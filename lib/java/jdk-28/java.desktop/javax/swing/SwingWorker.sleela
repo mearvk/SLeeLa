@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class SwingWorker<T, V> {
+class SwingWorker {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class SwingWorker<T, V> {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<T, V>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 2; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "T"; } if (index == 1) { return "V"; } return null; }
+  public SwingWorker bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -74,11 +92,11 @@ class SwingWorker<T, V> {
   @throwable("java.lang.UnsupportedOperationException")
   void done() { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException")
-  public final T get() { return null; }
+  public final Any get() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException")
-  public final T get(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  public final Any get(long timeout, Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final javax.swing.SwingWorker.StateValue getState() { return null; }
+  public final Any getState() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean isDone() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -87,23 +105,23 @@ class SwingWorker<T, V> {
   public final void execute() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final void publish(V... chunks) { }
+  final void publish(Any... chunks) { }
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean isCancelled() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void process(java.util.List<V> chunks) { }
+  void process(Any chunks) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  public final void firePropertyChange(String propertyName, Any oldValue, Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public final void addPropertyChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public final void removePropertyChangeListener(Any listener) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.lang.Exception")
-  T doInBackground() { return null; }
+  Any doInBackground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.beans.PropertyChangeSupport getPropertyChangeSupport() { return null; }
+  public final Any getPropertyChangeSupport() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   final void setProgress(int progress) { }

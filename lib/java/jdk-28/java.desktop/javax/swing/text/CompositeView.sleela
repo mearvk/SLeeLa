@@ -56,10 +56,28 @@ class CompositeView {
   String javaKind = "class";
   String javaSuper = "javax.swing.text.View";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public CompositeView bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public CompositeView(javax.swing.text.Element elem) { }
+  public CompositeView(Any elem) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -69,22 +87,22 @@ class CompositeView {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void replace(int offset, int length, javax.swing.text.View[] views) { }
+  public void replace(int offset, int length, Any[] views) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  boolean isAfter(int x, int y, java.awt.Rectangle alloc) { return false; }
+  boolean isAfter(int x, int y, Any alloc) { return false; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  boolean isBefore(int x, int y, java.awt.Rectangle alloc) { return false; }
+  boolean isBefore(int x, int y, Any alloc) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setParent(javax.swing.text.View parent) { }
+  public void setParent(Any parent) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setParagraphInsets(javax.swing.text.AttributeSet attr) { }
+  void setParagraphInsets(Any attr) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getViewCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.View getView(int n) { return null; }
+  public Any getView(int n) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getViewIndexAtPosition(int pos) { return 0; }
@@ -95,49 +113,49 @@ class CompositeView {
   @throwable("java.lang.UnsupportedOperationException")
   short getRightInset() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Shape getChildAllocation(int index, java.awt.Shape a) { return null; }
+  public Any getChildAllocation(int index, Any a) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   short getTopInset() { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  int getNextNorthSouthVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) { return 0; }
+  int getNextNorthSouthVisualPositionFrom(int pos, Any b, Any a, int direction, Any[] biasRet) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean flipEastAndWestAtEnds(int position, javax.swing.text.Position.Bias bias) { return false; }
+  boolean flipEastAndWestAtEnds(int position, Any bias) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Rectangle getInsideAllocation(java.awt.Shape a) { return null; }
+  Any getInsideAllocation(Any a) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void loadChildren(javax.swing.text.ViewFactory f) { }
+  void loadChildren(Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   short getBottomInset() { return 0; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  void childAllocation(int index, java.awt.Rectangle a) { }
+  void childAllocation(int index, Any a) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  javax.swing.text.View getViewAtPoint(int x, int y, java.awt.Rectangle alloc) { return null; }
+  Any getViewAtPoint(int x, int y, Any alloc) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.text.View getViewAtPosition(int pos, java.awt.Rectangle a) { return null; }
+  Any getViewAtPosition(int pos, Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public int getNextVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) { return 0; }
+  public int getNextVisualPositionFrom(int pos, Any b, Any a, int direction, Any[] biasRet) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  int getNextEastWestVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) { return 0; }
+  int getNextEastWestVisualPositionFrom(int pos, Any b, Any a, int direction, Any[] biasRet) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getViewIndex(int pos, javax.swing.text.Position.Bias b) { return 0; }
+  public int getViewIndex(int pos, Any b) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void setInsets(short top, short left, short bottom, short right) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int viewToModel(float x, float y, java.awt.Shape a, javax.swing.text.Position.Bias[] bias) { return 0; }
+  public int viewToModel(float x, float y, Any a, Any[] bias) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public java.awt.Shape modelToView(int pos, java.awt.Shape a, javax.swing.text.Position.Bias b) { return null; }
+  public Any modelToView(int pos, Any a, Any b) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public java.awt.Shape modelToView(int p0, javax.swing.text.Position.Bias b0, int p1, javax.swing.text.Position.Bias b1, java.awt.Shape a) { return null; }
+  public Any modelToView(int p0, Any b0, int p1, Any b1, Any a) { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class SwingUtilities {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SwingUtilities bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,96 +82,96 @@ class SwingUtilities {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Component getRoot(java.awt.Component c) { return null; }
+  public static Any getRoot(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Component getDeepestComponentAt(java.awt.Component parent, int x, int y) { return null; }
+  public static Any getDeepestComponentAt(Any parent, int x, int y) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final boolean isRectangleContainingRectangle(java.awt.Rectangle a, java.awt.Rectangle b) { return false; }
+  public static final boolean isRectangleContainingRectangle(Any a, Any b) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Rectangle getLocalBounds(java.awt.Component aComponent) { return null; }
+  public static Any getLocalBounds(Any aComponent) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Container getAncestorNamed(java.lang.String name, java.awt.Component comp) { return null; }
+  public static Any getAncestorNamed(String name, Any comp) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.event.MouseEvent convertMouseEvent(java.awt.Component source, java.awt.event.MouseEvent sourceEvent, java.awt.Component destination) { return null; }
+  public static Any convertMouseEvent(Any source, Any sourceEvent, Any destination) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Window windowForComponent(java.awt.Component c) { return null; }
+  public static Any windowForComponent(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isLeftMouseButton(java.awt.event.MouseEvent anEvent) { return false; }
+  public static boolean isLeftMouseButton(Any anEvent) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isMiddleMouseButton(java.awt.event.MouseEvent anEvent) { return false; }
+  public static boolean isMiddleMouseButton(Any anEvent) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isRightMouseButton(java.awt.event.MouseEvent anEvent) { return false; }
+  public static boolean isRightMouseButton(Any anEvent) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int computeStringWidth(java.awt.FontMetrics fm, java.lang.String str) { return 0; }
+  public static int computeStringWidth(Any fm, String str) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void replaceUIInputMap(javax.swing.JComponent component, int type, javax.swing.InputMap uiInputMap) { }
+  public static void replaceUIInputMap(Any component, int type, Any uiInputMap) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void replaceUIActionMap(javax.swing.JComponent component, javax.swing.ActionMap uiActionMap) { }
+  public static void replaceUIActionMap(Any component, Any uiActionMap) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.InputMap getUIInputMap(javax.swing.JComponent component, int condition) { return null; }
+  public static Any getUIInputMap(Any component, int condition) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.ActionMap getUIActionMap(javax.swing.JComponent component) { return null; }
+  public static Any getUIActionMap(Any component) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Rectangle calculateInnerArea(javax.swing.JComponent c, java.awt.Rectangle r) { return null; }
+  public static Any calculateInnerArea(Any c, Any r) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int getAccessibleChildrenCount(java.awt.Component c) { return 0; }
+  public static int getAccessibleChildrenCount(Any c) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.accessibility.Accessible getAccessibleChild(java.awt.Component c, int i) { return null; }
+  public static Any getAccessibleChild(Any c, int i) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.accessibility.Accessible getAccessibleAt(java.awt.Component c, java.awt.Point p) { return null; }
+  public static Any getAccessibleAt(Any c, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int getAccessibleIndexInParent(java.awt.Component c) { return 0; }
+  public static int getAccessibleIndexInParent(Any c) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Rectangle computeUnion(int x, int y, int width, int height, java.awt.Rectangle dest) { return null; }
+  public static Any computeUnion(int x, int y, int width, int height, Any dest) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Window getWindowAncestor(java.awt.Component c) { return null; }
+  public static Any getWindowAncestor(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Rectangle computeIntersection(int x, int y, int width, int height, java.awt.Rectangle dest) { return null; }
+  public static Any computeIntersection(int x, int y, int width, int height, Any dest) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void paintComponent(java.awt.Graphics g, java.awt.Component c, java.awt.Container p, java.awt.Rectangle r) { }
+  public static void paintComponent(Any g, Any c, Any p, Any r) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void paintComponent(java.awt.Graphics g, java.awt.Component c, java.awt.Container p, int x, int y, int w, int h) { }
+  public static void paintComponent(Any g, Any c, Any p, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean processKeyBindings(java.awt.event.KeyEvent event) { return false; }
+  public static boolean processKeyBindings(Any event) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean notifyAction(javax.swing.Action action, javax.swing.KeyStroke ks, java.awt.event.KeyEvent event, java.lang.Object sender, int modifiers) { return false; }
+  public static boolean notifyAction(Any action, Any ks, Any event, Any sender, int modifiers) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Rectangle convertRectangle(java.awt.Component source, java.awt.Rectangle aRectangle, java.awt.Component destination) { return null; }
+  public static Any convertRectangle(Any source, Any aRectangle, Any destination) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Container getAncestorOfClass(java.lang.Class<?> c, java.awt.Component comp) { return null; }
+  public static Any getAncestorOfClass(Any c, Any comp) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Component getUnwrappedView(javax.swing.JViewport viewport) { return null; }
+  public static Any getUnwrappedView(Any viewport) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isDescendingFrom(java.awt.Component a, java.awt.Component b) { return false; }
+  public static boolean isDescendingFrom(Any a, Any b) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.lang.reflect.InvocationTargetException")
-  public static void invokeAndWait(java.lang.Runnable doRun) { }
+  public static void invokeAndWait(Any doRun) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.JRootPane getRootPane(java.awt.Component c) { return null; }
+  public static Any getRootPane(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Point convertPoint(java.awt.Component source, java.awt.Point aPoint, java.awt.Component destination) { return null; }
+  public static Any convertPoint(Any source, Any aPoint, Any destination) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Point convertPoint(java.awt.Component source, int x, int y, java.awt.Component destination) { return null; }
+  public static Any convertPoint(Any source, int x, int y, Any destination) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void convertPointToScreen(java.awt.Point p, java.awt.Component c) { }
+  public static void convertPointToScreen(Any p, Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void convertPointFromScreen(java.awt.Point p, java.awt.Component c) { }
+  public static void convertPointFromScreen(Any p, Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void updateComponentTreeUI(java.awt.Component c) { }
+  public static void updateComponentTreeUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Container getUnwrappedParent(java.awt.Component component) { return null; }
+  public static Any getUnwrappedParent(Any component) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Component findFocusOwner(java.awt.Component c) { return null; }
+  public static Any findFocusOwner(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.accessibility.AccessibleStateSet getAccessibleStateSet(java.awt.Component c) { return null; }
+  public static Any getAccessibleStateSet(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String layoutCompoundLabel(java.awt.FontMetrics fm, java.lang.String text, javax.swing.Icon icon, int verticalAlignment, int horizontalAlignment, int verticalTextPosition, int horizontalTextPosition, java.awt.Rectangle viewR, java.awt.Rectangle iconR, java.awt.Rectangle textR, int textIconGap) { return null; }
+  public static String layoutCompoundLabel(Any fm, String text, Any icon, int verticalAlignment, int horizontalAlignment, int verticalTextPosition, int horizontalTextPosition, Any viewR, Any iconR, Any textR, int textIconGap) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String layoutCompoundLabel(javax.swing.JComponent c, java.awt.FontMetrics fm, java.lang.String text, javax.swing.Icon icon, int verticalAlignment, int horizontalAlignment, int verticalTextPosition, int horizontalTextPosition, java.awt.Rectangle viewR, java.awt.Rectangle iconR, java.awt.Rectangle textR, int textIconGap) { return null; }
+  public static String layoutCompoundLabel(Any c, Any fm, String text, Any icon, int verticalAlignment, int horizontalAlignment, int verticalTextPosition, int horizontalTextPosition, Any viewR, Any iconR, Any textR, int textIconGap) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean isEventDispatchThread() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Rectangle[] computeDifference(java.awt.Rectangle rectA, java.awt.Rectangle rectB) { return null; }
+  public static Any[] computeDifference(Any rectA, Any rectB) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void invokeLater(java.lang.Runnable doRun) { }
+  public static void invokeLater(Any doRun) { }
   < ---- END java signatures ---- >
 }

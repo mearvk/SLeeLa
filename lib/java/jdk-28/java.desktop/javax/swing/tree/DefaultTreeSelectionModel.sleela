@@ -56,6 +56,24 @@ class DefaultTreeSelectionModel {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DefaultTreeSelectionModel bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String SELECTION_MODE_PROPERTY = "selectionMode";
@@ -83,18 +101,18 @@ class DefaultTreeSelectionModel {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public synchronized void addPropertyChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.beans.PropertyChangeListener[] getPropertyChangeListeners() { return null; }
+  public Any[] getPropertyChangeListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public synchronized void removePropertyChangeListener(Any listener) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean arePathsContiguous(javax.swing.tree.TreePath[] paths) { return false; }
+  boolean arePathsContiguous(Any[] paths) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void insureUniqueness() { }
@@ -103,28 +121,28 @@ class DefaultTreeSelectionModel {
   void updateLeadIndex() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void notifyPathChange(java.util.Vector<?> changedPaths, javax.swing.tree.TreePath oldLeadSelection) { }
+  void notifyPathChange(Any changedPaths, Any oldLeadSelection) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean canPathsBeAdded(javax.swing.tree.TreePath[] paths) { return false; }
+  boolean canPathsBeAdded(Any[] paths) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean canPathsBeRemoved(javax.swing.tree.TreePath[] paths) { return false; }
+  boolean canPathsBeRemoved(Any[] paths) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void insureRowContinuity() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setRowMapper(javax.swing.tree.RowMapper newMapper) { }
+  public void setRowMapper(Any newMapper) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.RowMapper getRowMapper() { return null; }
+  public Any getRowMapper() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void resetRowSelection() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addSelectionPath(javax.swing.tree.TreePath path) { }
+  public void addSelectionPath(Any path) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addSelectionPaths(javax.swing.tree.TreePath[] paths) { }
+  public void addSelectionPaths(Any[] paths) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreePath getSelectionPath() { return null; }
+  public Any getSelectionPath() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int[] getSelectionRows() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -134,41 +152,42 @@ class DefaultTreeSelectionModel {
   @throwable("java.lang.UnsupportedOperationException")
   public int getMaxSelectionRow() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isPathSelected(javax.swing.tree.TreePath path) { return false; }
+  public boolean isPathSelected(Any path) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeTreeSelectionListener(javax.swing.event.TreeSelectionListener x) { }
+  public void removeTreeSelectionListener(Any x) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addTreeSelectionListener(javax.swing.event.TreeSelectionListener x) { }
+  public void addTreeSelectionListener(Any x) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeSelectionPaths(javax.swing.tree.TreePath[] paths) { }
+  public void removeSelectionPaths(Any[] paths) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeSelectionPath(javax.swing.tree.TreePath path) { }
+  public void removeSelectionPath(Any path) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isSelectionEmpty() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getLeadSelectionRow() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.TreeSelectionListener[] getTreeSelectionListeners() { return null; }
+  public Any[] getTreeSelectionListeners() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void fireValueChanged(javax.swing.event.TreeSelectionEvent e) { }
+  void fireValueChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setSelectionMode(int mode) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSelectionPaths(javax.swing.tree.TreePath[] pPaths) { }
+  public void setSelectionPaths(Any[] pPaths) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreePath[] getSelectionPaths() { return null; }
+  public Any[] getSelectionPaths() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreePath getLeadSelectionPath() { return null; }
+  public Any getLeadSelectionPath() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSelectionPath(javax.swing.tree.TreePath path) { }
+  public void setSelectionPath(Any path) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isRowSelected(int row) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void clearSelection() { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getSelectionMode() { return 0; }
+  @generic("<T extends java.util.EventListener>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
+  public Any[] getListeners(Any listenerType) { return null; }
   < ---- END java signatures ---- >
 }

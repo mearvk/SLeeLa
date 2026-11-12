@@ -56,6 +56,24 @@ class HexFormat {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public HexFormat bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,55 +82,58 @@ class HexFormat {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object o) { return false; }
+  public boolean equals(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isUpperCase() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.HexFormat of() { return null; }
+  public static Any of() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String prefix() { return null; }
+  public String prefix() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String suffix() { return null; }
+  public String suffix() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String delimiter() { return null; }
+  public String delimiter() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.HexFormat withUpperCase() { return null; }
+  public Any withUpperCase() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toHexDigits(long value, int digits) { return null; }
+  public String toHexDigits(long value, int digits) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toHexDigits(long value) { return null; }
+  public String toHexDigits(long value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toHexDigits(int value) { return null; }
+  public String toHexDigits(int value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toHexDigits(char value) { return null; }
+  public String toHexDigits(char value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toHexDigits(short value) { return null; }
+  public String toHexDigits(short value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toHexDigits(byte value) { return null; }
+  public String toHexDigits(byte value) { return null; }
+  @generic("<A extends java.lang.Appendable>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <A extends java.lang.Appendable> A toHexDigits(A out, byte value) { return null; }
+  public Any toHexDigits(Any out, byte value) { return null; }
+  @generic("<A extends java.lang.Appendable>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <A extends java.lang.Appendable> A formatHex(A out, byte[] bytes) { return null; }
+  public Any formatHex(Any out, byte[] bytes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String formatHex(byte[] bytes, int fromIndex, int toIndex) { return null; }
+  public String formatHex(byte[] bytes, int fromIndex, int toIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String formatHex(byte[] bytes) { return null; }
+  public String formatHex(byte[] bytes) { return null; }
+  @generic("<A extends java.lang.Appendable>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <A extends java.lang.Appendable> A formatHex(A out, byte[] bytes, int fromIndex, int toIndex) { return null; }
+  public Any formatHex(Any out, byte[] bytes, int fromIndex, int toIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public byte[] parseHex(java.lang.CharSequence string) { return null; }
+  public byte[] parseHex(Any string) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public byte[] parseHex(char[] chars, int fromIndex, int toIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public byte[] parseHex(java.lang.CharSequence string, int fromIndex, int toIndex) { return null; }
+  public byte[] parseHex(Any string, int fromIndex, int toIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int fromHexDigits(java.lang.CharSequence string) { return 0; }
+  public static int fromHexDigits(Any string) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int fromHexDigits(java.lang.CharSequence string, int fromIndex, int toIndex) { return 0; }
+  public static int fromHexDigits(Any string, int fromIndex, int toIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public char toHighHexDigit(int value) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -120,19 +141,19 @@ class HexFormat {
   @throwable("java.lang.UnsupportedOperationException")
   public static int fromHexDigit(int ch) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static long fromHexDigitsToLong(java.lang.CharSequence string, int fromIndex, int toIndex) { return 0; }
+  public static long fromHexDigitsToLong(Any string, int fromIndex, int toIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static long fromHexDigitsToLong(java.lang.CharSequence string) { return 0; }
+  public static long fromHexDigitsToLong(Any string) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.HexFormat ofDelimiter(java.lang.String delimiter) { return null; }
+  public static Any ofDelimiter(String delimiter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.HexFormat withDelimiter(java.lang.String delimiter) { return null; }
+  public Any withDelimiter(String delimiter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.HexFormat withPrefix(java.lang.String prefix) { return null; }
+  public Any withPrefix(String prefix) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.HexFormat withSuffix(java.lang.String suffix) { return null; }
+  public Any withSuffix(String suffix) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.HexFormat withLowerCase() { return null; }
+  public Any withLowerCase() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean isHexDigit(int ch) { return false; }
   < ---- END java signatures ---- >

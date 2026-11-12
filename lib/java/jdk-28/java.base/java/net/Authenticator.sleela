@@ -56,6 +56,24 @@ class Authenticator {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Authenticator bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,45 +87,45 @@ class Authenticator {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.Authenticator getDefault() { return null; }
+  public static Any getDefault() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static synchronized void setDefault(java.net.Authenticator a) { }
+  public static synchronized void setDefault(Any a) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.net.PasswordAuthentication getPasswordAuthentication() { return null; }
+  Any getPasswordAuthentication() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.net.PasswordAuthentication requestPasswordAuthenticationInstance(java.lang.String host, java.net.InetAddress addr, int port, java.lang.String protocol, java.lang.String prompt, java.lang.String scheme, java.net.URL url, java.net.Authenticator.RequestorType reqType) { return null; }
+  public Any requestPasswordAuthenticationInstance(String host, Any addr, int port, String protocol, String prompt, String scheme, Any url, Any reqType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.PasswordAuthentication requestPasswordAuthentication(java.lang.String host, java.net.InetAddress addr, int port, java.lang.String protocol, java.lang.String prompt, java.lang.String scheme) { return null; }
+  public static Any requestPasswordAuthentication(String host, Any addr, int port, String protocol, String prompt, String scheme) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.PasswordAuthentication requestPasswordAuthentication(java.net.Authenticator authenticator, java.lang.String host, java.net.InetAddress addr, int port, java.lang.String protocol, java.lang.String prompt, java.lang.String scheme, java.net.URL url, java.net.Authenticator.RequestorType reqType) { return null; }
+  public static Any requestPasswordAuthentication(Any authenticator, String host, Any addr, int port, String protocol, String prompt, String scheme, Any url, Any reqType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.PasswordAuthentication requestPasswordAuthentication(java.lang.String host, java.net.InetAddress addr, int port, java.lang.String protocol, java.lang.String prompt, java.lang.String scheme, java.net.URL url, java.net.Authenticator.RequestorType reqType) { return null; }
+  public static Any requestPasswordAuthentication(String host, Any addr, int port, String protocol, String prompt, String scheme, Any url, Any reqType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.PasswordAuthentication requestPasswordAuthentication(java.net.InetAddress addr, int port, java.lang.String protocol, java.lang.String prompt, java.lang.String scheme) { return null; }
+  public static Any requestPasswordAuthentication(Any addr, int port, String protocol, String prompt, String scheme) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final java.lang.String getRequestingHost() { return null; }
+  final String getRequestingHost() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final java.net.InetAddress getRequestingSite() { return null; }
+  final Any getRequestingSite() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   final int getRequestingPort() { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final java.lang.String getRequestingProtocol() { return null; }
+  final String getRequestingProtocol() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final java.lang.String getRequestingPrompt() { return null; }
+  final String getRequestingPrompt() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final java.lang.String getRequestingScheme() { return null; }
+  final String getRequestingScheme() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.net.URL getRequestingURL() { return null; }
+  Any getRequestingURL() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.net.Authenticator.RequestorType getRequestorType() { return null; }
+  Any getRequestorType() { return null; }
   < ---- END java signatures ---- >
 }

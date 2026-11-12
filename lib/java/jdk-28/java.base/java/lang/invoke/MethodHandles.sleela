@@ -56,6 +56,25 @@ class MethodHandles {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  int genericTypeArgumentTotal = 0;
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MethodHandles bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } if (arguments == null) { this.genericTypeArgumentTotal = 0; } else { this.genericTypeArgumentTotal = genericTypeParameterCount(); } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= genericTypeArgumentTotal) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return genericTypeArgumentTotal; }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,106 +83,109 @@ class MethodHandles {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle throwException(java.lang.Class<?> returnType, java.lang.Class<? extends java.lang.Throwable> exType) { return null; }
+  public static Any throwException(Any returnType, Any exType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandles.Lookup lookup() { return null; }
+  public static Any lookup() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
-  public static <T> T classData(java.lang.invoke.MethodHandles.Lookup caller, java.lang.String name, java.lang.Class<T> type) { return null; }
+  public static Any classData(Any caller, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle empty(java.lang.invoke.MethodType type) { return null; }
+  public static Any empty(Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle constant(java.lang.Class<?> type, java.lang.Object value) { return null; }
+  public static Any constant(Any type, Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle identity(java.lang.Class<?> type) { return null; }
+  public static Any identity(Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle spreadInvoker(java.lang.invoke.MethodType type, int leadingArgCount) { return null; }
+  public static Any spreadInvoker(Any type, int leadingArgCount) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public static java.lang.invoke.MethodHandle arrayLength(java.lang.Class<?> arrayClass) { return null; }
+  public static Any arrayLength(Any arrayClass) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle varHandleInvoker(java.lang.invoke.VarHandle.AccessMode accessMode, java.lang.invoke.MethodType type) { return null; }
+  public static Any varHandleInvoker(Any accessMode, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandles.Lookup publicLookup() { return null; }
+  public static Any publicLookup() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle tryFinally(java.lang.invoke.MethodHandle target, java.lang.invoke.MethodHandle cleanup) { return null; }
+  public static Any tryFinally(Any target, Any cleanup) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle loop(java.lang.invoke.MethodHandle[]... clauses) { return null; }
+  public static Any loop(Any[]... clauses) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle tableSwitch(java.lang.invoke.MethodHandle fallback, java.lang.invoke.MethodHandle... targets) { return null; }
+  public static Any tableSwitch(Any fallback, Any... targets) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public static java.lang.invoke.MethodHandle arrayConstructor(java.lang.Class<?> arrayClass) { return null; }
+  public static Any arrayConstructor(Any arrayClass) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle exactInvoker(java.lang.invoke.MethodType type) { return null; }
+  public static Any exactInvoker(Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle foldArguments(java.lang.invoke.MethodHandle target, java.lang.invoke.MethodHandle combiner) { return null; }
+  public static Any foldArguments(Any target, Any combiner) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle foldArguments(java.lang.invoke.MethodHandle target, int pos, java.lang.invoke.MethodHandle combiner) { return null; }
+  public static Any foldArguments(Any target, int pos, Any combiner) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle invoker(java.lang.invoke.MethodType type) { return null; }
+  public static Any invoker(Any type) { return null; }
+  @generic("<T extends java.lang.reflect.Member>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T extends java.lang.reflect.Member> T reflectAs(java.lang.Class<T> expected, java.lang.invoke.MethodHandle target) { return null; }
+  public static Any reflectAs(Any expected, Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle zero(java.lang.Class<?> type) { return null; }
+  public static Any zero(Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle dropArgumentsToMatch(java.lang.invoke.MethodHandle target, int skip, java.util.List<java.lang.Class<?>> newTypes, int pos) { return null; }
+  public static Any dropArgumentsToMatch(Any target, int skip, Any newTypes, int pos) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle dropArguments(java.lang.invoke.MethodHandle target, int pos, java.util.List<java.lang.Class<?>> valueTypes) { return null; }
+  public static Any dropArguments(Any target, int pos, Any valueTypes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle dropArguments(java.lang.invoke.MethodHandle target, int pos, java.lang.Class<?>... valueTypes) { return null; }
+  public static Any dropArguments(Any target, int pos, Any... valueTypes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle countedLoop(java.lang.invoke.MethodHandle start, java.lang.invoke.MethodHandle end, java.lang.invoke.MethodHandle init, java.lang.invoke.MethodHandle body) { return null; }
+  public static Any countedLoop(Any start, Any end, Any init, Any body) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle countedLoop(java.lang.invoke.MethodHandle iterations, java.lang.invoke.MethodHandle init, java.lang.invoke.MethodHandle body) { return null; }
+  public static Any countedLoop(Any iterations, Any init, Any body) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle permuteArguments(java.lang.invoke.MethodHandle target, java.lang.invoke.MethodType newType, int... reorder) { return null; }
+  public static Any permuteArguments(Any target, Any newType, int... reorder) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.VarHandle filterValue(java.lang.invoke.VarHandle target, java.lang.invoke.MethodHandle filterToTarget, java.lang.invoke.MethodHandle filterFromTarget) { return null; }
+  public static Any filterValue(Any target, Any filterToTarget, Any filterFromTarget) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.VarHandle filterCoordinates(java.lang.invoke.VarHandle target, int pos, java.lang.invoke.MethodHandle... filters) { return null; }
+  public static Any filterCoordinates(Any target, int pos, Any... filters) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.VarHandle insertCoordinates(java.lang.invoke.VarHandle target, int pos, java.lang.Object... values) { return null; }
+  public static Any insertCoordinates(Any target, int pos, Any... values) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.VarHandle permuteCoordinates(java.lang.invoke.VarHandle target, java.util.List<java.lang.Class<?>> newCoordinates, int... reorder) { return null; }
+  public static Any permuteCoordinates(Any target, Any newCoordinates, int... reorder) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.VarHandle collectCoordinates(java.lang.invoke.VarHandle target, int pos, java.lang.invoke.MethodHandle filter) { return null; }
+  public static Any collectCoordinates(Any target, int pos, Any filter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.VarHandle dropCoordinates(java.lang.invoke.VarHandle target, int pos, java.lang.Class<?>... valueTypes) { return null; }
+  public static Any dropCoordinates(Any target, int pos, Any... valueTypes) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
-  public static java.lang.invoke.MethodHandles.Lookup privateLookupIn(java.lang.Class<?> targetClass, java.lang.invoke.MethodHandles.Lookup caller) { return null; }
+  public static Any privateLookupIn(Any targetClass, Any caller) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
-  public static <T> T classDataAt(java.lang.invoke.MethodHandles.Lookup caller, java.lang.String name, java.lang.Class<T> type, int index) { return null; }
+  public static Any classDataAt(Any caller, String name, Any type, int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public static java.lang.invoke.MethodHandle arrayElementGetter(java.lang.Class<?> arrayClass) { return null; }
+  public static Any arrayElementGetter(Any arrayClass) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public static java.lang.invoke.MethodHandle arrayElementSetter(java.lang.Class<?> arrayClass) { return null; }
+  public static Any arrayElementSetter(Any arrayClass) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public static java.lang.invoke.VarHandle arrayElementVarHandle(java.lang.Class<?> arrayClass) { return null; }
+  public static Any arrayElementVarHandle(Any arrayClass) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public static java.lang.invoke.VarHandle byteArrayViewVarHandle(java.lang.Class<?> viewArrayClass, java.nio.ByteOrder byteOrder) { return null; }
+  public static Any byteArrayViewVarHandle(Any viewArrayClass, Any byteOrder) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public static java.lang.invoke.VarHandle byteBufferViewVarHandle(java.lang.Class<?> viewArrayClass, java.nio.ByteOrder byteOrder) { return null; }
+  public static Any byteBufferViewVarHandle(Any viewArrayClass, Any byteOrder) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle varHandleExactInvoker(java.lang.invoke.VarHandle.AccessMode accessMode, java.lang.invoke.MethodType type) { return null; }
+  public static Any varHandleExactInvoker(Any accessMode, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle explicitCastArguments(java.lang.invoke.MethodHandle target, java.lang.invoke.MethodType newType) { return null; }
+  public static Any explicitCastArguments(Any target, Any newType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle insertArguments(java.lang.invoke.MethodHandle target, int pos, java.lang.Object... values) { return null; }
+  public static Any insertArguments(Any target, int pos, Any... values) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle dropReturn(java.lang.invoke.MethodHandle target) { return null; }
+  public static Any dropReturn(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle filterArguments(java.lang.invoke.MethodHandle target, int pos, java.lang.invoke.MethodHandle... filters) { return null; }
+  public static Any filterArguments(Any target, int pos, Any... filters) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle collectArguments(java.lang.invoke.MethodHandle target, int pos, java.lang.invoke.MethodHandle filter) { return null; }
+  public static Any collectArguments(Any target, int pos, Any filter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle filterReturnValue(java.lang.invoke.MethodHandle target, java.lang.invoke.MethodHandle filter) { return null; }
+  public static Any filterReturnValue(Any target, Any filter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle guardWithTest(java.lang.invoke.MethodHandle test, java.lang.invoke.MethodHandle target, java.lang.invoke.MethodHandle fallback) { return null; }
+  public static Any guardWithTest(Any test, Any target, Any fallback) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle catchException(java.lang.invoke.MethodHandle target, java.lang.Class<? extends java.lang.Throwable> exType, java.lang.invoke.MethodHandle handler) { return null; }
+  public static Any catchException(Any target, Any exType, Any handler) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle whileLoop(java.lang.invoke.MethodHandle init, java.lang.invoke.MethodHandle pred, java.lang.invoke.MethodHandle body) { return null; }
+  public static Any whileLoop(Any init, Any pred, Any body) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle doWhileLoop(java.lang.invoke.MethodHandle init, java.lang.invoke.MethodHandle body, java.lang.invoke.MethodHandle pred) { return null; }
+  public static Any doWhileLoop(Any init, Any body, Any pred) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle iteratedLoop(java.lang.invoke.MethodHandle iterator, java.lang.invoke.MethodHandle init, java.lang.invoke.MethodHandle body) { return null; }
+  public static Any iteratedLoop(Any iterator, Any init, Any body) { return null; }
   < ---- END java signatures ---- >
 }

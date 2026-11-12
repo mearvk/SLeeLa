@@ -56,6 +56,24 @@ class JMXConnector {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JMXConnector bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String CREDENTIALS = "jmx.remote.credentials";
@@ -70,18 +88,18 @@ class JMXConnector {
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
   public void connect() { }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public void connect(java.util.Map<java.lang.String, ?> env) { }
+  public void connect(Any env) { }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.lang.String getConnectionId() { return null; }
+  public String getConnectionId() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void addConnectionNotificationListener(javax.management.NotificationListener listener, javax.management.NotificationFilter filter, java.lang.Object handback) { }
+  public void addConnectionNotificationListener(Any listener, Any filter, Any handback) { }
   @throwable("java.lang.AbstractMethodError, javax.management.ListenerNotFoundException")
-  public void removeConnectionNotificationListener(javax.management.NotificationListener l, javax.management.NotificationFilter f, java.lang.Object handback) { }
+  public void removeConnectionNotificationListener(Any l, Any f, Any handback) { }
   @throwable("java.lang.AbstractMethodError, javax.management.ListenerNotFoundException")
-  public void removeConnectionNotificationListener(javax.management.NotificationListener listener) { }
+  public void removeConnectionNotificationListener(Any listener) { }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public javax.management.MBeanServerConnection getMBeanServerConnection() { return null; }
+  public Any getMBeanServerConnection() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public default javax.management.MBeanServerConnection getMBeanServerConnection(javax.security.auth.Subject delegationSubject) { return null; }
+  public default Any getMBeanServerConnection(Any delegationSubject) { return null; }
   < ---- END java signatures ---- >
 }

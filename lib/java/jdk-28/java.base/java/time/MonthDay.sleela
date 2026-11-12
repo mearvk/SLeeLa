@@ -56,6 +56,24 @@ class MonthDay {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MonthDay bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,60 +82,61 @@ class MonthDay {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public int get(java.time.temporal.TemporalField field) { return 0; }
+  public int get(Any field) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(java.time.MonthDay other) { return 0; }
+  public int compareTo(Any other) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public long getLong(java.time.temporal.TemporalField field) { return 0; }
+  public long getLong(Any field) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.MonthDay of(int month, int dayOfMonth) { return null; }
+  public static Any of(int month, int dayOfMonth) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.MonthDay of(java.time.Month month, int dayOfMonth) { return null; }
+  public static Any of(Any month, int dayOfMonth) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String format(java.time.format.DateTimeFormatter formatter) { return null; }
+  public String format(Any formatter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.MonthDay from(java.time.temporal.TemporalAccessor temporal) { return null; }
+  public static Any from(Any temporal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isSupported(java.time.temporal.TemporalField field) { return false; }
+  public boolean isSupported(Any field) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.MonthDay parse(java.lang.CharSequence text) { return null; }
+  public static Any parse(Any text) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.MonthDay parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { return null; }
+  public static Any parse(Any text, Any formatter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.MonthDay with(java.time.Month month) { return null; }
+  public Any with(Any month) { return null; }
+  @generic("<R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <R> R query(java.time.temporal.TemporalQuery<R> query) { return null; }
+  public Any query(Any query) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { return null; }
+  public Any range(Any field) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.MonthDay now(java.time.Clock clock) { return null; }
+  public static Any now(Any clock) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.MonthDay now() { return null; }
+  public static Any now() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMonthValue() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getDayOfMonth() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { return null; }
+  public Any adjustInto(Any temporal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isAfter(java.time.MonthDay other) { return false; }
+  public boolean isAfter(Any other) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isBefore(java.time.MonthDay other) { return false; }
+  public boolean isBefore(Any other) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Month getMonth() { return null; }
+  public Any getMonth() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.MonthDay withDayOfMonth(int dayOfMonth) { return null; }
+  public Any withDayOfMonth(int dayOfMonth) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.MonthDay withMonth(int month) { return null; }
+  public Any withMonth(int month) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isValidYear(int year) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalDate atYear(int year) { return null; }
+  public Any atYear(int year) { return null; }
   < ---- END java signatures ---- >
 }

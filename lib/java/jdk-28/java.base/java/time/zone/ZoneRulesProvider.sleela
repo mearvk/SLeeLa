@@ -56,6 +56,24 @@ class ZoneRulesProvider {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ZoneRulesProvider bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,25 +88,25 @@ class ZoneRulesProvider {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.zone.ZoneRules getRules(java.lang.String zoneId, boolean forCaching) { return null; }
+  public static Any getRules(String zoneId, boolean forCaching) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Set<java.lang.String> getAvailableZoneIds() { return null; }
+  public static Any getAvailableZoneIds() { return null; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  java.util.Set<java.lang.String> provideZoneIds() { return null; }
+  Any provideZoneIds() { return null; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  java.time.zone.ZoneRules provideRules(java.lang.String zoneId, boolean forCaching) { return null; }
+  Any provideRules(String zoneId, boolean forCaching) { return null; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  java.util.NavigableMap<java.lang.String, java.time.zone.ZoneRules> provideVersions(java.lang.String zoneId) { return null; }
+  Any provideVersions(String zoneId) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   boolean provideRefresh() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void registerProvider(java.time.zone.ZoneRulesProvider provider) { }
+  public static void registerProvider(Any provider) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.NavigableMap<java.lang.String, java.time.zone.ZoneRules> getVersions(java.lang.String zoneId) { return null; }
+  public static Any getVersions(String zoneId) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean refresh() { return false; }
   < ---- END java signatures ---- >

@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class JLayer<V extends java.awt.Component> {
+class JLayer {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,12 +56,30 @@ class JLayer<V extends java.awt.Component> {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<V extends java.awt.Component>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "V"; } return null; }
+  public JLayer bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public JLayer(V view, javax.swing.plaf.LayerUI<V> ui) { }
+  public JLayer(Any view, Any ui) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JLayer(V view) { }
+  public JLayer(Any view) { }
   @throwable("java.lang.UnsupportedOperationException")
   public JLayer() { }
   < ---- END java constructors ---- >
@@ -73,71 +91,71 @@ class JLayer<V extends java.awt.Component> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void remove(java.awt.Component comp) { }
+  public void remove(Any comp) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeAll() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBorder(javax.swing.border.Border border) { }
+  public void setBorder(Any border) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUI(javax.swing.plaf.LayerUI<? super V> ui) { }
+  public void setUI(Any ui) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.LayerUI<? super V> getUI() { return null; }
+  public Any getUI() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isOptimizedDrawingEnabled() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.border.Border getBorder() { return null; }
+  public Any getBorder() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintComponent(java.awt.Graphics g) { }
+  void paintComponent(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void paintImmediately(int x, int y, int w, int h) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   boolean isPaintingOrigin() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JPanel createGlassPane() { return null; }
+  public Any createGlassPane() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void propertyChange(java.beans.PropertyChangeEvent evt) { }
+  public void propertyChange(Any evt) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public V getView() { return null; }
+  public Any getView() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setView(V view) { }
+  public void setView(Any view) { }
   @throwable("java.lang.UnsupportedOperationException")
   public long getLayerEventMask() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setLayerEventMask(long layerEventMask) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredScrollableViewportSize() { return null; }
+  public Any getPreferredScrollableViewportSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { return 0; }
+  public int getScrollableUnitIncrement(Any visibleRect, int orientation, int direction) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getScrollableBlockIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { return 0; }
+  public int getScrollableBlockIncrement(Any visibleRect, int orientation, int direction) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getScrollableTracksViewportWidth() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getScrollableTracksViewportHeight() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int w, int h) { return false; }
+  public boolean imageUpdate(Any img, int infoflags, int x, int y, int w, int h) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JPanel getGlassPane() { return null; }
+  public Any getGlassPane() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setGlassPane(javax.swing.JPanel glassPane) { }
+  public void setGlassPane(Any glassPane) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLayout(java.awt.LayoutManager mgr) { }
+  public void setLayout(Any mgr) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void addNotify() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { }
+  void addImpl(Any comp, Any constraints, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeNotify() { }
   @throwable("java.lang.UnsupportedOperationException")
   public void doLayout() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g) { }
+  public void paint(Any g) { }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class HTMLFrameElement {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public HTMLFrameElement bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,38 +82,38 @@ class HTMLFrameElement {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setName(java.lang.String name) { }
+  public void setName(String name) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getFrameBorder() { return null; }
+  public String getFrameBorder() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setFrameBorder(java.lang.String frameBorder) { }
+  public void setFrameBorder(String frameBorder) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getLongDesc() { return null; }
+  public String getLongDesc() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setLongDesc(java.lang.String longDesc) { }
+  public void setLongDesc(String longDesc) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getMarginHeight() { return null; }
+  public String getMarginHeight() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setMarginHeight(java.lang.String marginHeight) { }
+  public void setMarginHeight(String marginHeight) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getMarginWidth() { return null; }
+  public String getMarginWidth() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setMarginWidth(java.lang.String marginWidth) { }
+  public void setMarginWidth(String marginWidth) { }
   @throwable("java.lang.AbstractMethodError")
   public boolean getNoResize() { return false; }
   @throwable("java.lang.AbstractMethodError")
   public void setNoResize(boolean noResize) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getScrolling() { return null; }
+  public String getScrolling() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setScrolling(java.lang.String scrolling) { }
+  public void setScrolling(String scrolling) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getSrc() { return null; }
+  public String getSrc() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setSrc(java.lang.String src) { }
+  public void setSrc(String src) { }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.Document getContentDocument() { return null; }
+  public Any getContentDocument() { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class RelationService {
   String javaKind = "class";
   String javaSuper = "javax.management.NotificationBroadcasterSupport";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public RelationService bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -71,82 +89,82 @@ class RelationService {
   @throwable("java.lang.UnsupportedOperationException, javax.management.relation.RelationServiceNotRegisteredException")
   public void isActive() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void postRegister(java.lang.Boolean registrationDone) { }
+  public void postRegister(Any registrationDone) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
   public void preDeregister() { }
   @throwable("java.lang.UnsupportedOperationException")
   public void postDeregister() { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.relation.RelationServiceNotRegisteredException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException, javax.management.relation.RoleNotFoundException")
-  public java.util.List<javax.management.ObjectName> getRole(java.lang.String relationId, java.lang.String roleName) { return null; }
+  public Any getRole(String relationId, String roleName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.relation.RelationServiceNotRegisteredException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException")
-  public javax.management.relation.RoleResult getRoles(java.lang.String relationId, java.lang.String[] roleNameArray) { return null; }
+  public Any getRoles(String relationId, String[] roleNameArray) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException, javax.management.relation.RoleNotFoundException")
-  public java.lang.Integer getRoleCardinality(java.lang.String relationId, java.lang.String roleName) { return null; }
+  public Any getRoleCardinality(String relationId, String roleName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException, javax.management.relation.RelationServiceNotRegisteredException")
-  public javax.management.relation.RoleResult getAllRoles(java.lang.String relationId) { return null; }
+  public Any getAllRoles(String relationId) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.relation.RelationServiceNotRegisteredException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException, javax.management.relation.RoleNotFoundException, javax.management.relation.InvalidRoleValueException")
-  public void setRole(java.lang.String relationId, javax.management.relation.Role role) { }
+  public void setRole(String relationId, Any role) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.relation.RelationServiceNotRegisteredException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException")
-  public javax.management.relation.RoleResult setRoles(java.lang.String relationId, javax.management.relation.RoleList roleList) { return null; }
+  public Any setRoles(String relationId, Any roleList) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException")
-  public java.util.Map<javax.management.ObjectName, java.util.List<java.lang.String>> getReferencedMBeans(java.lang.String relationId) { return null; }
+  public Any getReferencedMBeans(String relationId) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException")
-  public java.lang.String getRelationTypeName(java.lang.String relationId) { return null; }
+  public String getRelationTypeName(String relationId) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setPurgeFlag(boolean purgeFlag) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.RelationTypeNotFoundException")
-  public java.util.List<javax.management.relation.RoleInfo> getRoleInfos(java.lang.String relationTypeName) { return null; }
+  public Any getRoleInfos(String relationTypeName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.RelationTypeNotFoundException, javax.management.relation.RoleInfoNotFoundException")
-  public javax.management.relation.RoleInfo getRoleInfo(java.lang.String relationTypeName, java.lang.String roleInfoName) { return null; }
+  public Any getRoleInfo(String relationTypeName, String roleInfoName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.relation.RelationServiceNotRegisteredException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException")
-  public void removeRelation(java.lang.String relationId) { }
+  public void removeRelation(String relationId) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException")
-  public void sendRelationRemovalNotification(java.lang.String relationId, java.util.List<javax.management.ObjectName> unregMBeanList) { }
+  public void sendRelationRemovalNotification(String relationId, Any unregMBeanList) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public java.util.Map<java.lang.String, java.util.List<java.lang.String>> findReferencingRelations(javax.management.ObjectName mbeanName, java.lang.String relationTypeName, java.lang.String roleName) { return null; }
+  public Any findReferencingRelations(Any mbeanName, String relationTypeName, String roleName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.relation.RelationServiceNotRegisteredException")
   public void purgeRelations() { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.RelationServiceNotRegisteredException, javax.management.relation.RelationNotFoundException")
-  public void updateRoleMap(java.lang.String relationId, javax.management.relation.Role newRole, java.util.List<javax.management.ObjectName> oldValue) { }
+  public void updateRoleMap(String relationId, Any newRole, Any oldValue) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException")
-  public void sendRelationCreationNotification(java.lang.String relationId) { }
+  public void sendRelationCreationNotification(String relationId) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException")
-  public javax.management.ObjectName isRelationMBean(java.lang.String relationId) { return null; }
+  public Any isRelationMBean(String relationId) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getPurgeFlag() { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.InvalidRelationTypeException")
-  public void createRelationType(java.lang.String relationTypeName, javax.management.relation.RoleInfo[] roleInfoArray) { }
+  public void createRelationType(String relationTypeName, Any[] roleInfoArray) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.InvalidRelationTypeException")
-  public void addRelationType(javax.management.relation.RelationType relationTypeObj) { }
+  public void addRelationType(Any relationTypeObj) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<java.lang.String> getAllRelationTypeNames() { return null; }
+  public Any getAllRelationTypeNames() { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.relation.RelationServiceNotRegisteredException, java.lang.IllegalArgumentException, javax.management.relation.RelationTypeNotFoundException")
-  public void removeRelationType(java.lang.String relationTypeName) { }
+  public void removeRelationType(String relationTypeName) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.relation.RelationServiceNotRegisteredException, java.lang.IllegalArgumentException, javax.management.relation.RoleNotFoundException, javax.management.relation.InvalidRelationIdException, javax.management.relation.RelationTypeNotFoundException, javax.management.relation.InvalidRoleValueException")
-  public void createRelation(java.lang.String relationId, java.lang.String relationTypeName, javax.management.relation.RoleList roleList) { }
+  public void createRelation(String relationId, String relationTypeName, Any roleList) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.RelationServiceNotRegisteredException, java.lang.NoSuchMethodException, javax.management.relation.InvalidRelationIdException, javax.management.InstanceNotFoundException, javax.management.relation.InvalidRelationServiceException, javax.management.relation.RelationTypeNotFoundException, javax.management.relation.RoleNotFoundException, javax.management.relation.InvalidRoleValueException")
-  public void addRelation(javax.management.ObjectName relationObjectName) { }
+  public void addRelation(Any relationObjectName) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public java.lang.String isRelation(javax.management.ObjectName objectName) { return null; }
+  public String isRelation(Any objectName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public java.lang.Boolean hasRelation(java.lang.String relationId) { return null; }
+  public Any hasRelation(String relationId) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<java.lang.String> getAllRelationIds() { return null; }
+  public Any getAllRelationIds() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.RelationTypeNotFoundException")
-  public java.lang.Integer checkRoleReading(java.lang.String roleName, java.lang.String relationTypeName) { return null; }
+  public Any checkRoleReading(String roleName, String relationTypeName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.RelationTypeNotFoundException")
-  public java.lang.Integer checkRoleWriting(javax.management.relation.Role role, java.lang.String relationTypeName, java.lang.Boolean initFlag) { return null; }
+  public Any checkRoleWriting(Any role, String relationTypeName, Any initFlag) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.RelationNotFoundException")
-  public void sendRoleUpdateNotification(java.lang.String relationId, javax.management.relation.Role newRole, java.util.List<javax.management.ObjectName> oldValue) { }
+  public void sendRoleUpdateNotification(String relationId, Any newRole, Any oldValue) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public java.util.Map<javax.management.ObjectName, java.util.List<java.lang.String>> findAssociatedMBeans(javax.management.ObjectName mbeanName, java.lang.String relationTypeName, java.lang.String roleName) { return null; }
+  public Any findAssociatedMBeans(Any mbeanName, String relationTypeName, String roleName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, javax.management.relation.RelationTypeNotFoundException")
-  public java.util.List<java.lang.String> findRelationsOfType(java.lang.String relationTypeName) { return null; }
+  public Any findRelationsOfType(String relationTypeName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void handleNotification(javax.management.Notification notif, java.lang.Object handback) { }
+  public void handleNotification(Any notif, Any handback) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.management.MBeanNotificationInfo[] getNotificationInfo() { return null; }
+  public Any[] getNotificationInfo() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
-  public javax.management.ObjectName preRegister(javax.management.MBeanServer server, javax.management.ObjectName name) { return null; }
+  public Any preRegister(Any server, Any name) { return null; }
   < ---- END java signatures ---- >
 }

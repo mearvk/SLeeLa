@@ -56,6 +56,24 @@ class BaseRowSet {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BaseRowSet bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int UNICODE_STREAM_PARAM = 0;
@@ -84,86 +102,86 @@ class BaseRowSet {
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public int getType() { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setBoolean(java.lang.String parameterName, boolean x) { }
+  public void setBoolean(String parameterName, boolean x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setBoolean(int parameterIndex, boolean x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setByte(int parameterIndex, byte x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setByte(java.lang.String parameterName, byte x) { }
+  public void setByte(String parameterName, byte x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setShort(java.lang.String parameterName, short x) { }
+  public void setShort(String parameterName, short x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setShort(int parameterIndex, short x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setInt(int parameterIndex, int x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setInt(java.lang.String parameterName, int x) { }
+  public void setInt(String parameterName, int x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setLong(int parameterIndex, long x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setLong(java.lang.String parameterName, long x) { }
+  public void setLong(String parameterName, long x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setFloat(int parameterIndex, float x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setFloat(java.lang.String parameterName, float x) { }
+  public void setFloat(String parameterName, float x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setDouble(int parameterIndex, double x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setDouble(java.lang.String parameterName, double x) { }
+  public void setDouble(String parameterName, double x) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isReadOnly() { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setURL(int parameterIndex, java.net.URL x) { }
+  public void setURL(int parameterIndex, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setArray(int parameterIndex, java.sql.Array array) { }
+  public void setArray(int parameterIndex, Any array) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setTime(java.lang.String parameterName, java.sql.Time x) { }
+  public void setTime(String parameterName, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setTime(int parameterIndex, java.sql.Time x, java.util.Calendar cal) { }
+  public void setTime(int parameterIndex, Any x, Any cal) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setTime(int parameterIndex, java.sql.Time x) { }
+  public void setTime(int parameterIndex, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setTime(java.lang.String parameterName, java.sql.Time x, java.util.Calendar cal) { }
+  public void setTime(String parameterName, Any x, Any cal) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setType(int type) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.lang.Object[] getParams() { return null; }
+  public Any[] getParams() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void initParams() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getPassword() { return null; }
+  public String getPassword() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getCommand() { return null; }
+  public String getCommand() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPassword(java.lang.String pass) { }
+  public void setPassword(String pass) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setRef(int parameterIndex, java.sql.Ref ref) { }
+  public void setRef(int parameterIndex, Any ref) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setObject(int parameterIndex, java.lang.Object x, int targetSqlType, int scale) { }
+  public void setObject(int parameterIndex, Any x, int targetSqlType, int scale) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setObject(int parameterIndex, java.lang.Object x, int targetSqlType) { }
+  public void setObject(int parameterIndex, Any x, int targetSqlType) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setObject(java.lang.String parameterName, java.lang.Object x, int targetSqlType) { }
+  public void setObject(String parameterName, Any x, int targetSqlType) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setObject(java.lang.String parameterName, java.lang.Object x) { }
+  public void setObject(String parameterName, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setObject(java.lang.String parameterName, java.lang.Object x, int targetSqlType, int scale) { }
+  public void setObject(String parameterName, Any x, int targetSqlType, int scale) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setObject(int parameterIndex, java.lang.Object x) { }
+  public void setObject(int parameterIndex, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setString(int parameterIndex, java.lang.String x) { }
+  public void setString(int parameterIndex, String x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setString(java.lang.String parameterName, java.lang.String x) { }
+  public void setString(String parameterName, String x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setCharacterStream(java.lang.String parameterName, java.io.Reader reader, int length) { }
+  public void setCharacterStream(String parameterName, Any reader, int length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setCharacterStream(int parameterIndex, java.io.Reader reader, int length) { }
+  public void setCharacterStream(int parameterIndex, Any reader, int length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setCharacterStream(int parameterIndex, java.io.Reader reader) { }
+  public void setCharacterStream(int parameterIndex, Any reader) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setCharacterStream(java.lang.String parameterName, java.io.Reader reader) { }
+  public void setCharacterStream(String parameterName, Any reader) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setFetchDirection(int direction) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
@@ -177,89 +195,89 @@ class BaseRowSet {
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setBytes(int parameterIndex, byte[] x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setBytes(java.lang.String parameterName, byte[] x) { }
+  public void setBytes(String parameterName, byte[] x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setBinaryStream(java.lang.String parameterName, java.io.InputStream x, int length) { }
+  public void setBinaryStream(String parameterName, Any x, int length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setBinaryStream(int parameterIndex, java.io.InputStream x, int length) { }
+  public void setBinaryStream(int parameterIndex, Any x, int length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setBinaryStream(int parameterIndex, java.io.InputStream x) { }
+  public void setBinaryStream(int parameterIndex, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setBinaryStream(java.lang.String parameterName, java.io.InputStream x) { }
+  public void setBinaryStream(String parameterName, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setNull(java.lang.String parameterName, int sqlType) { }
+  public void setNull(String parameterName, int sqlType) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setNull(int parameterIndex, int sqlType) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setNull(int parameterIndex, int sqlType, java.lang.String typeName) { }
+  public void setNull(int parameterIndex, int sqlType, String typeName) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setNull(java.lang.String parameterName, int sqlType, java.lang.String typeName) { }
+  public void setNull(String parameterName, int sqlType, String typeName) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setBigDecimal(java.lang.String parameterName, java.math.BigDecimal x) { }
+  public void setBigDecimal(String parameterName, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setBigDecimal(int parameterIndex, java.math.BigDecimal x) { }
+  public void setBigDecimal(int parameterIndex, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setTimestamp(java.lang.String parameterName, java.sql.Timestamp x) { }
+  public void setTimestamp(String parameterName, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setTimestamp(java.lang.String parameterName, java.sql.Timestamp x, java.util.Calendar cal) { }
+  public void setTimestamp(String parameterName, Any x, Any cal) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setTimestamp(int parameterIndex, java.sql.Timestamp x, java.util.Calendar cal) { }
+  public void setTimestamp(int parameterIndex, Any x, Any cal) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setTimestamp(int parameterIndex, java.sql.Timestamp x) { }
+  public void setTimestamp(int parameterIndex, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setAsciiStream(int parameterIndex, java.io.InputStream x, int length) { }
+  public void setAsciiStream(int parameterIndex, Any x, int length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setAsciiStream(int parameterIndex, java.io.InputStream x) { }
+  public void setAsciiStream(int parameterIndex, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setAsciiStream(java.lang.String parameterName, java.io.InputStream x, int length) { }
+  public void setAsciiStream(String parameterName, Any x, int length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setAsciiStream(java.lang.String parameterName, java.io.InputStream x) { }
+  public void setAsciiStream(String parameterName, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setRowId(java.lang.String parameterName, java.sql.RowId x) { }
+  public void setRowId(String parameterName, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setRowId(int parameterIndex, java.sql.RowId x) { }
+  public void setRowId(int parameterIndex, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setNString(java.lang.String parameterName, java.lang.String value) { }
+  public void setNString(String parameterName, String value) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setNString(int parameterIndex, java.lang.String value) { }
+  public void setNString(int parameterIndex, String value) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setNCharacterStream(java.lang.String parameterName, java.io.Reader value, long length) { }
+  public void setNCharacterStream(String parameterName, Any value, long length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setNCharacterStream(int parameterIndex, java.io.Reader value, long length) { }
+  public void setNCharacterStream(int parameterIndex, Any value, long length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setNCharacterStream(int parameterIndex, java.io.Reader value) { }
+  public void setNCharacterStream(int parameterIndex, Any value) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setNCharacterStream(java.lang.String parameterName, java.io.Reader value) { }
+  public void setNCharacterStream(String parameterName, Any value) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setNClob(java.lang.String parameterName, java.io.Reader reader) { }
+  public void setNClob(String parameterName, Any reader) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setNClob(int parameterIndex, java.io.Reader reader) { }
+  public void setNClob(int parameterIndex, Any reader) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setNClob(int parameterIndex, java.io.Reader reader, long length) { }
+  public void setNClob(int parameterIndex, Any reader, long length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setNClob(java.lang.String parameterName, java.io.Reader reader, long length) { }
+  public void setNClob(String parameterName, Any reader, long length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setClob(java.lang.String parameterName, java.io.Reader reader, long length) { }
+  public void setClob(String parameterName, Any reader, long length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setClob(int parameterIndex, java.io.Reader reader, long length) { }
+  public void setClob(int parameterIndex, Any reader, long length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setClob(int parameterIndex, java.io.Reader reader) { }
+  public void setClob(int parameterIndex, Any reader) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setClob(java.lang.String parameterName, java.io.Reader reader) { }
+  public void setClob(String parameterName, Any reader) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setBlob(java.lang.String parameterName, java.io.InputStream inputStream) { }
+  public void setBlob(String parameterName, Any inputStream) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setBlob(java.lang.String parameterName, java.io.InputStream inputStream, long length) { }
+  public void setBlob(String parameterName, Any inputStream, long length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setBlob(int parameterIndex, java.io.InputStream inputStream) { }
+  public void setBlob(int parameterIndex, Any inputStream) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setBlob(int parameterIndex, java.io.InputStream inputStream, long length) { }
+  public void setBlob(int parameterIndex, Any inputStream, long length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setSQLXML(int parameterIndex, java.sql.SQLXML xmlObject) { }
+  public void setSQLXML(int parameterIndex, Any xmlObject) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setSQLXML(java.lang.String parameterName, java.sql.SQLXML xmlObject) { }
+  public void setSQLXML(String parameterName, Any xmlObject) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setUnicodeStream(int parameterIndex, java.io.InputStream x, int length) { }
+  public void setUnicodeStream(int parameterIndex, Any x, int length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void clearParameters() { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
@@ -281,29 +299,29 @@ class BaseRowSet {
   @throwable("java.lang.UnsupportedOperationException")
   public int getTransactionIsolation() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Map<java.lang.String, java.lang.Class<?>> getTypeMap() { return null; }
+  public Any getTypeMap() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTypeMap(java.util.Map<java.lang.String, java.lang.Class<?>> map) { }
+  public void setTypeMap(Any map) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.lang.String getUrl() { return null; }
+  public String getUrl() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setUrl(java.lang.String url) { }
+  public void setUrl(String url) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getDataSourceName() { return null; }
+  public String getDataSourceName() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setDataSourceName(java.lang.String name) { }
+  public void setDataSourceName(String name) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUsername() { return null; }
+  public String getUsername() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUsername(java.lang.String name) { }
+  public void setUsername(String name) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setCommand(java.lang.String cmd) { }
+  public void setCommand(String cmd) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setConcurrency(int concurrency) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addRowSetListener(javax.sql.RowSetListener listener) { }
+  public void addRowSetListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeRowSetListener(javax.sql.RowSetListener listener) { }
+  public void removeRowSetListener(Any listener) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   void notifyCursorMoved() { }

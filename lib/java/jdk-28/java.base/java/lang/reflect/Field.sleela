@@ -56,6 +56,24 @@ class Field {
   String javaKind = "class";
   String javaSuper = "java.lang.reflect.AccessibleObject";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Field bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,74 +82,76 @@ class Field {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public java.lang.Object get(java.lang.Object obj) { return null; }
+  public Any get(Any obj) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public boolean getBoolean(java.lang.Object obj) { return false; }
+  public boolean getBoolean(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public byte getByte(java.lang.Object obj) { return 0; }
+  public byte getByte(Any obj) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public short getShort(java.lang.Object obj) { return 0; }
+  public short getShort(Any obj) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public char getChar(java.lang.Object obj) { return 0; }
+  public char getChar(Any obj) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public int getInt(java.lang.Object obj) { return 0; }
+  public int getInt(Any obj) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public long getLong(java.lang.Object obj) { return 0; }
+  public long getLong(Any obj) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public float getFloat(java.lang.Object obj) { return 0.0; }
+  public float getFloat(Any obj) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public double getDouble(java.lang.Object obj) { return 0.0; }
+  public double getDouble(Any obj) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getModifiers() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setAccessible(boolean flag) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toGenericString() { return null; }
+  public String toGenericString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isSynthetic() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.lang.reflect.AccessFlag> accessFlags() { return null; }
+  public Any accessFlags() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Class<?> getDeclaringClass() { return null; }
+  public Any getDeclaringClass() { return null; }
+  @generic("<T extends java.lang.annotation.Annotation>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.lang.annotation.Annotation> T getAnnotation(java.lang.Class<T> annotationClass) { return null; }
+  public Any getAnnotation(Any annotationClass) { return null; }
+  @generic("<T extends java.lang.annotation.Annotation>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.lang.annotation.Annotation> T[] getAnnotationsByType(java.lang.Class<T> annotationClass) { return null; }
+  public Any[] getAnnotationsByType(Any annotationClass) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.annotation.Annotation[] getDeclaredAnnotations() { return null; }
+  public Any[] getDeclaredAnnotations() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public void set(java.lang.Object obj, java.lang.Object value) { }
+  public void set(Any obj, Any value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.reflect.Type getGenericType() { return null; }
+  public Any getGenericType() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Class<?> getType() { return null; }
+  public Any getType() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public void setBoolean(java.lang.Object obj, boolean z) { }
+  public void setBoolean(Any obj, boolean z) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public void setByte(java.lang.Object obj, byte b) { }
+  public void setByte(Any obj, byte b) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public void setChar(java.lang.Object obj, char c) { }
+  public void setChar(Any obj, char c) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public void setShort(java.lang.Object obj, short s) { }
+  public void setShort(Any obj, short s) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public void setInt(java.lang.Object obj, int i) { }
+  public void setInt(Any obj, int i) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public void setLong(java.lang.Object obj, long l) { }
+  public void setLong(Any obj, long l) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public void setFloat(java.lang.Object obj, float f) { }
+  public void setFloat(Any obj, float f) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException, java.lang.IllegalAccessException")
-  public void setDouble(java.lang.Object obj, double d) { }
+  public void setDouble(Any obj, double d) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEnumConstant() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.reflect.AnnotatedType getAnnotatedType() { return null; }
+  public Any getAnnotatedType() { return null; }
   < ---- END java signatures ---- >
 }

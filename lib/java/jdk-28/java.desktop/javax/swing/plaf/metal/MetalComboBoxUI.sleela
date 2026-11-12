@@ -56,6 +56,24 @@ class MetalComboBoxUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.basic.BasicComboBoxUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MetalComboBoxUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,42 +87,42 @@ class MetalComboBoxUI {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
+  public Any getMinimumSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintCurrentValueBackground(java.awt.Graphics g, java.awt.Rectangle bounds, boolean hasFocus) { }
+  public void paintCurrentValueBackground(Any g, Any bounds, boolean hasFocus) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintCurrentValue(java.awt.Graphics g, java.awt.Rectangle bounds, boolean hasFocus) { }
+  public void paintCurrentValue(Any g, Any bounds, boolean hasFocus) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void editablePropertyChanged(java.beans.PropertyChangeEvent e) { }
+  void editablePropertyChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void layoutComboBox(java.awt.Container parent, javax.swing.plaf.metal.MetalComboBoxUI.MetalComboBoxLayoutManager manager) { }
+  public void layoutComboBox(Any parent, Any manager) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void configureEditor() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.LayoutManager createLayoutManager() { return null; }
+  Any createLayoutManager() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.ComboBoxEditor createEditor() { return null; }
+  Any createEditor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getBaseline(javax.swing.JComponent c, int width, int height) { return 0; }
+  public int getBaseline(Any c, int width, int height) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
+  public static Any createUI(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.beans.PropertyChangeListener createPropertyChangeListener() { return null; }
+  public Any createPropertyChangeListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.plaf.basic.ComboPopup createPopup() { return null; }
+  Any createPopup() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JButton createArrowButton() { return null; }
+  Any createArrowButton() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void unconfigureEditor() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void removeListeners() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
+  public void paint(Any g, Any c) { }
   < ---- END java signatures ---- >
 }

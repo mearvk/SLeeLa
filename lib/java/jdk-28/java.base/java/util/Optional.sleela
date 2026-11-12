@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class Optional<T> {
+class Optional {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class Optional<T> {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<T>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "T"; } return null; }
+  public Optional bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,44 +82,50 @@ class Optional<T> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public T get() { return null; }
+  public Any get() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Optional<T> of(T value) { return null; }
+  public static Any of(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEmpty() { return false; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.Optional<U> map(java.util.function.Function<? super T, ? extends U> mapper) { return null; }
+  public Any map(Any mapper) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.stream.Stream<T> stream() { return null; }
+  public Any stream() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Optional<T> filter(java.util.function.Predicate<? super T> predicate) { return null; }
+  public Any filter(Any predicate) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Optional<T> empty() { return null; }
+  public static Any empty() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public T orElse(T other) { return null; }
+  public Any orElse(Any other) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isPresent() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public T orElseThrow() { return null; }
+  public Any orElseThrow() { return null; }
+  @generic("<X extends java.lang.Throwable>")
   @throwable("java.lang.UnsupportedOperationException, X")
-  public <X extends java.lang.Throwable> T orElseThrow(java.util.function.Supplier<? extends X> exceptionSupplier) { return null; }
+  public Any orElseThrow(Any exceptionSupplier) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.Optional<U> flatMap(java.util.function.Function<? super T, ? extends java.util.Optional<? extends U>> mapper) { return null; }
+  public Any flatMap(Any mapper) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Optional<T> ofNullable(T value) { return null; }
+  public static Any ofNullable(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void ifPresent(java.util.function.Consumer<? super T> action) { }
+  public void ifPresent(Any action) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void ifPresentOrElse(java.util.function.Consumer<? super T> action, java.lang.Runnable emptyAction) { }
+  public void ifPresentOrElse(Any action, Any emptyAction) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Optional<T> or(java.util.function.Supplier<? extends java.util.Optional<? extends T>> supplier) { return null; }
+  public Any or(Any supplier) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public T orElseGet(java.util.function.Supplier<? extends T> supplier) { return null; }
+  public Any orElseGet(Any supplier) { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class Process {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Process bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,49 +87,49 @@ class Process {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.ProcessHandle.Info info() { return null; }
+  public Any info() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isAlive() { return false; }
   @throwable("java.lang.AbstractMethodError")
   public void destroy() { }
   @throwable("java.lang.AbstractMethodError")
-  public java.io.InputStream getInputStream() { return null; }
+  public Any getInputStream() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public long pid() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.io.InputStream getErrorStream() { return null; }
+  public Any getErrorStream() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public boolean waitFor(java.time.Duration duration) { return false; }
+  public boolean waitFor(Any duration) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public boolean waitFor(long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  public boolean waitFor(long timeout, Any unit) { return false; }
   @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
   public int waitFor() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.stream.Stream<java.lang.ProcessHandle> children() { return null; }
+  public Any children() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Process> onExit() { return null; }
+  public Any onExit() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.io.OutputStream getOutputStream() { return null; }
+  public Any getOutputStream() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.io.BufferedReader inputReader() { return null; }
+  public final Any inputReader() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.io.BufferedReader inputReader(java.nio.charset.Charset charset) { return null; }
+  public final Any inputReader(Any charset) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.io.BufferedReader errorReader() { return null; }
+  public final Any errorReader() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.io.BufferedReader errorReader(java.nio.charset.Charset charset) { return null; }
+  public final Any errorReader(Any charset) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.io.BufferedWriter outputWriter(java.nio.charset.Charset charset) { return null; }
+  public final Any outputWriter(Any charset) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.io.BufferedWriter outputWriter() { return null; }
+  public final Any outputWriter() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int exitValue() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.ProcessHandle toHandle() { return null; }
+  public Any toHandle() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.stream.Stream<java.lang.ProcessHandle> descendants() { return null; }
+  public Any descendants() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Process destroyForcibly() { return null; }
+  public Any destroyForcibly() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean supportsNormalTermination() { return false; }
   < ---- END java signatures ---- >

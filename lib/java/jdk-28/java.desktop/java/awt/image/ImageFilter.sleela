@@ -56,6 +56,24 @@ class ImageFilter {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ImageFilter bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any consumer;
@@ -73,24 +91,24 @@ class ImageFilter {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setProperties(java.util.Hashtable<?, ?> props) { }
+  public void setProperties(Any props) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPixels(int x, int y, int w, int h, java.awt.image.ColorModel model, int[] pixels, int off, int scansize) { }
+  public void setPixels(int x, int y, int w, int h, Any model, int[] pixels, int off, int scansize) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPixels(int x, int y, int w, int h, java.awt.image.ColorModel model, byte[] pixels, int off, int scansize) { }
+  public void setPixels(int x, int y, int w, int h, Any model, byte[] pixels, int off, int scansize) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setHints(int hints) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setDimensions(int width, int height) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setColorModel(java.awt.image.ColorModel model) { }
+  public void setColorModel(Any model) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void imageComplete(int status) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.ImageFilter getFilterInstance(java.awt.image.ImageConsumer ic) { return null; }
+  public Any getFilterInstance(Any ic) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void resendTopDownLeftRight(java.awt.image.ImageProducer ip) { }
+  public void resendTopDownLeftRight(Any ip) { }
   < ---- END java signatures ---- >
 }

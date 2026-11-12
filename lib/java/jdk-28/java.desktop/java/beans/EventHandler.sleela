@@ -56,10 +56,28 @@ class EventHandler {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public EventHandler bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public EventHandler(java.lang.Object target, java.lang.String action, java.lang.String eventPropertyName, java.lang.String listenerMethodName) { }
+  public EventHandler(Any target, String action, String eventPropertyName, String listenerMethodName) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -68,19 +86,22 @@ class EventHandler {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> T create(java.lang.Class<T> listenerInterface, java.lang.Object target, java.lang.String action, java.lang.String eventPropertyName) { return null; }
+  public static Any create(Any listenerInterface, Any target, String action, String eventPropertyName) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> T create(java.lang.Class<T> listenerInterface, java.lang.Object target, java.lang.String action, java.lang.String eventPropertyName, java.lang.String listenerMethodName) { return null; }
+  public static Any create(Any listenerInterface, Any target, String action, String eventPropertyName, String listenerMethodName) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> T create(java.lang.Class<T> listenerInterface, java.lang.Object target, java.lang.String action) { return null; }
+  public static Any create(Any listenerInterface, Any target, String action) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getTarget() { return null; }
+  public Any getTarget() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getListenerMethodName() { return null; }
+  public String getListenerMethodName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getEventPropertyName() { return null; }
+  public String getEventPropertyName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getAction() { return null; }
+  public String getAction() { return null; }
   < ---- END java signatures ---- >
 }

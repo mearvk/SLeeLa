@@ -56,6 +56,24 @@ class Executors {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Executors bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -63,49 +81,52 @@ class Executors {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.concurrent.Callable<T> callable(java.lang.Runnable task, T result) { return null; }
+  public static Any callable(Any task, Any result) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.Callable<java.lang.Object> callable(java.lang.Runnable task) { return null; }
+  public static Any callable(Any task) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ThreadFactory defaultThreadFactory() { return null; }
+  public static Any defaultThreadFactory() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ExecutorService newSingleThreadExecutor(java.util.concurrent.ThreadFactory threadFactory) { return null; }
+  public static Any newSingleThreadExecutor(Any threadFactory) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ExecutorService newSingleThreadExecutor() { return null; }
+  public static Any newSingleThreadExecutor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ExecutorService newThreadPerTaskExecutor(java.util.concurrent.ThreadFactory threadFactory) { return null; }
+  public static Any newThreadPerTaskExecutor(Any threadFactory) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ExecutorService newFixedThreadPool(int nThreads) { return null; }
+  public static Any newFixedThreadPool(int nThreads) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ExecutorService newFixedThreadPool(int nThreads, java.util.concurrent.ThreadFactory threadFactory) { return null; }
+  public static Any newFixedThreadPool(int nThreads, Any threadFactory) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ExecutorService newWorkStealingPool() { return null; }
+  public static Any newWorkStealingPool() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ExecutorService newWorkStealingPool(int parallelism) { return null; }
+  public static Any newWorkStealingPool(int parallelism) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ExecutorService newVirtualThreadPerTaskExecutor() { return null; }
+  public static Any newVirtualThreadPerTaskExecutor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ScheduledExecutorService newSingleThreadScheduledExecutor() { return null; }
+  public static Any newSingleThreadScheduledExecutor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ScheduledExecutorService newSingleThreadScheduledExecutor(java.util.concurrent.ThreadFactory threadFactory) { return null; }
+  public static Any newSingleThreadScheduledExecutor(Any threadFactory) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ExecutorService unconfigurableExecutorService(java.util.concurrent.ExecutorService executor) { return null; }
+  public static Any unconfigurableExecutorService(Any executor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ScheduledExecutorService unconfigurableScheduledExecutorService(java.util.concurrent.ScheduledExecutorService executor) { return null; }
+  public static Any unconfigurableScheduledExecutorService(Any executor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ThreadFactory privilegedThreadFactory() { return null; }
+  public static Any privilegedThreadFactory() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.concurrent.Callable<T> privilegedCallable(java.util.concurrent.Callable<T> callable) { return null; }
+  public static Any privilegedCallable(Any callable) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.concurrent.Callable<T> privilegedCallableUsingCurrentClassLoader(java.util.concurrent.Callable<T> callable) { return null; }
+  public static Any privilegedCallableUsingCurrentClassLoader(Any callable) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ExecutorService newCachedThreadPool() { return null; }
+  public static Any newCachedThreadPool() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ExecutorService newCachedThreadPool(java.util.concurrent.ThreadFactory threadFactory) { return null; }
+  public static Any newCachedThreadPool(Any threadFactory) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ScheduledExecutorService newScheduledThreadPool(int corePoolSize) { return null; }
+  public static Any newScheduledThreadPool(int corePoolSize) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ScheduledExecutorService newScheduledThreadPool(int corePoolSize, java.util.concurrent.ThreadFactory threadFactory) { return null; }
+  public static Any newScheduledThreadPool(int corePoolSize, Any threadFactory) { return null; }
   < ---- END java signatures ---- >
 }

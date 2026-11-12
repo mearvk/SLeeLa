@@ -56,10 +56,28 @@ class UIDefaults {
   String javaKind = "class";
   String javaSuper = "java.util.Hashtable";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public UIDefaults bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public UIDefaults(java.lang.Object[] keyValueList) { }
+  public UIDefaults(Any[] keyValueList) { }
   @throwable("java.lang.UnsupportedOperationException")
   public UIDefaults(int initialCapacity, float loadFactor) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -73,74 +91,74 @@ class UIDefaults {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object get(java.lang.Object key) { return null; }
+  public Any get(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object get(java.lang.Object key, java.util.Locale l) { return null; }
+  public Any get(Any key, Any l) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object put(java.lang.Object key, java.lang.Object value) { return null; }
+  public Any put(Any key, Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean getBoolean(java.lang.Object key) { return false; }
+  public boolean getBoolean(Any key) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean getBoolean(java.lang.Object key, java.util.Locale l) { return false; }
+  public boolean getBoolean(Any key, Any l) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getInt(java.lang.Object key, java.util.Locale l) { return 0; }
+  public int getInt(Any key, Any l) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getInt(java.lang.Object key) { return 0; }
+  public int getInt(Any key) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getString(java.lang.Object key) { return null; }
+  public String getString(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getString(java.lang.Object key, java.util.Locale l) { return null; }
+  public String getString(Any key, Any l) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  void firePropertyChange(String propertyName, Any oldValue, Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public synchronized void addPropertyChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.beans.PropertyChangeListener[] getPropertyChangeListeners() { return null; }
+  public synchronized Any[] getPropertyChangeListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public synchronized void removePropertyChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ComponentUI getUI(javax.swing.JComponent target) { return null; }
+  public Any getUI(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Locale getDefaultLocale() { return null; }
+  public Any getDefaultLocale() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.border.Border getBorder(java.lang.Object key, java.util.Locale l) { return null; }
+  public Any getBorder(Any key, Any l) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.border.Border getBorder(java.lang.Object key) { return null; }
+  public Any getBorder(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDefaultLocale(java.util.Locale l) { }
+  public void setDefaultLocale(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Class<? extends javax.swing.plaf.ComponentUI> getUIClass(java.lang.String uiClassID, java.lang.ClassLoader uiClassLoader) { return null; }
+  public Any getUIClass(String uiClassID, Any uiClassLoader) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Class<? extends javax.swing.plaf.ComponentUI> getUIClass(java.lang.String uiClassID) { return null; }
+  public Any getUIClass(String uiClassID) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void getUIError(java.lang.String msg) { }
+  void getUIError(String msg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void putDefaults(java.lang.Object[] keyValueList) { }
+  public void putDefaults(Any[] keyValueList) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getDimension(java.lang.Object key, java.util.Locale l) { return null; }
+  public Any getDimension(Any key, Any l) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getDimension(java.lang.Object key) { return null; }
+  public Any getDimension(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addResourceBundle(java.lang.String bundleName) { }
+  public synchronized void addResourceBundle(String bundleName) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removeResourceBundle(java.lang.String bundleName) { }
+  public synchronized void removeResourceBundle(String bundleName) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getColor(java.lang.Object key) { return null; }
+  public Any getColor(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getColor(java.lang.Object key, java.util.Locale l) { return null; }
+  public Any getColor(Any key, Any l) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getIcon(java.lang.Object key, java.util.Locale l) { return null; }
+  public Any getIcon(Any key, Any l) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getIcon(java.lang.Object key) { return null; }
+  public Any getIcon(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Insets getInsets(java.lang.Object key) { return null; }
+  public Any getInsets(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Insets getInsets(java.lang.Object key, java.util.Locale l) { return null; }
+  public Any getInsets(Any key, Any l) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Font getFont(java.lang.Object key) { return null; }
+  public Any getFont(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Font getFont(java.lang.Object key, java.util.Locale l) { return null; }
+  public Any getFont(Any key, Any l) { return null; }
   < ---- END java signatures ---- >
 }

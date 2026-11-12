@@ -56,6 +56,24 @@ class Short {
   String javaKind = "class";
   String javaSuper = "java.lang.Number";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Short bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int MIN_VALUE = -32768;
@@ -69,7 +87,7 @@ class Short {
   @throwable("java.lang.UnsupportedOperationException")
   public Short(short value) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public Short(java.lang.String s) { }
+  public Short(String s) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -79,11 +97,11 @@ class Short {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(short s) { return null; }
+  public static String toString(short s) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int hashCode(short value) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -93,7 +111,7 @@ class Short {
   @throwable("java.lang.UnsupportedOperationException")
   public static short reverseBytes(short i) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(java.lang.Short anotherShort) { return 0; }
+  public int compareTo(Any anotherShort) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int compare(short x, short y) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -109,22 +127,22 @@ class Short {
   @throwable("java.lang.UnsupportedOperationException")
   public double doubleValue() { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static java.lang.Short valueOf(java.lang.String s, int radix) { return null; }
+  public static Any valueOf(String s, int radix) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static java.lang.Short valueOf(java.lang.String s) { return null; }
+  public static Any valueOf(String s) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.Short valueOf(short s) { return null; }
+  public static Any valueOf(short s) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static java.lang.Short decode(java.lang.String nm) { return null; }
+  public static Any decode(String nm) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Optional<java.lang.constant.DynamicConstantDesc<java.lang.Short>> describeConstable() { return null; }
+  public Any describeConstable() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static long toUnsignedLong(short x) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int toUnsignedInt(short x) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static short parseShort(java.lang.String s) { return 0; }
+  public static short parseShort(String s) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static short parseShort(java.lang.String s, int radix) { return 0; }
+  public static short parseShort(String s, int radix) { return 0; }
   < ---- END java signatures ---- >
 }

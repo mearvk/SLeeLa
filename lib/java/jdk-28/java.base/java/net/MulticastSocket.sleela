@@ -56,12 +56,30 @@ class MulticastSocket {
   String javaKind = "class";
   String javaSuper = "java.net.DatagramSocket";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MulticastSocket bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public MulticastSocket(int port) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public MulticastSocket(java.net.SocketAddress bindaddr) { }
+  public MulticastSocket(Any bindaddr) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public MulticastSocket() { }
   < ---- END java constructors ---- >
@@ -75,15 +93,15 @@ class MulticastSocket {
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public int getTimeToLive() { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void send(java.net.DatagramPacket p, byte ttl) { }
+  public void send(Any p, byte ttl) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void joinGroup(java.net.InetAddress mcastaddr) { }
+  public void joinGroup(Any mcastaddr) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void joinGroup(java.net.SocketAddress mcastaddr, java.net.NetworkInterface netIf) { }
+  public void joinGroup(Any mcastaddr, Any netIf) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void leaveGroup(java.net.SocketAddress mcastaddr, java.net.NetworkInterface netIf) { }
+  public void leaveGroup(Any mcastaddr, Any netIf) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void leaveGroup(java.net.InetAddress mcastaddr) { }
+  public void leaveGroup(Any mcastaddr) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public void setTTL(byte ttl) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
@@ -91,13 +109,13 @@ class MulticastSocket {
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public void setTimeToLive(int ttl) { }
   @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
-  public void setInterface(java.net.InetAddress inf) { }
+  public void setInterface(Any inf) { }
   @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
-  public java.net.InetAddress getInterface() { return null; }
+  public Any getInterface() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
-  public void setNetworkInterface(java.net.NetworkInterface netIf) { }
+  public void setNetworkInterface(Any netIf) { }
   @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
-  public java.net.NetworkInterface getNetworkInterface() { return null; }
+  public Any getNetworkInterface() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
   public void setLoopbackMode(boolean disable) { }
   @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")

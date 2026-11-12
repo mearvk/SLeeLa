@@ -56,6 +56,24 @@ class DatatypeFactory {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DatatypeFactory bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String DATATYPEFACTORY_PROPERTY = "javax.xml.datatype.DatatypeFactory";
@@ -75,52 +93,52 @@ class DatatypeFactory {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, javax.xml.datatype.DatatypeConfigurationException")
-  public static javax.xml.datatype.DatatypeFactory newInstance() { return null; }
+  public static Any newInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.xml.datatype.DatatypeConfigurationException")
-  public static javax.xml.datatype.DatatypeFactory newInstance(java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { return null; }
+  public static Any newInstance(String factoryClassName, Any classLoader) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.datatype.Duration newDuration(boolean isPositive, java.math.BigInteger years, java.math.BigInteger months, java.math.BigInteger days, java.math.BigInteger hours, java.math.BigInteger minutes, java.math.BigDecimal seconds) { return null; }
+  public Any newDuration(boolean isPositive, Any years, Any months, Any days, Any hours, Any minutes, Any seconds) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.xml.datatype.Duration newDuration(boolean isPositive, int years, int months, int days, int hours, int minutes, int seconds) { return null; }
+  public Any newDuration(boolean isPositive, int years, int months, int days, int hours, int minutes, int seconds) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.datatype.Duration newDuration(long durationInMilliSeconds) { return null; }
+  public Any newDuration(long durationInMilliSeconds) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.datatype.Duration newDuration(java.lang.String lexicalRepresentation) { return null; }
+  public Any newDuration(String lexicalRepresentation) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.xml.datatype.Duration newDurationDayTime(boolean isPositive, java.math.BigInteger day, java.math.BigInteger hour, java.math.BigInteger minute, java.math.BigInteger second) { return null; }
+  public Any newDurationDayTime(boolean isPositive, Any day, Any hour, Any minute, Any second) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.xml.datatype.Duration newDurationDayTime(boolean isPositive, int day, int hour, int minute, int second) { return null; }
+  public Any newDurationDayTime(boolean isPositive, int day, int hour, int minute, int second) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.xml.datatype.Duration newDurationDayTime(long durationInMilliseconds) { return null; }
+  public Any newDurationDayTime(long durationInMilliseconds) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.xml.datatype.Duration newDurationDayTime(java.lang.String lexicalRepresentation) { return null; }
+  public Any newDurationDayTime(String lexicalRepresentation) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.xml.datatype.Duration newDurationYearMonth(boolean isPositive, int year, int month) { return null; }
+  public Any newDurationYearMonth(boolean isPositive, int year, int month) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.xml.datatype.Duration newDurationYearMonth(boolean isPositive, java.math.BigInteger year, java.math.BigInteger month) { return null; }
+  public Any newDurationYearMonth(boolean isPositive, Any year, Any month) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.xml.datatype.Duration newDurationYearMonth(long durationInMilliseconds) { return null; }
+  public Any newDurationYearMonth(long durationInMilliseconds) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.xml.datatype.Duration newDurationYearMonth(java.lang.String lexicalRepresentation) { return null; }
+  public Any newDurationYearMonth(String lexicalRepresentation) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.datatype.XMLGregorianCalendar newXMLGregorianCalendar(java.util.GregorianCalendar cal) { return null; }
+  public Any newXMLGregorianCalendar(Any cal) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.datatype.XMLGregorianCalendar newXMLGregorianCalendar(java.math.BigInteger year, int month, int day, int hour, int minute, int second, java.math.BigDecimal fractionalSecond, int timezone) { return null; }
+  public Any newXMLGregorianCalendar(Any year, int month, int day, int hour, int minute, int second, Any fractionalSecond, int timezone) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.xml.datatype.XMLGregorianCalendar newXMLGregorianCalendar(int year, int month, int day, int hour, int minute, int second, int millisecond, int timezone) { return null; }
+  public Any newXMLGregorianCalendar(int year, int month, int day, int hour, int minute, int second, int millisecond, int timezone) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.datatype.XMLGregorianCalendar newXMLGregorianCalendar(java.lang.String lexicalRepresentation) { return null; }
+  public Any newXMLGregorianCalendar(String lexicalRepresentation) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.datatype.XMLGregorianCalendar newXMLGregorianCalendar() { return null; }
+  public Any newXMLGregorianCalendar() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.xml.datatype.XMLGregorianCalendar newXMLGregorianCalendarTime(int hours, int minutes, int seconds, java.math.BigDecimal fractionalSecond, int timezone) { return null; }
+  public Any newXMLGregorianCalendarTime(int hours, int minutes, int seconds, Any fractionalSecond, int timezone) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.xml.datatype.XMLGregorianCalendar newXMLGregorianCalendarTime(int hours, int minutes, int seconds, int milliseconds, int timezone) { return null; }
+  public Any newXMLGregorianCalendarTime(int hours, int minutes, int seconds, int milliseconds, int timezone) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.xml.datatype.XMLGregorianCalendar newXMLGregorianCalendarTime(int hours, int minutes, int seconds, int timezone) { return null; }
+  public Any newXMLGregorianCalendarTime(int hours, int minutes, int seconds, int timezone) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.xml.datatype.DatatypeFactory newDefaultInstance() { return null; }
+  public static Any newDefaultInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.xml.datatype.XMLGregorianCalendar newXMLGregorianCalendarDate(int year, int month, int day, int timezone) { return null; }
+  public Any newXMLGregorianCalendarDate(int year, int month, int day, int timezone) { return null; }
   < ---- END java signatures ---- >
 }

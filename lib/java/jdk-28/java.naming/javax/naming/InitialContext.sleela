@@ -56,6 +56,24 @@ class InitialContext {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public InitialContext bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any myProps;
@@ -65,7 +83,7 @@ class InitialContext {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public InitialContext(java.util.Hashtable<?, ?> environment) { }
+  public InitialContext(Any environment) { }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
   public InitialContext() { }
   @JavaProtected
@@ -80,76 +98,78 @@ class InitialContext {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public javax.naming.NamingEnumeration<javax.naming.NameClassPair> list(java.lang.String name) { return null; }
+  public Any list(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public javax.naming.NamingEnumeration<javax.naming.NameClassPair> list(javax.naming.Name name) { return null; }
+  public Any list(Any name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public java.lang.Object lookup(javax.naming.Name name) { return null; }
+  public Any lookup(Any name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public java.lang.Object lookup(java.lang.String name) { return null; }
+  public Any lookup(String name) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  void init(java.util.Hashtable<?, ?> environment) { }
+  void init(Any environment) { }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public void rebind(javax.naming.Name name, java.lang.Object obj) { }
+  public void rebind(Any name, Any obj) { }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public void rebind(java.lang.String name, java.lang.Object obj) { }
+  public void rebind(String name, Any obj) { }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public void bind(javax.naming.Name name, java.lang.Object obj) { }
+  public void bind(Any name, Any obj) { }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public void bind(java.lang.String name, java.lang.Object obj) { }
+  public void bind(String name, Any obj) { }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public void rename(javax.naming.Name oldName, javax.naming.Name newName) { }
+  public void rename(Any oldName, Any newName) { }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public void rename(java.lang.String oldName, java.lang.String newName) { }
+  public void rename(String oldName, String newName) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public static <T> T doLookup(java.lang.String name) { return null; }
+  public static Any doLookup(String name) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public static <T> T doLookup(javax.naming.Name name) { return null; }
+  public static Any doLookup(Any name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public javax.naming.NamingEnumeration<javax.naming.Binding> listBindings(javax.naming.Name name) { return null; }
+  public Any listBindings(Any name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public javax.naming.NamingEnumeration<javax.naming.Binding> listBindings(java.lang.String name) { return null; }
+  public Any listBindings(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public void destroySubcontext(java.lang.String name) { }
+  public void destroySubcontext(String name) { }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public void destroySubcontext(javax.naming.Name name) { }
+  public void destroySubcontext(Any name) { }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public javax.naming.Context createSubcontext(java.lang.String name) { return null; }
+  public Any createSubcontext(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public javax.naming.Context createSubcontext(javax.naming.Name name) { return null; }
+  public Any createSubcontext(Any name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public java.lang.Object lookupLink(java.lang.String name) { return null; }
+  public Any lookupLink(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public java.lang.Object lookupLink(javax.naming.Name name) { return null; }
+  public Any lookupLink(Any name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public javax.naming.NameParser getNameParser(java.lang.String name) { return null; }
+  public Any getNameParser(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public javax.naming.NameParser getNameParser(javax.naming.Name name) { return null; }
+  public Any getNameParser(Any name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public java.lang.String composeName(java.lang.String name, java.lang.String prefix) { return null; }
+  public String composeName(String name, String prefix) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public javax.naming.Name composeName(javax.naming.Name name, javax.naming.Name prefix) { return null; }
+  public Any composeName(Any name, Any prefix) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public java.lang.Object addToEnvironment(java.lang.String propName, java.lang.Object propVal) { return null; }
+  public Any addToEnvironment(String propName, Any propVal) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public java.lang.Object removeFromEnvironment(java.lang.String propName) { return null; }
+  public Any removeFromEnvironment(String propName) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  javax.naming.Context getDefaultInitCtx() { return null; }
+  Any getDefaultInitCtx() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  javax.naming.Context getURLOrDefaultInitCtx(javax.naming.Name name) { return null; }
+  Any getURLOrDefaultInitCtx(Any name) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  javax.naming.Context getURLOrDefaultInitCtx(java.lang.String name) { return null; }
+  Any getURLOrDefaultInitCtx(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public void unbind(java.lang.String name) { }
+  public void unbind(String name) { }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public void unbind(javax.naming.Name name) { }
+  public void unbind(Any name) { }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public java.lang.String getNameInNamespace() { return null; }
+  public String getNameInNamespace() { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.NamingException")
-  public java.util.Hashtable<?, ?> getEnvironment() { return null; }
+  public Any getEnvironment() { return null; }
   < ---- END java signatures ---- >
 }

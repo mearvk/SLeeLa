@@ -56,6 +56,24 @@ class HTMLElement {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public HTMLElement bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,24 +82,24 @@ class HTMLElement {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getId() { return null; }
+  public String getId() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getClassName() { return null; }
+  public String getClassName() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getTitle() { return null; }
+  public String getTitle() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setTitle(java.lang.String title) { }
+  public void setTitle(String title) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setClassName(java.lang.String className) { }
+  public void setClassName(String className) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setId(java.lang.String id) { }
+  public void setId(String id) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getLang() { return null; }
+  public String getLang() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setLang(java.lang.String lang) { }
+  public void setLang(String lang) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getDir() { return null; }
+  public String getDir() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setDir(java.lang.String dir) { }
+  public void setDir(String dir) { }
   < ---- END java signatures ---- >
 }

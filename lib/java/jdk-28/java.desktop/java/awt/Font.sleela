@@ -56,6 +56,24 @@ class Font {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Font bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String DIALOG = "Dialog";
@@ -84,9 +102,9 @@ class Font {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public Font(java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?> attributes) { }
+  public Font(Any attributes) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Font(java.lang.String name, int style, int size) { }
+  public Font(String name, int style, int size) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -96,29 +114,29 @@ class Font {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Font decode(java.lang.String str) { return null; }
+  public static Any decode(String str) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getSize() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Map<java.awt.font.TextAttribute, ?> getAttributes() { return null; }
+  public Any getAttributes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getFamily(java.util.Locale l) { return null; }
+  public String getFamily(Any l) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getFamily() { return null; }
+  public String getFamily() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getStyle() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getFontName(java.util.Locale l) { return null; }
+  public String getFontName(Any l) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getFontName() { return null; }
+  public String getFontName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasLayoutAttributes() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -140,72 +158,72 @@ class Font {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isTransformed() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getStringBounds(java.lang.String str, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { return null; }
+  public Any getStringBounds(String str, int beginIndex, int limit, Any frc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getStringBounds(java.text.CharacterIterator ci, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { return null; }
+  public Any getStringBounds(Any ci, int beginIndex, int limit, Any frc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getStringBounds(java.lang.String str, java.awt.font.FontRenderContext frc) { return null; }
+  public Any getStringBounds(String str, Any frc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getStringBounds(char[] chars, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { return null; }
+  public Any getStringBounds(char[] chars, int beginIndex, int limit, Any frc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean textRequiresLayout(char[] chars, int start, int end) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.FontFormatException, java.io.IOException")
-  public static java.awt.Font[] createFonts(java.io.File fontFile) { return null; }
+  public static Any[] createFonts(Any fontFile) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.FontFormatException, java.io.IOException")
-  public static java.awt.Font createFont(int fontFormat, java.io.File fontFile) { return null; }
+  public static Any createFont(int fontFormat, Any fontFile) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getPSName() { return null; }
+  public String getPSName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public float getSize2D() { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isPlain() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.text.AttributedCharacterIterator.Attribute[] getAvailableAttributes() { return null; }
+  public Any[] getAvailableAttributes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Font deriveFont(java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?> attributes) { return null; }
+  public Any deriveFont(Any attributes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Font deriveFont(float size) { return null; }
+  public Any deriveFont(float size) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Font deriveFont(int style) { return null; }
+  public Any deriveFont(int style) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Font deriveFont(int style, float size) { return null; }
+  public Any deriveFont(int style, float size) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Font deriveFont(int style, java.awt.geom.AffineTransform trans) { return null; }
+  public Any deriveFont(int style, Any trans) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int canDisplayUpTo(char[] text, int start, int limit) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int canDisplayUpTo(java.lang.String str) { return 0; }
+  public int canDisplayUpTo(String str) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int canDisplayUpTo(java.text.CharacterIterator iter, int start, int limit) { return 0; }
+  public int canDisplayUpTo(Any iter, int start, int limit) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasUniformLineMetrics() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.font.LineMetrics getLineMetrics(java.lang.String str, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { return null; }
+  public Any getLineMetrics(String str, int beginIndex, int limit, Any frc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.font.LineMetrics getLineMetrics(char[] chars, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { return null; }
+  public Any getLineMetrics(char[] chars, int beginIndex, int limit, Any frc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.font.LineMetrics getLineMetrics(java.text.CharacterIterator ci, int beginIndex, int limit, java.awt.font.FontRenderContext frc) { return null; }
+  public Any getLineMetrics(Any ci, int beginIndex, int limit, Any frc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.font.LineMetrics getLineMetrics(java.lang.String str, java.awt.font.FontRenderContext frc) { return null; }
+  public Any getLineMetrics(String str, Any frc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getMaxCharBounds(java.awt.font.FontRenderContext frc) { return null; }
+  public Any getMaxCharBounds(Any frc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.font.GlyphVector createGlyphVector(java.awt.font.FontRenderContext frc, int[] glyphCodes) { return null; }
+  public Any createGlyphVector(Any frc, int[] glyphCodes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.font.GlyphVector createGlyphVector(java.awt.font.FontRenderContext frc, java.text.CharacterIterator ci) { return null; }
+  public Any createGlyphVector(Any frc, Any ci) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.font.GlyphVector createGlyphVector(java.awt.font.FontRenderContext frc, char[] chars) { return null; }
+  public Any createGlyphVector(Any frc, char[] chars) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.font.GlyphVector createGlyphVector(java.awt.font.FontRenderContext frc, java.lang.String str) { return null; }
+  public Any createGlyphVector(Any frc, String str) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.font.GlyphVector layoutGlyphVector(java.awt.font.FontRenderContext frc, char[] text, int start, int limit, int flags) { return null; }
+  public Any layoutGlyphVector(Any frc, char[] text, int start, int limit, int flags) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.AffineTransform getTransform() { return null; }
+  public Any getTransform() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Font getFont(java.util.Map<? extends java.text.AttributedCharacterIterator.Attribute, ?> attributes) { return null; }
+  public static Any getFont(Any attributes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Font getFont(java.lang.String nm) { return null; }
+  public static Any getFont(String nm) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Font getFont(java.lang.String nm, java.awt.Font font) { return null; }
+  public static Any getFont(String nm, Any font) { return null; }
   < ---- END java signatures ---- >
 }

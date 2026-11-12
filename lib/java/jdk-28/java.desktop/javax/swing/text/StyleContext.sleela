@@ -56,6 +56,24 @@ class StyleContext {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public StyleContext bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String DEFAULT_STYLE = "default";
@@ -73,67 +91,67 @@ class StyleContext {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void writeAttributes(java.io.ObjectOutputStream out, javax.swing.text.AttributeSet a) { }
+  public void writeAttributes(Any out, Any a) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException, java.io.IOException")
-  public void readAttributes(java.io.ObjectInputStream in, javax.swing.text.MutableAttributeSet a) { }
+  public void readAttributes(Any in, Any a) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized javax.swing.text.AttributeSet addAttribute(javax.swing.text.AttributeSet old, java.lang.Object name, java.lang.Object value) { return null; }
+  public synchronized Any addAttribute(Any old, Any name, Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.Style getStyle(java.lang.String nm) { return null; }
+  public Any getStyle(String nm) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized javax.swing.text.AttributeSet addAttributes(javax.swing.text.AttributeSet old, javax.swing.text.AttributeSet attr) { return null; }
+  public synchronized Any addAttributes(Any old, Any attr) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getForeground(javax.swing.text.AttributeSet attr) { return null; }
+  public Any getForeground(Any attr) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getBackground(javax.swing.text.AttributeSet attr) { return null; }
+  public Any getBackground(Any attr) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.text.StyleContext.SmallAttributeSet createSmallAttributeSet(javax.swing.text.AttributeSet a) { return null; }
+  Any createSmallAttributeSet(Any a) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.text.MutableAttributeSet createLargeAttributeSet(javax.swing.text.AttributeSet a) { return null; }
+  Any createLargeAttributeSet(Any a) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getCompressionThreshold() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void reclaim(javax.swing.text.AttributeSet a) { }
+  public void reclaim(Any a) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static void writeAttributeSet(java.io.ObjectOutputStream out, javax.swing.text.AttributeSet a) { }
+  public static void writeAttributeSet(Any out, Any a) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException, java.io.IOException")
-  public static void readAttributeSet(java.io.ObjectInputStream in, javax.swing.text.MutableAttributeSet a) { }
+  public static void readAttributeSet(Any in, Any a) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void registerStaticAttributeKey(java.lang.Object key) { }
+  public static void registerStaticAttributeKey(Any key) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final javax.swing.text.StyleContext getDefaultStyleContext() { return null; }
+  public static final Any getDefaultStyleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Enumeration<?> getStyleNames() { return null; }
+  public Any getStyleNames() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.AttributeSet getEmptySet() { return null; }
+  public Any getEmptySet() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.Object getStaticAttribute(java.lang.Object key) { return null; }
+  public static Any getStaticAttribute(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.Object getStaticAttributeKey(java.lang.Object key) { return null; }
+  public static Any getStaticAttributeKey(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized javax.swing.text.AttributeSet removeAttribute(javax.swing.text.AttributeSet old, java.lang.Object name) { return null; }
+  public synchronized Any removeAttribute(Any old, Any name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized javax.swing.text.AttributeSet removeAttributes(javax.swing.text.AttributeSet old, javax.swing.text.AttributeSet attrs) { return null; }
+  public synchronized Any removeAttributes(Any old, Any attrs) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.Style addStyle(java.lang.String nm, javax.swing.text.Style parent) { return null; }
+  public Any addStyle(String nm, Any parent) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeStyle(java.lang.String nm) { }
+  public void removeStyle(String nm) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.FontMetrics getFontMetrics(java.awt.Font f) { return null; }
+  public Any getFontMetrics(Any f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeChangeListener(javax.swing.event.ChangeListener l) { }
+  public void removeChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addChangeListener(javax.swing.event.ChangeListener l) { }
+  public void addChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.ChangeListener[] getChangeListeners() { return null; }
+  public Any[] getChangeListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Font getFont(java.lang.String family, int style, int size) { return null; }
+  public Any getFont(String family, int style, int size) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Font getFont(javax.swing.text.AttributeSet attr) { return null; }
+  public Any getFont(Any attr) { return null; }
   < ---- END java signatures ---- >
 }

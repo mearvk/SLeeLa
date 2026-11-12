@@ -56,6 +56,24 @@ class Driver {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Driver bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -66,16 +84,16 @@ class Driver {
   @throwable("java.lang.AbstractMethodError")
   public int getMajorVersion() { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Connection connect(java.lang.String url, java.util.Properties info) { return null; }
+  public Any connect(String url, Any info) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getMinorVersion() { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public boolean acceptsURL(java.lang.String url) { return false; }
+  public boolean acceptsURL(String url) { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.DriverPropertyInfo[] getPropertyInfo(java.lang.String url, java.util.Properties info) { return null; }
+  public Any[] getPropertyInfo(String url, Any info) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean jdbcCompliant() { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLFeatureNotSupportedException")
-  public java.util.logging.Logger getParentLogger() { return null; }
+  public Any getParentLogger() { return null; }
   < ---- END java signatures ---- >
 }

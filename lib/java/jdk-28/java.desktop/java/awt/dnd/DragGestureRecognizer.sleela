@@ -56,6 +56,24 @@ class DragGestureRecognizer {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DragGestureRecognizer bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any dragSource;
@@ -68,16 +86,16 @@ class DragGestureRecognizer {
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  DragGestureRecognizer(java.awt.dnd.DragSource ds) { }
+  DragGestureRecognizer(Any ds) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  DragGestureRecognizer(java.awt.dnd.DragSource ds, java.awt.Component c) { }
+  DragGestureRecognizer(Any ds, Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  DragGestureRecognizer(java.awt.dnd.DragSource ds, java.awt.Component c, int sa) { }
+  DragGestureRecognizer(Any ds, Any c, int sa) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  DragGestureRecognizer(java.awt.dnd.DragSource ds, java.awt.Component c, int sa, java.awt.dnd.DragGestureListener dgl) { }
+  DragGestureRecognizer(Any ds, Any c, int sa, Any dgl) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -87,11 +105,11 @@ class DragGestureRecognizer {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.awt.Component getComponent() { return null; }
+  public synchronized Any getComponent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void setComponent(java.awt.Component c) { }
+  public synchronized void setComponent(Any c) { }
   @throwable("java.lang.UnsupportedOperationException, java.util.TooManyListenersException")
-  public synchronized void addDragGestureListener(java.awt.dnd.DragGestureListener dgl) { }
+  public synchronized void addDragGestureListener(Any dgl) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
   void unregisterListeners() { }
@@ -99,22 +117,22 @@ class DragGestureRecognizer {
   @throwable("java.lang.AbstractMethodError")
   void registerListeners() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.dnd.DragSource getDragSource() { return null; }
+  public Any getDragSource() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized int getSourceActions() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized void setSourceActions(int actions) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.event.InputEvent getTriggerEvent() { return null; }
+  public Any getTriggerEvent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void resetRecognizer() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removeDragGestureListener(java.awt.dnd.DragGestureListener dgl) { }
+  public synchronized void removeDragGestureListener(Any dgl) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  synchronized void fireDragGestureRecognized(int dragAction, java.awt.Point p) { }
+  synchronized void fireDragGestureRecognized(int dragAction, Any p) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  synchronized void appendEvent(java.awt.event.InputEvent awtie) { }
+  synchronized void appendEvent(Any awtie) { }
   < ---- END java signatures ---- >
 }

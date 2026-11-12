@@ -56,6 +56,24 @@ class DefaultMutableTreeNode {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DefaultMutableTreeNode bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any EMPTY_ENUMERATION = null;
@@ -68,9 +86,9 @@ class DefaultMutableTreeNode {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public DefaultMutableTreeNode(java.lang.Object userObject, boolean allowsChildren) { }
+  public DefaultMutableTreeNode(Any userObject, boolean allowsChildren) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public DefaultMutableTreeNode(java.lang.Object userObject) { }
+  public DefaultMutableTreeNode(Any userObject) { }
   @throwable("java.lang.UnsupportedOperationException")
   public DefaultMutableTreeNode() { }
   < ---- END java constructors ---- >
@@ -82,27 +100,27 @@ class DefaultMutableTreeNode {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void remove(javax.swing.tree.MutableTreeNode aChild) { }
+  public void remove(Any aChild) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void remove(int childIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void insert(javax.swing.tree.MutableTreeNode newChild, int childIndex) { }
+  public void insert(Any newChild, int childIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void add(javax.swing.tree.MutableTreeNode newChild) { }
+  public void add(Any newChild) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreeNode getParent() { return null; }
+  public Any getParent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreeNode getRoot() { return null; }
+  public Any getRoot() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreeNode[] getPath() { return null; }
+  public Any[] getPath() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getIndex(javax.swing.tree.TreeNode aChild) { return 0; }
+  public int getIndex(Any aChild) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setParent(javax.swing.tree.MutableTreeNode newParent) { }
+  public void setParent(Any newParent) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isRoot() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -112,41 +130,41 @@ class DefaultMutableTreeNode {
   @throwable("java.lang.UnsupportedOperationException")
   public int getChildCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreeNode getLastChild() { return null; }
+  public Any getLastChild() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Enumeration<javax.swing.tree.TreeNode> postorderEnumeration() { return null; }
+  public Any postorderEnumeration() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreeNode getChildAfter(javax.swing.tree.TreeNode aChild) { return null; }
+  public Any getChildAfter(Any aChild) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isNodeSibling(javax.swing.tree.TreeNode anotherNode) { return false; }
+  public boolean isNodeSibling(Any anotherNode) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreeNode getChildBefore(javax.swing.tree.TreeNode aChild) { return null; }
+  public Any getChildBefore(Any aChild) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.DefaultMutableTreeNode getFirstLeaf() { return null; }
+  public Any getFirstLeaf() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.DefaultMutableTreeNode getNextLeaf() { return null; }
+  public Any getNextLeaf() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.DefaultMutableTreeNode getPreviousLeaf() { return null; }
+  public Any getPreviousLeaf() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeFromParent() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isNodeDescendant(javax.swing.tree.DefaultMutableTreeNode anotherNode) { return false; }
+  public boolean isNodeDescendant(Any anotherNode) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreeNode getSharedAncestor(javax.swing.tree.DefaultMutableTreeNode aNode) { return null; }
+  public Any getSharedAncestor(Any aNode) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isNodeRelated(javax.swing.tree.DefaultMutableTreeNode aNode) { return false; }
+  public boolean isNodeRelated(Any aNode) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object[] getUserObjectPath() { return null; }
+  public Any[] getUserObjectPath() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.DefaultMutableTreeNode getNextNode() { return null; }
+  public Any getNextNode() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.DefaultMutableTreeNode getPreviousNode() { return null; }
+  public Any getPreviousNode() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Enumeration<javax.swing.tree.TreeNode> preorderEnumeration() { return null; }
+  public Any preorderEnumeration() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Enumeration<javax.swing.tree.TreeNode> depthFirstEnumeration() { return null; }
+  public Any depthFirstEnumeration() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Enumeration<javax.swing.tree.TreeNode> pathFromAncestorEnumeration(javax.swing.tree.TreeNode ancestor) { return null; }
+  public Any pathFromAncestorEnumeration(Any ancestor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getSiblingCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -156,31 +174,31 @@ class DefaultMutableTreeNode {
   @throwable("java.lang.UnsupportedOperationException")
   public void setAllowsChildren(boolean allows) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isNodeAncestor(javax.swing.tree.TreeNode anotherNode) { return false; }
+  public boolean isNodeAncestor(Any anotherNode) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isNodeChild(javax.swing.tree.TreeNode aNode) { return false; }
+  public boolean isNodeChild(Any aNode) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeAllChildren() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Enumeration<javax.swing.tree.TreeNode> breadthFirstEnumeration() { return null; }
+  public Any breadthFirstEnumeration() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.tree.TreeNode[] getPathToRoot(javax.swing.tree.TreeNode aNode, int depth) { return null; }
+  Any[] getPathToRoot(Any aNode, int depth) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.DefaultMutableTreeNode getLastLeaf() { return null; }
+  public Any getLastLeaf() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getDepth() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreeNode getFirstChild() { return null; }
+  public Any getFirstChild() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.DefaultMutableTreeNode getPreviousSibling() { return null; }
+  public Any getPreviousSibling() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.DefaultMutableTreeNode getNextSibling() { return null; }
+  public Any getNextSibling() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getUserObject() { return null; }
+  public Any getUserObject() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUserObject(java.lang.Object userObject) { }
+  public void setUserObject(Any userObject) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreeNode getChildAt(int index) { return null; }
+  public Any getChildAt(int index) { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class Sequencer {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Sequencer bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int LOOP_CONTINUOUSLY = -1;
@@ -80,7 +98,7 @@ class Sequencer {
   @throwable("java.lang.AbstractMethodError")
   public long getTickLength() { return 0; }
   @throwable("java.lang.AbstractMethodError, javax.sound.midi.InvalidMidiDataException")
-  public void setSequence(javax.sound.midi.Sequence sequence) { }
+  public void setSequence(Any sequence) { }
   @throwable("java.lang.AbstractMethodError")
   public void startRecording() { }
   @throwable("java.lang.AbstractMethodError")
@@ -88,9 +106,9 @@ class Sequencer {
   @throwable("java.lang.AbstractMethodError")
   public boolean isRecording() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public void recordEnable(javax.sound.midi.Track track, int channel) { }
+  public void recordEnable(Any track, int channel) { }
   @throwable("java.lang.AbstractMethodError")
-  public void recordDisable(javax.sound.midi.Track track) { }
+  public void recordDisable(Any track) { }
   @throwable("java.lang.AbstractMethodError")
   public float getTempoInBPM() { return 0.0; }
   @throwable("java.lang.AbstractMethodError")
@@ -110,17 +128,17 @@ class Sequencer {
   @throwable("java.lang.AbstractMethodError")
   public void setMicrosecondPosition(long microseconds) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setMasterSyncMode(javax.sound.midi.Sequencer.SyncMode sync) { }
+  public void setMasterSyncMode(Any sync) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.sound.midi.Sequencer.SyncMode getMasterSyncMode() { return null; }
+  public Any getMasterSyncMode() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.sound.midi.Sequencer.SyncMode[] getMasterSyncModes() { return null; }
+  public Any[] getMasterSyncModes() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setSlaveSyncMode(javax.sound.midi.Sequencer.SyncMode sync) { }
+  public void setSlaveSyncMode(Any sync) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.sound.midi.Sequencer.SyncMode getSlaveSyncMode() { return null; }
+  public Any getSlaveSyncMode() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.sound.midi.Sequencer.SyncMode[] getSlaveSyncModes() { return null; }
+  public Any[] getSlaveSyncModes() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void setTrackMute(int track, boolean mute) { }
   @throwable("java.lang.AbstractMethodError")
@@ -130,13 +148,13 @@ class Sequencer {
   @throwable("java.lang.AbstractMethodError")
   public boolean getTrackSolo(int track) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean addMetaEventListener(javax.sound.midi.MetaEventListener listener) { return false; }
+  public boolean addMetaEventListener(Any listener) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public void removeMetaEventListener(javax.sound.midi.MetaEventListener listener) { }
+  public void removeMetaEventListener(Any listener) { }
   @throwable("java.lang.AbstractMethodError")
-  public int[] addControllerEventListener(javax.sound.midi.ControllerEventListener listener, int[] controllers) { return null; }
+  public int[] addControllerEventListener(Any listener, int[] controllers) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public int[] removeControllerEventListener(javax.sound.midi.ControllerEventListener listener, int[] controllers) { return null; }
+  public int[] removeControllerEventListener(Any listener, int[] controllers) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void setLoopStartPoint(long tick) { }
   @throwable("java.lang.AbstractMethodError")
@@ -150,6 +168,6 @@ class Sequencer {
   @throwable("java.lang.AbstractMethodError")
   public int getLoopCount() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.sound.midi.Sequence getSequence() { return null; }
+  public Any getSequence() { return null; }
   < ---- END java signatures ---- >
 }

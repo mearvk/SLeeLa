@@ -56,6 +56,24 @@ class JTable {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JTable bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int AUTO_RESIZE_OFF = 0;
@@ -90,17 +108,17 @@ class JTable {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public JTable(javax.swing.table.TableModel dm, javax.swing.table.TableColumnModel cm, javax.swing.ListSelectionModel sm) { }
+  public JTable(Any dm, Any cm, Any sm) { }
   @throwable("java.lang.UnsupportedOperationException")
   public JTable(int numRows, int numColumns) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTable(java.util.Vector<? extends java.util.Vector> rowData, java.util.Vector<?> columnNames) { }
+  public JTable(Any rowData, Any columnNames) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTable(java.lang.Object[][] rowData, java.lang.Object[] columnNames) { }
+  public JTable(Any[][] rowData, Any[] columnNames) { }
   @throwable("java.lang.UnsupportedOperationException")
   public JTable() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTable(javax.swing.table.TableModel dm) { }
+  public JTable(Any dm) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -111,28 +129,28 @@ class JTable {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSelectionModel(javax.swing.ListSelectionModel selectionModel) { }
+  public void setSelectionModel(Any selectionModel) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUI(javax.swing.plaf.TableUI ui) { }
+  public void setUI(Any ui) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.TableUI getUI() { return null; }
+  public Any getUI() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.ListSelectionModel getSelectionModel() { return null; }
+  public Any getSelectionModel() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean processKeyBinding(javax.swing.KeyStroke ks, java.awt.event.KeyEvent e, int condition, boolean pressed) { return false; }
+  boolean processKeyBinding(Any ks, Any e, int condition, boolean pressed) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getToolTipText(java.awt.event.MouseEvent event) { return null; }
+  public String getToolTipText(Any event) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEditing() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void valueChanged(javax.swing.event.ListSelectionEvent e) { }
+  public void valueChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getRowHeight(int row) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -142,18 +160,18 @@ class JTable {
   @throwable("java.lang.UnsupportedOperationException")
   public void setRowHeight(int row, int rowHeight) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setCellEditor(javax.swing.table.TableCellEditor anEditor) { }
+  public void setCellEditor(Any anEditor) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.table.TableColumnModel createDefaultColumnModel() { return null; }
+  Any createDefaultColumnModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setColumnModel(javax.swing.table.TableColumnModel columnModel) { }
+  public void setColumnModel(Any columnModel) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.ListSelectionModel createDefaultSelectionModel() { return null; }
+  Any createDefaultSelectionModel() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.table.TableModel createDefaultDataModel() { return null; }
+  Any createDefaultDataModel() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void initializeLocalVars() { }
@@ -161,7 +179,7 @@ class JTable {
   @throwable("java.lang.UnsupportedOperationException")
   void configureEnclosingScrollPane() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.JTableHeader getTableHeader() { return null; }
+  public Any getTableHeader() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void unconfigureEnclosingScrollPane() { }
@@ -171,7 +189,7 @@ class JTable {
   @throwable("java.lang.UnsupportedOperationException")
   public void setRowMargin(int rowMargin) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableColumnModel getColumnModel() { return null; }
+  public Any getColumnModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setShowHorizontalLines(boolean showHorizontalLines) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -179,29 +197,29 @@ class JTable {
   @throwable("java.lang.UnsupportedOperationException")
   public int getColumnCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableColumn getColumn(java.lang.Object identifier) { return null; }
+  public Any getColumn(Any identifier) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void createDefaultColumnsFromModel() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeColumn(javax.swing.table.TableColumn aColumn) { }
+  public void removeColumn(Any aColumn) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addColumn(javax.swing.table.TableColumn aColumn) { }
+  public void addColumn(Any aColumn) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void createDefaultRenderers() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableCellRenderer getDefaultRenderer(java.lang.Class<?> columnClass) { return null; }
+  public Any getDefaultRenderer(Any columnClass) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void createDefaultEditors() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableCellEditor getDefaultEditor(java.lang.Class<?> columnClass) { return null; }
+  public Any getDefaultEditor(Any columnClass) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int rowAtPoint(java.awt.Point point) { return 0; }
+  public int rowAtPoint(Any point) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int columnAtPoint(java.awt.Point point) { return 0; }
+  public int columnAtPoint(Any point) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getCellRect(int row, int column, boolean includeSpacing) { return null; }
+  public Any getCellRect(int row, int column, boolean includeSpacing) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void addRowSelectionInterval(int index0, int index1) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -215,7 +233,7 @@ class JTable {
   @throwable("java.lang.UnsupportedOperationException")
   public void setColumnSelectionInterval(int index0, int index1) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setRowSorter(javax.swing.RowSorter<? extends javax.swing.table.TableModel> sorter) { }
+  public void setRowSorter(Any sorter) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setSelectionMode(int selectionMode) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -239,19 +257,19 @@ class JTable {
   @throwable("java.lang.UnsupportedOperationException")
   public int convertColumnIndexToView(int modelColumnIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.RowSorter<? extends javax.swing.table.TableModel> getRowSorter() { return null; }
+  public Any getRowSorter() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int convertRowIndexToView(int modelRowIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int convertRowIndexToModel(int viewRowIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getColumnName(int column) { return null; }
+  public String getColumnName(int column) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Class<?> getColumnClass(int column) { return null; }
+  public Any getColumnClass(int column) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getValueAt(int row, int column) { return null; }
+  public Any getValueAt(int row, int column) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setValueAt(java.lang.Object aValue, int row, int column) { }
+  public void setValueAt(Any aValue, int row, int column) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void moveColumn(int column, int targetColumn) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -263,23 +281,23 @@ class JTable {
   @throwable("java.lang.UnsupportedOperationException")
   public void sizeColumnsToFit(boolean lastColumnOnly) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int column) { return null; }
+  public Any prepareRenderer(Any renderer, int row, int column) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean editCellAt(int row, int column) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean editCellAt(int row, int column, java.util.EventObject e) { return false; }
+  public boolean editCellAt(int row, int column, Any e) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component prepareEditor(javax.swing.table.TableCellEditor editor, int row, int column) { return null; }
+  public Any prepareEditor(Any editor, int row, int column) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setEditingRow(int aRow) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setEditingColumn(int aColumn) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void tableChanged(javax.swing.event.TableModelEvent e) { }
+  public void tableChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getAutoCreateRowSorter() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void sorterChanged(javax.swing.event.RowSorterEvent e) { }
+  public void sorterChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getSelectedRow() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -290,25 +308,25 @@ class JTable {
   public boolean getSurrendersFocusOnKeystroke() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.table.JTableHeader createDefaultTableHeader() { return null; }
+  Any createDefaultTableHeader() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTableHeader(javax.swing.table.JTableHeader tableHeader) { }
+  public void setTableHeader(Any tableHeader) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setShowGrid(boolean showGrid) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setSurrendersFocusOnKeystroke(boolean surrendersFocusOnKeystroke) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPreferredScrollableViewportSize(java.awt.Dimension size) { }
+  public void setPreferredScrollableViewportSize(Any size) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.JScrollPane createScrollPaneForTable(javax.swing.JTable aTable) { return null; }
+  public static Any createScrollPaneForTable(Any aTable) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setIntercellSpacing(java.awt.Dimension intercellSpacing) { }
+  public void setIntercellSpacing(Any intercellSpacing) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getIntercellSpacing() { return null; }
+  public Any getIntercellSpacing() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setGridColor(java.awt.Color gridColor) { }
+  public void setGridColor(Any gridColor) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getGridColor() { return null; }
+  public Any getGridColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getShowHorizontalLines() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -318,9 +336,9 @@ class JTable {
   @throwable("java.lang.UnsupportedOperationException")
   public void setAutoCreateColumnsFromModel(boolean autoCreateColumnsFromModel) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDefaultRenderer(java.lang.Class<?> columnClass, javax.swing.table.TableCellRenderer renderer) { }
+  public void setDefaultRenderer(Any columnClass, Any renderer) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDefaultEditor(java.lang.Class<?> columnClass, javax.swing.table.TableCellEditor editor) { }
+  public void setDefaultEditor(Any columnClass, Any editor) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setAutoCreateRowSorter(boolean autoCreateRowSorter) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -342,39 +360,39 @@ class JTable {
   @throwable("java.lang.UnsupportedOperationException")
   public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getSelectionForeground() { return null; }
+  public Any getSelectionForeground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSelectionForeground(java.awt.Color selectionForeground) { }
+  public void setSelectionForeground(Any selectionForeground) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getSelectionBackground() { return null; }
+  public Any getSelectionBackground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSelectionBackground(java.awt.Color selectionBackground) { }
+  public void setSelectionBackground(Any selectionBackground) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableCellRenderer getCellRenderer(int row, int column) { return null; }
+  public Any getCellRenderer(int row, int column) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setDragEnabled(boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getDragEnabled() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void setDropMode(javax.swing.DropMode dropMode) { }
+  public final void setDropMode(Any dropMode) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final javax.swing.DropMode getDropMode() { return null; }
+  public final Any getDropMode() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final javax.swing.JTable.DropLocation getDropLocation() { return null; }
+  public final Any getDropLocation() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredScrollableViewportSize() { return null; }
+  public Any getPreferredScrollableViewportSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getScrollableUnitIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { return 0; }
+  public int getScrollableUnitIncrement(Any visibleRect, int orientation, int direction) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getScrollableBlockIncrement(java.awt.Rectangle visibleRect, int orientation, int direction) { return 0; }
+  public int getScrollableBlockIncrement(Any visibleRect, int orientation, int direction) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getScrollableTracksViewportWidth() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getScrollableTracksViewportHeight() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableCellEditor getCellEditor() { return null; }
+  public Any getCellEditor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableCellEditor getCellEditor(int row, int column) { return null; }
+  public Any getCellEditor(int row, int column) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getRowCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -382,39 +400,39 @@ class JTable {
   @throwable("java.lang.UnsupportedOperationException")
   public void selectAll() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableModel getModel() { return null; }
+  public Any getModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void clearSelection() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setModel(javax.swing.table.TableModel dataModel) { }
+  public void setModel(Any dataModel) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.print.Printable getPrintable(javax.swing.JTable.PrintMode printMode, java.text.MessageFormat headerFormat, java.text.MessageFormat footerFormat) { return null; }
+  public Any getPrintable(Any printMode, Any headerFormat, Any footerFormat) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void editingStopped(javax.swing.event.ChangeEvent e) { }
+  public void editingStopped(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void editingCanceled(javax.swing.event.ChangeEvent e) { }
+  public void editingCanceled(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isCellEditable(int row, int column) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getEditorComponent() { return null; }
+  public Any getEditorComponent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getEditingColumn() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getEditingRow() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void columnAdded(javax.swing.event.TableColumnModelEvent e) { }
+  public void columnAdded(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void columnRemoved(javax.swing.event.TableColumnModelEvent e) { }
+  public void columnRemoved(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void columnMoved(javax.swing.event.TableColumnModelEvent e) { }
+  public void columnMoved(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void columnMarginChanged(javax.swing.event.ChangeEvent e) { }
+  public void columnMarginChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void columnSelectionChanged(javax.swing.event.ListSelectionEvent e) { }
+  public void columnSelectionChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setFillsViewportHeight(boolean fillsViewportHeight) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void addNotify() { }
   @throwable("java.lang.UnsupportedOperationException")

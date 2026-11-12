@@ -56,6 +56,24 @@ class AccessibleComponent {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public AccessibleComponent bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,57 +82,57 @@ class AccessibleComponent {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public boolean contains(java.awt.Point p) { return false; }
+  public boolean contains(Any p) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Rectangle getBounds() { return null; }
+  public Any getBounds() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Point getLocation() { return null; }
+  public Any getLocation() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isEnabled() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Dimension getSize() { return null; }
+  public Any getSize() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setSize(java.awt.Dimension d) { }
+  public void setSize(Any d) { }
   @throwable("java.lang.AbstractMethodError")
   public void setVisible(boolean b) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setBounds(java.awt.Rectangle r) { }
+  public void setBounds(Any r) { }
   @throwable("java.lang.AbstractMethodError")
   public void requestFocus() { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.accessibility.Accessible getAccessibleAt(java.awt.Point p) { return null; }
+  public Any getAccessibleAt(Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Point getLocationOnScreen() { return null; }
+  public Any getLocationOnScreen() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void setEnabled(boolean b) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Color getForeground() { return null; }
+  public Any getForeground() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setForeground(java.awt.Color c) { }
+  public void setForeground(Any c) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Color getBackground() { return null; }
+  public Any getBackground() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setBackground(java.awt.Color c) { }
+  public void setBackground(Any c) { }
   @throwable("java.lang.AbstractMethodError")
   public boolean isFocusTraversable() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public void addFocusListener(java.awt.event.FocusListener l) { }
+  public void addFocusListener(Any l) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.FontMetrics getFontMetrics(java.awt.Font f) { return null; }
+  public Any getFontMetrics(Any f) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setCursor(java.awt.Cursor cursor) { }
+  public void setCursor(Any cursor) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Cursor getCursor() { return null; }
+  public Any getCursor() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void removeFocusListener(java.awt.event.FocusListener l) { }
+  public void removeFocusListener(Any l) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setLocation(java.awt.Point p) { }
+  public void setLocation(Any p) { }
   @throwable("java.lang.AbstractMethodError")
   public boolean isVisible() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Font getFont() { return null; }
+  public Any getFont() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setFont(java.awt.Font f) { }
+  public void setFont(Any f) { }
   @throwable("java.lang.AbstractMethodError")
   public boolean isShowing() { return false; }
   < ---- END java signatures ---- >

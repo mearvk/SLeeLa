@@ -56,6 +56,24 @@ class IIOParam {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public IIOParam bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any sourceRegion;
@@ -83,19 +101,19 @@ class IIOParam {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.imageio.IIOParamController getController() { return null; }
+  public Any getController() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasController() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setController(javax.imageio.IIOParamController controller) { }
+  public void setController(Any controller) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.imageio.IIOParamController getDefaultController() { return null; }
+  public Any getDefaultController() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean activateController() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSourceRegion(java.awt.Rectangle sourceRegion) { }
+  public void setSourceRegion(Any sourceRegion) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getSourceRegion() { return null; }
+  public Any getSourceRegion() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setSourceSubsampling(int sourceXSubsampling, int sourceYSubsampling, int subsamplingXOffset, int subsamplingYOffset) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -111,12 +129,12 @@ class IIOParam {
   @throwable("java.lang.UnsupportedOperationException")
   public int[] getSourceBands() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDestinationType(javax.imageio.ImageTypeSpecifier destinationType) { }
+  public void setDestinationType(Any destinationType) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.imageio.ImageTypeSpecifier getDestinationType() { return null; }
+  public Any getDestinationType() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDestinationOffset(java.awt.Point destinationOffset) { }
+  public void setDestinationOffset(Any destinationOffset) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Point getDestinationOffset() { return null; }
+  public Any getDestinationOffset() { return null; }
   < ---- END java signatures ---- >
 }

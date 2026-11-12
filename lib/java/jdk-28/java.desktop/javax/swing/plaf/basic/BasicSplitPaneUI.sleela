@@ -56,6 +56,24 @@ class BasicSplitPaneUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.SplitPaneUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BasicSplitPaneUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static String NON_CONTINUOUS_DIVIDER = null;
@@ -99,13 +117,13 @@ class BasicSplitPaneUI {
   @throwable("java.lang.UnsupportedOperationException")
   void installListeners() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent jc) { return null; }
+  public Any getPreferredSize(Any jc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent jc) { return null; }
+  public Any getMinimumSize(Any jc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void installUI(javax.swing.JComponent c) { }
+  public void installUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void uninstallUI(javax.swing.JComponent c) { }
+  public void uninstallUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getOrientation() { return 0; }
   @JavaProtected
@@ -120,65 +138,65 @@ class BasicSplitPaneUI {
   @throwable("java.lang.UnsupportedOperationException")
   public void setLastDragLocation(int l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.basic.BasicSplitPaneDivider createDefaultDivider() { return null; }
+  public Any createDefaultDivider() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void resetLayoutManager() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Component createDefaultNonContinuousLayoutDivider() { return null; }
+  Any createDefaultNonContinuousLayoutDivider() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setNonContinuousLayoutDivider(java.awt.Component newDivider, boolean rememberSizes) { }
+  void setNonContinuousLayoutDivider(Any newDivider, boolean rememberSizes) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setNonContinuousLayoutDivider(java.awt.Component newDivider) { }
+  void setNonContinuousLayoutDivider(Any newDivider) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getLastDragLocation() { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.ActionListener createKeyboardUpLeftListener() { return null; }
+  Any createKeyboardUpLeftListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.ActionListener createKeyboardDownRightListener() { return null; }
+  Any createKeyboardDownRightListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.ActionListener createKeyboardHomeListener() { return null; }
+  Any createKeyboardHomeListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.ActionListener createKeyboardEndListener() { return null; }
+  Any createKeyboardEndListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.ActionListener createKeyboardResizeToggleListener() { return null; }
+  Any createKeyboardResizeToggleListener() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getNonContinuousLayoutDivider() { return null; }
+  public Any getNonContinuousLayoutDivider() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getDividerBorderSize() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setOrientation(int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.basic.BasicSplitPaneDivider getDivider() { return null; }
+  public Any getDivider() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void resetToPreferredSizes(javax.swing.JSplitPane jc) { }
+  public void resetToPreferredSizes(Any jc) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDividerLocation(javax.swing.JSplitPane jc, int location) { }
+  public void setDividerLocation(Any jc, int location) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getMinimumDividerLocation(javax.swing.JSplitPane jc) { return 0; }
+  public int getMinimumDividerLocation(Any jc) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getMaximumDividerLocation(javax.swing.JSplitPane jc) { return 0; }
+  public int getMaximumDividerLocation(Any jc) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void finishedPaintingChildren(javax.swing.JSplitPane sp, java.awt.Graphics g) { }
+  public void finishedPaintingChildren(Any sp, Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setContinuousLayout(boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isContinuousLayout() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getDividerLocation(javax.swing.JSplitPane jc) { return 0; }
+  public int getDividerLocation(Any jc) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent x) { return null; }
+  public static Any createUI(Any x) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JSplitPane getSplitPane() { return null; }
+  public Any getSplitPane() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installKeyboardActions() { }
@@ -196,15 +214,15 @@ class BasicSplitPaneUI {
   void uninstallDefaults() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createPropertyChangeListener() { return null; }
+  Any createPropertyChangeListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.FocusListener createFocusListener() { return null; }
+  Any createFocusListener() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Insets getInsets(javax.swing.JComponent jc) { return null; }
+  public Any getInsets(Any jc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent jc) { return null; }
+  public Any getMaximumSize(Any jc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g, javax.swing.JComponent jc) { }
+  public void paint(Any g, Any jc) { }
   < ---- END java signatures ---- >
 }

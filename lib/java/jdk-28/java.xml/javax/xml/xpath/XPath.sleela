@@ -56,6 +56,24 @@ class XPath {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public XPath bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -66,26 +84,27 @@ class XPath {
   @throwable("java.lang.AbstractMethodError")
   public void reset() { }
   @throwable("java.lang.AbstractMethodError, javax.xml.xpath.XPathExpressionException")
-  public javax.xml.xpath.XPathExpression compile(java.lang.String expression) { return null; }
+  public Any compile(String expression) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.xml.xpath.XPathExpressionException")
-  public java.lang.String evaluate(java.lang.String expression, java.lang.Object item) { return null; }
+  public String evaluate(String expression, Any item) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.xml.xpath.XPathExpressionException")
-  public java.lang.Object evaluate(java.lang.String expression, java.lang.Object item, javax.xml.namespace.QName returnType) { return null; }
+  public Any evaluate(String expression, Any item, Any returnType) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, javax.xml.xpath.XPathExpressionException")
-  public default <T> T evaluateExpression(java.lang.String expression, java.lang.Object item, java.lang.Class<T> type) { return null; }
+  public default Any evaluateExpression(String expression, Any item, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.xml.xpath.XPathExpressionException")
-  public default javax.xml.xpath.XPathEvaluationResult<?> evaluateExpression(java.lang.String expression, java.lang.Object item) { return null; }
+  public default Any evaluateExpression(String expression, Any item) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setXPathVariableResolver(javax.xml.xpath.XPathVariableResolver resolver) { }
+  public void setXPathVariableResolver(Any resolver) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.xpath.XPathVariableResolver getXPathVariableResolver() { return null; }
+  public Any getXPathVariableResolver() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setXPathFunctionResolver(javax.xml.xpath.XPathFunctionResolver resolver) { }
+  public void setXPathFunctionResolver(Any resolver) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.xpath.XPathFunctionResolver getXPathFunctionResolver() { return null; }
+  public Any getXPathFunctionResolver() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.namespace.NamespaceContext getNamespaceContext() { return null; }
+  public Any getNamespaceContext() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setNamespaceContext(javax.xml.namespace.NamespaceContext nsContext) { }
+  public void setNamespaceContext(Any nsContext) { }
   < ---- END java signatures ---- >
 }

@@ -57,6 +57,24 @@ class Builder {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Builder bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -65,28 +83,28 @@ class Builder {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public jdk.jshell.JShell.Builder out(java.io.PrintStream out) { return null; }
+  public Any out(Any out) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public jdk.jshell.JShell.Builder console(jdk.jshell.JShellConsole console) { return null; }
+  public Any console(Any console) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public jdk.jshell.JShell.Builder err(java.io.PrintStream err) { return null; }
+  public Any err(Any err) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public jdk.jshell.JShell.Builder in(java.io.InputStream in) { return null; }
+  public Any in(Any in) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalStateException")
-  public jdk.jshell.JShell build() { return null; }
+  public Any build() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public jdk.jshell.JShell.Builder fileManager(java.util.function.Function<javax.tools.StandardJavaFileManager, javax.tools.StandardJavaFileManager> mapping) { return null; }
+  public Any fileManager(Any mapping) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public jdk.jshell.JShell.Builder remoteVMOptions(java.lang.String... options) { return null; }
+  public Any remoteVMOptions(String... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public jdk.jshell.JShell.Builder compilerOptions(java.lang.String... options) { return null; }
+  public Any compilerOptions(String... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public jdk.jshell.JShell.Builder executionEngine(jdk.jshell.spi.ExecutionControlProvider executionControlProvider, java.util.Map<java.lang.String, java.lang.String> executionControlParameters) { return null; }
+  public Any executionEngine(Any executionControlProvider, Any executionControlParameters) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public jdk.jshell.JShell.Builder executionEngine(java.lang.String executionControlSpec) { return null; }
+  public Any executionEngine(String executionControlSpec) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public jdk.jshell.JShell.Builder tempVariableNameGenerator(java.util.function.Supplier<java.lang.String> generator) { return null; }
+  public Any tempVariableNameGenerator(Any generator) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public jdk.jshell.JShell.Builder idGenerator(java.util.function.BiFunction<jdk.jshell.Snippet, java.lang.Integer, java.lang.String> generator) { return null; }
+  public Any idGenerator(Any generator) { return null; }
   < ---- END java signatures ---- >
 }

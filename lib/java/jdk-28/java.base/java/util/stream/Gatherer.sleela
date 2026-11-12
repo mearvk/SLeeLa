@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class Gatherer<T, A, R> {
+class Gatherer {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class Gatherer<T, A, R> {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<T, A, R>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 3; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "T"; } if (index == 1) { return "A"; } if (index == 2) { return "R"; } return null; }
+  public Gatherer bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -63,33 +81,43 @@ class Gatherer<T, A, R> {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
+  @generic("<T, A, R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, A, R> java.util.stream.Gatherer<T, A, R> of(java.util.function.Supplier<A> initializer, java.util.stream.Gatherer.Integrator<A, T, R> integrator, java.util.function.BinaryOperator<A> combiner, java.util.function.BiConsumer<A, java.util.stream.Gatherer.Downstream<? super R>> finisher) { return null; }
+  public static Any of(Any initializer, Any integrator, Any combiner, Any finisher) { return null; }
+  @generic("<T, R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, R> java.util.stream.Gatherer<T, java.lang.Void, R> of(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R> integrator, java.util.function.BiConsumer<java.lang.Void, java.util.stream.Gatherer.Downstream<? super R>> finisher) { return null; }
+  public static Any of(Any integrator, Any finisher) { return null; }
+  @generic("<T, R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, R> java.util.stream.Gatherer<T, java.lang.Void, R> of(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R> integrator) { return null; }
+  public static Any of(Any integrator) { return null; }
+  @generic("<RR>")
   @throwable("java.lang.UnsupportedOperationException")
-  public default <RR> java.util.stream.Gatherer<T, ?, RR> andThen(java.util.stream.Gatherer<? super R, ?, ? extends RR> that) { return null; }
+  public default Any andThen(Any that) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.function.BinaryOperator<A> combiner() { return null; }
+  public default Any combiner() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.function.BiConsumer<A, java.util.stream.Gatherer.Downstream<? super R>> finisher() { return null; }
+  public default Any finisher() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.function.Supplier<A> initializer() { return null; }
+  public default Any initializer() { return null; }
+  @generic("<A>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <A> java.util.function.Supplier<A> defaultInitializer() { return null; }
+  public static Any defaultInitializer() { return null; }
+  @generic("<A>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <A> java.util.function.BinaryOperator<A> defaultCombiner() { return null; }
+  public static Any defaultCombiner() { return null; }
+  @generic("<A, R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <A, R> java.util.function.BiConsumer<A, java.util.stream.Gatherer.Downstream<? super R>> defaultFinisher() { return null; }
+  public static Any defaultFinisher() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.Gatherer.Integrator<A, T, R> integrator() { return null; }
+  public Any integrator() { return null; }
+  @generic("<T, A, R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, A, R> java.util.stream.Gatherer<T, A, R> ofSequential(java.util.function.Supplier<A> initializer, java.util.stream.Gatherer.Integrator<A, T, R> integrator, java.util.function.BiConsumer<A, java.util.stream.Gatherer.Downstream<? super R>> finisher) { return null; }
+  public static Any ofSequential(Any initializer, Any integrator, Any finisher) { return null; }
+  @generic("<T, R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, R> java.util.stream.Gatherer<T, java.lang.Void, R> ofSequential(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R> integrator) { return null; }
+  public static Any ofSequential(Any integrator) { return null; }
+  @generic("<T, R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, R> java.util.stream.Gatherer<T, java.lang.Void, R> ofSequential(java.util.stream.Gatherer.Integrator<java.lang.Void, T, R> integrator, java.util.function.BiConsumer<java.lang.Void, java.util.stream.Gatherer.Downstream<? super R>> finisher) { return null; }
+  public static Any ofSequential(Any integrator, Any finisher) { return null; }
   < ---- END java signatures ---- >
 }

@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class JComboBox<E> {
+class JComboBox {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class JComboBox<E> {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<E>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "E"; } return null; }
+  public JComboBox bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any dataModel;
@@ -73,9 +91,9 @@ class JComboBox<E> {
   @throwable("java.lang.UnsupportedOperationException")
   public JComboBox() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JComboBox(java.util.Vector<E> items) { }
+  public JComboBox(Any items) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JComboBox(E[] items) { }
+  public JComboBox(Any[] items) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -86,44 +104,44 @@ class JComboBox<E> {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public E getItemAt(int index) { return null; }
+  public Any getItemAt(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setEnabled(boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void processKeyEvent(java.awt.event.KeyEvent e) { }
+  public void processKeyEvent(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUI(javax.swing.plaf.ComboBoxUI ui) { }
+  public void setUI(Any ui) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ComboBoxUI getUI() { return null; }
+  public Any getUI() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean processKeyBinding(javax.swing.KeyStroke ks, java.awt.event.KeyEvent e, int condition, boolean pressed) { return false; }
+  boolean processKeyBinding(Any ks, Any e, int condition, boolean pressed) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addActionListener(java.awt.event.ActionListener l) { }
+  public void addActionListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setActionCommand(java.lang.String aCommand) { }
+  public void setActionCommand(String aCommand) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeActionListener(java.awt.event.ActionListener l) { }
+  public void removeActionListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.event.ActionListener[] getActionListeners() { return null; }
+  public Any[] getActionListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addItemListener(java.awt.event.ItemListener aListener) { }
+  public void addItemListener(Any aListener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object[] getSelectedObjects() { return null; }
+  public Any[] getSelectedObjects() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeItemListener(java.awt.event.ItemListener aListener) { }
+  public void removeItemListener(Any aListener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.event.ItemListener[] getItemListeners() { return null; }
+  public Any[] getItemListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addItem(E item) { }
+  public void addItem(Any item) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getSelectedItem() { return null; }
+  public Any getSelectedItem() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getItemCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -131,14 +149,14 @@ class JComboBox<E> {
   @throwable("java.lang.UnsupportedOperationException")
   public int getSelectedIndex() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Action getAction() { return null; }
+  public Any getAction() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installAncestorListener() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.ListCellRenderer<? super E> getRenderer() { return null; }
+  public Any getRenderer() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.ComboBoxEditor getEditor() { return null; }
+  public Any getEditor() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void selectedItemChanged() { }
@@ -151,7 +169,7 @@ class JComboBox<E> {
   public boolean isPopupVisible() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JComboBox.KeySelectionManager createDefaultKeySelectionManager() { return null; }
+  Any createDefaultKeySelectionManager() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void hidePopup() { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -163,17 +181,17 @@ class JComboBox<E> {
   @throwable("java.lang.UnsupportedOperationException")
   public int getMaximumRowCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setRenderer(javax.swing.ListCellRenderer<? super E> aRenderer) { }
+  public void setRenderer(Any aRenderer) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setEditor(javax.swing.ComboBoxEditor anEditor) { }
+  public void setEditor(Any anEditor) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public E getPrototypeDisplayValue() { return null; }
+  public Any getPrototypeDisplayValue() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPrototypeDisplayValue(E prototypeDisplayValue) { }
+  public void setPrototypeDisplayValue(Any prototypeDisplayValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void insertItemAt(E item, int index) { }
+  public void insertItemAt(Any item, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeItem(java.lang.Object anObject) { }
+  public void removeItem(Any anObject) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeItemAt(int anIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -181,11 +199,11 @@ class JComboBox<E> {
   @throwable("java.lang.UnsupportedOperationException")
   public void showPopup() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addPopupMenuListener(javax.swing.event.PopupMenuListener l) { }
+  public void addPopupMenuListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removePopupMenuListener(javax.swing.event.PopupMenuListener l) { }
+  public void removePopupMenuListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.PopupMenuListener[] getPopupMenuListeners() { return null; }
+  public Any[] getPopupMenuListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void firePopupMenuWillBecomeVisible() { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -195,44 +213,44 @@ class JComboBox<E> {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean selectWithKeyChar(char keyChar) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void configureEditor(javax.swing.ComboBoxEditor anEditor, java.lang.Object anItem) { }
+  public void configureEditor(Any anEditor, Any anItem) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setKeySelectionManager(javax.swing.JComboBox.KeySelectionManager aManager) { }
+  public void setKeySelectionManager(Any aManager) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JComboBox.KeySelectionManager getKeySelectionManager() { return null; }
+  public Any getKeySelectionManager() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setEditable(boolean aFlag) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getActionCommand() { return null; }
+  public String getActionCommand() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void actionPerformed(java.awt.event.ActionEvent e) { }
+  public void actionPerformed(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.ComboBoxModel<E> getModel() { return null; }
+  public Any getModel() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void configurePropertiesFromAction(javax.swing.Action a) { }
+  void configurePropertiesFromAction(Any a) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createActionPropertyChangeListener(javax.swing.Action a) { return null; }
+  Any createActionPropertyChangeListener(Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setAction(javax.swing.Action a) { }
+  public void setAction(Any a) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void actionPropertyChanged(javax.swing.Action action, java.lang.String propertyName) { }
+  void actionPropertyChanged(Any action, String propertyName) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setModel(javax.swing.ComboBoxModel<E> aModel) { }
+  public void setModel(Any aModel) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void fireItemStateChanged(java.awt.event.ItemEvent e) { }
+  void fireItemStateChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void contentsChanged(javax.swing.event.ListDataEvent e) { }
+  public void contentsChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void intervalAdded(javax.swing.event.ListDataEvent e) { }
+  public void intervalAdded(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void intervalRemoved(javax.swing.event.ListDataEvent e) { }
+  public void intervalRemoved(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSelectedItem(java.lang.Object anObject) { }
+  public void setSelectedItem(Any anObject) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   < ---- END java signatures ---- >
 }

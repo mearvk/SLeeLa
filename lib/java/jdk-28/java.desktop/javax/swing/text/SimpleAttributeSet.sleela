@@ -56,6 +56,24 @@ class SimpleAttributeSet {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SimpleAttributeSet bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any EMPTY = null;
@@ -65,7 +83,7 @@ class SimpleAttributeSet {
   @throwable("java.lang.UnsupportedOperationException")
   public SimpleAttributeSet() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public SimpleAttributeSet(javax.swing.text.AttributeSet source) { }
+  public SimpleAttributeSet(Any source) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -75,42 +93,42 @@ class SimpleAttributeSet {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isDefined(java.lang.Object attrName) { return false; }
+  public boolean isDefined(Any attrName) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isEqual(javax.swing.text.AttributeSet attr) { return false; }
+  public boolean isEqual(Any attr) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getAttribute(java.lang.Object name) { return null; }
+  public Any getAttribute(Any name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addAttribute(java.lang.Object name, java.lang.Object value) { }
+  public void addAttribute(Any name, Any value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addAttributes(javax.swing.text.AttributeSet attributes) { }
+  public void addAttributes(Any attributes) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getAttributeCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Enumeration<?> getAttributeNames() { return null; }
+  public Any getAttributeNames() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsAttribute(java.lang.Object name, java.lang.Object value) { return false; }
+  public boolean containsAttribute(Any name, Any value) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsAttributes(javax.swing.text.AttributeSet attributes) { return false; }
+  public boolean containsAttributes(Any attributes) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.AttributeSet getResolveParent() { return null; }
+  public Any getResolveParent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeAttribute(java.lang.Object name) { }
+  public void removeAttribute(Any name) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeAttributes(java.util.Enumeration<?> names) { }
+  public void removeAttributes(Any names) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setResolveParent(javax.swing.text.AttributeSet parent) { }
+  public void setResolveParent(Any parent) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.AttributeSet copyAttributes() { return null; }
+  public Any copyAttributes() { return null; }
   < ---- END java signatures ---- >
 }

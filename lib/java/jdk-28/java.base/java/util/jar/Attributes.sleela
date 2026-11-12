@@ -56,6 +56,24 @@ class Attributes {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Attributes bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any map;
@@ -63,7 +81,7 @@ class Attributes {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public Attributes(java.util.jar.Attributes attr) { }
+  public Attributes(Any attr) { }
   @throwable("java.lang.UnsupportedOperationException")
   public Attributes(int size) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -77,40 +95,40 @@ class Attributes {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object remove(java.lang.Object name) { return null; }
+  public Any remove(Any name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int size() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object get(java.lang.Object name) { return null; }
+  public Any get(Any name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object put(java.lang.Object name, java.lang.Object value) { return null; }
+  public Any put(Any name, Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object o) { return false; }
+  public boolean equals(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Collection<java.lang.Object> values() { return null; }
+  public Any values() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void clear() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getValue(java.lang.String name) { return null; }
+  public String getValue(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getValue(java.util.jar.Attributes.Name name) { return null; }
+  public String getValue(Any name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.util.Map.Entry<java.lang.Object, java.lang.Object>> entrySet() { return null; }
+  public Any entrySet() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void putAll(java.util.Map<?, ?> attr) { }
+  public void putAll(Any attr) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.lang.Object> keySet() { return null; }
+  public Any keySet() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsValue(java.lang.Object value) { return false; }
+  public boolean containsValue(Any value) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsKey(java.lang.Object name) { return false; }
+  public boolean containsKey(Any name) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String putValue(java.lang.String name, java.lang.String value) { return null; }
+  public String putValue(String name, String value) { return null; }
   < ---- END java signatures ---- >
 }

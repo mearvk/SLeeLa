@@ -56,6 +56,24 @@ class RowSetMetaDataImpl {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public RowSetMetaDataImpl bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -68,8 +86,9 @@ class RowSetMetaDataImpl {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public <T> T unwrap(java.lang.Class<T> iface) { return null; }
+  public Any unwrap(Any iface) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public boolean isReadOnly(int columnIndex) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
@@ -89,13 +108,13 @@ class RowSetMetaDataImpl {
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public int getColumnCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.lang.String getColumnName(int columnIndex) { return null; }
+  public String getColumnName(int columnIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public int getPrecision(int columnIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setPrecision(int columnIndex, int precision) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public boolean isWrapperFor(java.lang.Class<?> interfaces) { return false; }
+  public boolean isWrapperFor(Any interfaces) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public int isNullable(int columnIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
@@ -109,21 +128,21 @@ class RowSetMetaDataImpl {
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public int getColumnDisplaySize(int columnIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.lang.String getColumnLabel(int columnIndex) { return null; }
+  public String getColumnLabel(int columnIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.lang.String getSchemaName(int columnIndex) { return null; }
+  public String getSchemaName(int columnIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.lang.String getTableName(int columnIndex) { return null; }
+  public String getTableName(int columnIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.lang.String getCatalogName(int columnIndex) { return null; }
+  public String getCatalogName(int columnIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public int getColumnType(int columnIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.lang.String getColumnTypeName(int columnIndex) { return null; }
+  public String getColumnTypeName(int columnIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public boolean isDefinitelyWritable(int columnIndex) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.lang.String getColumnClassName(int columnIndex) { return null; }
+  public String getColumnClassName(int columnIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setAutoIncrement(int columnIndex, boolean property) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
@@ -135,18 +154,18 @@ class RowSetMetaDataImpl {
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setColumnDisplaySize(int columnIndex, int size) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setColumnLabel(int columnIndex, java.lang.String label) { }
+  public void setColumnLabel(int columnIndex, String label) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setColumnName(int columnIndex, java.lang.String columnName) { }
+  public void setColumnName(int columnIndex, String columnName) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setSchemaName(int columnIndex, java.lang.String schemaName) { }
+  public void setSchemaName(int columnIndex, String schemaName) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setTableName(int columnIndex, java.lang.String tableName) { }
+  public void setTableName(int columnIndex, String tableName) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setCatalogName(int columnIndex, java.lang.String catalogName) { }
+  public void setCatalogName(int columnIndex, String catalogName) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public void setColumnType(int columnIndex, int SQLType) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public void setColumnTypeName(int columnIndex, java.lang.String typeName) { }
+  public void setColumnTypeName(int columnIndex, String typeName) { }
   < ---- END java signatures ---- >
 }

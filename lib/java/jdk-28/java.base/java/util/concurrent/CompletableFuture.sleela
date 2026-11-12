@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class CompletableFuture<T> {
+class CompletableFuture {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class CompletableFuture<T> {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<T>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "T"; } return null; }
+  public CompletableFuture bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,164 +87,189 @@ class CompletableFuture<T> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException")
-  public T get() { return null; }
+  public Any get() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException")
-  public T get(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  public Any get(long timeout, Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<T> copy() { return null; }
+  public Any copy() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public T join() { return null; }
+  public Any join() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.Future.State state() { return null; }
+  public Any state() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isDone() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean cancel(boolean mayInterruptIfRunning) { return false; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<U> handle(java.util.function.BiFunction<? super T, java.lang.Throwable, ? extends U> fn) { return null; }
+  public Any handle(Any fn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean complete(T value) { return false; }
+  public boolean complete(Any value) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.CompletableFuture<java.lang.Void> allOf(java.util.concurrent.CompletableFuture<?>... cfs) { return null; }
+  public static Any allOf(Any... cfs) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isCancelled() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public T resultNow() { return null; }
+  public Any resultNow() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Throwable exceptionNow() { return null; }
+  public Any exceptionNow() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean completeExceptionally(java.lang.Throwable ex) { return false; }
+  public boolean completeExceptionally(Any ex) { return false; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <U> java.util.concurrent.CompletableFuture<U> supplyAsync(java.util.function.Supplier<U> supplier, java.util.concurrent.Executor executor) { return null; }
+  public static Any supplyAsync(Any supplier, Any executor) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <U> java.util.concurrent.CompletableFuture<U> supplyAsync(java.util.function.Supplier<U> supplier) { return null; }
+  public static Any supplyAsync(Any supplier) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<U> newIncompleteFuture() { return null; }
+  public Any newIncompleteFuture() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<T> toCompletableFuture() { return null; }
+  public Any toCompletableFuture() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public T getNow(T valueIfAbsent) { return null; }
+  public Any getNow(Any valueIfAbsent) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.Executor defaultExecutor() { return null; }
+  public Any defaultExecutor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<T> completeAsync(java.util.function.Supplier<? extends T> supplier, java.util.concurrent.Executor executor) { return null; }
+  public Any completeAsync(Any supplier, Any executor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<T> completeAsync(java.util.function.Supplier<? extends T> supplier) { return null; }
+  public Any completeAsync(Any supplier) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<T> whenComplete(java.util.function.BiConsumer<? super T, ? super java.lang.Throwable> action) { return null; }
+  public Any whenComplete(Any action) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<T> exceptionallyComposeAsync(java.util.function.Function<java.lang.Throwable, ? extends java.util.concurrent.CompletionStage<T>> fn) { return null; }
+  public Any exceptionallyComposeAsync(Any fn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<T> exceptionallyComposeAsync(java.util.function.Function<java.lang.Throwable, ? extends java.util.concurrent.CompletionStage<T>> fn, java.util.concurrent.Executor executor) { return null; }
+  public Any exceptionallyComposeAsync(Any fn, Any executor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<T> exceptionallyCompose(java.util.function.Function<java.lang.Throwable, ? extends java.util.concurrent.CompletionStage<T>> fn) { return null; }
+  public Any exceptionallyCompose(Any fn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<T> exceptionallyAsync(java.util.function.Function<java.lang.Throwable, ? extends T> fn) { return null; }
+  public Any exceptionallyAsync(Any fn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<T> exceptionallyAsync(java.util.function.Function<java.lang.Throwable, ? extends T> fn, java.util.concurrent.Executor executor) { return null; }
+  public Any exceptionallyAsync(Any fn, Any executor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<T> exceptionally(java.util.function.Function<java.lang.Throwable, ? extends T> fn) { return null; }
+  public Any exceptionally(Any fn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<T> whenCompleteAsync(java.util.function.BiConsumer<? super T, ? super java.lang.Throwable> action) { return null; }
+  public Any whenCompleteAsync(Any action) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<T> whenCompleteAsync(java.util.function.BiConsumer<? super T, ? super java.lang.Throwable> action, java.util.concurrent.Executor executor) { return null; }
+  public Any whenCompleteAsync(Any action, Any executor) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<U> handleAsync(java.util.function.BiFunction<? super T, java.lang.Throwable, ? extends U> fn) { return null; }
+  public Any handleAsync(Any fn) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<U> handleAsync(java.util.function.BiFunction<? super T, java.lang.Throwable, ? extends U> fn, java.util.concurrent.Executor executor) { return null; }
+  public Any handleAsync(Any fn, Any executor) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<U> thenComposeAsync(java.util.function.Function<? super T, ? extends java.util.concurrent.CompletionStage<U>> fn) { return null; }
+  public Any thenComposeAsync(Any fn) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<U> thenComposeAsync(java.util.function.Function<? super T, ? extends java.util.concurrent.CompletionStage<U>> fn, java.util.concurrent.Executor executor) { return null; }
+  public Any thenComposeAsync(Any fn, Any executor) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<U> thenCompose(java.util.function.Function<? super T, ? extends java.util.concurrent.CompletionStage<U>> fn) { return null; }
+  public Any thenCompose(Any fn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> runAfterEitherAsync(java.util.concurrent.CompletionStage<?> other, java.lang.Runnable action) { return null; }
+  public Any runAfterEitherAsync(Any other, Any action) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> runAfterEitherAsync(java.util.concurrent.CompletionStage<?> other, java.lang.Runnable action, java.util.concurrent.Executor executor) { return null; }
+  public Any runAfterEitherAsync(Any other, Any action, Any executor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> runAfterEither(java.util.concurrent.CompletionStage<?> other, java.lang.Runnable action) { return null; }
+  public Any runAfterEither(Any other, Any action) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> acceptEitherAsync(java.util.concurrent.CompletionStage<? extends T> other, java.util.function.Consumer<? super T> action, java.util.concurrent.Executor executor) { return null; }
+  public Any acceptEitherAsync(Any other, Any action, Any executor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> acceptEitherAsync(java.util.concurrent.CompletionStage<? extends T> other, java.util.function.Consumer<? super T> action) { return null; }
+  public Any acceptEitherAsync(Any other, Any action) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> acceptEither(java.util.concurrent.CompletionStage<? extends T> other, java.util.function.Consumer<? super T> action) { return null; }
+  public Any acceptEither(Any other, Any action) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<U> applyToEitherAsync(java.util.concurrent.CompletionStage<? extends T> other, java.util.function.Function<? super T, U> fn, java.util.concurrent.Executor executor) { return null; }
+  public Any applyToEitherAsync(Any other, Any fn, Any executor) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<U> applyToEitherAsync(java.util.concurrent.CompletionStage<? extends T> other, java.util.function.Function<? super T, U> fn) { return null; }
+  public Any applyToEitherAsync(Any other, Any fn) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<U> applyToEither(java.util.concurrent.CompletionStage<? extends T> other, java.util.function.Function<? super T, U> fn) { return null; }
+  public Any applyToEither(Any other, Any fn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> runAfterBothAsync(java.util.concurrent.CompletionStage<?> other, java.lang.Runnable action) { return null; }
+  public Any runAfterBothAsync(Any other, Any action) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> runAfterBothAsync(java.util.concurrent.CompletionStage<?> other, java.lang.Runnable action, java.util.concurrent.Executor executor) { return null; }
+  public Any runAfterBothAsync(Any other, Any action, Any executor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> runAfterBoth(java.util.concurrent.CompletionStage<?> other, java.lang.Runnable action) { return null; }
+  public Any runAfterBoth(Any other, Any action) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<java.lang.Void> thenAcceptBothAsync(java.util.concurrent.CompletionStage<? extends U> other, java.util.function.BiConsumer<? super T, ? super U> action) { return null; }
+  public Any thenAcceptBothAsync(Any other, Any action) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<java.lang.Void> thenAcceptBothAsync(java.util.concurrent.CompletionStage<? extends U> other, java.util.function.BiConsumer<? super T, ? super U> action, java.util.concurrent.Executor executor) { return null; }
+  public Any thenAcceptBothAsync(Any other, Any action, Any executor) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<java.lang.Void> thenAcceptBoth(java.util.concurrent.CompletionStage<? extends U> other, java.util.function.BiConsumer<? super T, ? super U> action) { return null; }
+  public Any thenAcceptBoth(Any other, Any action) { return null; }
+  @generic("<U, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U, V> java.util.concurrent.CompletableFuture<V> thenCombineAsync(java.util.concurrent.CompletionStage<? extends U> other, java.util.function.BiFunction<? super T, ? super U, ? extends V> fn, java.util.concurrent.Executor executor) { return null; }
+  public Any thenCombineAsync(Any other, Any fn, Any executor) { return null; }
+  @generic("<U, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U, V> java.util.concurrent.CompletableFuture<V> thenCombineAsync(java.util.concurrent.CompletionStage<? extends U> other, java.util.function.BiFunction<? super T, ? super U, ? extends V> fn) { return null; }
+  public Any thenCombineAsync(Any other, Any fn) { return null; }
+  @generic("<U, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U, V> java.util.concurrent.CompletableFuture<V> thenCombine(java.util.concurrent.CompletionStage<? extends U> other, java.util.function.BiFunction<? super T, ? super U, ? extends V> fn) { return null; }
+  public Any thenCombine(Any other, Any fn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> thenRunAsync(java.lang.Runnable action) { return null; }
+  public Any thenRunAsync(Any action) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> thenRunAsync(java.lang.Runnable action, java.util.concurrent.Executor executor) { return null; }
+  public Any thenRunAsync(Any action, Any executor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> thenRun(java.lang.Runnable action) { return null; }
+  public Any thenRun(Any action) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> thenAcceptAsync(java.util.function.Consumer<? super T> action, java.util.concurrent.Executor executor) { return null; }
+  public Any thenAcceptAsync(Any action, Any executor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> thenAcceptAsync(java.util.function.Consumer<? super T> action) { return null; }
+  public Any thenAcceptAsync(Any action) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> thenAccept(java.util.function.Consumer<? super T> action) { return null; }
+  public Any thenAccept(Any action) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<U> thenApplyAsync(java.util.function.Function<? super T, ? extends U> fn, java.util.concurrent.Executor executor) { return null; }
+  public Any thenApplyAsync(Any fn, Any executor) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<U> thenApplyAsync(java.util.function.Function<? super T, ? extends U> fn) { return null; }
+  public Any thenApplyAsync(Any fn) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <U> java.util.concurrent.CompletableFuture<U> thenApply(java.util.function.Function<? super T, ? extends U> fn) { return null; }
+  public Any thenApply(Any fn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.CompletableFuture<java.lang.Void> runAsync(java.lang.Runnable runnable, java.util.concurrent.Executor executor) { return null; }
+  public static Any runAsync(Any runnable, Any executor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.CompletableFuture<java.lang.Void> runAsync(java.lang.Runnable runnable) { return null; }
+  public static Any runAsync(Any runnable) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <U> java.util.concurrent.CompletableFuture<U> completedFuture(U value) { return null; }
+  public static Any completedFuture(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.CompletableFuture<java.lang.Object> anyOf(java.util.concurrent.CompletableFuture<?>... cfs) { return null; }
+  public static Any anyOf(Any... cfs) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isCompletedExceptionally() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void obtrudeValue(T value) { }
+  public void obtrudeValue(Any value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void obtrudeException(java.lang.Throwable ex) { }
+  public void obtrudeException(Any ex) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getNumberOfDependents() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletionStage<T> minimalCompletionStage() { return null; }
+  public Any minimalCompletionStage() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<T> orTimeout(long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  public Any orTimeout(long timeout, Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<T> completeOnTimeout(T value, long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  public Any completeOnTimeout(Any value, long timeout, Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.Executor delayedExecutor(long delay, java.util.concurrent.TimeUnit unit) { return null; }
+  public static Any delayedExecutor(long delay, Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.Executor delayedExecutor(long delay, java.util.concurrent.TimeUnit unit, java.util.concurrent.Executor executor) { return null; }
+  public static Any delayedExecutor(long delay, Any unit, Any executor) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <U> java.util.concurrent.CompletionStage<U> completedStage(U value) { return null; }
+  public static Any completedStage(Any value) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <U> java.util.concurrent.CompletableFuture<U> failedFuture(java.lang.Throwable ex) { return null; }
+  public static Any failedFuture(Any ex) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <U> java.util.concurrent.CompletionStage<U> failedStage(java.lang.Throwable ex) { return null; }
+  public static Any failedStage(Any ex) { return null; }
   < ---- END java signatures ---- >
 }

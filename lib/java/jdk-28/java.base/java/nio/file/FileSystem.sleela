@@ -56,6 +56,24 @@ class FileSystem {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public FileSystem bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -72,24 +90,24 @@ class FileSystem {
   @throwable("java.lang.AbstractMethodError")
   public boolean isOpen() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.file.spi.FileSystemProvider provider() { return null; }
+  public Any provider() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.file.Path getPath(java.lang.String first, java.lang.String... more) { return null; }
+  public Any getPath(String first, String... more) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isReadOnly() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getSeparator() { return null; }
+  public String getSeparator() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Iterable<java.nio.file.Path> getRootDirectories() { return null; }
+  public Any getRootDirectories() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Iterable<java.nio.file.FileStore> getFileStores() { return null; }
+  public Any getFileStores() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Set<java.lang.String> supportedFileAttributeViews() { return null; }
+  public Any supportedFileAttributeViews() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.file.PathMatcher getPathMatcher(java.lang.String syntaxAndPattern) { return null; }
+  public Any getPathMatcher(String syntaxAndPattern) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.file.attribute.UserPrincipalLookupService getUserPrincipalLookupService() { return null; }
+  public Any getUserPrincipalLookupService() { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.nio.file.WatchService newWatchService() { return null; }
+  public Any newWatchService() { return null; }
   < ---- END java signatures ---- >
 }

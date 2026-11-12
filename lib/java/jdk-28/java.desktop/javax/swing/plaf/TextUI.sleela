@@ -56,6 +56,24 @@ class TextUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.ComponentUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public TextUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,30 +88,30 @@ class TextUI {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getToolTipText(javax.swing.text.JTextComponent t, java.awt.Point pt) { return null; }
+  public String getToolTipText(Any t, Any pt) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.text.View getRootView(javax.swing.text.JTextComponent t) { return null; }
+  public Any getRootView(Any t) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
-  public int getNextVisualPositionFrom(javax.swing.text.JTextComponent t, int pos, javax.swing.text.Position.Bias b, int direction, javax.swing.text.Position.Bias[] biasRet) { return 0; }
+  public int getNextVisualPositionFrom(Any t, int pos, Any b, int direction, Any[] biasRet) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.text.EditorKit getEditorKit(javax.swing.text.JTextComponent t) { return null; }
+  public Any getEditorKit(Any t) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public java.awt.geom.Rectangle2D modelToView2D(javax.swing.text.JTextComponent t, int pos, javax.swing.text.Position.Bias bias) { return null; }
+  public Any modelToView2D(Any t, int pos, Any bias) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int viewToModel2D(javax.swing.text.JTextComponent t, java.awt.geom.Point2D pt, javax.swing.text.Position.Bias[] biasReturn) { return 0; }
+  public int viewToModel2D(Any t, Any pt, Any[] biasReturn) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public int viewToModel(javax.swing.text.JTextComponent t, java.awt.Point pt) { return 0; }
+  public int viewToModel(Any t, Any pt) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public int viewToModel(javax.swing.text.JTextComponent t, java.awt.Point pt, javax.swing.text.Position.Bias[] biasReturn) { return 0; }
+  public int viewToModel(Any t, Any pt, Any[] biasReturn) { return 0; }
   @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
-  public java.awt.Rectangle modelToView(javax.swing.text.JTextComponent t, int pos, javax.swing.text.Position.Bias bias) { return null; }
+  public Any modelToView(Any t, int pos, Any bias) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
-  public java.awt.Rectangle modelToView(javax.swing.text.JTextComponent t, int pos) { return null; }
+  public Any modelToView(Any t, int pos) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void damageRange(javax.swing.text.JTextComponent t, int p0, int p1, javax.swing.text.Position.Bias firstBias, javax.swing.text.Position.Bias secondBias) { }
+  public void damageRange(Any t, int p0, int p1, Any firstBias, Any secondBias) { }
   @throwable("java.lang.AbstractMethodError")
-  public void damageRange(javax.swing.text.JTextComponent t, int p0, int p1) { }
+  public void damageRange(Any t, int p0, int p1) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getToolTipText2D(javax.swing.text.JTextComponent t, java.awt.geom.Point2D pt) { return null; }
+  public String getToolTipText2D(Any t, Any pt) { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class Attributes {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Attributes bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String NAME_ANNOTATION_DEFAULT = "AnnotationDefault";
@@ -103,74 +121,74 @@ class Attributes {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.SignatureAttribute> signature() { return null; }
+  public static Any signature() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.AnnotationDefaultAttribute> annotationDefault() { return null; }
+  public static Any annotationDefault() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.CodeAttribute> code() { return null; }
+  public static Any code() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.ModuleAttribute> module() { return null; }
+  public static Any module() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.ModuleTargetAttribute> moduleTarget() { return null; }
+  public static Any moduleTarget() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.ModuleResolutionAttribute> moduleResolution() { return null; }
+  public static Any moduleResolution() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.ModuleHashesAttribute> moduleHashes() { return null; }
+  public static Any moduleHashes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.SyntheticAttribute> synthetic() { return null; }
+  public static Any synthetic() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.ConstantValueAttribute> constantValue() { return null; }
+  public static Any constantValue() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.RuntimeVisibleAnnotationsAttribute> runtimeVisibleAnnotations() { return null; }
+  public static Any runtimeVisibleAnnotations() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.BootstrapMethodsAttribute> bootstrapMethods() { return null; }
+  public static Any bootstrapMethods() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.CharacterRangeTableAttribute> characterRangeTable() { return null; }
+  public static Any characterRangeTable() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.CompilationIDAttribute> compilationId() { return null; }
+  public static Any compilationId() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.DeprecatedAttribute> deprecated() { return null; }
+  public static Any deprecated() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.EnclosingMethodAttribute> enclosingMethod() { return null; }
+  public static Any enclosingMethod() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.ExceptionsAttribute> exceptions() { return null; }
+  public static Any exceptions() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.InnerClassesAttribute> innerClasses() { return null; }
+  public static Any innerClasses() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.LineNumberTableAttribute> lineNumberTable() { return null; }
+  public static Any lineNumberTable() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.LocalVariableTableAttribute> localVariableTable() { return null; }
+  public static Any localVariableTable() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.LocalVariableTypeTableAttribute> localVariableTypeTable() { return null; }
+  public static Any localVariableTypeTable() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.MethodParametersAttribute> methodParameters() { return null; }
+  public static Any methodParameters() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.ModuleMainClassAttribute> moduleMainClass() { return null; }
+  public static Any moduleMainClass() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.ModulePackagesAttribute> modulePackages() { return null; }
+  public static Any modulePackages() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.NestHostAttribute> nestHost() { return null; }
+  public static Any nestHost() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.NestMembersAttribute> nestMembers() { return null; }
+  public static Any nestMembers() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.PermittedSubclassesAttribute> permittedSubclasses() { return null; }
+  public static Any permittedSubclasses() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.RuntimeInvisibleAnnotationsAttribute> runtimeInvisibleAnnotations() { return null; }
+  public static Any runtimeInvisibleAnnotations() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.RuntimeInvisibleParameterAnnotationsAttribute> runtimeInvisibleParameterAnnotations() { return null; }
+  public static Any runtimeInvisibleParameterAnnotations() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.RuntimeInvisibleTypeAnnotationsAttribute> runtimeInvisibleTypeAnnotations() { return null; }
+  public static Any runtimeInvisibleTypeAnnotations() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.RuntimeVisibleParameterAnnotationsAttribute> runtimeVisibleParameterAnnotations() { return null; }
+  public static Any runtimeVisibleParameterAnnotations() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.RuntimeVisibleTypeAnnotationsAttribute> runtimeVisibleTypeAnnotations() { return null; }
+  public static Any runtimeVisibleTypeAnnotations() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.SourceDebugExtensionAttribute> sourceDebugExtension() { return null; }
+  public static Any sourceDebugExtension() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.SourceFileAttribute> sourceFile() { return null; }
+  public static Any sourceFile() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.SourceIDAttribute> sourceId() { return null; }
+  public static Any sourceId() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AttributeMapper<java.lang.classfile.attribute.StackMapTableAttribute> stackMapTable() { return null; }
+  public static Any stackMapTable() { return null; }
   < ---- END java signatures ---- >
 }

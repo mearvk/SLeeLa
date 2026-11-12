@@ -56,12 +56,30 @@ class SimpleDateFormat {
   String javaKind = "class";
   String javaSuper = "java.text.DateFormat";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SimpleDateFormat bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public SimpleDateFormat(java.lang.String pattern, java.text.DateFormatSymbols formatSymbols) { }
+  public SimpleDateFormat(String pattern, Any formatSymbols) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public SimpleDateFormat(java.lang.String pattern) { }
+  public SimpleDateFormat(String pattern) { }
   @throwable("java.lang.UnsupportedOperationException")
   public SimpleDateFormat() { }
   < ---- END java constructors ---- >
@@ -73,34 +91,34 @@ class SimpleDateFormat {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuffer format(java.util.Date date, java.lang.StringBuffer toAppendTo, java.text.FieldPosition pos) { return null; }
+  public Any format(Any date, Any toAppendTo, Any pos) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Date parse(java.lang.String text, java.text.ParsePosition pos) { return null; }
+  public Any parse(String text, Any pos) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.text.AttributedCharacterIterator formatToCharacterIterator(java.lang.Object obj) { return null; }
+  public Any formatToCharacterIterator(Any obj) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void applyPattern(java.lang.String pattern) { }
+  public void applyPattern(String pattern) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toPattern() { return null; }
+  public String toPattern() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toLocalizedPattern() { return null; }
+  public String toLocalizedPattern() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void applyLocalizedPattern(java.lang.String pattern) { }
+  public void applyLocalizedPattern(String pattern) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void set2DigitYearStart(java.util.Date startDate) { }
+  public void set2DigitYearStart(Any startDate) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Date get2DigitYearStart() { return null; }
+  public Any get2DigitYearStart() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.text.DateFormatSymbols getDateFormatSymbols() { return null; }
+  public Any getDateFormatSymbols() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDateFormatSymbols(java.text.DateFormatSymbols newFormatSymbols) { }
+  public void setDateFormatSymbols(Any newFormatSymbols) { }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class Deflater {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Deflater bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int DEFLATED = 8;
@@ -99,13 +117,13 @@ class Deflater {
   @throwable("java.lang.UnsupportedOperationException")
   public void setInput(byte[] input, int off, int len) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setInput(java.nio.ByteBuffer input) { }
+  public void setInput(Any input) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setDictionary(byte[] dictionary) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setDictionary(byte[] dictionary, int off, int len) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDictionary(java.nio.ByteBuffer dictionary) { }
+  public void setDictionary(Any dictionary) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean finished() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -125,9 +143,9 @@ class Deflater {
   @throwable("java.lang.UnsupportedOperationException")
   public int deflate(byte[] output) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int deflate(java.nio.ByteBuffer output) { return 0; }
+  public int deflate(Any output) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int deflate(java.nio.ByteBuffer output, int flush) { return 0; }
+  public int deflate(Any output, int flush) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int deflate(byte[] output, int off, int len, int flush) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")

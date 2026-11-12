@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class Comparator<T> {
+class Comparator {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class Comparator<T> {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<T>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "T"; } return null; }
+  public Comparator bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,38 +82,48 @@ class Comparator<T> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public int compare(T o1, T o2) { return 0; }
+  public int compare(Any o1, Any o2) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.Comparator<T> reversed() { return null; }
+  public default Any reversed() { return null; }
+  @generic("<T extends java.lang.Comparable<? super T>>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T extends java.lang.Comparable<? super T>> java.util.Comparator<T> reverseOrder() { return null; }
+  public static Any reverseOrder() { return null; }
+  @generic("<T, U extends java.lang.Comparable<? super U>>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, U extends java.lang.Comparable<? super U>> java.util.Comparator<T> comparing(java.util.function.Function<? super T, ? extends U> keyExtractor) { return null; }
+  public static Any comparing(Any keyExtractor) { return null; }
+  @generic("<T, U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, U> java.util.Comparator<T> comparing(java.util.function.Function<? super T, ? extends U> keyExtractor, java.util.Comparator<? super U> keyComparator) { return null; }
+  public static Any comparing(Any keyExtractor, Any keyComparator) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public default <U> java.util.Comparator<T> thenComparing(java.util.function.Function<? super T, ? extends U> keyExtractor, java.util.Comparator<? super U> keyComparator) { return null; }
+  public default Any thenComparing(Any keyExtractor, Any keyComparator) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.Comparator<T> thenComparing(java.util.Comparator<? super T> other) { return null; }
+  public default Any thenComparing(Any other) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Comparator<T> comparingInt(java.util.function.ToIntFunction<? super T> keyExtractor) { return null; }
+  public static Any comparingInt(Any keyExtractor) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Comparator<T> comparingLong(java.util.function.ToLongFunction<? super T> keyExtractor) { return null; }
+  public static Any comparingLong(Any keyExtractor) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Comparator<T> comparingDouble(java.util.function.ToDoubleFunction<? super T> keyExtractor) { return null; }
+  public static Any comparingDouble(Any keyExtractor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.Comparator<T> thenComparingInt(java.util.function.ToIntFunction<? super T> keyExtractor) { return null; }
+  public default Any thenComparingInt(Any keyExtractor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.Comparator<T> thenComparingLong(java.util.function.ToLongFunction<? super T> keyExtractor) { return null; }
+  public default Any thenComparingLong(Any keyExtractor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.Comparator<T> thenComparingDouble(java.util.function.ToDoubleFunction<? super T> keyExtractor) { return null; }
+  public default Any thenComparingDouble(Any keyExtractor) { return null; }
+  @generic("<T extends java.lang.Comparable<? super T>>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T extends java.lang.Comparable<? super T>> java.util.Comparator<T> naturalOrder() { return null; }
+  public static Any naturalOrder() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Comparator<T> nullsFirst(java.util.Comparator<? super T> comparator) { return null; }
+  public static Any nullsFirst(Any comparator) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Comparator<T> nullsLast(java.util.Comparator<? super T> comparator) { return null; }
+  public static Any nullsLast(Any comparator) { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class FlightRecorder {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public FlightRecorder bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,28 +82,28 @@ class FlightRecorder {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static void register(java.lang.Class<? extends jdk.jfr.Event> eventClass) { }
+  public static void register(Any eventClass) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void unregister(java.lang.Class<? extends jdk.jfr.Event> eventClass) { }
+  public static void unregister(Any eventClass) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addListener(jdk.jfr.FlightRecorderListener changeListener) { }
+  public static void addListener(Any changeListener) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean isInitialized() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean isAvailable() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean removeListener(jdk.jfr.FlightRecorderListener changeListener) { return false; }
+  public static boolean removeListener(Any changeListener) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addPeriodicEvent(java.lang.Class<? extends jdk.jfr.Event> eventClass, java.lang.Runnable hook) { }
+  public static void addPeriodicEvent(Any eventClass, Any hook) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean removePeriodicEvent(java.lang.Runnable hook) { return false; }
+  public static boolean removePeriodicEvent(Any hook) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<jdk.jfr.EventType> getEventTypes() { return null; }
+  public Any getEventTypes() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalStateException")
-  public static jdk.jfr.FlightRecorder getFlightRecorder() { return null; }
+  public static Any getFlightRecorder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<jdk.jfr.Recording> getRecordings() { return null; }
+  public Any getRecordings() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public jdk.jfr.Recording takeSnapshot() { return null; }
+  public Any takeSnapshot() { return null; }
   < ---- END java signatures ---- >
 }

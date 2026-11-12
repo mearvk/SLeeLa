@@ -56,6 +56,24 @@ class LookAndFeel {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public LookAndFeel bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,35 +88,35 @@ class LookAndFeel {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void initialize() { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getID() { return null; }
+  public String getID() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getDescription() { return null; }
+  public String getDescription() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void installColors(javax.swing.JComponent c, java.lang.String defaultBgName, java.lang.String defaultFgName) { }
+  public static void installColors(Any c, String defaultBgName, String defaultFgName) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void loadKeyBindings(javax.swing.InputMap retMap, java.lang.Object[] keys) { }
+  public static void loadKeyBindings(Any retMap, Any[] keys) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.Object makeIcon(java.lang.Class<?> baseClass, java.lang.String gifFile) { return null; }
+  public static Any makeIcon(Any baseClass, String gifFile) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void installColorsAndFont(javax.swing.JComponent c, java.lang.String defaultBgName, java.lang.String defaultFgName, java.lang.String defaultFontName) { }
+  public static void installColorsAndFont(Any c, String defaultBgName, String defaultFgName, String defaultFontName) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void installBorder(javax.swing.JComponent c, java.lang.String defaultBorderName) { }
+  public static void installBorder(Any c, String defaultBorderName) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void uninstallBorder(javax.swing.JComponent c) { }
+  public static void uninstallBorder(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.text.JTextComponent.KeyBinding[] makeKeyBindings(java.lang.Object[] keyBindingList) { return null; }
+  public static Any[] makeKeyBindings(Any[] keyBindingList) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.InputMap makeInputMap(java.lang.Object[] keys) { return null; }
+  public static Any makeInputMap(Any[] keys) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.ComponentInputMap makeComponentInputMap(javax.swing.JComponent c, java.lang.Object[] keys) { return null; }
+  public static Any makeComponentInputMap(Any c, Any[] keys) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.Object getDesktopPropertyValue(java.lang.String systemPropertyName, java.lang.Object fallbackValue) { return null; }
+  public static Any getDesktopPropertyValue(String systemPropertyName, Any fallbackValue) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isNativeLookAndFeel() { return false; }
   @throwable("java.lang.AbstractMethodError")
@@ -106,18 +124,18 @@ class LookAndFeel {
   @throwable("java.lang.UnsupportedOperationException")
   public void uninitialize() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void installProperty(javax.swing.JComponent c, java.lang.String propertyName, java.lang.Object propertyValue) { }
+  public static void installProperty(Any c, String propertyName, Any propertyValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.UIDefaults getDefaults() { return null; }
+  public Any getDefaults() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.LayoutStyle getLayoutStyle() { return null; }
+  public Any getLayoutStyle() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void provideErrorFeedback(java.awt.Component component) { }
+  public void provideErrorFeedback(Any component) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getSupportsWindowDecorations() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getDisabledIcon(javax.swing.JComponent component, javax.swing.Icon icon) { return null; }
+  public Any getDisabledIcon(Any component, Any icon) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getDisabledSelectedIcon(javax.swing.JComponent component, javax.swing.Icon icon) { return null; }
+  public Any getDisabledSelectedIcon(Any component, Any icon) { return null; }
   < ---- END java signatures ---- >
 }

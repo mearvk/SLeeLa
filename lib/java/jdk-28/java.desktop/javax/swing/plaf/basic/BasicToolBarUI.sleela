@@ -56,6 +56,24 @@ class BasicToolBarUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.ToolBarUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BasicToolBarUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any toolBar;
@@ -93,76 +111,76 @@ class BasicToolBarUI {
   @throwable("java.lang.UnsupportedOperationException")
   void installListeners() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void installUI(javax.swing.JComponent c) { }
+  public void installUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void uninstallUI(javax.swing.JComponent c) { }
+  public void uninstallUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setOrientation(int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
+  public static Any createUI(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFloating(boolean b, java.awt.Point p) { }
+  public void setFloating(boolean b, Any p) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.border.Border createRolloverBorder() { return null; }
+  Any createRolloverBorder() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.border.Border createNonRolloverBorder() { return null; }
+  Any createNonRolloverBorder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isRolloverBorders() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setRolloverBorders(boolean rollover) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void installNormalBorders(javax.swing.JComponent c) { }
+  void installNormalBorders(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.event.MouseInputListener createDockingListener() { return null; }
+  Any createDockingListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createPropertyListener() { return null; }
+  Any createPropertyListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.ContainerListener createToolBarContListener() { return null; }
+  Any createToolBarContListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.FocusListener createToolBarFocusListener() { return null; }
+  Any createToolBarFocusListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.WindowListener createFrameListener() { return null; }
+  Any createFrameListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.RootPaneContainer createFloatingWindow(javax.swing.JToolBar toolbar) { return null; }
+  Any createFloatingWindow(Any toolbar) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void installRolloverBorders(javax.swing.JComponent c) { }
+  void installRolloverBorders(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void installNonRolloverBorders(javax.swing.JComponent c) { }
+  void installNonRolloverBorders(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setBorderToRollover(java.awt.Component c) { }
+  void setBorderToRollover(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setBorderToNonRollover(java.awt.Component c) { }
+  void setBorderToNonRollover(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setBorderToNormal(java.awt.Component c) { }
+  void setBorderToNormal(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.border.Border getRolloverBorder(javax.swing.AbstractButton b) { return null; }
+  Any getRolloverBorder(Any b) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.border.Border getNonRolloverBorder(javax.swing.AbstractButton b) { return null; }
+  Any getNonRolloverBorder(Any b) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.plaf.basic.BasicToolBarUI.DragWindow createDragWindow(javax.swing.JToolBar toolbar) { return null; }
+  Any createDragWindow(Any toolbar) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean canDock(java.awt.Component c, java.awt.Point p) { return false; }
+  public boolean canDock(Any c, Any p) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getDockingColor() { return null; }
+  public Any getDockingColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getFloatingColor() { return null; }
+  public Any getFloatingColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setFloatingLocation(int x, int y) { }
   @JavaProtected
@@ -170,20 +188,20 @@ class BasicToolBarUI {
   void navigateFocusedComp(int direction) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JFrame createFloatingFrame(javax.swing.JToolBar toolbar) { return null; }
+  Any createFloatingFrame(Any toolbar) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDockingColor(java.awt.Color c) { }
+  public void setDockingColor(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFloatingColor(java.awt.Color c) { }
+  public void setFloatingColor(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void dragTo(java.awt.Point position, java.awt.Point origin) { }
+  void dragTo(Any position, Any origin) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void floatAt(java.awt.Point position, java.awt.Point origin) { }
+  void floatAt(Any position, Any origin) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintDragWindow(java.awt.Graphics g) { }
+  void paintDragWindow(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installKeyboardActions() { }

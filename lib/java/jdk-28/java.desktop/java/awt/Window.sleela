@@ -56,12 +56,30 @@ class Window {
   String javaKind = "class";
   String javaSuper = "java.awt.Container";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Window bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public Window(java.awt.Frame owner) { }
+  public Window(Any owner) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Window(java.awt.Window owner, java.awt.GraphicsConfiguration gc_) { }
+  public Window(Any owner, Any gc_) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -71,55 +89,55 @@ class Window {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Window.Type getType() { return null; }
+  public Any getType() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isOpaque() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isActive() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Window getOwner() { return null; }
+  public Any getOwner() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Locale getLocale() { return null; }
+  public Any getLocale() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setSize(int width, int height) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSize(java.awt.Dimension d) { }
+  public void setSize(Any d) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void dispose() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Shape getShape() { return null; }
+  public Any getShape() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setVisible(boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setType(java.awt.Window.Type type) { }
+  public void setType(Any type) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBounds(java.awt.Rectangle r) { }
+  public void setBounds(Any r) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setBounds(int x, int y, int width, int height) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void pack() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public void addPropertyChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addPropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { }
+  public void addPropertyChangeListener(String propertyName, Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.awt.AWTKeyStroke> getFocusTraversalKeys(int id) { return null; }
+  public Any getFocusTraversalKeys(int id) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final void setFocusCycleRoot(boolean focusCycleRoot) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Toolkit getToolkit() { return null; }
+  public Any getToolkit() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.im.InputContext getInputContext() { return null; }
+  public Any getInputContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void show() { }
   @throwable("java.lang.UnsupportedOperationException")
   public void hide() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getBackground() { return null; }
+  public Any getBackground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBackground(java.awt.Color bgColor) { }
+  public void setBackground(Any bgColor) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.AWTException")
-  public void createBufferStrategy(int numBuffers, java.awt.BufferCapabilities caps) { }
+  public void createBufferStrategy(int numBuffers, Any caps) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void createBufferStrategy(int numBuffers) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -135,64 +153,64 @@ class Window {
   @throwable("java.lang.UnsupportedOperationException")
   public final void setAlwaysOnTop(boolean alwaysOnTop) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void setIconImages(java.util.List<? extends java.awt.Image> icons) { }
+  public synchronized void setIconImages(Any icons) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void toFront() { }
   @throwable("java.lang.UnsupportedOperationException")
   public void toBack() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Window[] getWindows() { return null; }
+  public static Any[] getWindows() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Window[] getOwnedWindows() { return null; }
+  public Any[] getOwnedWindows() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processWindowEvent(java.awt.event.WindowEvent e) { }
+  void processWindowEvent(Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processWindowFocusEvent(java.awt.event.WindowEvent e) { }
+  void processWindowFocusEvent(Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processWindowStateEvent(java.awt.event.WindowEvent e) { }
+  void processWindowStateEvent(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isFocused() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getFocusableWindowState() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void applyResourceBundle(java.lang.String rbName) { }
+  public void applyResourceBundle(String rbName) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void applyResourceBundle(java.util.ResourceBundle rb) { }
+  public void applyResourceBundle(Any rb) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addWindowListener(java.awt.event.WindowListener l) { }
+  public synchronized void addWindowListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addWindowFocusListener(java.awt.event.WindowFocusListener l) { }
+  public synchronized void addWindowFocusListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addWindowStateListener(java.awt.event.WindowStateListener l) { }
+  public synchronized void addWindowStateListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setModalExclusionType(java.awt.Dialog.ModalExclusionType exclusionType) { }
+  public void setModalExclusionType(Any exclusionType) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setOpacity(float opacity) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<java.awt.Image> getIconImages() { return null; }
+  public Any getIconImages() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setIconImage(java.awt.Image image) { }
+  public void setIconImage(Any image) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String getWarningString() { return null; }
+  public final String getWarningString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Window[] getOwnerlessWindows() { return null; }
+  public static Any[] getOwnerlessWindows() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dialog.ModalExclusionType getModalExclusionType() { return null; }
+  public Any getModalExclusionType() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removeWindowListener(java.awt.event.WindowListener l) { }
+  public synchronized void removeWindowListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removeWindowStateListener(java.awt.event.WindowStateListener l) { }
+  public synchronized void removeWindowStateListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removeWindowFocusListener(java.awt.event.WindowFocusListener l) { }
+  public synchronized void removeWindowFocusListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.awt.event.WindowListener[] getWindowListeners() { return null; }
+  public synchronized Any[] getWindowListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.awt.event.WindowFocusListener[] getWindowFocusListeners() { return null; }
+  public synchronized Any[] getWindowFocusListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.awt.event.WindowStateListener[] getWindowStateListeners() { return null; }
+  public synchronized Any[] getWindowStateListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setFocusableWindowState(boolean focusableWindowState) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -200,27 +218,27 @@ class Window {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isAutoRequestFocus() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLocationRelativeTo(java.awt.Component c) { }
+  public void setLocationRelativeTo(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isLocationByPlatform() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public float getOpacity() { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setShape(java.awt.Shape shape) { }
+  public void setShape(Any shape) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setMinimumSize(java.awt.Dimension minimumSize) { }
+  public void setMinimumSize(Any minimumSize) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setCursor(java.awt.Cursor cursor) { }
+  public void setCursor(Any cursor) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.BufferStrategy getBufferStrategy() { return null; }
+  public Any getBufferStrategy() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setLocation(int x, int y) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLocation(java.awt.Point p) { }
+  public void setLocation(Any p) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isValidateRoot() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void addNotify() { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -228,21 +246,22 @@ class Window {
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean isFocusCycleRoot() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getFocusOwner() { return null; }
+  public Any getFocusOwner() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isShowing() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g) { }
+  public void paint(Any g) { }
+  @generic("<T extends java.util.EventListener>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
+  public Any[] getListeners(Any listenerType) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processEvent(java.awt.AWTEvent e) { }
+  void processEvent(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean postEvent(java.awt.Event e) { return false; }
+  public boolean postEvent(Any e) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getMostRecentFocusOwner() { return null; }
+  public Any getMostRecentFocusOwner() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.awt.Container getFocusCycleRootAncestor() { return null; }
+  public final Any getFocusCycleRootAncestor() { return null; }
   < ---- END java signatures ---- >
 }

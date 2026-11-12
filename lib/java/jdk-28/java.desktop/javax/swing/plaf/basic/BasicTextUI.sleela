@@ -56,6 +56,24 @@ class BasicTextUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.TextUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BasicTextUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,79 +87,79 @@ class BasicTextUI {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void update(java.awt.Graphics g, javax.swing.JComponent c) { }
+  public void update(Any g, Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.View create(javax.swing.text.Element elem, int p0, int p1) { return null; }
+  public Any create(Any elem, int p0, int p1) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.View create(javax.swing.text.Element elem) { return null; }
+  public Any create(Any elem) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final javax.swing.text.JTextComponent getComponent() { return null; }
+  final Any getComponent() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installListeners() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  public Any getPreferredSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
+  public Any getMinimumSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void installUI(javax.swing.JComponent c) { }
+  public void installUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void uninstallUI(javax.swing.JComponent c) { }
+  public void uninstallUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getToolTipText(javax.swing.text.JTextComponent t, java.awt.Point pt) { return null; }
+  public String getToolTipText(Any t, Any pt) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void modelChanged() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String getKeymapName() { return null; }
+  String getKeymapName() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.text.Highlighter createHighlighter() { return null; }
+  Any createHighlighter() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.text.Keymap createKeymap() { return null; }
+  Any createKeymap() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Rectangle getVisibleEditorRect() { return null; }
+  Any getVisibleEditorRect() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintSafely(java.awt.Graphics g) { }
+  void paintSafely(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.text.Caret createCaret() { return null; }
+  Any createCaret() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.View getRootView(javax.swing.text.JTextComponent tc) { return null; }
+  public Any getRootView(Any tc) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void propertyChange(java.beans.PropertyChangeEvent evt) { }
+  void propertyChange(Any evt) { }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public int getNextVisualPositionFrom(javax.swing.text.JTextComponent t, int pos, javax.swing.text.Position.Bias b, int direction, javax.swing.text.Position.Bias[] biasRet) { return 0; }
+  public int getNextVisualPositionFrom(Any t, int pos, Any b, int direction, Any[] biasRet) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final void setView(javax.swing.text.View v) { }
+  final void setView(Any v) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.EditorKit getEditorKit(javax.swing.text.JTextComponent tc) { return null; }
+  public Any getEditorKit(Any tc) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public java.awt.geom.Rectangle2D modelToView2D(javax.swing.text.JTextComponent tc, int pos, javax.swing.text.Position.Bias bias) { return null; }
+  public Any modelToView2D(Any tc, int pos, Any bias) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int viewToModel2D(javax.swing.text.JTextComponent tc, java.awt.geom.Point2D pt, javax.swing.text.Position.Bias[] biasReturn) { return 0; }
+  public int viewToModel2D(Any tc, Any pt, Any[] biasReturn) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int viewToModel(javax.swing.text.JTextComponent tc, java.awt.Point pt, javax.swing.text.Position.Bias[] biasReturn) { return 0; }
+  public int viewToModel(Any tc, Any pt, Any[] biasReturn) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int viewToModel(javax.swing.text.JTextComponent tc, java.awt.Point pt) { return 0; }
+  public int viewToModel(Any tc, Any pt) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public java.awt.Rectangle modelToView(javax.swing.text.JTextComponent tc, int pos) { return null; }
+  public Any modelToView(Any tc, int pos) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public java.awt.Rectangle modelToView(javax.swing.text.JTextComponent tc, int pos, javax.swing.text.Position.Bias bias) { return null; }
+  public Any modelToView(Any tc, int pos, Any bias) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void damageRange(javax.swing.text.JTextComponent t, int p0, int p1, javax.swing.text.Position.Bias p0Bias, javax.swing.text.Position.Bias p1Bias) { }
+  public void damageRange(Any t, int p0, int p1, Any p0Bias, Any p1Bias) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void damageRange(javax.swing.text.JTextComponent tc, int p0, int p1) { }
+  public void damageRange(Any tc, int p0, int p1) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  java.lang.String getPropertyPrefix() { return null; }
+  String getPropertyPrefix() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installKeyboardActions() { }
@@ -159,10 +177,10 @@ class BasicTextUI {
   void uninstallDefaults() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintBackground(java.awt.Graphics g) { }
+  void paintBackground(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
+  public Any getMaximumSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
+  public final void paint(Any g, Any c) { }
   < ---- END java signatures ---- >
 }

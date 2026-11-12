@@ -57,6 +57,24 @@ class Lookup {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Lookup bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int PUBLIC = 1;
@@ -75,67 +93,69 @@ class Lookup {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException, java.lang.IllegalAccessException")
-  public java.lang.Class<?> findClass(java.lang.String targetName) { return null; }
+  public Any findClass(String targetName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
-  public java.lang.Class<?> defineClass(byte[] bytes) { return null; }
+  public Any defineClass(byte[] bytes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandles.Lookup in(java.lang.Class<?> requestedLookupClass) { return null; }
+  public Any in(Any requestedLookupClass) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
-  public <T> java.lang.Class<T> ensureInitialized(java.lang.Class<T> targetClass) { return null; }
+  public Any ensureInitialized(Any targetClass) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandleInfo revealDirect(java.lang.invoke.MethodHandle target) { return null; }
+  public Any revealDirect(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Class<?> lookupClass() { return null; }
+  public Any lookupClass() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Class<?> previousLookupClass() { return null; }
+  public Any previousLookupClass() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchMethodException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandle findVirtual(java.lang.Class<?> refc, java.lang.String name, java.lang.invoke.MethodType type) { return null; }
+  public Any findVirtual(Any refc, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchMethodException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandle findStatic(java.lang.Class<?> refc, java.lang.String name, java.lang.invoke.MethodType type) { return null; }
+  public Any findStatic(Any refc, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandle unreflect(java.lang.reflect.Method m) { return null; }
+  public Any unreflect(Any m) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandle unreflectConstructor(java.lang.reflect.Constructor<?> c) { return null; }
+  public Any unreflectConstructor(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int lookupModes() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasFullPrivilegeAccess() { return false; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
-  public <T> java.lang.Class<T> accessClass(java.lang.Class<T> targetClass) { return null; }
+  public Any accessClass(Any targetClass) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandles.Lookup dropLookupMode(int modeToDrop) { return null; }
+  public Any dropLookupMode(int modeToDrop) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandles.Lookup defineHiddenClass(byte[] bytes, boolean initialize, java.lang.invoke.MethodHandles.Lookup.ClassOption... options) { return null; }
+  public Any defineHiddenClass(byte[] bytes, boolean initialize, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandles.Lookup defineHiddenClassWithClassData(byte[] bytes, java.lang.Object classData, boolean initialize, java.lang.invoke.MethodHandles.Lookup.ClassOption... options) { return null; }
+  public Any defineHiddenClassWithClassData(byte[] bytes, Any classData, boolean initialize, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchMethodException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandle findConstructor(java.lang.Class<?> refc, java.lang.invoke.MethodType type) { return null; }
+  public Any findConstructor(Any refc, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchMethodException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandle findSpecial(java.lang.Class<?> refc, java.lang.String name, java.lang.invoke.MethodType type, java.lang.Class<?> specialCaller) { return null; }
+  public Any findSpecial(Any refc, String name, Any type, Any specialCaller) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchFieldException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandle findGetter(java.lang.Class<?> refc, java.lang.String name, java.lang.Class<?> type) { return null; }
+  public Any findGetter(Any refc, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchFieldException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandle findSetter(java.lang.Class<?> refc, java.lang.String name, java.lang.Class<?> type) { return null; }
+  public Any findSetter(Any refc, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchFieldException, java.lang.IllegalAccessException")
-  public java.lang.invoke.VarHandle findVarHandle(java.lang.Class<?> recv, java.lang.String name, java.lang.Class<?> type) { return null; }
+  public Any findVarHandle(Any recv, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchFieldException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandle findStaticGetter(java.lang.Class<?> refc, java.lang.String name, java.lang.Class<?> type) { return null; }
+  public Any findStaticGetter(Any refc, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchFieldException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandle findStaticSetter(java.lang.Class<?> refc, java.lang.String name, java.lang.Class<?> type) { return null; }
+  public Any findStaticSetter(Any refc, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchFieldException, java.lang.IllegalAccessException")
-  public java.lang.invoke.VarHandle findStaticVarHandle(java.lang.Class<?> decl, java.lang.String name, java.lang.Class<?> type) { return null; }
+  public Any findStaticVarHandle(Any decl, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchMethodException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandle bind(java.lang.Object receiver, java.lang.String name, java.lang.invoke.MethodType type) { return null; }
+  public Any bind(Any receiver, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandle unreflectSpecial(java.lang.reflect.Method m, java.lang.Class<?> specialCaller) { return null; }
+  public Any unreflectSpecial(Any m, Any specialCaller) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandle unreflectGetter(java.lang.reflect.Field f) { return null; }
+  public Any unreflectGetter(Any f) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
-  public java.lang.invoke.MethodHandle unreflectSetter(java.lang.reflect.Field f) { return null; }
+  public Any unreflectSetter(Any f) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalAccessException")
-  public java.lang.invoke.VarHandle unreflectVarHandle(java.lang.reflect.Field f) { return null; }
+  public Any unreflectVarHandle(Any f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasPrivateAccess() { return false; }
   < ---- END java signatures ---- >

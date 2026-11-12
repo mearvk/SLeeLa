@@ -56,6 +56,24 @@ class ByteBuffer {
   String javaKind = "class";
   String javaSuper = "java.nio.Buffer";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ByteBuffer bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,103 +82,103 @@ class ByteBuffer {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer reset() { return null; }
+  public Any reset() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer get(byte[] dst) { return null; }
+  public Any get(byte[] dst) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public byte get(int index) { return 0; }
   @throwable("java.lang.AbstractMethodError")
   public byte get() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer get(byte[] dst, int offset, int length) { return null; }
+  public Any get(byte[] dst, int offset, int length) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer get(int index, byte[] dst) { return null; }
+  public Any get(int index, byte[] dst) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer get(int index, byte[] dst, int offset, int length) { return null; }
+  public Any get(int index, byte[] dst, int offset, int length) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer put(int index, byte b) { return null; }
+  public Any put(int index, byte b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer put(java.nio.ByteBuffer src) { return null; }
+  public Any put(Any src) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer put(int index, java.nio.ByteBuffer src, int offset, int length) { return null; }
+  public Any put(int index, Any src, int offset, int length) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.ByteBuffer put(byte[] src) { return null; }
+  public final Any put(byte[] src) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer put(int index, byte[] src) { return null; }
+  public Any put(int index, byte[] src) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer put(int index, byte[] src, int offset, int length) { return null; }
+  public Any put(int index, byte[] src, int offset, int length) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer put(byte[] src, int offset, int length) { return null; }
+  public Any put(byte[] src, int offset, int length) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer put(byte b) { return null; }
+  public Any put(byte b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object ob) { return false; }
+  public boolean equals(Any ob) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(java.nio.ByteBuffer that) { return 0; }
+  public int compareTo(Any that) { return 0; }
   @throwable("java.lang.AbstractMethodError")
   public short getShort() { return 0; }
   @throwable("java.lang.AbstractMethodError")
   public short getShort(int index) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer putShort(int index, short value) { return null; }
+  public Any putShort(int index, short value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer putShort(short value) { return null; }
+  public Any putShort(short value) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public char getChar(int index) { return 0; }
   @throwable("java.lang.AbstractMethodError")
   public char getChar() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer putChar(int index, char value) { return null; }
+  public Any putChar(int index, char value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer putChar(char value) { return null; }
+  public Any putChar(char value) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getInt(int index) { return 0; }
   @throwable("java.lang.AbstractMethodError")
   public int getInt() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer putInt(int index, int value) { return null; }
+  public Any putInt(int index, int value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer putInt(int value) { return null; }
+  public Any putInt(int value) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public long getLong(int index) { return 0; }
   @throwable("java.lang.AbstractMethodError")
   public long getLong() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer putLong(long value) { return null; }
+  public Any putLong(long value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer putLong(int index, long value) { return null; }
+  public Any putLong(int index, long value) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public float getFloat() { return 0.0; }
   @throwable("java.lang.AbstractMethodError")
   public float getFloat(int index) { return 0.0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer putFloat(float value) { return null; }
+  public Any putFloat(float value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer putFloat(int index, float value) { return null; }
+  public Any putFloat(int index, float value) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public double getDouble(int index) { return 0.0; }
   @throwable("java.lang.AbstractMethodError")
   public double getDouble() { return 0.0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer putDouble(int index, double value) { return null; }
+  public Any putDouble(int index, double value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer putDouble(double value) { return null; }
+  public Any putDouble(double value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer clear() { return null; }
+  public Any clear() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.nio.ByteBuffer wrap(byte[] array, int offset, int length) { return null; }
+  public static Any wrap(byte[] array, int offset, int length) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.nio.ByteBuffer wrap(byte[] array) { return null; }
+  public static Any wrap(byte[] array) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer position(int newPosition) { return null; }
+  public Any position(int newPosition) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int mismatch(java.nio.ByteBuffer that) { return 0; }
+  public int mismatch(Any that) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer limit(int newLimit) { return null; }
+  public Any limit(int newLimit) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isDirect() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -170,44 +188,44 @@ class ByteBuffer {
   @throwable("java.lang.UnsupportedOperationException")
   public final int arrayOffset() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer mark() { return null; }
+  public Any mark() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer flip() { return null; }
+  public Any flip() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.ByteBuffer rewind() { return null; }
+  public Any rewind() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer slice(int index, int length) { return null; }
+  public Any slice(int index, int length) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer slice() { return null; }
+  public Any slice() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer duplicate() { return null; }
+  public Any duplicate() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.nio.ByteBuffer allocate(int capacity) { return null; }
+  public static Any allocate(int capacity) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int alignmentOffset(int index, int unitSize) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.nio.ByteBuffer allocateDirect(int capacity) { return null; }
+  public static Any allocateDirect(int capacity) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer asReadOnlyBuffer() { return null; }
+  public Any asReadOnlyBuffer() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer compact() { return null; }
+  public Any compact() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.ByteBuffer order(java.nio.ByteOrder bo) { return null; }
+  public final Any order(Any bo) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.ByteOrder order() { return null; }
+  public final Any order() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.ByteBuffer alignedSlice(int unitSize) { return null; }
+  public final Any alignedSlice(int unitSize) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.CharBuffer asCharBuffer() { return null; }
+  public Any asCharBuffer() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ShortBuffer asShortBuffer() { return null; }
+  public Any asShortBuffer() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.IntBuffer asIntBuffer() { return null; }
+  public Any asIntBuffer() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.LongBuffer asLongBuffer() { return null; }
+  public Any asLongBuffer() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.FloatBuffer asFloatBuffer() { return null; }
+  public Any asFloatBuffer() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.DoubleBuffer asDoubleBuffer() { return null; }
+  public Any asDoubleBuffer() { return null; }
   < ---- END java signatures ---- >
 }

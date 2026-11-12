@@ -56,6 +56,24 @@ class Attribute {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Attribute bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final long serialVersionUID = 8707690322213556804;
@@ -68,36 +86,36 @@ class Attribute {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public boolean remove(java.lang.Object attrval) { return false; }
+  public boolean remove(Any attrval) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object remove(int ix) { return null; }
+  public Any remove(int ix) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int size() { return 0; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public java.lang.Object get(int ix) { return null; }
+  public Any get(int ix) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public java.lang.Object get() { return null; }
+  public Any get() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void clear() { }
   @throwable("java.lang.AbstractMethodError")
-  public boolean add(java.lang.Object attrVal) { return false; }
+  public boolean add(Any attrVal) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public void add(int ix, java.lang.Object attrVal) { }
+  public void add(int ix, Any attrVal) { }
   @throwable("java.lang.AbstractMethodError")
-  public boolean contains(java.lang.Object attrVal) { return false; }
+  public boolean contains(Any attrVal) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object set(int ix, java.lang.Object attrVal) { return null; }
+  public Any set(int ix, Any attrVal) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isOrdered() { return false; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.NamingEnumeration<?> getAll() { return null; }
+  public Any getAll() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getID() { return null; }
+  public String getID() { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.directory.DirContext getAttributeSyntaxDefinition() { return null; }
+  public Any getAttributeSyntaxDefinition() { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.directory.DirContext getAttributeDefinition() { return null; }
+  public Any getAttributeDefinition() { return null; }
   < ---- END java signatures ---- >
 }

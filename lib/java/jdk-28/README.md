@@ -132,6 +132,35 @@ bash    lib/java/jdk-28/tools/check_jdk28.sh 8    # compile-check every file; re
 `< ---- BEGIN java implementation ---- >` block holds hand-written SLeeLa logic
 and is never overwritten.
 
+## Generics: the SLeeLa method (erasure)
+
+The files use the SLeeLa generics method of SLEELA.syntax 16.3 and 38.1, not
+the Java spelling (`ArrayList<String>`):
+
+- **Classes:** a class is written without Java type parameters. `class HashMap`,
+  not `class HashMap<K, V>`.
+- **Type variables:** every type variable, and every parameterized or
+  package-qualified reference type, erases to `Any`. `java.lang.String` erases
+  to `String`, and primitives and array or varargs suffixes are kept. For
+  example, `V put(K key, V value)` becomes `public Any put(Any key, Any value)`.
+- **Values:** a value of a type parameter travels as `Any`. Test it with
+  `instanceof` and cast it where it is used, as with `SLValueList`.
+- **Generic methods:** a method Java declares generic keeps its type
+  parameters as data in `@generic("<T>")`.
+- **The generics record:** every file carries it, whether or not the type is
+  generic:
+  - `JAVA_TYPE_PARAMETERS` (for example `"<K, V>"`, or `""`);
+  - `genericTypeParameters()`, `genericTypeParameterCount()` and
+    `genericTypeParameterName(int)`;
+  - per instance, `bindGenericTypeArguments(String[])`,
+    `genericTypeArgument(int)` and `genericTypeArgumentCount()`. These record
+    the type arguments a caller means, for example `java.lang.String`. Nothing
+    is checked against them at run time.
+
+No VM change was made for this.
+[`examples/java/jdk-28/GenericsRun.sleela`](../../../examples/java/jdk-28/GenericsRun.sleela)
+runs it.
+
 ## Licensing
 
 The Java API is by Oracle and the OpenJDK community, under GPLv2 with the

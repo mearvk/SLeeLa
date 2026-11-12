@@ -56,6 +56,24 @@ class Files {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Files bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,142 +82,144 @@ class Files {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static long size(java.nio.file.Path path) { return 0; }
+  public static long size(Any path) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static boolean isHidden(java.nio.file.Path path) { return false; }
+  public static boolean isHidden(Any path) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static long copy(java.nio.file.Path source, java.io.OutputStream out) { return 0; }
+  public static long copy(Any source, Any out) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path copy(java.nio.file.Path source, java.nio.file.Path target, java.nio.file.CopyOption... options) { return null; }
+  public static Any copy(Any source, Any target, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static long mismatch(java.nio.file.Path path, java.nio.file.Path path2) { return 0; }
+  public static long mismatch(Any path, Any path2) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.util.stream.Stream<java.lang.String> lines(java.nio.file.Path path) { return null; }
+  public static Any lines(Any path) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.util.stream.Stream<java.lang.String> lines(java.nio.file.Path path, java.nio.charset.Charset cs) { return null; }
+  public static Any lines(Any path, Any cs) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.util.stream.Stream<java.nio.file.Path> list(java.nio.file.Path dir) { return null; }
+  public static Any list(Any dir) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static byte[] readAllBytes(java.nio.file.Path path) { return null; }
+  public static byte[] readAllBytes(Any path) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.util.stream.Stream<java.nio.file.Path> find(java.nio.file.Path start, int maxDepth, java.util.function.BiPredicate<java.nio.file.Path, java.nio.file.attribute.BasicFileAttributes> matcher, java.nio.file.FileVisitOption... options) { return null; }
+  public static Any find(Any start, int maxDepth, Any matcher, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path write(java.nio.file.Path path, java.lang.Iterable<? extends java.lang.CharSequence> lines, java.nio.charset.Charset cs, java.nio.file.OpenOption... options) { return null; }
+  public static Any write(Any path, Any lines, Any cs, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path write(java.nio.file.Path path, java.lang.Iterable<? extends java.lang.CharSequence> lines, java.nio.file.OpenOption... options) { return null; }
+  public static Any write(Any path, Any lines, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path write(java.nio.file.Path path, byte[] bytes, java.nio.file.OpenOption... options) { return null; }
+  public static Any write(Any path, byte[] bytes, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.util.stream.Stream<java.nio.file.Path> walk(java.nio.file.Path start, java.nio.file.FileVisitOption... options) { return null; }
+  public static Any walk(Any start, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.util.stream.Stream<java.nio.file.Path> walk(java.nio.file.Path start, int maxDepth, java.nio.file.FileVisitOption... options) { return null; }
+  public static Any walk(Any start, int maxDepth, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static void delete(java.nio.file.Path path) { }
+  public static void delete(Any path) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean exists(java.nio.file.Path path, java.nio.file.LinkOption... options) { return false; }
+  public static boolean exists(Any path, Any... options) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isDirectory(java.nio.file.Path path, java.nio.file.LinkOption... options) { return false; }
+  public static boolean isDirectory(Any path, Any... options) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.attribute.UserPrincipal getOwner(java.nio.file.Path path, java.nio.file.LinkOption... options) { return null; }
+  public static Any getOwner(Any path, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isRegularFile(java.nio.file.Path path, java.nio.file.LinkOption... options) { return false; }
+  public static boolean isRegularFile(Any path, Any... options) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path createDirectories(java.nio.file.Path dir, java.nio.file.attribute.FileAttribute<?>... attrs) { return null; }
+  public static Any createDirectories(Any dir, Any... attrs) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean notExists(java.nio.file.Path path, java.nio.file.LinkOption... options) { return false; }
+  public static boolean notExists(Any path, Any... options) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isWritable(java.nio.file.Path path) { return false; }
+  public static boolean isWritable(Any path) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.attribute.FileTime getLastModifiedTime(java.nio.file.Path path, java.nio.file.LinkOption... options) { return null; }
+  public static Any getLastModifiedTime(Any path, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path createDirectory(java.nio.file.Path dir, java.nio.file.attribute.FileAttribute<?>... attrs) { return null; }
+  public static Any createDirectory(Any dir, Any... attrs) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path setLastModifiedTime(java.nio.file.Path path, java.nio.file.attribute.FileTime time) { return null; }
+  public static Any setLastModifiedTime(Any path, Any time) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path createTempFile(java.lang.String prefix, java.lang.String suffix, java.nio.file.attribute.FileAttribute<?>... attrs) { return null; }
+  public static Any createTempFile(String prefix, String suffix, Any... attrs) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path createTempFile(java.nio.file.Path dir, java.lang.String prefix, java.lang.String suffix, java.nio.file.attribute.FileAttribute<?>... attrs) { return null; }
+  public static Any createTempFile(Any dir, String prefix, String suffix, Any... attrs) { return null; }
+  @generic("<A extends java.nio.file.attribute.BasicFileAttributes>")
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static <A extends java.nio.file.attribute.BasicFileAttributes> A readAttributes(java.nio.file.Path path, java.lang.Class<A> type, java.nio.file.LinkOption... options) { return null; }
+  public static Any readAttributes(Any path, Any type, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.util.Map<java.lang.String, java.lang.Object> readAttributes(java.nio.file.Path path, java.lang.String attributes, java.nio.file.LinkOption... options) { return null; }
+  public static Any readAttributes(Any path, String attributes, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.io.OutputStream newOutputStream(java.nio.file.Path path, java.nio.file.OpenOption... options) { return null; }
+  public static Any newOutputStream(Any path, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.io.InputStream newInputStream(java.nio.file.Path path, java.nio.file.OpenOption... options) { return null; }
+  public static Any newInputStream(Any path, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.channels.SeekableByteChannel newByteChannel(java.nio.file.Path path, java.nio.file.OpenOption... options) { return null; }
+  public static Any newByteChannel(Any path, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.channels.SeekableByteChannel newByteChannel(java.nio.file.Path path, java.util.Set<? extends java.nio.file.OpenOption> options, java.nio.file.attribute.FileAttribute<?>... attrs) { return null; }
+  public static Any newByteChannel(Any path, Any options, Any... attrs) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.DirectoryStream<java.nio.file.Path> newDirectoryStream(java.nio.file.Path dir, java.lang.String glob) { return null; }
+  public static Any newDirectoryStream(Any dir, String glob) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.DirectoryStream<java.nio.file.Path> newDirectoryStream(java.nio.file.Path dir, java.nio.file.DirectoryStream.Filter<? super java.nio.file.Path> filter) { return null; }
+  public static Any newDirectoryStream(Any dir, Any filter) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.DirectoryStream<java.nio.file.Path> newDirectoryStream(java.nio.file.Path dir) { return null; }
+  public static Any newDirectoryStream(Any dir) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path createTempDirectory(java.nio.file.Path dir, java.lang.String prefix, java.nio.file.attribute.FileAttribute<?>... attrs) { return null; }
+  public static Any createTempDirectory(Any dir, String prefix, Any... attrs) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path createTempDirectory(java.lang.String prefix, java.nio.file.attribute.FileAttribute<?>... attrs) { return null; }
+  public static Any createTempDirectory(String prefix, Any... attrs) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path createSymbolicLink(java.nio.file.Path link, java.nio.file.Path target, java.nio.file.attribute.FileAttribute<?>... attrs) { return null; }
+  public static Any createSymbolicLink(Any link, Any target, Any... attrs) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path createLink(java.nio.file.Path link, java.nio.file.Path existing) { return null; }
+  public static Any createLink(Any link, Any existing) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static boolean deleteIfExists(java.nio.file.Path path) { return false; }
+  public static boolean deleteIfExists(Any path) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path move(java.nio.file.Path source, java.nio.file.Path target, java.nio.file.CopyOption... options) { return null; }
+  public static Any move(Any source, Any target, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path readSymbolicLink(java.nio.file.Path link) { return null; }
+  public static Any readSymbolicLink(Any link) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.FileStore getFileStore(java.nio.file.Path path) { return null; }
+  public static Any getFileStore(Any path) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static boolean isSameFile(java.nio.file.Path path, java.nio.file.Path path2) { return false; }
+  public static boolean isSameFile(Any path, Any path2) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.lang.String probeContentType(java.nio.file.Path path) { return null; }
+  public static String probeContentType(Any path) { return null; }
+  @generic("<V extends java.nio.file.attribute.FileAttributeView>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <V extends java.nio.file.attribute.FileAttributeView> V getFileAttributeView(java.nio.file.Path path, java.lang.Class<V> type, java.nio.file.LinkOption... options) { return null; }
+  public static Any getFileAttributeView(Any path, Any type, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path setAttribute(java.nio.file.Path path, java.lang.String attribute, java.lang.Object value, java.nio.file.LinkOption... options) { return null; }
+  public static Any setAttribute(Any path, String attribute, Any value, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path setOwner(java.nio.file.Path path, java.nio.file.attribute.UserPrincipal owner) { return null; }
+  public static Any setOwner(Any path, Any owner) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isSymbolicLink(java.nio.file.Path path) { return false; }
+  public static boolean isSymbolicLink(Any path) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isReadable(java.nio.file.Path path) { return false; }
+  public static boolean isReadable(Any path) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isExecutable(java.nio.file.Path path) { return false; }
+  public static boolean isExecutable(Any path) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path walkFileTree(java.nio.file.Path start, java.util.Set<java.nio.file.FileVisitOption> options, int maxDepth, java.nio.file.FileVisitor<? super java.nio.file.Path> visitor) { return null; }
+  public static Any walkFileTree(Any start, Any options, int maxDepth, Any visitor) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path walkFileTree(java.nio.file.Path start, java.nio.file.FileVisitor<? super java.nio.file.Path> visitor) { return null; }
+  public static Any walkFileTree(Any start, Any visitor) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.io.BufferedReader newBufferedReader(java.nio.file.Path path, java.nio.charset.Charset cs) { return null; }
+  public static Any newBufferedReader(Any path, Any cs) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.io.BufferedReader newBufferedReader(java.nio.file.Path path) { return null; }
+  public static Any newBufferedReader(Any path) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.io.BufferedWriter newBufferedWriter(java.nio.file.Path path, java.nio.file.OpenOption... options) { return null; }
+  public static Any newBufferedWriter(Any path, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.io.BufferedWriter newBufferedWriter(java.nio.file.Path path, java.nio.charset.Charset cs, java.nio.file.OpenOption... options) { return null; }
+  public static Any newBufferedWriter(Any path, Any cs, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.lang.String readString(java.nio.file.Path path) { return null; }
+  public static String readString(Any path) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.lang.String readString(java.nio.file.Path path, java.nio.charset.Charset cs) { return null; }
+  public static String readString(Any path, Any cs) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.util.List<java.lang.String> readAllLines(java.nio.file.Path path, java.nio.charset.Charset cs) { return null; }
+  public static Any readAllLines(Any path, Any cs) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.util.List<java.lang.String> readAllLines(java.nio.file.Path path) { return null; }
+  public static Any readAllLines(Any path) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path writeString(java.nio.file.Path path, java.lang.CharSequence csq, java.nio.charset.Charset cs, java.nio.file.OpenOption... options) { return null; }
+  public static Any writeString(Any path, Any csq, Any cs, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path writeString(java.nio.file.Path path, java.lang.CharSequence csq, java.nio.file.OpenOption... options) { return null; }
+  public static Any writeString(Any path, Any csq, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path createFile(java.nio.file.Path path, java.nio.file.attribute.FileAttribute<?>... attrs) { return null; }
+  public static Any createFile(Any path, Any... attrs) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.lang.Object getAttribute(java.nio.file.Path path, java.lang.String attribute, java.nio.file.LinkOption... options) { return null; }
+  public static Any getAttribute(Any path, String attribute, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.util.Set<java.nio.file.attribute.PosixFilePermission> getPosixFilePermissions(java.nio.file.Path path, java.nio.file.LinkOption... options) { return null; }
+  public static Any getPosixFilePermissions(Any path, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.nio.file.Path setPosixFilePermissions(java.nio.file.Path path, java.util.Set<java.nio.file.attribute.PosixFilePermission> perms) { return null; }
+  public static Any setPosixFilePermissions(Any path, Any perms) { return null; }
   < ---- END java signatures ---- >
 }

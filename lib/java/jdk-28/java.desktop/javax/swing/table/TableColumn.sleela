@@ -56,6 +56,24 @@ class TableColumn {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public TableColumn bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String COLUMN_WIDTH_PROPERTY = "columWidth";
@@ -78,7 +96,7 @@ class TableColumn {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public TableColumn(int modelIndex, int width, javax.swing.table.TableCellRenderer cellRenderer, javax.swing.table.TableCellEditor cellEditor) { }
+  public TableColumn(int modelIndex, int width, Any cellRenderer, Any cellEditor) { }
   @throwable("java.lang.UnsupportedOperationException")
   public TableColumn(int modelIndex, int width) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -94,17 +112,17 @@ class TableColumn {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getIdentifier() { return null; }
+  public Any getIdentifier() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setResizable(boolean isResizable) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setWidth(int width) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public synchronized void addPropertyChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.beans.PropertyChangeListener[] getPropertyChangeListeners() { return null; }
+  public synchronized Any[] getPropertyChangeListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public synchronized void removePropertyChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setMinWidth(int minWidth) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -114,9 +132,9 @@ class TableColumn {
   @throwable("java.lang.UnsupportedOperationException")
   public void setModelIndex(int modelIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setIdentifier(java.lang.Object identifier) { }
+  public void setIdentifier(Any identifier) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setHeaderRenderer(javax.swing.table.TableCellRenderer headerRenderer) { }
+  public void setHeaderRenderer(Any headerRenderer) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMinWidth() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -131,25 +149,25 @@ class TableColumn {
   public void enableResizedPosting() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.table.TableCellRenderer createDefaultHeaderRenderer() { return null; }
+  Any createDefaultHeaderRenderer() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setCellRenderer(javax.swing.table.TableCellRenderer cellRenderer) { }
+  public void setCellRenderer(Any cellRenderer) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setCellEditor(javax.swing.table.TableCellEditor cellEditor) { }
+  public void setCellEditor(Any cellEditor) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getHeaderValue() { return null; }
+  public Any getHeaderValue() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getModelIndex() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setHeaderValue(java.lang.Object headerValue) { }
+  public void setHeaderValue(Any headerValue) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setPreferredWidth(int preferredWidth) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableCellRenderer getHeaderRenderer() { return null; }
+  public Any getHeaderRenderer() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableCellRenderer getCellRenderer() { return null; }
+  public Any getCellRenderer() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableCellEditor getCellEditor() { return null; }
+  public Any getCellEditor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getWidth() { return 0; }
   < ---- END java signatures ---- >

@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class AtomicReference<V> {
+class AtomicReference {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,10 +56,28 @@ class AtomicReference<V> {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<V>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "V"; } return null; }
+  public AtomicReference bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public AtomicReference(V initialValue) { }
+  public AtomicReference(Any initialValue) { }
   @throwable("java.lang.UnsupportedOperationException")
   public AtomicReference() { }
   < ---- END java constructors ---- >
@@ -71,52 +89,52 @@ class AtomicReference<V> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public final V get() { return null; }
+  public final Any get() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void set(V newValue) { }
+  public final void set(Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final V getOpaque() { return null; }
+  public final Any getOpaque() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void setOpaque(V newValue) { }
+  public final void setOpaque(Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final V getAcquire() { return null; }
+  public final Any getAcquire() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void setRelease(V newValue) { }
+  public final void setRelease(Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean compareAndSet(V expectedValue, V newValue) { return false; }
+  public final boolean compareAndSet(Any expectedValue, Any newValue) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final V compareAndExchange(V expectedValue, V newValue) { return null; }
+  public final Any compareAndExchange(Any expectedValue, Any newValue) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final V compareAndExchangeAcquire(V expectedValue, V newValue) { return null; }
+  public final Any compareAndExchangeAcquire(Any expectedValue, Any newValue) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final V compareAndExchangeRelease(V expectedValue, V newValue) { return null; }
+  public final Any compareAndExchangeRelease(Any expectedValue, Any newValue) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSetPlain(V expectedValue, V newValue) { return false; }
+  public final boolean weakCompareAndSetPlain(Any expectedValue, Any newValue) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSet(V expectedValue, V newValue) { return false; }
+  public final boolean weakCompareAndSet(Any expectedValue, Any newValue) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSetAcquire(V expectedValue, V newValue) { return false; }
+  public final boolean weakCompareAndSetAcquire(Any expectedValue, Any newValue) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSetRelease(V expectedValue, V newValue) { return false; }
+  public final boolean weakCompareAndSetRelease(Any expectedValue, Any newValue) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final V getAndSet(V newValue) { return null; }
+  public final Any getAndSet(Any newValue) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean weakCompareAndSetVolatile(V expectedValue, V newValue) { return false; }
+  public final boolean weakCompareAndSetVolatile(Any expectedValue, Any newValue) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void lazySet(V newValue) { }
+  public final void lazySet(Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final V getAndUpdate(java.util.function.UnaryOperator<V> updateFunction) { return null; }
+  public final Any getAndUpdate(Any updateFunction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final V updateAndGet(java.util.function.UnaryOperator<V> updateFunction) { return null; }
+  public final Any updateAndGet(Any updateFunction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final V getAndAccumulate(V x, java.util.function.BinaryOperator<V> accumulatorFunction) { return null; }
+  public final Any getAndAccumulate(Any x, Any accumulatorFunction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final V accumulateAndGet(V x, java.util.function.BinaryOperator<V> accumulatorFunction) { return null; }
+  public final Any accumulateAndGet(Any x, Any accumulatorFunction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final V getPlain() { return null; }
+  public final Any getPlain() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void setPlain(V newValue) { }
+  public final void setPlain(Any newValue) { }
   < ---- END java signatures ---- >
 }

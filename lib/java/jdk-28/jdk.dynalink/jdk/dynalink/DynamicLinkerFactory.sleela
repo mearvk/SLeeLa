@@ -56,6 +56,24 @@ class DynamicLinkerFactory {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DynamicLinkerFactory bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,30 +87,30 @@ class DynamicLinkerFactory {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void setClassLoader(java.lang.ClassLoader classLoader) { }
+  public void setClassLoader(Any classLoader) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPrioritizedLinkers(jdk.dynalink.linker.GuardingDynamicLinker... prioritizedLinkers) { }
+  public void setPrioritizedLinkers(Any... prioritizedLinkers) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPrioritizedLinkers(java.util.List<? extends jdk.dynalink.linker.GuardingDynamicLinker> prioritizedLinkers) { }
+  public void setPrioritizedLinkers(Any prioritizedLinkers) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFallbackLinkers(jdk.dynalink.linker.GuardingDynamicLinker... fallbackLinkers) { }
+  public void setFallbackLinkers(Any... fallbackLinkers) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFallbackLinkers(java.util.List<? extends jdk.dynalink.linker.GuardingDynamicLinker> fallbackLinkers) { }
+  public void setFallbackLinkers(Any fallbackLinkers) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPrioritizedLinker(jdk.dynalink.linker.GuardingDynamicLinker prioritizedLinker) { }
+  public void setPrioritizedLinker(Any prioritizedLinker) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setSyncOnRelink(boolean syncOnRelink) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setUnstableRelinkThreshold(int unstableRelinkThreshold) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPrelinkTransformer(jdk.dynalink.linker.GuardedInvocationTransformer prelinkTransformer) { }
+  public void setPrelinkTransformer(Any prelinkTransformer) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setAutoConversionStrategy(jdk.dynalink.linker.MethodTypeConversionStrategy autoConversionStrategy) { }
+  public void setAutoConversionStrategy(Any autoConversionStrategy) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setInternalObjectsFilter(jdk.dynalink.linker.MethodHandleTransformer internalObjectsFilter) { }
+  public void setInternalObjectsFilter(Any internalObjectsFilter) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public jdk.dynalink.DynamicLinker createLinker() { return null; }
+  public Any createLinker() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<java.util.ServiceConfigurationError> getAutoLoadingErrors() { return null; }
+  public Any getAutoLoadingErrors() { return null; }
   < ---- END java signatures ---- >
 }

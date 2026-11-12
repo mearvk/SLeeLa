@@ -56,6 +56,24 @@ class ChronoLocalDate {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ChronoLocalDate bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,45 +82,46 @@ class ChronoLocalDate {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default int compareTo(java.time.chrono.ChronoLocalDate other) { return 0; }
+  public default int compareTo(Any other) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.String format(java.time.format.DateTimeFormatter formatter) { return null; }
+  public default String format(Any formatter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.chrono.ChronoLocalDate from(java.time.temporal.TemporalAccessor temporal) { return null; }
+  public static Any from(Any temporal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default boolean isSupported(java.time.temporal.TemporalUnit unit) { return false; }
+  public default boolean isSupported(Any unit) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoLocalDate with(java.time.temporal.TemporalField field, long newValue) { return null; }
+  public default Any with(Any field, long newValue) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoLocalDate with(java.time.temporal.TemporalAdjuster adjuster) { return null; }
+  public default Any with(Any adjuster) { return null; }
+  @generic("<R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public default <R> R query(java.time.temporal.TemporalQuery<R> query) { return null; }
+  public default Any query(Any query) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default boolean isEqual(java.time.chrono.ChronoLocalDate other) { return false; }
+  public default boolean isEqual(Any other) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoLocalDate minus(java.time.temporal.TemporalAmount amount) { return null; }
+  public default Any minus(Any amount) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoLocalDate minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { return null; }
+  public default Any minus(long amountToSubtract, Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoLocalDate plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { return null; }
+  public default Any plus(long amountToAdd, Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoLocalDate plus(java.time.temporal.TemporalAmount amount) { return null; }
+  public default Any plus(Any amount) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public long until(java.time.temporal.Temporal endExclusive, java.time.temporal.TemporalUnit unit) { return 0; }
+  public long until(Any endExclusive, Any unit) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.chrono.ChronoPeriod until(java.time.chrono.ChronoLocalDate endDateExclusive) { return null; }
+  public Any until(Any endDateExclusive) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { return null; }
+  public default Any adjustInto(Any temporal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default boolean isAfter(java.time.chrono.ChronoLocalDate other) { return false; }
+  public default boolean isAfter(Any other) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default boolean isBefore(java.time.chrono.ChronoLocalDate other) { return false; }
+  public default boolean isBefore(Any other) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public default boolean isLeapYear() { return false; }
   @throwable("java.lang.AbstractMethodError")
@@ -112,12 +131,12 @@ class ChronoLocalDate {
   @throwable("java.lang.UnsupportedOperationException")
   public default long toEpochDay() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoLocalDateTime<?> atTime(java.time.LocalTime localTime) { return null; }
+  public default Any atTime(Any localTime) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.Era getEra() { return null; }
+  public default Any getEra() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.chrono.Chronology getChronology() { return null; }
+  public Any getChronology() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Comparator<java.time.chrono.ChronoLocalDate> timeLineOrder() { return null; }
+  public static Any timeLineOrder() { return null; }
   < ---- END java signatures ---- >
 }

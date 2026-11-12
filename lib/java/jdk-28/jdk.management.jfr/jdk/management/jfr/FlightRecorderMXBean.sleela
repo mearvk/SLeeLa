@@ -56,6 +56,24 @@ class FlightRecorderMXBean {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public FlightRecorderMXBean bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String MXBEAN_NAME = "jdk.management.jfr:type=FlightRecorder";
@@ -68,19 +86,19 @@ class FlightRecorderMXBean {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public long openStream(long recordingId, java.util.Map<java.lang.String, java.lang.String> streamOptions) { return 0; }
+  public long openStream(long recordingId, Any streamOptions) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public void copyTo(long recordingId, java.lang.String outputFile) { }
+  public void copyTo(long recordingId, String outputFile) { }
   @throwable("java.lang.AbstractMethodError, java.lang.IllegalStateException")
   public void startRecording(long recordingId) { }
   @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException, java.lang.IllegalStateException")
   public boolean stopRecording(long recordingId) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<jdk.management.jfr.EventTypeInfo> getEventTypes() { return null; }
+  public Any getEventTypes() { return null; }
   @throwable("java.lang.AbstractMethodError, java.lang.IllegalStateException")
   public long newRecording() { return 0; }
   @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
-  public void setConfiguration(long recordingId, java.lang.String contents) { }
+  public void setConfiguration(long recordingId, String contents) { }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
   public byte[] readStream(long streamId) { return null; }
   @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
@@ -90,19 +108,19 @@ class FlightRecorderMXBean {
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
   public void closeStream(long streamId) { }
   @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
-  public java.util.Map<java.lang.String, java.lang.String> getRecordingOptions(long recordingId) { return null; }
+  public Any getRecordingOptions(long recordingId) { return null; }
   @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
-  public java.util.Map<java.lang.String, java.lang.String> getRecordingSettings(long recordingId) { return null; }
+  public Any getRecordingSettings(long recordingId) { return null; }
   @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
-  public void setPredefinedConfiguration(long recordingId, java.lang.String configurationName) { }
+  public void setPredefinedConfiguration(long recordingId, String configurationName) { }
   @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
-  public void setRecordingSettings(long recordingId, java.util.Map<java.lang.String, java.lang.String> settings) { }
+  public void setRecordingSettings(long recordingId, Any settings) { }
   @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
-  public void setRecordingOptions(long recordingId, java.util.Map<java.lang.String, java.lang.String> options) { }
+  public void setRecordingOptions(long recordingId, Any options) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<jdk.management.jfr.ConfigurationInfo> getConfigurations() { return null; }
+  public Any getConfigurations() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<jdk.management.jfr.RecordingInfo> getRecordings() { return null; }
+  public Any getRecordings() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public long takeSnapshot() { return 0; }
   < ---- END java signatures ---- >

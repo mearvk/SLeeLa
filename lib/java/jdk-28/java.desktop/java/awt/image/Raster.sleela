@@ -56,6 +56,24 @@ class Raster {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Raster bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any sampleModel;
@@ -74,13 +92,13 @@ class Raster {
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  Raster(java.awt.image.SampleModel sampleModel, java.awt.image.DataBuffer dataBuffer, java.awt.Rectangle aRegion, java.awt.Point sampleModelTranslate, java.awt.image.Raster parent) { }
+  Raster(Any sampleModel, Any dataBuffer, Any aRegion, Any sampleModelTranslate, Any parent) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  Raster(java.awt.image.SampleModel sampleModel, java.awt.image.DataBuffer dataBuffer, java.awt.Point origin) { }
+  Raster(Any sampleModel, Any dataBuffer, Any origin) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  Raster(java.awt.image.SampleModel sampleModel, java.awt.Point origin) { }
+  Raster(Any sampleModel, Any origin) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -90,9 +108,9 @@ class Raster {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getBounds() { return null; }
+  public Any getBounds() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.Raster getParent() { return null; }
+  public Any getParent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int getHeight() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -100,37 +118,37 @@ class Raster {
   @throwable("java.lang.UnsupportedOperationException")
   public final int getMinY() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.image.WritableRaster createInterleavedRaster(int dataType, int w, int h, int scanlineStride, int pixelStride, int[] bandOffsets, java.awt.Point location) { return null; }
+  public static Any createInterleavedRaster(int dataType, int w, int h, int scanlineStride, int pixelStride, int[] bandOffsets, Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.image.WritableRaster createInterleavedRaster(int dataType, int w, int h, int bands, java.awt.Point location) { return null; }
+  public static Any createInterleavedRaster(int dataType, int w, int h, int bands, Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.image.WritableRaster createInterleavedRaster(java.awt.image.DataBuffer dataBuffer, int w, int h, int scanlineStride, int pixelStride, int[] bandOffsets, java.awt.Point location) { return null; }
+  public static Any createInterleavedRaster(Any dataBuffer, int w, int h, int scanlineStride, int pixelStride, int[] bandOffsets, Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.image.WritableRaster createBandedRaster(int dataType, int w, int h, int bands, java.awt.Point location) { return null; }
+  public static Any createBandedRaster(int dataType, int w, int h, int bands, Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.image.WritableRaster createBandedRaster(java.awt.image.DataBuffer dataBuffer, int w, int h, int scanlineStride, int[] bankIndices, int[] bandOffsets, java.awt.Point location) { return null; }
+  public static Any createBandedRaster(Any dataBuffer, int w, int h, int scanlineStride, int[] bankIndices, int[] bandOffsets, Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.image.WritableRaster createBandedRaster(int dataType, int w, int h, int scanlineStride, int[] bankIndices, int[] bandOffsets, java.awt.Point location) { return null; }
+  public static Any createBandedRaster(int dataType, int w, int h, int scanlineStride, int[] bankIndices, int[] bandOffsets, Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.image.WritableRaster createPackedRaster(java.awt.image.DataBuffer dataBuffer, int w, int h, int bitsPerPixel, java.awt.Point location) { return null; }
+  public static Any createPackedRaster(Any dataBuffer, int w, int h, int bitsPerPixel, Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.image.WritableRaster createPackedRaster(java.awt.image.DataBuffer dataBuffer, int w, int h, int scanlineStride, int[] bandMasks, java.awt.Point location) { return null; }
+  public static Any createPackedRaster(Any dataBuffer, int w, int h, int scanlineStride, int[] bandMasks, Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.image.WritableRaster createPackedRaster(int dataType, int w, int h, int[] bandMasks, java.awt.Point location) { return null; }
+  public static Any createPackedRaster(int dataType, int w, int h, int[] bandMasks, Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.image.WritableRaster createPackedRaster(int dataType, int w, int h, int bands, int bitsPerBand, java.awt.Point location) { return null; }
+  public static Any createPackedRaster(int dataType, int w, int h, int bands, int bitsPerBand, Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.image.WritableRaster createWritableRaster(java.awt.image.SampleModel sm, java.awt.Point location) { return null; }
+  public static Any createWritableRaster(Any sm, Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.image.WritableRaster createWritableRaster(java.awt.image.SampleModel sm, java.awt.image.DataBuffer db, java.awt.Point location) { return null; }
+  public static Any createWritableRaster(Any sm, Any db, Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int getNumBands() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int getNumDataElements() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.Raster createChild(int parentX, int parentY, int width, int height, int childMinX, int childMinY, int[] bandList) { return null; }
+  public Any createChild(int parentX, int parentY, int width, int height, int childMinX, int childMinY, int[] bandList) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.DataBuffer getDataBuffer() { return null; }
+  public Any getDataBuffer() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public float[] getPixel(int x, int y, float[] fArray) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -156,29 +174,29 @@ class Raster {
   @throwable("java.lang.UnsupportedOperationException")
   public float[] getSamples(int x, int y, int w, int h, int b, float[] fArray) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.image.Raster createRaster(java.awt.image.SampleModel sm, java.awt.image.DataBuffer db, java.awt.Point location) { return null; }
+  public static Any createRaster(Any sm, Any db, Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int getSampleModelTranslateX() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int getSampleModelTranslateY() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.Raster createTranslatedChild(int childMinX, int childMinY) { return null; }
+  public Any createTranslatedChild(int childMinX, int childMinY) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.SampleModel getSampleModel() { return null; }
+  public Any getSampleModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getDataElements(int x, int y, java.lang.Object outData) { return null; }
+  public Any getDataElements(int x, int y, Any outData) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getDataElements(int x, int y, int w, int h, java.lang.Object outData) { return null; }
+  public Any getDataElements(int x, int y, int w, int h, Any outData) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int getTransferType() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.WritableRaster createCompatibleWritableRaster(int x, int y, int w, int h) { return null; }
+  public Any createCompatibleWritableRaster(int x, int y, int w, int h) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.WritableRaster createCompatibleWritableRaster(java.awt.Rectangle rect) { return null; }
+  public Any createCompatibleWritableRaster(Any rect) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.WritableRaster createCompatibleWritableRaster(int w, int h) { return null; }
+  public Any createCompatibleWritableRaster(int w, int h) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.WritableRaster createCompatibleWritableRaster() { return null; }
+  public Any createCompatibleWritableRaster() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int getWidth() { return 0; }
   < ---- END java signatures ---- >

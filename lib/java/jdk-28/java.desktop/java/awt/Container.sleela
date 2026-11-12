@@ -56,6 +56,24 @@ class Container {
   String javaKind = "class";
   String javaSuper = "java.awt.Component";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Container bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,77 +87,77 @@ class Container {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void remove(java.awt.Component comp) { }
+  public void remove(Any comp) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void remove(int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void update(java.awt.Graphics g) { }
+  public void update(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component add(java.awt.Component comp) { return null; }
+  public Any add(Any comp) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void add(java.awt.Component comp, java.lang.Object constraints) { }
+  public void add(Any comp, Any constraints) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component add(java.awt.Component comp, int index) { return null; }
+  public Any add(Any comp, int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void add(java.awt.Component comp, java.lang.Object constraints, int index) { }
+  public void add(Any comp, Any constraints, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component add(java.lang.String name, java.awt.Component comp) { return null; }
+  public Any add(String name, Any comp) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void list(java.io.PrintStream out, int indent) { }
+  public void list(Any out, int indent) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void validate() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeAll() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getComponent(int n) { return null; }
+  public Any getComponent(int n) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void invalidate() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component[] getComponents() { return null; }
+  public Any[] getComponents() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void validateTree() { }
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean isFocusTraversalPolicyProvider() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void applyComponentOrientation(java.awt.ComponentOrientation o) { }
+  public void applyComponentOrientation(Any o) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addPropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { }
+  public void addPropertyChangeListener(String propertyName, Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public void addPropertyChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addContainerListener(java.awt.event.ContainerListener l) { }
+  public synchronized void addContainerListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.LayoutManager getLayout() { return null; }
+  public Any getLayout() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setComponentZOrder(java.awt.Component comp, int index) { }
+  public void setComponentZOrder(Any comp, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize() { return null; }
+  public Any getPreferredSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize() { return null; }
+  public Any getMinimumSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintComponents(java.awt.Graphics g) { }
+  public void paintComponents(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void printComponents(java.awt.Graphics g) { }
+  public void printComponents(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removeContainerListener(java.awt.event.ContainerListener l) { }
+  public synchronized void removeContainerListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.awt.event.ContainerListener[] getContainerListeners() { return null; }
+  public synchronized Any[] getContainerListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public java.awt.Point getMousePosition(boolean allowChildren) { return null; }
+  public Any getMousePosition(boolean allowChildren) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isAncestorOf(java.awt.Component c) { return false; }
+  public boolean isAncestorOf(Any c) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFocusTraversalKeys(int id, java.util.Set<? extends java.awt.AWTKeyStroke> keystrokes) { }
+  public void setFocusTraversalKeys(int id, Any keystrokes) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.awt.AWTKeyStroke> getFocusTraversalKeys(int id) { return null; }
+  public Any getFocusTraversalKeys(int id) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean areFocusTraversalKeysSet(int id) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFocusTraversalPolicy(java.awt.FocusTraversalPolicy policy) { }
+  public void setFocusTraversalPolicy(Any policy) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isFocusTraversalPolicySet() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -153,65 +171,66 @@ class Container {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isValidateRoot() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLayout(java.awt.LayoutManager mgr) { }
+  public void setLayout(Any mgr) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void addNotify() { }
   @throwable("java.lang.UnsupportedOperationException")
   public int countComponents() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Insets insets() { return null; }
+  public Any insets() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Insets getInsets() { return null; }
+  public Any getInsets() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { }
+  void addImpl(Any comp, Any constraints, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getComponentZOrder(java.awt.Component comp) { return 0; }
+  public int getComponentZOrder(Any comp) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeNotify() { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isFocusCycleRoot() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isFocusCycleRoot(java.awt.Container container) { return false; }
+  public boolean isFocusCycleRoot(Any container) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.FocusTraversalPolicy getFocusTraversalPolicy() { return null; }
+  public Any getFocusTraversalPolicy() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getComponentCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void doLayout() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFont(java.awt.Font f) { }
+  public void setFont(Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension preferredSize() { return null; }
+  public Any preferredSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension minimumSize() { return null; }
+  public Any minimumSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMaximumSize() { return null; }
+  public Any getMaximumSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public float getAlignmentX() { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
   public float getAlignmentY() { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g) { }
+  public void paint(Any g) { }
+  @generic("<T extends java.util.EventListener>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
+  public Any[] getListeners(Any listenerType) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processContainerEvent(java.awt.event.ContainerEvent e) { }
+  void processContainerEvent(Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processEvent(java.awt.AWTEvent e) { }
+  void processEvent(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getComponentAt(java.awt.Point p) { return null; }
+  public Any getComponentAt(Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getComponentAt(int x, int y) { return null; }
+  public Any getComponentAt(int x, int y) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void deliverEvent(java.awt.Event e) { }
+  public void deliverEvent(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component locate(int x, int y) { return null; }
+  public Any locate(int x, int y) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component findComponentAt(java.awt.Point p) { return null; }
+  public Any findComponentAt(Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component findComponentAt(int x, int y) { return null; }
+  public Any findComponentAt(int x, int y) { return null; }
   < ---- END java signatures ---- >
 }

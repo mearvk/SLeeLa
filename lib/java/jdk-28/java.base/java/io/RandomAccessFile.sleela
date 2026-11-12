@@ -56,12 +56,30 @@ class RandomAccessFile {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public RandomAccessFile bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, java.io.FileNotFoundException")
-  public RandomAccessFile(java.io.File file, java.lang.String mode) { }
+  public RandomAccessFile(Any file, String mode) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.FileNotFoundException")
-  public RandomAccessFile(java.lang.String pathname, java.lang.String mode) { }
+  public RandomAccessFile(String pathname, String mode) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -73,7 +91,7 @@ class RandomAccessFile {
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public long length() { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public final java.lang.String readLine() { return null; }
+  public final String readLine() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public void setLength(long newLength) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
@@ -93,9 +111,9 @@ class RandomAccessFile {
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public int read(byte[] b) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public final void writeUTF(java.lang.String str) { }
+  public final void writeUTF(String str) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public final java.lang.String readUTF() { return null; }
+  public final String readUTF() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public final long readLong() { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
@@ -109,11 +127,11 @@ class RandomAccessFile {
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public final void writeShort(int v) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.channels.FileChannel getChannel() { return null; }
+  public final Any getChannel() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public final java.io.FileDescriptor getFD() { return null; }
+  public final Any getFD() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public final void writeBytes(java.lang.String s) { }
+  public final void writeBytes(String s) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public final int readUnsignedShort() { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
@@ -141,7 +159,7 @@ class RandomAccessFile {
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public final void writeBoolean(boolean v) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public final void writeChars(java.lang.String s) { }
+  public final void writeChars(String s) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public native long getFilePointer() { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")

@@ -56,6 +56,24 @@ class ClassType {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ClassType bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int INVOKE_SINGLE_THREADED = 1;
@@ -70,20 +88,20 @@ class ClassType {
   @throwable("java.lang.AbstractMethodError")
   public boolean isEnum() { return false; }
   @throwable("java.lang.AbstractMethodError, com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException, com.sun.jdi.IncompatibleThreadStateException, com.sun.jdi.InvocationException")
-  public com.sun.jdi.ObjectReference newInstance(com.sun.jdi.ThreadReference thread, com.sun.jdi.Method method, java.util.List<? extends com.sun.jdi.Value> arguments, int options) { return null; }
+  public Any newInstance(Any thread, Any method, Any arguments, int options) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.InterfaceType> interfaces() { return null; }
+  public Any interfaces() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.ClassType superclass() { return null; }
+  public Any superclass() { return null; }
   @throwable("java.lang.AbstractMethodError, com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException")
-  public void setValue(com.sun.jdi.Field field, com.sun.jdi.Value value) { }
+  public void setValue(Any field, Any value) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.InterfaceType> allInterfaces() { return null; }
+  public Any allInterfaces() { return null; }
   @throwable("java.lang.AbstractMethodError, com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException, com.sun.jdi.IncompatibleThreadStateException, com.sun.jdi.InvocationException")
-  public com.sun.jdi.Value invokeMethod(com.sun.jdi.ThreadReference thread, com.sun.jdi.Method method, java.util.List<? extends com.sun.jdi.Value> arguments, int options) { return null; }
+  public Any invokeMethod(Any thread, Any method, Any arguments, int options) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.ClassType> subclasses() { return null; }
+  public Any subclasses() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.Method concreteMethodByName(java.lang.String name, java.lang.String signature) { return null; }
+  public Any concreteMethodByName(String name, String signature) { return null; }
   < ---- END java signatures ---- >
 }

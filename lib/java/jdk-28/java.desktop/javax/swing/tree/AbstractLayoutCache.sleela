@@ -56,6 +56,24 @@ class AbstractLayoutCache {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public AbstractLayoutCache bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any nodeDimensions;
@@ -78,29 +96,29 @@ class AbstractLayoutCache {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Rectangle getBounds(javax.swing.tree.TreePath path, java.awt.Rectangle placeIn) { return null; }
+  public Any getBounds(Any path, Any placeIn) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean isExpanded(javax.swing.tree.TreePath path) { return false; }
+  public boolean isExpanded(Any path) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int[] getRowsForPaths(javax.swing.tree.TreePath[] paths) { return null; }
+  public int[] getRowsForPaths(Any[] paths) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSelectionModel(javax.swing.tree.TreeSelectionModel newLSM) { }
+  public void setSelectionModel(Any newLSM) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreeSelectionModel getSelectionModel() { return null; }
+  public Any getSelectionModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getPreferredWidth(java.awt.Rectangle bounds) { return 0; }
+  public int getPreferredWidth(Any bounds) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public void treeNodesChanged(javax.swing.event.TreeModelEvent e) { }
+  public void treeNodesChanged(Any e) { }
   @throwable("java.lang.AbstractMethodError")
-  public void treeNodesInserted(javax.swing.event.TreeModelEvent e) { }
+  public void treeNodesInserted(Any e) { }
   @throwable("java.lang.AbstractMethodError")
-  public void treeNodesRemoved(javax.swing.event.TreeModelEvent e) { }
+  public void treeNodesRemoved(Any e) { }
   @throwable("java.lang.AbstractMethodError")
-  public void treeStructureChanged(javax.swing.event.TreeModelEvent e) { }
+  public void treeStructureChanged(Any e) { }
   @throwable("java.lang.AbstractMethodError")
-  public int getRowForPath(javax.swing.tree.TreePath path) { return 0; }
+  public int getRowForPath(Any path) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public void setExpandedState(javax.swing.tree.TreePath path, boolean isExpanded) { }
+  public void setExpandedState(Any path, boolean isExpanded) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   boolean isFixedRowHeight() { return false; }
@@ -113,33 +131,33 @@ class AbstractLayoutCache {
   @throwable("java.lang.UnsupportedOperationException")
   public void setRootVisible(boolean rootVisible) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.tree.TreePath getPathForRow(int row) { return null; }
+  public Any getPathForRow(int row) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getRowCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreeModel getModel() { return null; }
+  public Any getModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setModel(javax.swing.tree.TreeModel newModel) { }
+  public void setModel(Any newModel) { }
   @throwable("java.lang.AbstractMethodError")
   public void invalidateSizes() { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.tree.TreePath getPathClosestTo(int x, int y) { return null; }
+  public Any getPathClosestTo(int x, int y) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Enumeration<javax.swing.tree.TreePath> getVisiblePathsFrom(javax.swing.tree.TreePath path) { return null; }
+  public Any getVisiblePathsFrom(Any path) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean getExpandedState(javax.swing.tree.TreePath path) { return false; }
+  public boolean getExpandedState(Any path) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setNodeDimensions(javax.swing.tree.AbstractLayoutCache.NodeDimensions nd) { }
+  public void setNodeDimensions(Any nd) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getPreferredHeight() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public void invalidatePathBounds(javax.swing.tree.TreePath path) { }
+  public void invalidatePathBounds(Any path) { }
   @throwable("java.lang.AbstractMethodError")
-  public int getVisibleChildCount(javax.swing.tree.TreePath path) { return 0; }
+  public int getVisibleChildCount(Any path) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Rectangle getNodeDimensions(java.lang.Object value, int row, int depth, boolean expanded, java.awt.Rectangle placeIn) { return null; }
+  Any getNodeDimensions(Any value, int row, int depth, boolean expanded, Any placeIn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.AbstractLayoutCache.NodeDimensions getNodeDimensions() { return null; }
+  public Any getNodeDimensions() { return null; }
   < ---- END java signatures ---- >
 }

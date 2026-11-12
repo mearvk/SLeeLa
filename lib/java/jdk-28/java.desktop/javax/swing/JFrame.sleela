@@ -56,6 +56,24 @@ class JFrame {
   String javaKind = "class";
   String javaSuper = "java.awt.Frame";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JFrame bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any rootPane;
@@ -65,11 +83,11 @@ class JFrame {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public JFrame(java.lang.String title, java.awt.GraphicsConfiguration gc_) { }
+  public JFrame(String title, Any gc_) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public JFrame(java.lang.String title) { }
+  public JFrame(String title) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JFrame(java.awt.GraphicsConfiguration gc_) { }
+  public JFrame(Any gc_) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
   public JFrame() { }
   < ---- END java constructors ---- >
@@ -81,60 +99,60 @@ class JFrame {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void remove(java.awt.Component comp) { }
+  public void remove(Any comp) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void update(java.awt.Graphics g) { }
+  public void update(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTransferHandler(javax.swing.TransferHandler newHandler) { }
+  public void setTransferHandler(Any newHandler) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.TransferHandler getTransferHandler() { return null; }
+  public Any getTransferHandler() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void repaint(long time, int x, int y, int width, int height) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Graphics getGraphics() { return null; }
+  public Any getGraphics() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processWindowEvent(java.awt.event.WindowEvent e) { }
+  void processWindowEvent(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JRootPane getRootPane() { return null; }
+  public Any getRootPane() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JLayeredPane getLayeredPane() { return null; }
+  public Any getLayeredPane() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Container getContentPane() { return null; }
+  public Any getContentPane() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setIconImage(java.awt.Image image) { }
+  public void setIconImage(Any image) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void frameInit() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JRootPane createRootPane() { return null; }
+  Any createRootPane() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setRootPane(javax.swing.JRootPane root) { }
+  void setRootPane(Any root) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void setRootPaneCheckingEnabled(boolean enabled) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean isDefaultLookAndFeelDecorated() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setJMenuBar(javax.swing.JMenuBar menubar) { }
+  public void setJMenuBar(Any menubar) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JMenuBar getJMenuBar() { return null; }
+  public Any getJMenuBar() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   boolean isRootPaneCheckingEnabled() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setContentPane(java.awt.Container contentPane) { }
+  public void setContentPane(Any contentPane) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLayeredPane(javax.swing.JLayeredPane layeredPane) { }
+  public void setLayeredPane(Any layeredPane) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getGlassPane() { return null; }
+  public Any getGlassPane() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setGlassPane(java.awt.Component glassPane) { }
+  public void setGlassPane(Any glassPane) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setDefaultCloseOperation(int operation) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -142,11 +160,11 @@ class JFrame {
   @throwable("java.lang.UnsupportedOperationException")
   public static void setDefaultLookAndFeelDecorated(boolean defaultLookAndFeelDecorated) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLayout(java.awt.LayoutManager manager) { }
+  public void setLayout(Any manager) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { }
+  void addImpl(Any comp, Any constraints, int index) { }
   < ---- END java signatures ---- >
 }

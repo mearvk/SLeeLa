@@ -56,6 +56,24 @@ class TreeSelectionModel {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public TreeSelectionModel bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int SINGLE_TREE_SELECTION = 1;
@@ -70,21 +88,21 @@ class TreeSelectionModel {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public void addPropertyChangeListener(Any listener) { }
   @throwable("java.lang.AbstractMethodError")
-  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public void removePropertyChangeListener(Any listener) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setRowMapper(javax.swing.tree.RowMapper newMapper) { }
+  public void setRowMapper(Any newMapper) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.tree.RowMapper getRowMapper() { return null; }
+  public Any getRowMapper() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void resetRowSelection() { }
   @throwable("java.lang.AbstractMethodError")
-  public void addSelectionPath(javax.swing.tree.TreePath path) { }
+  public void addSelectionPath(Any path) { }
   @throwable("java.lang.AbstractMethodError")
-  public void addSelectionPaths(javax.swing.tree.TreePath[] paths) { }
+  public void addSelectionPaths(Any[] paths) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.tree.TreePath getSelectionPath() { return null; }
+  public Any getSelectionPath() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int[] getSelectionRows() { return null; }
   @throwable("java.lang.AbstractMethodError")
@@ -94,15 +112,15 @@ class TreeSelectionModel {
   @throwable("java.lang.AbstractMethodError")
   public int getMaxSelectionRow() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean isPathSelected(javax.swing.tree.TreePath path) { return false; }
+  public boolean isPathSelected(Any path) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public void removeTreeSelectionListener(javax.swing.event.TreeSelectionListener x) { }
+  public void removeTreeSelectionListener(Any x) { }
   @throwable("java.lang.AbstractMethodError")
-  public void addTreeSelectionListener(javax.swing.event.TreeSelectionListener x) { }
+  public void addTreeSelectionListener(Any x) { }
   @throwable("java.lang.AbstractMethodError")
-  public void removeSelectionPaths(javax.swing.tree.TreePath[] paths) { }
+  public void removeSelectionPaths(Any[] paths) { }
   @throwable("java.lang.AbstractMethodError")
-  public void removeSelectionPath(javax.swing.tree.TreePath path) { }
+  public void removeSelectionPath(Any path) { }
   @throwable("java.lang.AbstractMethodError")
   public boolean isSelectionEmpty() { return false; }
   @throwable("java.lang.AbstractMethodError")
@@ -110,13 +128,13 @@ class TreeSelectionModel {
   @throwable("java.lang.AbstractMethodError")
   public void setSelectionMode(int mode) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setSelectionPaths(javax.swing.tree.TreePath[] paths) { }
+  public void setSelectionPaths(Any[] paths) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.tree.TreePath[] getSelectionPaths() { return null; }
+  public Any[] getSelectionPaths() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.tree.TreePath getLeadSelectionPath() { return null; }
+  public Any getLeadSelectionPath() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setSelectionPath(javax.swing.tree.TreePath path) { }
+  public void setSelectionPath(Any path) { }
   @throwable("java.lang.AbstractMethodError")
   public boolean isRowSelected(int row) { return false; }
   @throwable("java.lang.AbstractMethodError")

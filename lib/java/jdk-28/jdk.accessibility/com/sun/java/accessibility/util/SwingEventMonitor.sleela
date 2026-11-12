@@ -56,6 +56,24 @@ class SwingEventMonitor {
   String javaKind = "class";
   String javaSuper = "com.sun.java.accessibility.util.AWTEventMonitor";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SwingEventMonitor bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any listenerList = null;
@@ -73,76 +91,76 @@ class SwingEventMonitor {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addPropertyChangeListener(java.beans.PropertyChangeListener l) { }
+  public static void addPropertyChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removePropertyChangeListener(java.beans.PropertyChangeListener l) { }
+  public static void removePropertyChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addVetoableChangeListener(java.beans.VetoableChangeListener l) { }
+  public static void addVetoableChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeVetoableChangeListener(java.beans.VetoableChangeListener l) { }
+  public static void removeVetoableChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addAncestorListener(javax.swing.event.AncestorListener l) { }
+  public static void addAncestorListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeAncestorListener(javax.swing.event.AncestorListener l) { }
+  public static void removeAncestorListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addUndoableEditListener(javax.swing.event.UndoableEditListener l) { }
+  public static void addUndoableEditListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeUndoableEditListener(javax.swing.event.UndoableEditListener l) { }
+  public static void removeUndoableEditListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeTreeSelectionListener(javax.swing.event.TreeSelectionListener l) { }
+  public static void removeTreeSelectionListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addTreeSelectionListener(javax.swing.event.TreeSelectionListener l) { }
+  public static void addTreeSelectionListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addTreeExpansionListener(javax.swing.event.TreeExpansionListener l) { }
+  public static void addTreeExpansionListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeTreeExpansionListener(javax.swing.event.TreeExpansionListener l) { }
+  public static void removeTreeExpansionListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeTableModelListener(javax.swing.event.TableModelListener l) { }
+  public static void removeTableModelListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addTableModelListener(javax.swing.event.TableModelListener l) { }
+  public static void addTableModelListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeColumnModelListener(javax.swing.event.TableColumnModelListener l) { }
+  public static void removeColumnModelListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addColumnModelListener(javax.swing.event.TableColumnModelListener l) { }
+  public static void addColumnModelListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeListSelectionListener(javax.swing.event.ListSelectionListener l) { }
+  public static void removeListSelectionListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addListSelectionListener(javax.swing.event.ListSelectionListener l) { }
+  public static void addListSelectionListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addMenuListener(javax.swing.event.MenuListener l) { }
+  public static void addMenuListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeMenuListener(javax.swing.event.MenuListener l) { }
+  public static void removeMenuListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addPopupMenuListener(javax.swing.event.PopupMenuListener l) { }
+  public static void addPopupMenuListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removePopupMenuListener(javax.swing.event.PopupMenuListener l) { }
+  public static void removePopupMenuListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeDocumentListener(javax.swing.event.DocumentListener l) { }
+  public static void removeDocumentListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addDocumentListener(javax.swing.event.DocumentListener l) { }
+  public static void addDocumentListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addCaretListener(javax.swing.event.CaretListener l) { }
+  public static void addCaretListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeCaretListener(javax.swing.event.CaretListener l) { }
+  public static void removeCaretListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeTreeModelListener(javax.swing.event.TreeModelListener l) { }
+  public static void removeTreeModelListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addTreeModelListener(javax.swing.event.TreeModelListener l) { }
+  public static void addTreeModelListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeChangeListener(javax.swing.event.ChangeListener l) { }
+  public static void removeChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addChangeListener(javax.swing.event.ChangeListener l) { }
+  public static void addChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addCellEditorListener(javax.swing.event.CellEditorListener l) { }
+  public static void addCellEditorListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeCellEditorListener(javax.swing.event.CellEditorListener l) { }
+  public static void removeCellEditorListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addListDataListener(javax.swing.event.ListDataListener l) { }
+  public static void addListDataListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeListDataListener(javax.swing.event.ListDataListener l) { }
+  public static void removeListDataListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void addInternalFrameListener(javax.swing.event.InternalFrameListener l) { }
+  public static void addInternalFrameListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void removeInternalFrameListener(javax.swing.event.InternalFrameListener l) { }
+  public static void removeInternalFrameListener(Any l) { }
   < ---- END java signatures ---- >
 }

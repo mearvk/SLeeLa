@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class ForwardingJavaFileManager<M extends javax.tools.JavaFileManager> {
+class ForwardingJavaFileManager {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class ForwardingJavaFileManager<M extends javax.tools.JavaFileManager> {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<M extends javax.tools.JavaFileManager>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "M"; } return null; }
+  public ForwardingJavaFileManager bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any fileManager;
@@ -64,7 +82,7 @@ class ForwardingJavaFileManager<M extends javax.tools.JavaFileManager> {
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  ForwardingJavaFileManager(M fileManager) { }
+  ForwardingJavaFileManager(Any fileManager) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -76,42 +94,43 @@ class ForwardingJavaFileManager<M extends javax.tools.JavaFileManager> {
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public void flush() { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public boolean contains(javax.tools.JavaFileManager.Location location, javax.tools.FileObject fo) { return false; }
+  public boolean contains(Any location, Any fo) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public java.lang.Iterable<javax.tools.JavaFileObject> list(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.util.Set<javax.tools.JavaFileObject.Kind> kinds, boolean recurse) { return null; }
+  public Any list(Any location, String packageName, Any kinds, boolean recurse) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.ClassLoader getClassLoader(javax.tools.JavaFileManager.Location location) { return null; }
+  public Any getClassLoader(Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isSameFile(javax.tools.FileObject a, javax.tools.FileObject b) { return false; }
+  public boolean isSameFile(Any a, Any b) { return false; }
+  @generic("<S>")
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public <S> java.util.ServiceLoader<S> getServiceLoader(javax.tools.JavaFileManager.Location location, java.lang.Class<S> service) { return null; }
+  public Any getServiceLoader(Any location, Any service) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int isSupportedOption(java.lang.String option) { return 0; }
+  public int isSupportedOption(String option) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean handleOption(java.lang.String current, java.util.Iterator<java.lang.String> remaining) { return false; }
+  public boolean handleOption(String current, Any remaining) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public javax.tools.JavaFileObject getJavaFileForOutput(javax.tools.JavaFileManager.Location location, java.lang.String className, javax.tools.JavaFileObject.Kind kind, javax.tools.FileObject sibling) { return null; }
+  public Any getJavaFileForOutput(Any location, String className, Any kind, Any sibling) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public javax.tools.FileObject getFileForOutput(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.lang.String relativeName, javax.tools.FileObject sibling) { return null; }
+  public Any getFileForOutput(Any location, String packageName, String relativeName, Any sibling) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String inferBinaryName(javax.tools.JavaFileManager.Location location, javax.tools.JavaFileObject file) { return null; }
+  public String inferBinaryName(Any location, Any file) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean hasLocation(javax.tools.JavaFileManager.Location location) { return false; }
+  public boolean hasLocation(Any location) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public javax.tools.JavaFileObject getJavaFileForInput(javax.tools.JavaFileManager.Location location, java.lang.String className, javax.tools.JavaFileObject.Kind kind) { return null; }
+  public Any getJavaFileForInput(Any location, String className, Any kind) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public javax.tools.JavaFileObject getJavaFileForOutputForOriginatingFiles(javax.tools.JavaFileManager.Location location, java.lang.String className, javax.tools.JavaFileObject.Kind kind, javax.tools.FileObject... originatingFiles) { return null; }
+  public Any getJavaFileForOutputForOriginatingFiles(Any location, String className, Any kind, Any... originatingFiles) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public javax.tools.FileObject getFileForInput(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.lang.String relativeName) { return null; }
+  public Any getFileForInput(Any location, String packageName, String relativeName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public javax.tools.FileObject getFileForOutputForOriginatingFiles(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.lang.String relativeName, javax.tools.FileObject... originatingFiles) { return null; }
+  public Any getFileForOutputForOriginatingFiles(Any location, String packageName, String relativeName, Any... originatingFiles) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public javax.tools.JavaFileManager.Location getLocationForModule(javax.tools.JavaFileManager.Location location, javax.tools.JavaFileObject fo) { return null; }
+  public Any getLocationForModule(Any location, Any fo) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public javax.tools.JavaFileManager.Location getLocationForModule(javax.tools.JavaFileManager.Location location, java.lang.String moduleName) { return null; }
+  public Any getLocationForModule(Any location, String moduleName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public java.lang.String inferModuleName(javax.tools.JavaFileManager.Location location) { return null; }
+  public String inferModuleName(Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public java.lang.Iterable<java.util.Set<javax.tools.JavaFileManager.Location>> listLocationsForModules(javax.tools.JavaFileManager.Location location) { return null; }
+  public Any listLocationsForModules(Any location) { return null; }
   < ---- END java signatures ---- >
 }

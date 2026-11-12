@@ -56,6 +56,24 @@ class ModelMBeanInfo {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ModelMBeanInfo bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,36 +82,36 @@ class ModelMBeanInfo {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public javax.management.Descriptor getDescriptor(java.lang.String inDescriptorName, java.lang.String inDescriptorType) { return null; }
+  public Any getDescriptor(String inDescriptorName, String inDescriptorType) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.management.MBeanConstructorInfo[] getConstructors() { return null; }
+  public Any[] getConstructors() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getClassName() { return null; }
+  public String getClassName() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.management.MBeanAttributeInfo[] getAttributes() { return null; }
+  public Any[] getAttributes() { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public javax.management.modelmbean.ModelMBeanAttributeInfo getAttribute(java.lang.String inName) { return null; }
+  public Any getAttribute(String inName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getDescription() { return null; }
+  public String getDescription() { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public void setDescriptor(javax.management.Descriptor inDescriptor, java.lang.String inDescriptorType) { }
+  public void setDescriptor(Any inDescriptor, String inDescriptorType) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.management.MBeanOperationInfo[] getOperations() { return null; }
+  public Any[] getOperations() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.management.MBeanNotificationInfo[] getNotifications() { return null; }
+  public Any[] getNotifications() { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public javax.management.Descriptor[] getDescriptors(java.lang.String inDescriptorType) { return null; }
+  public Any[] getDescriptors(String inDescriptorType) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public void setDescriptors(javax.management.Descriptor[] inDescriptors) { }
+  public void setDescriptors(Any[] inDescriptors) { }
   @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public javax.management.Descriptor getMBeanDescriptor() { return null; }
+  public Any getMBeanDescriptor() { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public void setMBeanDescriptor(javax.management.Descriptor inDescriptor) { }
+  public void setMBeanDescriptor(Any inDescriptor) { }
   @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public javax.management.modelmbean.ModelMBeanOperationInfo getOperation(java.lang.String inName) { return null; }
+  public Any getOperation(String inName) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public javax.management.modelmbean.ModelMBeanNotificationInfo getNotification(java.lang.String inName) { return null; }
+  public Any getNotification(String inName) { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class SimpleTimeZone {
   String javaKind = "class";
   String javaSuper = "java.util.TimeZone";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SimpleTimeZone bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int WALL_TIME = 0;
@@ -65,13 +83,13 @@ class SimpleTimeZone {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public SimpleTimeZone(int rawOffset, java.lang.String ID, int startMonth, int startDay, int startDayOfWeek, int startTime, int startTimeMode, int endMonth, int endDay, int endDayOfWeek, int endTime, int endTimeMode, int dstSavings) { }
+  public SimpleTimeZone(int rawOffset, String ID, int startMonth, int startDay, int startDayOfWeek, int startTime, int startTimeMode, int endMonth, int endDay, int endDayOfWeek, int endTime, int endTimeMode, int dstSavings) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public SimpleTimeZone(int rawOffset, java.lang.String ID, int startMonth, int startDay, int startDayOfWeek, int startTime, int endMonth, int endDay, int endDayOfWeek, int endTime, int dstSavings) { }
+  public SimpleTimeZone(int rawOffset, String ID, int startMonth, int startDay, int startDayOfWeek, int startTime, int endMonth, int endDay, int endDayOfWeek, int endTime, int dstSavings) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public SimpleTimeZone(int rawOffset, java.lang.String ID, int startMonth, int startDay, int startDayOfWeek, int startTime, int endMonth, int endDay, int endDayOfWeek, int endTime) { }
+  public SimpleTimeZone(int rawOffset, String ID, int startMonth, int startDay, int startDayOfWeek, int startTime, int endMonth, int endDay, int endDayOfWeek, int endTime) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public SimpleTimeZone(int rawOffset, java.lang.String ID) { }
+  public SimpleTimeZone(int rawOffset, String ID) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -81,13 +99,13 @@ class SimpleTimeZone {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getOffset(int era, int year, int month, int day, int dayOfWeek, int millis) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -95,11 +113,11 @@ class SimpleTimeZone {
   @throwable("java.lang.UnsupportedOperationException")
   public int getDSTSavings() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean hasSameRules(java.util.TimeZone other) { return false; }
+  public boolean hasSameRules(Any other) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getRawOffset() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean inDaylightTime(java.util.Date date) { return false; }
+  public boolean inDaylightTime(Any date) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean useDaylightTime() { return false; }
   @throwable("java.lang.UnsupportedOperationException")

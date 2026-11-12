@@ -56,18 +56,36 @@ class DropTarget {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DropTarget bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public DropTarget(java.awt.Component c, int ops, java.awt.dnd.DropTargetListener dtl) { }
+  public DropTarget(Any c, int ops, Any dtl) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public DropTarget(java.awt.Component c, java.awt.dnd.DropTargetListener dtl) { }
+  public DropTarget(Any c, Any dtl) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
   public DropTarget() { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public DropTarget(java.awt.Component c, int ops, java.awt.dnd.DropTargetListener dtl, boolean act) { }
+  public DropTarget(Any c, int ops, Any dtl, boolean act) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public DropTarget(java.awt.Component c, int ops, java.awt.dnd.DropTargetListener dtl, boolean act, java.awt.datatransfer.FlavorMap fm) { }
+  public DropTarget(Any c, int ops, Any dtl, boolean act, Any fm) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -79,50 +97,50 @@ class DropTarget {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isActive() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.awt.Component getComponent() { return null; }
+  public synchronized Any getComponent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void drop(java.awt.dnd.DropTargetDropEvent dtde) { }
+  public synchronized void drop(Any dtde) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void setComponent(java.awt.Component c) { }
+  public synchronized void setComponent(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.dnd.DropTargetContext createDropTargetContext() { return null; }
+  Any createDropTargetContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setDefaultActions(int ops) { }
   @throwable("java.lang.UnsupportedOperationException, java.util.TooManyListenersException")
-  public synchronized void addDropTargetListener(java.awt.dnd.DropTargetListener dtl) { }
+  public synchronized void addDropTargetListener(Any dtl) { }
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized void setActive(boolean isActive) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void clearAutoscroll() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.dnd.DropTargetContext getDropTargetContext() { return null; }
+  public Any getDropTargetContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void dragEnter(java.awt.dnd.DropTargetDragEvent dtde) { }
+  public synchronized void dragEnter(Any dtde) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void initializeAutoscrolling(java.awt.Point p) { }
+  void initializeAutoscrolling(Any p) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void dragOver(java.awt.dnd.DropTargetDragEvent dtde) { }
+  public synchronized void dragOver(Any dtde) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void updateAutoscroll(java.awt.Point dragCursorLocn) { }
+  void updateAutoscroll(Any dragCursorLocn) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void dropActionChanged(java.awt.dnd.DropTargetDragEvent dtde) { }
+  public synchronized void dropActionChanged(Any dtde) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void dragExit(java.awt.dnd.DropTargetEvent dte) { }
+  public synchronized void dragExit(Any dte) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.dnd.DropTarget.DropTargetAutoScroller createDropTargetAutoScroller(java.awt.Component c, java.awt.Point p) { return null; }
+  Any createDropTargetAutoScroller(Any c, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getDefaultActions() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removeDropTargetListener(java.awt.dnd.DropTargetListener dtl) { }
+  public synchronized void removeDropTargetListener(Any dtl) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFlavorMap(java.awt.datatransfer.FlavorMap fm) { }
+  public void setFlavorMap(Any fm) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.datatransfer.FlavorMap getFlavorMap() { return null; }
+  public Any getFlavorMap() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void addNotify() { }
   @throwable("java.lang.UnsupportedOperationException")

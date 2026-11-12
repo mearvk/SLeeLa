@@ -56,6 +56,24 @@ class ClassBuilder {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ClassBuilder bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,40 +82,40 @@ class ClassBuilder {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.ClassBuilder withFlags(int flags) { return null; }
+  public default Any withFlags(int flags) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.ClassBuilder withFlags(java.lang.reflect.AccessFlag... flags) { return null; }
+  public default Any withFlags(Any... flags) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.ClassBuilder withMethod(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, int methodFlags, java.util.function.Consumer<? super java.lang.classfile.MethodBuilder> handler) { return null; }
+  public Any withMethod(Any name, Any descriptor, int methodFlags, Any handler) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.ClassBuilder withMethod(java.lang.String name, java.lang.constant.MethodTypeDesc descriptor, int methodFlags, java.util.function.Consumer<? super java.lang.classfile.MethodBuilder> handler) { return null; }
+  public default Any withMethod(String name, Any descriptor, int methodFlags, Any handler) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.ClassBuilder withMethodBody(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, int methodFlags, java.util.function.Consumer<? super java.lang.classfile.CodeBuilder> handler) { return null; }
+  public default Any withMethodBody(Any name, Any descriptor, int methodFlags, Any handler) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.ClassBuilder withMethodBody(java.lang.String name, java.lang.constant.MethodTypeDesc descriptor, int methodFlags, java.util.function.Consumer<? super java.lang.classfile.CodeBuilder> handler) { return null; }
+  public default Any withMethodBody(String name, Any descriptor, int methodFlags, Any handler) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.ClassBuilder withSuperclass(java.lang.classfile.constantpool.ClassEntry superclassEntry) { return null; }
+  public default Any withSuperclass(Any superclassEntry) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.ClassBuilder withField(java.lang.String name, java.lang.constant.ClassDesc descriptor, java.util.function.Consumer<? super java.lang.classfile.FieldBuilder> handler) { return null; }
+  public default Any withField(String name, Any descriptor, Any handler) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.ClassBuilder withField(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, int flags) { return null; }
+  public default Any withField(Any name, Any descriptor, int flags) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.ClassBuilder withField(java.lang.String name, java.lang.constant.ClassDesc descriptor, int flags) { return null; }
+  public default Any withField(String name, Any descriptor, int flags) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.ClassBuilder withField(java.lang.classfile.constantpool.Utf8Entry name, java.lang.classfile.constantpool.Utf8Entry descriptor, java.util.function.Consumer<? super java.lang.classfile.FieldBuilder> handler) { return null; }
+  public Any withField(Any name, Any descriptor, Any handler) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.ClassBuilder transformField(java.lang.classfile.FieldModel field, java.lang.classfile.FieldTransform transform) { return null; }
+  public Any transformField(Any field, Any transform) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.ClassBuilder transformMethod(java.lang.classfile.MethodModel method, java.lang.classfile.MethodTransform transform) { return null; }
+  public Any transformMethod(Any method, Any transform) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.ClassBuilder withInterfaces(java.util.List<java.lang.classfile.constantpool.ClassEntry> interfaces) { return null; }
+  public default Any withInterfaces(Any interfaces) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.ClassBuilder withInterfaces(java.lang.classfile.constantpool.ClassEntry... interfaces) { return null; }
+  public default Any withInterfaces(Any... interfaces) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.ClassBuilder withInterfaceSymbols(java.util.List<java.lang.constant.ClassDesc> interfaces) { return null; }
+  public default Any withInterfaceSymbols(Any interfaces) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.ClassBuilder withInterfaceSymbols(java.lang.constant.ClassDesc... interfaces) { return null; }
+  public default Any withInterfaceSymbols(Any... interfaces) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.ClassBuilder withVersion(int major, int minor) { return null; }
+  public default Any withVersion(int major, int minor) { return null; }
   < ---- END java signatures ---- >
 }

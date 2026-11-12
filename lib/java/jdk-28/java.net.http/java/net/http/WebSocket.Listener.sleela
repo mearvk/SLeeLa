@@ -57,6 +57,24 @@ class Listener {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Listener bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -65,18 +83,18 @@ class Listener {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.concurrent.CompletionStage<?> onClose(java.net.http.WebSocket webSocket, int statusCode, java.lang.String reason) { return null; }
+  public default Any onClose(Any webSocket, int statusCode, String reason) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default void onError(java.net.http.WebSocket webSocket, java.lang.Throwable error) { }
+  public default void onError(Any webSocket, Any error) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public default void onOpen(java.net.http.WebSocket webSocket) { }
+  public default void onOpen(Any webSocket) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.concurrent.CompletionStage<?> onText(java.net.http.WebSocket webSocket, java.lang.CharSequence data, boolean last) { return null; }
+  public default Any onText(Any webSocket, Any data, boolean last) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.concurrent.CompletionStage<?> onBinary(java.net.http.WebSocket webSocket, java.nio.ByteBuffer data, boolean last) { return null; }
+  public default Any onBinary(Any webSocket, Any data, boolean last) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.concurrent.CompletionStage<?> onPing(java.net.http.WebSocket webSocket, java.nio.ByteBuffer message) { return null; }
+  public default Any onPing(Any webSocket, Any message) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.concurrent.CompletionStage<?> onPong(java.net.http.WebSocket webSocket, java.nio.ByteBuffer message) { return null; }
+  public default Any onPong(Any webSocket, Any message) { return null; }
   < ---- END java signatures ---- >
 }

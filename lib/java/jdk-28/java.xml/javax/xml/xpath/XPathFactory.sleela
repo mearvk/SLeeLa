@@ -56,6 +56,24 @@ class XPathFactory {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public XPathFactory bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String DEFAULT_PROPERTY_NAME = "javax.xml.xpath.XPathFactory";
@@ -75,28 +93,28 @@ class XPathFactory {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getProperty(java.lang.String name) { return null; }
+  public String getProperty(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.xml.xpath.XPathFactoryConfigurationException")
-  public static javax.xml.xpath.XPathFactory newInstance(java.lang.String uri, java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { return null; }
+  public static Any newInstance(String uri, String factoryClassName, Any classLoader) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.xml.xpath.XPathFactoryConfigurationException")
-  public static javax.xml.xpath.XPathFactory newInstance(java.lang.String uri) { return null; }
+  public static Any newInstance(String uri) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.xml.xpath.XPathFactory newInstance() { return null; }
+  public static Any newInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setProperty(java.lang.String name, java.lang.String value) { }
+  public void setProperty(String name, String value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setXPathVariableResolver(javax.xml.xpath.XPathVariableResolver resolver) { }
+  public void setXPathVariableResolver(Any resolver) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setXPathFunctionResolver(javax.xml.xpath.XPathFunctionResolver resolver) { }
+  public void setXPathFunctionResolver(Any resolver) { }
   @throwable("java.lang.AbstractMethodError")
-  public boolean isObjectModelSupported(java.lang.String objectModel) { return false; }
+  public boolean isObjectModelSupported(String objectModel) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.xpath.XPath newXPath() { return null; }
+  public Any newXPath() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.xml.xpath.XPathFactory newDefaultInstance() { return null; }
+  public static Any newDefaultInstance() { return null; }
   @throwable("java.lang.AbstractMethodError, javax.xml.xpath.XPathFactoryConfigurationException")
-  public boolean getFeature(java.lang.String name) { return false; }
+  public boolean getFeature(String name) { return false; }
   @throwable("java.lang.AbstractMethodError, javax.xml.xpath.XPathFactoryConfigurationException")
-  public void setFeature(java.lang.String name, boolean value) { }
+  public void setFeature(String name, boolean value) { }
   < ---- END java signatures ---- >
 }

@@ -56,10 +56,28 @@ class LabelView {
   String javaKind = "class";
   String javaSuper = "javax.swing.text.GlyphView";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public LabelView bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public LabelView(javax.swing.text.Element elem) { }
+  public LabelView(Any elem) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -75,18 +93,18 @@ class LabelView {
   @throwable("java.lang.UnsupportedOperationException")
   void setUnderline(boolean u) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getForeground() { return null; }
+  public Any getForeground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getBackground() { return null; }
+  public Any getBackground() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setBackground(java.awt.Color bg) { }
+  void setBackground(Any bg) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isSuperscript() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isSubscript() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void changedUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  public void changedUpdate(Any e, Any a, Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void setPropertiesFromAttributes() { }
@@ -96,7 +114,7 @@ class LabelView {
   public boolean isStrikeThrough() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.FontMetrics getFontMetrics() { return null; }
+  Any getFontMetrics() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void setStrikeThrough(boolean s) { }
@@ -104,6 +122,6 @@ class LabelView {
   @throwable("java.lang.UnsupportedOperationException")
   void setSubscript(boolean s) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Font getFont() { return null; }
+  public Any getFont() { return null; }
   < ---- END java signatures ---- >
 }

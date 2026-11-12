@@ -56,6 +56,24 @@ class MemorySegment {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MemorySegment bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any NULL = null;
@@ -68,53 +86,53 @@ class MemorySegment {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.foreign.MemorySegment.Scope scope() { return null; }
+  public Any scope() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public char get(java.lang.foreign.ValueLayout.OfChar layout, long offset) { return 0; }
+  public char get(Any layout, long offset) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean equals(java.lang.Object that) { return false; }
+  public boolean equals(Any that) { return false; }
   @throwable("java.lang.AbstractMethodError")
   public int hashCode() { return 0; }
   @throwable("java.lang.AbstractMethodError")
   public void load() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void copy(java.lang.foreign.MemorySegment srcSegment, java.lang.foreign.ValueLayout srcElementLayout, long srcOffset, java.lang.foreign.MemorySegment dstSegment, java.lang.foreign.ValueLayout dstElementLayout, long dstOffset, long elementCount) { }
+  public static void copy(Any srcSegment, Any srcElementLayout, long srcOffset, Any dstSegment, Any dstElementLayout, long dstOffset, long elementCount) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void copy(java.lang.foreign.MemorySegment srcSegment, long srcOffset, java.lang.foreign.MemorySegment dstSegment, long dstOffset, long bytes) { }
+  public static void copy(Any srcSegment, long srcOffset, Any dstSegment, long dstOffset, long bytes) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void copy(java.lang.Object srcArray, int srcIndex, java.lang.foreign.MemorySegment dstSegment, java.lang.foreign.ValueLayout dstLayout, long dstOffset, int elementCount) { }
+  public static void copy(Any srcArray, int srcIndex, Any dstSegment, Any dstLayout, long dstOffset, int elementCount) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void copy(java.lang.foreign.MemorySegment srcSegment, java.lang.foreign.ValueLayout srcLayout, long srcOffset, java.lang.Object dstArray, int dstIndex, int elementCount) { }
+  public static void copy(Any srcSegment, Any srcLayout, long srcOffset, Any dstArray, int dstIndex, int elementCount) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static long mismatch(java.lang.foreign.MemorySegment srcSegment, long srcFromOffset, long srcToOffset, java.lang.foreign.MemorySegment dstSegment, long dstFromOffset, long dstToOffset) { return 0; }
+  public static long mismatch(Any srcSegment, long srcFromOffset, long srcToOffset, Any dstSegment, long dstFromOffset, long dstToOffset) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public long mismatch(java.lang.foreign.MemorySegment other) { return 0; }
+  public long mismatch(Any other) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public byte[] toArray(java.lang.foreign.ValueLayout.OfByte elementLayout) { return null; }
+  public byte[] toArray(Any elementLayout) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.foreign.MemorySegment fill(byte value) { return null; }
+  public Any fill(byte value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.Stream<java.lang.foreign.MemorySegment> elements(java.lang.foreign.MemoryLayout elementLayout) { return null; }
+  public Any elements(Any elementLayout) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Spliterator<java.lang.foreign.MemorySegment> spliterator(java.lang.foreign.MemoryLayout elementLayout) { return null; }
+  public Any spliterator(Any elementLayout) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void set(java.lang.foreign.ValueLayout.OfLong layout, long offset, long value) { }
+  public void set(Any layout, long offset, long value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void set(java.lang.foreign.ValueLayout.OfDouble layout, long offset, double value) { }
+  public void set(Any layout, long offset, double value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void set(java.lang.foreign.ValueLayout.OfByte layout, long offset, byte value) { }
+  public void set(Any layout, long offset, byte value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void set(java.lang.foreign.AddressLayout layout, long offset, java.lang.foreign.MemorySegment value) { }
+  public void set(Any layout, long offset, Any value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void set(java.lang.foreign.ValueLayout.OfBoolean layout, long offset, boolean value) { }
+  public void set(Any layout, long offset, boolean value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void set(java.lang.foreign.ValueLayout.OfChar layout, long offset, char value) { }
+  public void set(Any layout, long offset, char value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void set(java.lang.foreign.ValueLayout.OfShort layout, long offset, short value) { }
+  public void set(Any layout, long offset, short value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void set(java.lang.foreign.ValueLayout.OfFloat layout, long offset, float value) { }
+  public void set(Any layout, long offset, float value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void set(java.lang.foreign.ValueLayout.OfInt layout, long offset, int value) { }
+  public void set(Any layout, long offset, int value) { }
   @throwable("java.lang.AbstractMethodError")
   public boolean isNative() { return false; }
   @throwable("java.lang.AbstractMethodError")
@@ -128,82 +146,82 @@ class MemorySegment {
   @throwable("java.lang.AbstractMethodError")
   public void force() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.foreign.MemorySegment ofArray(byte[] byteArray) { return null; }
+  public static Any ofArray(byte[] byteArray) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.foreign.MemorySegment ofArray(double[] doubleArray) { return null; }
+  public static Any ofArray(double[] doubleArray) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.foreign.MemorySegment ofArray(short[] shortArray) { return null; }
+  public static Any ofArray(short[] shortArray) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.foreign.MemorySegment ofArray(long[] longArray) { return null; }
+  public static Any ofArray(long[] longArray) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.foreign.MemorySegment ofArray(char[] charArray) { return null; }
+  public static Any ofArray(char[] charArray) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.foreign.MemorySegment ofArray(float[] floatArray) { return null; }
+  public static Any ofArray(float[] floatArray) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.foreign.MemorySegment ofArray(int[] intArray) { return null; }
+  public static Any ofArray(int[] intArray) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.foreign.MemorySegment copyFrom(java.lang.foreign.MemorySegment src) { return null; }
+  public Any copyFrom(Any src) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getString(long offset) { return null; }
+  public String getString(long offset) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getString(long offset, java.nio.charset.Charset charset) { return null; }
+  public String getString(long offset, Any charset) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean isAccessibleBy(java.lang.Thread thread) { return false; }
+  public boolean isAccessibleBy(Any thread) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.foreign.MemorySegment ofBuffer(java.nio.Buffer buffer) { return null; }
+  public static Any ofBuffer(Any buffer) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.foreign.MemorySegment ofAddress(long address) { return null; }
+  public static Any ofAddress(long address) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Optional<java.lang.Object> heapBase() { return null; }
+  public Any heapBase() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public long byteSize() { return 0; }
   @throwable("java.lang.AbstractMethodError")
   public long maxByteAlignment() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.foreign.MemorySegment asSlice(long offset) { return null; }
+  public Any asSlice(long offset) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.foreign.MemorySegment asSlice(long offset, long newSize, long byteAlignment) { return null; }
+  public Any asSlice(long offset, long newSize, long byteAlignment) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.foreign.MemorySegment asSlice(long offset, long newSize) { return null; }
+  public Any asSlice(long offset, long newSize) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.foreign.MemorySegment asSlice(long offset, java.lang.foreign.MemoryLayout layout) { return null; }
+  public Any asSlice(long offset, Any layout) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.foreign.MemorySegment reinterpret(long newSize, java.lang.foreign.Arena arena, java.util.function.Consumer<java.lang.foreign.MemorySegment> cleanup) { return null; }
+  public Any reinterpret(long newSize, Any arena, Any cleanup) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.foreign.MemorySegment reinterpret(java.lang.foreign.Arena arena, java.util.function.Consumer<java.lang.foreign.MemorySegment> cleanup) { return null; }
+  public Any reinterpret(Any arena, Any cleanup) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.foreign.MemorySegment reinterpret(long newSize) { return null; }
+  public Any reinterpret(long newSize) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.foreign.MemorySegment asReadOnly() { return null; }
+  public Any asReadOnly() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isMapped() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Optional<java.lang.foreign.MemorySegment> asOverlappingSlice(java.lang.foreign.MemorySegment other) { return null; }
+  public Any asOverlappingSlice(Any other) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setString(long offset, java.lang.String str) { }
+  public void setString(long offset, String str) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setString(long offset, java.lang.String str, java.nio.charset.Charset charset) { }
+  public void setString(long offset, String str, Any charset) { }
   @throwable("java.lang.AbstractMethodError")
-  public double getAtIndex(java.lang.foreign.ValueLayout.OfDouble layout, long index) { return 0.0; }
+  public double getAtIndex(Any layout, long index) { return 0.0; }
   @throwable("java.lang.AbstractMethodError")
-  public void setAtIndex(java.lang.foreign.ValueLayout.OfByte layout, long index, byte value) { }
+  public void setAtIndex(Any layout, long index, byte value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setAtIndex(java.lang.foreign.AddressLayout layout, long index, java.lang.foreign.MemorySegment value) { }
+  public void setAtIndex(Any layout, long index, Any value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setAtIndex(java.lang.foreign.ValueLayout.OfChar layout, long index, char value) { }
+  public void setAtIndex(Any layout, long index, char value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setAtIndex(java.lang.foreign.ValueLayout.OfInt layout, long index, int value) { }
+  public void setAtIndex(Any layout, long index, int value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setAtIndex(java.lang.foreign.ValueLayout.OfFloat layout, long index, float value) { }
+  public void setAtIndex(Any layout, long index, float value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setAtIndex(java.lang.foreign.ValueLayout.OfLong layout, long index, long value) { }
+  public void setAtIndex(Any layout, long index, long value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setAtIndex(java.lang.foreign.ValueLayout.OfShort layout, long index, short value) { }
+  public void setAtIndex(Any layout, long index, short value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setAtIndex(java.lang.foreign.ValueLayout.OfDouble layout, long index, double value) { }
+  public void setAtIndex(Any layout, long index, double value) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setAtIndex(java.lang.foreign.ValueLayout.OfBoolean layout, long index, boolean value) { }
+  public void setAtIndex(Any layout, long index, boolean value) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteBuffer asByteBuffer() { return null; }
+  public Any asByteBuffer() { return null; }
   < ---- END java signatures ---- >
 }

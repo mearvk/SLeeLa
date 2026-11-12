@@ -56,6 +56,24 @@ class BigDecimal {
   String javaKind = "class";
   String javaSuper = "java.lang.Number";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BigDecimal bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any ZERO = null;
@@ -74,37 +92,37 @@ class BigDecimal {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public BigDecimal(java.math.BigInteger unscaledVal, int scale) { }
+  public BigDecimal(Any unscaledVal, int scale) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BigDecimal(java.math.BigInteger val, java.math.MathContext mc) { }
+  public BigDecimal(Any val, Any mc) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BigDecimal(java.math.BigInteger val) { }
+  public BigDecimal(Any val) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BigDecimal(long val, java.math.MathContext mc) { }
+  public BigDecimal(long val, Any mc) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BigDecimal(double val, java.math.MathContext mc) { }
+  public BigDecimal(double val, Any mc) { }
   @throwable("java.lang.UnsupportedOperationException")
   public BigDecimal(long val) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BigDecimal(int val, java.math.MathContext mc) { }
+  public BigDecimal(int val, Any mc) { }
   @throwable("java.lang.UnsupportedOperationException")
   public BigDecimal(int val) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BigDecimal(java.math.BigInteger unscaledVal, int scale, java.math.MathContext mc) { }
+  public BigDecimal(Any unscaledVal, int scale, Any mc) { }
   @throwable("java.lang.UnsupportedOperationException")
   public BigDecimal(char[] in) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BigDecimal(char[] in, int offset, int len, java.math.MathContext mc) { }
+  public BigDecimal(char[] in, int offset, int len, Any mc) { }
   @throwable("java.lang.UnsupportedOperationException")
   public BigDecimal(char[] in, int offset, int len) { }
   @throwable("java.lang.UnsupportedOperationException")
   public BigDecimal(double val) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BigDecimal(java.lang.String val, java.math.MathContext mc) { }
+  public BigDecimal(String val, Any mc) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BigDecimal(java.lang.String val) { }
+  public BigDecimal(String val) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BigDecimal(char[] in, java.math.MathContext mc) { }
+  public BigDecimal(char[] in, Any mc) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -114,31 +132,31 @@ class BigDecimal {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object x) { return false; }
+  public boolean equals(Any x) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal abs() { return null; }
+  public Any abs() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal abs(java.math.MathContext mc) { return null; }
+  public Any abs(Any mc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal sqrt(java.math.MathContext mc) { return null; }
+  public Any sqrt(Any mc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal pow(int n) { return null; }
+  public Any pow(int n) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal pow(int n, java.math.MathContext mc) { return null; }
+  public Any pow(int n, Any mc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal min(java.math.BigDecimal val) { return null; }
+  public Any min(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal max(java.math.BigDecimal val) { return null; }
+  public Any max(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal round(java.math.MathContext mc) { return null; }
+  public Any round(Any mc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int signum() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(java.math.BigDecimal val) { return 0; }
+  public int compareTo(Any val) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int intValue() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -148,51 +166,51 @@ class BigDecimal {
   @throwable("java.lang.UnsupportedOperationException")
   public double doubleValue() { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.math.BigDecimal valueOf(long unscaledVal, int scale) { return null; }
+  public static Any valueOf(long unscaledVal, int scale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.math.BigDecimal valueOf(long val) { return null; }
+  public static Any valueOf(long val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.math.BigDecimal valueOf(double val) { return null; }
+  public static Any valueOf(double val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int scale() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal add(java.math.BigDecimal augend, java.math.MathContext mc) { return null; }
+  public Any add(Any augend, Any mc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal add(java.math.BigDecimal augend) { return null; }
+  public Any add(Any augend) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal multiply(java.math.BigDecimal multiplicand) { return null; }
+  public Any multiply(Any multiplicand) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal multiply(java.math.BigDecimal multiplicand, java.math.MathContext mc) { return null; }
+  public Any multiply(Any multiplicand, Any mc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal ulp() { return null; }
+  public Any ulp() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal negate() { return null; }
+  public Any negate() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal negate(java.math.MathContext mc) { return null; }
+  public Any negate(Any mc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal remainder(java.math.BigDecimal divisor) { return null; }
+  public Any remainder(Any divisor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal remainder(java.math.BigDecimal divisor, java.math.MathContext mc) { return null; }
+  public Any remainder(Any divisor, Any mc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal subtract(java.math.BigDecimal subtrahend, java.math.MathContext mc) { return null; }
+  public Any subtract(Any subtrahend, Any mc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal subtract(java.math.BigDecimal subtrahend) { return null; }
+  public Any subtract(Any subtrahend) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger toBigInteger() { return null; }
+  public Any toBigInteger() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal divide(java.math.BigDecimal divisor) { return null; }
+  public Any divide(Any divisor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal divide(java.math.BigDecimal divisor, java.math.RoundingMode roundingMode) { return null; }
+  public Any divide(Any divisor, Any roundingMode) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal divide(java.math.BigDecimal divisor, int roundingMode) { return null; }
+  public Any divide(Any divisor, int roundingMode) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal divide(java.math.BigDecimal divisor, int scale, java.math.RoundingMode roundingMode) { return null; }
+  public Any divide(Any divisor, int scale, Any roundingMode) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal divide(java.math.BigDecimal divisor, int scale, int roundingMode) { return null; }
+  public Any divide(Any divisor, int scale, int roundingMode) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal[] divideAndRemainder(java.math.BigDecimal divisor, java.math.MathContext mc) { return null; }
+  public Any[] divideAndRemainder(Any divisor, Any mc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal[] divideAndRemainder(java.math.BigDecimal divisor) { return null; }
+  public Any[] divideAndRemainder(Any divisor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public long longValueExact() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -202,36 +220,36 @@ class BigDecimal {
   @throwable("java.lang.UnsupportedOperationException")
   public byte byteValueExact() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal scaleByPowerOfTen(int n) { return null; }
+  public Any scaleByPowerOfTen(int n) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal plus(java.math.MathContext mc) { return null; }
+  public Any plus(Any mc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal plus() { return null; }
+  public Any plus() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal divideToIntegralValue(java.math.BigDecimal divisor, java.math.MathContext mc) { return null; }
+  public Any divideToIntegralValue(Any divisor, Any mc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal divideToIntegralValue(java.math.BigDecimal divisor) { return null; }
+  public Any divideToIntegralValue(Any divisor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal movePointRight(int n) { return null; }
+  public Any movePointRight(int n) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger toBigIntegerExact() { return null; }
+  public Any toBigIntegerExact() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int precision() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger unscaledValue() { return null; }
+  public Any unscaledValue() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal setScale(int newScale) { return null; }
+  public Any setScale(int newScale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal setScale(int newScale, java.math.RoundingMode roundingMode) { return null; }
+  public Any setScale(int newScale, Any roundingMode) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal setScale(int newScale, int roundingMode) { return null; }
+  public Any setScale(int newScale, int roundingMode) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal stripTrailingZeros() { return null; }
+  public Any stripTrailingZeros() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigDecimal movePointLeft(int n) { return null; }
+  public Any movePointLeft(int n) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toEngineeringString() { return null; }
+  public String toEngineeringString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toPlainString() { return null; }
+  public String toPlainString() { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class BasicTreeUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.TreeUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BasicTreeUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any collapsedIcon;
@@ -105,41 +123,41 @@ class BasicTreeUI {
   @throwable("java.lang.UnsupportedOperationException")
   void installListeners() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  public Any getPreferredSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c, boolean checkConsistency) { return null; }
+  public Any getPreferredSize(Any c, boolean checkConsistency) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
+  public Any getMinimumSize(Any c) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setSelectionModel(javax.swing.tree.TreeSelectionModel newLSM) { }
+  void setSelectionModel(Any newLSM) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.tree.TreeSelectionModel getSelectionModel() { return null; }
+  Any getSelectionModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void installUI(javax.swing.JComponent c) { }
+  public void installUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void uninstallUI(javax.swing.JComponent c) { }
+  public void uninstallUI(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.MouseListener createMouseListener() { return null; }
+  Any createMouseListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void updateSize() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getRowForPath(javax.swing.JTree tree, javax.swing.tree.TreePath path) { return 0; }
+  public int getRowForPath(Any tree, Any path) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreePath getClosestPathForLocation(javax.swing.JTree tree, int x, int y) { return null; }
+  public Any getClosestPathForLocation(Any tree, int x, int y) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isEditing(javax.swing.JTree tree) { return false; }
+  public boolean isEditing(Any tree) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean stopEditing(javax.swing.JTree tree) { return false; }
+  public boolean stopEditing(Any tree) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void cancelEditing(javax.swing.JTree tree) { }
+  public void cancelEditing(Any tree) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void startEditingAtPath(javax.swing.JTree tree, javax.swing.tree.TreePath path) { }
+  public void startEditingAtPath(Any tree, Any path) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreePath getEditingPath(javax.swing.JTree tree) { return null; }
+  public Any getEditingPath(Any tree) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getRowHeight() { return 0; }
@@ -148,10 +166,10 @@ class BasicTreeUI {
   void setRowHeight(int rowHeight) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setCellRenderer(javax.swing.tree.TreeCellRenderer tcr) { }
+  void setCellRenderer(Any tcr) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setCellEditor(javax.swing.tree.TreeCellEditor editor) { }
+  void setCellEditor(Any editor) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   boolean isRootVisible() { return false; }
@@ -169,7 +187,7 @@ class BasicTreeUI {
   int getLeadSelectionRow() { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.tree.TreeCellRenderer getCellRenderer() { return null; }
+  Any getCellRenderer() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void setRootVisible(boolean newValue) { }
@@ -178,25 +196,25 @@ class BasicTreeUI {
   void setShowsRootHandles(boolean newValue) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.tree.TreeCellEditor getCellEditor() { return null; }
+  Any getCellEditor() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.event.TreeModelListener createTreeModelListener() { return null; }
+  Any createTreeModelListener() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreePath getPathForRow(javax.swing.JTree tree, int row) { return null; }
+  public Any getPathForRow(Any tree, int row) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getRowCount(javax.swing.JTree tree) { return 0; }
+  public int getRowCount(Any tree) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getPathBounds(javax.swing.JTree tree, javax.swing.tree.TreePath path) { return null; }
+  public Any getPathBounds(Any tree, Any path) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.ComponentListener createComponentListener() { return null; }
+  Any createComponentListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintDropLine(java.awt.Graphics g) { }
+  void paintDropLine(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Rectangle getDropLineRect(javax.swing.JTree.DropLocation loc) { return null; }
+  Any getDropLineRect(Any loc) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void setEditable(boolean newValue) { }
@@ -204,20 +222,20 @@ class BasicTreeUI {
   @throwable("java.lang.UnsupportedOperationException")
   boolean isEditable() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getBaseline(javax.swing.JComponent c, int width, int height) { return 0; }
+  public int getBaseline(Any c, int width, int height) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(javax.swing.JComponent c) { return null; }
+  public Any getBaselineResizeBehavior(Any c) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean startEditing(javax.swing.tree.TreePath path, java.awt.event.MouseEvent event) { return false; }
+  boolean startEditing(Any path, Any event) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.tree.TreeModel getModel() { return null; }
+  Any getModel() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setModel(javax.swing.tree.TreeModel model) { }
+  void setModel(Any model) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent x) { return null; }
+  public static Any createUI(Any x) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void completeEditing() { }
@@ -226,7 +244,7 @@ class BasicTreeUI {
   void completeEditing(boolean messageStop, boolean messageCancel, boolean messageTree) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.tree.AbstractLayoutCache createLayoutCache() { return null; }
+  Any createLayoutCache() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void configureLayoutCache() { }
@@ -244,30 +262,30 @@ class BasicTreeUI {
   void completeUIInstall() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Color getHashColor() { return null; }
+  Any getHashColor() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setHashColor(java.awt.Color color) { }
+  void setHashColor(Any color) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setExpandedIcon(javax.swing.Icon newG) { }
+  public void setExpandedIcon(Any newG) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setCollapsedIcon(javax.swing.Icon newG) { }
+  public void setCollapsedIcon(Any newG) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setLeftChildIndent(int newAmount) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setRightChildIndent(int newAmount) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.event.TreeExpansionListener createTreeExpansionListener() { return null; }
+  Any createTreeExpansionListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createSelectionModelPropertyChangeListener() { return null; }
+  Any createSelectionModelPropertyChangeListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.event.TreeSelectionListener createTreeSelectionListener() { return null; }
+  Any createTreeSelectionListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.CellRendererPane createCellRendererPane() { return null; }
+  Any createCellRendererPane() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void prepareForUIUninstall() { }
@@ -276,25 +294,25 @@ class BasicTreeUI {
   void completeUIUninstall() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.tree.TreeCellRenderer createDefaultCellRenderer() { return null; }
+  Any createDefaultCellRenderer() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintVerticalPartOfLeg(java.awt.Graphics g, java.awt.Rectangle clipBounds, java.awt.Insets insets, javax.swing.tree.TreePath path) { }
+  void paintVerticalPartOfLeg(Any g, Any clipBounds, Any insets, Any path) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintHorizontalPartOfLeg(java.awt.Graphics g, java.awt.Rectangle clipBounds, java.awt.Insets insets, java.awt.Rectangle bounds, javax.swing.tree.TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) { }
+  void paintHorizontalPartOfLeg(Any g, Any clipBounds, Any insets, Any bounds, Any path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean shouldPaintExpandControl(javax.swing.tree.TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) { return false; }
+  boolean shouldPaintExpandControl(Any path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintExpandControl(java.awt.Graphics g, java.awt.Rectangle clipBounds, java.awt.Insets insets, java.awt.Rectangle bounds, javax.swing.tree.TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) { }
+  void paintExpandControl(Any g, Any clipBounds, Any insets, Any bounds, Any path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintRow(java.awt.Graphics g, java.awt.Rectangle clipBounds, java.awt.Insets insets, java.awt.Rectangle bounds, javax.swing.tree.TreePath path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) { }
+  void paintRow(Any g, Any clipBounds, Any insets, Any bounds, Any path, int row, boolean isExpanded, boolean hasBeenExpanded, boolean isLeaf) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean isDropLine(javax.swing.JTree.DropLocation loc) { return false; }
+  boolean isDropLine(Any loc) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getRightChildIndent() { return 0; }
   @JavaProtected
@@ -302,35 +320,35 @@ class BasicTreeUI {
   int getHorizontalLegBuffer() { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintHorizontalLine(java.awt.Graphics g, javax.swing.JComponent c, int y, int left, int right) { }
+  void paintHorizontalLine(Any g, Any c, int y, int left, int right) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getRowX(int row, int depth) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.tree.TreePath getLastChildPath(javax.swing.tree.TreePath parent) { return null; }
+  Any getLastChildPath(Any parent) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getVerticalLegBuffer() { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintVerticalLine(java.awt.Graphics g, javax.swing.JComponent c, int x, int top, int bottom) { }
+  void paintVerticalLine(Any g, Any c, int x, int top, int bottom) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getExpandedIcon() { return null; }
+  public Any getExpandedIcon() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void drawCentered(java.awt.Component c, java.awt.Graphics graphics, javax.swing.Icon icon, int x, int y) { }
+  void drawCentered(Any c, Any graphics, Any icon, int x, int y) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getCollapsedIcon() { return null; }
+  public Any getCollapsedIcon() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void drawDashedVerticalLine(java.awt.Graphics g, int x, int y1, int y2) { }
+  void drawDashedVerticalLine(Any g, int x, int y1, int y2) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void drawDashedHorizontalLine(java.awt.Graphics g, int y, int x1, int x2) { }
+  void drawDashedHorizontalLine(Any g, int y, int x1, int x2) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void updateExpandedDescendants(javax.swing.tree.TreePath path) { }
+  void updateExpandedDescendants(Any path) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void updateLayoutCacheExpandedNodes() { }
@@ -339,55 +357,55 @@ class BasicTreeUI {
   void updateLeadSelectionRow() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.tree.TreeCellEditor createDefaultCellEditor() { return null; }
+  Any createDefaultCellEditor() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.event.CellEditorListener createCellEditorListener() { return null; }
+  Any createCellEditorListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.tree.AbstractLayoutCache.NodeDimensions createNodeDimensions() { return null; }
+  Any createNodeDimensions() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredMinSize() { return null; }
+  public Any getPreferredMinSize() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void updateCachedPreferredSize() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean isLocationInExpandControl(javax.swing.tree.TreePath path, int mouseX, int mouseY) { return false; }
+  boolean isLocationInExpandControl(Any path, int mouseX, int mouseY) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void handleExpandControlClick(javax.swing.tree.TreePath path, int mouseX, int mouseY) { }
+  void handleExpandControlClick(Any path, int mouseX, int mouseY) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void toggleExpandState(javax.swing.tree.TreePath path) { }
+  void toggleExpandState(Any path) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void ensureRowsAreVisible(int beginRow, int endRow) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean isMultiSelectEvent(java.awt.event.MouseEvent event) { return false; }
+  boolean isMultiSelectEvent(Any event) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean isToggleSelectionEvent(java.awt.event.MouseEvent event) { return false; }
+  boolean isToggleSelectionEvent(Any event) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean isToggleEvent(java.awt.event.MouseEvent event) { return false; }
+  boolean isToggleEvent(Any event) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getLeftChildIndent() { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void pathWasExpanded(javax.swing.tree.TreePath path) { }
+  void pathWasExpanded(Any path) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void pathWasCollapsed(javax.swing.tree.TreePath path) { }
+  void pathWasCollapsed(Any path) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPreferredMinSize(java.awt.Dimension newSize) { }
+  public void setPreferredMinSize(Any newSize) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void checkForClickInExpandControl(javax.swing.tree.TreePath path, int mouseX, int mouseY) { }
+  void checkForClickInExpandControl(Any path, int mouseX, int mouseY) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void selectPathForEvent(javax.swing.tree.TreePath path, java.awt.event.MouseEvent event) { }
+  void selectPathForEvent(Any path, Any event) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void updateRenderer() { }
@@ -402,7 +420,7 @@ class BasicTreeUI {
   void installDefaults() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.KeyListener createKeyListener() { return null; }
+  Any createKeyListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void uninstallListeners() { }
@@ -414,16 +432,16 @@ class BasicTreeUI {
   void installComponents() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createPropertyChangeListener() { return null; }
+  Any createPropertyChangeListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void uninstallComponents() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.FocusListener createFocusListener() { return null; }
+  Any createFocusListener() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
+  public Any getMaximumSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
+  public void paint(Any g, Any c) { }
   < ---- END java signatures ---- >
 }

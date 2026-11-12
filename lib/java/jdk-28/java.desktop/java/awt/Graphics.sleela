@@ -56,6 +56,24 @@ class Graphics {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Graphics bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -72,13 +90,13 @@ class Graphics {
   @throwable("java.lang.UnsupportedOperationException")
   public void finalize() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Graphics create(int x, int y, int width, int height) { return null; }
+  public Any create(int x, int y, int width, int height) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Graphics create() { return null; }
+  public Any create() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setColor(java.awt.Color c) { }
+  public void setColor(Any c) { }
   @throwable("java.lang.AbstractMethodError")
   public void dispose() { }
   @throwable("java.lang.AbstractMethodError")
@@ -86,37 +104,37 @@ class Graphics {
   @throwable("java.lang.AbstractMethodError")
   public void setClip(int x, int y, int width, int height) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setClip(java.awt.Shape clip) { }
+  public void setClip(Any clip) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Shape getClip() { return null; }
+  public Any getClip() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void clipRect(int x, int y, int width, int height) { }
   @throwable("java.lang.AbstractMethodError")
   public void drawLine(int x1, int y1, int x2, int y2) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Color getColor() { return null; }
+  public Any getColor() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void fillRect(int x, int y, int width, int height) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void drawPolygon(java.awt.Polygon p) { }
+  public void drawPolygon(Any p) { }
   @throwable("java.lang.AbstractMethodError")
   public void drawPolygon(int[] xPoints, int[] yPoints, int nPoints) { }
   @throwable("java.lang.AbstractMethodError")
   public void fillPolygon(int[] xPoints, int[] yPoints, int nPoints) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void fillPolygon(java.awt.Polygon p) { }
+  public void fillPolygon(Any p) { }
   @throwable("java.lang.AbstractMethodError")
-  public void drawString(java.text.AttributedCharacterIterator iterator, int x, int y) { }
+  public void drawString(Any iterator, int x, int y) { }
   @throwable("java.lang.AbstractMethodError")
-  public void drawString(java.lang.String str, int x, int y) { }
+  public void drawString(String str, int x, int y) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getClipBounds(java.awt.Rectangle r) { return null; }
+  public Any getClipBounds(Any r) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Rectangle getClipBounds() { return null; }
+  public Any getClipBounds() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void setPaintMode() { }
   @throwable("java.lang.AbstractMethodError")
-  public void setXORMode(java.awt.Color c1) { }
+  public void setXORMode(Any c1) { }
   @throwable("java.lang.AbstractMethodError")
   public void copyArea(int x, int y, int width, int height, int dx, int dy) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -144,29 +162,29 @@ class Graphics {
   @throwable("java.lang.UnsupportedOperationException")
   public void drawBytes(byte[] data, int offset, int length, int x, int y) { }
   @throwable("java.lang.AbstractMethodError")
-  public boolean drawImage(java.awt.Image img, int x, int y, int width, int height, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) { return false; }
+  public boolean drawImage(Any img, int x, int y, int width, int height, Any bgcolor, Any observer) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean drawImage(java.awt.Image img, int x, int y, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) { return false; }
+  public boolean drawImage(Any img, int x, int y, Any bgcolor, Any observer) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.image.ImageObserver observer) { return false; }
+  public boolean drawImage(Any img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, Any observer) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) { return false; }
+  public boolean drawImage(Any img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, Any bgcolor, Any observer) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean drawImage(java.awt.Image img, int x, int y, int width, int height, java.awt.image.ImageObserver observer) { return false; }
+  public boolean drawImage(Any img, int x, int y, int width, int height, Any observer) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean drawImage(java.awt.Image img, int x, int y, java.awt.image.ImageObserver observer) { return false; }
+  public boolean drawImage(Any img, int x, int y, Any observer) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getClipRect() { return null; }
+  public Any getClipRect() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hitClip(int x, int y, int width, int height) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.FontMetrics getFontMetrics(java.awt.Font f) { return null; }
+  public Any getFontMetrics(Any f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.FontMetrics getFontMetrics() { return null; }
+  public Any getFontMetrics() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Font getFont() { return null; }
+  public Any getFont() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setFont(java.awt.Font font) { }
+  public void setFont(Any font) { }
   @throwable("java.lang.AbstractMethodError")
   public void clearRect(int x, int y, int width, int height) { }
   < ---- END java signatures ---- >

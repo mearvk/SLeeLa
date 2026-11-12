@@ -56,6 +56,24 @@ class CachedRowSet {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public CachedRowSet bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final boolean COMMIT_ON_ACCEPT_CHANGES = false;
@@ -72,43 +90,43 @@ class CachedRowSet {
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void commit() { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void execute(java.sql.Connection conn) { }
+  public void execute(Any conn) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void release() { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.util.Collection<?> toCollection(int column) { return null; }
+  public Any toCollection(int column) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.util.Collection<?> toCollection(java.lang.String column) { return null; }
+  public Any toCollection(String column) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.util.Collection<?> toCollection() { return null; }
+  public Any toCollection() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void rollback() { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void rollback(java.sql.Savepoint s) { }
+  public void rollback(Any s) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public javax.sql.RowSet createShared() { return null; }
+  public Any createShared() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.String getTableName() { return null; }
+  public String getTableName() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setMetaData(javax.sql.RowSetMetaData md) { }
+  public void setMetaData(Any md) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.ResultSet getOriginal() { return null; }
+  public Any getOriginal() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.ResultSet getOriginalRow() { return null; }
+  public Any getOriginalRow() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setTableName(java.lang.String tabName) { }
+  public void setTableName(String tabName) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public boolean getShowDeleted() { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void setShowDeleted(boolean b) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void populate(java.sql.ResultSet rs, int startRow) { }
+  public void populate(Any rs, int startRow) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void populate(java.sql.ResultSet data) { }
+  public void populate(Any data) { }
   @throwable("java.lang.AbstractMethodError, javax.sql.rowset.spi.SyncProviderException")
   public void acceptChanges() { }
   @throwable("java.lang.AbstractMethodError, javax.sql.rowset.spi.SyncProviderException")
-  public void acceptChanges(java.sql.Connection con) { }
+  public void acceptChanges(Any con) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void restoreOriginal() { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
@@ -120,11 +138,11 @@ class CachedRowSet {
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public boolean columnUpdated(int idx) { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public boolean columnUpdated(java.lang.String columnName) { return false; }
+  public boolean columnUpdated(String columnName) { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public javax.sql.rowset.spi.SyncProvider getSyncProvider() { return null; }
+  public Any getSyncProvider() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setSyncProvider(java.lang.String provider) { }
+  public void setSyncProvider(String provider) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void setOriginalRow() { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
@@ -132,15 +150,15 @@ class CachedRowSet {
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void setKeyColumns(int[] keys) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public javax.sql.rowset.CachedRowSet createCopy() { return null; }
+  public Any createCopy() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public javax.sql.rowset.CachedRowSet createCopySchema() { return null; }
+  public Any createCopySchema() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public javax.sql.rowset.CachedRowSet createCopyNoConstraints() { return null; }
+  public Any createCopyNoConstraints() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public javax.sql.rowset.RowSetWarning getRowSetWarnings() { return null; }
+  public Any getRowSetWarnings() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void rowSetPopulated(javax.sql.RowSetEvent event, int numRows) { }
+  public void rowSetPopulated(Any event, int numRows) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void setPageSize(int size) { }
   @throwable("java.lang.AbstractMethodError")

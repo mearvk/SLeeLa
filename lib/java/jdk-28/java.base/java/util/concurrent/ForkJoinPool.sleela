@@ -56,6 +56,24 @@ class ForkJoinPool {
   String javaKind = "class";
   String javaSuper = "java.util.concurrent.AbstractExecutorService";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ForkJoinPool bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any defaultForkJoinWorkerThreadFactory = null;
@@ -63,13 +81,13 @@ class ForkJoinPool {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public ForkJoinPool(int parallelism, java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory factory, java.lang.Thread.UncaughtExceptionHandler handler, boolean asyncMode, int corePoolSize, int maximumPoolSize, int minimumRunnable, java.util.function.Predicate<? super java.util.concurrent.ForkJoinPool> saturate, long keepAliveTime, java.util.concurrent.TimeUnit unit) { }
+  public ForkJoinPool(int parallelism, Any factory, Any handler, boolean asyncMode, int corePoolSize, int maximumPoolSize, int minimumRunnable, Any saturate, long keepAliveTime, Any unit) { }
   @throwable("java.lang.UnsupportedOperationException")
   public ForkJoinPool() { }
   @throwable("java.lang.UnsupportedOperationException")
   public ForkJoinPool(int parallelism) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public ForkJoinPool(int parallelism, java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory factory, java.lang.Thread.UncaughtExceptionHandler handler, boolean asyncMode) { }
+  public ForkJoinPool(int parallelism, Any factory, Any handler, boolean asyncMode) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -81,68 +99,80 @@ class ForkJoinPool {
   @throwable("java.lang.UnsupportedOperationException")
   public void shutdown() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory getFactory() { return null; }
+  public Any getFactory() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isTerminated() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Thread.UncaughtExceptionHandler getUncaughtExceptionHandler() { return null; }
+  public Any getUncaughtExceptionHandler() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void execute(java.util.concurrent.ForkJoinTask<?> task) { }
+  public void execute(Any task) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> java.util.concurrent.ForkJoinTask<T> externalSubmit(java.util.concurrent.ForkJoinTask<T> task) { return null; }
+  public Any externalSubmit(Any task) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public long getQueuedTaskCount() { return 0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> java.util.concurrent.ForkJoinTask<T> lazySubmit(java.util.concurrent.ForkJoinTask<T> task) { return null; }
+  public Any lazySubmit(Any task) { return null; }
+  @generic("<V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <V> java.util.concurrent.ScheduledFuture<V> schedule(java.util.concurrent.Callable<V> callable, long delay, java.util.concurrent.TimeUnit unit) { return null; }
+  public Any schedule(Any callable, long delay, Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int getCommonPoolParallelism() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isShutdown() { return false; }
   @JavaProtected
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  <T> java.util.concurrent.RunnableFuture<T> newTaskFor(java.lang.Runnable runnable, T value) { return null; }
+  Any newTaskFor(Any runnable, Any value) { return null; }
   @JavaProtected
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  <T> java.util.concurrent.RunnableFuture<T> newTaskFor(java.util.concurrent.Callable<T> callable) { return null; }
+  Any newTaskFor(Any callable) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.ForkJoinTask<?> submit(java.lang.Runnable task) { return null; }
+  public Any submit(Any task) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> java.util.concurrent.ForkJoinTask<T> submit(java.lang.Runnable task, T result) { return null; }
+  public Any submit(Any task, Any result) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException")
-  public <T> T invokeAny(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks, long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  public Any invokeAny(Any tasks, long timeout, Any unit) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException")
-  public <T> T invokeAny(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks) { return null; }
+  public Any invokeAny(Any tasks) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public <T> java.util.List<java.util.concurrent.Future<T>> invokeAll(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks, long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  public Any invokeAll(Any tasks, long timeout, Any unit) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public <T> java.util.List<java.util.concurrent.Future<T>> invokeAll(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks) { return null; }
+  public Any invokeAll(Any tasks) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public boolean awaitTermination(long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  public boolean awaitTermination(long timeout, Any unit) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<java.lang.Runnable> shutdownNow() { return null; }
+  public Any shutdownNow() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.util.concurrent.ForkJoinTask<?> pollSubmission() { return null; }
+  Any pollSubmission() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void cancelDelayedTasksOnShutdown() { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getParallelism() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.concurrent.ForkJoinPool commonPool() { return null; }
+  public static Any commonPool() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int setParallelism(int size) { return 0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> java.util.List<java.util.concurrent.Future<T>> invokeAllUninterruptibly(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks) { return null; }
+  public Any invokeAllUninterruptibly(Any tasks) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.ScheduledFuture<?> scheduleAtFixedRate(java.lang.Runnable command, long initialDelay, long period, java.util.concurrent.TimeUnit unit) { return null; }
+  public Any scheduleAtFixedRate(Any command, long initialDelay, long period, Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.ScheduledFuture<?> scheduleWithFixedDelay(java.lang.Runnable command, long initialDelay, long delay, java.util.concurrent.TimeUnit unit) { return null; }
+  public Any scheduleWithFixedDelay(Any command, long initialDelay, long delay, Any unit) { return null; }
+  @generic("<V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <V> java.util.concurrent.ForkJoinTask<V> submitWithTimeout(java.util.concurrent.Callable<V> callable, long timeout, java.util.concurrent.TimeUnit unit, java.util.function.Consumer<? super java.util.concurrent.ForkJoinTask<V>> timeoutAction) { return null; }
+  public Any submitWithTimeout(Any callable, long timeout, Any unit, Any timeoutAction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getPoolSize() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -163,12 +193,12 @@ class ForkJoinPool {
   public boolean hasQueuedSubmissions() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  int drainTasksTo(java.util.Collection<? super java.util.concurrent.ForkJoinTask<?>> c) { return 0; }
+  int drainTasksTo(Any c) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isTerminating() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean awaitQuiescence(long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  public boolean awaitQuiescence(long timeout, Any unit) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public static void managedBlock(java.util.concurrent.ForkJoinPool.ManagedBlocker blocker) { }
+  public static void managedBlock(Any blocker) { }
   < ---- END java signatures ---- >
 }

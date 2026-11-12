@@ -56,6 +56,24 @@ class IsoChronology {
   String javaKind = "class";
   String javaSuper = "java.time.chrono.AbstractChronology";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public IsoChronology bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any INSTANCE = null;
@@ -68,47 +86,47 @@ class IsoChronology {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getId() { return null; }
+  public String getId() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.temporal.ValueRange range(java.time.temporal.ChronoField field) { return null; }
+  public Any range(Any field) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalDate date(java.time.chrono.Era era, int yearOfEra, int month, int dayOfMonth) { return null; }
+  public Any date(Any era, int yearOfEra, int month, int dayOfMonth) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalDate date(int prolepticYear, int month, int dayOfMonth) { return null; }
+  public Any date(int prolepticYear, int month, int dayOfMonth) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalDate date(java.time.temporal.TemporalAccessor temporal) { return null; }
+  public Any date(Any temporal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<java.time.chrono.Era> eras() { return null; }
+  public Any eras() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public long epochSecond(int prolepticYear, int month, int dayOfMonth, int hour, int minute, int second, java.time.ZoneOffset zoneOffset) { return 0; }
+  public long epochSecond(int prolepticYear, int month, int dayOfMonth, int hour, int minute, int second, Any zoneOffset) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isLeapYear(long prolepticYear) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.chrono.IsoEra eraOf(int eraValue) { return null; }
+  public Any eraOf(int eraValue) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalDateTime localDateTime(java.time.temporal.TemporalAccessor temporal) { return null; }
+  public Any localDateTime(Any temporal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getCalendarType() { return null; }
+  public String getCalendarType() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalDate dateEpochDay(long epochDay) { return null; }
+  public Any dateEpochDay(long epochDay) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalDate dateNow() { return null; }
+  public Any dateNow() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalDate dateNow(java.time.Clock clock) { return null; }
+  public Any dateNow(Any clock) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int prolepticYear(java.time.chrono.Era era, int yearOfEra) { return 0; }
+  public int prolepticYear(Any era, int yearOfEra) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalDate dateYearDay(int prolepticYear, int dayOfYear) { return null; }
+  public Any dateYearDay(int prolepticYear, int dayOfYear) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalDate dateYearDay(java.time.chrono.Era era, int yearOfEra, int dayOfYear) { return null; }
+  public Any dateYearDay(Any era, int yearOfEra, int dayOfYear) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalDate resolveDate(java.util.Map<java.time.temporal.TemporalField, java.lang.Long> fieldValues, java.time.format.ResolverStyle resolverStyle) { return null; }
+  public Any resolveDate(Any fieldValues, Any resolverStyle) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.ZonedDateTime zonedDateTime(java.time.temporal.TemporalAccessor temporal) { return null; }
+  public Any zonedDateTime(Any temporal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.ZonedDateTime zonedDateTime(java.time.Instant instant, java.time.ZoneId zone) { return null; }
+  public Any zonedDateTime(Any instant, Any zone) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Period period(int years, int months, int days) { return null; }
+  public Any period(int years, int months, int days) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isIsoBased() { return false; }
   < ---- END java signatures ---- >

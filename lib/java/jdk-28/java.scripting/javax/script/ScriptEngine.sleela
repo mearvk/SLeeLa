@@ -56,6 +56,24 @@ class ScriptEngine {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ScriptEngine bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String ARGV = "javax.script.argv";
@@ -74,28 +92,28 @@ class ScriptEngine {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object get(java.lang.String key) { return null; }
+  public Any get(String key) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void put(java.lang.String key, java.lang.Object value) { }
+  public void put(String key, Any value) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.script.ScriptEngineFactory getFactory() { return null; }
+  public Any getFactory() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.script.ScriptContext getContext() { return null; }
+  public Any getContext() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setContext(javax.script.ScriptContext context) { }
+  public void setContext(Any context) { }
   @throwable("java.lang.AbstractMethodError, javax.script.ScriptException")
-  public java.lang.Object eval(java.io.Reader reader, javax.script.ScriptContext context) { return null; }
+  public Any eval(Any reader, Any context) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.script.ScriptException")
-  public java.lang.Object eval(java.lang.String script, javax.script.ScriptContext context) { return null; }
+  public Any eval(String script, Any context) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.script.ScriptException")
-  public java.lang.Object eval(java.io.Reader reader) { return null; }
+  public Any eval(Any reader) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.script.ScriptException")
-  public java.lang.Object eval(java.lang.String script) { return null; }
+  public Any eval(String script) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setBindings(javax.script.Bindings bindings, int scope) { }
+  public void setBindings(Any bindings, int scope) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.script.Bindings getBindings(int scope) { return null; }
+  public Any getBindings(int scope) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.script.Bindings createBindings() { return null; }
+  public Any createBindings() { return null; }
   < ---- END java signatures ---- >
 }

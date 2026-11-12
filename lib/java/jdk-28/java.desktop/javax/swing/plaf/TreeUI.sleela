@@ -56,6 +56,24 @@ class TreeUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.ComponentUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public TreeUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,24 +88,24 @@ class TreeUI {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public int getRowForPath(javax.swing.JTree tree, javax.swing.tree.TreePath path) { return 0; }
+  public int getRowForPath(Any tree, Any path) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.tree.TreePath getClosestPathForLocation(javax.swing.JTree tree, int x, int y) { return null; }
+  public Any getClosestPathForLocation(Any tree, int x, int y) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean isEditing(javax.swing.JTree tree) { return false; }
+  public boolean isEditing(Any tree) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean stopEditing(javax.swing.JTree tree) { return false; }
+  public boolean stopEditing(Any tree) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public void cancelEditing(javax.swing.JTree tree) { }
+  public void cancelEditing(Any tree) { }
   @throwable("java.lang.AbstractMethodError")
-  public void startEditingAtPath(javax.swing.JTree tree, javax.swing.tree.TreePath path) { }
+  public void startEditingAtPath(Any tree, Any path) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.tree.TreePath getEditingPath(javax.swing.JTree tree) { return null; }
+  public Any getEditingPath(Any tree) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.tree.TreePath getPathForRow(javax.swing.JTree tree, int row) { return null; }
+  public Any getPathForRow(Any tree, int row) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public int getRowCount(javax.swing.JTree tree) { return 0; }
+  public int getRowCount(Any tree) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Rectangle getPathBounds(javax.swing.JTree tree, javax.swing.tree.TreePath path) { return null; }
+  public Any getPathBounds(Any tree, Any path) { return null; }
   < ---- END java signatures ---- >
 }

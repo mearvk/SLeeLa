@@ -56,6 +56,24 @@ class SAXParserFactory {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SAXParserFactory bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,15 +88,15 @@ class SAXParserFactory {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.xml.parsers.SAXParserFactory newInstance() { return null; }
+  public static Any newInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.xml.parsers.SAXParserFactory newInstance(java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { return null; }
+  public static Any newInstance(String factoryClassName, Any classLoader) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.xml.validation.Schema getSchema() { return null; }
+  public Any getSchema() { return null; }
   @throwable("java.lang.AbstractMethodError, javax.xml.parsers.ParserConfigurationException, org.xml.sax.SAXException")
-  public javax.xml.parsers.SAXParser newSAXParser() { return null; }
+  public Any newSAXParser() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.xml.parsers.SAXParserFactory newDefaultInstance() { return null; }
+  public static Any newDefaultInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isNamespaceAware() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -86,22 +104,22 @@ class SAXParserFactory {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isXIncludeAware() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.xml.parsers.SAXParserFactory newDefaultNSInstance() { return null; }
+  public static Any newDefaultNSInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.xml.parsers.SAXParserFactory newNSInstance() { return null; }
+  public static Any newNSInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.xml.parsers.SAXParserFactory newNSInstance(java.lang.String factoryClassName, java.lang.ClassLoader classLoader) { return null; }
+  public static Any newNSInstance(String factoryClassName, Any classLoader) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setXIncludeAware(boolean state) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setValidating(boolean validating) { }
   @throwable("java.lang.AbstractMethodError, javax.xml.parsers.ParserConfigurationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
-  public boolean getFeature(java.lang.String name) { return false; }
+  public boolean getFeature(String name) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setNamespaceAware(boolean awareness) { }
   @throwable("java.lang.AbstractMethodError, javax.xml.parsers.ParserConfigurationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
-  public void setFeature(java.lang.String name, boolean value) { }
+  public void setFeature(String name, boolean value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSchema(javax.xml.validation.Schema schema) { }
+  public void setSchema(Any schema) { }
   < ---- END java signatures ---- >
 }

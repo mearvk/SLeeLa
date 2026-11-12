@@ -56,6 +56,24 @@ class MetalButtonUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.basic.BasicButtonUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MetalButtonUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any focusColor;
@@ -75,33 +93,33 @@ class MetalButtonUI {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void update(java.awt.Graphics g, javax.swing.JComponent c) { }
+  public void update(Any g, Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintText(java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle textRect, java.lang.String text) { }
+  void paintText(Any g, Any c, Any textRect, String text) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Color getFocusColor() { return null; }
+  Any getFocusColor() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Color getSelectColor() { return null; }
+  Any getSelectColor() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Color getDisabledTextColor() { return null; }
+  Any getDisabledTextColor() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintFocus(java.awt.Graphics g, javax.swing.AbstractButton b, java.awt.Rectangle viewRect, java.awt.Rectangle textRect, java.awt.Rectangle iconRect) { }
+  void paintFocus(Any g, Any b, Any viewRect, Any textRect, Any iconRect) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
+  public static Any createUI(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void installDefaults(javax.swing.AbstractButton b) { }
+  public void installDefaults(Any b) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.plaf.basic.BasicButtonListener createButtonListener(javax.swing.AbstractButton b) { return null; }
+  Any createButtonListener(Any b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void uninstallDefaults(javax.swing.AbstractButton b) { }
+  public void uninstallDefaults(Any b) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintButtonPressed(java.awt.Graphics g, javax.swing.AbstractButton b) { }
+  void paintButtonPressed(Any g, Any b) { }
   < ---- END java signatures ---- >
 }

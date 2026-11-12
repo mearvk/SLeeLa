@@ -56,6 +56,24 @@ class IntStream {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public IntStream bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,100 +82,102 @@ class IntStream {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalInt min() { return null; }
+  public Any min() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalInt max() { return null; }
+  public Any max() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.IntStream of(int t) { return null; }
+  public static Any of(int t) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.IntStream of(int... values) { return null; }
+  public static Any of(int... values) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int[] toArray() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.PrimitiveIterator.OfInt iterator() { return null; }
+  public Any iterator() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.IntStream map(java.util.function.IntUnaryOperator mapper) { return null; }
+  public Any map(Any mapper) { return null; }
+  @generic("<R>")
   @throwable("java.lang.AbstractMethodError")
-  public <R> R collect(java.util.function.Supplier<R> supplier, java.util.function.ObjIntConsumer<R> accumulator, java.util.function.BiConsumer<R, R> combiner) { return null; }
+  public Any collect(Any supplier, Any accumulator, Any combiner) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public long count() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.IntStream.Builder builder() { return null; }
+  public static Any builder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.IntStream concat(java.util.stream.IntStream a, java.util.stream.IntStream b) { return null; }
+  public static Any concat(Any a, Any b) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.IntStream limit(long maxSize) { return null; }
+  public Any limit(long maxSize) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Spliterator.OfInt spliterator() { return null; }
+  public Any spliterator() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.IntStream filter(java.util.function.IntPredicate predicate) { return null; }
+  public Any filter(Any predicate) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.IntStream empty() { return null; }
+  public static Any empty() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean anyMatch(java.util.function.IntPredicate predicate) { return false; }
+  public boolean anyMatch(Any predicate) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public void forEach(java.util.function.IntConsumer action) { }
+  public void forEach(Any action) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalInt findAny() { return null; }
+  public Any findAny() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.IntStream skip(long n) { return null; }
+  public Any skip(long n) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.IntStream peek(java.util.function.IntConsumer action) { return null; }
+  public Any peek(Any action) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int sum() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalInt reduce(java.util.function.IntBinaryOperator op) { return null; }
+  public Any reduce(Any op) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public int reduce(int identity, java.util.function.IntBinaryOperator op) { return 0; }
+  public int reduce(int identity, Any op) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.IntStream range(int startInclusive, int endExclusive) { return null; }
+  public static Any range(int startInclusive, int endExclusive) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.IntStream parallel() { return null; }
+  public Any parallel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.IntStream iterate(int seed, java.util.function.IntPredicate hasNext, java.util.function.IntUnaryOperator next_) { return null; }
+  public static Any iterate(int seed, Any hasNext, Any next_) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.IntStream iterate(int seed, java.util.function.IntUnaryOperator f) { return null; }
+  public static Any iterate(int seed, Any f) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.IntStream flatMap(java.util.function.IntFunction<? extends java.util.stream.IntStream> mapper) { return null; }
+  public Any flatMap(Any mapper) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean allMatch(java.util.function.IntPredicate predicate) { return false; }
+  public boolean allMatch(Any predicate) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.IntStream distinct() { return null; }
+  public Any distinct() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalInt findFirst() { return null; }
+  public Any findFirst() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean noneMatch(java.util.function.IntPredicate predicate) { return false; }
+  public boolean noneMatch(Any predicate) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.IntStream sorted() { return null; }
+  public Any sorted() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.IntStream generate(java.util.function.IntSupplier s) { return null; }
+  public static Any generate(Any s) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void forEachOrdered(java.util.function.IntConsumer action) { }
+  public void forEachOrdered(Any action) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.LongStream mapToLong(java.util.function.IntToLongFunction mapper) { return null; }
+  public Any mapToLong(Any mapper) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream mapToDouble(java.util.function.IntToDoubleFunction mapper) { return null; }
+  public Any mapToDouble(Any mapper) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.stream.IntStream mapMulti(java.util.stream.IntStream.IntMapMultiConsumer mapper) { return null; }
+  public default Any mapMulti(Any mapper) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.stream.IntStream takeWhile(java.util.function.IntPredicate predicate) { return null; }
+  public default Any takeWhile(Any predicate) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.stream.IntStream dropWhile(java.util.function.IntPredicate predicate) { return null; }
+  public default Any dropWhile(Any predicate) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.IntStream sequential() { return null; }
+  public Any sequential() { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.stream.Stream<U> mapToObj(java.util.function.IntFunction<? extends U> mapper) { return null; }
+  public Any mapToObj(Any mapper) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.IntStream rangeClosed(int startInclusive, int endInclusive) { return null; }
+  public static Any rangeClosed(int startInclusive, int endInclusive) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.Stream<java.lang.Integer> boxed() { return null; }
+  public Any boxed() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalDouble average() { return null; }
+  public Any average() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.IntSummaryStatistics summaryStatistics() { return null; }
+  public Any summaryStatistics() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.LongStream asLongStream() { return null; }
+  public Any asLongStream() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream asDoubleStream() { return null; }
+  public Any asDoubleStream() { return null; }
   < ---- END java signatures ---- >
 }

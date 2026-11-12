@@ -56,6 +56,24 @@ class DefaultTableColumnModel {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DefaultTableColumnModel bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any tableColumns;
@@ -80,13 +98,13 @@ class DefaultTableColumnModel {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void fireColumnAdded(javax.swing.event.TableColumnModelEvent e) { }
+  void fireColumnAdded(Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void fireColumnRemoved(javax.swing.event.TableColumnModelEvent e) { }
+  void fireColumnRemoved(Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void fireColumnMoved(javax.swing.event.TableColumnModelEvent e) { }
+  void fireColumnMoved(Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void fireColumnMarginChanged() { }
@@ -95,17 +113,17 @@ class DefaultTableColumnModel {
   void recalcWidthCache() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void fireColumnSelectionChanged(javax.swing.event.ListSelectionEvent e) { }
+  void fireColumnSelectionChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.TableColumnModelListener[] getColumnModelListeners() { return null; }
+  public Any[] getColumnModelListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSelectionModel(javax.swing.ListSelectionModel newModel) { }
+  public void setSelectionModel(Any newModel) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.ListSelectionModel getSelectionModel() { return null; }
+  public Any getSelectionModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void propertyChange(java.beans.PropertyChangeEvent evt) { }
+  public void propertyChange(Any evt) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void valueChanged(javax.swing.event.ListSelectionEvent e) { }
+  public void valueChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setColumnMargin(int newMargin) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -113,11 +131,11 @@ class DefaultTableColumnModel {
   @throwable("java.lang.UnsupportedOperationException")
   public int getColumnCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableColumn getColumn(int columnIndex) { return null; }
+  public Any getColumn(int columnIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeColumn(javax.swing.table.TableColumn column) { }
+  public void removeColumn(Any column) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addColumn(javax.swing.table.TableColumn aColumn) { }
+  public void addColumn(Any aColumn) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int[] getSelectedColumns() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -127,7 +145,7 @@ class DefaultTableColumnModel {
   @throwable("java.lang.UnsupportedOperationException")
   public int getSelectedColumnCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getColumnIndex(java.lang.Object identifier) { return 0; }
+  public int getColumnIndex(Any identifier) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void moveColumn(int columnIndex, int newIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -135,15 +153,16 @@ class DefaultTableColumnModel {
   @throwable("java.lang.UnsupportedOperationException")
   public int getTotalColumnWidth() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeColumnModelListener(javax.swing.event.TableColumnModelListener x) { }
+  public void removeColumnModelListener(Any x) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addColumnModelListener(javax.swing.event.TableColumnModelListener x) { }
+  public void addColumnModelListener(Any x) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Enumeration<javax.swing.table.TableColumn> getColumns() { return null; }
+  public Any getColumns() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.ListSelectionModel createSelectionModel() { return null; }
+  Any createSelectionModel() { return null; }
+  @generic("<T extends java.util.EventListener>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
+  public Any[] getListeners(Any listenerType) { return null; }
   < ---- END java signatures ---- >
 }

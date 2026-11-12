@@ -56,6 +56,24 @@ class Security {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Security bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,26 +82,26 @@ class Security {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String getProperty(java.lang.String key) { return null; }
+  public static String getProperty(String key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setProperty(java.lang.String key, java.lang.String datum) { }
+  public static void setProperty(String key, String datum) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int addProvider(java.security.Provider provider) { return 0; }
+  public static int addProvider(Any provider) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static synchronized int insertProviderAt(java.security.Provider provider, int position) { return 0; }
+  public static synchronized int insertProviderAt(Any provider, int position) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.security.Provider getProvider(java.lang.String name) { return null; }
+  public static Any getProvider(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.security.Provider[] getProviders() { return null; }
+  public static Any[] getProviders() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.security.Provider[] getProviders(java.util.Map<java.lang.String, java.lang.String> filter) { return null; }
+  public static Any[] getProviders(Any filter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.security.Provider[] getProviders(java.lang.String filter) { return null; }
+  public static Any[] getProviders(String filter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String getAlgorithmProperty(java.lang.String algName, java.lang.String propName) { return null; }
+  public static String getAlgorithmProperty(String algName, String propName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static synchronized void removeProvider(java.lang.String name) { }
+  public static synchronized void removeProvider(String name) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Set<java.lang.String> getAlgorithms(java.lang.String serviceName) { return null; }
+  public static Any getAlgorithms(String serviceName) { return null; }
   < ---- END java signatures ---- >
 }

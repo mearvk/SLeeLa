@@ -56,12 +56,30 @@ class EncryptedPrivateKeyInfo {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public EncryptedPrivateKeyInfo bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
-  public EncryptedPrivateKeyInfo(java.security.AlgorithmParameters algParams, byte[] encryptedData) { }
+  public EncryptedPrivateKeyInfo(Any algParams, byte[] encryptedData) { }
   @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
-  public EncryptedPrivateKeyInfo(java.lang.String algName, byte[] encryptedData) { }
+  public EncryptedPrivateKeyInfo(String algName, byte[] encryptedData) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public EncryptedPrivateKeyInfo(byte[] encoded) { }
   < ---- END java constructors ---- >
@@ -73,27 +91,27 @@ class EncryptedPrivateKeyInfo {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, java.security.GeneralSecurityException")
-  public java.security.PrivateKey getKey(char[] password) { return null; }
+  public Any getKey(char[] password) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.security.GeneralSecurityException")
-  public java.security.PrivateKey getKey(java.security.Key decryptKey, java.security.Provider provider) { return null; }
+  public Any getKey(Any decryptKey, Any provider) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public byte[] getEncoded() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException")
-  public java.security.spec.PKCS8EncodedKeySpec getKeySpec(java.security.Key decryptKey, java.security.Provider provider) { return null; }
+  public Any getKeySpec(Any decryptKey, Any provider) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException")
-  public java.security.spec.PKCS8EncodedKeySpec getKeySpec(java.security.Key decryptKey) { return null; }
+  public Any getKeySpec(Any decryptKey) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchProviderException, java.security.NoSuchAlgorithmException, java.security.InvalidKeyException")
-  public java.security.spec.PKCS8EncodedKeySpec getKeySpec(java.security.Key decryptKey, java.lang.String providerName) { return null; }
+  public Any getKeySpec(Any decryptKey, String providerName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getAlgName() { return null; }
+  public String getAlgName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.security.AlgorithmParameters getAlgParameters() { return null; }
+  public Any getAlgParameters() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.crypto.EncryptedPrivateKeyInfo encryptKey(java.security.PrivateKey key, char[] password) { return null; }
+  public static Any encryptKey(Any key, char[] password) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.crypto.EncryptedPrivateKeyInfo encryptKey(java.security.PrivateKey key, java.security.Key encKey, java.lang.String algorithm, java.security.spec.AlgorithmParameterSpec params, java.security.Provider provider, java.security.SecureRandom random) { return null; }
+  public static Any encryptKey(Any key, Any encKey, String algorithm, Any params, Any provider, Any random) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.crypto.EncryptedPrivateKeyInfo encryptKey(java.security.PrivateKey key, char[] password, java.lang.String algorithm, java.security.spec.AlgorithmParameterSpec params, java.security.Provider provider) { return null; }
+  public static Any encryptKey(Any key, char[] password, String algorithm, Any params, Any provider) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public byte[] getEncryptedData() { return null; }
   < ---- END java signatures ---- >

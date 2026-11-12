@@ -57,6 +57,24 @@ class Builder {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Builder bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -70,30 +88,30 @@ class Builder {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Calendar.Builder set(int field, int value) { return null; }
+  public Any set(int field, int value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Calendar build() { return null; }
+  public Any build() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Calendar.Builder setTimeZone(java.util.TimeZone zone) { return null; }
+  public Any setTimeZone(Any zone) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Calendar.Builder setLenient(boolean lenient) { return null; }
+  public Any setLenient(boolean lenient) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Calendar.Builder setWeekDate(int weekYear, int weekOfYear, int dayOfWeek) { return null; }
+  public Any setWeekDate(int weekYear, int weekOfYear, int dayOfWeek) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Calendar.Builder setInstant(long instant) { return null; }
+  public Any setInstant(long instant) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Calendar.Builder setInstant(java.util.Date instant) { return null; }
+  public Any setInstant(Any instant) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Calendar.Builder setFields(int... fieldValuePairs) { return null; }
+  public Any setFields(int... fieldValuePairs) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Calendar.Builder setTimeOfDay(int hourOfDay, int minute, int second) { return null; }
+  public Any setTimeOfDay(int hourOfDay, int minute, int second) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Calendar.Builder setTimeOfDay(int hourOfDay, int minute, int second, int millis) { return null; }
+  public Any setTimeOfDay(int hourOfDay, int minute, int second, int millis) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Calendar.Builder setWeekDefinition(int firstDayOfWeek, int minimalDaysInFirstWeek) { return null; }
+  public Any setWeekDefinition(int firstDayOfWeek, int minimalDaysInFirstWeek) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Calendar.Builder setCalendarType(java.lang.String type) { return null; }
+  public Any setCalendarType(String type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Calendar.Builder setLocale(java.util.Locale locale) { return null; }
+  public Any setLocale(Any locale) { return null; }
   < ---- END java signatures ---- >
 }

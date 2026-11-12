@@ -56,14 +56,32 @@ class ModelMBeanInfoSupport {
   String javaKind = "class";
   String javaSuper = "javax.management.MBeanInfo";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ModelMBeanInfoSupport bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public ModelMBeanInfoSupport(java.lang.String className, java.lang.String description, javax.management.modelmbean.ModelMBeanAttributeInfo[] attributes, javax.management.modelmbean.ModelMBeanConstructorInfo[] constructors, javax.management.modelmbean.ModelMBeanOperationInfo[] operations, javax.management.modelmbean.ModelMBeanNotificationInfo[] notifications, javax.management.Descriptor mbeandescriptor) { }
+  public ModelMBeanInfoSupport(String className, String description, Any[] attributes, Any[] constructors, Any[] operations, Any[] notifications, Any mbeandescriptor) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public ModelMBeanInfoSupport(java.lang.String className, java.lang.String description, javax.management.modelmbean.ModelMBeanAttributeInfo[] attributes, javax.management.modelmbean.ModelMBeanConstructorInfo[] constructors, javax.management.modelmbean.ModelMBeanOperationInfo[] operations, javax.management.modelmbean.ModelMBeanNotificationInfo[] notifications) { }
+  public ModelMBeanInfoSupport(String className, String description, Any[] attributes, Any[] constructors, Any[] operations, Any[] notifications) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public ModelMBeanInfoSupport(javax.management.modelmbean.ModelMBeanInfo mbi) { }
+  public ModelMBeanInfoSupport(Any mbi) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -73,30 +91,30 @@ class ModelMBeanInfoSupport {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.management.Descriptor getDescriptor() { return null; }
+  public Any getDescriptor() { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public javax.management.Descriptor getDescriptor(java.lang.String inDescriptorName, java.lang.String inDescriptorType) { return null; }
+  public Any getDescriptor(String inDescriptorName, String inDescriptorType) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public javax.management.Descriptor getDescriptor(java.lang.String inDescriptorName) { return null; }
+  public Any getDescriptor(String inDescriptorName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public javax.management.modelmbean.ModelMBeanConstructorInfo getConstructor(java.lang.String inName) { return null; }
+  public Any getConstructor(String inName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public javax.management.modelmbean.ModelMBeanAttributeInfo getAttribute(java.lang.String inName) { return null; }
+  public Any getAttribute(String inName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public void setDescriptor(javax.management.Descriptor inDescriptor, java.lang.String inDescriptorType) { }
+  public void setDescriptor(Any inDescriptor, String inDescriptorType) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public javax.management.Descriptor[] getDescriptors(java.lang.String inDescriptorType) { return null; }
+  public Any[] getDescriptors(String inDescriptorType) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public void setDescriptors(javax.management.Descriptor[] inDescriptors) { }
+  public void setDescriptors(Any[] inDescriptors) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException")
-  public javax.management.Descriptor getMBeanDescriptor() { return null; }
+  public Any getMBeanDescriptor() { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public void setMBeanDescriptor(javax.management.Descriptor inMBeanDescriptor) { }
+  public void setMBeanDescriptor(Any inMBeanDescriptor) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public javax.management.modelmbean.ModelMBeanOperationInfo getOperation(java.lang.String inName) { return null; }
+  public Any getOperation(String inName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public javax.management.modelmbean.ModelMBeanNotificationInfo getNotification(java.lang.String inName) { return null; }
+  public Any getNotification(String inName) { return null; }
   < ---- END java signatures ---- >
 }

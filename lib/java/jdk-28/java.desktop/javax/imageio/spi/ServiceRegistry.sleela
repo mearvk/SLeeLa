@@ -56,10 +56,28 @@ class ServiceRegistry {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ServiceRegistry bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public ServiceRegistry(java.util.Iterator<java.lang.Class<?>> categories) { }
+  public ServiceRegistry(Any categories) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -71,36 +89,45 @@ class ServiceRegistry {
   @throwable("java.lang.UnsupportedOperationException, java.lang.Throwable")
   public void finalize() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean contains(java.lang.Object provider) { return false; }
+  public boolean contains(Any provider) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void registerServiceProvider(java.lang.Object provider) { }
+  public void registerServiceProvider(Any provider) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> boolean registerServiceProvider(T provider, java.lang.Class<T> category) { return false; }
+  public boolean registerServiceProvider(Any provider, Any category) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Iterator<java.lang.Class<?>> getCategories() { return null; }
+  public Any getCategories() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> boolean setOrdering(java.lang.Class<T> category, T firstProvider, T secondProvider) { return false; }
+  public boolean setOrdering(Any category, Any firstProvider, Any secondProvider) { return false; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> boolean unsetOrdering(java.lang.Class<T> category, T firstProvider, T secondProvider) { return false; }
+  public boolean unsetOrdering(Any category, Any firstProvider, Any secondProvider) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void deregisterAll(java.lang.Class<?> category) { }
+  public void deregisterAll(Any category) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void deregisterAll() { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Iterator<T> lookupProviders(java.lang.Class<T> providerClass, java.lang.ClassLoader loader) { return null; }
+  public static Any lookupProviders(Any providerClass, Any loader) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Iterator<T> lookupProviders(java.lang.Class<T> providerClass) { return null; }
+  public static Any lookupProviders(Any providerClass) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void registerServiceProviders(java.util.Iterator<?> providers) { }
+  public void registerServiceProviders(Any providers) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> java.util.Iterator<T> getServiceProviders(java.lang.Class<T> category, boolean useOrdering) { return null; }
+  public Any getServiceProviders(Any category, boolean useOrdering) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> java.util.Iterator<T> getServiceProviders(java.lang.Class<T> category, javax.imageio.spi.ServiceRegistry.Filter filter, boolean useOrdering) { return null; }
+  public Any getServiceProviders(Any category, Any filter, boolean useOrdering) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> T getServiceProviderByClass(java.lang.Class<T> providerClass) { return null; }
+  public Any getServiceProviderByClass(Any providerClass) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> boolean deregisterServiceProvider(T provider, java.lang.Class<T> category) { return false; }
+  public boolean deregisterServiceProvider(Any provider, Any category) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void deregisterServiceProvider(java.lang.Object provider) { }
+  public void deregisterServiceProvider(Any provider) { }
   < ---- END java signatures ---- >
 }

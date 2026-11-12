@@ -56,6 +56,24 @@ class JOptionPane {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JOptionPane bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any UNINITIALIZED_VALUE = null;
@@ -100,19 +118,19 @@ class JOptionPane {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public JOptionPane(java.lang.Object message, int messageType, int optionType) { }
+  public JOptionPane(Any message, int messageType, int optionType) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JOptionPane(java.lang.Object message, int messageType) { }
+  public JOptionPane(Any message, int messageType) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JOptionPane(java.lang.Object message) { }
+  public JOptionPane(Any message) { }
   @throwable("java.lang.UnsupportedOperationException")
   public JOptionPane() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JOptionPane(java.lang.Object message, int messageType, int optionType, javax.swing.Icon icon) { }
+  public JOptionPane(Any message, int messageType, int optionType, Any icon) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JOptionPane(java.lang.Object message, int messageType, int optionType, javax.swing.Icon icon, java.lang.Object[] options) { }
+  public JOptionPane(Any message, int messageType, int optionType, Any icon, Any[] options) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JOptionPane(java.lang.Object message, int messageType, int optionType, javax.swing.Icon icon, java.lang.Object[] options, java.lang.Object initialValue) { }
+  public JOptionPane(Any message, int messageType, int optionType, Any icon, Any[] options, Any initialValue) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -122,127 +140,127 @@ class JOptionPane {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getValue() { return null; }
+  public Any getValue() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getMessage() { return null; }
+  public Any getMessage() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setValue(java.lang.Object newValue) { }
+  public void setValue(Any newValue) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setInitialValue(java.lang.Object newInitialValue) { }
+  public void setInitialValue(Any newInitialValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setOptions(java.lang.Object[] newOptions) { }
+  public void setOptions(Any[] newOptions) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setMessage(java.lang.Object newMessage) { }
+  public void setMessage(Any newMessage) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUI(javax.swing.plaf.OptionPaneUI ui) { }
+  public void setUI(Any ui) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.OptionPaneUI getUI() { return null; }
+  public Any getUI() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMessageType() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getOptionType() { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public javax.swing.JDialog createDialog(java.lang.String title) { return null; }
+  public Any createDialog(String title) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public javax.swing.JDialog createDialog(java.awt.Component parentComponent, java.lang.String title) { return null; }
+  public Any createDialog(Any parentComponent, String title) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String showInputDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.Object initialSelectionValue) { return null; }
+  public static String showInputDialog(Any parentComponent, Any message, Any initialSelectionValue) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public static java.lang.String showInputDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType) { return null; }
+  public static String showInputDialog(Any parentComponent, Any message, String title, int messageType) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public static java.lang.Object showInputDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType, javax.swing.Icon icon, java.lang.Object[] selectionValues, java.lang.Object initialSelectionValue) { return null; }
+  public static Any showInputDialog(Any parentComponent, Any message, String title, int messageType, Any icon, Any[] selectionValues, Any initialSelectionValue) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public static java.lang.String showInputDialog(java.awt.Component parentComponent, java.lang.Object message) { return null; }
+  public static String showInputDialog(Any parentComponent, Any message) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public static java.lang.String showInputDialog(java.lang.Object message) { return null; }
+  public static String showInputDialog(Any message) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setWantsInput(boolean newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSelectionValues(java.lang.Object[] newValues) { }
+  public void setSelectionValues(Any[] newValues) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setInitialSelectionValue(java.lang.Object newValue) { }
+  public void setInitialSelectionValue(Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public static java.awt.Frame getRootFrame() { return null; }
+  public static Any getRootFrame() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void selectInitialValue() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getInputValue() { return null; }
+  public Any getInputValue() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public static void showMessageDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType, javax.swing.Icon icon) { }
+  public static void showMessageDialog(Any parentComponent, Any message, String title, int messageType, Any icon) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public static void showMessageDialog(java.awt.Component parentComponent, java.lang.Object message) { }
+  public static void showMessageDialog(Any parentComponent, Any message) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public static void showMessageDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType) { }
+  public static void showMessageDialog(Any parentComponent, Any message, String title, int messageType) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public static int showOptionDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType, int messageType, javax.swing.Icon icon, java.lang.Object[] options, java.lang.Object initialValue) { return 0; }
+  public static int showOptionDialog(Any parentComponent, Any message, String title, int optionType, int messageType, Any icon, Any[] options, Any initialValue) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public static int showConfirmDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType, int messageType, javax.swing.Icon icon) { return 0; }
+  public static int showConfirmDialog(Any parentComponent, Any message, String title, int optionType, int messageType, Any icon) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public static int showConfirmDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType, int messageType) { return 0; }
+  public static int showConfirmDialog(Any parentComponent, Any message, String title, int optionType, int messageType) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public static int showConfirmDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType) { return 0; }
+  public static int showConfirmDialog(Any parentComponent, Any message, String title, int optionType) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public static int showConfirmDialog(java.awt.Component parentComponent, java.lang.Object message) { return 0; }
+  public static int showConfirmDialog(Any parentComponent, Any message) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void showInternalMessageDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType) { }
+  public static void showInternalMessageDialog(Any parentComponent, Any message, String title, int messageType) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void showInternalMessageDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType, javax.swing.Icon icon) { }
+  public static void showInternalMessageDialog(Any parentComponent, Any message, String title, int messageType, Any icon) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void showInternalMessageDialog(java.awt.Component parentComponent, java.lang.Object message) { }
+  public static void showInternalMessageDialog(Any parentComponent, Any message) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int showInternalOptionDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType, int messageType, javax.swing.Icon icon, java.lang.Object[] options, java.lang.Object initialValue) { return 0; }
+  public static int showInternalOptionDialog(Any parentComponent, Any message, String title, int optionType, int messageType, Any icon, Any[] options, Any initialValue) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int showInternalConfirmDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType, int messageType, javax.swing.Icon icon) { return 0; }
+  public static int showInternalConfirmDialog(Any parentComponent, Any message, String title, int optionType, int messageType, Any icon) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int showInternalConfirmDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType, int messageType) { return 0; }
+  public static int showInternalConfirmDialog(Any parentComponent, Any message, String title, int optionType, int messageType) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int showInternalConfirmDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int optionType) { return 0; }
+  public static int showInternalConfirmDialog(Any parentComponent, Any message, String title, int optionType) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int showInternalConfirmDialog(java.awt.Component parentComponent, java.lang.Object message) { return 0; }
+  public static int showInternalConfirmDialog(Any parentComponent, Any message) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JInternalFrame createInternalFrame(java.awt.Component parentComponent, java.lang.String title) { return null; }
+  public Any createInternalFrame(Any parentComponent, String title) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String showInternalInputDialog(java.awt.Component parentComponent, java.lang.Object message) { return null; }
+  public static String showInternalInputDialog(Any parentComponent, Any message) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String showInternalInputDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType) { return null; }
+  public static String showInternalInputDialog(Any parentComponent, Any message, String title, int messageType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.Object showInternalInputDialog(java.awt.Component parentComponent, java.lang.Object message, java.lang.String title, int messageType, javax.swing.Icon icon, java.lang.Object[] selectionValues, java.lang.Object initialSelectionValue) { return null; }
+  public static Any showInternalInputDialog(Any parentComponent, Any message, String title, int messageType, Any icon, Any[] selectionValues, Any initialSelectionValue) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.JDesktopPane getDesktopPaneForComponent(java.awt.Component parentComponent) { return null; }
+  public static Any getDesktopPaneForComponent(Any parentComponent) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public static java.awt.Frame getFrameForComponent(java.awt.Component parentComponent) { return null; }
+  public static Any getFrameForComponent(Any parentComponent) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setMessageType(int newType) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setOptionType(int newType) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setRootFrame(java.awt.Frame newRootFrame) { }
+  public static void setRootFrame(Any newRootFrame) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getInitialValue() { return null; }
+  public Any getInitialValue() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object[] getSelectionValues() { return null; }
+  public Any[] getSelectionValues() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getInitialSelectionValue() { return null; }
+  public Any getInitialSelectionValue() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setInputValue(java.lang.Object newValue) { }
+  public void setInputValue(Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMaxCharactersPerLineCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getWantsInput() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getIcon() { return null; }
+  public Any getIcon() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setIcon(javax.swing.Icon newIcon) { }
+  public void setIcon(Any newIcon) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object[] getOptions() { return null; }
+  public Any[] getOptions() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   < ---- END java signatures ---- >
 }

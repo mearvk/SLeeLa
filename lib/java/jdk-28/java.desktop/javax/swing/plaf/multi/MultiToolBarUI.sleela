@@ -56,6 +56,24 @@ class MultiToolBarUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.ToolBarUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MultiToolBarUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any uis;
@@ -73,28 +91,28 @@ class MultiToolBarUI {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void update(java.awt.Graphics a, javax.swing.JComponent b) { }
+  public void update(Any a, Any b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean contains(javax.swing.JComponent a, int b, int c) { return false; }
+  public boolean contains(Any a, int b, int c) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ComponentUI[] getUIs() { return null; }
+  public Any[] getUIs() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getAccessibleChildrenCount(javax.swing.JComponent a) { return 0; }
+  public int getAccessibleChildrenCount(Any a) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.Accessible getAccessibleChild(javax.swing.JComponent a, int b) { return null; }
+  public Any getAccessibleChild(Any a, int b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent a) { return null; }
+  public Any getPreferredSize(Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent a) { return null; }
+  public Any getMinimumSize(Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void installUI(javax.swing.JComponent a) { }
+  public void installUI(Any a) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void uninstallUI(javax.swing.JComponent a) { }
+  public void uninstallUI(Any a) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent a) { return null; }
+  public static Any createUI(Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent a) { return null; }
+  public Any getMaximumSize(Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics a, javax.swing.JComponent b) { }
+  public void paint(Any a, Any b) { }
   < ---- END java signatures ---- >
 }

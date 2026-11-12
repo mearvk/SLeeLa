@@ -56,6 +56,24 @@ class EventRequestManager {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public EventRequestManager bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,74 +82,74 @@ class EventRequestManager {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.MonitorContendedEnterRequest> monitorContendedEnterRequests() { return null; }
+  public Any monitorContendedEnterRequests() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.ModificationWatchpointRequest> modificationWatchpointRequests() { return null; }
+  public Any modificationWatchpointRequests() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.ClassPrepareRequest createClassPrepareRequest() { return null; }
+  public Any createClassPrepareRequest() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.ClassUnloadRequest createClassUnloadRequest() { return null; }
+  public Any createClassUnloadRequest() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.ThreadStartRequest createThreadStartRequest() { return null; }
+  public Any createThreadStartRequest() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.ThreadDeathRequest createThreadDeathRequest() { return null; }
+  public Any createThreadDeathRequest() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.ExceptionRequest createExceptionRequest(com.sun.jdi.ReferenceType refType, boolean notifyCaught, boolean notifyUncaught) { return null; }
+  public Any createExceptionRequest(Any refType, boolean notifyCaught, boolean notifyUncaught) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.MethodEntryRequest createMethodEntryRequest() { return null; }
+  public Any createMethodEntryRequest() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.MethodExitRequest createMethodExitRequest() { return null; }
+  public Any createMethodExitRequest() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.MonitorContendedEnterRequest createMonitorContendedEnterRequest() { return null; }
+  public Any createMonitorContendedEnterRequest() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.MonitorContendedEnteredRequest createMonitorContendedEnteredRequest() { return null; }
+  public Any createMonitorContendedEnteredRequest() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.MonitorWaitRequest createMonitorWaitRequest() { return null; }
+  public Any createMonitorWaitRequest() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.MonitorWaitedRequest createMonitorWaitedRequest() { return null; }
+  public Any createMonitorWaitedRequest() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.StepRequest createStepRequest(com.sun.jdi.ThreadReference thread, int size, int depth) { return null; }
+  public Any createStepRequest(Any thread, int size, int depth) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.BreakpointRequest createBreakpointRequest(com.sun.jdi.Location location) { return null; }
+  public Any createBreakpointRequest(Any location) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.AccessWatchpointRequest createAccessWatchpointRequest(com.sun.jdi.Field field) { return null; }
+  public Any createAccessWatchpointRequest(Any field) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.ModificationWatchpointRequest createModificationWatchpointRequest(com.sun.jdi.Field field) { return null; }
+  public Any createModificationWatchpointRequest(Any field) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.VMDeathRequest createVMDeathRequest() { return null; }
+  public Any createVMDeathRequest() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void deleteEventRequest(com.sun.jdi.request.EventRequest eventRequest) { }
+  public void deleteEventRequest(Any eventRequest) { }
   @throwable("java.lang.AbstractMethodError")
-  public void deleteEventRequests(java.util.List<? extends com.sun.jdi.request.EventRequest> eventRequests) { }
+  public void deleteEventRequests(Any eventRequests) { }
   @throwable("java.lang.AbstractMethodError")
   public void deleteAllBreakpoints() { }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.StepRequest> stepRequests() { return null; }
+  public Any stepRequests() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.ClassPrepareRequest> classPrepareRequests() { return null; }
+  public Any classPrepareRequests() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.ClassUnloadRequest> classUnloadRequests() { return null; }
+  public Any classUnloadRequests() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.ThreadStartRequest> threadStartRequests() { return null; }
+  public Any threadStartRequests() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.ThreadDeathRequest> threadDeathRequests() { return null; }
+  public Any threadDeathRequests() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.ExceptionRequest> exceptionRequests() { return null; }
+  public Any exceptionRequests() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.BreakpointRequest> breakpointRequests() { return null; }
+  public Any breakpointRequests() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.AccessWatchpointRequest> accessWatchpointRequests() { return null; }
+  public Any accessWatchpointRequests() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.MethodEntryRequest> methodEntryRequests() { return null; }
+  public Any methodEntryRequests() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.MethodExitRequest> methodExitRequests() { return null; }
+  public Any methodExitRequests() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.MonitorContendedEnteredRequest> monitorContendedEnteredRequests() { return null; }
+  public Any monitorContendedEnteredRequests() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.MonitorWaitRequest> monitorWaitRequests() { return null; }
+  public Any monitorWaitRequests() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.MonitorWaitedRequest> monitorWaitedRequests() { return null; }
+  public Any monitorWaitedRequests() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.request.VMDeathRequest> vmDeathRequests() { return null; }
+  public Any vmDeathRequests() { return null; }
   < ---- END java signatures ---- >
 }

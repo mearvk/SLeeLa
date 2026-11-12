@@ -56,6 +56,24 @@ class JMenu {
   String javaKind = "class";
   String javaSuper = "javax.swing.JMenuItem";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JMenu bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any popupListener;
@@ -63,11 +81,11 @@ class JMenu {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public JMenu(java.lang.String s, boolean b) { }
+  public JMenu(String s, boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JMenu(javax.swing.Action a) { }
+  public JMenu(Any a) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JMenu(java.lang.String s) { }
+  public JMenu(String s) { }
   @throwable("java.lang.UnsupportedOperationException")
   public JMenu() { }
   < ---- END java constructors ---- >
@@ -81,53 +99,53 @@ class JMenu {
   @throwable("java.lang.UnsupportedOperationException")
   public void remove(int pos) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void remove(javax.swing.JMenuItem item) { }
+  public void remove(Any item) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void insert(java.lang.String s, int pos) { }
+  public void insert(String s, int pos) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JMenuItem insert(javax.swing.JMenuItem mi, int pos) { return null; }
+  public Any insert(Any mi, int pos) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component add(java.awt.Component c, int index) { return null; }
+  public Any add(Any c, int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component add(java.awt.Component c) { return null; }
+  public Any add(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JMenuItem add(java.lang.String s) { return null; }
+  public Any add(String s) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeAll() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getComponent() { return null; }
+  public Any getComponent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void applyComponentOrientation(java.awt.ComponentOrientation o) { }
+  public void applyComponentOrientation(Any o) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processKeyEvent(java.awt.event.KeyEvent evt) { }
+  void processKeyEvent(Any evt) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setComponentOrientation(java.awt.ComponentOrientation o) { }
+  public void setComponentOrientation(Any o) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isSelected() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.MenuElement[] getSubElements() { return null; }
+  public Any[] getSubElements() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setSelected(boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void menuSelectionChanged(boolean isIncluded) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setAccelerator(javax.swing.KeyStroke keyStroke) { }
+  public void setAccelerator(Any keyStroke) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JMenuItem createActionComponent(javax.swing.Action a) { return null; }
+  Any createActionComponent(Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setPopupMenuVisible(boolean b) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createActionChangeListener(javax.swing.JMenuItem b) { return null; }
+  Any createActionChangeListener(Any b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getDelay() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -142,16 +160,16 @@ class JMenu {
   public boolean isPopupMenuVisible() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Point getPopupMenuOrigin() { return null; }
+  Any getPopupMenuOrigin() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JMenu.WinListener createWinListener(javax.swing.JPopupMenu p) { return null; }
+  Any createWinListener(Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getMenuComponent(int n) { return null; }
+  public Any getMenuComponent(int n) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMenuComponentCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isMenuComponent(java.awt.Component c) { return false; }
+  public boolean isMenuComponent(Any c) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setDelay(int d) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -159,11 +177,11 @@ class JMenu {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isTopLevelMenu() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addMenuListener(javax.swing.event.MenuListener l) { }
+  public void addMenuListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeMenuListener(javax.swing.event.MenuListener l) { }
+  public void removeMenuListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.MenuListener[] getMenuListeners() { return null; }
+  public Any[] getMenuListeners() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void fireMenuSelected() { }
@@ -174,16 +192,16 @@ class JMenu {
   @throwable("java.lang.UnsupportedOperationException")
   void fireMenuCanceled() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JPopupMenu getPopupMenu() { return null; }
+  public Any getPopupMenu() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JMenuItem getItem(int pos) { return null; }
+  public Any getItem(int pos) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void doClick(int pressTime) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setModel(javax.swing.ButtonModel newModel) { }
+  public void setModel(Any newModel) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component[] getMenuComponents() { return null; }
+  public Any[] getMenuComponents() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   < ---- END java signatures ---- >
 }

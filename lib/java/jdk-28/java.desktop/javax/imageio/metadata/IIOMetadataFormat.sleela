@@ -56,6 +56,24 @@ class IIOMetadataFormat {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public IIOMetadataFormat bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int CHILD_POLICY_EMPTY = 0;
@@ -89,56 +107,56 @@ class IIOMetadataFormat {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getRootName() { return null; }
+  public String getRootName() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String[] getAttributeNames(java.lang.String elementName) { return null; }
+  public String[] getAttributeNames(String elementName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean canNodeAppear(java.lang.String elementName, javax.imageio.ImageTypeSpecifier imageType) { return false; }
+  public boolean canNodeAppear(String elementName, Any imageType) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public int getElementMinChildren(java.lang.String elementName) { return 0; }
+  public int getElementMinChildren(String elementName) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public int getElementMaxChildren(java.lang.String elementName) { return 0; }
+  public int getElementMaxChildren(String elementName) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getElementDescription(java.lang.String elementName, java.util.Locale locale) { return null; }
+  public String getElementDescription(String elementName, Any locale) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public int getChildPolicy(java.lang.String elementName) { return 0; }
+  public int getChildPolicy(String elementName) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String[] getChildNames(java.lang.String elementName) { return null; }
+  public String[] getChildNames(String elementName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public int getAttributeValueType(java.lang.String elementName, java.lang.String attrName) { return 0; }
+  public int getAttributeValueType(String elementName, String attrName) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public int getAttributeDataType(java.lang.String elementName, java.lang.String attrName) { return 0; }
+  public int getAttributeDataType(String elementName, String attrName) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean isAttributeRequired(java.lang.String elementName, java.lang.String attrName) { return false; }
+  public boolean isAttributeRequired(String elementName, String attrName) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAttributeDefaultValue(java.lang.String elementName, java.lang.String attrName) { return null; }
+  public String getAttributeDefaultValue(String elementName, String attrName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String[] getAttributeEnumerations(java.lang.String elementName, java.lang.String attrName) { return null; }
+  public String[] getAttributeEnumerations(String elementName, String attrName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAttributeMinValue(java.lang.String elementName, java.lang.String attrName) { return null; }
+  public String getAttributeMinValue(String elementName, String attrName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAttributeMaxValue(java.lang.String elementName, java.lang.String attrName) { return null; }
+  public String getAttributeMaxValue(String elementName, String attrName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public int getAttributeListMinLength(java.lang.String elementName, java.lang.String attrName) { return 0; }
+  public int getAttributeListMinLength(String elementName, String attrName) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public int getAttributeListMaxLength(java.lang.String elementName, java.lang.String attrName) { return 0; }
+  public int getAttributeListMaxLength(String elementName, String attrName) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAttributeDescription(java.lang.String elementName, java.lang.String attrName, java.util.Locale locale) { return null; }
+  public String getAttributeDescription(String elementName, String attrName, Any locale) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public int getObjectValueType(java.lang.String elementName) { return 0; }
+  public int getObjectValueType(String elementName) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Class<?> getObjectClass(java.lang.String elementName) { return null; }
+  public Any getObjectClass(String elementName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object getObjectDefaultValue(java.lang.String elementName) { return null; }
+  public Any getObjectDefaultValue(String elementName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object[] getObjectEnumerations(java.lang.String elementName) { return null; }
+  public Any[] getObjectEnumerations(String elementName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Comparable<?> getObjectMinValue(java.lang.String elementName) { return null; }
+  public Any getObjectMinValue(String elementName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Comparable<?> getObjectMaxValue(java.lang.String elementName) { return null; }
+  public Any getObjectMaxValue(String elementName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public int getObjectArrayMinLength(java.lang.String elementName) { return 0; }
+  public int getObjectArrayMinLength(String elementName) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public int getObjectArrayMaxLength(java.lang.String elementName) { return 0; }
+  public int getObjectArrayMaxLength(String elementName) { return 0; }
   < ---- END java signatures ---- >
 }

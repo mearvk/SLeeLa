@@ -56,6 +56,24 @@ class MBeanServerConnection {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MBeanServerConnection bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,46 +82,46 @@ class MBeanServerConnection {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public boolean isRegistered(javax.management.ObjectName name) { return false; }
+  public boolean isRegistered(Any name) { return false; }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, javax.management.ReflectionException, java.io.IOException")
-  public javax.management.AttributeList getAttributes(javax.management.ObjectName name, java.lang.String[] attributes) { return null; }
+  public Any getAttributes(Any name, String[] attributes) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, javax.management.AttributeNotFoundException, javax.management.InvalidAttributeValueException, javax.management.MBeanException, javax.management.ReflectionException, java.io.IOException")
-  public void setAttribute(javax.management.ObjectName name, javax.management.Attribute attribute) { }
+  public void setAttribute(Any name, Any attribute) { }
   @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.AttributeNotFoundException, javax.management.InstanceNotFoundException, javax.management.ReflectionException, java.io.IOException")
-  public java.lang.Object getAttribute(javax.management.ObjectName name, java.lang.String attribute) { return null; }
+  public Any getAttribute(Any name, String attribute) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, javax.management.ReflectionException, java.io.IOException")
-  public javax.management.AttributeList setAttributes(javax.management.ObjectName name, javax.management.AttributeList attributes) { return null; }
+  public Any setAttributes(Any name, Any attributes) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.util.Set<javax.management.ObjectName> queryNames(javax.management.ObjectName name, javax.management.QueryExp query) { return null; }
+  public Any queryNames(Any name, Any query) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.ReflectionException, javax.management.InstanceAlreadyExistsException, javax.management.MBeanRegistrationException, javax.management.MBeanException, javax.management.NotCompliantMBeanException, java.io.IOException")
-  public javax.management.ObjectInstance createMBean(java.lang.String className, javax.management.ObjectName name) { return null; }
+  public Any createMBean(String className, Any name) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.ReflectionException, javax.management.InstanceAlreadyExistsException, javax.management.MBeanRegistrationException, javax.management.MBeanException, javax.management.NotCompliantMBeanException, java.io.IOException")
-  public javax.management.ObjectInstance createMBean(java.lang.String className, javax.management.ObjectName name, java.lang.Object[] params, java.lang.String[] signature) { return null; }
+  public Any createMBean(String className, Any name, Any[] params, String[] signature) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.ReflectionException, javax.management.InstanceAlreadyExistsException, javax.management.MBeanRegistrationException, javax.management.MBeanException, javax.management.NotCompliantMBeanException, javax.management.InstanceNotFoundException, java.io.IOException")
-  public javax.management.ObjectInstance createMBean(java.lang.String className, javax.management.ObjectName name, javax.management.ObjectName loaderName) { return null; }
+  public Any createMBean(String className, Any name, Any loaderName) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.ReflectionException, javax.management.InstanceAlreadyExistsException, javax.management.MBeanRegistrationException, javax.management.MBeanException, javax.management.NotCompliantMBeanException, javax.management.InstanceNotFoundException, java.io.IOException")
-  public javax.management.ObjectInstance createMBean(java.lang.String className, javax.management.ObjectName name, javax.management.ObjectName loaderName, java.lang.Object[] params, java.lang.String[] signature) { return null; }
+  public Any createMBean(String className, Any name, Any loaderName, Any[] params, String[] signature) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, javax.management.MBeanRegistrationException, java.io.IOException")
-  public void unregisterMBean(javax.management.ObjectName name) { }
+  public void unregisterMBean(Any name) { }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, java.io.IOException")
-  public javax.management.ObjectInstance getObjectInstance(javax.management.ObjectName name) { return null; }
+  public Any getObjectInstance(Any name) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.util.Set<javax.management.ObjectInstance> queryMBeans(javax.management.ObjectName name, javax.management.QueryExp query) { return null; }
+  public Any queryMBeans(Any name, Any query) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.lang.Integer getMBeanCount() { return null; }
+  public Any getMBeanCount() { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.lang.String getDefaultDomain() { return null; }
+  public String getDefaultDomain() { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.lang.String[] getDomains() { return null; }
+  public String[] getDomains() { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, java.io.IOException")
-  public void addNotificationListener(javax.management.ObjectName name, javax.management.NotificationListener listener, javax.management.NotificationFilter filter, java.lang.Object handback) { }
+  public void addNotificationListener(Any name, Any listener, Any filter, Any handback) { }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, javax.management.ListenerNotFoundException, java.io.IOException")
-  public void removeNotificationListener(javax.management.ObjectName name, javax.management.NotificationListener listener) { }
+  public void removeNotificationListener(Any name, Any listener) { }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, javax.management.ListenerNotFoundException, java.io.IOException")
-  public void removeNotificationListener(javax.management.ObjectName name, javax.management.NotificationListener listener, javax.management.NotificationFilter filter, java.lang.Object handback) { }
+  public void removeNotificationListener(Any name, Any listener, Any filter, Any handback) { }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, javax.management.IntrospectionException, javax.management.ReflectionException, java.io.IOException")
-  public javax.management.MBeanInfo getMBeanInfo(javax.management.ObjectName name) { return null; }
+  public Any getMBeanInfo(Any name) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, java.io.IOException")
-  public boolean isInstanceOf(javax.management.ObjectName name, java.lang.String className) { return false; }
+  public boolean isInstanceOf(Any name, String className) { return false; }
   < ---- END java signatures ---- >
 }

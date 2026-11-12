@@ -56,6 +56,24 @@ class DateTimeFormatter {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DateTimeFormatter bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any ISO_LOCAL_DATE = null;
@@ -82,68 +100,69 @@ class DateTimeFormatter {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String format(java.time.temporal.TemporalAccessor temporal) { return null; }
+  public String format(Any temporal) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> T parse(java.lang.CharSequence text, java.time.temporal.TemporalQuery<T> query) { return null; }
+  public Any parse(Any text, Any query) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.temporal.TemporalAccessor parse(java.lang.CharSequence text) { return null; }
+  public Any parse(Any text) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Locale getLocale() { return null; }
+  public Any getLocale() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.ZoneId getZone() { return null; }
+  public Any getZone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatter withZone(java.time.ZoneId zone) { return null; }
+  public Any withZone(Any zone) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void formatTo(java.time.temporal.TemporalAccessor temporal, java.lang.Appendable appendable) { }
+  public void formatTo(Any temporal, Any appendable) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.chrono.Chronology getChronology() { return null; }
+  public Any getChronology() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.format.DateTimeFormatter ofPattern(java.lang.String pattern) { return null; }
+  public static Any ofPattern(String pattern) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.format.DateTimeFormatter ofPattern(java.lang.String pattern, java.util.Locale locale) { return null; }
+  public static Any ofPattern(String pattern, Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.format.DateTimeFormatter ofLocalizedDate(java.time.format.FormatStyle dateStyle) { return null; }
+  public static Any ofLocalizedDate(Any dateStyle) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.format.DateTimeFormatter ofLocalizedTime(java.time.format.FormatStyle timeStyle) { return null; }
+  public static Any ofLocalizedTime(Any timeStyle) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.format.DateTimeFormatter ofLocalizedDateTime(java.time.format.FormatStyle dateTimeStyle) { return null; }
+  public static Any ofLocalizedDateTime(Any dateTimeStyle) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.format.DateTimeFormatter ofLocalizedDateTime(java.time.format.FormatStyle dateStyle, java.time.format.FormatStyle timeStyle) { return null; }
+  public static Any ofLocalizedDateTime(Any dateStyle, Any timeStyle) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.format.DateTimeFormatter ofLocalizedPattern(java.lang.String requestedTemplate) { return null; }
+  public static Any ofLocalizedPattern(String requestedTemplate) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.time.temporal.TemporalQuery<java.time.Period> parsedExcessDays() { return null; }
+  public static final Any parsedExcessDays() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.time.temporal.TemporalQuery<java.lang.Boolean> parsedLeapSecond() { return null; }
+  public static final Any parsedLeapSecond() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatter withLocale(java.util.Locale locale) { return null; }
+  public Any withLocale(Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatter localizedBy(java.util.Locale locale) { return null; }
+  public Any localizedBy(Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DecimalStyle getDecimalStyle() { return null; }
+  public Any getDecimalStyle() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatter withDecimalStyle(java.time.format.DecimalStyle decimalStyle) { return null; }
+  public Any withDecimalStyle(Any decimalStyle) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatter withChronology(java.time.chrono.Chronology chrono) { return null; }
+  public Any withChronology(Any chrono) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.ResolverStyle getResolverStyle() { return null; }
+  public Any getResolverStyle() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatter withResolverStyle(java.time.format.ResolverStyle resolverStyle) { return null; }
+  public Any withResolverStyle(Any resolverStyle) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.time.temporal.TemporalField> getResolverFields() { return null; }
+  public Any getResolverFields() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatter withResolverFields(java.time.temporal.TemporalField... resolverFields) { return null; }
+  public Any withResolverFields(Any... resolverFields) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatter withResolverFields(java.util.Set<java.time.temporal.TemporalField> resolverFields) { return null; }
+  public Any withResolverFields(Any resolverFields) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.temporal.TemporalAccessor parseBest(java.lang.CharSequence text, java.time.temporal.TemporalQuery<?>... queries) { return null; }
+  public Any parseBest(Any text, Any... queries) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.temporal.TemporalAccessor parseUnresolved(java.lang.CharSequence text, java.text.ParsePosition position) { return null; }
+  public Any parseUnresolved(Any text, Any position) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.text.Format toFormat() { return null; }
+  public Any toFormat() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.text.Format toFormat(java.time.temporal.TemporalQuery<?> parseQuery) { return null; }
+  public Any toFormat(Any parseQuery) { return null; }
   < ---- END java signatures ---- >
 }

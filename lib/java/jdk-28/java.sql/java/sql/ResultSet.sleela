@@ -56,6 +56,24 @@ class ResultSet {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ResultSet bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int FETCH_FORWARD = 1000;
@@ -79,37 +97,37 @@ class ResultSet {
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void updateBytes(int columnIndex, byte[] x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateBytes(java.lang.String columnLabel, byte[] x) { }
+  public void updateBytes(String columnLabel, byte[] x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public boolean getBoolean(java.lang.String columnLabel) { return false; }
+  public boolean getBoolean(String columnLabel) { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public boolean getBoolean(int columnIndex) { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public byte getByte(java.lang.String columnLabel) { return 0; }
+  public byte getByte(String columnLabel) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public byte getByte(int columnIndex) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public short getShort(java.lang.String columnLabel) { return 0; }
+  public short getShort(String columnLabel) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public short getShort(int columnIndex) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public int getInt(int columnIndex) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public int getInt(java.lang.String columnLabel) { return 0; }
+  public int getInt(String columnLabel) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public long getLong(java.lang.String columnLabel) { return 0; }
+  public long getLong(String columnLabel) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public long getLong(int columnIndex) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public float getFloat(java.lang.String columnLabel) { return 0.0; }
+  public float getFloat(String columnLabel) { return 0.0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public float getFloat(int columnIndex) { return 0.0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public double getDouble(int columnIndex) { return 0.0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public double getDouble(java.lang.String columnLabel) { return 0.0; }
+  public double getDouble(String columnLabel) { return 0.0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public byte[] getBytes(java.lang.String columnLabel) { return null; }
+  public byte[] getBytes(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public byte[] getBytes(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
@@ -121,69 +139,70 @@ class ResultSet {
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public int getType() { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Ref getRef(int columnIndex) { return null; }
+  public Any getRef(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Ref getRef(java.lang.String columnLabel) { return null; }
+  public Any getRef(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public boolean previous() { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Array getArray(int columnIndex) { return null; }
+  public Any getArray(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Array getArray(java.lang.String columnLabel) { return null; }
+  public Any getArray(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public boolean absolute(int row) { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.String getString(java.lang.String columnLabel) { return null; }
+  public String getString(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.String getString(int columnIndex) { return null; }
+  public String getString(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.math.BigDecimal getBigDecimal(java.lang.String columnLabel) { return null; }
+  public Any getBigDecimal(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.math.BigDecimal getBigDecimal(int columnIndex) { return null; }
+  public Any getBigDecimal(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.math.BigDecimal getBigDecimal(int columnIndex, int scale) { return null; }
+  public Any getBigDecimal(int columnIndex, int scale) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.math.BigDecimal getBigDecimal(java.lang.String columnLabel, int scale) { return null; }
+  public Any getBigDecimal(String columnLabel, int scale) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Time getTime(int columnIndex, java.util.Calendar cal) { return null; }
+  public Any getTime(int columnIndex, Any cal) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Time getTime(java.lang.String columnLabel) { return null; }
+  public Any getTime(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Time getTime(int columnIndex) { return null; }
+  public Any getTime(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Time getTime(java.lang.String columnLabel, java.util.Calendar cal) { return null; }
+  public Any getTime(String columnLabel, Any cal) { return null; }
+  @generic("<T>")
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public <T> T getObject(java.lang.String columnLabel, java.lang.Class<T> type) { return null; }
+  public Any getObject(String columnLabel, Any type) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.Object getObject(java.lang.String columnLabel) { return null; }
+  public Any getObject(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.Object getObject(int columnIndex, java.util.Map<java.lang.String, java.lang.Class<?>> map) { return null; }
+  public Any getObject(int columnIndex, Any map) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.Object getObject(int columnIndex) { return null; }
+  public Any getObject(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateTime(int columnIndex, java.sql.Time x) { }
+  public void updateTime(int columnIndex, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateTime(java.lang.String columnLabel, java.sql.Time x) { }
+  public void updateTime(String columnLabel, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateArray(int columnIndex, java.sql.Array x) { }
+  public void updateArray(int columnIndex, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateArray(java.lang.String columnLabel, java.sql.Array x) { }
+  public void updateArray(String columnLabel, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.net.URL getURL(java.lang.String columnLabel) { return null; }
+  public Any getURL(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.net.URL getURL(int columnIndex) { return null; }
+  public Any getURL(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Timestamp getTimestamp(int columnIndex, java.util.Calendar cal) { return null; }
+  public Any getTimestamp(int columnIndex, Any cal) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Timestamp getTimestamp(java.lang.String columnLabel, java.util.Calendar cal) { return null; }
+  public Any getTimestamp(String columnLabel, Any cal) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Timestamp getTimestamp(java.lang.String columnLabel) { return null; }
+  public Any getTimestamp(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Timestamp getTimestamp(int columnIndex) { return null; }
+  public Any getTimestamp(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public boolean relative(int rows) { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Statement getStatement() { return null; }
+  public Any getStatement() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public boolean isFirst() { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
@@ -191,37 +210,37 @@ class ResultSet {
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void insertRow() { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public int findColumn(java.lang.String columnLabel) { return 0; }
+  public int findColumn(String columnLabel) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public int getRow() { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public boolean isClosed() { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.io.Reader getCharacterStream(int columnIndex) { return null; }
+  public Any getCharacterStream(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.io.Reader getCharacterStream(java.lang.String columnLabel) { return null; }
+  public Any getCharacterStream(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public boolean wasNull() { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.io.InputStream getAsciiStream(java.lang.String columnLabel) { return null; }
+  public Any getAsciiStream(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.io.InputStream getAsciiStream(int columnIndex) { return null; }
+  public Any getAsciiStream(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.io.InputStream getUnicodeStream(int columnIndex) { return null; }
+  public Any getUnicodeStream(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.io.InputStream getUnicodeStream(java.lang.String columnLabel) { return null; }
+  public Any getUnicodeStream(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.io.InputStream getBinaryStream(int columnIndex) { return null; }
+  public Any getBinaryStream(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.io.InputStream getBinaryStream(java.lang.String columnLabel) { return null; }
+  public Any getBinaryStream(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.SQLWarning getWarnings() { return null; }
+  public Any getWarnings() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void clearWarnings() { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.String getCursorName() { return null; }
+  public String getCursorName() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.ResultSetMetaData getMetaData() { return null; }
+  public Any getMetaData() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public boolean isBeforeFirst() { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
@@ -247,105 +266,105 @@ class ResultSet {
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public boolean rowDeleted() { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateNull(java.lang.String columnLabel) { }
+  public void updateNull(String columnLabel) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void updateNull(int columnIndex) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateBoolean(java.lang.String columnLabel, boolean x) { }
+  public void updateBoolean(String columnLabel, boolean x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void updateBoolean(int columnIndex, boolean x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void updateByte(int columnIndex, byte x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateByte(java.lang.String columnLabel, byte x) { }
+  public void updateByte(String columnLabel, byte x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void updateShort(int columnIndex, short x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateShort(java.lang.String columnLabel, short x) { }
+  public void updateShort(String columnLabel, short x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void updateInt(int columnIndex, int x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateInt(java.lang.String columnLabel, int x) { }
+  public void updateInt(String columnLabel, int x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void updateLong(int columnIndex, long x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateLong(java.lang.String columnLabel, long x) { }
+  public void updateLong(String columnLabel, long x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateFloat(java.lang.String columnLabel, float x) { }
+  public void updateFloat(String columnLabel, float x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void updateFloat(int columnIndex, float x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void updateDouble(int columnIndex, double x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateDouble(java.lang.String columnLabel, double x) { }
+  public void updateDouble(String columnLabel, double x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateBigDecimal(java.lang.String columnLabel, java.math.BigDecimal x) { }
+  public void updateBigDecimal(String columnLabel, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateBigDecimal(int columnIndex, java.math.BigDecimal x) { }
+  public void updateBigDecimal(int columnIndex, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateString(java.lang.String columnLabel, java.lang.String x) { }
+  public void updateString(String columnLabel, String x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateString(int columnIndex, java.lang.String x) { }
+  public void updateString(int columnIndex, String x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateDate(int columnIndex, java.sql.Date x) { }
+  public void updateDate(int columnIndex, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateDate(java.lang.String columnLabel, java.sql.Date x) { }
+  public void updateDate(String columnLabel, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateTimestamp(int columnIndex, java.sql.Timestamp x) { }
+  public void updateTimestamp(int columnIndex, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateTimestamp(java.lang.String columnLabel, java.sql.Timestamp x) { }
+  public void updateTimestamp(String columnLabel, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateAsciiStream(int columnIndex, java.io.InputStream x) { }
+  public void updateAsciiStream(int columnIndex, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateAsciiStream(java.lang.String columnLabel, java.io.InputStream x, long length) { }
+  public void updateAsciiStream(String columnLabel, Any x, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateAsciiStream(int columnIndex, java.io.InputStream x, int length) { }
+  public void updateAsciiStream(int columnIndex, Any x, int length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateAsciiStream(java.lang.String columnLabel, java.io.InputStream x, int length) { }
+  public void updateAsciiStream(String columnLabel, Any x, int length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateAsciiStream(int columnIndex, java.io.InputStream x, long length) { }
+  public void updateAsciiStream(int columnIndex, Any x, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateAsciiStream(java.lang.String columnLabel, java.io.InputStream x) { }
+  public void updateAsciiStream(String columnLabel, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateBinaryStream(int columnIndex, java.io.InputStream x, long length) { }
+  public void updateBinaryStream(int columnIndex, Any x, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateBinaryStream(java.lang.String columnLabel, java.io.InputStream x) { }
+  public void updateBinaryStream(String columnLabel, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateBinaryStream(int columnIndex, java.io.InputStream x, int length) { }
+  public void updateBinaryStream(int columnIndex, Any x, int length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateBinaryStream(java.lang.String columnLabel, java.io.InputStream x, int length) { }
+  public void updateBinaryStream(String columnLabel, Any x, int length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateBinaryStream(java.lang.String columnLabel, java.io.InputStream x, long length) { }
+  public void updateBinaryStream(String columnLabel, Any x, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateBinaryStream(int columnIndex, java.io.InputStream x) { }
+  public void updateBinaryStream(int columnIndex, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateCharacterStream(int columnIndex, java.io.Reader x, long length) { }
+  public void updateCharacterStream(int columnIndex, Any x, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateCharacterStream(java.lang.String columnLabel, java.io.Reader reader, long length) { }
+  public void updateCharacterStream(String columnLabel, Any reader, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateCharacterStream(java.lang.String columnLabel, java.io.Reader reader, int length) { }
+  public void updateCharacterStream(String columnLabel, Any reader, int length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateCharacterStream(java.lang.String columnLabel, java.io.Reader reader) { }
+  public void updateCharacterStream(String columnLabel, Any reader) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateCharacterStream(int columnIndex, java.io.Reader x) { }
+  public void updateCharacterStream(int columnIndex, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateCharacterStream(int columnIndex, java.io.Reader x, int length) { }
+  public void updateCharacterStream(int columnIndex, Any x, int length) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public default void updateObject(java.lang.String columnLabel, java.lang.Object x, java.sql.SQLType targetSqlType, int scaleOrLength) { }
+  public default void updateObject(String columnLabel, Any x, Any targetSqlType, int scaleOrLength) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public default void updateObject(int columnIndex, java.lang.Object x, java.sql.SQLType targetSqlType, int scaleOrLength) { }
+  public default void updateObject(int columnIndex, Any x, Any targetSqlType, int scaleOrLength) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public default void updateObject(int columnIndex, java.lang.Object x, java.sql.SQLType targetSqlType) { }
+  public default void updateObject(int columnIndex, Any x, Any targetSqlType) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateObject(java.lang.String columnLabel, java.lang.Object x) { }
+  public void updateObject(String columnLabel, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public default void updateObject(java.lang.String columnLabel, java.lang.Object x, java.sql.SQLType targetSqlType) { }
+  public default void updateObject(String columnLabel, Any x, Any targetSqlType) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateObject(int columnIndex, java.lang.Object x) { }
+  public void updateObject(int columnIndex, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateObject(int columnIndex, java.lang.Object x, int scaleOrLength) { }
+  public void updateObject(int columnIndex, Any x, int scaleOrLength) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateObject(java.lang.String columnLabel, java.lang.Object x, int scaleOrLength) { }
+  public void updateObject(String columnLabel, Any x, int scaleOrLength) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void updateRow() { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
@@ -359,82 +378,82 @@ class ResultSet {
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void moveToCurrentRow() { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Blob getBlob(int columnIndex) { return null; }
+  public Any getBlob(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Blob getBlob(java.lang.String columnLabel) { return null; }
+  public Any getBlob(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Clob getClob(java.lang.String columnLabel) { return null; }
+  public Any getClob(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Clob getClob(int columnIndex) { return null; }
+  public Any getClob(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateRef(java.lang.String columnLabel, java.sql.Ref x) { }
+  public void updateRef(String columnLabel, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateRef(int columnIndex, java.sql.Ref x) { }
+  public void updateRef(int columnIndex, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateBlob(int columnIndex, java.io.InputStream inputStream) { }
+  public void updateBlob(int columnIndex, Any inputStream) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateBlob(java.lang.String columnLabel, java.sql.Blob x) { }
+  public void updateBlob(String columnLabel, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateBlob(int columnIndex, java.io.InputStream inputStream, long length) { }
+  public void updateBlob(int columnIndex, Any inputStream, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateBlob(java.lang.String columnLabel, java.io.InputStream inputStream, long length) { }
+  public void updateBlob(String columnLabel, Any inputStream, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateClob(java.lang.String columnLabel, java.io.Reader reader, long length) { }
+  public void updateClob(String columnLabel, Any reader, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateClob(int columnIndex, java.io.Reader reader, long length) { }
+  public void updateClob(int columnIndex, Any reader, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateClob(java.lang.String columnLabel, java.sql.Clob x) { }
+  public void updateClob(String columnLabel, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateClob(int columnIndex, java.sql.Clob x) { }
+  public void updateClob(int columnIndex, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.RowId getRowId(int columnIndex) { return null; }
+  public Any getRowId(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.RowId getRowId(java.lang.String columnLabel) { return null; }
+  public Any getRowId(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateRowId(int columnIndex, java.sql.RowId x) { }
+  public void updateRowId(int columnIndex, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateRowId(java.lang.String columnLabel, java.sql.RowId x) { }
+  public void updateRowId(String columnLabel, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public int getHoldability() { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateNString(java.lang.String columnLabel, java.lang.String nString) { }
+  public void updateNString(String columnLabel, String nString) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateNString(int columnIndex, java.lang.String nString) { }
+  public void updateNString(int columnIndex, String nString) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateNClob(int columnIndex, java.sql.NClob nClob) { }
+  public void updateNClob(int columnIndex, Any nClob) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateNClob(java.lang.String columnLabel, java.io.Reader reader) { }
+  public void updateNClob(String columnLabel, Any reader) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateNClob(java.lang.String columnLabel, java.io.Reader reader, long length) { }
+  public void updateNClob(String columnLabel, Any reader, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateNClob(int columnIndex, java.io.Reader reader, long length) { }
+  public void updateNClob(int columnIndex, Any reader, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.NClob getNClob(java.lang.String columnLabel) { return null; }
+  public Any getNClob(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.NClob getNClob(int columnIndex) { return null; }
+  public Any getNClob(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.SQLXML getSQLXML(java.lang.String columnLabel) { return null; }
+  public Any getSQLXML(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.SQLXML getSQLXML(int columnIndex) { return null; }
+  public Any getSQLXML(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateSQLXML(java.lang.String columnLabel, java.sql.SQLXML xmlObject) { }
+  public void updateSQLXML(String columnLabel, Any xmlObject) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateSQLXML(int columnIndex, java.sql.SQLXML xmlObject) { }
+  public void updateSQLXML(int columnIndex, Any xmlObject) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.String getNString(java.lang.String columnLabel) { return null; }
+  public String getNString(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.String getNString(int columnIndex) { return null; }
+  public String getNString(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.io.Reader getNCharacterStream(java.lang.String columnLabel) { return null; }
+  public Any getNCharacterStream(String columnLabel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.io.Reader getNCharacterStream(int columnIndex) { return null; }
+  public Any getNCharacterStream(int columnIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateNCharacterStream(int columnIndex, java.io.Reader x) { }
+  public void updateNCharacterStream(int columnIndex, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateNCharacterStream(java.lang.String columnLabel, java.io.Reader reader, long length) { }
+  public void updateNCharacterStream(String columnLabel, Any reader, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateNCharacterStream(int columnIndex, java.io.Reader x, long length) { }
+  public void updateNCharacterStream(int columnIndex, Any x, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void updateNCharacterStream(java.lang.String columnLabel, java.io.Reader reader) { }
+  public void updateNCharacterStream(String columnLabel, Any reader) { }
   < ---- END java signatures ---- >
 }

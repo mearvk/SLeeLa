@@ -56,12 +56,30 @@ class DecimalFormatSymbols {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DecimalFormatSymbols bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
   public DecimalFormatSymbols() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public DecimalFormatSymbols(java.util.Locale locale) { }
+  public DecimalFormatSymbols(Any locale) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -71,21 +89,21 @@ class DecimalFormatSymbols {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.text.DecimalFormatSymbols getInstance(java.util.Locale locale) { return null; }
+  public static final Any getInstance(Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.text.DecimalFormatSymbols getInstance() { return null; }
+  public static final Any getInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Locale[] getAvailableLocales() { return null; }
+  public static Any[] getAvailableLocales() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getNaN() { return null; }
+  public String getNaN() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getInfinity() { return null; }
+  public String getInfinity() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public char getZeroDigit() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -97,13 +115,13 @@ class DecimalFormatSymbols {
   @throwable("java.lang.UnsupportedOperationException")
   public char getDecimalSeparator() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getExponentSeparator() { return null; }
+  public String getExponentSeparator() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Locale getLocale() { return null; }
+  public Any getLocale() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getInternationalCurrencySymbol() { return null; }
+  public String getInternationalCurrencySymbol() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getCurrencySymbol() { return null; }
+  public String getCurrencySymbol() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public char getDigit() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -115,9 +133,9 @@ class DecimalFormatSymbols {
   @throwable("java.lang.UnsupportedOperationException")
   public char getMinusSign() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Currency getCurrency() { return null; }
+  public Any getCurrency() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setCurrency(java.util.Currency currency) { }
+  public void setCurrency(Any currency) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setZeroDigit(char zeroDigit) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -133,19 +151,19 @@ class DecimalFormatSymbols {
   @throwable("java.lang.UnsupportedOperationException")
   public void setPatternSeparator(char patternSeparator) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setInfinity(java.lang.String infinity) { }
+  public void setInfinity(String infinity) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setNaN(java.lang.String NaN) { }
+  public void setNaN(String NaN) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setMinusSign(char minusSign) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setCurrencySymbol(java.lang.String currency) { }
+  public void setCurrencySymbol(String currency) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setInternationalCurrencySymbol(java.lang.String currencyCode) { }
+  public void setInternationalCurrencySymbol(String currencyCode) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setMonetaryDecimalSeparator(char sep) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setExponentSeparator(java.lang.String exp) { }
+  public void setExponentSeparator(String exp) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setMonetaryGroupingSeparator(char monetaryGroupingSeparator) { }
   < ---- END java signatures ---- >

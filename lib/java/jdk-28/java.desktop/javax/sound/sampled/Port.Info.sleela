@@ -57,6 +57,24 @@ class Info {
   String javaKind = "class";
   String javaSuper = "javax.sound.sampled.Line.Info";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Info bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any MICROPHONE = null;
@@ -69,7 +87,7 @@ class Info {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public Info(java.lang.Class<?> lineClass, java.lang.String name, boolean isSource) { }
+  public Info(Any lineClass, String name, boolean isSource) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -79,15 +97,15 @@ class Info {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean equals(java.lang.Object obj) { return false; }
+  public final boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String toString() { return null; }
+  public final String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean matches(javax.sound.sampled.Line.Info info) { return false; }
+  public boolean matches(Any info) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isSource() { return false; }
   < ---- END java signatures ---- >

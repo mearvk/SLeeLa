@@ -56,6 +56,24 @@ class HTMLDocument {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public HTMLDocument bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,40 +82,40 @@ class HTMLDocument {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public void write(java.lang.String text) { }
+  public void write(String text) { }
   @throwable("java.lang.AbstractMethodError")
   public void open() { }
   @throwable("java.lang.AbstractMethodError")
-  public void writeln(java.lang.String text) { }
+  public void writeln(String text) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getURL() { return null; }
+  public String getURL() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.html.HTMLElement getBody() { return null; }
+  public Any getBody() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getTitle() { return null; }
+  public String getTitle() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setTitle(java.lang.String title) { }
+  public void setTitle(String title) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getCookie() { return null; }
+  public String getCookie() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getDomain() { return null; }
+  public String getDomain() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.html.HTMLCollection getApplets() { return null; }
+  public Any getApplets() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getReferrer() { return null; }
+  public String getReferrer() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setBody(org.w3c.dom.html.HTMLElement body) { }
+  public void setBody(Any body) { }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.html.HTMLCollection getImages() { return null; }
+  public Any getImages() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.html.HTMLCollection getLinks() { return null; }
+  public Any getLinks() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.html.HTMLCollection getForms() { return null; }
+  public Any getForms() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.html.HTMLCollection getAnchors() { return null; }
+  public Any getAnchors() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setCookie(java.lang.String cookie) { }
+  public void setCookie(String cookie) { }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.NodeList getElementsByName(java.lang.String elementName) { return null; }
+  public Any getElementsByName(String elementName) { return null; }
   < ---- END java signatures ---- >
 }

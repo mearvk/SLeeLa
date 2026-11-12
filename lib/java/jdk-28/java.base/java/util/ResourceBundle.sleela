@@ -56,6 +56,24 @@ class ResourceBundle {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ResourceBundle bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any parent;
@@ -73,40 +91,40 @@ class ResourceBundle {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.lang.String> keySet() { return null; }
+  public Any keySet() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsKey(java.lang.String key) { return false; }
+  public boolean containsKey(String key) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String[] getStringArray(java.lang.String key) { return null; }
+  public final String[] getStringArray(String key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String getString(java.lang.String key) { return null; }
+  public final String getString(String key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Locale getLocale() { return null; }
+  public Any getLocale() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.Object getObject(java.lang.String key) { return null; }
+  public final Any getObject(String key) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Enumeration<java.lang.String> getKeys() { return null; }
+  public Any getKeys() { return null; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  java.lang.Object handleGetObject(java.lang.String key) { return null; }
+  Any handleGetObject(String key) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.util.Set<java.lang.String> handleKeySet() { return null; }
+  Any handleKeySet() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setParent(java.util.ResourceBundle parent) { }
+  void setParent(Any parent) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.util.ResourceBundle getBundle(java.lang.String baseName, java.util.Locale locale) { return null; }
+  public static final Any getBundle(String baseName, Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.util.ResourceBundle getBundle(java.lang.String baseName) { return null; }
+  public static final Any getBundle(String baseName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.ResourceBundle getBundle(java.lang.String baseName, java.util.Locale locale, java.lang.ClassLoader loader) { return null; }
+  public static Any getBundle(String baseName, Any locale, Any loader) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.ResourceBundle getBundle(java.lang.String baseName, java.util.Locale targetLocale, java.lang.ClassLoader loader, java.util.ResourceBundle.Control control) { return null; }
+  public static Any getBundle(String baseName, Any targetLocale, Any loader, Any control) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getBaseBundleName() { return null; }
+  public String getBaseBundleName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final void clearCache(java.lang.ClassLoader loader) { }
+  public static final void clearCache(Any loader) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static final void clearCache() { }
   < ---- END java signatures ---- >

@@ -56,6 +56,24 @@ class ScriptContext {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ScriptContext bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int ENGINE_SCOPE = 100;
@@ -69,32 +87,32 @@ class ScriptContext {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public void setAttribute(java.lang.String name, java.lang.Object value, int scope) { }
+  public void setAttribute(String name, Any value, int scope) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object getAttribute(java.lang.String name) { return null; }
+  public Any getAttribute(String name) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object getAttribute(java.lang.String name, int scope) { return null; }
+  public Any getAttribute(String name, int scope) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setWriter(java.io.Writer writer) { }
+  public void setWriter(Any writer) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.io.Reader getReader() { return null; }
+  public Any getReader() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object removeAttribute(java.lang.String name, int scope) { return null; }
+  public Any removeAttribute(String name, int scope) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.io.Writer getWriter() { return null; }
+  public Any getWriter() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setBindings(javax.script.Bindings bindings, int scope) { }
+  public void setBindings(Any bindings, int scope) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.script.Bindings getBindings(int scope) { return null; }
+  public Any getBindings(int scope) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.io.Writer getErrorWriter() { return null; }
+  public Any getErrorWriter() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public int getAttributesScope(java.lang.String name) { return 0; }
+  public int getAttributesScope(String name) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public void setErrorWriter(java.io.Writer writer) { }
+  public void setErrorWriter(Any writer) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setReader(java.io.Reader reader) { }
+  public void setReader(Any reader) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<java.lang.Integer> getScopes() { return null; }
+  public Any getScopes() { return null; }
   < ---- END java signatures ---- >
 }

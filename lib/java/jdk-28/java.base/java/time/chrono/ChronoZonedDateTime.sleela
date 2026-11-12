@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class ChronoZonedDateTime<D extends java.time.chrono.ChronoLocalDate> {
+class ChronoZonedDateTime {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class ChronoZonedDateTime<D extends java.time.chrono.ChronoLocalDate> {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<D extends java.time.chrono.ChronoLocalDate>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "D"; } return null; }
+  public ChronoZonedDateTime bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,70 +82,71 @@ class ChronoZonedDateTime<D extends java.time.chrono.ChronoLocalDate> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public default int get(java.time.temporal.TemporalField field) { return 0; }
+  public default int get(Any field) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default int compareTo(java.time.chrono.ChronoZonedDateTime<?> other) { return 0; }
+  public default int compareTo(Any other) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default long getLong(java.time.temporal.TemporalField field) { return 0; }
+  public default long getLong(Any field) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.String format(java.time.format.DateTimeFormatter formatter) { return null; }
+  public default String format(Any formatter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.chrono.ChronoZonedDateTime<?> from(java.time.temporal.TemporalAccessor temporal) { return null; }
+  public static Any from(Any temporal) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean isSupported(java.time.temporal.TemporalField field) { return false; }
+  public boolean isSupported(Any field) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.chrono.ChronoZonedDateTime<D> with(java.time.temporal.TemporalField field, long newValue) { return null; }
+  public Any with(Any field, long newValue) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoZonedDateTime<D> with(java.time.temporal.TemporalAdjuster adjuster) { return null; }
+  public default Any with(Any adjuster) { return null; }
+  @generic("<R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public default <R> R query(java.time.temporal.TemporalQuery<R> query) { return null; }
+  public default Any query(Any query) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.ZoneOffset getOffset() { return null; }
+  public Any getOffset() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { return null; }
+  public default Any range(Any field) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default boolean isEqual(java.time.chrono.ChronoZonedDateTime<?> other) { return false; }
+  public default boolean isEqual(Any other) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.Instant toInstant() { return null; }
+  public default Any toInstant() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoZonedDateTime<D> minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { return null; }
+  public default Any minus(long amountToSubtract, Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoZonedDateTime<D> minus(java.time.temporal.TemporalAmount amount) { return null; }
+  public default Any minus(Any amount) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.ZoneId getZone() { return null; }
+  public Any getZone() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.chrono.ChronoZonedDateTime<D> plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { return null; }
+  public Any plus(long amountToAdd, Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoZonedDateTime<D> plus(java.time.temporal.TemporalAmount amount) { return null; }
+  public default Any plus(Any amount) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default boolean isAfter(java.time.chrono.ChronoZonedDateTime<?> other) { return false; }
+  public default boolean isAfter(Any other) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default boolean isBefore(java.time.chrono.ChronoZonedDateTime<?> other) { return false; }
+  public default boolean isBefore(Any other) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.LocalTime toLocalTime() { return null; }
+  public default Any toLocalTime() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.Chronology getChronology() { return null; }
+  public default Any getChronology() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public default long toEpochSecond() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Comparator<java.time.chrono.ChronoZonedDateTime<?>> timeLineOrder() { return null; }
+  public static Any timeLineOrder() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.chrono.ChronoLocalDateTime<D> toLocalDateTime() { return null; }
+  public Any toLocalDateTime() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default D toLocalDate() { return null; }
+  public default Any toLocalDate() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.chrono.ChronoZonedDateTime<D> withZoneSameInstant(java.time.ZoneId zone) { return null; }
+  public Any withZoneSameInstant(Any zone) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.chrono.ChronoZonedDateTime<D> withZoneSameLocal(java.time.ZoneId zone) { return null; }
+  public Any withZoneSameLocal(Any zone) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.chrono.ChronoZonedDateTime<D> withLaterOffsetAtOverlap() { return null; }
+  public Any withLaterOffsetAtOverlap() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.chrono.ChronoZonedDateTime<D> withEarlierOffsetAtOverlap() { return null; }
+  public Any withEarlierOffsetAtOverlap() { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class Lookup {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Lookup bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any PUBLIC = null;
@@ -63,7 +81,7 @@ class Lookup {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public Lookup(java.lang.invoke.MethodHandles.Lookup lookup) { }
+  public Lookup(Any lookup) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -73,32 +91,32 @@ class Lookup {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle findVirtual(java.lang.Class<?> declaringClass, java.lang.String name, java.lang.invoke.MethodType type) { return null; }
+  public Any findVirtual(Any declaringClass, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle findStatic(java.lang.Class<?> declaringClass, java.lang.String name, java.lang.invoke.MethodType type) { return null; }
+  public Any findStatic(Any declaringClass, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle unreflect(java.lang.reflect.Method m) { return null; }
+  public Any unreflect(Any m) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle unreflect(java.lang.invoke.MethodHandles.Lookup lookup, java.lang.reflect.Method m) { return null; }
+  public static Any unreflect(Any lookup, Any m) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle unreflectConstructor(java.lang.invoke.MethodHandles.Lookup lookup, java.lang.reflect.Constructor<?> c) { return null; }
+  public static Any unreflectConstructor(Any lookup, Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle unreflectConstructor(java.lang.reflect.Constructor<?> c) { return null; }
+  public Any unreflectConstructor(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle findSpecial(java.lang.Class<?> declaringClass, java.lang.String name, java.lang.invoke.MethodType type) { return null; }
+  public Any findSpecial(Any declaringClass, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle findGetter(java.lang.Class<?> refc, java.lang.String name, java.lang.Class<?> type) { return null; }
+  public Any findGetter(Any refc, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle unreflectGetter(java.lang.reflect.Field f) { return null; }
+  public Any unreflectGetter(Any f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle unreflectSetter(java.lang.reflect.Field f) { return null; }
+  public Any unreflectSetter(Any f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle findOwnSpecial(java.lang.String name, java.lang.Class<?> rtype, java.lang.Class<?>... ptypes) { return null; }
+  public Any findOwnSpecial(String name, Any rtype, Any... ptypes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle findOwnSpecial(java.lang.invoke.MethodHandles.Lookup lookup, java.lang.String name, java.lang.Class<?> rtype, java.lang.Class<?>... ptypes) { return null; }
+  public static Any findOwnSpecial(Any lookup, String name, Any rtype, Any... ptypes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle findOwnStatic(java.lang.String name, java.lang.Class<?> rtype, java.lang.Class<?>... ptypes) { return null; }
+  public Any findOwnStatic(String name, Any rtype, Any... ptypes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.invoke.MethodHandle findOwnStatic(java.lang.invoke.MethodHandles.Lookup lookup, java.lang.String name, java.lang.Class<?> rtype, java.lang.Class<?>... ptypes) { return null; }
+  public static Any findOwnStatic(Any lookup, String name, Any rtype, Any... ptypes) { return null; }
   < ---- END java signatures ---- >
 }

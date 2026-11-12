@@ -56,6 +56,24 @@ class BorderFactory {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BorderFactory bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,70 +82,70 @@ class BorderFactory {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createRaisedSoftBevelBorder() { return null; }
+  public static Any createRaisedSoftBevelBorder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createLoweredSoftBevelBorder() { return null; }
+  public static Any createLoweredSoftBevelBorder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createDashedBorder(java.awt.Paint paint, float thickness, float length, float spacing, boolean rounded) { return null; }
+  public static Any createDashedBorder(Any paint, float thickness, float length, float spacing, boolean rounded) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createDashedBorder(java.awt.Paint paint) { return null; }
+  public static Any createDashedBorder(Any paint) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createDashedBorder(java.awt.Paint paint, float length, float spacing) { return null; }
+  public static Any createDashedBorder(Any paint, float length, float spacing) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createStrokeBorder(java.awt.BasicStroke stroke, java.awt.Paint paint) { return null; }
+  public static Any createStrokeBorder(Any stroke, Any paint) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createStrokeBorder(java.awt.BasicStroke stroke) { return null; }
+  public static Any createStrokeBorder(Any stroke) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createLineBorder(java.awt.Color color) { return null; }
+  public static Any createLineBorder(Any color) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createLineBorder(java.awt.Color color, int thickness, boolean rounded) { return null; }
+  public static Any createLineBorder(Any color, int thickness, boolean rounded) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createLineBorder(java.awt.Color color, int thickness) { return null; }
+  public static Any createLineBorder(Any color, int thickness) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createRaisedBevelBorder() { return null; }
+  public static Any createRaisedBevelBorder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createLoweredBevelBorder() { return null; }
+  public static Any createLoweredBevelBorder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createBevelBorder(int type, java.awt.Color highlightOuter, java.awt.Color highlightInner, java.awt.Color shadowOuter, java.awt.Color shadowInner) { return null; }
+  public static Any createBevelBorder(int type, Any highlightOuter, Any highlightInner, Any shadowOuter, Any shadowInner) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createBevelBorder(int type, java.awt.Color highlight, java.awt.Color shadow) { return null; }
+  public static Any createBevelBorder(int type, Any highlight, Any shadow) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createBevelBorder(int type) { return null; }
+  public static Any createBevelBorder(int type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createSoftBevelBorder(int type, java.awt.Color highlight, java.awt.Color shadow) { return null; }
+  public static Any createSoftBevelBorder(int type, Any highlight, Any shadow) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createSoftBevelBorder(int type) { return null; }
+  public static Any createSoftBevelBorder(int type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createSoftBevelBorder(int type, java.awt.Color highlightOuter, java.awt.Color highlightInner, java.awt.Color shadowOuter, java.awt.Color shadowInner) { return null; }
+  public static Any createSoftBevelBorder(int type, Any highlightOuter, Any highlightInner, Any shadowOuter, Any shadowInner) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createEtchedBorder(int type, java.awt.Color highlight, java.awt.Color shadow) { return null; }
+  public static Any createEtchedBorder(int type, Any highlight, Any shadow) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createEtchedBorder(int type) { return null; }
+  public static Any createEtchedBorder(int type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createEtchedBorder(java.awt.Color highlight, java.awt.Color shadow) { return null; }
+  public static Any createEtchedBorder(Any highlight, Any shadow) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createEtchedBorder() { return null; }
+  public static Any createEtchedBorder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.TitledBorder createTitledBorder(java.lang.String title) { return null; }
+  public static Any createTitledBorder(String title) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.TitledBorder createTitledBorder(javax.swing.border.Border border) { return null; }
+  public static Any createTitledBorder(Any border) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.TitledBorder createTitledBorder(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition, java.awt.Font titleFont) { return null; }
+  public static Any createTitledBorder(Any border, String title, int titleJustification, int titlePosition, Any titleFont) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.TitledBorder createTitledBorder(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition) { return null; }
+  public static Any createTitledBorder(Any border, String title, int titleJustification, int titlePosition) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.TitledBorder createTitledBorder(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition, java.awt.Font titleFont, java.awt.Color titleColor) { return null; }
+  public static Any createTitledBorder(Any border, String title, int titleJustification, int titlePosition, Any titleFont, Any titleColor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.TitledBorder createTitledBorder(javax.swing.border.Border border, java.lang.String title) { return null; }
+  public static Any createTitledBorder(Any border, String title) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createEmptyBorder(int top, int left, int bottom, int right) { return null; }
+  public static Any createEmptyBorder(int top, int left, int bottom, int right) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.Border createEmptyBorder() { return null; }
+  public static Any createEmptyBorder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.CompoundBorder createCompoundBorder(javax.swing.border.Border outsideBorder, javax.swing.border.Border insideBorder) { return null; }
+  public static Any createCompoundBorder(Any outsideBorder, Any insideBorder) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.CompoundBorder createCompoundBorder() { return null; }
+  public static Any createCompoundBorder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.border.MatteBorder createMatteBorder(int top, int left, int bottom, int right, javax.swing.Icon tileIcon) { return null; }
+  public static Any createMatteBorder(int top, int left, int bottom, int right, Any tileIcon) { return null; }
   < ---- END java signatures ---- >
 }

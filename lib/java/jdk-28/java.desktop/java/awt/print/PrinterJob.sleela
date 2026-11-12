@@ -56,6 +56,24 @@ class PrinterJob {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public PrinterJob bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -75,42 +93,42 @@ class PrinterJob {
   @throwable("java.lang.AbstractMethodError")
   public int getCopies() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getUserName() { return null; }
+  public String getUserName() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void setCopies(int copies) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.print.PageFormat getPageFormat(javax.print.attribute.PrintRequestAttributeSet attributes) { return null; }
+  public Any getPageFormat(Any attributes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.print.PrinterJob getPrinterJob() { return null; }
+  public static Any getPrinterJob() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.print.PrintService[] lookupPrintServices() { return null; }
+  public static Any[] lookupPrintServices() { return null; }
   @throwable("java.lang.AbstractMethodError, java.awt.HeadlessException")
   public boolean printDialog() { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public boolean printDialog(javax.print.attribute.PrintRequestAttributeSet attributes) { return false; }
+  public boolean printDialog(Any attributes) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.print.PageFormat defaultPage() { return null; }
+  public Any defaultPage() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.print.PageFormat defaultPage(java.awt.print.PageFormat page) { return null; }
+  public Any defaultPage(Any page) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public java.awt.print.PageFormat pageDialog(javax.print.attribute.PrintRequestAttributeSet attributes) { return null; }
+  public Any pageDialog(Any attributes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.print.PrintService getPrintService() { return null; }
+  public Any getPrintService() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.print.PageFormat validatePage(java.awt.print.PageFormat page) { return null; }
+  public Any validatePage(Any page) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.print.StreamPrintServiceFactory[] lookupStreamPrintServices(java.lang.String mimeType) { return null; }
+  public static Any[] lookupStreamPrintServices(String mimeType) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.print.PrinterException")
-  public void setPrintService(javax.print.PrintService service) { }
+  public void setPrintService(Any service) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setPrintable(java.awt.print.Printable painter) { }
+  public void setPrintable(Any painter) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setPrintable(java.awt.print.Printable painter, java.awt.print.PageFormat format) { }
+  public void setPrintable(Any painter, Any format) { }
   @throwable("java.lang.AbstractMethodError, java.lang.NullPointerException")
-  public void setPageable(java.awt.print.Pageable document) { }
+  public void setPageable(Any document) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setJobName(java.lang.String jobName) { }
+  public void setJobName(String jobName) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getJobName() { return null; }
+  public String getJobName() { return null; }
   < ---- END java signatures ---- >
 }

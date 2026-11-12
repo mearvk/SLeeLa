@@ -56,6 +56,24 @@ class DatagramSocketImpl {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DatagramSocketImpl bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   int localPort;
@@ -75,52 +93,54 @@ class DatagramSocketImpl {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  void join(java.net.InetAddress inetaddr) { }
+  void join(Any inetaddr) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.net.SocketException")
   void create() { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  int peek(java.net.InetAddress i) { return 0; }
+  int peek(Any i) { return 0; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.net.SocketException")
-  void bind(int lport, java.net.InetAddress laddr) { }
+  void bind(int lport, Any laddr) { }
   @JavaProtected
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  <T> void setOption(java.net.SocketOption<T> name, T value) { }
+  void setOption(Any name, Any value) { }
   @JavaProtected
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  <T> T getOption(java.net.SocketOption<T> name) { return null; }
+  Any getOption(Any name) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.util.Set<java.net.SocketOption<?>> supportedOptions() { return null; }
+  Any supportedOptions() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, java.net.SocketException")
-  void connect(java.net.InetAddress address, int port) { }
+  void connect(Any address, int port) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
   int getTimeToLive() { return 0; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  void leave(java.net.InetAddress inetaddr) { }
+  void leave(Any inetaddr) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void disconnect() { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  void send(java.net.DatagramPacket p) { }
+  void send(Any p) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getLocalPort() { return 0; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  void joinGroup(java.net.SocketAddress mcastaddr, java.net.NetworkInterface netIf) { }
+  void joinGroup(Any mcastaddr, Any netIf) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  void leaveGroup(java.net.SocketAddress mcastaddr, java.net.NetworkInterface netIf) { }
+  void leaveGroup(Any mcastaddr, Any netIf) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  int peekData(java.net.DatagramPacket p) { return 0; }
+  int peekData(Any p) { return 0; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
   void setTTL(byte ttl) { }
@@ -132,9 +152,9 @@ class DatagramSocketImpl {
   void setTimeToLive(int ttl) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.io.FileDescriptor getFileDescriptor() { return null; }
+  Any getFileDescriptor() { return null; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  void receive(java.net.DatagramPacket p) { }
+  void receive(Any p) { }
   < ---- END java signatures ---- >
 }

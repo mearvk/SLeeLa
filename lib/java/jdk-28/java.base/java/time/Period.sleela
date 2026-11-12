@@ -56,6 +56,24 @@ class Period {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Period bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any ZERO = null;
@@ -68,23 +86,23 @@ class Period {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public long get(java.time.temporal.TemporalUnit unit) { return 0; }
+  public long get(Any unit) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.Period of(int years, int months, int days) { return null; }
+  public static Any of(int years, int months, int days) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.Period from(java.time.temporal.TemporalAmount amount) { return null; }
+  public static Any from(Any amount) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.Period parse(java.lang.CharSequence text) { return null; }
+  public static Any parse(Any text) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.Period between(java.time.LocalDate startDateInclusive, java.time.LocalDate endDateExclusive) { return null; }
+  public static Any between(Any startDateInclusive, Any endDateExclusive) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Period normalized() { return null; }
+  public Any normalized() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isZero() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -92,52 +110,52 @@ class Period {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isNegative() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Period minus(java.time.temporal.TemporalAmount amountToSubtract) { return null; }
+  public Any minus(Any amountToSubtract) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Period plus(java.time.temporal.TemporalAmount amountToAdd) { return null; }
+  public Any plus(Any amountToAdd) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<java.time.temporal.TemporalUnit> getUnits() { return null; }
+  public Any getUnits() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Period negated() { return null; }
+  public Any negated() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Period multipliedBy(int scalar) { return null; }
+  public Any multipliedBy(int scalar) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Period plusDays(long daysToAdd) { return null; }
+  public Any plusDays(long daysToAdd) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.Period ofDays(int days) { return null; }
+  public static Any ofDays(int days) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Period minusDays(long daysToSubtract) { return null; }
+  public Any minusDays(long daysToSubtract) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.temporal.Temporal addTo(java.time.temporal.Temporal temporal) { return null; }
+  public Any addTo(Any temporal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.temporal.Temporal subtractFrom(java.time.temporal.Temporal temporal) { return null; }
+  public Any subtractFrom(Any temporal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Period plusMonths(long monthsToAdd) { return null; }
+  public Any plusMonths(long monthsToAdd) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public long toTotalMonths() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getDays() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Period plusYears(long yearsToAdd) { return null; }
+  public Any plusYears(long yearsToAdd) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Period minusMonths(long monthsToSubtract) { return null; }
+  public Any minusMonths(long monthsToSubtract) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.chrono.IsoChronology getChronology() { return null; }
+  public Any getChronology() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Period minusYears(long yearsToSubtract) { return null; }
+  public Any minusYears(long yearsToSubtract) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getYears() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.Period ofYears(int years) { return null; }
+  public static Any ofYears(int years) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.Period ofMonths(int months) { return null; }
+  public static Any ofMonths(int months) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.Period ofWeeks(int weeks) { return null; }
+  public static Any ofWeeks(int weeks) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Period withYears(int years) { return null; }
+  public Any withYears(int years) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Period withMonths(int months) { return null; }
+  public Any withMonths(int months) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Period withDays(int days) { return null; }
+  public Any withDays(int days) { return null; }
   < ---- END java signatures ---- >
 }

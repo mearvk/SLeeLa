@@ -56,6 +56,24 @@ class HTMLDocument {
   String javaKind = "class";
   String javaSuper = "javax.swing.text.DefaultStyledDocument";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public HTMLDocument bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String AdditionalComments = "AdditionalComments";
@@ -63,9 +81,9 @@ class HTMLDocument {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public HTMLDocument(javax.swing.text.AbstractDocument.Content c, javax.swing.text.html.StyleSheet styles) { }
+  public HTMLDocument(Any c, Any styles) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public HTMLDocument(javax.swing.text.html.StyleSheet styles) { }
+  public HTMLDocument(Any styles) { }
   @throwable("java.lang.UnsupportedOperationException")
   public HTMLDocument() { }
   < ---- END java constructors ---- >
@@ -78,71 +96,71 @@ class HTMLDocument {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  void insert(int offset, javax.swing.text.DefaultStyledDocument.ElementSpec[] data) { }
+  void insert(int offset, Any[] data) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.html.HTMLDocument.Iterator getIterator(javax.swing.text.html.HTML.Tag t) { return null; }
+  public Any getIterator(Any t) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void create(javax.swing.text.DefaultStyledDocument.ElementSpec[] data) { }
+  void create(Any[] data) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.Element getElement(java.lang.String id) { return null; }
+  public Any getElement(String id) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.Element getElement(javax.swing.text.Element e, java.lang.Object attribute, java.lang.Object value) { return null; }
+  public Any getElement(Any e, Any attribute, Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.net.URL getBase() { return null; }
+  public Any getBase() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setParser(javax.swing.text.html.HTMLEditorKit.Parser parser) { }
+  public void setParser(Any parser) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.html.StyleSheet getStyleSheet() { return null; }
+  public Any getStyleSheet() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBase(java.net.URL u) { }
+  public void setBase(Any u) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setPreservesUnknownTags(boolean preservesTags) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.html.HTMLEditorKit.Parser getParser() { return null; }
+  public Any getParser() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setTokenThreshold(int n) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.html.HTMLEditorKit.ParserCallback getReader(int pos) { return null; }
+  public Any getReader(int pos) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.html.HTMLEditorKit.ParserCallback getReader(int pos, int popDepth, int pushDepth, javax.swing.text.html.HTML.Tag insertTag) { return null; }
+  public Any getReader(int pos, int popDepth, int pushDepth, Any insertTag) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void fireChangedUpdate(javax.swing.event.DocumentEvent e) { }
+  void fireChangedUpdate(Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void fireUndoableEditUpdate(javax.swing.event.UndoableEditEvent e) { }
+  void fireUndoableEditUpdate(Any e) { }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException, java.io.IOException")
-  public void setOuterHTML(javax.swing.text.Element elem, java.lang.String htmlText) { }
+  public void setOuterHTML(Any elem, String htmlText) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.text.Element createLeafElement(javax.swing.text.Element parent, javax.swing.text.AttributeSet a, int p0, int p1) { return null; }
+  Any createLeafElement(Any parent, Any a, int p0, int p1) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.text.Element createBranchElement(javax.swing.text.Element parent, javax.swing.text.AttributeSet a) { return null; }
+  Any createBranchElement(Any parent, Any a) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.text.AbstractDocument.AbstractElement createDefaultRoot() { return null; }
+  Any createDefaultRoot() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getTokenThreshold() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getPreservesUnknownTags() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void processHTMLFrameHyperlinkEvent(javax.swing.text.html.HTMLFrameHyperlinkEvent e) { }
+  public void processHTMLFrameHyperlinkEvent(Any e) { }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException, java.io.IOException")
-  public void setInnerHTML(javax.swing.text.Element elem, java.lang.String htmlText) { }
+  public void setInnerHTML(Any elem, String htmlText) { }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException, java.io.IOException")
-  public void insertAfterStart(javax.swing.text.Element elem, java.lang.String htmlText) { }
+  public void insertAfterStart(Any elem, String htmlText) { }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException, java.io.IOException")
-  public void insertBeforeEnd(javax.swing.text.Element elem, java.lang.String htmlText) { }
+  public void insertBeforeEnd(Any elem, String htmlText) { }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException, java.io.IOException")
-  public void insertBeforeStart(javax.swing.text.Element elem, java.lang.String htmlText) { }
+  public void insertBeforeStart(Any elem, String htmlText) { }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException, java.io.IOException")
-  public void insertAfterEnd(javax.swing.text.Element elem, java.lang.String htmlText) { }
+  public void insertAfterEnd(Any elem, String htmlText) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void insertUpdate(javax.swing.text.AbstractDocument.DefaultDocumentEvent chng, javax.swing.text.AttributeSet attr) { }
+  void insertUpdate(Any chng, Any attr) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setParagraphAttributes(int offset, int length, javax.swing.text.AttributeSet s, boolean replace) { }
+  public void setParagraphAttributes(int offset, int length, Any s, boolean replace) { }
   < ---- END java signatures ---- >
 }

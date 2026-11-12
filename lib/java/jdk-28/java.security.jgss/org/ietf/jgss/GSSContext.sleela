@@ -56,6 +56,24 @@ class GSSContext {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public GSSContext bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int DEFAULT_LIFETIME = 0;
@@ -69,13 +87,13 @@ class GSSContext {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public void wrap(java.io.InputStream inStream, java.io.OutputStream outStream, org.ietf.jgss.MessageProp msgProp) { }
+  public void wrap(Any inStream, Any outStream, Any msgProp) { }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public byte[] wrap(byte[] inBuf, int offset, int len, org.ietf.jgss.MessageProp msgProp) { return null; }
+  public byte[] wrap(byte[] inBuf, int offset, int len, Any msgProp) { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public void unwrap(java.io.InputStream inStream, java.io.OutputStream outStream, org.ietf.jgss.MessageProp msgProp) { }
+  public void unwrap(Any inStream, Any outStream, Any msgProp) { }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public byte[] unwrap(byte[] inBuf, int offset, int len, org.ietf.jgss.MessageProp msgProp) { return null; }
+  public byte[] unwrap(byte[] inBuf, int offset, int len, Any msgProp) { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
   public byte[] export() { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
@@ -83,23 +101,23 @@ class GSSContext {
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
   public byte[] initSecContext(byte[] inputBuf, int offset, int len) { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public int initSecContext(java.io.InputStream inStream, java.io.OutputStream outStream) { return 0; }
+  public int initSecContext(Any inStream, Any outStream) { return 0; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
   public byte[] acceptSecContext(byte[] inToken, int offset, int len) { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public void acceptSecContext(java.io.InputStream inStream, java.io.OutputStream outStream) { }
+  public void acceptSecContext(Any inStream, Any outStream) { }
   @throwable("java.lang.AbstractMethodError")
   public boolean isEstablished() { return false; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
   public int getWrapSizeLimit(int qop, boolean confReq, int maxTokenSize) { return 0; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public void getMIC(java.io.InputStream inStream, java.io.OutputStream outStream, org.ietf.jgss.MessageProp msgProp) { }
+  public void getMIC(Any inStream, Any outStream, Any msgProp) { }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public byte[] getMIC(byte[] inMsg, int offset, int len, org.ietf.jgss.MessageProp msgProp) { return null; }
+  public byte[] getMIC(byte[] inMsg, int offset, int len, Any msgProp) { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public void verifyMIC(java.io.InputStream tokStream, java.io.InputStream msgStream, org.ietf.jgss.MessageProp msgProp) { }
+  public void verifyMIC(Any tokStream, Any msgStream, Any msgProp) { }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public void verifyMIC(byte[] inToken, int tokOffset, int tokLen, byte[] inMsg, int msgOffset, int msgLen, org.ietf.jgss.MessageProp msgProp) { }
+  public void verifyMIC(byte[] inToken, int tokOffset, int tokLen, byte[] inMsg, int msgOffset, int msgLen, Any msgProp) { }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
   public void requestMutualAuth(boolean state) { }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
@@ -117,7 +135,7 @@ class GSSContext {
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
   public void requestLifetime(int lifetime) { }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public void setChannelBinding(org.ietf.jgss.ChannelBinding cb) { }
+  public void setChannelBinding(Any cb) { }
   @throwable("java.lang.AbstractMethodError")
   public boolean getCredDelegState() { return false; }
   @throwable("java.lang.AbstractMethodError")
@@ -139,13 +157,13 @@ class GSSContext {
   @throwable("java.lang.AbstractMethodError")
   public int getLifetime() { return 0; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public org.ietf.jgss.GSSName getSrcName() { return null; }
+  public Any getSrcName() { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public org.ietf.jgss.GSSName getTargName() { return null; }
+  public Any getTargName() { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public org.ietf.jgss.Oid getMech() { return null; }
+  public Any getMech() { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public org.ietf.jgss.GSSCredential getDelegCred() { return null; }
+  public Any getDelegCred() { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
   public boolean isInitiator() { return false; }
   < ---- END java signatures ---- >

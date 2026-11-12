@@ -56,6 +56,24 @@ class XAResource {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public XAResource bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int TMENDRSCAN = 8388608;
@@ -78,23 +96,23 @@ class XAResource {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError, javax.transaction.xa.XAException")
-  public void commit(javax.transaction.xa.Xid xid, boolean onePhase) { }
+  public void commit(Any xid, boolean onePhase) { }
   @throwable("java.lang.AbstractMethodError, javax.transaction.xa.XAException")
-  public void end(javax.transaction.xa.Xid xid, int flags) { }
+  public void end(Any xid, int flags) { }
   @throwable("java.lang.AbstractMethodError, javax.transaction.xa.XAException")
-  public void start(javax.transaction.xa.Xid xid, int flags) { }
+  public void start(Any xid, int flags) { }
   @throwable("java.lang.AbstractMethodError, javax.transaction.xa.XAException")
-  public int prepare(javax.transaction.xa.Xid xid) { return 0; }
+  public int prepare(Any xid) { return 0; }
   @throwable("java.lang.AbstractMethodError, javax.transaction.xa.XAException")
-  public void rollback(javax.transaction.xa.Xid xid) { }
+  public void rollback(Any xid) { }
   @throwable("java.lang.AbstractMethodError, javax.transaction.xa.XAException")
-  public javax.transaction.xa.Xid[] recover(int flag) { return null; }
+  public Any[] recover(int flag) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.transaction.xa.XAException")
-  public void forget(javax.transaction.xa.Xid xid) { }
+  public void forget(Any xid) { }
   @throwable("java.lang.AbstractMethodError, javax.transaction.xa.XAException")
   public int getTransactionTimeout() { return 0; }
   @throwable("java.lang.AbstractMethodError, javax.transaction.xa.XAException")
-  public boolean isSameRM(javax.transaction.xa.XAResource xares) { return false; }
+  public boolean isSameRM(Any xares) { return false; }
   @throwable("java.lang.AbstractMethodError, javax.transaction.xa.XAException")
   public boolean setTransactionTimeout(int seconds) { return false; }
   < ---- END java signatures ---- >

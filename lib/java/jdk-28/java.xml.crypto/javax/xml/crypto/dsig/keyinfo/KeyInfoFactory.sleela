@@ -56,6 +56,24 @@ class KeyInfoFactory {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public KeyInfoFactory bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,44 +88,44 @@ class KeyInfoFactory {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.xml.crypto.dsig.keyinfo.KeyInfoFactory getInstance() { return null; }
+  public static Any getInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchProviderException")
-  public static javax.xml.crypto.dsig.keyinfo.KeyInfoFactory getInstance(java.lang.String mechanismType, java.lang.String provider) { return null; }
+  public static Any getInstance(String mechanismType, String provider) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.xml.crypto.dsig.keyinfo.KeyInfoFactory getInstance(java.lang.String mechanismType, java.security.Provider provider) { return null; }
+  public static Any getInstance(String mechanismType, Any provider) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.xml.crypto.dsig.keyinfo.KeyInfoFactory getInstance(java.lang.String mechanismType) { return null; }
+  public static Any getInstance(String mechanismType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.security.Provider getProvider() { return null; }
+  public final Any getProvider() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean isFeatureSupported(java.lang.String feature) { return false; }
+  public boolean isFeatureSupported(String feature) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.crypto.URIDereferencer getURIDereferencer() { return null; }
+  public Any getURIDereferencer() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String getMechanismType() { return null; }
+  public final String getMechanismType() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.crypto.dsig.keyinfo.KeyInfo newKeyInfo(java.util.List<? extends javax.xml.crypto.XMLStructure> content, java.lang.String id) { return null; }
+  public Any newKeyInfo(Any content, String id) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.crypto.dsig.keyinfo.KeyInfo newKeyInfo(java.util.List<? extends javax.xml.crypto.XMLStructure> content) { return null; }
+  public Any newKeyInfo(Any content) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.crypto.dsig.keyinfo.KeyName newKeyName(java.lang.String name) { return null; }
+  public Any newKeyName(String name) { return null; }
   @throwable("java.lang.AbstractMethodError, java.security.KeyException")
-  public javax.xml.crypto.dsig.keyinfo.KeyValue newKeyValue(java.security.PublicKey key) { return null; }
+  public Any newKeyValue(Any key) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.crypto.dsig.keyinfo.PGPData newPGPData(byte[] keyId) { return null; }
+  public Any newPGPData(byte[] keyId) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.crypto.dsig.keyinfo.PGPData newPGPData(byte[] keyId, byte[] keyPacket, java.util.List<? extends javax.xml.crypto.XMLStructure> other) { return null; }
+  public Any newPGPData(byte[] keyId, byte[] keyPacket, Any other) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.crypto.dsig.keyinfo.PGPData newPGPData(byte[] keyPacket, java.util.List<? extends javax.xml.crypto.XMLStructure> other) { return null; }
+  public Any newPGPData(byte[] keyPacket, Any other) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.crypto.dsig.keyinfo.RetrievalMethod newRetrievalMethod(java.lang.String uri, java.lang.String type, java.util.List<? extends javax.xml.crypto.dsig.Transform> transforms) { return null; }
+  public Any newRetrievalMethod(String uri, String type, Any transforms) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.crypto.dsig.keyinfo.RetrievalMethod newRetrievalMethod(java.lang.String uri) { return null; }
+  public Any newRetrievalMethod(String uri) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.crypto.dsig.keyinfo.X509Data newX509Data(java.util.List<?> content) { return null; }
+  public Any newX509Data(Any content) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.crypto.dsig.keyinfo.X509IssuerSerial newX509IssuerSerial(java.lang.String issuerName, java.math.BigInteger serialNumber) { return null; }
+  public Any newX509IssuerSerial(String issuerName, Any serialNumber) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.xml.crypto.MarshalException")
-  public javax.xml.crypto.dsig.keyinfo.KeyInfo unmarshalKeyInfo(javax.xml.crypto.XMLStructure xmlStructure) { return null; }
+  public Any unmarshalKeyInfo(Any xmlStructure) { return null; }
   < ---- END java signatures ---- >
 }

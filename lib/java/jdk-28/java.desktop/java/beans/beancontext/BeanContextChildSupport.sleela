@@ -56,6 +56,24 @@ class BeanContextChildSupport {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BeanContextChildSupport bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any beanContextChildPeer;
@@ -69,7 +87,7 @@ class BeanContextChildSupport {
   @throwable("java.lang.UnsupportedOperationException")
   public BeanContextChildSupport() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BeanContextChildSupport(java.beans.beancontext.BeanContextChild bcc) { }
+  public BeanContextChildSupport(Any bcc) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -79,23 +97,23 @@ class BeanContextChildSupport {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void firePropertyChange(java.lang.String name, java.lang.Object oldValue, java.lang.Object newValue) { }
+  public void firePropertyChange(String name, Any oldValue, Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addPropertyChangeListener(java.lang.String name, java.beans.PropertyChangeListener pcl) { }
+  public void addPropertyChangeListener(String name, Any pcl) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removePropertyChangeListener(java.lang.String name, java.beans.PropertyChangeListener pcl) { }
+  public void removePropertyChangeListener(String name, Any pcl) { }
   @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
-  public void fireVetoableChange(java.lang.String name, java.lang.Object oldValue, java.lang.Object newValue) { }
+  public void fireVetoableChange(String name, Any oldValue, Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addVetoableChangeListener(java.lang.String name, java.beans.VetoableChangeListener vcl) { }
+  public void addVetoableChangeListener(String name, Any vcl) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeVetoableChangeListener(java.lang.String name, java.beans.VetoableChangeListener vcl) { }
+  public void removeVetoableChangeListener(String name, Any vcl) { }
   @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
-  public synchronized void setBeanContext(java.beans.beancontext.BeanContext bc) { }
+  public synchronized void setBeanContext(Any bc) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.beans.beancontext.BeanContext getBeanContext() { return null; }
+  public synchronized Any getBeanContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean validatePendingSetBeanContext(java.beans.beancontext.BeanContext newValue) { return false; }
+  public boolean validatePendingSetBeanContext(Any newValue) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void releaseBeanContextResources() { }
@@ -103,11 +121,11 @@ class BeanContextChildSupport {
   @throwable("java.lang.UnsupportedOperationException")
   void initializeBeanContextResources() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void serviceRevoked(java.beans.beancontext.BeanContextServiceRevokedEvent bcsre) { }
+  public void serviceRevoked(Any bcsre) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void serviceAvailable(java.beans.beancontext.BeanContextServiceAvailableEvent bcsae) { }
+  public void serviceAvailable(Any bcsae) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.beans.beancontext.BeanContextChild getBeanContextChildPeer() { return null; }
+  public Any getBeanContextChildPeer() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isDelegated() { return false; }
   < ---- END java signatures ---- >

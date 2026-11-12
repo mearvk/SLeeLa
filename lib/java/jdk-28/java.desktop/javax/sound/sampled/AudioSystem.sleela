@@ -56,6 +56,24 @@ class AudioSystem {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public AudioSystem bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int NOT_SPECIFIED = -1;
@@ -68,50 +86,50 @@ class AudioSystem {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static int write(javax.sound.sampled.AudioInputStream stream, javax.sound.sampled.AudioFileFormat.Type fileType, java.io.OutputStream out) { return 0; }
+  public static int write(Any stream, Any fileType, Any out) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.LineUnavailableException")
-  public static javax.sound.sampled.Line getLine(javax.sound.sampled.Line.Info info) { return null; }
+  public static Any getLine(Any info) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.LineUnavailableException")
-  public static javax.sound.sampled.Clip getClip() { return null; }
+  public static Any getClip() { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.LineUnavailableException")
-  public static javax.sound.sampled.Clip getClip(javax.sound.sampled.Mixer.Info mixerInfo) { return null; }
+  public static Any getClip(Any mixerInfo) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isFileTypeSupported(javax.sound.sampled.AudioFileFormat.Type fileType) { return false; }
+  public static boolean isFileTypeSupported(Any fileType) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isFileTypeSupported(javax.sound.sampled.AudioFileFormat.Type fileType, javax.sound.sampled.AudioInputStream stream) { return false; }
+  public static boolean isFileTypeSupported(Any fileType, Any stream) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.sound.sampled.Mixer getMixer(javax.sound.sampled.Mixer.Info info) { return null; }
+  public static Any getMixer(Any info) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.sound.sampled.Mixer.Info[] getMixerInfo() { return null; }
+  public static Any[] getMixerInfo() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.sound.sampled.Line.Info[] getSourceLineInfo(javax.sound.sampled.Line.Info info) { return null; }
+  public static Any[] getSourceLineInfo(Any info) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.sound.sampled.Line.Info[] getTargetLineInfo(javax.sound.sampled.Line.Info info) { return null; }
+  public static Any[] getTargetLineInfo(Any info) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isLineSupported(javax.sound.sampled.Line.Info info) { return false; }
+  public static boolean isLineSupported(Any info) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.sound.sampled.AudioFormat.Encoding[] getTargetEncodings(javax.sound.sampled.AudioFormat.Encoding sourceEncoding) { return null; }
+  public static Any[] getTargetEncodings(Any sourceEncoding) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isConversionSupported(javax.sound.sampled.AudioFormat targetFormat, javax.sound.sampled.AudioFormat sourceFormat) { return false; }
+  public static boolean isConversionSupported(Any targetFormat, Any sourceFormat) { return false; }
   @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException")
-  public static javax.sound.sampled.AudioInputStream getAudioInputStream(java.io.File file) { return null; }
+  public static Any getAudioInputStream(Any file) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.sound.sampled.AudioInputStream getAudioInputStream(javax.sound.sampled.AudioFormat targetFormat, javax.sound.sampled.AudioInputStream sourceStream) { return null; }
+  public static Any getAudioInputStream(Any targetFormat, Any sourceStream) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.sound.sampled.AudioFormat[] getTargetFormats(javax.sound.sampled.AudioFormat.Encoding targetEncoding, javax.sound.sampled.AudioFormat sourceFormat) { return null; }
+  public static Any[] getTargetFormats(Any targetEncoding, Any sourceFormat) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.UnsupportedAudioFileException, java.io.IOException")
-  public static javax.sound.sampled.AudioFileFormat getAudioFileFormat(java.io.File file) { return null; }
+  public static Any getAudioFileFormat(Any file) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.sound.sampled.AudioFileFormat.Type[] getAudioFileTypes() { return null; }
+  public static Any[] getAudioFileTypes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.sound.sampled.AudioFileFormat.Type[] getAudioFileTypes(javax.sound.sampled.AudioInputStream stream) { return null; }
+  public static Any[] getAudioFileTypes(Any stream) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.LineUnavailableException")
-  public static javax.sound.sampled.SourceDataLine getSourceDataLine(javax.sound.sampled.AudioFormat format, javax.sound.sampled.Mixer.Info mixerinfo) { return null; }
+  public static Any getSourceDataLine(Any format, Any mixerinfo) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.LineUnavailableException")
-  public static javax.sound.sampled.SourceDataLine getSourceDataLine(javax.sound.sampled.AudioFormat format) { return null; }
+  public static Any getSourceDataLine(Any format) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.LineUnavailableException")
-  public static javax.sound.sampled.TargetDataLine getTargetDataLine(javax.sound.sampled.AudioFormat format, javax.sound.sampled.Mixer.Info mixerinfo) { return null; }
+  public static Any getTargetDataLine(Any format, Any mixerinfo) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.sound.sampled.LineUnavailableException")
-  public static javax.sound.sampled.TargetDataLine getTargetDataLine(javax.sound.sampled.AudioFormat format) { return null; }
+  public static Any getTargetDataLine(Any format) { return null; }
   < ---- END java signatures ---- >
 }

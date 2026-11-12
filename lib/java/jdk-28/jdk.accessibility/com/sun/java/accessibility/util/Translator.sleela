@@ -56,6 +56,24 @@ class Translator {
   String javaKind = "class";
   String javaSuper = "javax.accessibility.AccessibleContext";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Translator bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any source;
@@ -65,7 +83,7 @@ class Translator {
   @throwable("java.lang.UnsupportedOperationException")
   public Translator() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Translator(java.lang.Object o) { }
+  public Translator(Any o) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -75,97 +93,97 @@ class Translator {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object o) { return false; }
+  public boolean equals(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean contains(java.awt.Point p) { return false; }
+  public boolean contains(Any p) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getBounds() { return null; }
+  public Any getBounds() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Point getLocation() { return null; }
+  public Any getLocation() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEnabled() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getSize() { return null; }
+  public Any getSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.IllegalComponentStateException")
-  public java.util.Locale getLocale() { return null; }
+  public Any getLocale() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSize(java.awt.Dimension d) { }
+  public void setSize(Any d) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setVisible(boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBounds(java.awt.Rectangle r) { }
+  public void setBounds(Any r) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void requestFocus() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addPropertyChangeListener(java.beans.PropertyChangeListener l) { }
+  public void addPropertyChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getAccessibleChildrenCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.Accessible getAccessibleChild(int i) { return null; }
+  public Any getAccessibleChild(int i) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.Accessible getAccessibleAt(java.awt.Point p) { return null; }
+  public Any getAccessibleAt(Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Point getLocationOnScreen() { return null; }
+  public Any getLocationOnScreen() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setEnabled(boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getForeground() { return null; }
+  public Any getForeground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setForeground(java.awt.Color c) { }
+  public void setForeground(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getBackground() { return null; }
+  public Any getBackground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBackground(java.awt.Color c) { }
+  public void setBackground(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isFocusTraversable() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removePropertyChangeListener(java.beans.PropertyChangeListener l) { }
+  public void removePropertyChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addFocusListener(java.awt.event.FocusListener l) { }
+  public synchronized void addFocusListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.Accessible getAccessibleParent() { return null; }
+  public Any getAccessibleParent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getAccessibleIndexInParent() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.accessibility.Accessible getAccessible(java.lang.Object o) { return null; }
+  public static Any getAccessible(Any o) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.FontMetrics getFontMetrics(java.awt.Font f) { return null; }
+  public Any getFontMetrics(Any f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setCursor(java.awt.Cursor c) { }
+  public void setCursor(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Cursor getCursor() { return null; }
+  public Any getCursor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removeFocusListener(java.awt.event.FocusListener l) { }
+  public synchronized void removeFocusListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleStateSet getAccessibleStateSet() { return null; }
+  public Any getAccessibleStateSet() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getAccessibleName() { return null; }
+  public String getAccessibleName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setAccessibleName(java.lang.String s) { }
+  public void setAccessibleName(String s) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getAccessibleDescription() { return null; }
+  public String getAccessibleDescription() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setAccessibleDescription(java.lang.String s) { }
+  public void setAccessibleDescription(String s) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleRole getAccessibleRole() { return null; }
+  public Any getAccessibleRole() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSource(java.lang.Object o) { }
+  public void setSource(Any o) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLocation(java.awt.Point p) { }
+  public void setLocation(Any p) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getSource() { return null; }
+  public Any getSource() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  protected static java.lang.Class<?> getTranslatorClass(java.lang.Class<?> c) { return null; }
+  protected static Any getTranslatorClass(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isVisible() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Font getFont() { return null; }
+  public Any getFont() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFont(java.awt.Font f) { }
+  public void setFont(Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isShowing() { return false; }
   < ---- END java signatures ---- >

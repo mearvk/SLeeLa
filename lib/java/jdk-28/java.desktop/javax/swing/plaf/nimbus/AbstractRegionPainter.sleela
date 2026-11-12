@@ -56,6 +56,24 @@ class AbstractRegionPainter {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public AbstractRegionPainter bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -71,10 +89,10 @@ class AbstractRegionPainter {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.Object[] getExtendedCacheKeys(javax.swing.JComponent c) { return null; }
+  Any[] getExtendedCacheKeys(Any c) { return null; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  javax.swing.plaf.nimbus.AbstractRegionPainter.PaintContext getPaintContext() { return null; }
+  Any getPaintContext() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   final float decodeX(float x) { return 0.0; }
@@ -83,10 +101,10 @@ class AbstractRegionPainter {
   final float decodeY(float y) { return 0.0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void configureGraphics(java.awt.Graphics2D g) { }
+  void configureGraphics(Any g) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  void doPaint(java.awt.Graphics2D g, javax.swing.JComponent c, int width, int height, java.lang.Object[] extendedCacheKeys) { }
+  void doPaint(Any g, Any c, int width, int height, Any[] extendedCacheKeys) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   final float decodeAnchorX(float x, float dx) { return 0.0; }
@@ -95,20 +113,20 @@ class AbstractRegionPainter {
   final float decodeAnchorY(float y, float dy) { return 0.0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final java.awt.Color decodeColor(java.lang.String key, float hOffset, float sOffset, float bOffset, int aOffset) { return null; }
+  final Any decodeColor(String key, float hOffset, float sOffset, float bOffset, int aOffset) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final java.awt.Color decodeColor(java.awt.Color color1, java.awt.Color color2, float midPoint) { return null; }
+  final Any decodeColor(Any color1, Any color2, float midPoint) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final java.awt.LinearGradientPaint decodeGradient(float x1, float y1, float x2, float y2, float[] midpoints, java.awt.Color[] colors) { return null; }
+  final Any decodeGradient(float x1, float y1, float x2, float y2, float[] midpoints, Any[] colors) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final java.awt.RadialGradientPaint decodeRadialGradient(float x, float y, float r, float[] midpoints, java.awt.Color[] colors) { return null; }
+  final Any decodeRadialGradient(float x, float y, float r, float[] midpoints, Any[] colors) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final java.awt.Color getComponentColor(javax.swing.JComponent c, java.lang.String property, java.awt.Color defaultColor, float saturationOffset, float brightnessOffset, int alphaOffset) { return null; }
+  final Any getComponentColor(Any c, String property, Any defaultColor, float saturationOffset, float brightnessOffset, int alphaOffset) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void paint(java.awt.Graphics2D g, javax.swing.JComponent c, int w, int h) { }
+  public final void paint(Any g, Any c, int w, int h) { }
   < ---- END java signatures ---- >
 }

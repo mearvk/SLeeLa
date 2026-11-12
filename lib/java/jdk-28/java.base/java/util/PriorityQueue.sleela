@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class PriorityQueue<E> {
+class PriorityQueue {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,12 +56,30 @@ class PriorityQueue<E> {
   String javaKind = "class";
   String javaSuper = "java.util.AbstractQueue";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<E>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "E"; } return null; }
+  public PriorityQueue bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public PriorityQueue(int initialCapacity, java.util.Comparator<? super E> comparator) { }
+  public PriorityQueue(int initialCapacity, Any comparator) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public PriorityQueue(java.util.Collection<? extends E> c) { }
+  public PriorityQueue(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
   public PriorityQueue() { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -75,38 +93,39 @@ class PriorityQueue<E> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean remove(java.lang.Object o) { return false; }
+  public boolean remove(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int size() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void clear() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean add(E e) { return false; }
+  public boolean add(Any e) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object[] toArray() { return null; }
+  public Any[] toArray() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> T[] toArray(T[] a) { return null; }
+  public Any[] toArray(Any[] a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Iterator<E> iterator() { return null; }
+  public Any iterator() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean contains(java.lang.Object o) { return false; }
+  public boolean contains(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.util.Spliterator<E> spliterator() { return null; }
+  public final Any spliterator() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void forEach(java.util.function.Consumer<? super E> action) { }
+  public void forEach(Any action) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public E peek() { return null; }
+  public Any peek() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean removeIf(java.util.function.Predicate<? super E> filter) { return false; }
+  public boolean removeIf(Any filter) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean removeAll(java.util.Collection<?> c) { return false; }
+  public boolean removeAll(Any c) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean retainAll(java.util.Collection<?> c) { return false; }
+  public boolean retainAll(Any c) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Comparator<? super E> comparator() { return null; }
+  public Any comparator() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public E poll() { return null; }
+  public Any poll() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean offer(E e) { return false; }
+  public boolean offer(Any e) { return false; }
   < ---- END java signatures ---- >
 }

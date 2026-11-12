@@ -56,6 +56,24 @@ class MetalComboBoxButton {
   String javaKind = "class";
   String javaSuper = "javax.swing.JButton";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MetalComboBoxButton bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any comboBox;
@@ -67,9 +85,9 @@ class MetalComboBoxButton {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public MetalComboBoxButton(javax.swing.JComboBox<java.lang.Object> cb, javax.swing.Icon i, javax.swing.CellRendererPane pane, javax.swing.JList<java.lang.Object> list) { }
+  public MetalComboBoxButton(Any cb, Any i, Any pane, Any list) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public MetalComboBoxButton(javax.swing.JComboBox<java.lang.Object> cb, javax.swing.Icon i, boolean onlyIcon, javax.swing.CellRendererPane pane, javax.swing.JList<java.lang.Object> list) { }
+  public MetalComboBoxButton(Any cb, Any i, boolean onlyIcon, Any pane, Any list) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -79,21 +97,21 @@ class MetalComboBoxButton {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize() { return null; }
+  public Any getMinimumSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setEnabled(boolean enabled) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isFocusTraversable() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintComponent(java.awt.Graphics g) { }
+  public void paintComponent(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final javax.swing.Icon getComboIcon() { return null; }
+  public final Any getComboIcon() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final javax.swing.JComboBox<java.lang.Object> getComboBox() { return null; }
+  public final Any getComboBox() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void setComboBox(javax.swing.JComboBox<java.lang.Object> cb) { }
+  public final void setComboBox(Any cb) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void setComboIcon(javax.swing.Icon i) { }
+  public final void setComboIcon(Any i) { }
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean isIconOnly() { return false; }
   @throwable("java.lang.UnsupportedOperationException")

@@ -56,6 +56,24 @@ class KeyboardFocusManager {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public KeyboardFocusManager bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int FORWARD_TRAVERSAL_KEYS = 0;
@@ -77,137 +95,137 @@ class KeyboardFocusManager {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  void firePropertyChange(String propertyName, Any oldValue, Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.awt.FocusTraversalPolicy getDefaultFocusTraversalPolicy() { return null; }
+  public synchronized Any getDefaultFocusTraversalPolicy() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean postProcessKeyEvent(java.awt.event.KeyEvent e) { return false; }
+  public boolean postProcessKeyEvent(Any e) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addPropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { }
+  public void addPropertyChangeListener(String propertyName, Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public void addPropertyChangeListener(Any listener) { }
   @throwable("java.lang.AbstractMethodError")
-  public void processKeyEvent(java.awt.Component focusedComponent, java.awt.event.KeyEvent e) { }
+  public void processKeyEvent(Any focusedComponent, Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.beans.PropertyChangeListener[] getPropertyChangeListeners() { return null; }
+  public synchronized Any[] getPropertyChangeListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.beans.PropertyChangeListener[] getPropertyChangeListeners(java.lang.String propertyName) { return null; }
+  public synchronized Any[] getPropertyChangeListeners(String propertyName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getPermanentFocusOwner() { return null; }
+  public Any getPermanentFocusOwner() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setGlobalPermanentFocusOwner(java.awt.Component permanentFocusOwner) { }
+  void setGlobalPermanentFocusOwner(Any permanentFocusOwner) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  void discardKeyEvents(java.awt.Component comp) { }
+  void discardKeyEvents(Any comp) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.awt.AWTKeyStroke> getDefaultFocusTraversalKeys(int id) { return null; }
+  public Any getDefaultFocusTraversalKeys(int id) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public void removePropertyChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removePropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { }
+  public void removePropertyChangeListener(String propertyName, Any listener) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
-  void fireVetoableChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  void fireVetoableChange(String propertyName, Any oldValue, Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void clearGlobalFocusOwner() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setGlobalCurrentFocusCycleRoot(java.awt.Container newFocusCycleRoot) { }
+  public void setGlobalCurrentFocusCycleRoot(Any newFocusCycleRoot) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addVetoableChangeListener(java.beans.VetoableChangeListener listener) { }
+  public void addVetoableChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addVetoableChangeListener(java.lang.String propertyName, java.beans.VetoableChangeListener listener) { }
+  public void addVetoableChangeListener(String propertyName, Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeVetoableChangeListener(java.lang.String propertyName, java.beans.VetoableChangeListener listener) { }
+  public void removeVetoableChangeListener(String propertyName, Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeVetoableChangeListener(java.beans.VetoableChangeListener listener) { }
+  public void removeVetoableChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.beans.VetoableChangeListener[] getVetoableChangeListeners(java.lang.String propertyName) { return null; }
+  public synchronized Any[] getVetoableChangeListeners(String propertyName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.beans.VetoableChangeListener[] getVetoableChangeListeners() { return null; }
+  public synchronized Any[] getVetoableChangeListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setCurrentKeyboardFocusManager(java.awt.KeyboardFocusManager newManager) { }
+  public static void setCurrentKeyboardFocusManager(Any newManager) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void clearFocusOwner() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDefaultFocusTraversalPolicy(java.awt.FocusTraversalPolicy defaultPolicy) { }
+  public void setDefaultFocusTraversalPolicy(Any defaultPolicy) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDefaultFocusTraversalKeys(int id, java.util.Set<? extends java.awt.AWTKeyStroke> keystrokes) { }
+  public void setDefaultFocusTraversalKeys(int id, Any keystrokes) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Container getGlobalCurrentFocusCycleRoot() { return null; }
+  Any getGlobalCurrentFocusCycleRoot() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addKeyEventDispatcher(java.awt.KeyEventDispatcher dispatcher) { }
+  public void addKeyEventDispatcher(Any dispatcher) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeKeyEventDispatcher(java.awt.KeyEventDispatcher dispatcher) { }
+  public void removeKeyEventDispatcher(Any dispatcher) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addKeyEventPostProcessor(java.awt.KeyEventPostProcessor processor) { }
+  public void addKeyEventPostProcessor(Any processor) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeKeyEventPostProcessor(java.awt.KeyEventPostProcessor processor) { }
+  public void removeKeyEventPostProcessor(Any processor) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Window getActiveWindow() { return null; }
+  public Any getActiveWindow() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Window getGlobalFocusedWindow() { return null; }
+  Any getGlobalFocusedWindow() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setGlobalFocusOwner(java.awt.Component focusOwner) { }
+  void setGlobalFocusOwner(Any focusOwner) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setGlobalFocusedWindow(java.awt.Window focusedWindow) { }
+  void setGlobalFocusedWindow(Any focusedWindow) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Window getGlobalActiveWindow() { return null; }
+  Any getGlobalActiveWindow() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setGlobalActiveWindow(java.awt.Window activeWindow) { }
+  void setGlobalActiveWindow(Any activeWindow) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Component getGlobalFocusOwner() { return null; }
+  Any getGlobalFocusOwner() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Component getGlobalPermanentFocusOwner() { return null; }
+  Any getGlobalPermanentFocusOwner() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void redispatchEvent(java.awt.Component target, java.awt.AWTEvent e) { }
+  public final void redispatchEvent(Any target, Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.util.List<java.awt.KeyEventPostProcessor> getKeyEventPostProcessors() { return null; }
+  Any getKeyEventPostProcessors() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Window getFocusedWindow() { return null; }
+  public Any getFocusedWindow() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  synchronized java.util.List<java.awt.KeyEventDispatcher> getKeyEventDispatchers() { return null; }
+  synchronized Any getKeyEventDispatchers() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean dispatchKeyEvent(java.awt.event.KeyEvent e) { return false; }
+  public boolean dispatchKeyEvent(Any e) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public void focusNextComponent(java.awt.Component aComponent) { }
+  public void focusNextComponent(Any aComponent) { }
   @throwable("java.lang.UnsupportedOperationException")
   public final void focusNextComponent() { }
   @throwable("java.lang.AbstractMethodError")
-  public void focusPreviousComponent(java.awt.Component aComponent) { }
+  public void focusPreviousComponent(Any aComponent) { }
   @throwable("java.lang.UnsupportedOperationException")
   public final void focusPreviousComponent() { }
   @throwable("java.lang.AbstractMethodError")
-  public void upFocusCycle(java.awt.Component aComponent) { }
+  public void upFocusCycle(Any aComponent) { }
   @throwable("java.lang.UnsupportedOperationException")
   public final void upFocusCycle() { }
   @throwable("java.lang.UnsupportedOperationException")
   public final void downFocusCycle() { }
   @throwable("java.lang.AbstractMethodError")
-  public void downFocusCycle(java.awt.Container aContainer) { }
+  public void downFocusCycle(Any aContainer) { }
   @throwable("java.lang.AbstractMethodError")
-  public boolean dispatchEvent(java.awt.AWTEvent e) { return false; }
+  public boolean dispatchEvent(Any e) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.KeyboardFocusManager getCurrentKeyboardFocusManager() { return null; }
+  public static Any getCurrentKeyboardFocusManager() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getFocusOwner() { return null; }
+  public Any getFocusOwner() { return null; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  void enqueueKeyEvents(long after, java.awt.Component untilFocused) { }
+  void enqueueKeyEvents(long after, Any untilFocused) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  void dequeueKeyEvents(long after, java.awt.Component untilFocused) { }
+  void dequeueKeyEvents(long after, Any untilFocused) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Container getCurrentFocusCycleRoot() { return null; }
+  public Any getCurrentFocusCycleRoot() { return null; }
   < ---- END java signatures ---- >
 }

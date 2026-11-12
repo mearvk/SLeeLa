@@ -56,6 +56,24 @@ class ImageIcon {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ImageIcon bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any component = null;
@@ -64,19 +82,19 @@ class ImageIcon {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public ImageIcon(java.net.URL location) { }
+  public ImageIcon(Any location) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public ImageIcon(java.awt.Image image, java.lang.String description) { }
+  public ImageIcon(Any image, String description) { }
   @throwable("java.lang.UnsupportedOperationException")
   public ImageIcon() { }
   @throwable("java.lang.UnsupportedOperationException")
   public ImageIcon(byte[] imageData) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public ImageIcon(byte[] imageData, java.lang.String description) { }
+  public ImageIcon(byte[] imageData, String description) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public ImageIcon(java.lang.String filename, java.lang.String description) { }
+  public ImageIcon(String filename, String description) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public ImageIcon(java.lang.String filename) { }
+  public ImageIcon(String filename) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -86,31 +104,31 @@ class ImageIcon {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getDescription() { return null; }
+  public String getDescription() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getImageLoadStatus() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDescription(java.lang.String description) { }
+  public void setDescription(String description) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setImageObserver(java.awt.image.ImageObserver observer) { }
+  public void setImageObserver(Any observer) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.ImageObserver getImageObserver() { return null; }
+  public Any getImageObserver() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void loadImage(java.awt.Image image) { }
+  void loadImage(Any image) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setImage(java.awt.Image image) { }
+  public void setImage(Any image) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) { }
+  public synchronized void paintIcon(Any c, Any g, int x, int y) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getIconWidth() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getIconHeight() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Image getImage() { return null; }
+  public Any getImage() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   < ---- END java signatures ---- >
 }

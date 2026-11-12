@@ -56,6 +56,24 @@ class NumericShaper {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public NumericShaper bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int EUROPEAN = 1;
@@ -87,9 +105,9 @@ class NumericShaper {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object o) { return false; }
+  public boolean equals(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -97,24 +115,24 @@ class NumericShaper {
   @throwable("java.lang.UnsupportedOperationException")
   public void shape(char[] text, int start, int count, int context) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void shape(char[] text, int start, int count, java.awt.font.NumericShaper.Range context) { }
+  public void shape(char[] text, int start, int count, Any context) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isContextual() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.font.NumericShaper getShaper(java.awt.font.NumericShaper.Range singleRange) { return null; }
+  public static Any getShaper(Any singleRange) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.font.NumericShaper getShaper(int singleRange) { return null; }
+  public static Any getShaper(int singleRange) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.font.NumericShaper getContextualShaper(java.util.Set<java.awt.font.NumericShaper.Range> ranges, java.awt.font.NumericShaper.Range defaultContext) { return null; }
+  public static Any getContextualShaper(Any ranges, Any defaultContext) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.font.NumericShaper getContextualShaper(int ranges, int defaultContext) { return null; }
+  public static Any getContextualShaper(int ranges, int defaultContext) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.font.NumericShaper getContextualShaper(java.util.Set<java.awt.font.NumericShaper.Range> ranges) { return null; }
+  public static Any getContextualShaper(Any ranges) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.font.NumericShaper getContextualShaper(int ranges) { return null; }
+  public static Any getContextualShaper(int ranges) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getRanges() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.awt.font.NumericShaper.Range> getRangeSet() { return null; }
+  public Any getRangeSet() { return null; }
   < ---- END java signatures ---- >
 }

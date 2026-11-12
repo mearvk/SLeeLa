@@ -56,6 +56,24 @@ class ScrollPaneLayout {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ScrollPaneLayout bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any viewport;
@@ -84,40 +102,40 @@ class ScrollPaneLayout {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Component addSingletonComponent(java.awt.Component oldC, java.awt.Component newC) { return null; }
+  Any addSingletonComponent(Any oldC, Any newC) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JViewport getViewport() { return null; }
+  public Any getViewport() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getCorner(java.lang.String key) { return null; }
+  public Any getCorner(String key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setVerticalScrollBarPolicy(int x) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setHorizontalScrollBarPolicy(int x) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void syncWithScrollPane(javax.swing.JScrollPane sp) { }
+  public void syncWithScrollPane(Any sp) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JViewport getColumnHeader() { return null; }
+  public Any getColumnHeader() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JViewport getRowHeader() { return null; }
+  public Any getRowHeader() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JScrollBar getVerticalScrollBar() { return null; }
+  public Any getVerticalScrollBar() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JScrollBar getHorizontalScrollBar() { return null; }
+  public Any getHorizontalScrollBar() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getVerticalScrollBarPolicy() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getHorizontalScrollBarPolicy() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getViewportBorderBounds(javax.swing.JScrollPane scrollpane) { return null; }
+  public Any getViewportBorderBounds(Any scrollpane) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeLayoutComponent(java.awt.Component c) { }
+  public void removeLayoutComponent(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addLayoutComponent(java.lang.String s, java.awt.Component c) { }
+  public void addLayoutComponent(String s, Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void layoutContainer(java.awt.Container parent) { }
+  public void layoutContainer(Any parent) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension preferredLayoutSize(java.awt.Container parent) { return null; }
+  public Any preferredLayoutSize(Any parent) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension minimumLayoutSize(java.awt.Container parent) { return null; }
+  public Any minimumLayoutSize(Any parent) { return null; }
   < ---- END java signatures ---- >
 }

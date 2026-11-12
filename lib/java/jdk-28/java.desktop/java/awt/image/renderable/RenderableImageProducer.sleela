@@ -56,10 +56,28 @@ class RenderableImageProducer {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public RenderableImageProducer bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public RenderableImageProducer(java.awt.image.renderable.RenderableImage rdblImage, java.awt.image.renderable.RenderContext rc) { }
+  public RenderableImageProducer(Any rdblImage, Any rc) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -71,16 +89,16 @@ class RenderableImageProducer {
   @throwable("java.lang.UnsupportedOperationException")
   public void run() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addConsumer(java.awt.image.ImageConsumer ic) { }
+  public synchronized void addConsumer(Any ic) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized boolean isConsumer(java.awt.image.ImageConsumer ic) { return false; }
+  public synchronized boolean isConsumer(Any ic) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removeConsumer(java.awt.image.ImageConsumer ic) { }
+  public synchronized void removeConsumer(Any ic) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void startProduction(java.awt.image.ImageConsumer ic) { }
+  public synchronized void startProduction(Any ic) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void requestTopDownLeftRightResend(java.awt.image.ImageConsumer ic) { }
+  public void requestTopDownLeftRightResend(Any ic) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void setRenderContext(java.awt.image.renderable.RenderContext rc) { }
+  public synchronized void setRenderContext(Any rc) { }
   < ---- END java signatures ---- >
 }

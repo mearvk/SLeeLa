@@ -56,6 +56,24 @@ class SynthProgressBarUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.basic.BasicProgressBarUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SynthProgressBarUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,31 +87,31 @@ class SynthProgressBarUI {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void update(java.awt.Graphics g, javax.swing.JComponent c) { }
+  public void update(Any g, Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.synth.SynthContext getContext(javax.swing.JComponent c) { return null; }
+  public Any getContext(Any c) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installListeners() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintText(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, java.lang.String title) { }
+  void paintText(Any context, Any g, String title) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  public Any getPreferredSize(Any c) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Rectangle getBox(java.awt.Rectangle r) { return null; }
+  Any getBox(Any r) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void setAnimationIndex(int newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void propertyChange(java.beans.PropertyChangeEvent e) { }
+  public void propertyChange(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getBaseline(javax.swing.JComponent c, int width, int height) { return 0; }
+  public int getBaseline(Any c, int width, int height) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent x) { return null; }
+  public static Any createUI(Any x) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installDefaults() { }
@@ -104,6 +122,6 @@ class SynthProgressBarUI {
   @throwable("java.lang.UnsupportedOperationException")
   void uninstallDefaults() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
+  public void paint(Any g, Any c) { }
   < ---- END java signatures ---- >
 }

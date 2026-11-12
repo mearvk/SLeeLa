@@ -56,6 +56,24 @@ class InputMethodRequests {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public InputMethodRequests bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,18 +82,18 @@ class InputMethodRequests {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Rectangle getTextLocation(java.awt.font.TextHitInfo offset) { return null; }
+  public Any getTextLocation(Any offset) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.font.TextHitInfo getLocationOffset(int x, int y) { return null; }
+  public Any getLocationOffset(int x, int y) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getInsertPositionOffset() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.text.AttributedCharacterIterator getCommittedText(int beginIndex, int endIndex, java.text.AttributedCharacterIterator.Attribute[] attributes) { return null; }
+  public Any getCommittedText(int beginIndex, int endIndex, Any[] attributes) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getCommittedTextLength() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.text.AttributedCharacterIterator cancelLatestCommittedText(java.text.AttributedCharacterIterator.Attribute[] attributes) { return null; }
+  public Any cancelLatestCommittedText(Any[] attributes) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.text.AttributedCharacterIterator getSelectedText(java.text.AttributedCharacterIterator.Attribute[] attributes) { return null; }
+  public Any getSelectedText(Any[] attributes) { return null; }
   < ---- END java signatures ---- >
 }

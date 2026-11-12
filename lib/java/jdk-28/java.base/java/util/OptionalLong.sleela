@@ -56,6 +56,24 @@ class OptionalLong {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public OptionalLong bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,33 +82,34 @@ class OptionalLong {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.OptionalLong of(long value) { return null; }
+  public static Any of(long value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.stream.LongStream stream() { return null; }
+  public Any stream() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.OptionalLong empty() { return null; }
+  public static Any empty() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public long orElse(long other) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isPresent() { return false; }
+  @generic("<X extends java.lang.Throwable>")
   @throwable("java.lang.UnsupportedOperationException, X")
-  public <X extends java.lang.Throwable> long orElseThrow(java.util.function.Supplier<? extends X> exceptionSupplier) { return 0; }
+  public long orElseThrow(Any exceptionSupplier) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public long orElseThrow() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void ifPresent(java.util.function.LongConsumer action) { }
+  public void ifPresent(Any action) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void ifPresentOrElse(java.util.function.LongConsumer action, java.lang.Runnable emptyAction) { }
+  public void ifPresentOrElse(Any action, Any emptyAction) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public long orElseGet(java.util.function.LongSupplier supplier) { return 0; }
+  public long orElseGet(Any supplier) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public long getAsLong() { return 0; }
   < ---- END java signatures ---- >

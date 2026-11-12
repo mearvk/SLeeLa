@@ -56,22 +56,40 @@ class SQLException {
   String javaKind = "class";
   String javaSuper = "java.lang.Exception";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SQLException bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLException(java.lang.Throwable cause) { }
+  public SQLException(Any cause) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLException(java.lang.String reason, java.lang.Throwable cause) { }
+  public SQLException(String reason, Any cause) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLException(java.lang.String reason, java.lang.String sqlState, java.lang.Throwable cause) { }
+  public SQLException(String reason, String sqlState, Any cause) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLException(java.lang.String reason, java.lang.String sqlState, int vendorCode, java.lang.Throwable cause) { }
+  public SQLException(String reason, String sqlState, int vendorCode, Any cause) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLException(java.lang.String reason, java.lang.String SQLState, int vendorCode) { }
+  public SQLException(String reason, String SQLState, int vendorCode) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLException(java.lang.String reason, java.lang.String SQLState) { }
+  public SQLException(String reason, String SQLState) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public SQLException(java.lang.String reason) { }
+  public SQLException(String reason) { }
   @throwable("java.lang.UnsupportedOperationException")
   public SQLException() { }
   < ---- END java constructors ---- >
@@ -83,14 +101,14 @@ class SQLException {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Iterator<java.lang.Throwable> iterator() { return null; }
+  public Any iterator() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getErrorCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getSQLState() { return null; }
+  public String getSQLState() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.sql.SQLException getNextException() { return null; }
+  public Any getNextException() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setNextException(java.sql.SQLException ex) { }
+  public void setNextException(Any ex) { }
   < ---- END java signatures ---- >
 }

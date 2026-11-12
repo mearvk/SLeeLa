@@ -56,6 +56,24 @@ class BasicOptionPaneUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.OptionPaneUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BasicOptionPaneUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int MinimumWidth = 262;
@@ -82,72 +100,72 @@ class BasicOptionPaneUI {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.Object getMessage() { return null; }
+  Any getMessage() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installListeners() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  public Any getPreferredSize(Any c) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Container createMessageArea() { return null; }
+  Any createMessageArea() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Container createSeparator() { return null; }
+  Any createSeparator() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Container createButtonArea() { return null; }
+  Any createButtonArea() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumOptionPaneSize() { return null; }
+  public Any getMinimumOptionPaneSize() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void addMessageComponents(java.awt.Container container, java.awt.GridBagConstraints cons, java.lang.Object msg, int maxll, boolean internallyCreated) { }
+  void addMessageComponents(Any container, Any cons, Any msg, int maxll, boolean internallyCreated) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void addIcon(java.awt.Container top) { }
+  void addIcon(Any top) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void burstStringInto(java.awt.Container c, java.lang.String d, int maxll) { }
+  void burstStringInto(Any c, String d, int maxll) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.Icon getIconForType(int messageType) { return null; }
+  Any getIconForType(int messageType) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.Object[] getButtons() { return null; }
+  Any[] getButtons() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getInitialValueIndex() { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void addButtonComponents(java.awt.Container container, java.lang.Object[] buttons, int initialIndex) { }
+  void addButtonComponents(Any container, Any[] buttons, int initialIndex) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   boolean getSizeButtonsToSameWidth() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.ActionListener createButtonActionListener(int buttonIndex) { return null; }
+  Any createButtonActionListener(int buttonIndex) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void resetInputValue() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void installUI(javax.swing.JComponent c) { }
+  public void installUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void uninstallUI(javax.swing.JComponent c) { }
+  public void uninstallUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void selectInitialValue(javax.swing.JOptionPane op) { }
+  public void selectInitialValue(Any op) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getMaxCharactersPerLineCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsCustomComponents(javax.swing.JOptionPane op) { return false; }
+  public boolean containsCustomComponents(Any op) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.Icon getIcon() { return null; }
+  Any getIcon() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.LayoutManager createLayoutManager() { return null; }
+  Any createLayoutManager() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent x) { return null; }
+  public static Any createUI(Any x) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installKeyboardActions() { }
@@ -168,7 +186,7 @@ class BasicOptionPaneUI {
   void installComponents() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createPropertyChangeListener() { return null; }
+  Any createPropertyChangeListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void uninstallComponents() { }

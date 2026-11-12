@@ -56,6 +56,24 @@ class DefaultHandler2 {
   String javaKind = "class";
   String javaSuper = "org.xml.sax.helpers.DefaultHandler";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DefaultHandler2 bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -71,30 +89,30 @@ class DefaultHandler2 {
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
   public void comment(char[] ch, int start, int length) { }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
-  public void startDTD(java.lang.String name, java.lang.String publicId, java.lang.String systemId) { }
+  public void startDTD(String name, String publicId, String systemId) { }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
   public void endDTD() { }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
-  public void startEntity(java.lang.String name) { }
+  public void startEntity(String name) { }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
-  public void endEntity(java.lang.String name) { }
+  public void endEntity(String name) { }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
   public void startCDATA() { }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
   public void endCDATA() { }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
-  public void elementDecl(java.lang.String name, java.lang.String model) { }
+  public void elementDecl(String name, String model) { }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
-  public void attributeDecl(java.lang.String eName, java.lang.String aName, java.lang.String type, java.lang.String mode, java.lang.String value) { }
+  public void attributeDecl(String eName, String aName, String type, String mode, String value) { }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
-  public void internalEntityDecl(java.lang.String name, java.lang.String value) { }
+  public void internalEntityDecl(String name, String value) { }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException")
-  public void externalEntityDecl(java.lang.String name, java.lang.String publicId, java.lang.String systemId) { }
+  public void externalEntityDecl(String name, String publicId, String systemId) { }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException, java.io.IOException")
-  public org.xml.sax.InputSource getExternalSubset(java.lang.String name, java.lang.String baseURI) { return null; }
+  public Any getExternalSubset(String name, String baseURI) { return null; }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException, java.io.IOException")
-  public org.xml.sax.InputSource resolveEntity(java.lang.String name, java.lang.String publicId, java.lang.String baseURI, java.lang.String systemId) { return null; }
+  public Any resolveEntity(String name, String publicId, String baseURI, String systemId) { return null; }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXException, java.io.IOException")
-  public org.xml.sax.InputSource resolveEntity(java.lang.String publicId, java.lang.String systemId) { return null; }
+  public Any resolveEntity(String publicId, String systemId) { return null; }
   < ---- END java signatures ---- >
 }

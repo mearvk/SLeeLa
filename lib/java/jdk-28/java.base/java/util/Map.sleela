@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class Map<K, V> {
+class Map {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class Map<K, V> {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<K, V>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 2; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "K"; } if (index == 1) { return "V"; } return null; }
+  public Map bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,82 +82,96 @@ class Map<K, V> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public default boolean remove(java.lang.Object key, java.lang.Object value) { return false; }
+  public default boolean remove(Any key, Any value) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public V remove(java.lang.Object key) { return null; }
+  public Any remove(Any key) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int size() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public V get(java.lang.Object key) { return null; }
+  public Any get(Any key) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public V put(K key, V value) { return null; }
+  public Any put(Any key, Any value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean equals(java.lang.Object o) { return false; }
+  public boolean equals(Any o) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Collection<V> values() { return null; }
+  public Any values() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int hashCode() { return 0; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> copyOf(java.util.Map<? extends K, ? extends V> map) { return null; }
+  public static Any copyOf(Any map) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void clear() { }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) { return null; }
+  public static Any of(Any k1, Any v1, Any k2, Any v2, Any k3, Any v3, Any k4, Any v4) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> of() { return null; }
+  public static Any of() { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6) { return null; }
+  public static Any of(Any k1, Any v1, Any k2, Any v2, Any k3, Any v3, Any k4, Any v4, Any k5, Any v5, Any k6, Any v6) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3) { return null; }
+  public static Any of(Any k1, Any v1, Any k2, Any v2, Any k3, Any v3) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2) { return null; }
+  public static Any of(Any k1, Any v1, Any k2, Any v2) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1) { return null; }
+  public static Any of(Any k1, Any v1) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6, K k7, V v7, K k8, V v8, K k9, V v9, K k10, V v10) { return null; }
+  public static Any of(Any k1, Any v1, Any k2, Any v2, Any k3, Any v3, Any k4, Any v4, Any k5, Any v5, Any k6, Any v6, Any k7, Any v7, Any k8, Any v8, Any k9, Any v9, Any k10, Any v10) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6, K k7, V v7, K k8, V v8, K k9, V v9) { return null; }
+  public static Any of(Any k1, Any v1, Any k2, Any v2, Any k3, Any v3, Any k4, Any v4, Any k5, Any v5, Any k6, Any v6, Any k7, Any v7, Any k8, Any v8, Any k9, Any v9) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6, K k7, V v7, K k8, V v8) { return null; }
+  public static Any of(Any k1, Any v1, Any k2, Any v2, Any k3, Any v3, Any k4, Any v4, Any k5, Any v5, Any k6, Any v6, Any k7, Any v7, Any k8, Any v8) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6, K k7, V v7) { return null; }
+  public static Any of(Any k1, Any v1, Any k2, Any v2, Any k3, Any v3, Any k4, Any v4, Any k5, Any v5, Any k6, Any v6, Any k7, Any v7) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> of(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5) { return null; }
+  public static Any of(Any k1, Any v1, Any k2, Any v2, Any k3, Any v3, Any k4, Any v4, Any k5, Any v5) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default boolean replace(K key, V oldValue, V newValue) { return false; }
+  public default boolean replace(Any key, Any oldValue, Any newValue) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default V replace(K key, V value) { return null; }
+  public default Any replace(Any key, Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { }
+  public default void replaceAll(Any function) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public default V merge(K key, V value, java.util.function.BiFunction<? super V, ? super V, ? extends V> remappingFunction) { return null; }
+  public default Any merge(Any key, Any value, Any remappingFunction) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { return null; }
+  public Any entrySet() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void putAll(java.util.Map<? extends K, ? extends V> m) { }
+  public void putAll(Any m) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public default V putIfAbsent(K key, V value) { return null; }
+  public default Any putIfAbsent(Any key, Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default V compute(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { return null; }
+  public default Any compute(Any key, Any remappingFunction) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map.Entry<K, V> entry(K k, V v) { return null; }
+  public static Any entry(Any k, Any v) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default V computeIfAbsent(K key, java.util.function.Function<? super K, ? extends V> mappingFunction) { return null; }
+  public default Any computeIfAbsent(Any key, Any mappingFunction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { }
+  public default void forEach(Any action) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Set<K> keySet() { return null; }
+  public Any keySet() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean containsValue(java.lang.Object value) { return false; }
+  public boolean containsValue(Any value) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean containsKey(java.lang.Object key) { return false; }
+  public boolean containsKey(Any key) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default V getOrDefault(java.lang.Object key, V defaultValue) { return null; }
+  public default Any getOrDefault(Any key, Any defaultValue) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default V computeIfPresent(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { return null; }
+  public default Any computeIfPresent(Any key, Any remappingFunction) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> ofEntries(java.util.Map.Entry<? extends K, ? extends V>... entries) { return null; }
+  public static Any ofEntries(Any... entries) { return null; }
   < ---- END java signatures ---- >
 }

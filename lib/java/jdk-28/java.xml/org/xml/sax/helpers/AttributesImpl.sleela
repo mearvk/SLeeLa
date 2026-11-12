@@ -56,12 +56,30 @@ class AttributesImpl {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public AttributesImpl bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
   public AttributesImpl() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public AttributesImpl(org.xml.sax.Attributes atts) { }
+  public AttributesImpl(Any atts) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -75,44 +93,44 @@ class AttributesImpl {
   @throwable("java.lang.UnsupportedOperationException")
   public void clear() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getValue(java.lang.String qName) { return null; }
+  public String getValue(String qName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getValue(java.lang.String uri, java.lang.String localName) { return null; }
+  public String getValue(String uri, String localName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getValue(int index) { return null; }
+  public String getValue(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setValue(int index, java.lang.String value) { }
+  public void setValue(int index, String value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getType(java.lang.String qName) { return null; }
+  public String getType(String qName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getType(java.lang.String uri, java.lang.String localName) { return null; }
+  public String getType(String uri, String localName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getType(int index) { return null; }
+  public String getType(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getIndex(java.lang.String qName) { return 0; }
+  public int getIndex(String qName) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getIndex(java.lang.String uri, java.lang.String localName) { return 0; }
+  public int getIndex(String uri, String localName) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setAttribute(int index, java.lang.String uri, java.lang.String localName, java.lang.String qName, java.lang.String type, java.lang.String value) { }
+  public void setAttribute(int index, String uri, String localName, String qName, String type, String value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addAttribute(java.lang.String uri, java.lang.String localName, java.lang.String qName, java.lang.String type, java.lang.String value) { }
+  public void addAttribute(String uri, String localName, String qName, String type, String value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setType(int index, java.lang.String type) { }
+  public void setType(int index, String type) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setAttributes(org.xml.sax.Attributes atts) { }
+  public void setAttributes(Any atts) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeAttribute(int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getQName(int index) { return null; }
+  public String getQName(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setURI(int index, java.lang.String uri) { }
+  public void setURI(int index, String uri) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getURI(int index) { return null; }
+  public String getURI(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getLocalName(int index) { return null; }
+  public String getLocalName(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLocalName(int index, java.lang.String localName) { }
+  public void setLocalName(int index, String localName) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setQName(int index, java.lang.String qName) { }
+  public void setQName(int index, String qName) { }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class CodeBuilder {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public CodeBuilder bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,412 +82,412 @@ class CodeBuilder {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lineNumber(int line) { return null; }
+  public default Any lineNumber(int line) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder block(java.util.function.Consumer<java.lang.classfile.CodeBuilder.BlockCodeBuilder> handler) { return null; }
+  public default Any block(Any handler) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder swap() { return null; }
+  public default Any swap() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder pop() { return null; }
+  public default Any pop() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder fieldAccess(java.lang.classfile.Opcode opcode, java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.constant.ClassDesc type) { return null; }
+  public default Any fieldAccess(Any opcode, Any owner, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder fieldAccess(java.lang.classfile.Opcode opcode, java.lang.classfile.constantpool.FieldRefEntry ref) { return null; }
+  public default Any fieldAccess(Any opcode, Any ref) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder loadLocal(java.lang.classfile.TypeKind tk, int slot) { return null; }
+  public default Any loadLocal(Any tk, int slot) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder storeLocal(java.lang.classfile.TypeKind tk, int slot) { return null; }
+  public default Any storeLocal(Any tk, int slot) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder checkcast(java.lang.classfile.constantpool.ClassEntry type) { return null; }
+  public default Any checkcast(Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder getstatic(java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.constant.ClassDesc type) { return null; }
+  public default Any getstatic(Any owner, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder getstatic(java.lang.classfile.constantpool.FieldRefEntry ref) { return null; }
+  public default Any getstatic(Any ref) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder invokevirtual(java.lang.classfile.constantpool.MethodRefEntry ref) { return null; }
+  public default Any invokevirtual(Any ref) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder invokevirtual(java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.constant.MethodTypeDesc type) { return null; }
+  public default Any invokevirtual(Any owner, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dup() { return null; }
+  public default Any dup() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder aload(int slot) { return null; }
+  public default Any aload(int slot) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder invokestatic(java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.constant.MethodTypeDesc type) { return null; }
+  public default Any invokestatic(Any owner, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder invokestatic(java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.constant.MethodTypeDesc type, boolean isInterface) { return null; }
+  public default Any invokestatic(Any owner, String name, Any type, boolean isInterface) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder invokestatic(java.lang.classfile.constantpool.MethodRefEntry ref) { return null; }
+  public default Any invokestatic(Any ref) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder arrayLoad(java.lang.classfile.TypeKind tk) { return null; }
+  public default Any arrayLoad(Any tk) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder aaload() { return null; }
+  public default Any aaload() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder arrayStore(java.lang.classfile.TypeKind tk) { return null; }
+  public default Any arrayStore(Any tk) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder aastore() { return null; }
+  public default Any aastore() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder arraylength() { return null; }
+  public default Any arraylength() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.Label newLabel() { return null; }
+  public Any newLabel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ifeq(java.lang.classfile.Label target) { return null; }
+  public default Any ifeq(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder goto_w(java.lang.classfile.Label target) { return null; }
+  public default Any goto_w(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder labelBinding(java.lang.classfile.Label label) { return null; }
+  public default Any labelBinding(Any label) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder exceptionCatch(java.lang.classfile.Label start, java.lang.classfile.Label end, java.lang.classfile.Label handler, java.lang.classfile.constantpool.ClassEntry catchType) { return null; }
+  public default Any exceptionCatch(Any start, Any end, Any handler, Any catchType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder athrow() { return null; }
+  public default Any athrow() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder aconst_null() { return null; }
+  public default Any aconst_null() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder pop2() { return null; }
+  public default Any pop2() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder getfield(java.lang.classfile.constantpool.FieldRefEntry ref) { return null; }
+  public default Any getfield(Any ref) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder getfield(java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.constant.ClassDesc type) { return null; }
+  public default Any getfield(Any owner, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder tableswitch(java.lang.classfile.Label defaultTarget, java.util.List<java.lang.classfile.instruction.SwitchCase> cases) { return null; }
+  public default Any tableswitch(Any defaultTarget, Any cases) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder tableswitch(int low, int high, java.lang.classfile.Label defaultTarget, java.util.List<java.lang.classfile.instruction.SwitchCase> cases) { return null; }
+  public default Any tableswitch(int low, int high, Any defaultTarget, Any cases) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder goto_(java.lang.classfile.Label target) { return null; }
+  public default Any goto_(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder loadConstant(double value) { return null; }
+  public default Any loadConstant(double value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder loadConstant(long value) { return null; }
+  public default Any loadConstant(long value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder loadConstant(int value) { return null; }
+  public default Any loadConstant(int value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder loadConstant(java.lang.constant.ConstantDesc value) { return null; }
+  public default Any loadConstant(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder loadConstant(float value) { return null; }
+  public default Any loadConstant(float value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ifne(java.lang.classfile.Label target) { return null; }
+  public default Any ifne(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder iconst_0() { return null; }
+  public default Any iconst_0() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lconst_0() { return null; }
+  public default Any lconst_0() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder fconst_0() { return null; }
+  public default Any fconst_0() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dconst_0() { return null; }
+  public default Any dconst_0() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder return_() { return null; }
+  public default Any return_() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder return_(java.lang.classfile.TypeKind tk) { return null; }
+  public default Any return_(Any tk) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder conversion(java.lang.classfile.TypeKind fromType, java.lang.classfile.TypeKind toType) { return null; }
+  public default Any conversion(Any fromType, Any toType) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.Label endLabel() { return null; }
+  public Any endLabel() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int parameterSlot(int paramNo) { return 0; }
   @throwable("java.lang.AbstractMethodError")
   public int receiverSlot() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder astore(int slot) { return null; }
+  public default Any astore(int slot) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.Label startLabel() { return null; }
+  public Any startLabel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder istore(int slot) { return null; }
+  public default Any istore(int slot) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lstore(int slot) { return null; }
+  public default Any lstore(int slot) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dstore(int slot) { return null; }
+  public default Any dstore(int slot) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder fstore(int slot) { return null; }
+  public default Any fstore(int slot) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder iload(int slot) { return null; }
+  public default Any iload(int slot) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lload(int slot) { return null; }
+  public default Any lload(int slot) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dload(int slot) { return null; }
+  public default Any dload(int slot) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder fload(int slot) { return null; }
+  public default Any fload(int slot) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public int allocateLocal(java.lang.classfile.TypeKind typeKind) { return 0; }
+  public int allocateLocal(Any typeKind) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder invokespecial(java.lang.classfile.constantpool.MethodRefEntry ref) { return null; }
+  public default Any invokespecial(Any ref) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder invokespecial(java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.constant.MethodTypeDesc type) { return null; }
+  public default Any invokespecial(Any owner, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder invokespecial(java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.constant.MethodTypeDesc type, boolean isInterface) { return null; }
+  public default Any invokespecial(Any owner, String name, Any type, boolean isInterface) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder branch(java.lang.classfile.Opcode op, java.lang.classfile.Label target) { return null; }
+  public default Any branch(Any op, Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder nop() { return null; }
+  public default Any nop() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder anewarray(java.lang.classfile.constantpool.ClassEntry classEntry) { return null; }
+  public default Any anewarray(Any classEntry) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder areturn() { return null; }
+  public default Any areturn() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder bipush(int b) { return null; }
+  public default Any bipush(int b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder d2f() { return null; }
+  public default Any d2f() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder d2i() { return null; }
+  public default Any d2i() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder d2l() { return null; }
+  public default Any d2l() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dadd() { return null; }
+  public default Any dadd() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dcmpg() { return null; }
+  public default Any dcmpg() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dcmpl() { return null; }
+  public default Any dcmpl() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dconst_1() { return null; }
+  public default Any dconst_1() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ddiv() { return null; }
+  public default Any ddiv() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dmul() { return null; }
+  public default Any dmul() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dneg() { return null; }
+  public default Any dneg() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder drem() { return null; }
+  public default Any drem() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dreturn() { return null; }
+  public default Any dreturn() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dsub() { return null; }
+  public default Any dsub() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dup2() { return null; }
+  public default Any dup2() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dup2_x1() { return null; }
+  public default Any dup2_x1() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dup2_x2() { return null; }
+  public default Any dup2_x2() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dup_x1() { return null; }
+  public default Any dup_x1() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dup_x2() { return null; }
+  public default Any dup_x2() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder f2d() { return null; }
+  public default Any f2d() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder f2i() { return null; }
+  public default Any f2i() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder f2l() { return null; }
+  public default Any f2l() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder fadd() { return null; }
+  public default Any fadd() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder fcmpg() { return null; }
+  public default Any fcmpg() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder fcmpl() { return null; }
+  public default Any fcmpl() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder fconst_1() { return null; }
+  public default Any fconst_1() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder fconst_2() { return null; }
+  public default Any fconst_2() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder fdiv() { return null; }
+  public default Any fdiv() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder fmul() { return null; }
+  public default Any fmul() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder fneg() { return null; }
+  public default Any fneg() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder frem() { return null; }
+  public default Any frem() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder freturn() { return null; }
+  public default Any freturn() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder fsub() { return null; }
+  public default Any fsub() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder i2b() { return null; }
+  public default Any i2b() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder i2c() { return null; }
+  public default Any i2c() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder i2d() { return null; }
+  public default Any i2d() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder i2f() { return null; }
+  public default Any i2f() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder i2l() { return null; }
+  public default Any i2l() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder i2s() { return null; }
+  public default Any i2s() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder iadd() { return null; }
+  public default Any iadd() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder iand() { return null; }
+  public default Any iand() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder iconst_1() { return null; }
+  public default Any iconst_1() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder iconst_2() { return null; }
+  public default Any iconst_2() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder iconst_3() { return null; }
+  public default Any iconst_3() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder iconst_4() { return null; }
+  public default Any iconst_4() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder iconst_5() { return null; }
+  public default Any iconst_5() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder iconst_m1() { return null; }
+  public default Any iconst_m1() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder idiv() { return null; }
+  public default Any idiv() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder if_acmpeq(java.lang.classfile.Label target) { return null; }
+  public default Any if_acmpeq(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder if_acmpne(java.lang.classfile.Label target) { return null; }
+  public default Any if_acmpne(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder if_icmpeq(java.lang.classfile.Label target) { return null; }
+  public default Any if_icmpeq(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder if_icmpge(java.lang.classfile.Label target) { return null; }
+  public default Any if_icmpge(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder if_icmpgt(java.lang.classfile.Label target) { return null; }
+  public default Any if_icmpgt(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder if_icmple(java.lang.classfile.Label target) { return null; }
+  public default Any if_icmple(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder if_icmplt(java.lang.classfile.Label target) { return null; }
+  public default Any if_icmplt(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder if_icmpne(java.lang.classfile.Label target) { return null; }
+  public default Any if_icmpne(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ifnonnull(java.lang.classfile.Label target) { return null; }
+  public default Any ifnonnull(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ifnull(java.lang.classfile.Label target) { return null; }
+  public default Any ifnull(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ifge(java.lang.classfile.Label target) { return null; }
+  public default Any ifge(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ifgt(java.lang.classfile.Label target) { return null; }
+  public default Any ifgt(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ifle(java.lang.classfile.Label target) { return null; }
+  public default Any ifle(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder iflt(java.lang.classfile.Label target) { return null; }
+  public default Any iflt(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder iinc(int slot, int val) { return null; }
+  public default Any iinc(int slot, int val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder imul() { return null; }
+  public default Any imul() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ineg() { return null; }
+  public default Any ineg() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder instanceOf(java.lang.constant.ClassDesc target) { return null; }
+  public default Any instanceOf(Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder invokedynamic(java.lang.classfile.constantpool.InvokeDynamicEntry ref) { return null; }
+  public default Any invokedynamic(Any ref) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder invokeinterface(java.lang.classfile.constantpool.InterfaceMethodRefEntry ref) { return null; }
+  public default Any invokeinterface(Any ref) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder invokeinterface(java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.constant.MethodTypeDesc type) { return null; }
+  public default Any invokeinterface(Any owner, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ior() { return null; }
+  public default Any ior() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder irem() { return null; }
+  public default Any irem() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ireturn() { return null; }
+  public default Any ireturn() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ishl() { return null; }
+  public default Any ishl() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ishr() { return null; }
+  public default Any ishr() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder isub() { return null; }
+  public default Any isub() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder iushr() { return null; }
+  public default Any iushr() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ixor() { return null; }
+  public default Any ixor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lookupswitch(java.lang.classfile.Label defaultTarget, java.util.List<java.lang.classfile.instruction.SwitchCase> cases) { return null; }
+  public default Any lookupswitch(Any defaultTarget, Any cases) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder l2d() { return null; }
+  public default Any l2d() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder l2f() { return null; }
+  public default Any l2f() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder l2i() { return null; }
+  public default Any l2i() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ladd() { return null; }
+  public default Any ladd() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder land() { return null; }
+  public default Any land() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lcmp() { return null; }
+  public default Any lcmp() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lconst_1() { return null; }
+  public default Any lconst_1() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ldc(java.lang.constant.ConstantDesc value) { return null; }
+  public default Any ldc(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ldiv() { return null; }
+  public default Any ldiv() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lmul() { return null; }
+  public default Any lmul() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lneg() { return null; }
+  public default Any lneg() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lor() { return null; }
+  public default Any lor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lrem() { return null; }
+  public default Any lrem() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lreturn() { return null; }
+  public default Any lreturn() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lshl() { return null; }
+  public default Any lshl() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lshr() { return null; }
+  public default Any lshr() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lsub() { return null; }
+  public default Any lsub() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lushr() { return null; }
+  public default Any lushr() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lxor() { return null; }
+  public default Any lxor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder monitorenter() { return null; }
+  public default Any monitorenter() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder monitorexit() { return null; }
+  public default Any monitorexit() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder multianewarray(java.lang.classfile.constantpool.ClassEntry array, int dims) { return null; }
+  public default Any multianewarray(Any array, int dims) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder new_(java.lang.classfile.constantpool.ClassEntry clazz) { return null; }
+  public default Any new_(Any clazz) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder newarray(java.lang.classfile.TypeKind typeKind) { return null; }
+  public default Any newarray(Any typeKind) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder sipush(int s) { return null; }
+  public default Any sipush(int s) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ifThen(java.util.function.Consumer<java.lang.classfile.CodeBuilder.BlockCodeBuilder> thenHandler) { return null; }
+  public default Any ifThen(Any thenHandler) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ifThen(java.lang.classfile.Opcode opcode, java.util.function.Consumer<java.lang.classfile.CodeBuilder.BlockCodeBuilder> thenHandler) { return null; }
+  public default Any ifThen(Any opcode, Any thenHandler) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ifThenElse(java.util.function.Consumer<java.lang.classfile.CodeBuilder.BlockCodeBuilder> thenHandler, java.util.function.Consumer<java.lang.classfile.CodeBuilder.BlockCodeBuilder> elseHandler) { return null; }
+  public default Any ifThenElse(Any thenHandler, Any elseHandler) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder ifThenElse(java.lang.classfile.Opcode opcode, java.util.function.Consumer<java.lang.classfile.CodeBuilder.BlockCodeBuilder> thenHandler, java.util.function.Consumer<java.lang.classfile.CodeBuilder.BlockCodeBuilder> elseHandler) { return null; }
+  public default Any ifThenElse(Any opcode, Any thenHandler, Any elseHandler) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder localVariable(int slot, java.lang.String name, java.lang.constant.ClassDesc descriptor, java.lang.classfile.Label startScope, java.lang.classfile.Label endScope) { return null; }
+  public default Any localVariable(int slot, String name, Any descriptor, Any startScope, Any endScope) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder localVariable(int slot, java.lang.classfile.constantpool.Utf8Entry nameEntry, java.lang.classfile.constantpool.Utf8Entry descriptorEntry, java.lang.classfile.Label startScope, java.lang.classfile.Label endScope) { return null; }
+  public default Any localVariable(int slot, Any nameEntry, Any descriptorEntry, Any startScope, Any endScope) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder localVariableType(int slot, java.lang.classfile.constantpool.Utf8Entry nameEntry, java.lang.classfile.constantpool.Utf8Entry signatureEntry, java.lang.classfile.Label startScope, java.lang.classfile.Label endScope) { return null; }
+  public default Any localVariableType(int slot, Any nameEntry, Any signatureEntry, Any startScope, Any endScope) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder localVariableType(int slot, java.lang.String name, java.lang.classfile.Signature signature, java.lang.classfile.Label startScope, java.lang.classfile.Label endScope) { return null; }
+  public default Any localVariableType(int slot, String name, Any signature, Any startScope, Any endScope) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder transforming(java.lang.classfile.CodeTransform transform, java.util.function.Consumer<java.lang.classfile.CodeBuilder> handler) { return null; }
+  public default Any transforming(Any transform, Any handler) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder trying(java.util.function.Consumer<java.lang.classfile.CodeBuilder.BlockCodeBuilder> tryHandler, java.util.function.Consumer<java.lang.classfile.CodeBuilder.CatchBuilder> catchesHandler) { return null; }
+  public default Any trying(Any tryHandler, Any catchesHandler) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.Label newBoundLabel() { return null; }
+  public default Any newBoundLabel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder exceptionCatchAll(java.lang.classfile.Label start, java.lang.classfile.Label end, java.lang.classfile.Label handler) { return null; }
+  public default Any exceptionCatchAll(Any start, Any end, Any handler) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder characterRange(java.lang.classfile.Label startScope, java.lang.classfile.Label endScope, int characterRangeStart, int characterRangeEnd, int flags) { return null; }
+  public default Any characterRange(Any startScope, Any endScope, int characterRangeStart, int characterRangeEnd, int flags) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder baload() { return null; }
+  public default Any baload() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder bastore() { return null; }
+  public default Any bastore() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder caload() { return null; }
+  public default Any caload() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder castore() { return null; }
+  public default Any castore() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder daload() { return null; }
+  public default Any daload() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder dastore() { return null; }
+  public default Any dastore() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder faload() { return null; }
+  public default Any faload() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder fastore() { return null; }
+  public default Any fastore() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder iaload() { return null; }
+  public default Any iaload() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder iastore() { return null; }
+  public default Any iastore() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder laload() { return null; }
+  public default Any laload() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder lastore() { return null; }
+  public default Any lastore() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder putfield(java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.constant.ClassDesc type) { return null; }
+  public default Any putfield(Any owner, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder putfield(java.lang.classfile.constantpool.FieldRefEntry ref) { return null; }
+  public default Any putfield(Any ref) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder putstatic(java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.constant.ClassDesc type) { return null; }
+  public default Any putstatic(Any owner, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder putstatic(java.lang.classfile.constantpool.FieldRefEntry ref) { return null; }
+  public default Any putstatic(Any ref) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder saload() { return null; }
+  public default Any saload() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.CodeBuilder sastore() { return null; }
+  public default Any sastore() { return null; }
   < ---- END java signatures ---- >
 }

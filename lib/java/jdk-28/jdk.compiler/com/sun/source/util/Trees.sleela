@@ -56,6 +56,24 @@ class Trees {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Trees bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,38 +87,38 @@ class Trees {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public boolean isAccessible(com.sun.source.tree.Scope scope, javax.lang.model.element.TypeElement type) { return false; }
+  public boolean isAccessible(Any scope, Any type) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean isAccessible(com.sun.source.tree.Scope scope, javax.lang.model.element.Element member, javax.lang.model.type.DeclaredType type) { return false; }
+  public boolean isAccessible(Any scope, Any member, Any type) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.tree.Scope getScope(com.sun.source.util.TreePath path) { return null; }
+  public Any getScope(Any path) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.util.TreePath getPath(com.sun.source.tree.CompilationUnitTree unit, com.sun.source.tree.Tree node) { return null; }
+  public Any getPath(Any unit, Any node) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.util.TreePath getPath(javax.lang.model.element.Element e) { return null; }
+  public Any getPath(Any e) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.util.TreePath getPath(javax.lang.model.element.Element e, javax.lang.model.element.AnnotationMirror a, javax.lang.model.element.AnnotationValue v) { return null; }
+  public Any getPath(Any e, Any a, Any v) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static com.sun.source.util.Trees instance(javax.annotation.processing.ProcessingEnvironment env) { return null; }
+  public static Any instance(Any env) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.lang.model.element.Element getElement(com.sun.source.util.TreePath path) { return null; }
+  public Any getElement(Any path) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.tree.Tree getTree(javax.lang.model.element.Element e, javax.lang.model.element.AnnotationMirror a) { return null; }
+  public Any getTree(Any e, Any a) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.tree.Tree getTree(javax.lang.model.element.Element element) { return null; }
+  public Any getTree(Any element) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.tree.Tree getTree(javax.lang.model.element.Element e, javax.lang.model.element.AnnotationMirror a, javax.lang.model.element.AnnotationValue v) { return null; }
+  public Any getTree(Any e, Any a, Any v) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.lang.model.type.TypeMirror getOriginalType(javax.lang.model.type.ErrorType errorType) { return null; }
+  public Any getOriginalType(Any errorType) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.util.SourcePositions getSourcePositions() { return null; }
+  public Any getSourcePositions() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void printMessage(javax.tools.Diagnostic.Kind kind, java.lang.CharSequence msg, com.sun.source.tree.Tree t, com.sun.source.tree.CompilationUnitTree root) { }
+  public void printMessage(Any kind, Any msg, Any t, Any root) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getDocComment(com.sun.source.util.TreePath path) { return null; }
+  public String getDocComment(Any path) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.lang.model.type.TypeMirror getLub(com.sun.source.tree.CatchTree tree) { return null; }
+  public Any getLub(Any tree) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.lang.model.type.TypeMirror getTypeMirror(com.sun.source.util.TreePath path) { return null; }
+  public Any getTypeMirror(Any path) { return null; }
   < ---- END java signatures ---- >
 }

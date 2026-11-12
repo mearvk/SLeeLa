@@ -56,11 +56,29 @@ class Charset {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Charset bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  Charset(java.lang.String canonicalName, java.lang.String[] aliases) { }
+  Charset(String canonicalName, String[] aliases) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -70,46 +88,46 @@ class Charset {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String name() { return null; }
+  public final String name() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.nio.charset.Charset forName(java.lang.String charsetName, java.nio.charset.Charset fallback) { return null; }
+  public static Any forName(String charsetName, Any fallback) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.nio.charset.Charset forName(java.lang.String charsetName) { return null; }
+  public static Any forName(String charsetName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean equals(java.lang.Object ob) { return false; }
+  public final boolean equals(Any ob) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String toString() { return null; }
+  public final String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final int compareTo(java.nio.charset.Charset that) { return 0; }
+  public final int compareTo(Any that) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.charset.CharsetDecoder newDecoder() { return null; }
+  public Any newDecoder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.CharBuffer decode(java.nio.ByteBuffer bb) { return null; }
+  public final Any decode(Any bb) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.charset.CharsetEncoder newEncoder() { return null; }
+  public Any newEncoder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.ByteBuffer encode(java.nio.CharBuffer cb) { return null; }
+  public final Any encode(Any cb) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.ByteBuffer encode(java.lang.String str) { return null; }
+  public final Any encode(String str) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.nio.charset.Charset defaultCharset() { return null; }
+  public static Any defaultCharset() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean canEncode() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean contains(java.nio.charset.Charset cs) { return false; }
+  public boolean contains(Any cs) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean isRegistered() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isSupported(java.lang.String charsetName) { return false; }
+  public static boolean isSupported(String charsetName) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.util.Set<java.lang.String> aliases() { return null; }
+  public final Any aliases() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.SortedMap<java.lang.String, java.nio.charset.Charset> availableCharsets() { return null; }
+  public static Any availableCharsets() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String displayName(java.util.Locale locale) { return null; }
+  public String displayName(Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String displayName() { return null; }
+  public String displayName() { return null; }
   < ---- END java signatures ---- >
 }

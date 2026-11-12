@@ -56,18 +56,36 @@ class EventSetDescriptor {
   String javaKind = "class";
   String javaSuper = "java.beans.FeatureDescriptor";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public EventSetDescriptor bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
-  public EventSetDescriptor(java.lang.String eventSetName, java.lang.Class<?> listenerType, java.lang.reflect.Method[] listenerMethods, java.lang.reflect.Method addListenerMethod, java.lang.reflect.Method removeListenerMethod) { }
+  public EventSetDescriptor(String eventSetName, Any listenerType, Any[] listenerMethods, Any addListenerMethod, Any removeListenerMethod) { }
   @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
-  public EventSetDescriptor(java.lang.String eventSetName, java.lang.Class<?> listenerType, java.lang.reflect.Method[] listenerMethods, java.lang.reflect.Method addListenerMethod, java.lang.reflect.Method removeListenerMethod, java.lang.reflect.Method getListenerMethod) { }
+  public EventSetDescriptor(String eventSetName, Any listenerType, Any[] listenerMethods, Any addListenerMethod, Any removeListenerMethod, Any getListenerMethod) { }
   @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
-  public EventSetDescriptor(java.lang.Class<?> sourceClass, java.lang.String eventSetName, java.lang.Class<?> listenerType, java.lang.String listenerMethodName) { }
+  public EventSetDescriptor(Any sourceClass, String eventSetName, Any listenerType, String listenerMethodName) { }
   @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
-  public EventSetDescriptor(java.lang.Class<?> sourceClass, java.lang.String eventSetName, java.lang.Class<?> listenerType, java.lang.String[] listenerMethodNames, java.lang.String addListenerMethodName, java.lang.String removeListenerMethodName) { }
+  public EventSetDescriptor(Any sourceClass, String eventSetName, Any listenerType, String[] listenerMethodNames, String addListenerMethodName, String removeListenerMethodName) { }
   @throwable("java.lang.UnsupportedOperationException, java.beans.IntrospectionException")
-  public EventSetDescriptor(java.lang.Class<?> sourceClass, java.lang.String eventSetName, java.lang.Class<?> listenerType, java.lang.String[] listenerMethodNames, java.lang.String addListenerMethodName, java.lang.String removeListenerMethodName, java.lang.String getListenerMethodName) { }
+  public EventSetDescriptor(Any sourceClass, String eventSetName, Any listenerType, String[] listenerMethodNames, String addListenerMethodName, String removeListenerMethodName, String getListenerMethodName) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -77,21 +95,21 @@ class EventSetDescriptor {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.reflect.Method[] getListenerMethods() { return null; }
+  public synchronized Any[] getListenerMethods() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Class<?> getListenerType() { return null; }
+  public Any getListenerType() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isUnicast() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setUnicast(boolean unicast) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.beans.MethodDescriptor[] getListenerMethodDescriptors() { return null; }
+  public synchronized Any[] getListenerMethodDescriptors() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.reflect.Method getAddListenerMethod() { return null; }
+  public synchronized Any getAddListenerMethod() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.reflect.Method getRemoveListenerMethod() { return null; }
+  public synchronized Any getRemoveListenerMethod() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.reflect.Method getGetListenerMethod() { return null; }
+  public synchronized Any getGetListenerMethod() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setInDefaultEventSet(boolean inDefaultEventSet) { }
   @throwable("java.lang.UnsupportedOperationException")

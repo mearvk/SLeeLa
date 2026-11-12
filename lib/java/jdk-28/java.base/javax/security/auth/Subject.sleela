@@ -56,12 +56,30 @@ class Subject {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Subject bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
   public Subject() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Subject(boolean readOnly, java.util.Set<? extends java.security.Principal> principals, java.util.Set<?> pubCredentials, java.util.Set<?> privCredentials) { }
+  public Subject(boolean readOnly, Any principals, Any pubCredentials, Any privCredentials) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -71,36 +89,42 @@ class Subject {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object o) { return false; }
+  public boolean equals(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.security.auth.Subject current() { return null; }
+  public static Any current() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setReadOnly() { }
+  @generic("<T extends java.security.Principal>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.security.Principal> java.util.Set<T> getPrincipals(java.lang.Class<T> c) { return null; }
+  public Any getPrincipals(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.security.Principal> getPrincipals() { return null; }
+  public Any getPrincipals() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isReadOnly() { return false; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, java.util.concurrent.CompletionException")
-  public static <T> T callAs(javax.security.auth.Subject subject, java.util.concurrent.Callable<T> action) { return null; }
+  public static Any callAs(Any subject, Any action) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.security.auth.Subject getSubject(java.security.AccessControlContext acc) { return null; }
+  public static Any getSubject(Any acc) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, java.security.PrivilegedActionException")
-  public static <T> T doAs(javax.security.auth.Subject subject, java.security.PrivilegedExceptionAction<T> action) { return null; }
+  public static Any doAs(Any subject, Any action) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, java.security.PrivilegedActionException")
-  public static <T> T doAsPrivileged(javax.security.auth.Subject subject, java.security.PrivilegedExceptionAction<T> action, java.security.AccessControlContext acc) { return null; }
+  public static Any doAsPrivileged(Any subject, Any action, Any acc) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> java.util.Set<T> getPublicCredentials(java.lang.Class<T> c) { return null; }
+  public Any getPublicCredentials(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.lang.Object> getPublicCredentials() { return null; }
+  public Any getPublicCredentials() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> java.util.Set<T> getPrivateCredentials(java.lang.Class<T> c) { return null; }
+  public Any getPrivateCredentials(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.lang.Object> getPrivateCredentials() { return null; }
+  public Any getPrivateCredentials() { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class JLayeredPane {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JLayeredPane bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any DEFAULT_LAYER = null;
@@ -81,55 +99,55 @@ class JLayeredPane {
   @throwable("java.lang.UnsupportedOperationException")
   public void remove(int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int getLayer(javax.swing.JComponent c) { return 0; }
+  public static int getLayer(Any c) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeAll() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getPosition(java.awt.Component c) { return 0; }
+  public int getPosition(Any c) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void moveToFront(java.awt.Component c) { }
+  public void moveToFront(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isOptimizedDrawingEnabled() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPosition(java.awt.Component c, int position) { }
+  public void setPosition(Any c, int position) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getIndexOf(java.awt.Component c) { return 0; }
+  public int getIndexOf(Any c) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void putLayer(javax.swing.JComponent c, int layer) { }
+  public static void putLayer(Any c, int layer) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void moveToBack(java.awt.Component c) { }
+  public void moveToBack(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLayer(java.awt.Component c, int layer) { }
+  public void setLayer(Any c, int layer) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLayer(java.awt.Component c, int layer, int position) { }
+  public void setLayer(Any c, int layer, int position) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int insertIndexForLayer(int layer, int position) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.util.Hashtable<java.awt.Component, java.lang.Integer> getComponentToLayer() { return null; }
+  Any getComponentToLayer() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.Integer getObjectForLayer(int layer) { return null; }
+  Any getObjectForLayer(int layer) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getComponentCountInLayer(int layer) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.JLayeredPane getLayeredPaneAbove(java.awt.Component c) { return null; }
+  public static Any getLayeredPaneAbove(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int highestLayer() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int lowestLayer() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component[] getComponentsInLayer(int layer) { return null; }
+  public Any[] getComponentsInLayer(int layer) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { }
+  void addImpl(Any comp, Any constraints, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g) { }
+  public void paint(Any g) { }
   < ---- END java signatures ---- >
 }

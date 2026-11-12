@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class CountedCompleter<T> {
+class CountedCompleter {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class CountedCompleter<T> {
   String javaKind = "class";
   String javaSuper = "java.util.concurrent.ForkJoinTask";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<T>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "T"; } return null; }
+  public CountedCompleter bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -63,10 +81,10 @@ class CountedCompleter<T> {
   CountedCompleter() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  CountedCompleter(java.util.concurrent.CountedCompleter<?> completer) { }
+  CountedCompleter(Any completer) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  CountedCompleter(java.util.concurrent.CountedCompleter<?> completer, int initialPendingCount) { }
+  CountedCompleter(Any completer, int initialPendingCount) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -78,27 +96,27 @@ class CountedCompleter<T> {
   @throwable("java.lang.AbstractMethodError")
   public void compute() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.util.concurrent.CountedCompleter<?> getRoot() { return null; }
+  public final Any getRoot() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   final boolean exec() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void complete(T rawResult) { }
+  public void complete(Any rawResult) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void onCompletion(java.util.concurrent.CountedCompleter<?> caller) { }
+  public void onCompletion(Any caller) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setRawResult(T t) { }
+  void setRawResult(Any t) { }
   @throwable("java.lang.UnsupportedOperationException")
   public final void tryComplete() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.util.concurrent.CountedCompleter<?> firstComplete() { return null; }
+  public final Any firstComplete() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final void helpComplete(int maxTasks) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean onExceptionalCompletion(java.lang.Throwable ex, java.util.concurrent.CountedCompleter<?> caller) { return false; }
+  public boolean onExceptionalCompletion(Any ex, Any caller) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.util.concurrent.CountedCompleter<?> getCompleter() { return null; }
+  public final Any getCompleter() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int getPendingCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -112,10 +130,10 @@ class CountedCompleter<T> {
   @throwable("java.lang.UnsupportedOperationException")
   public final void propagateCompletion() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.util.concurrent.CountedCompleter<?> nextComplete() { return null; }
+  public final Any nextComplete() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final void quietlyCompleteRoot() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public T getRawResult() { return null; }
+  public Any getRawResult() { return null; }
   < ---- END java signatures ---- >
 }

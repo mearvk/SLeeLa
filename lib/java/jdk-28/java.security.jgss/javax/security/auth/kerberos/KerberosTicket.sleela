@@ -56,10 +56,28 @@ class KerberosTicket {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public KerberosTicket bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public KerberosTicket(byte[] asn1Encoding, javax.security.auth.kerberos.KerberosPrincipal client, javax.security.auth.kerberos.KerberosPrincipal server, byte[] sessionKey, int keyType, boolean[] flags, java.util.Date authTime, java.util.Date startTime, java.util.Date endTime, java.util.Date renewTill, java.net.InetAddress[] clientAddresses) { }
+  public KerberosTicket(byte[] asn1Encoding, Any client, Any server, byte[] sessionKey, int keyType, boolean[] flags, Any authTime, Any startTime, Any endTime, Any renewTill, Any[] clientAddresses) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -69,9 +87,9 @@ class KerberosTicket {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object other) { return false; }
+  public boolean equals(Any other) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -89,23 +107,23 @@ class KerberosTicket {
   @throwable("java.lang.UnsupportedOperationException, javax.security.auth.RefreshFailedException")
   public void refresh() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.util.Date getStartTime() { return null; }
+  public final Any getStartTime() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean isRenewable() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.util.Date getRenewTill() { return null; }
+  public final Any getRenewTill() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final javax.security.auth.kerberos.KerberosPrincipal getClient() { return null; }
+  public final Any getClient() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final javax.security.auth.kerberos.KerberosPrincipal getServer() { return null; }
+  public final Any getServer() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final javax.crypto.SecretKey getSessionKey() { return null; }
+  public final Any getSessionKey() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.util.Date getAuthTime() { return null; }
+  public final Any getAuthTime() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.util.Date getEndTime() { return null; }
+  public final Any getEndTime() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.net.InetAddress[] getClientAddresses() { return null; }
+  public final Any[] getClientAddresses() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int getSessionKeyType() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")

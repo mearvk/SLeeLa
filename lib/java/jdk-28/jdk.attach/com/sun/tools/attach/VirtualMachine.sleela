@@ -56,11 +56,29 @@ class VirtualMachine {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public VirtualMachine bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  VirtualMachine(com.sun.tools.attach.spi.AttachProvider provider, java.lang.String id) { }
+  VirtualMachine(Any provider, String id) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -70,42 +88,42 @@ class VirtualMachine {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object ob) { return false; }
+  public boolean equals(Any ob) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.lang.String startLocalManagementAgent() { return null; }
+  public String startLocalManagementAgent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.List<com.sun.tools.attach.VirtualMachineDescriptor> list() { return null; }
+  public static Any list() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String id() { return null; }
+  public final String id() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final com.sun.tools.attach.spi.AttachProvider provider() { return null; }
+  public final Any provider() { return null; }
   @throwable("java.lang.UnsupportedOperationException, com.sun.tools.attach.AttachNotSupportedException, java.io.IOException")
-  public static com.sun.tools.attach.VirtualMachine attach(java.lang.String id) { return null; }
+  public static Any attach(String id) { return null; }
   @throwable("java.lang.UnsupportedOperationException, com.sun.tools.attach.AttachNotSupportedException, java.io.IOException")
-  public static com.sun.tools.attach.VirtualMachine attach(com.sun.tools.attach.VirtualMachineDescriptor vmd) { return null; }
+  public static Any attach(Any vmd) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
   public void detach() { }
   @throwable("java.lang.UnsupportedOperationException, com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException")
-  public void loadAgent(java.lang.String agent) { }
+  public void loadAgent(String agent) { }
   @throwable("java.lang.AbstractMethodError, com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException")
-  public void loadAgent(java.lang.String agent, java.lang.String options) { }
+  public void loadAgent(String agent, String options) { }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.util.Properties getSystemProperties() { return null; }
+  public Any getSystemProperties() { return null; }
   @throwable("java.lang.AbstractMethodError, com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException")
-  public void loadAgentLibrary(java.lang.String agentLibrary, java.lang.String options) { }
+  public void loadAgentLibrary(String agentLibrary, String options) { }
   @throwable("java.lang.UnsupportedOperationException, com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException")
-  public void loadAgentLibrary(java.lang.String agentLibrary) { }
+  public void loadAgentLibrary(String agentLibrary) { }
   @throwable("java.lang.UnsupportedOperationException, com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException")
-  public void loadAgentPath(java.lang.String agentPath) { }
+  public void loadAgentPath(String agentPath) { }
   @throwable("java.lang.AbstractMethodError, com.sun.tools.attach.AgentLoadException, com.sun.tools.attach.AgentInitializationException, java.io.IOException")
-  public void loadAgentPath(java.lang.String agentPath, java.lang.String options) { }
+  public void loadAgentPath(String agentPath, String options) { }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.util.Properties getAgentProperties() { return null; }
+  public Any getAgentProperties() { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public void startManagementAgent(java.util.Properties agentProperties) { }
+  public void startManagementAgent(Any agentProperties) { }
   < ---- END java signatures ---- >
 }

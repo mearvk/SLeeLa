@@ -56,6 +56,24 @@ class DefaultTreeModel {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DefaultTreeModel bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any root;
@@ -65,9 +83,9 @@ class DefaultTreeModel {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public DefaultTreeModel(javax.swing.tree.TreeNode root) { }
+  public DefaultTreeModel(Any root) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public DefaultTreeModel(javax.swing.tree.TreeNode root, boolean asksAllowsChildren) { }
+  public DefaultTreeModel(Any root, boolean asksAllowsChildren) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -77,63 +95,64 @@ class DefaultTreeModel {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getRoot() { return null; }
+  public Any getRoot() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void reload() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void reload(javax.swing.tree.TreeNode node) { }
+  public void reload(Any node) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isLeaf(java.lang.Object node) { return false; }
+  public boolean isLeaf(Any node) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getChildCount(java.lang.Object parent) { return 0; }
+  public int getChildCount(Any parent) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getChild(java.lang.Object parent, int index) { return null; }
+  public Any getChild(Any parent, int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void valueForPathChanged(javax.swing.tree.TreePath path, java.lang.Object newValue) { }
+  public void valueForPathChanged(Any path, Any newValue) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.tree.TreeNode[] getPathToRoot(javax.swing.tree.TreeNode aNode, int depth) { return null; }
+  Any[] getPathToRoot(Any aNode, int depth) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreeNode[] getPathToRoot(javax.swing.tree.TreeNode aNode) { return null; }
+  public Any[] getPathToRoot(Any aNode) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeTreeModelListener(javax.swing.event.TreeModelListener l) { }
+  public void removeTreeModelListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addTreeModelListener(javax.swing.event.TreeModelListener l) { }
+  public void addTreeModelListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getIndexOfChild(java.lang.Object parent, java.lang.Object child) { return 0; }
+  public int getIndexOfChild(Any parent, Any child) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void fireTreeStructureChanged(java.lang.Object source, java.lang.Object[] path, int[] childIndices, java.lang.Object[] children) { }
+  void fireTreeStructureChanged(Any source, Any[] path, int[] childIndices, Any[] children) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void nodeStructureChanged(javax.swing.tree.TreeNode node) { }
+  public void nodeStructureChanged(Any node) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void nodeChanged(javax.swing.tree.TreeNode node) { }
+  public void nodeChanged(Any node) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void nodesWereInserted(javax.swing.tree.TreeNode node, int[] childIndices) { }
+  public void nodesWereInserted(Any node, int[] childIndices) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void nodesWereRemoved(javax.swing.tree.TreeNode node, int[] childIndices, java.lang.Object[] removedChildren) { }
+  public void nodesWereRemoved(Any node, int[] childIndices, Any[] removedChildren) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void nodesChanged(javax.swing.tree.TreeNode node, int[] childIndices) { }
+  public void nodesChanged(Any node, int[] childIndices) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void fireTreeNodesInserted(java.lang.Object source, java.lang.Object[] path, int[] childIndices, java.lang.Object[] children) { }
+  void fireTreeNodesInserted(Any source, Any[] path, int[] childIndices, Any[] children) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void fireTreeNodesRemoved(java.lang.Object source, java.lang.Object[] path, int[] childIndices, java.lang.Object[] children) { }
+  void fireTreeNodesRemoved(Any source, Any[] path, int[] childIndices, Any[] children) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void fireTreeNodesChanged(java.lang.Object source, java.lang.Object[] path, int[] childIndices, java.lang.Object[] children) { }
+  void fireTreeNodesChanged(Any source, Any[] path, int[] childIndices, Any[] children) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setAsksAllowsChildren(boolean newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setRoot(javax.swing.tree.TreeNode root) { }
+  public void setRoot(Any root) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void insertNodeInto(javax.swing.tree.MutableTreeNode newChild, javax.swing.tree.MutableTreeNode parent, int index) { }
+  public void insertNodeInto(Any newChild, Any parent, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeNodeFromParent(javax.swing.tree.MutableTreeNode node) { }
+  public void removeNodeFromParent(Any node) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.TreeModelListener[] getTreeModelListeners() { return null; }
+  public Any[] getTreeModelListeners() { return null; }
+  @generic("<T extends java.util.EventListener>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
+  public Any[] getListeners(Any listenerType) { return null; }
   < ---- END java signatures ---- >
 }

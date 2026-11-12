@@ -56,6 +56,24 @@ class ZoneOffsetTransitionRule {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ZoneOffsetTransitionRule bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,32 +82,32 @@ class ZoneOffsetTransitionRule {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object otherRule) { return false; }
+  public boolean equals(Any otherRule) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.zone.ZoneOffsetTransitionRule of(java.time.Month month, int dayOfMonthIndicator, java.time.DayOfWeek dayOfWeek, java.time.LocalTime time, boolean timeEndOfDay, java.time.zone.ZoneOffsetTransitionRule.TimeDefinition timeDefinition, java.time.ZoneOffset standardOffset, java.time.ZoneOffset offsetBefore, java.time.ZoneOffset offsetAfter) { return null; }
+  public static Any of(Any month, int dayOfMonthIndicator, Any dayOfWeek, Any time, boolean timeEndOfDay, Any timeDefinition, Any standardOffset, Any offsetBefore, Any offsetAfter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Month getMonth() { return null; }
+  public Any getMonth() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.DayOfWeek getDayOfWeek() { return null; }
+  public Any getDayOfWeek() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getDayOfMonthIndicator() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalTime getLocalTime() { return null; }
+  public Any getLocalTime() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isMidnightEndOfDay() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.zone.ZoneOffsetTransitionRule.TimeDefinition getTimeDefinition() { return null; }
+  public Any getTimeDefinition() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.ZoneOffset getStandardOffset() { return null; }
+  public Any getStandardOffset() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.ZoneOffset getOffsetBefore() { return null; }
+  public Any getOffsetBefore() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.ZoneOffset getOffsetAfter() { return null; }
+  public Any getOffsetAfter() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.zone.ZoneOffsetTransition createTransition(int year) { return null; }
+  public Any createTransition(int year) { return null; }
   < ---- END java signatures ---- >
 }

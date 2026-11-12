@@ -56,10 +56,28 @@ class JPopupMenu {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JPopupMenu bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public JPopupMenu(java.lang.String label) { }
+  public JPopupMenu(String label) { }
   @throwable("java.lang.UnsupportedOperationException")
   public JPopupMenu() { }
   < ---- END java constructors ---- >
@@ -73,93 +91,93 @@ class JPopupMenu {
   @throwable("java.lang.UnsupportedOperationException")
   public void remove(int pos) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void insert(java.awt.Component component, int index) { }
+  public void insert(Any component, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JMenuItem add(javax.swing.JMenuItem menuItem) { return null; }
+  public Any add(Any menuItem) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JMenuItem add(java.lang.String s) { return null; }
+  public Any add(String s) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getLabel() { return null; }
+  public String getLabel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getComponent() { return null; }
+  public Any getComponent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setVisible(boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void pack() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void show(java.awt.Component invoker, int x, int y) { }
+  public void show(Any invoker, int x, int y) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processKeyEvent(java.awt.event.KeyEvent evt) { }
+  void processKeyEvent(Any evt) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void processKeyEvent(java.awt.event.KeyEvent e, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { }
+  public void processKeyEvent(Any e, Any[] path, Any manager) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isPopupTrigger(java.awt.event.MouseEvent e) { return false; }
+  public boolean isPopupTrigger(Any e) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processFocusEvent(java.awt.event.FocusEvent evt) { }
+  void processFocusEvent(Any evt) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void processMouseEvent(java.awt.event.MouseEvent event, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { }
+  public void processMouseEvent(Any event, Any[] path, Any manager) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintBorder(java.awt.Graphics g) { }
+  void paintBorder(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSelectionModel(javax.swing.SingleSelectionModel model) { }
+  public void setSelectionModel(Any model) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUI(javax.swing.plaf.PopupMenuUI ui) { }
+  public void setUI(Any ui) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.PopupMenuUI getUI() { return null; }
+  public Any getUI() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getComponentAtIndex(int i) { return null; }
+  public Any getComponentAtIndex(int i) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.SingleSelectionModel getSelectionModel() { return null; }
+  public Any getSelectionModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isBorderPainted() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.MenuElement[] getSubElements() { return null; }
+  public Any[] getSubElements() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSelected(java.awt.Component sel) { }
+  public void setSelected(Any sel) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setBorderPainted(boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Insets getMargin() { return null; }
+  public Any getMargin() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void menuSelectionChanged(boolean isIncluded) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addMenuKeyListener(javax.swing.event.MenuKeyListener l) { }
+  public void addMenuKeyListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeMenuKeyListener(javax.swing.event.MenuKeyListener l) { }
+  public void removeMenuKeyListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.MenuKeyListener[] getMenuKeyListeners() { return null; }
+  public Any[] getMenuKeyListeners() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JMenuItem createActionComponent(javax.swing.Action a) { return null; }
+  Any createActionComponent(Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getInvoker() { return null; }
+  public Any getInvoker() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setInvoker(java.awt.Component invoker) { }
+  public void setInvoker(Any invoker) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setPopupSize(int width, int height) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPopupSize(java.awt.Dimension d) { }
+  public void setPopupSize(Any d) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void setDefaultLightWeightPopupEnabled(boolean aFlag) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createActionChangeListener(javax.swing.JMenuItem b) { return null; }
+  Any createActionChangeListener(Any b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLabel(java.lang.String label) { }
+  public void setLabel(String label) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void addSeparator() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getComponentIndex(java.awt.Component c) { return 0; }
+  public int getComponentIndex(Any c) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean getDefaultLightWeightPopupEnabled() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -167,11 +185,11 @@ class JPopupMenu {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isLightWeightPopupEnabled() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addPopupMenuListener(javax.swing.event.PopupMenuListener l) { }
+  public void addPopupMenuListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removePopupMenuListener(javax.swing.event.PopupMenuListener l) { }
+  public void removePopupMenuListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.PopupMenuListener[] getPopupMenuListeners() { return null; }
+  public Any[] getPopupMenuListeners() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void firePopupMenuWillBecomeVisible() { }
@@ -184,7 +202,7 @@ class JPopupMenu {
   @throwable("java.lang.UnsupportedOperationException")
   public void setLocation(int x, int y) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isVisible() { return false; }
   < ---- END java signatures ---- >

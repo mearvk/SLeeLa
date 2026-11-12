@@ -56,6 +56,24 @@ class StyleConstants {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public StyleConstants bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String ComponentElementName = "component";
@@ -101,90 +119,90 @@ class StyleConstants {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Component getComponent(javax.swing.text.AttributeSet a) { return null; }
+  public static Any getComponent(Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setAlignment(javax.swing.text.MutableAttributeSet a, int align) { }
+  public static void setAlignment(Any a, int align) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int getAlignment(javax.swing.text.AttributeSet a) { return 0; }
+  public static int getAlignment(Any a) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setSuperscript(javax.swing.text.MutableAttributeSet a, boolean b) { }
+  public static void setSuperscript(Any a, boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setUnderline(javax.swing.text.MutableAttributeSet a, boolean b) { }
+  public static void setUnderline(Any a, boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setComponent(javax.swing.text.MutableAttributeSet a, java.awt.Component c) { }
+  public static void setComponent(Any a, Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Color getForeground(javax.swing.text.AttributeSet a) { return null; }
+  public static Any getForeground(Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setForeground(javax.swing.text.MutableAttributeSet a, java.awt.Color fg) { }
+  public static void setForeground(Any a, Any fg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Color getBackground(javax.swing.text.AttributeSet a) { return null; }
+  public static Any getBackground(Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setBackground(javax.swing.text.MutableAttributeSet a, java.awt.Color fg) { }
+  public static void setBackground(Any a, Any fg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setFontFamily(javax.swing.text.MutableAttributeSet a, java.lang.String fam) { }
+  public static void setFontFamily(Any a, String fam) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setFontSize(javax.swing.text.MutableAttributeSet a, int s) { }
+  public static void setFontSize(Any a, int s) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setBold(javax.swing.text.MutableAttributeSet a, boolean b) { }
+  public static void setBold(Any a, boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setItalic(javax.swing.text.MutableAttributeSet a, boolean b) { }
+  public static void setItalic(Any a, boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String getFontFamily(javax.swing.text.AttributeSet a) { return null; }
+  public static String getFontFamily(Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int getFontSize(javax.swing.text.AttributeSet a) { return 0; }
+  public static int getFontSize(Any a) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isSuperscript(javax.swing.text.AttributeSet a) { return false; }
+  public static boolean isSuperscript(Any a) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isSubscript(javax.swing.text.AttributeSet a) { return false; }
+  public static boolean isSubscript(Any a) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setBidiLevel(javax.swing.text.MutableAttributeSet a, int o) { }
+  public static void setBidiLevel(Any a, int o) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setRightIndent(javax.swing.text.MutableAttributeSet a, float i) { }
+  public static void setRightIndent(Any a, float i) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setLeftIndent(javax.swing.text.MutableAttributeSet a, float i) { }
+  public static void setLeftIndent(Any a, float i) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setSpaceAbove(javax.swing.text.MutableAttributeSet a, float i) { }
+  public static void setSpaceAbove(Any a, float i) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setSpaceBelow(javax.swing.text.MutableAttributeSet a, float i) { }
+  public static void setSpaceBelow(Any a, float i) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setTabSet(javax.swing.text.MutableAttributeSet a, javax.swing.text.TabSet tabs) { }
+  public static void setTabSet(Any a, Any tabs) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isBold(javax.swing.text.AttributeSet a) { return false; }
+  public static boolean isBold(Any a) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isItalic(javax.swing.text.AttributeSet a) { return false; }
+  public static boolean isItalic(Any a) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static float getLineSpacing(javax.swing.text.AttributeSet a) { return 0.0; }
+  public static float getLineSpacing(Any a) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setLineSpacing(javax.swing.text.MutableAttributeSet a, float i) { }
+  public static void setLineSpacing(Any a, float i) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static float getFirstLineIndent(javax.swing.text.AttributeSet a) { return 0.0; }
+  public static float getFirstLineIndent(Any a) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setFirstLineIndent(javax.swing.text.MutableAttributeSet a, float i) { }
+  public static void setFirstLineIndent(Any a, float i) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.text.TabSet getTabSet(javax.swing.text.AttributeSet a) { return null; }
+  public static Any getTabSet(Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static float getSpaceAbove(javax.swing.text.AttributeSet a) { return 0.0; }
+  public static float getSpaceAbove(Any a) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static float getLeftIndent(javax.swing.text.AttributeSet a) { return 0.0; }
+  public static float getLeftIndent(Any a) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static float getSpaceBelow(javax.swing.text.AttributeSet a) { return 0.0; }
+  public static float getSpaceBelow(Any a) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static float getRightIndent(javax.swing.text.AttributeSet a) { return 0.0; }
+  public static float getRightIndent(Any a) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.Icon getIcon(javax.swing.text.AttributeSet a) { return null; }
+  public static Any getIcon(Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isUnderline(javax.swing.text.AttributeSet a) { return false; }
+  public static boolean isUnderline(Any a) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isStrikeThrough(javax.swing.text.AttributeSet a) { return false; }
+  public static boolean isStrikeThrough(Any a) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int getBidiLevel(javax.swing.text.AttributeSet a) { return 0; }
+  public static int getBidiLevel(Any a) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setIcon(javax.swing.text.MutableAttributeSet a, javax.swing.Icon c) { }
+  public static void setIcon(Any a, Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setStrikeThrough(javax.swing.text.MutableAttributeSet a, boolean b) { }
+  public static void setStrikeThrough(Any a, boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setSubscript(javax.swing.text.MutableAttributeSet a, boolean b) { }
+  public static void setSubscript(Any a, boolean b) { }
   < ---- END java signatures ---- >
 }

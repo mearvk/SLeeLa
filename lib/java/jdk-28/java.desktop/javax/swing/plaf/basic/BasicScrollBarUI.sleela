@@ -56,6 +56,24 @@ class BasicScrollBarUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.ScrollBarUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BasicScrollBarUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static int NO_HIGHLIGHT = 0;
@@ -103,61 +121,61 @@ class BasicScrollBarUI {
   @throwable("java.lang.UnsupportedOperationException")
   void installListeners() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  public Any getPreferredSize(Any c) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void configureScrollBarColors() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JButton createIncreaseButton(int orientation) { return null; }
+  Any createIncreaseButton(int orientation) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JButton createDecreaseButton(int orientation) { return null; }
+  Any createDecreaseButton(int orientation) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.plaf.basic.BasicScrollBarUI.TrackListener createTrackListener() { return null; }
+  Any createTrackListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.plaf.basic.BasicScrollBarUI.ArrowButtonListener createArrowButtonListener() { return null; }
+  Any createArrowButtonListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.plaf.basic.BasicScrollBarUI.ModelListener createModelListener() { return null; }
+  Any createModelListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.plaf.basic.BasicScrollBarUI.ScrollListener createScrollListener() { return null; }
+  Any createScrollListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Rectangle getThumbBounds() { return null; }
+  Any getThumbBounds() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void setThumbRollover(boolean active) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Rectangle getTrackBounds() { return null; }
+  Any getTrackBounds() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintThumb(java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle thumbBounds) { }
+  void paintThumb(Any g, Any c, Any thumbBounds) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintDecreaseHighlight(java.awt.Graphics g) { }
+  void paintDecreaseHighlight(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintIncreaseHighlight(java.awt.Graphics g) { }
+  void paintIncreaseHighlight(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Dimension getMaximumThumbSize() { return null; }
+  Any getMaximumThumbSize() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Dimension getMinimumThumbSize() { return null; }
+  Any getMinimumThumbSize() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void setThumbBounds(int x, int y, int width, int height) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void layoutVScrollbar(javax.swing.JScrollBar sb) { }
+  void layoutVScrollbar(Any sb) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void layoutHScrollbar(javax.swing.JScrollBar sb) { }
+  void layoutHScrollbar(Any sb) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void scrollByBlock(int direction) { }
@@ -169,14 +187,14 @@ class BasicScrollBarUI {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getSupportsAbsolutePositioning() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void installUI(javax.swing.JComponent c) { }
+  public void installUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void uninstallUI(javax.swing.JComponent c) { }
+  public void uninstallUI(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintTrack(java.awt.Graphics g, javax.swing.JComponent c, java.awt.Rectangle trackBounds) { }
+  void paintTrack(Any g, Any c, Any trackBounds) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
+  public static Any createUI(Any c) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installKeyboardActions() { }
@@ -197,23 +215,23 @@ class BasicScrollBarUI {
   void installComponents() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createPropertyChangeListener() { return null; }
+  Any createPropertyChangeListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void uninstallComponents() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeLayoutComponent(java.awt.Component child) { }
+  public void removeLayoutComponent(Any child) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addLayoutComponent(java.lang.String name, java.awt.Component child) { }
+  public void addLayoutComponent(String name, Any child) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void layoutContainer(java.awt.Container scrollbarContainer) { }
+  public void layoutContainer(Any scrollbarContainer) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension preferredLayoutSize(java.awt.Container scrollbarContainer) { return null; }
+  public Any preferredLayoutSize(Any scrollbarContainer) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension minimumLayoutSize(java.awt.Container scrollbarContainer) { return null; }
+  public Any minimumLayoutSize(Any scrollbarContainer) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
+  public Any getMaximumSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
+  public void paint(Any g, Any c) { }
   < ---- END java signatures ---- >
 }

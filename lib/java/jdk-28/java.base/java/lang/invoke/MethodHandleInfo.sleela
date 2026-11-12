@@ -56,6 +56,24 @@ class MethodHandleInfo {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MethodHandleInfo bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int REF_getField = 1;
@@ -76,22 +94,23 @@ class MethodHandleInfo {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(int kind, java.lang.Class<?> defc, java.lang.String name, java.lang.invoke.MethodType type) { return null; }
+  public static String toString(int kind, Any defc, String name, Any type) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getModifiers() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Class<?> getDeclaringClass() { return null; }
+  public Any getDeclaringClass() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public default boolean isVarArgs() { return false; }
   @throwable("java.lang.AbstractMethodError")
   public int getReferenceKind() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.invoke.MethodType getMethodType() { return null; }
+  public Any getMethodType() { return null; }
+  @generic("<T extends java.lang.reflect.Member>")
   @throwable("java.lang.AbstractMethodError")
-  public <T extends java.lang.reflect.Member> T reflectAs(java.lang.Class<T> expected, java.lang.invoke.MethodHandles.Lookup lookup) { return null; }
+  public Any reflectAs(Any expected, Any lookup) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String referenceKindToString(int referenceKind) { return null; }
+  public static String referenceKindToString(int referenceKind) { return null; }
   < ---- END java signatures ---- >
 }

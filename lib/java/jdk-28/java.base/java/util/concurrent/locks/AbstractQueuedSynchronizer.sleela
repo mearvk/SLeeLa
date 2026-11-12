@@ -56,6 +56,24 @@ class AbstractQueuedSynchronizer {
   String javaKind = "class";
   String javaSuper = "java.util.concurrent.locks.AbstractOwnableSynchronizer";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public AbstractQueuedSynchronizer bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,7 +88,7 @@ class AbstractQueuedSynchronizer {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   final int getState() { return 0; }
@@ -88,17 +106,17 @@ class AbstractQueuedSynchronizer {
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean hasQueuedThreads() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean isQueued(java.lang.Thread thread) { return false; }
+  public final boolean isQueued(Any thread) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int getQueueLength() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.util.Collection<java.lang.Thread> getQueuedThreads() { return null; }
+  public final Any getQueuedThreads() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean hasWaiters(java.util.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject condition) { return false; }
+  public final boolean hasWaiters(Any condition) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final int getWaitQueueLength(java.util.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject condition) { return 0; }
+  public final int getWaitQueueLength(Any condition) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.util.Collection<java.lang.Thread> getWaitingThreads(java.util.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject condition) { return null; }
+  public final Any getWaitingThreads(Any condition) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
   public final void acquireSharedInterruptibly(int arg) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
@@ -120,9 +138,9 @@ class AbstractQueuedSynchronizer {
   @throwable("java.lang.UnsupportedOperationException")
   boolean tryReleaseShared(int arg) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.Thread getFirstQueuedThread() { return null; }
+  public final Any getFirstQueuedThread() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean owns(java.util.concurrent.locks.AbstractQueuedSynchronizer.ConditionObject condition) { return false; }
+  public final boolean owns(Any condition) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
   public final void acquireInterruptibly(int arg) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
@@ -134,8 +152,8 @@ class AbstractQueuedSynchronizer {
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean hasQueuedPredecessors() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.util.Collection<java.lang.Thread> getExclusiveQueuedThreads() { return null; }
+  public final Any getExclusiveQueuedThreads() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.util.Collection<java.lang.Thread> getSharedQueuedThreads() { return null; }
+  public final Any getSharedQueuedThreads() { return null; }
   < ---- END java signatures ---- >
 }

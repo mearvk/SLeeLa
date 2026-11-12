@@ -56,12 +56,30 @@ class LdapName {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public LdapName bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public LdapName(java.util.List<javax.naming.ldap.Rdn> rdns) { }
+  public LdapName(Any rdns) { }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.InvalidNameException")
-  public LdapName(java.lang.String name) { }
+  public LdapName(String name) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -71,48 +89,48 @@ class LdapName {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, javax.naming.InvalidNameException")
-  public java.lang.Object remove(int posn) { return null; }
+  public Any remove(int posn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int size() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String get(int posn) { return null; }
+  public String get(int posn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(java.lang.Object obj) { return 0; }
+  public int compareTo(Any obj) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean startsWith(java.util.List<javax.naming.ldap.Rdn> rdns) { return false; }
+  public boolean startsWith(Any rdns) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.naming.Name add(javax.naming.ldap.Rdn comp) { return null; }
+  public Any add(Any comp) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.InvalidNameException")
-  public javax.naming.Name add(int posn, java.lang.String comp) { return null; }
+  public Any add(int posn, String comp) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.naming.Name add(int posn, javax.naming.ldap.Rdn comp) { return null; }
+  public Any add(int posn, Any comp) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.InvalidNameException")
-  public javax.naming.Name add(java.lang.String comp) { return null; }
+  public Any add(String comp) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean endsWith(java.util.List<javax.naming.ldap.Rdn> rdns) { return false; }
+  public boolean endsWith(Any rdns) { return false; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.InvalidNameException")
-  public javax.naming.Name addAll(javax.naming.Name suffix) { return null; }
+  public Any addAll(Any suffix) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.naming.InvalidNameException")
-  public javax.naming.Name addAll(int posn, javax.naming.Name suffix) { return null; }
+  public Any addAll(int posn, Any suffix) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Enumeration<java.lang.String> getAll() { return null; }
+  public Any getAll() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.naming.Name getPrefix(int posn) { return null; }
+  public Any getPrefix(int posn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.naming.ldap.Rdn getRdn(int posn) { return null; }
+  public Any getRdn(int posn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<javax.naming.ldap.Rdn> getRdns() { return null; }
+  public Any getRdns() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.naming.Name getSuffix(int posn) { return null; }
+  public Any getSuffix(int posn) { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class DecimalStyle {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DecimalStyle bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any STANDARD = null;
@@ -68,15 +86,15 @@ class DecimalStyle {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.format.DecimalStyle of(java.util.Locale locale) { return null; }
+  public static Any of(Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Set<java.util.Locale> getAvailableLocales() { return null; }
+  public static Any getAvailableLocales() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public char getZeroDigit() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -86,14 +104,14 @@ class DecimalStyle {
   @throwable("java.lang.UnsupportedOperationException")
   public char getNegativeSign() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.format.DecimalStyle ofDefaultLocale() { return null; }
+  public static Any ofDefaultLocale() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DecimalStyle withZeroDigit(char zeroDigit) { return null; }
+  public Any withZeroDigit(char zeroDigit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DecimalStyle withPositiveSign(char positiveSign) { return null; }
+  public Any withPositiveSign(char positiveSign) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DecimalStyle withNegativeSign(char negativeSign) { return null; }
+  public Any withNegativeSign(char negativeSign) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DecimalStyle withDecimalSeparator(char decimalSeparator) { return null; }
+  public Any withDecimalSeparator(char decimalSeparator) { return null; }
   < ---- END java signatures ---- >
 }

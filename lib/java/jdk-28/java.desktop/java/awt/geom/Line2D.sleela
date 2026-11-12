@@ -56,6 +56,24 @@ class Line2D {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Line2D bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,25 +88,25 @@ class Line2D {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean contains(double x, double y, double w, double h) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean contains(java.awt.geom.Rectangle2D r) { return false; }
+  public boolean contains(Any r) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean contains(double x, double y) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getBounds() { return null; }
+  public Any getBounds() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean intersects(java.awt.geom.Rectangle2D r) { return false; }
+  public boolean intersects(Any r) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean intersects(double x, double y, double w, double h) { return false; }
   @throwable("java.lang.AbstractMethodError")
   public void setLine(double x1, double y1, double x2, double y2) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLine(java.awt.geom.Line2D l) { }
+  public void setLine(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLine(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2) { }
+  public void setLine(Any p1, Any p2) { }
   @throwable("java.lang.AbstractMethodError")
   public double getX1() { return 0.0; }
   @throwable("java.lang.AbstractMethodError")
@@ -98,15 +116,15 @@ class Line2D {
   @throwable("java.lang.AbstractMethodError")
   public double getY2() { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean intersectsLine(java.awt.geom.Line2D l) { return false; }
+  public boolean intersectsLine(Any l) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean intersectsLine(double x1, double y1, double x2, double y2) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { return null; }
+  public Any getPathIterator(Any at, double flatness) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { return null; }
+  public Any getPathIterator(Any at) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int relativeCCW(java.awt.geom.Point2D p) { return 0; }
+  public int relativeCCW(Any p) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int relativeCCW(double px, double py) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -116,11 +134,11 @@ class Line2D {
   @throwable("java.lang.UnsupportedOperationException")
   public static double ptSegDistSq(double x1, double y1, double x2, double y2, double px, double py) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public double ptSegDistSq(java.awt.geom.Point2D pt) { return 0.0; }
+  public double ptSegDistSq(Any pt) { return 0.0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.geom.Point2D getP1() { return null; }
+  public Any getP1() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.geom.Point2D getP2() { return null; }
+  public Any getP2() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean linesIntersect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -128,11 +146,11 @@ class Line2D {
   @throwable("java.lang.UnsupportedOperationException")
   public static double ptSegDist(double x1, double y1, double x2, double y2, double px, double py) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public double ptSegDist(java.awt.geom.Point2D pt) { return 0.0; }
+  public double ptSegDist(Any pt) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
   public double ptLineDistSq(double px, double py) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public double ptLineDistSq(java.awt.geom.Point2D pt) { return 0.0; }
+  public double ptLineDistSq(Any pt) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static double ptLineDistSq(double x1, double y1, double x2, double y2, double px, double py) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -140,6 +158,6 @@ class Line2D {
   @throwable("java.lang.UnsupportedOperationException")
   public double ptLineDist(double px, double py) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public double ptLineDist(java.awt.geom.Point2D pt) { return 0.0; }
+  public double ptLineDist(Any pt) { return 0.0; }
   < ---- END java signatures ---- >
 }

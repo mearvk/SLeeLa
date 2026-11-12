@@ -56,6 +56,24 @@ class PlainDocument {
   String javaKind = "class";
   String javaSuper = "javax.swing.text.AbstractDocument";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public PlainDocument bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String tabSizeAttribute = "tabSize";
@@ -66,7 +84,7 @@ class PlainDocument {
   @throwable("java.lang.UnsupportedOperationException")
   public PlainDocument() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public PlainDocument(javax.swing.text.AbstractDocument.Content c) { }
+  public PlainDocument(Any c) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -77,18 +95,18 @@ class PlainDocument {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.text.AbstractDocument.AbstractElement createDefaultRoot() { return null; }
+  Any createDefaultRoot() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.Element getDefaultRootElement() { return null; }
+  public Any getDefaultRootElement() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.Element getParagraphElement(int pos) { return null; }
+  public Any getParagraphElement(int pos) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void insertUpdate(javax.swing.text.AbstractDocument.DefaultDocumentEvent chng, javax.swing.text.AttributeSet attr) { }
+  void insertUpdate(Any chng, Any attr) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void removeUpdate(javax.swing.text.AbstractDocument.DefaultDocumentEvent chng) { }
+  void removeUpdate(Any chng) { }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public void insertString(int offs, java.lang.String str, javax.swing.text.AttributeSet a) { }
+  public void insertString(int offs, String str, Any a) { }
   < ---- END java signatures ---- >
 }

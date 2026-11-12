@@ -56,6 +56,24 @@ class FontMetrics {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public FontMetrics bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any font;
@@ -64,7 +82,7 @@ class FontMetrics {
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  FontMetrics(java.awt.Font font) { }
+  FontMetrics(Any font) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -74,17 +92,17 @@ class FontMetrics {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getHeight() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getStringBounds(java.text.CharacterIterator ci, int beginIndex, int limit, java.awt.Graphics context) { return null; }
+  public Any getStringBounds(Any ci, int beginIndex, int limit, Any context) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getStringBounds(java.lang.String str, int beginIndex, int limit, java.awt.Graphics context) { return null; }
+  public Any getStringBounds(String str, int beginIndex, int limit, Any context) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getStringBounds(java.lang.String str, java.awt.Graphics context) { return null; }
+  public Any getStringBounds(String str, Any context) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getStringBounds(char[] chars, int beginIndex, int limit, java.awt.Graphics context) { return null; }
+  public Any getStringBounds(char[] chars, int beginIndex, int limit, Any context) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getAscent() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -94,15 +112,15 @@ class FontMetrics {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasUniformLineMetrics() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.font.LineMetrics getLineMetrics(java.lang.String str, int beginIndex, int limit, java.awt.Graphics context) { return null; }
+  public Any getLineMetrics(String str, int beginIndex, int limit, Any context) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.font.LineMetrics getLineMetrics(char[] chars, int beginIndex, int limit, java.awt.Graphics context) { return null; }
+  public Any getLineMetrics(char[] chars, int beginIndex, int limit, Any context) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.font.LineMetrics getLineMetrics(java.text.CharacterIterator ci, int beginIndex, int limit, java.awt.Graphics context) { return null; }
+  public Any getLineMetrics(Any ci, int beginIndex, int limit, Any context) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.font.LineMetrics getLineMetrics(java.lang.String str, java.awt.Graphics context) { return null; }
+  public Any getLineMetrics(String str, Any context) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getMaxCharBounds(java.awt.Graphics context) { return null; }
+  public Any getMaxCharBounds(Any context) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMaxDescent() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -110,13 +128,13 @@ class FontMetrics {
   @throwable("java.lang.UnsupportedOperationException")
   public int charsWidth(char[] data, int off, int len) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int stringWidth(java.lang.String str) { return 0; }
+  public int stringWidth(String str) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int charWidth(char ch) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int charWidth(int codePoint) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.font.FontRenderContext getFontRenderContext() { return null; }
+  public Any getFontRenderContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMaxAscent() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -126,6 +144,6 @@ class FontMetrics {
   @throwable("java.lang.UnsupportedOperationException")
   public int bytesWidth(byte[] data, int off, int len) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Font getFont() { return null; }
+  public Any getFont() { return null; }
   < ---- END java signatures ---- >
 }

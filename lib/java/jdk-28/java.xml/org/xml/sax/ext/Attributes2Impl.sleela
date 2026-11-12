@@ -56,12 +56,30 @@ class Attributes2Impl {
   String javaKind = "class";
   String javaSuper = "org.xml.sax.helpers.AttributesImpl";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Attributes2Impl bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
   public Attributes2Impl() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Attributes2Impl(org.xml.sax.Attributes atts) { }
+  public Attributes2Impl(Any atts) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -71,15 +89,15 @@ class Attributes2Impl {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void addAttribute(java.lang.String uri, java.lang.String localName, java.lang.String qName, java.lang.String type, java.lang.String value) { }
+  public void addAttribute(String uri, String localName, String qName, String type, String value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setAttributes(org.xml.sax.Attributes atts) { }
+  public void setAttributes(Any atts) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeAttribute(int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isSpecified(java.lang.String uri, java.lang.String localName) { return false; }
+  public boolean isSpecified(String uri, String localName) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isSpecified(java.lang.String qName) { return false; }
+  public boolean isSpecified(String qName) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isSpecified(int index) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -87,9 +105,9 @@ class Attributes2Impl {
   @throwable("java.lang.UnsupportedOperationException")
   public void setSpecified(int index, boolean value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isDeclared(java.lang.String uri, java.lang.String localName) { return false; }
+  public boolean isDeclared(String uri, String localName) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isDeclared(java.lang.String qName) { return false; }
+  public boolean isDeclared(String qName) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isDeclared(int index) { return false; }
   < ---- END java signatures ---- >

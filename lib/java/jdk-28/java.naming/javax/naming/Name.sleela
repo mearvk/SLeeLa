@@ -56,6 +56,24 @@ class Name {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Name bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final long serialVersionUID = -3617482732056931635;
@@ -68,34 +86,34 @@ class Name {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError, javax.naming.InvalidNameException")
-  public java.lang.Object remove(int posn) { return null; }
+  public Any remove(int posn) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int size() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String get(int posn) { return null; }
+  public String get(int posn) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public int compareTo(java.lang.Object obj) { return 0; }
+  public int compareTo(Any obj) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean startsWith(javax.naming.Name n) { return false; }
+  public boolean startsWith(Any n) { return false; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.AbstractMethodError, javax.naming.InvalidNameException")
-  public javax.naming.Name add(java.lang.String comp) { return null; }
+  public Any add(String comp) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.InvalidNameException")
-  public javax.naming.Name add(int posn, java.lang.String comp) { return null; }
+  public Any add(int posn, String comp) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean endsWith(javax.naming.Name n) { return false; }
+  public boolean endsWith(Any n) { return false; }
   @throwable("java.lang.AbstractMethodError, javax.naming.InvalidNameException")
-  public javax.naming.Name addAll(javax.naming.Name suffix) { return null; }
+  public Any addAll(Any suffix) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.InvalidNameException")
-  public javax.naming.Name addAll(int posn, javax.naming.Name n) { return null; }
+  public Any addAll(int posn, Any n) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Enumeration<java.lang.String> getAll() { return null; }
+  public Any getAll() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.naming.Name getPrefix(int posn) { return null; }
+  public Any getPrefix(int posn) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.naming.Name getSuffix(int posn) { return null; }
+  public Any getSuffix(int posn) { return null; }
   < ---- END java signatures ---- >
 }

@@ -57,6 +57,24 @@ class Carrier {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Carrier bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -65,12 +83,15 @@ class Carrier {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void run(java.lang.Runnable op) { }
+  public void run(Any op) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> T get(java.lang.ScopedValue<T> key) { return null; }
+  public Any get(Any key) { return null; }
+  @generic("<R, X extends java.lang.Throwable>")
   @throwable("java.lang.UnsupportedOperationException, X")
-  public <R, X extends java.lang.Throwable> R call(java.lang.ScopedValue.CallableOp<? extends R, X> op) { return null; }
+  public Any call(Any op) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T> java.lang.ScopedValue.Carrier where(java.lang.ScopedValue<T> key, T value) { return null; }
+  public Any where(Any key, Any value) { return null; }
   < ---- END java signatures ---- >
 }

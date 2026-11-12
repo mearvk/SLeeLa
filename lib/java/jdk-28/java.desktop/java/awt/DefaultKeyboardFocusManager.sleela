@@ -56,6 +56,24 @@ class DefaultKeyboardFocusManager {
   String javaKind = "class";
   String javaSuper = "java.awt.KeyboardFocusManager";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DefaultKeyboardFocusManager bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,29 +87,29 @@ class DefaultKeyboardFocusManager {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean postProcessKeyEvent(java.awt.event.KeyEvent e) { return false; }
+  public boolean postProcessKeyEvent(Any e) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void processKeyEvent(java.awt.Component focusedComponent, java.awt.event.KeyEvent e) { }
+  public void processKeyEvent(Any focusedComponent, Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  synchronized void discardKeyEvents(java.awt.Component comp) { }
+  synchronized void discardKeyEvents(Any comp) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean dispatchKeyEvent(java.awt.event.KeyEvent e) { return false; }
+  public boolean dispatchKeyEvent(Any e) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void focusNextComponent(java.awt.Component aComponent) { }
+  public void focusNextComponent(Any aComponent) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void focusPreviousComponent(java.awt.Component aComponent) { }
+  public void focusPreviousComponent(Any aComponent) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void upFocusCycle(java.awt.Component aComponent) { }
+  public void upFocusCycle(Any aComponent) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void downFocusCycle(java.awt.Container aContainer) { }
+  public void downFocusCycle(Any aContainer) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean dispatchEvent(java.awt.AWTEvent e) { return false; }
+  public boolean dispatchEvent(Any e) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  synchronized void enqueueKeyEvents(long after, java.awt.Component untilFocused) { }
+  synchronized void enqueueKeyEvents(long after, Any untilFocused) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  synchronized void dequeueKeyEvents(long after, java.awt.Component untilFocused) { }
+  synchronized void dequeueKeyEvents(long after, Any untilFocused) { }
   < ---- END java signatures ---- >
 }

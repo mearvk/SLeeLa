@@ -56,6 +56,24 @@ class RectangularShape {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public RectangularShape bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,17 +88,17 @@ class RectangularShape {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean contains(java.awt.geom.Rectangle2D r) { return false; }
+  public boolean contains(Any r) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getBounds() { return null; }
+  public Any getBounds() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getFrame() { return null; }
+  public Any getFrame() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean intersects(java.awt.geom.Rectangle2D r) { return false; }
+  public boolean intersects(Any r) { return false; }
   @throwable("java.lang.AbstractMethodError")
   public double getX() { return 0.0; }
   @throwable("java.lang.AbstractMethodError")
@@ -98,15 +116,15 @@ class RectangularShape {
   @throwable("java.lang.AbstractMethodError")
   public void setFrame(double x, double y, double w, double h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFrame(java.awt.geom.Point2D loc, java.awt.geom.Dimension2D size) { }
+  public void setFrame(Any loc, Any size) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFrame(java.awt.geom.Rectangle2D r) { }
+  public void setFrame(Any r) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setFrameFromDiagonal(double x1, double y1, double x2, double y2) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFrameFromDiagonal(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2) { }
+  public void setFrameFromDiagonal(Any p1, Any p2) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFrameFromCenter(java.awt.geom.Point2D center, java.awt.geom.Point2D corner) { }
+  public void setFrameFromCenter(Any center, Any corner) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setFrameFromCenter(double centerX, double centerY, double cornerX, double cornerY) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -114,7 +132,7 @@ class RectangularShape {
   @throwable("java.lang.UnsupportedOperationException")
   public double getCenterY() { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { return null; }
+  public Any getPathIterator(Any at, double flatness) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public double getWidth() { return 0.0; }
   < ---- END java signatures ---- >

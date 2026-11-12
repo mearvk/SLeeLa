@@ -56,6 +56,24 @@ class MethodHandleDesc {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MethodHandleDesc bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,20 +82,20 @@ class MethodHandleDesc {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public boolean equals(java.lang.Object o) { return false; }
+  public boolean equals(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.constant.DirectMethodHandleDesc of(java.lang.constant.DirectMethodHandleDesc.Kind kind, java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.String lookupDescriptor) { return null; }
+  public static Any of(Any kind, Any owner, String name, String lookupDescriptor) { return null; }
   @throwable("java.lang.AbstractMethodError, java.lang.ReflectiveOperationException")
-  public java.lang.invoke.MethodHandle resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup lookup) { return null; }
+  public Any resolveConstantDesc(Any lookup) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.constant.MethodHandleDesc asType(java.lang.constant.MethodTypeDesc type) { return null; }
+  public default Any asType(Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.constant.DirectMethodHandleDesc ofField(java.lang.constant.DirectMethodHandleDesc.Kind kind, java.lang.constant.ClassDesc owner, java.lang.String fieldName, java.lang.constant.ClassDesc fieldType) { return null; }
+  public static Any ofField(Any kind, Any owner, String fieldName, Any fieldType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.constant.DirectMethodHandleDesc ofMethod(java.lang.constant.DirectMethodHandleDesc.Kind kind, java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.constant.MethodTypeDesc lookupMethodType) { return null; }
+  public static Any ofMethod(Any kind, Any owner, String name, Any lookupMethodType) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.constant.MethodTypeDesc invocationType() { return null; }
+  public Any invocationType() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.constant.DirectMethodHandleDesc ofConstructor(java.lang.constant.ClassDesc owner, java.lang.constant.ClassDesc... paramTypes) { return null; }
+  public static Any ofConstructor(Any owner, Any... paramTypes) { return null; }
   < ---- END java signatures ---- >
 }

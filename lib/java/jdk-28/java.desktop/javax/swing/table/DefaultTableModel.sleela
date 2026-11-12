@@ -56,6 +56,24 @@ class DefaultTableModel {
   String javaKind = "class";
   String javaSuper = "javax.swing.table.AbstractTableModel";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DefaultTableModel bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any dataVector;
@@ -64,13 +82,13 @@ class DefaultTableModel {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public DefaultTableModel(java.util.Vector<?> columnNames, int rowCount) { }
+  public DefaultTableModel(Any columnNames, int rowCount) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public DefaultTableModel(java.lang.Object[] columnNames, int rowCount) { }
+  public DefaultTableModel(Any[] columnNames, int rowCount) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public DefaultTableModel(java.util.Vector<? extends java.util.Vector> data, java.util.Vector<?> columnNames) { }
+  public DefaultTableModel(Any data, Any columnNames) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public DefaultTableModel(java.lang.Object[][] data, java.lang.Object[] columnNames) { }
+  public DefaultTableModel(Any[][] data, Any[] columnNames) { }
   @throwable("java.lang.UnsupportedOperationException")
   public DefaultTableModel(int rowCount, int columnCount) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -84,35 +102,35 @@ class DefaultTableModel {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDataVector(java.lang.Object[][] dataVector, java.lang.Object[] columnIdentifiers) { }
+  public void setDataVector(Any[][] dataVector, Any[] columnIdentifiers) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDataVector(java.util.Vector<? extends java.util.Vector> dataVector, java.util.Vector<?> columnIdentifiers) { }
+  public void setDataVector(Any dataVector, Any columnIdentifiers) { }
   @throwable("java.lang.UnsupportedOperationException")
-  protected static java.util.Vector<java.util.Vector<java.lang.Object>> convertToVector(java.lang.Object[][] anArray) { return null; }
+  protected static Any convertToVector(Any[][] anArray) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  protected static java.util.Vector<java.lang.Object> convertToVector(java.lang.Object[] anArray) { return null; }
+  protected static Any convertToVector(Any[] anArray) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setNumRows(int rowCount) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void insertRow(int row, java.lang.Object[] rowData) { }
+  public void insertRow(int row, Any[] rowData) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void insertRow(int row, java.util.Vector<?> rowData) { }
+  public void insertRow(int row, Any rowData) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addRow(java.util.Vector<?> rowData) { }
+  public void addRow(Any rowData) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addRow(java.lang.Object[] rowData) { }
+  public void addRow(Any[] rowData) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setColumnIdentifiers(java.util.Vector<?> columnIdentifiers) { }
+  public void setColumnIdentifiers(Any columnIdentifiers) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setColumnIdentifiers(java.lang.Object[] newIdentifiers) { }
+  public void setColumnIdentifiers(Any[] newIdentifiers) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Vector<java.util.Vector> getDataVector() { return null; }
+  public Any getDataVector() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void newDataAvailable(javax.swing.event.TableModelEvent event) { }
+  public void newDataAvailable(Any event) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void newRowsAdded(javax.swing.event.TableModelEvent e) { }
+  public void newRowsAdded(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void rowsRemoved(javax.swing.event.TableModelEvent event) { }
+  public void rowsRemoved(Any event) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setRowCount(int rowCount) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -124,17 +142,17 @@ class DefaultTableModel {
   @throwable("java.lang.UnsupportedOperationException")
   public int getColumnCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addColumn(java.lang.Object columnName, java.lang.Object[] columnData) { }
+  public void addColumn(Any columnName, Any[] columnData) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addColumn(java.lang.Object columnName, java.util.Vector<?> columnData) { }
+  public void addColumn(Any columnName, Any columnData) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addColumn(java.lang.Object columnName) { }
+  public void addColumn(Any columnName) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getColumnName(int column) { return null; }
+  public String getColumnName(int column) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getValueAt(int row, int column) { return null; }
+  public Any getValueAt(int row, int column) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setValueAt(java.lang.Object aValue, int row, int column) { }
+  public void setValueAt(Any aValue, int row, int column) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getRowCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")

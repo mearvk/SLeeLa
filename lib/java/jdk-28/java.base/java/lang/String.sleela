@@ -56,6 +56,24 @@ class String {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Any bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any CASE_INSENSITIVE_ORDER = null;
@@ -68,21 +86,21 @@ class String {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object anObject) { return false; }
+  public boolean equals(Any anObject) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int length() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(java.lang.String anotherString) { return 0; }
+  public int compareTo(String anotherString) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int indexOf(java.lang.String str, int fromIndex) { return 0; }
+  public int indexOf(String str, int fromIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int indexOf(java.lang.String str, int beginIndex, int endIndex) { return 0; }
+  public int indexOf(String str, int beginIndex, int endIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int indexOf(int ch) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -90,25 +108,25 @@ class String {
   @throwable("java.lang.UnsupportedOperationException")
   public int indexOf(int ch, int beginIndex, int endIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int indexOf(java.lang.String str) { return 0; }
+  public int indexOf(String str) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String valueOf(java.lang.Object obj) { return null; }
+  public static String valueOf(Any obj) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String valueOf(long l) { return null; }
+  public static String valueOf(long l) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String valueOf(int i) { return null; }
+  public static String valueOf(int i) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String valueOf(char c) { return null; }
+  public static String valueOf(char c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String valueOf(char[] data, int offset, int count) { return null; }
+  public static String valueOf(char[] data, int offset, int count) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String valueOf(boolean b) { return null; }
+  public static String valueOf(boolean b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String valueOf(double d) { return null; }
+  public static String valueOf(double d) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String valueOf(char[] data) { return null; }
+  public static String valueOf(char[] data) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String valueOf(float f) { return null; }
+  public static String valueOf(float f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public char charAt(int index) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -120,120 +138,121 @@ class String {
   @throwable("java.lang.UnsupportedOperationException")
   public int offsetByCodePoints(int index, int codePointOffset) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.io.UnsupportedEncodingException")
-  public byte[] getBytes(java.lang.String charsetName) { return null; }
+  public byte[] getBytes(String charsetName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void getBytes(int srcBegin, int srcEnd, byte[] dst, int dstBegin) { }
   @throwable("java.lang.UnsupportedOperationException")
   public byte[] getBytes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public byte[] getBytes(java.nio.charset.Charset charset) { return null; }
+  public byte[] getBytes(Any charset) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean contentEquals(java.lang.StringBuffer sb) { return false; }
+  public boolean contentEquals(Any sb) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean regionMatches(int toffset, java.lang.String other, int ooffset, int len) { return false; }
+  public boolean regionMatches(int toffset, String other, int ooffset, int len) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean regionMatches(boolean ignoreCase, int toffset, java.lang.String other, int ooffset, int len) { return false; }
+  public boolean regionMatches(boolean ignoreCase, int toffset, String other, int ooffset, int len) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean startsWith(java.lang.String prefix) { return false; }
+  public boolean startsWith(String prefix) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean startsWith(java.lang.String prefix, int toffset) { return false; }
+  public boolean startsWith(String prefix, int toffset) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int lastIndexOf(int ch) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int lastIndexOf(java.lang.String str) { return 0; }
+  public int lastIndexOf(String str) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int lastIndexOf(java.lang.String str, int fromIndex) { return 0; }
+  public int lastIndexOf(String str, int fromIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int lastIndexOf(int ch, int fromIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String substring(int beginIndex, int endIndex) { return null; }
+  public String substring(int beginIndex, int endIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String substring(int beginIndex) { return null; }
+  public String substring(int beginIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String replace(java.lang.CharSequence target, java.lang.CharSequence replacement) { return null; }
+  public String replace(Any target, Any replacement) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String replace(char oldChar, char newChar) { return null; }
+  public String replace(char oldChar, char newChar) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean matches(java.lang.String regex) { return false; }
+  public boolean matches(String regex) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String replaceFirst(java.lang.String regex, java.lang.String replacement) { return null; }
+  public String replaceFirst(String regex, String replacement) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String replaceAll(java.lang.String regex, java.lang.String replacement) { return null; }
+  public String replaceAll(String regex, String replacement) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String[] split(java.lang.String regex) { return null; }
+  public String[] split(String regex) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String[] split(java.lang.String regex, int limit) { return null; }
+  public String[] split(String regex, int limit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String[] splitWithDelimiters(java.lang.String regex, int limit) { return null; }
+  public String[] splitWithDelimiters(String regex, int limit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String join(java.lang.CharSequence delimiter, java.lang.CharSequence... elements) { return null; }
+  public static String join(Any delimiter, Any... elements) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String join(java.lang.CharSequence delimiter, java.lang.Iterable<? extends java.lang.CharSequence> elements) { return null; }
+  public static String join(Any delimiter, Any elements) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toLowerCase() { return null; }
+  public String toLowerCase() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toLowerCase(java.util.Locale locale) { return null; }
+  public String toLowerCase(Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toUpperCase(java.util.Locale locale) { return null; }
+  public String toUpperCase(Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toUpperCase() { return null; }
+  public String toUpperCase() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String trim() { return null; }
+  public String trim() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String strip() { return null; }
+  public String strip() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String stripLeading() { return null; }
+  public String stripLeading() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String stripTrailing() { return null; }
+  public String stripTrailing() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.stream.Stream<java.lang.String> lines() { return null; }
+  public Any lines() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String repeat(int count) { return null; }
+  public String repeat(int count) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isBlank() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public char[] toCharArray() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String format(java.util.Locale l, java.lang.String format, java.lang.Object... args) { return null; }
+  public static String format(Any l, String format, Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String format(java.lang.String format, java.lang.Object... args) { return null; }
+  public static String format(String format, Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup lookup) { return null; }
+  public String resolveConstantDesc(Any lookup) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.stream.IntStream codePoints() { return null; }
+  public Any codePoints() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equalsIgnoreCase(java.lang.String anotherString) { return false; }
+  public boolean equalsIgnoreCase(String anotherString) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int compareToIgnoreCase(java.lang.String str) { return 0; }
+  public int compareToIgnoreCase(String str) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean endsWith(java.lang.String suffix) { return false; }
+  public boolean endsWith(String suffix) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.CharSequence subSequence(int beginIndex, int endIndex) { return null; }
+  public Any subSequence(int beginIndex, int endIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String concat(java.lang.String str) { return null; }
+  public String concat(String str) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean contains(java.lang.CharSequence s) { return false; }
+  public boolean contains(Any s) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String indent(int n) { return null; }
+  public String indent(int n) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String stripIndent() { return null; }
+  public String stripIndent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String translateEscapes() { return null; }
+  public String translateEscapes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.stream.IntStream chars() { return null; }
+  public Any chars() { return null; }
+  @generic("<R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <R> R transform(java.util.function.Function<? super java.lang.String, ? extends R> f) { return null; }
+  public Any transform(Any f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String formatted(java.lang.Object... args) { return null; }
+  public String formatted(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String copyValueOf(char[] data, int offset, int count) { return null; }
+  public static String copyValueOf(char[] data, int offset, int count) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String copyValueOf(char[] data) { return null; }
+  public static String copyValueOf(char[] data) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public native java.lang.String intern() { return null; }
+  public native String intern() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Optional<java.lang.String> describeConstable() { return null; }
+  public Any describeConstable() { return null; }
   < ---- END java signatures ---- >
 }

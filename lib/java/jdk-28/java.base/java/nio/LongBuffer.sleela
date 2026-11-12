@@ -56,6 +56,24 @@ class LongBuffer {
   String javaKind = "class";
   String javaSuper = "java.nio.Buffer";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public LongBuffer bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,55 +82,55 @@ class LongBuffer {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.LongBuffer reset() { return null; }
+  public final Any reset() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public long get() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.LongBuffer get(int index, long[] dst) { return null; }
+  public Any get(int index, long[] dst) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public long get(int index) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.LongBuffer get(long[] dst, int offset, int length) { return null; }
+  public Any get(long[] dst, int offset, int length) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.LongBuffer get(long[] dst) { return null; }
+  public Any get(long[] dst) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.LongBuffer get(int index, long[] dst, int offset, int length) { return null; }
+  public Any get(int index, long[] dst, int offset, int length) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.LongBuffer put(java.nio.LongBuffer src) { return null; }
+  public Any put(Any src) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.LongBuffer put(long[] src, int offset, int length) { return null; }
+  public Any put(long[] src, int offset, int length) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.LongBuffer put(long[] src) { return null; }
+  public final Any put(long[] src) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.LongBuffer put(int index, java.nio.LongBuffer src, int offset, int length) { return null; }
+  public Any put(int index, Any src, int offset, int length) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.LongBuffer put(int index, long[] src) { return null; }
+  public Any put(int index, long[] src) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.LongBuffer put(int index, long[] src, int offset, int length) { return null; }
+  public Any put(int index, long[] src, int offset, int length) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.LongBuffer put(int index, long l) { return null; }
+  public Any put(int index, long l) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.LongBuffer put(long l) { return null; }
+  public Any put(long l) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object ob) { return false; }
+  public boolean equals(Any ob) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(java.nio.LongBuffer that) { return 0; }
+  public int compareTo(Any that) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.LongBuffer clear() { return null; }
+  public final Any clear() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.nio.LongBuffer wrap(long[] array) { return null; }
+  public static Any wrap(long[] array) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.nio.LongBuffer wrap(long[] array, int offset, int length) { return null; }
+  public static Any wrap(long[] array, int offset, int length) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.LongBuffer position(int newPosition) { return null; }
+  public final Any position(int newPosition) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int mismatch(java.nio.LongBuffer that) { return 0; }
+  public int mismatch(Any that) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.LongBuffer limit(int newLimit) { return null; }
+  public final Any limit(int newLimit) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isDirect() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -122,24 +140,24 @@ class LongBuffer {
   @throwable("java.lang.UnsupportedOperationException")
   public final int arrayOffset() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.LongBuffer mark() { return null; }
+  public final Any mark() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.LongBuffer flip() { return null; }
+  public final Any flip() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.LongBuffer rewind() { return null; }
+  public final Any rewind() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.LongBuffer slice() { return null; }
+  public Any slice() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.LongBuffer slice(int index, int length) { return null; }
+  public Any slice(int index, int length) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.LongBuffer duplicate() { return null; }
+  public Any duplicate() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.nio.LongBuffer allocate(int capacity) { return null; }
+  public static Any allocate(int capacity) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.LongBuffer asReadOnlyBuffer() { return null; }
+  public Any asReadOnlyBuffer() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.LongBuffer compact() { return null; }
+  public Any compact() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.ByteOrder order() { return null; }
+  public Any order() { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class Rectangle2D {
   String javaKind = "class";
   String javaSuper = "java.awt.geom.RectangularShape";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Rectangle2D bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int OUT_LEFT = 1;
@@ -77,13 +95,13 @@ class Rectangle2D {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void add(double newx, double newy) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void add(java.awt.geom.Rectangle2D r) { }
+  public void add(Any r) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean contains(double x, double y) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -91,32 +109,32 @@ class Rectangle2D {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean intersects(double x, double y, double w, double h) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void union(java.awt.geom.Rectangle2D src1, java.awt.geom.Rectangle2D src2, java.awt.geom.Rectangle2D dest) { }
+  public static void union(Any src1, Any src2, Any dest) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void intersect(java.awt.geom.Rectangle2D src1, java.awt.geom.Rectangle2D src2, java.awt.geom.Rectangle2D dest) { }
+  public static void intersect(Any src1, Any src2, Any dest) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setRect(java.awt.geom.Rectangle2D r) { }
+  public void setRect(Any r) { }
   @throwable("java.lang.AbstractMethodError")
   public void setRect(double x, double y, double w, double h) { }
   @throwable("java.lang.AbstractMethodError")
   public int outcode(double x, double y) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int outcode(java.awt.geom.Point2D p) { return 0; }
+  public int outcode(Any p) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.geom.Rectangle2D createIntersection(java.awt.geom.Rectangle2D r) { return null; }
+  public Any createIntersection(Any r) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.geom.Rectangle2D createUnion(java.awt.geom.Rectangle2D r) { return null; }
+  public Any createUnion(Any r) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean intersectsLine(java.awt.geom.Line2D l) { return false; }
+  public boolean intersectsLine(Any l) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean intersectsLine(double x1, double y1, double x2, double y2) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setFrame(double x, double y, double w, double h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getBounds2D() { return null; }
+  public Any getBounds2D() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { return null; }
+  public Any getPathIterator(Any at, double flatness) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { return null; }
+  public Any getPathIterator(Any at) { return null; }
   < ---- END java signatures ---- >
 }

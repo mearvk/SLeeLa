@@ -56,6 +56,24 @@ class Arc2D {
   String javaKind = "class";
   String javaSuper = "java.awt.geom.RectangularShape";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Arc2D bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int OPEN = 0;
@@ -79,11 +97,11 @@ class Arc2D {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean contains(java.awt.geom.Rectangle2D r) { return false; }
+  public boolean contains(Any r) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean contains(double x, double y, double w, double h) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -91,15 +109,15 @@ class Arc2D {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean intersects(double x, double y, double w, double h) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Point2D getStartPoint() { return null; }
+  public Any getStartPoint() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Point2D getEndPoint() { return null; }
+  public Any getEndPoint() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setFrame(double x, double y, double w, double h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getBounds2D() { return null; }
+  public Any getBounds2D() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { return null; }
+  public Any getPathIterator(Any at) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setArcType(int type) { }
   @throwable("java.lang.AbstractMethodError")
@@ -107,17 +125,17 @@ class Arc2D {
   @throwable("java.lang.AbstractMethodError")
   public double getAngleExtent() { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setArc(java.awt.geom.Arc2D a) { }
+  public void setArc(Any a) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setArc(java.awt.geom.Point2D loc, java.awt.geom.Dimension2D size, double angSt, double angExt, int closure) { }
+  public void setArc(Any loc, Any size, double angSt, double angExt, int closure) { }
   @throwable("java.lang.AbstractMethodError")
   public void setArc(double x, double y, double w, double h, double angSt, double angExt, int closure) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setArc(java.awt.geom.Rectangle2D rect, double angSt, double angExt, int closure) { }
+  public void setArc(Any rect, double angSt, double angExt, int closure) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setArcByCenter(double x, double y, double radius, double angSt, double angExt, int closure) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setAngleStart(java.awt.geom.Point2D p) { }
+  public void setAngleStart(Any p) { }
   @throwable("java.lang.AbstractMethodError")
   public void setAngleStart(double angSt) { }
   @throwable("java.lang.AbstractMethodError")
@@ -125,15 +143,15 @@ class Arc2D {
   @throwable("java.lang.UnsupportedOperationException")
   public void setAngles(double x1, double y1, double x2, double y2) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setAngles(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2) { }
+  public void setAngles(Any p1, Any p2) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  java.awt.geom.Rectangle2D makeBounds(double x, double y, double w, double h) { return null; }
+  Any makeBounds(double x, double y, double w, double h) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getArcType() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean containsAngle(double angle) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setArcByTangent(java.awt.geom.Point2D p1, java.awt.geom.Point2D p2, java.awt.geom.Point2D p3, double radius) { }
+  public void setArcByTangent(Any p1, Any p2, Any p3, double radius) { }
   < ---- END java signatures ---- >
 }

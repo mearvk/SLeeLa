@@ -56,12 +56,30 @@ class ScriptEngineManager {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ScriptEngineManager bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
   public ScriptEngineManager() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public ScriptEngineManager(java.lang.ClassLoader loader) { }
+  public ScriptEngineManager(Any loader) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -71,26 +89,26 @@ class ScriptEngineManager {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object get(java.lang.String key) { return null; }
+  public Any get(String key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void put(java.lang.String key, java.lang.Object value) { }
+  public void put(String key, Any value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBindings(javax.script.Bindings bindings) { }
+  public void setBindings(Any bindings) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.script.Bindings getBindings() { return null; }
+  public Any getBindings() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.script.ScriptEngine getEngineByName(java.lang.String shortName) { return null; }
+  public Any getEngineByName(String shortName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.script.ScriptEngine getEngineByExtension(java.lang.String extension) { return null; }
+  public Any getEngineByExtension(String extension) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.script.ScriptEngine getEngineByMimeType(java.lang.String mimeType) { return null; }
+  public Any getEngineByMimeType(String mimeType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<javax.script.ScriptEngineFactory> getEngineFactories() { return null; }
+  public Any getEngineFactories() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void registerEngineName(java.lang.String name, javax.script.ScriptEngineFactory factory) { }
+  public void registerEngineName(String name, Any factory) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void registerEngineMimeType(java.lang.String type, javax.script.ScriptEngineFactory factory) { }
+  public void registerEngineMimeType(String type, Any factory) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void registerEngineExtension(java.lang.String extension, javax.script.ScriptEngineFactory factory) { }
+  public void registerEngineExtension(String extension, Any factory) { }
   < ---- END java signatures ---- >
 }

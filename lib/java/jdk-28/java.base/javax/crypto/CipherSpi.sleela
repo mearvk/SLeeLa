@@ -56,6 +56,24 @@ class CipherSpi {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public CipherSpi bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -70,10 +88,10 @@ class CipherSpi {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  java.security.AlgorithmParameters engineGetParameters() { return null; }
+  Any engineGetParameters() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException")
-  int engineUpdate(java.nio.ByteBuffer input, java.nio.ByteBuffer output) { return 0; }
+  int engineUpdate(Any input, Any output) { return 0; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
   byte[] engineUpdate(byte[] input, int inputOffset, int inputLen) { return null; }
@@ -91,7 +109,7 @@ class CipherSpi {
   byte[] engineGetIV() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException")
-  int engineGetKeySize(java.security.Key key) { return 0; }
+  int engineGetKeySize(Any key) { return 0; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
   byte[] engineDoFinal(byte[] input, int inputOffset, int inputLen) { return null; }
@@ -100,30 +118,30 @@ class CipherSpi {
   int engineDoFinal(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
-  int engineDoFinal(java.nio.ByteBuffer input, java.nio.ByteBuffer output) { return 0; }
+  int engineDoFinal(Any input, Any output) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, javax.crypto.IllegalBlockSizeException, java.security.InvalidKeyException")
-  byte[] engineWrap(java.security.Key key) { return null; }
+  byte[] engineWrap(Any key) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException, java.security.NoSuchAlgorithmException")
-  java.security.Key engineUnwrap(byte[] wrappedKey, java.lang.String wrappedKeyAlgorithm, int wrappedKeyType) { return null; }
+  Any engineUnwrap(byte[] wrappedKey, String wrappedKeyAlgorithm, int wrappedKeyType) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void engineUpdateAAD(byte[] src, int offset, int len) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void engineUpdateAAD(java.nio.ByteBuffer src) { }
+  void engineUpdateAAD(Any src) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.security.NoSuchAlgorithmException")
-  void engineSetMode(java.lang.String mode) { }
+  void engineSetMode(String mode) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, javax.crypto.NoSuchPaddingException")
-  void engineSetPadding(java.lang.String padding) { }
+  void engineSetPadding(String padding) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.security.InvalidKeyException")
-  void engineInit(int opmode, java.security.Key key, java.security.SecureRandom random) { }
+  void engineInit(int opmode, Any key, Any random) { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError, java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException")
-  void engineInit(int opmode, java.security.Key key, java.security.AlgorithmParameters params, java.security.SecureRandom random) { }
+  void engineInit(int opmode, Any key, Any params, Any random) { }
   < ---- END java signatures ---- >
 }

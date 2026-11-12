@@ -56,6 +56,24 @@ class XMLGregorianCalendar {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public XMLGregorianCalendar bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -71,21 +89,21 @@ class XMLGregorianCalendar {
   @throwable("java.lang.AbstractMethodError")
   public void reset() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public int compare(javax.xml.datatype.XMLGregorianCalendar xmlGregorianCalendar) { return 0; }
+  public int compare(Any xmlGregorianCalendar) { return 0; }
   @throwable("java.lang.AbstractMethodError")
   public void clear() { }
   @throwable("java.lang.AbstractMethodError")
-  public void add(javax.xml.datatype.Duration duration) { }
+  public void add(Any duration) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.datatype.XMLGregorianCalendar normalize() { return null; }
+  public Any normalize() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isValid() { return false; }
   @throwable("java.lang.AbstractMethodError")
@@ -97,11 +115,11 @@ class XMLGregorianCalendar {
   @throwable("java.lang.AbstractMethodError")
   public int getSecond() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.TimeZone getTimeZone(int defaultZoneoffset) { return null; }
+  public Any getTimeZone(int defaultZoneoffset) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setTime(int hour, int minute, int second) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTime(int hour, int minute, int second, java.math.BigDecimal fractional) { }
+  public void setTime(int hour, int minute, int second, Any fractional) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setTime(int hour, int minute, int second, int millisecond) { }
   @throwable("java.lang.AbstractMethodError")
@@ -109,13 +127,13 @@ class XMLGregorianCalendar {
   @throwable("java.lang.AbstractMethodError")
   public void setMonth(int month) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setYear(java.math.BigInteger year) { }
+  public void setYear(Any year) { }
   @throwable("java.lang.AbstractMethodError")
   public void setYear(int year) { }
   @throwable("java.lang.AbstractMethodError")
   public int getDay() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.namespace.QName getXMLSchemaType() { return null; }
+  public Any getXMLSchemaType() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void setHour(int hour) { }
   @throwable("java.lang.AbstractMethodError")
@@ -123,28 +141,28 @@ class XMLGregorianCalendar {
   @throwable("java.lang.AbstractMethodError")
   public void setSecond(int second) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setFractionalSecond(java.math.BigDecimal fractional) { }
+  public void setFractionalSecond(Any fractional) { }
   @throwable("java.lang.AbstractMethodError")
   public void setMillisecond(int millisecond) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.math.BigDecimal getFractionalSecond() { return null; }
+  public Any getFractionalSecond() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getTimezone() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMillisecond() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String toXMLFormat() { return null; }
+  public String toXMLFormat() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void setDay(int day) { }
   @throwable("java.lang.AbstractMethodError")
   public void setTimezone(int offset) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.math.BigInteger getEon() { return null; }
+  public Any getEon() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.math.BigInteger getEonAndYear() { return null; }
+  public Any getEonAndYear() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.GregorianCalendar toGregorianCalendar() { return null; }
+  public Any toGregorianCalendar() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.GregorianCalendar toGregorianCalendar(java.util.TimeZone timezone, java.util.Locale aLocale, javax.xml.datatype.XMLGregorianCalendar defaults) { return null; }
+  public Any toGregorianCalendar(Any timezone, Any aLocale, Any defaults) { return null; }
   < ---- END java signatures ---- >
 }

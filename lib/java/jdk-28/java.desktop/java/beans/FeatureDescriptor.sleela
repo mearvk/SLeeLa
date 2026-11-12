@@ -56,6 +56,24 @@ class FeatureDescriptor {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public FeatureDescriptor bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,23 +87,23 @@ class FeatureDescriptor {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isHidden() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getValue(java.lang.String attributeName) { return null; }
+  public Any getValue(String attributeName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setName(java.lang.String name) { }
+  public void setName(String name) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setValue(java.lang.String attributeName, java.lang.Object value) { }
+  public void setValue(String attributeName, Any value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getDisplayName() { return null; }
+  public String getDisplayName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setHidden(boolean hidden) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDisplayName(java.lang.String displayName) { }
+  public void setDisplayName(String displayName) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isExpert() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -93,12 +111,12 @@ class FeatureDescriptor {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isPreferred() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getShortDescription() { return null; }
+  public String getShortDescription() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Enumeration<java.lang.String> attributeNames() { return null; }
+  public Any attributeNames() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setPreferred(boolean preferred) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setShortDescription(java.lang.String text) { }
+  public void setShortDescription(String text) { }
   < ---- END java signatures ---- >
 }

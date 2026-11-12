@@ -56,10 +56,28 @@ class HttpCookie {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public HttpCookie bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public HttpCookie(java.lang.String name, java.lang.String value) { }
+  public HttpCookie(String name, String value) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -69,29 +87,29 @@ class HttpCookie {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getValue() { return null; }
+  public String getValue() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setValue(java.lang.String newValue) { }
+  public void setValue(String newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.List<java.net.HttpCookie> parse(java.lang.String header) { return null; }
+  public static Any parse(String header) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getPath() { return null; }
+  public String getPath() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setVersion(int v) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setComment(java.lang.String purpose) { }
+  public void setComment(String purpose) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getComment() { return null; }
+  public String getComment() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getVersion() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -99,21 +117,21 @@ class HttpCookie {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isHttpOnly() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getPortlist() { return null; }
+  public String getPortlist() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPath(java.lang.String uri) { }
+  public void setPath(String uri) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getDomain() { return null; }
+  public String getDomain() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDomain(java.lang.String pattern) { }
+  public void setDomain(String pattern) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPortlist(java.lang.String ports) { }
+  public void setPortlist(String ports) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasExpired() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setCommentURL(java.lang.String purpose) { }
+  public void setCommentURL(String purpose) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getCommentURL() { return null; }
+  public String getCommentURL() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setDiscard(boolean discard) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -127,6 +145,6 @@ class HttpCookie {
   @throwable("java.lang.UnsupportedOperationException")
   public void setHttpOnly(boolean httpOnly) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean domainMatches(java.lang.String domain, java.lang.String host) { return false; }
+  public static boolean domainMatches(String domain, String host) { return false; }
   < ---- END java signatures ---- >
 }

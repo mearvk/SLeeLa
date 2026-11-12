@@ -56,6 +56,24 @@ class Color {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Color bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any white = null;
@@ -98,7 +116,7 @@ class Color {
   @throwable("java.lang.UnsupportedOperationException")
   public Color(int r, int g, int b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Color(java.awt.color.ColorSpace cspace, float[] components, float alpha) { }
+  public Color(Any cspace, float[] components, float alpha) { }
   @throwable("java.lang.UnsupportedOperationException")
   public Color(int rgba, boolean hasalpha) { }
   < ---- END java constructors ---- >
@@ -110,27 +128,27 @@ class Color {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static java.awt.Color decode(java.lang.String nm) { return null; }
+  public static Any decode(String nm) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public float[] getComponents(java.awt.color.ColorSpace cspace, float[] compArray) { return null; }
+  public float[] getComponents(Any cspace, float[] compArray) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public float[] getComponents(float[] compArray) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Color getColor(java.lang.String nm, int v) { return null; }
+  public static Any getColor(String nm, int v) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Color getColor(java.lang.String nm, java.awt.Color v) { return null; }
+  public static Any getColor(String nm, Any v) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Color getColor(java.lang.String nm) { return null; }
+  public static Any getColor(String nm) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color brighter() { return null; }
+  public Any brighter() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color darker() { return null; }
+  public Any darker() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int HSBtoRGB(float hue, float saturation, float brightness) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -140,13 +158,13 @@ class Color {
   @throwable("java.lang.UnsupportedOperationException")
   public static float[] RGBtoHSB(int r, int g, int b, float[] hsbvals) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.Color getHSBColor(float h, float s, float b) { return null; }
+  public static Any getHSBColor(float h, float s, float b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public float[] getColorComponents(java.awt.color.ColorSpace cspace, float[] compArray) { return null; }
+  public float[] getColorComponents(Any cspace, float[] compArray) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public float[] getColorComponents(float[] compArray) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.PaintContext createContext(java.awt.image.ColorModel cm, java.awt.Rectangle r, java.awt.geom.Rectangle2D r2d, java.awt.geom.AffineTransform xform, java.awt.RenderingHints hints) { return null; }
+  public Any createContext(Any cm, Any r, Any r2d, Any xform, Any hints) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getAlpha() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -160,6 +178,6 @@ class Color {
   @throwable("java.lang.UnsupportedOperationException")
   public int getRGB() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.color.ColorSpace getColorSpace() { return null; }
+  public Any getColorSpace() { return null; }
   < ---- END java signatures ---- >
 }

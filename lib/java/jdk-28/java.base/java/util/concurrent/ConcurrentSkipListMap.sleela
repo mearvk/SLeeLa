@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class ConcurrentSkipListMap<K, V> {
+class ConcurrentSkipListMap {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,10 +56,28 @@ class ConcurrentSkipListMap<K, V> {
   String javaKind = "class";
   String javaSuper = "java.util.AbstractMap";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<K, V>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 2; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "K"; } if (index == 1) { return "V"; } return null; }
+  public ConcurrentSkipListMap bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public ConcurrentSkipListMap(java.util.Map<? extends K, ? extends V> m) { }
+  public ConcurrentSkipListMap(Any m) { }
   @throwable("java.lang.UnsupportedOperationException")
   public ConcurrentSkipListMap() { }
   < ---- END java constructors ---- >
@@ -71,104 +89,104 @@ class ConcurrentSkipListMap<K, V> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean remove(java.lang.Object key, java.lang.Object value) { return false; }
+  public boolean remove(Any key, Any value) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public V remove(java.lang.Object key) { return null; }
+  public Any remove(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int size() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public V get(java.lang.Object key) { return null; }
+  public Any get(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public V put(K key, V value) { return null; }
+  public Any put(Any key, Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object o) { return false; }
+  public boolean equals(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Collection<V> values() { return null; }
+  public Any values() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.ConcurrentSkipListMap<K, V> clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void clear() { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean replace(K key, V oldValue, V newValue) { return false; }
+  public boolean replace(Any key, Any oldValue, Any newValue) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public V replace(K key, V value) { return null; }
+  public Any replace(Any key, Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void replaceAll(java.util.function.BiFunction<? super K, ? super V, ? extends V> function) { }
+  public void replaceAll(Any function) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public V merge(K key, V value, java.util.function.BiFunction<? super V, ? super V, ? extends V> remappingFunction) { return null; }
+  public Any merge(Any key, Any value, Any remappingFunction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.util.Map.Entry<K, V>> entrySet() { return null; }
+  public Any entrySet() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public V putIfAbsent(K key, V value) { return null; }
+  public Any putIfAbsent(Any key, Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public V compute(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { return null; }
+  public Any compute(Any key, Any remappingFunction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public V computeIfAbsent(K key, java.util.function.Function<? super K, ? extends V> mappingFunction) { return null; }
+  public Any computeIfAbsent(Any key, Any mappingFunction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void forEach(java.util.function.BiConsumer<? super K, ? super V> action) { }
+  public void forEach(Any action) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.NavigableSet<K> keySet() { return null; }
+  public Any keySet() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsValue(java.lang.Object value) { return false; }
+  public boolean containsValue(Any value) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsKey(java.lang.Object key) { return false; }
+  public boolean containsKey(Any key) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public V getOrDefault(java.lang.Object key, V defaultValue) { return null; }
+  public Any getOrDefault(Any key, Any defaultValue) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public V computeIfPresent(K key, java.util.function.BiFunction<? super K, ? super V, ? extends V> remappingFunction) { return null; }
+  public Any computeIfPresent(Any key, Any remappingFunction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Comparator<? super K> comparator() { return null; }
+  public Any comparator() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public K firstKey() { return null; }
+  public Any firstKey() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public V putFirst(K k, V v) { return null; }
+  public Any putFirst(Any k, Any v) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public V putLast(K k, V v) { return null; }
+  public Any putLast(Any k, Any v) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Map.Entry<K, V> firstEntry() { return null; }
+  public Any firstEntry() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Map.Entry<K, V> lastEntry() { return null; }
+  public Any lastEntry() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Map.Entry<K, V> pollFirstEntry() { return null; }
+  public Any pollFirstEntry() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Map.Entry<K, V> pollLastEntry() { return null; }
+  public Any pollLastEntry() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.ConcurrentNavigableMap<K, V> descendingMap() { return null; }
+  public Any descendingMap() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Map.Entry<K, V> lowerEntry(K key) { return null; }
+  public Any lowerEntry(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public K lowerKey(K key) { return null; }
+  public Any lowerKey(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Map.Entry<K, V> floorEntry(K key) { return null; }
+  public Any floorEntry(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public K floorKey(K key) { return null; }
+  public Any floorKey(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Map.Entry<K, V> ceilingEntry(K key) { return null; }
+  public Any ceilingEntry(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public K ceilingKey(K key) { return null; }
+  public Any ceilingKey(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Map.Entry<K, V> higherEntry(K key) { return null; }
+  public Any higherEntry(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public K higherKey(K key) { return null; }
+  public Any higherKey(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.NavigableSet<K> navigableKeySet() { return null; }
+  public Any navigableKeySet() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.NavigableSet<K> descendingKeySet() { return null; }
+  public Any descendingKeySet() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.ConcurrentNavigableMap<K, V> subMap(K fromKey, boolean fromInclusive, K toKey, boolean toInclusive) { return null; }
+  public Any subMap(Any fromKey, boolean fromInclusive, Any toKey, boolean toInclusive) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.ConcurrentNavigableMap<K, V> subMap(K fromKey, K toKey) { return null; }
+  public Any subMap(Any fromKey, Any toKey) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.ConcurrentNavigableMap<K, V> headMap(K toKey, boolean inclusive) { return null; }
+  public Any headMap(Any toKey, boolean inclusive) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.ConcurrentNavigableMap<K, V> headMap(K toKey) { return null; }
+  public Any headMap(Any toKey) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.ConcurrentNavigableMap<K, V> tailMap(K fromKey, boolean inclusive) { return null; }
+  public Any tailMap(Any fromKey, boolean inclusive) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.ConcurrentNavigableMap<K, V> tailMap(K fromKey) { return null; }
+  public Any tailMap(Any fromKey) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public K lastKey() { return null; }
+  public Any lastKey() { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class Cipher {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Cipher bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int ENCRYPT_MODE = 1;
@@ -70,7 +88,7 @@ class Cipher {
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  Cipher(javax.crypto.CipherSpi cipherSpi, java.security.Provider provider, java.lang.String transformation) { }
+  Cipher(Any cipherSpi, Any provider, String transformation) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -80,7 +98,7 @@ class Cipher {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException")
   public final int update(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException")
@@ -90,45 +108,45 @@ class Cipher {
   @throwable("java.lang.UnsupportedOperationException")
   public final byte[] update(byte[] input) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException")
-  public final int update(java.nio.ByteBuffer input, java.nio.ByteBuffer output) { return 0; }
+  public final int update(Any input, Any output) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, javax.crypto.IllegalBlockSizeException, java.security.InvalidKeyException")
-  public final byte[] wrap(java.security.Key key) { return null; }
+  public final byte[] wrap(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, javax.crypto.NoSuchPaddingException")
-  public static final javax.crypto.Cipher getInstance(java.lang.String transformation) { return null; }
+  public static final Any getInstance(String transformation) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, javax.crypto.NoSuchPaddingException")
-  public static final javax.crypto.Cipher getInstance(java.lang.String transformation, java.security.Provider provider) { return null; }
+  public static final Any getInstance(String transformation, Any provider) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException, java.security.NoSuchProviderException, javax.crypto.NoSuchPaddingException")
-  public static final javax.crypto.Cipher getInstance(java.lang.String transformation, java.lang.String provider) { return null; }
+  public static final Any getInstance(String transformation, String provider) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException")
-  public final void init(int opmode, java.security.Key key, java.security.AlgorithmParameters params) { }
+  public final void init(int opmode, Any key, Any params) { }
   @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException")
-  public final void init(int opmode, java.security.Key key) { }
+  public final void init(int opmode, Any key) { }
   @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException, java.security.InvalidAlgorithmParameterException")
-  public final void init(int opmode, java.security.Key key, java.security.spec.AlgorithmParameterSpec params, java.security.SecureRandom random) { }
+  public final void init(int opmode, Any key, Any params, Any random) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.security.AlgorithmParameters getParameters() { return null; }
+  public final Any getParameters() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.security.InvalidKeyException, java.security.NoSuchAlgorithmException")
-  public final java.security.Key unwrap(byte[] wrappedKey, java.lang.String wrappedKeyAlgorithm, int wrappedKeyType) { return null; }
+  public final Any unwrap(byte[] wrappedKey, String wrappedKeyAlgorithm, int wrappedKeyType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.security.Provider getProvider() { return null; }
+  public final Any getProvider() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String getAlgorithm() { return null; }
+  public final String getAlgorithm() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final javax.crypto.ExemptionMechanism getExemptionMechanism() { return null; }
+  public final Any getExemptionMechanism() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final void updateAAD(byte[] src, int offset, int len) { }
   @throwable("java.lang.UnsupportedOperationException")
   public final void updateAAD(byte[] src) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void updateAAD(java.nio.ByteBuffer src) { }
+  public final void updateAAD(Any src) { }
   @throwable("java.lang.UnsupportedOperationException")
   public final int getOutputSize(int inputLen) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public final byte[] getIV() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
-  public static final int getMaxAllowedKeyLength(java.lang.String transformation) { return 0; }
+  public static final int getMaxAllowedKeyLength(String transformation) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.security.NoSuchAlgorithmException")
-  public static final java.security.spec.AlgorithmParameterSpec getMaxAllowedParameterSpec(java.lang.String transformation) { return null; }
+  public static final Any getMaxAllowedParameterSpec(String transformation) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
   public final int doFinal(byte[] input, int inputOffset, int inputLen, byte[] output, int outputOffset) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
@@ -136,7 +154,7 @@ class Cipher {
   @throwable("java.lang.UnsupportedOperationException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
   public final byte[] doFinal(byte[] input, int inputOffset, int inputLen) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
-  public final int doFinal(java.nio.ByteBuffer input, java.nio.ByteBuffer output) { return 0; }
+  public final int doFinal(Any input, Any output) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, javax.crypto.ShortBufferException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")
   public final int doFinal(byte[] input, int inputOffset, int inputLen, byte[] output) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, javax.crypto.IllegalBlockSizeException, javax.crypto.BadPaddingException")

@@ -56,6 +56,24 @@ class MethodHandle {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MethodHandle bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,36 +82,36 @@ class MethodHandle {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, java.lang.Throwable")
-  public final native java.lang.Object invokeExact(java.lang.Object... args) { return null; }
+  public final native Any invokeExact(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle asFixedArity() { return null; }
+  public Any asFixedArity() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodType type() { return null; }
+  public Any type() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Optional<java.lang.constant.MethodHandleDesc> describeConstable() { return null; }
+  public Any describeConstable() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.invoke.MethodHandle asType(java.lang.invoke.MethodType newType) { return null; }
+  public final Any asType(Any newType) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.Throwable")
-  public java.lang.Object invokeWithArguments(java.util.List<?> arguments) { return null; }
+  public Any invokeWithArguments(Any arguments) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.Throwable")
-  public java.lang.Object invokeWithArguments(java.lang.Object... arguments) { return null; }
+  public Any invokeWithArguments(Any... arguments) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle asSpreader(java.lang.Class<?> arrayType, int arrayLength) { return null; }
+  public Any asSpreader(Any arrayType, int arrayLength) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle asSpreader(int spreadArgPos, java.lang.Class<?> arrayType, int arrayLength) { return null; }
+  public Any asSpreader(int spreadArgPos, Any arrayType, int arrayLength) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isVarargsCollector() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle asVarargsCollector(java.lang.Class<?> arrayType) { return null; }
+  public Any asVarargsCollector(Any arrayType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle asCollector(int collectArgPos, java.lang.Class<?> arrayType, int arrayLength) { return null; }
+  public Any asCollector(int collectArgPos, Any arrayType, int arrayLength) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle asCollector(java.lang.Class<?> arrayType, int arrayLength) { return null; }
+  public Any asCollector(Any arrayType, int arrayLength) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle withVarargs(boolean makeVarargs) { return null; }
+  public Any withVarargs(boolean makeVarargs) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle bindTo(java.lang.Object x) { return null; }
+  public Any bindTo(Any x) { return null; }
   < ---- END java signatures ---- >
 }

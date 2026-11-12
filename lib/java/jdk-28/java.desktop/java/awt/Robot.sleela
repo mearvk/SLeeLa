@@ -56,12 +56,30 @@ class Robot {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Robot bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, java.awt.AWTException")
   public Robot() { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.AWTException")
-  public Robot(java.awt.GraphicsDevice screen) { }
+  public Robot(Any screen) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -71,7 +89,7 @@ class Robot {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.String toString() { return null; }
+  public synchronized String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void delay(int ms) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -93,11 +111,11 @@ class Robot {
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized int getAutoDelay() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.awt.Color getPixelColor(int x, int y) { return null; }
+  public synchronized Any getPixelColor(int x, int y) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.awt.image.BufferedImage createScreenCapture(java.awt.Rectangle screenRect) { return null; }
+  public synchronized Any createScreenCapture(Any screenRect) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.awt.image.MultiResolutionImage createMultiResolutionScreenCapture(java.awt.Rectangle screenRect) { return null; }
+  public synchronized Any createMultiResolutionScreenCapture(Any screenRect) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized void setAutoWaitForIdle(boolean isOn) { }
   @throwable("java.lang.UnsupportedOperationException")

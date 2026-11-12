@@ -56,6 +56,24 @@ class Character {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Character bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int MIN_RADIX = 2;
@@ -142,7 +160,7 @@ class Character {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String getName(int codePoint) { return null; }
+  public static String getName(int codePoint) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean isJavaIdentifierStart(char ch) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -152,13 +170,13 @@ class Character {
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean isJavaIdentifierPart(int codePoint) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(int codePoint) { return null; }
+  public static String toString(int codePoint) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(char c) { return null; }
+  public static String toString(char c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -166,7 +184,7 @@ class Character {
   @throwable("java.lang.UnsupportedOperationException")
   public static char reverseBytes(char ch) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(java.lang.Character anotherCharacter) { return 0; }
+  public int compareTo(Any anotherCharacter) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean isDigit(char ch) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -188,7 +206,7 @@ class Character {
   @throwable("java.lang.UnsupportedOperationException")
   public char charValue() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.Character valueOf(char c) { return null; }
+  public static Any valueOf(char c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static char[] toChars(int codePoint) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -208,25 +226,25 @@ class Character {
   @throwable("java.lang.UnsupportedOperationException")
   public static int toCodePoint(char high, char low) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int codePointAt(java.lang.CharSequence seq, int index) { return 0; }
+  public static int codePointAt(Any seq, int index) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int codePointAt(char[] a, int index, int limit) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int codePointAt(char[] a, int index) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int codePointBefore(java.lang.CharSequence seq, int index) { return 0; }
+  public static int codePointBefore(Any seq, int index) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int codePointBefore(char[] a, int index) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int codePointBefore(char[] a, int index, int start) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int codePointCount(java.lang.CharSequence seq, int beginIndex, int endIndex) { return 0; }
+  public static int codePointCount(Any seq, int beginIndex, int endIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int codePointCount(char[] a, int offset, int count) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int offsetByCodePoints(char[] a, int start, int count, int index, int codePointOffset) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int offsetByCodePoints(java.lang.CharSequence seq, int index, int codePointOffset) { return 0; }
+  public static int offsetByCodePoints(Any seq, int index, int codePointOffset) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static char toLowerCase(char ch) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -238,7 +256,7 @@ class Character {
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean isBmpCodePoint(int codePoint) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Optional<java.lang.constant.DynamicConstantDesc<java.lang.Character>> describeConstable() { return null; }
+  public Any describeConstable() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int getType(char ch) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -330,6 +348,6 @@ class Character {
   @throwable("java.lang.UnsupportedOperationException")
   public static char forDigit(int digit, int radix) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int codePointOf(java.lang.String name) { return 0; }
+  public static int codePointOf(String name) { return 0; }
   < ---- END java signatures ---- >
 }

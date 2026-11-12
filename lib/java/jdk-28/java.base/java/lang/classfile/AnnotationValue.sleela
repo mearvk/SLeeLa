@@ -56,6 +56,24 @@ class AnnotationValue {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public AnnotationValue bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int TAG_BYTE = 66;
@@ -80,56 +98,56 @@ class AnnotationValue {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue of(java.lang.Object value) { return null; }
+  public static Any of(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfClass ofClass(java.lang.classfile.constantpool.Utf8Entry className) { return null; }
+  public static Any ofClass(Any className) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int tag() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfArray ofArray(java.util.List<java.lang.classfile.AnnotationValue> values) { return null; }
+  public static Any ofArray(Any values) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfArray ofArray(java.lang.classfile.AnnotationValue... values) { return null; }
+  public static Any ofArray(Any... values) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfString ofString(java.lang.String value) { return null; }
+  public static Any ofString(String value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfString ofString(java.lang.classfile.constantpool.Utf8Entry value) { return null; }
+  public static Any ofString(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfLong ofLong(long value) { return null; }
+  public static Any ofLong(long value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfLong ofLong(java.lang.classfile.constantpool.LongEntry value) { return null; }
+  public static Any ofLong(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfInt ofInt(int value) { return null; }
+  public static Any ofInt(int value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfInt ofInt(java.lang.classfile.constantpool.IntegerEntry value) { return null; }
+  public static Any ofInt(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfChar ofChar(char value) { return null; }
+  public static Any ofChar(char value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfChar ofChar(java.lang.classfile.constantpool.IntegerEntry value) { return null; }
+  public static Any ofChar(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfShort ofShort(short value) { return null; }
+  public static Any ofShort(short value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfShort ofShort(java.lang.classfile.constantpool.IntegerEntry value) { return null; }
+  public static Any ofShort(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfByte ofByte(java.lang.classfile.constantpool.IntegerEntry value) { return null; }
+  public static Any ofByte(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfByte ofByte(byte value) { return null; }
+  public static Any ofByte(byte value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfBoolean ofBoolean(java.lang.classfile.constantpool.IntegerEntry value) { return null; }
+  public static Any ofBoolean(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfBoolean ofBoolean(boolean value) { return null; }
+  public static Any ofBoolean(boolean value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfDouble ofDouble(double value) { return null; }
+  public static Any ofDouble(double value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfDouble ofDouble(java.lang.classfile.constantpool.DoubleEntry value) { return null; }
+  public static Any ofDouble(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfFloat ofFloat(float value) { return null; }
+  public static Any ofFloat(float value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfFloat ofFloat(java.lang.classfile.constantpool.FloatEntry value) { return null; }
+  public static Any ofFloat(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfAnnotation ofAnnotation(java.lang.classfile.Annotation value) { return null; }
+  public static Any ofAnnotation(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfEnum ofEnum(java.lang.constant.ClassDesc className, java.lang.String constantName) { return null; }
+  public static Any ofEnum(Any className, String constantName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.AnnotationValue.OfEnum ofEnum(java.lang.classfile.constantpool.Utf8Entry className, java.lang.classfile.constantpool.Utf8Entry constantName) { return null; }
+  public static Any ofEnum(Any className, Any constantName) { return null; }
   < ---- END java signatures ---- >
 }

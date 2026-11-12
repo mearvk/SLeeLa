@@ -56,6 +56,24 @@ class DragSource {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DragSource bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any DefaultCopyDrop = null;
@@ -78,41 +96,43 @@ class DragSource {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeDragSourceListener(java.awt.dnd.DragSourceListener dsl) { }
+  public void removeDragSourceListener(Any dsl) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.dnd.DragSourceListener[] getDragSourceListeners() { return null; }
+  public Any[] getDragSourceListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeDragSourceMotionListener(java.awt.dnd.DragSourceMotionListener dsml) { }
+  public void removeDragSourceMotionListener(Any dsml) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.dnd.DragSourceMotionListener[] getDragSourceMotionListeners() { return null; }
+  public Any[] getDragSourceMotionListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int getDragThreshold() { return 0; }
+  @generic("<T extends java.awt.dnd.DragGestureRecognizer>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.awt.dnd.DragGestureRecognizer> T createDragGestureRecognizer(java.lang.Class<T> recognizerAbstractClass, java.awt.Component c, int actions, java.awt.dnd.DragGestureListener dgl) { return null; }
+  public Any createDragGestureRecognizer(Any recognizerAbstractClass, Any c, int actions, Any dgl) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.dnd.DragSourceContext createDragSourceContext(java.awt.dnd.DragGestureEvent dgl, java.awt.Cursor dragCursor, java.awt.Image dragImage, java.awt.Point imageOffset, java.awt.datatransfer.Transferable t, java.awt.dnd.DragSourceListener dsl) { return null; }
+  Any createDragSourceContext(Any dgl, Any dragCursor, Any dragImage, Any imageOffset, Any t, Any dsl) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.dnd.InvalidDnDOperationException")
-  public void startDrag(java.awt.dnd.DragGestureEvent trigger, java.awt.Cursor dragCursor, java.awt.datatransfer.Transferable transferable, java.awt.dnd.DragSourceListener dsl) { }
+  public void startDrag(Any trigger, Any dragCursor, Any transferable, Any dsl) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.dnd.InvalidDnDOperationException")
-  public void startDrag(java.awt.dnd.DragGestureEvent trigger, java.awt.Cursor dragCursor, java.awt.Image dragImage, java.awt.Point imageOffset, java.awt.datatransfer.Transferable transferable, java.awt.dnd.DragSourceListener dsl, java.awt.datatransfer.FlavorMap flavorMap) { }
+  public void startDrag(Any trigger, Any dragCursor, Any dragImage, Any imageOffset, Any transferable, Any dsl, Any flavorMap) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.dnd.InvalidDnDOperationException")
-  public void startDrag(java.awt.dnd.DragGestureEvent trigger, java.awt.Cursor dragCursor, java.awt.Image dragImage, java.awt.Point dragOffset, java.awt.datatransfer.Transferable transferable, java.awt.dnd.DragSourceListener dsl) { }
+  public void startDrag(Any trigger, Any dragCursor, Any dragImage, Any dragOffset, Any transferable, Any dsl) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.dnd.InvalidDnDOperationException")
-  public void startDrag(java.awt.dnd.DragGestureEvent trigger, java.awt.Cursor dragCursor, java.awt.datatransfer.Transferable transferable, java.awt.dnd.DragSourceListener dsl, java.awt.datatransfer.FlavorMap flavorMap) { }
+  public void startDrag(Any trigger, Any dragCursor, Any transferable, Any dsl, Any flavorMap) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addDragSourceListener(java.awt.dnd.DragSourceListener dsl) { }
+  public void addDragSourceListener(Any dsl) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addDragSourceMotionListener(java.awt.dnd.DragSourceMotionListener dsml) { }
+  public void addDragSourceMotionListener(Any dsml) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.dnd.DragSource getDefaultDragSource() { return null; }
+  public static Any getDefaultDragSource() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean isDragImageSupported() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.dnd.DragGestureRecognizer createDefaultDragGestureRecognizer(java.awt.Component c, int actions, java.awt.dnd.DragGestureListener dgl) { return null; }
+  public Any createDefaultDragGestureRecognizer(Any c, int actions, Any dgl) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.datatransfer.FlavorMap getFlavorMap() { return null; }
+  public Any getFlavorMap() { return null; }
+  @generic("<T extends java.util.EventListener>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
+  public Any[] getListeners(Any listenerType) { return null; }
   < ---- END java signatures ---- >
 }

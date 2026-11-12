@@ -56,6 +56,24 @@ class MetalTheme {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MetalTheme bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,112 +88,112 @@ class MetalTheme {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getControl() { return null; }
+  public Any getControl() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getFocusColor() { return null; }
+  public Any getFocusColor() { return null; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  javax.swing.plaf.ColorUIResource getPrimary1() { return null; }
+  Any getPrimary1() { return null; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  javax.swing.plaf.ColorUIResource getPrimary2() { return null; }
+  Any getPrimary2() { return null; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  javax.swing.plaf.ColorUIResource getPrimary3() { return null; }
+  Any getPrimary3() { return null; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  javax.swing.plaf.ColorUIResource getSecondary1() { return null; }
+  Any getSecondary1() { return null; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  javax.swing.plaf.ColorUIResource getSecondary2() { return null; }
+  Any getSecondary2() { return null; }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  javax.swing.plaf.ColorUIResource getSecondary3() { return null; }
+  Any getSecondary3() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.plaf.FontUIResource getControlTextFont() { return null; }
+  public Any getControlTextFont() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.plaf.FontUIResource getSystemTextFont() { return null; }
+  public Any getSystemTextFont() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.plaf.FontUIResource getUserTextFont() { return null; }
+  public Any getUserTextFont() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.plaf.FontUIResource getMenuTextFont() { return null; }
+  public Any getMenuTextFont() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.plaf.FontUIResource getWindowTitleFont() { return null; }
+  public Any getWindowTitleFont() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.swing.plaf.FontUIResource getSubTextFont() { return null; }
+  public Any getSubTextFont() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.plaf.ColorUIResource getBlack() { return null; }
+  Any getBlack() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.plaf.ColorUIResource getWhite() { return null; }
+  Any getWhite() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getControlInfo() { return null; }
+  public Any getControlInfo() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getControlDisabled() { return null; }
+  public Any getControlDisabled() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getControlTextColor() { return null; }
+  public Any getControlTextColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getDesktopColor() { return null; }
+  public Any getDesktopColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getControlShadow() { return null; }
+  public Any getControlShadow() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getControlDarkShadow() { return null; }
+  public Any getControlDarkShadow() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getControlHighlight() { return null; }
+  public Any getControlHighlight() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getPrimaryControl() { return null; }
+  public Any getPrimaryControl() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getPrimaryControlShadow() { return null; }
+  public Any getPrimaryControlShadow() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getPrimaryControlDarkShadow() { return null; }
+  public Any getPrimaryControlDarkShadow() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getPrimaryControlInfo() { return null; }
+  public Any getPrimaryControlInfo() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getPrimaryControlHighlight() { return null; }
+  public Any getPrimaryControlHighlight() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getSystemTextColor() { return null; }
+  public Any getSystemTextColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getInactiveControlTextColor() { return null; }
+  public Any getInactiveControlTextColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getInactiveSystemTextColor() { return null; }
+  public Any getInactiveSystemTextColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getUserTextColor() { return null; }
+  public Any getUserTextColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getTextHighlightColor() { return null; }
+  public Any getTextHighlightColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getHighlightedTextColor() { return null; }
+  public Any getHighlightedTextColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getWindowBackground() { return null; }
+  public Any getWindowBackground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getWindowTitleBackground() { return null; }
+  public Any getWindowTitleBackground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getWindowTitleForeground() { return null; }
+  public Any getWindowTitleForeground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getWindowTitleInactiveBackground() { return null; }
+  public Any getWindowTitleInactiveBackground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getWindowTitleInactiveForeground() { return null; }
+  public Any getWindowTitleInactiveForeground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getMenuBackground() { return null; }
+  public Any getMenuBackground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getMenuForeground() { return null; }
+  public Any getMenuForeground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getMenuSelectedBackground() { return null; }
+  public Any getMenuSelectedBackground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getMenuSelectedForeground() { return null; }
+  public Any getMenuSelectedForeground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getMenuDisabledForeground() { return null; }
+  public Any getMenuDisabledForeground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getSeparatorBackground() { return null; }
+  public Any getSeparatorBackground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getSeparatorForeground() { return null; }
+  public Any getSeparatorForeground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getAcceleratorForeground() { return null; }
+  public Any getAcceleratorForeground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ColorUIResource getAcceleratorSelectedForeground() { return null; }
+  public Any getAcceleratorSelectedForeground() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addCustomEntriesToTable(javax.swing.UIDefaults table) { }
+  public void addCustomEntriesToTable(Any table) { }
   < ---- END java signatures ---- >
 }

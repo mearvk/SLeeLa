@@ -56,6 +56,24 @@ class MultiLookAndFeel {
   String javaKind = "class";
   String javaSuper = "javax.swing.LookAndFeel";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MultiLookAndFeel bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,20 +87,20 @@ class MultiLookAndFeel {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getID() { return null; }
+  public String getID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getDescription() { return null; }
+  public String getDescription() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  protected static javax.swing.plaf.ComponentUI[] uisToArray(java.util.Vector<? extends javax.swing.plaf.ComponentUI> uis) { return null; }
+  protected static Any[] uisToArray(Any uis) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.plaf.ComponentUI createUIs(javax.swing.plaf.ComponentUI mui, java.util.Vector<javax.swing.plaf.ComponentUI> uis, javax.swing.JComponent target) { return null; }
+  public static Any createUIs(Any mui, Any uis, Any target) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isNativeLookAndFeel() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isSupportedLookAndFeel() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.UIDefaults getDefaults() { return null; }
+  public Any getDefaults() { return null; }
   < ---- END java signatures ---- >
 }

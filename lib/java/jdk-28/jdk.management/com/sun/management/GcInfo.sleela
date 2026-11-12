@@ -56,6 +56,24 @@ class GcInfo {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public GcInfo bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,35 +82,35 @@ class GcInfo {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object get(java.lang.String key) { return null; }
+  public Any get(String key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Collection<?> values() { return null; }
+  public Any values() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static com.sun.management.GcInfo from(javax.management.openmbean.CompositeData cd) { return null; }
+  public static Any from(Any cd) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public long getId() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsValue(java.lang.Object value) { return false; }
+  public boolean containsValue(Any value) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsKey(java.lang.String key) { return false; }
+  public boolean containsKey(String key) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object[] getAll(java.lang.String[] keys) { return null; }
+  public Any[] getAll(String[] keys) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public long getDuration() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.management.openmbean.CompositeData toCompositeData(javax.management.openmbean.CompositeType ct) { return null; }
+  public Any toCompositeData(Any ct) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Map<java.lang.String, java.lang.management.MemoryUsage> getMemoryUsageBeforeGc() { return null; }
+  public Any getMemoryUsageBeforeGc() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Map<java.lang.String, java.lang.management.MemoryUsage> getMemoryUsageAfterGc() { return null; }
+  public Any getMemoryUsageAfterGc() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.management.openmbean.CompositeType getCompositeType() { return null; }
+  public Any getCompositeType() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public long getStartTime() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")

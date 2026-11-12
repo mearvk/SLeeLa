@@ -56,6 +56,24 @@ class Collections {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Collections bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any EMPTY_SET = null;
@@ -69,145 +87,206 @@ class Collections {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> T min(java.util.Collection<? extends T> coll, java.util.Comparator<? super T> comp) { return null; }
+  public static Any min(Any coll, Any comp) { return null; }
+  @generic("<T extends java.lang.Object & java.lang.Comparable<? super T>>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T extends java.lang.Object & java.lang.Comparable<? super T>> T min(java.util.Collection<? extends T> coll) { return null; }
+  public static Any min(Any coll) { return null; }
+  @generic("<T extends java.lang.Object & java.lang.Comparable<? super T>>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T extends java.lang.Object & java.lang.Comparable<? super T>> T max(java.util.Collection<? extends T> coll) { return null; }
+  public static Any max(Any coll) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> T max(java.util.Collection<? extends T> coll, java.util.Comparator<? super T> comp) { return null; }
+  public static Any max(Any coll, Any comp) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void reverse(java.util.List<?> list) { }
+  public static void reverse(Any list) { }
+  @generic("<T extends java.lang.Comparable<? super T>>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T extends java.lang.Comparable<? super T>> void sort(java.util.List<T> list) { }
+  public static void sort(Any list) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> void sort(java.util.List<T> list, java.util.Comparator<? super T> c) { }
+  public static void sort(Any list, Any c) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> void copy(java.util.List<? super T> dest, java.util.List<? extends T> src) { }
+  public static void copy(Any dest, Any src) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> boolean replaceAll(java.util.List<T> list, T oldVal, T newVal) { return false; }
+  public static boolean replaceAll(Any list, Any oldVal, Any newVal) { return false; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> void fill(java.util.List<? super T> list, T obj) { }
+  public static void fill(Any list, Any obj) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.ArrayList<T> list(java.util.Enumeration<T> e) { return null; }
+  public static Any list(Any e) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> boolean addAll(java.util.Collection<? super T> c, T... elements) { return false; }
+  public static boolean addAll(Any c, Any... elements) { return false; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Enumeration<T> emptyEnumeration() { return null; }
+  public static Any emptyEnumeration() { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Set<E> newSetFromMap(java.util.Map<E, java.lang.Boolean> map) { return null; }
+  public static Any newSetFromMap(Any map) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static final <T> java.util.List<T> emptyList() { return null; }
+  public static final Any emptyList() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Set<T> unmodifiableSet(java.util.Set<? extends T> s) { return null; }
+  public static Any unmodifiableSet(Any s) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Enumeration<T> enumeration(java.util.Collection<T> c) { return null; }
+  public static Any enumeration(Any c) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Set<T> synchronizedSet(java.util.Set<T> s) { return null; }
+  public static Any synchronizedSet(Any s) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Collection<T> synchronizedCollection(java.util.Collection<T> c) { return null; }
+  public static Any synchronizedCollection(Any c) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Iterator<T> emptyIterator() { return null; }
+  public static Any emptyIterator() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.List<T> nCopies(int n, T o) { return null; }
+  public static Any nCopies(int n, Any o) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Comparator<T> reverseOrder(java.util.Comparator<T> cmp) { return null; }
+  public static Any reverseOrder(Any cmp) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Comparator<T> reverseOrder() { return null; }
+  public static Any reverseOrder() { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> unmodifiableMap(java.util.Map<? extends K, ? extends V> m) { return null; }
+  public static Any unmodifiableMap(Any m) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.SortedMap<K, V> unmodifiableSortedMap(java.util.SortedMap<K, ? extends V> m) { return null; }
+  public static Any unmodifiableSortedMap(Any m) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void swap(java.util.List<?> list, int i, int j) { }
+  public static void swap(Any list, int i, int j) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> int binarySearch(java.util.List<? extends T> list, T key, java.util.Comparator<? super T> c) { return 0; }
+  public static int binarySearch(Any list, Any key, Any c) { return 0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> int binarySearch(java.util.List<? extends java.lang.Comparable<? super T>> list, T key) { return 0; }
+  public static int binarySearch(Any list, Any key) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void shuffle(java.util.List<?> list, java.util.Random rnd) { }
+  public static void shuffle(Any list, Any rnd) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void shuffle(java.util.List<?> list) { }
+  public static void shuffle(Any list) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void rotate(java.util.List<?> list, int distance) { }
+  public static void rotate(Any list, int distance) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int indexOfSubList(java.util.List<?> source, java.util.List<?> target) { return 0; }
+  public static int indexOfSubList(Any source, Any target) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int lastIndexOfSubList(java.util.List<?> source, java.util.List<?> target) { return 0; }
+  public static int lastIndexOfSubList(Any source, Any target) { return 0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Collection<T> unmodifiableCollection(java.util.Collection<? extends T> c) { return null; }
+  public static Any unmodifiableCollection(Any c) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.SequencedCollection<T> unmodifiableSequencedCollection(java.util.SequencedCollection<? extends T> c) { return null; }
+  public static Any unmodifiableSequencedCollection(Any c) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.SequencedSet<T> unmodifiableSequencedSet(java.util.SequencedSet<? extends T> s) { return null; }
+  public static Any unmodifiableSequencedSet(Any s) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.SortedSet<T> unmodifiableSortedSet(java.util.SortedSet<T> s) { return null; }
+  public static Any unmodifiableSortedSet(Any s) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.NavigableSet<T> unmodifiableNavigableSet(java.util.NavigableSet<T> s) { return null; }
+  public static Any unmodifiableNavigableSet(Any s) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.List<T> unmodifiableList(java.util.List<? extends T> list) { return null; }
+  public static Any unmodifiableList(Any list) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.SequencedMap<K, V> unmodifiableSequencedMap(java.util.SequencedMap<? extends K, ? extends V> m) { return null; }
+  public static Any unmodifiableSequencedMap(Any m) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.NavigableMap<K, V> unmodifiableNavigableMap(java.util.NavigableMap<K, ? extends V> m) { return null; }
+  public static Any unmodifiableNavigableMap(Any m) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.SortedSet<T> synchronizedSortedSet(java.util.SortedSet<T> s) { return null; }
+  public static Any synchronizedSortedSet(Any s) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.NavigableSet<T> synchronizedNavigableSet(java.util.NavigableSet<T> s) { return null; }
+  public static Any synchronizedNavigableSet(Any s) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.List<T> synchronizedList(java.util.List<T> list) { return null; }
+  public static Any synchronizedList(Any list) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> synchronizedMap(java.util.Map<K, V> m) { return null; }
+  public static Any synchronizedMap(Any m) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.SortedMap<K, V> synchronizedSortedMap(java.util.SortedMap<K, V> m) { return null; }
+  public static Any synchronizedSortedMap(Any m) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.NavigableMap<K, V> synchronizedNavigableMap(java.util.NavigableMap<K, V> m) { return null; }
+  public static Any synchronizedNavigableMap(Any m) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Collection<E> checkedCollection(java.util.Collection<E> c, java.lang.Class<E> type) { return null; }
+  public static Any checkedCollection(Any c, Any type) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Queue<E> checkedQueue(java.util.Queue<E> queue, java.lang.Class<E> type) { return null; }
+  public static Any checkedQueue(Any queue, Any type) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Set<E> checkedSet(java.util.Set<E> s, java.lang.Class<E> type) { return null; }
+  public static Any checkedSet(Any s, Any type) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.SortedSet<E> checkedSortedSet(java.util.SortedSet<E> s, java.lang.Class<E> type) { return null; }
+  public static Any checkedSortedSet(Any s, Any type) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.NavigableSet<E> checkedNavigableSet(java.util.NavigableSet<E> s, java.lang.Class<E> type) { return null; }
+  public static Any checkedNavigableSet(Any s, Any type) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.List<E> checkedList(java.util.List<E> list, java.lang.Class<E> type) { return null; }
+  public static Any checkedList(Any list, Any type) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> checkedMap(java.util.Map<K, V> m, java.lang.Class<K> keyType, java.lang.Class<V> valueType) { return null; }
+  public static Any checkedMap(Any m, Any keyType, Any valueType) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.SortedMap<K, V> checkedSortedMap(java.util.SortedMap<K, V> m, java.lang.Class<K> keyType, java.lang.Class<V> valueType) { return null; }
+  public static Any checkedSortedMap(Any m, Any keyType, Any valueType) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.NavigableMap<K, V> checkedNavigableMap(java.util.NavigableMap<K, V> m, java.lang.Class<K> keyType, java.lang.Class<V> valueType) { return null; }
+  public static Any checkedNavigableMap(Any m, Any keyType, Any valueType) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.ListIterator<T> emptyListIterator() { return null; }
+  public static Any emptyListIterator() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static final <T> java.util.Set<T> emptySet() { return null; }
+  public static final Any emptySet() { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.SortedSet<E> emptySortedSet() { return null; }
+  public static Any emptySortedSet() { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.NavigableSet<E> emptyNavigableSet() { return null; }
+  public static Any emptyNavigableSet() { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static final <K, V> java.util.Map<K, V> emptyMap() { return null; }
+  public static final Any emptyMap() { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static final <K, V> java.util.SortedMap<K, V> emptySortedMap() { return null; }
+  public static final Any emptySortedMap() { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static final <K, V> java.util.NavigableMap<K, V> emptyNavigableMap() { return null; }
+  public static final Any emptyNavigableMap() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Set<T> singleton(T o) { return null; }
+  public static Any singleton(Any o) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.List<T> singletonList(T o) { return null; }
+  public static Any singletonList(Any o) { return null; }
+  @generic("<K, V>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <K, V> java.util.Map<K, V> singletonMap(K key, V value) { return null; }
+  public static Any singletonMap(Any key, Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int frequency(java.util.Collection<?> c, java.lang.Object o) { return 0; }
+  public static int frequency(Any c, Any o) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean disjoint(java.util.Collection<?> c1, java.util.Collection<?> c2) { return false; }
+  public static boolean disjoint(Any c1, Any c2) { return false; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.SequencedSet<E> newSequencedSetFromMap(java.util.SequencedMap<E, java.lang.Boolean> map) { return null; }
+  public static Any newSequencedSetFromMap(Any map) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Queue<T> asLifoQueue(java.util.Deque<T> deque) { return null; }
+  public static Any asLifoQueue(Any deque) { return null; }
   < ---- END java signatures ---- >
 }

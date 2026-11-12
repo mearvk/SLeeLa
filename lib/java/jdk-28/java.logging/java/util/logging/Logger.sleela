@@ -56,6 +56,24 @@ class Logger {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Logger bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String GLOBAL_LOGGER_NAME = "global";
@@ -65,7 +83,7 @@ class Logger {
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  Logger(java.lang.String name, java.lang.String resourceBundleName) { }
+  Logger(String name, String resourceBundleName) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -75,122 +93,122 @@ class Logger {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void log(java.util.logging.Level level, java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  public void log(Any level, Any msgSupplier) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void log(java.util.logging.LogRecord record_) { }
+  public void log(Any record_) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void log(java.util.logging.Level level, java.lang.String msg) { }
+  public void log(Any level, String msg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void log(java.util.logging.Level level, java.lang.String msg, java.lang.Object param1) { }
+  public void log(Any level, String msg, Any param1) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void log(java.util.logging.Level level, java.lang.Throwable thrown, java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  public void log(Any level, Any thrown, Any msgSupplier) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void log(java.util.logging.Level level, java.lang.String msg, java.lang.Object[] params) { }
+  public void log(Any level, String msg, Any[] params) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void info(java.lang.String msg) { }
+  public void info(String msg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void info(java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  public void info(Any msgSupplier) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.logging.Logger getParent() { return null; }
+  public Any getParent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.logging.Logger getLogger(java.lang.String name) { return null; }
+  public static Any getLogger(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.logging.Logger getLogger(java.lang.String name, java.lang.String resourceBundleName) { return null; }
+  public static Any getLogger(String name, String resourceBundleName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void config(java.lang.String msg) { }
+  public void config(String msg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void config(java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  public void config(Any msgSupplier) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.logging.Filter getFilter() { return null; }
+  public Any getFilter() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addHandler(java.util.logging.Handler handler) { }
+  public void addHandler(Any handler) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isLoggable(java.util.logging.Level level) { return false; }
+  public boolean isLoggable(Any level) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void warning(java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  public void warning(Any msgSupplier) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void warning(java.lang.String msg) { }
+  public void warning(String msg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setParent(java.util.logging.Logger parent) { }
+  public void setParent(Any parent) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLevel(java.util.logging.Level newLevel) { }
+  public void setLevel(Any newLevel) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFilter(java.util.logging.Filter newFilter) { }
+  public void setFilter(Any newFilter) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.logging.Level getLevel() { return null; }
+  public Any getLevel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getResourceBundleName() { return null; }
+  public String getResourceBundleName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.logging.Handler[] getHandlers() { return null; }
+  public Any[] getHandlers() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeHandler(java.util.logging.Handler handler) { }
+  public void removeHandler(Any handler) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setUseParentHandlers(boolean useParentHandlers) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.logging.Logger getAnonymousLogger() { return null; }
+  public static Any getAnonymousLogger() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.logging.Logger getAnonymousLogger(java.lang.String resourceBundleName) { return null; }
+  public static Any getAnonymousLogger(String resourceBundleName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getUseParentHandlers() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setResourceBundle(java.util.ResourceBundle bundle) { }
+  public void setResourceBundle(Any bundle) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void logp(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String msg, java.lang.Object[] params) { }
+  public void logp(Any level, String sourceClass, String sourceMethod, String msg, Any[] params) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void logp(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String msg, java.lang.Throwable thrown) { }
+  public void logp(Any level, String sourceClass, String sourceMethod, String msg, Any thrown) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void logp(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String msg) { }
+  public void logp(Any level, String sourceClass, String sourceMethod, String msg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void logp(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.Throwable thrown, java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  public void logp(Any level, String sourceClass, String sourceMethod, Any thrown, Any msgSupplier) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void logp(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  public void logp(Any level, String sourceClass, String sourceMethod, Any msgSupplier) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.ResourceBundle getResourceBundle() { return null; }
+  public Any getResourceBundle() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.util.logging.Logger getGlobal() { return null; }
+  public static final Any getGlobal() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void logrb(java.util.logging.Level level, java.util.ResourceBundle bundle, java.lang.String msg, java.lang.Object... params) { }
+  public void logrb(Any level, Any bundle, String msg, Any... params) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void logrb(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.util.ResourceBundle bundle, java.lang.String msg, java.lang.Object... params) { }
+  public void logrb(Any level, String sourceClass, String sourceMethod, Any bundle, String msg, Any... params) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void logrb(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String bundleName, java.lang.String msg, java.lang.Throwable thrown) { }
+  public void logrb(Any level, String sourceClass, String sourceMethod, String bundleName, String msg, Any thrown) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void logrb(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.util.ResourceBundle bundle, java.lang.String msg, java.lang.Throwable thrown) { }
+  public void logrb(Any level, String sourceClass, String sourceMethod, Any bundle, String msg, Any thrown) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void logrb(java.util.logging.Level level, java.util.ResourceBundle bundle, java.lang.String msg, java.lang.Throwable thrown) { }
+  public void logrb(Any level, Any bundle, String msg, Any thrown) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void logrb(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String bundleName, java.lang.String msg) { }
+  public void logrb(Any level, String sourceClass, String sourceMethod, String bundleName, String msg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void logrb(java.util.logging.Level level, java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.String bundleName, java.lang.String msg, java.lang.Object[] params) { }
+  public void logrb(Any level, String sourceClass, String sourceMethod, String bundleName, String msg, Any[] params) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void entering(java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.Object param1) { }
+  public void entering(String sourceClass, String sourceMethod, Any param1) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void entering(java.lang.String sourceClass, java.lang.String sourceMethod) { }
+  public void entering(String sourceClass, String sourceMethod) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void entering(java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.Object[] params) { }
+  public void entering(String sourceClass, String sourceMethod, Any[] params) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void exiting(java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.Object result) { }
+  public void exiting(String sourceClass, String sourceMethod, Any result) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void exiting(java.lang.String sourceClass, java.lang.String sourceMethod) { }
+  public void exiting(String sourceClass, String sourceMethod) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void throwing(java.lang.String sourceClass, java.lang.String sourceMethod, java.lang.Throwable thrown) { }
+  public void throwing(String sourceClass, String sourceMethod, Any thrown) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void severe(java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  public void severe(Any msgSupplier) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void severe(java.lang.String msg) { }
+  public void severe(String msg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void fine(java.lang.String msg) { }
+  public void fine(String msg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void fine(java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  public void fine(Any msgSupplier) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void finer(java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  public void finer(Any msgSupplier) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void finer(java.lang.String msg) { }
+  public void finer(String msg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void finest(java.lang.String msg) { }
+  public void finest(String msg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void finest(java.util.function.Supplier<java.lang.String> msgSupplier) { }
+  public void finest(Any msgSupplier) { }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class JScrollPane {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JScrollPane bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   int verticalScrollBarPolicy;
@@ -77,9 +95,9 @@ class JScrollPane {
   @throwable("java.lang.UnsupportedOperationException")
   public JScrollPane(int vsbPolicy, int hsbPolicy) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JScrollPane(java.awt.Component view) { }
+  public JScrollPane(Any view) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JScrollPane(java.awt.Component view, int vsbPolicy, int hsbPolicy) { }
+  public JScrollPane(Any view, int vsbPolicy, int hsbPolicy) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -90,25 +108,25 @@ class JScrollPane {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setComponentOrientation(java.awt.ComponentOrientation co) { }
+  public void setComponentOrientation(Any co) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUI(javax.swing.plaf.ScrollPaneUI ui) { }
+  public void setUI(Any ui) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ScrollPaneUI getUI() { return null; }
+  public Any getUI() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JViewport getViewport() { return null; }
+  public Any getViewport() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setColumnHeaderView(java.awt.Component view) { }
+  public void setColumnHeaderView(Any view) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getCorner(java.lang.String key) { return null; }
+  public Any getCorner(String key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setCorner(java.lang.String key, java.awt.Component corner) { }
+  public void setCorner(String key, Any corner) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setWheelScrollingEnabled(boolean handleWheel) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -119,48 +137,48 @@ class JScrollPane {
   public void setHorizontalScrollBarPolicy(int policy) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JViewport createViewport() { return null; }
+  Any createViewport() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setViewport(javax.swing.JViewport viewport) { }
+  public void setViewport(Any viewport) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JScrollBar createVerticalScrollBar() { return null; }
+  public Any createVerticalScrollBar() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setVerticalScrollBar(javax.swing.JScrollBar verticalScrollBar) { }
+  public void setVerticalScrollBar(Any verticalScrollBar) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JScrollBar createHorizontalScrollBar() { return null; }
+  public Any createHorizontalScrollBar() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setHorizontalScrollBar(javax.swing.JScrollBar horizontalScrollBar) { }
+  public void setHorizontalScrollBar(Any horizontalScrollBar) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setViewportView(java.awt.Component view) { }
+  public void setViewportView(Any view) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JViewport getColumnHeader() { return null; }
+  public Any getColumnHeader() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JViewport getRowHeader() { return null; }
+  public Any getRowHeader() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JScrollBar getVerticalScrollBar() { return null; }
+  public Any getVerticalScrollBar() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JScrollBar getHorizontalScrollBar() { return null; }
+  public Any getHorizontalScrollBar() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setRowHeader(javax.swing.JViewport rowHeader) { }
+  public void setRowHeader(Any rowHeader) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setColumnHeader(javax.swing.JViewport columnHeader) { }
+  public void setColumnHeader(Any columnHeader) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getVerticalScrollBarPolicy() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getHorizontalScrollBarPolicy() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.border.Border getViewportBorder() { return null; }
+  public Any getViewportBorder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setViewportBorder(javax.swing.border.Border viewportBorder) { }
+  public void setViewportBorder(Any viewportBorder) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getViewportBorderBounds() { return null; }
+  public Any getViewportBorderBounds() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setRowHeaderView(java.awt.Component view) { }
+  public void setRowHeaderView(Any view) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isValidateRoot() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLayout(java.awt.LayoutManager layout) { }
+  public void setLayout(Any layout) { }
   < ---- END java signatures ---- >
 }

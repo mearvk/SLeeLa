@@ -56,6 +56,24 @@ class X500Principal {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public X500Principal bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String RFC1779 = "RFC1779";
@@ -65,11 +83,11 @@ class X500Principal {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public X500Principal(java.io.InputStream is) { }
+  public X500Principal(Any is) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public X500Principal(java.lang.String name) { }
+  public X500Principal(String name) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public X500Principal(java.lang.String name, java.util.Map<java.lang.String, java.lang.String> keywordMap) { }
+  public X500Principal(String name, Any keywordMap) { }
   @throwable("java.lang.UnsupportedOperationException")
   public X500Principal(byte[] name) { }
   < ---- END java constructors ---- >
@@ -81,15 +99,15 @@ class X500Principal {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getName(java.lang.String format) { return null; }
+  public String getName(String format) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getName(java.lang.String format, java.util.Map<java.lang.String, java.lang.String> oidMap) { return null; }
+  public String getName(String format, Any oidMap) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object o) { return false; }
+  public boolean equals(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")

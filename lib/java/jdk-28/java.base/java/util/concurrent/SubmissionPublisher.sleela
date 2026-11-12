@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class SubmissionPublisher<T> {
+class SubmissionPublisher {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,12 +56,30 @@ class SubmissionPublisher<T> {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<T>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "T"; } return null; }
+  public SubmissionPublisher bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public SubmissionPublisher(java.util.concurrent.Executor executor, int maxBufferCapacity) { }
+  public SubmissionPublisher(Any executor, int maxBufferCapacity) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public SubmissionPublisher(java.util.concurrent.Executor executor, int maxBufferCapacity, java.util.function.BiConsumer<? super java.util.concurrent.Flow.Subscriber<? super T>, ? super java.lang.Throwable> handler) { }
+  public SubmissionPublisher(Any executor, int maxBufferCapacity, Any handler) { }
   @throwable("java.lang.UnsupportedOperationException")
   public SubmissionPublisher() { }
   < ---- END java constructors ---- >
@@ -73,19 +91,19 @@ class SubmissionPublisher<T> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public int offer(T item, long timeout, java.util.concurrent.TimeUnit unit, java.util.function.BiPredicate<java.util.concurrent.Flow.Subscriber<? super T>, ? super T> onDrop) { return 0; }
+  public int offer(Any item, long timeout, Any unit, Any onDrop) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int offer(T item, java.util.function.BiPredicate<java.util.concurrent.Flow.Subscriber<? super T>, ? super T> onDrop) { return 0; }
+  public int offer(Any item, Any onDrop) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int submit(T item) { return 0; }
+  public int submit(Any item) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.CompletableFuture<java.lang.Void> consume(java.util.function.Consumer<? super T> consumer) { return null; }
+  public Any consume(Any consumer) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.concurrent.Executor getExecutor() { return null; }
+  public Any getExecutor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void closeExceptionally(java.lang.Throwable error) { }
+  public void closeExceptionally(Any error) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Throwable getClosedException() { return null; }
+  public Any getClosedException() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasSubscribers() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -93,15 +111,15 @@ class SubmissionPublisher<T> {
   @throwable("java.lang.UnsupportedOperationException")
   public int getMaxBufferCapacity() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<java.util.concurrent.Flow.Subscriber<? super T>> getSubscribers() { return null; }
+  public Any getSubscribers() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isSubscribed(java.util.concurrent.Flow.Subscriber<? super T> subscriber) { return false; }
+  public boolean isSubscribed(Any subscriber) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public long estimateMinimumDemand() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int estimateMaximumLag() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void subscribe(java.util.concurrent.Flow.Subscriber<? super T> subscriber) { }
+  public void subscribe(Any subscriber) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isClosed() { return false; }
   < ---- END java signatures ---- >

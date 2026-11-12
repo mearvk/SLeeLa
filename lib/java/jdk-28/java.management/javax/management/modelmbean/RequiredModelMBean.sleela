@@ -56,12 +56,30 @@ class RequiredModelMBean {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public RequiredModelMBean bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
   public RequiredModelMBean() { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public RequiredModelMBean(javax.management.modelmbean.ModelMBeanInfo mbi) { }
+  public RequiredModelMBean(Any mbi) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -75,49 +93,49 @@ class RequiredModelMBean {
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.InstanceNotFoundException")
   public void store() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.management.AttributeList getAttributes(java.lang.String[] attrNames) { return null; }
+  public Any getAttributes(String[] attrNames) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.AttributeNotFoundException, javax.management.InvalidAttributeValueException, javax.management.MBeanException, javax.management.ReflectionException")
-  public void setAttribute(javax.management.Attribute attribute) { }
+  public void setAttribute(Any attribute) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.AttributeNotFoundException, javax.management.MBeanException, javax.management.ReflectionException")
-  public java.lang.Object getAttribute(java.lang.String attrName) { return null; }
+  public Any getAttribute(String attrName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.management.AttributeList setAttributes(javax.management.AttributeList attributes) { return null; }
+  public Any setAttributes(Any attributes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void postRegister(java.lang.Boolean registrationDone) { }
+  public void postRegister(Any registrationDone) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
   public void preDeregister() { }
   @throwable("java.lang.UnsupportedOperationException")
   public void postDeregister() { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public void sendNotification(javax.management.Notification ntfyObj) { }
+  public void sendNotification(Any ntfyObj) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public void sendNotification(java.lang.String ntfyText) { }
+  public void sendNotification(String ntfyText) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.management.MBeanNotificationInfo[] getNotificationInfo() { return null; }
+  public Any[] getNotificationInfo() { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public void setModelMBeanInfo(javax.management.modelmbean.ModelMBeanInfo mbi) { }
+  public void setModelMBeanInfo(Any mbi) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.InstanceNotFoundException, javax.management.modelmbean.InvalidTargetObjectTypeException")
-  public void setManagedResource(java.lang.Object mr, java.lang.String mr_type) { }
+  public void setManagedResource(Any mr, String mr_type) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public void sendAttributeChangeNotification(javax.management.Attribute inOldVal, javax.management.Attribute inNewVal) { }
+  public void sendAttributeChangeNotification(Any inOldVal, Any inNewVal) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
-  public void sendAttributeChangeNotification(javax.management.AttributeChangeNotification ntfyObj) { }
+  public void sendAttributeChangeNotification(Any ntfyObj) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException, java.lang.IllegalArgumentException")
-  public void addAttributeChangeNotificationListener(javax.management.NotificationListener inlistener, java.lang.String inAttributeName, java.lang.Object inhandback) { }
+  public void addAttributeChangeNotificationListener(Any inlistener, String inAttributeName, Any inhandback) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.ListenerNotFoundException")
-  public void removeAttributeChangeNotificationListener(javax.management.NotificationListener inlistener, java.lang.String inAttributeName) { }
+  public void removeAttributeChangeNotificationListener(Any inlistener, String inAttributeName) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public void addNotificationListener(javax.management.NotificationListener listener, javax.management.NotificationFilter filter, java.lang.Object handback) { }
+  public void addNotificationListener(Any listener, Any filter, Any handback) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.ListenerNotFoundException")
-  public void removeNotificationListener(javax.management.NotificationListener listener) { }
+  public void removeNotificationListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.ListenerNotFoundException")
-  public void removeNotificationListener(javax.management.NotificationListener listener, javax.management.NotificationFilter filter, java.lang.Object handback) { }
+  public void removeNotificationListener(Any listener, Any filter, Any handback) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.management.MBeanInfo getMBeanInfo() { return null; }
+  public Any getMBeanInfo() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.management.loading.ClassLoaderRepository getClassLoaderRepository() { return null; }
+  Any getClassLoaderRepository() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
-  public javax.management.ObjectName preRegister(javax.management.MBeanServer server, javax.management.ObjectName name) { return null; }
+  public Any preRegister(Any server, Any name) { return null; }
   < ---- END java signatures ---- >
 }

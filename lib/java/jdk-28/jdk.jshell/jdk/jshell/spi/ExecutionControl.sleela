@@ -56,6 +56,24 @@ class ExecutionControl {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ExecutionControl bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,20 +82,20 @@ class ExecutionControl {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError, jdk.jshell.spi.ExecutionControl.ClassInstallException, jdk.jshell.spi.ExecutionControl.NotImplementedException, jdk.jshell.spi.ExecutionControl.EngineTerminationException")
-  public void load(jdk.jshell.spi.ExecutionControl.ClassBytecodes[] cbcs) { }
+  public void load(Any[] cbcs) { }
   @throwable("java.lang.AbstractMethodError, jdk.jshell.spi.ExecutionControl.EngineTerminationException, jdk.jshell.spi.ExecutionControl.InternalException")
   public void stop() { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.Throwable")
-  public static jdk.jshell.spi.ExecutionControl generate(jdk.jshell.spi.ExecutionEnv env, java.lang.String spec) { return null; }
+  public static Any generate(Any env, String spec) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.Throwable")
-  public static jdk.jshell.spi.ExecutionControl generate(jdk.jshell.spi.ExecutionEnv env, java.lang.String name, java.util.Map<java.lang.String, java.lang.String> parameters) { return null; }
+  public static Any generate(Any env, String name, Any parameters) { return null; }
   @throwable("java.lang.AbstractMethodError, jdk.jshell.spi.ExecutionControl.ClassInstallException, jdk.jshell.spi.ExecutionControl.NotImplementedException, jdk.jshell.spi.ExecutionControl.EngineTerminationException")
-  public void redefine(jdk.jshell.spi.ExecutionControl.ClassBytecodes[] cbcs) { }
+  public void redefine(Any[] cbcs) { }
   @throwable("java.lang.AbstractMethodError, jdk.jshell.spi.ExecutionControl.RunException, jdk.jshell.spi.ExecutionControl.EngineTerminationException, jdk.jshell.spi.ExecutionControl.InternalException")
-  public java.lang.Object extensionCommand(java.lang.String command, java.lang.Object arg) { return null; }
+  public Any extensionCommand(String command, Any arg) { return null; }
   @throwable("java.lang.AbstractMethodError, jdk.jshell.spi.ExecutionControl.EngineTerminationException, jdk.jshell.spi.ExecutionControl.InternalException")
-  public void addToClasspath(java.lang.String path) { }
+  public void addToClasspath(String path) { }
   @throwable("java.lang.AbstractMethodError, jdk.jshell.spi.ExecutionControl.RunException, jdk.jshell.spi.ExecutionControl.EngineTerminationException, jdk.jshell.spi.ExecutionControl.InternalException")
-  public java.lang.String varValue(java.lang.String className, java.lang.String varName) { return null; }
+  public String varValue(String className, String varName) { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class RMIClassLoader {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public RMIClassLoader bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,22 +82,22 @@ class RMIClassLoader {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, java.net.MalformedURLException, java.lang.ClassNotFoundException")
-  public static java.lang.Class<?> loadClass(java.lang.String name) { return null; }
+  public static Any loadClass(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.net.MalformedURLException, java.lang.ClassNotFoundException")
-  public static java.lang.Class<?> loadClass(java.lang.String codebase, java.lang.String name, java.lang.ClassLoader defaultLoader) { return null; }
+  public static Any loadClass(String codebase, String name, Any defaultLoader) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.net.MalformedURLException, java.lang.ClassNotFoundException")
-  public static java.lang.Class<?> loadClass(java.lang.String codebase, java.lang.String name) { return null; }
+  public static Any loadClass(String codebase, String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.net.MalformedURLException, java.lang.ClassNotFoundException")
-  public static java.lang.Class<?> loadClass(java.net.URL codebase, java.lang.String name) { return null; }
+  public static Any loadClass(Any codebase, String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.net.MalformedURLException")
-  public static java.lang.ClassLoader getClassLoader(java.lang.String codebase) { return null; }
+  public static Any getClassLoader(String codebase) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException, java.net.MalformedURLException")
-  public static java.lang.Class<?> loadProxyClass(java.lang.String codebase, java.lang.String[] interfaces, java.lang.ClassLoader defaultLoader) { return null; }
+  public static Any loadProxyClass(String codebase, String[] interfaces, Any defaultLoader) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String getClassAnnotation(java.lang.Class<?> cl) { return null; }
+  public static String getClassAnnotation(Any cl) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.rmi.server.RMIClassLoaderSpi getDefaultProviderInstance() { return null; }
+  public static Any getDefaultProviderInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.Object getSecurityContext(java.lang.ClassLoader loader) { return null; }
+  public static Any getSecurityContext(Any loader) { return null; }
   < ---- END java signatures ---- >
 }

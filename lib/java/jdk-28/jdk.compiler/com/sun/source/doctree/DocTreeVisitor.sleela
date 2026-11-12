@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class DocTreeVisitor<R, P> {
+class DocTreeVisitor {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class DocTreeVisitor<R, P> {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<R, P>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 2; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "R"; } if (index == 1) { return "P"; } return null; }
+  public DocTreeVisitor bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,84 +82,84 @@ class DocTreeVisitor<R, P> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public R visitReturn(com.sun.source.doctree.ReturnTree node, P p) { return null; }
+  public Any visitReturn(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitIdentifier(com.sun.source.doctree.IdentifierTree node, P p) { return null; }
+  public Any visitIdentifier(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitLiteral(com.sun.source.doctree.LiteralTree node, P p) { return null; }
+  public Any visitLiteral(Any node, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default R visitProvides(com.sun.source.doctree.ProvidesTree node, P p) { return null; }
+  public default Any visitProvides(Any node, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default R visitUses(com.sun.source.doctree.UsesTree node, P p) { return null; }
+  public default Any visitUses(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitOther(com.sun.source.doctree.DocTree node, P p) { return null; }
+  public Any visitOther(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitErroneous(com.sun.source.doctree.ErroneousTree node, P p) { return null; }
+  public Any visitErroneous(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitAuthor(com.sun.source.doctree.AuthorTree node, P p) { return null; }
+  public Any visitAuthor(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitReference(com.sun.source.doctree.ReferenceTree node, P p) { return null; }
+  public Any visitReference(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitText(com.sun.source.doctree.TextTree node, P p) { return null; }
+  public Any visitText(Any node, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default R visitRawText(com.sun.source.doctree.RawTextTree node, P p) { return null; }
+  public default Any visitRawText(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitComment(com.sun.source.doctree.CommentTree node, P p) { return null; }
+  public Any visitComment(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitDeprecated(com.sun.source.doctree.DeprecatedTree node, P p) { return null; }
+  public Any visitDeprecated(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitDocComment(com.sun.source.doctree.DocCommentTree node, P p) { return null; }
+  public Any visitDocComment(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitDocRoot(com.sun.source.doctree.DocRootTree node, P p) { return null; }
+  public Any visitDocRoot(Any node, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default R visitDocType(com.sun.source.doctree.DocTypeTree node, P p) { return null; }
+  public default Any visitDocType(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitEndElement(com.sun.source.doctree.EndElementTree node, P p) { return null; }
+  public Any visitEndElement(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitEntity(com.sun.source.doctree.EntityTree node, P p) { return null; }
+  public Any visitEntity(Any node, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default R visitEscape(com.sun.source.doctree.EscapeTree node, P p) { return null; }
+  public default Any visitEscape(Any node, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default R visitHidden(com.sun.source.doctree.HiddenTree node, P p) { return null; }
+  public default Any visitHidden(Any node, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default R visitIndex(com.sun.source.doctree.IndexTree node, P p) { return null; }
+  public default Any visitIndex(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitInheritDoc(com.sun.source.doctree.InheritDocTree node, P p) { return null; }
+  public Any visitInheritDoc(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitLink(com.sun.source.doctree.LinkTree node, P p) { return null; }
+  public Any visitLink(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitParam(com.sun.source.doctree.ParamTree node, P p) { return null; }
+  public Any visitParam(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitSee(com.sun.source.doctree.SeeTree node, P p) { return null; }
+  public Any visitSee(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitSerial(com.sun.source.doctree.SerialTree node, P p) { return null; }
+  public Any visitSerial(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitSerialData(com.sun.source.doctree.SerialDataTree node, P p) { return null; }
+  public Any visitSerialData(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitSerialField(com.sun.source.doctree.SerialFieldTree node, P p) { return null; }
+  public Any visitSerialField(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitSince(com.sun.source.doctree.SinceTree node, P p) { return null; }
+  public Any visitSince(Any node, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default R visitSnippet(com.sun.source.doctree.SnippetTree node, P p) { return null; }
+  public default Any visitSnippet(Any node, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default R visitSpec(com.sun.source.doctree.SpecTree node, P p) { return null; }
+  public default Any visitSpec(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitStartElement(com.sun.source.doctree.StartElementTree node, P p) { return null; }
+  public Any visitStartElement(Any node, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default R visitSummary(com.sun.source.doctree.SummaryTree node, P p) { return null; }
+  public default Any visitSummary(Any node, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default R visitSystemProperty(com.sun.source.doctree.SystemPropertyTree node, P p) { return null; }
+  public default Any visitSystemProperty(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitThrows(com.sun.source.doctree.ThrowsTree node, P p) { return null; }
+  public Any visitThrows(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitUnknownBlockTag(com.sun.source.doctree.UnknownBlockTagTree node, P p) { return null; }
+  public Any visitUnknownBlockTag(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitUnknownInlineTag(com.sun.source.doctree.UnknownInlineTagTree node, P p) { return null; }
+  public Any visitUnknownInlineTag(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitValue(com.sun.source.doctree.ValueTree node, P p) { return null; }
+  public Any visitValue(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitVersion(com.sun.source.doctree.VersionTree node, P p) { return null; }
+  public Any visitVersion(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitAttribute(com.sun.source.doctree.AttributeTree node, P p) { return null; }
+  public Any visitAttribute(Any node, Any p) { return null; }
   < ---- END java signatures ---- >
 }

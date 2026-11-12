@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class Stream<T> {
+class Stream {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class Stream<T> {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<T>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "T"; } return null; }
+  public Stream bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,102 +82,119 @@ class Stream<T> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Optional<T> min(java.util.Comparator<? super T> comparator) { return null; }
+  public Any min(Any comparator) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Optional<T> max(java.util.Comparator<? super T> comparator) { return null; }
+  public Any max(Any comparator) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Stream<T> of(T... values) { return null; }
+  public static Any of(Any... values) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Stream<T> of(T t) { return null; }
+  public static Any of(Any t) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object[] toArray() { return null; }
+  public Any[] toArray() { return null; }
+  @generic("<A>")
   @throwable("java.lang.AbstractMethodError")
-  public <A> A[] toArray(java.util.function.IntFunction<A[]> generator) { return null; }
+  public Any[] toArray(Any generator) { return null; }
+  @generic("<R>")
   @throwable("java.lang.AbstractMethodError")
-  public <R> java.util.stream.Stream<R> map(java.util.function.Function<? super T, ? extends R> mapper) { return null; }
+  public Any map(Any mapper) { return null; }
+  @generic("<R>")
   @throwable("java.lang.AbstractMethodError")
-  public <R> R collect(java.util.function.Supplier<R> supplier, java.util.function.BiConsumer<R, ? super T> accumulator, java.util.function.BiConsumer<R, R> combiner) { return null; }
+  public Any collect(Any supplier, Any accumulator, Any combiner) { return null; }
+  @generic("<R, A>")
   @throwable("java.lang.AbstractMethodError")
-  public <R, A> R collect(java.util.stream.Collector<? super T, A, R> collector) { return null; }
+  public Any collect(Any collector) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.List<T> toList() { return null; }
+  public default Any toList() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public long count() { return 0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Stream.Builder<T> builder() { return null; }
+  public static Any builder() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Stream<T> concat(java.util.stream.Stream<? extends T> a, java.util.stream.Stream<? extends T> b) { return null; }
+  public static Any concat(Any a, Any b) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.Stream<T> limit(long maxSize) { return null; }
+  public Any limit(long maxSize) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.Stream<T> filter(java.util.function.Predicate<? super T> predicate) { return null; }
+  public Any filter(Any predicate) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Stream<T> empty() { return null; }
+  public static Any empty() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean anyMatch(java.util.function.Predicate<? super T> predicate) { return false; }
+  public boolean anyMatch(Any predicate) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public void forEach(java.util.function.Consumer<? super T> action) { }
+  public void forEach(Any action) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Optional<T> findAny() { return null; }
+  public Any findAny() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.Stream<T> skip(long n) { return null; }
+  public Any skip(long n) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.Stream<T> peek(java.util.function.Consumer<? super T> action) { return null; }
+  public Any peek(Any action) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Optional<T> reduce(java.util.function.BinaryOperator<T> accumulator) { return null; }
+  public Any reduce(Any accumulator) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public T reduce(T identity, java.util.function.BinaryOperator<T> accumulator) { return null; }
+  public Any reduce(Any identity, Any accumulator) { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> U reduce(U identity, java.util.function.BiFunction<U, ? super T, U> accumulator, java.util.function.BinaryOperator<U> combiner) { return null; }
+  public Any reduce(Any identity, Any accumulator, Any combiner) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Stream<T> iterate(T seed, java.util.function.UnaryOperator<T> f) { return null; }
+  public static Any iterate(Any seed, Any f) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Stream<T> iterate(T seed, java.util.function.Predicate<? super T> hasNext, java.util.function.UnaryOperator<T> next_) { return null; }
+  public static Any iterate(Any seed, Any hasNext, Any next_) { return null; }
+  @generic("<R>")
   @throwable("java.lang.AbstractMethodError")
-  public <R> java.util.stream.Stream<R> flatMap(java.util.function.Function<? super T, ? extends java.util.stream.Stream<? extends R>> mapper) { return null; }
+  public Any flatMap(Any mapper) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean allMatch(java.util.function.Predicate<? super T> predicate) { return false; }
+  public boolean allMatch(Any predicate) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.Stream<T> distinct() { return null; }
+  public Any distinct() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Stream<T> ofNullable(T t) { return null; }
+  public static Any ofNullable(Any t) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Optional<T> findFirst() { return null; }
+  public Any findFirst() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean noneMatch(java.util.function.Predicate<? super T> predicate) { return false; }
+  public boolean noneMatch(Any predicate) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.Stream<T> sorted() { return null; }
+  public Any sorted() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.Stream<T> sorted(java.util.Comparator<? super T> comparator) { return null; }
+  public Any sorted(Any comparator) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Stream<T> generate(java.util.function.Supplier<? extends T> s) { return null; }
+  public static Any generate(Any s) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void forEachOrdered(java.util.function.Consumer<? super T> action) { }
+  public void forEachOrdered(Any action) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.IntStream mapToInt(java.util.function.ToIntFunction<? super T> mapper) { return null; }
+  public Any mapToInt(Any mapper) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.LongStream mapToLong(java.util.function.ToLongFunction<? super T> mapper) { return null; }
+  public Any mapToLong(Any mapper) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream mapToDouble(java.util.function.ToDoubleFunction<? super T> mapper) { return null; }
+  public Any mapToDouble(Any mapper) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.IntStream flatMapToInt(java.util.function.Function<? super T, ? extends java.util.stream.IntStream> mapper) { return null; }
+  public Any flatMapToInt(Any mapper) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream flatMapToDouble(java.util.function.Function<? super T, ? extends java.util.stream.DoubleStream> mapper) { return null; }
+  public Any flatMapToDouble(Any mapper) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.LongStream flatMapToLong(java.util.function.Function<? super T, ? extends java.util.stream.LongStream> mapper) { return null; }
+  public Any flatMapToLong(Any mapper) { return null; }
+  @generic("<R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public default <R> java.util.stream.Stream<R> mapMulti(java.util.function.BiConsumer<? super T, ? super java.util.function.Consumer<R>> mapper) { return null; }
+  public default Any mapMulti(Any mapper) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.stream.IntStream mapMultiToInt(java.util.function.BiConsumer<? super T, ? super java.util.function.IntConsumer> mapper) { return null; }
+  public default Any mapMultiToInt(Any mapper) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.stream.LongStream mapMultiToLong(java.util.function.BiConsumer<? super T, ? super java.util.function.LongConsumer> mapper) { return null; }
+  public default Any mapMultiToLong(Any mapper) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.stream.DoubleStream mapMultiToDouble(java.util.function.BiConsumer<? super T, ? super java.util.function.DoubleConsumer> mapper) { return null; }
+  public default Any mapMultiToDouble(Any mapper) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.stream.Stream<T> takeWhile(java.util.function.Predicate<? super T> predicate) { return null; }
+  public default Any takeWhile(Any predicate) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.stream.Stream<T> dropWhile(java.util.function.Predicate<? super T> predicate) { return null; }
+  public default Any dropWhile(Any predicate) { return null; }
+  @generic("<R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public default <R> java.util.stream.Stream<R> gather(java.util.stream.Gatherer<? super T, ?, R> gatherer) { return null; }
+  public default Any gather(Any gatherer) { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class BasicInternalFrameUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.InternalFrameUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BasicInternalFrameUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any frame;
@@ -74,7 +92,7 @@ class BasicInternalFrameUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public BasicInternalFrameUI(javax.swing.JInternalFrame b) { }
+  public BasicInternalFrameUI(Any b) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -87,57 +105,57 @@ class BasicInternalFrameUI {
   @throwable("java.lang.UnsupportedOperationException")
   void installListeners() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent x) { return null; }
+  public Any getPreferredSize(Any x) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent x) { return null; }
+  public Any getMinimumSize(Any x) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void installUI(javax.swing.JComponent c) { }
+  public void installUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void uninstallUI(javax.swing.JComponent c) { }
+  public void uninstallUI(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void createInternalFrameListener() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JComponent createNorthPane(javax.swing.JInternalFrame w) { return null; }
+  Any createNorthPane(Any w) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setNorthPane(javax.swing.JComponent c) { }
+  public void setNorthPane(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JComponent createSouthPane(javax.swing.JInternalFrame w) { return null; }
+  Any createSouthPane(Any w) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSouthPane(javax.swing.JComponent c) { }
+  public void setSouthPane(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JComponent createEastPane(javax.swing.JInternalFrame w) { return null; }
+  Any createEastPane(Any w) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setEastPane(javax.swing.JComponent c) { }
+  public void setEastPane(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JComponent createWestPane(javax.swing.JInternalFrame w) { return null; }
+  Any createWestPane(Any w) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setWestPane(javax.swing.JComponent c) { }
+  public void setWestPane(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.event.MouseInputAdapter createBorderListener(javax.swing.JInternalFrame w) { return null; }
+  Any createBorderListener(Any w) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void installMouseHandlers(javax.swing.JComponent c) { }
+  void installMouseHandlers(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.event.MouseInputListener createGlassPaneDispatcher() { return null; }
+  Any createGlassPaneDispatcher() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.ComponentListener createComponentListener() { return null; }
+  Any createComponentListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void deinstallMouseHandlers(javax.swing.JComponent c) { }
+  void deinstallMouseHandlers(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void replacePane(javax.swing.JComponent currentPane, javax.swing.JComponent newPane) { }
+  void replacePane(Any currentPane, Any newPane) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.DesktopManager createDesktopManager() { return null; }
+  Any createDesktopManager() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   final boolean isKeyBindingRegistered() { return false; }
@@ -156,18 +174,18 @@ class BasicInternalFrameUI {
   @throwable("java.lang.UnsupportedOperationException")
   void setupMenuCloseKey() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JComponent getNorthPane() { return null; }
+  public Any getNorthPane() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JComponent getSouthPane() { return null; }
+  public Any getSouthPane() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JComponent getWestPane() { return null; }
+  public Any getWestPane() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JComponent getEastPane() { return null; }
+  public Any getEastPane() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.LayoutManager createLayoutManager() { return null; }
+  Any createLayoutManager() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent b) { return null; }
+  public static Any createUI(Any b) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installKeyboardActions() { }
@@ -188,35 +206,35 @@ class BasicInternalFrameUI {
   void installComponents() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createPropertyChangeListener() { return null; }
+  Any createPropertyChangeListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void uninstallComponents() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void iconifyFrame(javax.swing.JInternalFrame f) { }
+  void iconifyFrame(Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void closeFrame(javax.swing.JInternalFrame f) { }
+  void closeFrame(Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void maximizeFrame(javax.swing.JInternalFrame f) { }
+  void maximizeFrame(Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void minimizeFrame(javax.swing.JInternalFrame f) { }
+  void minimizeFrame(Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void deiconifyFrame(javax.swing.JInternalFrame f) { }
+  void deiconifyFrame(Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void activateFrame(javax.swing.JInternalFrame f) { }
+  void activateFrame(Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void deactivateFrame(javax.swing.JInternalFrame f) { }
+  void deactivateFrame(Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.DesktopManager getDesktopManager() { return null; }
+  Any getDesktopManager() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent x) { return null; }
+  public Any getMaximumSize(Any x) { return null; }
   < ---- END java signatures ---- >
 }

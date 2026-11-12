@@ -56,6 +56,24 @@ class BitSet {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BitSet bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -75,23 +93,23 @@ class BitSet {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean get(int bitIndex) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.BitSet get(int fromIndex, int toIndex) { return null; }
+  public Any get(int fromIndex, int toIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int length() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.BitSet valueOf(long[] longs) { return null; }
+  public static Any valueOf(long[] longs) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.BitSet valueOf(java.nio.LongBuffer lb) { return null; }
+  public static Any valueOf(Any lb) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.BitSet valueOf(byte[] bytes) { return null; }
+  public static Any valueOf(byte[] bytes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void clear(int bitIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -101,7 +119,7 @@ class BitSet {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.stream.IntStream stream() { return null; }
+  public Any stream() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void set(int fromIndex, int toIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -119,13 +137,13 @@ class BitSet {
   @throwable("java.lang.UnsupportedOperationException")
   public int nextClearBit(int fromIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void or(java.util.BitSet set) { }
+  public void or(Any set) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void and(java.util.BitSet set) { }
+  public void and(Any set) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void xor(java.util.BitSet set) { }
+  public void xor(Any set) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void andNot(java.util.BitSet set) { }
+  public void andNot(Any set) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int cardinality() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -137,6 +155,6 @@ class BitSet {
   @throwable("java.lang.UnsupportedOperationException")
   public int previousClearBit(int fromIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean intersects(java.util.BitSet set) { return false; }
+  public boolean intersects(Any set) { return false; }
   < ---- END java signatures ---- >
 }

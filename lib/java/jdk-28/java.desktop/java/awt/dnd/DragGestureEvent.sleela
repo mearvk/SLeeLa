@@ -56,10 +56,28 @@ class DragGestureEvent {
   String javaKind = "class";
   String javaSuper = "java.util.EventObject";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DragGestureEvent bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public DragGestureEvent(java.awt.dnd.DragGestureRecognizer dgr, int act, java.awt.Point ori, java.util.List<? extends java.awt.event.InputEvent> evs) { }
+  public DragGestureEvent(Any dgr, int act, Any ori, Any evs) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -69,28 +87,28 @@ class DragGestureEvent {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object[] toArray(java.lang.Object[] array) { return null; }
+  public Any[] toArray(Any[] array) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object[] toArray() { return null; }
+  public Any[] toArray() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Iterator<java.awt.event.InputEvent> iterator() { return null; }
+  public Any iterator() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getComponent() { return null; }
+  public Any getComponent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.dnd.DragSource getDragSource() { return null; }
+  public Any getDragSource() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.event.InputEvent getTriggerEvent() { return null; }
+  public Any getTriggerEvent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.dnd.DragGestureRecognizer getSourceAsDragGestureRecognizer() { return null; }
+  public Any getSourceAsDragGestureRecognizer() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Point getDragOrigin() { return null; }
+  public Any getDragOrigin() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getDragAction() { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.dnd.InvalidDnDOperationException")
-  public void startDrag(java.awt.Cursor dragCursor, java.awt.Image dragImage, java.awt.Point imageOffset, java.awt.datatransfer.Transferable transferable, java.awt.dnd.DragSourceListener dsl) { }
+  public void startDrag(Any dragCursor, Any dragImage, Any imageOffset, Any transferable, Any dsl) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.dnd.InvalidDnDOperationException")
-  public void startDrag(java.awt.Cursor dragCursor, java.awt.datatransfer.Transferable transferable) { }
+  public void startDrag(Any dragCursor, Any transferable) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.dnd.InvalidDnDOperationException")
-  public void startDrag(java.awt.Cursor dragCursor, java.awt.datatransfer.Transferable transferable, java.awt.dnd.DragSourceListener dsl) { }
+  public void startDrag(Any dragCursor, Any transferable, Any dsl) { }
   < ---- END java signatures ---- >
 }

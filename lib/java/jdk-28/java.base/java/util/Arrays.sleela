@@ -56,6 +56,24 @@ class Arrays {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Arrays bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -74,13 +92,15 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean equals(byte[] a, byte[] a2) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean equals(java.lang.Object[] a, int aFromIndex, int aToIndex, java.lang.Object[] b, int bFromIndex, int bToIndex) { return false; }
+  public static boolean equals(Any[] a, int aFromIndex, int aToIndex, Any[] b, int bFromIndex, int bToIndex) { return false; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> boolean equals(T[] a, T[] a2, java.util.Comparator<? super T> cmp) { return false; }
+  public static boolean equals(Any[] a, Any[] a2, Any cmp) { return false; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> boolean equals(T[] a, int aFromIndex, int aToIndex, T[] b, int bFromIndex, int bToIndex, java.util.Comparator<? super T> cmp) { return false; }
+  public static boolean equals(Any[] a, int aFromIndex, int aToIndex, Any[] b, int bFromIndex, int bToIndex, Any cmp) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean equals(java.lang.Object[] a, java.lang.Object[] a2) { return false; }
+  public static boolean equals(Any[] a, Any[] a2) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean equals(float[] a, int aFromIndex, int aToIndex, float[] b, int bFromIndex, int bToIndex) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -104,23 +124,23 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean equals(int[] a, int[] a2) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(char[] a) { return null; }
+  public static String toString(char[] a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(float[] a) { return null; }
+  public static String toString(float[] a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(double[] a) { return null; }
+  public static String toString(double[] a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(java.lang.Object[] a) { return null; }
+  public static String toString(Any[] a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(byte[] a) { return null; }
+  public static String toString(byte[] a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(boolean[] a) { return null; }
+  public static String toString(boolean[] a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(long[] a) { return null; }
+  public static String toString(long[] a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(int[] a) { return null; }
+  public static String toString(int[] a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(short[] a) { return null; }
+  public static String toString(short[] a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int hashCode(float[] a) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -130,7 +150,7 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static int hashCode(double[] a) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int hashCode(java.lang.Object[] a) { return 0; }
+  public static int hashCode(Any[] a) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int hashCode(long[] a) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -161,10 +181,12 @@ class Arrays {
   public static int[] copyOf(int[] original, int newLength) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static byte[] copyOf(byte[] original, int newLength) { return null; }
+  @generic("<T, U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, U> T[] copyOf(U[] original, int newLength, java.lang.Class<? extends T[]> newType) { return null; }
+  public static Any[] copyOf(Any[] original, int newLength, Any newType) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> T[] copyOf(T[] original, int newLength) { return null; }
+  public static Any[] copyOf(Any[] original, int newLength) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean[] copyOf(boolean[] original, int newLength) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -176,19 +198,21 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static short[] copyOf(short[] original, int newLength) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void sort(java.lang.Object[] a) { }
+  public static void sort(Any[] a) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void sort(long[] a) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void sort(long[] a, int fromIndex, int toIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void sort(short[] a) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> void sort(T[] a, int fromIndex, int toIndex, java.util.Comparator<? super T> c) { }
+  public static void sort(Any[] a, int fromIndex, int toIndex, Any c) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> void sort(T[] a, java.util.Comparator<? super T> c) { }
+  public static void sort(Any[] a, Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void sort(java.lang.Object[] a, int fromIndex, int toIndex) { }
+  public static void sort(Any[] a, int fromIndex, int toIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void sort(int[] a) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -221,10 +245,12 @@ class Arrays {
   public static float[] copyOfRange(float[] original, int from, int to) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static double[] copyOfRange(double[] original, int from, int to) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> T[] copyOfRange(T[] original, int from, int to) { return null; }
+  public static Any[] copyOfRange(Any[] original, int from, int to) { return null; }
+  @generic("<T, U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, U> T[] copyOfRange(U[] original, int from, int to, java.lang.Class<? extends T[]> newType) { return null; }
+  public static Any[] copyOfRange(Any[] original, int from, int to, Any newType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static byte[] copyOfRange(byte[] original, int from, int to) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -259,16 +285,20 @@ class Arrays {
   public static int compare(byte[] a, byte[] b) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int compare(byte[] a, int aFromIndex, int aToIndex, byte[] b, int bFromIndex, int bToIndex) { return 0; }
+  @generic("<T extends java.lang.Comparable<? super T>>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T extends java.lang.Comparable<? super T>> int compare(T[] a, int aFromIndex, int aToIndex, T[] b, int bFromIndex, int bToIndex) { return 0; }
+  public static int compare(Any[] a, int aFromIndex, int aToIndex, Any[] b, int bFromIndex, int bToIndex) { return 0; }
+  @generic("<T extends java.lang.Comparable<? super T>>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T extends java.lang.Comparable<? super T>> int compare(T[] a, T[] b) { return 0; }
+  public static int compare(Any[] a, Any[] b) { return 0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> int compare(T[] a, T[] b, java.util.Comparator<? super T> cmp) { return 0; }
+  public static int compare(Any[] a, Any[] b, Any cmp) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int compare(double[] a, int aFromIndex, int aToIndex, double[] b, int bFromIndex, int bToIndex) { return 0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> int compare(T[] a, int aFromIndex, int aToIndex, T[] b, int bFromIndex, int bToIndex, java.util.Comparator<? super T> cmp) { return 0; }
+  public static int compare(Any[] a, int aFromIndex, int aToIndex, Any[] b, int bFromIndex, int bToIndex, Any cmp) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int compare(float[] a, float[] b) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -278,13 +308,15 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static int mismatch(long[] a, int aFromIndex, int aToIndex, long[] b, int bFromIndex, int bToIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int mismatch(java.lang.Object[] a, java.lang.Object[] b) { return 0; }
+  public static int mismatch(Any[] a, Any[] b) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int mismatch(java.lang.Object[] a, int aFromIndex, int aToIndex, java.lang.Object[] b, int bFromIndex, int bToIndex) { return 0; }
+  public static int mismatch(Any[] a, int aFromIndex, int aToIndex, Any[] b, int bFromIndex, int bToIndex) { return 0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> int mismatch(T[] a, T[] b, java.util.Comparator<? super T> cmp) { return 0; }
+  public static int mismatch(Any[] a, Any[] b, Any cmp) { return 0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> int mismatch(T[] a, int aFromIndex, int aToIndex, T[] b, int bFromIndex, int bToIndex, java.util.Comparator<? super T> cmp) { return 0; }
+  public static int mismatch(Any[] a, int aFromIndex, int aToIndex, Any[] b, int bFromIndex, int bToIndex, Any cmp) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int mismatch(double[] a, int aFromIndex, int aToIndex, double[] b, int bFromIndex, int bToIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -311,24 +343,26 @@ class Arrays {
   public static int mismatch(boolean[] a, int aFromIndex, int aToIndex, boolean[] b, int bFromIndex, int bToIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int mismatch(byte[] a, byte[] b) { return 0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Stream<T> stream(T[] array) { return null; }
+  public static Any stream(Any[] array) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.LongStream stream(long[] array) { return null; }
+  public static Any stream(long[] array) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.IntStream stream(int[] array, int startInclusive, int endExclusive) { return null; }
+  public static Any stream(int[] array, int startInclusive, int endExclusive) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.IntStream stream(int[] array) { return null; }
+  public static Any stream(int[] array) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Stream<T> stream(T[] array, int startInclusive, int endExclusive) { return null; }
+  public static Any stream(Any[] array, int startInclusive, int endExclusive) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.DoubleStream stream(double[] array, int startInclusive, int endExclusive) { return null; }
+  public static Any stream(double[] array, int startInclusive, int endExclusive) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.DoubleStream stream(double[] array) { return null; }
+  public static Any stream(double[] array) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.LongStream stream(long[] array, int startInclusive, int endExclusive) { return null; }
+  public static Any stream(long[] array, int startInclusive, int endExclusive) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void fill(java.lang.Object[] a, int fromIndex, int toIndex, java.lang.Object val) { }
+  public static void fill(Any[] a, int fromIndex, int toIndex, Any val) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void fill(long[] a, long val) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -356,7 +390,7 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static void fill(float[] a, int fromIndex, int toIndex, float val) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void fill(java.lang.Object[] a, java.lang.Object val) { }
+  public static void fill(Any[] a, Any val) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void fill(char[] a, int fromIndex, int toIndex, char val) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -364,41 +398,46 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static void fill(double[] a, double val) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Spliterator.OfInt spliterator(int[] array) { return null; }
+  public static Any spliterator(int[] array) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Spliterator.OfLong spliterator(long[] array) { return null; }
+  public static Any spliterator(long[] array) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Spliterator.OfInt spliterator(int[] array, int startInclusive, int endExclusive) { return null; }
+  public static Any spliterator(int[] array, int startInclusive, int endExclusive) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Spliterator<T> spliterator(T[] array, int startInclusive, int endExclusive) { return null; }
+  public static Any spliterator(Any[] array, int startInclusive, int endExclusive) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Spliterator.OfDouble spliterator(double[] array, int startInclusive, int endExclusive) { return null; }
+  public static Any spliterator(double[] array, int startInclusive, int endExclusive) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.Spliterator<T> spliterator(T[] array) { return null; }
+  public static Any spliterator(Any[] array) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Spliterator.OfLong spliterator(long[] array, int startInclusive, int endExclusive) { return null; }
+  public static Any spliterator(long[] array, int startInclusive, int endExclusive) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Spliterator.OfDouble spliterator(double[] array) { return null; }
+  public static Any spliterator(double[] array) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.List<T> asList(T... a) { return null; }
+  public static Any asList(Any... a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean deepEquals(java.lang.Object[] a1, java.lang.Object[] a2) { return false; }
+  public static boolean deepEquals(Any[] a1, Any[] a2) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int deepHashCode(java.lang.Object[] a) { return 0; }
+  public static int deepHashCode(Any[] a) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String deepToString(java.lang.Object[] a) { return null; }
+  public static String deepToString(Any[] a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static void parallelSort(int[] a) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void parallelSort(int[] a, int fromIndex, int toIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void parallelSort(long[] a) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> void parallelSort(T[] a, int fromIndex, int toIndex, java.util.Comparator<? super T> cmp) { }
+  public static void parallelSort(Any[] a, int fromIndex, int toIndex, Any cmp) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void parallelSort(short[] a, int fromIndex, int toIndex) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> void parallelSort(T[] a, java.util.Comparator<? super T> cmp) { }
+  public static void parallelSort(Any[] a, Any cmp) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void parallelSort(short[] a) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -409,10 +448,12 @@ class Arrays {
   public static void parallelSort(float[] a, int fromIndex, int toIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void parallelSort(float[] a) { }
+  @generic("<T extends java.lang.Comparable<? super T>>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T extends java.lang.Comparable<? super T>> void parallelSort(T[] a) { }
+  public static void parallelSort(Any[] a) { }
+  @generic("<T extends java.lang.Comparable<? super T>>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T extends java.lang.Comparable<? super T>> void parallelSort(T[] a, int fromIndex, int toIndex) { }
+  public static void parallelSort(Any[] a, int fromIndex, int toIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void parallelSort(byte[] a) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -424,21 +465,23 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static void parallelSort(long[] a, int fromIndex, int toIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void parallelPrefix(double[] array, int fromIndex, int toIndex, java.util.function.DoubleBinaryOperator op) { }
+  public static void parallelPrefix(double[] array, int fromIndex, int toIndex, Any op) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void parallelPrefix(double[] array, java.util.function.DoubleBinaryOperator op) { }
+  public static void parallelPrefix(double[] array, Any op) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void parallelPrefix(int[] array, java.util.function.IntBinaryOperator op) { }
+  public static void parallelPrefix(int[] array, Any op) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void parallelPrefix(int[] array, int fromIndex, int toIndex, java.util.function.IntBinaryOperator op) { }
+  public static void parallelPrefix(int[] array, int fromIndex, int toIndex, Any op) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void parallelPrefix(long[] array, int fromIndex, int toIndex, java.util.function.LongBinaryOperator op) { }
+  public static void parallelPrefix(long[] array, int fromIndex, int toIndex, Any op) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void parallelPrefix(long[] array, java.util.function.LongBinaryOperator op) { }
+  public static void parallelPrefix(long[] array, Any op) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> void parallelPrefix(T[] array, int fromIndex, int toIndex, java.util.function.BinaryOperator<T> op) { }
+  public static void parallelPrefix(Any[] array, int fromIndex, int toIndex, Any op) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> void parallelPrefix(T[] array, java.util.function.BinaryOperator<T> op) { }
+  public static void parallelPrefix(Any[] array, Any op) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static int binarySearch(float[] a, int fromIndex, int toIndex, float key) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -448,11 +491,12 @@ class Arrays {
   @throwable("java.lang.UnsupportedOperationException")
   public static int binarySearch(short[] a, int fromIndex, int toIndex, short key) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int binarySearch(java.lang.Object[] a, java.lang.Object key) { return 0; }
+  public static int binarySearch(Any[] a, Any key) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int binarySearch(java.lang.Object[] a, int fromIndex, int toIndex, java.lang.Object key) { return 0; }
+  public static int binarySearch(Any[] a, int fromIndex, int toIndex, Any key) { return 0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> int binarySearch(T[] a, T key, java.util.Comparator<? super T> c) { return 0; }
+  public static int binarySearch(Any[] a, Any key, Any c) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int binarySearch(double[] a, int fromIndex, int toIndex, double key) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -473,23 +517,26 @@ class Arrays {
   public static int binarySearch(long[] a, int fromIndex, int toIndex, long key) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int binarySearch(int[] a, int key) { return 0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> int binarySearch(T[] a, int fromIndex, int toIndex, T key, java.util.Comparator<? super T> c) { return 0; }
+  public static int binarySearch(Any[] a, int fromIndex, int toIndex, Any key, Any c) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setAll(double[] array, java.util.function.IntToDoubleFunction generator) { }
+  public static void setAll(double[] array, Any generator) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setAll(int[] array, java.util.function.IntUnaryOperator generator) { }
+  public static void setAll(int[] array, Any generator) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setAll(long[] array, java.util.function.IntToLongFunction generator) { }
+  public static void setAll(long[] array, Any generator) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> void setAll(T[] array, java.util.function.IntFunction<? extends T> generator) { }
+  public static void setAll(Any[] array, Any generator) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void parallelSetAll(double[] array, java.util.function.IntToDoubleFunction generator) { }
+  public static void parallelSetAll(double[] array, Any generator) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void parallelSetAll(long[] array, java.util.function.IntToLongFunction generator) { }
+  public static void parallelSetAll(long[] array, Any generator) { }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> void parallelSetAll(T[] array, java.util.function.IntFunction<? extends T> generator) { }
+  public static void parallelSetAll(Any[] array, Any generator) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void parallelSetAll(int[] array, java.util.function.IntUnaryOperator generator) { }
+  public static void parallelSetAll(int[] array, Any generator) { }
   < ---- END java signatures ---- >
 }

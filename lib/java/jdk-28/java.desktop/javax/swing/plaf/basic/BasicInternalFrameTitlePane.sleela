@@ -56,6 +56,24 @@ class BasicInternalFrameTitlePane {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BasicInternalFrameTitlePane bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static String CLOSE_CMD = null;
@@ -90,7 +108,7 @@ class BasicInternalFrameTitlePane {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public BasicInternalFrameTitlePane(javax.swing.JInternalFrame f) { }
+  public BasicInternalFrameTitlePane(Any f) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -101,12 +119,12 @@ class BasicInternalFrameTitlePane {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String getTitle(java.lang.String text, java.awt.FontMetrics fm, int availTextWidth) { return null; }
+  String getTitle(String text, Any fm, int availTextWidth) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installListeners() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintComponent(java.awt.Graphics g) { }
+  public void paintComponent(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installTitlePane() { }
@@ -118,7 +136,7 @@ class BasicInternalFrameTitlePane {
   void enableActions() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.LayoutManager createLayout() { return null; }
+  Any createLayout() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void assembleSystemMenu() { }
@@ -136,19 +154,19 @@ class BasicInternalFrameTitlePane {
   void setButtonIcons() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JMenuBar createSystemMenuBar() { return null; }
+  Any createSystemMenuBar() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JMenu createSystemMenu() { return null; }
+  Any createSystemMenu() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void addSystemMenuItems(javax.swing.JMenu systemMenu) { }
+  void addSystemMenuItems(Any systemMenu) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintTitleBackground(java.awt.Graphics g) { }
+  void paintTitleBackground(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void postClosingEvent(javax.swing.JInternalFrame frame) { }
+  void postClosingEvent(Any frame) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installDefaults() { }
@@ -160,6 +178,6 @@ class BasicInternalFrameTitlePane {
   void uninstallDefaults() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createPropertyChangeListener() { return null; }
+  Any createPropertyChangeListener() { return null; }
   < ---- END java signatures ---- >
 }

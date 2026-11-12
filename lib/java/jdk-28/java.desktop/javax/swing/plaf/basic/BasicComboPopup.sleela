@@ -56,6 +56,24 @@ class BasicComboPopup {
   String javaKind = "class";
   String javaSuper = "javax.swing.JPopupMenu";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BasicComboPopup bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static int SCROLL_UP = 0;
@@ -82,7 +100,7 @@ class BasicComboPopup {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public BasicComboPopup(javax.swing.JComboBox<java.lang.Object> combo) { }
+  public BasicComboPopup(Any combo) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -93,7 +111,7 @@ class BasicComboPopup {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.MouseEvent convertMouseEvent(java.awt.event.MouseEvent e) { return null; }
+  Any convertMouseEvent(Any e) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void show() { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -102,19 +120,19 @@ class BasicComboPopup {
   public boolean isFocusTraversable() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.MouseListener createMouseListener() { return null; }
+  Any createMouseListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.MouseMotionListener createMouseMotionListener() { return null; }
+  Any createMouseMotionListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void uninstallComboBoxModelListeners(javax.swing.ComboBoxModel<?> model) { }
+  void uninstallComboBoxModelListeners(Any model) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void configureList() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JScrollPane createScroller() { return null; }
+  Any createScroller() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void configureScroller() { }
@@ -129,22 +147,22 @@ class BasicComboPopup {
   void installListListeners() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.MouseListener createListMouseListener() { return null; }
+  Any createListMouseListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.MouseMotionListener createListMouseMotionListener() { return null; }
+  Any createListMouseMotionListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.event.ListSelectionListener createListSelectionListener() { return null; }
+  Any createListSelectionListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void installComboBoxModelListeners(javax.swing.ComboBoxModel<?> model) { }
+  void installComboBoxModelListeners(Any model) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getPopupHeightForRowCount(int maxRowCount) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Rectangle computePopupBounds(int px, int py, int pw, int ph) { return null; }
+  Any computePopupBounds(int px, int py, int pw, int ph) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void startAutoScrolling(int direction) { }
@@ -159,15 +177,15 @@ class BasicComboPopup {
   void autoScrollDown() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void delegateFocus(java.awt.event.MouseEvent e) { }
+  void delegateFocus(Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void updateListBoxSelectionForEvent(java.awt.event.MouseEvent anEvent, boolean shouldScroll) { }
+  void updateListBoxSelectionForEvent(Any anEvent, boolean shouldScroll) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JList<java.lang.Object> getList() { return null; }
+  public Any getList() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JList<java.lang.Object> createList() { return null; }
+  Any createList() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void firePopupMenuWillBecomeVisible() { }
@@ -179,7 +197,7 @@ class BasicComboPopup {
   void firePopupMenuCanceled() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.ItemListener createItemListener() { return null; }
+  Any createItemListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installKeyboardActions() { }
@@ -188,25 +206,25 @@ class BasicComboPopup {
   void uninstallKeyboardActions() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.KeyListener createKeyListener() { return null; }
+  Any createKeyListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createPropertyChangeListener() { return null; }
+  Any createPropertyChangeListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void togglePopup() { }
   @throwable("java.lang.UnsupportedOperationException")
   public void uninstallingUI() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.event.MouseListener getMouseListener() { return null; }
+  public Any getMouseListener() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.event.MouseMotionListener getMouseMotionListener() { return null; }
+  public Any getMouseMotionListener() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.event.KeyListener getKeyListener() { return null; }
+  public Any getKeyListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.event.ListDataListener createListDataListener() { return null; }
+  Any createListDataListener() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   < ---- END java signatures ---- >
 }

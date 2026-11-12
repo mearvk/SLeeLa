@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class Set<E> {
+class Set {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class Set<E> {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<E>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "E"; } return null; }
+  public Set bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,62 +82,76 @@ class Set<E> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public boolean remove(java.lang.Object o) { return false; }
+  public boolean remove(Any o) { return false; }
   @throwable("java.lang.AbstractMethodError")
   public int size() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean equals(java.lang.Object o) { return false; }
+  public boolean equals(Any o) { return false; }
   @throwable("java.lang.AbstractMethodError")
   public int hashCode() { return 0; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Set<E> copyOf(java.util.Collection<? extends E> coll) { return null; }
+  public static Any copyOf(Any coll) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void clear() { }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Set<E> of(E e1, E e2, E e3, E e4, E e5) { return null; }
+  public static Any of(Any e1, Any e2, Any e3, Any e4, Any e5) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Set<E> of(E e1, E e2, E e3, E e4) { return null; }
+  public static Any of(Any e1, Any e2, Any e3, Any e4) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Set<E> of(E e1, E e2, E e3) { return null; }
+  public static Any of(Any e1, Any e2, Any e3) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Set<E> of(E e1, E e2) { return null; }
+  public static Any of(Any e1, Any e2) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Set<E> of(E e1) { return null; }
+  public static Any of(Any e1) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Set<E> of(E... elements) { return null; }
+  public static Any of(Any... elements) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Set<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9, E e10) { return null; }
+  public static Any of(Any e1, Any e2, Any e3, Any e4, Any e5, Any e6, Any e7, Any e8, Any e9, Any e10) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Set<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9) { return null; }
+  public static Any of(Any e1, Any e2, Any e3, Any e4, Any e5, Any e6, Any e7, Any e8, Any e9) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Set<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8) { return null; }
+  public static Any of(Any e1, Any e2, Any e3, Any e4, Any e5, Any e6, Any e7, Any e8) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Set<E> of(E e1, E e2, E e3, E e4, E e5, E e6, E e7) { return null; }
+  public static Any of(Any e1, Any e2, Any e3, Any e4, Any e5, Any e6, Any e7) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Set<E> of(E e1, E e2, E e3, E e4, E e5, E e6) { return null; }
+  public static Any of(Any e1, Any e2, Any e3, Any e4, Any e5, Any e6) { return null; }
+  @generic("<E>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <E> java.util.Set<E> of() { return null; }
+  public static Any of() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean add(E e) { return false; }
+  public boolean add(Any e) { return false; }
+  @generic("<T>")
   @throwable("java.lang.AbstractMethodError")
-  public <T> T[] toArray(T[] a) { return null; }
+  public Any[] toArray(Any[] a) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object[] toArray() { return null; }
+  public Any[] toArray() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Iterator<E> iterator() { return null; }
+  public Any iterator() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean contains(java.lang.Object o) { return false; }
+  public boolean contains(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.Spliterator<E> spliterator() { return null; }
+  public default Any spliterator() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean addAll(java.util.Collection<? extends E> c) { return false; }
+  public boolean addAll(Any c) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean removeAll(java.util.Collection<?> c) { return false; }
+  public boolean removeAll(Any c) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean retainAll(java.util.Collection<?> c) { return false; }
+  public boolean retainAll(Any c) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean containsAll(java.util.Collection<?> c) { return false; }
+  public boolean containsAll(Any c) { return false; }
   < ---- END java signatures ---- >
 }

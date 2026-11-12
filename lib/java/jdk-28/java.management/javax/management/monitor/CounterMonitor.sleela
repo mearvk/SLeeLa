@@ -56,6 +56,24 @@ class CounterMonitor {
   String javaKind = "class";
   String javaSuper = "javax.management.monitor.Monitor";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public CounterMonitor bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -73,33 +91,33 @@ class CounterMonitor {
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized void stop() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.Number getOffset() { return null; }
+  public synchronized Any getOffset() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public synchronized void setOffset(java.lang.Number value) { }
+  public synchronized void setOffset(Any value) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public synchronized void setThreshold(java.lang.Number value) { }
+  public synchronized void setThreshold(Any value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.Number getModulus() { return null; }
+  public synchronized Any getModulus() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.management.MBeanNotificationInfo[] getNotificationInfo() { return null; }
+  public Any[] getNotificationInfo() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.Number getDerivedGauge(javax.management.ObjectName object) { return null; }
+  public synchronized Any getDerivedGauge(Any object) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.Number getDerivedGauge() { return null; }
+  public synchronized Any getDerivedGauge() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized long getDerivedGaugeTimeStamp(javax.management.ObjectName object) { return 0; }
+  public synchronized long getDerivedGaugeTimeStamp(Any object) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized long getDerivedGaugeTimeStamp() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.Number getThreshold(javax.management.ObjectName object) { return null; }
+  public synchronized Any getThreshold(Any object) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.Number getThreshold() { return null; }
+  public synchronized Any getThreshold() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public synchronized void setInitThreshold(java.lang.Number value) { }
+  public synchronized void setInitThreshold(Any value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.Number getInitThreshold() { return null; }
+  public synchronized Any getInitThreshold() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalArgumentException")
-  public synchronized void setModulus(java.lang.Number value) { }
+  public synchronized void setModulus(Any value) { }
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized boolean getNotify() { return false; }
   @throwable("java.lang.UnsupportedOperationException")

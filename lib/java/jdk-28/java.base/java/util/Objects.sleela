@@ -56,6 +56,24 @@ class Objects {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Objects bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,27 +82,31 @@ class Objects {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean equals(java.lang.Object a, java.lang.Object b) { return false; }
+  public static boolean equals(Any a, Any b) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(java.lang.Object o) { return null; }
+  public static String toString(Any o) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(java.lang.Object o, java.lang.String nullDefault) { return null; }
+  public static String toString(Any o, String nullDefault) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int checkIndex(int index, int length) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static long checkIndex(long index, long length) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int hashCode(java.lang.Object o) { return 0; }
+  public static int hashCode(Any o) { return 0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> int compare(T a, T b, java.util.Comparator<? super T> c) { return 0; }
+  public static int compare(Any a, Any b, Any c) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int hash(java.lang.Object... values) { return 0; }
+  public static int hash(Any... values) { return 0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> T requireNonNull(T obj, java.util.function.Supplier<java.lang.String> messageSupplier) { return null; }
+  public static Any requireNonNull(Any obj, Any messageSupplier) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> T requireNonNull(T obj, java.lang.String message) { return null; }
+  public static Any requireNonNull(Any obj, String message) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> T requireNonNull(T obj) { return null; }
+  public static Any requireNonNull(Any obj) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static long checkFromToIndex(long fromIndex, long toIndex, long length) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -94,16 +116,18 @@ class Objects {
   @throwable("java.lang.UnsupportedOperationException")
   public static long checkFromIndexSize(long fromIndex, long size, long length) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean deepEquals(java.lang.Object a, java.lang.Object b) { return false; }
+  public static boolean deepEquals(Any a, Any b) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toIdentityString(java.lang.Object o) { return null; }
+  public static String toIdentityString(Any o) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isNull(java.lang.Object obj) { return false; }
+  public static boolean isNull(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean nonNull(java.lang.Object obj) { return false; }
+  public static boolean nonNull(Any obj) { return false; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> T requireNonNullElse(T obj, T defaultObj) { return null; }
+  public static Any requireNonNullElse(Any obj, Any defaultObj) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> T requireNonNullElseGet(T obj, java.util.function.Supplier<? extends T> supplier) { return null; }
+  public static Any requireNonNullElseGet(Any obj, Any supplier) { return null; }
   < ---- END java signatures ---- >
 }

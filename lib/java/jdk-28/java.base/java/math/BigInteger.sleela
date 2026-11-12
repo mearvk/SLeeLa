@@ -56,6 +56,24 @@ class BigInteger {
   String javaKind = "class";
   String javaSuper = "java.lang.Number";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BigInteger bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any ZERO = null;
@@ -66,11 +84,11 @@ class BigInteger {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public BigInteger(java.lang.String val) { }
+  public BigInteger(String val) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BigInteger(int bitLength, int certainty, java.util.Random rnd) { }
+  public BigInteger(int bitLength, int certainty, Any rnd) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BigInteger(int numBits, java.util.Random rnd) { }
+  public BigInteger(int numBits, Any rnd) { }
   @throwable("java.lang.UnsupportedOperationException")
   public BigInteger(int signum, byte[] magnitude, int off, int len) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -78,7 +96,7 @@ class BigInteger {
   @throwable("java.lang.UnsupportedOperationException")
   public BigInteger(byte[] val, int off, int len) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BigInteger(java.lang.String val, int radix) { }
+  public BigInteger(String val, int radix) { }
   @throwable("java.lang.UnsupportedOperationException")
   public BigInteger(int signum, byte[] magnitude) { }
   < ---- END java constructors ---- >
@@ -92,27 +110,27 @@ class BigInteger {
   @throwable("java.lang.UnsupportedOperationException")
   public int bitCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object x) { return false; }
+  public boolean equals(Any x) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString(int radix) { return null; }
+  public String toString(int radix) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger abs() { return null; }
+  public Any abs() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger sqrt() { return null; }
+  public Any sqrt() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger pow(int exponent) { return null; }
+  public Any pow(int exponent) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger min(java.math.BigInteger val) { return null; }
+  public Any min(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger max(java.math.BigInteger val) { return null; }
+  public Any max(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int signum() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(java.math.BigInteger val) { return 0; }
+  public int compareTo(Any val) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int intValue() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -122,65 +140,65 @@ class BigInteger {
   @throwable("java.lang.UnsupportedOperationException")
   public double doubleValue() { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.math.BigInteger valueOf(long val) { return null; }
+  public static Any valueOf(long val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger add(java.math.BigInteger val) { return null; }
+  public Any add(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger mod(java.math.BigInteger m) { return null; }
+  public Any mod(Any m) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger setBit(int n) { return null; }
+  public Any setBit(int n) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger shiftLeft(int n) { return null; }
+  public Any shiftLeft(int n) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public byte[] toByteArray() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger multiply(java.math.BigInteger val) { return null; }
+  public Any multiply(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger or(java.math.BigInteger val) { return null; }
+  public Any or(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger negate() { return null; }
+  public Any negate() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger and(java.math.BigInteger val) { return null; }
+  public Any and(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger not() { return null; }
+  public Any not() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger remainder(java.math.BigInteger val) { return null; }
+  public Any remainder(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int bitLength() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean testBit(int n) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger subtract(java.math.BigInteger val) { return null; }
+  public Any subtract(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger shiftRight(int n) { return null; }
+  public Any shiftRight(int n) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getLowestSetBit() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger modPow(java.math.BigInteger exponent, java.math.BigInteger m) { return null; }
+  public Any modPow(Any exponent, Any m) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger modInverse(java.math.BigInteger m) { return null; }
+  public Any modInverse(Any m) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger divide(java.math.BigInteger val) { return null; }
+  public Any divide(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger[] divideAndRemainder(java.math.BigInteger val) { return null; }
+  public Any[] divideAndRemainder(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.math.BigInteger probablePrime(int bitLength, java.util.Random rnd) { return null; }
+  public static Any probablePrime(int bitLength, Any rnd) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger nextProbablePrime() { return null; }
+  public Any nextProbablePrime() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger parallelMultiply(java.math.BigInteger val) { return null; }
+  public Any parallelMultiply(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger[] sqrtAndRemainder() { return null; }
+  public Any[] sqrtAndRemainder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger gcd(java.math.BigInteger val) { return null; }
+  public Any gcd(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger xor(java.math.BigInteger val) { return null; }
+  public Any xor(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger andNot(java.math.BigInteger val) { return null; }
+  public Any andNot(Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger clearBit(int n) { return null; }
+  public Any clearBit(int n) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger flipBit(int n) { return null; }
+  public Any flipBit(int n) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isProbablePrime(int certainty) { return false; }
   @throwable("java.lang.UnsupportedOperationException")

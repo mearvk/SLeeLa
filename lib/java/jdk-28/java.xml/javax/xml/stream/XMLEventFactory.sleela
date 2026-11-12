@@ -56,6 +56,24 @@ class XMLEventFactory {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public XMLEventFactory bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,66 +88,66 @@ class XMLEventFactory {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, javax.xml.stream.FactoryConfigurationError")
-  public static javax.xml.stream.XMLEventFactory newInstance(java.lang.String factoryId, java.lang.ClassLoader classLoader) { return null; }
+  public static Any newInstance(String factoryId, Any classLoader) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.xml.stream.FactoryConfigurationError")
-  public static javax.xml.stream.XMLEventFactory newInstance() { return null; }
+  public static Any newInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.xml.stream.XMLEventFactory newDefaultFactory() { return null; }
+  public static Any newDefaultFactory() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.Namespace createNamespace(java.lang.String namespaceURI) { return null; }
+  public Any createNamespace(String namespaceURI) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.Namespace createNamespace(java.lang.String prefix, java.lang.String namespaceUri) { return null; }
+  public Any createNamespace(String prefix, String namespaceUri) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.StartElement createStartElement(java.lang.String prefix, java.lang.String namespaceUri, java.lang.String localName) { return null; }
+  public Any createStartElement(String prefix, String namespaceUri, String localName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.StartElement createStartElement(java.lang.String prefix, java.lang.String namespaceUri, java.lang.String localName, java.util.Iterator<? extends javax.xml.stream.events.Attribute> attributes, java.util.Iterator<? extends javax.xml.stream.events.Namespace> namespaces) { return null; }
+  public Any createStartElement(String prefix, String namespaceUri, String localName, Any attributes, Any namespaces) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.StartElement createStartElement(java.lang.String prefix, java.lang.String namespaceUri, java.lang.String localName, java.util.Iterator<? extends javax.xml.stream.events.Attribute> attributes, java.util.Iterator<? extends javax.xml.stream.events.Namespace> namespaces, javax.xml.namespace.NamespaceContext context) { return null; }
+  public Any createStartElement(String prefix, String namespaceUri, String localName, Any attributes, Any namespaces, Any context) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.StartElement createStartElement(javax.xml.namespace.QName name, java.util.Iterator<? extends javax.xml.stream.events.Attribute> attributes, java.util.Iterator<? extends javax.xml.stream.events.Namespace> namespaces) { return null; }
+  public Any createStartElement(Any name, Any attributes, Any namespaces) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.EndElement createEndElement(java.lang.String prefix, java.lang.String namespaceUri, java.lang.String localName, java.util.Iterator<? extends javax.xml.stream.events.Namespace> namespaces) { return null; }
+  public Any createEndElement(String prefix, String namespaceUri, String localName, Any namespaces) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.EndElement createEndElement(javax.xml.namespace.QName name, java.util.Iterator<? extends javax.xml.stream.events.Namespace> namespaces) { return null; }
+  public Any createEndElement(Any name, Any namespaces) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.EndElement createEndElement(java.lang.String prefix, java.lang.String namespaceUri, java.lang.String localName) { return null; }
+  public Any createEndElement(String prefix, String namespaceUri, String localName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.Characters createCharacters(java.lang.String content) { return null; }
+  public Any createCharacters(String content) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.Characters createCData(java.lang.String content) { return null; }
+  public Any createCData(String content) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.Characters createSpace(java.lang.String content) { return null; }
+  public Any createSpace(String content) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.Characters createIgnorableSpace(java.lang.String content) { return null; }
+  public Any createIgnorableSpace(String content) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.StartDocument createStartDocument() { return null; }
+  public Any createStartDocument() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.StartDocument createStartDocument(java.lang.String encoding) { return null; }
+  public Any createStartDocument(String encoding) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.StartDocument createStartDocument(java.lang.String encoding, java.lang.String version) { return null; }
+  public Any createStartDocument(String encoding, String version) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.StartDocument createStartDocument(java.lang.String encoding, java.lang.String version, boolean standalone) { return null; }
+  public Any createStartDocument(String encoding, String version, boolean standalone) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.EndDocument createEndDocument() { return null; }
+  public Any createEndDocument() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.DTD createDTD(java.lang.String dtd) { return null; }
+  public Any createDTD(String dtd) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.Comment createComment(java.lang.String text) { return null; }
+  public Any createComment(String text) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.ProcessingInstruction createProcessingInstruction(java.lang.String target, java.lang.String data) { return null; }
+  public Any createProcessingInstruction(String target, String data) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.Attribute createAttribute(java.lang.String prefix, java.lang.String namespaceURI, java.lang.String localName, java.lang.String value) { return null; }
+  public Any createAttribute(String prefix, String namespaceURI, String localName, String value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.Attribute createAttribute(javax.xml.namespace.QName name, java.lang.String value) { return null; }
+  public Any createAttribute(Any name, String value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.Attribute createAttribute(java.lang.String localName, java.lang.String value) { return null; }
+  public Any createAttribute(String localName, String value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.events.EntityReference createEntityReference(java.lang.String name, javax.xml.stream.events.EntityDeclaration declaration) { return null; }
+  public Any createEntityReference(String name, Any declaration) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setLocation(javax.xml.stream.Location location) { }
+  public void setLocation(Any location) { }
   @throwable("java.lang.UnsupportedOperationException, javax.xml.stream.FactoryConfigurationError")
-  public static javax.xml.stream.XMLEventFactory newFactory() { return null; }
+  public static Any newFactory() { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.xml.stream.FactoryConfigurationError")
-  public static javax.xml.stream.XMLEventFactory newFactory(java.lang.String factoryId, java.lang.ClassLoader classLoader) { return null; }
+  public static Any newFactory(String factoryId, Any classLoader) { return null; }
   < ---- END java signatures ---- >
 }

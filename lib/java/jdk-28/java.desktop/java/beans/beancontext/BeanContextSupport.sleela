@@ -56,6 +56,24 @@ class BeanContextSupport {
   String javaKind = "class";
   String javaSuper = "java.beans.beancontext.BeanContextChildSupport";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BeanContextSupport bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any children;
@@ -69,13 +87,13 @@ class BeanContextSupport {
   @throwable("java.lang.UnsupportedOperationException")
   public BeanContextSupport() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BeanContextSupport(java.beans.beancontext.BeanContext peer) { }
+  public BeanContextSupport(Any peer) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BeanContextSupport(java.beans.beancontext.BeanContext peer, java.util.Locale lcle) { }
+  public BeanContextSupport(Any peer, Any lcle) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BeanContextSupport(java.beans.beancontext.BeanContext peer, java.util.Locale lcle, boolean dtime) { }
+  public BeanContextSupport(Any peer, Any lcle, boolean dtime) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BeanContextSupport(java.beans.beancontext.BeanContext peer, java.util.Locale lcle, boolean dTime, boolean visible) { }
+  public BeanContextSupport(Any peer, Any lcle, boolean dTime, boolean visible) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -86,9 +104,9 @@ class BeanContextSupport {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean remove(java.lang.Object targetChild, boolean callChildSetBC) { return false; }
+  boolean remove(Any targetChild, boolean callChildSetBC) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean remove(java.lang.Object targetChild) { return false; }
+  public boolean remove(Any targetChild) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int size() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -96,110 +114,110 @@ class BeanContextSupport {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean add(java.lang.Object targetChild) { return false; }
+  public boolean add(Any targetChild) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object[] toArray() { return null; }
+  public Any[] toArray() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object[] toArray(java.lang.Object[] arry) { return null; }
+  public Any[] toArray(Any[] arry) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Iterator<java.lang.Object> iterator() { return null; }
+  public Any iterator() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean contains(java.lang.Object o) { return false; }
+  public boolean contains(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.io.InputStream getResourceAsStream(java.lang.String name, java.beans.beancontext.BeanContextChild bcc) { return null; }
+  public Any getResourceAsStream(String name, Any bcc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.net.URL getResource(java.lang.String name, java.beans.beancontext.BeanContextChild bcc) { return null; }
+  public Any getResource(String name, Any bcc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean addAll(java.util.Collection c) { return false; }
+  public boolean addAll(Any c) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   synchronized void initialize() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsKey(java.lang.Object o) { return false; }
+  public boolean containsKey(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean removeAll(java.util.Collection c) { return false; }
+  public boolean removeAll(Any c) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean retainAll(java.util.Collection c) { return false; }
+  public boolean retainAll(Any c) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean containsAll(java.util.Collection c) { return false; }
+  public boolean containsAll(Any c) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.util.Locale getLocale() { return null; }
+  public synchronized Any getLocale() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
-  public synchronized void setLocale(java.util.Locale newLocale) { }
+  public synchronized void setLocale(Any newLocale) { }
   @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
-  public void vetoableChange(java.beans.PropertyChangeEvent pce) { }
+  public void vetoableChange(Any pce) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.util.Iterator<java.beans.beancontext.BeanContextSupport.BCSChild> bcsChildren() { return null; }
+  Any bcsChildren() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  final void serialize(java.io.ObjectOutputStream oos, java.util.Collection<?> coll) { }
+  final void serialize(Any oos, Any coll) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.beancontext.BeanContextSupport.BCSChild createBCSChild(java.lang.Object targetChild, java.lang.Object peer) { return null; }
+  Any createBCSChild(Any targetChild, Any peer) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void childJustRemovedHook(java.lang.Object child, java.beans.beancontext.BeanContextSupport.BCSChild bcsc) { }
+  void childJustRemovedHook(Any child, Any bcsc) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  void bcsPreSerializationHook(java.io.ObjectOutputStream oos) { }
+  void bcsPreSerializationHook(Any oos) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, java.lang.ClassNotFoundException")
-  void bcsPreDeserializationHook(java.io.ObjectInputStream ois) { }
+  void bcsPreDeserializationHook(Any ois) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.beans.beancontext.BeanContext getBeanContextPeer() { return null; }
+  public Any getBeanContextPeer() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean validatePendingAdd(java.lang.Object targetChild) { return false; }
+  boolean validatePendingAdd(Any targetChild) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  protected static final java.beans.beancontext.BeanContextChild getChildBeanContextChild(java.lang.Object child) { return null; }
+  protected static final Any getChildBeanContextChild(Any child) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  protected static final java.beans.Visibility getChildVisibility(java.lang.Object child) { return null; }
+  protected static final Any getChildVisibility(Any child) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  protected static final java.io.Serializable getChildSerializable(java.lang.Object child) { return null; }
+  protected static final Any getChildSerializable(Any child) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void childJustAddedHook(java.lang.Object child, java.beans.beancontext.BeanContextSupport.BCSChild bcsc) { }
+  void childJustAddedHook(Any child, Any bcsc) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final void fireChildrenAdded(java.beans.beancontext.BeanContextMembershipEvent bcme) { }
+  final void fireChildrenAdded(Any bcme) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean validatePendingRemove(java.lang.Object targetChild) { return false; }
+  boolean validatePendingRemove(Any targetChild) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final void fireChildrenRemoved(java.beans.beancontext.BeanContextMembershipEvent bcme) { }
+  final void fireChildrenRemoved(Any bcme) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public final void writeChildren(java.io.ObjectOutputStream oos) { }
+  public final void writeChildren(Any oos) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void childDeserializedHook(java.lang.Object child, java.beans.beancontext.BeanContextSupport.BCSChild bcsc) { }
+  void childDeserializedHook(Any child, Any bcsc) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, java.lang.ClassNotFoundException")
-  public final void readChildren(java.io.ObjectInputStream ois) { }
+  public final void readChildren(Any ois) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isSerializing() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  protected static final java.beans.PropertyChangeListener getChildPropertyChangeListener(java.lang.Object child) { return null; }
+  protected static final Any getChildPropertyChangeListener(Any child) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  protected static final java.beans.VetoableChangeListener getChildVetoableChangeListener(java.lang.Object child) { return null; }
+  protected static final Any getChildVetoableChangeListener(Any child) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  protected static final java.beans.beancontext.BeanContextMembershipListener getChildBeanContextMembershipListener(java.lang.Object child) { return null; }
+  protected static final Any getChildBeanContextMembershipListener(Any child) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final java.lang.Object[] copyChildren() { return null; }
+  final Any[] copyChildren() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  protected static final boolean classEquals(java.lang.Class<?> first, java.lang.Class<?> second) { return false; }
+  protected static final boolean classEquals(Any first, Any second) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, java.lang.ClassNotFoundException")
-  final void deserialize(java.io.ObjectInputStream ois, java.util.Collection coll) { }
+  final void deserialize(Any ois, Any coll) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void propertyChange(java.beans.PropertyChangeEvent pce) { }
+  public void propertyChange(Any pce) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException, java.lang.ClassNotFoundException")
-  public java.lang.Object instantiateChild(java.lang.String beanName) { return null; }
+  public Any instantiateChild(String beanName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addBeanContextMembershipListener(java.beans.beancontext.BeanContextMembershipListener bcml) { }
+  public void addBeanContextMembershipListener(Any bcml) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeBeanContextMembershipListener(java.beans.beancontext.BeanContextMembershipListener bcml) { }
+  public void removeBeanContextMembershipListener(Any bcml) { }
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized void setDesignTime(boolean dTime) { }
   @throwable("java.lang.UnsupportedOperationException")

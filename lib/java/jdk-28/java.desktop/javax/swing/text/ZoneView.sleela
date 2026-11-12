@@ -56,10 +56,28 @@ class ZoneView {
   String javaKind = "class";
   String javaSuper = "javax.swing.text.BoxView";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ZoneView bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public ZoneView(javax.swing.text.Element elem, int axis) { }
+  public ZoneView(Any elem, int axis) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -69,17 +87,17 @@ class ZoneView {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void insertUpdate(javax.swing.event.DocumentEvent changes, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  public void insertUpdate(Any changes, Any a, Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeUpdate(javax.swing.event.DocumentEvent changes, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  public void removeUpdate(Any changes, Any a, Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMaxZonesLoaded() { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void unloadZone(javax.swing.text.View zone) { }
+  void unloadZone(Any zone) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.text.View createZone(int p0, int p1) { return null; }
+  Any createZone(int p0, int p1) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMaximumZoneSize() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -88,18 +106,18 @@ class ZoneView {
   public void setMaxZonesLoaded(int mzl) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void zoneWasLoaded(javax.swing.text.View zone) { }
+  void zoneWasLoaded(Any zone) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean isZoneLoaded(javax.swing.text.View zone) { return false; }
+  boolean isZoneLoaded(Any zone) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getViewIndexAtPosition(int pos) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void loadChildren(javax.swing.text.ViewFactory f) { }
+  void loadChildren(Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean updateChildren(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, javax.swing.text.ViewFactory f) { return false; }
+  boolean updateChildren(Any ec, Any e, Any f) { return false; }
   < ---- END java signatures ---- >
 }

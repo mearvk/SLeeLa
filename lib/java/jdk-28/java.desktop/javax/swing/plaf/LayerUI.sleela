@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class LayerUI<V extends java.awt.Component> {
+class LayerUI {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class LayerUI<V extends java.awt.Component> {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.ComponentUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<V extends java.awt.Component>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "V"; } return null; }
+  public LayerUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -70,73 +88,73 @@ class LayerUI<V extends java.awt.Component> {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  void firePropertyChange(String propertyName, Any oldValue, Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public void addPropertyChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addPropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { }
+  public void addPropertyChangeListener(String propertyName, Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  public Any getPreferredSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
+  public Any getMinimumSize(Any c) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processKeyEvent(java.awt.event.KeyEvent e, javax.swing.JLayer<? extends V> l) { }
+  void processKeyEvent(Any e, Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.beans.PropertyChangeListener[] getPropertyChangeListeners(java.lang.String propertyName) { return null; }
+  public Any[] getPropertyChangeListeners(String propertyName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.beans.PropertyChangeListener[] getPropertyChangeListeners() { return null; }
+  public Any[] getPropertyChangeListeners() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processFocusEvent(java.awt.event.FocusEvent e, javax.swing.JLayer<? extends V> l) { }
+  void processFocusEvent(Any e, Any l) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processMouseEvent(java.awt.event.MouseEvent e, javax.swing.JLayer<? extends V> l) { }
+  void processMouseEvent(Any e, Any l) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processMouseMotionEvent(java.awt.event.MouseEvent e, javax.swing.JLayer<? extends V> l) { }
+  void processMouseMotionEvent(Any e, Any l) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processMouseWheelEvent(java.awt.event.MouseWheelEvent e, javax.swing.JLayer<? extends V> l) { }
+  void processMouseWheelEvent(Any e, Any l) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processComponentEvent(java.awt.event.ComponentEvent e, javax.swing.JLayer<? extends V> l) { }
+  void processComponentEvent(Any e, Any l) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processInputMethodEvent(java.awt.event.InputMethodEvent e, javax.swing.JLayer<? extends V> l) { }
+  void processInputMethodEvent(Any e, Any l) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processHierarchyEvent(java.awt.event.HierarchyEvent e, javax.swing.JLayer<? extends V> l) { }
+  void processHierarchyEvent(Any e, Any l) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processHierarchyBoundsEvent(java.awt.event.HierarchyEvent e, javax.swing.JLayer<? extends V> l) { }
+  void processHierarchyBoundsEvent(Any e, Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removePropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) { }
+  public void removePropertyChangeListener(String propertyName, Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) { }
+  public void removePropertyChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void updateUI(javax.swing.JLayer<? extends V> l) { }
+  public void updateUI(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void installUI(javax.swing.JComponent c) { }
+  public void installUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void uninstallUI(javax.swing.JComponent c) { }
+  public void uninstallUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintImmediately(int x, int y, int width, int height, javax.swing.JLayer<? extends V> l) { }
+  public void paintImmediately(int x, int y, int width, int height, Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void eventDispatched(java.awt.AWTEvent e, javax.swing.JLayer<? extends V> l) { }
+  public void eventDispatched(Any e, Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void applyPropertyChange(java.beans.PropertyChangeEvent evt, javax.swing.JLayer<? extends V> l) { }
+  public void applyPropertyChange(Any evt, Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getBaseline(javax.swing.JComponent c, int width, int height) { return 0; }
+  public int getBaseline(Any c, int width, int height) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(javax.swing.JComponent c) { return null; }
+  public Any getBaselineResizeBehavior(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int w, int h, javax.swing.JLayer<? extends V> l) { return false; }
+  public boolean imageUpdate(Any img, int infoflags, int x, int y, int w, int h, Any l) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void doLayout(javax.swing.JLayer<? extends V> l) { }
+  public void doLayout(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
+  public Any getMaximumSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
+  public void paint(Any g, Any c) { }
   < ---- END java signatures ---- >
 }

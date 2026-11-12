@@ -56,6 +56,24 @@ class SynthComboBoxUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.basic.BasicComboBoxUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SynthComboBoxUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,32 +87,32 @@ class SynthComboBoxUI {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void update(java.awt.Graphics g, javax.swing.JComponent c) { }
+  public void update(Any g, Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.synth.SynthContext getContext(javax.swing.JComponent c) { return null; }
+  public Any getContext(Any c) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installListeners() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
+  public Any getMinimumSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void installUI(javax.swing.JComponent c) { }
+  public void installUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void uninstallUI(javax.swing.JComponent c) { }
+  public void uninstallUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintCurrentValue(java.awt.Graphics g, java.awt.Rectangle bounds, boolean hasFocus) { }
+  public void paintCurrentValue(Any g, Any bounds, boolean hasFocus) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Dimension getDefaultSize() { return null; }
+  Any getDefaultSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void propertyChange(java.beans.PropertyChangeEvent e) { }
+  public void propertyChange(Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.ComboBoxEditor createEditor() { return null; }
+  Any createEditor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
+  public static Any createUI(Any c) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installDefaults() { }
@@ -106,14 +124,14 @@ class SynthComboBoxUI {
   void uninstallDefaults() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.plaf.basic.ComboPopup createPopup() { return null; }
+  Any createPopup() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.ListCellRenderer<java.lang.Object> createRenderer() { return null; }
+  Any createRenderer() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JButton createArrowButton() { return null; }
+  Any createArrowButton() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
+  public void paint(Any g, Any c) { }
   < ---- END java signatures ---- >
 }

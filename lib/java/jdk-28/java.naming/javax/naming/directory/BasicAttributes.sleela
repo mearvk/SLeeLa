@@ -56,12 +56,30 @@ class BasicAttributes {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BasicAttributes bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public BasicAttributes(java.lang.String attrID, java.lang.Object val, boolean ignoreCase) { }
+  public BasicAttributes(String attrID, Any val, boolean ignoreCase) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BasicAttributes(java.lang.String attrID, java.lang.Object val) { }
+  public BasicAttributes(String attrID, Any val) { }
   @throwable("java.lang.UnsupportedOperationException")
   public BasicAttributes(boolean ignoreCase) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -75,28 +93,28 @@ class BasicAttributes {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.naming.directory.Attribute remove(java.lang.String attrID) { return null; }
+  public Any remove(String attrID) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int size() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.naming.directory.Attribute get(java.lang.String attrID) { return null; }
+  public Any get(String attrID) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.naming.directory.Attribute put(javax.naming.directory.Attribute attr) { return null; }
+  public Any put(Any attr) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.naming.directory.Attribute put(java.lang.String attrID, java.lang.Object val) { return null; }
+  public Any put(String attrID, Any val) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.naming.NamingEnumeration<javax.naming.directory.Attribute> getAll() { return null; }
+  public Any getAll() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isCaseIgnored() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.naming.NamingEnumeration<java.lang.String> getIDs() { return null; }
+  public Any getIDs() { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class Locale {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Locale bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any ENGLISH = null;
@@ -86,11 +104,11 @@ class Locale {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public Locale(java.lang.String language) { }
+  public Locale(String language) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Locale(java.lang.String language, java.lang.String country, java.lang.String variant) { }
+  public Locale(String language, String country, String variant) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Locale(java.lang.String language, java.lang.String country) { }
+  public Locale(String language, String country) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -100,100 +118,100 @@ class Locale {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String toString() { return null; }
+  public final String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Locale of(java.lang.String language, java.lang.String country) { return null; }
+  public static Any of(String language, String country) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Locale of(java.lang.String language, java.lang.String country, java.lang.String variant) { return null; }
+  public static Any of(String language, String country, String variant) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Locale of(java.lang.String language) { return null; }
+  public static Any of(String language) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Locale getDefault(java.util.Locale.Category category) { return null; }
+  public static Any getDefault(Any category) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Locale getDefault() { return null; }
+  public static Any getDefault() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Locale lookup(java.util.List<java.util.Locale.LanguageRange> priorityList, java.util.Collection<java.util.Locale> locales) { return null; }
+  public static Any lookup(Any priorityList, Any locales) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.List<java.util.Locale> filter(java.util.List<java.util.Locale.LanguageRange> priorityList, java.util.Collection<java.util.Locale> locales, java.util.Locale.FilteringMode mode) { return null; }
+  public static Any filter(Any priorityList, Any locales, Any mode) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.List<java.util.Locale> filter(java.util.List<java.util.Locale.LanguageRange> priorityList, java.util.Collection<java.util.Locale> locales) { return null; }
+  public static Any filter(Any priorityList, Any locales) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getLanguage() { return null; }
+  public String getLanguage() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String getDisplayName() { return null; }
+  public final String getDisplayName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getDisplayName(java.util.Locale inLocale) { return null; }
+  public String getDisplayName(Any inLocale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Locale[] getAvailableLocales() { return null; }
+  public static Any[] getAvailableLocales() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUnicodeLocaleType(java.lang.String key) { return null; }
+  public String getUnicodeLocaleType(String key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getCountry() { return null; }
+  public String getCountry() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Locale stripExtensions() { return null; }
+  public Any stripExtensions() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasExtensions() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getVariant() { return null; }
+  public String getVariant() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static synchronized void setDefault(java.util.Locale.Category category, java.util.Locale newLocale) { }
+  public static synchronized void setDefault(Any category, Any newLocale) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static synchronized void setDefault(java.util.Locale newLocale) { }
+  public static synchronized void setDefault(Any newLocale) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getScript() { return null; }
+  public String getScript() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.lang.String> getUnicodeLocaleAttributes() { return null; }
+  public Any getUnicodeLocaleAttributes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.lang.String> getUnicodeLocaleKeys() { return null; }
+  public Any getUnicodeLocaleKeys() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String getDisplayLanguage() { return null; }
+  public final String getDisplayLanguage() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getDisplayLanguage(java.util.Locale inLocale) { return null; }
+  public String getDisplayLanguage(Any inLocale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getDisplayScript(java.util.Locale inLocale) { return null; }
+  public String getDisplayScript(Any inLocale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getDisplayScript() { return null; }
+  public String getDisplayScript() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getDisplayCountry(java.util.Locale inLocale) { return null; }
+  public String getDisplayCountry(Any inLocale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String getDisplayCountry() { return null; }
+  public final String getDisplayCountry() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getDisplayVariant(java.util.Locale inLocale) { return null; }
+  public String getDisplayVariant(Any inLocale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String getDisplayVariant() { return null; }
+  public final String getDisplayVariant() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.List<java.lang.String> filterTags(java.util.List<java.util.Locale.LanguageRange> priorityList, java.util.Collection<java.lang.String> tags) { return null; }
+  public static Any filterTags(Any priorityList, Any tags) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.List<java.lang.String> filterTags(java.util.List<java.util.Locale.LanguageRange> priorityList, java.util.Collection<java.lang.String> tags, java.util.Locale.FilteringMode mode) { return null; }
+  public static Any filterTags(Any priorityList, Any tags, Any mode) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String lookupTag(java.util.List<java.util.Locale.LanguageRange> priorityList, java.util.Collection<java.lang.String> tags) { return null; }
+  public static String lookupTag(Any priorityList, Any tags) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.Stream<java.util.Locale> availableLocales() { return null; }
+  public static Any availableLocales() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Set<java.lang.String> getISOCountries(java.util.Locale.IsoCountryCode type) { return null; }
+  public static Any getISOCountries(Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String[] getISOCountries() { return null; }
+  public static String[] getISOCountries() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String[] getISOLanguages() { return null; }
+  public static String[] getISOLanguages() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getExtension(char key) { return null; }
+  public String getExtension(char key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.lang.Character> getExtensionKeys() { return null; }
+  public Any getExtensionKeys() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toLanguageTag() { return null; }
+  public String toLanguageTag() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String caseFoldLanguageTag(java.lang.String languageTag) { return null; }
+  public static String caseFoldLanguageTag(String languageTag) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Locale forLanguageTag(java.lang.String languageTag) { return null; }
+  public static Any forLanguageTag(String languageTag) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.util.MissingResourceException")
-  public java.lang.String getISO3Language() { return null; }
+  public String getISO3Language() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.util.MissingResourceException")
-  public java.lang.String getISO3Country() { return null; }
+  public String getISO3Country() { return null; }
   < ---- END java signatures ---- >
 }

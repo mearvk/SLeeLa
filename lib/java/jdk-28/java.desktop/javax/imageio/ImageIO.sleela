@@ -56,6 +56,24 @@ class ImageIO {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ImageIO bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,56 +82,56 @@ class ImageIO {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static boolean write(java.awt.image.RenderedImage im, java.lang.String formatName, java.io.File output) { return false; }
+  public static boolean write(Any im, String formatName, Any output) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static java.awt.image.BufferedImage read(java.io.InputStream input) { return null; }
+  public static Any read(Any input) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.imageio.ImageReader getImageReader(javax.imageio.ImageWriter writer) { return null; }
+  public static Any getImageReader(Any writer) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static void setUseCache(boolean useCache) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean getUseCache() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setCacheDirectory(java.io.File cacheDirectory) { }
+  public static void setCacheDirectory(Any cacheDirectory) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.io.File getCacheDirectory() { return null; }
+  public static Any getCacheDirectory() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static javax.imageio.stream.ImageInputStream createImageInputStream(java.lang.Object input) { return null; }
+  public static Any createImageInputStream(Any input) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Iterator<javax.imageio.ImageReader> getImageReaders(java.lang.Object input) { return null; }
+  public static Any getImageReaders(Any input) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static javax.imageio.stream.ImageOutputStream createImageOutputStream(java.lang.Object output) { return null; }
+  public static Any createImageOutputStream(Any output) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Iterator<javax.imageio.ImageWriter> getImageWriters(javax.imageio.ImageTypeSpecifier type, java.lang.String formatName) { return null; }
+  public static Any getImageWriters(Any type, String formatName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static void scanForPlugins() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String[] getReaderFormatNames() { return null; }
+  public static String[] getReaderFormatNames() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String[] getReaderMIMETypes() { return null; }
+  public static String[] getReaderMIMETypes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String[] getReaderFileSuffixes() { return null; }
+  public static String[] getReaderFileSuffixes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Iterator<javax.imageio.ImageReader> getImageReadersByFormatName(java.lang.String formatName) { return null; }
+  public static Any getImageReadersByFormatName(String formatName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Iterator<javax.imageio.ImageReader> getImageReadersBySuffix(java.lang.String fileSuffix) { return null; }
+  public static Any getImageReadersBySuffix(String fileSuffix) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Iterator<javax.imageio.ImageReader> getImageReadersByMIMEType(java.lang.String MIMEType) { return null; }
+  public static Any getImageReadersByMIMEType(String MIMEType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String[] getWriterFormatNames() { return null; }
+  public static String[] getWriterFormatNames() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String[] getWriterMIMETypes() { return null; }
+  public static String[] getWriterMIMETypes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String[] getWriterFileSuffixes() { return null; }
+  public static String[] getWriterFileSuffixes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Iterator<javax.imageio.ImageWriter> getImageWritersByFormatName(java.lang.String formatName) { return null; }
+  public static Any getImageWritersByFormatName(String formatName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Iterator<javax.imageio.ImageWriter> getImageWritersBySuffix(java.lang.String fileSuffix) { return null; }
+  public static Any getImageWritersBySuffix(String fileSuffix) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Iterator<javax.imageio.ImageWriter> getImageWritersByMIMEType(java.lang.String MIMEType) { return null; }
+  public static Any getImageWritersByMIMEType(String MIMEType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.imageio.ImageWriter getImageWriter(javax.imageio.ImageReader reader) { return null; }
+  public static Any getImageWriter(Any reader) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Iterator<javax.imageio.ImageTranscoder> getImageTranscoders(javax.imageio.ImageReader reader, javax.imageio.ImageWriter writer) { return null; }
+  public static Any getImageTranscoders(Any reader, Any writer) { return null; }
   < ---- END java signatures ---- >
 }

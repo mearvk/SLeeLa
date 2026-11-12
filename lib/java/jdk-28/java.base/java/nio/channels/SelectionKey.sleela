@@ -56,6 +56,24 @@ class SelectionKey {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SelectionKey bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int OP_READ = 1;
@@ -79,21 +97,21 @@ class SelectionKey {
   @throwable("java.lang.AbstractMethodError")
   public void cancel() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.Object attachment() { return null; }
+  public final Any attachment() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.Object attach(java.lang.Object ob) { return null; }
+  public final Any attach(Any ob) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.channels.SelectableChannel channel() { return null; }
+  public Any channel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean isWritable() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.channels.Selector selector() { return null; }
+  public Any selector() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isValid() { return false; }
   @throwable("java.lang.AbstractMethodError")
   public int interestOps() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.channels.SelectionKey interestOps(int ops) { return null; }
+  public Any interestOps(int ops) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean isReadable() { return false; }
   @throwable("java.lang.AbstractMethodError")

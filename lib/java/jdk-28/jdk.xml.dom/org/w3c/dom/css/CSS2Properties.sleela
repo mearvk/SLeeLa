@@ -56,6 +56,24 @@ class CSS2Properties {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public CSS2Properties bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,492 +82,492 @@ class CSS2Properties {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getSize() { return null; }
+  public String getSize() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getContent() { return null; }
+  public String getContent() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setColor(java.lang.String color) { }
+  public void setColor(String color) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setSize(java.lang.String size) { }
+  public void setSize(String size) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPosition() { return null; }
+  public String getPosition() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorder(java.lang.String border) { }
+  public void setBorder(String border) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setWidth(java.lang.String width) { }
+  public void setWidth(String width) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getHeight() { return null; }
+  public String getHeight() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBackground() { return null; }
+  public String getBackground() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBackground(java.lang.String background) { }
+  public void setBackground(String background) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setClip(java.lang.String clip) { }
+  public void setClip(String clip) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getClip() { return null; }
+  public String getClip() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPadding(java.lang.String padding) { }
+  public void setPadding(String padding) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setHeight(java.lang.String height) { }
+  public void setHeight(String height) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setMargin(java.lang.String margin) { }
+  public void setMargin(String margin) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getMargin() { return null; }
+  public String getMargin() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorder() { return null; }
+  public String getBorder() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setFontFamily(java.lang.String fontFamily) { }
+  public void setFontFamily(String fontFamily) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setFontSize(java.lang.String fontSize) { }
+  public void setFontSize(String fontSize) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBackgroundImage() { return null; }
+  public String getBackgroundImage() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getFontFamily() { return null; }
+  public String getFontFamily() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getFontSize() { return null; }
+  public String getFontSize() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPadding() { return null; }
+  public String getPadding() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderStyle() { return null; }
+  public String getBorderStyle() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setMinWidth(java.lang.String minWidth) { }
+  public void setMinWidth(String minWidth) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setMaxWidth(java.lang.String maxWidth) { }
+  public void setMaxWidth(String maxWidth) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getMinWidth() { return null; }
+  public String getMinWidth() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getMaxWidth() { return null; }
+  public String getMaxWidth() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderWidth() { return null; }
+  public String getBorderWidth() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPosition(java.lang.String position) { }
+  public void setPosition(String position) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getColor() { return null; }
+  public String getColor() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getTextDecoration() { return null; }
+  public String getTextDecoration() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getOutline() { return null; }
+  public String getOutline() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getWidth() { return null; }
+  public String getWidth() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setCursor(java.lang.String cursor) { }
+  public void setCursor(String cursor) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getCursor() { return null; }
+  public String getCursor() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPage() { return null; }
+  public String getPage() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPage(java.lang.String page) { }
+  public void setPage(String page) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderColor(java.lang.String borderColor) { }
+  public void setBorderColor(String borderColor) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderColor() { return null; }
+  public String getBorderColor() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setDirection(java.lang.String direction) { }
+  public void setDirection(String direction) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getDirection() { return null; }
+  public String getDirection() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setContent(java.lang.String content) { }
+  public void setContent(String content) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAzimuth() { return null; }
+  public String getAzimuth() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setAzimuth(java.lang.String azimuth) { }
+  public void setAzimuth(String azimuth) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBackgroundAttachment() { return null; }
+  public String getBackgroundAttachment() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBackgroundAttachment(java.lang.String backgroundAttachment) { }
+  public void setBackgroundAttachment(String backgroundAttachment) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBackgroundColor() { return null; }
+  public String getBackgroundColor() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBackgroundColor(java.lang.String backgroundColor) { }
+  public void setBackgroundColor(String backgroundColor) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBackgroundImage(java.lang.String backgroundImage) { }
+  public void setBackgroundImage(String backgroundImage) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBackgroundPosition() { return null; }
+  public String getBackgroundPosition() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBackgroundPosition(java.lang.String backgroundPosition) { }
+  public void setBackgroundPosition(String backgroundPosition) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBackgroundRepeat() { return null; }
+  public String getBackgroundRepeat() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBackgroundRepeat(java.lang.String backgroundRepeat) { }
+  public void setBackgroundRepeat(String backgroundRepeat) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderCollapse() { return null; }
+  public String getBorderCollapse() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderCollapse(java.lang.String borderCollapse) { }
+  public void setBorderCollapse(String borderCollapse) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderSpacing() { return null; }
+  public String getBorderSpacing() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderSpacing(java.lang.String borderSpacing) { }
+  public void setBorderSpacing(String borderSpacing) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderStyle(java.lang.String borderStyle) { }
+  public void setBorderStyle(String borderStyle) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderTop() { return null; }
+  public String getBorderTop() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderTop(java.lang.String borderTop) { }
+  public void setBorderTop(String borderTop) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderRight() { return null; }
+  public String getBorderRight() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderRight(java.lang.String borderRight) { }
+  public void setBorderRight(String borderRight) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderBottom() { return null; }
+  public String getBorderBottom() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderBottom(java.lang.String borderBottom) { }
+  public void setBorderBottom(String borderBottom) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderLeft() { return null; }
+  public String getBorderLeft() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderLeft(java.lang.String borderLeft) { }
+  public void setBorderLeft(String borderLeft) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderTopColor() { return null; }
+  public String getBorderTopColor() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderTopColor(java.lang.String borderTopColor) { }
+  public void setBorderTopColor(String borderTopColor) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderRightColor() { return null; }
+  public String getBorderRightColor() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderRightColor(java.lang.String borderRightColor) { }
+  public void setBorderRightColor(String borderRightColor) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderBottomColor() { return null; }
+  public String getBorderBottomColor() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderBottomColor(java.lang.String borderBottomColor) { }
+  public void setBorderBottomColor(String borderBottomColor) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderLeftColor() { return null; }
+  public String getBorderLeftColor() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderLeftColor(java.lang.String borderLeftColor) { }
+  public void setBorderLeftColor(String borderLeftColor) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderTopStyle() { return null; }
+  public String getBorderTopStyle() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderTopStyle(java.lang.String borderTopStyle) { }
+  public void setBorderTopStyle(String borderTopStyle) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderRightStyle() { return null; }
+  public String getBorderRightStyle() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderRightStyle(java.lang.String borderRightStyle) { }
+  public void setBorderRightStyle(String borderRightStyle) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderBottomStyle() { return null; }
+  public String getBorderBottomStyle() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderBottomStyle(java.lang.String borderBottomStyle) { }
+  public void setBorderBottomStyle(String borderBottomStyle) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderLeftStyle() { return null; }
+  public String getBorderLeftStyle() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderLeftStyle(java.lang.String borderLeftStyle) { }
+  public void setBorderLeftStyle(String borderLeftStyle) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderTopWidth() { return null; }
+  public String getBorderTopWidth() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderTopWidth(java.lang.String borderTopWidth) { }
+  public void setBorderTopWidth(String borderTopWidth) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderRightWidth() { return null; }
+  public String getBorderRightWidth() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderRightWidth(java.lang.String borderRightWidth) { }
+  public void setBorderRightWidth(String borderRightWidth) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderBottomWidth() { return null; }
+  public String getBorderBottomWidth() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderBottomWidth(java.lang.String borderBottomWidth) { }
+  public void setBorderBottomWidth(String borderBottomWidth) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorderLeftWidth() { return null; }
+  public String getBorderLeftWidth() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderLeftWidth(java.lang.String borderLeftWidth) { }
+  public void setBorderLeftWidth(String borderLeftWidth) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBorderWidth(java.lang.String borderWidth) { }
+  public void setBorderWidth(String borderWidth) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBottom() { return null; }
+  public String getBottom() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setBottom(java.lang.String bottom) { }
+  public void setBottom(String bottom) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getCaptionSide() { return null; }
+  public String getCaptionSide() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setCaptionSide(java.lang.String captionSide) { }
+  public void setCaptionSide(String captionSide) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getClear() { return null; }
+  public String getClear() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setClear(java.lang.String clear) { }
+  public void setClear(String clear) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getCounterIncrement() { return null; }
+  public String getCounterIncrement() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setCounterIncrement(java.lang.String counterIncrement) { }
+  public void setCounterIncrement(String counterIncrement) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getCounterReset() { return null; }
+  public String getCounterReset() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setCounterReset(java.lang.String counterReset) { }
+  public void setCounterReset(String counterReset) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getCue() { return null; }
+  public String getCue() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setCue(java.lang.String cue) { }
+  public void setCue(String cue) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getCueAfter() { return null; }
+  public String getCueAfter() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setCueAfter(java.lang.String cueAfter) { }
+  public void setCueAfter(String cueAfter) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getCueBefore() { return null; }
+  public String getCueBefore() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setCueBefore(java.lang.String cueBefore) { }
+  public void setCueBefore(String cueBefore) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getDisplay() { return null; }
+  public String getDisplay() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setDisplay(java.lang.String display) { }
+  public void setDisplay(String display) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getElevation() { return null; }
+  public String getElevation() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setElevation(java.lang.String elevation) { }
+  public void setElevation(String elevation) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getEmptyCells() { return null; }
+  public String getEmptyCells() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setEmptyCells(java.lang.String emptyCells) { }
+  public void setEmptyCells(String emptyCells) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getCssFloat() { return null; }
+  public String getCssFloat() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setCssFloat(java.lang.String cssFloat) { }
+  public void setCssFloat(String cssFloat) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getFontSizeAdjust() { return null; }
+  public String getFontSizeAdjust() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setFontSizeAdjust(java.lang.String fontSizeAdjust) { }
+  public void setFontSizeAdjust(String fontSizeAdjust) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getFontStretch() { return null; }
+  public String getFontStretch() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setFontStretch(java.lang.String fontStretch) { }
+  public void setFontStretch(String fontStretch) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getFontStyle() { return null; }
+  public String getFontStyle() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setFontStyle(java.lang.String fontStyle) { }
+  public void setFontStyle(String fontStyle) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getFontVariant() { return null; }
+  public String getFontVariant() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setFontVariant(java.lang.String fontVariant) { }
+  public void setFontVariant(String fontVariant) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getFontWeight() { return null; }
+  public String getFontWeight() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setFontWeight(java.lang.String fontWeight) { }
+  public void setFontWeight(String fontWeight) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getLeft() { return null; }
+  public String getLeft() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setLeft(java.lang.String left) { }
+  public void setLeft(String left) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getLetterSpacing() { return null; }
+  public String getLetterSpacing() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setLetterSpacing(java.lang.String letterSpacing) { }
+  public void setLetterSpacing(String letterSpacing) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getLineHeight() { return null; }
+  public String getLineHeight() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setLineHeight(java.lang.String lineHeight) { }
+  public void setLineHeight(String lineHeight) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getListStyle() { return null; }
+  public String getListStyle() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setListStyle(java.lang.String listStyle) { }
+  public void setListStyle(String listStyle) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getListStyleImage() { return null; }
+  public String getListStyleImage() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setListStyleImage(java.lang.String listStyleImage) { }
+  public void setListStyleImage(String listStyleImage) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getListStylePosition() { return null; }
+  public String getListStylePosition() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setListStylePosition(java.lang.String listStylePosition) { }
+  public void setListStylePosition(String listStylePosition) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getListStyleType() { return null; }
+  public String getListStyleType() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setListStyleType(java.lang.String listStyleType) { }
+  public void setListStyleType(String listStyleType) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getMarginTop() { return null; }
+  public String getMarginTop() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setMarginTop(java.lang.String marginTop) { }
+  public void setMarginTop(String marginTop) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getMarginRight() { return null; }
+  public String getMarginRight() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setMarginRight(java.lang.String marginRight) { }
+  public void setMarginRight(String marginRight) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getMarginBottom() { return null; }
+  public String getMarginBottom() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setMarginBottom(java.lang.String marginBottom) { }
+  public void setMarginBottom(String marginBottom) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getMarginLeft() { return null; }
+  public String getMarginLeft() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setMarginLeft(java.lang.String marginLeft) { }
+  public void setMarginLeft(String marginLeft) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getMarkerOffset() { return null; }
+  public String getMarkerOffset() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setMarkerOffset(java.lang.String markerOffset) { }
+  public void setMarkerOffset(String markerOffset) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getMarks() { return null; }
+  public String getMarks() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setMarks(java.lang.String marks) { }
+  public void setMarks(String marks) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getMaxHeight() { return null; }
+  public String getMaxHeight() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setMaxHeight(java.lang.String maxHeight) { }
+  public void setMaxHeight(String maxHeight) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getMinHeight() { return null; }
+  public String getMinHeight() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setMinHeight(java.lang.String minHeight) { }
+  public void setMinHeight(String minHeight) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getOrphans() { return null; }
+  public String getOrphans() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setOrphans(java.lang.String orphans) { }
+  public void setOrphans(String orphans) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setOutline(java.lang.String outline) { }
+  public void setOutline(String outline) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getOutlineColor() { return null; }
+  public String getOutlineColor() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setOutlineColor(java.lang.String outlineColor) { }
+  public void setOutlineColor(String outlineColor) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getOutlineStyle() { return null; }
+  public String getOutlineStyle() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setOutlineStyle(java.lang.String outlineStyle) { }
+  public void setOutlineStyle(String outlineStyle) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getOutlineWidth() { return null; }
+  public String getOutlineWidth() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setOutlineWidth(java.lang.String outlineWidth) { }
+  public void setOutlineWidth(String outlineWidth) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getOverflow() { return null; }
+  public String getOverflow() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setOverflow(java.lang.String overflow) { }
+  public void setOverflow(String overflow) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPaddingTop() { return null; }
+  public String getPaddingTop() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPaddingTop(java.lang.String paddingTop) { }
+  public void setPaddingTop(String paddingTop) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPaddingRight() { return null; }
+  public String getPaddingRight() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPaddingRight(java.lang.String paddingRight) { }
+  public void setPaddingRight(String paddingRight) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPaddingBottom() { return null; }
+  public String getPaddingBottom() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPaddingBottom(java.lang.String paddingBottom) { }
+  public void setPaddingBottom(String paddingBottom) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPaddingLeft() { return null; }
+  public String getPaddingLeft() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPaddingLeft(java.lang.String paddingLeft) { }
+  public void setPaddingLeft(String paddingLeft) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPageBreakAfter() { return null; }
+  public String getPageBreakAfter() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPageBreakAfter(java.lang.String pageBreakAfter) { }
+  public void setPageBreakAfter(String pageBreakAfter) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPageBreakBefore() { return null; }
+  public String getPageBreakBefore() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPageBreakBefore(java.lang.String pageBreakBefore) { }
+  public void setPageBreakBefore(String pageBreakBefore) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPageBreakInside() { return null; }
+  public String getPageBreakInside() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPageBreakInside(java.lang.String pageBreakInside) { }
+  public void setPageBreakInside(String pageBreakInside) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPause() { return null; }
+  public String getPause() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPause(java.lang.String pause) { }
+  public void setPause(String pause) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPauseAfter() { return null; }
+  public String getPauseAfter() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPauseAfter(java.lang.String pauseAfter) { }
+  public void setPauseAfter(String pauseAfter) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPauseBefore() { return null; }
+  public String getPauseBefore() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPauseBefore(java.lang.String pauseBefore) { }
+  public void setPauseBefore(String pauseBefore) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPitch() { return null; }
+  public String getPitch() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPitch(java.lang.String pitch) { }
+  public void setPitch(String pitch) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPitchRange() { return null; }
+  public String getPitchRange() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPitchRange(java.lang.String pitchRange) { }
+  public void setPitchRange(String pitchRange) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPlayDuring() { return null; }
+  public String getPlayDuring() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setPlayDuring(java.lang.String playDuring) { }
+  public void setPlayDuring(String playDuring) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getQuotes() { return null; }
+  public String getQuotes() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setQuotes(java.lang.String quotes) { }
+  public void setQuotes(String quotes) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getRichness() { return null; }
+  public String getRichness() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setRichness(java.lang.String richness) { }
+  public void setRichness(String richness) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getRight() { return null; }
+  public String getRight() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setRight(java.lang.String right) { }
+  public void setRight(String right) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getSpeak() { return null; }
+  public String getSpeak() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setSpeak(java.lang.String speak) { }
+  public void setSpeak(String speak) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getSpeakHeader() { return null; }
+  public String getSpeakHeader() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setSpeakHeader(java.lang.String speakHeader) { }
+  public void setSpeakHeader(String speakHeader) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getSpeakNumeral() { return null; }
+  public String getSpeakNumeral() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setSpeakNumeral(java.lang.String speakNumeral) { }
+  public void setSpeakNumeral(String speakNumeral) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getSpeakPunctuation() { return null; }
+  public String getSpeakPunctuation() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setSpeakPunctuation(java.lang.String speakPunctuation) { }
+  public void setSpeakPunctuation(String speakPunctuation) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getSpeechRate() { return null; }
+  public String getSpeechRate() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setSpeechRate(java.lang.String speechRate) { }
+  public void setSpeechRate(String speechRate) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getStress() { return null; }
+  public String getStress() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setStress(java.lang.String stress) { }
+  public void setStress(String stress) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getTableLayout() { return null; }
+  public String getTableLayout() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setTableLayout(java.lang.String tableLayout) { }
+  public void setTableLayout(String tableLayout) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getTextAlign() { return null; }
+  public String getTextAlign() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setTextAlign(java.lang.String textAlign) { }
+  public void setTextAlign(String textAlign) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setTextDecoration(java.lang.String textDecoration) { }
+  public void setTextDecoration(String textDecoration) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getTextIndent() { return null; }
+  public String getTextIndent() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setTextIndent(java.lang.String textIndent) { }
+  public void setTextIndent(String textIndent) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getTextShadow() { return null; }
+  public String getTextShadow() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setTextShadow(java.lang.String textShadow) { }
+  public void setTextShadow(String textShadow) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getTextTransform() { return null; }
+  public String getTextTransform() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setTextTransform(java.lang.String textTransform) { }
+  public void setTextTransform(String textTransform) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getTop() { return null; }
+  public String getTop() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setTop(java.lang.String top) { }
+  public void setTop(String top) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getUnicodeBidi() { return null; }
+  public String getUnicodeBidi() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setUnicodeBidi(java.lang.String unicodeBidi) { }
+  public void setUnicodeBidi(String unicodeBidi) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getVerticalAlign() { return null; }
+  public String getVerticalAlign() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setVerticalAlign(java.lang.String verticalAlign) { }
+  public void setVerticalAlign(String verticalAlign) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getVisibility() { return null; }
+  public String getVisibility() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setVisibility(java.lang.String visibility) { }
+  public void setVisibility(String visibility) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getVoiceFamily() { return null; }
+  public String getVoiceFamily() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setVoiceFamily(java.lang.String voiceFamily) { }
+  public void setVoiceFamily(String voiceFamily) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getVolume() { return null; }
+  public String getVolume() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setVolume(java.lang.String volume) { }
+  public void setVolume(String volume) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getWhiteSpace() { return null; }
+  public String getWhiteSpace() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setWhiteSpace(java.lang.String whiteSpace) { }
+  public void setWhiteSpace(String whiteSpace) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getWidows() { return null; }
+  public String getWidows() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setWidows(java.lang.String widows) { }
+  public void setWidows(String widows) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getWordSpacing() { return null; }
+  public String getWordSpacing() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setWordSpacing(java.lang.String wordSpacing) { }
+  public void setWordSpacing(String wordSpacing) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getZIndex() { return null; }
+  public String getZIndex() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setZIndex(java.lang.String zIndex) { }
+  public void setZIndex(String zIndex) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getFont() { return null; }
+  public String getFont() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setFont(java.lang.String font) { }
+  public void setFont(String font) { }
   < ---- END java signatures ---- >
 }

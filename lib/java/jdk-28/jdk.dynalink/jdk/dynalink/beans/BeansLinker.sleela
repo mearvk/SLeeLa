@@ -56,12 +56,30 @@ class BeansLinker {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BeansLinker bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
   public BeansLinker() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public BeansLinker(jdk.dynalink.beans.MissingMemberHandlerFactory missingMemberHandlerFactory) { }
+  public BeansLinker(Any missingMemberHandlerFactory) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -71,26 +89,26 @@ class BeansLinker {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
-  public jdk.dynalink.linker.GuardedInvocation getGuardedInvocation(jdk.dynalink.linker.LinkRequest request, jdk.dynalink.linker.LinkerServices linkerServices) { return null; }
+  public Any getGuardedInvocation(Any request, Any linkerServices) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.Object getConstructorMethod(java.lang.Class<?> clazz, java.lang.String signature) { return null; }
+  public static Any getConstructorMethod(Any clazz, String signature) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Set<java.lang.String> getReadableStaticPropertyNames(java.lang.Class<?> clazz) { return null; }
+  public static Any getReadableStaticPropertyNames(Any clazz) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Set<java.lang.String> getWritableStaticPropertyNames(java.lang.Class<?> clazz) { return null; }
+  public static Any getWritableStaticPropertyNames(Any clazz) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Set<java.lang.String> getStaticMethodNames(java.lang.Class<?> clazz) { return null; }
+  public static Any getStaticMethodNames(Any clazz) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public jdk.dynalink.linker.TypeBasedGuardingDynamicLinker getLinkerForClass(java.lang.Class<?> clazz) { return null; }
+  public Any getLinkerForClass(Any clazz) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isDynamicMethod(java.lang.Object obj) { return false; }
+  public static boolean isDynamicMethod(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isDynamicConstructor(java.lang.Object obj) { return false; }
+  public static boolean isDynamicConstructor(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Set<java.lang.String> getReadableInstancePropertyNames(java.lang.Class<?> clazz) { return null; }
+  public static Any getReadableInstancePropertyNames(Any clazz) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Set<java.lang.String> getWritableInstancePropertyNames(java.lang.Class<?> clazz) { return null; }
+  public static Any getWritableInstancePropertyNames(Any clazz) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Set<java.lang.String> getInstanceMethodNames(java.lang.Class<?> clazz) { return null; }
+  public static Any getInstanceMethodNames(Any clazz) { return null; }
   < ---- END java signatures ---- >
 }

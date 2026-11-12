@@ -23,10 +23,10 @@ is copied or expanded):
     the Java signature.
 
 Inputs (all in-repo):
-  * lib/java/early_access/jdk28/docs/api/   the JDK 28 type inventory, mirrored
+  * lib/java/jdk-25/early_access/jdk28/docs/api/   the JDK 28 type inventory, mirrored
                                             from the online JDK 28 API index
-  * lib/java/api/jdk-api.jsonl              reflected API (members, constants)
-  * lib/java/api/jdk-signatures.jsonl       exact generic signatures
+  * lib/java/jdk-25/api/jdk-api.jsonl              reflected API (members, constants)
+  * lib/java/jdk-25/api/jdk-signatures.jsonl       exact generic signatures
 A JDK 28 type that the reflected data does not know (new in JDK 28) gets its
 identity and Source link only; its members are marked pending.
 
@@ -44,7 +44,7 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[4]
 OUT = REPO / "lib" / "java" / "jdk-28"
 API_DIR = OUT
-LIBJAVA = REPO / "lib" / "java"
+LIBJAVA = REPO / "lib" / "java" / "jdk-25"  # reflected API data, tools and the JDK 28 index mirror
 DOCS = LIBJAVA / "early_access" / "jdk28" / "docs" / "api"
 ONLINE = "https://download.java.net/java/early_access/jdk28/docs/api/"
 DATE = "2026-11-12"
@@ -53,7 +53,7 @@ sys.path.insert(0, str(LIBJAVA / "tools"))
 import jdk_api_declare as dec  # noqa: E402
 import jdk_api_signatures as sg  # noqa: E402
 
-FIXED_FIELDS = 11 + 5  # metadata + javaType/javaModule/javaSource/javaKind/javaSuper
+FIXED_FIELDS = 11 + 6  # metadata + javaType/javaModule/javaSource/javaKind/javaSuper + genericTypeArguments
 MAX_FIELDS = 64
 # Documented modules that export no packages (no types). Each is in the JDK 25
 # runtime this tree was reflected from and has a module-summary page in the
@@ -79,7 +79,9 @@ NO_PACKAGE_MODULES = {
     "jdk.naming.dns": "module page in the JDK 11 API docs; in the JDK 25 runtime",
     "jdk.management.agent": "in the JDK 25 runtime; module page not yet confirmed online",
 }
-HELPERS = {"javaModule", "javaSource", "javaKind", "javaSuper", "javaInterfaces", "sourceUrl"}
+HELPERS = {"javaModule", "javaSource", "javaKind", "javaSuper", "javaInterfaces", "sourceUrl",
+           "JAVA_TYPE_PARAMETERS", "genericTypeArguments", "genericTypeParameters", "genericTypeParameterCount",
+           "genericTypeParameterName", "bindGenericTypeArguments", "genericTypeArgument", "genericTypeArgumentCount"}
 
 
 def inventory():
@@ -181,13 +183,52 @@ def throwable(names) -> str:
     return '  @throwable("' + ", ".join(names) + '")'
 
 
+PRIMS = {"int", "long", "short", "byte", "char", "float", "double", "boolean", "void"}
+ANNOT = re.compile(r"@[\w.]+(\([^()]*\))?\s*")
+
+
+def erase(t: str) -> str:
+    """The SLeeLa generics method (SLEELA.syntax 16.3, 38.1): erasure.
+
+    A type variable or any parameterized / package-qualified reference type
+    erases to Any; java.lang.String erases to String; primitives stay; array
+    and varargs suffixes are kept on the erased element type."""
+    t = ANNOT.sub("", t).strip()
+    suffix = ""
+    if t.endswith("..."):
+        suffix, t = "...", t[:-3].strip()
+    dims = ""
+    while t.endswith("[]"):
+        dims, t = dims + "[]", t[:-2].strip()
+    raw = t.split("<", 1)[0].strip()
+    if raw in PRIMS:
+        base = raw
+    elif raw in ("java.lang.String", "String"):
+        base = "String"
+    else:
+        base = "Any"
+    return base + dims + suffix
+
+
 def params_of(m) -> str:
     out = []
     for ptype, pname in m["params"]:
         if pname in sg.RESERVED_PARAMS:
             pname = pname + "_"
-        out.append(f"{ptype} {pname}")
+        out.append(f"{erase(ptype)} {pname}")
     return ", ".join(out)
+
+
+def generic_note(tparams: str) -> list:
+    """A method that Java declares generic keeps its type parameters as data."""
+    if not tparams:
+        return []
+    return ['  @generic("' + tparams.replace('"', "'") + '")']
+
+
+def erase_name(t: str) -> str:
+    """A thrown type named in @throwable, without its type arguments."""
+    return ANNOT.sub("", t).split("<", 1)[0].strip().replace('"', "'")
 
 
 def render_stub(type_name: str, m: dict) -> str:
@@ -201,10 +242,12 @@ def render_stub(type_name: str, m: dict) -> str:
         mods = [x for x in mods if x != "protected"]
         lines.append("  @JavaProtected")
     first = "java.lang.AbstractMethodError" if m["abstract"] else "java.lang.UnsupportedOperationException"
-    lines.append(throwable([first] + m["throws"]))
+    lines += generic_note(m["tparams"])
+    lines.append(throwable([first] + [erase_name(x) for x in m["throws"]]))
     mods = [x for x in mods if x != "abstract"]
-    head = " ".join(mods + ([m["tparams"]] if m["tparams"] else []) + [m["ret"], m["name"]])
-    lines.append(f"  {head}({params_of(m)}) {{{default_return(m['ret'])} }}")
+    ret = erase(m["ret"])
+    head = " ".join(mods + [ret, m["name"]])
+    lines.append(f"  {head}({params_of(m)}) {{{default_return(ret)} }}")
     return "\n".join(lines)
 
 
@@ -214,10 +257,65 @@ def render_ctor_stub(type_name: str, cls: str, m: dict) -> str:
     if m["protected"]:
         mods = [x for x in mods if x != "protected"]
         lines.append("  @JavaProtected")
-    lines.append(throwable(["java.lang.UnsupportedOperationException"] + m["throws"]))
+    lines += generic_note(m["tparams"])
+    lines.append(throwable(["java.lang.UnsupportedOperationException"] + [erase_name(x) for x in m["throws"]]))
     head = " ".join(mods + [cls])
     lines.append(f"  {head}({params_of(m)}) {{ }}")
     return "\n".join(lines)
+
+
+def generics_record(sig, cls: str) -> str:
+    """Every file records its Java type parameters as data (the SLeeLa generics
+    method: erasure to Any, no reified type arguments)."""
+    tparams = sig["tparams"] if sig and sig.get("tparams") else ""
+    names = []
+    if tparams:
+        inner, depth, cur = tparams[1:-1], 0, ""
+        for ch in inner:
+            if ch == "<":
+                depth += 1
+            elif ch == ">":
+                depth -= 1
+            if ch == "," and depth == 0:
+                names.append(cur.strip().split(" ", 1)[0])
+                cur = ""
+            else:
+                cur += ch
+        if cur.strip():
+            names.append(cur.strip().split(" ", 1)[0])
+    self_type = "Any" if cls in dec.RESERVED else cls
+    # A Java member named arrayLength (ObjectInputFilter.FilterInfo, MethodHandles)
+    # hides the VM builtin inside the class, so the argument count is kept in a
+    # field: a full Java binding has one argument per type parameter.
+    shadowed = bool(sig) and any(m["name"] == "arrayLength" for m in sig.get("members", []))
+    if shadowed:
+        count_field = "  int genericTypeArgumentTotal = 0;\n"
+        size = "genericTypeArgumentTotal"
+        set_total = " if (arguments == null) { this.genericTypeArgumentTotal = 0; } else { this.genericTypeArgumentTotal = genericTypeParameterCount(); }"
+    else:
+        count_field = ""
+        size = "arrayLength(genericTypeArguments)"
+        set_total = ""
+    lookup = "".join(f'if (index == {i}) {{ return "{n}"; }} ' for i, n in enumerate(names))
+    lit = tparams.replace("\\", "\\\\").replace('"', '\\"')
+    return f'''  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "{lit}";
+  String[] genericTypeArguments = new String[0];
+{count_field}  public static String genericTypeParameters() {{ return JAVA_TYPE_PARAMETERS; }}
+  public static int genericTypeParameterCount() {{ return {len(names)}; }}
+  public static String genericTypeParameterName(int index) {{ {lookup}return null; }}
+  public {self_type} bindGenericTypeArguments(String[] arguments) {{ if (arguments == null) {{ this.genericTypeArguments = new String[0]; }} else {{ this.genericTypeArguments = arguments; }}{set_total} return this; }}
+  public String genericTypeArgument(int index) {{ if (index < 0 || index >= {size}) {{ return null; }} return genericTypeArguments[index]; }}
+  public int genericTypeArgumentCount() {{ return {size}; }}
+'''
 
 
 def member_blocks(t, sig, cls: str, impl: str = ""):
@@ -250,22 +348,22 @@ def member_blocks(t, sig, cls: str, impl: str = ""):
     for m in sig["members"]:
         if cls in dec.RESERVED:
             break  # a class named by a SLeeLa keyword (String) cannot declare constructors
-        if m["name"] != "<init>" or m["tparams"] or not sg.renderable(m) or len(m["params"]) in has_ctor_arity:
+        if m["name"] != "<init>" or len(m["params"]) in has_ctor_arity:
             continue
-        key = tuple(sg.erased(p[0], ctv) for p in m["params"])
+        key = tuple(erase(p[0]) for p in m["params"])
         if key in cseen:
             continue
         cseen.add(key)
         ctors.append(render_ctor_stub(t["name"], cls, m))
     meths, mseen = [], set()
     for m in sig["members"]:
-        if m["name"] == "<init>" or m["name"] in declared or m["name"] in taken or not dec.usable(m["name"], cls) or not sg.renderable(m):
+        if m["name"] == "<init>" or m["name"] in declared or m["name"] in taken or not dec.usable(m["name"], cls):
             continue
         tv = ctv | sg.tvar_names(m["tparams"])
         want = tuple(sg.kind(p[0], tv) for p in m["params"])
         if any(sg.accepts(have, want) for have in impl_methods.get(m["name"], [])):
             continue
-        key = (m["name"], tuple(sg.erased(p[0], tv) for p in m["params"]))
+        key = (m["name"], tuple(erase(p[0]) for p in m["params"]))
         if key in mseen:
             continue
         mseen.add(key)
@@ -341,7 +439,7 @@ def main() -> int:
 #sleela 3.0
 material;
 
-class {cls}{tps} {{
+class {cls} {{
 {metadata(meta_id(DOCS / rel), fq)}
   String javaType = "{fq}";
   String javaModule = "{module}";
@@ -349,6 +447,7 @@ class {cls}{tps} {{
   String javaKind = "{kind}";
   String javaSuper = "{sup}";
 
+{generics_record(sig, cls)}
 ''' + (impl + "\n" if impl else "") + "\n".join(body) + "\n}\n"
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(text, encoding="utf-8")

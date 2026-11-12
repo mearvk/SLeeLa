@@ -56,6 +56,24 @@ class JViewport {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JViewport bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int BLIT_SCROLL_MODE = 1;
@@ -81,55 +99,55 @@ class JViewport {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void remove(java.awt.Component child) { }
+  public void remove(Any child) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void setBorder(javax.swing.border.Border border) { }
+  public final void setBorder(Any border) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  void firePropertyChange(String propertyName, Any oldValue, Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void repaint(long tm, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUI(javax.swing.plaf.ViewportUI ui) { }
+  public void setUI(Any ui) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ViewportUI getUI() { return null; }
+  public Any getUI() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isOptimizedDrawingEnabled() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void scrollRectToVisible(java.awt.Rectangle contentRect) { }
+  public void scrollRectToVisible(Any contentRect) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   boolean isPaintingOrigin() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void reshape(int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getView() { return null; }
+  public Any getView() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setView(java.awt.Component view) { }
+  public void setView(Any view) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setViewPosition(java.awt.Point p) { }
+  public void setViewPosition(Any p) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.LayoutManager createLayoutManager() { return null; }
+  Any createLayoutManager() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Point getViewPosition() { return null; }
+  public Any getViewPosition() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getExtentSize() { return null; }
+  public Any getExtentSize() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean computeBlit(int dx, int dy, java.awt.Point blitFrom, java.awt.Point blitTo, java.awt.Dimension blitSize, java.awt.Rectangle blitPaint) { return false; }
+  boolean computeBlit(int dx, int dy, Any blitFrom, Any blitTo, Any blitSize, Any blitPaint) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setScrollMode(int mode) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JViewport.ViewListener createViewListener() { return null; }
+  Any createViewListener() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getScrollMode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -137,34 +155,34 @@ class JViewport {
   @throwable("java.lang.UnsupportedOperationException")
   public void setBackingStoreEnabled(boolean enabled) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getViewSize() { return null; }
+  public Any getViewSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setViewSize(java.awt.Dimension newSize) { }
+  public void setViewSize(Any newSize) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getViewRect() { return null; }
+  public Any getViewRect() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Point toViewCoordinates(java.awt.Point p) { return null; }
+  public Any toViewCoordinates(Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setExtentSize(java.awt.Dimension newExtent) { }
+  public void setExtentSize(Any newExtent) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeChangeListener(javax.swing.event.ChangeListener l) { }
+  public void removeChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addChangeListener(javax.swing.event.ChangeListener l) { }
+  public void addChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.ChangeListener[] getChangeListeners() { return null; }
+  public Any[] getChangeListeners() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void fireStateChanged() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.awt.Insets getInsets(java.awt.Insets insets) { return null; }
+  public final Any getInsets(Any insets) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.awt.Insets getInsets() { return null; }
+  public final Any getInsets() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void addImpl(java.awt.Component child, java.lang.Object constraints, int index) { }
+  void addImpl(Any child, Any constraints, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g) { }
+  public void paint(Any g) { }
   < ---- END java signatures ---- >
 }

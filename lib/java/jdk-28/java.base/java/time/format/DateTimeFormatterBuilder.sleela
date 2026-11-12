@@ -56,6 +56,24 @@ class DateTimeFormatterBuilder {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DateTimeFormatterBuilder bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,90 +87,90 @@ class DateTimeFormatterBuilder {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder append(java.time.format.DateTimeFormatter formatter) { return null; }
+  public Any append(Any formatter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder parseStrict() { return null; }
+  public Any parseStrict() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendZoneText(java.time.format.TextStyle textStyle, java.util.Set<java.time.ZoneId> preferredZones) { return null; }
+  public Any appendZoneText(Any textStyle, Any preferredZones) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendZoneText(java.time.format.TextStyle textStyle) { return null; }
+  public Any appendZoneText(Any textStyle) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatter toFormatter(java.util.Locale locale) { return null; }
+  public Any toFormatter(Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatter toFormatter() { return null; }
+  public Any toFormatter() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendChronologyText(java.time.format.TextStyle textStyle) { return null; }
+  public Any appendChronologyText(Any textStyle) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendPattern(java.lang.String pattern) { return null; }
+  public Any appendPattern(String pattern) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendLocalized(java.lang.String requestedTemplate) { return null; }
+  public Any appendLocalized(String requestedTemplate) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendLocalized(java.time.format.FormatStyle dateStyle, java.time.format.FormatStyle timeStyle) { return null; }
+  public Any appendLocalized(Any dateStyle, Any timeStyle) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendValue(java.time.temporal.TemporalField field) { return null; }
+  public Any appendValue(Any field) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendValue(java.time.temporal.TemporalField field, int minWidth, int maxWidth, java.time.format.SignStyle signStyle) { return null; }
+  public Any appendValue(Any field, int minWidth, int maxWidth, Any signStyle) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendValue(java.time.temporal.TemporalField field, int width) { return null; }
+  public Any appendValue(Any field, int width) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendLiteral(java.lang.String literal) { return null; }
+  public Any appendLiteral(String literal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendLiteral(char literal) { return null; }
+  public Any appendLiteral(char literal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder parseCaseInsensitive() { return null; }
+  public Any parseCaseInsensitive() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendOffsetId() { return null; }
+  public Any appendOffsetId() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder optionalStart() { return null; }
+  public Any optionalStart() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendFraction(java.time.temporal.TemporalField field, int minWidth, int maxWidth, boolean decimalPoint) { return null; }
+  public Any appendFraction(Any field, int minWidth, int maxWidth, boolean decimalPoint) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder parseLenient() { return null; }
+  public Any parseLenient() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder parseCaseSensitive() { return null; }
+  public Any parseCaseSensitive() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendZoneRegionId() { return null; }
+  public Any appendZoneRegionId() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendInstant() { return null; }
+  public Any appendInstant() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendInstant(int fractionalDigits) { return null; }
+  public Any appendInstant(int fractionalDigits) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendOffset(java.lang.String pattern, java.lang.String noOffsetText) { return null; }
+  public Any appendOffset(String pattern, String noOffsetText) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendText(java.time.temporal.TemporalField field, java.time.format.TextStyle textStyle) { return null; }
+  public Any appendText(Any field, Any textStyle) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendText(java.time.temporal.TemporalField field) { return null; }
+  public Any appendText(Any field) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder optionalEnd() { return null; }
+  public Any optionalEnd() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder padNext(int padWidth) { return null; }
+  public Any padNext(int padWidth) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder padNext(int padWidth, char padChar) { return null; }
+  public Any padNext(int padWidth, char padChar) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendZoneId() { return null; }
+  public Any appendZoneId() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendGenericZoneText(java.time.format.TextStyle textStyle, java.util.Set<java.time.ZoneId> preferredZones) { return null; }
+  public Any appendGenericZoneText(Any textStyle, Any preferredZones) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendGenericZoneText(java.time.format.TextStyle textStyle) { return null; }
+  public Any appendGenericZoneText(Any textStyle) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendLocalizedOffset(java.time.format.TextStyle style) { return null; }
+  public Any appendLocalizedOffset(Any style) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendDayPeriodText(java.time.format.TextStyle style) { return null; }
+  public Any appendDayPeriodText(Any style) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendValueReduced(java.time.temporal.TemporalField field, int width, int maxWidth, int baseValue) { return null; }
+  public Any appendValueReduced(Any field, int width, int maxWidth, int baseValue) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendValueReduced(java.time.temporal.TemporalField field, int width, int maxWidth, java.time.chrono.ChronoLocalDate baseDate) { return null; }
+  public Any appendValueReduced(Any field, int width, int maxWidth, Any baseDate) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String getLocalizedDateTimePattern(java.time.format.FormatStyle dateStyle, java.time.format.FormatStyle timeStyle, java.time.chrono.Chronology chrono, java.util.Locale locale) { return null; }
+  public static String getLocalizedDateTimePattern(Any dateStyle, Any timeStyle, Any chrono, Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String getLocalizedDateTimePattern(java.lang.String requestedTemplate, java.time.chrono.Chronology chrono, java.util.Locale locale) { return null; }
+  public static String getLocalizedDateTimePattern(String requestedTemplate, Any chrono, Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder parseDefaulting(java.time.temporal.TemporalField field, long value) { return null; }
+  public Any parseDefaulting(Any field, long value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendZoneOrOffsetId() { return null; }
+  public Any appendZoneOrOffsetId() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendChronologyId() { return null; }
+  public Any appendChronologyId() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.format.DateTimeFormatterBuilder appendOptional(java.time.format.DateTimeFormatter formatter) { return null; }
+  public Any appendOptional(Any formatter) { return null; }
   < ---- END java signatures ---- >
 }

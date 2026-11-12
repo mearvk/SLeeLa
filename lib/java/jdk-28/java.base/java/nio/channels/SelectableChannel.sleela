@@ -56,6 +56,24 @@ class SelectableChannel {
   String javaKind = "class";
   String javaSuper = "java.nio.channels.spi.AbstractInterruptibleChannel";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SelectableChannel bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -72,20 +90,20 @@ class SelectableChannel {
   @throwable("java.lang.AbstractMethodError")
   public boolean isRegistered() { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.nio.channels.ClosedChannelException")
-  public final java.nio.channels.SelectionKey register(java.nio.channels.Selector sel, int ops) { return null; }
+  public final Any register(Any sel, int ops) { return null; }
   @throwable("java.lang.AbstractMethodError, java.nio.channels.ClosedChannelException")
-  public java.nio.channels.SelectionKey register(java.nio.channels.Selector sel, int ops, java.lang.Object att) { return null; }
+  public Any register(Any sel, int ops, Any att) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.channels.spi.SelectorProvider provider() { return null; }
+  public Any provider() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int validOps() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.channels.SelectionKey keyFor(java.nio.channels.Selector sel) { return null; }
+  public Any keyFor(Any sel) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.nio.channels.SelectableChannel configureBlocking(boolean block) { return null; }
+  public Any configureBlocking(boolean block) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isBlocking() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object blockingLock() { return null; }
+  public Any blockingLock() { return null; }
   < ---- END java signatures ---- >
 }

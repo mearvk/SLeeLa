@@ -56,6 +56,24 @@ class DocTreeFactory {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DocTreeFactory bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,100 +82,100 @@ class DocTreeFactory {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.util.DocTreeFactory at(int pos) { return null; }
+  public Any at(int pos) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.source.doctree.DocTree> getFirstSentence(java.util.List<? extends com.sun.source.doctree.DocTree> list) { return null; }
+  public Any getFirstSentence(Any list) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.DocCommentTree newDocCommentTree(java.util.List<? extends com.sun.source.doctree.DocTree> fullBody, java.util.List<? extends com.sun.source.doctree.DocTree> tags, java.util.List<? extends com.sun.source.doctree.DocTree> preamble, java.util.List<? extends com.sun.source.doctree.DocTree> postamble) { return null; }
+  public Any newDocCommentTree(Any fullBody, Any tags, Any preamble, Any postamble) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.DocCommentTree newDocCommentTree(java.util.List<? extends com.sun.source.doctree.DocTree> fullBody, java.util.List<? extends com.sun.source.doctree.DocTree> tags) { return null; }
+  public Any newDocCommentTree(Any fullBody, Any tags) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.InheritDocTree newInheritDocTree() { return null; }
+  public Any newInheritDocTree() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default com.sun.source.doctree.InheritDocTree newInheritDocTree(com.sun.source.doctree.ReferenceTree supertype) { return null; }
+  public default Any newInheritDocTree(Any supertype) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.ReferenceTree newReferenceTree(java.lang.String signature) { return null; }
+  public Any newReferenceTree(String signature) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default com.sun.source.doctree.ReturnTree newReturnTree(boolean isInline, java.util.List<? extends com.sun.source.doctree.DocTree> description) { return null; }
+  public default Any newReturnTree(boolean isInline, Any description) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.ReturnTree newReturnTree(java.util.List<? extends com.sun.source.doctree.DocTree> description) { return null; }
+  public Any newReturnTree(Any description) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default com.sun.source.doctree.ValueTree newValueTree(com.sun.source.doctree.TextTree format, com.sun.source.doctree.ReferenceTree ref) { return null; }
+  public default Any newValueTree(Any format, Any ref) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.ValueTree newValueTree(com.sun.source.doctree.ReferenceTree ref) { return null; }
+  public Any newValueTree(Any ref) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.VersionTree newVersionTree(java.util.List<? extends com.sun.source.doctree.DocTree> text) { return null; }
+  public Any newVersionTree(Any text) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.UsesTree newUsesTree(com.sun.source.doctree.ReferenceTree name, java.util.List<? extends com.sun.source.doctree.DocTree> description) { return null; }
+  public Any newUsesTree(Any name, Any description) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.UnknownInlineTagTree newUnknownInlineTagTree(javax.lang.model.element.Name name, java.util.List<? extends com.sun.source.doctree.DocTree> content) { return null; }
+  public Any newUnknownInlineTagTree(Any name, Any content) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.UnknownBlockTagTree newUnknownBlockTagTree(javax.lang.model.element.Name name, java.util.List<? extends com.sun.source.doctree.DocTree> content) { return null; }
+  public Any newUnknownBlockTagTree(Any name, Any content) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.ThrowsTree newThrowsTree(com.sun.source.doctree.ReferenceTree name, java.util.List<? extends com.sun.source.doctree.DocTree> description) { return null; }
+  public Any newThrowsTree(Any name, Any description) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.TextTree newTextTree(java.lang.String text) { return null; }
+  public Any newTextTree(String text) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.SystemPropertyTree newSystemPropertyTree(javax.lang.model.element.Name propertyName) { return null; }
+  public Any newSystemPropertyTree(Any propertyName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default com.sun.source.doctree.SummaryTree newSummaryTree(java.util.List<? extends com.sun.source.doctree.DocTree> summary) { return null; }
+  public default Any newSummaryTree(Any summary) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.StartElementTree newStartElementTree(javax.lang.model.element.Name name, java.util.List<? extends com.sun.source.doctree.DocTree> attrs, boolean selfClosing) { return null; }
+  public Any newStartElementTree(Any name, Any attrs, boolean selfClosing) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.SpecTree newSpecTree(com.sun.source.doctree.TextTree url, java.util.List<? extends com.sun.source.doctree.DocTree> title) { return null; }
+  public Any newSpecTree(Any url, Any title) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.SnippetTree newSnippetTree(java.util.List<? extends com.sun.source.doctree.DocTree> attributes, com.sun.source.doctree.TextTree text) { return null; }
+  public Any newSnippetTree(Any attributes, Any text) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.SinceTree newSinceTree(java.util.List<? extends com.sun.source.doctree.DocTree> text) { return null; }
+  public Any newSinceTree(Any text) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.SerialFieldTree newSerialFieldTree(com.sun.source.doctree.IdentifierTree name, com.sun.source.doctree.ReferenceTree type, java.util.List<? extends com.sun.source.doctree.DocTree> description) { return null; }
+  public Any newSerialFieldTree(Any name, Any type, Any description) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.SerialDataTree newSerialDataTree(java.util.List<? extends com.sun.source.doctree.DocTree> description) { return null; }
+  public Any newSerialDataTree(Any description) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.SerialTree newSerialTree(java.util.List<? extends com.sun.source.doctree.DocTree> description) { return null; }
+  public Any newSerialTree(Any description) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.SeeTree newSeeTree(java.util.List<? extends com.sun.source.doctree.DocTree> reference) { return null; }
+  public Any newSeeTree(Any reference) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.RawTextTree newRawTextTree(com.sun.source.doctree.DocTree.Kind kind, java.lang.String code) { return null; }
+  public Any newRawTextTree(Any kind, String code) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.ProvidesTree newProvidesTree(com.sun.source.doctree.ReferenceTree name, java.util.List<? extends com.sun.source.doctree.DocTree> description) { return null; }
+  public Any newProvidesTree(Any name, Any description) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.ParamTree newParamTree(boolean isTypeParameter, com.sun.source.doctree.IdentifierTree name, java.util.List<? extends com.sun.source.doctree.DocTree> description) { return null; }
+  public Any newParamTree(boolean isTypeParameter, Any name, Any description) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.LiteralTree newLiteralTree(com.sun.source.doctree.TextTree text) { return null; }
+  public Any newLiteralTree(Any text) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.LinkTree newLinkPlainTree(com.sun.source.doctree.ReferenceTree ref, java.util.List<? extends com.sun.source.doctree.DocTree> label) { return null; }
+  public Any newLinkPlainTree(Any ref, Any label) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.LinkTree newLinkTree(com.sun.source.doctree.ReferenceTree ref, java.util.List<? extends com.sun.source.doctree.DocTree> label) { return null; }
+  public Any newLinkTree(Any ref, Any label) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.IndexTree newIndexTree(com.sun.source.doctree.DocTree term, java.util.List<? extends com.sun.source.doctree.DocTree> description) { return null; }
+  public Any newIndexTree(Any term, Any description) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.IdentifierTree newIdentifierTree(javax.lang.model.element.Name name) { return null; }
+  public Any newIdentifierTree(Any name) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.HiddenTree newHiddenTree(java.util.List<? extends com.sun.source.doctree.DocTree> text) { return null; }
+  public Any newHiddenTree(Any text) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.ThrowsTree newExceptionTree(com.sun.source.doctree.ReferenceTree name, java.util.List<? extends com.sun.source.doctree.DocTree> description) { return null; }
+  public Any newExceptionTree(Any name, Any description) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.EscapeTree newEscapeTree(char ch) { return null; }
+  public Any newEscapeTree(char ch) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.ErroneousTree newErroneousTree(java.lang.String text, javax.tools.Diagnostic<javax.tools.JavaFileObject> diag) { return null; }
+  public Any newErroneousTree(String text, Any diag) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.EntityTree newEntityTree(javax.lang.model.element.Name name) { return null; }
+  public Any newEntityTree(Any name) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.EndElementTree newEndElementTree(javax.lang.model.element.Name name) { return null; }
+  public Any newEndElementTree(Any name) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.DocTypeTree newDocTypeTree(java.lang.String text) { return null; }
+  public Any newDocTypeTree(String text) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.DocRootTree newDocRootTree() { return null; }
+  public Any newDocRootTree() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.DeprecatedTree newDeprecatedTree(java.util.List<? extends com.sun.source.doctree.DocTree> text) { return null; }
+  public Any newDeprecatedTree(Any text) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.CommentTree newCommentTree(java.lang.String text) { return null; }
+  public Any newCommentTree(String text) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.LiteralTree newCodeTree(com.sun.source.doctree.TextTree text) { return null; }
+  public Any newCodeTree(Any text) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.AuthorTree newAuthorTree(java.util.List<? extends com.sun.source.doctree.DocTree> name) { return null; }
+  public Any newAuthorTree(Any name) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.source.doctree.AttributeTree newAttributeTree(javax.lang.model.element.Name name, com.sun.source.doctree.AttributeTree.ValueKind vkind, java.util.List<? extends com.sun.source.doctree.DocTree> value) { return null; }
+  public Any newAttributeTree(Any name, Any vkind, Any value) { return null; }
   < ---- END java signatures ---- >
 }

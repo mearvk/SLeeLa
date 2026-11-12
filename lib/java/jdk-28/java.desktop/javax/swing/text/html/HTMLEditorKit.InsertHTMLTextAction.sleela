@@ -57,6 +57,24 @@ class InsertHTMLTextAction {
   String javaKind = "class";
   String javaSuper = "javax.swing.text.html.HTMLEditorKit.HTMLTextAction";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public InsertHTMLTextAction bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   String html;
@@ -68,9 +86,9 @@ class InsertHTMLTextAction {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public InsertHTMLTextAction(java.lang.String name, java.lang.String html, javax.swing.text.html.HTML.Tag parentTag, javax.swing.text.html.HTML.Tag addTag, javax.swing.text.html.HTML.Tag alternateParentTag, javax.swing.text.html.HTML.Tag alternateAddTag) { }
+  public InsertHTMLTextAction(String name, String html, Any parentTag, Any addTag, Any alternateParentTag, Any alternateAddTag) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public InsertHTMLTextAction(java.lang.String name, java.lang.String html, javax.swing.text.html.HTML.Tag parentTag, javax.swing.text.html.HTML.Tag addTag) { }
+  public InsertHTMLTextAction(String name, String html, Any parentTag, Any addTag) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -81,14 +99,14 @@ class InsertHTMLTextAction {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void insertHTML(javax.swing.JEditorPane editor, javax.swing.text.html.HTMLDocument doc, int offset, java.lang.String html, int popDepth, int pushDepth, javax.swing.text.html.HTML.Tag addTag) { }
+  void insertHTML(Any editor, Any doc, int offset, String html, int popDepth, int pushDepth, Any addTag) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void insertAtBoundry(javax.swing.JEditorPane editor, javax.swing.text.html.HTMLDocument doc, int offset, javax.swing.text.Element insertElement, java.lang.String html, javax.swing.text.html.HTML.Tag parentTag, javax.swing.text.html.HTML.Tag addTag) { }
+  void insertAtBoundry(Any editor, Any doc, int offset, Any insertElement, String html, Any parentTag, Any addTag) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void insertAtBoundary(javax.swing.JEditorPane editor, javax.swing.text.html.HTMLDocument doc, int offset, javax.swing.text.Element insertElement, java.lang.String html, javax.swing.text.html.HTML.Tag parentTag, javax.swing.text.html.HTML.Tag addTag) { }
+  void insertAtBoundary(Any editor, Any doc, int offset, Any insertElement, String html, Any parentTag, Any addTag) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void actionPerformed(java.awt.event.ActionEvent ae) { }
+  public void actionPerformed(Any ae) { }
   < ---- END java signatures ---- >
 }

@@ -56,10 +56,28 @@ class BoxView {
   String javaKind = "class";
   String javaSuper = "javax.swing.text.CompositeView";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BoxView bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public BoxView(javax.swing.text.Element elem, int axis) { }
+  public BoxView(Any elem, int axis) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -69,16 +87,16 @@ class BoxView {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void replace(int index, int length, javax.swing.text.View[] elems) { }
+  public void replace(int index, int length, Any[] elems) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getOffset(int axis, int childIndex) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean isAfter(int x, int y, java.awt.Rectangle innerAlloc) { return false; }
+  boolean isAfter(int x, int y, Any innerAlloc) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean isBefore(int x, int y, java.awt.Rectangle innerAlloc) { return false; }
+  boolean isBefore(int x, int y, Any innerAlloc) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setSize(float width, float height) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -93,17 +111,17 @@ class BoxView {
   void layout(int width, int height) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.SizeRequirements calculateMinorAxisRequirements(int axis, javax.swing.SizeRequirements r) { return null; }
+  Any calculateMinorAxisRequirements(int axis, Any r) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public float getPreferredSpan(int axis) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Shape getChildAllocation(int index, java.awt.Shape a) { return null; }
+  public Any getChildAllocation(int index, Any a) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getSpan(int axis, int childIndex) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintChild(java.awt.Graphics g, java.awt.Rectangle alloc, int index) { }
+  void paintChild(Any g, Any alloc, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
   public float getMinimumSpan(int axis) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -112,15 +130,15 @@ class BoxView {
   public void layoutChanged(int axis) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean flipEastAndWestAtEnds(int position, javax.swing.text.Position.Bias bias) { return false; }
+  boolean flipEastAndWestAtEnds(int position, Any bias) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   boolean isLayoutValid(int axis) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void preferenceChanged(javax.swing.text.View child, boolean width, boolean height) { }
+  public void preferenceChanged(Any child, boolean width, boolean height) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void forwardUpdate(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  void forwardUpdate(Any ec, Any e, Any a, Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void layoutMajorAxis(int targetSpan, int axis, int[] offsets, int[] spans) { }
@@ -132,29 +150,29 @@ class BoxView {
   boolean isAllocationValid() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void childAllocation(int index, java.awt.Rectangle alloc) { }
+  void childAllocation(int index, Any alloc) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.SizeRequirements calculateMajorAxisRequirements(int axis, javax.swing.SizeRequirements r) { return null; }
+  Any calculateMajorAxisRequirements(int axis, Any r) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getResizeWeight(int axis) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setAxis(int axis) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.text.View getViewAtPoint(int x, int y, java.awt.Rectangle alloc) { return null; }
+  Any getViewAtPoint(int x, int y, Any alloc) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.SizeRequirements baselineRequirements(int axis, javax.swing.SizeRequirements r) { return null; }
+  Any baselineRequirements(int axis, Any r) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getWidth() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int viewToModel(float x, float y, java.awt.Shape a, javax.swing.text.Position.Bias[] bias) { return 0; }
+  public int viewToModel(float x, float y, Any a, Any[] bias) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public java.awt.Shape modelToView(int pos, java.awt.Shape a, javax.swing.text.Position.Bias b) { return null; }
+  public Any modelToView(int pos, Any a, Any b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getAxis() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g, java.awt.Shape allocation) { }
+  public void paint(Any g, Any allocation) { }
   < ---- END java signatures ---- >
 }

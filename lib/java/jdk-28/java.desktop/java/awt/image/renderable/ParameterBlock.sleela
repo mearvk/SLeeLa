@@ -56,6 +56,24 @@ class ParameterBlock {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ParameterBlock bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any sources;
@@ -64,9 +82,9 @@ class ParameterBlock {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public ParameterBlock(java.util.Vector<java.lang.Object> sources, java.util.Vector<java.lang.Object> parameters) { }
+  public ParameterBlock(Any sources, Any parameters) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public ParameterBlock(java.util.Vector<java.lang.Object> sources) { }
+  public ParameterBlock(Any sources) { }
   @throwable("java.lang.UnsupportedOperationException")
   public ParameterBlock() { }
   < ---- END java constructors ---- >
@@ -78,61 +96,61 @@ class ParameterBlock {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock add(short s) { return null; }
+  public Any add(short s) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock add(char c) { return null; }
+  public Any add(char c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock add(byte b) { return null; }
+  public Any add(byte b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock add(java.lang.Object obj) { return null; }
+  public Any add(Any obj) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock add(double d) { return null; }
+  public Any add(double d) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock add(float f) { return null; }
+  public Any add(float f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock add(long l) { return null; }
+  public Any add(long l) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock add(int i) { return null; }
+  public Any add(int i) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock set(long l, int index) { return null; }
+  public Any set(long l, int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock set(java.lang.Object obj, int index) { return null; }
+  public Any set(Any obj, int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock set(int i, int index) { return null; }
+  public Any set(int i, int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock set(short s, int index) { return null; }
+  public Any set(short s, int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock set(char c, int index) { return null; }
+  public Any set(char c, int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock set(double d, int index) { return null; }
+  public Any set(double d, int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock set(float f, int index) { return null; }
+  public Any set(float f, int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock set(byte b, int index) { return null; }
+  public Any set(byte b, int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Vector<java.lang.Object> getParameters() { return null; }
+  public Any getParameters() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setParameters(java.util.Vector<java.lang.Object> parameters) { }
+  public void setParameters(Any parameters) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Vector<java.lang.Object> getSources() { return null; }
+  public Any getSources() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock setSource(java.lang.Object source, int index) { return null; }
+  public Any setSource(Any source, int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSources(java.util.Vector<java.lang.Object> sources) { }
+  public void setSources(Any sources) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getNumParameters() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getObjectParameter(int index) { return null; }
+  public Any getObjectParameter(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object shallowClone() { return null; }
+  public Any shallowClone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.ParameterBlock addSource(java.lang.Object source) { return null; }
+  public Any addSource(Any source) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.RenderedImage getRenderedSource(int index) { return null; }
+  public Any getRenderedSource(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.renderable.RenderableImage getRenderableSource(int index) { return null; }
+  public Any getRenderableSource(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getNumSources() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -154,8 +172,8 @@ class ParameterBlock {
   @throwable("java.lang.UnsupportedOperationException")
   public double getDoubleParameter(int index) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Class<?>[] getParamClasses() { return null; }
+  public Any[] getParamClasses() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getSource(int index) { return null; }
+  public Any getSource(int index) { return null; }
   < ---- END java signatures ---- >
 }

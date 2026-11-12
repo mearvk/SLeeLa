@@ -56,6 +56,24 @@ class LogStream {
   String javaKind = "class";
   String javaSuper = "java.io.PrintStream";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public LogStream bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int SILENT = 0;
@@ -70,22 +88,22 @@ class LogStream {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.rmi.server.LogStream log(java.lang.String name) { return null; }
+  public static Any log(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void write(byte[] b, int off, int len) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void write(int b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.io.OutputStream getOutputStream() { return null; }
+  public synchronized Any getOutputStream() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static synchronized java.io.PrintStream getDefaultStream() { return null; }
+  public static synchronized Any getDefaultStream() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static synchronized void setDefaultStream(java.io.PrintStream newDefault) { }
+  public static synchronized void setDefaultStream(Any newDefault) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int parseLevel(java.lang.String s) { return 0; }
+  public static int parseLevel(String s) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void setOutputStream(java.io.OutputStream out) { }
+  public synchronized void setOutputStream(Any out) { }
   < ---- END java signatures ---- >
 }

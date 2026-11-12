@@ -56,6 +56,24 @@ class Range {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Range bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int START_TO_START = 0;
@@ -71,52 +89,52 @@ class Range {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
   public void detach() { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
-  public void setStart(org.w3c.dom.Node refNode, int offset) { }
+  public void setStart(Any refNode, int offset) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
-  public void selectNode(org.w3c.dom.Node refNode) { }
+  public void selectNode(Any refNode) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
   public int getStartOffset() { return 0; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
   public int getEndOffset() { return 0; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
-  public void setEnd(org.w3c.dom.Node refNode, int offset) { }
+  public void setEnd(Any refNode, int offset) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
   public void collapse(boolean toStart) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public org.w3c.dom.Node getStartContainer() { return null; }
+  public Any getStartContainer() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public org.w3c.dom.Node getEndContainer() { return null; }
+  public Any getEndContainer() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
   public boolean getCollapsed() { return false; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public org.w3c.dom.Node getCommonAncestorContainer() { return null; }
+  public Any getCommonAncestorContainer() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
-  public void setStartBefore(org.w3c.dom.Node refNode) { }
+  public void setStartBefore(Any refNode) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
-  public void setStartAfter(org.w3c.dom.Node refNode) { }
+  public void setStartAfter(Any refNode) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
-  public void setEndBefore(org.w3c.dom.Node refNode) { }
+  public void setEndBefore(Any refNode) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
-  public void setEndAfter(org.w3c.dom.Node refNode) { }
+  public void setEndAfter(Any refNode) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.ranges.RangeException, org.w3c.dom.DOMException")
-  public void selectNodeContents(org.w3c.dom.Node refNode) { }
+  public void selectNodeContents(Any refNode) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public short compareBoundaryPoints(short how, org.w3c.dom.ranges.Range sourceRange) { return 0; }
+  public short compareBoundaryPoints(short how, Any sourceRange) { return 0; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
   public void deleteContents() { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public org.w3c.dom.DocumentFragment extractContents() { return null; }
+  public Any extractContents() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public org.w3c.dom.DocumentFragment cloneContents() { return null; }
+  public Any cloneContents() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException, org.w3c.dom.ranges.RangeException")
-  public void insertNode(org.w3c.dom.Node newNode) { }
+  public void insertNode(Any newNode) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException, org.w3c.dom.ranges.RangeException")
-  public void surroundContents(org.w3c.dom.Node newParent) { }
+  public void surroundContents(Any newParent) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public org.w3c.dom.ranges.Range cloneRange() { return null; }
+  public Any cloneRange() { return null; }
   < ---- END java signatures ---- >
 }

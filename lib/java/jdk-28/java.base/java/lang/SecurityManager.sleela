@@ -56,6 +56,24 @@ class SecurityManager {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SecurityManager bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -71,61 +89,61 @@ class SecurityManager {
   @throwable("java.lang.UnsupportedOperationException")
   public void checkCreateClassLoader() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.ThreadGroup getThreadGroup() { return null; }
+  public Any getThreadGroup() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkAccess(java.lang.Thread t) { }
+  public void checkAccess(Any t) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void checkExit(int status) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkPermission(java.security.Permission perm) { }
+  public void checkPermission(Any perm) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkPermission(java.security.Permission perm, java.lang.Object context) { }
+  public void checkPermission(Any perm, Any context) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.Class<?>[] getClassContext() { return null; }
+  Any[] getClassContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getSecurityContext() { return null; }
+  public Any getSecurityContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkExec(java.lang.String cmd) { }
+  public void checkExec(String cmd) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkLink(java.lang.String lib) { }
+  public void checkLink(String lib) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkRead(java.lang.String file) { }
+  public void checkRead(String file) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkRead(java.lang.String file, java.lang.Object context) { }
+  public void checkRead(String file, Any context) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkRead(java.io.FileDescriptor fd) { }
+  public void checkRead(Any fd) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkWrite(java.lang.String file) { }
+  public void checkWrite(String file) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkWrite(java.io.FileDescriptor fd) { }
+  public void checkWrite(Any fd) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkDelete(java.lang.String file) { }
+  public void checkDelete(String file) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkConnect(java.lang.String host, int port) { }
+  public void checkConnect(String host, int port) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkConnect(java.lang.String host, int port, java.lang.Object context) { }
+  public void checkConnect(String host, int port, Any context) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void checkListen(int port) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkAccept(java.lang.String host, int port) { }
+  public void checkAccept(String host, int port) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkMulticast(java.net.InetAddress maddr) { }
+  public void checkMulticast(Any maddr) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkMulticast(java.net.InetAddress maddr, byte ttl) { }
+  public void checkMulticast(Any maddr, byte ttl) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void checkPropertiesAccess() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkPropertyAccess(java.lang.String key) { }
+  public void checkPropertyAccess(String key) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void checkPrintJobAccess() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkPackageAccess(java.lang.String pkg) { }
+  public void checkPackageAccess(String pkg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkPackageDefinition(java.lang.String pkg) { }
+  public void checkPackageDefinition(String pkg) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void checkSetFactory() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void checkSecurityAccess(java.lang.String target) { }
+  public void checkSecurityAccess(String target) { }
   < ---- END java signatures ---- >
 }

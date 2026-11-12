@@ -56,10 +56,28 @@ class LogRecord {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public LogRecord bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public LogRecord(java.util.logging.Level level, java.lang.String msg) { }
+  public LogRecord(Any level, String msg) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -69,51 +87,51 @@ class LogRecord {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getMessage() { return null; }
+  public String getMessage() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object[] getParameters() { return null; }
+  public Any[] getParameters() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setInstant(java.time.Instant instant) { }
+  public void setInstant(Any instant) { }
   @throwable("java.lang.UnsupportedOperationException")
   public long getMillis() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLevel(java.util.logging.Level level) { }
+  public void setLevel(Any level) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.logging.Level getLevel() { return null; }
+  public Any getLevel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getResourceBundleName() { return null; }
+  public String getResourceBundleName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getLoggerName() { return null; }
+  public String getLoggerName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLoggerName(java.lang.String name) { }
+  public void setLoggerName(String name) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setResourceBundleName(java.lang.String name) { }
+  public void setResourceBundleName(String name) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setResourceBundle(java.util.ResourceBundle bundle) { }
+  public void setResourceBundle(Any bundle) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setParameters(java.lang.Object[] parameters) { }
+  public void setParameters(Any[] parameters) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setThrown(java.lang.Throwable thrown) { }
+  public void setThrown(Any thrown) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSourceClassName(java.lang.String sourceClassName) { }
+  public void setSourceClassName(String sourceClassName) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSourceMethodName(java.lang.String sourceMethodName) { }
+  public void setSourceMethodName(String sourceMethodName) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.ResourceBundle getResourceBundle() { return null; }
+  public Any getResourceBundle() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setMillis(long millis) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setMessage(java.lang.String message) { }
+  public void setMessage(String message) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Instant getInstant() { return null; }
+  public Any getInstant() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public long getSequenceNumber() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setSequenceNumber(long seq) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getSourceClassName() { return null; }
+  public String getSourceClassName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getSourceMethodName() { return null; }
+  public String getSourceMethodName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getThreadID() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -121,8 +139,8 @@ class LogRecord {
   @throwable("java.lang.UnsupportedOperationException")
   public long getLongThreadID() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.logging.LogRecord setLongThreadID(long longThreadID) { return null; }
+  public Any setLongThreadID(long longThreadID) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Throwable getThrown() { return null; }
+  public Any getThrown() { return null; }
   < ---- END java signatures ---- >
 }

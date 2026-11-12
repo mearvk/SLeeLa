@@ -56,6 +56,24 @@ class ConstantPoolBuilder {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ConstantPoolBuilder bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,68 +82,68 @@ class ConstantPoolBuilder {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.constantpool.ConstantPoolBuilder of(java.lang.classfile.ClassModel classModel) { return null; }
+  public static Any of(Any classModel) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.classfile.constantpool.ConstantPoolBuilder of() { return null; }
+  public static Any of() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.ClassEntry classEntry(java.lang.classfile.constantpool.Utf8Entry ne) { return null; }
+  public Any classEntry(Any ne) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.constantpool.NameAndTypeEntry nameAndTypeEntry(java.lang.String name, java.lang.constant.MethodTypeDesc type) { return null; }
+  public default Any nameAndTypeEntry(String name, Any type) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.NameAndTypeEntry nameAndTypeEntry(java.lang.classfile.constantpool.Utf8Entry nameEntry, java.lang.classfile.constantpool.Utf8Entry typeEntry) { return null; }
+  public Any nameAndTypeEntry(Any nameEntry, Any typeEntry) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.FieldRefEntry fieldRefEntry(java.lang.classfile.constantpool.ClassEntry owner, java.lang.classfile.constantpool.NameAndTypeEntry nameAndType) { return null; }
+  public Any fieldRefEntry(Any owner, Any nameAndType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.constantpool.FieldRefEntry fieldRefEntry(java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.constant.ClassDesc type) { return null; }
+  public default Any fieldRefEntry(Any owner, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.constantpool.Utf8Entry utf8Entry(java.lang.constant.ClassDesc desc) { return null; }
+  public default Any utf8Entry(Any desc) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.Utf8Entry utf8Entry(java.lang.String s) { return null; }
+  public Any utf8Entry(String s) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.IntegerEntry intEntry(int value) { return null; }
+  public Any intEntry(int value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.FloatEntry floatEntry(float value) { return null; }
+  public Any floatEntry(float value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.LongEntry longEntry(long value) { return null; }
+  public Any longEntry(long value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.DoubleEntry doubleEntry(double value) { return null; }
+  public Any doubleEntry(double value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.constantpool.PackageEntry packageEntry(java.lang.constant.PackageDesc packageDesc) { return null; }
+  public default Any packageEntry(Any packageDesc) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.ModuleEntry moduleEntry(java.lang.classfile.constantpool.Utf8Entry moduleName) { return null; }
+  public Any moduleEntry(Any moduleName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.MethodRefEntry methodRefEntry(java.lang.classfile.constantpool.ClassEntry owner, java.lang.classfile.constantpool.NameAndTypeEntry nameAndType) { return null; }
+  public Any methodRefEntry(Any owner, Any nameAndType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.constantpool.MethodRefEntry methodRefEntry(java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.constant.MethodTypeDesc type) { return null; }
+  public default Any methodRefEntry(Any owner, String name, Any type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.constantpool.InterfaceMethodRefEntry interfaceMethodRefEntry(java.lang.constant.ClassDesc owner, java.lang.String name, java.lang.constant.MethodTypeDesc type) { return null; }
+  public default Any interfaceMethodRefEntry(Any owner, String name, Any type) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.InterfaceMethodRefEntry interfaceMethodRefEntry(java.lang.classfile.constantpool.ClassEntry owner, java.lang.classfile.constantpool.NameAndTypeEntry nameAndType) { return null; }
+  public Any interfaceMethodRefEntry(Any owner, Any nameAndType) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.MethodTypeEntry methodTypeEntry(java.lang.constant.MethodTypeDesc descriptor) { return null; }
+  public Any methodTypeEntry(Any descriptor) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.MethodHandleEntry methodHandleEntry(int refKind, java.lang.classfile.constantpool.MemberRefEntry reference) { return null; }
+  public Any methodHandleEntry(int refKind, Any reference) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.constantpool.MethodHandleEntry methodHandleEntry(java.lang.constant.DirectMethodHandleDesc descriptor) { return null; }
+  public default Any methodHandleEntry(Any descriptor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.constantpool.InvokeDynamicEntry invokeDynamicEntry(java.lang.constant.DynamicCallSiteDesc dcsd) { return null; }
+  public default Any invokeDynamicEntry(Any dcsd) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.InvokeDynamicEntry invokeDynamicEntry(java.lang.classfile.BootstrapMethodEntry bootstrapMethodEntry, java.lang.classfile.constantpool.NameAndTypeEntry nameAndType) { return null; }
+  public Any invokeDynamicEntry(Any bootstrapMethodEntry, Any nameAndType) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.ConstantDynamicEntry constantDynamicEntry(java.lang.classfile.BootstrapMethodEntry bootstrapMethodEntry, java.lang.classfile.constantpool.NameAndTypeEntry nameAndType) { return null; }
+  public Any constantDynamicEntry(Any bootstrapMethodEntry, Any nameAndType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.constantpool.ConstantDynamicEntry constantDynamicEntry(java.lang.constant.DynamicConstantDesc<?> dcd) { return null; }
+  public default Any constantDynamicEntry(Any dcd) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.constantpool.StringEntry stringEntry(java.lang.classfile.constantpool.Utf8Entry utf8) { return null; }
+  public Any stringEntry(Any utf8) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.constantpool.StringEntry stringEntry(java.lang.String value) { return null; }
+  public default Any stringEntry(String value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.BootstrapMethodEntry bsmEntry(java.lang.constant.DirectMethodHandleDesc methodReference, java.util.List<java.lang.constant.ConstantDesc> arguments) { return null; }
+  public default Any bsmEntry(Any methodReference, Any arguments) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean canWriteDirect(java.lang.classfile.constantpool.ConstantPool constantPool) { return false; }
+  public boolean canWriteDirect(Any constantPool) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.constantpool.ConstantValueEntry constantValueEntry(java.lang.constant.ConstantDesc c) { return null; }
+  public default Any constantValueEntry(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.constantpool.LoadableConstantEntry loadableConstantEntry(java.lang.constant.ConstantDesc c) { return null; }
+  public default Any loadableConstantEntry(Any c) { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class SSLEngine {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SSLEngine bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -63,7 +81,7 @@ class SSLEngine {
   SSLEngine() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  SSLEngine(java.lang.String peerHost, int peerPort) { }
+  SSLEngine(String peerHost, int peerPort) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -73,25 +91,25 @@ class SSLEngine {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, javax.net.ssl.SSLException")
-  public javax.net.ssl.SSLEngineResult wrap(java.nio.ByteBuffer[] srcs, java.nio.ByteBuffer dst) { return null; }
+  public Any wrap(Any[] srcs, Any dst) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.net.ssl.SSLException")
-  public javax.net.ssl.SSLEngineResult wrap(java.nio.ByteBuffer src, java.nio.ByteBuffer dst) { return null; }
+  public Any wrap(Any src, Any dst) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.net.ssl.SSLException")
-  public javax.net.ssl.SSLEngineResult wrap(java.nio.ByteBuffer[] srcs, int offset, int length, java.nio.ByteBuffer dst) { return null; }
+  public Any wrap(Any[] srcs, int offset, int length, Any dst) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.net.ssl.SSLException")
-  public javax.net.ssl.SSLEngineResult unwrap(java.nio.ByteBuffer src, java.nio.ByteBuffer dst) { return null; }
+  public Any unwrap(Any src, Any dst) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.net.ssl.SSLException")
-  public javax.net.ssl.SSLEngineResult unwrap(java.nio.ByteBuffer src, java.nio.ByteBuffer[] dsts, int offset, int length) { return null; }
+  public Any unwrap(Any src, Any[] dsts, int offset, int length) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.net.ssl.SSLException")
-  public javax.net.ssl.SSLEngineResult unwrap(java.nio.ByteBuffer src, java.nio.ByteBuffer[] dsts) { return null; }
+  public Any unwrap(Any src, Any[] dsts) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String[] getSupportedCipherSuites() { return null; }
+  public String[] getSupportedCipherSuites() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.net.ssl.SSLSession getSession() { return null; }
+  public Any getSession() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String[] getEnabledCipherSuites() { return null; }
+  public String[] getEnabledCipherSuites() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String[] getEnabledProtocols() { return null; }
+  public String[] getEnabledProtocols() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean getNeedClientAuth() { return false; }
   @throwable("java.lang.AbstractMethodError")
@@ -101,13 +119,13 @@ class SSLEngine {
   @throwable("java.lang.AbstractMethodError")
   public void setWantClientAuth(boolean want) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setEnabledCipherSuites(java.lang.String[] suites) { }
+  public void setEnabledCipherSuites(String[] suites) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setEnabledProtocols(java.lang.String[] protocols) { }
+  public void setEnabledProtocols(String[] protocols) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String[] getSupportedProtocols() { return null; }
+  public String[] getSupportedProtocols() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.net.ssl.SSLSession getHandshakeSession() { return null; }
+  public Any getHandshakeSession() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void setUseClientMode(boolean mode) { }
   @throwable("java.lang.AbstractMethodError")
@@ -117,23 +135,23 @@ class SSLEngine {
   @throwable("java.lang.AbstractMethodError")
   public boolean getEnableSessionCreation() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.net.ssl.SSLParameters getSSLParameters() { return null; }
+  public Any getSSLParameters() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSSLParameters(javax.net.ssl.SSLParameters params) { }
+  public void setSSLParameters(Any params) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getApplicationProtocol() { return null; }
+  public String getApplicationProtocol() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getHandshakeApplicationProtocol() { return null; }
+  public String getHandshakeApplicationProtocol() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setHandshakeApplicationProtocolSelector(java.util.function.BiFunction<javax.net.ssl.SSLEngine, java.util.List<java.lang.String>, java.lang.String> selector) { }
+  public void setHandshakeApplicationProtocolSelector(Any selector) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.function.BiFunction<javax.net.ssl.SSLEngine, java.util.List<java.lang.String>, java.lang.String> getHandshakeApplicationProtocolSelector() { return null; }
+  public Any getHandshakeApplicationProtocolSelector() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getPeerHost() { return null; }
+  public String getPeerHost() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getPeerPort() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Runnable getDelegatedTask() { return null; }
+  public Any getDelegatedTask() { return null; }
   @throwable("java.lang.AbstractMethodError, javax.net.ssl.SSLException")
   public void closeInbound() { }
   @throwable("java.lang.AbstractMethodError")
@@ -145,6 +163,6 @@ class SSLEngine {
   @throwable("java.lang.AbstractMethodError, javax.net.ssl.SSLException")
   public void beginHandshake() { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.net.ssl.SSLEngineResult.HandshakeStatus getHandshakeStatus() { return null; }
+  public Any getHandshakeStatus() { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,12 +56,30 @@ class StringBuffer {
   String javaKind = "class";
   String javaSuper = "java.lang.AbstractStringBuilder";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public StringBuffer bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public StringBuffer(java.lang.CharSequence seq) { }
+  public StringBuffer(Any seq) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public StringBuffer(java.lang.String str) { }
+  public StringBuffer(String str) { }
   @throwable("java.lang.UnsupportedOperationException")
   public StringBuffer(int capacity) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -77,61 +95,61 @@ class StringBuffer {
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized int length() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.String toString() { return null; }
+  public synchronized String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer append(int i) { return null; }
+  public synchronized Any append(int i) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer append(long lng) { return null; }
+  public synchronized Any append(long lng) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer append(float f) { return null; }
+  public synchronized Any append(float f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer append(char[] str) { return null; }
+  public synchronized Any append(char[] str) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer append(char[] str, int offset, int len) { return null; }
+  public synchronized Any append(char[] str, int offset, int len) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer append(boolean b) { return null; }
+  public synchronized Any append(boolean b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer append(char c) { return null; }
+  public synchronized Any append(char c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer append(double d) { return null; }
+  public synchronized Any append(double d) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer append(java.lang.String str) { return null; }
+  public synchronized Any append(String str) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer append(java.lang.StringBuffer sb) { return null; }
+  public synchronized Any append(Any sb) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer append(java.lang.CharSequence s, int start, int end) { return null; }
+  public synchronized Any append(Any s, int start, int end) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer reverse() { return null; }
+  public synchronized Any reverse() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized void getChars(int srcBegin, int srcEnd, char[] dst, int dstBegin) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized int compareTo(java.lang.StringBuffer another) { return 0; }
+  public synchronized int compareTo(Any another) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized int indexOf(java.lang.String str, int fromIndex) { return 0; }
+  public synchronized int indexOf(String str, int fromIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int indexOf(java.lang.String str) { return 0; }
+  public int indexOf(String str) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer insert(int offset, java.lang.Object obj) { return null; }
+  public synchronized Any insert(int offset, Any obj) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer insert(int index, char[] str, int offset, int len) { return null; }
+  public synchronized Any insert(int index, char[] str, int offset, int len) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer insert(int offset, char[] str) { return null; }
+  public synchronized Any insert(int offset, char[] str) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuffer insert(int offset, float f) { return null; }
+  public Any insert(int offset, float f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuffer insert(int offset, long l) { return null; }
+  public Any insert(int offset, long l) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer insert(int offset, java.lang.String str) { return null; }
+  public synchronized Any insert(int offset, String str) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer insert(int dstOffset, java.lang.CharSequence s, int start, int end) { return null; }
+  public synchronized Any insert(int dstOffset, Any s, int start, int end) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuffer insert(int offset, boolean b) { return null; }
+  public Any insert(int offset, boolean b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuffer insert(int offset, double d) { return null; }
+  public Any insert(int offset, double d) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer insert(int offset, char c) { return null; }
+  public synchronized Any insert(int offset, char c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuffer insert(int offset, int i) { return null; }
+  public Any insert(int offset, int i) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized char charAt(int index) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -143,21 +161,21 @@ class StringBuffer {
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized int offsetByCodePoints(int index, int codePointOffset) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized int lastIndexOf(java.lang.String str, int fromIndex) { return 0; }
+  public synchronized int lastIndexOf(String str, int fromIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int lastIndexOf(java.lang.String str) { return 0; }
+  public int lastIndexOf(String str) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.String substring(int start) { return null; }
+  public synchronized String substring(int start) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.String substring(int start, int end) { return null; }
+  public synchronized String substring(int start, int end) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer replace(int start, int end, java.lang.String str) { return null; }
+  public synchronized Any replace(int start, int end, String str) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer repeat(java.lang.CharSequence cs, int count) { return null; }
+  public synchronized Any repeat(Any cs, int count) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer repeat(int codePoint, int count) { return null; }
+  public synchronized Any repeat(int codePoint, int count) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.CharSequence subSequence(int start, int end) { return null; }
+  public synchronized Any subSequence(int start, int end) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized void trimToSize() { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -169,10 +187,10 @@ class StringBuffer {
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized void setCharAt(int index, char ch) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer appendCodePoint(int codePoint) { return null; }
+  public synchronized Any appendCodePoint(int codePoint) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer delete(int start, int end) { return null; }
+  public synchronized Any delete(int start, int end) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.StringBuffer deleteCharAt(int index) { return null; }
+  public synchronized Any deleteCharAt(int index) { return null; }
   < ---- END java signatures ---- >
 }

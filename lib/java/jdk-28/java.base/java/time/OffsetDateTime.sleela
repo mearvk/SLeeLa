@@ -56,6 +56,24 @@ class OffsetDateTime {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public OffsetDateTime bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static Any MIN = null;
@@ -69,53 +87,54 @@ class OffsetDateTime {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public int get(java.time.temporal.TemporalField field) { return 0; }
+  public int get(Any field) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(java.time.OffsetDateTime other) { return 0; }
+  public int compareTo(Any other) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public long getLong(java.time.temporal.TemporalField field) { return 0; }
+  public long getLong(Any field) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.OffsetDateTime of(java.time.LocalDateTime dateTime, java.time.ZoneOffset offset) { return null; }
+  public static Any of(Any dateTime, Any offset) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.OffsetDateTime of(int year, int month, int dayOfMonth, int hour, int minute, int second, int nanoOfSecond, java.time.ZoneOffset offset) { return null; }
+  public static Any of(int year, int month, int dayOfMonth, int hour, int minute, int second, int nanoOfSecond, Any offset) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.OffsetDateTime of(java.time.LocalDate date, java.time.LocalTime time, java.time.ZoneOffset offset) { return null; }
+  public static Any of(Any date, Any time, Any offset) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String format(java.time.format.DateTimeFormatter formatter) { return null; }
+  public String format(Any formatter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.OffsetDateTime from(java.time.temporal.TemporalAccessor temporal) { return null; }
+  public static Any from(Any temporal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isSupported(java.time.temporal.TemporalUnit unit) { return false; }
+  public boolean isSupported(Any unit) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.OffsetDateTime parse(java.lang.CharSequence text) { return null; }
+  public static Any parse(Any text) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.OffsetDateTime parse(java.lang.CharSequence text, java.time.format.DateTimeFormatter formatter) { return null; }
+  public static Any parse(Any text, Any formatter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime with(java.time.temporal.TemporalField field, long newValue) { return null; }
+  public Any with(Any field, long newValue) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime with(java.time.temporal.TemporalAdjuster adjuster) { return null; }
+  public Any with(Any adjuster) { return null; }
+  @generic("<R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <R> R query(java.time.temporal.TemporalQuery<R> query) { return null; }
+  public Any query(Any query) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.ZoneOffset getOffset() { return null; }
+  public Any getOffset() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.temporal.ValueRange range(java.time.temporal.TemporalField field) { return null; }
+  public Any range(Any field) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.OffsetDateTime now() { return null; }
+  public static Any now() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.OffsetDateTime now(java.time.Clock clock) { return null; }
+  public static Any now(Any clock) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isEqual(java.time.OffsetDateTime other) { return false; }
+  public boolean isEqual(Any other) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getNano() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Instant toInstant() { return null; }
+  public Any toInstant() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getYear() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -129,100 +148,100 @@ class OffsetDateTime {
   @throwable("java.lang.UnsupportedOperationException")
   public int getSecond() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime minus(long amountToSubtract, java.time.temporal.TemporalUnit unit) { return null; }
+  public Any minus(long amountToSubtract, Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime minus(java.time.temporal.TemporalAmount amountToSubtract) { return null; }
+  public Any minus(Any amountToSubtract) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime plus(long amountToAdd, java.time.temporal.TemporalUnit unit) { return null; }
+  public Any plus(long amountToAdd, Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime plus(java.time.temporal.TemporalAmount amountToAdd) { return null; }
+  public Any plus(Any amountToAdd) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public long until(java.time.temporal.Temporal endExclusive, java.time.temporal.TemporalUnit unit) { return 0; }
+  public long until(Any endExclusive, Any unit) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime plusNanos(long nanos) { return null; }
+  public Any plusNanos(long nanos) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime plusSeconds(long seconds) { return null; }
+  public Any plusSeconds(long seconds) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime plusDays(long days) { return null; }
+  public Any plusDays(long days) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime plusHours(long hours) { return null; }
+  public Any plusHours(long hours) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime plusMinutes(long minutes) { return null; }
+  public Any plusMinutes(long minutes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime minusDays(long days) { return null; }
+  public Any minusDays(long days) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime minusHours(long hours) { return null; }
+  public Any minusHours(long hours) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime minusMinutes(long minutes) { return null; }
+  public Any minusMinutes(long minutes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime minusSeconds(long seconds) { return null; }
+  public Any minusSeconds(long seconds) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime minusNanos(long nanos) { return null; }
+  public Any minusNanos(long nanos) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime truncatedTo(java.time.temporal.TemporalUnit unit) { return null; }
+  public Any truncatedTo(Any unit) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.temporal.Temporal adjustInto(java.time.temporal.Temporal temporal) { return null; }
+  public Any adjustInto(Any temporal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.OffsetDateTime ofInstant(java.time.Instant instant, java.time.ZoneId zone) { return null; }
+  public static Any ofInstant(Any instant, Any zone) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isAfter(java.time.OffsetDateTime other) { return false; }
+  public boolean isAfter(Any other) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isBefore(java.time.OffsetDateTime other) { return false; }
+  public boolean isBefore(Any other) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.Month getMonth() { return null; }
+  public Any getMonth() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.DayOfWeek getDayOfWeek() { return null; }
+  public Any getDayOfWeek() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getDayOfYear() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime withDayOfMonth(int dayOfMonth) { return null; }
+  public Any withDayOfMonth(int dayOfMonth) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime withDayOfYear(int dayOfYear) { return null; }
+  public Any withDayOfYear(int dayOfYear) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime plusWeeks(long weeks) { return null; }
+  public Any plusWeeks(long weeks) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime withMonth(int month) { return null; }
+  public Any withMonth(int month) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime plusMonths(long months) { return null; }
+  public Any plusMonths(long months) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime withYear(int year) { return null; }
+  public Any withYear(int year) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime plusYears(long years) { return null; }
+  public Any plusYears(long years) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime minusMonths(long months) { return null; }
+  public Any minusMonths(long months) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalTime toLocalTime() { return null; }
+  public Any toLocalTime() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime minusYears(long years) { return null; }
+  public Any minusYears(long years) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime minusWeeks(long weeks) { return null; }
+  public Any minusWeeks(long weeks) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public long toEpochSecond() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Comparator<java.time.OffsetDateTime> timeLineOrder() { return null; }
+  public static Any timeLineOrder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalDateTime toLocalDateTime() { return null; }
+  public Any toLocalDateTime() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime withHour(int hour) { return null; }
+  public Any withHour(int hour) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime withMinute(int minute) { return null; }
+  public Any withMinute(int minute) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime withSecond(int second) { return null; }
+  public Any withSecond(int second) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime withNano(int nanoOfSecond) { return null; }
+  public Any withNano(int nanoOfSecond) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalDate toLocalDate() { return null; }
+  public Any toLocalDate() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.ZonedDateTime toZonedDateTime() { return null; }
+  public Any toZonedDateTime() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime withOffsetSameInstant(java.time.ZoneOffset offset) { return null; }
+  public Any withOffsetSameInstant(Any offset) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetDateTime withOffsetSameLocal(java.time.ZoneOffset offset) { return null; }
+  public Any withOffsetSameLocal(Any offset) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.ZonedDateTime atZoneSameInstant(java.time.ZoneId zone) { return null; }
+  public Any atZoneSameInstant(Any zone) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.ZonedDateTime atZoneSimilarLocal(java.time.ZoneId zone) { return null; }
+  public Any atZoneSimilarLocal(Any zone) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.OffsetTime toOffsetTime() { return null; }
+  public Any toOffsetTime() { return null; }
   < ---- END java signatures ---- >
 }

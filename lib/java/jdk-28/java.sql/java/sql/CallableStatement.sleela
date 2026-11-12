@@ -56,6 +56,24 @@ class CallableStatement {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public CallableStatement bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -66,222 +84,223 @@ class CallableStatement {
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public boolean getBoolean(int parameterIndex) { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public boolean getBoolean(java.lang.String parameterName) { return false; }
+  public boolean getBoolean(String parameterName) { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public byte getByte(int parameterIndex) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public byte getByte(java.lang.String parameterName) { return 0; }
+  public byte getByte(String parameterName) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public short getShort(int parameterIndex) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public short getShort(java.lang.String parameterName) { return 0; }
+  public short getShort(String parameterName) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public int getInt(int parameterIndex) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public int getInt(java.lang.String parameterName) { return 0; }
+  public int getInt(String parameterName) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public long getLong(java.lang.String parameterName) { return 0; }
+  public long getLong(String parameterName) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public long getLong(int parameterIndex) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public float getFloat(java.lang.String parameterName) { return 0.0; }
+  public float getFloat(String parameterName) { return 0.0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public float getFloat(int parameterIndex) { return 0.0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public double getDouble(java.lang.String parameterName) { return 0.0; }
+  public double getDouble(String parameterName) { return 0.0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public double getDouble(int parameterIndex) { return 0.0; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public byte[] getBytes(java.lang.String parameterName) { return null; }
+  public byte[] getBytes(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public byte[] getBytes(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setBoolean(java.lang.String parameterName, boolean x) { }
+  public void setBoolean(String parameterName, boolean x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setByte(java.lang.String parameterName, byte x) { }
+  public void setByte(String parameterName, byte x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setShort(java.lang.String parameterName, short x) { }
+  public void setShort(String parameterName, short x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setInt(java.lang.String parameterName, int x) { }
+  public void setInt(String parameterName, int x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setLong(java.lang.String parameterName, long x) { }
+  public void setLong(String parameterName, long x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setFloat(java.lang.String parameterName, float x) { }
+  public void setFloat(String parameterName, float x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setDouble(java.lang.String parameterName, double x) { }
+  public void setDouble(String parameterName, double x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Ref getRef(int parameterIndex) { return null; }
+  public Any getRef(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Ref getRef(java.lang.String parameterName) { return null; }
+  public Any getRef(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Array getArray(java.lang.String parameterName) { return null; }
+  public Any getArray(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Array getArray(int parameterIndex) { return null; }
+  public Any getArray(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setURL(java.lang.String parameterName, java.net.URL val) { }
+  public void setURL(String parameterName, Any val) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.String getString(int parameterIndex) { return null; }
+  public String getString(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.String getString(java.lang.String parameterName) { return null; }
+  public String getString(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.math.BigDecimal getBigDecimal(int parameterIndex) { return null; }
+  public Any getBigDecimal(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.math.BigDecimal getBigDecimal(java.lang.String parameterName) { return null; }
+  public Any getBigDecimal(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.math.BigDecimal getBigDecimal(int parameterIndex, int scale) { return null; }
+  public Any getBigDecimal(int parameterIndex, int scale) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Time getTime(java.lang.String parameterName, java.util.Calendar cal) { return null; }
+  public Any getTime(String parameterName, Any cal) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Time getTime(int parameterIndex, java.util.Calendar cal) { return null; }
+  public Any getTime(int parameterIndex, Any cal) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Time getTime(int parameterIndex) { return null; }
+  public Any getTime(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Time getTime(java.lang.String parameterName) { return null; }
+  public Any getTime(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setTime(java.lang.String parameterName, java.sql.Time x, java.util.Calendar cal) { }
+  public void setTime(String parameterName, Any x, Any cal) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setTime(java.lang.String parameterName, java.sql.Time x) { }
+  public void setTime(String parameterName, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.Object getObject(java.lang.String parameterName, java.util.Map<java.lang.String, java.lang.Class<?>> map) { return null; }
+  public Any getObject(String parameterName, Any map) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.Object getObject(java.lang.String parameterName) { return null; }
+  public Any getObject(String parameterName) { return null; }
+  @generic("<T>")
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public <T> T getObject(int parameterIndex, java.lang.Class<T> type) { return null; }
+  public Any getObject(int parameterIndex, Any type) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.Object getObject(int parameterIndex) { return null; }
+  public Any getObject(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.net.URL getURL(int parameterIndex) { return null; }
+  public Any getURL(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.net.URL getURL(java.lang.String parameterName) { return null; }
+  public Any getURL(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Timestamp getTimestamp(int parameterIndex, java.util.Calendar cal) { return null; }
+  public Any getTimestamp(int parameterIndex, Any cal) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Timestamp getTimestamp(java.lang.String parameterName, java.util.Calendar cal) { return null; }
+  public Any getTimestamp(String parameterName, Any cal) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Timestamp getTimestamp(java.lang.String parameterName) { return null; }
+  public Any getTimestamp(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Timestamp getTimestamp(int parameterIndex) { return null; }
+  public Any getTimestamp(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setObject(java.lang.String parameterName, java.lang.Object x, int targetSqlType) { }
+  public void setObject(String parameterName, Any x, int targetSqlType) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setObject(java.lang.String parameterName, java.lang.Object x) { }
+  public void setObject(String parameterName, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public default void setObject(java.lang.String parameterName, java.lang.Object x, java.sql.SQLType targetSqlType) { }
+  public default void setObject(String parameterName, Any x, Any targetSqlType) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public default void setObject(java.lang.String parameterName, java.lang.Object x, java.sql.SQLType targetSqlType, int scaleOrLength) { }
+  public default void setObject(String parameterName, Any x, Any targetSqlType, int scaleOrLength) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setObject(java.lang.String parameterName, java.lang.Object x, int targetSqlType, int scale) { }
+  public void setObject(String parameterName, Any x, int targetSqlType, int scale) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setString(java.lang.String parameterName, java.lang.String x) { }
+  public void setString(String parameterName, String x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.io.Reader getCharacterStream(int parameterIndex) { return null; }
+  public Any getCharacterStream(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.io.Reader getCharacterStream(java.lang.String parameterName) { return null; }
+  public Any getCharacterStream(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setCharacterStream(java.lang.String parameterName, java.io.Reader reader, int length) { }
+  public void setCharacterStream(String parameterName, Any reader, int length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setCharacterStream(java.lang.String parameterName, java.io.Reader reader) { }
+  public void setCharacterStream(String parameterName, Any reader) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setCharacterStream(java.lang.String parameterName, java.io.Reader reader, long length) { }
+  public void setCharacterStream(String parameterName, Any reader, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public boolean wasNull() { return false; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Blob getBlob(java.lang.String parameterName) { return null; }
+  public Any getBlob(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Blob getBlob(int parameterIndex) { return null; }
+  public Any getBlob(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Clob getClob(java.lang.String parameterName) { return null; }
+  public Any getClob(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.Clob getClob(int parameterIndex) { return null; }
+  public Any getClob(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.RowId getRowId(int parameterIndex) { return null; }
+  public Any getRowId(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.RowId getRowId(java.lang.String parameterName) { return null; }
+  public Any getRowId(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.NClob getNClob(java.lang.String parameterName) { return null; }
+  public Any getNClob(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.NClob getNClob(int parameterIndex) { return null; }
+  public Any getNClob(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.SQLXML getSQLXML(int parameterIndex) { return null; }
+  public Any getSQLXML(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.sql.SQLXML getSQLXML(java.lang.String parameterName) { return null; }
+  public Any getSQLXML(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.String getNString(java.lang.String parameterName) { return null; }
+  public String getNString(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.String getNString(int parameterIndex) { return null; }
+  public String getNString(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.io.Reader getNCharacterStream(int parameterIndex) { return null; }
+  public Any getNCharacterStream(int parameterIndex) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.io.Reader getNCharacterStream(java.lang.String parameterName) { return null; }
+  public Any getNCharacterStream(String parameterName) { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setBytes(java.lang.String parameterName, byte[] x) { }
+  public void setBytes(String parameterName, byte[] x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setBinaryStream(java.lang.String parameterName, java.io.InputStream x, int length) { }
+  public void setBinaryStream(String parameterName, Any x, int length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setBinaryStream(java.lang.String parameterName, java.io.InputStream x, long length) { }
+  public void setBinaryStream(String parameterName, Any x, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setBinaryStream(java.lang.String parameterName, java.io.InputStream x) { }
+  public void setBinaryStream(String parameterName, Any x) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public default void registerOutParameter(int parameterIndex, java.sql.SQLType sqlType) { }
+  public default void registerOutParameter(int parameterIndex, Any sqlType) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public default void registerOutParameter(java.lang.String parameterName, java.sql.SQLType sqlType, int scale) { }
+  public default void registerOutParameter(String parameterName, Any sqlType, int scale) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public default void registerOutParameter(java.lang.String parameterName, java.sql.SQLType sqlType, java.lang.String typeName) { }
+  public default void registerOutParameter(String parameterName, Any sqlType, String typeName) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public default void registerOutParameter(int parameterIndex, java.sql.SQLType sqlType, int scale) { }
+  public default void registerOutParameter(int parameterIndex, Any sqlType, int scale) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public default void registerOutParameter(int parameterIndex, java.sql.SQLType sqlType, java.lang.String typeName) { }
+  public default void registerOutParameter(int parameterIndex, Any sqlType, String typeName) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public default void registerOutParameter(java.lang.String parameterName, java.sql.SQLType sqlType) { }
+  public default void registerOutParameter(String parameterName, Any sqlType) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void registerOutParameter(int parameterIndex, int sqlType) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void registerOutParameter(java.lang.String parameterName, int sqlType, java.lang.String typeName) { }
+  public void registerOutParameter(String parameterName, int sqlType, String typeName) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void registerOutParameter(java.lang.String parameterName, int sqlType, int scale) { }
+  public void registerOutParameter(String parameterName, int sqlType, int scale) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void registerOutParameter(int parameterIndex, int sqlType, int scale) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void registerOutParameter(int parameterIndex, int sqlType, java.lang.String typeName) { }
+  public void registerOutParameter(int parameterIndex, int sqlType, String typeName) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void registerOutParameter(java.lang.String parameterName, int sqlType) { }
+  public void registerOutParameter(String parameterName, int sqlType) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setNull(java.lang.String parameterName, int sqlType, java.lang.String typeName) { }
+  public void setNull(String parameterName, int sqlType, String typeName) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setNull(java.lang.String parameterName, int sqlType) { }
+  public void setNull(String parameterName, int sqlType) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setBigDecimal(java.lang.String parameterName, java.math.BigDecimal x) { }
+  public void setBigDecimal(String parameterName, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setTimestamp(java.lang.String parameterName, java.sql.Timestamp x) { }
+  public void setTimestamp(String parameterName, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setTimestamp(java.lang.String parameterName, java.sql.Timestamp x, java.util.Calendar cal) { }
+  public void setTimestamp(String parameterName, Any x, Any cal) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setAsciiStream(java.lang.String parameterName, java.io.InputStream x, int length) { }
+  public void setAsciiStream(String parameterName, Any x, int length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setAsciiStream(java.lang.String parameterName, java.io.InputStream x, long length) { }
+  public void setAsciiStream(String parameterName, Any x, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setAsciiStream(java.lang.String parameterName, java.io.InputStream x) { }
+  public void setAsciiStream(String parameterName, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setRowId(java.lang.String parameterName, java.sql.RowId x) { }
+  public void setRowId(String parameterName, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setNString(java.lang.String parameterName, java.lang.String value) { }
+  public void setNString(String parameterName, String value) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setNCharacterStream(java.lang.String parameterName, java.io.Reader value) { }
+  public void setNCharacterStream(String parameterName, Any value) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setNCharacterStream(java.lang.String parameterName, java.io.Reader value, long length) { }
+  public void setNCharacterStream(String parameterName, Any value, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setNClob(java.lang.String parameterName, java.io.Reader reader, long length) { }
+  public void setNClob(String parameterName, Any reader, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setNClob(java.lang.String parameterName, java.sql.NClob value) { }
+  public void setNClob(String parameterName, Any value) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setClob(java.lang.String parameterName, java.io.Reader reader, long length) { }
+  public void setClob(String parameterName, Any reader, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setClob(java.lang.String parameterName, java.sql.Clob x) { }
+  public void setClob(String parameterName, Any x) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setBlob(java.lang.String parameterName, java.io.InputStream inputStream, long length) { }
+  public void setBlob(String parameterName, Any inputStream, long length) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setBlob(java.lang.String parameterName, java.io.InputStream inputStream) { }
+  public void setBlob(String parameterName, Any inputStream) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void setSQLXML(java.lang.String parameterName, java.sql.SQLXML xmlObject) { }
+  public void setSQLXML(String parameterName, Any xmlObject) { }
   < ---- END java signatures ---- >
 }

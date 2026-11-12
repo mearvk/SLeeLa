@@ -56,6 +56,24 @@ class HTMLTableCellElement {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public HTMLTableCellElement bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,49 +82,49 @@ class HTMLTableCellElement {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getScope() { return null; }
+  public String getScope() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setWidth(java.lang.String width) { }
+  public void setWidth(String width) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getHeight() { return null; }
+  public String getHeight() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setHeight(java.lang.String height) { }
+  public void setHeight(String height) { }
   @throwable("java.lang.AbstractMethodError")
   public int getRowSpan() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public void setAxis(java.lang.String axis) { }
+  public void setAxis(String axis) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBgColor() { return null; }
+  public String getBgColor() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getWidth() { return null; }
+  public String getWidth() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getHeaders() { return null; }
+  public String getHeaders() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAlign() { return null; }
+  public String getAlign() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setAlign(java.lang.String align) { }
+  public void setAlign(String align) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setBgColor(java.lang.String bgColor) { }
+  public void setBgColor(String bgColor) { }
   @throwable("java.lang.AbstractMethodError")
   public int getCellIndex() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAbbr() { return null; }
+  public String getAbbr() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setAbbr(java.lang.String abbr) { }
+  public void setAbbr(String abbr) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getCh() { return null; }
+  public String getCh() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setCh(java.lang.String ch) { }
+  public void setCh(String ch) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getChOff() { return null; }
+  public String getChOff() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setChOff(java.lang.String chOff) { }
+  public void setChOff(String chOff) { }
   @throwable("java.lang.AbstractMethodError")
   public int getColSpan() { return 0; }
   @throwable("java.lang.AbstractMethodError")
   public void setColSpan(int colSpan) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setHeaders(java.lang.String headers) { }
+  public void setHeaders(String headers) { }
   @throwable("java.lang.AbstractMethodError")
   public boolean getNoWrap() { return false; }
   @throwable("java.lang.AbstractMethodError")
@@ -114,12 +132,12 @@ class HTMLTableCellElement {
   @throwable("java.lang.AbstractMethodError")
   public void setRowSpan(int rowSpan) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setScope(java.lang.String scope) { }
+  public void setScope(String scope) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getVAlign() { return null; }
+  public String getVAlign() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setVAlign(java.lang.String vAlign) { }
+  public void setVAlign(String vAlign) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAxis() { return null; }
+  public String getAxis() { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class SyncFactory {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SyncFactory bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String ROWSET_SYNC_PROVIDER = "rowset.provider.classname";
@@ -70,22 +88,22 @@ class SyncFactory {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.spi.SyncFactoryException")
-  public static javax.sql.rowset.spi.SyncProvider getInstance(java.lang.String providerID) { return null; }
+  public static Any getInstance(String providerID) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.spi.SyncFactoryException")
-  public static java.util.logging.Logger getLogger() { return null; }
+  public static Any getLogger() { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.spi.SyncFactoryException")
-  public static synchronized void registerProvider(java.lang.String providerID) { }
+  public static synchronized void registerProvider(String providerID) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.sql.rowset.spi.SyncFactory getSyncFactory() { return null; }
+  public static Any getSyncFactory() { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.spi.SyncFactoryException")
-  public static synchronized void unregisterProvider(java.lang.String providerID) { }
+  public static synchronized void unregisterProvider(String providerID) { }
   @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.spi.SyncFactoryException")
-  public static java.util.Enumeration<javax.sql.rowset.spi.SyncProvider> getRegisteredProviders() { return null; }
+  public static Any getRegisteredProviders() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setLogger(java.util.logging.Logger logger) { }
+  public static void setLogger(Any logger) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setLogger(java.util.logging.Logger logger, java.util.logging.Level level) { }
+  public static void setLogger(Any logger, Any level) { }
   @throwable("java.lang.UnsupportedOperationException, javax.sql.rowset.spi.SyncFactoryException")
-  public static synchronized void setJNDIContext(javax.naming.Context ctx) { }
+  public static synchronized void setJNDIContext(Any ctx) { }
   < ---- END java signatures ---- >
 }

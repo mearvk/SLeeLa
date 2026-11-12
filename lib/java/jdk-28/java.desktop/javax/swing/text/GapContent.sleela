@@ -56,6 +56,24 @@ class GapContent {
   String javaKind = "class";
   String javaSuper = "javax.swing.text.GapVector";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public GapContent bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -71,20 +89,20 @@ class GapContent {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public javax.swing.undo.UndoableEdit remove(int where, int nitems) { return null; }
+  public Any remove(int where, int nitems) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int length() { return 0; }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public void getChars(int where, int len, javax.swing.text.Segment chars) { }
+  public void getChars(int where, int len, Any chars) { }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public java.lang.String getString(int where, int len) { return null; }
+  public String getString(int where, int len) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public javax.swing.undo.UndoableEdit insertString(int where, java.lang.String str) { return null; }
+  public Any insertString(int where, String str) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public javax.swing.text.Position createPosition(int offset) { return null; }
+  public Any createPosition(int offset) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.Object allocateArray(int len) { return null; }
+  Any allocateArray(int len) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getArrayLength() { return 0; }
@@ -105,9 +123,9 @@ class GapContent {
   void shiftGapEndUp(int newGapEnd) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.util.Vector getPositionsInRange(java.util.Vector v, int offset, int length) { return null; }
+  Any getPositionsInRange(Any v, int offset, int length) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void updateUndoPositions(java.util.Vector positions, int offset, int length) { }
+  void updateUndoPositions(Any positions, int offset, int length) { }
   < ---- END java signatures ---- >
 }

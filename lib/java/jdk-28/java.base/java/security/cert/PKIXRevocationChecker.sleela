@@ -56,6 +56,24 @@ class PKIXRevocationChecker {
   String javaKind = "class";
   String javaSuper = "java.security.cert.PKIXCertPathChecker";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public PKIXRevocationChecker bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,28 +88,28 @@ class PKIXRevocationChecker {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.security.cert.PKIXRevocationChecker clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setOptions(java.util.Set<java.security.cert.PKIXRevocationChecker.Option> options) { }
+  public void setOptions(Any options) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setOcspResponder(java.net.URI uri) { }
+  public void setOcspResponder(Any uri) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.net.URI getOcspResponder() { return null; }
+  public Any getOcspResponder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setOcspResponderCert(java.security.cert.X509Certificate cert) { }
+  public void setOcspResponderCert(Any cert) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.security.cert.X509Certificate getOcspResponderCert() { return null; }
+  public Any getOcspResponderCert() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setOcspExtensions(java.util.List<java.security.cert.Extension> extensions) { }
+  public void setOcspExtensions(Any extensions) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<java.security.cert.Extension> getOcspExtensions() { return null; }
+  public Any getOcspExtensions() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setOcspResponses(java.util.Map<java.security.cert.X509Certificate, byte[]> responses) { }
+  public void setOcspResponses(Any responses) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Map<java.security.cert.X509Certificate, byte[]> getOcspResponses() { return null; }
+  public Any getOcspResponses() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<java.security.cert.CertPathValidatorException> getSoftFailExceptions() { return null; }
+  public Any getSoftFailExceptions() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.security.cert.PKIXRevocationChecker.Option> getOptions() { return null; }
+  public Any getOptions() { return null; }
   < ---- END java signatures ---- >
 }

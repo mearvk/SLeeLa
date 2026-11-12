@@ -56,10 +56,28 @@ class JSpinner {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JSpinner bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public JSpinner(javax.swing.SpinnerModel model) { }
+  public JSpinner(Any model) { }
   @throwable("java.lang.UnsupportedOperationException")
   public JSpinner() { }
   < ---- END java constructors ---- >
@@ -71,44 +89,44 @@ class JSpinner {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getValue() { return null; }
+  public Any getValue() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setValue(java.lang.Object value) { }
+  public void setValue(Any value) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUI(javax.swing.plaf.SpinnerUI ui) { }
+  public void setUI(Any ui) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.SpinnerUI getUI() { return null; }
+  public Any getUI() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
   public void commitEdit() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JComponent getEditor() { return null; }
+  public Any getEditor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setEditor(javax.swing.JComponent editor) { }
+  public void setEditor(Any editor) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JComponent createEditor(javax.swing.SpinnerModel model) { return null; }
+  Any createEditor(Any model) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.SpinnerModel getModel() { return null; }
+  public Any getModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeChangeListener(javax.swing.event.ChangeListener listener) { }
+  public void removeChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addChangeListener(javax.swing.event.ChangeListener listener) { }
+  public void addChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setModel(javax.swing.SpinnerModel model) { }
+  public void setModel(Any model) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.ChangeListener[] getChangeListeners() { return null; }
+  public Any[] getChangeListeners() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void fireStateChanged() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getNextValue() { return null; }
+  public Any getNextValue() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getPreviousValue() { return null; }
+  public Any getPreviousValue() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   < ---- END java signatures ---- >
 }

@@ -57,6 +57,24 @@ class ModuleAttributeBuilder {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ModuleAttributeBuilder bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -65,36 +83,36 @@ class ModuleAttributeBuilder {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder moduleName(java.lang.constant.ModuleDesc moduleName) { return null; }
+  public Any moduleName(Any moduleName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder exports(java.lang.constant.PackageDesc pkge, int exportsFlagsMask, java.lang.constant.ModuleDesc... exportsToModules) { return null; }
+  public Any exports(Any pkge, int exportsFlagsMask, Any... exportsToModules) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder exports(java.lang.constant.PackageDesc pkge, java.util.Collection<java.lang.reflect.AccessFlag> exportsFlags, java.lang.constant.ModuleDesc... exportsToModules) { return null; }
+  public default Any exports(Any pkge, Any exportsFlags, Any... exportsToModules) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder exports(java.lang.classfile.attribute.ModuleExportInfo exports) { return null; }
+  public Any exports(Any exports) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder uses(java.lang.classfile.constantpool.ClassEntry uses) { return null; }
+  public Any uses(Any uses) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder opens(java.lang.constant.PackageDesc pkge, java.util.Collection<java.lang.reflect.AccessFlag> opensFlags, java.lang.constant.ModuleDesc... opensToModules) { return null; }
+  public default Any opens(Any pkge, Any opensFlags, Any... opensToModules) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder opens(java.lang.classfile.attribute.ModuleOpenInfo opens) { return null; }
+  public Any opens(Any opens) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder opens(java.lang.constant.PackageDesc pkge, int opensFlagsMask, java.lang.constant.ModuleDesc... opensToModules) { return null; }
+  public Any opens(Any pkge, int opensFlagsMask, Any... opensToModules) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder provides(java.lang.constant.ClassDesc service, java.lang.constant.ClassDesc... implClasses) { return null; }
+  public Any provides(Any service, Any... implClasses) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder provides(java.lang.classfile.attribute.ModuleProvideInfo provides) { return null; }
+  public Any provides(Any provides) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder moduleVersion(java.lang.String version) { return null; }
+  public Any moduleVersion(String version) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder requires(java.lang.constant.ModuleDesc module, int requiresFlagsMask, java.lang.String version) { return null; }
+  public Any requires(Any module, int requiresFlagsMask, String version) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder requires(java.lang.constant.ModuleDesc module, java.util.Collection<java.lang.reflect.AccessFlag> requiresFlags, java.lang.String version) { return null; }
+  public default Any requires(Any module, Any requiresFlags, String version) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder requires(java.lang.classfile.attribute.ModuleRequireInfo requires) { return null; }
+  public Any requires(Any requires) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder moduleFlags(java.lang.reflect.AccessFlag... moduleFlags) { return null; }
+  public default Any moduleFlags(Any... moduleFlags) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.classfile.attribute.ModuleAttribute.ModuleAttributeBuilder moduleFlags(int flagsMask) { return null; }
+  public Any moduleFlags(int flagsMask) { return null; }
   < ---- END java signatures ---- >
 }

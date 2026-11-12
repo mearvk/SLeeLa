@@ -56,6 +56,24 @@ class StreamSource {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public StreamSource bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String FEATURE = "http://javax.xml.transform.stream.StreamSource/feature";
@@ -63,11 +81,11 @@ class StreamSource {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public StreamSource(java.io.Reader reader) { }
+  public StreamSource(Any reader) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public StreamSource(java.io.Reader reader, java.lang.String systemId) { }
+  public StreamSource(Any reader, String systemId) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public StreamSource(java.lang.String systemId) { }
+  public StreamSource(String systemId) { }
   @throwable("java.lang.UnsupportedOperationException")
   public StreamSource() { }
   < ---- END java constructors ---- >
@@ -81,22 +99,22 @@ class StreamSource {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.io.InputStream getInputStream() { return null; }
+  public Any getInputStream() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setInputStream(java.io.InputStream inputStream) { }
+  public void setInputStream(Any inputStream) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.io.Reader getReader() { return null; }
+  public Any getReader() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSystemId(java.lang.String systemId) { }
+  public void setSystemId(String systemId) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSystemId(java.io.File f) { }
+  public void setSystemId(Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPublicId(java.lang.String publicId) { }
+  public void setPublicId(String publicId) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getPublicId() { return null; }
+  public String getPublicId() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getSystemId() { return null; }
+  public String getSystemId() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setReader(java.io.Reader reader) { }
+  public void setReader(Any reader) { }
   < ---- END java signatures ---- >
 }

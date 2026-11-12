@@ -56,6 +56,24 @@ class X509CertSelector {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public X509CertSelector bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,33 +87,33 @@ class X509CertSelector {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean match(java.security.cert.Certificate cert) { return false; }
+  public boolean match(Any cert) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.lang.String> getPolicy() { return null; }
+  public Any getPolicy() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getBasicConstraints() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getIssuerAsString() { return null; }
+  public String getIssuerAsString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getSubjectAsString() { return null; }
+  public String getSubjectAsString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setCertificate(java.security.cert.X509Certificate cert) { }
+  public void setCertificate(Any cert) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSerialNumber(java.math.BigInteger serial) { }
+  public void setSerialNumber(Any serial) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setIssuer(javax.security.auth.x500.X500Principal issuer) { }
+  public void setIssuer(Any issuer) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public void setIssuer(byte[] issuerDN) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void setIssuer(java.lang.String issuerDN) { }
+  public void setIssuer(String issuerDN) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSubject(javax.security.auth.x500.X500Principal subject) { }
+  public void setSubject(Any subject) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void setSubject(java.lang.String subjectDN) { }
+  public void setSubject(String subjectDN) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public void setSubject(byte[] subjectDN) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -103,37 +121,37 @@ class X509CertSelector {
   @throwable("java.lang.UnsupportedOperationException")
   public void setAuthorityKeyIdentifier(byte[] authorityKeyID) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setCertificateValid(java.util.Date certValid) { }
+  public void setCertificateValid(Any certValid) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPrivateKeyValid(java.util.Date privateKeyValid) { }
+  public void setPrivateKeyValid(Any privateKeyValid) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void setSubjectPublicKeyAlgID(java.lang.String oid) { }
+  public void setSubjectPublicKeyAlgID(String oid) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public void setSubjectPublicKey(byte[] key) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSubjectPublicKey(java.security.PublicKey key) { }
+  public void setSubjectPublicKey(Any key) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setKeyUsage(boolean[] keyUsage) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void setExtendedKeyUsage(java.util.Set<java.lang.String> keyPurposeSet) { }
+  public void setExtendedKeyUsage(Any keyPurposeSet) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setMatchAllSubjectAltNames(boolean matchAllNames) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void setSubjectAlternativeNames(java.util.Collection<java.util.List<?>> names) { }
+  public void setSubjectAlternativeNames(Any names) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public void addSubjectAlternativeName(int type, byte[] name) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void addSubjectAlternativeName(int type, java.lang.String name) { }
+  public void addSubjectAlternativeName(int type, String name) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setBasicConstraints(int minMaxPathLen) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void setPathToNames(java.util.Collection<java.util.List<?>> names) { }
+  public void setPathToNames(Any names) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public void addPathToName(int type, byte[] name) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void addPathToName(int type, java.lang.String name) { }
+  public void addPathToName(int type, String name) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.security.auth.x500.X500Principal getIssuer() { return null; }
+  public Any getIssuer() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public byte[] getIssuerAsBytes() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
@@ -143,33 +161,33 @@ class X509CertSelector {
   @throwable("java.lang.UnsupportedOperationException")
   public byte[] getAuthorityKeyIdentifier() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Date getCertificateValid() { return null; }
+  public Any getCertificateValid() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Date getPrivateKeyValid() { return null; }
+  public Any getPrivateKeyValid() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getSubjectPublicKeyAlgID() { return null; }
+  public String getSubjectPublicKeyAlgID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.security.PublicKey getSubjectPublicKey() { return null; }
+  public Any getSubjectPublicKey() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getMatchAllSubjectAltNames() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Collection<java.util.List<?>> getPathToNames() { return null; }
+  public Any getPathToNames() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.security.auth.x500.X500Principal getSubject() { return null; }
+  public Any getSubject() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.security.cert.X509Certificate getCertificate() { return null; }
+  public Any getCertificate() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public void setNameConstraints(byte[] bytes) { }
   @throwable("java.lang.UnsupportedOperationException")
   public byte[] getNameConstraints() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.lang.String> getExtendedKeyUsage() { return null; }
+  public Any getExtendedKeyUsage() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Collection<java.util.List<?>> getSubjectAlternativeNames() { return null; }
+  public Any getSubjectAlternativeNames() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.math.BigInteger getSerialNumber() { return null; }
+  public Any getSerialNumber() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void setPolicy(java.util.Set<java.lang.String> certPolicySet) { }
+  public void setPolicy(Any certPolicySet) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean[] getKeyUsage() { return null; }
   < ---- END java signatures ---- >

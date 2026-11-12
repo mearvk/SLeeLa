@@ -56,6 +56,24 @@ class JavaFileManager {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JavaFileManager bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -66,40 +84,41 @@ class JavaFileManager {
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
   public void flush() { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public default boolean contains(javax.tools.JavaFileManager.Location location, javax.tools.FileObject fo) { return false; }
+  public default boolean contains(Any location, Any fo) { return false; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.lang.Iterable<javax.tools.JavaFileObject> list(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.util.Set<javax.tools.JavaFileObject.Kind> kinds, boolean recurse) { return null; }
+  public Any list(Any location, String packageName, Any kinds, boolean recurse) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.ClassLoader getClassLoader(javax.tools.JavaFileManager.Location location) { return null; }
+  public Any getClassLoader(Any location) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean isSameFile(javax.tools.FileObject a, javax.tools.FileObject b) { return false; }
+  public boolean isSameFile(Any a, Any b) { return false; }
+  @generic("<S>")
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public default <S> java.util.ServiceLoader<S> getServiceLoader(javax.tools.JavaFileManager.Location location, java.lang.Class<S> service) { return null; }
+  public default Any getServiceLoader(Any location, Any service) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean handleOption(java.lang.String current, java.util.Iterator<java.lang.String> remaining) { return false; }
+  public boolean handleOption(String current, Any remaining) { return false; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public javax.tools.JavaFileObject getJavaFileForOutput(javax.tools.JavaFileManager.Location location, java.lang.String className, javax.tools.JavaFileObject.Kind kind, javax.tools.FileObject sibling) { return null; }
+  public Any getJavaFileForOutput(Any location, String className, Any kind, Any sibling) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public javax.tools.FileObject getFileForOutput(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.lang.String relativeName, javax.tools.FileObject sibling) { return null; }
+  public Any getFileForOutput(Any location, String packageName, String relativeName, Any sibling) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String inferBinaryName(javax.tools.JavaFileManager.Location location, javax.tools.JavaFileObject file) { return null; }
+  public String inferBinaryName(Any location, Any file) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean hasLocation(javax.tools.JavaFileManager.Location location) { return false; }
+  public boolean hasLocation(Any location) { return false; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public javax.tools.JavaFileObject getJavaFileForInput(javax.tools.JavaFileManager.Location location, java.lang.String className, javax.tools.JavaFileObject.Kind kind) { return null; }
+  public Any getJavaFileForInput(Any location, String className, Any kind) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public default javax.tools.JavaFileObject getJavaFileForOutputForOriginatingFiles(javax.tools.JavaFileManager.Location location, java.lang.String className, javax.tools.JavaFileObject.Kind kind, javax.tools.FileObject... originatingFiles) { return null; }
+  public default Any getJavaFileForOutputForOriginatingFiles(Any location, String className, Any kind, Any... originatingFiles) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public javax.tools.FileObject getFileForInput(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.lang.String relativeName) { return null; }
+  public Any getFileForInput(Any location, String packageName, String relativeName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public default javax.tools.FileObject getFileForOutputForOriginatingFiles(javax.tools.JavaFileManager.Location location, java.lang.String packageName, java.lang.String relativeName, javax.tools.FileObject... originatingFiles) { return null; }
+  public default Any getFileForOutputForOriginatingFiles(Any location, String packageName, String relativeName, Any... originatingFiles) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public default javax.tools.JavaFileManager.Location getLocationForModule(javax.tools.JavaFileManager.Location location, javax.tools.JavaFileObject fo) { return null; }
+  public default Any getLocationForModule(Any location, Any fo) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public default javax.tools.JavaFileManager.Location getLocationForModule(javax.tools.JavaFileManager.Location location, java.lang.String moduleName) { return null; }
+  public default Any getLocationForModule(Any location, String moduleName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public default java.lang.String inferModuleName(javax.tools.JavaFileManager.Location location) { return null; }
+  public default String inferModuleName(Any location) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public default java.lang.Iterable<java.util.Set<javax.tools.JavaFileManager.Location>> listLocationsForModules(javax.tools.JavaFileManager.Location location) { return null; }
+  public default Any listLocationsForModules(Any location) { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class Timer {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Timer bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any listenerList;
@@ -63,7 +81,7 @@ class Timer {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public Timer(int delay, java.awt.event.ActionListener listener) { }
+  public Timer(int delay, Any listener) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -97,23 +115,24 @@ class Timer {
   @throwable("java.lang.UnsupportedOperationException")
   public int getDelay() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addActionListener(java.awt.event.ActionListener listener) { }
+  public void addActionListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setActionCommand(java.lang.String command) { }
+  public void setActionCommand(String command) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeActionListener(java.awt.event.ActionListener listener) { }
+  public void removeActionListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.event.ActionListener[] getActionListeners() { return null; }
+  public Any[] getActionListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setDelay(int delay) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setRepeats(boolean flag) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getActionCommand() { return null; }
+  public String getActionCommand() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void fireActionPerformed(java.awt.event.ActionEvent e) { }
+  void fireActionPerformed(Any e) { }
+  @generic("<T extends java.util.EventListener>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
+  public Any[] getListeners(Any listenerType) { return null; }
   < ---- END java signatures ---- >
 }

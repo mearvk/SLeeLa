@@ -56,6 +56,24 @@ class JTabbedPane {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JTabbedPane bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int WRAP_TAB_LAYOUT = 0;
@@ -83,94 +101,94 @@ class JTabbedPane {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void remove(java.awt.Component component) { }
+  public void remove(Any component) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void remove(int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void add(java.awt.Component component, java.lang.Object constraints) { }
+  public void add(Any component, Any constraints) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component add(java.lang.String title, java.awt.Component component) { return null; }
+  public Any add(String title, Any component) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component add(java.awt.Component component, int index) { return null; }
+  public Any add(Any component, int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void add(java.awt.Component component, java.lang.Object constraints, int index) { }
+  public void add(Any component, Any constraints, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component add(java.awt.Component component) { return null; }
+  public Any add(Any component) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeAll() { }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUI(javax.swing.plaf.TabbedPaneUI ui) { }
+  public void setUI(Any ui) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.TabbedPaneUI getUI() { return null; }
+  public Any getUI() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getToolTipText(java.awt.event.MouseEvent event) { return null; }
+  public String getToolTipText(Any event) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int indexOfComponent(java.awt.Component component) { return 0; }
+  public int indexOfComponent(Any component) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeTabAt(int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void insertTab(java.lang.String title, javax.swing.Icon icon, java.awt.Component component, java.lang.String tip, int index) { }
+  public void insertTab(String title, Any icon, Any component, String tip, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTabComponentAt(int index, java.awt.Component component) { }
+  public void setTabComponentAt(int index, Any component) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getSelectedComponent() { return null; }
+  public Any getSelectedComponent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getTabRunCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEnabledAt(int index) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getBoundsAt(int index) { return null; }
+  public Any getBoundsAt(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getTabComponentAt(int index) { return null; }
+  public Any getTabComponentAt(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int indexOfTabComponent(java.awt.Component tabComponent) { return 0; }
+  public int indexOfTabComponent(Any tabComponent) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getTabPlacement() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getTabLayoutPolicy() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSelectedComponent(java.awt.Component c) { }
+  public void setSelectedComponent(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getDisabledIconAt(int index) { return null; }
+  public Any getDisabledIconAt(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getToolTipTextAt(int index) { return null; }
+  public String getToolTipTextAt(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getBackgroundAt(int index) { return null; }
+  public Any getBackgroundAt(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getForegroundAt(int index) { return null; }
+  public Any getForegroundAt(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMnemonicAt(int tabIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getDisplayedMnemonicIndexAt(int tabIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTitleAt(int index, java.lang.String title) { }
+  public void setTitleAt(int index, String title) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setIconAt(int index, javax.swing.Icon icon) { }
+  public void setIconAt(int index, Any icon) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setToolTipTextAt(int index, java.lang.String toolTipText) { }
+  public void setToolTipTextAt(int index, String toolTipText) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBackgroundAt(int index, java.awt.Color background) { }
+  public void setBackgroundAt(int index, Any background) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setForegroundAt(int index, java.awt.Color foreground) { }
+  public void setForegroundAt(int index, Any foreground) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setEnabledAt(int index, boolean enabled) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setComponentAt(int index, java.awt.Component component) { }
+  public void setComponentAt(int index, Any component) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setDisplayedMnemonicIndexAt(int tabIndex, int mnemonicIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setMnemonicAt(int tabIndex, int mnemonic) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int indexOfTab(javax.swing.Icon icon) { return 0; }
+  public int indexOfTab(Any icon) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int indexOfTab(java.lang.String title) { return 0; }
+  public int indexOfTab(String title) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int indexAtLocation(int x, int y) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -182,38 +200,38 @@ class JTabbedPane {
   @throwable("java.lang.UnsupportedOperationException")
   public void setTabLayoutPolicy(int tabLayoutPolicy) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDisabledIconAt(int index, javax.swing.Icon disabledIcon) { }
+  public void setDisabledIconAt(int index, Any disabledIcon) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.SingleSelectionModel getModel() { return null; }
+  public Any getModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeChangeListener(javax.swing.event.ChangeListener l) { }
+  public void removeChangeListener(Any l) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.event.ChangeListener createChangeListener() { return null; }
+  Any createChangeListener() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addChangeListener(javax.swing.event.ChangeListener l) { }
+  public void addChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setModel(javax.swing.SingleSelectionModel model) { }
+  public void setModel(Any model) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.ChangeListener[] getChangeListeners() { return null; }
+  public Any[] getChangeListeners() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void fireStateChanged() { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getTabCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addTab(java.lang.String title, java.awt.Component component) { }
+  public void addTab(String title, Any component) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addTab(java.lang.String title, javax.swing.Icon icon, java.awt.Component component) { }
+  public void addTab(String title, Any icon, Any component) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addTab(java.lang.String title, javax.swing.Icon icon, java.awt.Component component, java.lang.String tip) { }
+  public void addTab(String title, Any icon, Any component, String tip) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getTitleAt(int index) { return null; }
+  public String getTitleAt(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getIconAt(int index) { return null; }
+  public Any getIconAt(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getComponentAt(int index) { return null; }
+  public Any getComponentAt(int index) { return null; }
   < ---- END java signatures ---- >
 }

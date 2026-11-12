@@ -56,6 +56,24 @@ class View {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public View bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int BadBreakWeight = 0;
@@ -68,7 +86,7 @@ class View {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public View(javax.swing.text.Element elem) { }
+  public View(Any elem) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -80,49 +98,49 @@ class View {
   @throwable("java.lang.UnsupportedOperationException")
   public void remove(int i) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void append(javax.swing.text.View v) { }
+  public void append(Any v) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void insert(int offs, javax.swing.text.View v) { }
+  public void insert(int offs, Any v) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void replace(int offset, int length, javax.swing.text.View[] views) { }
+  public void replace(int offset, int length, Any[] views) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.View getParent() { return null; }
+  public Any getParent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.AttributeSet getAttributes() { return null; }
+  public Any getAttributes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeAll() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.Element getElement() { return null; }
+  public Any getElement() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setParent(javax.swing.text.View parent) { }
+  public void setParent(Any parent) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setSize(float width, float height) { }
   @throwable("java.lang.UnsupportedOperationException")
   public float getAlignment(int axis) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Graphics getGraphics() { return null; }
+  public Any getGraphics() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getToolTipText(float x, float y, java.awt.Shape allocation) { return null; }
+  public String getToolTipText(float x, float y, Any allocation) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getStartOffset() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.ViewFactory getViewFactory() { return null; }
+  public Any getViewFactory() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getEndOffset() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void insertUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  public void insertUpdate(Any e, Any a, Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  public void removeUpdate(Any e, Any a, Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void changedUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  public void changedUpdate(Any e, Any a, Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getViewCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.View getView(int n) { return null; }
+  public Any getView(int n) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public float getPreferredSpan(int axis) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Shape getChildAllocation(int index, java.awt.Shape a) { return null; }
+  public Any getChildAllocation(int index, Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public float getMinimumSpan(int axis) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -130,48 +148,48 @@ class View {
   @throwable("java.lang.UnsupportedOperationException")
   public int getBreakWeight(int axis, float pos, float len) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.View createFragment(int p0, int p1) { return null; }
+  public Any createFragment(int p0, int p1) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.View breakView(int axis, int offset, float pos, float len) { return null; }
+  public Any breakView(int axis, int offset, float pos, float len) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void preferenceChanged(javax.swing.text.View child, boolean width, boolean height) { }
+  public void preferenceChanged(Any child, boolean width, boolean height) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void forwardUpdate(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  void forwardUpdate(Any ec, Any e, Any a, Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getResizeWeight(int axis) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public int getNextVisualPositionFrom(int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) { return 0; }
+  public int getNextVisualPositionFrom(int pos, Any b, Any a, int direction, Any[] biasRet) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getViewIndex(float x, float y, java.awt.Shape allocation) { return 0; }
+  public int getViewIndex(float x, float y, Any allocation) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getViewIndex(int pos, javax.swing.text.Position.Bias b) { return 0; }
+  public int getViewIndex(int pos, Any b) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean updateChildren(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, javax.swing.text.ViewFactory f) { return false; }
+  boolean updateChildren(Any ec, Any e, Any f) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void updateLayout(javax.swing.event.DocumentEvent.ElementChange ec, javax.swing.event.DocumentEvent e, java.awt.Shape a) { }
+  void updateLayout(Any ec, Any e, Any a) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void forwardUpdateToView(javax.swing.text.View v, javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  void forwardUpdateToView(Any v, Any e, Any a, Any f) { }
   @throwable("java.lang.AbstractMethodError")
-  public int viewToModel(float x, float y, java.awt.Shape a, javax.swing.text.Position.Bias[] biasReturn) { return 0; }
+  public int viewToModel(float x, float y, Any a, Any[] biasReturn) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int viewToModel(float x, float y, java.awt.Shape a) { return 0; }
+  public int viewToModel(float x, float y, Any a) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public java.awt.Shape modelToView(int p0, javax.swing.text.Position.Bias b0, int p1, javax.swing.text.Position.Bias b1, java.awt.Shape a) { return null; }
+  public Any modelToView(int p0, Any b0, int p1, Any b1, Any a) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
-  public java.awt.Shape modelToView(int pos, java.awt.Shape a, javax.swing.text.Position.Bias b) { return null; }
+  public Any modelToView(int pos, Any a, Any b) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public java.awt.Shape modelToView(int pos, java.awt.Shape a) { return null; }
+  public Any modelToView(int pos, Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.Document getDocument() { return null; }
+  public Any getDocument() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Container getContainer() { return null; }
+  public Any getContainer() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isVisible() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public void paint(java.awt.Graphics g, java.awt.Shape allocation) { }
+  public void paint(Any g, Any allocation) { }
   < ---- END java signatures ---- >
 }

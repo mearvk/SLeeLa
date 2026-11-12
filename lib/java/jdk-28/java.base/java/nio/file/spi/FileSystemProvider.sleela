@@ -56,6 +56,24 @@ class FileSystemProvider {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public FileSystemProvider bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,62 +88,65 @@ class FileSystemProvider {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public boolean isHidden(java.nio.file.Path path) { return false; }
+  public boolean isHidden(Any path) { return false; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public void copy(java.nio.file.Path source, java.nio.file.Path target, java.nio.file.CopyOption... options) { }
+  public void copy(Any source, Any target, Any... options) { }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public void checkAccess(java.nio.file.Path path, java.nio.file.AccessMode... modes) { }
+  public void checkAccess(Any path, Any... modes) { }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public void delete(java.nio.file.Path path) { }
+  public void delete(Any path) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getScheme() { return null; }
+  public String getScheme() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.file.Path getPath(java.net.URI uri) { return null; }
+  public Any getPath(Any uri) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean exists(java.nio.file.Path path, java.nio.file.LinkOption... options) { return false; }
+  public boolean exists(Any path, Any... options) { return false; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public void createDirectory(java.nio.file.Path dir, java.nio.file.attribute.FileAttribute<?>... attrs) { }
+  public void createDirectory(Any dir, Any... attrs) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.nio.file.FileSystem getFileSystem(java.net.URI uri) { return null; }
+  public Any getFileSystem(Any uri) { return null; }
+  @generic("<A extends java.nio.file.attribute.BasicFileAttributes>")
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public <A extends java.nio.file.attribute.BasicFileAttributes> A readAttributes(java.nio.file.Path path, java.lang.Class<A> type, java.nio.file.LinkOption... options) { return null; }
+  public Any readAttributes(Any path, Any type, Any... options) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.util.Map<java.lang.String, java.lang.Object> readAttributes(java.nio.file.Path path, java.lang.String attributes, java.nio.file.LinkOption... options) { return null; }
+  public Any readAttributes(Any path, String attributes, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public java.io.OutputStream newOutputStream(java.nio.file.Path path, java.nio.file.OpenOption... options) { return null; }
+  public Any newOutputStream(Any path, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public java.io.InputStream newInputStream(java.nio.file.Path path, java.nio.file.OpenOption... options) { return null; }
+  public Any newInputStream(Any path, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public java.nio.channels.FileChannel newFileChannel(java.nio.file.Path path, java.util.Set<? extends java.nio.file.OpenOption> options, java.nio.file.attribute.FileAttribute<?>... attrs) { return null; }
+  public Any newFileChannel(Any path, Any options, Any... attrs) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.List<java.nio.file.spi.FileSystemProvider> installedProviders() { return null; }
+  public static Any installedProviders() { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.nio.file.FileSystem newFileSystem(java.net.URI uri, java.util.Map<java.lang.String, ?> env) { return null; }
+  public Any newFileSystem(Any uri, Any env) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.nio.channels.SeekableByteChannel newByteChannel(java.nio.file.Path path, java.util.Set<? extends java.nio.file.OpenOption> options, java.nio.file.attribute.FileAttribute<?>... attrs) { return null; }
+  public Any newByteChannel(Any path, Any options, Any... attrs) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.nio.file.DirectoryStream<java.nio.file.Path> newDirectoryStream(java.nio.file.Path dir, java.nio.file.DirectoryStream.Filter<? super java.nio.file.Path> filter) { return null; }
+  public Any newDirectoryStream(Any dir, Any filter) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void createSymbolicLink(java.nio.file.Path link, java.nio.file.Path target, java.nio.file.attribute.FileAttribute<?>... attrs) { }
+  public void createSymbolicLink(Any link, Any target, Any... attrs) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void createLink(java.nio.file.Path link, java.nio.file.Path existing) { }
+  public void createLink(Any link, Any existing) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public boolean deleteIfExists(java.nio.file.Path path) { return false; }
+  public boolean deleteIfExists(Any path) { return false; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public void move(java.nio.file.Path source, java.nio.file.Path target, java.nio.file.CopyOption... options) { }
+  public void move(Any source, Any target, Any... options) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public java.nio.file.Path readSymbolicLink(java.nio.file.Path link) { return null; }
+  public Any readSymbolicLink(Any link) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.nio.file.FileStore getFileStore(java.nio.file.Path path) { return null; }
+  public Any getFileStore(Any path) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public boolean isSameFile(java.nio.file.Path path, java.nio.file.Path path2) { return false; }
+  public boolean isSameFile(Any path, Any path2) { return false; }
+  @generic("<V extends java.nio.file.attribute.FileAttributeView>")
   @throwable("java.lang.AbstractMethodError")
-  public <V extends java.nio.file.attribute.FileAttributeView> V getFileAttributeView(java.nio.file.Path path, java.lang.Class<V> type, java.nio.file.LinkOption... options) { return null; }
+  public Any getFileAttributeView(Any path, Any type, Any... options) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public void setAttribute(java.nio.file.Path path, java.lang.String attribute, java.lang.Object value, java.nio.file.LinkOption... options) { }
+  public void setAttribute(Any path, String attribute, Any value, Any... options) { }
+  @generic("<A extends java.nio.file.attribute.BasicFileAttributes>")
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public <A extends java.nio.file.attribute.BasicFileAttributes> A readAttributesIfExists(java.nio.file.Path path, java.lang.Class<A> type, java.nio.file.LinkOption... options) { return null; }
+  public Any readAttributesIfExists(Any path, Any type, Any... options) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public java.nio.channels.AsynchronousFileChannel newAsynchronousFileChannel(java.nio.file.Path path, java.util.Set<? extends java.nio.file.OpenOption> options, java.util.concurrent.ExecutorService executor, java.nio.file.attribute.FileAttribute<?>... attrs) { return null; }
+  public Any newAsynchronousFileChannel(Any path, Any options, Any executor, Any... attrs) { return null; }
   < ---- END java signatures ---- >
 }

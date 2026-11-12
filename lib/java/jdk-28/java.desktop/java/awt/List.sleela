@@ -56,6 +56,24 @@ class List {
   String javaKind = "class";
   String javaSuper = "java.awt.Component";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public List bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
@@ -73,28 +91,28 @@ class List {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void remove(java.lang.String item) { }
+  public synchronized void remove(String item) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void remove(int position) { }
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized void clear() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void add(java.lang.String item, int index) { }
+  public void add(String item, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void add(java.lang.String item) { }
+  public void add(String item) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeAll() { }
   @throwable("java.lang.UnsupportedOperationException")
   public void select(int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.String[] getItems() { return null; }
+  public synchronized String[] getItems() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized void delItems(int start, int end) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.String[] getSelectedItems() { return null; }
+  public synchronized String[] getSelectedItems() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized void deselect(int index) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -104,7 +122,7 @@ class List {
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized void makeVisible(int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void replaceItem(java.lang.String newValue, int index) { }
+  public synchronized void replaceItem(String newValue, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isIndexSelected(int index) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -114,43 +132,43 @@ class List {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isMultipleMode() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize(int rows) { return null; }
+  public Any getPreferredSize(int rows) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize() { return null; }
+  public Any getPreferredSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize(int rows) { return null; }
+  public Any getMinimumSize(int rows) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize() { return null; }
+  public Any getMinimumSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isSelected(int index) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processActionEvent(java.awt.event.ActionEvent e) { }
+  void processActionEvent(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addActionListener(java.awt.event.ActionListener l) { }
+  public synchronized void addActionListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removeActionListener(java.awt.event.ActionListener l) { }
+  public synchronized void removeActionListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.awt.event.ActionListener[] getActionListeners() { return null; }
+  public synchronized Any[] getActionListeners() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processItemEvent(java.awt.event.ItemEvent e) { }
+  void processItemEvent(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addItemListener(java.awt.event.ItemListener l) { }
+  public synchronized void addItemListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object[] getSelectedObjects() { return null; }
+  public Any[] getSelectedObjects() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removeItemListener(java.awt.event.ItemListener l) { }
+  public synchronized void removeItemListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.awt.event.ItemListener[] getItemListeners() { return null; }
+  public synchronized Any[] getItemListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int countItems() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addItem(java.lang.String item, int index) { }
+  public synchronized void addItem(String item, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addItem(java.lang.String item) { }
+  public void addItem(String item) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.String getSelectedItem() { return null; }
+  public synchronized String getSelectedItem() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getItemCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -162,25 +180,26 @@ class List {
   @throwable("java.lang.UnsupportedOperationException")
   public int getRows() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getItem(int index) { return null; }
+  public String getItem(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void addNotify() { }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeNotify() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension preferredSize(int rows) { return null; }
+  public Any preferredSize(int rows) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension preferredSize() { return null; }
+  public Any preferredSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension minimumSize() { return null; }
+  public Any minimumSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension minimumSize(int rows) { return null; }
+  public Any minimumSize(int rows) { return null; }
+  @generic("<T extends java.util.EventListener>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
+  public Any[] getListeners(Any listenerType) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processEvent(java.awt.AWTEvent e) { }
+  void processEvent(Any e) { }
   < ---- END java signatures ---- >
 }

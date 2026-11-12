@@ -56,6 +56,24 @@ class Instrumentation {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Instrumentation bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,38 +82,38 @@ class Instrumentation {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public void addTransformer(java.lang.instrument.ClassFileTransformer transformer, boolean canRetransform) { }
+  public void addTransformer(Any transformer, boolean canRetransform) { }
   @throwable("java.lang.AbstractMethodError")
-  public void addTransformer(java.lang.instrument.ClassFileTransformer transformer) { }
+  public void addTransformer(Any transformer) { }
   @throwable("java.lang.AbstractMethodError")
-  public boolean removeTransformer(java.lang.instrument.ClassFileTransformer transformer) { return false; }
+  public boolean removeTransformer(Any transformer) { return false; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isRetransformClassesSupported() { return false; }
   @throwable("java.lang.AbstractMethodError, java.lang.instrument.UnmodifiableClassException")
-  public void retransformClasses(java.lang.Class<?>... classes) { }
+  public void retransformClasses(Any... classes) { }
   @throwable("java.lang.AbstractMethodError")
   public boolean isRedefineClassesSupported() { return false; }
   @throwable("java.lang.AbstractMethodError, java.lang.ClassNotFoundException, java.lang.instrument.UnmodifiableClassException")
-  public void redefineClasses(java.lang.instrument.ClassDefinition... definitions) { }
+  public void redefineClasses(Any... definitions) { }
   @throwable("java.lang.AbstractMethodError")
-  public boolean isModifiableClass(java.lang.Class<?> theClass) { return false; }
+  public boolean isModifiableClass(Any theClass) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Class[] getAllLoadedClasses() { return null; }
+  public Any[] getAllLoadedClasses() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Class[] getInitiatedClasses(java.lang.ClassLoader loader) { return null; }
+  public Any[] getInitiatedClasses(Any loader) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public long getObjectSize(java.lang.Object objectToSize) { return 0; }
+  public long getObjectSize(Any objectToSize) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public void appendToBootstrapClassLoaderSearch(java.util.jar.JarFile jarfile) { }
+  public void appendToBootstrapClassLoaderSearch(Any jarfile) { }
   @throwable("java.lang.AbstractMethodError")
-  public void appendToSystemClassLoaderSearch(java.util.jar.JarFile jarfile) { }
+  public void appendToSystemClassLoaderSearch(Any jarfile) { }
   @throwable("java.lang.AbstractMethodError")
   public boolean isNativeMethodPrefixSupported() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public void setNativeMethodPrefix(java.lang.instrument.ClassFileTransformer transformer, java.lang.String prefix) { }
+  public void setNativeMethodPrefix(Any transformer, String prefix) { }
   @throwable("java.lang.AbstractMethodError")
-  public void redefineModule(java.lang.Module module, java.util.Set<java.lang.Module> extraReads, java.util.Map<java.lang.String, java.util.Set<java.lang.Module>> extraExports, java.util.Map<java.lang.String, java.util.Set<java.lang.Module>> extraOpens, java.util.Set<java.lang.Class<?>> extraUses, java.util.Map<java.lang.Class<?>, java.util.List<java.lang.Class<?>>> extraProvides) { }
+  public void redefineModule(Any module, Any extraReads, Any extraExports, Any extraOpens, Any extraUses, Any extraProvides) { }
   @throwable("java.lang.AbstractMethodError")
-  public boolean isModifiableModule(java.lang.Module module) { return false; }
+  public boolean isModifiableModule(Any module) { return false; }
   < ---- END java signatures ---- >
 }

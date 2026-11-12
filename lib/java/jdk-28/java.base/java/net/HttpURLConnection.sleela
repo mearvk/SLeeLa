@@ -56,6 +56,24 @@ class HttpURLConnection {
   String javaKind = "class";
   String javaSuper = "java.net.URLConnection";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public HttpURLConnection bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int HTTP_OK = 200;
@@ -107,7 +125,7 @@ class HttpURLConnection {
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  HttpURLConnection(java.net.URL u) { }
+  HttpURLConnection(Any u) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -117,15 +135,15 @@ class HttpURLConnection {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.io.InputStream getErrorStream() { return null; }
+  public Any getErrorStream() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.net.ProtocolException")
-  public void setRequestMethod(java.lang.String method) { }
+  public void setRequestMethod(String method) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
   public int getResponseCode() { return 0; }
   @throwable("java.lang.AbstractMethodError")
   public void disconnect() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setAuthenticator(java.net.Authenticator auth) { }
+  public void setAuthenticator(Any auth) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setFixedLengthStreamingMode(long contentLength) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -141,18 +159,18 @@ class HttpURLConnection {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getInstanceFollowRedirects() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getRequestMethod() { return null; }
+  public String getRequestMethod() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public java.lang.String getResponseMessage() { return null; }
+  public String getResponseMessage() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean usingProxy() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getHeaderField(int n) { return null; }
+  public String getHeaderField(int n) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getHeaderFieldKey(int n) { return null; }
+  public String getHeaderFieldKey(int n) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public long getHeaderFieldDate(java.lang.String name, long defaultValue) { return 0; }
+  public long getHeaderFieldDate(String name, long defaultValue) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public java.security.Permission getPermission() { return null; }
+  public Any getPermission() { return null; }
   < ---- END java signatures ---- >
 }

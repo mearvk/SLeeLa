@@ -56,6 +56,24 @@ class FixedHeightLayoutCache {
   String javaKind = "class";
   String javaSuper = "javax.swing.tree.AbstractLayoutCache";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public FixedHeightLayoutCache bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,42 +87,42 @@ class FixedHeightLayoutCache {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getBounds(javax.swing.tree.TreePath path, java.awt.Rectangle placeIn) { return null; }
+  public Any getBounds(Any path, Any placeIn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isExpanded(javax.swing.tree.TreePath path) { return false; }
+  public boolean isExpanded(Any path) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void treeNodesChanged(javax.swing.event.TreeModelEvent e) { }
+  public void treeNodesChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void treeNodesInserted(javax.swing.event.TreeModelEvent e) { }
+  public void treeNodesInserted(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void treeNodesRemoved(javax.swing.event.TreeModelEvent e) { }
+  public void treeNodesRemoved(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void treeStructureChanged(javax.swing.event.TreeModelEvent e) { }
+  public void treeStructureChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getRowForPath(javax.swing.tree.TreePath path) { return 0; }
+  public int getRowForPath(Any path) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setExpandedState(javax.swing.tree.TreePath path, boolean isExpanded) { }
+  public void setExpandedState(Any path, boolean isExpanded) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setRowHeight(int rowHeight) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setRootVisible(boolean rootVisible) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreePath getPathForRow(int row) { return null; }
+  public Any getPathForRow(int row) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getRowCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setModel(javax.swing.tree.TreeModel newModel) { }
+  public void setModel(Any newModel) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void invalidateSizes() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.tree.TreePath getPathClosestTo(int x, int y) { return null; }
+  public Any getPathClosestTo(int x, int y) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Enumeration<javax.swing.tree.TreePath> getVisiblePathsFrom(javax.swing.tree.TreePath path) { return null; }
+  public Any getVisiblePathsFrom(Any path) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean getExpandedState(javax.swing.tree.TreePath path) { return false; }
+  public boolean getExpandedState(Any path) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void invalidatePathBounds(javax.swing.tree.TreePath path) { }
+  public void invalidatePathBounds(Any path) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getVisibleChildCount(javax.swing.tree.TreePath path) { return 0; }
+  public int getVisibleChildCount(Any path) { return 0; }
   < ---- END java signatures ---- >
 }

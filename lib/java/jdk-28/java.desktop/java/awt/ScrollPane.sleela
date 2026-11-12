@@ -56,6 +56,24 @@ class ScrollPane {
   String javaKind = "class";
   String javaSuper = "java.awt.Container";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ScrollPane bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int SCROLLBARS_AS_NEEDED = 0;
@@ -77,15 +95,15 @@ class ScrollPane {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String paramString() { return null; }
+  public String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void printComponents(java.awt.Graphics g) { }
+  public void printComponents(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   boolean eventTypeEnabled(int type) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processMouseWheelEvent(java.awt.event.MouseWheelEvent e) { }
+  void processMouseWheelEvent(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void layout() { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -95,30 +113,30 @@ class ScrollPane {
   @throwable("java.lang.UnsupportedOperationException")
   public int getVScrollbarWidth() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setScrollPosition(java.awt.Point p) { }
+  public void setScrollPosition(Any p) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setScrollPosition(int x, int y) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Point getScrollPosition() { return null; }
+  public Any getScrollPosition() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getViewportSize() { return null; }
+  public Any getViewportSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isWheelScrollingEnabled() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getScrollbarDisplayPolicy() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Adjustable getVAdjustable() { return null; }
+  public Any getVAdjustable() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Adjustable getHAdjustable() { return null; }
+  public Any getHAdjustable() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void setLayout(java.awt.LayoutManager mgr) { }
+  public final void setLayout(Any mgr) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void addNotify() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { }
+  final void addImpl(Any comp, Any constraints, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void doLayout() { }
   < ---- END java signatures ---- >

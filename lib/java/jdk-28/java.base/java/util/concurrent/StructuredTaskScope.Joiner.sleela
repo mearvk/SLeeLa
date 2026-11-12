@@ -8,7 +8,7 @@
 #sleela 3.0
 material;
 
-class Joiner<T, R> {
+class Joiner {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -57,6 +57,24 @@ class Joiner<T, R> {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<T, R>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 2; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "T"; } if (index == 1) { return "R"; } return null; }
+  public Joiner bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -65,20 +83,25 @@ class Joiner<T, R> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError, java.lang.Throwable")
-  public R result() { return null; }
+  public Any result() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default boolean onComplete(java.util.concurrent.StructuredTaskScope.Subtask<? extends T> subtask) { return false; }
+  public default boolean onComplete(Any subtask) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default boolean onFork(java.util.concurrent.StructuredTaskScope.Subtask<? extends T> subtask) { return false; }
+  public default boolean onFork(Any subtask) { return false; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.concurrent.StructuredTaskScope.Joiner<T, java.util.stream.Stream<java.util.concurrent.StructuredTaskScope.Subtask<T>>> allSuccessfulOrThrow() { return null; }
+  public static Any allSuccessfulOrThrow() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.concurrent.StructuredTaskScope.Joiner<T, T> anySuccessfulResultOrThrow() { return null; }
+  public static Any anySuccessfulResultOrThrow() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.concurrent.StructuredTaskScope.Joiner<T, java.lang.Void> awaitAllSuccessfulOrThrow() { return null; }
+  public static Any awaitAllSuccessfulOrThrow() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.concurrent.StructuredTaskScope.Joiner<T, java.lang.Void> awaitAll() { return null; }
+  public static Any awaitAll() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.concurrent.StructuredTaskScope.Joiner<T, java.util.stream.Stream<java.util.concurrent.StructuredTaskScope.Subtask<T>>> allUntil(java.util.function.Predicate<java.util.concurrent.StructuredTaskScope.Subtask<? extends T>> isDone) { return null; }
+  public static Any allUntil(Any isDone) { return null; }
   < ---- END java signatures ---- >
 }

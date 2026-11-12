@@ -56,6 +56,24 @@ class DefaultCaret {
   String javaKind = "class";
   String javaSuper = "java.awt.Rectangle";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DefaultCaret bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int UPDATE_WHEN_ON_EDT = 0;
@@ -78,69 +96,69 @@ class DefaultCaret {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isActive() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final javax.swing.text.JTextComponent getComponent() { return null; }
+  final Any getComponent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setVisible(boolean e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void install(javax.swing.text.JTextComponent c) { }
+  public void install(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMark() { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   final synchronized void repaint() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void focusGained(java.awt.event.FocusEvent e) { }
+  public void focusGained(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void focusLost(java.awt.event.FocusEvent e) { }
+  public void focusLost(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void mousePressed(java.awt.event.MouseEvent e) { }
+  public void mousePressed(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void mouseReleased(java.awt.event.MouseEvent e) { }
+  public void mouseReleased(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void mouseClicked(java.awt.event.MouseEvent e) { }
+  public void mouseClicked(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void mouseExited(java.awt.event.MouseEvent e) { }
+  public void mouseExited(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void mouseEntered(java.awt.event.MouseEvent e) { }
+  public void mouseEntered(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void mouseMoved(java.awt.event.MouseEvent e) { }
+  public void mouseMoved(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void mouseDragged(java.awt.event.MouseEvent e) { }
+  public void mouseDragged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Point getMagicCaretPosition() { return null; }
+  public Any getMagicCaretPosition() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void deinstall(javax.swing.text.JTextComponent c) { }
+  public void deinstall(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setDot(int dot) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDot(int dot, javax.swing.text.Position.Bias dotBias) { }
+  public void setDot(int dot, Any dotBias) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void moveDot(int dot, javax.swing.text.Position.Bias dotBias) { }
+  public void moveDot(int dot, Any dotBias) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void moveDot(int dot) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getDot() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.Position.Bias getMarkBias() { return null; }
+  public Any getMarkBias() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.Position.Bias getDotBias() { return null; }
+  public Any getDotBias() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getBlinkRate() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setBlinkRate(int rate) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeChangeListener(javax.swing.event.ChangeListener l) { }
+  public void removeChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addChangeListener(javax.swing.event.ChangeListener l) { }
+  public void addChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.ChangeListener[] getChangeListeners() { return null; }
+  public Any[] getChangeListeners() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void fireStateChanged() { }
@@ -149,22 +167,22 @@ class DefaultCaret {
   @throwable("java.lang.UnsupportedOperationException")
   public void setSelectionVisible(boolean vis) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setMagicCaretPosition(java.awt.Point p) { }
+  public void setMagicCaretPosition(Any p) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void moveCaret(java.awt.event.MouseEvent e) { }
+  void moveCaret(Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void positionCaret(java.awt.event.MouseEvent e) { }
+  void positionCaret(Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  synchronized void damage(java.awt.Rectangle r) { }
+  synchronized void damage(Any r) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.text.Highlighter.HighlightPainter getSelectionPainter() { return null; }
+  Any getSelectionPainter() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void adjustVisibility(java.awt.Rectangle nloc) { }
+  void adjustVisibility(Any nloc) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setUpdatePolicy(int policy) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -172,8 +190,9 @@ class DefaultCaret {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isVisible() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g) { }
+  public void paint(Any g) { }
+  @generic("<T extends java.util.EventListener>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
+  public Any[] getListeners(Any listenerType) { return null; }
   < ---- END java signatures ---- >
 }

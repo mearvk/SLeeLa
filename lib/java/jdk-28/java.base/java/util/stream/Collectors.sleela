@@ -56,6 +56,24 @@ class Collectors {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Collectors bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,92 +82,133 @@ class Collectors {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.Collector<java.lang.CharSequence, ?, java.lang.String> joining(java.lang.CharSequence delimiter, java.lang.CharSequence prefix, java.lang.CharSequence suffix) { return null; }
+  public static Any joining(Any delimiter, Any prefix, Any suffix) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.Collector<java.lang.CharSequence, ?, java.lang.String> joining() { return null; }
+  public static Any joining() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.Collector<java.lang.CharSequence, ?, java.lang.String> joining(java.lang.CharSequence delimiter) { return null; }
+  public static Any joining(Any delimiter) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.util.List<T>> toList() { return null; }
+  public static Any toList() { return null; }
+  @generic("<T, K, U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, K, U> java.util.stream.Collector<T, ?, java.util.Map<K, U>> toMap(java.util.function.Function<? super T, ? extends K> keyMapper, java.util.function.Function<? super T, ? extends U> valueMapper, java.util.function.BinaryOperator<U> mergeFunction) { return null; }
+  public static Any toMap(Any keyMapper, Any valueMapper, Any mergeFunction) { return null; }
+  @generic("<T, K, U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, K, U> java.util.stream.Collector<T, ?, java.util.Map<K, U>> toMap(java.util.function.Function<? super T, ? extends K> keyMapper, java.util.function.Function<? super T, ? extends U> valueMapper) { return null; }
+  public static Any toMap(Any keyMapper, Any valueMapper) { return null; }
+  @generic("<T, K, U, M extends java.util.Map<K, U>>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, K, U, M extends java.util.Map<K, U>> java.util.stream.Collector<T, ?, M> toMap(java.util.function.Function<? super T, ? extends K> keyMapper, java.util.function.Function<? super T, ? extends U> valueMapper, java.util.function.BinaryOperator<U> mergeFunction, java.util.function.Supplier<M> mapFactory) { return null; }
+  public static Any toMap(Any keyMapper, Any valueMapper, Any mergeFunction, Any mapFactory) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.util.Set<T>> toSet() { return null; }
+  public static Any toSet() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.util.Optional<T>> maxBy(java.util.Comparator<? super T> comparator) { return null; }
+  public static Any maxBy(Any comparator) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.util.Optional<T>> minBy(java.util.Comparator<? super T> comparator) { return null; }
+  public static Any minBy(Any comparator) { return null; }
+  @generic("<T, U, A, R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, U, A, R> java.util.stream.Collector<T, ?, R> mapping(java.util.function.Function<? super T, ? extends U> mapper, java.util.stream.Collector<? super U, A, R> downstream) { return null; }
+  public static Any mapping(Any mapper, Any downstream) { return null; }
+  @generic("<T, K>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, K> java.util.stream.Collector<T, ?, java.util.Map<K, java.util.List<T>>> groupingBy(java.util.function.Function<? super T, ? extends K> classifier) { return null; }
+  public static Any groupingBy(Any classifier) { return null; }
+  @generic("<T, K, D, A, M extends java.util.Map<K, D>>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, K, D, A, M extends java.util.Map<K, D>> java.util.stream.Collector<T, ?, M> groupingBy(java.util.function.Function<? super T, ? extends K> classifier, java.util.function.Supplier<M> mapFactory, java.util.stream.Collector<? super T, A, D> downstream) { return null; }
+  public static Any groupingBy(Any classifier, Any mapFactory, Any downstream) { return null; }
+  @generic("<T, K, A, D>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, K, A, D> java.util.stream.Collector<T, ?, java.util.Map<K, D>> groupingBy(java.util.function.Function<? super T, ? extends K> classifier, java.util.stream.Collector<? super T, A, D> downstream) { return null; }
+  public static Any groupingBy(Any classifier, Any downstream) { return null; }
+  @generic("<T, C extends java.util.Collection<T>>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, C extends java.util.Collection<T>> java.util.stream.Collector<T, ?, C> toCollection(java.util.function.Supplier<C> collectionFactory) { return null; }
+  public static Any toCollection(Any collectionFactory) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.lang.Long> summingLong(java.util.function.ToLongFunction<? super T> mapper) { return null; }
+  public static Any summingLong(Any mapper) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.util.Optional<T>> reducing(java.util.function.BinaryOperator<T> op) { return null; }
+  public static Any reducing(Any op) { return null; }
+  @generic("<T, U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, U> java.util.stream.Collector<T, ?, U> reducing(U identity, java.util.function.Function<? super T, ? extends U> mapper, java.util.function.BinaryOperator<U> op) { return null; }
+  public static Any reducing(Any identity, Any mapper, Any op) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, T> reducing(T identity, java.util.function.BinaryOperator<T> op) { return null; }
+  public static Any reducing(Any identity, Any op) { return null; }
+  @generic("<T, K, A, D>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, K, A, D> java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, D>> groupingByConcurrent(java.util.function.Function<? super T, ? extends K> classifier, java.util.stream.Collector<? super T, A, D> downstream) { return null; }
+  public static Any groupingByConcurrent(Any classifier, Any downstream) { return null; }
+  @generic("<T, K, A, D, M extends java.util.concurrent.ConcurrentMap<K, D>>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, K, A, D, M extends java.util.concurrent.ConcurrentMap<K, D>> java.util.stream.Collector<T, ?, M> groupingByConcurrent(java.util.function.Function<? super T, ? extends K> classifier, java.util.function.Supplier<M> mapFactory, java.util.stream.Collector<? super T, A, D> downstream) { return null; }
+  public static Any groupingByConcurrent(Any classifier, Any mapFactory, Any downstream) { return null; }
+  @generic("<T, K>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, K> java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, java.util.List<T>>> groupingByConcurrent(java.util.function.Function<? super T, ? extends K> classifier) { return null; }
+  public static Any groupingByConcurrent(Any classifier) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, java.util.List<T>>> partitioningBy(java.util.function.Predicate<? super T> predicate) { return null; }
+  public static Any partitioningBy(Any predicate) { return null; }
+  @generic("<T, D, A>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, D, A> java.util.stream.Collector<T, ?, java.util.Map<java.lang.Boolean, D>> partitioningBy(java.util.function.Predicate<? super T> predicate, java.util.stream.Collector<? super T, A, D> downstream) { return null; }
+  public static Any partitioningBy(Any predicate, Any downstream) { return null; }
+  @generic("<T, A, R, RR>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, A, R, RR> java.util.stream.Collector<T, A, RR> collectingAndThen(java.util.stream.Collector<T, A, R> downstream, java.util.function.Function<R, RR> finisher) { return null; }
+  public static Any collectingAndThen(Any downstream, Any finisher) { return null; }
+  @generic("<T, K, U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, K, U> java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>> toConcurrentMap(java.util.function.Function<? super T, ? extends K> keyMapper, java.util.function.Function<? super T, ? extends U> valueMapper) { return null; }
+  public static Any toConcurrentMap(Any keyMapper, Any valueMapper) { return null; }
+  @generic("<T, K, U, M extends java.util.concurrent.ConcurrentMap<K, U>>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, K, U, M extends java.util.concurrent.ConcurrentMap<K, U>> java.util.stream.Collector<T, ?, M> toConcurrentMap(java.util.function.Function<? super T, ? extends K> keyMapper, java.util.function.Function<? super T, ? extends U> valueMapper, java.util.function.BinaryOperator<U> mergeFunction, java.util.function.Supplier<M> mapFactory) { return null; }
+  public static Any toConcurrentMap(Any keyMapper, Any valueMapper, Any mergeFunction, Any mapFactory) { return null; }
+  @generic("<T, K, U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, K, U> java.util.stream.Collector<T, ?, java.util.concurrent.ConcurrentMap<K, U>> toConcurrentMap(java.util.function.Function<? super T, ? extends K> keyMapper, java.util.function.Function<? super T, ? extends U> valueMapper, java.util.function.BinaryOperator<U> mergeFunction) { return null; }
+  public static Any toConcurrentMap(Any keyMapper, Any valueMapper, Any mergeFunction) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.util.List<T>> toUnmodifiableList() { return null; }
+  public static Any toUnmodifiableList() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.util.Set<T>> toUnmodifiableSet() { return null; }
+  public static Any toUnmodifiableSet() { return null; }
+  @generic("<T, U, A, R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, U, A, R> java.util.stream.Collector<T, ?, R> flatMapping(java.util.function.Function<? super T, ? extends java.util.stream.Stream<? extends U>> mapper, java.util.stream.Collector<? super U, A, R> downstream) { return null; }
+  public static Any flatMapping(Any mapper, Any downstream) { return null; }
+  @generic("<T, A, R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, A, R> java.util.stream.Collector<T, ?, R> filtering(java.util.function.Predicate<? super T> predicate, java.util.stream.Collector<? super T, A, R> downstream) { return null; }
+  public static Any filtering(Any predicate, Any downstream) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.lang.Long> counting() { return null; }
+  public static Any counting() { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.lang.Integer> summingInt(java.util.function.ToIntFunction<? super T> mapper) { return null; }
+  public static Any summingInt(Any mapper) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.lang.Double> summingDouble(java.util.function.ToDoubleFunction<? super T> mapper) { return null; }
+  public static Any summingDouble(Any mapper) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.lang.Double> averagingInt(java.util.function.ToIntFunction<? super T> mapper) { return null; }
+  public static Any averagingInt(Any mapper) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.lang.Double> averagingLong(java.util.function.ToLongFunction<? super T> mapper) { return null; }
+  public static Any averagingLong(Any mapper) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.lang.Double> averagingDouble(java.util.function.ToDoubleFunction<? super T> mapper) { return null; }
+  public static Any averagingDouble(Any mapper) { return null; }
+  @generic("<T, K, U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, K, U> java.util.stream.Collector<T, ?, java.util.Map<K, U>> toUnmodifiableMap(java.util.function.Function<? super T, ? extends K> keyMapper, java.util.function.Function<? super T, ? extends U> valueMapper) { return null; }
+  public static Any toUnmodifiableMap(Any keyMapper, Any valueMapper) { return null; }
+  @generic("<T, K, U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, K, U> java.util.stream.Collector<T, ?, java.util.Map<K, U>> toUnmodifiableMap(java.util.function.Function<? super T, ? extends K> keyMapper, java.util.function.Function<? super T, ? extends U> valueMapper, java.util.function.BinaryOperator<U> mergeFunction) { return null; }
+  public static Any toUnmodifiableMap(Any keyMapper, Any valueMapper, Any mergeFunction) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.util.IntSummaryStatistics> summarizingInt(java.util.function.ToIntFunction<? super T> mapper) { return null; }
+  public static Any summarizingInt(Any mapper) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.util.LongSummaryStatistics> summarizingLong(java.util.function.ToLongFunction<? super T> mapper) { return null; }
+  public static Any summarizingLong(Any mapper) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.util.stream.Collector<T, ?, java.util.DoubleSummaryStatistics> summarizingDouble(java.util.function.ToDoubleFunction<? super T> mapper) { return null; }
+  public static Any summarizingDouble(Any mapper) { return null; }
+  @generic("<T, R1, R2, R>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, R1, R2, R> java.util.stream.Collector<T, ?, R> teeing(java.util.stream.Collector<? super T, ?, R1> downstream1, java.util.stream.Collector<? super T, ?, R2> downstream2, java.util.function.BiFunction<? super R1, ? super R2, R> merger) { return null; }
+  public static Any teeing(Any downstream1, Any downstream2, Any merger) { return null; }
   < ---- END java signatures ---- >
 }

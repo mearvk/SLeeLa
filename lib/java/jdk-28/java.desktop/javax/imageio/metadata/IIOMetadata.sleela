@@ -56,6 +56,24 @@ class IIOMetadata {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public IIOMetadata bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   boolean standardFormatSupported;
@@ -73,7 +91,7 @@ class IIOMetadata {
   IIOMetadata() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  IIOMetadata(boolean standardMetadataFormatSupported, java.lang.String nativeMetadataFormatName, java.lang.String nativeMetadataFormatClassName, java.lang.String[] extraMetadataFormatNames, java.lang.String[] extraMetadataFormatClassNames) { }
+  IIOMetadata(boolean standardMetadataFormatSupported, String nativeMetadataFormatName, String nativeMetadataFormatClassName, String[] extraMetadataFormatNames, String[] extraMetadataFormatClassNames) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -87,56 +105,56 @@ class IIOMetadata {
   @throwable("java.lang.AbstractMethodError")
   public boolean isReadOnly() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getNativeMetadataFormatName() { return null; }
+  public String getNativeMetadataFormatName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isStandardMetadataFormatSupported() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String[] getExtraMetadataFormatNames() { return null; }
+  public String[] getExtraMetadataFormatNames() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.imageio.metadata.IIOMetadataNode getStandardChromaNode() { return null; }
+  Any getStandardChromaNode() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.imageio.metadata.IIOMetadataNode getStandardCompressionNode() { return null; }
+  Any getStandardCompressionNode() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.imageio.metadata.IIOMetadataNode getStandardDataNode() { return null; }
+  Any getStandardDataNode() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.imageio.metadata.IIOMetadataNode getStandardDimensionNode() { return null; }
+  Any getStandardDimensionNode() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.imageio.metadata.IIOMetadataNode getStandardDocumentNode() { return null; }
+  Any getStandardDocumentNode() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.imageio.metadata.IIOMetadataNode getStandardTextNode() { return null; }
+  Any getStandardTextNode() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.imageio.metadata.IIOMetadataNode getStandardTileNode() { return null; }
+  Any getStandardTileNode() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.imageio.metadata.IIOMetadataNode getStandardTransparencyNode() { return null; }
+  Any getStandardTransparencyNode() { return null; }
   @throwable("java.lang.AbstractMethodError, javax.imageio.metadata.IIOInvalidTreeException")
-  public void mergeTree(java.lang.String formatName, org.w3c.dom.Node root) { }
+  public void mergeTree(String formatName, Any root) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.imageio.metadata.IIOMetadataController getController() { return null; }
+  public Any getController() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasController() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String[] getMetadataFormatNames() { return null; }
+  public String[] getMetadataFormatNames() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.imageio.metadata.IIOMetadataFormat getMetadataFormat(java.lang.String formatName) { return null; }
+  public Any getMetadataFormat(String formatName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.Node getAsTree(java.lang.String formatName) { return null; }
+  public Any getAsTree(String formatName) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final javax.imageio.metadata.IIOMetadataNode getStandardTree() { return null; }
+  final Any getStandardTree() { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.imageio.metadata.IIOInvalidTreeException")
-  public void setFromTree(java.lang.String formatName, org.w3c.dom.Node root) { }
+  public void setFromTree(String formatName, Any root) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setController(javax.imageio.metadata.IIOMetadataController controller) { }
+  public void setController(Any controller) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.imageio.metadata.IIOMetadataController getDefaultController() { return null; }
+  public Any getDefaultController() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean activateController() { return false; }
   < ---- END java signatures ---- >

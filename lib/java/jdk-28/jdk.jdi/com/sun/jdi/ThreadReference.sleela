@@ -56,6 +56,24 @@ class ThreadReference {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ThreadReference bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int THREAD_STATUS_UNKNOWN = -1;
@@ -74,7 +92,7 @@ class ThreadReference {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String name() { return null; }
+  public String name() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void interrupt() { }
   @throwable("java.lang.AbstractMethodError")
@@ -82,17 +100,17 @@ class ThreadReference {
   @throwable("java.lang.UnsupportedOperationException")
   public default boolean isVirtual() { return false; }
   @throwable("java.lang.AbstractMethodError, com.sun.jdi.InvalidTypeException")
-  public void stop(com.sun.jdi.ObjectReference throwable) { }
+  public void stop(Any throwable) { }
   @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
-  public java.util.List<com.sun.jdi.StackFrame> frames() { return null; }
+  public Any frames() { return null; }
   @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
-  public java.util.List<com.sun.jdi.StackFrame> frames(int start, int length) { return null; }
+  public Any frames(int start, int length) { return null; }
   @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
-  public com.sun.jdi.StackFrame frame(int index) { return null; }
+  public Any frame(int index) { return null; }
   @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
   public int frameCount() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.ThreadGroupReference threadGroup() { return null; }
+  public Any threadGroup() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isSuspended() { return false; }
   @throwable("java.lang.AbstractMethodError")
@@ -104,14 +122,14 @@ class ThreadReference {
   @throwable("java.lang.AbstractMethodError")
   public boolean isAtBreakpoint() { return false; }
   @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
-  public java.util.List<com.sun.jdi.ObjectReference> ownedMonitors() { return null; }
+  public Any ownedMonitors() { return null; }
   @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
-  public java.util.List<com.sun.jdi.MonitorInfo> ownedMonitorsAndFrames() { return null; }
+  public Any ownedMonitorsAndFrames() { return null; }
   @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
-  public com.sun.jdi.ObjectReference currentContendedMonitor() { return null; }
+  public Any currentContendedMonitor() { return null; }
   @throwable("java.lang.AbstractMethodError, com.sun.jdi.IncompatibleThreadStateException")
-  public void popFrames(com.sun.jdi.StackFrame frame) { }
+  public void popFrames(Any frame) { }
   @throwable("java.lang.AbstractMethodError, com.sun.jdi.InvalidTypeException, com.sun.jdi.ClassNotLoadedException, com.sun.jdi.IncompatibleThreadStateException")
-  public void forceEarlyReturn(com.sun.jdi.Value value) { }
+  public void forceEarlyReturn(Any value) { }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class HttpRequest {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public HttpRequest bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,28 +88,28 @@ class HttpRequest {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean equals(java.lang.Object obj) { return false; }
+  public final boolean equals(Any obj) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String method() { return null; }
+  public String method() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Optional<java.net.http.HttpClient.Version> version() { return null; }
+  public Any version() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int hashCode() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Optional<java.time.Duration> timeout() { return null; }
+  public Any timeout() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.net.URI uri() { return null; }
+  public Any uri() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.http.HttpRequest.Builder newBuilder(java.net.http.HttpRequest request, java.util.function.BiPredicate<java.lang.String, java.lang.String> filter) { return null; }
+  public static Any newBuilder(Any request, Any filter) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.http.HttpRequest.Builder newBuilder() { return null; }
+  public static Any newBuilder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.http.HttpRequest.Builder newBuilder(java.net.URI uri) { return null; }
+  public static Any newBuilder(Any uri) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.net.http.HttpHeaders headers() { return null; }
+  public Any headers() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean expectContinue() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Optional<java.net.http.HttpRequest.BodyPublisher> bodyPublisher() { return null; }
+  public Any bodyPublisher() { return null; }
   < ---- END java signatures ---- >
 }

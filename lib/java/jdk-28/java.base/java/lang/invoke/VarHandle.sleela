@@ -56,6 +56,24 @@ class VarHandle {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public VarHandle bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,93 +82,93 @@ class VarHandle {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object get(java.lang.Object... args) { return null; }
+  public final native Any get(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String toString() { return null; }
+  public final String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static void storeStoreFence() { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void fullFence() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Optional<java.lang.invoke.VarHandle.VarHandleDesc> describeConstable() { return null; }
+  public Any describeConstable() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native void set(java.lang.Object... args) { }
+  public final native void set(Any... args) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Class<?> varType() { return null; }
+  public Any varType() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<java.lang.Class<?>> coordinateTypes() { return null; }
+  public Any coordinateTypes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.invoke.MethodType accessModeType(java.lang.invoke.VarHandle.AccessMode accessMode) { return null; }
+  public final Any accessModeType(Any accessMode) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isAccessModeSupported(java.lang.invoke.VarHandle.AccessMode accessMode) { return false; }
+  public boolean isAccessModeSupported(Any accessMode) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public static void loadLoadFence() { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasInvokeExactBehavior() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getVolatile(java.lang.Object... args) { return null; }
+  public final native Any getVolatile(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native void setVolatile(java.lang.Object... args) { }
+  public final native void setVolatile(Any... args) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getOpaque(java.lang.Object... args) { return null; }
+  public final native Any getOpaque(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native void setOpaque(java.lang.Object... args) { }
+  public final native void setOpaque(Any... args) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAcquire(java.lang.Object... args) { return null; }
+  public final native Any getAcquire(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native void setRelease(java.lang.Object... args) { }
+  public final native void setRelease(Any... args) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native boolean compareAndSet(java.lang.Object... args) { return false; }
+  public final native boolean compareAndSet(Any... args) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object compareAndExchange(java.lang.Object... args) { return null; }
+  public final native Any compareAndExchange(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object compareAndExchangeAcquire(java.lang.Object... args) { return null; }
+  public final native Any compareAndExchangeAcquire(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object compareAndExchangeRelease(java.lang.Object... args) { return null; }
+  public final native Any compareAndExchangeRelease(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native boolean weakCompareAndSetPlain(java.lang.Object... args) { return false; }
+  public final native boolean weakCompareAndSetPlain(Any... args) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native boolean weakCompareAndSet(java.lang.Object... args) { return false; }
+  public final native boolean weakCompareAndSet(Any... args) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native boolean weakCompareAndSetAcquire(java.lang.Object... args) { return false; }
+  public final native boolean weakCompareAndSetAcquire(Any... args) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native boolean weakCompareAndSetRelease(java.lang.Object... args) { return false; }
+  public final native boolean weakCompareAndSetRelease(Any... args) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAndSet(java.lang.Object... args) { return null; }
+  public final native Any getAndSet(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAndSetAcquire(java.lang.Object... args) { return null; }
+  public final native Any getAndSetAcquire(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAndSetRelease(java.lang.Object... args) { return null; }
+  public final native Any getAndSetRelease(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAndAdd(java.lang.Object... args) { return null; }
+  public final native Any getAndAdd(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAndAddAcquire(java.lang.Object... args) { return null; }
+  public final native Any getAndAddAcquire(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAndAddRelease(java.lang.Object... args) { return null; }
+  public final native Any getAndAddRelease(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAndBitwiseOr(java.lang.Object... args) { return null; }
+  public final native Any getAndBitwiseOr(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAndBitwiseOrAcquire(java.lang.Object... args) { return null; }
+  public final native Any getAndBitwiseOrAcquire(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAndBitwiseOrRelease(java.lang.Object... args) { return null; }
+  public final native Any getAndBitwiseOrRelease(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAndBitwiseAnd(java.lang.Object... args) { return null; }
+  public final native Any getAndBitwiseAnd(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAndBitwiseAndAcquire(java.lang.Object... args) { return null; }
+  public final native Any getAndBitwiseAndAcquire(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAndBitwiseAndRelease(java.lang.Object... args) { return null; }
+  public final native Any getAndBitwiseAndRelease(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAndBitwiseXor(java.lang.Object... args) { return null; }
+  public final native Any getAndBitwiseXor(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAndBitwiseXorAcquire(java.lang.Object... args) { return null; }
+  public final native Any getAndBitwiseXorAcquire(Any... args) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final native java.lang.Object getAndBitwiseXorRelease(java.lang.Object... args) { return null; }
+  public final native Any getAndBitwiseXorRelease(Any... args) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.invoke.VarHandle withInvokeExactBehavior() { return null; }
+  public Any withInvokeExactBehavior() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.invoke.VarHandle withInvokeBehavior() { return null; }
+  public Any withInvokeBehavior() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.invoke.MethodHandle toMethodHandle(java.lang.invoke.VarHandle.AccessMode accessMode) { return null; }
+  public Any toMethodHandle(Any accessMode) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static void acquireFence() { }
   @throwable("java.lang.UnsupportedOperationException")

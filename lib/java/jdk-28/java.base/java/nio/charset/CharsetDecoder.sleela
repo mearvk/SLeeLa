@@ -56,11 +56,29 @@ class CharsetDecoder {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public CharsetDecoder bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  CharsetDecoder(java.nio.charset.Charset cs, float averageCharsPerByte, float maxCharsPerByte) { }
+  CharsetDecoder(Any cs, float averageCharsPerByte, float maxCharsPerByte) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -70,53 +88,53 @@ class CharsetDecoder {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.charset.CharsetDecoder reset() { return null; }
+  public final Any reset() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final float maxCharsPerByte() { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.charset.CharsetDecoder onMalformedInput(java.nio.charset.CodingErrorAction newAction) { return null; }
+  public final Any onMalformedInput(Any newAction) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.charset.CharsetDecoder onUnmappableCharacter(java.nio.charset.CodingErrorAction newAction) { return null; }
+  public final Any onUnmappableCharacter(Any newAction) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.nio.charset.CharacterCodingException")
-  public final java.nio.CharBuffer decode(java.nio.ByteBuffer in) { return null; }
+  public final Any decode(Any in) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.charset.CoderResult decode(java.nio.ByteBuffer in, java.nio.CharBuffer out, boolean endOfInput) { return null; }
+  public final Any decode(Any in, Any out, boolean endOfInput) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.charset.CoderResult flush(java.nio.CharBuffer out) { return null; }
+  public final Any flush(Any out) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.charset.Charset charset() { return null; }
+  public final Any charset() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String replacement() { return null; }
+  public final String replacement() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.nio.charset.CoderResult implFlush(java.nio.CharBuffer out) { return null; }
+  Any implFlush(Any out) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.charset.CodingErrorAction malformedInputAction() { return null; }
+  public Any malformedInputAction() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.charset.CodingErrorAction unmappableCharacterAction() { return null; }
+  public Any unmappableCharacterAction() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.nio.charset.CharsetDecoder replaceWith(java.lang.String newReplacement) { return null; }
+  public final Any replaceWith(String newReplacement) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void implReplaceWith(java.lang.String newReplacement) { }
+  void implReplaceWith(String newReplacement) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void implOnMalformedInput(java.nio.charset.CodingErrorAction newAction) { }
+  void implOnMalformedInput(Any newAction) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void implOnUnmappableCharacter(java.nio.charset.CodingErrorAction newAction) { }
+  void implOnUnmappableCharacter(Any newAction) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void implReset() { }
   @JavaProtected
   @throwable("java.lang.AbstractMethodError")
-  java.nio.charset.CoderResult decodeLoop(java.nio.ByteBuffer in, java.nio.CharBuffer out) { return null; }
+  Any decodeLoop(Any in, Any out) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isAutoDetecting() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isCharsetDetected() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.charset.Charset detectedCharset() { return null; }
+  public Any detectedCharset() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final float averageCharsPerByte() { return 0.0; }
   < ---- END java signatures ---- >

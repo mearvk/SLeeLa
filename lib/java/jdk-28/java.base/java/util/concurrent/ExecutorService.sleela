@@ -56,6 +56,24 @@ class ExecutorService {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ExecutorService bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -69,21 +87,26 @@ class ExecutorService {
   public boolean isTerminated() { return false; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isShutdown() { return false; }
+  @generic("<T>")
   @throwable("java.lang.AbstractMethodError")
-  public <T> java.util.concurrent.Future<T> submit(java.lang.Runnable task, T result) { return null; }
+  public Any submit(Any task, Any result) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.Future<?> submit(java.lang.Runnable task) { return null; }
+  public Any submit(Any task) { return null; }
+  @generic("<T>")
   @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException, java.util.concurrent.ExecutionException")
-  public <T> T invokeAny(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks) { return null; }
+  public Any invokeAny(Any tasks) { return null; }
+  @generic("<T>")
   @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException")
-  public <T> T invokeAny(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks, long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  public Any invokeAny(Any tasks, long timeout, Any unit) { return null; }
+  @generic("<T>")
   @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
-  public <T> java.util.List<java.util.concurrent.Future<T>> invokeAll(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks) { return null; }
+  public Any invokeAll(Any tasks) { return null; }
+  @generic("<T>")
   @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
-  public <T> java.util.List<java.util.concurrent.Future<T>> invokeAll(java.util.Collection<? extends java.util.concurrent.Callable<T>> tasks, long timeout, java.util.concurrent.TimeUnit unit) { return null; }
+  public Any invokeAll(Any tasks, long timeout, Any unit) { return null; }
   @throwable("java.lang.AbstractMethodError, java.lang.InterruptedException")
-  public boolean awaitTermination(long timeout, java.util.concurrent.TimeUnit unit) { return false; }
+  public boolean awaitTermination(long timeout, Any unit) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<java.lang.Runnable> shutdownNow() { return null; }
+  public Any shutdownNow() { return null; }
   < ---- END java signatures ---- >
 }

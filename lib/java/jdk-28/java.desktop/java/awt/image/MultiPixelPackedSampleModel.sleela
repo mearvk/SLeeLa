@@ -56,6 +56,24 @@ class MultiPixelPackedSampleModel {
   String javaKind = "class";
   String javaSuper = "java.awt.image.SampleModel";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MultiPixelPackedSampleModel bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -71,7 +89,7 @@ class MultiPixelPackedSampleModel {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object o) { return false; }
+  public boolean equals(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -81,27 +99,27 @@ class MultiPixelPackedSampleModel {
   @throwable("java.lang.UnsupportedOperationException")
   public int[] getSampleSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.DataBuffer createDataBuffer() { return null; }
+  public Any createDataBuffer() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getNumDataElements() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.SampleModel createSubsetSampleModel(int[] bands) { return null; }
+  public Any createSubsetSampleModel(int[] bands) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int[] getPixel(int x, int y, int[] iArray, java.awt.image.DataBuffer data) { return null; }
+  public int[] getPixel(int x, int y, int[] iArray, Any data) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getSample(int x, int y, int b, java.awt.image.DataBuffer data) { return 0; }
+  public int getSample(int x, int y, int b, Any data) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDataElements(int x, int y, java.lang.Object obj, java.awt.image.DataBuffer data) { }
+  public void setDataElements(int x, int y, Any obj, Any data) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPixel(int x, int y, int[] iArray, java.awt.image.DataBuffer data) { }
+  public void setPixel(int x, int y, int[] iArray, Any data) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSample(int x, int y, int b, int s, java.awt.image.DataBuffer data) { }
+  public void setSample(int x, int y, int b, int s, Any data) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getDataElements(int x, int y, java.lang.Object obj, java.awt.image.DataBuffer data) { return null; }
+  public Any getDataElements(int x, int y, Any obj, Any data) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getTransferType() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.SampleModel createCompatibleSampleModel(int w, int h) { return null; }
+  public Any createCompatibleSampleModel(int w, int h) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getScanlineStride() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")

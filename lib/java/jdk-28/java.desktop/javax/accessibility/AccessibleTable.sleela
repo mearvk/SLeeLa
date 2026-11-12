@@ -56,6 +56,24 @@ class AccessibleTable {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public AccessibleTable bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,13 +82,13 @@ class AccessibleTable {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public javax.accessibility.Accessible getAccessibleCaption() { return null; }
+  public Any getAccessibleCaption() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setAccessibleCaption(javax.accessibility.Accessible a) { }
+  public void setAccessibleCaption(Any a) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.accessibility.Accessible getAccessibleSummary() { return null; }
+  public Any getAccessibleSummary() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setAccessibleSummary(javax.accessibility.Accessible a) { }
+  public void setAccessibleSummary(Any a) { }
   @throwable("java.lang.AbstractMethodError")
   public int getAccessibleRowCount() { return 0; }
   @throwable("java.lang.AbstractMethodError")
@@ -80,21 +98,21 @@ class AccessibleTable {
   @throwable("java.lang.AbstractMethodError")
   public int getAccessibleColumnExtentAt(int r, int c) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.accessibility.AccessibleTable getAccessibleRowHeader() { return null; }
+  public Any getAccessibleRowHeader() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setAccessibleRowHeader(javax.accessibility.AccessibleTable table) { }
+  public void setAccessibleRowHeader(Any table) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.accessibility.AccessibleTable getAccessibleColumnHeader() { return null; }
+  public Any getAccessibleColumnHeader() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setAccessibleColumnHeader(javax.accessibility.AccessibleTable table) { }
+  public void setAccessibleColumnHeader(Any table) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.accessibility.Accessible getAccessibleRowDescription(int r) { return null; }
+  public Any getAccessibleRowDescription(int r) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setAccessibleRowDescription(int r, javax.accessibility.Accessible a) { }
+  public void setAccessibleRowDescription(int r, Any a) { }
   @throwable("java.lang.AbstractMethodError")
-  public javax.accessibility.Accessible getAccessibleColumnDescription(int c) { return null; }
+  public Any getAccessibleColumnDescription(int c) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setAccessibleColumnDescription(int c, javax.accessibility.Accessible a) { }
+  public void setAccessibleColumnDescription(int c, Any a) { }
   @throwable("java.lang.AbstractMethodError")
   public boolean isAccessibleSelected(int r, int c) { return false; }
   @throwable("java.lang.AbstractMethodError")
@@ -106,6 +124,6 @@ class AccessibleTable {
   @throwable("java.lang.AbstractMethodError")
   public int[] getSelectedAccessibleColumns() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.accessibility.Accessible getAccessibleAt(int r, int c) { return null; }
+  public Any getAccessibleAt(int r, int c) { return null; }
   < ---- END java signatures ---- >
 }

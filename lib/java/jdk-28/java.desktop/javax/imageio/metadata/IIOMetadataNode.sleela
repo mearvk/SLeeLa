@@ -56,12 +56,30 @@ class IIOMetadataNode {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public IIOMetadataNode bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
   public IIOMetadataNode() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public IIOMetadataNode(java.lang.String nodeName) { }
+  public IIOMetadataNode(String nodeName) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -73,124 +91,124 @@ class IIOMetadataNode {
   @throwable("java.lang.UnsupportedOperationException")
   public int getLength() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isSupported(java.lang.String feature, java.lang.String version) { return false; }
+  public boolean isSupported(String feature, String version) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.NamedNodeMap getAttributes() { return null; }
+  public Any getAttributes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void normalize() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setAttribute(java.lang.String name, java.lang.String value) { }
+  public void setAttribute(String name, String value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getAttribute(java.lang.String name) { return null; }
+  public String getAttribute(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Node item(int index) { return null; }
+  public Any item(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getPrefix() { return null; }
+  public String getPrefix() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getTagName() { return null; }
+  public String getTagName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Node getLastChild() { return null; }
+  public Any getLastChild() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Node appendChild(org.w3c.dom.Node newChild) { return null; }
+  public Any appendChild(Any newChild) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeAttribute(java.lang.String name) { }
+  public void removeAttribute(String name) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getNodeName() { return null; }
+  public String getNodeName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public short getNodeType() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getNodeValue() { return null; }
+  public String getNodeValue() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setNodeValue(java.lang.String nodeValue) { }
+  public void setNodeValue(String nodeValue) { }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public org.w3c.dom.TypeInfo getSchemaTypeInfo() { return null; }
+  public Any getSchemaTypeInfo() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Node getParentNode() { return null; }
+  public Any getParentNode() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.NodeList getChildNodes() { return null; }
+  public Any getChildNodes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Node getFirstChild() { return null; }
+  public Any getFirstChild() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Node getPreviousSibling() { return null; }
+  public Any getPreviousSibling() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Node getNextSibling() { return null; }
+  public Any getNextSibling() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Document getOwnerDocument() { return null; }
+  public Any getOwnerDocument() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Node insertBefore(org.w3c.dom.Node newChild, org.w3c.dom.Node refChild) { return null; }
+  public Any insertBefore(Any newChild, Any refChild) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Node replaceChild(org.w3c.dom.Node newChild, org.w3c.dom.Node oldChild) { return null; }
+  public Any replaceChild(Any newChild, Any oldChild) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Node removeChild(org.w3c.dom.Node oldChild) { return null; }
+  public Any removeChild(Any oldChild) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasChildNodes() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Node cloneNode(boolean deep) { return null; }
+  public Any cloneNode(boolean deep) { return null; }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public java.lang.String getNamespaceURI() { return null; }
+  public String getNamespaceURI() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPrefix(java.lang.String prefix) { }
+  public void setPrefix(String prefix) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getLocalName() { return null; }
+  public String getLocalName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasAttributes() { return false; }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public java.lang.String getBaseURI() { return null; }
+  public String getBaseURI() { return null; }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public short compareDocumentPosition(org.w3c.dom.Node other) { return 0; }
+  public short compareDocumentPosition(Any other) { return 0; }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public java.lang.String getTextContent() { return null; }
+  public String getTextContent() { return null; }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public void setTextContent(java.lang.String textContent) { }
+  public void setTextContent(String textContent) { }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public boolean isSameNode(org.w3c.dom.Node node) { return false; }
+  public boolean isSameNode(Any node) { return false; }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public java.lang.String lookupPrefix(java.lang.String namespaceURI) { return null; }
+  public String lookupPrefix(String namespaceURI) { return null; }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public boolean isDefaultNamespace(java.lang.String namespaceURI) { return false; }
+  public boolean isDefaultNamespace(String namespaceURI) { return false; }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public java.lang.String lookupNamespaceURI(java.lang.String prefix) { return null; }
+  public String lookupNamespaceURI(String prefix) { return null; }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public boolean isEqualNode(org.w3c.dom.Node node) { return false; }
+  public boolean isEqualNode(Any node) { return false; }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public java.lang.Object getFeature(java.lang.String feature, java.lang.String version) { return null; }
+  public Any getFeature(String feature, String version) { return null; }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public java.lang.Object setUserData(java.lang.String key, java.lang.Object data, org.w3c.dom.UserDataHandler handler) { return null; }
+  public Any setUserData(String key, Any data, Any handler) { return null; }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public java.lang.Object getUserData(java.lang.String key) { return null; }
+  public Any getUserData(String key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getUserObject() { return null; }
+  public Any getUserObject() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUserObject(java.lang.Object userObject) { }
+  public void setUserObject(Any userObject) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Attr getAttributeNode(java.lang.String name) { return null; }
+  public Any getAttributeNode(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Attr removeAttributeNode(org.w3c.dom.Attr oldAttr) { return null; }
+  public Any removeAttributeNode(Any oldAttr) { return null; }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public org.w3c.dom.Attr setAttributeNode(org.w3c.dom.Attr newAttr) { return null; }
+  public Any setAttributeNode(Any newAttr) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.NodeList getElementsByTagName(java.lang.String name) { return null; }
+  public Any getElementsByTagName(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean hasAttribute(java.lang.String name) { return false; }
+  public boolean hasAttribute(String name) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getAttributeNS(java.lang.String namespaceURI, java.lang.String localName) { return null; }
+  public String getAttributeNS(String namespaceURI, String localName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setAttributeNS(java.lang.String namespaceURI, java.lang.String qualifiedName, java.lang.String value) { }
+  public void setAttributeNS(String namespaceURI, String qualifiedName, String value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeAttributeNS(java.lang.String namespaceURI, java.lang.String localName) { }
+  public void removeAttributeNS(String namespaceURI, String localName) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Attr getAttributeNodeNS(java.lang.String namespaceURI, java.lang.String localName) { return null; }
+  public Any getAttributeNodeNS(String namespaceURI, String localName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.Attr setAttributeNodeNS(org.w3c.dom.Attr newAttr) { return null; }
+  public Any setAttributeNodeNS(Any newAttr) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.w3c.dom.NodeList getElementsByTagNameNS(java.lang.String namespaceURI, java.lang.String localName) { return null; }
+  public Any getElementsByTagNameNS(String namespaceURI, String localName) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean hasAttributeNS(java.lang.String namespaceURI, java.lang.String localName) { return false; }
+  public boolean hasAttributeNS(String namespaceURI, String localName) { return false; }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public void setIdAttribute(java.lang.String name, boolean isId) { }
+  public void setIdAttribute(String name, boolean isId) { }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public void setIdAttributeNS(java.lang.String namespaceURI, java.lang.String localName, boolean isId) { }
+  public void setIdAttributeNS(String namespaceURI, String localName, boolean isId) { }
   @throwable("java.lang.UnsupportedOperationException, org.w3c.dom.DOMException")
-  public void setIdAttributeNode(org.w3c.dom.Attr idAttr, boolean isId) { }
+  public void setIdAttributeNode(Any idAttr, boolean isId) { }
   < ---- END java signatures ---- >
 }

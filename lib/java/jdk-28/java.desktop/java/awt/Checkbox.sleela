@@ -56,18 +56,36 @@ class Checkbox {
   String javaKind = "class";
   String javaSuper = "java.awt.Component";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Checkbox bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public Checkbox(java.lang.String label, boolean state, java.awt.CheckboxGroup group) { }
+  public Checkbox(String label, boolean state, Any group) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public Checkbox(java.lang.String label, java.awt.CheckboxGroup group, boolean state) { }
+  public Checkbox(String label, Any group, boolean state) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public Checkbox(java.lang.String label) { }
+  public Checkbox(String label) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
   public Checkbox() { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
-  public Checkbox(java.lang.String label, boolean state) { }
+  public Checkbox(String label, boolean state) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -82,34 +100,35 @@ class Checkbox {
   public void setState(boolean state) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getLabel() { return null; }
+  public String getLabel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLabel(java.lang.String label) { }
+  public void setLabel(String label) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setCheckboxGroup(java.awt.CheckboxGroup g) { }
+  public void setCheckboxGroup(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processItemEvent(java.awt.event.ItemEvent e) { }
+  void processItemEvent(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addItemListener(java.awt.event.ItemListener l) { }
+  public synchronized void addItemListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object[] getSelectedObjects() { return null; }
+  public Any[] getSelectedObjects() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.CheckboxGroup getCheckboxGroup() { return null; }
+  public Any getCheckboxGroup() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removeItemListener(java.awt.event.ItemListener l) { }
+  public synchronized void removeItemListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.awt.event.ItemListener[] getItemListeners() { return null; }
+  public synchronized Any[] getItemListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void addNotify() { }
+  @generic("<T extends java.util.EventListener>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
+  public Any[] getListeners(Any listenerType) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processEvent(java.awt.AWTEvent e) { }
+  void processEvent(Any e) { }
   < ---- END java signatures ---- >
 }

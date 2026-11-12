@@ -56,6 +56,24 @@ class HTMLImageElement {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public HTMLImageElement bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,56 +82,56 @@ class HTMLImageElement {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setName(java.lang.String name) { }
+  public void setName(String name) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setBorder(java.lang.String border) { }
+  public void setBorder(String border) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setWidth(java.lang.String width) { }
+  public void setWidth(String width) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getHeight() { return null; }
+  public String getHeight() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setHeight(java.lang.String height) { }
+  public void setHeight(String height) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorder() { return null; }
+  public String getBorder() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getWidth() { return null; }
+  public String getWidth() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAlign() { return null; }
+  public String getAlign() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setAlign(java.lang.String align) { }
+  public void setAlign(String align) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAlt() { return null; }
+  public String getAlt() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setAlt(java.lang.String alt) { }
+  public void setAlt(String alt) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getHspace() { return null; }
+  public String getHspace() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setHspace(java.lang.String hspace) { }
+  public void setHspace(String hspace) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getVspace() { return null; }
+  public String getVspace() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setVspace(java.lang.String vspace) { }
+  public void setVspace(String vspace) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getLongDesc() { return null; }
+  public String getLongDesc() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setLongDesc(java.lang.String longDesc) { }
+  public void setLongDesc(String longDesc) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getSrc() { return null; }
+  public String getSrc() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setSrc(java.lang.String src) { }
+  public void setSrc(String src) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getLowSrc() { return null; }
+  public String getLowSrc() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setLowSrc(java.lang.String lowSrc) { }
+  public void setLowSrc(String lowSrc) { }
   @throwable("java.lang.AbstractMethodError")
   public boolean getIsMap() { return false; }
   @throwable("java.lang.AbstractMethodError")
   public void setIsMap(boolean isMap) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getUseMap() { return null; }
+  public String getUseMap() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setUseMap(java.lang.String useMap) { }
+  public void setUseMap(String useMap) { }
   < ---- END java signatures ---- >
 }

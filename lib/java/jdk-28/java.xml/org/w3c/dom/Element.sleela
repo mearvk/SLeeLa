@@ -56,6 +56,24 @@ class Element {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Element bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,44 +82,44 @@ class Element {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setAttribute(java.lang.String name, java.lang.String value) { }
+  public void setAttribute(String name, String value) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAttribute(java.lang.String name) { return null; }
+  public String getAttribute(String name) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getTagName() { return null; }
+  public String getTagName() { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void removeAttribute(java.lang.String name) { }
+  public void removeAttribute(String name) { }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.TypeInfo getSchemaTypeInfo() { return null; }
+  public Any getSchemaTypeInfo() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.Attr getAttributeNode(java.lang.String name) { return null; }
+  public Any getAttributeNode(String name) { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public org.w3c.dom.Attr removeAttributeNode(org.w3c.dom.Attr oldAttr) { return null; }
+  public Any removeAttributeNode(Any oldAttr) { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public org.w3c.dom.Attr setAttributeNode(org.w3c.dom.Attr newAttr) { return null; }
+  public Any setAttributeNode(Any newAttr) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.NodeList getElementsByTagName(java.lang.String name) { return null; }
+  public Any getElementsByTagName(String name) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean hasAttribute(java.lang.String name) { return false; }
+  public boolean hasAttribute(String name) { return false; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public java.lang.String getAttributeNS(java.lang.String namespaceURI, java.lang.String localName) { return null; }
+  public String getAttributeNS(String namespaceURI, String localName) { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setAttributeNS(java.lang.String namespaceURI, java.lang.String qualifiedName, java.lang.String value) { }
+  public void setAttributeNS(String namespaceURI, String qualifiedName, String value) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void removeAttributeNS(java.lang.String namespaceURI, java.lang.String localName) { }
+  public void removeAttributeNS(String namespaceURI, String localName) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public org.w3c.dom.Attr getAttributeNodeNS(java.lang.String namespaceURI, java.lang.String localName) { return null; }
+  public Any getAttributeNodeNS(String namespaceURI, String localName) { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public org.w3c.dom.Attr setAttributeNodeNS(org.w3c.dom.Attr newAttr) { return null; }
+  public Any setAttributeNodeNS(Any newAttr) { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public org.w3c.dom.NodeList getElementsByTagNameNS(java.lang.String namespaceURI, java.lang.String localName) { return null; }
+  public Any getElementsByTagNameNS(String namespaceURI, String localName) { return null; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public boolean hasAttributeNS(java.lang.String namespaceURI, java.lang.String localName) { return false; }
+  public boolean hasAttributeNS(String namespaceURI, String localName) { return false; }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setIdAttribute(java.lang.String name, boolean isId) { }
+  public void setIdAttribute(String name, boolean isId) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setIdAttributeNS(java.lang.String namespaceURI, java.lang.String localName, boolean isId) { }
+  public void setIdAttributeNS(String namespaceURI, String localName, boolean isId) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public void setIdAttributeNode(org.w3c.dom.Attr idAttr, boolean isId) { }
+  public void setIdAttributeNode(Any idAttr, boolean isId) { }
   < ---- END java signatures ---- >
 }

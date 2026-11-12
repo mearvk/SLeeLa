@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class TypeVisitor<R, P> {
+class TypeVisitor {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class TypeVisitor<R, P> {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<R, P>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 2; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "R"; } if (index == 1) { return "P"; } return null; }
+  public TypeVisitor bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,32 +82,32 @@ class TypeVisitor<R, P> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public R visit(javax.lang.model.type.TypeMirror t, P p) { return null; }
+  public Any visit(Any t, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default R visit(javax.lang.model.type.TypeMirror t) { return null; }
+  public default Any visit(Any t) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitError(javax.lang.model.type.ErrorType t, P p) { return null; }
+  public Any visitError(Any t, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitDeclared(javax.lang.model.type.DeclaredType t, P p) { return null; }
+  public Any visitDeclared(Any t, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitExecutable(javax.lang.model.type.ExecutableType t, P p) { return null; }
+  public Any visitExecutable(Any t, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitTypeVariable(javax.lang.model.type.TypeVariable t, P p) { return null; }
+  public Any visitTypeVariable(Any t, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitWildcard(javax.lang.model.type.WildcardType t, P p) { return null; }
+  public Any visitWildcard(Any t, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitNoType(javax.lang.model.type.NoType t, P p) { return null; }
+  public Any visitNoType(Any t, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitArray(javax.lang.model.type.ArrayType t, P p) { return null; }
+  public Any visitArray(Any t, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitUnknown(javax.lang.model.type.TypeMirror t, P p) { return null; }
+  public Any visitUnknown(Any t, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitPrimitive(javax.lang.model.type.PrimitiveType t, P p) { return null; }
+  public Any visitPrimitive(Any t, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitNull(javax.lang.model.type.NullType t, P p) { return null; }
+  public Any visitNull(Any t, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitUnion(javax.lang.model.type.UnionType t, P p) { return null; }
+  public Any visitUnion(Any t, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitIntersection(javax.lang.model.type.IntersectionType t, P p) { return null; }
+  public Any visitIntersection(Any t, Any p) { return null; }
   < ---- END java signatures ---- >
 }

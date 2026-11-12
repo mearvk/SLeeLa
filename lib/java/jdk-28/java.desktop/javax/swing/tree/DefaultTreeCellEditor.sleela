@@ -56,6 +56,24 @@ class DefaultTreeCellEditor {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DefaultTreeCellEditor bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any realEditor;
@@ -75,9 +93,9 @@ class DefaultTreeCellEditor {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public DefaultTreeCellEditor(javax.swing.JTree tree, javax.swing.tree.DefaultTreeCellRenderer renderer) { }
+  public DefaultTreeCellEditor(Any tree, Any renderer) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public DefaultTreeCellEditor(javax.swing.JTree tree, javax.swing.tree.DefaultTreeCellRenderer renderer, javax.swing.tree.TreeCellEditor editor) { }
+  public DefaultTreeCellEditor(Any tree, Any renderer, Any editor) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -87,30 +105,30 @@ class DefaultTreeCellEditor {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getBorderSelectionColor() { return null; }
+  public Any getBorderSelectionColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBorderSelectionColor(java.awt.Color newColor) { }
+  public void setBorderSelectionColor(Any newColor) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.tree.TreeCellEditor createTreeCellEditor() { return null; }
+  Any createTreeCellEditor() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Container createContainer() { return null; }
+  Any createContainer() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setTree(javax.swing.JTree newTree) { }
+  void setTree(Any newTree) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void determineOffset(javax.swing.JTree tree, java.lang.Object value, boolean isSelected, boolean expanded, boolean leaf, int row) { }
+  void determineOffset(Any tree, Any value, boolean isSelected, boolean expanded, boolean leaf, int row) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void prepareForEditing() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean canEditImmediately(java.util.EventObject event) { return false; }
+  boolean canEditImmediately(Any event) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean shouldStartEditingTimer(java.util.EventObject event) { return false; }
+  boolean shouldStartEditingTimer(Any event) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void startEditingTimer() { }
@@ -118,30 +136,30 @@ class DefaultTreeCellEditor {
   @throwable("java.lang.UnsupportedOperationException")
   boolean inHitRegion(int x, int y) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void valueChanged(javax.swing.event.TreeSelectionEvent e) { }
+  public void valueChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getTreeCellEditorComponent(javax.swing.JTree tree, java.lang.Object value, boolean isSelected, boolean expanded, boolean leaf, int row) { return null; }
+  public Any getTreeCellEditorComponent(Any tree, Any value, boolean isSelected, boolean expanded, boolean leaf, int row) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void actionPerformed(java.awt.event.ActionEvent e) { }
+  public void actionPerformed(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isCellEditable(java.util.EventObject event) { return false; }
+  public boolean isCellEditable(Any event) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean shouldSelectCell(java.util.EventObject event) { return false; }
+  public boolean shouldSelectCell(Any event) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean stopCellEditing() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void cancelCellEditing() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addCellEditorListener(javax.swing.event.CellEditorListener l) { }
+  public void addCellEditorListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeCellEditorListener(javax.swing.event.CellEditorListener l) { }
+  public void removeCellEditorListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.CellEditorListener[] getCellEditorListeners() { return null; }
+  public Any[] getCellEditorListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getCellEditorValue() { return null; }
+  public Any getCellEditorValue() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Font getFont() { return null; }
+  public Any getFont() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFont(java.awt.Font font) { }
+  public void setFont(Any font) { }
   < ---- END java signatures ---- >
 }

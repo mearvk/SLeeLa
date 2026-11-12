@@ -56,6 +56,24 @@ class RecordedObject {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public RecordedObject bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,38 +82,39 @@ class RecordedObject {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String toString() { return null; }
+  public final String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final jdk.jfr.consumer.RecordedClass getClass(java.lang.String name) { return null; }
+  public final Any getClass(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean getBoolean(java.lang.String name) { return false; }
+  public final boolean getBoolean(String name) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final byte getByte(java.lang.String name) { return 0; }
+  public final byte getByte(String name) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final short getShort(java.lang.String name) { return 0; }
+  public final short getShort(String name) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final char getChar(java.lang.String name) { return 0; }
+  public final char getChar(String name) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final int getInt(java.lang.String name) { return 0; }
+  public final int getInt(String name) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final long getLong(java.lang.String name) { return 0; }
+  public final long getLong(String name) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final float getFloat(java.lang.String name) { return 0.0; }
+  public final float getFloat(String name) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final double getDouble(java.lang.String name) { return 0.0; }
+  public final double getDouble(String name) { return 0.0; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public final <T> T getValue(java.lang.String name) { return null; }
+  public final Any getValue(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<jdk.jfr.ValueDescriptor> getFields() { return null; }
+  public Any getFields() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String getString(java.lang.String name) { return null; }
+  public final String getString(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.time.Duration getDuration(java.lang.String name) { return null; }
+  public final Any getDuration(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.time.Instant getInstant(java.lang.String name) { return null; }
+  public final Any getInstant(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final jdk.jfr.consumer.RecordedThread getThread(java.lang.String name) { return null; }
+  public final Any getThread(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean hasField(java.lang.String name) { return false; }
+  public boolean hasField(String name) { return false; }
   < ---- END java signatures ---- >
 }

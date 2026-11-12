@@ -56,6 +56,24 @@ class JFormattedTextField {
   String javaKind = "class";
   String javaSuper = "javax.swing.JTextField";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JFormattedTextField bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int COMMIT = 0;
@@ -66,9 +84,9 @@ class JFormattedTextField {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public JFormattedTextField(javax.swing.JFormattedTextField.AbstractFormatterFactory factory, java.lang.Object currentValue) { }
+  public JFormattedTextField(Any factory, Any currentValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JFormattedTextField(javax.swing.JFormattedTextField.AbstractFormatterFactory factory) { }
+  public JFormattedTextField(Any factory) { }
   @throwable("java.lang.UnsupportedOperationException")
   public JFormattedTextField() { }
   < ---- END java constructors ---- >
@@ -80,28 +98,28 @@ class JFormattedTextField {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getValue() { return null; }
+  public Any getValue() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setValue(java.lang.Object value) { }
+  public void setValue(Any value) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setFormatter(javax.swing.JFormattedTextField.AbstractFormatter format) { }
+  void setFormatter(Any format) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JFormattedTextField.AbstractFormatter getFormatter() { return null; }
+  public Any getFormatter() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processFocusEvent(java.awt.event.FocusEvent e) { }
+  void processFocusEvent(Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processInputMethodEvent(java.awt.event.InputMethodEvent e) { }
+  void processInputMethodEvent(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setFocusLostBehavior(int behavior) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFormatterFactory(javax.swing.JFormattedTextField.AbstractFormatterFactory tf) { }
+  public void setFormatterFactory(Any tf) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JFormattedTextField.AbstractFormatterFactory getFormatterFactory() { return null; }
+  public Any getFormatterFactory() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getFocusLostBehavior() { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
@@ -112,8 +130,8 @@ class JFormattedTextField {
   @throwable("java.lang.UnsupportedOperationException")
   void invalidEdit() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDocument(javax.swing.text.Document doc) { }
+  public void setDocument(Any doc) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Action[] getActions() { return null; }
+  public Any[] getActions() { return null; }
   < ---- END java signatures ---- >
 }

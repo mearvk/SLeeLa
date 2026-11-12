@@ -56,6 +56,24 @@ class BasicSliderUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.SliderUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BasicSliderUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int POSITIVE_SCROLL = 1;
@@ -85,7 +103,7 @@ class BasicSliderUI {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public BasicSliderUI(javax.swing.JSlider b) { }
+  public BasicSliderUI(Any b) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -96,25 +114,25 @@ class BasicSliderUI {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void installListeners(javax.swing.JSlider slider) { }
+  void installListeners(Any slider) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Color getHighlightColor() { return null; }
+  Any getHighlightColor() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Color getShadowColor() { return null; }
+  Any getShadowColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  public Any getPreferredSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
+  public Any getMinimumSize(Any c) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.plaf.basic.BasicSliderUI.TrackListener createTrackListener(javax.swing.JSlider slider) { return null; }
+  Any createTrackListener(Any slider) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.plaf.basic.BasicSliderUI.ScrollListener createScrollListener(javax.swing.JSlider slider) { return null; }
+  Any createScrollListener(Any slider) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintThumb(java.awt.Graphics g) { }
+  public void paintThumb(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void scrollByBlock(int direction) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -127,16 +145,16 @@ class BasicSliderUI {
   boolean labelsHaveSameBaselines() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Dimension getThumbSize() { return null; }
+  Any getThumbSize() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getHeightOfTallestLabel() { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.Integer getLowestValue() { return null; }
+  Any getLowestValue() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.Integer getHighestValue() { return null; }
+  Any getHighestValue() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int yPositionForValue(int value, int trackY, int trackHeight) { return 0; }
@@ -147,13 +165,13 @@ class BasicSliderUI {
   @throwable("java.lang.UnsupportedOperationException")
   void recalculateIfInsetsChanged() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredVerticalSize() { return null; }
+  public Any getPreferredVerticalSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredHorizontalSize() { return null; }
+  public Any getPreferredHorizontalSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumVerticalSize() { return null; }
+  public Any getMinimumVerticalSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumHorizontalSize() { return null; }
+  public Any getMinimumHorizontalSize() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void calculateFocusRect() { }
@@ -183,10 +201,10 @@ class BasicSliderUI {
   int xPositionForValue(int value) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Component getHighestValueLabel() { return null; }
+  Any getHighestValueLabel() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Component getLowestValueLabel() { return null; }
+  Any getLowestValueLabel() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getWidthOfWidestLabel() { return 0; }
@@ -195,25 +213,25 @@ class BasicSliderUI {
   void recalculateIfOrientationChanged() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Color getFocusColor() { return null; }
+  Any getFocusColor() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintMinorTickForHorizSlider(java.awt.Graphics g, java.awt.Rectangle tickBounds, int x) { }
+  void paintMinorTickForHorizSlider(Any g, Any tickBounds, int x) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintMajorTickForHorizSlider(java.awt.Graphics g, java.awt.Rectangle tickBounds, int x) { }
+  void paintMajorTickForHorizSlider(Any g, Any tickBounds, int x) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintMinorTickForVertSlider(java.awt.Graphics g, java.awt.Rectangle tickBounds, int y) { }
+  void paintMinorTickForVertSlider(Any g, Any tickBounds, int y) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintMajorTickForVertSlider(java.awt.Graphics g, java.awt.Rectangle tickBounds, int y) { }
+  void paintMajorTickForVertSlider(Any g, Any tickBounds, int y) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintHorizontalLabel(java.awt.Graphics g, int value, java.awt.Component label) { }
+  void paintHorizontalLabel(Any g, int value, Any label) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintVerticalLabel(java.awt.Graphics g, int value, java.awt.Component label) { }
+  void paintVerticalLabel(Any g, int value, Any label) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   boolean drawInverted() { return false; }
@@ -239,59 +257,59 @@ class BasicSliderUI {
   @throwable("java.lang.UnsupportedOperationException")
   public int valueForXPosition(int xPos) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void installUI(javax.swing.JComponent c) { }
+  public void installUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void uninstallUI(javax.swing.JComponent c) { }
+  public void uninstallUI(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getTickLength() { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.ComponentListener createComponentListener(javax.swing.JSlider slider) { return null; }
+  Any createComponentListener(Any slider) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTicks(java.awt.Graphics g) { }
+  public void paintTicks(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTrack(java.awt.Graphics g) { }
+  public void paintTrack(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintLabels(java.awt.Graphics g) { }
+  public void paintLabels(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getBaseline(javax.swing.JComponent c, int width, int height) { return 0; }
+  public int getBaseline(Any c, int width, int height) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(javax.swing.JComponent c) { return null; }
+  public Any getBaselineResizeBehavior(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintFocus(java.awt.Graphics g) { }
+  public void paintFocus(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.event.ChangeListener createChangeListener(javax.swing.JSlider slider) { return null; }
+  Any createChangeListener(Any slider) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent b) { return null; }
+  public static Any createUI(Any b) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void installKeyboardActions(javax.swing.JSlider slider) { }
+  void installKeyboardActions(Any slider) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void uninstallKeyboardActions(javax.swing.JSlider slider) { }
+  void uninstallKeyboardActions(Any slider) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void installDefaults(javax.swing.JSlider slider) { }
+  void installDefaults(Any slider) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void uninstallListeners(javax.swing.JSlider slider) { }
+  void uninstallListeners(Any slider) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void uninstallDefaults(javax.swing.JSlider slider) { }
+  void uninstallDefaults(Any slider) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createPropertyChangeListener(javax.swing.JSlider slider) { return null; }
+  Any createPropertyChangeListener(Any slider) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.FocusListener createFocusListener(javax.swing.JSlider slider) { return null; }
+  Any createFocusListener(Any slider) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   boolean isDragging() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
+  public Any getMaximumSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
+  public void paint(Any g, Any c) { }
   < ---- END java signatures ---- >
 }

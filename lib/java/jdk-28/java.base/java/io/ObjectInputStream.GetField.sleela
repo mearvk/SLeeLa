@@ -57,6 +57,24 @@ class GetField {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public GetField bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -70,26 +88,26 @@ class GetField {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public long get(java.lang.String name, long val) { return 0; }
+  public long get(String name, long val) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public int get(java.lang.String name, int val) { return 0; }
+  public int get(String name, int val) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public short get(java.lang.String name, short val) { return 0; }
+  public short get(String name, short val) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public float get(java.lang.String name, float val) { return 0.0; }
+  public float get(String name, float val) { return 0.0; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public double get(java.lang.String name, double val) { return 0.0; }
+  public double get(String name, double val) { return 0.0; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException, java.lang.ClassNotFoundException")
-  public java.lang.Object get(java.lang.String name, java.lang.Object val) { return null; }
+  public Any get(String name, Any val) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public boolean get(java.lang.String name, boolean val) { return false; }
+  public boolean get(String name, boolean val) { return false; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public byte get(java.lang.String name, byte val) { return 0; }
+  public byte get(String name, byte val) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public char get(java.lang.String name, char val) { return 0; }
+  public char get(String name, char val) { return 0; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public boolean defaulted(java.lang.String name) { return false; }
+  public boolean defaulted(String name) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.io.ObjectStreamClass getObjectStreamClass() { return null; }
+  public Any getObjectStreamClass() { return null; }
   < ---- END java signatures ---- >
 }

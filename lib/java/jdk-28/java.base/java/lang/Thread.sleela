@@ -56,6 +56,24 @@ class Thread {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Thread bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int MIN_PRIORITY = 1;
@@ -65,21 +83,21 @@ class Thread {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public Thread(java.lang.ThreadGroup group, java.lang.String name) { }
+  public Thread(Any group, String name) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Thread(java.lang.String name) { }
+  public Thread(String name) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Thread(java.lang.ThreadGroup group, java.lang.Runnable task, java.lang.String name) { }
+  public Thread(Any group, Any task, String name) { }
   @throwable("java.lang.UnsupportedOperationException")
   public Thread() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Thread(java.lang.Runnable task) { }
+  public Thread(Any task) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Thread(java.lang.ThreadGroup group, java.lang.Runnable task) { }
+  public Thread(Any group, Any task) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Thread(java.lang.ThreadGroup group, java.lang.Runnable task, java.lang.String name, long stackSize, boolean inheritInheritableThreadLocals) { }
+  public Thread(Any group, Any task, String name, long stackSize, boolean inheritInheritableThreadLocals) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Thread(java.lang.ThreadGroup group, java.lang.Runnable task, java.lang.String name, long stackSize) { }
+  public Thread(Any group, Any task, String name, long stackSize) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -89,24 +107,24 @@ class Thread {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String getName() { return null; }
+  public final String getName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StackTraceElement[] getStackTrace() { return null; }
+  public Any[] getStackTrace() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void run() { }
   @throwable("java.lang.UnsupportedOperationException")
   public void interrupt() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, java.lang.CloneNotSupportedException")
-  java.lang.Object clone() { return null; }
+  Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static native java.lang.Thread currentThread() { return null; }
+  public static native Any currentThread() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static void onSpinWait() { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public final boolean join(java.time.Duration duration) { return false; }
+  public final boolean join(Any duration) { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
   public final void join(long millis, int nanos) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
@@ -114,9 +132,9 @@ class Thread {
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
   public final void join(long millis) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setContextClassLoader(java.lang.ClassLoader cl) { }
+  public void setContextClassLoader(Any cl) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static native boolean holdsLock(java.lang.Object obj) { return false; }
+  public static native boolean holdsLock(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public final void setPriority(int newPriority) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -124,13 +142,13 @@ class Thread {
   @throwable("java.lang.UnsupportedOperationException")
   public void start() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.ThreadGroup getThreadGroup() { return null; }
+  public final Any getThreadGroup() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int getPriority() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean isDaemon() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.ClassLoader getContextClassLoader() { return null; }
+  public Any getContextClassLoader() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static boolean interrupted() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -138,46 +156,46 @@ class Thread {
   @throwable("java.lang.UnsupportedOperationException")
   public static int activeCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static int enumerate(java.lang.Thread[] tarray) { return 0; }
+  public static int enumerate(Any[] tarray) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean isAlive() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public final long threadId() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Thread.UncaughtExceptionHandler getUncaughtExceptionHandler() { return null; }
+  public Any getUncaughtExceptionHandler() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
   public static void sleep(long millis) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
   public static void sleep(long millis, int nanos) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException")
-  public static void sleep(java.time.Duration duration) { }
+  public static void sleep(Any duration) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.Thread.Builder.OfPlatform ofPlatform() { return null; }
+  public static Any ofPlatform() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.Thread.Builder.OfVirtual ofVirtual() { return null; }
+  public static Any ofVirtual() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.Thread startVirtualThread(java.lang.Runnable task) { return null; }
+  public static Any startVirtualThread(Any task) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final void stop() { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isInterrupted() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final synchronized void setName(java.lang.String name) { }
+  public final synchronized void setName(String name) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static void dumpStack() { }
   @throwable("java.lang.UnsupportedOperationException")
   public final void checkAccess() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Map<java.lang.Thread, java.lang.StackTraceElement[]> getAllStackTraces() { return null; }
+  public static Any getAllStackTraces() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public long getId() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Thread.State getState() { return null; }
+  public Any getState() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setDefaultUncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler ueh) { }
+  public static void setDefaultUncaughtExceptionHandler(Any ueh) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.Thread.UncaughtExceptionHandler getDefaultUncaughtExceptionHandler() { return null; }
+  public static Any getDefaultUncaughtExceptionHandler() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUncaughtExceptionHandler(java.lang.Thread.UncaughtExceptionHandler ueh) { }
+  public void setUncaughtExceptionHandler(Any ueh) { }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class DriverManager {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DriverManager bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,36 +82,36 @@ class DriverManager {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static void println(java.lang.String message) { }
+  public static void println(String message) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public static java.sql.Connection getConnection(java.lang.String url) { return null; }
+  public static Any getConnection(String url) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public static java.sql.Connection getConnection(java.lang.String url, java.lang.String user, java.lang.String password) { return null; }
+  public static Any getConnection(String url, String user, String password) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public static java.sql.Connection getConnection(java.lang.String url, java.util.Properties info) { return null; }
+  public static Any getConnection(String url, Any info) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setLogStream(java.io.PrintStream out) { }
+  public static void setLogStream(Any out) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.io.PrintWriter getLogWriter() { return null; }
+  public static Any getLogWriter() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public static void registerDriver(java.sql.Driver driver) { }
+  public static void registerDriver(Any driver) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public static void registerDriver(java.sql.Driver driver, java.sql.DriverAction da) { }
+  public static void registerDriver(Any driver, Any da) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Enumeration<java.sql.Driver> getDrivers() { return null; }
+  public static Any getDrivers() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setLogWriter(java.io.PrintWriter out) { }
+  public static void setLogWriter(Any out) { }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public static java.sql.Driver getDriver(java.lang.String url) { return null; }
+  public static Any getDriver(String url) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public static void deregisterDriver(java.sql.Driver driver) { }
+  public static void deregisterDriver(Any driver) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.Stream<java.sql.Driver> drivers() { return null; }
+  public static Any drivers() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public static void setLoginTimeout(int seconds) { }
   @throwable("java.lang.UnsupportedOperationException")
   public static int getLoginTimeout() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.io.PrintStream getLogStream() { return null; }
+  public static Any getLogStream() { return null; }
   < ---- END java signatures ---- >
 }

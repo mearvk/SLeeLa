@@ -56,6 +56,24 @@ class Polygon {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Polygon bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   int npoints;
@@ -84,15 +102,15 @@ class Polygon {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean contains(int x, int y) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean contains(java.awt.Point p) { return false; }
+  public boolean contains(Any p) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean contains(double x, double y, double w, double h) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getBounds() { return null; }
+  public Any getBounds() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void invalidate() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean intersects(java.awt.geom.Rectangle2D r) { return false; }
+  public boolean intersects(Any r) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean intersects(double x, double y, double w, double h) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -100,13 +118,13 @@ class Polygon {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean inside(int x, int y) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getBounds2D() { return null; }
+  public Any getBounds2D() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { return null; }
+  public Any getPathIterator(Any at, double flatness) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { return null; }
+  public Any getPathIterator(Any at) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getBoundingBox() { return null; }
+  public Any getBoundingBox() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void addPoint(int x, int y) { }
   < ---- END java signatures ---- >

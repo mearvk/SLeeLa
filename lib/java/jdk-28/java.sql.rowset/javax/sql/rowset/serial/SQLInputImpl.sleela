@@ -56,10 +56,28 @@ class SQLInputImpl {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SQLInputImpl bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public SQLInputImpl(java.lang.Object[] attributes, java.util.Map<java.lang.String, java.lang.Class<?>> map) { }
+  public SQLInputImpl(Any[] attributes, Any map) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -69,7 +87,7 @@ class SQLInputImpl {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.lang.Object readObject() { return null; }
+  public Any readObject() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public int readInt() { return 0; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
@@ -87,40 +105,40 @@ class SQLInputImpl {
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public boolean readBoolean() { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.lang.String readString() { return null; }
+  public String readString() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.sql.Array readArray() { return null; }
+  public Any readArray() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
   public boolean wasNull() { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.math.BigDecimal readBigDecimal() { return null; }
+  public Any readBigDecimal() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.sql.Date readDate() { return null; }
+  public Any readDate() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.sql.Time readTime() { return null; }
+  public Any readTime() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.sql.Timestamp readTimestamp() { return null; }
+  public Any readTimestamp() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.io.Reader readCharacterStream() { return null; }
+  public Any readCharacterStream() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.io.InputStream readAsciiStream() { return null; }
+  public Any readAsciiStream() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.io.InputStream readBinaryStream() { return null; }
+  public Any readBinaryStream() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.sql.Ref readRef() { return null; }
+  public Any readRef() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.sql.Blob readBlob() { return null; }
+  public Any readBlob() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.sql.Clob readClob() { return null; }
+  public Any readClob() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.net.URL readURL() { return null; }
+  public Any readURL() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.sql.NClob readNClob() { return null; }
+  public Any readNClob() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.lang.String readNString() { return null; }
+  public String readNString() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.sql.SQLXML readSQLXML() { return null; }
+  public Any readSQLXML() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.sql.SQLException")
-  public java.sql.RowId readRowId() { return null; }
+  public Any readRowId() { return null; }
   < ---- END java signatures ---- >
 }

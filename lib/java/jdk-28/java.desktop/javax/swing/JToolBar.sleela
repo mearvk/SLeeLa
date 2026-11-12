@@ -56,12 +56,30 @@ class JToolBar {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JToolBar bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public JToolBar(java.lang.String name, int orientation) { }
+  public JToolBar(String name, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JToolBar(java.lang.String name) { }
+  public JToolBar(String name) { }
   @throwable("java.lang.UnsupportedOperationException")
   public JToolBar(int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -75,37 +93,37 @@ class JToolBar {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JButton add(javax.swing.Action a) { return null; }
+  public Any add(Any a) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintBorder(java.awt.Graphics g) { }
+  void paintBorder(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUI(javax.swing.plaf.ToolBarUI ui) { }
+  public void setUI(Any ui) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ToolBarUI getUI() { return null; }
+  public Any getUI() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getComponentAtIndex(int i) { return null; }
+  public Any getComponentAtIndex(int i) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isBorderPainted() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setBorderPainted(boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setMargin(java.awt.Insets m) { }
+  public void setMargin(Any m) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Insets getMargin() { return null; }
+  public Any getMargin() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JButton createActionComponent(javax.swing.Action a) { return null; }
+  Any createActionComponent(Any a) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createActionChangeListener(javax.swing.JButton b) { return null; }
+  Any createActionChangeListener(Any b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isFloatable() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -113,9 +131,9 @@ class JToolBar {
   @throwable("java.lang.UnsupportedOperationException")
   public void addSeparator() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addSeparator(java.awt.Dimension size) { }
+  public void addSeparator(Any size) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getComponentIndex(java.awt.Component c) { return 0; }
+  public int getComponentIndex(Any c) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getOrientation() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -125,11 +143,11 @@ class JToolBar {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isRollover() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLayout(java.awt.LayoutManager mgr) { }
+  public void setLayout(Any mgr) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { }
+  void addImpl(Any comp, Any constraints, int index) { }
   < ---- END java signatures ---- >
 }

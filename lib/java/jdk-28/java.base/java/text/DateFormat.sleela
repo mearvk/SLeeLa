@@ -56,6 +56,24 @@ class DateFormat {
   String javaKind = "class";
   String javaSuper = "java.text.Format";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DateFormat bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int ERA_FIELD = 0;
@@ -99,58 +117,58 @@ class DateFormat {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.StringBuffer format(java.lang.Object obj, java.lang.StringBuffer toAppendTo, java.text.FieldPosition fieldPosition) { return null; }
+  public final Any format(Any obj, Any toAppendTo, Any fieldPosition) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String format(java.util.Date date) { return null; }
+  public final String format(Any date) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.text.DateFormat getInstance() { return null; }
+  public static final Any getInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.text.ParseException")
-  public java.util.Date parse(java.lang.String source) { return null; }
+  public Any parse(String source) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Date parse(java.lang.String source, java.text.ParsePosition pos) { return null; }
+  public Any parse(String source, Any pos) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.text.DateFormat getDateTimeInstance(int dateStyle, int timeStyle, java.util.Locale aLocale) { return null; }
+  public static final Any getDateTimeInstance(int dateStyle, int timeStyle, Any aLocale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.text.DateFormat getDateTimeInstance(int dateStyle, int timeStyle) { return null; }
+  public static final Any getDateTimeInstance(int dateStyle, int timeStyle) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.text.DateFormat getDateTimeInstance() { return null; }
+  public static final Any getDateTimeInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Locale[] getAvailableLocales() { return null; }
+  public static Any[] getAvailableLocales() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTimeZone(java.util.TimeZone zone) { }
+  public void setTimeZone(Any zone) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.TimeZone getTimeZone() { return null; }
+  public Any getTimeZone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setLenient(boolean lenient) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isLenient() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.text.DateFormat getDateInstance(int style) { return null; }
+  public static final Any getDateInstance(int style) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.text.DateFormat getDateInstance(int style, java.util.Locale aLocale) { return null; }
+  public static final Any getDateInstance(int style, Any aLocale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.text.DateFormat getDateInstance() { return null; }
+  public static final Any getDateInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.text.DateFormat getTimeInstance(int style) { return null; }
+  public static final Any getTimeInstance(int style) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.text.DateFormat getTimeInstance() { return null; }
+  public static final Any getTimeInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static final java.text.DateFormat getTimeInstance(int style, java.util.Locale aLocale) { return null; }
+  public static final Any getTimeInstance(int style, Any aLocale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object parseObject(java.lang.String source, java.text.ParsePosition pos) { return null; }
+  public Any parseObject(String source, Any pos) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setCalendar(java.util.Calendar newCalendar) { }
+  public void setCalendar(Any newCalendar) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Calendar getCalendar() { return null; }
+  public Any getCalendar() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setNumberFormat(java.text.NumberFormat newNumberFormat) { }
+  public void setNumberFormat(Any newNumberFormat) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.text.NumberFormat getNumberFormat() { return null; }
+  public Any getNumberFormat() { return null; }
   < ---- END java signatures ---- >
 }

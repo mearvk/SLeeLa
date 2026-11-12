@@ -56,6 +56,24 @@ class TimeZone {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public TimeZone bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int SHORT = 0;
@@ -74,51 +92,51 @@ class TimeZone {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.TimeZone getDefault() { return null; }
+  public static Any getDefault() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getOffset(int era, int year, int month, int day, int dayOfWeek, int milliseconds) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getOffset(long date) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String getDisplayName() { return null; }
+  public final String getDisplayName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String getDisplayName(boolean daylight, int style) { return null; }
+  public final String getDisplayName(boolean daylight, int style) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getDisplayName(boolean daylight, int style, java.util.Locale locale) { return null; }
+  public String getDisplayName(boolean daylight, int style, Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String getDisplayName(java.util.Locale locale) { return null; }
+  public final String getDisplayName(Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.TimeZone getTimeZone(java.lang.String ID) { return null; }
+  public static Any getTimeZone(String ID) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.TimeZone getTimeZone(java.time.ZoneId zoneId) { return null; }
+  public static Any getTimeZone(Any zoneId) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getID() { return null; }
+  public String getID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getDSTSavings() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean hasSameRules(java.util.TimeZone other) { return false; }
+  public boolean hasSameRules(Any other) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.ZoneId toZoneId() { return null; }
+  public Any toZoneId() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getRawOffset() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setDefault(java.util.TimeZone zone) { }
+  public static void setDefault(Any zone) { }
   @throwable("java.lang.AbstractMethodError")
-  public boolean inDaylightTime(java.util.Date date) { return false; }
+  public boolean inDaylightTime(Any date) { return false; }
   @throwable("java.lang.AbstractMethodError")
   public boolean useDaylightTime() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String[] getAvailableIDs() { return null; }
+  public static String[] getAvailableIDs() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String[] getAvailableIDs(int rawOffset) { return null; }
+  public static String[] getAvailableIDs(int rawOffset) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.Stream<java.lang.String> availableIDs(int rawOffset) { return null; }
+  public static Any availableIDs(int rawOffset) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.Stream<java.lang.String> availableIDs() { return null; }
+  public static Any availableIDs() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setID(java.lang.String ID) { }
+  public void setID(String ID) { }
   @throwable("java.lang.AbstractMethodError")
   public void setRawOffset(int offsetMillis) { }
   @throwable("java.lang.UnsupportedOperationException")

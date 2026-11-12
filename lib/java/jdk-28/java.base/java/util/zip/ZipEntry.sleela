@@ -56,6 +56,24 @@ class ZipEntry {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ZipEntry bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int STORED = 0;
@@ -64,9 +82,9 @@ class ZipEntry {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public ZipEntry(java.lang.String name) { }
+  public ZipEntry(String name) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public ZipEntry(java.util.zip.ZipEntry e) { }
+  public ZipEntry(Any e) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -76,13 +94,13 @@ class ZipEntry {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMethod() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -90,25 +108,25 @@ class ZipEntry {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isDirectory() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.file.attribute.FileTime getLastModifiedTime() { return null; }
+  public Any getLastModifiedTime() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.zip.ZipEntry setLastModifiedTime(java.nio.file.attribute.FileTime time) { return null; }
+  public Any setLastModifiedTime(Any time) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public long getTime() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setTime(long time) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTimeLocal(java.time.LocalDateTime time) { }
+  public void setTimeLocal(Any time) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.time.LocalDateTime getTimeLocal() { return null; }
+  public Any getTimeLocal() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.zip.ZipEntry setLastAccessTime(java.nio.file.attribute.FileTime time) { return null; }
+  public Any setLastAccessTime(Any time) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.file.attribute.FileTime getLastAccessTime() { return null; }
+  public Any getLastAccessTime() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.zip.ZipEntry setCreationTime(java.nio.file.attribute.FileTime time) { return null; }
+  public Any setCreationTime(Any time) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.nio.file.attribute.FileTime getCreationTime() { return null; }
+  public Any getCreationTime() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setSize(long size) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -126,8 +144,8 @@ class ZipEntry {
   @throwable("java.lang.UnsupportedOperationException")
   public byte[] getExtra() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setComment(java.lang.String comment) { }
+  public void setComment(String comment) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getComment() { return null; }
+  public String getComment() { return null; }
   < ---- END java signatures ---- >
 }

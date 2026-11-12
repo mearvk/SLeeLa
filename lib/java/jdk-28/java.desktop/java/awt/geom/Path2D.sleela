@@ -56,6 +56,24 @@ class Path2D {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Path2D bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int WIND_EVEN_ODD = 0;
@@ -71,41 +89,41 @@ class Path2D {
   @throwable("java.lang.UnsupportedOperationException")
   public final synchronized void reset() { }
   @throwable("java.lang.AbstractMethodError")
-  public void append(java.awt.geom.PathIterator pi, boolean connect) { }
+  public void append(Any pi, boolean connect) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean contains(java.awt.geom.PathIterator pi, java.awt.geom.Rectangle2D r) { return false; }
+  public static boolean contains(Any pi, Any r) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean contains(double x, double y, double w, double h) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean contains(double x, double y) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean contains(java.awt.geom.Point2D p) { return false; }
+  public final boolean contains(Any p) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean contains(java.awt.geom.PathIterator pi, double x, double y, double w, double h) { return false; }
+  public static boolean contains(Any pi, double x, double y, double w, double h) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean contains(java.awt.geom.PathIterator pi, double x, double y) { return false; }
+  public static boolean contains(Any pi, double x, double y) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public void transform(java.awt.geom.AffineTransform at) { }
+  public void transform(Any at) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.awt.Rectangle getBounds() { return null; }
+  public final Any getBounds() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void trimToSize() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean intersects(java.awt.geom.PathIterator pi, java.awt.geom.Rectangle2D r) { return false; }
+  public static boolean intersects(Any pi, Any r) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean intersects(java.awt.geom.PathIterator pi, double x, double y, double w, double h) { return false; }
+  public static boolean intersects(Any pi, double x, double y, double w, double h) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final boolean intersects(java.awt.geom.Rectangle2D r) { return false; }
+  public final boolean intersects(Any r) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public final boolean intersects(double x, double y, double w, double h) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public final synchronized int getWindingRule() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final synchronized java.awt.Shape createTransformedShape(java.awt.geom.AffineTransform at) { return null; }
+  public final synchronized Any createTransformedShape(Any at) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { return null; }
+  public final Any getPathIterator(Any at, double flatness) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void moveTo(double x, double y) { }
   @throwable("java.lang.AbstractMethodError")
@@ -119,6 +137,6 @@ class Path2D {
   @throwable("java.lang.AbstractMethodError")
   public void curveTo(double x1, double y1, double x2, double y2, double x3, double y3) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final synchronized java.awt.geom.Point2D getCurrentPoint() { return null; }
+  public final synchronized Any getCurrentPoint() { return null; }
   < ---- END java signatures ---- >
 }

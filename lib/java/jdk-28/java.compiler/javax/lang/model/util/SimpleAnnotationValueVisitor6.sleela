@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class SimpleAnnotationValueVisitor6<R, P> {
+class SimpleAnnotationValueVisitor6 {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class SimpleAnnotationValueVisitor6<R, P> {
   String javaKind = "class";
   String javaSuper = "javax.lang.model.util.AbstractAnnotationValueVisitor6";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<R, P>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 2; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "R"; } if (index == 1) { return "P"; } return null; }
+  public SimpleAnnotationValueVisitor6 bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any DEFAULT_VALUE;
@@ -67,7 +85,7 @@ class SimpleAnnotationValueVisitor6<R, P> {
   SimpleAnnotationValueVisitor6() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  SimpleAnnotationValueVisitor6(R defaultValue) { }
+  SimpleAnnotationValueVisitor6(Any defaultValue) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -77,33 +95,33 @@ class SimpleAnnotationValueVisitor6<R, P> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public R visitType(javax.lang.model.type.TypeMirror t, P p) { return null; }
+  public Any visitType(Any t, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public R visitArray(java.util.List<? extends javax.lang.model.element.AnnotationValue> vals, P p) { return null; }
+  public Any visitArray(Any vals, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public R visitAnnotation(javax.lang.model.element.AnnotationMirror a, P p) { return null; }
+  public Any visitAnnotation(Any a, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public R visitString(java.lang.String s, P p) { return null; }
+  public Any visitString(String s, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public R visitBoolean(boolean b, P p) { return null; }
+  public Any visitBoolean(boolean b, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public R visitChar(char c, P p) { return null; }
+  public Any visitChar(char c, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public R visitByte(byte b, P p) { return null; }
+  public Any visitByte(byte b, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public R visitShort(short s, P p) { return null; }
+  public Any visitShort(short s, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public R visitInt(int i, P p) { return null; }
+  public Any visitInt(int i, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public R visitLong(long i, P p) { return null; }
+  public Any visitLong(long i, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public R visitFloat(float f, P p) { return null; }
+  public Any visitFloat(float f, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public R visitDouble(double d, P p) { return null; }
+  public Any visitDouble(double d, Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public R visitEnumConstant(javax.lang.model.element.VariableElement c, P p) { return null; }
+  public Any visitEnumConstant(Any c, Any p) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  R defaultAction(java.lang.Object o, P p) { return null; }
+  Any defaultAction(Any o, Any p) { return null; }
   < ---- END java signatures ---- >
 }

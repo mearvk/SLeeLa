@@ -56,6 +56,24 @@ class RMIConnection {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public RMIConnection bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,54 +82,54 @@ class RMIConnection {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public boolean isRegistered(javax.management.ObjectName name, javax.security.auth.Subject delegationSubject) { return false; }
+  public boolean isRegistered(Any name, Any delegationSubject) { return false; }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, javax.management.ReflectionException, java.io.IOException")
-  public javax.management.AttributeList getAttributes(javax.management.ObjectName name, java.lang.String[] attributes, javax.security.auth.Subject delegationSubject) { return null; }
+  public Any getAttributes(Any name, String[] attributes, Any delegationSubject) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, javax.management.AttributeNotFoundException, javax.management.InvalidAttributeValueException, javax.management.MBeanException, javax.management.ReflectionException, java.io.IOException")
-  public void setAttribute(javax.management.ObjectName name, java.rmi.MarshalledObject attribute, javax.security.auth.Subject delegationSubject) { }
+  public void setAttribute(Any name, Any attribute, Any delegationSubject) { }
   @throwable("java.lang.AbstractMethodError, javax.management.MBeanException, javax.management.AttributeNotFoundException, javax.management.InstanceNotFoundException, javax.management.ReflectionException, java.io.IOException")
-  public java.lang.Object getAttribute(javax.management.ObjectName name, java.lang.String attribute, javax.security.auth.Subject delegationSubject) { return null; }
+  public Any getAttribute(Any name, String attribute, Any delegationSubject) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, javax.management.ReflectionException, java.io.IOException")
-  public javax.management.AttributeList setAttributes(javax.management.ObjectName name, java.rmi.MarshalledObject attributes, javax.security.auth.Subject delegationSubject) { return null; }
+  public Any setAttributes(Any name, Any attributes, Any delegationSubject) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.lang.String getConnectionId() { return null; }
+  public String getConnectionId() { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, java.io.IOException")
-  public java.lang.Integer[] addNotificationListeners(javax.management.ObjectName[] names, java.rmi.MarshalledObject[] filters, javax.security.auth.Subject[] delegationSubjects) { return null; }
+  public Any[] addNotificationListeners(Any[] names, Any[] filters, Any[] delegationSubjects) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, javax.management.ListenerNotFoundException, java.io.IOException")
-  public void removeNotificationListeners(javax.management.ObjectName name, java.lang.Integer[] listenerIDs, javax.security.auth.Subject delegationSubject) { }
+  public void removeNotificationListeners(Any name, Any[] listenerIDs, Any delegationSubject) { }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public javax.management.remote.NotificationResult fetchNotifications(long clientSequenceNumber, int maxNotifications, long timeout) { return null; }
+  public Any fetchNotifications(long clientSequenceNumber, int maxNotifications, long timeout) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.util.Set<javax.management.ObjectName> queryNames(javax.management.ObjectName name, java.rmi.MarshalledObject query, javax.security.auth.Subject delegationSubject) { return null; }
+  public Any queryNames(Any name, Any query, Any delegationSubject) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.ReflectionException, javax.management.InstanceAlreadyExistsException, javax.management.MBeanRegistrationException, javax.management.MBeanException, javax.management.NotCompliantMBeanException, javax.management.InstanceNotFoundException, java.io.IOException")
-  public javax.management.ObjectInstance createMBean(java.lang.String className, javax.management.ObjectName name, javax.management.ObjectName loaderName, java.rmi.MarshalledObject params, java.lang.String[] signature, javax.security.auth.Subject delegationSubject) { return null; }
+  public Any createMBean(String className, Any name, Any loaderName, Any params, String[] signature, Any delegationSubject) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.ReflectionException, javax.management.InstanceAlreadyExistsException, javax.management.MBeanRegistrationException, javax.management.MBeanException, javax.management.NotCompliantMBeanException, java.io.IOException")
-  public javax.management.ObjectInstance createMBean(java.lang.String className, javax.management.ObjectName name, javax.security.auth.Subject delegationSubject) { return null; }
+  public Any createMBean(String className, Any name, Any delegationSubject) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.ReflectionException, javax.management.InstanceAlreadyExistsException, javax.management.MBeanRegistrationException, javax.management.MBeanException, javax.management.NotCompliantMBeanException, javax.management.InstanceNotFoundException, java.io.IOException")
-  public javax.management.ObjectInstance createMBean(java.lang.String className, javax.management.ObjectName name, javax.management.ObjectName loaderName, javax.security.auth.Subject delegationSubject) { return null; }
+  public Any createMBean(String className, Any name, Any loaderName, Any delegationSubject) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.ReflectionException, javax.management.InstanceAlreadyExistsException, javax.management.MBeanRegistrationException, javax.management.MBeanException, javax.management.NotCompliantMBeanException, java.io.IOException")
-  public javax.management.ObjectInstance createMBean(java.lang.String className, javax.management.ObjectName name, java.rmi.MarshalledObject params, java.lang.String[] signature, javax.security.auth.Subject delegationSubject) { return null; }
+  public Any createMBean(String className, Any name, Any params, String[] signature, Any delegationSubject) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, javax.management.MBeanRegistrationException, java.io.IOException")
-  public void unregisterMBean(javax.management.ObjectName name, javax.security.auth.Subject delegationSubject) { }
+  public void unregisterMBean(Any name, Any delegationSubject) { }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, java.io.IOException")
-  public javax.management.ObjectInstance getObjectInstance(javax.management.ObjectName name, javax.security.auth.Subject delegationSubject) { return null; }
+  public Any getObjectInstance(Any name, Any delegationSubject) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.util.Set<javax.management.ObjectInstance> queryMBeans(javax.management.ObjectName name, java.rmi.MarshalledObject query, javax.security.auth.Subject delegationSubject) { return null; }
+  public Any queryMBeans(Any name, Any query, Any delegationSubject) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.lang.Integer getMBeanCount(javax.security.auth.Subject delegationSubject) { return null; }
+  public Any getMBeanCount(Any delegationSubject) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.lang.String getDefaultDomain(javax.security.auth.Subject delegationSubject) { return null; }
+  public String getDefaultDomain(Any delegationSubject) { return null; }
   @throwable("java.lang.AbstractMethodError, java.io.IOException")
-  public java.lang.String[] getDomains(javax.security.auth.Subject delegationSubject) { return null; }
+  public String[] getDomains(Any delegationSubject) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, java.io.IOException")
-  public void addNotificationListener(javax.management.ObjectName name, javax.management.ObjectName listener, java.rmi.MarshalledObject filter, java.rmi.MarshalledObject handback, javax.security.auth.Subject delegationSubject) { }
+  public void addNotificationListener(Any name, Any listener, Any filter, Any handback, Any delegationSubject) { }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, javax.management.ListenerNotFoundException, java.io.IOException")
-  public void removeNotificationListener(javax.management.ObjectName name, javax.management.ObjectName listener, javax.security.auth.Subject delegationSubject) { }
+  public void removeNotificationListener(Any name, Any listener, Any delegationSubject) { }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, javax.management.ListenerNotFoundException, java.io.IOException")
-  public void removeNotificationListener(javax.management.ObjectName name, javax.management.ObjectName listener, java.rmi.MarshalledObject filter, java.rmi.MarshalledObject handback, javax.security.auth.Subject delegationSubject) { }
+  public void removeNotificationListener(Any name, Any listener, Any filter, Any handback, Any delegationSubject) { }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, javax.management.IntrospectionException, javax.management.ReflectionException, java.io.IOException")
-  public javax.management.MBeanInfo getMBeanInfo(javax.management.ObjectName name, javax.security.auth.Subject delegationSubject) { return null; }
+  public Any getMBeanInfo(Any name, Any delegationSubject) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException, java.io.IOException")
-  public boolean isInstanceOf(javax.management.ObjectName name, java.lang.String className, javax.security.auth.Subject delegationSubject) { return false; }
+  public boolean isInstanceOf(Any name, String className, Any delegationSubject) { return false; }
   < ---- END java signatures ---- >
 }

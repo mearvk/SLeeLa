@@ -56,12 +56,30 @@ class WrappedPlainView {
   String javaKind = "class";
   String javaSuper = "javax.swing.text.BoxView";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public WrappedPlainView bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public WrappedPlainView(javax.swing.text.Element elem) { }
+  public WrappedPlainView(Any elem) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public WrappedPlainView(javax.swing.text.Element elem, boolean wordWrap) { }
+  public WrappedPlainView(Any elem, boolean wordWrap) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -73,11 +91,11 @@ class WrappedPlainView {
   @throwable("java.lang.UnsupportedOperationException")
   public void setSize(float width, float height) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void insertUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  public void insertUpdate(Any e, Any a, Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  public void removeUpdate(Any e, Any a, Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void changedUpdate(javax.swing.event.DocumentEvent e, java.awt.Shape a, javax.swing.text.ViewFactory f) { }
+  public void changedUpdate(Any e, Any a, Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getTabSize() { return 0; }
@@ -86,10 +104,10 @@ class WrappedPlainView {
   int calculateBreakPosition(int p0, int p1) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void drawLine(int p0, int p1, java.awt.Graphics2D g, float x, float y) { }
+  void drawLine(int p0, int p1, Any g, float x, float y) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void drawLine(int p0, int p1, java.awt.Graphics g, int x, int y) { }
+  void drawLine(int p0, int p1, Any g, int x, int y) { }
   @throwable("java.lang.UnsupportedOperationException")
   public float getPreferredSpan(int axis) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -100,23 +118,23 @@ class WrappedPlainView {
   public float nextTabStop(float x, int tabOffset) { return 0.0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void loadChildren(javax.swing.text.ViewFactory f) { }
+  void loadChildren(Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  int drawSelectedText(java.awt.Graphics g, int x, int y, int p0, int p1) { return 0; }
+  int drawSelectedText(Any g, int x, int y, int p0, int p1) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  float drawSelectedText(java.awt.Graphics2D g, float x, float y, int p0, int p1) { return 0.0; }
+  float drawSelectedText(Any g, float x, float y, int p0, int p1) { return 0.0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  float drawUnselectedText(java.awt.Graphics2D g, float x, float y, int p0, int p1) { return 0.0; }
+  float drawUnselectedText(Any g, float x, float y, int p0, int p1) { return 0.0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  int drawUnselectedText(java.awt.Graphics g, int x, int y, int p0, int p1) { return 0; }
+  int drawUnselectedText(Any g, int x, int y, int p0, int p1) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final javax.swing.text.Segment getLineBuffer() { return null; }
+  final Any getLineBuffer() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g, java.awt.Shape a) { }
+  public void paint(Any g, Any a) { }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class TIFFTag {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public TIFFTag bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int TIFF_BYTE = 1;
@@ -78,11 +96,11 @@ class TIFFTag {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public TIFFTag(java.lang.String name, int number, int dataTypes, int count) { }
+  public TIFFTag(String name, int number, int dataTypes, int count) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public TIFFTag(java.lang.String name, int number, int dataTypes) { }
+  public TIFFTag(String name, int number, int dataTypes) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public TIFFTag(java.lang.String name, int number, javax.imageio.plugins.tiff.TIFFTagSet tagSet) { }
+  public TIFFTag(String name, int number, Any tagSet) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -92,7 +110,7 @@ class TIFFTag {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -104,16 +122,16 @@ class TIFFTag {
   @throwable("java.lang.UnsupportedOperationException")
   public int getDataTypes() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.imageio.plugins.tiff.TIFFTagSet getTagSet() { return null; }
+  public Any getTagSet() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isIFDPointer() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasValueNames() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void addValueName(int value, java.lang.String name) { }
+  void addValueName(int value, String name) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getValueName(int value) { return null; }
+  public String getValueName(int value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int[] getNamedValues() { return null; }
   < ---- END java signatures ---- >

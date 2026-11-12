@@ -56,6 +56,24 @@ class Executable {
   String javaKind = "class";
   String javaSuper = "java.lang.reflect.AccessibleObject";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Executable bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,48 +82,50 @@ class Executable {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getModifiers() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.reflect.TypeVariable<?>[] getTypeParameters() { return null; }
+  public Any[] getTypeParameters() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Class<?>[] getParameterTypes() { return null; }
+  public Any[] getParameterTypes() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String toGenericString() { return null; }
+  public String toGenericString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isSynthetic() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Set<java.lang.reflect.AccessFlag> accessFlags() { return null; }
+  public Any accessFlags() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Class<?> getDeclaringClass() { return null; }
+  public Any getDeclaringClass() { return null; }
+  @generic("<T extends java.lang.annotation.Annotation>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.lang.annotation.Annotation> T getAnnotation(java.lang.Class<T> annotationClass) { return null; }
+  public Any getAnnotation(Any annotationClass) { return null; }
+  @generic("<T extends java.lang.annotation.Annotation>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.lang.annotation.Annotation> T[] getAnnotationsByType(java.lang.Class<T> annotationClass) { return null; }
+  public Any[] getAnnotationsByType(Any annotationClass) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.annotation.Annotation[] getDeclaredAnnotations() { return null; }
+  public Any[] getDeclaredAnnotations() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isVarArgs() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.reflect.AnnotatedType[] getAnnotatedParameterTypes() { return null; }
+  public Any[] getAnnotatedParameterTypes() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getParameterCount() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.annotation.Annotation[][] getParameterAnnotations() { return null; }
+  public Any[][] getParameterAnnotations() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.reflect.Type[] getGenericParameterTypes() { return null; }
+  public Any[] getGenericParameterTypes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.reflect.Type[] getGenericExceptionTypes() { return null; }
+  public Any[] getGenericExceptionTypes() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Class<?>[] getExceptionTypes() { return null; }
+  public Any[] getExceptionTypes() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.reflect.AnnotatedType getAnnotatedReturnType() { return null; }
+  public Any getAnnotatedReturnType() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.reflect.Parameter[] getParameters() { return null; }
+  public Any[] getParameters() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.reflect.AnnotatedType getAnnotatedReceiverType() { return null; }
+  public Any getAnnotatedReceiverType() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.reflect.AnnotatedType[] getAnnotatedExceptionTypes() { return null; }
+  public Any[] getAnnotatedExceptionTypes() { return null; }
   < ---- END java signatures ---- >
 }

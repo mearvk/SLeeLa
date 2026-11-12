@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class CompletionStage<T> {
+class CompletionStage {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class CompletionStage<T> {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<T>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "T"; } return null; }
+  public CompletionStage bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -63,91 +81,109 @@ class CompletionStage<T> {
      AbstractMethodError, else UnsupportedOperationException, plus the
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.concurrent.CompletionStage<U> handle(java.util.function.BiFunction<? super T, java.lang.Throwable, ? extends U> fn) { return null; }
+  public Any handle(Any fn) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletableFuture<T> toCompletableFuture() { return null; }
+  public Any toCompletableFuture() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<T> whenComplete(java.util.function.BiConsumer<? super T, ? super java.lang.Throwable> action) { return null; }
+  public Any whenComplete(Any action) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.concurrent.CompletionStage<T> exceptionallyComposeAsync(java.util.function.Function<java.lang.Throwable, ? extends java.util.concurrent.CompletionStage<T>> fn, java.util.concurrent.Executor executor) { return null; }
+  public default Any exceptionallyComposeAsync(Any fn, Any executor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.concurrent.CompletionStage<T> exceptionallyComposeAsync(java.util.function.Function<java.lang.Throwable, ? extends java.util.concurrent.CompletionStage<T>> fn) { return null; }
+  public default Any exceptionallyComposeAsync(Any fn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.concurrent.CompletionStage<T> exceptionallyCompose(java.util.function.Function<java.lang.Throwable, ? extends java.util.concurrent.CompletionStage<T>> fn) { return null; }
+  public default Any exceptionallyCompose(Any fn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.concurrent.CompletionStage<T> exceptionallyAsync(java.util.function.Function<java.lang.Throwable, ? extends T> fn, java.util.concurrent.Executor executor) { return null; }
+  public default Any exceptionallyAsync(Any fn, Any executor) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.concurrent.CompletionStage<T> exceptionallyAsync(java.util.function.Function<java.lang.Throwable, ? extends T> fn) { return null; }
+  public default Any exceptionallyAsync(Any fn) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<T> exceptionally(java.util.function.Function<java.lang.Throwable, ? extends T> fn) { return null; }
+  public Any exceptionally(Any fn) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<T> whenCompleteAsync(java.util.function.BiConsumer<? super T, ? super java.lang.Throwable> action, java.util.concurrent.Executor executor) { return null; }
+  public Any whenCompleteAsync(Any action, Any executor) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<T> whenCompleteAsync(java.util.function.BiConsumer<? super T, ? super java.lang.Throwable> action) { return null; }
+  public Any whenCompleteAsync(Any action) { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.concurrent.CompletionStage<U> handleAsync(java.util.function.BiFunction<? super T, java.lang.Throwable, ? extends U> fn, java.util.concurrent.Executor executor) { return null; }
+  public Any handleAsync(Any fn, Any executor) { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.concurrent.CompletionStage<U> handleAsync(java.util.function.BiFunction<? super T, java.lang.Throwable, ? extends U> fn) { return null; }
+  public Any handleAsync(Any fn) { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.concurrent.CompletionStage<U> thenComposeAsync(java.util.function.Function<? super T, ? extends java.util.concurrent.CompletionStage<U>> fn, java.util.concurrent.Executor executor) { return null; }
+  public Any thenComposeAsync(Any fn, Any executor) { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.concurrent.CompletionStage<U> thenComposeAsync(java.util.function.Function<? super T, ? extends java.util.concurrent.CompletionStage<U>> fn) { return null; }
+  public Any thenComposeAsync(Any fn) { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.concurrent.CompletionStage<U> thenCompose(java.util.function.Function<? super T, ? extends java.util.concurrent.CompletionStage<U>> fn) { return null; }
+  public Any thenCompose(Any fn) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<java.lang.Void> runAfterEitherAsync(java.util.concurrent.CompletionStage<?> other, java.lang.Runnable action) { return null; }
+  public Any runAfterEitherAsync(Any other, Any action) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<java.lang.Void> runAfterEitherAsync(java.util.concurrent.CompletionStage<?> other, java.lang.Runnable action, java.util.concurrent.Executor executor) { return null; }
+  public Any runAfterEitherAsync(Any other, Any action, Any executor) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<java.lang.Void> runAfterEither(java.util.concurrent.CompletionStage<?> other, java.lang.Runnable action) { return null; }
+  public Any runAfterEither(Any other, Any action) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<java.lang.Void> acceptEitherAsync(java.util.concurrent.CompletionStage<? extends T> other, java.util.function.Consumer<? super T> action) { return null; }
+  public Any acceptEitherAsync(Any other, Any action) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<java.lang.Void> acceptEitherAsync(java.util.concurrent.CompletionStage<? extends T> other, java.util.function.Consumer<? super T> action, java.util.concurrent.Executor executor) { return null; }
+  public Any acceptEitherAsync(Any other, Any action, Any executor) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<java.lang.Void> acceptEither(java.util.concurrent.CompletionStage<? extends T> other, java.util.function.Consumer<? super T> action) { return null; }
+  public Any acceptEither(Any other, Any action) { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.concurrent.CompletionStage<U> applyToEitherAsync(java.util.concurrent.CompletionStage<? extends T> other, java.util.function.Function<? super T, U> fn, java.util.concurrent.Executor executor) { return null; }
+  public Any applyToEitherAsync(Any other, Any fn, Any executor) { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.concurrent.CompletionStage<U> applyToEitherAsync(java.util.concurrent.CompletionStage<? extends T> other, java.util.function.Function<? super T, U> fn) { return null; }
+  public Any applyToEitherAsync(Any other, Any fn) { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.concurrent.CompletionStage<U> applyToEither(java.util.concurrent.CompletionStage<? extends T> other, java.util.function.Function<? super T, U> fn) { return null; }
+  public Any applyToEither(Any other, Any fn) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<java.lang.Void> runAfterBothAsync(java.util.concurrent.CompletionStage<?> other, java.lang.Runnable action, java.util.concurrent.Executor executor) { return null; }
+  public Any runAfterBothAsync(Any other, Any action, Any executor) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<java.lang.Void> runAfterBothAsync(java.util.concurrent.CompletionStage<?> other, java.lang.Runnable action) { return null; }
+  public Any runAfterBothAsync(Any other, Any action) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<java.lang.Void> runAfterBoth(java.util.concurrent.CompletionStage<?> other, java.lang.Runnable action) { return null; }
+  public Any runAfterBoth(Any other, Any action) { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.concurrent.CompletionStage<java.lang.Void> thenAcceptBothAsync(java.util.concurrent.CompletionStage<? extends U> other, java.util.function.BiConsumer<? super T, ? super U> action) { return null; }
+  public Any thenAcceptBothAsync(Any other, Any action) { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.concurrent.CompletionStage<java.lang.Void> thenAcceptBothAsync(java.util.concurrent.CompletionStage<? extends U> other, java.util.function.BiConsumer<? super T, ? super U> action, java.util.concurrent.Executor executor) { return null; }
+  public Any thenAcceptBothAsync(Any other, Any action, Any executor) { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.concurrent.CompletionStage<java.lang.Void> thenAcceptBoth(java.util.concurrent.CompletionStage<? extends U> other, java.util.function.BiConsumer<? super T, ? super U> action) { return null; }
+  public Any thenAcceptBoth(Any other, Any action) { return null; }
+  @generic("<U, V>")
   @throwable("java.lang.AbstractMethodError")
-  public <U, V> java.util.concurrent.CompletionStage<V> thenCombineAsync(java.util.concurrent.CompletionStage<? extends U> other, java.util.function.BiFunction<? super T, ? super U, ? extends V> fn, java.util.concurrent.Executor executor) { return null; }
+  public Any thenCombineAsync(Any other, Any fn, Any executor) { return null; }
+  @generic("<U, V>")
   @throwable("java.lang.AbstractMethodError")
-  public <U, V> java.util.concurrent.CompletionStage<V> thenCombineAsync(java.util.concurrent.CompletionStage<? extends U> other, java.util.function.BiFunction<? super T, ? super U, ? extends V> fn) { return null; }
+  public Any thenCombineAsync(Any other, Any fn) { return null; }
+  @generic("<U, V>")
   @throwable("java.lang.AbstractMethodError")
-  public <U, V> java.util.concurrent.CompletionStage<V> thenCombine(java.util.concurrent.CompletionStage<? extends U> other, java.util.function.BiFunction<? super T, ? super U, ? extends V> fn) { return null; }
+  public Any thenCombine(Any other, Any fn) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<java.lang.Void> thenRunAsync(java.lang.Runnable action, java.util.concurrent.Executor executor) { return null; }
+  public Any thenRunAsync(Any action, Any executor) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<java.lang.Void> thenRunAsync(java.lang.Runnable action) { return null; }
+  public Any thenRunAsync(Any action) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<java.lang.Void> thenRun(java.lang.Runnable action) { return null; }
+  public Any thenRun(Any action) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<java.lang.Void> thenAcceptAsync(java.util.function.Consumer<? super T> action) { return null; }
+  public Any thenAcceptAsync(Any action) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<java.lang.Void> thenAcceptAsync(java.util.function.Consumer<? super T> action, java.util.concurrent.Executor executor) { return null; }
+  public Any thenAcceptAsync(Any action, Any executor) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.concurrent.CompletionStage<java.lang.Void> thenAccept(java.util.function.Consumer<? super T> action) { return null; }
+  public Any thenAccept(Any action) { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.concurrent.CompletionStage<U> thenApplyAsync(java.util.function.Function<? super T, ? extends U> fn, java.util.concurrent.Executor executor) { return null; }
+  public Any thenApplyAsync(Any fn, Any executor) { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.concurrent.CompletionStage<U> thenApplyAsync(java.util.function.Function<? super T, ? extends U> fn) { return null; }
+  public Any thenApplyAsync(Any fn) { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.concurrent.CompletionStage<U> thenApply(java.util.function.Function<? super T, ? extends U> fn) { return null; }
+  public Any thenApply(Any fn) { return null; }
   < ---- END java signatures ---- >
 }

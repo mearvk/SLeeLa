@@ -56,6 +56,24 @@ class DirContext {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DirContext bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int ADD_ATTRIBUTE = 1;
@@ -70,56 +88,56 @@ class DirContext {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public void rebind(javax.naming.Name name, java.lang.Object obj, javax.naming.directory.Attributes attrs) { }
+  public void rebind(Any name, Any obj, Any attrs) { }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public void rebind(java.lang.String name, java.lang.Object obj, javax.naming.directory.Attributes attrs) { }
+  public void rebind(String name, Any obj, Any attrs) { }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.directory.Attributes getAttributes(javax.naming.Name name) { return null; }
+  public Any getAttributes(Any name) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.directory.Attributes getAttributes(java.lang.String name, java.lang.String[] attrIds) { return null; }
+  public Any getAttributes(String name, String[] attrIds) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.directory.Attributes getAttributes(javax.naming.Name name, java.lang.String[] attrIds) { return null; }
+  public Any getAttributes(Any name, String[] attrIds) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.directory.Attributes getAttributes(java.lang.String name) { return null; }
+  public Any getAttributes(String name) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(java.lang.String name, javax.naming.directory.Attributes matchingAttributes, java.lang.String[] attributesToReturn) { return null; }
+  public Any search(String name, Any matchingAttributes, String[] attributesToReturn) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(javax.naming.Name name, javax.naming.directory.Attributes matchingAttributes, java.lang.String[] attributesToReturn) { return null; }
+  public Any search(Any name, Any matchingAttributes, String[] attributesToReturn) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(java.lang.String name, java.lang.String filterExpr, java.lang.Object[] filterArgs, javax.naming.directory.SearchControls cons) { return null; }
+  public Any search(String name, String filterExpr, Any[] filterArgs, Any cons) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(javax.naming.Name name, java.lang.String filterExpr, java.lang.Object[] filterArgs, javax.naming.directory.SearchControls cons) { return null; }
+  public Any search(Any name, String filterExpr, Any[] filterArgs, Any cons) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(java.lang.String name, java.lang.String filter, javax.naming.directory.SearchControls cons) { return null; }
+  public Any search(String name, String filter, Any cons) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(javax.naming.Name name, java.lang.String filter, javax.naming.directory.SearchControls cons) { return null; }
+  public Any search(Any name, String filter, Any cons) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(java.lang.String name, javax.naming.directory.Attributes matchingAttributes) { return null; }
+  public Any search(String name, Any matchingAttributes) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.NamingEnumeration<javax.naming.directory.SearchResult> search(javax.naming.Name name, javax.naming.directory.Attributes matchingAttributes) { return null; }
+  public Any search(Any name, Any matchingAttributes) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public void bind(java.lang.String name, java.lang.Object obj, javax.naming.directory.Attributes attrs) { }
+  public void bind(String name, Any obj, Any attrs) { }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public void bind(javax.naming.Name name, java.lang.Object obj, javax.naming.directory.Attributes attrs) { }
+  public void bind(Any name, Any obj, Any attrs) { }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.directory.DirContext createSubcontext(java.lang.String name, javax.naming.directory.Attributes attrs) { return null; }
+  public Any createSubcontext(String name, Any attrs) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.directory.DirContext createSubcontext(javax.naming.Name name, javax.naming.directory.Attributes attrs) { return null; }
+  public Any createSubcontext(Any name, Any attrs) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public void modifyAttributes(java.lang.String name, javax.naming.directory.ModificationItem[] mods) { }
+  public void modifyAttributes(String name, Any[] mods) { }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public void modifyAttributes(java.lang.String name, int mod_op, javax.naming.directory.Attributes attrs) { }
+  public void modifyAttributes(String name, int mod_op, Any attrs) { }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public void modifyAttributes(javax.naming.Name name, int mod_op, javax.naming.directory.Attributes attrs) { }
+  public void modifyAttributes(Any name, int mod_op, Any attrs) { }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public void modifyAttributes(javax.naming.Name name, javax.naming.directory.ModificationItem[] mods) { }
+  public void modifyAttributes(Any name, Any[] mods) { }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.directory.DirContext getSchema(javax.naming.Name name) { return null; }
+  public Any getSchema(Any name) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.directory.DirContext getSchema(java.lang.String name) { return null; }
+  public Any getSchema(String name) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.directory.DirContext getSchemaClassDefinition(javax.naming.Name name) { return null; }
+  public Any getSchemaClassDefinition(Any name) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.naming.NamingException")
-  public javax.naming.directory.DirContext getSchemaClassDefinition(java.lang.String name) { return null; }
+  public Any getSchemaClassDefinition(String name) { return null; }
   < ---- END java signatures ---- >
 }

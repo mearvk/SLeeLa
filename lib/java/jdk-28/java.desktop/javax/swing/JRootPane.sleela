@@ -56,6 +56,24 @@ class JRootPane {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JRootPane bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int NONE = 0;
@@ -88,68 +106,68 @@ class JRootPane {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setDoubleBuffered(boolean aFlag) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setMenuBar(javax.swing.JMenuBar menu) { }
+  public void setMenuBar(Any menu) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JMenuBar getMenuBar() { return null; }
+  public Any getMenuBar() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUI(javax.swing.plaf.RootPaneUI ui) { }
+  public void setUI(Any ui) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.RootPaneUI getUI() { return null; }
+  public Any getUI() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isOptimizedDrawingEnabled() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Component createGlassPane() { return null; }
+  Any createGlassPane() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JLayeredPane createLayeredPane() { return null; }
+  Any createLayeredPane() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Container createContentPane() { return null; }
+  Any createContentPane() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.LayoutManager createRootLayout() { return null; }
+  Any createRootLayout() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getWindowDecorationStyle() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JButton getDefaultButton() { return null; }
+  public Any getDefaultButton() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JLayeredPane getLayeredPane() { return null; }
+  public Any getLayeredPane() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Container getContentPane() { return null; }
+  public Any getContentPane() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setWindowDecorationStyle(int windowDecorationStyle) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setJMenuBar(javax.swing.JMenuBar menu) { }
+  public void setJMenuBar(Any menu) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JMenuBar getJMenuBar() { return null; }
+  public Any getJMenuBar() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setContentPane(java.awt.Container content) { }
+  public void setContentPane(Any content) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLayeredPane(javax.swing.JLayeredPane layered) { }
+  public void setLayeredPane(Any layered) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getGlassPane() { return null; }
+  public Any getGlassPane() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setGlassPane(java.awt.Component glass) { }
+  public void setGlassPane(Any glass) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDefaultButton(javax.swing.JButton defaultButton) { }
+  public void setDefaultButton(Any defaultButton) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isValidateRoot() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void addNotify() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { }
+  void addImpl(Any comp, Any constraints, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeNotify() { }
   < ---- END java signatures ---- >

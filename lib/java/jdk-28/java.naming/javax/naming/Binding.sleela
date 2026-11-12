@@ -56,16 +56,34 @@ class Binding {
   String javaKind = "class";
   String javaSuper = "javax.naming.NameClassPair";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Binding bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public Binding(java.lang.String name, java.lang.String className, java.lang.Object obj, boolean isRelative) { }
+  public Binding(String name, String className, Any obj, boolean isRelative) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Binding(java.lang.String name, java.lang.String className, java.lang.Object obj) { }
+  public Binding(String name, String className, Any obj) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Binding(java.lang.String name, java.lang.Object obj, boolean isRelative) { }
+  public Binding(String name, Any obj, boolean isRelative) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Binding(java.lang.String name, java.lang.Object obj) { }
+  public Binding(String name, Any obj) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -75,12 +93,12 @@ class Binding {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getClassName() { return null; }
+  public String getClassName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object getObject() { return null; }
+  public Any getObject() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setObject(java.lang.Object obj) { }
+  public void setObject(Any obj) { }
   < ---- END java signatures ---- >
 }

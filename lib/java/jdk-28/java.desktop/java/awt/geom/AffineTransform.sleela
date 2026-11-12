@@ -56,6 +56,24 @@ class AffineTransform {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public AffineTransform bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int TYPE_IDENTITY = 0;
@@ -82,7 +100,7 @@ class AffineTransform {
   @throwable("java.lang.UnsupportedOperationException")
   public AffineTransform() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public AffineTransform(java.awt.geom.AffineTransform Tx) { }
+  public AffineTransform(Any Tx) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -92,17 +110,17 @@ class AffineTransform {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void scale(double sx, double sy) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void transform(java.awt.geom.Point2D[] ptSrc, int srcOff, java.awt.geom.Point2D[] ptDst, int dstOff, int numPts) { }
+  public void transform(Any[] ptSrc, int srcOff, Any[] ptDst, int dstOff, int numPts) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void transform(double[] srcPts, int srcOff, float[] dstPts, int dstOff, int numPts) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -112,7 +130,7 @@ class AffineTransform {
   @throwable("java.lang.UnsupportedOperationException")
   public void transform(float[] srcPts, int srcOff, float[] dstPts, int dstOff, int numPts) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Point2D transform(java.awt.geom.Point2D ptSrc, java.awt.geom.Point2D ptDst) { return null; }
+  public Any transform(Any ptSrc, Any ptDst) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getType() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -146,23 +164,23 @@ class AffineTransform {
   @throwable("java.lang.UnsupportedOperationException")
   public void setToShear(double shx, double shy) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.geom.AffineTransform getTranslateInstance(double tx, double ty) { return null; }
+  public static Any getTranslateInstance(double tx, double ty) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.geom.AffineTransform getRotateInstance(double vecx, double vecy, double anchorx, double anchory) { return null; }
+  public static Any getRotateInstance(double vecx, double vecy, double anchorx, double anchory) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.geom.AffineTransform getRotateInstance(double vecx, double vecy) { return null; }
+  public static Any getRotateInstance(double vecx, double vecy) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.geom.AffineTransform getRotateInstance(double theta) { return null; }
+  public static Any getRotateInstance(double theta) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.geom.AffineTransform getRotateInstance(double theta, double anchorx, double anchory) { return null; }
+  public static Any getRotateInstance(double theta, double anchorx, double anchory) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.geom.AffineTransform getQuadrantRotateInstance(int numquadrants) { return null; }
+  public static Any getQuadrantRotateInstance(int numquadrants) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.geom.AffineTransform getQuadrantRotateInstance(int numquadrants, double anchorx, double anchory) { return null; }
+  public static Any getQuadrantRotateInstance(int numquadrants, double anchorx, double anchory) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.geom.AffineTransform getScaleInstance(double sx, double sy) { return null; }
+  public static Any getScaleInstance(double sx, double sy) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.awt.geom.AffineTransform getShearInstance(double shx, double shy) { return null; }
+  public static Any getShearInstance(double shx, double shy) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public double getDeterminant() { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -190,24 +208,24 @@ class AffineTransform {
   @throwable("java.lang.UnsupportedOperationException")
   public void setTransform(double m00, double m10, double m01, double m11, double m02, double m12) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTransform(java.awt.geom.AffineTransform Tx) { }
+  public void setTransform(Any Tx) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void concatenate(java.awt.geom.AffineTransform Tx) { }
+  public void concatenate(Any Tx) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void preConcatenate(java.awt.geom.AffineTransform Tx) { }
+  public void preConcatenate(Any Tx) { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.geom.NoninvertibleTransformException")
-  public java.awt.geom.AffineTransform createInverse() { return null; }
+  public Any createInverse() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.geom.NoninvertibleTransformException")
   public void invert() { }
   @throwable("java.lang.UnsupportedOperationException, java.awt.geom.NoninvertibleTransformException")
-  public java.awt.geom.Point2D inverseTransform(java.awt.geom.Point2D ptSrc, java.awt.geom.Point2D ptDst) { return null; }
+  public Any inverseTransform(Any ptSrc, Any ptDst) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.awt.geom.NoninvertibleTransformException")
   public void inverseTransform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void deltaTransform(double[] srcPts, int srcOff, double[] dstPts, int dstOff, int numPts) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Point2D deltaTransform(java.awt.geom.Point2D ptSrc, java.awt.geom.Point2D ptDst) { return null; }
+  public Any deltaTransform(Any ptSrc, Any ptDst) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Shape createTransformedShape(java.awt.Shape pSrc) { return null; }
+  public Any createTransformedShape(Any pSrc) { return null; }
   < ---- END java signatures ---- >
 }

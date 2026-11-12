@@ -56,6 +56,24 @@ class JTableHeader {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JTableHeader bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any table;
@@ -72,7 +90,7 @@ class JTableHeader {
   @throwable("java.lang.UnsupportedOperationException")
   public JTableHeader() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public JTableHeader(javax.swing.table.TableColumnModel cm) { }
+  public JTableHeader(Any cm) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -83,26 +101,26 @@ class JTableHeader {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JTable getTable() { return null; }
+  public Any getTable() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize() { return null; }
+  public Any getPreferredSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUI(javax.swing.plaf.TableHeaderUI ui) { }
+  public void setUI(Any ui) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.TableHeaderUI getUI() { return null; }
+  public Any getUI() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getToolTipText(java.awt.event.MouseEvent event) { return null; }
+  public String getToolTipText(Any event) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getHeaderRect(int column) { return null; }
+  public Any getHeaderRect(int column) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.table.TableCellRenderer createDefaultRenderer() { return null; }
+  Any createDefaultRenderer() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setReorderingAllowed(boolean reorderingAllowed) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -112,7 +130,7 @@ class JTableHeader {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getResizingAllowed() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableColumn getDraggedColumn() { return null; }
+  public Any getDraggedColumn() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getDraggedDistance() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -120,44 +138,44 @@ class JTableHeader {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getUpdateTableInRealTime() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDraggedColumn(javax.swing.table.TableColumn aColumn) { }
+  public void setDraggedColumn(Any aColumn) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setDraggedDistance(int distance) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.table.TableColumnModel createDefaultColumnModel() { return null; }
+  Any createDefaultColumnModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setColumnModel(javax.swing.table.TableColumnModel columnModel) { }
+  public void setColumnModel(Any columnModel) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void initializeLocalVars() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTable(javax.swing.JTable table) { }
+  public void setTable(Any table) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void resizeAndRepaint() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableColumnModel getColumnModel() { return null; }
+  public Any getColumnModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setResizingColumn(javax.swing.table.TableColumn aColumn) { }
+  public void setResizingColumn(Any aColumn) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableCellRenderer getDefaultRenderer() { return null; }
+  public Any getDefaultRenderer() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int columnAtPoint(java.awt.Point point) { return 0; }
+  public int columnAtPoint(Any point) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.table.TableColumn getResizingColumn() { return null; }
+  public Any getResizingColumn() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDefaultRenderer(javax.swing.table.TableCellRenderer defaultRenderer) { }
+  public void setDefaultRenderer(Any defaultRenderer) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void columnAdded(javax.swing.event.TableColumnModelEvent e) { }
+  public void columnAdded(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void columnRemoved(javax.swing.event.TableColumnModelEvent e) { }
+  public void columnRemoved(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void columnMoved(javax.swing.event.TableColumnModelEvent e) { }
+  public void columnMoved(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void columnMarginChanged(javax.swing.event.ChangeEvent e) { }
+  public void columnMarginChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void columnSelectionChanged(javax.swing.event.ListSelectionEvent e) { }
+  public void columnSelectionChanged(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   < ---- END java signatures ---- >
 }

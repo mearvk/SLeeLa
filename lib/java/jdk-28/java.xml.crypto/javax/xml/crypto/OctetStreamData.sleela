@@ -56,12 +56,30 @@ class OctetStreamData {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public OctetStreamData bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public OctetStreamData(java.io.InputStream octetStream) { }
+  public OctetStreamData(Any octetStream) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public OctetStreamData(java.io.InputStream octetStream, java.lang.String uri, java.lang.String mimeType) { }
+  public OctetStreamData(Any octetStream, String uri, String mimeType) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -71,10 +89,10 @@ class OctetStreamData {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getURI() { return null; }
+  public String getURI() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.io.InputStream getOctetStream() { return null; }
+  public Any getOctetStream() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getMimeType() { return null; }
+  public String getMimeType() { return null; }
   < ---- END java signatures ---- >
 }

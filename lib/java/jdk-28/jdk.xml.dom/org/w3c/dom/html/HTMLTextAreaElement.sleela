@@ -56,6 +56,24 @@ class HTMLTextAreaElement {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public HTMLTextAreaElement bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,23 +82,23 @@ class HTMLTextAreaElement {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getName() { return null; }
+  public String getName() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getValue() { return null; }
+  public String getValue() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void setReadOnly(boolean readOnly) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setName(java.lang.String name) { }
+  public void setName(String name) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setValue(java.lang.String value) { }
+  public void setValue(String value) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getType() { return null; }
+  public String getType() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getDefaultValue() { return null; }
+  public String getDefaultValue() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void select() { }
   @throwable("java.lang.AbstractMethodError")
-  public void setDefaultValue(java.lang.String defaultValue) { }
+  public void setDefaultValue(String defaultValue) { }
   @throwable("java.lang.AbstractMethodError")
   public void focus() { }
   @throwable("java.lang.AbstractMethodError")
@@ -96,13 +114,13 @@ class HTMLTextAreaElement {
   @throwable("java.lang.AbstractMethodError")
   public void setDisabled(boolean disabled) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAccessKey() { return null; }
+  public String getAccessKey() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setAccessKey(java.lang.String accessKey) { }
+  public void setAccessKey(String accessKey) { }
   @throwable("java.lang.AbstractMethodError")
   public void setTabIndex(int tabIndex) { }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.html.HTMLFormElement getForm() { return null; }
+  public Any getForm() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getCols() { return 0; }
   @throwable("java.lang.AbstractMethodError")

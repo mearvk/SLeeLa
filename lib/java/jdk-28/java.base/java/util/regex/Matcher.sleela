@@ -56,6 +56,24 @@ class Matcher {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Matcher bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,35 +82,35 @@ class Matcher {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String group(int group) { return null; }
+  public String group(int group) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String group() { return null; }
+  public String group() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String group(java.lang.String name) { return null; }
+  public String group(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.regex.Matcher reset() { return null; }
+  public Any reset() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.regex.Matcher reset(java.lang.CharSequence input) { return null; }
+  public Any reset(Any input) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean matches() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String replaceFirst(java.util.function.Function<java.util.regex.MatchResult, java.lang.String> replacer) { return null; }
+  public String replaceFirst(Any replacer) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String replaceFirst(java.lang.String replacement) { return null; }
+  public String replaceFirst(String replacement) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String replaceAll(java.lang.String replacement) { return null; }
+  public String replaceAll(String replacement) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String replaceAll(java.util.function.Function<java.util.regex.MatchResult, java.lang.String> replacer) { return null; }
+  public String replaceAll(Any replacer) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.regex.Pattern pattern() { return null; }
+  public Any pattern() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int end() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int end(int group) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int end(java.lang.String name) { return 0; }
+  public int end(String name) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean find() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -102,21 +120,21 @@ class Matcher {
   @throwable("java.lang.UnsupportedOperationException")
   public int start(int group) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int start(java.lang.String name) { return 0; }
+  public int start(String name) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.stream.Stream<java.util.regex.MatchResult> results() { return null; }
+  public Any results() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.regex.Matcher region(int start, int end) { return null; }
+  public Any region(int start, int end) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Map<java.lang.String, java.lang.Integer> namedGroups() { return null; }
+  public Any namedGroups() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int groupCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasMatch() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.regex.Matcher appendReplacement(java.lang.StringBuffer sb, java.lang.String replacement) { return null; }
+  public Any appendReplacement(Any sb, String replacement) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuffer appendTail(java.lang.StringBuffer sb) { return null; }
+  public Any appendTail(Any sb) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int regionStart() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -126,20 +144,20 @@ class Matcher {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean requireEnd() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.regex.MatchResult toMatchResult() { return null; }
+  public Any toMatchResult() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.regex.Matcher usePattern(java.util.regex.Pattern newPattern) { return null; }
+  public Any usePattern(Any newPattern) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean lookingAt() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String quoteReplacement(java.lang.String s) { return null; }
+  public static String quoteReplacement(String s) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasTransparentBounds() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.regex.Matcher useTransparentBounds(boolean b) { return null; }
+  public Any useTransparentBounds(boolean b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean hasAnchoringBounds() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.regex.Matcher useAnchoringBounds(boolean b) { return null; }
+  public Any useAnchoringBounds(boolean b) { return null; }
   < ---- END java signatures ---- >
 }

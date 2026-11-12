@@ -56,6 +56,24 @@ class TitledBorder {
   String javaKind = "class";
   String javaSuper = "javax.swing.border.AbstractBorder";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public TitledBorder bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int DEFAULT_POSITION = 0;
@@ -85,17 +103,17 @@ class TitledBorder {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public TitledBorder(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition, java.awt.Font titleFont, java.awt.Color titleColor) { }
+  public TitledBorder(Any border, String title, int titleJustification, int titlePosition, Any titleFont, Any titleColor) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public TitledBorder(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition, java.awt.Font titleFont) { }
+  public TitledBorder(Any border, String title, int titleJustification, int titlePosition, Any titleFont) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public TitledBorder(javax.swing.border.Border border, java.lang.String title, int titleJustification, int titlePosition) { }
+  public TitledBorder(Any border, String title, int titleJustification, int titlePosition) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public TitledBorder(java.lang.String title) { }
+  public TitledBorder(String title) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public TitledBorder(javax.swing.border.Border border) { }
+  public TitledBorder(Any border) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public TitledBorder(javax.swing.border.Border border, java.lang.String title) { }
+  public TitledBorder(Any border, String title) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -105,23 +123,23 @@ class TitledBorder {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getTitle() { return null; }
+  public String getTitle() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBorder(javax.swing.border.Border border) { }
+  public void setBorder(Any border) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTitle(java.lang.String title) { }
+  public void setTitle(String title) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize(java.awt.Component c) { return null; }
+  public Any getMinimumSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int width, int height) { }
+  public void paintBorder(Any c, Any g, int x, int y, int width, int height) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.border.Border getBorder() { return null; }
+  public Any getBorder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Insets getBorderInsets(java.awt.Component c, java.awt.Insets insets) { return null; }
+  public Any getBorderInsets(Any c, Any insets) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getBaseline(java.awt.Component c, int width, int height) { return 0; }
+  public int getBaseline(Any c, int width, int height) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(java.awt.Component c) { return null; }
+  public Any getBaselineResizeBehavior(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isBorderOpaque() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -133,15 +151,15 @@ class TitledBorder {
   @throwable("java.lang.UnsupportedOperationException")
   public int getTitleJustification() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Font getTitleFont() { return null; }
+  public Any getTitleFont() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getTitleColor() { return null; }
+  public Any getTitleColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTitleFont(java.awt.Font titleFont) { }
+  public void setTitleFont(Any titleFont) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTitleColor(java.awt.Color titleColor) { }
+  public void setTitleColor(Any titleColor) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Font getFont(java.awt.Component c) { return null; }
+  Any getFont(Any c) { return null; }
   < ---- END java signatures ---- >
 }

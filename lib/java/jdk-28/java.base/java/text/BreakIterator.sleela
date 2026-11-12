@@ -56,6 +56,24 @@ class BreakIterator {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BreakIterator bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int DONE = -1;
@@ -74,7 +92,7 @@ class BreakIterator {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int next() { return 0; }
   @throwable("java.lang.AbstractMethodError")
@@ -88,29 +106,29 @@ class BreakIterator {
   @throwable("java.lang.AbstractMethodError")
   public int previous() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static synchronized java.util.Locale[] getAvailableLocales() { return null; }
+  public static synchronized Any[] getAvailableLocales() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.text.BreakIterator getWordInstance(java.util.Locale locale) { return null; }
+  public static Any getWordInstance(Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.text.BreakIterator getWordInstance() { return null; }
+  public static Any getWordInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.text.BreakIterator getLineInstance(java.util.Locale locale) { return null; }
+  public static Any getLineInstance(Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.text.BreakIterator getLineInstance() { return null; }
+  public static Any getLineInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.text.BreakIterator getCharacterInstance() { return null; }
+  public static Any getCharacterInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.text.BreakIterator getCharacterInstance(java.util.Locale locale) { return null; }
+  public static Any getCharacterInstance(Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.text.BreakIterator getSentenceInstance() { return null; }
+  public static Any getSentenceInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.text.BreakIterator getSentenceInstance(java.util.Locale locale) { return null; }
+  public static Any getSentenceInstance(Any locale) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.text.CharacterIterator getText() { return null; }
+  public Any getText() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setText(java.text.CharacterIterator newText) { }
+  public void setText(Any newText) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setText(java.lang.String newText) { }
+  public void setText(String newText) { }
   @throwable("java.lang.AbstractMethodError")
   public int following(int offset) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")

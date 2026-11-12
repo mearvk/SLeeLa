@@ -56,6 +56,24 @@ class TransferHandler {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public TransferHandler bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int NONE = 0;
@@ -67,7 +85,7 @@ class TransferHandler {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public TransferHandler(java.lang.String property) { }
+  public TransferHandler(String property) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   TransferHandler() { }
@@ -81,39 +99,39 @@ class TransferHandler {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void exportDone(javax.swing.JComponent source, java.awt.datatransfer.Transferable data, int action) { }
+  void exportDone(Any source, Any data, int action) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.datatransfer.Transferable createTransferable(javax.swing.JComponent c) { return null; }
+  Any createTransferable(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean importData(javax.swing.TransferHandler.TransferSupport support) { return false; }
+  public boolean importData(Any support) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean importData(javax.swing.JComponent comp, java.awt.datatransfer.Transferable t) { return false; }
+  public boolean importData(Any comp, Any t) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean canImport(javax.swing.TransferHandler.TransferSupport support) { return false; }
+  public boolean canImport(Any support) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean canImport(javax.swing.JComponent comp, java.awt.datatransfer.DataFlavor[] transferFlavors) { return false; }
+  public boolean canImport(Any comp, Any[] transferFlavors) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDragImage(java.awt.Image img) { }
+  public void setDragImage(Any img) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Image getDragImage() { return null; }
+  public Any getDragImage() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDragImageOffset(java.awt.Point p) { }
+  public void setDragImageOffset(Any p) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Point getDragImageOffset() { return null; }
+  public Any getDragImageOffset() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void exportAsDrag(javax.swing.JComponent comp, java.awt.event.InputEvent e, int action) { }
+  public void exportAsDrag(Any comp, Any e, int action) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.IllegalStateException")
-  public void exportToClipboard(javax.swing.JComponent comp, java.awt.datatransfer.Clipboard clip, int action) { }
+  public void exportToClipboard(Any comp, Any clip, int action) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getVisualRepresentation(java.awt.datatransfer.Transferable t) { return null; }
+  public Any getVisualRepresentation(Any t) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getSourceActions(javax.swing.JComponent c) { return 0; }
+  public int getSourceActions(Any c) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.Action getCutAction() { return null; }
+  public static Any getCutAction() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.Action getCopyAction() { return null; }
+  public static Any getCopyAction() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.Action getPasteAction() { return null; }
+  public static Any getPasteAction() { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class DoubleStream {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DoubleStream bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,92 +82,94 @@ class DoubleStream {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalDouble min() { return null; }
+  public Any min() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalDouble max() { return null; }
+  public Any max() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.DoubleStream of(double... values) { return null; }
+  public static Any of(double... values) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.DoubleStream of(double t) { return null; }
+  public static Any of(double t) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public double[] toArray() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.PrimitiveIterator.OfDouble iterator() { return null; }
+  public Any iterator() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream map(java.util.function.DoubleUnaryOperator mapper) { return null; }
+  public Any map(Any mapper) { return null; }
+  @generic("<R>")
   @throwable("java.lang.AbstractMethodError")
-  public <R> R collect(java.util.function.Supplier<R> supplier, java.util.function.ObjDoubleConsumer<R> accumulator, java.util.function.BiConsumer<R, R> combiner) { return null; }
+  public Any collect(Any supplier, Any accumulator, Any combiner) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public long count() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.DoubleStream.Builder builder() { return null; }
+  public static Any builder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.DoubleStream concat(java.util.stream.DoubleStream a, java.util.stream.DoubleStream b) { return null; }
+  public static Any concat(Any a, Any b) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream limit(long maxSize) { return null; }
+  public Any limit(long maxSize) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Spliterator.OfDouble spliterator() { return null; }
+  public Any spliterator() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream filter(java.util.function.DoublePredicate predicate) { return null; }
+  public Any filter(Any predicate) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.DoubleStream empty() { return null; }
+  public static Any empty() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean anyMatch(java.util.function.DoublePredicate predicate) { return false; }
+  public boolean anyMatch(Any predicate) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public void forEach(java.util.function.DoubleConsumer action) { }
+  public void forEach(Any action) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalDouble findAny() { return null; }
+  public Any findAny() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream skip(long n) { return null; }
+  public Any skip(long n) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream peek(java.util.function.DoubleConsumer action) { return null; }
+  public Any peek(Any action) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public double sum() { return 0.0; }
   @throwable("java.lang.AbstractMethodError")
-  public double reduce(double identity, java.util.function.DoubleBinaryOperator op) { return 0.0; }
+  public double reduce(double identity, Any op) { return 0.0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalDouble reduce(java.util.function.DoubleBinaryOperator op) { return null; }
+  public Any reduce(Any op) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream parallel() { return null; }
+  public Any parallel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.DoubleStream iterate(double seed, java.util.function.DoubleUnaryOperator f) { return null; }
+  public static Any iterate(double seed, Any f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.DoubleStream iterate(double seed, java.util.function.DoublePredicate hasNext, java.util.function.DoubleUnaryOperator next_) { return null; }
+  public static Any iterate(double seed, Any hasNext, Any next_) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream flatMap(java.util.function.DoubleFunction<? extends java.util.stream.DoubleStream> mapper) { return null; }
+  public Any flatMap(Any mapper) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean allMatch(java.util.function.DoublePredicate predicate) { return false; }
+  public boolean allMatch(Any predicate) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream distinct() { return null; }
+  public Any distinct() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalDouble findFirst() { return null; }
+  public Any findFirst() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean noneMatch(java.util.function.DoublePredicate predicate) { return false; }
+  public boolean noneMatch(Any predicate) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream sorted() { return null; }
+  public Any sorted() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.DoubleStream generate(java.util.function.DoubleSupplier s) { return null; }
+  public static Any generate(Any s) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void forEachOrdered(java.util.function.DoubleConsumer action) { }
+  public void forEachOrdered(Any action) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.IntStream mapToInt(java.util.function.DoubleToIntFunction mapper) { return null; }
+  public Any mapToInt(Any mapper) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.LongStream mapToLong(java.util.function.DoubleToLongFunction mapper) { return null; }
+  public Any mapToLong(Any mapper) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.stream.DoubleStream mapMulti(java.util.stream.DoubleStream.DoubleMapMultiConsumer mapper) { return null; }
+  public default Any mapMulti(Any mapper) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.stream.DoubleStream takeWhile(java.util.function.DoublePredicate predicate) { return null; }
+  public default Any takeWhile(Any predicate) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.stream.DoubleStream dropWhile(java.util.function.DoublePredicate predicate) { return null; }
+  public default Any dropWhile(Any predicate) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream sequential() { return null; }
+  public Any sequential() { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.stream.Stream<U> mapToObj(java.util.function.DoubleFunction<? extends U> mapper) { return null; }
+  public Any mapToObj(Any mapper) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.Stream<java.lang.Double> boxed() { return null; }
+  public Any boxed() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalDouble average() { return null; }
+  public Any average() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.DoubleSummaryStatistics summaryStatistics() { return null; }
+  public Any summaryStatistics() { return null; }
   < ---- END java signatures ---- >
 }

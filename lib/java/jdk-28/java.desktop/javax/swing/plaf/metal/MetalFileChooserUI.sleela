@@ -56,10 +56,28 @@ class MetalFileChooserUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.basic.BasicFileChooserUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public MetalFileChooserUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public MetalFileChooserUI(javax.swing.JFileChooser filechooser) { }
+  public MetalFileChooserUI(Any filechooser) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -69,83 +87,83 @@ class MetalFileChooserUI {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getFileName() { return null; }
+  public String getFileName() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void installListeners(javax.swing.JFileChooser fc) { }
+  void installListeners(Any fc) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize(javax.swing.JComponent c) { return null; }
+  public Any getPreferredSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
+  public Any getMinimumSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void installUI(javax.swing.JComponent c) { }
+  public void installUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void uninstallUI(javax.swing.JComponent c) { }
+  public void uninstallUI(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.ActionMap getActionMap() { return null; }
+  Any getActionMap() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.ListSelectionListener createListSelectionListener(javax.swing.JFileChooser fc) { return null; }
+  public Any createListSelectionListener(Any fc) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.ActionMap createActionMap() { return null; }
+  Any createActionMap() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void installStrings(javax.swing.JFileChooser fc) { }
+  void installStrings(Any fc) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JButton getApproveButton(javax.swing.JFileChooser fc) { return null; }
+  Any getApproveButton(Any fc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getDirectoryName() { return null; }
+  public String getDirectoryName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDirectoryName(java.lang.String dirname) { }
+  public void setDirectoryName(String dirname) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void setDirectorySelected(boolean directorySelected) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void ensureFileIsVisible(javax.swing.JFileChooser fc, java.io.File f) { }
+  public void ensureFileIsVisible(Any fc, Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void rescanCurrentDirectory(javax.swing.JFileChooser fc) { }
+  public void rescanCurrentDirectory(Any fc) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void valueChanged(javax.swing.event.ListSelectionEvent e) { }
+  public void valueChanged(Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JPanel createList(javax.swing.JFileChooser fc) { return null; }
+  Any createList(Any fc) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.plaf.metal.MetalFileChooserUI.DirectoryComboBoxModel createDirectoryComboBoxModel(javax.swing.JFileChooser fc) { return null; }
+  Any createDirectoryComboBoxModel(Any fc) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JPanel getBottomPanel() { return null; }
+  Any getBottomPanel() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.plaf.metal.MetalFileChooserUI.FilterComboBoxModel createFilterComboBoxModel() { return null; }
+  Any createFilterComboBoxModel() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.plaf.metal.MetalFileChooserUI.FilterComboBoxRenderer createFilterComboBoxRenderer() { return null; }
+  Any createFilterComboBoxRenderer() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JPanel getButtonPanel() { return null; }
+  Any getButtonPanel() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void addControlButtons() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JPanel createDetailsView(javax.swing.JFileChooser fc) { return null; }
+  Any createDetailsView(Any fc) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void removeControlButtons() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFileName(java.lang.String filename) { }
+  public void setFileName(String filename) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
+  public static Any createUI(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void installComponents(javax.swing.JFileChooser fc) { }
+  public void installComponents(Any fc) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.beans.PropertyChangeListener createPropertyChangeListener(javax.swing.JFileChooser fc) { return null; }
+  public Any createPropertyChangeListener(Any fc) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void uninstallComponents(javax.swing.JFileChooser fc) { }
+  public void uninstallComponents(Any fc) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
+  public Any getMaximumSize(Any c) { return null; }
   < ---- END java signatures ---- >
 }

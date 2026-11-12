@@ -57,6 +57,24 @@ class BodySubscribers {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BodySubscribers bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -65,38 +83,44 @@ class BodySubscribers {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.http.HttpResponse.BodySubscriber<java.lang.String> ofString(java.nio.charset.Charset charset) { return null; }
+  public static Any ofString(Any charset) { return null; }
+  @generic("<T, U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T, U> java.net.http.HttpResponse.BodySubscriber<U> mapping(java.net.http.HttpResponse.BodySubscriber<T> upstream, java.util.function.Function<? super T, ? extends U> mapper) { return null; }
+  public static Any mapping(Any upstream, Any mapper) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.http.HttpResponse.BodySubscriber<java.io.InputStream> ofInputStream() { return null; }
+  public static Any ofInputStream() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.http.HttpResponse.BodySubscriber<byte[]> ofByteArray() { return null; }
+  public static Any ofByteArray() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.http.HttpResponse.BodySubscriber<java.nio.file.Path> ofFile(java.nio.file.Path file) { return null; }
+  public static Any ofFile(Any file) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.http.HttpResponse.BodySubscriber<java.nio.file.Path> ofFile(java.nio.file.Path file, java.nio.file.OpenOption... openOptions) { return null; }
+  public static Any ofFile(Any file, Any... openOptions) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.net.http.HttpResponse.BodySubscriber<T> limiting(java.net.http.HttpResponse.BodySubscriber<T> downstreamSubscriber, long capacity) { return null; }
+  public static Any limiting(Any downstreamSubscriber, long capacity) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T> java.net.http.HttpResponse.BodySubscriber<T> buffering(java.net.http.HttpResponse.BodySubscriber<T> downstream, int bufferSize) { return null; }
+  public static Any buffering(Any downstream, int bufferSize) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.http.HttpResponse.BodySubscriber<java.util.concurrent.Flow.Publisher<java.util.List<java.nio.ByteBuffer>>> ofPublisher() { return null; }
+  public static Any ofPublisher() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.http.HttpResponse.BodySubscriber<java.lang.Void> ofByteArrayConsumer(java.util.function.Consumer<java.util.Optional<byte[]>> consumer) { return null; }
+  public static Any ofByteArrayConsumer(Any consumer) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.http.HttpResponse.BodySubscriber<java.util.stream.Stream<java.lang.String>> ofLines(java.nio.charset.Charset charset) { return null; }
+  public static Any ofLines(Any charset) { return null; }
+  @generic("<U>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <U> java.net.http.HttpResponse.BodySubscriber<U> replacing(U value) { return null; }
+  public static Any replacing(Any value) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.http.HttpResponse.BodySubscriber<java.lang.Void> discarding() { return null; }
+  public static Any discarding() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.http.HttpResponse.BodySubscriber<java.lang.Void> fromLineSubscriber(java.util.concurrent.Flow.Subscriber<? super java.lang.String> subscriber) { return null; }
+  public static Any fromLineSubscriber(Any subscriber) { return null; }
+  @generic("<S extends java.util.concurrent.Flow.Subscriber<? super java.lang.String>, T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <S extends java.util.concurrent.Flow.Subscriber<? super java.lang.String>, T> java.net.http.HttpResponse.BodySubscriber<T> fromLineSubscriber(S subscriber, java.util.function.Function<? super S, ? extends T> finisher, java.nio.charset.Charset charset, java.lang.String lineSeparator) { return null; }
+  public static Any fromLineSubscriber(Any subscriber, Any finisher, Any charset, String lineSeparator) { return null; }
+  @generic("<S extends java.util.concurrent.Flow.Subscriber<? super java.util.List<java.nio.ByteBuffer>>, T>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <S extends java.util.concurrent.Flow.Subscriber<? super java.util.List<java.nio.ByteBuffer>>, T> java.net.http.HttpResponse.BodySubscriber<T> fromSubscriber(S subscriber, java.util.function.Function<? super S, ? extends T> finisher) { return null; }
+  public static Any fromSubscriber(Any subscriber, Any finisher) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.net.http.HttpResponse.BodySubscriber<java.lang.Void> fromSubscriber(java.util.concurrent.Flow.Subscriber<? super java.util.List<java.nio.ByteBuffer>> subscriber) { return null; }
+  public static Any fromSubscriber(Any subscriber) { return null; }
   < ---- END java signatures ---- >
 }

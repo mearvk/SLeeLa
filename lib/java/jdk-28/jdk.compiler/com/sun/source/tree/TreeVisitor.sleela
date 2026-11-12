@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class TreeVisitor<R, P> {
+class TreeVisitor {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class TreeVisitor<R, P> {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<R, P>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 2; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "R"; } if (index == 1) { return "P"; } return null; }
+  public TreeVisitor bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,140 +82,140 @@ class TreeVisitor<R, P> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public R visitArrayType(com.sun.source.tree.ArrayTypeTree node, P p) { return null; }
+  public Any visitArrayType(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitWildcard(com.sun.source.tree.WildcardTree node, P p) { return null; }
+  public Any visitWildcard(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitVariable(com.sun.source.tree.VariableTree node, P p) { return null; }
+  public Any visitVariable(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitPackage(com.sun.source.tree.PackageTree node, P p) { return null; }
+  public Any visitPackage(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitClass(com.sun.source.tree.ClassTree node, P p) { return null; }
+  public Any visitClass(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitModule(com.sun.source.tree.ModuleTree node, P p) { return null; }
+  public Any visitModule(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitCompilationUnit(com.sun.source.tree.CompilationUnitTree node, P p) { return null; }
+  public Any visitCompilationUnit(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitLambdaExpression(com.sun.source.tree.LambdaExpressionTree node, P p) { return null; }
+  public Any visitLambdaExpression(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitBlock(com.sun.source.tree.BlockTree node, P p) { return null; }
+  public Any visitBlock(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitMethod(com.sun.source.tree.MethodTree node, P p) { return null; }
+  public Any visitMethod(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitImport(com.sun.source.tree.ImportTree node, P p) { return null; }
+  public Any visitImport(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitEmptyStatement(com.sun.source.tree.EmptyStatementTree node, P p) { return null; }
+  public Any visitEmptyStatement(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitDoWhileLoop(com.sun.source.tree.DoWhileLoopTree node, P p) { return null; }
+  public Any visitDoWhileLoop(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitWhileLoop(com.sun.source.tree.WhileLoopTree node, P p) { return null; }
+  public Any visitWhileLoop(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitForLoop(com.sun.source.tree.ForLoopTree node, P p) { return null; }
+  public Any visitForLoop(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitEnhancedForLoop(com.sun.source.tree.EnhancedForLoopTree node, P p) { return null; }
+  public Any visitEnhancedForLoop(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitLabeledStatement(com.sun.source.tree.LabeledStatementTree node, P p) { return null; }
+  public Any visitLabeledStatement(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitSwitch(com.sun.source.tree.SwitchTree node, P p) { return null; }
+  public Any visitSwitch(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitSwitchExpression(com.sun.source.tree.SwitchExpressionTree node, P p) { return null; }
+  public Any visitSwitchExpression(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitCase(com.sun.source.tree.CaseTree node, P p) { return null; }
+  public Any visitCase(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitSynchronized(com.sun.source.tree.SynchronizedTree node, P p) { return null; }
+  public Any visitSynchronized(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitTry(com.sun.source.tree.TryTree node, P p) { return null; }
+  public Any visitTry(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitCatch(com.sun.source.tree.CatchTree node, P p) { return null; }
+  public Any visitCatch(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitConditionalExpression(com.sun.source.tree.ConditionalExpressionTree node, P p) { return null; }
+  public Any visitConditionalExpression(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitIf(com.sun.source.tree.IfTree node, P p) { return null; }
+  public Any visitIf(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitExpressionStatement(com.sun.source.tree.ExpressionStatementTree node, P p) { return null; }
+  public Any visitExpressionStatement(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitBreak(com.sun.source.tree.BreakTree node, P p) { return null; }
+  public Any visitBreak(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitContinue(com.sun.source.tree.ContinueTree node, P p) { return null; }
+  public Any visitContinue(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitReturn(com.sun.source.tree.ReturnTree node, P p) { return null; }
+  public Any visitReturn(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitThrow(com.sun.source.tree.ThrowTree node, P p) { return null; }
+  public Any visitThrow(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitAssert(com.sun.source.tree.AssertTree node, P p) { return null; }
+  public Any visitAssert(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitMethodInvocation(com.sun.source.tree.MethodInvocationTree node, P p) { return null; }
+  public Any visitMethodInvocation(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitNewClass(com.sun.source.tree.NewClassTree node, P p) { return null; }
+  public Any visitNewClass(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitNewArray(com.sun.source.tree.NewArrayTree node, P p) { return null; }
+  public Any visitNewArray(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitParenthesized(com.sun.source.tree.ParenthesizedTree node, P p) { return null; }
+  public Any visitParenthesized(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitAssignment(com.sun.source.tree.AssignmentTree node, P p) { return null; }
+  public Any visitAssignment(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitCompoundAssignment(com.sun.source.tree.CompoundAssignmentTree node, P p) { return null; }
+  public Any visitCompoundAssignment(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitUnary(com.sun.source.tree.UnaryTree node, P p) { return null; }
+  public Any visitUnary(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitBinary(com.sun.source.tree.BinaryTree node, P p) { return null; }
+  public Any visitBinary(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitTypeCast(com.sun.source.tree.TypeCastTree node, P p) { return null; }
+  public Any visitTypeCast(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitInstanceOf(com.sun.source.tree.InstanceOfTree node, P p) { return null; }
+  public Any visitInstanceOf(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitAnyPattern(com.sun.source.tree.AnyPatternTree node, P p) { return null; }
+  public Any visitAnyPattern(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitBindingPattern(com.sun.source.tree.BindingPatternTree node, P p) { return null; }
+  public Any visitBindingPattern(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitDefaultCaseLabel(com.sun.source.tree.DefaultCaseLabelTree node, P p) { return null; }
+  public Any visitDefaultCaseLabel(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitConstantCaseLabel(com.sun.source.tree.ConstantCaseLabelTree node, P p) { return null; }
+  public Any visitConstantCaseLabel(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitPatternCaseLabel(com.sun.source.tree.PatternCaseLabelTree node, P p) { return null; }
+  public Any visitPatternCaseLabel(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitDeconstructionPattern(com.sun.source.tree.DeconstructionPatternTree node, P p) { return null; }
+  public Any visitDeconstructionPattern(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitArrayAccess(com.sun.source.tree.ArrayAccessTree node, P p) { return null; }
+  public Any visitArrayAccess(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitMemberSelect(com.sun.source.tree.MemberSelectTree node, P p) { return null; }
+  public Any visitMemberSelect(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitMemberReference(com.sun.source.tree.MemberReferenceTree node, P p) { return null; }
+  public Any visitMemberReference(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitIdentifier(com.sun.source.tree.IdentifierTree node, P p) { return null; }
+  public Any visitIdentifier(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitLiteral(com.sun.source.tree.LiteralTree node, P p) { return null; }
+  public Any visitLiteral(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitPrimitiveType(com.sun.source.tree.PrimitiveTypeTree node, P p) { return null; }
+  public Any visitPrimitiveType(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitParameterizedType(com.sun.source.tree.ParameterizedTypeTree node, P p) { return null; }
+  public Any visitParameterizedType(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitUnionType(com.sun.source.tree.UnionTypeTree node, P p) { return null; }
+  public Any visitUnionType(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitIntersectionType(com.sun.source.tree.IntersectionTypeTree node, P p) { return null; }
+  public Any visitIntersectionType(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitTypeParameter(com.sun.source.tree.TypeParameterTree node, P p) { return null; }
+  public Any visitTypeParameter(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitModifiers(com.sun.source.tree.ModifiersTree node, P p) { return null; }
+  public Any visitModifiers(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitAnnotation(com.sun.source.tree.AnnotationTree node, P p) { return null; }
+  public Any visitAnnotation(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitAnnotatedType(com.sun.source.tree.AnnotatedTypeTree node, P p) { return null; }
+  public Any visitAnnotatedType(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitExports(com.sun.source.tree.ExportsTree node, P p) { return null; }
+  public Any visitExports(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitOpens(com.sun.source.tree.OpensTree node, P p) { return null; }
+  public Any visitOpens(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitProvides(com.sun.source.tree.ProvidesTree node, P p) { return null; }
+  public Any visitProvides(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitRequires(com.sun.source.tree.RequiresTree node, P p) { return null; }
+  public Any visitRequires(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitUses(com.sun.source.tree.UsesTree node, P p) { return null; }
+  public Any visitUses(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitOther(com.sun.source.tree.Tree node, P p) { return null; }
+  public Any visitOther(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitErroneous(com.sun.source.tree.ErroneousTree node, P p) { return null; }
+  public Any visitErroneous(Any node, Any p) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public R visitYield(com.sun.source.tree.YieldTree node, P p) { return null; }
+  public Any visitYield(Any node, Any p) { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class SAXSource {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SAXSource bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String FEATURE = "http://javax.xml.transform.sax.SAXSource/feature";
@@ -63,9 +81,9 @@ class SAXSource {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public SAXSource(org.xml.sax.InputSource inputSource) { }
+  public SAXSource(Any inputSource) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public SAXSource(org.xml.sax.XMLReader reader, org.xml.sax.InputSource inputSource) { }
+  public SAXSource(Any reader, Any inputSource) { }
   @throwable("java.lang.UnsupportedOperationException")
   public SAXSource() { }
   < ---- END java constructors ---- >
@@ -79,18 +97,18 @@ class SAXSource {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.xml.sax.InputSource getInputSource() { return null; }
+  public Any getInputSource() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static org.xml.sax.InputSource sourceToInputSource(javax.xml.transform.Source source) { return null; }
+  public static Any sourceToInputSource(Any source) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setInputSource(org.xml.sax.InputSource inputSource) { }
+  public void setInputSource(Any inputSource) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public org.xml.sax.XMLReader getXMLReader() { return null; }
+  public Any getXMLReader() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setXMLReader(org.xml.sax.XMLReader reader) { }
+  public void setXMLReader(Any reader) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSystemId(java.lang.String systemId) { }
+  public void setSystemId(String systemId) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getSystemId() { return null; }
+  public String getSystemId() { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class DefaultDesktopManager {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DefaultDesktopManager bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -70,51 +88,51 @@ class DefaultDesktopManager {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void removeIconFor(javax.swing.JInternalFrame f) { }
+  void removeIconFor(Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean wasIcon(javax.swing.JInternalFrame f) { return false; }
+  boolean wasIcon(Any f) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setWasIcon(javax.swing.JInternalFrame f, java.lang.Boolean value) { }
+  void setWasIcon(Any f, Any value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBoundsForFrame(javax.swing.JComponent f, int newX, int newY, int newWidth, int newHeight) { }
+  public void setBoundsForFrame(Any f, int newX, int newY, int newWidth, int newHeight) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void iconifyFrame(javax.swing.JInternalFrame f) { }
+  public void iconifyFrame(Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Rectangle getBoundsForIconOf(javax.swing.JInternalFrame f) { return null; }
+  Any getBoundsForIconOf(Any f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void openFrame(javax.swing.JInternalFrame f) { }
+  public void openFrame(Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void closeFrame(javax.swing.JInternalFrame f) { }
+  public void closeFrame(Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void maximizeFrame(javax.swing.JInternalFrame f) { }
+  public void maximizeFrame(Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void minimizeFrame(javax.swing.JInternalFrame f) { }
+  public void minimizeFrame(Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void deiconifyFrame(javax.swing.JInternalFrame f) { }
+  public void deiconifyFrame(Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void activateFrame(javax.swing.JInternalFrame f) { }
+  public void activateFrame(Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void deactivateFrame(javax.swing.JInternalFrame f) { }
+  public void deactivateFrame(Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void beginDraggingFrame(javax.swing.JComponent f) { }
+  public void beginDraggingFrame(Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void dragFrame(javax.swing.JComponent f, int newX, int newY) { }
+  public void dragFrame(Any f, int newX, int newY) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void endDraggingFrame(javax.swing.JComponent f) { }
+  public void endDraggingFrame(Any f) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void beginResizingFrame(javax.swing.JComponent f, int direction) { }
+  public void beginResizingFrame(Any f, int direction) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void resizeFrame(javax.swing.JComponent f, int newX, int newY, int newWidth, int newHeight) { }
+  public void resizeFrame(Any f, int newX, int newY, int newWidth, int newHeight) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void endResizingFrame(javax.swing.JComponent f) { }
+  public void endResizingFrame(Any f) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setPreviousBounds(javax.swing.JInternalFrame f, java.awt.Rectangle r) { }
+  void setPreviousBounds(Any f, Any r) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Rectangle getPreviousBounds(javax.swing.JInternalFrame f) { return null; }
+  Any getPreviousBounds(Any f) { return null; }
   < ---- END java signatures ---- >
 }

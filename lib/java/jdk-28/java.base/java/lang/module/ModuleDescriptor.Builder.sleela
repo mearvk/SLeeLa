@@ -57,6 +57,24 @@ class Builder {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Builder bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -65,48 +83,48 @@ class Builder {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder version(java.lang.String vs) { return null; }
+  public Any version(String vs) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder version(java.lang.module.ModuleDescriptor.Version v) { return null; }
+  public Any version(Any v) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder packages(java.util.Set<java.lang.String> pns) { return null; }
+  public Any packages(Any pns) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder exports(java.util.Set<java.lang.module.ModuleDescriptor.Exports.Modifier> ms, java.lang.String pn) { return null; }
+  public Any exports(Any ms, String pn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder exports(java.lang.String pn, java.util.Set<java.lang.String> targets) { return null; }
+  public Any exports(String pn, Any targets) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder exports(java.lang.String pn) { return null; }
+  public Any exports(String pn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder exports(java.util.Set<java.lang.module.ModuleDescriptor.Exports.Modifier> ms, java.lang.String pn, java.util.Set<java.lang.String> targets) { return null; }
+  public Any exports(Any ms, String pn, Any targets) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder exports(java.lang.module.ModuleDescriptor.Exports e) { return null; }
+  public Any exports(Any e) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder uses(java.lang.String service) { return null; }
+  public Any uses(String service) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder opens(java.util.Set<java.lang.module.ModuleDescriptor.Opens.Modifier> ms, java.lang.String pn, java.util.Set<java.lang.String> targets) { return null; }
+  public Any opens(Any ms, String pn, Any targets) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder opens(java.lang.String pn, java.util.Set<java.lang.String> targets) { return null; }
+  public Any opens(String pn, Any targets) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder opens(java.lang.String pn) { return null; }
+  public Any opens(String pn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder opens(java.lang.module.ModuleDescriptor.Opens obj) { return null; }
+  public Any opens(Any obj) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder opens(java.util.Set<java.lang.module.ModuleDescriptor.Opens.Modifier> ms, java.lang.String pn) { return null; }
+  public Any opens(Any ms, String pn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder provides(java.lang.module.ModuleDescriptor.Provides p) { return null; }
+  public Any provides(Any p) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder provides(java.lang.String service, java.util.List<java.lang.String> providers) { return null; }
+  public Any provides(String service, Any providers) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor build() { return null; }
+  public Any build() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder requires(java.lang.module.ModuleDescriptor.Requires req) { return null; }
+  public Any requires(Any req) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder requires(java.util.Set<java.lang.module.ModuleDescriptor.Requires.Modifier> ms, java.lang.String mn, java.lang.module.ModuleDescriptor.Version compiledVersion) { return null; }
+  public Any requires(Any ms, String mn, Any compiledVersion) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder requires(java.lang.String mn) { return null; }
+  public Any requires(String mn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder requires(java.util.Set<java.lang.module.ModuleDescriptor.Requires.Modifier> ms, java.lang.String mn) { return null; }
+  public Any requires(Any ms, String mn) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.module.ModuleDescriptor.Builder mainClass(java.lang.String mc) { return null; }
+  public Any mainClass(String mc) { return null; }
   < ---- END java signatures ---- >
 }

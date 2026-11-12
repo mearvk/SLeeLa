@@ -56,12 +56,30 @@ class DefaultPersistenceDelegate {
   String javaKind = "class";
   String javaSuper = "java.beans.PersistenceDelegate";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DefaultPersistenceDelegate bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
   public DefaultPersistenceDelegate() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public DefaultPersistenceDelegate(java.lang.String[] constructorPropertyNames) { }
+  public DefaultPersistenceDelegate(String[] constructorPropertyNames) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -72,12 +90,12 @@ class DefaultPersistenceDelegate {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void initialize(java.lang.Class<?> type, java.lang.Object oldInstance, java.lang.Object newInstance, java.beans.Encoder out) { }
+  void initialize(Any type, Any oldInstance, Any newInstance, Any out) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.Expression instantiate(java.lang.Object oldInstance, java.beans.Encoder out) { return null; }
+  Any instantiate(Any oldInstance, Any out) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean mutatesTo(java.lang.Object oldInstance, java.lang.Object newInstance) { return false; }
+  boolean mutatesTo(Any oldInstance, Any newInstance) { return false; }
   < ---- END java signatures ---- >
 }

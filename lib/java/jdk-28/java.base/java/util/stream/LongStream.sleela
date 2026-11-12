@@ -56,6 +56,24 @@ class LongStream {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public LongStream bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,98 +82,100 @@ class LongStream {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalLong min() { return null; }
+  public Any min() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalLong max() { return null; }
+  public Any max() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.LongStream of(long t) { return null; }
+  public static Any of(long t) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.LongStream of(long... values) { return null; }
+  public static Any of(long... values) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public long[] toArray() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.PrimitiveIterator.OfLong iterator() { return null; }
+  public Any iterator() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.LongStream map(java.util.function.LongUnaryOperator mapper) { return null; }
+  public Any map(Any mapper) { return null; }
+  @generic("<R>")
   @throwable("java.lang.AbstractMethodError")
-  public <R> R collect(java.util.function.Supplier<R> supplier, java.util.function.ObjLongConsumer<R> accumulator, java.util.function.BiConsumer<R, R> combiner) { return null; }
+  public Any collect(Any supplier, Any accumulator, Any combiner) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public long count() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.LongStream.Builder builder() { return null; }
+  public static Any builder() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.LongStream concat(java.util.stream.LongStream a, java.util.stream.LongStream b) { return null; }
+  public static Any concat(Any a, Any b) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.LongStream limit(long maxSize) { return null; }
+  public Any limit(long maxSize) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Spliterator.OfLong spliterator() { return null; }
+  public Any spliterator() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.LongStream filter(java.util.function.LongPredicate predicate) { return null; }
+  public Any filter(Any predicate) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.LongStream empty() { return null; }
+  public static Any empty() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean anyMatch(java.util.function.LongPredicate predicate) { return false; }
+  public boolean anyMatch(Any predicate) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public void forEach(java.util.function.LongConsumer action) { }
+  public void forEach(Any action) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalLong findAny() { return null; }
+  public Any findAny() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.LongStream skip(long n) { return null; }
+  public Any skip(long n) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.LongStream peek(java.util.function.LongConsumer action) { return null; }
+  public Any peek(Any action) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public long sum() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalLong reduce(java.util.function.LongBinaryOperator op) { return null; }
+  public Any reduce(Any op) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public long reduce(long identity, java.util.function.LongBinaryOperator op) { return 0; }
+  public long reduce(long identity, Any op) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.LongStream range(long startInclusive, long endExclusive) { return null; }
+  public static Any range(long startInclusive, long endExclusive) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.LongStream parallel() { return null; }
+  public Any parallel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.LongStream iterate(long seed, java.util.function.LongPredicate hasNext, java.util.function.LongUnaryOperator next_) { return null; }
+  public static Any iterate(long seed, Any hasNext, Any next_) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.LongStream iterate(long seed, java.util.function.LongUnaryOperator f) { return null; }
+  public static Any iterate(long seed, Any f) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.LongStream flatMap(java.util.function.LongFunction<? extends java.util.stream.LongStream> mapper) { return null; }
+  public Any flatMap(Any mapper) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean allMatch(java.util.function.LongPredicate predicate) { return false; }
+  public boolean allMatch(Any predicate) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.LongStream distinct() { return null; }
+  public Any distinct() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalLong findFirst() { return null; }
+  public Any findFirst() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public boolean noneMatch(java.util.function.LongPredicate predicate) { return false; }
+  public boolean noneMatch(Any predicate) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.LongStream sorted() { return null; }
+  public Any sorted() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.LongStream generate(java.util.function.LongSupplier s) { return null; }
+  public static Any generate(Any s) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void forEachOrdered(java.util.function.LongConsumer action) { }
+  public void forEachOrdered(Any action) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.IntStream mapToInt(java.util.function.LongToIntFunction mapper) { return null; }
+  public Any mapToInt(Any mapper) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream mapToDouble(java.util.function.LongToDoubleFunction mapper) { return null; }
+  public Any mapToDouble(Any mapper) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.stream.LongStream mapMulti(java.util.stream.LongStream.LongMapMultiConsumer mapper) { return null; }
+  public default Any mapMulti(Any mapper) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.stream.LongStream takeWhile(java.util.function.LongPredicate predicate) { return null; }
+  public default Any takeWhile(Any predicate) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.stream.LongStream dropWhile(java.util.function.LongPredicate predicate) { return null; }
+  public default Any dropWhile(Any predicate) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.LongStream sequential() { return null; }
+  public Any sequential() { return null; }
+  @generic("<U>")
   @throwable("java.lang.AbstractMethodError")
-  public <U> java.util.stream.Stream<U> mapToObj(java.util.function.LongFunction<? extends U> mapper) { return null; }
+  public Any mapToObj(Any mapper) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.stream.LongStream rangeClosed(long startInclusive, long endInclusive) { return null; }
+  public static Any rangeClosed(long startInclusive, long endInclusive) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.Stream<java.lang.Long> boxed() { return null; }
+  public Any boxed() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.OptionalDouble average() { return null; }
+  public Any average() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.LongSummaryStatistics summaryStatistics() { return null; }
+  public Any summaryStatistics() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.stream.DoubleStream asDoubleStream() { return null; }
+  public Any asDoubleStream() { return null; }
   < ---- END java signatures ---- >
 }

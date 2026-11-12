@@ -56,6 +56,24 @@ class VirtualMachine {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public VirtualMachine bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int TRACE_NONE = 0;
@@ -74,57 +92,57 @@ class VirtualMachine {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String name() { return null; }
+  public String name() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void exit(int exitCode) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String version() { return null; }
+  public String version() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.util.List<com.sun.jdi.ModuleReference> allModules() { return null; }
+  public default Any allModules() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String description() { return null; }
+  public String description() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Process process() { return null; }
+  public Any process() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void dispose() { }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.event.EventQueue eventQueue() { return null; }
+  public Any eventQueue() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void redefineClasses(java.util.Map<? extends com.sun.jdi.ReferenceType, byte[]> classToBytes) { }
+  public void redefineClasses(Any classToBytes) { }
   @throwable("java.lang.AbstractMethodError")
   public void suspend() { }
   @throwable("java.lang.AbstractMethodError")
   public void resume() { }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.ReferenceType> classesByName(java.lang.String className) { return null; }
+  public Any classesByName(String className) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.ReferenceType> allClasses() { return null; }
+  public Any allClasses() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.ThreadReference> allThreads() { return null; }
+  public Any allThreads() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<com.sun.jdi.ThreadGroupReference> topLevelThreadGroups() { return null; }
+  public Any topLevelThreadGroups() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.request.EventRequestManager eventRequestManager() { return null; }
+  public Any eventRequestManager() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.LongValue mirrorOf(long value) { return null; }
+  public Any mirrorOf(long value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.StringReference mirrorOf(java.lang.String value) { return null; }
+  public Any mirrorOf(String value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.ShortValue mirrorOf(short value) { return null; }
+  public Any mirrorOf(short value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.BooleanValue mirrorOf(boolean value) { return null; }
+  public Any mirrorOf(boolean value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.CharValue mirrorOf(char value) { return null; }
+  public Any mirrorOf(char value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.ByteValue mirrorOf(byte value) { return null; }
+  public Any mirrorOf(byte value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.DoubleValue mirrorOf(double value) { return null; }
+  public Any mirrorOf(double value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.FloatValue mirrorOf(float value) { return null; }
+  public Any mirrorOf(float value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.IntegerValue mirrorOf(int value) { return null; }
+  public Any mirrorOf(int value) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public com.sun.jdi.VoidValue mirrorOfVoid() { return null; }
+  public Any mirrorOfVoid() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean canWatchFieldModification() { return false; }
   @throwable("java.lang.AbstractMethodError")
@@ -174,11 +192,11 @@ class VirtualMachine {
   @throwable("java.lang.UnsupportedOperationException")
   public default boolean canGetModuleInfo() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public void setDefaultStratum(java.lang.String stratum) { }
+  public void setDefaultStratum(String stratum) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getDefaultStratum() { return null; }
+  public String getDefaultStratum() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public long[] instanceCounts(java.util.List<? extends com.sun.jdi.ReferenceType> refTypes) { return null; }
+  public long[] instanceCounts(Any refTypes) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void setDebugTraceMode(int traceFlags) { }
   < ---- END java signatures ---- >

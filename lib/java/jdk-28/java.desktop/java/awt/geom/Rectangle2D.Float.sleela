@@ -57,6 +57,24 @@ class Float {
   String javaKind = "class";
   String javaSuper = "java.awt.geom.Rectangle2D";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Float bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   double x;
@@ -79,7 +97,7 @@ class Float {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -91,17 +109,17 @@ class Float {
   @throwable("java.lang.UnsupportedOperationException")
   public void setRect(float x, float y, float w, float h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setRect(java.awt.geom.Rectangle2D r) { }
+  public void setRect(Any r) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setRect(double x, double y, double w, double h) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int outcode(double x, double y) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D createIntersection(java.awt.geom.Rectangle2D r) { return null; }
+  public Any createIntersection(Any r) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D createUnion(java.awt.geom.Rectangle2D r) { return null; }
+  public Any createUnion(Any r) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getBounds2D() { return null; }
+  public Any getBounds2D() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public double getWidth() { return 0.0; }
   < ---- END java signatures ---- >

@@ -56,6 +56,24 @@ class DefaultTreeCellRenderer {
   String javaKind = "class";
   String javaSuper = "javax.swing.JLabel";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DefaultTreeCellRenderer bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   boolean selected;
@@ -86,83 +104,83 @@ class DefaultTreeCellRenderer {
   @throwable("java.lang.UnsupportedOperationException")
   public void invalidate() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void firePropertyChange(java.lang.String propertyName, char oldValue, char newValue) { }
+  public void firePropertyChange(String propertyName, char oldValue, char newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void firePropertyChange(java.lang.String propertyName, byte oldValue, byte newValue) { }
+  public void firePropertyChange(String propertyName, byte oldValue, byte newValue) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  void firePropertyChange(String propertyName, Any oldValue, Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void firePropertyChange(java.lang.String propertyName, boolean oldValue, boolean newValue) { }
+  public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void firePropertyChange(java.lang.String propertyName, double oldValue, double newValue) { }
+  public void firePropertyChange(String propertyName, double oldValue, double newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void firePropertyChange(java.lang.String propertyName, float oldValue, float newValue) { }
+  public void firePropertyChange(String propertyName, float oldValue, float newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void firePropertyChange(java.lang.String propertyName, long oldValue, long newValue) { }
+  public void firePropertyChange(String propertyName, long oldValue, long newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void firePropertyChange(java.lang.String propertyName, int oldValue, int newValue) { }
+  public void firePropertyChange(String propertyName, int oldValue, int newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void firePropertyChange(java.lang.String propertyName, short oldValue, short newValue) { }
+  public void firePropertyChange(String propertyName, short oldValue, short newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize() { return null; }
+  public Any getPreferredSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void repaint(long tm, int x, int y, int width, int height) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void repaint(java.awt.Rectangle r) { }
+  public void repaint(Any r) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void repaint() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBackground(java.awt.Color color) { }
+  public void setBackground(Any color) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getTextSelectionColor() { return null; }
+  public Any getTextSelectionColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTextSelectionColor(java.awt.Color newColor) { }
+  public void setTextSelectionColor(Any newColor) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getBackgroundSelectionColor() { return null; }
+  public Any getBackgroundSelectionColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBackgroundSelectionColor(java.awt.Color newColor) { }
+  public void setBackgroundSelectionColor(Any newColor) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getTextNonSelectionColor() { return null; }
+  public Any getTextNonSelectionColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTextNonSelectionColor(java.awt.Color newColor) { }
+  public void setTextNonSelectionColor(Any newColor) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getBackgroundNonSelectionColor() { return null; }
+  public Any getBackgroundNonSelectionColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBackgroundNonSelectionColor(java.awt.Color newColor) { }
+  public void setBackgroundNonSelectionColor(Any newColor) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Color getBorderSelectionColor() { return null; }
+  public Any getBorderSelectionColor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBorderSelectionColor(java.awt.Color newColor) { }
+  public void setBorderSelectionColor(Any newColor) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getLeafIcon() { return null; }
+  public Any getLeafIcon() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLeafIcon(javax.swing.Icon newIcon) { }
+  public void setLeafIcon(Any newIcon) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getClosedIcon() { return null; }
+  public Any getClosedIcon() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setClosedIcon(javax.swing.Icon newIcon) { }
+  public void setClosedIcon(Any newIcon) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getOpenIcon() { return null; }
+  public Any getOpenIcon() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setOpenIcon(javax.swing.Icon newIcon) { }
+  public void setOpenIcon(Any newIcon) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getDefaultOpenIcon() { return null; }
+  public Any getDefaultOpenIcon() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getDefaultClosedIcon() { return null; }
+  public Any getDefaultClosedIcon() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getDefaultLeafIcon() { return null; }
+  public Any getDefaultLeafIcon() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getTreeCellRendererComponent(javax.swing.JTree tree, java.lang.Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) { return null; }
+  public Any getTreeCellRendererComponent(Any tree, Any value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void revalidate() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Font getFont() { return null; }
+  public Any getFont() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFont(java.awt.Font font) { }
+  public void setFont(Any font) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g) { }
+  public void paint(Any g) { }
   < ---- END java signatures ---- >
 }

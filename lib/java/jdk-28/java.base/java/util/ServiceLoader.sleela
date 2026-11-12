@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class ServiceLoader<S> {
+class ServiceLoader {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class ServiceLoader<S> {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<S>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "S"; } return null; }
+  public ServiceLoader bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,20 +82,23 @@ class ServiceLoader<S> {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
+  @generic("<S>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <S> java.util.ServiceLoader<S> load(java.lang.Class<S> service) { return null; }
+  public static Any load(Any service) { return null; }
+  @generic("<S>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <S> java.util.ServiceLoader<S> load(java.lang.ModuleLayer layer, java.lang.Class<S> service) { return null; }
+  public static Any load(Any layer, Any service) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Iterator<S> iterator() { return null; }
+  public Any iterator() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.stream.Stream<java.util.ServiceLoader.Provider<S>> stream() { return null; }
+  public Any stream() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Optional<S> findFirst() { return null; }
+  public Any findFirst() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void reload() { }
+  @generic("<S>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <S> java.util.ServiceLoader<S> loadInstalled(java.lang.Class<S> service) { return null; }
+  public static Any loadInstalled(Any service) { return null; }
   < ---- END java signatures ---- >
 }

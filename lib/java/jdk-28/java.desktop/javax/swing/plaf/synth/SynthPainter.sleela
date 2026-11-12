@@ -56,6 +56,24 @@ class SynthPainter {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public SynthPainter bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,276 +88,276 @@ class SynthPainter {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintProgressBarBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintProgressBarBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintProgressBarBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintProgressBarBackground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintProgressBarBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintProgressBarBorder(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintProgressBarBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintProgressBarBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintScrollBarBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintScrollBarBackground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintScrollBarBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintScrollBarBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintScrollBarBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintScrollBarBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintScrollBarBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintScrollBarBorder(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintScrollBarTrackBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintScrollBarTrackBackground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintScrollBarTrackBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintScrollBarTrackBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintScrollBarTrackBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintScrollBarTrackBorder(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintScrollBarTrackBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintScrollBarTrackBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSeparatorBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintSeparatorBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSeparatorBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintSeparatorBackground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSeparatorBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintSeparatorBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSeparatorBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintSeparatorBorder(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSliderBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintSliderBackground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSliderBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintSliderBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSliderBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintSliderBorder(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSliderBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintSliderBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSliderTrackBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintSliderTrackBackground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSliderTrackBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintSliderTrackBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSliderTrackBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintSliderTrackBorder(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSliderTrackBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintSliderTrackBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSplitPaneDividerBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintSplitPaneDividerBackground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSplitPaneDividerBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintSplitPaneDividerBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTabbedPaneTabAreaBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintTabbedPaneTabAreaBackground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTabbedPaneTabAreaBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTabbedPaneTabAreaBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTabbedPaneTabAreaBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTabbedPaneTabAreaBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTabbedPaneTabAreaBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintTabbedPaneTabAreaBorder(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTabbedPaneTabBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int tabIndex) { }
+  public void paintTabbedPaneTabBackground(Any context, Any g, int x, int y, int w, int h, int tabIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTabbedPaneTabBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int tabIndex, int orientation) { }
+  public void paintTabbedPaneTabBackground(Any context, Any g, int x, int y, int w, int h, int tabIndex, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTabbedPaneTabBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int tabIndex, int orientation) { }
+  public void paintTabbedPaneTabBorder(Any context, Any g, int x, int y, int w, int h, int tabIndex, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTabbedPaneTabBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int tabIndex) { }
+  public void paintTabbedPaneTabBorder(Any context, Any g, int x, int y, int w, int h, int tabIndex) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToolBarBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintToolBarBackground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToolBarBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintToolBarBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToolBarBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintToolBarBorder(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToolBarBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintToolBarBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToolBarContentBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintToolBarContentBackground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToolBarContentBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintToolBarContentBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToolBarContentBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintToolBarContentBorder(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToolBarContentBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintToolBarContentBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToolBarDragWindowBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintToolBarDragWindowBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToolBarDragWindowBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintToolBarDragWindowBackground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToolBarDragWindowBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintToolBarDragWindowBorder(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToolBarDragWindowBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintToolBarDragWindowBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintArrowButtonBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintArrowButtonBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintArrowButtonBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintArrowButtonBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintArrowButtonForeground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int direction) { }
+  public void paintArrowButtonForeground(Any context, Any g, int x, int y, int w, int h, int direction) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintButtonBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintButtonBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintButtonBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintButtonBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintCheckBoxMenuItemBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintCheckBoxMenuItemBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintCheckBoxMenuItemBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintCheckBoxMenuItemBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintCheckBoxBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintCheckBoxBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintCheckBoxBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintCheckBoxBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintColorChooserBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintColorChooserBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintColorChooserBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintColorChooserBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintComboBoxBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintComboBoxBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintComboBoxBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintComboBoxBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintDesktopIconBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintDesktopIconBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintDesktopIconBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintDesktopIconBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintDesktopPaneBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintDesktopPaneBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintDesktopPaneBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintDesktopPaneBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintEditorPaneBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintEditorPaneBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintEditorPaneBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintEditorPaneBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintFileChooserBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintFileChooserBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintFileChooserBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintFileChooserBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintFormattedTextFieldBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintFormattedTextFieldBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintFormattedTextFieldBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintFormattedTextFieldBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintInternalFrameTitlePaneBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintInternalFrameTitlePaneBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintInternalFrameTitlePaneBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintInternalFrameTitlePaneBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintInternalFrameBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintInternalFrameBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintInternalFrameBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintInternalFrameBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintLabelBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintLabelBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintLabelBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintLabelBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintListBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintListBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintListBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintListBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintMenuBarBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintMenuBarBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintMenuBarBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintMenuBarBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintMenuItemBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintMenuItemBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintMenuItemBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintMenuItemBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintMenuBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintMenuBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintMenuBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintMenuBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintOptionPaneBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintOptionPaneBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintOptionPaneBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintOptionPaneBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintPanelBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintPanelBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintPanelBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintPanelBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintPasswordFieldBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintPasswordFieldBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintPasswordFieldBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintPasswordFieldBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintPopupMenuBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintPopupMenuBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintPopupMenuBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintPopupMenuBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintProgressBarForeground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintProgressBarForeground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintRadioButtonMenuItemBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintRadioButtonMenuItemBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintRadioButtonMenuItemBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintRadioButtonMenuItemBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintRadioButtonBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintRadioButtonBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintRadioButtonBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintRadioButtonBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintRootPaneBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintRootPaneBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintRootPaneBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintRootPaneBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintScrollBarThumbBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintScrollBarThumbBackground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintScrollBarThumbBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintScrollBarThumbBorder(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintScrollPaneBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintScrollPaneBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintScrollPaneBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintScrollPaneBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSeparatorForeground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintSeparatorForeground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSliderThumbBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintSliderThumbBackground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSliderThumbBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintSliderThumbBorder(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSpinnerBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintSpinnerBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSpinnerBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintSpinnerBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSplitPaneDividerForeground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintSplitPaneDividerForeground(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSplitPaneDragDivider(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h, int orientation) { }
+  public void paintSplitPaneDragDivider(Any context, Any g, int x, int y, int w, int h, int orientation) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSplitPaneBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintSplitPaneBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintSplitPaneBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintSplitPaneBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTabbedPaneBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTabbedPaneBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTabbedPaneBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTabbedPaneBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTabbedPaneContentBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTabbedPaneContentBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTabbedPaneContentBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTabbedPaneContentBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTableHeaderBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTableHeaderBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTableHeaderBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTableHeaderBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTableBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTableBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTableBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTableBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTextAreaBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTextAreaBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTextAreaBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTextAreaBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTextPaneBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTextPaneBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTextPaneBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTextPaneBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTextFieldBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTextFieldBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTextFieldBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTextFieldBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToggleButtonBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintToggleButtonBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToggleButtonBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintToggleButtonBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToolTipBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintToolTipBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintToolTipBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintToolTipBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTreeBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTreeBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTreeBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTreeBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTreeCellBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTreeCellBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTreeCellBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTreeCellBorder(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintTreeCellFocus(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintTreeCellFocus(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintViewportBackground(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintViewportBackground(Any context, Any g, int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintViewportBorder(javax.swing.plaf.synth.SynthContext context, java.awt.Graphics g, int x, int y, int w, int h) { }
+  public void paintViewportBorder(Any context, Any g, int x, int y, int w, int h) { }
   < ---- END java signatures ---- >
 }

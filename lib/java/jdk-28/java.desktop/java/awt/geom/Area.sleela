@@ -56,12 +56,30 @@ class Area {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Area bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
   public Area() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public Area(java.awt.Shape s) { }
+  public Area(Any s) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -73,46 +91,46 @@ class Area {
   @throwable("java.lang.UnsupportedOperationException")
   public void reset() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.awt.geom.Area other) { return false; }
+  public boolean equals(Any other) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isEmpty() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void add(java.awt.geom.Area rhs) { }
+  public void add(Any rhs) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean contains(java.awt.geom.Point2D p) { return false; }
+  public boolean contains(Any p) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean contains(double x, double y) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean contains(double x, double y, double w, double h) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void transform(java.awt.geom.AffineTransform t) { }
+  public void transform(Any t) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getBounds() { return null; }
+  public Any getBounds() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void subtract(java.awt.geom.Area rhs) { }
+  public void subtract(Any rhs) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean intersects(double x, double y, double w, double h) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean intersects(java.awt.geom.Rectangle2D r) { return false; }
+  public boolean intersects(Any r) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void intersect(java.awt.geom.Area rhs) { }
+  public void intersect(Any rhs) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isRectangular() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Rectangle2D getBounds2D() { return null; }
+  public Any getBounds2D() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at) { return null; }
+  public Any getPathIterator(Any at) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.PathIterator getPathIterator(java.awt.geom.AffineTransform at, double flatness) { return null; }
+  public Any getPathIterator(Any at, double flatness) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void exclusiveOr(java.awt.geom.Area rhs) { }
+  public void exclusiveOr(Any rhs) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isPolygonal() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isSingular() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.geom.Area createTransformedArea(java.awt.geom.AffineTransform t) { return null; }
+  public Any createTransformedArea(Any t) { return null; }
   < ---- END java signatures ---- >
 }

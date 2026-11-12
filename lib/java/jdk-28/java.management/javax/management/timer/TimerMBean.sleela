@@ -56,6 +56,24 @@ class TimerMBean {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public TimerMBean bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -72,37 +90,37 @@ class TimerMBean {
   @throwable("java.lang.AbstractMethodError")
   public boolean isActive() { return false; }
   @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
-  public java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date, long period, long nbOccurences, boolean fixedRate) { return null; }
+  public Any addNotification(String type, String message, Any userData, Any date, long period, long nbOccurences, boolean fixedRate) { return null; }
   @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
-  public java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date, long period) { return null; }
+  public Any addNotification(String type, String message, Any userData, Any date, long period) { return null; }
   @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
-  public java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date, long period, long nbOccurences) { return null; }
+  public Any addNotification(String type, String message, Any userData, Any date, long period, long nbOccurences) { return null; }
   @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
-  public java.lang.Integer addNotification(java.lang.String type, java.lang.String message, java.lang.Object userData, java.util.Date date) { return null; }
+  public Any addNotification(String type, String message, Any userData, Any date) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Vector<java.lang.Integer> getNotificationIDs(java.lang.String type) { return null; }
+  public Any getNotificationIDs(String type) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException")
-  public void removeNotification(java.lang.Integer id) { }
+  public void removeNotification(Any id) { }
   @throwable("java.lang.AbstractMethodError, javax.management.InstanceNotFoundException")
-  public void removeNotifications(java.lang.String type) { }
+  public void removeNotifications(String type) { }
   @throwable("java.lang.AbstractMethodError")
   public void removeAllNotifications() { }
   @throwable("java.lang.AbstractMethodError")
   public int getNbNotifications() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.Vector<java.lang.Integer> getAllNotificationIDs() { return null; }
+  public Any getAllNotificationIDs() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getNotificationType(java.lang.Integer id) { return null; }
+  public String getNotificationType(Any id) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getNotificationMessage(java.lang.Integer id) { return null; }
+  public String getNotificationMessage(Any id) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Object getNotificationUserData(java.lang.Integer id) { return null; }
+  public Any getNotificationUserData(Any id) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Long getPeriod(java.lang.Integer id) { return null; }
+  public Any getPeriod(Any id) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Long getNbOccurences(java.lang.Integer id) { return null; }
+  public Any getNbOccurences(Any id) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.Boolean getFixedRate(java.lang.Integer id) { return null; }
+  public Any getFixedRate(Any id) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean getSendPastNotifications() { return false; }
   @throwable("java.lang.AbstractMethodError")

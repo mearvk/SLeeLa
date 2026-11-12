@@ -56,6 +56,24 @@ class HTMLTableElement {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public HTMLTableElement bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,69 +82,69 @@ class HTMLTableElement {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getFrame() { return null; }
+  public String getFrame() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getRules() { return null; }
+  public String getRules() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getSummary() { return null; }
+  public String getSummary() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setBorder(java.lang.String border) { }
+  public void setBorder(String border) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setWidth(java.lang.String width) { }
+  public void setWidth(String width) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getCellSpacing() { return null; }
+  public String getCellSpacing() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setCellSpacing(java.lang.String cellSpacing) { }
+  public void setCellSpacing(String cellSpacing) { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")
-  public org.w3c.dom.html.HTMLElement insertRow(int index) { return null; }
+  public Any insertRow(int index) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBorder() { return null; }
+  public String getBorder() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setFrame(java.lang.String frame) { }
+  public void setFrame(String frame) { }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.html.HTMLCollection getRows() { return null; }
+  public Any getRows() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getBgColor() { return null; }
+  public String getBgColor() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getWidth() { return null; }
+  public String getWidth() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAlign() { return null; }
+  public String getAlign() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setAlign(java.lang.String align) { }
+  public void setAlign(String align) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setBgColor(java.lang.String bgColor) { }
+  public void setBgColor(String bgColor) { }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.html.HTMLTableCaptionElement getCaption() { return null; }
+  public Any getCaption() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setCaption(org.w3c.dom.html.HTMLTableCaptionElement caption) { }
+  public void setCaption(Any caption) { }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.html.HTMLTableSectionElement getTHead() { return null; }
+  public Any getTHead() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setTHead(org.w3c.dom.html.HTMLTableSectionElement tHead) { }
+  public void setTHead(Any tHead) { }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.html.HTMLTableSectionElement getTFoot() { return null; }
+  public Any getTFoot() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setTFoot(org.w3c.dom.html.HTMLTableSectionElement tFoot) { }
+  public void setTFoot(Any tFoot) { }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.html.HTMLCollection getTBodies() { return null; }
+  public Any getTBodies() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getCellPadding() { return null; }
+  public String getCellPadding() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setCellPadding(java.lang.String cellPadding) { }
+  public void setCellPadding(String cellPadding) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setRules(java.lang.String rules) { }
+  public void setRules(String rules) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setSummary(java.lang.String summary) { }
+  public void setSummary(String summary) { }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.html.HTMLElement createTHead() { return null; }
+  public Any createTHead() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void deleteTHead() { }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.html.HTMLElement createTFoot() { return null; }
+  public Any createTFoot() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void deleteTFoot() { }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.html.HTMLElement createCaption() { return null; }
+  public Any createCaption() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void deleteCaption() { }
   @throwable("java.lang.AbstractMethodError, org.w3c.dom.DOMException")

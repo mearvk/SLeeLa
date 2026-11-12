@@ -56,6 +56,24 @@ class ValidatorHandler {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ValidatorHandler bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -70,26 +88,26 @@ class ValidatorHandler {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
-  public java.lang.Object getProperty(java.lang.String name) { return null; }
+  public Any getProperty(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
-  public void setProperty(java.lang.String name, java.lang.Object object) { }
+  public void setProperty(String name, Any object) { }
   @throwable("java.lang.AbstractMethodError")
-  public void setResourceResolver(org.w3c.dom.ls.LSResourceResolver resourceResolver) { }
+  public void setResourceResolver(Any resourceResolver) { }
   @throwable("java.lang.AbstractMethodError")
-  public org.w3c.dom.ls.LSResourceResolver getResourceResolver() { return null; }
+  public Any getResourceResolver() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.validation.TypeInfoProvider getTypeInfoProvider() { return null; }
+  public Any getTypeInfoProvider() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setContentHandler(org.xml.sax.ContentHandler receiver) { }
+  public void setContentHandler(Any receiver) { }
   @throwable("java.lang.AbstractMethodError")
-  public org.xml.sax.ErrorHandler getErrorHandler() { return null; }
+  public Any getErrorHandler() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setErrorHandler(org.xml.sax.ErrorHandler errorHandler) { }
+  public void setErrorHandler(Any errorHandler) { }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
-  public boolean getFeature(java.lang.String name) { return false; }
+  public boolean getFeature(String name) { return false; }
   @throwable("java.lang.UnsupportedOperationException, org.xml.sax.SAXNotRecognizedException, org.xml.sax.SAXNotSupportedException")
-  public void setFeature(java.lang.String name, boolean value) { }
+  public void setFeature(String name, boolean value) { }
   @throwable("java.lang.AbstractMethodError")
-  public org.xml.sax.ContentHandler getContentHandler() { return null; }
+  public Any getContentHandler() { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class XMLStreamReader {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public XMLStreamReader bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,37 +82,37 @@ class XMLStreamReader {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.namespace.QName getName() { return null; }
+  public Any getName() { return null; }
   @throwable("java.lang.AbstractMethodError, java.lang.IllegalArgumentException")
-  public java.lang.Object getProperty(java.lang.String name) { return null; }
+  public Any getProperty(String name) { return null; }
   @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
   public boolean hasNext() { return false; }
   @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
   public int next() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.stream.Location getLocation() { return null; }
+  public Any getLocation() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getEncoding() { return null; }
+  public String getEncoding() { return null; }
   @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
   public int nextTag() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getText() { return null; }
+  public String getText() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isStandalone() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getVersion() { return null; }
+  public String getVersion() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getTextLength() { return 0; }
   @throwable("java.lang.AbstractMethodError")
   public boolean hasName() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPrefix() { return null; }
+  public String getPrefix() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.namespace.QName getAttributeName(int index) { return null; }
+  public Any getAttributeName(int index) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getAttributeCount() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAttributeType(int index) { return null; }
+  public String getAttributeType(int index) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getEventType() { return 0; }
   @throwable("java.lang.AbstractMethodError")
@@ -104,27 +122,27 @@ class XMLStreamReader {
   @throwable("java.lang.AbstractMethodError")
   public boolean isCharacters() { return false; }
   @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
-  public java.lang.String getElementText() { return null; }
+  public String getElementText() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isWhiteSpace() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAttributeValue(java.lang.String namespaceURI, java.lang.String localName) { return null; }
+  public String getAttributeValue(String namespaceURI, String localName) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAttributeValue(int index) { return null; }
+  public String getAttributeValue(int index) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAttributeNamespace(int index) { return null; }
+  public String getAttributeNamespace(int index) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAttributeLocalName(int index) { return null; }
+  public String getAttributeLocalName(int index) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getAttributePrefix(int index) { return null; }
+  public String getAttributePrefix(int index) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isAttributeSpecified(int index) { return false; }
   @throwable("java.lang.AbstractMethodError")
   public int getNamespaceCount() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getNamespacePrefix(int index) { return null; }
+  public String getNamespacePrefix(int index) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public javax.xml.namespace.NamespaceContext getNamespaceContext() { return null; }
+  public Any getNamespaceContext() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public char[] getTextCharacters() { return null; }
   @throwable("java.lang.AbstractMethodError, javax.xml.stream.XMLStreamException")
@@ -136,18 +154,18 @@ class XMLStreamReader {
   @throwable("java.lang.AbstractMethodError")
   public boolean standaloneSet() { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getCharacterEncodingScheme() { return null; }
+  public String getCharacterEncodingScheme() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPITarget() { return null; }
+  public String getPITarget() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getPIData() { return null; }
+  public String getPIData() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getNamespaceURI(int index) { return null; }
+  public String getNamespaceURI(int index) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getNamespaceURI() { return null; }
+  public String getNamespaceURI() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getNamespaceURI(java.lang.String prefix) { return null; }
+  public String getNamespaceURI(String prefix) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getLocalName() { return null; }
+  public String getLocalName() { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,12 +56,30 @@ class StringBuilder {
   String javaKind = "class";
   String javaSuper = "java.lang.AbstractStringBuilder";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public StringBuilder bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public StringBuilder(java.lang.CharSequence seq) { }
+  public StringBuilder(Any seq) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public StringBuilder(java.lang.String str) { }
+  public StringBuilder(String str) { }
   @throwable("java.lang.UnsupportedOperationException")
   public StringBuilder(int capacity) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -75,74 +93,74 @@ class StringBuilder {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder append(java.lang.CharSequence s) { return null; }
+  public Any append(Any s) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder append(java.lang.CharSequence s, int start, int end) { return null; }
+  public Any append(Any s, int start, int end) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder append(char[] str) { return null; }
+  public Any append(char[] str) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder append(char[] str, int offset, int len) { return null; }
+  public Any append(char[] str, int offset, int len) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder append(java.lang.String str) { return null; }
+  public Any append(String str) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder append(long lng) { return null; }
+  public Any append(long lng) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder append(float f) { return null; }
+  public Any append(float f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder append(double d) { return null; }
+  public Any append(double d) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder append(boolean b) { return null; }
+  public Any append(boolean b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder append(char c) { return null; }
+  public Any append(char c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder append(int i) { return null; }
+  public Any append(int i) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder reverse() { return null; }
+  public Any reverse() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(java.lang.StringBuilder another) { return 0; }
+  public int compareTo(Any another) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int indexOf(java.lang.String str, int fromIndex) { return 0; }
+  public int indexOf(String str, int fromIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int indexOf(java.lang.String str) { return 0; }
+  public int indexOf(String str) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder insert(int dstOffset, java.lang.CharSequence s) { return null; }
+  public Any insert(int dstOffset, Any s) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder insert(int offset, java.lang.String str) { return null; }
+  public Any insert(int offset, String str) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder insert(int offset, char[] str) { return null; }
+  public Any insert(int offset, char[] str) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder insert(int offset, int i) { return null; }
+  public Any insert(int offset, int i) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder insert(int offset, double d) { return null; }
+  public Any insert(int offset, double d) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder insert(int offset, float f) { return null; }
+  public Any insert(int offset, float f) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder insert(int offset, long l) { return null; }
+  public Any insert(int offset, long l) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder insert(int offset, char c) { return null; }
+  public Any insert(int offset, char c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder insert(int offset, boolean b) { return null; }
+  public Any insert(int offset, boolean b) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder insert(int dstOffset, java.lang.CharSequence s, int start, int end) { return null; }
+  public Any insert(int dstOffset, Any s, int start, int end) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder insert(int index, char[] str, int offset, int len) { return null; }
+  public Any insert(int index, char[] str, int offset, int len) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int lastIndexOf(java.lang.String str, int fromIndex) { return 0; }
+  public int lastIndexOf(String str, int fromIndex) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int lastIndexOf(java.lang.String str) { return 0; }
+  public int lastIndexOf(String str) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder replace(int start, int end, java.lang.String str) { return null; }
+  public Any replace(int start, int end, String str) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder repeat(int codePoint, int count) { return null; }
+  public Any repeat(int codePoint, int count) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder repeat(java.lang.CharSequence cs, int count) { return null; }
+  public Any repeat(Any cs, int count) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder appendCodePoint(int codePoint) { return null; }
+  public Any appendCodePoint(int codePoint) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder delete(int start, int end) { return null; }
+  public Any delete(int start, int end) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.StringBuilder deleteCharAt(int index) { return null; }
+  public Any deleteCharAt(int index) { return null; }
   < ---- END java signatures ---- >
 }

@@ -7,7 +7,7 @@
 #sleela 3.0
 material;
 
-class DefaultRowSorter<M, I> {
+class DefaultRowSorter {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Eleven catalogued attributes with getter/setter pairs. Values are faithful
      to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
@@ -56,6 +56,24 @@ class DefaultRowSorter<M, I> {
   String javaKind = "class";
   String javaSuper = "javax.swing.RowSorter";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<M, I>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 2; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "M"; } if (index == 1) { return "I"; } return null; }
+  public DefaultRowSorter bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -71,20 +89,20 @@ class DefaultRowSorter<M, I> {
   @throwable("java.lang.UnsupportedOperationException")
   public void sort() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Comparator<?> getComparator(int column) { return null; }
+  public Any getComparator(int column) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final javax.swing.DefaultRowSorter.ModelWrapper<M, I> getModelWrapper() { return null; }
+  final Any getModelWrapper() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isSortable(int column) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.List<? extends javax.swing.RowSorter.SortKey> getSortKeys() { return null; }
+  public Any getSortKeys() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMaxSortKeys() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSortKeys(java.util.List<? extends javax.swing.RowSorter.SortKey> sortKeys) { }
+  public void setSortKeys(Any sortKeys) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.RowFilter<? super M, ? super I> getRowFilter() { return null; }
+  public Any getRowFilter() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   boolean useToString(int column) { return false; }
@@ -92,7 +110,7 @@ class DefaultRowSorter<M, I> {
   public boolean getSortsOnUpdates() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  final void setModelWrapper(javax.swing.DefaultRowSorter.ModelWrapper<M, I> modelWrapper) { }
+  final void setModelWrapper(Any modelWrapper) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setSortable(int column, boolean sortable) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -100,11 +118,11 @@ class DefaultRowSorter<M, I> {
   @throwable("java.lang.UnsupportedOperationException")
   public void setSortsOnUpdates(boolean sortsOnUpdates) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setRowFilter(javax.swing.RowFilter<? super M, ? super I> filter) { }
+  public void setRowFilter(Any filter) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void toggleSortOrder(int column) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setComparator(int column, java.util.Comparator<?> comparator) { }
+  public void setComparator(int column, Any comparator) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getModelRowCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -126,6 +144,6 @@ class DefaultRowSorter<M, I> {
   @throwable("java.lang.UnsupportedOperationException")
   public void modelStructureChanged() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final M getModel() { return null; }
+  public final Any getModel() { return null; }
   < ---- END java signatures ---- >
 }

@@ -57,6 +57,24 @@ class GlyphPainter {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public GlyphPainter bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @JavaProtected
@@ -71,24 +89,24 @@ class GlyphPainter {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public float getHeight(javax.swing.text.GlyphView v) { return 0.0; }
+  public float getHeight(Any v) { return 0.0; }
   @throwable("java.lang.AbstractMethodError")
-  public float getAscent(javax.swing.text.GlyphView v) { return 0.0; }
+  public float getAscent(Any v) { return 0.0; }
   @throwable("java.lang.AbstractMethodError")
-  public float getDescent(javax.swing.text.GlyphView v) { return 0.0; }
+  public float getDescent(Any v) { return 0.0; }
   @throwable("java.lang.AbstractMethodError")
-  public float getSpan(javax.swing.text.GlyphView v, int p0, int p1, javax.swing.text.TabExpander e, float x) { return 0.0; }
+  public float getSpan(Any v, int p0, int p1, Any e, float x) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException, javax.swing.text.BadLocationException")
-  public int getNextVisualPositionFrom(javax.swing.text.GlyphView v, int pos, javax.swing.text.Position.Bias b, java.awt.Shape a, int direction, javax.swing.text.Position.Bias[] biasRet) { return 0; }
+  public int getNextVisualPositionFrom(Any v, int pos, Any b, Any a, int direction, Any[] biasRet) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.GlyphView.GlyphPainter getPainter(javax.swing.text.GlyphView v, int p0, int p1) { return null; }
+  public Any getPainter(Any v, int p0, int p1) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public int viewToModel(javax.swing.text.GlyphView v, float x, float y, java.awt.Shape a, javax.swing.text.Position.Bias[] biasReturn) { return 0; }
+  public int viewToModel(Any v, float x, float y, Any a, Any[] biasReturn) { return 0; }
   @throwable("java.lang.AbstractMethodError, javax.swing.text.BadLocationException")
-  public java.awt.Shape modelToView(javax.swing.text.GlyphView v, int pos, javax.swing.text.Position.Bias bias, java.awt.Shape a) { return null; }
+  public Any modelToView(Any v, int pos, Any bias, Any a) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public int getBoundedPosition(javax.swing.text.GlyphView v, int p0, float x, float len) { return 0; }
+  public int getBoundedPosition(Any v, int p0, float x, float len) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public void paint(javax.swing.text.GlyphView v, java.awt.Graphics g, java.awt.Shape a, int p0, int p1) { }
+  public void paint(Any v, Any g, Any a, int p0, int p1) { }
   < ---- END java signatures ---- >
 }

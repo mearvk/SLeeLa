@@ -56,6 +56,24 @@ class ManagementFactory {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ManagementFactory bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String CLASS_LOADING_MXBEAN_NAME = "java.lang:type=ClassLoading";
@@ -76,36 +94,41 @@ class ManagementFactory {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.management.ClassLoadingMXBean getClassLoadingMXBean() { return null; }
+  public static Any getClassLoadingMXBean() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.management.OperatingSystemMXBean getOperatingSystemMXBean() { return null; }
+  public static Any getOperatingSystemMXBean() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.management.CompilationMXBean getCompilationMXBean() { return null; }
+  public static Any getCompilationMXBean() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.management.MemoryMXBean getMemoryMXBean() { return null; }
+  public static Any getMemoryMXBean() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.List<java.lang.management.GarbageCollectorMXBean> getGarbageCollectorMXBeans() { return null; }
+  public static Any getGarbageCollectorMXBeans() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.List<java.lang.management.MemoryManagerMXBean> getMemoryManagerMXBeans() { return null; }
+  public static Any getMemoryManagerMXBeans() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.List<java.lang.management.MemoryPoolMXBean> getMemoryPoolMXBeans() { return null; }
+  public static Any getMemoryPoolMXBeans() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.management.RuntimeMXBean getRuntimeMXBean() { return null; }
+  public static Any getRuntimeMXBean() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.management.ThreadMXBean getThreadMXBean() { return null; }
+  public static Any getThreadMXBean() { return null; }
+  @generic("<T extends java.lang.management.PlatformManagedObject>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T extends java.lang.management.PlatformManagedObject> T getPlatformMXBean(java.lang.Class<T> mxbeanInterface) { return null; }
+  public static Any getPlatformMXBean(Any mxbeanInterface) { return null; }
+  @generic("<T extends java.lang.management.PlatformManagedObject>")
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static <T extends java.lang.management.PlatformManagedObject> T getPlatformMXBean(javax.management.MBeanServerConnection connection, java.lang.Class<T> mxbeanInterface) { return null; }
+  public static Any getPlatformMXBean(Any connection, Any mxbeanInterface) { return null; }
+  @generic("<T extends java.lang.management.PlatformManagedObject>")
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static <T extends java.lang.management.PlatformManagedObject> java.util.List<T> getPlatformMXBeans(javax.management.MBeanServerConnection connection, java.lang.Class<T> mxbeanInterface) { return null; }
+  public static Any getPlatformMXBeans(Any connection, Any mxbeanInterface) { return null; }
+  @generic("<T extends java.lang.management.PlatformManagedObject>")
   @throwable("java.lang.UnsupportedOperationException")
-  public static <T extends java.lang.management.PlatformManagedObject> java.util.List<T> getPlatformMXBeans(java.lang.Class<T> mxbeanInterface) { return null; }
+  public static Any getPlatformMXBeans(Any mxbeanInterface) { return null; }
+  @generic("<T>")
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public static <T> T newPlatformMXBeanProxy(javax.management.MBeanServerConnection connection, java.lang.String mxbeanName, java.lang.Class<T> mxbeanInterface) { return null; }
+  public static Any newPlatformMXBeanProxy(Any connection, String mxbeanName, Any mxbeanInterface) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static synchronized javax.management.MBeanServer getPlatformMBeanServer() { return null; }
+  public static synchronized Any getPlatformMBeanServer() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Set<java.lang.Class<? extends java.lang.management.PlatformManagedObject>> getPlatformManagementInterfaces() { return null; }
+  public static Any getPlatformManagementInterfaces() { return null; }
   < ---- END java signatures ---- >
 }

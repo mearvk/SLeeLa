@@ -56,20 +56,38 @@ class DescriptorSupport {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public DescriptorSupport bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public DescriptorSupport(java.lang.String... fields) { }
+  public DescriptorSupport(String... fields) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.RuntimeOperationsException")
-  public DescriptorSupport(java.lang.String[] fieldNames, java.lang.Object[] fieldValues) { }
+  public DescriptorSupport(String[] fieldNames, Any[] fieldValues) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException, javax.management.modelmbean.XMLParseException")
-  public DescriptorSupport(java.lang.String inStr) { }
+  public DescriptorSupport(String inStr) { }
   @throwable("java.lang.UnsupportedOperationException")
   public DescriptorSupport() { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.MBeanException, javax.management.RuntimeOperationsException")
   public DescriptorSupport(int initNumFields) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public DescriptorSupport(javax.management.modelmbean.DescriptorSupport inDescr) { }
+  public DescriptorSupport(Any inDescr) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -79,30 +97,30 @@ class DescriptorSupport {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized boolean equals(java.lang.Object o) { return false; }
+  public synchronized boolean equals(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.String toString() { return null; }
+  public synchronized String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public synchronized int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.RuntimeOperationsException")
-  public synchronized java.lang.Object clone() { return null; }
+  public synchronized Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.String[] getFields() { return null; }
+  public synchronized String[] getFields() { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.RuntimeOperationsException")
   public synchronized boolean isValid() { return false; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.RuntimeOperationsException")
-  public synchronized void setFields(java.lang.String[] fieldNames, java.lang.Object[] fieldValues) { }
+  public synchronized void setFields(String[] fieldNames, Any[] fieldValues) { }
   @throwable("java.lang.UnsupportedOperationException, javax.management.RuntimeOperationsException")
-  public synchronized java.lang.Object getFieldValue(java.lang.String fieldName) { return null; }
+  public synchronized Any getFieldValue(String fieldName) { return null; }
   @throwable("java.lang.UnsupportedOperationException, javax.management.RuntimeOperationsException")
-  public synchronized void setField(java.lang.String fieldName, java.lang.Object fieldValue) { }
+  public synchronized void setField(String fieldName, Any fieldValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.String[] getFieldNames() { return null; }
+  public synchronized String[] getFieldNames() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.Object[] getFieldValues(java.lang.String... fieldNames) { return null; }
+  public synchronized Any[] getFieldValues(String... fieldNames) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removeField(java.lang.String fieldName) { }
+  public synchronized void removeField(String fieldName) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.lang.String toXMLString() { return null; }
+  public synchronized String toXMLString() { return null; }
   < ---- END java signatures ---- >
 }

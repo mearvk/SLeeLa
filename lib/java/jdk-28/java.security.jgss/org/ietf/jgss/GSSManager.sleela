@@ -56,6 +56,24 @@ class GSSManager {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public GSSManager bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,36 +87,36 @@ class GSSManager {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public static org.ietf.jgss.GSSManager getInstance() { return null; }
+  public static Any getInstance() { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public org.ietf.jgss.GSSContext createContext(org.ietf.jgss.GSSName peer, org.ietf.jgss.Oid mech, org.ietf.jgss.GSSCredential myCred, int lifetime) { return null; }
+  public Any createContext(Any peer, Any mech, Any myCred, int lifetime) { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public org.ietf.jgss.GSSContext createContext(byte[] interProcessToken) { return null; }
+  public Any createContext(byte[] interProcessToken) { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public org.ietf.jgss.GSSContext createContext(org.ietf.jgss.GSSCredential myCred) { return null; }
+  public Any createContext(Any myCred) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public org.ietf.jgss.Oid[] getMechs() { return null; }
+  public Any[] getMechs() { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public org.ietf.jgss.Oid[] getNamesForMech(org.ietf.jgss.Oid mech) { return null; }
+  public Any[] getNamesForMech(Any mech) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public org.ietf.jgss.Oid[] getMechsForName(org.ietf.jgss.Oid nameType) { return null; }
+  public Any[] getMechsForName(Any nameType) { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public org.ietf.jgss.GSSName createName(byte[] name, org.ietf.jgss.Oid nameType, org.ietf.jgss.Oid mech) { return null; }
+  public Any createName(byte[] name, Any nameType, Any mech) { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public org.ietf.jgss.GSSName createName(java.lang.String nameStr, org.ietf.jgss.Oid nameType, org.ietf.jgss.Oid mech) { return null; }
+  public Any createName(String nameStr, Any nameType, Any mech) { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public org.ietf.jgss.GSSName createName(java.lang.String nameStr, org.ietf.jgss.Oid nameType) { return null; }
+  public Any createName(String nameStr, Any nameType) { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public org.ietf.jgss.GSSName createName(byte[] name, org.ietf.jgss.Oid nameType) { return null; }
+  public Any createName(byte[] name, Any nameType) { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public org.ietf.jgss.GSSCredential createCredential(int usage) { return null; }
+  public Any createCredential(int usage) { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public org.ietf.jgss.GSSCredential createCredential(org.ietf.jgss.GSSName name, int lifetime, org.ietf.jgss.Oid[] mechs, int usage) { return null; }
+  public Any createCredential(Any name, int lifetime, Any[] mechs, int usage) { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public org.ietf.jgss.GSSCredential createCredential(org.ietf.jgss.GSSName name, int lifetime, org.ietf.jgss.Oid mech, int usage) { return null; }
+  public Any createCredential(Any name, int lifetime, Any mech, int usage) { return null; }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public void addProviderAtFront(java.security.Provider p, org.ietf.jgss.Oid mech) { }
+  public void addProviderAtFront(Any p, Any mech) { }
   @throwable("java.lang.AbstractMethodError, org.ietf.jgss.GSSException")
-  public void addProviderAtEnd(java.security.Provider p, org.ietf.jgss.Oid mech) { }
+  public void addProviderAtEnd(Any p, Any mech) { }
   < ---- END java signatures ---- >
 }

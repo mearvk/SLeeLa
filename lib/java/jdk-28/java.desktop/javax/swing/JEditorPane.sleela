@@ -56,6 +56,24 @@ class JEditorPane {
   String javaKind = "class";
   String javaSuper = "javax.swing.text.JTextComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JEditorPane bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String W3C_LENGTH_UNITS = "JEditorPane.w3cLengthUnits";
@@ -64,11 +82,11 @@ class JEditorPane {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public JEditorPane(java.lang.String type, java.lang.String text) { }
+  public JEditorPane(String type, String text) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public JEditorPane(java.lang.String url) { }
+  public JEditorPane(String url) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public JEditorPane(java.net.URL initialPage) { }
+  public JEditorPane(Any initialPage) { }
   @throwable("java.lang.UnsupportedOperationException")
   public JEditorPane() { }
   < ---- END java constructors ---- >
@@ -81,66 +99,66 @@ class JEditorPane {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void read(java.io.InputStream in, java.lang.Object desc) { }
+  public void read(Any in, Any desc) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getText() { return null; }
+  public String getText() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setText(java.lang.String t) { }
+  public void setText(String t) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize() { return null; }
+  public Any getPreferredSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void scrollToReference(java.lang.String reference) { }
+  public void scrollToReference(String reference) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.text.EditorKit createDefaultEditorKit() { return null; }
+  Any createDefaultEditorKit() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.EditorKit getEditorKitForContentType(java.lang.String type) { return null; }
+  public Any getEditorKitForContentType(String type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setEditorKit(javax.swing.text.EditorKit kit) { }
+  public void setEditorKit(Any kit) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.text.EditorKit createEditorKitForContentType(java.lang.String type) { return null; }
+  public static Any createEditorKitForContentType(String type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setEditorKitForContentType(java.lang.String type, javax.swing.text.EditorKit k) { }
+  public void setEditorKitForContentType(String type, Any k) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void registerEditorKitForContentType(java.lang.String type, java.lang.String classname) { }
+  public static void registerEditorKitForContentType(String type, String classname) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void registerEditorKitForContentType(java.lang.String type, java.lang.String classname, java.lang.ClassLoader loader) { }
+  public static void registerEditorKitForContentType(String type, String classname, Any loader) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addHyperlinkListener(javax.swing.event.HyperlinkListener listener) { }
+  public synchronized void addHyperlinkListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removeHyperlinkListener(javax.swing.event.HyperlinkListener listener) { }
+  public synchronized void removeHyperlinkListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized javax.swing.event.HyperlinkListener[] getHyperlinkListeners() { return null; }
+  public synchronized Any[] getHyperlinkListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void fireHyperlinkUpdate(javax.swing.event.HyperlinkEvent e) { }
+  public void fireHyperlinkUpdate(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String getEditorKitClassNameForContentType(java.lang.String type) { return null; }
+  public static String getEditorKitClassNameForContentType(String type) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.text.EditorKit getEditorKit() { return null; }
+  public Any getEditorKit() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void replaceSelection(java.lang.String content) { }
+  public void replaceSelection(String content) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getScrollableTracksViewportWidth() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getScrollableTracksViewportHeight() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  java.io.InputStream getStream(java.net.URL page) { return null; }
+  Any getStream(Any page) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.net.URL getPage() { return null; }
+  public Any getPage() { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void setPage(java.lang.String url) { }
+  public void setPage(String url) { }
   @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
-  public void setPage(java.net.URL page) { }
+  public void setPage(Any page) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void setContentType(java.lang.String type) { }
+  public final void setContentType(String type) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.String getContentType() { return null; }
+  public final String getContentType() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class ImageTypeSpecifier {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public ImageTypeSpecifier bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any colorModel;
@@ -64,9 +82,9 @@ class ImageTypeSpecifier {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public ImageTypeSpecifier(java.awt.image.RenderedImage image) { }
+  public ImageTypeSpecifier(Any image) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public ImageTypeSpecifier(java.awt.image.ColorModel colorModel, java.awt.image.SampleModel sampleModel) { }
+  public ImageTypeSpecifier(Any colorModel, Any sampleModel) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -76,39 +94,39 @@ class ImageTypeSpecifier {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object o) { return false; }
+  public boolean equals(Any o) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.BufferedImage createBufferedImage(int width, int height) { return null; }
+  public Any createBufferedImage(int width, int height) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.imageio.ImageTypeSpecifier createPacked(java.awt.color.ColorSpace colorSpace, int redMask, int greenMask, int blueMask, int alphaMask, int transferType, boolean isAlphaPremultiplied) { return null; }
+  public static Any createPacked(Any colorSpace, int redMask, int greenMask, int blueMask, int alphaMask, int transferType, boolean isAlphaPremultiplied) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.imageio.ImageTypeSpecifier createInterleaved(java.awt.color.ColorSpace colorSpace, int[] bandOffsets, int dataType, boolean hasAlpha, boolean isAlphaPremultiplied) { return null; }
+  public static Any createInterleaved(Any colorSpace, int[] bandOffsets, int dataType, boolean hasAlpha, boolean isAlphaPremultiplied) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.imageio.ImageTypeSpecifier createGrayscale(int bits, int dataType, boolean isSigned, boolean isAlphaPremultiplied) { return null; }
+  public static Any createGrayscale(int bits, int dataType, boolean isSigned, boolean isAlphaPremultiplied) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.imageio.ImageTypeSpecifier createGrayscale(int bits, int dataType, boolean isSigned) { return null; }
+  public static Any createGrayscale(int bits, int dataType, boolean isSigned) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.imageio.ImageTypeSpecifier createIndexed(byte[] redLUT, byte[] greenLUT, byte[] blueLUT, byte[] alphaLUT, int bits, int dataType) { return null; }
+  public static Any createIndexed(byte[] redLUT, byte[] greenLUT, byte[] blueLUT, byte[] alphaLUT, int bits, int dataType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.imageio.ImageTypeSpecifier createBanded(java.awt.color.ColorSpace colorSpace, int[] bankIndices, int[] bandOffsets, int dataType, boolean hasAlpha, boolean isAlphaPremultiplied) { return null; }
+  public static Any createBanded(Any colorSpace, int[] bankIndices, int[] bandOffsets, int dataType, boolean hasAlpha, boolean isAlphaPremultiplied) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.imageio.ImageTypeSpecifier createFromBufferedImageType(int bufferedImageType) { return null; }
+  public static Any createFromBufferedImageType(int bufferedImageType) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.imageio.ImageTypeSpecifier createFromRenderedImage(java.awt.image.RenderedImage image) { return null; }
+  public static Any createFromRenderedImage(Any image) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getBufferedImageType() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getBitsPerBand(int band) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.ColorModel getColorModel() { return null; }
+  public Any getColorModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getNumBands() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.SampleModel getSampleModel() { return null; }
+  public Any getSampleModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.SampleModel getSampleModel(int width, int height) { return null; }
+  public Any getSampleModel(int width, int height) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getNumComponents() { return 0; }
   < ---- END java signatures ---- >

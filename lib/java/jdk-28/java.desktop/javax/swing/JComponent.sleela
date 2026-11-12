@@ -56,6 +56,24 @@ class JComponent {
   String javaKind = "class";
   String javaSuper = "java.awt.Container";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JComponent bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int WHEN_FOCUSED = 0;
@@ -80,20 +98,20 @@ class JComponent {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public void update(java.awt.Graphics g) { }
+  public void update(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean contains(int x, int y) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getBounds(java.awt.Rectangle rv) { return null; }
+  public Any getBounds(Any rv) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Point getLocation(java.awt.Point rv) { return null; }
+  public Any getLocation(Any rv) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getSize(java.awt.Dimension rv) { return null; }
+  public Any getSize(Any rv) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setOpaque(boolean isOpaque) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isOpaque() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -121,57 +139,57 @@ class JComponent {
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getVerifyInputWhenFocusTarget() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBorder(javax.swing.border.Border border) { }
+  public void setBorder(Any border) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setAlignmentY(float alignmentY) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setAlignmentX(float alignmentX) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setInputVerifier(javax.swing.InputVerifier inputVerifier) { }
+  public void setInputVerifier(Any inputVerifier) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.InputVerifier getInputVerifier() { return null; }
+  public Any getInputVerifier() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setDebugGraphicsOptions(int debugOptions) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getDebugGraphicsOptions() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void unregisterKeyboardAction(javax.swing.KeyStroke aKeyStroke) { }
+  public void unregisterKeyboardAction(Any aKeyStroke) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.KeyStroke[] getRegisteredKeyStrokes() { return null; }
+  public Any[] getRegisteredKeyStrokes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getConditionForKeyStroke(javax.swing.KeyStroke aKeyStroke) { return 0; }
+  public int getConditionForKeyStroke(Any aKeyStroke) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.event.ActionListener getActionForKeyStroke(javax.swing.KeyStroke aKeyStroke) { return null; }
+  public Any getActionForKeyStroke(Any aKeyStroke) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void resetKeyboardActions() { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean requestDefaultFocus() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setToolTipText(java.lang.String text) { }
+  public void setToolTipText(String text) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Point getToolTipLocation(java.awt.event.MouseEvent event) { return null; }
+  public Any getToolTipLocation(Any event) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Point getPopupLocation(java.awt.event.MouseEvent event) { return null; }
+  public Any getPopupLocation(Any event) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JToolTip createToolTip() { return null; }
+  public Any createToolTip() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getAutoscrolls() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTransferHandler(javax.swing.TransferHandler newHandler) { }
+  public void setTransferHandler(Any newHandler) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.TransferHandler getTransferHandler() { return null; }
+  public Any getTransferHandler() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getVisibleRect() { return null; }
+  public Any getVisibleRect() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Container getTopLevelAncestor() { return null; }
+  public Any getTopLevelAncestor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setDoubleBuffered(boolean aFlag) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void firePropertyChange(java.lang.String propertyName, boolean oldValue, boolean newValue) { }
+  public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void firePropertyChange(java.lang.String propertyName, char oldValue, char newValue) { }
+  public void firePropertyChange(String propertyName, char oldValue, char newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void firePropertyChange(java.lang.String propertyName, int oldValue, int newValue) { }
+  public void firePropertyChange(String propertyName, int oldValue, int newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void requestFocus() { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -179,34 +197,34 @@ class JComponent {
   @throwable("java.lang.UnsupportedOperationException")
   public int getHeight() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getPreferredSize() { return null; }
+  public Any getPreferredSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize() { return null; }
+  public Any getMinimumSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFocusTraversalKeys(int id, java.util.Set<? extends java.awt.AWTKeyStroke> keystrokes) { }
+  public void setFocusTraversalKeys(int id, Any keystrokes) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setEnabled(boolean enabled) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void repaint(long tm, int x, int y, int width, int height) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void repaint(java.awt.Rectangle r) { }
+  public void repaint(Any r) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void hide() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setForeground(java.awt.Color fg) { }
+  public void setForeground(Any fg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setBackground(java.awt.Color bg) { }
+  public void setBackground(Any bg) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Graphics getGraphics() { return null; }
+  public Any getGraphics() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processKeyEvent(java.awt.event.KeyEvent e) { }
+  void processKeyEvent(Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processMouseEvent(java.awt.event.MouseEvent e) { }
+  void processMouseEvent(Any e) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processMouseMotionEvent(java.awt.event.MouseEvent e) { }
+  void processMouseMotionEvent(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean requestFocusInWindow() { return false; }
   @JavaProtected
@@ -216,157 +234,158 @@ class JComponent {
   public boolean isDoubleBuffered() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
-  void fireVetoableChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) { }
+  void fireVetoableChange(String propertyName, Any oldValue, Any newValue) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void addVetoableChangeListener(java.beans.VetoableChangeListener listener) { }
+  public synchronized void addVetoableChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized void removeVetoableChangeListener(java.beans.VetoableChangeListener listener) { }
+  public synchronized void removeVetoableChangeListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public synchronized java.beans.VetoableChangeListener[] getVetoableChangeListeners() { return null; }
+  public synchronized Any[] getVetoableChangeListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintBorder(java.awt.Graphics g) { }
+  void paintBorder(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setUI(javax.swing.plaf.ComponentUI newUI) { }
+  void setUI(Any newUI) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ComponentUI getUI() { return null; }
+  public Any getUI() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean processKeyBinding(javax.swing.KeyStroke ks, java.awt.event.KeyEvent e, int condition, boolean pressed) { return false; }
+  boolean processKeyBinding(Any ks, Any e, int condition, boolean pressed) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getInheritsPopupMenu() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JPopupMenu getComponentPopupMenu() { return null; }
+  public Any getComponentPopupMenu() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isManagingFocus() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Locale getDefaultLocale() { return null; }
+  public static Any getDefaultLocale() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void putClientProperty(java.lang.Object key, java.lang.Object value) { }
+  public final void putClientProperty(Any key, Any value) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isOptimizedDrawingEnabled() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static boolean isLightweightComponent(java.awt.Component c) { return false; }
+  public static boolean isLightweightComponent(Any c) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.border.Border getBorder() { return null; }
+  public Any getBorder() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Graphics getComponentGraphics(java.awt.Graphics g) { return null; }
+  Any getComponentGraphics(Any g) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintComponent(java.awt.Graphics g) { }
+  void paintComponent(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void printComponent(java.awt.Graphics g) { }
+  void printComponent(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void printBorder(java.awt.Graphics g) { }
+  void printBorder(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintChildren(java.awt.Graphics g) { }
+  void paintChildren(Any g) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void printChildren(java.awt.Graphics g) { }
+  void printChildren(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getNextFocusableComponent() { return null; }
+  public Any getNextFocusableComponent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setNextFocusableComponent(java.awt.Component aComponent) { }
+  public void setNextFocusableComponent(Any aComponent) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.lang.Object getClientProperty(java.lang.Object key) { return null; }
+  public final Any getClientProperty(Any key) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final javax.swing.InputMap getInputMap() { return null; }
+  public final Any getInputMap() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final javax.swing.InputMap getInputMap(int condition) { return null; }
+  public final Any getInputMap(int condition) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final javax.swing.ActionMap getActionMap() { return null; }
+  public final Any getActionMap() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void registerKeyboardAction(java.awt.event.ActionListener anAction, javax.swing.KeyStroke aKeyStroke, int aCondition) { }
+  public void registerKeyboardAction(Any anAction, Any aKeyStroke, int aCondition) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void registerKeyboardAction(java.awt.event.ActionListener anAction, java.lang.String aCommand, javax.swing.KeyStroke aKeyStroke, int aCondition) { }
+  public void registerKeyboardAction(Any anAction, String aCommand, Any aKeyStroke, int aCondition) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void setInputMap(int condition, javax.swing.InputMap map) { }
+  public final void setInputMap(int condition, Any map) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void setActionMap(javax.swing.ActionMap am) { }
+  public final void setActionMap(Any am) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static void setDefaultLocale(java.util.Locale l) { }
+  public static void setDefaultLocale(Any l) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void processComponentKeyEvent(java.awt.event.KeyEvent e) { }
+  void processComponentKeyEvent(Any e) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getToolTipText() { return null; }
+  public String getToolTipText() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getToolTipText(java.awt.event.MouseEvent event) { return null; }
+  public String getToolTipText(Any event) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void scrollRectToVisible(java.awt.Rectangle aRect) { }
+  public void scrollRectToVisible(Any aRect) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setAutoscrolls(boolean autoscrolls) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void computeVisibleRect(java.awt.Rectangle visibleRect) { }
+  public void computeVisibleRect(Any visibleRect) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addAncestorListener(javax.swing.event.AncestorListener listener) { }
+  public void addAncestorListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeAncestorListener(javax.swing.event.AncestorListener listener) { }
+  public void removeAncestorListener(Any listener) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.AncestorListener[] getAncestorListeners() { return null; }
+  public Any[] getAncestorListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void paintImmediately(int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paintImmediately(java.awt.Rectangle r) { }
+  public void paintImmediately(Any r) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   boolean isPaintingOrigin() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setInheritsPopupMenu(boolean value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setComponentPopupMenu(javax.swing.JPopupMenu popup) { }
+  public void setComponentPopupMenu(Any popup) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void reshape(int x, int y, int w, int h) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JRootPane getRootPane() { return null; }
+  public Any getRootPane() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getWidth() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPreferredSize(java.awt.Dimension preferredSize) { }
+  public void setPreferredSize(Any preferredSize) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setMinimumSize(java.awt.Dimension minimumSize) { }
+  public void setMinimumSize(Any minimumSize) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setMaximumSize(java.awt.Dimension maximumSize) { }
+  public void setMaximumSize(Any maximumSize) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getBaseline(int width, int height) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior() { return null; }
+  public Any getBaselineResizeBehavior() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void revalidate() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.FontMetrics getFontMetrics(java.awt.Font font) { return null; }
+  public Any getFontMetrics(Any font) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void printAll(java.awt.Graphics g) { }
+  public void printAll(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isValidateRoot() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public void addNotify() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Insets getInsets() { return null; }
+  public Any getInsets() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Insets getInsets(java.awt.Insets insets) { return null; }
+  public Any getInsets(Any insets) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeNotify() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setFont(java.awt.Font font) { }
+  public void setFont(Any font) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMaximumSize() { return null; }
+  public Any getMaximumSize() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public float getAlignmentX() { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
   public float getAlignmentY() { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g) { }
+  public void paint(Any g) { }
+  @generic("<T extends java.util.EventListener>")
   @throwable("java.lang.UnsupportedOperationException")
-  public <T extends java.util.EventListener> T[] getListeners(java.lang.Class<T> listenerType) { return null; }
+  public Any[] getListeners(Any listenerType) { return null; }
   < ---- END java signatures ---- >
 }

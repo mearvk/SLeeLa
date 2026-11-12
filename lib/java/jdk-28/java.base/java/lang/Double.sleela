@@ -56,6 +56,24 @@ class Double {
   String javaKind = "class";
   String javaSuper = "java.lang.Number";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Double bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static double POSITIVE_INFINITY = 0.0;
@@ -75,7 +93,7 @@ class Double {
   @throwable("java.lang.UnsupportedOperationException")
   public Double(double value) { }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public Double(java.lang.String s) { }
+  public Double(String s) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -85,11 +103,11 @@ class Double {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toString(double d) { return null; }
+  public static String toString(double d) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -111,7 +129,7 @@ class Double {
   @throwable("java.lang.UnsupportedOperationException")
   public static native double longBitsToDouble(long bits) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(java.lang.Double anotherDouble) { return 0; }
+  public int compareTo(Any anotherDouble) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public static int compare(double d1, double d2) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -127,15 +145,15 @@ class Double {
   @throwable("java.lang.UnsupportedOperationException")
   public double doubleValue() { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static java.lang.Double valueOf(java.lang.String s) { return null; }
+  public static Any valueOf(String s) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.Double valueOf(double d) { return null; }
+  public static Any valueOf(double d) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.lang.String toHexString(double d) { return null; }
+  public static String toHexString(double d) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Double resolveConstantDesc(java.lang.invoke.MethodHandles.Lookup lookup) { return null; }
+  public Any resolveConstantDesc(Any lookup) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Optional<java.lang.Double> describeConstable() { return null; }
+  public Any describeConstable() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isNaN() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -143,6 +161,6 @@ class Double {
   @throwable("java.lang.UnsupportedOperationException")
   public static double sum(double a, double b) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NumberFormatException")
-  public static double parseDouble(java.lang.String s) { return 0.0; }
+  public static double parseDouble(String s) { return 0.0; }
   < ---- END java signatures ---- >
 }

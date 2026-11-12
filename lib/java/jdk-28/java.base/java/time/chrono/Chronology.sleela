@@ -56,6 +56,24 @@ class Chronology {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Chronology bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
@@ -64,67 +82,67 @@ class Chronology {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int hashCode() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public int compareTo(java.time.chrono.Chronology other) { return 0; }
+  public int compareTo(Any other) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.chrono.Chronology of(java.lang.String id) { return null; }
+  public static Any of(String id) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.chrono.Chronology from(java.time.temporal.TemporalAccessor temporal) { return null; }
+  public static Any from(Any temporal) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getId() { return null; }
+  public String getId() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.temporal.ValueRange range(java.time.temporal.ChronoField field) { return null; }
+  public Any range(Any field) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.lang.String getDisplayName(java.time.format.TextStyle style, java.util.Locale locale) { return null; }
+  public default String getDisplayName(Any style, Any locale) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.chrono.ChronoLocalDate date(int prolepticYear, int month, int dayOfMonth) { return null; }
+  public Any date(int prolepticYear, int month, int dayOfMonth) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.chrono.ChronoLocalDate date(java.time.temporal.TemporalAccessor temporal) { return null; }
+  public Any date(Any temporal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoLocalDate date(java.time.chrono.Era era, int yearOfEra, int month, int dayOfMonth) { return null; }
+  public default Any date(Any era, int yearOfEra, int month, int dayOfMonth) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.util.List<java.time.chrono.Era> eras() { return null; }
+  public Any eras() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default long epochSecond(java.time.chrono.Era era, int yearOfEra, int month, int dayOfMonth, int hour, int minute, int second, java.time.ZoneOffset zoneOffset) { return 0; }
+  public default long epochSecond(Any era, int yearOfEra, int month, int dayOfMonth, int hour, int minute, int second, Any zoneOffset) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default long epochSecond(int prolepticYear, int month, int dayOfMonth, int hour, int minute, int second, java.time.ZoneOffset zoneOffset) { return 0; }
+  public default long epochSecond(int prolepticYear, int month, int dayOfMonth, int hour, int minute, int second, Any zoneOffset) { return 0; }
   @throwable("java.lang.AbstractMethodError")
   public boolean isLeapYear(long prolepticYear) { return false; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.chrono.Era eraOf(int eraValue) { return null; }
+  public Any eraOf(int eraValue) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoLocalDateTime<? extends java.time.chrono.ChronoLocalDate> localDateTime(java.time.temporal.TemporalAccessor temporal) { return null; }
+  public default Any localDateTime(Any temporal) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.lang.String getCalendarType() { return null; }
+  public String getCalendarType() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.chrono.ChronoLocalDate dateEpochDay(long epochDay) { return null; }
+  public Any dateEpochDay(long epochDay) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoLocalDate dateNow() { return null; }
+  public default Any dateNow() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoLocalDate dateNow(java.time.ZoneId zone) { return null; }
+  public default Any dateNow(Any zone) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public int prolepticYear(java.time.chrono.Era era, int yearOfEra) { return 0; }
+  public int prolepticYear(Any era, int yearOfEra) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.chrono.ChronoLocalDate dateYearDay(int prolepticYear, int dayOfYear) { return null; }
+  public Any dateYearDay(int prolepticYear, int dayOfYear) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoLocalDate dateYearDay(java.time.chrono.Era era, int yearOfEra, int dayOfYear) { return null; }
+  public default Any dateYearDay(Any era, int yearOfEra, int dayOfYear) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.time.chrono.Chronology ofLocale(java.util.Locale locale) { return null; }
+  public static Any ofLocale(Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Set<java.time.chrono.Chronology> getAvailableChronologies() { return null; }
+  public static Any getAvailableChronologies() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.time.chrono.ChronoLocalDate resolveDate(java.util.Map<java.time.temporal.TemporalField, java.lang.Long> fieldValues, java.time.format.ResolverStyle resolverStyle) { return null; }
+  public Any resolveDate(Any fieldValues, Any resolverStyle) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoZonedDateTime<? extends java.time.chrono.ChronoLocalDate> zonedDateTime(java.time.Instant instant, java.time.ZoneId zone) { return null; }
+  public default Any zonedDateTime(Any instant, Any zone) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoZonedDateTime<? extends java.time.chrono.ChronoLocalDate> zonedDateTime(java.time.temporal.TemporalAccessor temporal) { return null; }
+  public default Any zonedDateTime(Any temporal) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public default java.time.chrono.ChronoPeriod period(int years, int months, int days) { return null; }
+  public default Any period(int years, int months, int days) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public default boolean isIsoBased() { return false; }
   < ---- END java signatures ---- >

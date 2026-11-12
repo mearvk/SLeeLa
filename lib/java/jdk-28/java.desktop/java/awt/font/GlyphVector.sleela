@@ -56,6 +56,24 @@ class GlyphVector {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public GlyphVector bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int FLAG_HAS_TRANSFORMS = 1;
@@ -78,21 +96,21 @@ class GlyphVector {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError")
-  public boolean equals(java.awt.font.GlyphVector set) { return false; }
+  public boolean equals(Any set) { return false; }
   @throwable("java.lang.AbstractMethodError")
   public int getNumGlyphs() { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.font.FontRenderContext getFontRenderContext() { return null; }
+  public Any getFontRenderContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getGlyphCharIndex(int glyphIndex) { return 0; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.geom.Rectangle2D getVisualBounds() { return null; }
+  public Any getVisualBounds() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Shape getGlyphOutline(int glyphIndex) { return null; }
+  public Any getGlyphOutline(int glyphIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Shape getGlyphOutline(int glyphIndex, float x, float y) { return null; }
+  public Any getGlyphOutline(int glyphIndex, float x, float y) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Shape getGlyphVisualBounds(int glyphIndex) { return null; }
+  public Any getGlyphVisualBounds(int glyphIndex) { return null; }
   @throwable("java.lang.AbstractMethodError")
   public void performDefaultLayout() { }
   @throwable("java.lang.AbstractMethodError")
@@ -102,34 +120,34 @@ class GlyphVector {
   @throwable("java.lang.UnsupportedOperationException")
   public int[] getGlyphCharIndices(int beginGlyphIndex, int numEntries, int[] codeReturn) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.geom.Rectangle2D getLogicalBounds() { return null; }
+  public Any getLogicalBounds() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getPixelBounds(java.awt.font.FontRenderContext renderFRC, float x, float y) { return null; }
+  public Any getPixelBounds(Any renderFRC, float x, float y) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Shape getOutline(float x, float y) { return null; }
+  public Any getOutline(float x, float y) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Shape getOutline() { return null; }
+  public Any getOutline() { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.geom.Point2D getGlyphPosition(int glyphIndex) { return null; }
+  public Any getGlyphPosition(int glyphIndex) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setGlyphPosition(int glyphIndex, java.awt.geom.Point2D newPos) { }
+  public void setGlyphPosition(int glyphIndex, Any newPos) { }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.geom.AffineTransform getGlyphTransform(int glyphIndex) { return null; }
+  public Any getGlyphTransform(int glyphIndex) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public void setGlyphTransform(int glyphIndex, java.awt.geom.AffineTransform newTX) { }
+  public void setGlyphTransform(int glyphIndex, Any newTX) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getLayoutFlags() { return 0; }
   @throwable("java.lang.AbstractMethodError")
   public float[] getGlyphPositions(int beginGlyphIndex, int numEntries, float[] positionReturn) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Shape getGlyphLogicalBounds(int glyphIndex) { return null; }
+  public Any getGlyphLogicalBounds(int glyphIndex) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getGlyphPixelBounds(int index, java.awt.font.FontRenderContext renderFRC, float x, float y) { return null; }
+  public Any getGlyphPixelBounds(int index, Any renderFRC, float x, float y) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.font.GlyphMetrics getGlyphMetrics(int glyphIndex) { return null; }
+  public Any getGlyphMetrics(int glyphIndex) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.font.GlyphJustificationInfo getGlyphJustificationInfo(int glyphIndex) { return null; }
+  public Any getGlyphJustificationInfo(int glyphIndex) { return null; }
   @throwable("java.lang.AbstractMethodError")
-  public java.awt.Font getFont() { return null; }
+  public Any getFont() { return null; }
   < ---- END java signatures ---- >
 }

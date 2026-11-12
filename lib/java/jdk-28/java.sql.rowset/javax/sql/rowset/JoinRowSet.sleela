@@ -56,6 +56,24 @@ class JoinRowSet {
   String javaKind = "interface";
   String javaSuper = "";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JoinRowSet bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int CROSS_JOIN = 0;
@@ -72,21 +90,21 @@ class JoinRowSet {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void addRowSet(javax.sql.RowSet[] rowset, java.lang.String[] columnName) { }
+  public void addRowSet(Any[] rowset, String[] columnName) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void addRowSet(javax.sql.RowSet[] rowset, int[] columnIdx) { }
+  public void addRowSet(Any[] rowset, int[] columnIdx) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void addRowSet(javax.sql.RowSet rowset, java.lang.String columnName) { }
+  public void addRowSet(Any rowset, String columnName) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void addRowSet(javax.sql.RowSet rowset, int columnIdx) { }
+  public void addRowSet(Any rowset, int columnIdx) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public void addRowSet(javax.sql.rowset.Joinable rowset) { }
+  public void addRowSet(Any rowset) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.util.Collection<?> getRowSets() { return null; }
+  public Any getRowSets() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.String[] getRowSetNames() { return null; }
+  public String[] getRowSetNames() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public javax.sql.rowset.CachedRowSet toCachedRowSet() { return null; }
+  public Any toCachedRowSet() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public boolean supportsCrossJoin() { return false; }
   @throwable("java.lang.AbstractMethodError")
@@ -100,7 +118,7 @@ class JoinRowSet {
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public void setJoinType(int joinType) { }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
-  public java.lang.String getWhereClause() { return null; }
+  public String getWhereClause() { return null; }
   @throwable("java.lang.AbstractMethodError, java.sql.SQLException")
   public int getJoinType() { return 0; }
   < ---- END java signatures ---- >

@@ -56,6 +56,24 @@ class JMenuBar {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JMenuBar bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
@@ -69,64 +87,64 @@ class JMenuBar {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JMenu add(javax.swing.JMenu c) { return null; }
+  public Any add(Any c) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getComponent() { return null; }
+  public Any getComponent() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void processKeyEvent(java.awt.event.KeyEvent e, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { }
+  public void processKeyEvent(Any e, Any[] path, Any manager) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void processMouseEvent(java.awt.event.MouseEvent event, javax.swing.MenuElement[] path, javax.swing.MenuSelectionManager manager) { }
+  public void processMouseEvent(Any event, Any[] path, Any manager) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintBorder(java.awt.Graphics g) { }
+  void paintBorder(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSelectionModel(javax.swing.SingleSelectionModel model) { }
+  public void setSelectionModel(Any model) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUI(javax.swing.plaf.MenuBarUI ui) { }
+  public void setUI(Any ui) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.MenuBarUI getUI() { return null; }
+  public Any getUI() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component getComponentAtIndex(int i) { return null; }
+  public Any getComponentAtIndex(int i) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.SingleSelectionModel getSelectionModel() { return null; }
+  public Any getSelectionModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isSelected() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isBorderPainted() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  boolean processKeyBinding(javax.swing.KeyStroke ks, java.awt.event.KeyEvent e, int condition, boolean pressed) { return false; }
+  boolean processKeyBinding(Any ks, Any e, int condition, boolean pressed) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.MenuElement[] getSubElements() { return null; }
+  public Any[] getSubElements() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getUIClassID() { return null; }
+  public String getUIClassID() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JMenu getMenu(int index) { return null; }
+  public Any getMenu(int index) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMenuCount() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setHelpMenu(javax.swing.JMenu menu) { }
+  public void setHelpMenu(Any menu) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.JMenu getHelpMenu() { return null; }
+  public Any getHelpMenu() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSelected(java.awt.Component sel) { }
+  public void setSelected(Any sel) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setBorderPainted(boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setMargin(java.awt.Insets m) { }
+  public void setMargin(Any m) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Insets getMargin() { return null; }
+  public Any getMargin() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void menuSelectionChanged(boolean isIncluded) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getComponentIndex(java.awt.Component c) { return 0; }
+  public int getComponentIndex(Any c) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.accessibility.AccessibleContext getAccessibleContext() { return null; }
+  public Any getAccessibleContext() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void addNotify() { }
   @throwable("java.lang.UnsupportedOperationException")

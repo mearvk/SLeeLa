@@ -56,6 +56,24 @@ class AbstractButton {
   String javaKind = "class";
   String javaSuper = "javax.swing.JComponent";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public AbstractButton bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final String MODEL_CHANGED_PROPERTY = "model";
@@ -99,27 +117,27 @@ class AbstractButton {
      java implementation block; the generator then drops the stub. >>
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void init(java.lang.String text, javax.swing.Icon icon) { }
+  void init(String text, Any icon) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.lang.String paramString() { return null; }
+  String paramString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getLabel() { return null; }
+  public String getLabel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getText() { return null; }
+  public String getText() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setText(java.lang.String text) { }
+  public void setText(String text) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setEnabled(boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void updateUI() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintBorder(java.awt.Graphics g) { }
+  void paintBorder(Any g) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setUI(javax.swing.plaf.ButtonUI ui) { }
+  public void setUI(Any ui) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.plaf.ButtonUI getUI() { return null; }
+  public Any getUI() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isSelected() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -129,35 +147,35 @@ class AbstractButton {
   @throwable("java.lang.UnsupportedOperationException")
   public void setBorderPainted(boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setMargin(java.awt.Insets m) { }
+  public void setMargin(Any m) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Insets getMargin() { return null; }
+  public Any getMargin() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLabel(java.lang.String label) { }
+  public void setLabel(String label) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addActionListener(java.awt.event.ActionListener l) { }
+  public void addActionListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setActionCommand(java.lang.String actionCommand) { }
+  public void setActionCommand(String actionCommand) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeActionListener(java.awt.event.ActionListener l) { }
+  public void removeActionListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.event.ActionListener[] getActionListeners() { return null; }
+  public Any[] getActionListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addItemListener(java.awt.event.ItemListener l) { }
+  public void addItemListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object[] getSelectedObjects() { return null; }
+  public Any[] getSelectedObjects() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeItemListener(java.awt.event.ItemListener l) { }
+  public void removeItemListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.event.ItemListener[] getItemListeners() { return null; }
+  public Any[] getItemListeners() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getIcon() { return null; }
+  public Any getIcon() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Action getAction() { return null; }
+  public Any getAction() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int w, int h) { return false; }
+  public boolean imageUpdate(Any img, int infoflags, int x, int y, int w, int h) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getActionCommand() { return null; }
+  public String getActionCommand() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int getMnemonic() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -165,29 +183,29 @@ class AbstractButton {
   @throwable("java.lang.UnsupportedOperationException")
   public void doClick(int pressTime) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.ButtonModel getModel() { return null; }
+  public Any getModel() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setRolloverEnabled(boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getDisabledIcon() { return null; }
+  public Any getDisabledIcon() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getSelectedIcon() { return null; }
+  public Any getSelectedIcon() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getDisabledSelectedIcon() { return null; }
+  public Any getDisabledSelectedIcon() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  int checkVerticalKey(int key, java.lang.String exception) { return 0; }
+  int checkVerticalKey(int key, String exception) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  int checkHorizontalKey(int key, java.lang.String exception) { return 0; }
+  int checkHorizontalKey(int key, String exception) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isRolloverEnabled() { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void configurePropertiesFromAction(javax.swing.Action a) { }
+  void configurePropertiesFromAction(Any a) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createActionPropertyChangeListener(javax.swing.Action a) { return null; }
+  Any createActionPropertyChangeListener(Any a) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getHideActionText() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -199,44 +217,44 @@ class AbstractButton {
   @throwable("java.lang.UnsupportedOperationException")
   public void setMnemonic(int mnemonic) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setIcon(javax.swing.Icon defaultIcon) { }
+  public void setIcon(Any defaultIcon) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeChangeListener(javax.swing.event.ChangeListener l) { }
+  public void removeChangeListener(Any l) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.event.ChangeListener createChangeListener() { return null; }
+  Any createChangeListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.ActionListener createActionListener() { return null; }
+  Any createActionListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.ItemListener createItemListener() { return null; }
+  Any createItemListener() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addChangeListener(javax.swing.event.ChangeListener l) { }
+  public void addChangeListener(Any l) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDisabledIcon(javax.swing.Icon disabledIcon) { }
+  public void setDisabledIcon(Any disabledIcon) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setDisabledSelectedIcon(javax.swing.Icon disabledSelectedIcon) { }
+  public void setDisabledSelectedIcon(Any disabledSelectedIcon) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setAction(javax.swing.Action a) { }
+  public void setAction(Any a) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getPressedIcon() { return null; }
+  public Any getPressedIcon() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getRolloverSelectedIcon() { return null; }
+  public Any getRolloverSelectedIcon() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.Icon getRolloverIcon() { return null; }
+  public Any getRolloverIcon() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setIconTextGap(int iconTextGap) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setContentAreaFilled(boolean b) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setPressedIcon(javax.swing.Icon pressedIcon) { }
+  public void setPressedIcon(Any pressedIcon) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setSelectedIcon(javax.swing.Icon selectedIcon) { }
+  public void setSelectedIcon(Any selectedIcon) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setRolloverIcon(javax.swing.Icon rolloverIcon) { }
+  public void setRolloverIcon(Any rolloverIcon) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setRolloverSelectedIcon(javax.swing.Icon rolloverSelectedIcon) { }
+  public void setRolloverSelectedIcon(Any rolloverSelectedIcon) { }
   @throwable("java.lang.UnsupportedOperationException")
   public int getVerticalAlignment() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -257,7 +275,7 @@ class AbstractButton {
   public int getIconTextGap() { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void actionPropertyChanged(javax.swing.Action action, java.lang.String propertyName) { }
+  void actionPropertyChanged(Any action, String propertyName) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isFocusPainted() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -271,23 +289,23 @@ class AbstractButton {
   @throwable("java.lang.UnsupportedOperationException")
   public long getMultiClickThreshhold() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setModel(javax.swing.ButtonModel newModel) { }
+  public void setModel(Any newModel) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.event.ChangeListener[] getChangeListeners() { return null; }
+  public Any[] getChangeListeners() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void fireStateChanged() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void fireActionPerformed(java.awt.event.ActionEvent event) { }
+  void fireActionPerformed(Any event) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void fireItemStateChanged(java.awt.event.ItemEvent event) { }
+  void fireItemStateChanged(Any event) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLayout(java.awt.LayoutManager mgr) { }
+  public void setLayout(Any mgr) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void addImpl(java.awt.Component comp, java.lang.Object constraints, int index) { }
+  void addImpl(Any comp, Any constraints, int index) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void removeNotify() { }
   < ---- END java signatures ---- >

@@ -56,6 +56,24 @@ class BasicTabbedPaneUI {
   String javaKind = "class";
   String javaSuper = "javax.swing.plaf.TabbedPaneUI";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BasicTabbedPaneUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < public and protected instance fields >
   Any tabPane;
@@ -103,40 +121,40 @@ class BasicTabbedPaneUI {
   void installListeners() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintText(java.awt.Graphics g, int tabPlacement, java.awt.Font font, java.awt.FontMetrics metrics, int tabIndex, java.lang.String title, java.awt.Rectangle textRect, boolean isSelected) { }
+  void paintText(Any g, int tabPlacement, Any font, Any metrics, int tabIndex, String title, Any textRect, boolean isSelected) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMinimumSize(javax.swing.JComponent c) { return null; }
+  public Any getMinimumSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void installUI(javax.swing.JComponent c) { }
+  public void installUI(Any c) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void uninstallUI(javax.swing.JComponent c) { }
+  public void uninstallUI(Any c) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.MouseListener createMouseListener() { return null; }
+  Any createMouseListener() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getTabRunCount(javax.swing.JTabbedPane pane) { return 0; }
+  public int getTabRunCount(Any pane) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Rectangle getTabBounds(int tabIndex, java.awt.Rectangle dest) { return null; }
+  Any getTabBounds(int tabIndex, Any dest) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Rectangle getTabBounds(javax.swing.JTabbedPane pane, int i) { return null; }
+  public Any getTabBounds(Any pane, int i) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int tabForCoordinate(javax.swing.JTabbedPane pane, int x, int y) { return 0; }
+  public int tabForCoordinate(Any pane, int x, int y) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void setRolloverTab(int index) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Insets getTabAreaInsets(int tabPlacement) { return null; }
+  Any getTabAreaInsets(int tabPlacement) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getBaselineOffset() { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Insets getTabInsets(int tabPlacement, int tabIndex) { return null; }
+  Any getTabInsets(int tabPlacement, int tabIndex) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.text.View getTextViewForTab(int tabIndex) { return null; }
+  Any getTextViewForTab(int tabIndex) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int calculateMaxTabHeight(int tabPlacement) { return 0; }
@@ -145,28 +163,28 @@ class BasicTabbedPaneUI {
   int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintContentBorder(java.awt.Graphics g, int tabPlacement, int selectedIndex) { }
+  void paintContentBorder(Any g, int tabPlacement, int selectedIndex) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintTabArea(java.awt.Graphics g, int tabPlacement, int selectedIndex) { }
+  void paintTabArea(Any g, int tabPlacement, int selectedIndex) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintTab(java.awt.Graphics g, int tabPlacement, java.awt.Rectangle[] rects, int tabIndex, java.awt.Rectangle iconRect, java.awt.Rectangle textRect) { }
+  void paintTab(Any g, int tabPlacement, Any[] rects, int tabIndex, Any iconRect, Any textRect) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintTabBackground(java.awt.Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) { }
+  void paintTabBackground(Any g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintTabBorder(java.awt.Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) { }
+  void paintTabBorder(Any g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.Icon getIconForTab(int tabIndex) { return null; }
+  Any getIconForTab(int tabIndex) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void layoutLabel(int tabPlacement, java.awt.FontMetrics metrics, int tabIndex, java.lang.String title, javax.swing.Icon icon, java.awt.Rectangle tabRect, java.awt.Rectangle iconRect, java.awt.Rectangle textRect, boolean isSelected) { }
+  void layoutLabel(int tabPlacement, Any metrics, int tabIndex, String title, Any icon, Any tabRect, Any iconRect, Any textRect, boolean isSelected) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintFocusIndicator(java.awt.Graphics g, int tabPlacement, java.awt.Rectangle[] rects, int tabIndex, java.awt.Rectangle iconRect, java.awt.Rectangle textRect, boolean isSelected) { }
+  void paintFocusIndicator(Any g, int tabPlacement, Any[] rects, int tabIndex, Any iconRect, Any textRect, boolean isSelected) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getTabLabelShiftX(int tabPlacement, int tabIndex, boolean isSelected) { return 0; }
@@ -181,27 +199,27 @@ class BasicTabbedPaneUI {
   int calculateTabAreaHeight(int tabPlacement, int horizRunCount, int maxTabHeight) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintContentBorderTopEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
+  void paintContentBorderTopEdge(Any g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintContentBorderLeftEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
+  void paintContentBorderLeftEdge(Any g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintContentBorderBottomEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
+  void paintContentBorderBottomEdge(Any g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintContentBorderRightEdge(java.awt.Graphics g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
+  void paintContentBorderRightEdge(Any g, int tabPlacement, int selectedIndex, int x, int y, int w, int h) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int lastTabInRun(int tabCount, int run) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  int calculateTabWidth(int tabPlacement, int tabIndex, java.awt.FontMetrics metrics) { return 0; }
+  int calculateTabWidth(int tabPlacement, int tabIndex, Any metrics) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getTabRunOverlay(int tabPlacement) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  protected static void rotateInsets(java.awt.Insets topInsets, java.awt.Insets targetInsets, int targetPlacement) { }
+  protected static void rotateInsets(Any topInsets, Any targetInsets, int targetPlacement) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getFocusIndex() { return 0; }
@@ -243,16 +261,16 @@ class BasicTabbedPaneUI {
   int getNextTabRun(int baseRun) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Component getVisibleComponent() { return null; }
+  Any getVisibleComponent() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.JButton createScrollButton(int direction) { return null; }
+  Any createScrollButton(int direction) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getRolloverTab() { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void setVisibleComponent(java.awt.Component component) { }
+  void setVisibleComponent(Any component) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void assureRectsCreated(int tabCount) { }
@@ -273,10 +291,10 @@ class BasicTabbedPaneUI {
   int calculateMaxTabWidth(int tabPlacement) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Insets getSelectedTabPadInsets(int tabPlacement) { return null; }
+  Any getSelectedTabPadInsets(int tabPlacement) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.Insets getContentBorderInsets(int tabPlacement) { return null; }
+  Any getContentBorderInsets(int tabPlacement) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void navigateSelectedTab(int direction) { }
@@ -285,25 +303,25 @@ class BasicTabbedPaneUI {
   int getPreviousTabRun(int baseRun) { return 0; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.LayoutManager createLayoutManager() { return null; }
+  Any createLayoutManager() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   int getBaseline(int tab) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int getBaseline(javax.swing.JComponent c, int width, int height) { return 0; }
+  public int getBaseline(Any c, int width, int height) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Component.BaselineResizeBehavior getBaselineResizeBehavior(javax.swing.JComponent c) { return null; }
+  public Any getBaselineResizeBehavior(Any c) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.FontMetrics getFontMetrics() { return null; }
+  Any getFontMetrics() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  void paintIcon(java.awt.Graphics g, int tabPlacement, int tabIndex, javax.swing.Icon icon, java.awt.Rectangle iconRect, boolean isSelected) { }
+  void paintIcon(Any g, int tabPlacement, int tabIndex, Any icon, Any iconRect, boolean isSelected) { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  javax.swing.event.ChangeListener createChangeListener() { return null; }
+  Any createChangeListener() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static javax.swing.plaf.ComponentUI createUI(javax.swing.JComponent c) { return null; }
+  public static Any createUI(Any c) { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void installKeyboardActions() { }
@@ -324,16 +342,16 @@ class BasicTabbedPaneUI {
   void installComponents() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.beans.PropertyChangeListener createPropertyChangeListener() { return null; }
+  Any createPropertyChangeListener() { return null; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void uninstallComponents() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  java.awt.event.FocusListener createFocusListener() { return null; }
+  Any createFocusListener() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension getMaximumSize(javax.swing.JComponent c) { return null; }
+  public Any getMaximumSize(Any c) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void paint(java.awt.Graphics g, javax.swing.JComponent c) { }
+  public void paint(Any g, Any c) { }
   < ---- END java signatures ---- >
 }

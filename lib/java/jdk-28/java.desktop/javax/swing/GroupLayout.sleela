@@ -56,6 +56,24 @@ class GroupLayout {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public GroupLayout bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int DEFAULT_SIZE = -1;
@@ -64,7 +82,7 @@ class GroupLayout {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public GroupLayout(java.awt.Container host) { }
+  public GroupLayout(Any host) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -74,33 +92,33 @@ class GroupLayout {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void replace(java.awt.Component existingComponent, java.awt.Component newComponent) { }
+  public void replace(Any existingComponent, Any newComponent) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.GroupLayout.ParallelGroup createParallelGroup() { return null; }
+  public Any createParallelGroup() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.GroupLayout.ParallelGroup createParallelGroup(javax.swing.GroupLayout.Alignment alignment) { return null; }
+  public Any createParallelGroup(Any alignment) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.GroupLayout.ParallelGroup createParallelGroup(javax.swing.GroupLayout.Alignment alignment, boolean resizable) { return null; }
+  public Any createParallelGroup(Any alignment, boolean resizable) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setHorizontalGroup(javax.swing.GroupLayout.Group group) { }
+  public void setHorizontalGroup(Any group) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setVerticalGroup(javax.swing.GroupLayout.Group group) { }
+  public void setVerticalGroup(Any group) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setHonorsVisibility(java.awt.Component component, java.lang.Boolean honorsVisibility) { }
+  public void setHonorsVisibility(Any component, Any honorsVisibility) { }
   @throwable("java.lang.UnsupportedOperationException")
   public void setHonorsVisibility(boolean honorsVisibility) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.GroupLayout.SequentialGroup createSequentialGroup() { return null; }
+  public Any createSequentialGroup() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getAutoCreateContainerGaps() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void linkSize(int axis, java.awt.Component... components) { }
+  public void linkSize(int axis, Any... components) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void linkSize(java.awt.Component... components) { }
+  public void linkSize(Any... components) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.LayoutStyle getLayoutStyle() { return null; }
+  public Any getLayoutStyle() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean getAutoCreateGaps() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -110,28 +128,28 @@ class GroupLayout {
   @throwable("java.lang.UnsupportedOperationException")
   public void setAutoCreateContainerGaps(boolean autoCreateContainerPadding) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public javax.swing.GroupLayout.ParallelGroup createBaselineGroup(boolean resizable, boolean anchorBaselineToTop) { return null; }
+  public Any createBaselineGroup(boolean resizable, boolean anchorBaselineToTop) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setLayoutStyle(javax.swing.LayoutStyle layoutStyle) { }
+  public void setLayoutStyle(Any layoutStyle) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void removeLayoutComponent(java.awt.Component component) { }
+  public void removeLayoutComponent(Any component) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addLayoutComponent(java.lang.String name, java.awt.Component component) { }
+  public void addLayoutComponent(String name, Any component) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void addLayoutComponent(java.awt.Component component, java.lang.Object constraints) { }
+  public void addLayoutComponent(Any component, Any constraints) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void layoutContainer(java.awt.Container parent) { }
+  public void layoutContainer(Any parent) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public void invalidateLayout(java.awt.Container parent) { }
+  public void invalidateLayout(Any parent) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension preferredLayoutSize(java.awt.Container parent) { return null; }
+  public Any preferredLayoutSize(Any parent) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension minimumLayoutSize(java.awt.Container parent) { return null; }
+  public Any minimumLayoutSize(Any parent) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.Dimension maximumLayoutSize(java.awt.Container parent) { return null; }
+  public Any maximumLayoutSize(Any parent) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public float getLayoutAlignmentX(java.awt.Container parent) { return 0.0; }
+  public float getLayoutAlignmentX(Any parent) { return 0.0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public float getLayoutAlignmentY(java.awt.Container parent) { return 0.0; }
+  public float getLayoutAlignmentY(Any parent) { return 0.0; }
   < ---- END java signatures ---- >
 }

@@ -56,6 +56,24 @@ class Calendar {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Calendar bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int ERA = 0;
@@ -122,7 +140,7 @@ class Calendar {
   Calendar() { }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
-  Calendar(java.util.TimeZone zone, java.util.Locale aLocale) { }
+  Calendar(Any zone, Any aLocale) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -134,15 +152,15 @@ class Calendar {
   @throwable("java.lang.UnsupportedOperationException")
   public int get(int field) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean equals(java.lang.Object obj) { return false; }
+  public boolean equals(Any obj) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String toString() { return null; }
+  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public int hashCode() { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.Object clone() { return null; }
+  public Any clone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public int compareTo(java.util.Calendar anotherCalendar) { return 0; }
+  public int compareTo(Any anotherCalendar) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
   public final void clear(int field) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -150,11 +168,11 @@ class Calendar {
   @throwable("java.lang.AbstractMethodError")
   public void add(int field, int amount) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Calendar getInstance() { return null; }
+  public static Any getInstance() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Calendar getInstance(java.util.Locale aLocale) { return null; }
+  public static Any getInstance(Any aLocale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Calendar getInstance(java.util.TimeZone zone, java.util.Locale aLocale) { return null; }
+  public static Any getInstance(Any zone, Any aLocale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final void set(int year, int month, int date, int hourOfDay, int minute) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -164,22 +182,22 @@ class Calendar {
   @throwable("java.lang.UnsupportedOperationException")
   public final void set(int year, int month, int date, int hourOfDay, int minute, int second) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean before(java.lang.Object when) { return false; }
+  public boolean before(Any when) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean after(java.lang.Object when) { return false; }
+  public boolean after(Any when) { return false; }
   @JavaProtected
   @throwable("java.lang.UnsupportedOperationException")
   void complete() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getDisplayName(int field, int style, java.util.Locale locale) { return null; }
+  public String getDisplayName(int field, int style, Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.time.Instant toInstant() { return null; }
+  public final Any toInstant() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public static synchronized java.util.Locale[] getAvailableLocales() { return null; }
+  public static synchronized Any[] getAvailableLocales() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public void setTimeZone(java.util.TimeZone value) { }
+  public void setTimeZone(Any value) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.TimeZone getTimeZone() { return null; }
+  public Any getTimeZone() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setLenient(boolean lenient) { }
   @throwable("java.lang.UnsupportedOperationException")
@@ -191,9 +209,9 @@ class Calendar {
   @throwable("java.lang.UnsupportedOperationException")
   public void setTimeInMillis(long millis) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.util.Date getTime() { return null; }
+  public final Any getTime() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final void setTime(java.util.Date date) { }
+  public final void setTime(Any date) { }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isWeekDateSupported() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -203,9 +221,9 @@ class Calendar {
   @throwable("java.lang.AbstractMethodError")
   public int getLeastMaximum(int field) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.util.Map<java.lang.String, java.lang.Integer> getDisplayNames(int field, int style, java.util.Locale locale) { return null; }
+  public Any getDisplayNames(int field, int style, Any locale) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.lang.String getCalendarType() { return null; }
+  public String getCalendarType() { return null; }
   @throwable("java.lang.AbstractMethodError")
   public int getMinimum(int field) { return 0; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -226,7 +244,7 @@ class Calendar {
   @throwable("java.lang.AbstractMethodError")
   void computeTime() { }
   @throwable("java.lang.UnsupportedOperationException")
-  public static java.util.Set<java.lang.String> getAvailableCalendarTypes() { return null; }
+  public static Any getAvailableCalendarTypes() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public void setFirstDayOfWeek(int value) { }
   @throwable("java.lang.UnsupportedOperationException")

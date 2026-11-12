@@ -56,6 +56,24 @@ class AffineTransformOp {
   String javaKind = "class";
   String javaSuper = "java.lang.Object";
 
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public AffineTransformOp bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
   < ---- BEGIN java declarations (from the JDK 28 API) ---- >
   < constants and static fields (values reflected from the JDK) >
   static final int TYPE_NEAREST_NEIGHBOR = 1;
@@ -65,9 +83,9 @@ class AffineTransformOp {
 
   < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
   @throwable("java.lang.UnsupportedOperationException")
-  public AffineTransformOp(java.awt.geom.AffineTransform xform, java.awt.RenderingHints hints) { }
+  public AffineTransformOp(Any xform, Any hints) { }
   @throwable("java.lang.UnsupportedOperationException")
-  public AffineTransformOp(java.awt.geom.AffineTransform xform, int interpolationType) { }
+  public AffineTransformOp(Any xform, int interpolationType) { }
   < ---- END java constructors ---- >
 
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
@@ -77,19 +95,19 @@ class AffineTransformOp {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.awt.image.BufferedImage filter(java.awt.image.BufferedImage src, java.awt.image.BufferedImage dst) { return null; }
+  public final Any filter(Any src, Any dst) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.awt.geom.Rectangle2D getBounds2D(java.awt.image.Raster src) { return null; }
+  public final Any getBounds2D(Any src) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.awt.geom.AffineTransform getTransform() { return null; }
+  public final Any getTransform() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.awt.RenderingHints getRenderingHints() { return null; }
+  public final Any getRenderingHints() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.BufferedImage createCompatibleDestImage(java.awt.image.BufferedImage src, java.awt.image.ColorModel destCM) { return null; }
+  public Any createCompatibleDestImage(Any src, Any destCM) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public final java.awt.geom.Point2D getPoint2D(java.awt.geom.Point2D srcPt, java.awt.geom.Point2D dstPt) { return null; }
+  public final Any getPoint2D(Any srcPt, Any dstPt) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public java.awt.image.WritableRaster createCompatibleDestRaster(java.awt.image.Raster src) { return null; }
+  public Any createCompatibleDestRaster(Any src) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public final int getInterpolationType() { return 0; }
   < ---- END java signatures ---- >
