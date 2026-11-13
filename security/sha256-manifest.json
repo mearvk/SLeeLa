@@ -9323,7 +9323,7 @@
     },
     {
       "path": "lib/java/converter/JConvConfig.sleela",
-      "sha256": "d96a7d4a5cf595e3c2d70102f4a9df51499ebd035afb306d820c005d9d0c5090"
+      "sha256": "a92e0efdbd2482d2baebc194517de2b56447e27dcba12c9230e1beb8fbcc5709"
     },
     {
       "path": "lib/java/converter/JConvEmitter.sleela",
@@ -9335,19 +9335,23 @@
     },
     {
       "path": "lib/java/converter/JConvMain.sleela",
-      "sha256": "6c44d8a2cb7b5c4c803839ef00331c0db50bbaf4c6aefc1da4b3a75505824a38"
+      "sha256": "1ab82bbdaea172d8020cf4b514626c9e6fbdb09f14d5a04bf88ae8d98714a47c"
+    },
+    {
+      "path": "lib/java/converter/JConvModel.sleela",
+      "sha256": "45052ab006da3c430986519812a6e5e12ebb2f126c79e0e9507c83785d595a22"
     },
     {
       "path": "lib/java/converter/JConvReport.sleela",
-      "sha256": "cdd3c546ed0d1266c7ff2b5e1c1b930414f5c5bb9073c18f87780a70a6ca5b8d"
+      "sha256": "d5bc54c681fdf71fa94b63786d8508bdf233a43c6561aa7b7e5383c88e194d83"
     },
     {
       "path": "lib/java/converter/JConvRewriter.sleela",
-      "sha256": "119aadba034d9ce617a8dcf5b323c35bdc1b02876f636c61479f9bdb6acb4fbd"
+      "sha256": "913db24e4bc140ce866671d872397a9b0858381e13c88d4ac570e6aad06f58b7"
     },
     {
       "path": "lib/java/converter/JConvRules.sleela",
-      "sha256": "04f2612cd6375595089cbb0262742a9db6391ab559bea655a6d2c20d0500687c"
+      "sha256": "5e2f1c6e75c402f73c5237b399ac1d1e174f36353efb30b6d6de8c72c25b74fc"
     },
     {
       "path": "lib/java/converter/JConvSource.sleela",
@@ -9355,7 +9359,7 @@
     },
     {
       "path": "lib/java/converter/JConvTranslator.sleela",
-      "sha256": "e7916b70b90c5c6ea03041cc15677c69bbcda1fd8e8403c2b599b15e93e88f48"
+      "sha256": "82020835a7802c0ab4644a1f4b0725b65b2624aa919f3bc8c7fbbbf45197904b"
     },
     {
       "path": "lib/java/converter/JConvWalker.sleela",
@@ -50787,7 +50791,7 @@
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/Math.sleela",
-      "sha256": "5a2de43c39f483a1b0a1035993d6b32f2f17e4a72c9f55978a1aec485d4b7347"
+      "sha256": "5305c74ea77754ab95677518ee37cdc3f8a05dac711ca501351200640d9fc2de"
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/Module.sleela",

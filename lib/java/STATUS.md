@@ -223,7 +223,7 @@ never taken for a constant.
 
 | Check | Result |
 |---|---|
-| **Side-by-side with the JDK** (`examples/java/differential/run-differential.sh`): each `<Name>.java` runs on OpenJDK 25.0.2 and `<Name>.sleela` on the SLeeLa VM, and the output must be identical | **17 / 17 pass**, 641 lines identical: OperandSemantics 189, PropertiesCore 64, UUIDCore 53, IntegerParse 49, Base64Core 44, SmallWrappers 39, TimeCore 29, MathBigInteger 27, BeanEvents 27, ConcurrentZipBits 23, StringTokenizerCore 18, Jdk28Throwables 17, MathStatics 16, ConcurrentCollections 14, LongStatics 13, ExtendedThrowables 11, IntegerStatics 8 |
+| **Side-by-side with the JDK** (`examples/java/differential/run-differential.sh`): each `<Name>.java` runs on OpenJDK 25.0.2 and `<Name>.sleela` on the SLeeLa VM, and the output must be identical | **18 pairs** since 2026-11-13: `MathSqrt` (241 lines, bits of `Math.sqrt` for 240 values) added and passing; the full runner was last run 2026-11-12, **17 / 17 pass**, 641 lines identical: OperandSemantics 189, PropertiesCore 64, UUIDCore 53, IntegerParse 49, Base64Core 44, SmallWrappers 39, TimeCore 29, MathBigInteger 27, BeanEvents 27, ConcurrentZipBits 23, StringTokenizerCore 18, Jdk28Throwables 17, MathStatics 16, ConcurrentCollections 14, LongStatics 13, ExtendedThrowables 11, IntegerStatics 8 |
 | **Self-checking programs** (`examples/java/run-conformance.sh`) | **9 / 9 pass**, including a 1,348-value `Double.toString`/`parseDouble` round trip |
 | **Demos** (`examples/java/jdk-28/*.sleela`, 6 programs) | All 6 run to completion. They print results and carry no assertions, so this shows they execute, not that the output is correct |
 | **Probed accessor contracts** (`lib/java/jdk-25/tools/jdk_api_accessors_check.py`, 427 classes in 78 packages) | **48 / 78 packages pass, 30 fail** with `uncaught language exception` (for example `java.util`, `java.io`, `java.text`, `javax.swing`). The failing set is identical with the compiler from before today's change, so it is not a regression. Cause not yet diagnosed. The earlier "386 constructors, 79 packages, 0 failures" no longer reproduces. The tool itself had been broken by the move into `jdk-25/` (wrong repo root, wrong import prefix); both are fixed |
@@ -429,7 +429,7 @@ section 1.
 | SLeeLa files written / members / fail-loud stubs | 36 / 627 / 35 (5.6%; 47 in 0.1.0) |
 | Output files with a syntax error | 0 |
 | Output files passing `sleela check` | 8 of 36 |
-| `converter/samples/demo/ConvDemo.java` against a real JDK | 28 of 28 lines identical (0.3.0, `JCONV_BUNDLE=1`) |
+| `converter/samples/demo/ConvDemo.java` against a real JDK | 29 of 29 lines identical (0.4.0, `JCONV_BUNDLE=1`) |
 | `sleela check` errors on the sample, separate files / bundled | 903 / 553 |
 
 Converter 0.2.0 (2026-11-13) declares `#sleela 3.1` and uses its array
@@ -444,5 +444,19 @@ in `impl/subjects/conversion/conversion.model`), landed the same day and fails
 closed per file. `lib/java/converter` keeps per-member stubs (decided
 2026-11-13); where the two share a law (`binop`, `tostr` rows of the model) it
 applies the same template. Converter 0.3.0 adds operand types (int shifts,
-`double` / `char` shown as text) and `JCONV_BUNDLE=1`.
+`double` / `char` shown as text) and `JCONV_BUNDLE=1`; 0.4.0 reads those laws
+from the model itself, and types call results through its `ret` rows. The model
+is at revision 1.1.0: 8,922 result types reflected from the OpenJDK 25.0.2 API
+(section 10b, `impl/subjects/conversion/generate_ret_rows.py`).
+
+**`Math.sqrt` (jdk-28 tier) is correctly rounded since 2026-11-13.** It was
+Newton's method, which stops up to one ulp off (`Math.sqrt(2.0)` printed
+`1.414213562373095`, Java `1.4142135623730951`) and did not converge in 200 steps
+for magnitudes far from 1 (results wrong in the leading digits for about 1e-150).
+It now scales the argument into [2^-64, 2^64] by exact powers of two, runs Newton,
+and picks the correctly rounded root with the Tuckerman test using exact
+products (Dekker two-product), as IEEE 754 and the Java specification require.
+`examples/java/differential/MathSqrt` checks the bits for 240 values; the
+`Math` conformance program and the `MathStatics` and `MathBigInteger` pairs still
+pass.
 

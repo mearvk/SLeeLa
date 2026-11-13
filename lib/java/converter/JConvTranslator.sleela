@@ -16,7 +16,7 @@ material;
 class JConvTranslator {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. >>
-  String metaVersion = "0.3.0";
+  String metaVersion = "0.4.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-12";
@@ -421,7 +421,16 @@ class JConvTranslator {
           hasCtor = true;
           if (kind == "record" && paramCount(paren) == componentCount(compOpen, compClose)) { hasCanonical = true; }
         }
-        this.rw.addMethod(this.rules.renameIdent(mname), (flags % 2) == 1);
+        String mret = "";
+        if (!isCtor) {
+          int rs = hh;
+          if (isOp(rs, "<")) {
+            int ge = this.rw.genEnd(rs);
+            if (ge > rs) { rs = nx(ge + 1); }
+          }
+          mret = this.rw.typeTextOf(rs, this.rw.pv(paren)).replace(" ", "");
+        }
+        this.rw.addMethod(this.rules.renameIdent(mname), (flags % 2) == 1, mret);
       } else {
         mk[count] = 1;
         String fname = fieldName(hh, endTok);

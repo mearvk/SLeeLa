@@ -11,7 +11,7 @@ material;
 class JConvReport {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. >>
-  String metaVersion = "0.1.0";
+  String metaVersion = "0.4.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-12";
@@ -131,7 +131,8 @@ class JConvReport {
     if (this.handle >= 0) { close(this.handle); }
     this.handle = -1;
     String s = "# Java to SLeeLa conversion summary\n\n";
-    s = s + "Produced by lib/java/converter (best effort; rules in lib/java/converter/README.md).\n\n";
+    s = s + "Produced by lib/java/converter (best effort; rules in lib/java/converter/README.md).\n";
+    s = s + "Conversion model: " + rules.model.describe() + ".\n\n";
     s = s + "| Measure | Count |\n|---|---:|\n";
     s = s + "| Java files seen | " + this.filesSeen + " |\n";
     s = s + "| Java files converted | " + this.filesConverted + " |\n";

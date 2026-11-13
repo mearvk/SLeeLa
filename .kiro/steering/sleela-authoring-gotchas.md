@@ -180,7 +180,7 @@ refuse (do not clamp or wrap) inputs that could push it past. See
   `new Outer.C[1]`, and a nested interface fail. Prefer top-level classes.
 - **`new int32[n]` held `null` before the 2026-11-13 compiler fix** (now 0, like
   `new int[n]`); `new long[n]` / `new boolean[n]` were already zero / `false`.
-- **`$` is a lexical error everywhere, even inside a `<< ... >>` block comment.**
+- **`$` is a lexical error outside string literals, including inside a `<< ... >>` block comment** (it is fine inside a string literal).
   Do not copy template text such as `$a` into SLeeLa comments.
 
 ## Syntax 3.2 notes (char and arrays)
@@ -196,3 +196,5 @@ refuse (do not clamp or wrap) inputs that could push it past. See
   slots. `+x` (unary plus) is still not an operator. Write each line of a multi-line
   comment as its own `< ... >`, or use `<< ... >>`; a `<` line without its `>` is a
   syntax error in a library unit.
+- **A subnormal double literal is rejected** ("floating-point literal '5.3e-315'
+  is out of range"); the smallest normal, `2.2250738585072014e-308`, is accepted.

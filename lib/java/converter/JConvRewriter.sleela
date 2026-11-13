@@ -16,7 +16,7 @@ material;
 class JConvRewriter {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. >>
-  String metaVersion = "0.3.0";
+  String metaVersion = "0.4.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-12";
@@ -85,6 +85,7 @@ class JConvRewriter {
   < methods (name, 1 when static) and fields declared by the current type >
   String[] mNames;
   int[] mStatic;
+  String[] mRet;
   int mN;
   String[] fNames;
   String[] fTypes;
@@ -125,6 +126,7 @@ class JConvRewriter {
     this.patOkN = 0;
     this.mNames = new String[256];
     this.mStatic = new int[256];
+    this.mRet = new String[256];
     this.mN = 0;
     this.fNames = new String[256];
     this.fTypes = new String[256];
@@ -200,15 +202,24 @@ class JConvRewriter {
     return s;
   }
 
-  void addMethod(String n, boolean isStatic) {
+  < a method of the current type; overloads with different results make the result unknown >
+  void addMethod(String n, boolean isStatic, String ret) {
+    int e = methodIndex(n);
+    if (e >= 0) {
+      if (this.mRet[e] != ret) { this.mRet[e] = "?"; }
+      return;
+    }
     if (this.mN >= arrayLength(this.mNames)) {
       String[] a = new String[this.mN * 2];
       int[] b = new int[this.mN * 2];
+      String[] c = new String[this.mN * 2];
       int i = 0;
-      while (i < this.mN) { a[i] = this.mNames[i]; b[i] = this.mStatic[i]; i = i + 1; }
+      while (i < this.mN) { a[i] = this.mNames[i]; b[i] = this.mStatic[i]; c[i] = this.mRet[i]; i = i + 1; }
       this.mNames = a;
       this.mStatic = b;
+      this.mRet = c;
     }
+    this.mRet[this.mN] = ret;
     this.mNames[this.mN] = n;
     if (isStatic) { this.mStatic[this.mN] = 1; } else { this.mStatic[this.mN] = 0; }
     this.mN = this.mN + 1;
@@ -1380,9 +1391,125 @@ class JConvRewriter {
     return "?";
   }
 
+  < the closing bracket in the output list for the bracket at i >
+  int closeOut(int i) {
+    int d = 0;
+    int m = i;
+    while (m < this.on) {
+      String u = this.ot[m];
+      if (u == "(" || u == "[") { d = d + 1; }
+      if (u == ")" || u == "]") { d = d - 1; if (d == 0) { return m; } }
+      m = m + 1;
+    }
+    return this.on - 1;
+  }
+
+  < the end of the first argument of the call whose parenthesis opens at p >
+  int firstArgEnd(int p) {
+    int c = closeOut(p);
+    int d = 0;
+    int m = p + 1;
+    while (m < c) {
+      String u = this.ot[m];
+      if (u == "(" || u == "[") { d = d + 1; }
+      if (u == ")" || u == "]") { d = d - 1; }
+      if (d == 0 && u == ",") { return m; }
+      m = m + 1;
+    }
+    return c;
+  }
+
+  String typeOfKind(String k) {
+    if (k == "i") { return "int"; }
+    if (k == "l") { return "long"; }
+    if (k == "d") { return "double"; }
+    if (k == "c") { return "char"; }
+    if (k == "s") { return "String"; }
+    if (k == "b") { return "boolean"; }
+    return "?";
+  }
+
+  << The static type of the name chain that starts at output position i (a
+     local, a field, this, a class name for static members, or a call of a
+     method of this type), followed through .member, .member(...) and [index].
+     Member results come from the ret and field rows of the conversion model;
+     @arg0 takes the type of the first argument. "?" when any step is unknown.
+     chainEnd is set to the position after the chain. >>
+  int chainEnd;
+  String chainType(int i, int b) {
+    String cur = "";
+    boolean isStatic = false;
+    int j = i;
+    String t = this.ot[j];
+    this.chainEnd = i + 1;
+    if (t == "this") {
+      cur = this.unitName;
+      j = j + 1;
+    } else if (j + 1 < b && this.ot[j + 1] == "(") {
+      < an unqualified call: arrayLength, or a method of this type >
+      if (t == "arrayLength") { cur = "int"; }
+      else {
+        int mi = methodIndex(t);
+        if (mi < 0) { return "?"; }
+        cur = this.mRet[mi];
+      }
+      j = closeOut(j + 1) + 1;
+    } else {
+      cur = typeOfName(t);
+      if (cur == "?") {
+        if (upperStart(t)) { cur = t; isStatic = true; } else { return "?"; }
+      }
+      j = j + 1;
+    }
+    while (j < b) {
+      String u = this.ot[j];
+      if (u == "[") {
+        if (!cur.endsWith("[]")) { return "?"; }
+        cur = cur.substring(0, cur.length() - 2);
+        isStatic = false;
+        j = closeOut(j) + 1;
+        continue;
+      }
+      if (u == "." && j + 1 < b && this.ok[j + 1] == 1) {
+        String m = this.ot[j + 1];
+        if (j + 2 < b && this.ot[j + 2] == "(") {
+          String r = "";
+          if (cur == this.unitName) {
+            int mi2 = methodIndex(m);
+            if (mi2 >= 0) { r = this.mRet[mi2]; }
+          }
+          if (r == "") { r = this.rules.model.retOf(cur, m); }
+          if (r == "@arg0") { r = typeOfKind(exprKind(j + 3, firstArgEnd(j + 2))); }
+          if (r == "" || r == "?") { return "?"; }
+          cur = r;
+          isStatic = false;
+          j = closeOut(j + 2) + 1;
+          continue;
+        }
+        String f = "";
+        if (cur == this.unitName) { f = typeOfName(m); if (f == "?") { f = ""; } }
+        if (f == "") { f = this.rules.model.fieldOf(cur, m); }
+        if (f == "") { return "?"; }
+        cur = f;
+        isStatic = false;
+        j = j + 2;
+        continue;
+      }
+      break;
+    }
+    if (isStatic) { return "?"; }
+    this.chainEnd = j;
+    return cur;
+  }
+
   < i int, l long, d double, c char, s String, b boolean, ? unknown >
   String kindOfType(String t) {
     if (t == "int32" || t == "int" || t == "short" || t == "byte") { return "i"; }
+    if (t == "Integer" || t == "Short" || t == "Byte") { return "i"; }
+    if (t == "Long") { return "l"; }
+    if (t == "Double" || t == "Float") { return "d"; }
+    if (t == "Character") { return "c"; }
+    if (t == "Boolean") { return "b"; }
     if (t == "char") { return "c"; }
     if (t == "long") { return "l"; }
     if (t == "double" || t == "float") { return "d"; }
@@ -1541,9 +1668,9 @@ class JConvRewriter {
       }
       if (k == 1) {
         if (t == "true" || t == "false") { anyB = true; count = count + 1; i = i + 1; continue; }
-        if (t.startsWith("JavaOperands.") || t == "Double.toString" || t == "JavaText.plainIfRepresentable") {
+        if (t.startsWith("JavaOperands.") || isTostrName(t)) {
           < calls this pass inserted have known kinds >
-          if (t == "Double.toString" || t == "JavaText.plainIfRepresentable") { anyS = true; }
+          if (isTostrName(t)) { anyS = true; }
           else if (t.endsWith("Long")) { anyL = true; } else { anyI = true; }
           onlyChar = false;
           int c = i + 1;
@@ -1557,24 +1684,8 @@ class JConvRewriter {
           i = c + 1;
           continue;
         }
-        int j = i;
-        if (t == "this" && i + 2 < b && this.ot[i + 1] == ".") { j = i + 2; }
-        if (j + 1 < b && (this.ot[j + 1] == "(" || this.ot[j + 1] == ".")) { return "?"; }
-        String ty = typeOfName(this.ot[j]);
-        int after = j + 1;
-        while (after < b && this.ot[after] == "[") {
-          < an element of an array name: drop one [] >
-          if (!ty.endsWith("[]")) { return "?"; }
-          ty = ty.substring(0, ty.length() - 2);
-          int d3 = 0;
-          int m3 = after;
-          while (m3 < b) {
-            if (this.ot[m3] == "[") { d3 = d3 + 1; }
-            if (this.ot[m3] == "]") { d3 = d3 - 1; if (d3 == 0) { break; } }
-            m3 = m3 + 1;
-          }
-          after = m3 + 1;
-        }
+        String ty = chainType(i, b);
+        int after = this.chainEnd;
         String kk = kindOfType(ty);
         if (kk == "?") { return "?"; }
         if (kk == "s") { anyS = true; } else if (kk == "d") { anyD = true; } else if (kk == "l") { anyL = true; } else if (kk == "b") { anyB = true; } else { anyI = true; if (kk != "c") { onlyChar = false; } }
@@ -1595,24 +1706,65 @@ class JConvRewriter {
     return "?";
   }
 
-  void wrapRange(int a, int b, String fn) {
-    insertAt(b, 5, ")");
-    insertAt(a, 5, "(");
-    insertAt(a, 1, fn);
+  << A one-operand template of the model (tostr rows), F(G(x)) with x the operand, written
+     around the output range a .. b-1. Returns the number of tokens inserted,
+     or 0 when the template has another shape (then nothing is written). >>
+  int applyTemplate(int a, int b, String tpl) {
+    int at = tpl.indexOf("$a");
+    if (at <= 0) { return 0; }
+    String pre = tpl.substring(0, at);
+    String post = tpl.substring(at + 2);
+    int closers = 0;
+    int q = 0;
+    while (q < post.length()) {
+      if (post.charAt(q) != 41) { return 0; }
+      closers = closers + 1;
+      q = q + 1;
+    }
+    < the prefix is name ( name ( ... >
+    String[] names = new String[8];
+    int nn = 0;
+    String rest = pre;
+    while (rest != "") {
+      int p = rest.indexOf("(");
+      if (p <= 0 || nn >= 8) { return 0; }
+      names[nn] = rest.substring(0, p).trim();
+      nn = nn + 1;
+      rest = rest.substring(p + 1);
+    }
+    if (nn != closers) { return 0; }
+    int c = 0;
+    while (c < closers) { insertAt(b, 5, ")"); c = c + 1; }
+    int k = nn - 1;
+    while (k >= 0) {
+      insertAt(a, 5, "(");
+      insertAt(a, 1, names[k]);
+      k = k - 1;
+    }
+    return nn * 3;
   }
 
-  < the string conversion of a char or double operand a .. b-1, if it needs one >
-  void toStringIfNeeded(int a, int b) {
+  < the function name of a two-operand template of the model, F(a, b), or "" >
+  String binaryFn(String tpl) {
+    if (!tpl.endsWith("($a, $b)")) { return ""; }
+    return tpl.substring(0, tpl.length() - 8).trim();
+  }
+
+  < the outermost function of a tostr template (its result is a String) >
+  boolean isTostrName(String t) {
+    String d = this.rules.model.tostrDouble;
+    String c = this.rules.model.tostrChar;
+    if (d.indexOf("(") > 0 && d.substring(0, d.indexOf("(")).trim() == t) { return true; }
+    if (c.indexOf("(") > 0 && c.substring(0, c.indexOf("(")).trim() == t) { return true; }
+    return false;
+  }
+
+  < the string conversion of a char or double operand a .. b-1, if it needs one; returns tokens inserted >
+  int toStringIfNeeded(int a, int b) {
     String k = exprKind(a, b);
-    if (k == "d") { wrapRange(a, b, "Double.toString"); }
-    else if (k == "c") {
-      insertAt(b, 5, ")");
-      insertAt(b, 5, ")");
-      insertAt(a, 5, "(");
-      insertAt(a, 1, "JavaText.codePointU");
-      insertAt(a, 5, "(");
-      insertAt(a, 1, "JavaText.plainIfRepresentable");
-    }
+    if (k == "d") { return applyTemplate(a, b, this.rules.model.tostrDouble); }
+    if (k == "c") { return applyTemplate(a, b, this.rules.model.tostrChar); }
+    return 0;
   }
 
   void typedPass() {
@@ -1624,10 +1776,10 @@ class JConvRewriter {
       if (k == 5 && (t == "<<" || t == ">>" || t == ">>>")) {
         int a = operandStart(i, 1, false);
         int e = operandEnd(i + 1, 1, false);
-        if (a >= 0 && a < i && e > i + 1 && exprKind(a, i) == "i") {
-          String fn = "JavaOperands.shlInt";
-          if (t == ">>") { fn = "JavaOperands.shrInt"; }
-          if (t == ">>>") { fn = "JavaOperands.ushrInt"; }
+        String fn = binaryFn(this.rules.model.shlInt);
+        if (t == ">>") { fn = binaryFn(this.rules.model.shrInt); }
+        if (t == ">>>") { fn = binaryFn(this.rules.model.ushrInt); }
+        if (fn != "" && a >= 0 && a < i && e > i + 1 && exprKind(a, i) == "i") {
           this.ot[i] = ",";
           insertAt(e, 5, ")");
           insertAt(a, 5, "(");
@@ -1636,11 +1788,11 @@ class JConvRewriter {
           continue;
         }
       }
-      if (k == 5 && (t == "<<=" || t == ">>=" || t == ">>>=") && i > 0 && this.ok[i - 1] == 1 && (i == 1 || this.ot[i - 2] != ".") && kindOfType(typeOfName(this.ot[i - 1])) == "i") {
+      if (k == 5 && (t == "<<=" || t == ">>=" || t == ">>>=") && binaryFn(this.rules.model.shlInt) != "" && i > 0 && this.ok[i - 1] == 1 && (i == 1 || this.ot[i - 2] != ".") && kindOfType(typeOfName(this.ot[i - 1])) == "i") {
         < x op= n on an int: x = JavaOperands.op(x, n) >
-        String fn2 = "JavaOperands.shlInt";
-        if (t == ">>=") { fn2 = "JavaOperands.shrInt"; }
-        if (t == ">>>=") { fn2 = "JavaOperands.ushrInt"; }
+        String fn2 = binaryFn(this.rules.model.shlInt);
+        if (t == ">>=") { fn2 = binaryFn(this.rules.model.shrInt); }
+        if (t == ">>>=") { fn2 = binaryFn(this.rules.model.ushrInt); }
         int e2 = i + 1;
         int d = 0;
         while (e2 < this.on) {
@@ -1667,7 +1819,7 @@ class JConvRewriter {
           String leftK = exprKind(chain, i);
           String rightK = exprKind(i + 1, e3);
           if (leftK == "s" && (rightK == "d" || rightK == "c")) { toStringIfNeeded(i + 1, e3); }
-          else if (rightK == "s" && chain == a2 && (leftK == "d" || leftK == "c")) { toStringIfNeeded(a2, i); i = i + 4; }
+          else if (rightK == "s" && chain == a2 && (leftK == "d" || leftK == "c")) { i = i + toStringIfNeeded(a2, i) + 1; }
         }
       }
       if (k == 1 && t == "print" && i + 1 < this.on && this.ot[i + 1] == "(") {

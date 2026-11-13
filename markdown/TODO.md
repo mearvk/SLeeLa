@@ -312,7 +312,7 @@ program runs 23 of 24 lines identical to a real JDK. Next, in order:
 | 1 | ~~A bundle mode~~ **done in 0.3.0** (`JCONV_BUNDLE=1`): 39% fewer check errors on the sample; the sample program runs as one document | |
 | 2 | Loader: resolve `Outer.Inner.sleela`; compiler: inner classes reach the enclosing instance; inline nested classes (SLEELA.syntax 14) with constructors, `extends`, statics and arrays | most `check` errors in `HashMap` / `AbstractList` (course 15, A4). Inline nesting was measured and is too limited today (converter README section 6) |
 | 3 | Library: real statics for `Float`, `Objects`, `Arrays`, `Character` | "instance method must be called on an instance" errors |
-| 4 | Expression types: **names, literals, casts, array elements done in 0.3.0** (int shifts, `double` / `char` as text). Next: return types of called methods (the `ret` rows of the model and the jdk-28 signatures), `int` `+ - *` inside unstored expressions | the remaining near-misses come from operands that are method calls |
+| 4 | Expression types: names, literals, casts, array elements (0.3.0); **call results through the model's `ret` rows, read from `conversion.model` (0.4.0; model 1.1.0 has 8,922 reflected rows)**. Next: `int` `+ - *` inside unstored expressions (the `binop int` rows), receivers typed by an interface the model does not list, generic results (`List<String>.get` is a type variable) | |
 | 5 | Lower lambdas and method references (`lib/java/jdk-28/LOWERING.md` section 2) | the largest group of stubs in real JDK code |
 | 6 | Non-ASCII sources: a byte-safe read, or a VM helper | 12 of 15,020 JDK files are skipped |
 | 7 | A differential pair per supported construct (`samples/`), run occasionally | equivalence is shown by output, not claimed |

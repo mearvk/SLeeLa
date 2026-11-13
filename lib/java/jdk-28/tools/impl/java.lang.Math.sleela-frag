@@ -109,16 +109,54 @@
   public static double sqrt(double a) {
     if (a != a || a < 0.0) { return slNaN(); }
     if (a == 0.0 || slIsInf(a)) { return a; }
-    double g = a;
-    if (a > 1.0) { g = a / 2.0 + 0.5; }
+    << Scale a into [2^-64, 2^64] by exact powers of two (2^64 = 18446744073709551616,
+       2^-64 = 5.421010862427522e-20, 2^32 = 4294967296, 2^-32 = 2.3283064365386963e-10),
+       so Newton converges in a few dozen steps for every magnitude, then scale the
+       root back by the matching exact power of two. >>
+    double s = a;
+    double r = 1.0;
+    while (s > 18446744073709551616.0) { s = s * 5.421010862427522e-20; r = r * 4294967296.0; }
+    while (s < 5.421010862427522e-20) { s = s * 18446744073709551616.0; r = r * 2.3283064365386963e-10; }
+    double g = 1.0;
+    if (s > 1.0) { g = s / 2.0 + 0.5; }
     int i = 0;
     while (i < 200) {
-      double ng = 0.5 * (g + a / g);
-      if (ng == g) { return g; }
+      double ng = 0.5 * (g + s / g);
+      if (ng == g) { break; }
       g = ng;
       i = i + 1;
     }
-    return g;
+    << Newton ends within one ulp of the root of s. The Tuckerman test then picks the
+       correctly rounded root, as IEEE 754 and the Java specification require:
+       g is the root rounded to nearest exactly when g * prev(g) < s <= g * next(g).
+       It runs on the scaled s (no overflow, no subnormal products), and scaling by
+       the exact power of two r keeps the rounding. >>
+    int k = 0;
+    while (k < 4) {
+      double lo = nextDown(g);
+      double hi = nextUp(g);
+      if (!slProductLess(g, lo, s)) { g = lo; }
+      else if (slProductLess(g, hi, s)) { g = hi; }
+      else { k = 4; }
+      k = k + 1;
+    }
+    return g * r;
+  }
+  << True when x * y < a holds exactly. x * y is p + err exactly (Dekker two-product
+     with the Veltkamp split, no fused multiply-add needed), and a - p is exact
+     because p and a are within a factor of two (Sterbenz lemma). >>
+  static boolean slProductLess(double x, double y, double a) {
+    double p = x * y;
+    double c = 134217729.0;
+    double xh = c * x;
+    xh = xh - (xh - x);
+    double xl = x - xh;
+    double yh = c * y;
+    yh = yh - (yh - y);
+    double yl = y - yh;
+    double err = ((xh * yh - p) + xh * yl + xl * yh) + xl * yl;
+    double d = a - p;
+    return err < d;
   }
   public static double cbrt(double a) {
     if (a != a || a == 0.0 || slIsInf(a)) { return a; }

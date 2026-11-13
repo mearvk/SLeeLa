@@ -22,6 +22,8 @@ of behaviour is the goal, never textual resemblance. A conversion that is
 | Converter: C lexer + model loader, C++ translator | `sleelactl/convert/` |
 | **Conversion subject model** (the laws; like math, physics) | `impl/subjects/conversion/conversion.model` |
 | Executable form of the integer laws | `lib/java/JavaOperands.sleela` |
+| Reflected result types (model section 10b, generated; hand rows win) | `impl/subjects/conversion/generate_ret_rows.py` (`--check` to verify) |
+| Second consumer of the model (SLeeLa program, per-member stubs) | `lib/java/converter` (`JConvModel.sleela`) |
 | Registry entry | `bin/sleelactl.d/registry.conf` (`java-convert`, nature `tool`) |
 | Differential test | `tests/javaconv_differential_test.sh` |
 

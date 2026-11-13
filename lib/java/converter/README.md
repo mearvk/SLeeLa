@@ -3,7 +3,9 @@
 > **Container.** Java container content (`SLEELA.syntax` section 38.4). Nothing
 > here is part of the SLeeLa specification or adds syntax to SLeeLa.
 
-Status: **0.3.0, best effort (2026-11-13).** Output declares `#sleela 3.1` and
+Status: **0.4.0, best effort (2026-11-13).** The operand laws come from the shared
+conversion model, `impl/subjects/conversion/conversion.model` (read by
+`JConvModel`), the same data `sleelactl java-convert` reads. Output declares `#sleela 3.1` and
 uses its forms (SLEELA.syntax section 44): array initializers, character
 literals, labels, and jumps that run `finally`. Revise the rules here as the
 language and the library close the gaps listed in section 6. Changes since
@@ -65,6 +67,7 @@ JCONV_IN=/tmp/jdk-src JCONV_OUT=/tmp/jdk28-sleela JCONV_FILTER=java.base/java/ut
 | `JCONV_LIMIT` | stop after this many files | no limit |
 | `JCONV_INT` | `int32` (Java 32-bit `int`) or `int` (64-bit SLeeLa `int`) | `int32` |
 | `JCONV_COMMENTS` | `keep` or `drop` (the licence comment is always kept) | `keep` |
+| `JCONV_MODEL` | the conversion model to read | `$SLEELA_HOME/impl/subjects/conversion/conversion.model` |
 | `JCONV_BUNDLE` | `1`: nested types go into the document of their top-level type, so a converted program runs as one document; `0`: one file per type (`Outer.Inner.sleela`, the library layout) | `0` |
 
 `sleela run` treats every argument as a source file, so the settings travel in
@@ -123,10 +126,10 @@ several hours. Use `JCONV_FILTER` to convert one package or module at a time.
 | 6k | `return o instanceof T v && rest;` | `if (!(o instanceof T)) { return false; } T v = (T) (o); return rest;` | the `equals` shape; same conditions |
 | 6l | Labels, `break label`, `continue label`, `return` / `break` / `continue` through `finally` | kept | SLeeLa 3.1 (44.4, 44.5) |
 | 6m | `x++` and `(a = b)` used as a value | kept | the language evaluates both (43.6 rule 12); the value wraps at 32 bits only when stored |
-| 7a | `a << n`, `a >> n`, `a >>> n` with `a` of type `int`; `x <<= n` and friends | `JavaOperands.shlInt(a, n)`, `shrInt`, `ushrInt`; `x = JavaOperands.ushrInt(x, n)` | the `binop int` rows of `conversion.model`: Java masks the count to 5 bits and works in 32 bits (`h ^ (h >>> 16)` in `HashMap.hash` was wrong before). `long` shifts are already exact and stay |
-| 7b | a `double` or `float` shown as text (string concatenation, `println`) | `Double.toString(x)` | the `tostr double` row: Java prints `2.0`, SLeeLa `2` |
-| 7c | a `char` shown as text | `JavaText.plainIfRepresentable(JavaText.codePointU(c))` | the `tostr char` row: Java prints `z`, SLeeLa `122` |
-| 7d | operand types for 7a to 7c | from the fields of the type and the declarations of the member (parameters, locals, `for`, `catch`), array elements, casts, literals | a name declared with two types in one member, or a method call, makes the operand unknown, and an unknown operand is left as written: the pass never guesses |
+| 7a | `a << n`, `a >> n`, `a >>> n` with `a` of type `int`; `x <<= n` and friends | the function of the model's `binop int <<` / `>>` / `>>>` row (`JavaOperands.shlInt(a, n)`, `shrInt`, `ushrInt`); `x = JavaOperands.ushrInt(x, n)` | read from `conversion.model`: Java masks the count to 5 bits and works in 32 bits (`h ^ (h >>> 16)` in `HashMap.hash` was wrong before). `long` shifts are already exact and stay |
+| 7b | a `double` or `float` shown as text (string concatenation, `println`) | the model's `tostr double` template (`Double.toString(x)`) | Java prints `2.0`, SLeeLa `2` |
+| 7c | a `char` shown as text | the model's `tostr char` template (`JavaText.plainIfRepresentable(JavaText.codePointU(c))`) | Java prints `z`, SLeeLa `122` |
+| 7d | operand types for 7a to 7c | fields of the type and declarations of the member (parameters, locals, `for`, `catch`), array elements, casts, literals, and **call chains**: `Math.sqrt(x)`, `s.charAt(i)`, `s.length()`, `sb.reverse().toString()`, `Integer.MAX_VALUE`, own methods, through the model's `ret` and `field` rows (`@arg0`: the type of the first argument) | a name declared with two types in one member, an overloaded own method with two result types, or a member the model does not type makes the operand unknown, and an unknown operand is left as written: the pass never guesses |
 | 6g | `assert` | dropped | Java runs with assertions disabled by default, so the statement is not evaluated |
 | 6h | `System.out.println(x)` | `print(x)` | `System.out.print` (no newline) is a stub (reason 23): `print` always adds one |
 
@@ -193,10 +196,15 @@ Sample: 17 files from the OpenJDK 25.0.2 `src.zip` (`Math`, `Record`, `Override`
 | Members stubbed (fail loud) | 47 (7.5%) | 35 (5.6%) | 35 (5.6%) | 35 (5.6%) |
 | Files with a syntax error | 0 | 0 | 0 | 0 |
 | `sleela check` errors in total | 892 | 902 | 903 | **553** |
+| Typed-pass rewrites in the output (0.4.0 with model 1.1.0 / without the model file) | | | | 40 / 40 |
 | Files with no `sleela check` error | 8 of 36 | 8 of 36 | 8 of 36 | 5 of 16 |
 
 0.2.0 removed 12 stubs (the ten `for` headers with commas and two pattern
-`instanceof` members). Bundling removes 39% of the check errors, because a nested
+`instanceof` members). 0.4.0 changes what the converted code computes, not
+whether it compiles, so the check numbers are those of 0.3.0. On these 17 JDK
+files the model's `ret` rows add no typed rewrite beyond names, literals and
+casts (40 either way): the JDK code here seldom shifts or prints a library call
+result directly. In ordinary programs they do (the sample program, below). Bundling removes 39% of the check errors, because a nested
 type declared in the same document resolves by its simple name; the remaining
 errors come from the library and the language, not from conversion slips: by
 message, mostly "use of undeclared variable" (inner classes reaching the fields
@@ -212,8 +220,10 @@ initializer, a text block, the ternary, a `for` with commas and `continue`, a
 labeled `continue` / `break`, `return` through `finally`, pattern `instanceof`
 in `if` and `return`, int shifts inside expressions including `h ^ (h >>> 16)`,
 `>>>=`, a `long` shift, `double` and `char` values in string concatenation and
-`println`) converts with no stub. With `JCONV_BUNDLE=1` it runs as one document
-and prints **all 28 lines identical** to OpenJDK 25.0.2
+`println`, results of `Math.sqrt`, `Math.abs`, `charAt`, `length()`, a
+`StringBuilder` chain and an own `double` method in concatenation) converts with
+no stub. With `JCONV_BUNDLE=1` it runs as one document and prints **all 29 lines
+identical** to OpenJDK 25.0.2
 (`samples/ConvDemo.java.expected.txt` against `samples/ConvDemo.sleela.expected.txt`).
 
 Reproduce:
@@ -280,6 +290,7 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | `JConvSource` | loads a file in 4,095-byte pieces; code units and slices |
 | `JConvLexer` | Java tokens; literal and comment forms rewritten to SLeeLa |
 | `JConvRules` | the decision table (renames, types, modifiers, built-ins, stub reasons) |
+| `JConvModel` | reads the shared conversion model (`ret`, `field`, `binop int` shifts, `tostr`) |
 | `JConvRewriter` | token-level rewriting, the fail-loud scan, declaration and cast post-pass, helpers |
 | `JConvTranslator` | files, types, members, enum / record lowering, nested types, stubs, metadata |
 | `JConvEmitter` | layout and buffered output below the 65,536-byte String limit |
@@ -292,6 +303,7 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | Version | Change |
 |---|---|
 | 0.1.0 | First cut: walk, lex, rewrite, translate, stubs, report |
+| 0.4.0 | Model-driven: `JConvModel` reads `conversion.model` (shift functions, `tostr` templates, 8,964 `ret` rows of model 1.1.0, `field` rows); the typed pass types call chains through them (rule 7d). Built-in defaults only when the file cannot be read (the summary says which). The sample program gains library and own-method calls and runs all 29 lines identical, which needed the jdk-28 `Math.sqrt` to be correctly rounded (fixed the same day) |
 | 0.3.0 | Policy recorded: per-member stubs. Typed pass (rules 7a to 7d): `int` shifts through `JavaOperands`, `double` / `char` string conversion through `Double.toString` / `JavaText`, the same templates as the `binop` / `tostr` rows of `conversion.model`. `JCONV_BUNDLE=1`: one document per Java file, nested types inside (39% fewer check errors on the JDK sample; the sample program runs with all lines identical) |
 | 0.2.0 | Output declares `#sleela 3.1` and uses its forms: array initializers and `new T[n]` kept (the `slArray_*` / `slZeroArray_*` helpers are gone), character literals kept, labels and jumps through `finally` kept (stub reasons 4, 13, 18 retired). New lowerings: `for` headers with commas (6i), pattern `instanceof` in two exact shapes (6j, 6k). No cast to array types (the compiler rejects them). Compiler fix alongside: `new int32[n]` starts at 0 (`impl/frontend/compiler.cpp` `arrayFillKind`) |
 

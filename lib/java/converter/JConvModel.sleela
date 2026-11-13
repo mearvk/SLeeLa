@@ -1,0 +1,211 @@
+<< lib/java/converter/JConvModel.sleela
+   Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
+   Definition: the Java-to-SLeeLa conversion model, read as data. It loads
+   impl/subjects/conversion/conversion.model (or the file named by JCONV_MODEL),
+   the same model that sleelactl java-convert reads, and answers the questions
+   the typed pass of JConvRewriter asks: the result type of a library member
+   (ret rows), the type of a library field (field rows), the SLeeLa function
+   of an int shift (binop int rows) and the string conversion template of a
+   double or char (tostr rows). Only rows of those kinds are read. When the
+   file is missing the built-in defaults below are used and the report says so. >>
+#sleela 3.0
+material;
+
+class JConvModel {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full record: a library-family class of the Java container. The data it
+     reads follows the Java Language Specification and the reflected JDK API. >>
+  String metaVersion = "0.4.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "The Java Language Specification, Java SE 28 Edition";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < where the model came from, its name and revision, and the rows read >
+  String path;
+  String modelName;
+  String revision;
+  boolean loaded;
+  int retRows;
+  < ret rows: "Owner.member" to the result type (open addressing) >
+  String[] retKeys;
+  String[] retVals;
+  < field rows: "Owner.name" to the type >
+  String[] fieldKeys;
+  String[] fieldVals;
+  < binop int templates of the three shifts; tostr templates of double and char >
+  String shlInt;
+  String shrInt;
+  String ushrInt;
+  String tostrDouble;
+  String tostrChar;
+
+  JConvModel() {
+    this.path = "";
+    this.modelName = "built-in defaults";
+    this.revision = "";
+    this.loaded = false;
+    this.retRows = 0;
+    this.retKeys = new String[32768];
+    this.retVals = new String[32768];
+    this.fieldKeys = new String[1024];
+    this.fieldVals = new String[1024];
+    < the rows of conversion.model 1.0.0, used when the file cannot be read >
+    this.shlInt = "JavaOperands.shlInt($a, $b)";
+    this.shrInt = "JavaOperands.shrInt($a, $b)";
+    this.ushrInt = "JavaOperands.ushrInt($a, $b)";
+    this.tostrDouble = "Double.toString($a)";
+    this.tostrChar = "JavaText.plainIfRepresentable(JavaText.codePointU($a))";
+  }
+
+  int slotIn(String key, int size) {
+    int h = key.hashCode();
+    if (h < 0) { h = 0 - h; }
+    return h % size;
+  }
+
+  < the first row for a key wins, as in the sleelactl loader (cm_find) >
+  void put(String[] keys, String[] vals, String key, String val) {
+    int s = slotIn(key, arrayLength(keys));
+    int probes = 0;
+    while (keys[s] != null) {
+      if (keys[s] == key) { return; }
+      s = (s + 1) % arrayLength(keys);
+      probes = probes + 1;
+      if (probes >= arrayLength(keys)) { return; }
+    }
+    keys[s] = key;
+    vals[s] = val;
+  }
+
+  String find(String[] keys, String[] vals, String key) {
+    int s = slotIn(key, arrayLength(keys));
+    int probes = 0;
+    while (keys[s] != null) {
+      if (keys[s] == key) { return vals[s]; }
+      s = (s + 1) % arrayLength(keys);
+      probes = probes + 1;
+      if (probes >= arrayLength(keys)) { return ""; }
+    }
+    return "";
+  }
+
+  < the result type of Owner.member, "@arg0", or "" when the model does not say >
+  String retOf(String owner, String member) { return find(this.retKeys, this.retVals, owner + "." + member); }
+
+  String fieldOf(String owner, String name) { return find(this.fieldKeys, this.fieldVals, owner + "." + name); }
+
+  < the whitespace-separated fields of source units a .. b-1: up to n, the last one keeps the rest >
+  String[] fieldsAt(JConvSource src, int a, int b, int n) {
+    String[] out = new String[n];
+    int count = 0;
+    int i = a;
+    while (count < n && i < b) {
+      while (i < b && (src.at(i) == 32 || src.at(i) == 9 || src.at(i) == 13)) { i = i + 1; }
+      if (i >= b) { break; }
+      int j = i;
+      if (count == n - 1) {
+        j = b;
+        while (j > i && (src.at(j - 1) == 32 || src.at(j - 1) == 9 || src.at(j - 1) == 13)) { j = j - 1; }
+      } else {
+        while (j < b && src.at(j) != 32 && src.at(j) != 9) { j = j + 1; }
+      }
+      out[count] = src.slice(i, j);
+      count = count + 1;
+      i = j;
+    }
+    return out;
+  }
+
+  < true when source units a .. start with the given ASCII word followed by a space >
+  boolean startsAt(JConvSource src, int a, String word) {
+    int n = word.length();
+    int k = 0;
+    while (k < n) {
+      if (src.at(a + k) != word.charAt(k)) { return false; }
+      k = k + 1;
+    }
+    return src.at(a + n) == 32;
+  }
+
+  boolean load(String file) {
+    this.path = file;
+    JConvSource src = new JConvSource();
+    if (osExists(file) != 1 || !src.load(file)) { return false; }
+    int i = 0;
+    int a = 0;
+    int rows = 0;
+    while (i <= src.length) {
+      if (i == src.length || src.at(i) == 10) {
+        if (i > a) {
+          if (startsAt(src, a, "ret")) {
+            String[] f = fieldsAt(src, a, i, 4);
+            if (f[3] != null) {
+              put(this.retKeys, this.retVals, f[1] + "." + f[2], f[3]);
+              this.retRows = this.retRows + 1;
+            }
+          } else if (startsAt(src, a, "field")) {
+            String[] f2 = fieldsAt(src, a, i, 4);
+            if (f2[3] != null) { put(this.fieldKeys, this.fieldVals, f2[1] + "." + f2[2], f2[3]); }
+          } else if (startsAt(src, a, "binop")) {
+            String[] f3 = fieldsAt(src, a, i, 4);
+            if (f3[1] == "int" && f3[2] == "<<") { this.shlInt = f3[3]; }
+            if (f3[1] == "int" && f3[2] == ">>") { this.shrInt = f3[3]; }
+            if (f3[1] == "int" && f3[2] == ">>>") { this.ushrInt = f3[3]; }
+          } else if (startsAt(src, a, "tostr")) {
+            String[] f4 = fieldsAt(src, a, i, 3);
+            if (f4[1] == "double") { this.tostrDouble = f4[2]; }
+            if (f4[1] == "char") { this.tostrChar = f4[2]; }
+          } else if (startsAt(src, a, "model")) {
+            String[] f5 = fieldsAt(src, a, i, 3);
+            this.modelName = f5[1];
+            this.revision = f5[2];
+          }
+          rows = rows + 1;
+          if (rows % 1000 == 999) { int hint = 0; hint = gc; }
+        }
+        a = i + 1;
+      }
+      i = i + 1;
+    }
+    this.loaded = true;
+    return true;
+  }
+
+  String describe() {
+    if (!this.loaded) { return "built-in defaults (model file not read: " + this.path + ")"; }
+    return this.modelName + " " + this.revision + " (" + this.retRows + " ret rows, " + this.path + ")";
+  }
+}

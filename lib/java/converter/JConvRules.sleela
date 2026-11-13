@@ -12,7 +12,7 @@ class JConvRules {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. The rules it
      encodes follow the Java Language Specification and SLEELA.syntax. >>
-  String metaVersion = "0.3.0";
+  String metaVersion = "0.4.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-12";
@@ -57,9 +57,12 @@ class JConvRules {
   String intType;
   < one-character plain strings for codes 32..126, built once >
   String[] ascii;
+  < the conversion model (impl/subjects/conversion/conversion.model), read as data >
+  JConvModel model;
 
   JConvRules() {
     this.intType = "int32";
+    this.model = new JConvModel();
     this.ascii = new String[128];
     int c = 32;
     while (c < 127) {
@@ -69,6 +72,8 @@ class JConvRules {
   }
 
   void useIntType(String t) { this.intType = t; }
+
+  void useModel(JConvModel m) { this.model = m; }
 
   String charText(int c) {
     if (c >= 32 && c < 127) { return this.ascii[c]; }

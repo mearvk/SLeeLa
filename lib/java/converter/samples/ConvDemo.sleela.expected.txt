@@ -25,4 +25,5 @@ hash -123418033 15 -987654312 -1 3 137438953472
 text 0.25 2.0 z 3.0
 2.0
 0.25 first
+calls 1.4142135623730951 2.5 e 2 4.5 268435455 cba 8
 pattern str 3, big 9, other, true false

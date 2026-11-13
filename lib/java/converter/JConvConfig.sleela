@@ -13,6 +13,8 @@
      JCONV_INT       int32 (default, Java 32-bit int) or int (64-bit SLeeLa int)
      JCONV_COMMENTS  keep (default) or drop; the leading licence comment is
                      always kept
+     JCONV_MODEL     the conversion model to read (default:
+                     SLEELA_HOME/impl/subjects/conversion/conversion.model)
      JCONV_BUNDLE    0 (default): one file per type, nested types as
                      Outer.Inner.sleela (the library layout); 1: nested types
                      go into the document of their top-level type, so a
@@ -23,7 +25,7 @@ material;
 class JConvConfig {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. >>
-  String metaVersion = "0.3.0";
+  String metaVersion = "0.4.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-12";
@@ -69,6 +71,7 @@ class JConvConfig {
   String intType;
   boolean keepComments;
   boolean bundle;
+  String modelPath;
   String sleelaHome;
   String problem;
   < api scope: open-addressing set of <module>/<package path>/<Type> keys >
@@ -90,6 +93,7 @@ class JConvConfig {
     this.intType = "int32";
     this.keepComments = true;
     this.bundle = false;
+    this.modelPath = "";
     this.sleelaHome = "";
     this.problem = "";
     this.apiKeys = new String[16384];
@@ -132,6 +136,7 @@ class JConvConfig {
     this.intType = env("JCONV_INT", "int32");
     this.keepComments = (env("JCONV_COMMENTS", "keep") != "drop");
     this.bundle = (env("JCONV_BUNDLE", "0") == "1");
+    this.modelPath = env("JCONV_MODEL", trimSlash(env("SLEELA_HOME", ".")) + "/impl/subjects/conversion/conversion.model");
     this.sleelaHome = trimSlash(env("SLEELA_HOME", ""));
     if (this.inRoot == "") { this.problem = "JCONV_IN is not set (the root of the Java source tree)"; return false; }
     if (osIsDir(this.inRoot) != 1) { this.problem = "JCONV_IN is not a directory: " + this.inRoot; return false; }

@@ -12,7 +12,7 @@ material;
 class JConvMain {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. >>
-  String metaVersion = "0.1.0";
+  String metaVersion = "0.4.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-12";
@@ -91,6 +91,10 @@ class JConvMain {
       return;
     }
     rules.useIntType(cfg.intType);
+    JConvModel model = new JConvModel();
+    model.load(cfg.modelPath);
+    rules.useModel(model);
+    print("jconv: model " + model.describe());
     JConvReport rep = new JConvReport();
     JConvTranslator tr = new JConvTranslator(rules, cfg, rep, today());
     if (!tr.makeDirs(cfg.outRoot)) {

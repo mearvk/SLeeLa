@@ -100,6 +100,10 @@ public class ConvDemo {
         System.out.println("text " + quarter + " " + two + " " + letter + " " + 3.0);
         System.out.println(two);
         System.out.println(quarter + " first");
+        // typed through the model: results of library and own methods
+        String word = "Hello";
+        StringBuilder sb = new StringBuilder("abc");
+        System.out.println("calls " + Math.sqrt(2.0) + " " + Math.abs(-2.5) + " " + word.charAt(1) + " " + (word.length() >>> 1) + " " + half(9) + " " + (Integer.MAX_VALUE >>> 3) + " " + sb.reverse().toString() + " " + Math.max(3, 8));
         System.out.println("pattern " + describe("abc") + ", " + describe(Integer.valueOf(9)) + ", " + describe(Integer.valueOf(2)) + ", " + emptyText("") + " " + emptyText(Integer.valueOf(1)));
     }
 
@@ -115,6 +119,10 @@ public class ConvDemo {
 
     static boolean emptyText(Object o) {
         return o instanceof String s && s.isEmpty();
+    }
+
+    static double half(int n) {
+        return n / 2.0;
     }
 
     static String trace = "";
