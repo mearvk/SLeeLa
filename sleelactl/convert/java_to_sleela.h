@@ -38,6 +38,7 @@ struct MethodSig {
     bool isStatic = false;
     bool varargs = false;   // the last parameter is T... (its type is stored as T[])
     bool isAbstract = false; // declared without a body (an interface method, or abstract)
+    std::string owner;       // the class that declares it
 };
 struct FieldInfo { Ty ty; bool isStatic = false; };
 struct ClassInfo {
@@ -82,6 +83,11 @@ struct Options {
     // The converted program runs on one thread: Java synchronized and volatile are then plain
     // (they only order accesses between threads). Off by default: without it they are refused.
     bool singleThread = false;
+    // Java throws NegativeArraySizeException for a negative array size; the SLeeLa VM stops the program.
+    // The converter wraps every non-constant size in JavaChecks.size(n). (An out-of-range INDEX needs no
+    // wrapper: the VM throws it inside a try, SLEELA.syntax 37.5 and lib/java/support/SLJavaFaults.)
+    // --unchecked-sizes omits the wrapper (NOT equivalent for a program that reaches a negative size).
+    bool checkedArrays = true;
 };
 
 struct Result {

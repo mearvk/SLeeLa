@@ -568,6 +568,19 @@ def render_authorship(packages, out_dir, totals):
         page("Authorship", "\n".join(body), "", nav), encoding="utf-8")
 
 
+def java_tier_callout(out_dir):
+    """A pointer to the Java Specific Section, relative to the site being written."""
+    root = Path(__file__).resolve().parent.parent
+    target = root / "lib" / "java" / "JAVA.SPEC.md"
+    try:
+        rel = os.path.relpath(target, Path(out_dir).resolve()).replace(os.sep, "/")
+    except ValueError:
+        rel = "lib/java/JAVA.SPEC.md"
+    return ('<p>Everything specific to Java source (the Java tier under <code>lib/java</code> and the '
+            'Java to SLeeLa converter) is specified apart from the language, in the '
+            f'<a href="{e(rel)}">Java Specific Section</a>.</p>')
+
+
 def render_index(packages, pkg_units, out_dir, totals):
     nav = side_nav(packages, "")
     body = [f'<h1>SLeeLa Standard Library — HTML API</h1>']
@@ -578,9 +591,13 @@ def render_index(packages, pkg_units, out_dir, totals):
                 f'<strong>{totals["classes"]}</strong> classes and structs. '
                 f'Start at a package, open a unit, and read its fields and methods '
                 f'with plain explanations.</div>')
-    body.append('<p class="lead"><strong>Current language edition: SLeeLa syntax 3.0.</strong> '
+    body.append('<p class="lead"><strong>Current language edition: SLeeLa syntax 3.1</strong> '
+                '(also written <code>3.01</code>; sections 44, 45 and 46 of <code>SLEELA.syntax</code>: '
+                'the character literal and <code>char</code> type, the array specification, labeled '
+                'statements, and <code>finally</code> on <code>return</code>/<code>break</code>/<code>continue</code>). '
                 'Each unit retains and displays its own declared <code>#sleela</code> version; '
                 'older declarations remain supported and are not silently relabelled.</p>')
+    body.append(java_tier_callout(out_dir))
     body.append('<p>New here? Read the <a href="glossary.html">Glossary</a> first — '
                 'it defines the reading level these pages are written for '
                 '(<strong>Student 2</strong>) and the core SLeeLa terms.</p>')

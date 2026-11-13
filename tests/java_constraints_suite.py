@@ -29,7 +29,7 @@ def main():
             "c++", "-std=c++17", "-O2", "-Wall", "-Wextra", "-pedantic",
             "-I" + str(ROOT / "impl" / "frontend"),
             str(ROOT / "tests" / "java_overload_override.cpp"),
-            str(ROOT / "impl" / "frontend" / "java_equivalence.cpp"),
+            str(ROOT / "impl" / "frontend" / "java" / "java_equivalence.cpp"),
             "-o", str(overload_out),
         ])
         run([str(overload_out)])

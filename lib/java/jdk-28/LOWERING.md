@@ -117,7 +117,7 @@ call, and a `null` receiver must throw `NullPointerException` at the reference.
 **Target typing is required.** The arity (and which overload) comes from the
 functional interface the lambda is assigned or passed to. The Java front end
 already treats lambdas and inexact method references as "not pertinent until
-target typing" (`impl/frontend/java_equivalence.cpp`); the translator needs that
+target typing" (`impl/frontend/java/java_equivalence.cpp`); the translator needs that
 target type, so lowering runs after overload resolution.
 
 ### 2.4 Inner, local and anonymous classes (row 33)

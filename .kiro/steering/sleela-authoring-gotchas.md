@@ -6,14 +6,14 @@ inclusion: always
 
 Confirmed behaviours of the toolchain that `sleela check` alone will not catch.
 These were verified against the current compiler, which supports **source
-syntax 1.0 – 3.0**. Keep new/edited `.sleela` code within these rules.
+syntax 1.0 – 3.1**. Keep new/edited `.sleela` code within these rules.
 
 ## Compiler choice
 
 - The prebuilt `working-binaries/sleela` is current: it reports
-  `SLeeLa™ Language/Runtime 1.3.2-pro` and supports **syntax 1.0 – 3.0**, so it
-  checks and runs the whole tree (including `#sleela 2.x` and `#sleela 3.0`
-  files). Use it directly:
+  `SLeeLa™ Language/Runtime 1.3.2-pro` and supports **syntax 1.0 – 3.1**, so it
+  checks and runs the whole tree (including `#sleela 2.x`, `#sleela 3.0` and
+  `#sleela 3.1` files). Use it directly:
 
       ./working-binaries/sleela check <file>
       ./working-binaries/sleela run   <file>
@@ -186,13 +186,13 @@ refuse (do not clamp or wrap) inputs that could push it past. See
 - **`$` is a lexical error outside string literals, including inside a `<< ... >>` block comment** (it is fine inside a string literal).
   Do not copy template text such as `$a` into SLeeLa comments.
 
-## Syntax 3.2 notes (char and arrays)
+## Syntax 3.1 (3.01) notes: char and arrays
 
-- **Syntax 3.2 `char` and arrays (SLEELA.syntax 45, 46).** Under `#sleela 3.2` a `char`
+- **Syntax 3.1 `char` and arrays (SLEELA.syntax 45, 46).** Under `#sleela 3.1` a `char`
   shows as text only where its static type is `char` (a `+` with a String, `s += c`,
   `print(c)`); through `Any` or an `int` parameter it is a number, so use
   `SLChar.toString(c)`. `c + 1` is an `int`; `(char)` and every char store keep 16
-  bits (no lossy-conversion error). `a.length` and `new T[a][b]` are 3.2; below 3.2
+  bits (no lossy-conversion error). `a.length` and `new T[a][b]` are 3.1; below 3.1
   use `arrayLength(a)` and one dimension. Library code meant for any syntax must use
   `arrayLength` and numeric codes, not `.length` or char literals (a using program's
   syntax gates the whole merged program). A grid costs `1 + rows` of the 4096 array

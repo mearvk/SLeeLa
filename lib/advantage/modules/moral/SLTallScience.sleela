@@ -1,0 +1,128 @@
+<< lib/advantage/modules/moral/SLTallScience.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Tall Science: the United States held as a cataloged Item. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< SLeeLa courseware model: Tall Science, the United States as a listed Item. >
+< A reference catalog for judging a trade; no sale, no profiling. >
+class SLTallScience {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject real origin where publicly known; unknown values use none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39510;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | nation | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity on a 1..10 scale; courseware model with rule based judgement >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real citable instrument or none >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Tall Science: the United States held as an ITEM in a catalog, with the >
+  < lists it carries: subject nouns, names, scientific individuals, moral >
+  < individuals, and its boundary. This is a reference record for judging a >
+  < trade. Nothing is bought or sold, and no person is profiled: individuals >
+  < are listed as roles or public-record names supplied by the caller. >
+  < The nouns and names lists are read respectively: entry i of one pairs >
+  < with entry i of the other, so they must have the same length. >
+  String itemName = "the United States";
+  boolean hasItem = false;
+  boolean inBoundary = false;
+  boolean respected = false;
+  String[] nouns;
+  String[] names;
+  String[] sci;
+  String[] mor;
+  int nNouns = 0;
+  int nNames = 0;
+  int nSci = 0;
+  int nMor = 0;
+  boolean built = false;
+
+  void build() {
+    if (built) { return; }
+    nouns = new String[64];
+    names = new String[64];
+    sci = new String[64];
+    mor = new String[64];
+    int i = 0;
+    while (i < 64) { nouns[i] = ""; names[i] = ""; sci[i] = ""; mor[i] = ""; i = i + 1; }
+    built = true;
+  }
+
+  void setItemName(String n) { itemName = n; }
+  void setBoundary(boolean b) { inBoundary = b; }
+  void setRespected(boolean b) { respected = b; }
+  void declareItem() { build(); hasItem = true; }
+  int countNouns() { return nNouns; }
+  int countNames() { return nNames; }
+  int countScientific() { return nSci; }
+  int countMoral() { return nMor; }
+  boolean canonical() { return itemName == "the United States"; }
+  boolean paired() { return nNouns > 0 && nNouns == nNames; }
+
+  << list 0 nouns, 1 names, 2 scientific individuals, 3 moral individuals.
+     Refuses an empty text, an unknown list, or a full list (64). >>
+  boolean register(int list, String text) {
+    build();
+    if (text == "") { return false; }
+    if (list == 0) { if (nNouns >= 64) { return false; } nouns[nNouns] = text; nNouns = nNouns + 1; return true; }
+    if (list == 1) { if (nNames >= 64) { return false; } names[nNames] = text; nNames = nNames + 1; return true; }
+    if (list == 2) { if (nSci >= 64) { return false; } sci[nSci] = text; nSci = nSci + 1; return true; }
+    if (list == 3) { if (nMor >= 64) { return false; } mor[nMor] = text; nMor = nMor + 1; return true; }
+    return false;
+  }
+
+  << A starter catalog: three paired nouns and names of real US institutions,
+     and role labels (not people) for the scientific and moral lists. >>
+  void seed() {
+    build();
+    declareItem();
+    register(0, "nation");
+    register(1, "the United States");
+    register(0, "legislature");
+    register(1, "the United States Congress");
+    register(0, "judiciary");
+    register(1, "the Supreme Court of the United States");
+    register(2, "scientist (role)");
+    register(2, "engineer (role)");
+    register(2, "statistician (role)");
+    register(3, "ethicist (role)");
+    register(3, "judge (role)");
+    register(3, "steward (role)");
+    inBoundary = true;
+    respected = true;
+  }
+}

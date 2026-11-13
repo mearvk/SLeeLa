@@ -1,0 +1,61 @@
+<< advantage/artificial-intelligence/user-program/UserProgram.sleela
+   A user defined program that loads the Advantage medium, then some AI modules.
+   It lives OUTSIDE lib on purpose: the loader finds the lib classes by name.
+   Run: sleela run UserProgram.sleela >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< The program side of the conversation: modules call this when they speak. >
+class MyListener implements SLAdvListener {
+  int heard = 0;
+  int onMessage(SLAdvMessage m) {
+    heard = heard + 1;
+    print("  [module says] " + m.from + " / " + m.topic + " " + m.text);
+    return 0;
+  }
+}
+class UserProgram {
+  SLAdvMessage ask(SLAdvMedium med, String to, String topic) {
+    SLAdvMessage m = new SLAdvMessage();
+    m.addressed("program", to, topic, 0);
+    return med.ask(m);
+  }
+  void main() {
+    SLAdvMedium med = new SLAdvMedium();
+    MyListener ears = new MyListener();
+    med.begin();
+    med.attachListener(ears);
+    print("1. load only the modules this program wants");
+    med.load("moral-evaluator");
+    med.load("high-speed-trader");
+    med.pump();
+    print("   seated: " + med.count());
+
+    print("2. program asks the moral evaluator to judge a trade");
+    SLMoralTrade t = new SLMoralTrade();
+    t.endangersLife = true;
+    double[] w = new double[32];
+    t.toNums(w);
+    SLAdvMessage j = new SLAdvMessage();
+    j.addressed("program", "moral-evaluator", "judge", 0);
+    int i = 0;
+    while (i < 32) { j.setNum(i, w[i]); i = i + 1; }
+    SLAdvMessage r = med.ask(j);
+    print("   verdict " + r.num(0) + " (0 NO, 1 YES, 2 COMPLETE)  merit " + r.num(1) + "  reason: " + r.text);
+    med.pump();
+
+    print("3. program asks the trader for a status, then simulates 5 seconds");
+    r = ask(med, "high-speed-trader", "status");
+    print("   pragmatics " + r.num(3) + "  evals so far " + r.num(0));
+    SLAdvMessage s = new SLAdvMessage();
+    s.addressed("program", "high-speed-trader", "simulate", 0);
+    s.setNum(0, 5.0);
+    s.setNum(1, 1.0);
+    r = med.ask(s);
+    print("   evals " + r.num(0) + "  accepted " + r.num(1) + "  threshold " + r.num(6));
+    med.shutdown();
+    print("done; the program heard " + ears.heard + " unsolicited messages");
+  }
+}

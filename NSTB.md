@@ -2,6 +2,8 @@ artifact;
 pure;
 gasoline;
 
+<img align="right" src="images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
+
 # NSTB — National Standing, Terms, and Bond
 
 **Issuing project:** SLeeLa — MEARVK LLC — 2026

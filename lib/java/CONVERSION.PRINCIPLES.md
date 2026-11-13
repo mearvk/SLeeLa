@@ -8,7 +8,7 @@ Revision 1.0, 2026-11-13. Part of the Java tier; the normative text is
 | # | Principle | Meaning in practice |
 |---|---|---|
 | 1 | **Functional equivalence** | A converted program prints and returns what the Java program does on a JDK. Textual likeness is not the goal. |
-| 2 | **Java improvements live in the Java tier** | Library code in `lib/java` and lowerings in the converter (`sleelactl/convert`). Not in the SLeeLa compiler, VM or runtime. The language features syntax 3.1 and 3.2 added before this rule stay where they are and are used as they are. |
+| 2 | **Java improvements live in the Java tier** | Library code in `lib/java` and lowerings in the converter (`sleelactl/convert`). Not in the SLeeLa compiler, VM or runtime. The language features syntax 3.1 added before this rule stay where they are and are used as they are. |
 | 3 | **Fail closed** | A construct that cannot be converted equivalently is refused with `file:line:col [construct] reason`. A file with any refused member writes nothing. No near-misses. |
 | 4 | **The model owns the laws** | Types, operators, casts, string conversion and library result types are rows of `impl/subjects/conversion/conversion.model`. The converter holds structure (how a statement is rewritten), not arithmetic. |
 | 5 | **Lower to what exists** | No new syntax or opcode. A Java construct without a SLeeLa form becomes a short sequence of existing forms (generated classes, temporaries, library calls), as `jdk-28/LOWERING.md` prescribes. |
@@ -35,7 +35,7 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | `float` | held in a double, rounded to binary32 after every `+ - * / %`, conversion and cast; literals are the nearest float | `lib/java/JavaFloat.sleela` (uses `java.lang.Float` rounding) | `Floats` |
 | Casts (`(int) d`, `(long) d`, `(char) i`, ...) | Java saturation and truncation rules (`d2i`, `d2l`, `d2b`, ...) | model `cast` rows | `Operands` |
 | Compound assignment `x op= y` | `x = (T)(x op y)` with the implicit narrowing | converter + model `compound` | `Operands` |
-| Char literals and `char` as a number | integer code typed `char`; `(int)`/`(long)` of a char is a real cast because syntax 3.2 shows a char-typed value as text | converter | `Strings`, `Operands` |
+| Char literals and `char` as a number | integer code typed `char`; `(int)`/`(long)` of a char is a real cast because syntax 3.1 shows a char-typed value as text | converter | `Strings`, `Operands` |
 | Widening to `double` parameters and variables | explicit `(double)`, so later `/` does not divide as integers | converter `coerce`, `adaptArgs` | `Varargs`, `Basics` |
 
 ### 2.2 Strings and text
@@ -82,8 +82,10 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 |---|---|---|---|
 | `new T[n]`, defaults | native, typed fill (0, 0.0, false, null) | VM | `Basics` |
 | `{a, b, c}` and `new T[]{...}` | language feature, syntax 3.1 | SLEELA.syntax 44.3 | `Basics`, `Grid` |
-| `new T[a][b]`, jagged `new T[a][]`, nested initializers | language feature, syntax 3.2 | SLEELA.syntax 46.3 | `Grid` |
+| `new T[a][b]`, jagged `new T[a][]`, nested initializers | language feature, syntax 3.1 | SLEELA.syntax 46.3 | `Grid` |
 | `a.length` | `arrayLength(a)` | model `call` row | `Grid` |
+| Array index out of range | `ArrayIndexOutOfBoundsException` thrown by the VM inside a `try` (37.5); no converter wrapper | SLEELA.syntax 37.5, `SLJavaFaults` | `Bounds` |
+| Negative array size | `NegativeArraySizeException` through `JavaChecks.size(n)` | `lib/java/JavaChecks.sleela` | `Bounds` |
 | `char[]`, `float[]`, `long[]`, `boolean[]` | element defaults and narrowing as above | converter | `Grid`, `Floats` |
 
 ### 2.6 Classes and types
@@ -105,6 +107,7 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | Records | field per component, canonical (or compact) constructor, accessors, `toString`, `equals`/`hashCode` for simple components | converter | `Records` |
 | Field defaults and initialization order | default value on every field; field initializers and instance `{ }` blocks after `super(...)` | converter | `Init` |
 | `close()` | mapped to `closeResource()` in declarations and calls | converter `mapMember` | `Resources` |
+| A method named like a SLeeLa built-in (`read`, `write`, `accept`, `lock`, ...) | calls qualified with the owner class or `this.` | converter, `builtin_names.h` | `Bounds` |
 | Reserved or built-in member names | refused; locals renamed | converter | `Varargs` (a method named `join` was caught); no refusal test |
 | Packages, imports | dropped; library members resolve through `import java.jdk-N;` | converter | all |
 
@@ -125,8 +128,8 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | sleelactl registration | `sleelactl build java-convert`, `sleelactl run java-convert ...` | `bin/sleelactl.d/registry.conf` |
 | Presumed-JDK directories | `sleelactl/jdk/<N>/java` in, `sleelactl/jdk/<N>/sleela` out | `sleelactl/jdk/README.md` |
 | Support library | `JavaOperands`, `JavaFloat`, `JavaFormat`, `JavaText`, `jdk-25`/`jdk-28` units | `lib/java` |
-| Differential test | 20 programs on a JDK and on the VM, plus 9 refusals and a stale-output check (31 of 31, 2026-11-13; CI `java-convert.yml`) | `tests/javaconv_differential_test.sh` |
-| Language features the tier uses | char literal, array initializer, labels, `finally` on abrupt exit (3.1); `a.length`, multi-dimensional arrays, char as text (3.2) | `SLEELA.syntax` sections 44 to 46 |
+| Differential test | 22 programs on a JDK and on the VM, plus 9 refusals and a stale-output check (32 of 32, 2026-11-13; CI `java-convert.yml`) | `tests/javaconv_differential_test.sh` |
+| Language features the tier uses | char literal, array initializer, labels, `finally` on abrupt exit, `a.length`, multi-dimensional arrays, char as text (all syntax 3.1) | `SLEELA.syntax` sections 44 to 46 |
 
 ## 3. What is left
 
@@ -147,8 +150,10 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | 13 | **Reflection and class literals** | `getClass()`, `X.class`, `int.class`, annotation processing. | No lowering designed. | open |
 | 14 | **`float`/`double` corner cases** | Postfix `++` of a float used as a value; `-0.0` sign; hex float literals. | Case by case. | small |
 | 15 | **Two converters** | `sleelactl/convert` (C/C++) and `lib/java/converter` (SLeeLa) share the model but not the lowerings. | Align them or retire one. | medium |
-| 16 | **CI and binaries** | The differential test is not in CI; `working-binaries/` still reports syntax 3.0. | Add a CI job (needs a JDK and a source build); refresh the binaries. | small |
+| 16 | **CI and binaries** | The differential test is not in CI; `working-binaries/` was refreshed 2026-11-13 and now reports syntax 3.1. | Add a CI job (needs a JDK and a source build). | small |
 | 17 | **Name-mapping interplay with unconverted `lib/java` units** | A converted class that implements a library interface declaring `close()` does not match `closeResource()`. | Rename in the library units too, or map both. | small |
+| 18 | **Null dereference and stack overflow** | Still fatal VM errors, not `NullPointerException` / `StackOverflowError`; faults with no `try` handler are fatal (as an uncaught exception ends a Java program) | Extend the fault kinds; null needs a typed check at each dereference | medium |
+| 19 | **Methods named like a Munction verb** (`connect`, `send`, `enable`, ...) called on a receiver | The compiler gives those names the verb meaning on every receiver | Rename like `close`, in the library units too | small |
 
 ## 4. How to keep this page true
 

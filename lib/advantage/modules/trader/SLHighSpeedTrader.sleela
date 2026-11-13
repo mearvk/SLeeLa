@@ -1,0 +1,343 @@
+<< lib/advantage/modules/trader/SLHighSpeedTrader.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The high speed trader AI built from 8 to 24 pragmatics (pure computation, synthetic data). >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< SLeeLa courseware model: a high speed trader AI built from 8 to 24 pragmatics. >
+< Targets at least 5000 evaluations per second and about 2000 trades per minute (simulated). >
+< Pure computation on synthetic data; it places no orders and opens no connections. >
+class SLHighSpeedTrader {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject real origin where publicly known; unknown values use none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39501;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | nation | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity on a 1..10 scale; courseware model on synthetic data >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real citable instrument or none >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < The high speed trader: a pure-computation model (no orders, no network). >
+  < Candidate layout o[0..9]: edgeBps, costBps, evidenceN, spreadBps, >
+  < volBps, ageMs, qty (fraction of max order, 0 to 1), positionFrac (0 to 1), >
+  < venueTrust (0 to 1), depthRatio (depth divided by qty). >
+  < Pipeline per candidate: 24 features in 0..1, then the first P pragmatics >
+  < by priority order. Any feature below its hard minimum is a veto. Else the >
+  < weighted score must reach the threshold and the rate governor must have a >
+  < token. Everything fails closed: not ready, halted, or malformed means no. >
+  SLHstPragmatics reg;
+  double[] f;
+  double[] w;
+  double[] hm;
+  int[] order;
+  int[] vetoCount;
+  double[] prior;
+  int P = 8;
+  boolean ready = false;
+  boolean halted = false;
+  double threshold = 0.60;
+  double tradesPerMinute = 2000.0;
+  double ratePerMs = 0.0;
+  double burst = 8.0;
+  double tokens = 8.0;
+  double lastMs = -1.0;
+  double windowStart = 0.0;
+  int windowAccepted = 0;
+  int windowRateRej = 0;
+  int evals = 0;
+  int accepted = 0;
+  int rejVeto = 0;
+  int rejScore = 0;
+  int rejRate = 0;
+  int rejNotReady = 0;
+  int lastCode = 1;
+  int lastBucket = 0;
+  int insights = 0;
+  int insightsRefused = 0;
+  double lastScore = 0.0;
+  double pnl = 0.0;
+  double peak = 0.0;
+  double ddLimit = 400.0;
+  double eta = 0.10;
+  boolean learning = true;
+
+  < ---- configuration (fail closed) ---- >
+  << Returns false and leaves the trader NOT ready unless pragmatics is in
+     8..24 and tradesPerMinute is positive and finite. >>
+  boolean configure(int pragmatics, double tpm) {
+    ready = false;
+    if (pragmatics < 8 || pragmatics > 24) { return false; }
+    if (tpm != tpm || tpm <= 0.0 || tpm > 600000.0) { return false; }
+    reg = new SLHstPragmatics();
+    reg.build();
+    P = pragmatics;
+    tradesPerMinute = tpm;
+    ratePerMs = tpm / 60000.0;
+    burst = tpm / 240.0;
+    if (burst < 2.0) { burst = 2.0; }
+    tokens = burst;
+    lastMs = -1.0;
+    windowAccepted = 0;
+    windowRateRej = 0;
+    f = new double[24];
+    w = new double[24];
+    hm = new double[24];
+    order = new int[24];
+    vetoCount = new int[24];
+    prior = new double[10];
+    int i = 0;
+    while (i < 24) {
+      f[i] = 0.0;
+      w[i] = 1.0;
+      hm[i] = reg.hardMin(i);
+      order[i] = reg.orderAt(i);
+      vetoCount[i] = 0;
+      i = i + 1;
+    }
+    i = 0;
+    while (i < 10) { prior[i] = 0.5; i = i + 1; }
+    ready = true;
+    halted = false;
+    return true;
+  }
+
+  void setLearning(boolean on) { learning = on; }
+  << For comparison runs only: a positive finite drawdown limit in bps. >>
+  boolean setDrawdownLimit(double lim) {
+    if (lim != lim || lim <= 0.0) { return false; }
+    ddLimit = lim;
+    return true;
+  }
+  int getPragmatics() { return P; }
+  double getThreshold() { return threshold; }
+  int getEvals() { return evals; }
+  int getAccepted() { return accepted; }
+  int getRejVeto() { return rejVeto; }
+  int getRejScore() { return rejScore; }
+  int getRejRate() { return rejRate; }
+  int getVeto(int id) { return vetoCount[id]; }
+  double getWeight(int id) { return w[id]; }
+  double getPnl() { return pnl; }
+  int getLastCode() { return lastCode; }
+  double getLastScore() { return lastScore; }
+  boolean isHalted() { return halted; }
+  int getInsights() { return insights; }
+  int getInsightsRefused() { return insightsRefused; }
+  int resetWindowAccepted() { int a = windowAccepted; windowAccepted = 0; return a; }
+
+  < ---- small numeric helpers ---- >
+  double clamp01(double x) {
+    if (x < 0.0) { return 0.0; }
+    if (x > 1.0) { return 1.0; }
+    return x;
+  }
+  boolean okv(double x) { return x == x && x > -1.0e12 && x < 1.0e12; }
+
+  < ---- human control: halt is instant, re-arm is a deliberate human act ---- >
+  void haltNow() { halted = true; }
+  void rearm() { if (ready) { halted = false; peak = pnl; } }
+
+  < ---- the brilliant person channel ---- >
+  << A person with insight may nudge one pragmatic weight by a factor in
+     0.5..2.0. It can never change a hard minimum, so it can never unlock a
+     veto, and an out of range request is refused, not clamped. The weight is
+     kept in 0.25..4.0. Returns true when applied. >>
+  boolean insight(int id, double factor) {
+    if (ready == false) { insightsRefused = insightsRefused + 1; return false; }
+    if (id < 0 || id > 23) { insightsRefused = insightsRefused + 1; return false; }
+    if (factor != factor || factor < 0.5 || factor > 2.0) {
+      insightsRefused = insightsRefused + 1;
+      return false;
+    }
+    double nw = w[id] * factor;
+    if (nw < 0.25) { nw = 0.25; }
+    if (nw > 4.0) { nw = 4.0; }
+    w[id] = nw;
+    insights = insights + 1;
+    return true;
+  }
+
+  < ---- rate governor: token bucket plus a once a second threshold controller ---- >
+  void refill(double nowMs) {
+    if (lastMs < 0.0) { lastMs = nowMs; windowStart = nowMs; }
+    double dt = nowMs - lastMs;
+    if (dt > 0.0) {
+      tokens = tokens + dt * ratePerMs;
+      if (tokens > burst) { tokens = burst; }
+      lastMs = nowMs;
+    }
+    if (nowMs - windowStart >= 1000.0) {
+      double target = tradesPerMinute / 60.0;
+      if (windowRateRej > 3) {
+        threshold = threshold + 0.01;
+      } else {
+        if (windowAccepted < target * 0.98) { threshold = threshold - 0.01; }
+      }
+      if (threshold < 0.30) { threshold = 0.30; }
+      if (threshold > 0.98) { threshold = 0.98; }
+      windowAccepted = 0;
+      windowRateRej = 0;
+      windowStart = nowMs;
+    }
+  }
+
+  < ---- the 24 features, straight line, each in 0..1 where 1 is best ---- >
+  void features(double[] o) {
+    double e = o[0];
+    double c = o[1];
+    double n = o[2];
+    double s = o[3];
+    double v = o[4];
+    double a = o[5];
+    double q = o[6];
+    double p = o[7];
+    double t = o[8];
+    double d = o[9];
+    boolean wf = okv(e) && okv(c) && okv(n) && okv(s) && okv(v) && okv(a)
+              && okv(q) && okv(p) && okv(t) && okv(d);
+    if (wf == false) {
+      int z = 0;
+      while (z < 24) { f[z] = 0.0; z = z + 1; }
+      return;
+    }
+    double net = e - c;
+    double hs = 0.5 * s + 0.01;
+    f[0] = 1.0;
+    if (net > 0.0) { f[1] = clamp01(net / 20.0); } else { f[1] = 0.0; }
+    f[2] = clamp01(e / (4.0 * hs));
+    if (n < 0.0) { n = 0.0; }
+    f[3] = n / (n + 3.0);
+    double lim = 3.0 * v + 1.0;
+    if (e <= lim) { f[4] = 1.0; } else { f[4] = clamp01(lim / e); }
+    f[5] = clamp01(c / hs);
+    if (net > 0.0) { f[6] = clamp01(2.0 * net / (v + 1.0)); } else { f[6] = 0.0; }
+    f[7] = clamp01(d);
+    if (q <= 0.0 || q > 1.0) { f[8] = 0.0; } else { f[8] = 1.0 - 0.5 * q; }
+    if (a <= 50.0) { f[9] = 1.0; }
+    else { if (a >= 500.0) { f[9] = 0.0; } else { f[9] = (500.0 - a) / 450.0; } }
+    f[10] = clamp01(1.0 - p);
+    if (e > 0.0 && net > 0.0) { f[11] = clamp01(net / e); } else { f[11] = 0.0; }
+    f[12] = clamp01(d / 3.0);
+    f[13] = 1.0 / (1.0 + v / 50.0);
+    f[14] = clamp01(tokens / burst);
+    int b = 0;
+    if (net > 0.0) {
+      double x = net / 5.0;
+      while (b < 9 && x >= b + 1) { b = b + 1; }
+    }
+    lastBucket = b;
+    f[15] = prior[b];
+    f[16] = clamp01(t);
+    if (halted) { f[17] = 0.0; } else { f[17] = 1.0; }
+    if (e >= 0.0 && e <= 500.0 && c >= 0.0 && c <= 500.0 && s >= 0.0 && s <= 2000.0) {
+      f[18] = 1.0;
+    } else { f[18] = 0.0; }
+    if (p >= 0.0 && p < 0.95) { f[19] = 1.0; } else { f[19] = 0.0; }
+    f[20] = clamp01(1.0 - (peak - pnl) / ddLimit);
+    f[21] = clamp01(n / 10.0);
+    if (a >= 0.0 && a < 1000.0) { f[22] = 1.0; } else { f[22] = 0.0; }
+    f[23] = clamp01(1.0 - q * (1.0 - t));
+  }
+
+  < ---- evaluate one candidate: 1 accept, 0 reject; lastCode says why ---- >
+  << lastCode: 0 accepted, 1 not ready or halted, 10 plus id vetoed by that
+     pragmatic, 100 score below threshold, 101 rate governor out of tokens. >>
+  int evaluate(double[] o, double nowMs) {
+    evals = evals + 1;
+    if (ready == false) { rejNotReady = rejNotReady + 1; lastCode = 1; return 0; }
+    refill(nowMs);
+    features(o);
+    int i = 0;
+    double sw = 0.0;
+    double sc = 0.0;
+    while (i < P) {
+      int k = order[i];
+      double fk = f[k];
+      if (fk < hm[k]) {
+        vetoCount[k] = vetoCount[k] + 1;
+        rejVeto = rejVeto + 1;
+        lastCode = 10 + k;
+        return 0;
+      }
+      sw = sw + w[k];
+      sc = sc + w[k] * fk;
+      i = i + 1;
+    }
+    double score = sc / sw;
+    lastScore = score;
+    if (score < threshold) { rejScore = rejScore + 1; lastCode = 100; return 0; }
+    if (tokens < 1.0) {
+      rejRate = rejRate + 1;
+      windowRateRej = windowRateRej + 1;
+      lastCode = 101;
+      return 0;
+    }
+    tokens = tokens - 1.0;
+    accepted = accepted + 1;
+    windowAccepted = windowAccepted + 1;
+    lastCode = 0;
+    return 1;
+  }
+
+  < ---- evolution: call right after an accepted evaluate with the realized bps ---- >
+  << Multiplicative weights over the active pragmatics: a feature that was high
+     on a win is rewarded, high on a loss is penalized. The regime prior moves
+     toward the outcome. Drawdown within 5 percent of the limit halts the trader (matching the G5 veto), and only a
+     person can re-arm it. >>
+  void learn(double realizedBps) {
+    if (ready == false) { return; }
+    boolean win = realizedBps > 0.0;
+    pnl = pnl + realizedBps;
+    if (pnl > peak) { peak = pnl; }
+    if (peak - pnl >= ddLimit * 0.95) { halted = true; }
+    if (learning == false) { return; }
+    int i = 0;
+    while (i < P) {
+      int k = order[i];
+      double d = eta * (f[k] - 0.5);
+      if (win == false) { d = 0.0 - d; }
+      double nw = w[k] * (1.0 + d);
+      if (nw < 0.25) { nw = 0.25; }
+      if (nw > 4.0) { nw = 4.0; }
+      w[k] = nw;
+      i = i + 1;
+    }
+    double target = 0.0;
+    if (win) { target = 1.0; }
+    prior[lastBucket] = 0.9 * prior[lastBucket] + 0.1 * target;
+  }
+}

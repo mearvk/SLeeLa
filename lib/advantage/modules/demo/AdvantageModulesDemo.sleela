@@ -1,0 +1,253 @@
+<< lib/advantage/modules/demo/AdvantageModulesDemo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Advantage module host demo: a user defined program loads the medium, then some >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< AI modules, and talks to them over the bridge in both directions. >
+< run auto-loads the sibling classes by name. Data is synthetic and illustrative. >
+class AdvantageModulesDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject real origin where publicly known; unknown values use none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39533;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Advantage™";
+  String metaCorporation = "none";
+  < metaOrigin: National | nation | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity on a 1..10 scale; courseware grade module host >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real citable instrument or none >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int passed = 0;
+  int failed = 0;
+
+  void check(String what, boolean ok) {
+    if (ok) { passed = passed + 1; print("  PASS  " + what); }
+    else { failed = failed + 1; print("  FAIL  " + what); }
+  }
+
+  SLAdvMessage req(String to, String topic) {
+    SLAdvMessage m = new SLAdvMessage();
+    m.addressed("program", to, topic, 0);
+    return m;
+  }
+
+  SLAdvMessage cand(double e, double c, double n, double s, double v, double a, double q, double p, double t, double d, double now) {
+    SLAdvMessage m = req("high-speed-trader", "evaluate");
+    m.setNum(0, e); m.setNum(1, c); m.setNum(2, n); m.setNum(3, s); m.setNum(4, v);
+    m.setNum(5, a); m.setNum(6, q); m.setNum(7, p); m.setNum(8, t); m.setNum(9, d);
+    m.setNum(10, now);
+    return m;
+  }
+
+  SLAdvMessage judgeMsg(SLMoralTrade t) {
+    SLAdvMessage m = req("moral-evaluator", "judge");
+    double[] w = new double[32];
+    t.toNums(w);
+    int i = 0;
+    while (i < 32) { m.setNum(i, w[i]); i = i + 1; }
+    return m;
+  }
+
+  void main() {
+    print("=== Advantage modules: program, medium, bridge, modules (synthetic, no network) ===");
+
+    print("-- 1. the program loads the medium, the medium loads modules --");
+    SLAdvMedium med = new SLAdvMedium();
+    AdvProgramListener lis = new AdvProgramListener();
+    check("medium begins", med.begin());
+    med.attachListener(lis);
+    check("load high-speed-trader", med.load("high-speed-trader"));
+    check("load moral-evaluator", med.load("moral-evaluator"));
+    check("two modules seated", med.count() == 2 && med.has("high-speed-trader") && med.has("moral-evaluator"));
+    check("an unknown name is refused", med.load("no-such-module") == false);
+    check("a module already seated is refused", med.load("moral-evaluator") == false);
+    med.pump();
+    check("both modules told the program they are ready", lis.readyCount == 2);
+
+    print("-- 2. program to module and back: ask and reply --");
+    SLAdvMessage r = med.ask(req("high-speed-trader", "status"));
+    check("status reply arrives", r != null && r.kind == 1 && r.status == 0);
+    check("trader starts at 16 pragmatics", r.num(3) == 16.0);
+    SLAdvMessage bad = req("high-speed-trader", "configure");
+    bad.setNum(0, 7.0); bad.setNum(1, 2000.0);
+    r = med.ask(bad);
+    check("7 pragmatics refused over the bridge", r != null && r.status == 1);
+    SLAdvMessage good = req("high-speed-trader", "configure");
+    good.setNum(0, 8.0); good.setNum(1, 2000.0);
+    r = med.ask(good);
+    check("8 pragmatics accepted", r != null && r.status == 0);
+    r = med.ask(cand(40.0, 4.0, 20.0, 4.0, 15.0, 10.0, 0.3, 0.2, 0.9, 4.0, 1000.0));
+    check("a strong candidate is accepted", r != null && r.num(0) == 1.0);
+    r = med.ask(cand(1.0e30, 4.0, 20.0, 4.0, 15.0, 10.0, 0.3, 0.2, 0.9, 4.0, 2000.0));
+    check("a malformed candidate is refused (L1, code 10)", r != null && r.num(0) == 0.0 && r.num(1) == 10.0);
+
+    print("-- 3. the moral evaluator over the bridge --");
+    SLMoralTrade ex = new SLMoralTrade();
+    r = med.ask(judgeMsg(ex));
+    check("an exemplary trade is COMPLETE", r != null && r.num(0) == 2.0 && r.num(1) == 1.0);
+    SLMoralTrade danger = new SLMoralTrade();
+    danger.endangersLife = true;
+    r = med.ask(judgeMsg(danger));
+    check("danger to life is NO", r != null && r.num(0) == 0.0 && r.num(3) == 0.0);
+    med.pump();
+    check("the module told the program, unasked, about the veto", lis.vetoes == 1);
+    SLAdvMessage rev = req("moral-evaluator", "review");
+    rev.setNum(0, 1.0); rev.setNum(1, 0.0);
+    r = med.ask(rev);
+    check("a person review raises the threshold", r != null && r.status == 0 && r.num(0) > 0.80);
+    SLAdvMessage reg = req("moral-evaluator", "register");
+    reg.setNum(0, 0.0);
+    reg.text = "treaty";
+    r = med.ask(reg);
+    check("a catalog entry is registered", r != null && r.status == 0);
+    SLAdvMessage st = req("moral-evaluator", "status");
+    r = med.ask(st);
+    check("an unmatched noun now breaks the respective pairing", r != null && r.num(4) == 0.0);
+
+    print("-- 4. module to module: the trader consults the moral evaluator --");
+    SLAdvMessage lk = req("high-speed-trader", "link");
+    lk.text = "moral-evaluator";
+    r = med.ask(lk);
+    check("the trader is linked to the evaluator", r != null && r.status == 0);
+    SLAdvMessage seed = req("moral-evaluator", "seed-catalog");
+    med.ask(seed);
+    int before = lis.judgedEvents;
+    r = med.ask(cand(40.0, 4.0, 20.0, 4.0, 15.0, 10.0, 0.3, 0.2, 0.9, 4.0, 3000.0));
+    check("an accepted trade is sent on for judgement", r != null && r.num(0) == 1.0 && r.num(4) == 1.0);
+    med.pump();
+    check("the verdict came back and the program was told", lis.judgedEvents == before + 1);
+    check("a high speed trade is YES, not COMPLETE (no cooling off, no time to decide)", lis.lastVerdict == 1);
+
+    print("-- 5. a human centered veto withdraws the trade --");
+    SLMoralTrade unsafe = new SLMoralTrade();
+    unsafe.consent = false;
+    double[] w = new double[32];
+    unsafe.toNums(w);
+    SLAdvMessage sf = req("high-speed-trader", "set-facts");
+    int i = 0;
+    while (i < 32) { sf.setNum(i, w[i]); i = i + 1; }
+    med.ask(sf);
+    int vb = lis.vetoes;
+    r = med.ask(cand(40.0, 4.0, 20.0, 4.0, 15.0, 10.0, 0.3, 0.2, 0.9, 4.0, 4000.0));
+    med.pump();
+    check("the trader accepted it but the evaluator said NO", r != null && r.num(0) == 1.0 && lis.lastVerdict == 0);
+    check("the program heard the cardinal veto too", lis.vetoes == vb + 1);
+    r = med.ask(req("high-speed-trader", "status"));
+    check("the trader counts one withdrawn trade", r != null && r.num(6) >= 1.0);
+
+    print("-- 6. safety of the medium --");
+    r = med.ask(req("ghost", "status"));
+    check("a message to an unknown module gets an error reply", r != null && r.kind == 3 && r.status == 404);
+    r = med.ask(req("high-speed-trader", "dance"));
+    check("an unknown topic gets an error reply", r != null && r.kind == 3 && r.status == 2);
+    SLAdvMessage hs = req("high-speed-trader", "simulate");
+    hs.setNum(0, 0.0);
+    r = med.ask(hs);
+    check("a bad simulate request is refused", r != null && r.kind == 3 && r.status == 1);
+
+    print("-- 7. a user defined module sits beside the AI modules --");
+    AdvUserEchoModule echo = new AdvUserEchoModule();
+    check("the program seats its own module", med.attach(echo));
+    med.pump();
+    check("it announced itself", lis.readyCount == 3);
+    SLAdvMessage em = req("echo", "twice");
+    em.setNum(0, 21.0);
+    em.text = "hello";
+    r = med.ask(em);
+    check("the user module answers over the same bridge", r != null && r.num(0) == 42.0 && r.text == "hello");
+    AdvUserPingModule pb = new AdvUserPingModule();
+    pb.setNames("program", "x");
+    check("a user module named program is refused", med.attach(pb) == false);
+
+    print("-- 8. the bridge is bounded and a ping pong cannot hang --");
+    int k = 0;
+    int refused = 0;
+    while (k < 1030) {
+      SLAdvMessage q = req("echo", "fill");
+      if (med.bridge().post(q) < 0) { refused = refused + 1; }
+      k = k + 1;
+    }
+    check("posts beyond 1024 pending are refused", refused == 6);
+    med.pump();
+    check("the queue drains", med.bridge().pendingModules() == 0);
+    int dropsBefore = med.bridge().getDropped();
+    check("dropped posts were counted", dropsBefore >= 6);
+    AdvUserPingModule pa = new AdvUserPingModule();
+    pa.setNames("ping-a", "ping-b");
+    AdvUserPingModule pc = new AdvUserPingModule();
+    pc.setNames("ping-b", "ping-a");
+    med.attach(pa);
+    med.attach(pc);
+    med.tell("ping-a", "ping", "start");
+    med.pump();
+    check("the pump gave up after its cap instead of hanging", med.wasSaturated());
+    med.unload("ping-a");
+    med.unload("ping-b");
+    med.pump();
+    check("after unloading the pair the queues empty", med.bridge().pendingModules() == 0);
+
+    print("-- 9. the trader at speed, through the bridge --");
+    SLAdvMessage rl = req("high-speed-trader", "link");
+    rl.text = "";
+    med.ask(rl);
+    SLAdvMessage cf = req("high-speed-trader", "configure");
+    cf.setNum(0, 24.0); cf.setNum(1, 2000.0);
+    med.ask(cf);
+    SLAdvMessage sim = req("high-speed-trader", "simulate");
+    sim.setNum(0, 20.0);
+    sim.setNum(1, 7.0);
+    int t0 = timeMonotonicNanos();
+    r = med.ask(sim);
+    int t1 = timeMonotonicNanos();
+    double secs = ((t1 - t0) * 1.0) / 1.0e9;
+    check("20 simulated seconds evaluated 100000 candidates", r != null && r.num(0) == 100000.0);
+    print("  evals=" + r.num(0) + "  accepted=" + r.num(1) + "  threshold=" + r.num(6)
+          + "  wall evals/s=" + (r.num(0) / secs));
+    check("at least 5000 evaluations per second through the module", r.num(0) / secs >= 5000.0);
+
+    print("-- 10. unload and shutdown --");
+    check("unload the trader", med.unload("high-speed-trader"));
+    check("it is no longer seated", med.has("high-speed-trader") == false);
+    r = med.ask(req("high-speed-trader", "status"));
+    check("asking it now gets a 404", r != null && r.status == 404);
+    med.shutdown();
+    check("the bridge is closed", med.bridge().opened() == false);
+    check("a post after shutdown is refused", med.bridge().post(req("echo", "late")) == -1);
+    check("the medium is down", med.isUp() == false);
+
+    print("=== checks passed=" + passed + " failed=" + failed + " ===");
+  }
+}

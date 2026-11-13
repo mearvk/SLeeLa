@@ -2617,7 +2617,7 @@ static sl_int128_t sl_neg_wrap128(sl_int128_t x) {
 
 static int native_utf8_valid(const uint8_t* s, uint32_t n);
 
-/* ---- Syntax 3.2: char as text (OP_CHARSTR / OP_ADDCHAR) --------------------
+/* ---- Syntax 3.1: char as text (OP_CHARSTR / OP_ADDCHAR) --------------------
  * A char is a UTF-16 code unit held in an integer slot. Shown as text it becomes a
  * one-unit String. A plain String is UTF-8, so only a non-surrogate, non-NUL unit
  * can become one; with a UTF-16 (Java) String on the other side every unit,
@@ -2641,7 +2641,7 @@ static int char_unit_to_string(SLVM* vm, int64_t unit, int utf16, SLValue* out, 
     return 1;
 }
 
-/* ---- Syntax 3.2: rectangular multi-dimensional arrays (OP_NEWARRAYND) ------
+/* ---- Syntax 3.1: rectangular multi-dimensional arrays (OP_NEWARRAYND) ------
  * Builds an array of arrays, outermost first. Every array under construction is
  * kept on the VM operand stack (a collector root) until it has been stored into its
  * parent, so a collection triggered by a later allocation can never free it.
@@ -2656,10 +2656,24 @@ static int array_alloc_gc(SLVM* vm, SLThread* t, int64_t n) {
     }
     return h;
 }
+/* A struct instance lives in a bounded handle table that the collector frees. A loop that
+ * builds short-lived objects can fill the table between incremental safepoints even though
+ * nearly all of them are garbage, so allocation that finds the table full runs one COMPLETE
+ * root-aware collection and retries once -- the same discipline array_alloc_gc and the Java
+ * String creators use. A genuinely full table (every slot reachable) still fails. */
+static int struct_alloc_gc(SLVM* vm, SLThread* t, int type) {
+    int h = struct_alloc(vm, type);
+    if (h < 0 && type >= 0 && type < vm->nstruct_types) {
+        SLGCRootContext roots = { vm, t, vm->native_callback_caller };
+        gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &roots, 0);
+        h = struct_alloc(vm, type);
+    }
+    return h;
+}
 static int md_new(SLVM* vm, SLThread* t, const int64_t* dims, int n, int fill, int* out, const char** why) {
     if (dims[0] < 0) { *why = "negative array size"; return -1; }
     int h = array_alloc_gc(vm, t, dims[0]);
-    if (h < 0) { *why = "array allocation failed (negative/too-large size, or the live-array table is full: at most 4096 arrays, and each row of a multi-dimensional array is one)"; return -1; }
+    if (h < 0) { *why = "array allocation failed (negative or too-large size, out of memory, or the live-array table is full: at most 4096 arrays, and each row of a multi-dimensional array is one; each element takes 32 bytes and the managed heap is limited to 1 GiB unless SLEELA_GC_LIMIT_BYTES is set)"; return -1; }
     if (n == 1) {
         if (fill >= 1 && fill <= 3) {
             SLValue fillv = (fill == 1) ? slval_int(0) : (fill == 2) ? slval_double(0.0) : slval_bool(0);
@@ -3890,8 +3904,8 @@ static SLResult run_thread(SLThread* t) {
         case OP_NEWSTRUCT: {
             t->safepoint_tick = 0;
             slvm_gc_safepoint(vm, t, 4);
-            int h=struct_alloc(vm,in.a);
-            if(h<0) TERR("struct instantiation failed (unknown type or store exhausted)");
+            int h=struct_alloc_gc(vm,t,in.a);
+            if(h<0) TERR("struct instantiation failed (unknown type, or the live-struct table is full: at most 4096 struct instances are live at once)");
             PUSH(slval_struct(h));
         } break;
         case OP_GETFIELD: {
@@ -3930,8 +3944,8 @@ static SLResult run_thread(SLThread* t) {
             SLValue sv=POP();
             if(sv.type!=SL_STR) TERR("structUnpack requires a JSON String");
             int type=in.a;
-            int h=struct_alloc(vm,type);
-            if(h<0) TERR("structUnpack: instantiation failed");
+            int h=struct_alloc_gc(vm,t,type);
+            if(h<0) TERR("structUnpack: instantiation failed (unknown type, or the live-struct table is full)");
             const char* json=slvm_str(vm,sv.as.s);
             pthread_mutex_lock(&vm->struct_mtx);
             SLStructType* st=&vm->struct_types[type];
@@ -4105,7 +4119,7 @@ static SLResult run_thread(SLThread* t) {
                 gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &roots, 0);
                 h=array_alloc(vm,(int)nv.as.i);
             }
-            if(h<0) TERR("array allocation failed (negative/too-large size or store exhausted)");
+            if(h<0) TERR("array allocation failed (negative or too-large size, out of memory, or the live-array table is full: at most 4096 arrays are live at once; each element takes 32 bytes and the managed heap is limited to 1 GiB unless SLEELA_GC_LIMIT_BYTES is set)");
             /* Typed zero-fill (ABI 1.9): operand a selects the element default,
              * 0 null (unchanged), 1 integer 0, 2 double 0.0, 3 boolean false, so
              * `new int[n]` reads as Java does. The handle is not yet visible to

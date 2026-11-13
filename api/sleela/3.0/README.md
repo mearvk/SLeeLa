@@ -1,5 +1,7 @@
 # SLeeLa 3.0 API edition
 
+> **Superseded.** The current edition is [3.1](../3.1/README.md) (also written 3.01). This edition is preserved as it was and is no longer written to by `make api-docs`.
+
 **Current language edition:** SLeeLa syntax 3.0  
 **Normative specification:** [`SLEELA.syntax`](../../../SLEELA.syntax)  
 **Compiler gate:** `impl/frontend/version.h` — supported source syntax 1.0–3.0

@@ -1,3 +1,5 @@
+<img align="right" src="images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
+
 # SLeeLa Performance Report
 
 **Report edition:** 001  

@@ -1,0 +1,167 @@
+<< lib/advantage/modules/moral/SLMoralTrade.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The facts of one trade for the Moral Evaluator. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< SLeeLa courseware model: the facts of one trade for the Moral Evaluator. >
+< Plain fields; defaults describe an exemplary trade. >
+class SLMoralTrade {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject real origin where publicly known; unknown values use none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39511;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | nation | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity on a 1..10 scale; courseware model with rule based judgement >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real citable instrument or none >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < The facts of one trade, set by the caller. Defaults describe an exemplary >
+  < trade, so a test changes only the one fact it wants to break. >
+  boolean endangersLife = false;
+  boolean humanIsEnd = true;
+  boolean consent = true;
+  boolean deceptive = false;
+  boolean coerced = false;
+  double priceRatio = 1.0;
+  boolean hasRemedy = true;
+  boolean thirdPartyHarm = false;
+  boolean bothBenefit = true;
+  boolean exploitsUrgency = false;
+  double coolingOffHours = 24.0;
+  double decisionMinutes = 30.0;
+  boolean timestamped = true;
+  double termDays = 30.0;
+  double quoteAgeSeconds = 5.0;
+  double tradesPerMinute = 100.0;
+  boolean listerIdentified = true;
+  double listerStanding = 0.9;
+  boolean listingTruthful = true;
+  boolean listerProhibited = false;
+  boolean provenanceKnown = true;
+  boolean conflictDisclosed = true;
+  int listerCount = 3;
+  boolean listerAccountable = true;
+  boolean inUsBoundary = true;
+  boolean lawfulSubject = true;
+  boolean sanctionedCounterparty = false;
+  boolean recordsKept = true;
+  boolean feesAccounted = true;
+  boolean manipulative = false;
+  boolean protectionsHonored = true;
+  boolean respectsUS = true;
+
+  < ---- wire layout: 32 numbers in field order; booleans are 0 or 1 ---- >
+  << Used by the Advantage module bridge, where a trade travels as numbers.
+     fromNums refuses (returns false) a null or short array and leaves the
+     trade unchanged. toNums fills the first 32 elements. >>
+  int wireSize() { return 32; }
+  boolean fromNums(double[] n) {
+    if (n == null) { return false; }
+    if (arrayLength(n) < 32) { return false; }
+    endangersLife = n[0] != 0.0;
+    humanIsEnd = n[1] != 0.0;
+    consent = n[2] != 0.0;
+    deceptive = n[3] != 0.0;
+    coerced = n[4] != 0.0;
+    priceRatio = n[5];
+    hasRemedy = n[6] != 0.0;
+    thirdPartyHarm = n[7] != 0.0;
+    bothBenefit = n[8] != 0.0;
+    exploitsUrgency = n[9] != 0.0;
+    coolingOffHours = n[10];
+    decisionMinutes = n[11];
+    timestamped = n[12] != 0.0;
+    termDays = n[13];
+    quoteAgeSeconds = n[14];
+    tradesPerMinute = n[15];
+    listerIdentified = n[16] != 0.0;
+    listerStanding = n[17];
+    listingTruthful = n[18] != 0.0;
+    listerProhibited = n[19] != 0.0;
+    provenanceKnown = n[20] != 0.0;
+    conflictDisclosed = n[21] != 0.0;
+    listerCount = (int) n[22];
+    listerAccountable = n[23] != 0.0;
+    inUsBoundary = n[24] != 0.0;
+    lawfulSubject = n[25] != 0.0;
+    sanctionedCounterparty = n[26] != 0.0;
+    recordsKept = n[27] != 0.0;
+    feesAccounted = n[28] != 0.0;
+    manipulative = n[29] != 0.0;
+    protectionsHonored = n[30] != 0.0;
+    respectsUS = n[31] != 0.0;
+    return true;
+  }
+  boolean toNums(double[] n) {
+    if (n == null) { return false; }
+    if (arrayLength(n) < 32) { return false; }
+    if (endangersLife) { n[0] = 1.0; } else { n[0] = 0.0; }
+    if (humanIsEnd) { n[1] = 1.0; } else { n[1] = 0.0; }
+    if (consent) { n[2] = 1.0; } else { n[2] = 0.0; }
+    if (deceptive) { n[3] = 1.0; } else { n[3] = 0.0; }
+    if (coerced) { n[4] = 1.0; } else { n[4] = 0.0; }
+    n[5] = priceRatio * 1.0;
+    if (hasRemedy) { n[6] = 1.0; } else { n[6] = 0.0; }
+    if (thirdPartyHarm) { n[7] = 1.0; } else { n[7] = 0.0; }
+    if (bothBenefit) { n[8] = 1.0; } else { n[8] = 0.0; }
+    if (exploitsUrgency) { n[9] = 1.0; } else { n[9] = 0.0; }
+    n[10] = coolingOffHours * 1.0;
+    n[11] = decisionMinutes * 1.0;
+    if (timestamped) { n[12] = 1.0; } else { n[12] = 0.0; }
+    n[13] = termDays * 1.0;
+    n[14] = quoteAgeSeconds * 1.0;
+    n[15] = tradesPerMinute * 1.0;
+    if (listerIdentified) { n[16] = 1.0; } else { n[16] = 0.0; }
+    n[17] = listerStanding * 1.0;
+    if (listingTruthful) { n[18] = 1.0; } else { n[18] = 0.0; }
+    if (listerProhibited) { n[19] = 1.0; } else { n[19] = 0.0; }
+    if (provenanceKnown) { n[20] = 1.0; } else { n[20] = 0.0; }
+    if (conflictDisclosed) { n[21] = 1.0; } else { n[21] = 0.0; }
+    n[22] = listerCount * 1.0;
+    if (listerAccountable) { n[23] = 1.0; } else { n[23] = 0.0; }
+    if (inUsBoundary) { n[24] = 1.0; } else { n[24] = 0.0; }
+    if (lawfulSubject) { n[25] = 1.0; } else { n[25] = 0.0; }
+    if (sanctionedCounterparty) { n[26] = 1.0; } else { n[26] = 0.0; }
+    if (recordsKept) { n[27] = 1.0; } else { n[27] = 0.0; }
+    if (feesAccounted) { n[28] = 1.0; } else { n[28] = 0.0; }
+    if (manipulative) { n[29] = 1.0; } else { n[29] = 0.0; }
+    if (protectionsHonored) { n[30] = 1.0; } else { n[30] = 0.0; }
+    if (respectsUS) { n[31] = 1.0; } else { n[31] = 0.0; }
+    return true;
+  }
+}

@@ -8,7 +8,7 @@ inclusion: always
 VM (`impl/core`) or runtime. They go into the Java tier: SLeeLa library code under `lib/java` and
 lowerings in the converter (`sleelactl/convert`, `conversion.model`). They are specified in the Java
 Specific Section, `lib/java/JAVA.SPEC.md`, not in `SLEELA.syntax`, and from there into the
-documentation. Syntax 3.1/3.2 (sections 44 to 46) stays as the language features the tier uses.
+documentation. Syntax 3.1, also written 3.01 (sections 44 to 46), stays as the language features the tier uses.
 
 Standing, always-on. Registered 2026-11-12. Changes to this area must keep these rules.
 
@@ -66,10 +66,10 @@ Run: `sleelactl build java-convert`, then
 
 ## Known SLeeLa limits the converter must respect (do not paper over)
 
-- Converted output declares `#sleela 3.2` (SLEELA.syntax sections 44 to 46). It uses the
+- Converted output declares `#sleela 3.1` (SLEELA.syntax sections 44 to 46). It uses the
   array initializer, multi-dimensional creation `new T[a][b]` (jagged and nested initializers
   included), labeled `break`/`continue`, and `return`/`break`/`continue` that run `finally`.
-  The converter emits a char literal as its integer code. Because 3.2 shows a value of static
+  The converter emits a char literal as its integer code. Because 3.1 shows a value of static
   type `char` as text, a Java `(int)`/`(long)` cast of a char is emitted as a real cast, and a
   `char`/`double` shown as text still goes through the `tostr` rows (`Double.toString`, JavaText).
 - The open syntax blockers are the register in SLEELA.syntax 44.6. When SLeeLa gains a
@@ -94,7 +94,7 @@ Run: `sleelactl build java-convert`, then
 - Qualified type names: `Outer.Inner` in a type resolves to `Outer__Inner`; only a bare name goes through
   the nested-name map. Any walk up a superclass chain must be bounded (a mis-resolved name once made
   `NumberFormat.Field` its own superclass and hung the whole-tree run).
-- Status (2026-11-13): differential suite 31 of 31 (CI: `.github/workflows/java-convert.yml`); JDK 25.0.2
+- Status (2026-11-13): differential suite 32 of 32 (CI: `.github/workflows/java-convert.yml`); JDK 25.0.2
   `java.base` subset 420 of 884 files converted (426 with `--single-thread`). The full status document is the
   root `JAVA.CONVERSION.STATUS.md`; the run's report is the status, re-run before quoting newer numbers.
 - Text of values: a reference of a known type goes through the model row `tostr reference`
@@ -103,3 +103,6 @@ Run: `sleelactl build java-convert`, then
   `chartext` model rows. A boxed declared/cast type is refused (`[boxed]`): boxed values are primitives.
 - Output directories: a re-run deletes only the files listed in `<out>/.javaconv-emitted` (what the
   previous run wrote), so a file that fails closed never leaves an old conversion behind.
+- Array index faults are thrown by the VM inside a `try` (SLEELA.syntax 37.5, `SLJavaFaults`); the converter adds only
+  `JavaChecks.size` for negative array sizes and qualifies calls to methods named like a SLeeLa built-in.
+  Null dereference and stack overflow stay fatal (see `impl/RUNTIME-AUDIT.md`).

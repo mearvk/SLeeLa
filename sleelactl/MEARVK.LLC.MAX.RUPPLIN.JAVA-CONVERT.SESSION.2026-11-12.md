@@ -158,3 +158,7 @@ both `CONVERSION.PRINCIPLES.md`, `lib/java/STATUS.md`, `impl/subjects/conversion
   was a runner `nm` timeout (passed on re-run).
 - Suite 31 of 31 (21 programs, 9 refusals, stale-output check). Whole tree 420 of 884 (426 with `--single-thread`).
 - The overall status page is the root `JAVA.CONVERSION.STATUS.md`.
+
+## Addendum: language edition aligned to 3.01 (3.1) (2026-11-13)
+
+By the owner's decision the language edition set with 3.01 is the only one: sections 44, 45 and 46 of `SLEELA.syntax` are one edition, spelled `#sleela 3.01` or `3.1`. The "3.2" described above is retired. The compiler ceiling is 3.1 (`impl/frontend/version.h`), the 3.2 gates are 3.1 gates, a `#sleela 3.2` source is rejected as a future edition, the converter emits `#sleela 3.1`, and the two test directories `impl/tests/syntax31` and `impl/tests/syntax32` are merged into `impl/tests/syntax31` (19 cases). The text above is kept as the record of what was done at the time.

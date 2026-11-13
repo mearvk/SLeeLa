@@ -2,6 +2,7 @@
 // parser.cpp  --  Recursive-descent parser for the Java-like Sleela subset.
 // ===========================================================================
 #include "parser.h"
+#include "language_handler.h"
 #include "wide_integer.h"
 #include "unsigned_integer.h"
 #include <stdexcept>
@@ -126,21 +127,11 @@ bool Parser::acceptEllipsis(){
     if(check(Tok::Dot) && peek(1).kind==Tok::Dot && peek(2).kind==Tok::Dot){ i_+=3; return true; }
     return false;
 }
-// Java signature types are erased to the VM types SLeeLa supports, while the
-// source keeps the Java spelling: a declared type variable (E, T, K ...) and
-// any package-qualified reference type (java.util.List<E>) erase to Any,
-// java.lang.String to String. Array suffixes are preserved.
-std::string Parser::javaErase(const std::string& source){
-    std::string base=source; std::string dims;
-    while(base.size()>=2 && base.compare(base.size()-2,2,"[]")==0){ dims+="[]"; base.resize(base.size()-2); }
-    std::string raw=base.substr(0,base.find('<'));
-    for(auto it=typeVars_.rbegin(); it!=typeVars_.rend(); ++it)
-        for(const auto& v:*it) if(v==raw) return "Any"+dims;
-    if(raw.find('.')!=std::string::npos && !raw.empty() && raw[0]>='a' && raw[0]<='z'){
-        if(raw=="java.lang.String") return "String"+dims;
-        return "Any"+dims;
-    }
-    return source;
+// Signature types are erased to the VM types SLeeLa supports by whichever
+// language handler claims them (language_handler.h); with none registered the
+// declared spelling is kept. Array suffixes are preserved by the handler.
+std::string Parser::eraseSignatureType(const std::string& source){
+    return lang::eraseSignatureType(source,typeVars_);
 }
 void Parser::parseThrows(std::vector<std::string>& out){
     if(!accept(Tok::KwThrows)) return;
@@ -519,17 +510,16 @@ Program Parser::parseProgram(){
             accept(Tok::Semicolon);
             p.artifactMarked=true;
         }
-        else if(check(Tok::Ident)&&cur().text=="spark"&&!contentStarted){
-            // Spark marker (syntax 3.0, SLEELA.syntax section 43). A Preonem
-            // that indicates Java style declarative: the document declares
-            // itself SLeeLa constructs written in Java style. The Java support is the interpreter/VM's (java_references.cpp
-            // and the compiler), not a SLeeLa housing class. Declarative: no
-            // change to parsing/typing/codegen. Only before content begins, so a
-            // `spark` identifier elsewhere is untouched. ';' optional; a repeat
-            // marker is harmless.
+        else if(check(Tok::Ident)&&!contentStarted&&lang::isDocumentMarker(cur().text)){
+            // A document marker claimed by a registered language handler
+            // (language_handler.h), e.g. the Java handler's `spark` (syntax 3.0,
+            // SLEELA.syntax section 43). Contextual: only before content begins,
+            // so the same word elsewhere is an ordinary identifier. ';' optional;
+            // a repeat marker is harmless. Declarative: no change to parsing,
+            // typing or codegen; the syntax-version gate is semantic analysis.
+            p.markers.insert(cur().text);
             ++i_;
             accept(Tok::Semicolon);
-            p.sparkMarked=true;
         }
         else {
             unsigned mods=parseJavaModifiers();
@@ -548,7 +538,6 @@ Program Parser::parseProgram(){
     p.nestedClassCount=(int)hoistedNested_.size();
     for(auto& h:hoistedNested_) p.classes.push_back(std::move(h));
     for(const auto& u:uses31_) p.syntax31Uses.push_back(u);
-    for(const auto& u:uses32_) p.syntax32Uses.push_back(u);
     return p;
 }
 StructDecl Parser::parseStruct(){expect(Tok::KwStruct,"'struct'");StructDecl s;s.name=expect(Tok::Ident,"struct name").text;expect(Tok::LBrace,"'{'");while(!check(Tok::RBrace)&&!check(Tok::Eof)){Field f;f.type=parseType();f.name=expect(Tok::Ident,"field name").text;expect(Tok::Semicolon,"';'");s.fields.push_back(std::move(f));}expect(Tok::RBrace,"'}'");return s;}
@@ -649,7 +638,7 @@ std::string Parser::parseType(std::vector<annotation::Annotation>* typeAnnotatio
     if(typeAnnotations){auto a=parseTypeAnnotations(); typeAnnotations->insert(typeAnnotations->end(),a.begin(),a.end());}
     if(!isTypeStart()) error("expected a type");
     std::string t;
-    if(check(Tok::Ident)){ std::string g=parseGenericType(); std::string e=javaErase(g); t = (e==g) ? mangleTypeName(g) : e; } else { t=cur().text; i_++; }
+    if(check(Tok::Ident)){ std::string g=parseGenericType(); std::string e=eraseSignatureType(g); t = (e==g) ? mangleTypeName(g) : e; } else { t=cur().text; i_++; }
     while(accept(Tok::LBracket)){ if(typeAnnotations){auto a=parseTypeAnnotations(); typeAnnotations->insert(typeAnnotations->end(),a.begin(),a.end());} expect(Tok::RBracket,"']'");t+="[]"; }
     return t;
 }
@@ -965,15 +954,15 @@ ExprP Parser::parsePrimary(){
         auto n=std::make_unique<NewExpr>(type);
         if(accept(Tok::LBracket)){
             if(check(Tok::RBracket)){
-                // Syntax 3.1: new T[]{a, b, c}; syntax 3.2 also new T[][]{{..},{..}} (any rank)
+                // Syntax 3.1: new T[]{a, b, c}; syntax 3.1 also new T[][]{{..},{..}} (any rank)
                 i_++;
                 std::string arrType=n->typeName+"[]";
-                while(check(Tok::LBracket)&&peek(1).kind==Tok::RBracket){ i_+=2; arrType+="[]"; uses32_.insert("multi-dimensional array creation"); }
+                while(check(Tok::LBracket)&&peek(1).kind==Tok::RBracket){ i_+=2; arrType+="[]"; uses31_.insert("multi-dimensional array creation"); }
                 if(!check(Tok::LBrace))error("expected '{' after 'new "+n->typeName+"[]' (an array creation needs a size or an initializer)");
                 return parsePostfix(parseArrayLiteral(arrType));
             }
             n->typeName += "[]"; n->args.push_back(parseExpr()); expect(Tok::RBracket,"']'");
-            // Syntax 3.2: further dimensions `new T[a][b]...`; trailing empty `[]` are unsized
+            // Syntax 3.1: further dimensions `new T[a][b]...`; trailing empty `[]` are unsized
             // (their elements start null): `new T[a][]`. A sized dimension may not follow an unsized one.
             bool sawUnsized=false;
             while(check(Tok::LBracket)){
@@ -983,7 +972,7 @@ ExprP Parser::parsePrimary(){
                     if(sawUnsized) error("array dimension expression after an empty '[]' in 'new "+n->typeName+"'");
                     n->args.push_back(parseExpr()); expect(Tok::RBracket,"']'"); n->typeName += "[]";
                 }
-                uses32_.insert("multi-dimensional array creation");
+                uses31_.insert("multi-dimensional array creation");
             }
             if(n->args.size()>8) error("array creation with more than 8 sized dimensions");
             return parsePostfix(std::move(n));

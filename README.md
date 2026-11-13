@@ -1,9 +1,11 @@
+<img align="right" src="images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
+
 # SLeeLa
 <p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
 <p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
 
 <p align="center"><strong>A native systems language, compiler, runtime, and virtual-machine ecosystem.</strong></p>
-<p align="center"><a href="https://github.com/mearvk/SLeeLa/actions"><img alt="GitHub Actions" src="https://img.shields.io/github/actions/workflow/status/mearvk/SLeeLa/test-suite.yml?branch=main&label=test%20suite"></a> <a href="docs/PLATFORM-SUPPORT.md"><img alt="Platform matrix" src="https://img.shields.io/badge/platforms-Linux%20%7C%20macOS%20%7C%20Windows-273238"></a></p>
+<p align="center"><a href="https://github.com/mearvk/SLeeLa/actions"><img alt="GitHub Actions" src="https://img.shields.io/github/actions/workflow/status/mearvk/SLeeLa/java-convert.yml?branch=master&label=java-convert"></a> <a href="docs/PLATFORM-SUPPORT.md"><img alt="Platform matrix" src="https://img.shields.io/badge/platforms-Linux%20%7C%20macOS%20%7C%20Windows-273238"></a></p>
 
 **The Now. The Ingredient.** A language is more than syntax: it is the compiler, runtime, libraries, tools, and platform contracts that make software usable.
 
@@ -18,6 +20,7 @@ that standing is kept (recorded faithfully, e.g. in each class's Metadata
 
 ## I. Start Here
 - [Build the native implementation](impl/README.md)
+- [Modules: tutorials and explanations](docs/modules/README.md) — one verified writeup for each of the 44 `sleelactl` modules and the 3 Advantage modules: 30 hands-on tutorials (each step run, real output shown) and 17 explanations (models, contracts, and modules that cannot run end to end here), with the measured state of each and the problems found
 - [Virtual machines & Modium — hands-on user guide](virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU stack in SLeeLa source](lib/cpu/CPU.md) — a full gates→ALU→cores→OS→programs machine, a roster of 130+ CPU profiles, and adjustable [voltages, variable clocks, and expert timings](lib/cpu/TIMING.md) you can [run at spec and overclock](lib/cpu/components/README.md)
 - [Documentation index](docs/README.md)
@@ -35,6 +38,33 @@ that standing is kept (recorded faithfully, e.g. in each class's Metadata
 ## II. News
 
 Recent additions to the language, drivers, and standard library:
+
+- **Module writeups (2026-11-13).** Every `sleelactl` module and every Advantage module now has a verified [tutorial or explanation](docs/modules/README.md). Each page states what was run, what works and what does not; the index lists the cross-module problems found (for example, `http-1.0` does not compile and `math.pow` is wrong for bases of zero or below).
+
+- **The Java tier and the Java → SLeeLa converter.** `sleelactl java-convert`
+  converts Java source to SLeeLa source and refuses (writes nothing) on any
+  construct it cannot convert exactly. A differential suite runs each program on
+  a JDK and, converted, on the SLeeLa VM: **31 of 31** checks pass against
+  OpenJDK 25.0.2 (21 byte-identical programs, 9 fail-closed refusals, 1
+  stale-output check), gated in CI by
+  [`java-convert.yml`](.github/workflows/java-convert.yml). On the JDK 25
+  `java.base` subset, **420 of 884** files convert; that is not a claim that the
+  output compiles, and a tree-wide `sleela check` has not been measured. The
+  converter itself is a SLeeLa program under `lib/java/converter/`; the Java
+  runtime tier it targets lives in [`lib/java`](lib/java/README.md) (JDK 25 and
+  JDK 28 source surfaces). Specification: [`lib/java/JAVA.SPEC.md`](lib/java/JAVA.SPEC.md);
+  ledger: [`CONVERSION.PRINCIPLES.md`](CONVERSION.PRINCIPLES.md); measured
+  status: [`JAVA.CONVERSION.STATUS.md`](JAVA.CONVERSION.STATUS.md).
+- **Syntax 3.1 (also written 3.01).** The current language edition adds
+  [`SLEELA.syntax`](SLEELA.syntax) §44 (character literals, array initializers,
+  labeled `break` / `continue`, and `return` / `break` / `continue` that run
+  `finally`), §45 (the `char` specification, with the `SLChar` library) and §46
+  (the array specification: `a.length`, `new T[a][b]`, and the `SLIntArray`,
+  `SLDoubleArray`, `SLRefArray`, `SLArray2D` helpers). Related 3.0 work: §43.7
+  (interfaces are runtime supertypes; calls on `Any` receivers) and §37.5 (VM
+  faults are catchable inside `try`). The source compiler accepts syntax 1.0 –
+  3.1, and the committed `working-binaries/` toolchain was rebuilt on 2026-11-13
+  and now reports the same range. See [Section V](#v-language-and-runtime).
 
 - **The `advantage` standard-library package — advantaging a dividend, with
   math, physics, integration, grading, and routable output.**
@@ -92,6 +122,10 @@ Recent additions to the language, drivers, and standard library:
   [`api/sleela/3.0/version-014/`](api/sleela/3.0/version-014/index.html)
   snapshot) were rebuilt with `make api-docs` and now carry the new `SLISASleep`
   / `SLISABigMul` instruction entries on their `vm` package page.
+  Since syntax **3.1** (also written 3.01) the API is published as the
+  [`api/sleela/3.1/`](api/sleela/3.1/README.md) edition (language API reference,
+  Java tier API, and immutable snapshots from
+  [`version-001`](api/sleela/3.1/version-001/index.html)); the 3.0 edition is preserved.
 - **SleelaDoc from the command line — `sleela docs`.** SleelaDoc is now reachable
   straight from the terminal. `sleela docs` lists every documentable topic;
   `sleela docs crypto` shows a package; `sleela docs stringbuilder` resolves a
@@ -276,7 +310,13 @@ interactive deployment workflow and all installation options, see
 [Quick and Safe Install](install/README.md).
 
 ## V. Language and Runtime
-The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). The current repository documents syntax **3.2** (section 45: the `char` specification; section 46: the array specification with `a.length` and `new T[a][b]`), on top of syntax **3.1** (also written `3.01`; section 44: character literals, array initializers, labeled `break`/`continue`, and `return`/`break`/`continue` that run `finally`) and syntax **3.0**; compiler/tool version and source syntax version are distinct. The 3.0 surface adds the **`pure` and `gasoline` document markers** (§30) — a pair of bare, contextual, declarative-only Preonems that mean nearly the same thing, each marking the document’s standing by its own honesty. Syntax 3.0 consolidates the 1.0–2.9 language surface into the current normative edition, preserving all feature-specific minimum gates. The prior 2.9 surface adds **`@mix` consequent fields** (§28) — a class may declare multiple same-named instance fields when each carries `@mix`, understood as one indexed group (top-down `1,2,3,…` or manual `@mix(1,2,3,...)` whose index count must match the group). It carries forward the base-2 signed/unsigned wide-integer families `int32`..`int16777216` (§24) and `uint32`..`uint16777216` (§25) over the earlier `long`/`int64`/`int128` (§21); **keyword supporter documents** (§22); and the **Preonems** — the declarative-only document markers `author`/`authorial` (§18), `material`/`memory` (§19–§20), `determine` (§23), `object`/`field` (§26), `pure`/`gasoline` (§30), and `artifact` (§35, legislature-grade standing graded unto time and space), collectively titled the Preonems (§26.1). Constructor overload resolution and `this(...)`/base-constructor delegation are explicitly outside the verified syntax 1.8 contract. Consult the grammar and implementation notes before relying on a feature. SleelaDoc's nine source units now declare `#sleela 3.0`; the shared compiler gate accepts source syntax 1.0–3.2 (the committed `working-binaries/` toolchain still reports 1.0–3.0 until it is refreshed). The new API build is produced by `make api-docs`.
+The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). Compiler/tool version and source syntax version are distinct: the source compiler accepts syntax **1.0 – 3.1**, and the committed `working-binaries/` toolchain (rebuilt 2026-11-13) reports the same range. The new API build is produced by `make api-docs`.
+
+- **Syntax 3.01 (the same edition as 3.1; the minor is an integer).** §44 character literals, array initializers, labeled `break`/`continue`, and `return`/`break`/`continue` that run `finally`; §45 the `char` specification; §46 the array specification (`a.length`, `new T[a][b]`).
+- **Syntax 3.0** consolidates the 1.0–2.9 surface into the current normative edition, preserving all feature-specific minimum gates. It adds the **`pure` and `gasoline` document markers** (§30) — a pair of bare, contextual, declarative-only Preonems that mean nearly the same thing, each marking the document's standing by its own honesty; method and constructor overload resolution (§40) and `this(...)`/`super(...)` delegation (§43.6); Java support (§43); and host-authorized Native Drive (§36). Below 3.0, a class that declares more than one constructor is rejected.
+- **Syntax 2.9** adds **`@mix` consequent fields** (§28): a class may declare multiple same-named instance fields when each carries `@mix`, understood as one indexed group (top-down `1,2,3,…` or manual `@mix(1,2,3,...)` whose index count must match the group).
+- **Carried forward:** the base-2 signed/unsigned wide-integer families `int32`..`int16777216` (§24) and `uint32`..`uint16777216` (§25) over the earlier `long`/`int64`/`int128` (§21); **keyword supporter documents** (§22); and the **Preonems** — the declarative-only document markers `author`/`authorial` (§18), `material`/`memory` (§19–§20), `determine` (§23), `object`/`field` (§26), `pure`/`gasoline` (§30), and `artifact` (§35, legislature-grade standing graded unto time and space), collectively titled the Preonems (§26.1).
+- SleelaDoc's nine source units declare `#sleela 3.0`. Consult the grammar and implementation notes before relying on a feature.
 
 The repository includes a native C/C++ implementation, SLVM generation references, standard-library modules, tests, examples, and platform integrations. Implementation and validation status varies by module; consult its specification and current CI results rather than assuming uniform completeness.
 
@@ -496,7 +536,7 @@ drawing in memory, prints a report plus the DXF, and exits cleanly.
 
 ## XIII. UTF-4088 Input-map Ordering
 
-The specialized UTF-4088 catalogue defines its spatial input-map traversal and abstract pressure iterations in [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](../utf-4088/INPUT-MAP-AND-PRESSURE.md). The National Lien subject-index policy is in [`utf-4088/NATIONAL-LIEN-REGISTER.md`](../utf-4088/NATIONAL-LIEN-REGISTER.md). Map coordinates, pressure levels (1–50), permanent catalogue IDs, and alphabetic ranks are independent fields; none should be silently substituted for another. Pressure is an algorithmic iteration level, not a physical quantity.
+The specialized UTF-4088 catalogue defines its spatial input-map traversal and abstract pressure iterations in [`utf-4088/INPUT-MAP-AND-PRESSURE.md`](utf-4088/INPUT-MAP-AND-PRESSURE.md). The National Lien subject-index policy is in [`utf-4088/NATIONAL-LIEN-REGISTER.md`](utf-4088/NATIONAL-LIEN-REGISTER.md). Map coordinates, pressure levels (1–50), permanent catalogue IDs, and alphabetic ranks are independent fields; none should be silently substituted for another. Pressure is an algorithmic iteration level, not a physical quantity.
 
 
 ## XIV. Recent and Expanded Package Index
@@ -536,14 +576,21 @@ status should be checked in each package's own documentation and tests.
   statistics, including biographical profile examples.
 - **Coorenagraph** — `lib/coorenagraph/`: ethical reasoning, moral vocabulary,
   deliberation, and related concepts; see its package README and source files.
+- **CPU models** — `lib/cpu/`: a gates → ALU → cores → OS → programs stack
+  and a roster of CPU profiles; see [`lib/cpu/CPU.md`](lib/cpu/CPU.md).
 
 ### D–G
+
+- **GUI (SleelaUI example and version lines)** — `lib/gui/`: five parallel
+  version lines (`version-mual` 1.0, `version-gual` 2.0, `version-thual` 3.0,
+  `version-dual` 4.0, `version-military` 5.0), each a progressive superset of
+  the last, with runnable demos.
 
 - **Governance source models** — [lib/governance](lib/governance/README.md) defines declarative SLeeLa source shapes for proposals, anonymous manual ballots, and aggregate tallies. The proposed @vote annotation and manual process are documented in [registry/DEMOCRATIC-VOTING-SYNTAX.md](registry/DEMOCRATIC-VOTING-SYNTAX.md); current compilers treat it as inert comment metadata.
 
 ### H–I
 
-- **HTTP 1.0–8.0** — `lib/http-1.0/` through the available versioned HTTP
+- **HTTP 1.0–9.0** — `lib/http-1.0/` through `lib/http-9.0/`, the available versioned HTTP
   package directories: version-specific protocol specifications and
   implementations. Consult each version's documentation for its precise scope
   and verification status.
@@ -551,7 +598,19 @@ status should be checked in each package's own documentation and tests.
   `INTERNATIONAL.CRIMINAL.COURTS.md`: related domain-specific source and
   documentation.
 
+### J–N
+
+- **Java tier and converter** — `lib/java/` (including `jdk-25/`, `jdk-28/`,
+  and `converter/`) and `sleelactl/convert/`: the Java-facing SLeeLa source
+  surface and the Java → SLeeLa converter. See [`lib/java/README.md`](lib/java/README.md)
+  and [`JAVA.CONVERSION.STATUS.md`](JAVA.CONVERSION.STATUS.md).
+- **Munction** — `lib/munction/` and `munction/`: the Munction reach-handle
+  facility; see [`munction/MANUAL.md`](munction/MANUAL.md).
+
 ### O–S
+
+- **OS-level support** — `lib/os-level-support/`: operating-system-level
+  support classes; see [`lib/os-level-support/README.md`](lib/os-level-support/README.md).
 
 - **OFDMA** — `ofdma/`: orthogonal frequency-division multiple-access
   technical material and C/C++ development resources.
@@ -581,6 +640,11 @@ status should be checked in each package's own documentation and tests.
 - **Wi-Fi 4, Wi-Fi 5, and Wi-Fi 6** — `wi-fi-4/`, `wi-fi-5/`,
   `wi-fi-6/`, and related `lib/wifi/` source directories: generation-specific
   wireless networking material and configuration resources.
+
+### X–Z
+
+- **XML** — `lib/xml/`: the SLeeLa XML document object model, serializer, and
+  parser; see [`lib/xml/README.md`](lib/xml/README.md).
 
 ### Package-index Maintenance
 
@@ -626,12 +690,6 @@ python3 utf-4088/tools/generate_catalogue.py \
 ```
 
 The generated binary is 16,777,244 bytes and is designed to remain below 20,000,000 bytes. Unit tests and a GitHub Actions workflow verify entry count, glyph uniqueness, size, and SHA-256; successful runs publish the binary and summary as the `utf4088-million-catalogue` workflow artifact. The generated binary is deliberately kept out of Git history. UTF-4088 remains experimental and is not Unicode-compatible.
-
----
-
-# SLeeLa
-<p align="center"><img src="images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
-<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
 
 ---
 

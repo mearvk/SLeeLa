@@ -1,0 +1,248 @@
+<< lib/advantage/modules/trader/SLAdvTraderModule.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The high speed trader as an Advantage module (loaded by name high-speed-trader). >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Topics in: configure, evaluate, simulate, insight, halt, rearm, status, link, set-facts. >
+< It can consult another module (link) and tells the program with events. >
+class SLAdvTraderModule implements SLAdvModule {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject real origin where publicly known; unknown values use none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39524;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Advantage™";
+  String metaCorporation = "none";
+  < metaOrigin: National | nation | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity on a 1..10 scale; courseware grade module host >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real citable instrument or none >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Wire layout. configure: n0 pragmatics 8..24, n1 trades per minute. >
+  < evaluate: n0..n9 candidate, n10 now in ms; reply n0 accepted 0 or 1, >
+  < n1 code, n2 score, n3 threshold, n4 1 when sent to the linked module. >
+  < simulate: n0 seconds (1..600), n1 seed; reply n0 evals, n1 accepted, >
+  < n2 vetoed, n3 score rejects, n4 rate rejects, n5 pnl bps, n6 threshold, >
+  < n7 halted. insight: n0 pragmatic id, n1 factor. link: text is the name of >
+  < a module to judge each accepted trade. set-facts: n0..n31 trade facts >
+  < template for judged trades. A judged reply returns here from the linked >
+  < module; NO withdraws the trade, and the program is told by event. >
+  SLHighSpeedTrader tr;
+  SLHstMarket mk;
+  SLAdvBridge br;
+  boolean on = false;
+  String linked = "";
+  double clockMs = 0.0;
+  int judged = 0;
+  int kept = 0;
+  int withdrawn = 0;
+  int completeN = 0;
+  double[] facts;
+
+  String moduleName() { return "high-speed-trader"; }
+  String moduleKind() { return "ai.trader"; }
+  String moduleVersion() { return "1.0.0"; }
+  boolean running() { return on; }
+
+  boolean begin(SLAdvBridge bridge) {
+    if (bridge == null) { return false; }
+    br = bridge;
+    tr = new SLHighSpeedTrader();
+    mk = new SLHstMarket();
+    if (tr.configure(16, 2000.0) == false) { return false; }
+    facts = new double[32];
+    SLMoralTrade t = new SLMoralTrade();
+    t.toNums(facts);
+    on = true;
+    SLAdvMessage e = new SLAdvMessage();
+    e.addressed("high-speed-trader", "program", "ready", 2);
+    br.post(e);
+    return true;
+  }
+
+  void end() { on = false; }
+
+  void fail(SLAdvMessage m, int code, String why) {
+    br.post(m.makeError("high-speed-trader", code, why));
+  }
+
+  SLAdvMessage okReply(SLAdvMessage m) {
+    return m.makeReply("high-speed-trader", m.topic);
+  }
+
+  < ---- candidate to trade facts for the linked judge ---- >
+  void judgeFacts(double[] o, SLAdvMessage j) {
+    SLMoralTrade t = new SLMoralTrade();
+    t.fromNums(facts);
+    t.listerStanding = o[8];
+    t.quoteAgeSeconds = o[5] / 1000.0;
+    t.tradesPerMinute = tr.tradesPerMinute;
+    t.decisionMinutes = 0.0001;
+    t.coolingOffHours = 0.0;
+    t.termDays = 1.0;
+    double[] w = new double[32];
+    t.toNums(w);
+    int i = 0;
+    while (i < 32) { j.setNum(i, w[i]); i = i + 1; }
+  }
+
+  int handle(SLAdvMessage m) {
+    if (on == false) { fail(m, 503, "module not running"); return 1; }
+    if (m.kind == 1 && m.topic == "judge") { return judgedReply(m); }
+    if (m.kind != 0) { return 0; }
+    String tp = m.topic;
+    if (tp == "configure") {
+      boolean ok = tr.configure((int) m.num(0), m.num(1));
+      SLAdvMessage r = okReply(m);
+      if (ok) { r.status = 0; } else { r.status = 1; r.text = "refused: pragmatics 8..24, rate above 0"; }
+      br.post(r);
+      return r.status;
+    }
+    if (tp == "evaluate") {
+      double[] o = new double[10];
+      int i = 0;
+      while (i < 10) { o[i] = m.num(i); i = i + 1; }
+      int d = tr.evaluate(o, m.num(10));
+      if (m.num(10) > clockMs) { clockMs = m.num(10); }
+      SLAdvMessage r = okReply(m);
+      r.setNum(0, d * 1.0);
+      r.setNum(1, tr.getLastCode() * 1.0);
+      r.setNum(2, tr.getLastScore());
+      r.setNum(3, tr.getThreshold());
+      if (d == 1 && linked != "") {
+        SLAdvMessage j = new SLAdvMessage();
+        j.addressed("high-speed-trader", linked, "judge", 0);
+        judgeFacts(o, j);
+        if (br.post(j) >= 0) { r.setNum(4, 1.0); }
+      }
+      br.post(r);
+      return 0;
+    }
+    if (tp == "simulate") {
+      int secs = (int) m.num(0);
+      if (secs < 1 || secs > 600) { fail(m, 1, "seconds must be 1..600"); return 1; }
+      mk.reseed((int) m.num(1) + 1);
+      double[] o = new double[10];
+      int total = secs * 5000;
+      int i = 0;
+      int startAcc = tr.getAccepted();
+      int startEv = tr.getEvals();
+      while (i < total) {
+        mk.next(o);
+        int d = tr.evaluate(o, clockMs + i * 0.2);
+        if (d == 1) { tr.learn(mk.realized()); }
+        i = i + 1;
+      }
+      clockMs = clockMs + total * 0.2;
+      SLAdvMessage r = okReply(m);
+      r.setNum(0, (tr.getEvals() - startEv) * 1.0);
+      r.setNum(1, (tr.getAccepted() - startAcc) * 1.0);
+      r.setNum(2, tr.getRejVeto() * 1.0);
+      r.setNum(3, tr.getRejScore() * 1.0);
+      r.setNum(4, tr.getRejRate() * 1.0);
+      r.setNum(5, tr.getPnl());
+      r.setNum(6, tr.getThreshold());
+      if (tr.isHalted()) { r.setNum(7, 1.0); } else { r.setNum(7, 0.0); }
+      br.post(r);
+      if (tr.isHalted()) {
+        SLAdvMessage e = new SLAdvMessage();
+        e.addressed("high-speed-trader", "program", "halted", 2);
+        e.text = "drawdown guard halted the trader";
+        br.post(e);
+      }
+      return 0;
+    }
+    if (tp == "insight") {
+      boolean ok = tr.insight((int) m.num(0), m.num(1));
+      SLAdvMessage r = okReply(m);
+      if (ok) { r.status = 0; } else { r.status = 1; r.text = "insight refused"; }
+      br.post(r);
+      return r.status;
+    }
+    if (tp == "halt") {
+      tr.haltNow();
+      br.post(okReply(m));
+      return 0;
+    }
+    if (tp == "rearm") {
+      tr.rearm();
+      br.post(okReply(m));
+      return 0;
+    }
+    if (tp == "link") {
+      linked = m.text;
+      br.post(okReply(m));
+      return 0;
+    }
+    if (tp == "set-facts") {
+      int i = 0;
+      while (i < 32) { facts[i] = m.num(i); i = i + 1; }
+      br.post(okReply(m));
+      return 0;
+    }
+    if (tp == "status") {
+      SLAdvMessage r = okReply(m);
+      r.setNum(0, tr.getEvals() * 1.0);
+      r.setNum(1, tr.getAccepted() * 1.0);
+      r.setNum(2, tr.getThreshold());
+      r.setNum(3, tr.getPragmatics() * 1.0);
+      if (tr.isHalted()) { r.setNum(4, 1.0); } else { r.setNum(4, 0.0); }
+      r.setNum(5, judged * 1.0);
+      r.setNum(6, withdrawn * 1.0);
+      r.setNum(7, kept * 1.0);
+      r.text = linked;
+      br.post(r);
+      return 0;
+    }
+    fail(m, 2, "unknown topic: " + m.topic);
+    return 1;
+  }
+
+  < ---- the verdict comes back from the linked module ---- >
+  int judgedReply(SLAdvMessage m) {
+    int v = (int) m.num(0);
+    judged = judged + 1;
+    if (v == 0) { withdrawn = withdrawn + 1; } else { kept = kept + 1; }
+    if (v == 2) { completeN = completeN + 1; }
+    SLAdvMessage e = new SLAdvMessage();
+    e.addressed("high-speed-trader", "program", "trade-judged", 2);
+    e.setNum(0, v * 1.0);
+    e.setNum(1, m.num(1));
+    e.setNum(2, m.num(3));
+    e.text = m.text;
+    br.post(e);
+    return 0;
+  }
+}

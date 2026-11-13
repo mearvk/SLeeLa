@@ -1,0 +1,236 @@
+<< lib/advantage/modules/SLAdvMedium.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The Advantage medium: the middle, the center a user defined program loads. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Modules sit in it; the bridge carries messages between the program and them. >
+class SLAdvMedium {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject real origin where publicly known; unknown values use none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39523;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Advantage™";
+  String metaCorporation = "none";
+  < metaOrigin: National | nation | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity on a 1..10 scale; courseware grade module host >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real citable instrument or none >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < The program loads the medium (the center). The medium owns the bridge and >
+  < holds up to 16 modules. A module comes from the catalog by name (load) or >
+  < from the program itself (attach). pump routes every pending message. >
+  < Reserved names: program and medium. Messages to an unknown module get an >
+  < error reply. A pump handles at most 100000 messages, so a ping-pong >
+  < between modules cannot hang the program (saturated reports it). >
+  SLAdvBridge br;
+  SLAdvCatalog cat;
+  SLAdvListener listener;
+  SLAdvModule[] mods;
+  String[] names;
+  int n = 0;
+  int maxModules = 16;
+  boolean up = false;
+  boolean saturated = false;
+  int routed = 0;
+  int unknown = 0;
+  int failures = 0;
+
+  boolean begin() {
+    br = new SLAdvBridge();
+    br.openBridge();
+    cat = new SLAdvCatalog();
+    mods = new SLAdvModule[16];
+    names = new String[16];
+    int i = 0;
+    while (i < 16) { names[i] = ""; i = i + 1; }
+    n = 0;
+    up = true;
+    return true;
+  }
+
+  boolean isUp() { return up; }
+  SLAdvBridge bridge() { return br; }
+  SLAdvCatalog catalog() { return cat; }
+  int count() { return n; }
+  int getRouted() { return routed; }
+  int getUnknown() { return unknown; }
+  int getFailures() { return failures; }
+  boolean wasSaturated() { return saturated; }
+  String nameAt(int i) { if (i < 0 || i >= n) { return ""; } return names[i]; }
+
+  int indexOf(String name) {
+    int i = 0;
+    while (i < n) {
+      if (names[i] == name) { return i; }
+      i = i + 1;
+    }
+    return -1;
+  }
+  boolean has(String name) { return indexOf(name) >= 0; }
+
+  SLAdvModule find(String name) {
+    int i = indexOf(name);
+    if (i < 0) { return null; }
+    SLAdvModule m = mods[i];
+    return m;
+  }
+
+  << The program registers one listener; messages for program are then handed
+     to it on every pump instead of waiting in the queue. Null removes it. >>
+  void attachListener(SLAdvListener l) { listener = l; }
+
+  << Seat a module in the medium. Refused (false) when the medium is not up,
+     the module is null, its name is empty, reserved or already seated, the
+     medium is full, or the module declines to begin. >>
+  boolean attach(SLAdvModule m) {
+    if (up == false || m == null) { return false; }
+    String nm = m.moduleName();
+    if (nm == "" || nm == "program" || nm == "medium") { return false; }
+    if (has(nm)) { return false; }
+    if (n >= maxModules) { return false; }
+    if (m.begin(br) == false) { failures = failures + 1; return false; }
+    mods[n] = m;
+    names[n] = nm;
+    n = n + 1;
+    return true;
+  }
+
+  << Load a catalog module by name and seat it. False when unknown or refused. >>
+  boolean load(String name) {
+    if (up == false) { return false; }
+    SLAdvModule m = cat.create(name);
+    if (m == null) { return false; }
+    return attach(m);
+  }
+
+  << Unseat a module: it is ended and its slot closed up. >>
+  boolean unload(String name) {
+    int i = indexOf(name);
+    if (i < 0) { return false; }
+    SLAdvModule m = mods[i];
+    m.end();
+    int j = i;
+    while (j < n - 1) {
+      mods[j] = mods[j + 1];
+      names[j] = names[j + 1];
+      j = j + 1;
+    }
+    mods[n - 1] = null;
+    names[n - 1] = "";
+    n = n - 1;
+    return true;
+  }
+
+  << Route pending messages down to modules until none are left (or the
+     safety cap). Returns the number handled. Does not touch the program queue. >>
+  int pumpModules() {
+    int done = 0;
+    saturated = false;
+    while (done < 100000) {
+      SLAdvMessage m = br.nextForModules();
+      if (m == null) { return done; }
+      done = done + 1;
+      routed = routed + 1;
+      int i = indexOf(m.to);
+      if (i < 0) {
+        unknown = unknown + 1;
+        if (m.kind == 0 && m.from != "") {
+          br.post(m.makeError("medium", 404, "no such module: " + m.to));
+        }
+      } else {
+        SLAdvModule md = mods[i];
+        int rc = md.handle(m);
+        if (rc != 0) { failures = failures + 1; }
+      }
+    }
+    saturated = true;
+    return done;
+  }
+
+  << Hand every message waiting for the program to its listener. Returns how
+     many. Without a listener nothing moves; the program polls the bridge. >>
+  int deliver() {
+    int sent = 0;
+    if (listener == null) { return 0; }
+    while (true) {
+      SLAdvMessage m = br.nextForProgram();
+      if (m == null) { return sent; }
+      listener.onMessage(m);
+      sent = sent + 1;
+    }
+    return sent;
+  }
+
+  int pump() {
+    int done = pumpModules();
+    deliver();
+    return done;
+  }
+
+  << Ask a module and wait for the reply: stamps the sender as program, posts,
+     routes, and takes the matching reply. Null when the post was refused or
+     no reply came. >>
+  SLAdvMessage ask(SLAdvMessage req) {
+    req.from = "program";
+    int id = br.post(req);
+    if (id < 0) { return null; }
+    pumpModules();
+    return br.takeReply(id);
+  }
+
+  << Send a request without waiting. Returns the id, or -1 when refused. >>
+  int tell(String toName, String topicName, String text) {
+    SLAdvMessage m = new SLAdvMessage();
+    m.addressed("program", toName, topicName, 0);
+    m.text = text;
+    return br.post(m);
+  }
+
+  << End every module and close the bridge. >>
+  void shutdown() {
+    int i = n - 1;
+    while (i >= 0) {
+      SLAdvModule m = mods[i];
+      m.end();
+      mods[i] = null;
+      names[i] = "";
+      i = i - 1;
+    }
+    n = 0;
+    br.shut();
+    up = false;
+  }
+}

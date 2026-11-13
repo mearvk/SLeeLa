@@ -1,3 +1,5 @@
+<img align="right" src="images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
+
 # POINTERS — object references in SLeeLa
 
 > Every object has **two tiers**. **Tier 1** is the ordinary object-oriented

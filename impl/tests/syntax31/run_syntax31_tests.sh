@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Syntax 3.1 (SLEELA.syntax section 44): character literal, array initializer, labeled
-# statements, abrupt completion through finally. Each <name>.sleela has a
+# Syntax 3.1, also written 3.01 (SLEELA.syntax sections 44, 45, 46): character literal and the char
+# type, array initializer, a.length, multi-dimensional arrays, labeled statements, abrupt
+# completion through finally. Each <name>.sleela has a
 # <name>.expected.txt; gate_* and bad_* must be rejected with the stated message.
 # usage: run_syntax31_tests.sh [path-to-sleela]
 set -u
@@ -15,7 +16,14 @@ filter() { grep -v 'memory-manager\|^verification\|\[security\]\|\[defender\]'; 
 pass=0; fail=0
 for f in "$HERE"/*.sleela; do
   n="$(basename "$f" .sleela)"
+  mode=check
   case "$n" in
+    gate_length_in_3_0)          want="the array length member requires #sleela 3.1" ;;
+    gate_nd_in_3_0)              want="multi-dimensional array creation requires #sleela 3.1" ;;
+    bad_nd_sized_after_unsized)  want="array dimension expression after an empty" ;;
+    bad_nd_negative)             want="negative array size"; mode=run ;;
+    bad_length_assign)           want="the array length is read-only" ;;
+    bad_length_incr)             want="the array length is read-only" ;;
     gate_char_in_3_0)       want="character literal requires #sleela 3.1" ;;
     gate_label_in_3_0)      want="labeled statement requires #sleela 3.1" ;;
     gate_arrayinit_in_3_0)  want="array initializer requires #sleela 3.1" ;;
@@ -23,7 +31,7 @@ for f in "$HERE"/*.sleela; do
     *) want="" ;;
   esac
   if [ -n "$want" ]; then
-    out="$("$SLEELA" check "$f" 2>&1 | filter)"
+    out="$("$SLEELA" $mode "$f" 2>&1 | filter)"
     if printf '%s' "$out" | grep -qF "$want"; then echo "PASS  $n (rejected: $want)"; pass=$((pass+1)); else echo "FAIL  $n: expected '$want'"; echo "$out" | head -5; fail=$((fail+1)); fi
     continue
   fi

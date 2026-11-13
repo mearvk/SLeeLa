@@ -1,0 +1,30 @@
+#sleela 3.1
+class ArrayChurn {
+  void main() {
+    // 1: churn far more arrays than the table holds, none retained
+    int total = 0;
+    for (int i = 0; i < 20000; i++) { int[] a = new int[4]; a[0] = i; total = total + a[0] % 3; }
+    print("churn ok " + total);
+    // 2: keep one array live while churning; its contents must survive collections
+    int[] keep = new int[100];
+    for (int i = 0; i < 100; i++) { keep[i] = i * 3; }
+    for (int i = 0; i < 20000; i++) { int[] t = new int[2]; t[1] = i; }
+    int sum = 0;
+    for (int i = 0; i < 100; i++) { sum = sum + keep[i]; }
+    print("kept sum " + sum);
+    // 3: grids under pressure while a live grid is held
+    int[][] held = new int[30][30];
+    for (int i = 0; i < 30; i++) { for (int j = 0; j < 30; j++) { held[i][j] = i * 100 + j; } }
+    for (int k = 0; k < 200; k++) { int[][] g = new int[40][40]; g[39][39] = k; }
+    int hs = 0;
+    for (int i = 0; i < 30; i++) { for (int j = 0; j < 30; j++) { hs = hs + held[i][j]; } }
+    print("held grid sum " + hs);
+    // 4: arrays of arrays kept reachable only through the outer array
+    int[][] jag = new int[200][];
+    for (int i = 0; i < 200; i++) { jag[i] = new int[3]; jag[i][2] = i; }
+    for (int k = 0; k < 5000; k++) { int[] junk = new int[5]; junk[0] = k; }
+    int js = 0;
+    for (int i = 0; i < 200; i++) { js = js + jag[i][2]; }
+    print("jagged sum " + js);
+  }
+}

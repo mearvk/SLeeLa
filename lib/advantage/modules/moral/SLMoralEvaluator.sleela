@@ -1,0 +1,304 @@
+<< lib/advantage/modules/moral/SLMoralEvaluator.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The Moral Evaluator: up to 41 yes or no points, human and life centered. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< SLeeLa courseware model: the Moral Evaluator, up to 41 yes or no points. >
+< Human centered and life centered; five cardinal points are vetoes. >
+< A teaching model of rule based judgement, not an authority on morals or law. >
+class SLMoralEvaluator {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject real origin where publicly known; unknown values use none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39512;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | nation | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity on a 1..10 scale; courseware model with rule based judgement >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real citable instrument or none >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < The Moral Evaluator. A trade is judged by up to 41 yes or no points in >
+  < five dimensions: 0 trades, 1 time, 2 listers, 3 united states, 4 tall >
+  < science. The orientation is the human at the center and the living person: >
+  < five CARDINAL points (life safe, human is the end, informed consent, no >
+  < deception, lawful subject) are vetoes that no amount of merit can buy. >
+  < Verdicts: 0 NO, 1 YES, 2 COMPLETE (every one of the 41 points is yes). >
+  < In binary mode COMPLETE is reported as YES. Fail closed: not ready is NO. >
+  boolean[] yes;
+  int[] dim;
+  boolean[] cardinal;
+  int[] order;
+  String[] pname;
+  int[] dimTotal;
+  int[] dimYes;
+  double[] dimFrac;
+  int active = 41;
+  int mode = 3;
+  boolean ready = false;
+  double threshold = 0.80;
+  double dimFloor = 0.50;
+  double lastMerit = 0.0;
+  int lastVerdict = 0;
+  int lastCardinalFail = -1;
+  int lastWeakDim = -1;
+  String lastReason = "not ready";
+  int reviews = 0;
+
+  boolean configure(int points, int verdictStates) {
+    ready = false;
+    if (points < 5 || points > 41) { return false; }
+    if (verdictStates != 2 && verdictStates != 3) { return false; }
+    active = points;
+    mode = verdictStates;
+    yes = new boolean[41];
+    dim = new int[41];
+    cardinal = new boolean[41];
+    order = new int[41];
+    pname = new String[41];
+    dimTotal = new int[5];
+    dimYes = new int[5];
+    dimFrac = new double[5];
+    int i = 0;
+    while (i < 41) { yes[i] = false; cardinal[i] = false; i = i + 1; }
+    i = 0;
+    while (i < 5) { dimTotal[i] = 0; dimYes[i] = 0; dimFrac[i] = 0.0; i = i + 1; }
+    names();
+    i = 0;
+    while (i < 41) {
+      if (i < 9) { dim[i] = 0; }
+      else { if (i < 16) { dim[i] = 1; }
+      else { if (i < 24) { dim[i] = 2; }
+      else { if (i < 32) { dim[i] = 3; } else { dim[i] = 4; } } } }
+      i = i + 1;
+    }
+    cardinal[0] = true;
+    cardinal[1] = true;
+    cardinal[2] = true;
+    cardinal[3] = true;
+    cardinal[25] = true;
+    order[0] = 0; order[1] = 1; order[2] = 2; order[3] = 3; order[4] = 25;
+    int n = 5;
+    i = 0;
+    while (i < 41) {
+      if (cardinal[i] == false) { order[n] = i; n = n + 1; }
+      i = i + 1;
+    }
+    ready = true;
+    lastReason = "configured";
+    return true;
+  }
+
+  void names() {
+    pname[0] = "T01 life is safe";
+    pname[1] = "T02 the human is the end";
+    pname[2] = "T03 informed consent";
+    pname[3] = "T04 no deception";
+    pname[4] = "T05 no coercion";
+    pname[5] = "T06 fair value";
+    pname[6] = "T07 remedy exists";
+    pname[7] = "T08 no third party harm";
+    pname[8] = "T09 both sides benefit";
+    pname[9] = "M01 urgency not exploited";
+    pname[10] = "M02 cooling off offered";
+    pname[11] = "M03 time to decide";
+    pname[12] = "M04 timestamped";
+    pname[13] = "M05 commitment has an end";
+    pname[14] = "M06 quote is fresh";
+    pname[15] = "M07 pace is sustainable";
+    pname[16] = "L01 lister identified";
+    pname[17] = "L02 lister in good standing";
+    pname[18] = "L03 listing truthful";
+    pname[19] = "L04 lister not prohibited";
+    pname[20] = "L05 provenance known";
+    pname[21] = "L06 conflict disclosed";
+    pname[22] = "L07 more than one lister";
+    pname[23] = "L08 lister accountable";
+    pname[24] = "U01 within US boundary";
+    pname[25] = "U02 lawful subject";
+    pname[26] = "U03 no sanctioned counterparty";
+    pname[27] = "U04 records kept";
+    pname[28] = "U05 fees accounted";
+    pname[29] = "U06 no manipulation";
+    pname[30] = "U07 protections honored";
+    pname[31] = "U08 respects the United States";
+    pname[32] = "S01 US item cataloged";
+    pname[33] = "S02 subject nouns listed";
+    pname[34] = "S03 canonical name the United States";
+    pname[35] = "S04 names listed";
+    pname[36] = "S05 scientific individuals listed";
+    pname[37] = "S06 moral individuals listed";
+    pname[38] = "S07 nouns and names paired respectively";
+    pname[39] = "S08 inside US boundaries";
+    pname[40] = "S09 respected";
+  }
+
+  int getActive() { return active; }
+  boolean isReady() { return ready; }
+  double getThreshold() { return threshold; }
+  double getMerit() { return lastMerit; }
+  double getRisk() { return 1.0 - lastMerit; }
+  int getVerdict() { return lastVerdict; }
+  String getReason() { return lastReason; }
+  int getCardinalFail() { return lastCardinalFail; }
+  int getWeakDim() { return lastWeakDim; }
+  double getDimFrac(int d) { return dimFrac[d]; }
+  boolean getAnswer(int id) { return yes[id]; }
+  String pointName(int id) { return pname[id]; }
+  String verdictName(int v) {
+    if (v == 2) { return "COMPLETE"; }
+    if (v == 1) { return "YES"; }
+    return "NO";
+  }
+  String dimName(int d) {
+    if (d == 0) { return "trades"; }
+    if (d == 1) { return "time"; }
+    if (d == 2) { return "listers"; }
+    if (d == 3) { return "united states"; }
+    return "tall science";
+  }
+
+  < ---- the 41 yes or no answers, straight line ---- >
+  void answers(SLMoralTrade t, SLTallScience ts) {
+    yes[0] = t.endangersLife == false;
+    yes[1] = t.humanIsEnd;
+    yes[2] = t.consent;
+    yes[3] = t.deceptive == false;
+    yes[4] = t.coerced == false;
+    yes[5] = t.priceRatio >= 0.8 && t.priceRatio <= 1.25;
+    yes[6] = t.hasRemedy;
+    yes[7] = t.thirdPartyHarm == false;
+    yes[8] = t.bothBenefit;
+    yes[9] = t.exploitsUrgency == false;
+    yes[10] = t.coolingOffHours > 0.0;
+    yes[11] = t.decisionMinutes >= 5.0;
+    yes[12] = t.timestamped;
+    yes[13] = t.termDays > 0.0;
+    yes[14] = t.quoteAgeSeconds >= 0.0 && t.quoteAgeSeconds <= 60.0;
+    yes[15] = t.tradesPerMinute >= 0.0 && t.tradesPerMinute <= 2000.0;
+    yes[16] = t.listerIdentified;
+    yes[17] = t.listerStanding >= 0.5;
+    yes[18] = t.listingTruthful;
+    yes[19] = t.listerProhibited == false;
+    yes[20] = t.provenanceKnown;
+    yes[21] = t.conflictDisclosed;
+    yes[22] = t.listerCount >= 2;
+    yes[23] = t.listerAccountable;
+    yes[24] = t.inUsBoundary;
+    yes[25] = t.lawfulSubject;
+    yes[26] = t.sanctionedCounterparty == false;
+    yes[27] = t.recordsKept;
+    yes[28] = t.feesAccounted;
+    yes[29] = t.manipulative == false;
+    yes[30] = t.protectionsHonored;
+    yes[31] = t.respectsUS;
+    if (ts == null) {
+      int i = 32;
+      while (i < 41) { yes[i] = false; i = i + 1; }
+      return;
+    }
+    yes[32] = ts.hasItem;
+    yes[33] = ts.countNouns() >= 1;
+    yes[34] = ts.canonical();
+    yes[35] = ts.countNames() >= 1;
+    yes[36] = ts.countScientific() >= 1;
+    yes[37] = ts.countMoral() >= 1;
+    yes[38] = ts.paired();
+    yes[39] = ts.inBoundary;
+    yes[40] = ts.respected;
+  }
+
+  < ---- judge one trade: 0 NO, 1 YES, 2 COMPLETE ---- >
+  << Order of judgement: cardinal veto first, then each dimension must reach
+     the floor, then overall merit (the mean of the dimension fractions that
+     have active points) must reach the threshold. COMPLETE needs all 41 points
+     active and yes. getReason says why. >>
+  int evaluate(SLMoralTrade t, SLTallScience ts) {
+    lastCardinalFail = -1;
+    lastWeakDim = -1;
+    lastMerit = 0.0;
+    if (ready == false || t == null) { lastReason = "not ready"; lastVerdict = 0; return 0; }
+    answers(t, ts);
+    int d = 0;
+    while (d < 5) { dimTotal[d] = 0; dimYes[d] = 0; d = d + 1; }
+    int i = 0;
+    int yesCount = 0;
+    while (i < active) {
+      int k = order[i];
+      int dk = dim[k];
+      dimTotal[dk] = dimTotal[dk] + 1;
+      if (yes[k]) { dimYes[dk] = dimYes[dk] + 1; yesCount = yesCount + 1; }
+      else { if (cardinal[k] && lastCardinalFail < 0) { lastCardinalFail = k; } }
+      i = i + 1;
+    }
+    double sum = 0.0;
+    int used = 0;
+    d = 0;
+    while (d < 5) {
+      if (dimTotal[d] > 0) {
+        dimFrac[d] = (dimYes[d] * 1.0) / dimTotal[d];
+        sum = sum + dimFrac[d];
+        used = used + 1;
+        if (dimFrac[d] < dimFloor && lastWeakDim < 0) { lastWeakDim = d; }
+      } else { dimFrac[d] = 0.0; }
+      d = d + 1;
+    }
+    lastMerit = sum / used;
+    if (lastCardinalFail >= 0) { lastReason = "cardinal veto"; lastVerdict = 0; return 0; }
+    if (lastWeakDim >= 0) { lastReason = "dimension below floor"; lastVerdict = 0; return 0; }
+    if (lastMerit < threshold) { lastReason = "merit below threshold"; lastVerdict = 0; return 0; }
+    if (yesCount == 41 && mode == 3) { lastReason = "complete"; lastVerdict = 2; return 2; }
+    lastReason = "merit sufficient";
+    lastVerdict = 1;
+    return 1;
+  }
+
+  < ---- evolution: a human reviewer confirms or corrects the verdict ---- >
+  << A reviewer who says a YES was wrong raises the threshold by 0.01; a NO that
+     was wrong lowers it by 0.01. The threshold stays in 0.60..0.95. Cardinal
+     points and the dimension floor never change. Returns false when refused. >>
+  boolean review(int verdictWas, boolean correct) {
+    if (ready == false) { return false; }
+    if (verdictWas < 0 || verdictWas > 2) { return false; }
+    reviews = reviews + 1;
+    if (correct) { return true; }
+    if (verdictWas >= 1) { threshold = threshold + 0.01; }
+    else { threshold = threshold - 0.01; }
+    if (threshold < 0.60) { threshold = 0.60; }
+    if (threshold > 0.95) { threshold = 0.95; }
+    return true;
+  }
+}

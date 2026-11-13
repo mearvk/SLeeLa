@@ -1902,10 +1902,11 @@ void activate(GtkApplication *application, gpointer user_data) {
     // minimize / maximize / close icons are shown and can be lit by the CSS.
     gtk_header_bar_set_decoration_layout(GTK_HEADER_BAR(header), ":minimize,maximize,close");
 
-    // Brand logo in the upper-left of the title bar. The asset is pre-trimmed
-    // to the logo's minimum 2D content box with a transparent background (see
-    // tools/logo/Trim.java), so it sits flush at the left with no surrounding
-    // whitespace. Packed first so it is the leftmost title-bar element.
+    // Brand icon in the upper-left of the title bar: the SLeeLa medium-profile
+    // permanent icon (images/sleela/sleela-medium-profile-permanent-icon-001.jpg),
+    // cropped to the rounded square with a transparent surround and downsampled
+    // to 128x128 so it stays sharp on HiDPI when drawn at 22 px. Packed first so
+    // it is the leftmost title-bar element.
     GtkWidget *logo = gtk_image_new_from_file(asset_path(state, "titlebar-logo.png").c_str());
     gtk_image_set_pixel_size(GTK_IMAGE(logo), 22);
     gtk_widget_add_css_class(logo, "sleela-titlebar-logo");

@@ -345,7 +345,7 @@ SOC_MATH_OBJ := $(BUILD)/sociology_math.o
 SOC_OBJ := $(BUILD)/sociology.o
 SOC_SMOKE := $(BUILD)/sociology_smoke
 CORE_SRC := core/sleela_artifact.c
-FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/java_equivalence.cpp frontend/java_references.cpp frontend/semantic.cpp frontend/compiler.cpp \
+FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/language_handler.cpp frontend/class_relations.cpp frontend/java/java_handler.cpp frontend/java/java_equivalence.cpp frontend/semantic.cpp frontend/compiler.cpp \
           frontend/version.cpp frontend/artifact.cpp frontend/originate.cpp frontend/wikigen.cpp frontend/annotation_pipeline.cpp frontend/library_index.cpp frontend/docs.cpp frontend/keyword_supporter.cpp frontend/dynamite.cpp frontend/permissible.cpp \
           annotation/Annotation.cpp annotation/ForwardingAnnotation.cpp annotation/AnnotationForwarder.cpp \
           annotation/AnnotationInterpreter.cpp annotation/AnnotationRuntime.cpp \
@@ -354,6 +354,9 @@ FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/java_equivalence.cpp f
           subjects/economics/economics_native.cpp \
           subjects/inference/inference_native.cpp \
           subjects/chemistry/chemistry_api.cpp subjects/finance/financial_api.cpp
+# Java execution host (JVM hand-off): needs the runtime bridge, so it is linked into the
+# run binaries only (not the compile-only Nordshrift). Drop it to remove `run` of .java/.jar.
+JAVA_HOST_OBJ := $(BUILD)/java_host.o
 FE_OBJ := $(patsubst %.cpp,$(BUILD)/%.o,$(notdir $(FE_SRC)))
 DRIVER_OBJ := $(BUILD)/driver.o
 # The sleelvac compiler is an INDEPENDENT binary: same front-end source, but its
@@ -433,9 +436,9 @@ ifeq ($(OS),Windows_NT)
 else
   PYTHON ?= python3
 endif
-ALL_OBJECTS := $(CORE_OBJ) $(JAVA_STRING_OBJ) $(OSLS_OBJS) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(COMMON_RAILS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE) $(UTF16_OBJ) $(UTF16_SMOKE) $(JAVA_STRING_OBJ) $(JAVA_STRING_SMOKE)
+ALL_OBJECTS := $(JAVA_HOST_OBJ) $(CORE_OBJ) $(JAVA_STRING_OBJ) $(OSLS_OBJS) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(COMMON_RAILS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE) $(UTF16_OBJ) $(UTF16_SMOKE) $(JAVA_STRING_OBJ) $(JAVA_STRING_SMOKE)
 
-.PHONY: all install install-all uninstall uninstall-all sleelvac libslcore test-platform test-ref test-osls-isa test-osls-vm stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security regen-manifest check-manifest build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer test-native-ipc-handles test-native-call test-native-method-metadata test-native-method-aot test-native-concurrency test-java-utf16 test-java-string test-java-string-vm test-exceptions test-lineage
+.PHONY: all install install-all uninstall uninstall-all sleelvac libslcore test-platform test-ref test-osls-isa test-osls-vm stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security regen-manifest check-manifest build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer test-native-ipc-handles test-native-call test-native-method-metadata test-native-method-aot test-native-concurrency test-java-utf16 test-java-string test-java-string-vm test-exceptions test-lineage test-runtime-pressure
 
 
 all: verify-security $(SLEELA_BIN) $(SLEELAVC_BIN) $(NORDSHRIFT_BIN) $(SLCORE_LIB) stage
@@ -495,7 +498,7 @@ verify-security:
 	@if [ ! -f "$(VERIFY_MANIFEST)" ]; then echo "sleela: trusted SHA-256 manifest not found: $(VERIFY_MANIFEST)" >&2; exit 1; fi
 	@if [ ! -r "$(VERIFY_TOOL)" ]; then echo "sleela: verification tool not readable: $(VERIFY_TOOL)" >&2; exit 1; fi
 	@command -v $(firstword $(PYTHON)) >/dev/null 2>&1 || { echo "sleela: $(PYTHON) is required for SHA-256 verification" >&2; exit 1; }
-	@$(PYTHON) "$(VERIFY_TOOL)" $(VERIFY_ARGS)
+	@$(PYTHON) "$(VERIFY_TOOL)" $(VERIFY_ARGS) || { echo "sleela: the source tree does not match the trusted manifest, so NOTHING was rebuilt: any existing build/sleela is the PREVIOUS build and does not contain your edits." >&2; echo "sleela: if the edit was intended, review it and run 'make regen-manifest' (or tools/generate-sha256-manifest.py), then rebuild." >&2; exit 1; }
 
 # regen-manifest: rewrite the trusted manifest from the current source tree.
 # Use this AFTER you have intentionally edited verified source (the interpreter
@@ -536,12 +539,12 @@ $(ALL_OBJECTS): | verify-security
 # shares the whole front end with `sleela` but links its own driver object
 # (compiled with -DSLEELA_PRODUCT_SLEELVAC), so its `version` identity is fixed
 # at compile time and `sleela version` can never surface the Sleelvac banner.
-$(SLEELAVC_BIN): $(UTF16_OBJ) $(JAVA_STRING_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(COMMON_RAILS_OBJ) $(NGHTTP2_LIB)
+$(SLEELAVC_BIN): $(UTF16_OBJ) $(JAVA_STRING_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(JAVA_HOST_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(COMMON_RAILS_OBJ) $(NGHTTP2_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS) $(NGHTTP2_LIB)
 
 sleelvac: $(SLEELAVC_BIN)
 
-$(SLEELA_BIN): $(UTF16_OBJ) $(JAVA_STRING_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(COMMON_RAILS_OBJ) $(NGHTTP2_LIB)
+$(SLEELA_BIN): $(UTF16_OBJ) $(JAVA_STRING_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(JAVA_HOST_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(COMMON_RAILS_OBJ) $(NGHTTP2_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS) $(NGHTTP2_LIB)
 $(AUDIO_NATIVE_OBJ): core/sleela_audio_bridge.cpp core/sleela_audio_bridge.h ../audio/cpp/include/sleela_audio.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
@@ -922,6 +925,10 @@ $(FINANCIAL_OBJ): subjects/finance/financial.cpp subjects/finance/financial.h | 
 # objects that report the old range.
 $(BUILD)/%.o: frontend/%.cpp frontend/version.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+# Language handler modules (frontend/java/ is the Java handler). Each lists
+# itself in FE_SRC; removing it from FE_SRC removes that language's support.
+$(BUILD)/%.o: frontend/java/%.cpp frontend/language_handler.h frontend/version.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -Ifrontend -c $< -o $@
 # The native CommonRails printing engine, compiled from the heritage C++ layer.
 $(COMMON_RAILS_OBJ): ../common-rails/heritage/printing/cpp/CommonRailsPrinting.cpp ../common-rails/heritage/printing/cpp/CommonRailsPrinting.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(COMMON_RAILS_INC) -c $< -o $@
@@ -1033,7 +1040,7 @@ $(BUILD)/driver_sleelvac.o: frontend/driver.cpp frontend/compiler.h frontend/art
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-osls-isa test-osls-vm test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-lineage test-ref test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-unsigned-integer test-runtime test-memmgr test-native-ipc-handles test-native-call test-native-method-metadata test-native-method-aot test-native-concurrency
+test: verify-security test-osls-isa test-osls-vm test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-lineage test-ref test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-unsigned-integer test-runtime test-memmgr test-native-ipc-handles test-native-call test-native-method-metadata test-native-method-aot test-native-concurrency test-runtime-pressure
 test-osls-isa:
 	@cd $(CURDIR)/.. && $(PYTHON) tools/verify-osls-isa-extension.py
 
@@ -1173,6 +1180,11 @@ test-platform: $(THREAD_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(IO_PLATFORM_SMOK
 	@$(TERMINAL_PLATFORM_SMOKE)
 	@$(LIBRARY_PLATFORM_SMOKE)
 	@$(TIME_PLATFORM_SMOKE)
+
+# test-runtime-pressure: garbage collection under churn, the bounded live-object tables, allocation inside
+# a finally block, and worker threads (impl/tests/runtime/pressure).
+test-runtime-pressure: $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json} bash impl/tests/runtime/pressure/run_pressure_tests.sh $(CURDIR)/$(SLEELA_BIN)
 
 test-runtime: $(RUNTIME_SMOKE) $(GC_MODERN_SMOKE)
 	@echo "=== SLVM runtime services -- behavioral smoke ==="; $(RUNTIME_SMOKE)

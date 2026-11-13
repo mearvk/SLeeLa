@@ -1,0 +1,2 @@
+#sleela 3.0
+class CharInt { void main() { char a = 97; print(a); print(98); print("x" + a); } }

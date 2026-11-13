@@ -1,0 +1,4 @@
+churn ok 19999
+kept sum 14850
+held grid sum 1318050
+jagged sum 19900

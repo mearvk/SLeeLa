@@ -1,3 +1,5 @@
+<img align="right" src="images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
+
 # SLeeLa — 10-Day Change Log Manifest
 
 **Window:** 2026-10-13 → 2026-10-23 (inclusive)

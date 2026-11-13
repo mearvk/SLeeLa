@@ -4,7 +4,7 @@
 > here is part of the SLeeLa specification or adds syntax to SLeeLa.
 
 Status: **0.7.0, best effort (2026-11-13).** Output stays at syntax **3.1** (also
-written 3.01) by the owner's decision; syntax 3.2 forms are not used
+written 3.01) by the owner's decision; syntax 3.1 sections 45 and 46 forms are not used
 (`.kiro/steering/java-converter-lib.md`). The operand laws come from the shared
 conversion model, `impl/subjects/conversion/conversion.model` (read by
 `JConvModel`), the same data `sleelactl java-convert` reads. Output declares `#sleela 3.1` and

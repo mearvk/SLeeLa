@@ -1,0 +1,179 @@
+<< lib/advantage/modules/moral/SLAdvMoralModule.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The Moral Evaluator as an Advantage module (loaded by name moral-evaluator). >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Topics in: configure, seed-catalog, register, judge, review, ledger, status. >
+< It answers judge requests from the program or from any other module. >
+class SLAdvMoralModule implements SLAdvModule {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject real origin where publicly known; unknown values use none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39525;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Advantage™";
+  String metaCorporation = "none";
+  < metaOrigin: National | nation | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity on a 1..10 scale; courseware grade module host >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real citable instrument or none >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Wire layout. configure: n0 points 5..41, n1 verdict states 2 or 3. >
+  < register: n0 list (0 nouns, 1 names, 2 scientific, 3 moral), text is the >
+  < entry. judge: n0..n31 trade facts in SLMoralTrade wire order; reply n0 >
+  < verdict (0 NO, 1 YES, 2 COMPLETE), n1 merit, n2 risk, n3 cardinal point >
+  < that failed or -1, n4 weak dimension or -1, n5 active points, text reason. >
+  < review: n0 verdict that was given, n1 1 if it was right. ledger reply: >
+  < n0 trades, n1 NO, n2 YES, n3 COMPLETE, n4 mean merit, n5 recent merit, >
+  < n6 worst merit, n7 risk of merit. A cardinal veto also sends the program >
+  < an unsolicited cardinal-veto event. >
+  SLMoralEvaluator ev;
+  SLTallScience ts;
+  SLMoralMeritLedger led;
+  SLAdvBridge br;
+  boolean on = false;
+
+  String moduleName() { return "moral-evaluator"; }
+  String moduleKind() { return "ai.moral"; }
+  String moduleVersion() { return "1.0.0"; }
+  boolean running() { return on; }
+
+  boolean begin(SLAdvBridge bridge) {
+    if (bridge == null) { return false; }
+    br = bridge;
+    ev = new SLMoralEvaluator();
+    if (ev.configure(41, 3) == false) { return false; }
+    ts = new SLTallScience();
+    ts.seed();
+    led = new SLMoralMeritLedger();
+    on = true;
+    SLAdvMessage e = new SLAdvMessage();
+    e.addressed("moral-evaluator", "program", "ready", 2);
+    br.post(e);
+    return true;
+  }
+
+  void end() { on = false; }
+
+  void fail(SLAdvMessage m, int code, String why) {
+    br.post(m.makeError("moral-evaluator", code, why));
+  }
+
+  SLAdvMessage okReply(SLAdvMessage m) {
+    return m.makeReply("moral-evaluator", m.topic);
+  }
+
+  int handle(SLAdvMessage m) {
+    if (on == false) { fail(m, 503, "module not running"); return 1; }
+    if (m.kind != 0) { return 0; }
+    String tp = m.topic;
+    if (tp == "judge") {
+      SLMoralTrade t = new SLMoralTrade();
+      if (t.fromNums(m.numbers()) == false) { fail(m, 1, "bad trade facts"); return 1; }
+      int v = ev.evaluate(t, ts);
+      led.noteTrade(ev);
+      SLAdvMessage r = okReply(m);
+      r.setNum(0, v * 1.0);
+      r.setNum(1, ev.getMerit());
+      r.setNum(2, ev.getRisk());
+      r.setNum(3, ev.getCardinalFail() * 1.0);
+      r.setNum(4, ev.getWeakDim() * 1.0);
+      r.setNum(5, ev.getActive() * 1.0);
+      r.text = ev.getReason();
+      br.post(r);
+      if (ev.getCardinalFail() >= 0) {
+        SLAdvMessage e = new SLAdvMessage();
+        e.addressed("moral-evaluator", "program", "cardinal-veto", 2);
+        e.setNum(0, ev.getCardinalFail() * 1.0);
+        e.text = ev.pointName(ev.getCardinalFail());
+        br.post(e);
+      }
+      return 0;
+    }
+    if (tp == "configure") {
+      boolean ok = ev.configure((int) m.num(0), (int) m.num(1));
+      SLAdvMessage r = okReply(m);
+      if (ok) { r.status = 0; } else { r.status = 1; r.text = "refused: points 5..41, states 2 or 3"; }
+      br.post(r);
+      return r.status;
+    }
+    if (tp == "seed-catalog") {
+      ts = new SLTallScience();
+      ts.seed();
+      br.post(okReply(m));
+      return 0;
+    }
+    if (tp == "register") {
+      boolean ok = ts.register((int) m.num(0), m.text);
+      SLAdvMessage r = okReply(m);
+      if (ok) { r.status = 0; } else { r.status = 1; r.text = "register refused"; }
+      br.post(r);
+      return r.status;
+    }
+    if (tp == "review") {
+      boolean ok = ev.review((int) m.num(0), m.num(1) != 0.0);
+      SLAdvMessage r = okReply(m);
+      if (ok) { r.status = 0; } else { r.status = 1; r.text = "review refused"; }
+      r.setNum(0, ev.getThreshold());
+      br.post(r);
+      return r.status;
+    }
+    if (tp == "ledger") {
+      SLAdvMessage r = okReply(m);
+      r.setNum(0, led.getCount() * 1.0);
+      r.setNum(1, led.getNo() * 1.0);
+      r.setNum(2, led.getYes() * 1.0);
+      r.setNum(3, led.getComplete() * 1.0);
+      r.setNum(4, led.meanMerit());
+      r.setNum(5, led.recentMerit());
+      r.setNum(6, led.worstMerit());
+      r.setNum(7, led.riskOfMerit());
+      br.post(r);
+      return 0;
+    }
+    if (tp == "status") {
+      SLAdvMessage r = okReply(m);
+      r.setNum(0, ev.getActive() * 1.0);
+      r.setNum(1, ev.getThreshold());
+      r.setNum(2, ts.countNouns() * 1.0);
+      r.setNum(3, ts.countNames() * 1.0);
+      if (ts.paired()) { r.setNum(4, 1.0); } else { r.setNum(4, 0.0); }
+      br.post(r);
+      return 0;
+    }
+    fail(m, 2, "unknown topic: " + m.topic);
+    return 1;
+  }
+}

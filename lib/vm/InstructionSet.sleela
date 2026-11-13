@@ -485,11 +485,11 @@ class SLISBitUnsignedShiftRight { String name; int code; }
 < OP_BNOT 191 -- bitwise complement of one integer >
 class SLISBitNot { String name; int code; }
 
-< OP_CHARSTR 192 -- syntax 3.2 (SLEELA.syntax 45): pop a char (UTF-16 code unit) and push it as a one-character plain String; an unpaired surrogate or NUL is a runtime error >
+< OP_CHARSTR 192 -- syntax 3.1 (SLEELA.syntax 45): pop a char (UTF-16 code unit) and push it as a one-character plain String; an unpaired surrogate or NUL is a runtime error >
 class SLISCharToString { String name; int code; }
 
-< OP_ADDCHAR 193 -- syntax 3.2 (SLEELA.syntax 45): operand a bit 0 = left operand is a char, bit 1 = right operand is a char; exactly OP_ADD, except that when either operand is a String each flagged char operand is first converted to a one-unit String of the same kind >
+< OP_ADDCHAR 193 -- syntax 3.1 (SLEELA.syntax 45): operand a bit 0 = left operand is a char, bit 1 = right operand is a char; exactly OP_ADD, except that when either operand is a String each flagged char operand is first converted to a one-unit String of the same kind >
 class SLISAddChar { String name; int code; }
 
-< OP_NEWARRAYND 194 -- syntax 3.2 (SLEELA.syntax 46): operand a = sized dimensions n (2..8) | innermost fill kind << 8; pop n sizes (last on top) and push a rectangular array of arrays, outermost first >
+< OP_NEWARRAYND 194 -- syntax 3.1 (SLEELA.syntax 46): operand a = sized dimensions n (2..8) | innermost fill kind << 8; pop n sizes (last on top) and push a rectangular array of arrays, outermost first >
 class SLISNewArrayND { String name; int code; }

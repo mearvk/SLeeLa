@@ -1,2 +1,0 @@
-#sleela 3.2
-class Bad { void main() { int n = 0 - 1; int[][] a = new int[n][2]; print(arrayLength(a)); } }

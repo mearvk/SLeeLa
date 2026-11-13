@@ -1,0 +1,125 @@
+<< lib/advantage/modules/trader/SLHstPragmatics.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The registry of the 24 pragmatics of the high speed trader AI. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< SLeeLa courseware model: the registry of the 24 pragmatics of the high speed trader. >
+< Each pragmatic is one evolution of judgement: clear logic, logic of use, or secure and grounded trade. >
+< Pure data and lookups; no I/O. >
+class SLHstPragmatics {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject real origin where publicly known; unknown values use none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39500;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | nation | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity on a 1..10 scale; courseware model on synthetic data >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real citable instrument or none >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ids 0..7 LOGIC (clear logic), 8..15 USE (logic of use), 16..23 GROUND >
+  < (secure and grounded trade). The priority order interleaves the phases >
+  < so any prefix of 8 to 24 keeps all three, and the first 8 are the minimal >
+  < safe core: every hard gate a trade must clear before it is even scored. >
+  String[] names;
+  double[] hardMins;
+  int[] order;
+  boolean built = false;
+
+  void build() {
+    if (built) { return; }
+    names = new String[24];
+    hardMins = new double[24];
+    order = new int[24];
+    int i = 0;
+    while (i < 24) { hardMins[i] = 0.0; i = i + 1; }
+    names[0] = "L1 well-formed inputs";
+    names[1] = "L2 positive net edge";
+    names[2] = "L3 edge covers half spread";
+    names[3] = "L4 evidence sufficiency";
+    names[4] = "L5 plausibility vs volatility";
+    names[5] = "L6 cost realism";
+    names[6] = "L7 signal to noise";
+    names[7] = "L8 depth logic";
+    names[8] = "U1 size fits order cap";
+    names[9] = "U2 quote freshness";
+    names[10] = "U3 position headroom";
+    names[11] = "U4 cost efficiency";
+    names[12] = "U5 liquidity fit";
+    names[13] = "U6 holding risk";
+    names[14] = "U7 rate headroom";
+    names[15] = "U8 learned regime prior";
+    names[16] = "G1 venue trust";
+    names[17] = "G2 kill switch armed";
+    names[18] = "G3 price collar";
+    names[19] = "G4 position hard limit";
+    names[20] = "G5 drawdown guard";
+    names[21] = "G6 grounded evidence";
+    names[22] = "G7 staleness hard stop";
+    names[23] = "G8 trust discounted size";
+    hardMins[0] = 1.0;
+    hardMins[1] = 0.0005;
+    hardMins[8] = 0.0005;
+    hardMins[16] = 0.5;
+    hardMins[17] = 1.0;
+    hardMins[18] = 1.0;
+    hardMins[19] = 1.0;
+    hardMins[20] = 0.05;
+    hardMins[21] = 0.1;
+    hardMins[22] = 1.0;
+    hardMins[23] = 0.3;
+    order[0] = 0;  order[1] = 16; order[2] = 17; order[3] = 8;
+    order[4] = 18; order[5] = 1;  order[6] = 9;  order[7] = 19;
+    order[8] = 2;  order[9] = 10; order[10] = 20; order[11] = 3;
+    order[12] = 11; order[13] = 21; order[14] = 4; order[15] = 12;
+    order[16] = 22; order[17] = 5; order[18] = 13; order[19] = 23;
+    order[20] = 6; order[21] = 14; order[22] = 7; order[23] = 15;
+    built = true;
+  }
+
+  int count() { return 24; }
+  int minPragmatics() { return 8; }
+  int maxPragmatics() { return 24; }
+  String name(int id) { build(); return names[id]; }
+  double hardMin(int id) { build(); return hardMins[id]; }
+  int orderAt(int i) { build(); return order[i]; }
+  String phase(int id) {
+    if (id < 8) { return "logic"; }
+    if (id < 16) { return "use"; }
+    return "ground";
+  }
+}

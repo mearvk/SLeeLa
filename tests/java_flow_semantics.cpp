@@ -1,4 +1,4 @@
-#include "../impl/frontend/java_flow.h"
+#include "../impl/frontend/java/java_flow.h"
 #include <cassert>
 #include <iostream>
 using namespace sleela;

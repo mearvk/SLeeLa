@@ -19,7 +19,6 @@ private:
     std::set<std::string> structNames_;
     // Syntax 3.1 surface seen while parsing; copied to Program::syntax31Uses.
     std::set<std::string> uses31_;
-    std::set<std::string> uses32_;   // syntax 3.2 surface seen (multi-dimensional creation)
     ExprP parseArrayLiteral(const std::string& arrayType);
     ExprP parseInitializer(const std::string& declType);
     // Nested classes (syntax 1.11) hoisted out of their enclosing class during
@@ -32,7 +31,7 @@ private:
     // Java signature surface (syntax 3.0): the type variables of the enclosing
     // generic class / method declarations, erased to Any in parsed types.
     std::vector<std::vector<std::string>> typeVars_;
-    std::string javaErase(const std::string& source);
+    std::string eraseSignatureType(const std::string& source);
     bool acceptEllipsis();
     void splitAngleClosers();
     void collectStructNames();

@@ -11,6 +11,7 @@ extern "C" {
 }
 
 #include <cctype>
+#include "builtin_names.h"
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
@@ -585,7 +586,7 @@ private:
             if (!c) fail("model", "the conversion model has no cast from '" + from + "' to '" + to.n + "'");
             if (std::string(c->f[2]) == "=") {
                 r.code = a.code;
-                // Syntax 3.2 shows a value of static type char as text in a String context; a Java
+                // Syntax 3.1 shows a value of static type char as text in a String context; a Java
                 // (int)/(long) cast of a char is a number, so it must drop the char type explicitly.
                 if (a.ty.dims == 0 && a.ty.n == "char" && (to.n == "int" || to.n == "long")) {
                     r.code = "(" + to.n + ") " + paren(a.code);
@@ -1157,7 +1158,8 @@ private:
                 if (ic == "long" || ic == "double") fail("model", "array index must be int");
                 E r;
                 r.pure = e.pure && idx.pure;
-                r.code = paren(e.code) + "[" + idx.code + "]";
+                std::string indexCode = idx.code;   // an out-of-range index is thrown by the VM inside a try (37.5)
+                r.code = paren(e.code) + "[" + indexCode + "]";
                 r.ty = e.ty.dims > 0 ? mk(e.ty.n, e.ty.dims - 1) : mk("?");
                 e = r;
                 continue;
@@ -1272,6 +1274,12 @@ private:
             }
             if (!pm) refuseObjectMethod(curClass, name);
             a = adaptArgs(pm, a);
+            // A Java method named like a SLeeLa built-in (read, write, accept, lock, send, ...) would be taken
+            // for the built-in by an unqualified call, so the call is qualified with its owner or with this.
+            if (qualifier.empty() && pm && isBuiltinCallName(name)) {
+                if (pm->isStatic) qualifier = (pm->owner.empty() ? curClass : pm->owner) + ".";
+                else if (anonStack_.empty() || anonStack_.back().sub.rfind("#nest", 0) == 0) qualifier = "this.";
+            }
             E r;
             r.code = qualifier + mapMember(safeNameForCall(name)) + "(" + joinArgs(a) + ")";
             r.pure = false;
@@ -1323,7 +1331,7 @@ private:
         }
         if (!isOp("[") && !typeVars.count(name)) name = resolveTypeName(name);
         if (isOp("[")) {
-            // new T[a][b]..[] (syntax 3.2 multi-dimensional creation) or new T[]..{...} (initializer)
+            // new T[a][b]..[] (syntax 3.1 multi-dimensional creation) or new T[]..{...} (initializer)
             std::vector<std::string> sized;
             int rank = 0;
             bool sawUnsized = false;
@@ -1335,7 +1343,7 @@ private:
                 expectOp("]");
                 std::string c = classOf(n.ty);
                 if (c == "long" || c == "double") fail("model", "array size must be int");
-                sized.push_back(n.code);
+                sized.push_back(opt.checkedArrays && !(n.isLitInt && n.iv >= 0) ? "JavaChecks.size(" + n.code + ")" : n.code);
                 rank++;
             }
             E r;
@@ -2688,6 +2696,7 @@ private:
     // declared, a native switch assigns it in each arm, and the temporary is the value.
     // Java member names that collide with SLeeLa built-ins are renamed consistently in declarations and calls.
     // close() is the Munction reach-handle built-in, so the Java tier calls it closeResource().
+    static bool isBuiltinCallName(const std::string& n) { for (const char* const* b = kBuiltinCallNames; *b; ++b) if (n == *b) return true; return false; }
     static std::string mapMember(const std::string& n) { return n == "close" ? "closeResource" : n; }
     bool lastVarargs_ = false;
     std::string yieldVar_;
@@ -3096,7 +3105,7 @@ private:
           << "   Presumed JDK version: " << opt.jdkVersion << "\n"
           << "   Functional equivalence is the goal: operators follow lib/java/JavaOperands and the\n"
           << "   conversion subject model; library members resolve through the lib/java tier. >>\n"
-          << "#sleela 3.2\n"
+          << "#sleela 3.1\n"
           << "import java.jdk-" << opt.jdkVersion << ";\n"
           << "material;\n\n";
         return o.str();
@@ -3220,7 +3229,7 @@ private:
             if (isKw("throws")) skipThrows();
             curRet = ty;
             if (pass == 1) {
-                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";");
+                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls;
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }

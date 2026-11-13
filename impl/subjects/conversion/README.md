@@ -39,7 +39,7 @@ python3 impl/subjects/conversion/generate_ret_rows.py           # rewrite sectio
 python3 impl/subjects/conversion/generate_ret_rows.py --check   # exit 1 when out of date
 ```
 
-Measured with 1.3.0 (2026-11-13): `tests/javaconv_differential_test.sh` 31 of 31 (21 programs, 9 refusals,
+Measured with 1.3.0 (2026-11-13): `tests/javaconv_differential_test.sh` 32 of 32 (22 programs, 9 refusals,
 stale-output check); the JDK 25.0.2 `java.base` subset of 884 files converts 420 (see `JAVA.CONVERSION.STATUS.md`).
 
 Measured with 1.1.0 (2026-11-13): `tests/javaconv_differential_test.sh` 14 of 14

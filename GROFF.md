@@ -1,3 +1,5 @@
+<img align="right" src="images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
+
 # GROFF — our buddy for the SLeeLa man pages
 
 # SLeeLa

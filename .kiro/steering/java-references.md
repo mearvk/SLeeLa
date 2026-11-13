@@ -2,34 +2,38 @@
 
 Repo-scoped, always-on note.
 
-## Use `impl/frontend/java_references.{h,cpp}`
+## Java lives in a handler module, not in the compiler
 
-Java name references in the SLeeLa frontend, currently `extends` / superclass
-resolution, live in **one module**: `impl/frontend/java_references.cpp`
-(header `java_references.h`, namespace `sleela::javaref`). It is linked at
-compile time through `FE_SRC` in `impl/Makefile`.
+The compiler (parser, semantic, compiler, driver), the VM and the runtime carry NO
+Java logic. Java-referencing documents are served by the Java handler,
+`impl/frontend/java/java_handler.cpp`, reached only through the neutral interface
+`impl/frontend/language_handler.h` (`sleela::lang::*`). It registers itself with a
+static `Registrar` and is linked through `FE_SRC` in `impl/Makefile`; removing it from
+`FE_SRC` removes Java support. Review and staged plan: `impl/frontend/COMPILER-JAVA-REVIEW.md`.
 
-- Any code that follows a class `extends` edge (semantic analysis, instance
-  field layout, runtime parent registration, method aliasing, Sleela.home
-  lineage) MUST call `javaref::superclassOf(...)` or `javaref::resolveBaseName(...)`.
-  Do NOT read `cls.java.superclass` directly: `semantic.cpp` and `compiler.cpp`
-  would then disagree on `extends java.lang.X` (check passes, run loses fields).
-- A qualified name (`java.lang.Throwable`) falls back to its simple name only
-  for classes loaded from `/lib` (`fromLibrary`); a local class cannot
-  impersonate a JDK class.
-- Java type relations also live here: `javaref::isSubtypeOf` (extends +
-  implements, used by the semantic `assignable` rule and by virtual dispatch)
-  and `javaref::inheritanceDepth` (deepest-first dispatch order).
-- New Java name-reference helpers go in this file, not inline in
-  `semantic.cpp` / `compiler.cpp`.
+- Code that follows a class `extends` edge (semantic analysis, instance field
+  layout, runtime parent registration, method aliasing, Sleela.home lineage) MUST
+  call `classrel::superclassOf(...)` / `classrel::resolveBaseName(...)`
+  (`impl/frontend/class_relations.{h,cpp}`). Do NOT read `cls.java.superclass`
+  directly: `semantic.cpp` and `compiler.cpp` would then disagree.
+- A qualified name (`java.lang.Throwable`) falls back to its simple name only for
+  classes loaded from `/lib` (`fromLibrary`). That rule is the handler hook
+  `resolveReference`; `classrel` offers exact match first, then the handlers.
+- Type relations (`classrel::isSubtypeOf`, `inheritanceDepth`, `mostDerivedFirst`) are
+  language-neutral.
+- Java library-tier selection (`filterLibraryCandidates`) and the JVM launch for `sleela run` (`java/java_host.cpp`, `runHost`) are handler hooks too; `driver.cpp` has no Java policy or `java` process code.
+- New Java-specific behaviour (markers, erasure, library names/seeding, validation)
+  goes in `impl/frontend/java/`, as a hook on `LanguageHandler`. Do NOT add
+  `Java`/`java` names, literals or branches to `parser.cpp`, `semantic.cpp`,
+  `compiler.cpp` or the VM; add a neutral hook instead.
 
-## Sleela.home lineage lives here too
+## Sleela.home lineage lives in class_relations
 
-The Sleela.home lineage logic (SLEELA.syntax section 42) is in the same module:
-`javaref::lineageParentOf`, `javaref::lineageRootOf`, `javaref::lineageValue`.
+The Sleela.home lineage logic (SLEELA.syntax section 42, a SLeeLa feature) is in `class_relations`:
+`classrel::lineageParentOf`, `classrel::lineageRootOf`, `classrel::lineageValue`.
 `compiler.cpp` only keeps a one-line `lineageValue(x)` wrapper that passes its
 `lineageClasses_` and `currentClass_`. Change lineage behavior in
-`java_references.cpp`, not in `compiler.cpp`. Regression test:
+`class_relations.cpp`, not in `compiler.cpp`. Regression test:
 `bash impl/tests/lineage/run_lineage_tests.sh` (must print `lineage regression: PASS`).
 
 ## Backup and tests

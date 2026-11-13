@@ -26,7 +26,7 @@ to constructs the language already has (the principle of `lib/java/jdk-28/LOWERI
 not add syntax or opcodes.
 
 Relation to the language specification. Sections 44, 45 and 46 of `SLEELA.syntax` (syntax 3.1 and
-3.2: character literal, array initializer, labeled statements, `finally` on abrupt exit, `a.length`,
+3.1 (also written 3.01): character literal, array initializer, labeled statements, `finally` on abrupt exit, `a.length`,
 multi-dimensional arrays, char as text) are language features that the Java tier **uses**. They were
 added to the language before this rule and stay there. Nothing new is added to the language by the
 Java tier. `SLEELA.syntax` section 43 (Java support, `spark`) and 38.4 (the Java container) are
@@ -36,6 +36,29 @@ or alongside this rule: 43.7 (implemented interfaces are runtime supertypes; a m
 division by zero, an array index out of range and a failed cast are thrown, as
 `ArithmeticException`, `ArrayIndexOutOfBoundsException`, `ClassCastException` through
 `lib/java/support/SLJavaFaults`). The tier uses them; they are general language behavior.
+
+## 1.1 The Java handler module (compiler boundary)
+
+The few places where the SLeeLa compiler must act on a Java-authored or Java-referencing document
+are **not** compiler logic. They are the **Java handler**, `impl/frontend/java/java_handler.cpp`,
+loaded through the neutral interface `impl/frontend/language_handler.h`:
+
+| Hook | Java behaviour provided |
+|---|---|
+| `documentMarkers` | the `spark` Preonem marker, minimum `#sleela 3.0` (SLEELA.syntax 43) |
+| `resolveReference` | `java.lang.Throwable` resolves to the `/lib` class `Throwable`; a local class cannot impersonate it |
+| `eraseSignatureType` | type variables and package-qualified types erase to `Any`; `java.lang.String` to `String` |
+| `stringMethodLibrary` | `JavaStringMethods` provides methods on a String receiver |
+| `faultFunction` / `libraryNeeds` | `SLJavaFaults` builds the exception a VM fault throws inside a try; the driver seeds it for a Java-style document that uses try |
+| `validateProgram` | Java compatibility metadata checks |
+| `filterLibraryCandidates` | tier selection among library units with the same simple name: real source beats reference files, `java/jdk-28` beats `docs/api`, `import java.jdk-28;` selects the tier, JDK 28 clashes (`java.util.List` vs `java.awt.List`) rank by longest import root, module, package, depth |
+| `runHost` | `sleela run` of `.java`, `.jar`, `--class-path`/`-cp`/`--class` on an external JVM (`java/java_host.cpp`, linked into `sleela` and `sleelvac` only) |
+
+The compiler core knows only the interface. Removing the handler from `FE_SRC` in `impl/Makefile`
+removes Java support and changes nothing else. A Java improvement that needs a compiler hook adds a
+neutral hook to `LanguageHandler` and implements it in the handler, never a Java branch in
+`parser.cpp`, `semantic.cpp`, `compiler.cpp`, the VM or the runtime. Review, inventory and the
+staged plan (the `javaString*` builtins and `OP_JSTR_*` VM string kind are the remaining open item): `impl/frontend/COMPILER-JAVA-REVIEW.md`.
 
 ## 2. The Java tier
 
@@ -52,7 +75,7 @@ division by zero, an array index out of range and a failed cast are thrown, as
 | Second converter | `lib/java/converter` | a converter written in SLeeLa; same laws, same model |
 
 Loading. A program that imports `java.jdk-N` has the tier's classes resolved by name from `/lib`.
-Converted output carries `import java.jdk-N;` and `material;` and declares `#sleela 3.2`.
+Converted output carries `import java.jdk-N;` and `material;` and declares `#sleela 3.1`.
 The tier is not built into `sleela`: removing `lib/java` removes Java support and leaves the
 language intact.
 
@@ -154,6 +177,8 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
   signature is known (same file, or a collected tree) packs the extra arguments into
   `new T[]{...}`. A call to a varargs method of a type whose source was not collected is not packed.
   Test: `Varargs`.
+- A call to a method whose name is a SLeeLa built-in (`read`, `write`, `accept`, `lock`, `send`, `join`, ...) is qualified with
+  its owner class or `this.` (list: `sleelactl/convert/builtin_names.h`). Test: `Bounds` (a method named `read`).
 - Name mapping. `close()` is a SLeeLa built-in; the tier names the Java method `closeResource()`
   in declarations and calls. Java members named like a SLeeLa reserved word or built-in
   (`record`, `native`, `struct`, `join`, `spawn`, `sleep`, ...) are refused; local variables with
@@ -222,6 +247,12 @@ One-dimensional arrays, multi-dimensional creation `new T[a][b]`, jagged `new T[
 initializers, `a.length` (as `arrayLength(a)`), `char[]` and `float[]` (as `double[]`). Language
 limit: 4096 live arrays, and each row of a grid is one. Test: `Grid`.
 
+Run-time checks. An out-of-range index (read, write, compound store) is thrown by the VM inside a `try` as
+`ArrayIndexOutOfBoundsException("Index i out of bounds for length n")` (SLEELA.syntax 37.5, `lib/java/support/SLJavaFaults`);
+the converter adds nothing. A negative array size is wrapped as `JavaChecks.size(n)` (non-constant sizes only) and throws
+`NegativeArraySizeException` with the size as its message; `--unchecked-sizes` omits the wrapper. Test: `Bounds`.
+Open: null dereference and stack overflow remain fatal.
+
 ### 4.9 Concurrency
 `synchronized` (method and block) and `volatile` order accesses between threads. The tier converts
 a program as **single-threaded**: with `--single-thread` they become plain (a `synchronized` block is
@@ -267,8 +298,8 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 
 ## 7. Verification
 
-`bash tests/javaconv_differential_test.sh` runs 21 programs on a JDK and on the converted SLeeLa:
-Anon, Basics, Control, Enums, Flow, Floats, Formats, Functional, Grid, Init, Nested, ObjectText, Operands, Records,
+`bash tests/javaconv_differential_test.sh` runs 22 programs on a JDK and on the converted SLeeLa:
+Anon, Basics, Bounds, Control, Enums, Flow, Floats, Formats, Functional, Grid, Init, Nested, ObjectText, Operands, Records,
 Refs, Resources, Shapes, Strings, Switches, Sync, Varargs, and 9 refusal programs under `tests/reject` that must be refused (a lambda
 argument to an unknown method, String identity comparison, a `synchronized` block without `--single-thread`, an operand of
 unknown type, an `Object` method a user type does not declare, called with and without a receiver, a qualified nested

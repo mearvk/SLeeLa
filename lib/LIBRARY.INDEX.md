@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 1.15 adds `lib/advantage/modules/`, the Advantage™ module host and two AI modules: the contract (`SLAdvModule`, `SLAdvListener`), the envelope and bridge (`SLAdvMessage`, `SLAdvBridge`), the medium and catalog (`SLAdvMedium`, `SLAdvCatalog`), the high speed trader (`SLAdvTraderModule`, `SLHighSpeedTrader`, `SLHstMarket`, `SLHstPragmatics`), the Moral Evaluator (`SLAdvMoralModule`, `SLMoralEvaluator`, `SLMoralTrade`, `SLMoralMeritLedger`, `SLTallScience`) and demos (18128 → **18149** sources; 18214 → **18235** total records). Package and facade counts are unchanged.
+>
 > Revision 1.04 moves the `lib/java/jdk-28/` module folders up from `docs/api/` to `lib/java/jdk-28/<module>/<package>/<Type>.sleela` and adds the 16 JDK 28 modules that export no packages (`java.se`, `jdk.jlink`, `jdk.zipfs`, ...) as folders holding a `module-summary.md`: 58 module folders and 386 folders in all. The /lib loader (`impl/frontend/driver.cpp`) now treats `java/jdk-28/` as a reference tier like `docs/api/`, so a real `lib/java/java/...` unit always wins; `working-binaries/sleela` was rebuilt with that rule. No source or symbol count change (moves only).
 >
 > Revision 1.14 adds `lib/java/converter/JConvOuter.sleela` (inner classes reach the enclosing instance through an `slOuter` field and an `slOuterArg` constructor parameter; `Outer.this` and unqualified outer members are rewritten). One new source unit (counts: 18126 to **18127** sources; 18212 to **18213** symbols).
@@ -12,7 +14,9 @@
 >
 > Revision 1.11 adds two Java-tier support classes to `lib/java/`: `JavaFloat` (binary32 rounding for the `float` type) and `JavaFormat` (`String.format` conversions and `String.join`), both used by the Java to SLeeLa converter and specified in `lib/java/JAVA.SPEC.md`. Two new source units (counts: 18122 to **18124** sources; 18208 to **18210** total records; 123 packages).
 >
-> Revision 1.10 adds `lib/char/` and `lib/array/`, the libraries of the char specification (SLEELA.syntax section 45) and the array specification (section 46): `SLChar` (classification, case mapping, digits, surrogates, `toString`); `SLIntArray`, `SLDoubleArray`, `SLRefArray` (version-neutral helpers over `int[]`, `double[]`, `Any[]`: copy, fill, search, sum, minimum, maximum, reverse, heapsort, binary search, text) and `SLArray2D` (rectangular grids, needs syntax 3.2); each package has an `SLPackage` facade. Five new source units and two new facades (counts: 18115 to **18120** sources; 18199 to **18206** total records; 121 to **123** packages; 84 to **86** facades).
+> Revision 1.12 adds `lib/java/JavaChecks.sleela`, the Java-tier check that throws `NegativeArraySizeException` for a negative array size (`JavaChecks.size`), used by the Java to SLeeLa converter and specified in `lib/java/JAVA.SPEC.md` section 4.8. One new source unit (counts: 18127 to **18128** sources; 18213 to **18214** total records; 123 packages).
+>
+> Revision 1.10 adds `lib/char/` and `lib/array/`, the libraries of the char specification (SLEELA.syntax section 45) and the array specification (section 46): `SLChar` (classification, case mapping, digits, surrogates, `toString`); `SLIntArray`, `SLDoubleArray`, `SLRefArray` (version-neutral helpers over `int[]`, `double[]`, `Any[]`: copy, fill, search, sum, minimum, maximum, reverse, heapsort, binary search, text) and `SLArray2D` (rectangular grids, needs syntax 3.1); each package has an `SLPackage` facade. Five new source units and two new facades (counts: 18115 to **18120** sources; 18199 to **18206** total records; 121 to **123** packages; 84 to **86** facades).
 >
 > Revision 1.09 adds `lib/java/converter/`, the Java source to SLeeLa source converter: ten SLeeLa units (`JConvMain`, `JConvConfig`, `JConvWalker`, `JConvSource`, `JConvLexer`, `JConvRules`, `JConvRewriter`, `JConvTranslator`, `JConvEmitter`, `JConvReport`) plus `README.md` and `run-converter.sh`. It walks a Java source tree and writes one SLeeLa file per type; every Java-to-SLeeLa decision is in `JConvRules`. Ten new source units (counts: 18105 to **18115** sources; 18189 to **18199** symbols).
 >
@@ -104,9 +108,9 @@
 
 **Revision:** 0.82  
 **Packages:** 123  
-**SLeeLa source units:** 18127  
+**SLeeLa source units:** 18149  
 **Module-facade symbols:** 86  
-**Total symbol records:** 18213  
+**Total symbol records:** 18235  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

@@ -1,6 +1,6 @@
 << array/SLPackage.sleela
    SLeeLa Standard Library Definition.
-   Definition: Defines the SLeeLa standard-library package for arrays (syntax 3.2, section 46). >>
+   Definition: Defines the SLeeLa standard-library package for arrays (syntax 3.1, section 46). >>
 #sleela 3.0
 material;
 class SLPackage {

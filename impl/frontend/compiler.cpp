@@ -3,8 +3,8 @@
 // ===========================================================================
 #include "compiler.h"
 #include "semantic.h"
-#include "java_compat.h"
-#include "java_references.h"
+#include "class_relations.h"
+#include "language_handler.h"
 #include <algorithm>
 #include <tuple>
 #include <optional>
@@ -79,7 +79,7 @@ public:
                 prog_.classes.size(), local, lib, prog_.structs.size(),
                 dupc.size(), dups, groupDigits(SL_MAX_STRUCT_TYPES).c_str());
         }
-        validateJavaCompatibilityMetadata(prog_);
+        lang::validateProgram(prog_);
         library::Index libraryIndex = library::Index::discover();
         library::validateImports(prog_.imports, libraryIndex);
         // Protected source is admitted only when both language invariants hold:
@@ -160,7 +160,7 @@ public:
             const ClassDecl* cls=classByName[name];
             std::vector<const Field*> ordered; std::set<std::string> seen;
             if(inheritance){
-                const std::string sup=javaref::superclassOf(classByName,*cls);
+                const std::string sup=classrel::superclassOf(classByName,*cls);
                 if(!sup.empty()&&classByName.count(sup)&&!layoutInProgress.count(sup)){
                     resolveFields(sup);
                     for(const Field* bf:instanceFieldsOf[sup]) if(seen.insert(bf->name).second) ordered.push_back(bf);
@@ -200,7 +200,7 @@ public:
         }
         if(inheritance) {
             for(const auto& cls:prog_.classes) {
-                const std::string parent=javaref::superclassOf(classByName,cls);
+                const std::string parent=classrel::superclassOf(classByName,cls);
                 if(parent.empty() || !structLayout_.count(parent) || !structLayout_.count(cls.name)) continue;
                 const int rc=slvm_set_struct_parent(vm_,structLayout_.at(cls.name).typeIndex,structLayout_.at(parent).typeIndex);
                 if(rc!=0) throw std::runtime_error("Semantic error: could not register runtime parent class for '"+cls.name+"'");
@@ -214,7 +214,7 @@ public:
                 if(!structLayout_.count(cls.name)) continue;
                 const int self=structLayout_.at(cls.name).typeIndex;
                 for(const auto& i:cls.java.interfaces){
-                    const std::string r=javaref::resolveBaseName(classByName,javaref::stripTypeArguments(i));
+                    const std::string r=classrel::resolveBaseName(classByName,classrel::stripTypeArguments(i));
                     if(r.empty() || r==cls.name || !structLayout_.count(r)) continue;
                     if(slvm_add_struct_super(vm_,self,structLayout_.at(r).typeIndex)!=0)
                         throw std::runtime_error("Semantic error: could not register runtime interface '"+r+"' for '"+cls.name+"'");
@@ -252,7 +252,7 @@ public:
             std::function<void(const std::string&)> inheritMethods=[&](const std::string& name){
                 if(aliased.count(name)||!classByName.count(name)) return;
                 if(!aliasInProgress.insert(name).second) return; // cycle guard
-                const std::string sup=javaref::superclassOf(classByName,*classByName[name]);
+                const std::string sup=classrel::superclassOf(classByName,*classByName[name]);
                 if(sup.empty()||!classByName.count(sup)||aliasInProgress.count(sup)){ aliasInProgress.erase(name); aliased.insert(name); return; }
                 inheritMethods(sup);
                 // Alias the base's RESOLVED function set (its own + inherited),
@@ -280,11 +280,13 @@ public:
             emit(OP_POP); emit(OP_CONST,addNullConst()); emit(OP_RET); slvm_end_func(vm_);
             entry=(int)methods_.size();
         }
-        // SLEELA.syntax 37.5: with lib/java/support/SLJavaFaults loaded, a VM
-        // fault inside a try calls __sleela_fault(kind, message), which throws
-        // SLJavaFaults.make(kind, message) (an ArithmeticException, ...).
+        // SLEELA.syntax 37.5: with the language handler fault library loaded
+        // (the Java handler names lib/java/support/SLJavaFaults), a VM fault
+        // inside a try calls __sleela_fault(kind, message), which throws what
+        // that library builds from (kind, message) (an ArithmeticException, ...).
         {
-            auto fm=funcIndex_.find("SLJavaFaults::make");
+            const std::string faultFn=lang::faultFunction();
+            auto fm=faultFn.empty()?funcIndex_.end():funcIndex_.find(faultFn);
             if(fm!=funcIndex_.end() && methods_[fm->second].method->isStatic && methods_[fm->second].method->params.size()==2){
                 const int stub=slvm_begin_func(vm_,"__sleela_fault",2,2);
                 emit(OP_LOADL,0); emit(OP_LOADL,1); emit(OP_CALL,fm->second); emit(OP_THROW);
@@ -305,8 +307,8 @@ private:
     std::string currentClass_;
     // Sleela.home lineage (SLEELA.syntax section 42), resolved against the loaded classes.
     std::map<std::string,const ClassDecl*> lineageClasses_;
-    // The lineage logic lives in java_references.cpp (javaref::lineage*).
-    std::string lineageValue(const LineageExpr& x) const { return javaref::lineageValue(lineageClasses_,currentClass_,x); }
+    // The lineage logic lives in class_relations.cpp (classrel::lineage*).
+    std::string lineageValue(const LineageExpr& x) const { return classrel::lineageValue(lineageClasses_,currentClass_,x); }
     std::map<std::string,StructLayout> structLayout_;
     // Track the declared type of each in-scope local/global so member access
     // can resolve `x.field` to the right struct layout. Names not present are
@@ -734,12 +736,12 @@ private:
         for(const auto& c:s.catches){
             Clause cl{&c,false,{},"Any"};
             for(const auto& alt:c.types.empty()?std::vector<std::string>{c.type}:c.types){
-                const std::string t=javaref::resolveBaseName(lineageClasses_,alt);
+                const std::string t=classrel::resolveBaseName(lineageClasses_,alt);
                 if(t=="Any"){ cl.catchAll=true; continue; }
                 if(!structLayout_.count(t)) throw std::runtime_error("Semantic error: catch type '"+alt+"' is not a loaded class");
                 cl.ops.push_back(runtimeTypeOperand(t));
             }
-            if(c.types.size()==1 && !cl.catchAll) cl.varType=javaref::resolveBaseName(lineageClasses_,c.types[0]);
+            if(c.types.size()==1 && !cl.catchAll) cl.varType=classrel::resolveBaseName(lineageClasses_,c.types[0]);
             clauses.push_back(std::move(cl));
         }
         auto emitFinally=[&]{ if(hasFinally) emitBlock(*s.finallyBlock); };
@@ -878,7 +880,7 @@ private:
     }
     // Lower a (possibly compound) assignment expression. The result value is
     // left on the stack. Compound ops expand to `target = target <op> value`.
-    // Syntax 3.2: `s += c` with a char value c appends the character, not its number.
+    // Syntax 3.1: `s += c` with a char value c appends the character, not its number.
     unsigned compoundCharMask_=0;
     bool narrowCharStore_=false;
     void emitBinOpC(const std::string& o){ if(o=="+"&&compoundCharMask_){ emit(OP_ADDCHAR,(int)compoundCharMask_); return; } emitBinOp(o); }
@@ -956,7 +958,7 @@ private:
             } else {
                 emitValue();             // [array, index, value]
             }
-            if(narrowCharStore_){ emit(OP_CONST,slvm_add_const_int(vm_,0xFFFF)); emit(OP_BAND); }   // syntax 3.2: char[] element store keeps 16 bits
+            if(narrowCharStore_){ emit(OP_CONST,slvm_add_const_int(vm_,0xFFFF)); emit(OP_BAND); }   // syntax 3.1: char[] element store keeps 16 bits
             emit(OP_ARRSET);                         // [value]
             return;
         }
@@ -990,7 +992,7 @@ private:
             return "";
         }
         if(dynamic_cast<const ThisExpr*>(e))return currentClass_;
-        if(dynamic_cast<const SuperExpr*>(e))return javaref::lineageParentOf(lineageClasses_,currentClass_);
+        if(dynamic_cast<const SuperExpr*>(e))return classrel::lineageParentOf(lineageClasses_,currentClass_);
         if(auto m=dynamic_cast<const MemberAccess*>(e)){
             { std::string sc; if(isStaticClassRef(m->base.get(),sc)){ auto ft=staticFieldType_.find(sc+"::"+m->field); if(ft!=staticFieldType_.end()) return structLayout_.count(ft->second)?ft->second:std::string(); } }
             std::string bt=exprStructType(m->base.get());if(bt.empty())return "";auto lit=structLayout_.find(bt);if(lit==structLayout_.end())return "";int idx=-1;auto oit=lit->second.fieldOffset.find(m->field);if(oit!=lit->second.fieldOffset.end())idx=oit->second;if(idx<0)return "";return lit->second.fieldType[idx];}
@@ -1066,12 +1068,12 @@ private:
     // ancestor of `cls` that declares any constructor (nullptr when there is
     // none, or when that ancestor has no no-arg constructor). Sets `owner`.
     const Method* implicitBaseCtor(const std::string& cls,std::string& owner){
-        std::set<std::string> seen; std::string c=javaref::lineageParentOf(lineageClasses_,cls);
+        std::set<std::string> seen; std::string c=classrel::lineageParentOf(lineageClasses_,cls);
         while(!c.empty() && seen.insert(c).second){
             const ClassDecl* d=lineageClasses_.at(c); bool any=false;
             for(const auto& m:d->methods) if(m.java.constructor){ any=true; if(m.params.empty()){ owner=c; return &m; } }
             if(any) return nullptr;
-            c=javaref::lineageParentOf(lineageClasses_,c);
+            c=classrel::lineageParentOf(lineageClasses_,c);
         }
         return nullptr;
     }
@@ -1089,7 +1091,7 @@ private:
     void emitConstructorInvocation(const MethodCall& mc){
         if(syntax_<SyntaxVersion{3,0}) return;   // below 3.0 the arguments are not evaluated (42.7)
         if(!mc.resolved) return;                  // implicit default constructor: nothing to run
-        const std::string owner = mc.superConstructor ? javaref::lineageParentOf(lineageClasses_,currentClass_) : currentClass_;
+        const std::string owner = mc.superConstructor ? classrel::lineageParentOf(lineageClasses_,currentClass_) : currentClass_;
         emitThis(); emitArgsCoerced(mc.args,mc.resolved); emit(OP_CALL,ctorFuncIndex(owner,mc.resolved));
         // leave a value: the ExprStmt pops it
     }
@@ -1098,14 +1100,14 @@ private:
     std::vector<std::pair<int,int>> virtualTargets(const std::string& staticType,const Method* method){
         std::vector<std::tuple<int,int,int>> found; // depth, typeIndex, funcIndex
         for(const auto& cls:prog_.classes){
-            if(cls.name==staticType || !javaref::isSubtypeOf(lineageClasses_,cls.name,staticType)) continue;
+            if(cls.name==staticType || !classrel::isSubtypeOf(lineageClasses_,cls.name,staticType)) continue;
             auto lay=structLayout_.find(cls.name); if(lay==structLayout_.end()) continue;
             for(const auto& dm:cls.methods){
                 if(dm.isStatic||dm.java.constructor||dm.name!=method->name||dm.params.size()!=method->params.size()||&dm==method) continue;
                 bool sameParams=true; for(size_t i=0;i<dm.params.size();++i) if(dm.params[i].type!=method->params[i].type){sameParams=false;break;}
                 if(!sameParams) continue;
                 auto fi=funcIndexByPtr_.find(&dm); if(fi==funcIndexByPtr_.end()) continue;
-                found.emplace_back(javaref::inheritanceDepth(lineageClasses_,cls.name),lay->second.typeIndex,fi->second);
+                found.emplace_back(classrel::inheritanceDepth(lineageClasses_,cls.name),lay->second.typeIndex,fi->second);
                 break;
             }
         }
@@ -1135,7 +1137,7 @@ private:
     // SLEELA.syntax 43.7: a method call on an Any receiver. Semantic analysis
     // listed the loaded classes declaring the method, most derived first. Per
     // candidate: DUP, INSTANCEOF <class>, JMPF, arguments, CALL. A String and
-    // a utf16 value call the JavaStringMethods function with the receiver as
+    // a utf16 value call the string-method library function with the receiver as
     // its first argument. No match throws a message string.
     void emitAnyReceiverCall(const MethodCall& mc){
         emitExpr(mc.receiver.get());
@@ -1188,7 +1190,7 @@ private:
             return;
         }
         if(n.args.size()>=2 && n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){
-            // Syntax 3.2 multi-dimensional creation: new T[a][b]... / new T[a][b][]
+            // Syntax 3.1 multi-dimensional creation: new T[a][b]... / new T[a][b][]
             std::string base=n.typeName; size_t rank=0;
             while(base.size()>=2 && base.compare(base.size()-2,2,"[]")==0){ base.erase(base.size()-2); ++rank; }
             for(const auto& d:n.args) emitExpr(d.get());
@@ -1208,7 +1210,7 @@ private:
         // Initialize instance fields base-first along the extends chain (43.6):
         // a class's inherited fields get their declared initializers too.
         std::vector<std::string> chain{n.typeName};
-        if(!(syntax_<SyntaxVersion{3,0})){ std::set<std::string> seen{n.typeName}; std::string c=javaref::lineageParentOf(lineageClasses_,n.typeName); while(!c.empty()&&seen.insert(c).second){ chain.insert(chain.begin(),c); c=javaref::lineageParentOf(lineageClasses_,c); } }
+        if(!(syntax_<SyntaxVersion{3,0})){ std::set<std::string> seen{n.typeName}; std::string c=classrel::lineageParentOf(lineageClasses_,n.typeName); while(!c.empty()&&seen.insert(c).second){ chain.insert(chain.begin(),c); c=classrel::lineageParentOf(lineageClasses_,c); } }
         for(const auto& chainName:chain) for(const auto& cls:prog_.classes) if(cls.name==chainName){
             for(const auto& f:cls.fields) if(!f.isStatic){
                 auto off=it->second.fieldOffset.find(f.name);if(off==it->second.fieldOffset.end())continue;
@@ -1278,7 +1280,7 @@ private:
         return true;
     }
     void emitMember(const MemberAccess& m){
-        if(m.arrayLength){ emitExpr(m.base.get()); emit(OP_ARRLEN); return; }   // syntax 3.2: a.length
+        if(m.arrayLength){ emitExpr(m.base.get()); emit(OP_ARRLEN); return; }   // syntax 3.1: a.length
         // Back-propagate the terminal degree requirement to the origin.
         // next.next is the Degree-2 proposal. When that proposal is itself
         // static, its viewpoint extends by another two degrees to Degree 4.
@@ -1391,11 +1393,11 @@ private:
                 }
             } } }
         // Java String instance method (semantic analysis bound it to the static
-        // JavaStringMethods.<m>(String self, ...)): push the receiver as the
+        // <string library>.<m>(String self, ...)): push the receiver as the
         // first argument, then the arguments, and call the resolved function.
         if(mc.stringReceiver){
             int fi=resolvedIndex(mc.resolved);
-            if(fi<0)throw std::runtime_error("Semantic error: String method '"+m+"' did not resolve to a JavaStringMethods function");
+            if(fi<0)throw std::runtime_error("Semantic error: String method '"+m+"' did not resolve to a string-method library function");
             const Method* sm=methods_[fi].method;
             if((int)mc.args.size()+1!=(int)sm->params.size())throw std::runtime_error("Semantic error: String method '"+m+"' expects "+std::to_string(sm->params.size()>0?sm->params.size()-1:0)+" argument(s), got "+std::to_string(mc.args.size()));
             emitExpr(mc.receiver.get());
