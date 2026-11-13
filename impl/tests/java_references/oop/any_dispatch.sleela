@@ -1,0 +1,36 @@
+#sleela 3.0
+spark;
+material;
+import java.jdk-25.java.lang;
+< SLEELA.syntax 43.7: interfaces at run time, and calls on an Any receiver >
+interface Shape { double area(); String name(); }
+interface Named { String name(); }
+class Sq implements Shape { double s; Sq(double s) { this.s = s; } double area() { return s * s; } String name() { return "sq"; } }
+class Big extends Sq { Big(double s) { super(s); } String name() { return "big"; } }
+class Circ implements Shape, Named { double r; Circ(double r) { this.r = r; } double area() { return 3.0 * r * r; } String name() { return "circ"; } }
+class Other { int width() { return 7; } }
+class Oops extends RuntimeException implements Named { Oops() { super("oops"); } String name() { return "oops"; } }
+class P {
+  void main() {
+    Any a = new Sq(2.0);
+    Any b = new Big(3.0);
+    Any c = new Circ(1.0);
+    print(a.area());
+    print(b.name());
+    print(c.name());
+    Shape s = (Shape) c;
+    print(s.area());
+    Named nm = (Named) c;
+    print(nm.name());
+    print(b instanceof Shape);
+    print(b instanceof Named);
+    print(c instanceof Named);
+    print(new Other() instanceof Shape);
+    Any o = new Other();
+    print(o.width());
+    try { print(o.area()); } catch (Any e) { print("no area"); }
+    try { throw new Oops(); } catch (Named e) { print("caught " + e.name()); }
+    Any t = "hello";
+    print(t.length());
+  }
+}

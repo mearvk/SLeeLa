@@ -7,7 +7,7 @@
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
 #define SLEELA_VM_ABI_MINOR 9u
-#define SLEELA_ARTIFACT_FORMAT_VERSION 4u
+#define SLEELA_ARTIFACT_FORMAT_VERSION 5u
 #define SL_NATIVE_METHOD_ABI_VERSION 0x00010000u
 #define SL_NATIVE_METHOD_FLAG_ANNOTATED 0x00000001u
 #define SL_NATIVE_METHOD_FLAG_STATIC 0x00000002u
@@ -592,6 +592,10 @@ int slvm_declare_global(SLVM* vm, const char* name);
  * the offsets used by OP_GETFIELD / OP_SETFIELD. */
 int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_names, int nfields);
 int slvm_set_struct_parent(SLVM* vm, int type_index, int parent_type_index);
+/* Add a further supertype (an implemented interface) to a struct type, so
+ * OP_CHECKCAST / OP_INSTANCEOF / typed catch accept it (SLEELA.syntax 43.7).
+ * Duplicates are ignored. Returns 0, or -1 on a bad index. */
+int slvm_add_struct_super(SLVM* vm, int type_index, int super_type_index);
 int slvm_begin_func(SLVM* vm, const char* name, int nargs, int nlocals);
 /* Persist descriptive @native method identity on a compiled function. This
  * never authorizes or loads a module. signature is canonical UTF-8 text;

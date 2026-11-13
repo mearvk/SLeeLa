@@ -202,6 +202,7 @@ Sample: 17 files from the OpenJDK 25.0.2 `src.zip` (`Math`, `Record`, `Override`
 | `sleela check` errors in total | 892 | 902 | 903 | **553** |
 | Typed-pass rewrites in the output (0.4.0 with model 1.1.0 / without the model file) | | | | 40 / 40 |
 | 0.5.0 int wraps (`toInt`) / `divInt`, `remInt` calls in the output | | | | 88 / 7 (check numbers unchanged, 0 syntax errors) |
+| Same, compiler with SLEELA.syntax 43.7 (calls on `Any`, interfaces at run time) | | | | **522** (11 files with an error) |
 | Files with no `sleela check` error | 8 of 36 | 8 of 36 | 8 of 36 | 5 of 16 |
 
 0.2.0 removed 12 stubs (the ten `for` headers with commas and two pattern
@@ -267,10 +268,11 @@ library, in this order of weight:
    them, but they are mostly native or VM-intrinsic.
 3. **jdk-28 library units expose some statics as instance methods** (`Float.isNaN`,
    `Objects.checkIndex`, `Arrays.copyOf`, `Character.charCount`: STATUS.md section 6).
-4. **Calls on an `Any` receiver are rejected**, and **a runtime cast to an
-   interface fails**. Values typed by an interface (`Stream`, `Iterator`,
-   `Collection`) therefore cannot be returned or iterated where the erased
-   library signature says `Any`.
+4. **An `Any` value is not assignable to a typed variable or return type**
+   without a cast (`method 'stream' returns Any, expected Stream`). Since
+   2026-11-13 calls on an `Any` receiver dispatch at run time, and casts,
+   `instanceof` and `catch` see implemented interfaces (SLEELA.syntax 43.7);
+   a call whose method no loaded class declares is still an error.
 5. **Files with non-ASCII bytes are skipped** (12 of the 15,020 files in the JDK
    `src.zip`): the VM `read` built-in returns 4,095-byte pieces of a plain String,
    a UTF-8 character can be split between two pieces, and the VM has no

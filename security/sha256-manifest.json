@@ -235,7 +235,7 @@
     },
     {
       "path": "impl/core/sleela_artifact.c",
-      "sha256": "32f522779fcd6b97b6bc7ee21a988c1dee0291e78635083f560e2ae2e9548b13"
+      "sha256": "fcf1d15ec598eb7eed4e68c382deb7ec60b665071fef26afc7ad06faffaf9b6e"
     },
     {
       "path": "impl/core/sleela_audio_bridge.cpp",
@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "7459a9de33b0778a0cd0c105b7469878cfc74e5423da80421e0d0923517f6fb2"
+      "sha256": "54fd2b101f10ad4e0609476a0b39ae5790657c268ee182eadc8d7ca5a129ca91"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "00b00e96a2a7a14fabda50bccedc04ea518e7ed013e3bebe37cc93b5fd5fd892"
+      "sha256": "437bdd97783c68855d62a4cd3adf1a22ca3cec61ec04cfde40bbd579bdd80033"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -543,7 +543,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "f557a4df90e13bc36f813005010188af8ac2aecf872cf1e072e63a974f552653"
+      "sha256": "f872a6023882225d3b892363c6665df40cfe3a26cd9db60382c18873c130e6b2"
     },
     {
       "path": "impl/frontend/common_rails_banner.hpp",
@@ -551,7 +551,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "208610906d2aae4c744913bb2ddd595ce7ed98711a8b106fa5014ce7339984bf"
+      "sha256": "c859176a4848d3f077c0201fb81abdc51fbd32d84f526266580466a108f7f270"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -615,11 +615,11 @@
     },
     {
       "path": "impl/frontend/java_references.cpp",
-      "sha256": "e170a60b2abf27728edff971354be030e423ee475af340f6c9884c1d4f93f663"
+      "sha256": "d8b2089a34df72ff10d0c20087b05c82ea19fe10487b2aa92d45025f31ea3b2e"
     },
     {
       "path": "impl/frontend/java_references.h",
-      "sha256": "e58f817f42d233aa68f77670c2574213a4715c8a9fc53f40c451f6c64a484cf2"
+      "sha256": "cfd2c3bd288849f4f7ebacc21097deb2dfa9db5f7e0d248543273f51aaea13db"
     },
     {
       "path": "impl/frontend/keyword_supporter.cpp",
@@ -671,7 +671,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "8a779f653beff4bbfb3fdae704b71ccb52817504bc34db84517b9c0a9ff1a54b"
+      "sha256": "f721b31a96f9c2407f498441efd047f98d0b1452579d6fd64e5c2956513a005c"
     },
     {
       "path": "impl/frontend/semantic.h",

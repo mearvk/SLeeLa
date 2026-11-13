@@ -15,6 +15,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <vector>
 namespace sleela {
 namespace javaref {
 using ClassIndex = std::map<std::string,const ClassDecl*>;
@@ -44,6 +45,11 @@ std::string stripTypeArguments(const std::string& t);
 bool isSubtypeOf(const ClassIndex& classes,const std::string& from,const std::string& to);
 // Number of loaded superclasses above `n` (0 for a root). Cycle-safe.
 int inheritanceDepth(const ClassIndex& classes,const std::string& n);
+// Order class names so every class comes before each of its supertypes in
+// the list (most derived first; SLEELA.syntax 43.7 dynamic dispatch on Any).
+// A class that is a subtype of more listed names sorts earlier; ties keep the
+// input order.
+std::vector<std::string> mostDerivedFirst(const ClassIndex& classes,const std::vector<std::string>& names);
 
 // ---- spark Preonem (SLEELA.syntax section 43) ----------------------------
 // True when the document carries the `spark` marker, which indicates Java style

@@ -15,6 +15,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <utility>
 #include "../annotation/Annotation.hpp"
 
 namespace sleela {
@@ -102,7 +103,7 @@ struct Method;
 // `resolved` is the overload chosen by semantic analysis (syntax 3.0 overload
 // resolution); the compiler binds the call to exactly that declaration.
 struct Call:Expr{std::string callee;std::vector<ExprP> args;mutable const Method* resolved=nullptr;explicit Call(std::string c):callee(std::move(c)){}};
-struct MethodCall:Expr{ExprP receiver;std::string method;std::vector<ExprP> args;mutable const Method* resolved=nullptr;/* set by semantic analysis when the receiver is a String: the call is the static JavaStringMethods.<method>(receiver, args...) recorded in resolved */mutable bool stringReceiver=false;/* Java constructor invocation statement (SLEELA.syntax 43.6): super(args) / this(args) inside a constructor; receiver is SuperExpr/ThisExpr and resolved is the target constructor */bool superConstructor=false;bool thisConstructor=false;MethodCall(ExprP r,std::string m):receiver(std::move(r)),method(std::move(m)){}};
+struct MethodCall:Expr{ExprP receiver;std::string method;std::vector<ExprP> args;mutable const Method* resolved=nullptr;/* set by semantic analysis when the receiver is a String: the call is the static JavaStringMethods.<method>(receiver, args...) recorded in resolved */mutable bool stringReceiver=false;/* Java constructor invocation statement (SLEELA.syntax 43.6): super(args) / this(args) inside a constructor; receiver is SuperExpr/ThisExpr and resolved is the target constructor */bool superConstructor=false;bool thisConstructor=false;/* SLEELA.syntax 43.7: a call on an Any receiver. anyTargets are the (owner class, method) candidates, most derived first; anyStringTarget is the JavaStringMethods function for a String/utf16 receiver (or null); anyReturn is the common declared return type of every candidate (empty when they differ, then the call is Any) */mutable bool anyReceiver=false;mutable std::vector<std::pair<std::string,const Method*>> anyTargets;mutable const Method* anyStringTarget=nullptr;mutable std::string anyReturn;MethodCall(ExprP r,std::string m):receiver(std::move(r)),method(std::move(m)){}};
 struct NewExpr:Expr{std::string typeName;std::vector<ExprP> args;bool hasInit=false;std::vector<ExprP> init;/* syntax 3.1 array initializer {a,b,c} */mutable const Method* resolved=nullptr;explicit NewExpr(std::string t):typeName(std::move(t)){}};
 // `ran::<word>` -- the System / already-Ran-in-RAM reference. The `ran::`
 // qualifier names a system meaning explicitly, so ordinary words (mem, gc, ...)

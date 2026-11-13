@@ -4,6 +4,7 @@
 // See java_references.h.
 // ===========================================================================
 #include "java_references.h"
+#include <algorithm>
 namespace sleela {
 namespace javaref {
 std::string simpleName(const std::string& q){
@@ -57,6 +58,18 @@ int inheritanceDepth(const ClassIndex& classes,const std::string& n){
         if(p.empty()||seen.count(p)) return d;
         ++d; cur=p;
     }
+}
+
+std::vector<std::string> mostDerivedFirst(const ClassIndex& classes,const std::vector<std::string>& names){
+    std::vector<std::pair<int,std::string>> ranked;
+    for(const auto& n:names){
+        int above=0;
+        for(const auto& o:names) if(o!=n && isSubtypeOf(classes,n,o)) ++above;
+        ranked.emplace_back(above,n);
+    }
+    std::stable_sort(ranked.begin(),ranked.end(),[](const auto& a,const auto& b){return a.first>b.first;});
+    std::vector<std::string> out; for(const auto& r:ranked) out.push_back(r.second);
+    return out;
 }
 
 bool sparkDocument(const Program& p){ return p.sparkMarked; }

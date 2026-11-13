@@ -3225,7 +3225,8 @@ instance-field layout, the runtime parent link, method inheritance and the
 | Field inheritance | compiler instance layout, base fields first (section 42.7) |
 | Overloads and constructors | compiler overload resolution (section 40) |
 | `java.lang.String` methods, UTF-16 strings | compiler `javaString*` built-ins → `OP_JSTR_*` opcodes (166 onward) |
-| `instanceof`, casts | `OP_INSTANCEOF`, `OP_CHECKCAST` |
+| `instanceof`, casts | `OP_INSTANCEOF`, `OP_CHECKCAST`; the VM type table holds the `extends` parent and the implemented interfaces (`slvm_add_struct_super`, 43.7) |
+| Method call on an `Any` receiver | semantic `anyReceiverCall`, `javaref::mostDerivedFirst`; compiler `emitAnyReceiverCall` (43.7) |
 | `try` / `catch` / `throw` | `OP_TRY_PUSH`, `OP_TRY_POP`, `OP_THROW` (section 37) |
 | Generics | erasure to `Any` (38.1); type arguments kept as data |
 | Source-level Java rules (conversions, promotion, overload/override, inference) | `impl/frontend/java_equivalence.cpp` model |
@@ -3335,6 +3336,52 @@ on (it stays declarative, 43.2). Below 3.0 nothing in this subsection applies.
    old one. Lowered as `x += 1` / `x -= 1`. A `-` continues an identifier
    (`jdk-25`, `version-mual`) only when an identifier character follows it, so
    `j--`, `j-=1` and a trailing `-` end the name.
+
+
+### 43.7 Interfaces at run time, and calls on `Any` (2026-11-13)
+
+These rules hold in every `#sleela 3.0` and later document. They remove
+rejections and wrong answers; they add no syntax, so 3.0 documents get them
+too (as in 44.5).
+
+1. **Interfaces are runtime supertypes.** The VM type table records, for each
+   class, its `extends` parent and each interface it names in `implements`
+   (and an interface's own `extends`). `x instanceof I`, `(I) x` and
+   `catch (I e)` now accept an object whose class implements `I` directly,
+   through a superclass, or through another interface. Before this, only the
+   `extends` chain was checked at run time, so `(Shape) c` on a `Circ
+   implements Shape` failed with `checked cast failed` while the assignment
+   `Shape s = c;` was accepted at check time.
+   Compiler: `slvm_add_struct_super(vm, class, interface)` after the parent
+   links. VM: `struct_type_is_a` follows parent and supertype edges
+   transitively (cycle-bounded). The artifact format is **5**: each struct
+   type also stores its parent index and supertype list. A format 1-4
+   artifact loads with no hierarchy (every type a root); before format 5 a
+   loaded artifact had parent index 0 for every type.
+2. **Calls on `Any`.** `x.m(args)` where the static type of `x` is `Any` (an
+   erased generic `T`, a `List.get` result, a field typed `Any`) no longer
+   fails with `method 'm' requires a class or struct receiver`. Semantic
+   analysis collects every loaded class that declares an instance method `m`
+   whose parameters accept the argument types (one overload per class, chosen
+   as in section 40), and `JavaStringMethods.m(String, args)` when that
+   library is loaded. If there is none, it is an error: `no loaded class
+   declares an instance method 'm' taking N argument(s) of these types (call
+   on an Any receiver)`. The call has the candidates' common declared return
+   type when they all agree, else `Any`.
+3. **Lowering.** The receiver is evaluated once. For each candidate class,
+   most derived first (a class before every listed class it is a subtype
+   of; `javaref::mostDerivedFirst`): `DUP`, `INSTANCEOF <class>`, `JMPF`,
+   arguments, `CALL`. Then a `String` branch and a `utf16` branch to the
+   `JavaStringMethods` function, the receiver as its first argument. A value
+   that matches nothing is thrown as the string `no method 'm' taking N
+   argument(s) for the runtime value (call on an Any receiver)`, which
+   `catch (Any e)` catches. No new opcode.
+4. **Not done.** A failed `(T) x` is still a VM error, not a catchable
+   `ClassCastException` (43.5). A call on `Any` sees only methods declared in
+   loaded classes; it does not reach the built-in operations of arrays or of
+   other VM kinds. Every loaded class declaring `m` adds one test, so a very
+   common name (`toString`) with the whole `/lib/java` tree loaded makes a
+   long chain.
 
 
 ## 44. Syntax 3.1 — Java conversion blockers (character literal, array initializer, labels, abrupt completion through finally)

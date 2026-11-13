@@ -21,7 +21,9 @@
 /* Artifact format v2 adds struct layouts; v3 adds lossless UTF-16 constants
  * and globals; v4 adds validated per-function @native method identity.
  * Versions 1-3 remain loadable, with native metadata disabled. */
-#define SLART_VERSION 4u
+/* v5 (2026-11-13): each struct type also carries its extends parent and its
+ * further supertypes (implemented interfaces, SLEELA.syntax 43.7). */
+#define SLART_VERSION 5u
 
 static int wr(FILE* f, const void* p, size_t n) { return fwrite(p, 1, n, f) == n; }
 static int rd(FILE* f, void* p, size_t n) { return fread(p, 1, n, f) == n; }
@@ -265,6 +267,10 @@ int slvm_save_file(SLVM* vm, const char* path) {
         ok = ok && wr_i32(f, vm->struct_types[i].nfields);
         for (int j = 0; ok && j < vm->struct_types[i].nfields; ++j)
             ok = wr_string(f, vm->struct_types[i].fields[j]);
+        ok = ok && wr_i32(f, vm->struct_types[i].parent_type);
+        ok = ok && wr_i32(f, vm->struct_types[i].nsupers);
+        for (int j = 0; ok && j < vm->struct_types[i].nsupers; ++j)
+            ok = wr_i32(f, vm->struct_types[i].supers[j]);
     }
 
     if (fclose(f) != 0) ok = 0;
@@ -359,6 +365,24 @@ SLVM* slvm_load_file(const char* path) {
                 for (int32_t j = 0; ok && j < nf; ++j) {
                     st->fields[j] = rd_string(f);
                     ok = st->fields[j] != NULL;
+                }
+            }
+            /* v1-v4 carried no hierarchy: every type is a root. */
+            st->parent_type = -1;
+            if (ok && version >= 5u) {
+                int32_t parent = -1, ns = 0;
+                ok = rd_i32(f, &parent) && rd_i32(f, &ns);
+                if (ok && (parent < -1 || parent >= (int32_t)nstruct || ns < 0 || ns > (int32_t)nstruct)) ok = 0;
+                if (ok) st->parent_type = parent;
+                if (ok && ns > 0) {
+                    st->supers = (int*)calloc((size_t)ns, sizeof(int));
+                    ok = st->supers != NULL;
+                    for (int32_t j = 0; ok && j < ns; ++j) {
+                        int32_t sup = -1;
+                        ok = rd_i32(f, &sup) && sup >= 0 && sup < (int32_t)nstruct;
+                        if (ok) st->supers[j] = sup;
+                        st->nsupers = j + (ok ? 1 : 0);
+                    }
                 }
             }
         }

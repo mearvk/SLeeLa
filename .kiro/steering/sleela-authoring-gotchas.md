@@ -159,10 +159,11 @@ refuse (do not clamp or wrap) inputs that could push it past. See
 - **An inner `>>` ends a `<< ... >>` block comment early.** Separate it (`> >`)
   when copying text into a block comment, repeating until no `>>` is left
   (`>>>` leaves one after a single replace).
-- **Calls on an `Any` receiver are rejected** ("method 'x' requires a class or
-  struct receiver"), and **an `Any` value cannot be stored into a typed variable
-  or returned from a typed method** without a cast. A cast to a class works; **a
-  cast to an interface fails at run time** ("checked cast failed").
+- **An `Any` value cannot be stored into a typed variable or returned from a
+  typed method** without a cast. Since 2026-11-13 (SLEELA.syntax 43.7, syntax
+  3.0+) a call on an `Any` receiver dispatches at run time over the loaded
+  classes declaring that method, and a cast / `instanceof` / `catch` to an
+  interface works. A failed cast is still a VM error, not catchable.
 - **`String.valueOf(x)` does not parse:** `String` is a keyword and cannot be a
   static receiver. Write `"" + x`.
 - **SLeeLa has no empty statement:** `for (...) ;` is a syntax error; write `{ }`.

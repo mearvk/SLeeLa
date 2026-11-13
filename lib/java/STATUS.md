@@ -430,7 +430,7 @@ section 1.
 | Output files with a syntax error | 0 |
 | Output files passing `sleela check` | 8 of 36 |
 | `converter/samples/demo/ConvDemo.java` against a real JDK | 31 of 31 lines identical (0.5.0, `JCONV_BUNDLE=1`) |
-| `sleela check` errors on the sample, separate files / bundled | 903 / 553 |
+| `sleela check` errors on the sample, separate files / bundled | 903 / 553 (522 bundled with SLEELA.syntax 43.7) |
 
 Converter 0.2.0 (2026-11-13) declares `#sleela 3.1` and uses its array
 initializers, character literals, labels and jumps through `finally`, and lowers
@@ -438,7 +438,8 @@ initializers, character literals, labels and jumps through `finally`, and lowers
 
 The `check` errors come from the gaps in section 6 (nested-type files, inner
 classes reaching the enclosing instance, statics written as instance methods,
-calls on `Any`, interface casts) and from JDK-internal types that have no
+`Any` values stored into typed variables; calls on `Any` and interface casts
+were closed on 2026-11-13 by SLEELA.syntax 43.7) and from JDK-internal types that have no
 `jdk-28` file. A separate converter, `sleelactl java-convert` (C/C++, semantics
 in `impl/subjects/conversion/conversion.model`), landed the same day and fails
 closed per file. `lib/java/converter` keeps per-member stubs (decided

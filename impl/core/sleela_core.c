@@ -145,6 +145,11 @@ typedef struct {
     char* name;
     int nfields;
     int parent_type;
+    /* Further supertypes beyond the extends parent: the interfaces a class
+     * implements (SLEELA.syntax 43.7). Direct edges only; struct_type_is_a
+     * follows them transitively. */
+    int nsupers;
+    int* supers;
     char* fields[SL_MAX_STRUCT_FIELDS];
 } SLStructType;
 typedef struct {
@@ -609,6 +614,8 @@ int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_nam
     st->name = strdup(name);
     st->nfields = nfields;
     st->parent_type = -1;
+    st->nsupers = 0;
+    st->supers = NULL;
     for (int i = 0; i < nfields; i++) st->fields[i] = strdup(field_names[i] ? field_names[i] : "");
     return idx;
 }
@@ -617,6 +624,19 @@ int slvm_set_struct_parent(SLVM* vm, int type_index, int parent_type_index) {
     if (!vm || type_index < 0 || type_index >= vm->nstruct_types) return -1;
     if (parent_type_index < -1 || parent_type_index >= vm->nstruct_types || parent_type_index == type_index) return -1;
     vm->struct_types[type_index].parent_type = parent_type_index;
+    return 0;
+}
+
+int slvm_add_struct_super(SLVM* vm, int type_index, int super_type_index) {
+    if (!vm || type_index < 0 || type_index >= vm->nstruct_types) return -1;
+    if (super_type_index < 0 || super_type_index >= vm->nstruct_types || super_type_index == type_index) return -1;
+    SLStructType* st = &vm->struct_types[type_index];
+    for (int i = 0; i < st->nsupers; i++) if (st->supers[i] == super_type_index) return 0;
+    if (st->nsupers >= SL_MAX_STRUCT_TYPES) return -1;
+    int* grown = (int*)realloc(st->supers, (size_t)(st->nsupers + 1) * sizeof(int));
+    if (!grown) return -1;
+    st->supers = grown;
+    st->supers[st->nsupers++] = super_type_index;
     return 0;
 }
 
@@ -1135,6 +1155,7 @@ void slvm_free(SLVM* vm) {
     for (int i = 0; i < vm->nstruct_types; i++) {
         free(vm->struct_types[i].name);
         for (int j = 0; j < vm->struct_types[i].nfields; j++) free(vm->struct_types[i].fields[j]);
+        free(vm->struct_types[i].supers);
     }
     free(vm->struct_types);   /* the growable layout table itself */
     free(vm->structs);
@@ -1437,13 +1458,24 @@ static int struct_alloc(SLVM* vm, int type) {
 static int struct_valid_handle(SLVM* vm, int h) {
     return vm->structs && h >= 0 && h < SL_MAX_STRUCTS && vm->structs[h].active;
 }
-static int struct_type_is_a(SLVM* vm, int actual, int expected) {
-    if (!vm || expected < 0 || expected >= vm->nstruct_types) return 0;
+/* Is type `actual` the type `expected`, or below it through the extends
+ * chain or any registered supertype (implemented interface), transitively?
+ * Interface edges are followed depth-first with a recursion bound so a
+ * malformed (cyclic) registration cannot loop. SLEELA.syntax 43.7. */
+static int struct_type_is_a_depth(SLVM* vm, int actual, int expected, int budget) {
     for (int depth = 0; actual >= 0 && actual < vm->nstruct_types && depth < SL_MAX_STRUCT_TYPES; ++depth) {
         if (actual == expected) return 1;
-        actual = vm->struct_types[actual].parent_type;
+        const SLStructType* st = &vm->struct_types[actual];
+        if (budget > 0)
+            for (int i = 0; i < st->nsupers; i++)
+                if (struct_type_is_a_depth(vm, st->supers[i], expected, budget - 1)) return 1;
+        actual = st->parent_type;
     }
     return 0;
+}
+static int struct_type_is_a(SLVM* vm, int actual, int expected) {
+    if (!vm || expected < 0 || expected >= vm->nstruct_types) return 0;
+    return struct_type_is_a_depth(vm, actual, expected, 64);
 }
 
 /* ---- object references (OP_REF): weak, generation-checked handles --------- */

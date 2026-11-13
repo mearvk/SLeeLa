@@ -205,6 +205,21 @@ public:
                 const int rc=slvm_set_struct_parent(vm_,structLayout_.at(cls.name).typeIndex,structLayout_.at(parent).typeIndex);
                 if(rc!=0) throw std::runtime_error("Semantic error: could not register runtime parent class for '"+cls.name+"'");
             }
+            // SLEELA.syntax 43.7: the implemented interfaces (and an
+            // interface's extends edge) are runtime supertypes too, so
+            // (Shape) x, x instanceof Shape and catch (Shape e) agree with
+            // the static assignable rule (43.6 rule 1). Direct edges only;
+            // the VM follows them transitively.
+            for(const auto& cls:prog_.classes) {
+                if(!structLayout_.count(cls.name)) continue;
+                const int self=structLayout_.at(cls.name).typeIndex;
+                for(const auto& i:cls.java.interfaces){
+                    const std::string r=javaref::resolveBaseName(classByName,javaref::stripTypeArguments(i));
+                    if(r.empty() || r==cls.name || !structLayout_.count(r)) continue;
+                    if(slvm_add_struct_super(vm_,self,structLayout_.at(r).typeIndex)!=0)
+                        throw std::runtime_error("Semantic error: could not register runtime interface '"+r+"' for '"+cls.name+"'");
+                }
+            }
         }
         for(const auto& cls:prog_.classes) for(const auto& f:cls.fields) if(f.isStatic){
             const std::string key=cls.name+"::"+f.name;
@@ -981,6 +996,7 @@ private:
         if(auto mc=dynamic_cast<const MethodCall*>(e)){
             // A String-receiver call returns its JavaStringMethods method's type.
             if(mc->stringReceiver && mc->resolved){ const std::string& ret=mc->resolved->retType; return structLayout_.count(ret)?ret:std::string(); }
+            if(mc->anyReceiver) return structLayout_.count(mc->anyReturn)?mc->anyReturn:std::string();
             std::string rt;
             bool viaClassName=false;
             { std::string sc; if(isStaticClassRef(mc->receiver.get(),sc)){ rt=sc; viaClassName=true; } }
@@ -1103,6 +1119,35 @@ private:
             }
         }
         emitArgsCoerced(args,method); emit(OP_CALL,fidx);
+    }
+    // SLEELA.syntax 43.7: a method call on an Any receiver. Semantic analysis
+    // listed the loaded classes declaring the method, most derived first. Per
+    // candidate: DUP, INSTANCEOF <class>, JMPF, arguments, CALL. A String and
+    // a utf16 value call the JavaStringMethods function with the receiver as
+    // its first argument. No match throws a message string.
+    void emitAnyReceiverCall(const MethodCall& mc){
+        emitExpr(mc.receiver.get());
+        std::vector<int> ends;
+        for(const auto& t:mc.anyTargets){
+            auto lay=structLayout_.find(t.first); int fi=resolvedIndex(t.second);
+            if(lay==structLayout_.end()||fi<0) continue;
+            emit(OP_DUP); emit(OP_INSTANCEOF,lay->second.typeIndex); const int skip=emit(OP_JMPF,0);
+            emitArgsCoerced(mc.args,t.second); emit(OP_CALL,fi); ends.push_back(emit(OP_JMP,0));
+            patch(skip,here());
+        }
+        if(mc.anyStringTarget){
+            const int fi=resolvedIndex(mc.anyStringTarget);
+            if(fi>=0) for(int kind:{-(SL_STR+1),-(SL_UTF16+1)}){
+                emit(OP_DUP); emit(OP_INSTANCEOF,kind); const int skip=emit(OP_JMPF,0);
+                for(size_t i=0;i<mc.args.size();++i){ emitExpr(mc.args[i].get()); coerceToDeclared(mc.anyStringTarget->params[i+1].type); }
+                emit(OP_CALL,fi); ends.push_back(emit(OP_JMP,0));
+                patch(skip,here());
+            }
+        }
+        emit(OP_POP);
+        const std::string msg="no method '"+mc.method+"' taking "+std::to_string(mc.args.size())+" argument(s) for the runtime value (call on an Any receiver)";
+        emit(OP_CONST,slvm_add_const_str(vm_,msg.c_str())); emit(OP_THROW);
+        for(int e:ends) patch(e,here());
     }
     // Element default for `new T[n]`: Java numeric and boolean arrays start at
     // zero/false, not null (see OP_NEWARRAY operand a).
@@ -1346,6 +1391,7 @@ private:
             emit(OP_CALL,fi);
             return;
         }
+        if(mc.anyReceiver){ emitAnyReceiverCall(mc); return; }
         const std::string receiverType=exprStructType(mc.receiver.get());
         auto target=funcIndex_.find(receiverType+"::"+m);
         int fidx = target==funcIndex_.end() ? -1 : target->second;

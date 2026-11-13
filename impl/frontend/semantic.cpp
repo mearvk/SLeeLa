@@ -808,6 +808,54 @@ class Analyzer{
   }
   m.resolved=best; return{Kind::Void,{}};
  }
+ // Best own (declared, non-static, non-constructor) overload of `name` in
+ // class c whose parameters accept argTypes; null when none does.
+ const Method* ownInstanceOverload(const ClassDecl& c,const std::string& name,const std::vector<Type>& argTypes,size_t skip=0){
+  const Method* best=nullptr; int bestScore=-1;
+  for(const auto& mm:c.methods){
+   if(mm.name!=name||mm.isStatic!=(skip>0)||mm.java.constructor||mm.params.size()!=argTypes.size()) continue;
+   int score=0; bool ok=true;
+   for(size_t i=skip;i<argTypes.size();++i){
+    Type w=tn(mm.params[i].type); const Type& g=argTypes[i];
+    if(!assignable(w,g)){ok=false;break;}
+    if(w.kind==g.kind&&(w.kind!=Kind::Struct||w.name==g.name)) score+=2;
+    else if(w.kind!=Kind::Any&&!(w.kind==Kind::Struct&&w.name=="Object")) score+=1;
+   }
+   if(ok&&score>bestScore){best=&mm;bestScore=score;}
+  }
+  return best;
+ }
+ // SLEELA.syntax 43.7: x.m(args) where x is Any.
+ Type anyReceiverCall(const MethodCall& m){
+  std::vector<Type> at=argTypesOf(m.args);
+  std::map<std::string,const Method*> byOwner; std::vector<std::string> owners;
+  for(const auto& c:p.classes){
+   if(c.name=="JavaStringMethods") continue;
+   if(const Method* mm=ownInstanceOverload(c,m.method,at)){ byOwner[c.name]=mm; owners.push_back(c.name); }
+  }
+  m.anyReceiver=true; m.anyTargets.clear(); m.anyStringTarget=nullptr; m.anyReturn.clear();
+  for(const auto& o:javaref::mostDerivedFirst(*g_javaClasses,owners)) m.anyTargets.emplace_back(o,byOwner[o]);
+  // The value may be a String at run time: ask the driver to load the
+  // java.lang.String method library (it re-analyzes with it loaded).
+  if(!classNames.count("JavaStringMethods")) r.needsStringMethods=true;
+  if(classNames.count("JavaStringMethods")){
+   for(const auto& c:p.classes) if(c.name=="JavaStringMethods"){
+    std::vector<Type> st=at; st.insert(st.begin(),Type{Kind::String,{},{}});
+    m.anyStringTarget=ownInstanceOverload(c,m.method,st,1);
+    break;
+   }
+  }
+  if(m.anyTargets.empty()&&!m.anyStringTarget){
+   err("no loaded class declares an instance method '"+m.method+"' taking "+std::to_string(m.args.size())+" argument(s) of these types (call on an Any receiver)");
+   return{Kind::Error,{}};
+  }
+  std::vector<const Method*> all; for(const auto& t:m.anyTargets) all.push_back(t.second); if(m.anyStringTarget) all.push_back(m.anyStringTarget);
+  Type ret=tn(all.front()->retType); bool agree=true;
+  for(const Method* x:all) if(!same(tn(x->retType),ret)){agree=false;break;}
+  if(!agree) return{Kind::Any,{}};
+  m.anyReturn=all.front()->retType;
+  return ret;
+ }
  Type fluent(const MethodCall&m){
   if(m.superConstructor||m.thisConstructor) return constructorInvocation(m);
   if(m.method=="start"){if(auto r=dynamic_cast<const VarExpr*>(m.receiver.get())){if(r->name=="Munction"){if(m.args.size()!=1)err("Munction.start(name) takes one argument");else{Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction.start name must be string");}return{Kind::Unknown,{}};}}}
@@ -873,6 +921,11 @@ class Analyzer{
    for(size_t i=1;i<at.size()&&i<target.params.size();++i){Type g=at[i],w=tn(target.params[i].type);if(!assignable(w,g))err("argument to String method '"+m.method+"' has type "+nameOf(g)+", expected "+nameOf(w));}
    return tn(target.retType);
   }
+  // SLEELA.syntax 43.7: a call on an Any receiver (an erased generic, a
+  // dynamically typed value) dispatches at run time over every loaded class
+  // that declares an instance method of this name taking these arguments,
+  // most derived first; a String/utf16 value goes to JavaStringMethods.
+  if(rcv.kind==Kind::Any && !(syntax<SyntaxVersion{3,0}) && g_javaClasses) return anyReceiverCall(m);
   if(rcv.kind!=Kind::Struct){err("method '"+m.method+"' requires a class or struct receiver");return{Kind::Error,{}};}
   auto it=methods.find(rcv.name+"::"+m.method);if(it==methods.end()){err("class '"+rcv.name+"' has no method '"+m.method+"'");return{Kind::Error,{}};}
   std::vector<Type> at=argTypesOf(m.args);
