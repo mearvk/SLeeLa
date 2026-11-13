@@ -10,6 +10,7 @@ extern "C" {
 #include "java_lex.h"
 }
 
+#include <cctype>
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
@@ -320,6 +321,10 @@ private:
             if (isOp("(")) { int d = 0; do { if (isOp("(")) d++; else if (isOp(")")) d--; p++; } while (d > 0 && !atEof()); }
         }
         std::string name = ident();
+        // A type-qualified name Outer.Inner names the hoisted type Outer__Inner (package segments, which
+        // start in lower case, are dropped). Resolving only the last segment would bind Format.Field to
+        // the nested Field of the current file: java.text.NumberFormat.Field then extended itself.
+        std::string qual;
         int depth = 0;
         for (;;) {
             if (isOp("<")) {
@@ -329,13 +334,20 @@ private:
                     p++;
                 } while (d > 0 && !atEof());
             }
-            if (isOp(".") && isIdentTok(at(p + 1))) { p++; name = ident(); continue; }
+            if (isOp(".") && isIdentTok(at(p + 1))) {
+                if (!name.empty() && std::isupper((unsigned char)name[0])) qual = qual.empty() ? resolveTypeName(name) : qual + "__" + name;
+                else qual.clear();
+                p++;
+                name = ident();
+                continue;
+            }
             break;
         }
         while (isOp("[") && isOpAt(p + 1, "]")) { p += 2; depth++; }
         Ty t = mk(name, depth);
-        if (typeVars.count(name)) t.n = "?";
-        else t.n = resolveTypeName(name);
+        if (qual.empty() && typeVars.count(name)) t.n = "?";
+        else if (qual.empty()) t.n = resolveTypeName(name);
+        else t.n = qual + "__" + name;
         return t;
     }
 
@@ -956,6 +968,23 @@ private:
         return nullptr;
     }
 
+    // A method of java.lang.Object (equals, hashCode, getClass ...) called on a type of this tree that
+    // neither declares it nor has a library ancestor: SLeeLa has no such method, so the converted call
+    // would only fail later in the checker. Refuse it here, located, instead. Used for receiver calls
+    // (a.equals(b)) and for unqualified calls inside the class (getClass()).
+    void refuseObjectMethod(const std::string& recvType, const std::string& name) const {
+        static const std::set<std::string> kObjectMethods = {"equals", "hashCode", "getClass", "clone", "notify", "notifyAll", "wait", "finalize"};
+        if (!kObjectMethods.count(name) || !classes.count(recvType)) return;
+        int hops = 0;
+        for (std::string c = recvType; !c.empty();) {
+            auto ci = classes.find(c);
+            // an unknown type, or a cyclic / over-deep chain, may be a library type: do not refuse
+            if (ci == classes.end() || ++hops > 32 || ci->second.super == c) return;
+            c = ci->second.super;
+        }
+        fail("object-method", "java.lang.Object." + name + " on " + recvType + ", which does not declare it, has no SLeeLa equivalent yet");
+    }
+
     E callResult(const std::string& recvType, const std::string& name, const std::vector<E>& args, std::string code, bool staticCall) {
         E r;
         r.code = code;
@@ -965,28 +994,19 @@ private:
             r.ty = m->ret;
             return r;
         }
-        // A method of java.lang.Object (equals, hashCode, getClass ...) called on a type of this tree that
-        // neither declares it nor has a library ancestor: SLeeLa has no such method, so the converted call
-        // would only fail later in the checker. Refuse it here, located, instead.
-        static const std::set<std::string> kObjectMethods = {"equals", "hashCode", "getClass", "clone", "notify", "notifyAll", "wait", "finalize"};
-        if (kObjectMethods.count(name) && classes.count(recvType)) {
-            bool closed = true;
-            for (std::string c = recvType; !c.empty();) {
-                auto ci = classes.find(c);
-                if (ci == classes.end()) { closed = false; break; }
-                c = ci->second.super;
-            }
-            if (closed) fail("object-method", "java.lang.Object." + name + " on " + recvType + ", which does not declare it, has no SLeeLa equivalent yet");
-        }
+        refuseObjectMethod(recvType, name);
         std::string owner = recvType;
         std::string prim;
         if (modelBoxed(owner, &prim) && owner != "Integer" && owner != "Long" && owner != "Double") { /* keep */ }
         const cm_rec* rec = cm_find(&M, "ret", owner.c_str(), name.c_str(), nullptr);
         // A user type that extends a library type (class MyEx extends Exception) inherits that
         // type's members: walk the declared superclass chain through the model rows.
+        int depth = 0;
+        // the depth bound guards a cyclic chain (a nested Field extends Format.Field resolves to itself)
         for (std::string up = owner; !rec; ) {
+            if (++depth > 32) break;
             auto ci = classes.find(up);
-            if (ci == classes.end() || ci->second.super.empty()) break;
+            if (ci == classes.end() || ci->second.super.empty() || ci->second.super == up) break;
             up = ci->second.super;
             if (const MethodSig* m = pickMethod(up, name, args)) { r.ty = m->ret; return r; }
             rec = cm_find(&M, "ret", up.c_str(), name.c_str(), nullptr);
@@ -1215,6 +1235,7 @@ private:
                     else { if (ac.outerStatic) fail("outer-instance", "call of an instance method of the enclosing class from a static context"); qualifier = "outer_."; }
                 }
             }
+            if (!pm) refuseObjectMethod(curClass, name);
             a = adaptArgs(pm, a);
             E r;
             r.code = qualifier + mapMember(safeNameForCall(name)) + "(" + joinArgs(a) + ")";

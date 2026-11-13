@@ -22,3 +22,16 @@ bin/sleelactl run   java-convert --jdk-version 28
 The JDK source is GPLv2 with the Classpath Exception and is not committed
 (`.gitignore`). Output is derived from it: carry its notices if you publish it.
 The report states exactly what converted and what failed closed and why.
+
+## Last measurement
+
+2026-11-13, JDK 25.0.2 `src.zip`, `java.base` packages `java/lang`, `java/util`, `java/math`, `java/text`
+(with subpackages; 884 files):
+
+```sh
+unzip -q "$JAVA_HOME/lib/src.zip" 'java.base/java/lang/*' 'java.base/java/util/*' 'java.base/java/math/*' 'java.base/java/text/*' -d /tmp/jdk25
+sleelactl/convert/build/javaconv --jdk /tmp/jdk25 --out /tmp/jdk25-sleela --jdk-version 25
+```
+
+Result: 423 converted (499 SLeeLa files), 461 failed closed; 429 with `--single-thread`. Details and the
+refusal table: `sleelactl/convert/README.md`.

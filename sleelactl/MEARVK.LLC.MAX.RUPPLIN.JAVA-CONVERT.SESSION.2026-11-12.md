@@ -105,3 +105,39 @@ Still open from the review: `Object.equals`/`hashCode` on enums and plain classe
 `static { }` blocks, an uncaught exception prints `uncaught language exception` instead of Java's
 `Exception in thread "main" ...` text, `System.out.println(e)` of a library exception shows the handle
 (`RuntimeException#0`), and `String.split` is missing from the String method set.
+
+## Addendum: status re-measured, a hang fixed (2026-11-13, later)
+
+Correction to the review addendum above: the sandbox does have JDK sources (`$JAVA_HOME/lib/src.zip` of OpenJDK
+25.0.2), so the whole-tree run was repeated on the same 884-file `java.base` subset as the 2026-11-12 baseline.
+
+| Measurement | Converted | Note |
+|---|---|---|
+| 2026-11-12 baseline | 344 of 884 | first converter |
+| converter at `323cc04f` (before the review) | 424 of 884 | the 2026-11-13 lowerings |
+| converter at `8f617ba2` (the review commit) | did not finish | hung on `java/text/{DateFormat,MessageFormat,NumberFormat}.java` |
+| this commit | **423 of 884** (499 SLeeLa files); 429 with `--single-thread` | about 8 s |
+
+The hang: `parseType` kept only the last segment of a qualified type, so `NumberFormat.Field extends Format.Field`
+resolved `Format.Field` to `NumberFormat__Field` and the class extended itself. The new `[object-method]` superclass
+walk (added in the review) had no bound and looped on it. Fixed at the root: `Outer.Inner` in a type now names the
+hoisted `Outer__Inner`, and both new walks are bounded like the existing ones (depth 32, self-reference stops).
+Measured cost of the root fix alone: 420 to 433 files.
+
+A second gap found by checking converted output: an unqualified `getClass()` inside a class (as `java.text.Format`
+does) bypassed the `[object-method]` check, which only saw receiver calls. Both paths now share one helper.
+
+Compared with `323cc04f`: 9 files newly convert, 10 are newly refused, all `[object-method]`. Those 10 previously
+produced output that SLeeLa's checker rejects (`call to unknown method 'getClass'`, checked on a probe), so the
+count is lower but more honest.
+
+Files that fail closed, by first refusal: `nested-ambiguous` 133, `nested` 68, `untyped` 57, `object-method` 33,
+`volatile` 32, `init-block` 29, `syntax` 28, `model` 18, `synchronized` 16, `native` 12. "Converted" is not
+"checks": a split-layout file names sibling nested types (`Format__Field`) that a standalone `sleela check` does not
+link (spot-checked on 4 files); a tree-wide check was not measured.
+
+Tests added: `tests/reject/QualifiedNested.java` (fails with `[nested-ambiguous]` under the old name resolution),
+`tests/reject/BareObjectMethod.java`. Suite: 28 of 28. Model revision 1.2.0 (the three refusal rows; no law changed).
+Documents updated with these numbers: `sleelactl/convert/README.md`, `sleelactl/jdk/README.md`, `lib/java/JAVA.SPEC.md`,
+both `CONVERSION.PRINCIPLES.md`, `lib/java/STATUS.md`, `impl/subjects/conversion/README.md`,
+`wiki/Java-Specific-Section.md`, `.kiro/steering/java-to-sleela-conversion.md`.

@@ -91,5 +91,10 @@ Run: `sleelactl build java-convert`, then
 - Fields: the converter writes the Java default value on every field without an initializer and moves
   instance field initializers into `javaFieldInit_<Class>()`, called after `super(...)`. Keep both: SLeeLa
   fields start as `null` and SLeeLa runs initializers at allocation, before any constructor.
+- Qualified type names: `Outer.Inner` in a type resolves to `Outer__Inner`; only a bare name goes through
+  the nested-name map. Any walk up a superclass chain must be bounded (a mis-resolved name once made
+  `NumberFormat.Field` its own superclass and hung the whole-tree run).
+- Status (2026-11-13): differential suite 28 of 28; JDK 25.0.2 `java.base` subset 423 of 884 files
+  converted (429 with `--single-thread`). The run's report is the status; re-run before quoting newer numbers.
 - Output directories: a re-run deletes only the files listed in `<out>/.javaconv-emitted` (what the
   previous run wrote), so a file that fails closed never leaves an old conversion behind.

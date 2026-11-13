@@ -39,7 +39,7 @@
 # Template variables: $a $b operands, $t target type, $recv receiver, $args
 # comma-joined argument list, $0 $1 ... individual arguments.
 # ============================================================================
-model java-to-sleela 1.1.0
+model java-to-sleela 1.2.0
 
 # ---- 1. Types (JLS 4). SLeeLa int is a 64-bit slot, so the int-width types are
 #         kept as their own names and wrapped by the templates below.

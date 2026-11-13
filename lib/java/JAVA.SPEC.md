@@ -153,8 +153,10 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
   named `Outer__Name` (a name used by several nested types is refused). A static nested type may use
   the static members of its enclosing class. An inner (non-static) class holds the enclosing object in
   the field `outer_`; its constructors take it as a leading parameter, `new Inner(...)` inside the
-  outer class passes `this`, and `Outer.this` is `outer_`. Not converted: `outer.new Inner()`,
-  local classes declared in a method. Test: `Nested`.
+  outer class passes `this`, and `Outer.this` is `outer_`. A type written with its qualifier,
+  `Outer.Inner`, names `Outer__Inner` (package segments in lower case are dropped), so
+  `NumberFormat.Field extends Format.Field` extends `Format__Field`, not itself. Not converted:
+  `outer.new Inner()`, local classes declared in a method. Tests: `Nested`, `reject/QualifiedNested`.
 - Anonymous classes, lambdas and method references. Each becomes a generated top-level class
   `Top__N`: the captured local variables become constructor-initialised fields `cap_x` (Java requires
   them effectively final, so copying is exact), the enclosing object becomes `outer_`, unqualified
@@ -190,9 +192,10 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
   Exception`) is typed through the superclass chain and the model `ret` rows, so `e.getMessage()` has
   the type `String`. Test: `Init`.
 - `java.lang.Object` methods. `equals`, `hashCode`, `getClass`, `clone`, `wait`/`notify` called on a
-  user type that does not declare them (and has no library ancestor) are refused (`[object-method]`):
-  SLeeLa has no such method, and the call would otherwise only fail later in the checker. Records
-  declare the `equals`/`hashCode` they generate. Test: `reject/ObjectMethod`.
+  user type that does not declare them (and has no library ancestor) are refused (`[object-method]`),
+  with a receiver (`a.equals(b)`) or without one (`getClass()` inside the class): SLeeLa has no such
+  method, and the call would otherwise only fail later in the checker. Records declare the
+  `equals`/`hashCode` they generate. Tests: `reject/ObjectMethod`, `reject/BareObjectMethod`.
 - Object text. An object shown as text calls `toString()` through a generated static helper
   `Owner.javaText(x)` (`null` is `"null"`), because SLeeLa would show the handle.
 - Interfaces carry no metadata fields; every class carries the Metadata Class record.
@@ -247,8 +250,13 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 
 `bash tests/javaconv_differential_test.sh` runs 20 programs on a JDK and on the converted SLeeLa:
 Anon, Basics, Control, Enums, Flow, Floats, Formats, Functional, Grid, Init, Nested, Operands, Records, Refs,
-Resources, Shapes, Strings, Switches, Sync, Varargs, and 5 refusal programs under `tests/reject` that must be refused (a lambda
+Resources, Shapes, Strings, Switches, Sync, Varargs, and 7 refusal programs under `tests/reject` that must be refused (a lambda
 argument to an unknown method, String identity comparison, a `synchronized` block without `--single-thread`, an operand of
-unknown type, an `Object` method a user type does not declare). A last check converts a file, makes it fail closed, converts
+unknown type, an `Object` method a user type does not declare, called with and without a receiver, and a qualified nested
+superclass that shares its simple name with the class). A last check converts a file, makes it fail closed, converts
 again and requires that the earlier output is gone (the converter keeps the list of what it wrote in `.javaconv-emitted`).
 `bash examples/java/differential/run-differential.sh` is the older hand-converted suite.
+
+Whole-tree status (2026-11-13, JDK 25.0.2 `java.base`: `java/lang`, `java/util`, `java/math`, `java/text`,
+884 files): 423 of 884 files (499 SLeeLa files); 429 with `--single-thread`; first refusals led by `nested-ambiguous` (133 files),
+`nested` (68) and `untyped` (57). The report of the run is the status; see `sleelactl/convert/README.md`.

@@ -103,7 +103,9 @@ Where this file and one of those disagree, the normative text wins.
 | Arrays | one and many dimensions, jagged, nested initializers, `a.length` | `Grid` |
 | Concurrency | `synchronized` / `volatile` plain under `--single-thread`, else refused | `Sync` |
 | Refusals | proven by programs that must be refused | `tests/reject` (4) |
-| Whole suite | `tests/javaconv_differential_test.sh` | 20 programs + 5 refusals + stale-output check |
+| Qualified nested names | `Outer.Inner` in a type is `Outer__Inner`; a nested class no longer extends itself | `reject/QualifiedNested` |
+| Whole suite | `tests/javaconv_differential_test.sh` | 20 programs + 7 refusals + stale-output check (28 of 28, 2026-11-13) |
+| Whole-tree run | JDK 25.0.2 `java.base` (`java/lang`, `java/util`, `java/math`, `java/text`), 884 files | 423 converted (429 with `--single-thread`), 2026-11-13; 344 on 2026-11-12 |
 
 ### 2.5 `lib/java/converter` (written in SLeeLa, per-member stubs, output `#sleela 3.1`)
 
@@ -149,6 +151,8 @@ Where this file and one of those disagree, the normative text wins.
 | Class literals `X.class`, `getClass().getName()` | stub reason 9; a user exception prints the library class name | language / library | a runtime class-name query |
 | `enum` declarations in SLeeLa source (43.5); enums nested in a class, `this(...)` in an enum constructor | lowered by both converters except those two forms, refused by `sleelactl` | language / `sleelactl` | — |
 | `static { }` blocks; `Object.equals`/`hashCode`/`getClass` on a user type (enums included) | refused by `sleelactl` (`init-block`, `object-method`) | `sleelactl` / library | guarded static init; identity `equals` and hash |
+| One simple name for several nested types in a file (`nested-ambiguous`) | first refusal of 133 of the 461 JDK files that fail closed (2026-11-13), the largest group | `sleelactl` | resolve a bare nested name by scope (innermost enclosing type first) |
+| Converted is not checked | a split-layout file names sibling nested types a standalone `sleela check` does not link | loader / `sleelactl` | measure `check` over the tree; bundle or resolve `Outer__Inner` files |
 | `String` static members in `lib/java/converter` | stub reason 22 | `lib/java/converter` | the `JavaFormat` route `sleelactl` uses |
 | `System.out.print` without a newline | stub reason 23 | language / library (`print` always adds a newline) | a no-newline print built-in |
 | Files with non-ASCII bytes | skipped by `lib/java/converter` (12 of 15,020 JDK files) | VM `read` returns 4,095-byte plain String pieces | a byte-level read |

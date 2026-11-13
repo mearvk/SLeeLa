@@ -10,9 +10,13 @@ Section of the overall specification: [`lib/java/JAVA.SPEC.md`](../lib/java/JAVA
   `format` with a literal format; `switch` (statement, arrow and expression); enums; varargs; assignment
   and `++`/`--` as values; try-with-resources; arrays of any rank; anonymous classes, lambdas and method
   references; nested and inner classes; `instanceof` patterns; and `synchronized`/`volatile` under
-  `--single-thread`. Records are implemented but not yet tested.
+  `--single-thread`; records; Java field defaults and initialization order (field initializers and
+  instance initializer blocks after `super(...)`).
+- **Measured 2026-11-13:** 28 of 28 differential checks pass (20 programs identical to OpenJDK 25.0.2,
+  7 refusals, a stale-output check); the JDK 25 `java.base` subset converts 423 of 884 files.
 - **Open:** operands of unknown type (no generics inference), lambdas whose target interface is unknown,
-  nested capture chains, local classes, switch type patterns, `native`.
+  nested capture chains, local classes, switch type patterns, `static { }` blocks, `Object` methods on a
+  type that does not declare them, several nested types sharing one simple name in a file, `native`.
 
 The principles and the full ledger of what is converted and what is left: [`CONVERSION.PRINCIPLES.md`](../lib/java/CONVERSION.PRINCIPLES.md).
 
