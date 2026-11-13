@@ -18,7 +18,7 @@ specification in `lib/java/JAVA.SPEC.md`, the principles and the done/open ledge
 | How much of a real JDK converts? | **420 of 884** files of the JDK 25.0.2 `java.base` subset (496 SLeeLa files); **426** with `--single-thread`. The 2026-11-12 baseline was 344. |
 | Does "converted" mean "compiles"? | **No.** A converted file passed the converter, which refuses what it cannot convert exactly. A tree-wide `sleela check` of the output has **not** been measured (section 4). |
 | Is the JDK converted? | No. 464 files fail closed and write nothing. |
-| Is it gated in CI? | Yes, from 2026-11-13: `.github/workflows/java-convert.yml` (section 6). |
+| Is it gated in CI? | Yes, from 2026-11-13: `.github/workflows/java-convert.yml`, first run 31 of 31 (section 6). |
 
 ## 2. Differential suite (`tests/javaconv_differential_test.sh`)
 
@@ -106,16 +106,17 @@ These are not refused today. Each is listed here so that no result is read as mo
 | `55f52f49` | `Outer.Inner` in a type resolves to `Outer__Inner` (a nested class had become its own superclass and hung the whole-tree run); bounded superclass walks; bare `getClass()` refused too; model 1.2.0 | `reject/QualifiedNested`, `reject/BareObjectMethod` |
 | `1273f634` (main) | `main` brought level with `master` | section 7 |
 | `c91a4ecf` | `master` given the loader CMakeLists from `main`; stale `sleela_terminal.c` manifest entry refreshed (it failed `verify-security` in CI since `8e39e535`) | CI section 6 |
-| model 1.3.0 commit | library objects shown as text through `toString()` (`tostr reference`, `JavaFormat.objectText`) instead of the VM handle; unknown-typed values keep plain text; `[object-text]` for a user object without `toString()`; `chartext` rows (`append('x')` appends `x`, not `120`); `[boxed]` instead of writing `Integer i = 42` that did not compile; CI workflow `java-convert.yml` | `ObjectText`, `reject/IdentityText`, `reject/BoxedDecl` |
+| `e3993045` (model 1.3.0) | library objects shown as text through `toString()` (`tostr reference`, `JavaFormat.objectText`) instead of the VM handle; unknown-typed values keep plain text; `[object-text]` for a user object without `toString()`; `chartext` rows (`append('x')` appends `x`, not `120`); `[boxed]` instead of writing `Integer i = 42` that did not compile; CI workflow `java-convert.yml` | `ObjectText`, `reject/IdentityText`, `reject/BoxedDecl` |
 
 ## 6. Continuous integration
 
 | Workflow | State on 2026-11-13 |
 |---|---|
-| `java-convert.yml` (new): manifest gate, runtime build, converter build, model self-check, differential suite on Temurin 25 | added with model 1.3.0; see the run of that commit |
-| Advantage Library Verification, Native Drive | failed on `master` from `8e39e535` (stale manifest entry); **pass** on `c91a4ecf` |
+| `java-convert.yml` (new): manifest gate, runtime build, converter build, model self-check, differential suite on Temurin 25 | **pass, 31 of 31**, on `e3993045` (Temurin 25.0.5, so a second JDK build agrees with the local OpenJDK 25.0.2) |
+| Advantage Library Verification, Native Drive | failed on `master` from `8e39e535` (stale manifest entry); **pass** on `c91a4ecf` and `e3993045` |
 | Native Drive on `main` (`1273f634`) | failed once (`nm` timed out after 15 s on the runner, passes locally in 0.1 s); **passed on re-run** |
-| sleelactl, API documentation build, SLeeLa GUI Document CI, Heterogeneous value regression | pass |
+| sleelactl, API documentation build, SLeeLa GUI Document CI, Heterogeneous value regression, Comparison Standards Conformance | pass |
+| Native C and C++ Portability, Complete SLeeLa VM and Language Conformance, SLeeLa VM Arithmetic Table Completion | still running on `e3993045` when this page was written; not claimed |
 
 ## 7. Branches
 
