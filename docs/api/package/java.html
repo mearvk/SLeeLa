@@ -147,7 +147,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; java</div>
 <h1>Package <code>java</code></h1>
-<div class="lead">This package contains <strong>14964</strong> source unit(s) defining <strong>14964</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>14966</strong> source unit(s) defining <strong>14966</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="aboutevent">AboutEvent <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/jdk-28/java.desktop/java/awt/desktop/AboutEvent.sleela)</span></h2>
 <div data-u="aboutevent aboutevent">
@@ -138031,6 +138031,52 @@
 <tr><td><code>compareTo</code></td><td><span class="sig">int compareTo(Kind o)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>equals</code></td><td><span class="sig">boolean equals(Any other)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>hashCode</code></td><td><span class="sig">int hashCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="javafloat">JavaFloat <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/JavaFloat.sleela)</span></h2>
+<div data-u="javafloat javafloat">
+<h3 id="JavaFloat">JavaFloat <span class="pill">class</span></h3>
+<p class="desc">SLeeLa has no 32-bit floating point value. The Java tier holds a float in a double and rounds it to the nearest binary32 value (round half even, with overflow to infinity and gradual underflow) after every operation, using the rounding of java.lang.Float. For the operations + - * / and %, rounding the double result equals the correctly rounded binary32 result, because a double carries more than 2*24+2 significant bits. The converter (sleelactl java-convert) emits f32 around each float operation and text for showing a float. See lib/java/JAVA.SPEC.md, section on floating point.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>shared</code></td><td><span class="sig">static Float shared = new Float(0.0)</span></td><td class="desc">The one Float whose rounding and text routines every call shares.</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>f32</code></td><td><span class="sig">static double f32(double d)</span></td><td class="desc">The binary32 value nearest to d, held in a double.</td></tr>
+<tr><td><code>text</code></td><td><span class="sig">static String text(double f)</span></td><td class="desc">Float.toString of a value already rounded to binary32.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="javaformat">JavaFormat <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/JavaFormat.sleela)</span></h2>
+<div data-u="javaformat javaformat">
+<h3 id="JavaFormat">JavaFormat <span class="pill">class</span></h3>
+<p class="desc">The converter (sleelactl java-convert) lowers String.format with a literal format string, at conversion time, into a concatenation of these calls, one per conversion, so every argument keeps its static Java type: %d dec, %x %X %o radix, %f fixed, %s text, with the flags - 0 + , and space, a width and a precision. Rounding follows Java: HALF_UP on the shortest decimal digits of the double. See lib/java/JAVA.SPEC.md.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>LEFT</code></td><td><span class="sig">static final int LEFT = 1</span></td><td class="desc">Flag bits shared with the converter lowering of String.format.</td></tr>
+<tr><td><code>ZERO</code></td><td><span class="sig">static final int ZERO = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>PLUS</code></td><td><span class="sig">static final int PLUS = 4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>COMMA</code></td><td><span class="sig">static final int COMMA = 8</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>SPACE</code></td><td><span class="sig">static final int SPACE = 16</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>spaces</code></td><td><span class="sig">static String spaces(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>zeros</code></td><td><span class="sig">static String zeros(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fit</code></td><td><span class="sig">static String fit(String s, int width, int flags)</span></td><td class="desc">Pads s with spaces to width; LEFT puts the padding after s.</td></tr>
+<tr><td><code>group</code></td><td><span class="sig">static String group(String digits)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>signed</code></td><td><span class="sig">static String signed(boolean neg, String body, int width, int flags)</span></td><td class="desc">Sign, body and padding for a number; ZERO pads with zeros after the sign.</td></tr>
+<tr><td><code>dec</code></td><td><span class="sig">static String dec(long v, int width, int flags)</span></td><td class="desc">%d for int, long, short and byte.</td></tr>
+<tr><td><code>digitChar</code></td><td><span class="sig">static String digitChar(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>radixDigits</code></td><td><span class="sig">static String radixDigits(long v, int bits, int shift)</span></td><td class="desc">Unsigned digits of v in base 2^shift; bits is 8, 16, 32 or 64 (byte, short, int, long).</td></tr>
+<tr><td><code>radix</code></td><td><span class="sig">static String radix(long v, int bits, int shift, boolean upper, int width, int flags)</span></td><td class="desc">%x and %X (shift 4) and %o (shift 3) with Java two-complement text for negatives.</td></tr>
+<tr><td><code>incr</code></td><td><span class="sig">static String incr(String num)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>parseExp</code></td><td><span class="sig">static int parseExp(String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fixed</code></td><td><span class="sig">static String fixed(double d, int prec, int width, int flags)</span></td><td class="desc">%f: Java rounds the shortest decimal digits of the double (Double.toString) half up.</td></tr>
+<tr><td><code>text</code></td><td><span class="sig">static String text(String s, int prec, int width, int flags)</span></td><td class="desc">%s with optional precision (truncation) and width.</td></tr>
+<tr><td><code>joinArray</code></td><td><span class="sig">static String joinArray(String sep, String[] parts)</span></td><td class="desc">String.join(sep, parts).</td></tr>
 </table>
 </div>
 <h2 class="section" data-u="javainvocation">JavaInvocation <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/JavaInvocation.sleela)</span></h2>
@@ -301541,7 +301587,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-13 03:24 UTC.
+<code>/lib</code> tree on 2026-11-13 03:38 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
