@@ -186,7 +186,9 @@ operations are gated at 3.0.
 > bitwise operators, `L` / `f` suffixes and the `byte` / `short` / `char` /
 > `int32` widths (`STATUS.md` section 10); `char` literals are still open. The
 > workarounds in the generated classes remain until those classes are
-> regenerated. The current list of differences is `STATUS.md` section 6.
+> regenerated. Item 9 is done too: `new T[n]` starts at zero / `false`
+> (SLEELA.syntax 44.3), and `char` literals exist since syntax 3.1 (44.2). The
+> current list of differences is `STATUS.md` section 6.
 
 Each of these is a compiler or VM change. Each workaround above maps to one
 item here. When an item lands, its workaround can be removed by editing the

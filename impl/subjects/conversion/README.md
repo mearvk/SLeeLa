@@ -7,8 +7,9 @@ result types, and the constructs refused (fail closed).
 
 It is consumed by `sleelactl/convert` (C lexer + model loader, C++ translator),
 registered in sleelactl as `java-convert`, and by `lib/java/converter` (a SLeeLa
-program; `JConvModel.sleela` reads the `ret`, `field`, `binop int` shift and
-`tostr` rows). Unlike math/physics it is not compiled
+program; `JConvModel.sleela` reads the `ret`, `field`, `binop int` shift,
+division and remainder rows, the `cast long int` row (the 32-bit wrap) and the
+`tostr` rows; its output stays at syntax 3.1). Unlike math/physics it is not compiled
 into the `sleela` runtime: it governs a tool, and its executable half is
 `lib/java/JavaOperands.sleela`. Rules: `.kiro/steering/java-to-sleela-conversion.md`.
 

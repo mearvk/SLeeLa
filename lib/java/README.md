@@ -39,10 +39,13 @@ modules. Each file names its JDK 28 API page as its Java Source.
 [`converter/`](converter/README.md) is a SLeeLa program that walks a Java
 source tree (for example a JDK `src.zip`, `<module>/<package>/<Type>.java`) and
 writes one SLeeLa file per type to an output tree outside `lib/java`. Every
-Java-to-SLeeLa decision is in `converter/JConvRules.sleela`. A member that uses
-a construct SLeeLa cannot express yet becomes a stub that throws
-`UnsupportedOperationException` naming the reason. Status and measurements:
-[`STATUS.md`](STATUS.md) section 11.
+Java-to-SLeeLa decision is in `converter/JConvRules.sleela`, and the Java
+operator, string-conversion and result-type laws are read from the shared model
+`impl/subjects/conversion/conversion.model`. A member that uses a construct
+SLeeLa cannot express yet becomes a stub that throws
+`UnsupportedOperationException` naming the reason. Output declares syntax 3.1.
+Status and measurements: [`STATUS.md`](STATUS.md) section 11 and
+[`converter/README.md`](converter/README.md).
 
 ## Machine-Readable Inventory
 

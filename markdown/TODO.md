@@ -182,11 +182,11 @@ value, each with a differential row added **before** the fix:
 | # | Gap | Evidence | Fix |
 |---|---|---|---|
 | 1 | Stores into `byte[]` / `short[]` / `char[]` elements do not wrap | `byte[] a; a[0] = 127; a[0] += 1;` prints `128`, Java `-128` (checked 2026-11-12; locals, fields, `+=`, `++` all wrap) | narrow on `ARRSET` using the array element type; keep reads un-narrowed (new elements read `null`) |
-| 2 | `char` literals do not lex | `'a'` is a lexical error | lexer: `'x'`, escapes, `\uXXXX` to an integer token typed `char`; decide `"" + c` prints text, not the number |
-| 3 | Doubles print `inf` / `nan` | `5.0 / 0` prints `inf`, Java `Infinity` | change the VM double-to-text path, or route through `Double.toString`; update fixtures |
+| 2 | ~~`char` literals do not lex~~ **done** in syntax 3.1 (SLEELA.syntax 44.2) | `'a'` is the integer code; showing it as text goes through the library (`JavaText`) | — |
+| 3 | Doubles print `inf` / `-nan` (checked 2026-11-13 with `impl/build/sleela`, `#sleela 3.1`) | `5.0 / 0` prints `inf`, Java `Infinity` | VM double-to-text path; converted code already goes through `Double.toString` (converter rule 7b) |
 | 4 | `float` is a double | no 32-bit rounding, `Float` bit views are done in library code | round-to-float on `float` stores |
-| 5 | Plain `int` is 64-bit | `2147483647 + 1` is `2147483648` | **decision needed**: keep (current, safe) or add a `#sleela` Java source mode where `int` wraps; never change `int` globally |
-| 6 | Integer division corners are fatal in the VM | Checked 2026-11-12: `long.MIN_VALUE / -1` **crashes the VM with SIGFPE** (exit 136, core dump; the C division traps); `5 / 0` stops the program with `runtime error: integer divide by zero`, which `catch (Any e)` does **not** catch. Java gives `MIN_VALUE` and `ArithmeticException`. `JavaOperands.divLong` / `remLong` / `divInt` guard both cases today | VM: handle the `-1` divisor before dividing (wrap, as Java does) and raise a catchable `ArithmeticException` for a zero divisor. The crash is a robustness bug, independent of Java compatibility |
+| 5 | Plain `int` is 64-bit (converted code: exact since `lib/java/converter` 0.5.0, course 16) | `2147483647 + 1` is `2147483648` | **decision needed**: keep (current, safe) or add a `#sleela` Java source mode where `int` wraps; never change `int` globally |
+| 6 | Integer division corners are fatal in the VM, still (checked 2026-11-13 with `impl/build/sleela`, `#sleela 3.1`) | `long.MIN_VALUE / -1` **crashes the VM with SIGFPE** (exit 136); `5 / 0` stops the program with `runtime error: integer divide by zero`, which `catch (Any e)` does **not** catch. Java gives `MIN_VALUE` and `ArithmeticException` | VM: handle the `-1` divisor before dividing and raise a catchable `ArithmeticException`. Converted code avoids both: `lib/java/converter` 0.5.0 writes `/` and `%` through `JavaOperands.divInt` / `remInt` / `divLong` |
 
 **Moral — Measure the Java, do not imagine it.** Every operand rule is settled
 by running the real JDK beside the SLeeLa VM and diffing the output.
@@ -243,11 +243,11 @@ These are the compiler gaps in `STATUS.md` section 6 and
 | # | Prerequisite | Unblocks |
 |---|---|---|
 | A1 | ~~Virtual dispatch through a base-typed receiver; `super(...)` lowering; base field initializers for subclasses~~ **done** (SLEELA.syntax 43.6; `impl/tests/java_references/oop/`) | regenerate the library classes that still work around it (exception messages composed at construction) |
-| A2 | ~~Typed `catch`, multiple catch clauses, `finally`~~ **done** (43.6 rule 11). Still open: `return` / `break` / `continue` out of a try with `finally` (43.5), try-with-resources, catchable VM faults (`/ 0`) | faithful `try`-with-resources, `Closeable`/`AutoCloseable`, exception flow in `java.io` / `java.net` |
+| A2 | ~~Typed `catch`, multiple catch clauses, `finally`~~ **done** (43.6 rule 11). `return` / `break` / `continue` through `finally` done in syntax 3.1 (44.5). Still open: try-with-resources, catchable VM faults (`/ 0`) | faithful `try`-with-resources, `Closeable`/`AutoCloseable`, exception flow in `java.io` / `java.net` |
 | A3 | Lambdas and functional interfaces (`Comparator`, `Function`, `Consumer`, `Supplier`, `Predicate`) | comparator sorting, `compute` / `merge` / `forEach`, `Optional.map`, then `java.util.stream` |
 | A4 | Nested types resolved by the loader (`Map.Entry`, `Character.UnicodeBlock`) and exact-package import matching | `entrySet`, `Map.Entry`, ~hundreds of `Outer.Inner` files that are unreachable today; also the largest cause of `check` errors in converted JDK code (course 16) |
 | A5 | Live collection views (`keySet`, `values`, `entrySet`, `subList` return snapshots) | Java-correct iteration and mutation semantics |
-| A6 | Zero-fill numeric arrays by element type (new `int[]` elements read `null`) | removes explicit clearing in library code and the 2^53 `long`-sum hazard |
+| A6 | ~~Zero-fill numeric arrays by element type~~ **done** (SLEELA.syntax 44.3; `int32` since the 2026-11-13 compiler fix) | library code can drop its explicit clearing |
 | A7 | Task 14 above (array-element narrowing, `char` literals, `Infinity` text) | `char`-heavy code: `String`, `StringBuilder`, `Character`, `java.text` |
 
 **Stage B: behavior by package, largest practical payoff first** (unimplemented
