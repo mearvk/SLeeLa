@@ -147,7 +147,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; advantage</div>
 <h1>Package <code>advantage</code></h1>
-<div class="lead">This package contains <strong>185</strong> source unit(s) defining <strong>185</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>206</strong> source unit(s) defining <strong>206</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="advantage-demo">advantage-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/advantage-demo.sleela)</span></h2>
 <div data-u="advantage-demo advantagedemo">
@@ -157,6 +157,93 @@
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advantagemodulesdemo">AdvantageModulesDemo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/demo/AdvantageModulesDemo.sleela)</span></h2>
+<div data-u="advantagemodulesdemo advantagemodulesdemo">
+<h3 id="AdvantageModulesDemo">AdvantageModulesDemo <span class="pill">class</span></h3>
+<p class="desc">Advantage module host demo: a user defined program loads the medium, then some</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>check</code></td><td><span class="sig">void check(String what, boolean ok)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>req</code></td><td><span class="sig">SLAdvMessage req(String to, String topic)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cand</code></td><td><span class="sig">SLAdvMessage cand(double e, double c, double n, double s, double v, double a, double q, double p, double t, double d, double now)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>judgeMsg</code></td><td><span class="sig">SLAdvMessage judgeMsg(SLMoralTrade t)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advprogramlistener">AdvProgramListener <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/demo/AdvProgramListener.sleela)</span></h2>
+<div data-u="advprogramlistener advprogramlistener">
+<h3 id="AdvProgramListener">AdvProgramListener <span class="pill">class</span></h3>
+<p class="desc">Example listener for the demo: a user defined program callback that counts what</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>events</code></td><td><span class="sig">int events = 0</span></td><td class="desc">The program side of the conversation. A module speaks, this is called.</td></tr>
+<tr><td><code>errors</code></td><td><span class="sig">int errors = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>readyCount</code></td><td><span class="sig">int readyCount = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>vetoes</code></td><td><span class="sig">int vetoes = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>judgedEvents</code></td><td><span class="sig">int judgedEvents = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastVerdict</code></td><td><span class="sig">int lastVerdict = -1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>haltedEvents</code></td><td><span class="sig">int haltedEvents = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastTopic</code></td><td><span class="sig">String lastTopic = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>onMessage</code></td><td><span class="sig">int onMessage(SLAdvMessage m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advuserechomodule">AdvUserEchoModule <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/demo/AdvUserEchoModule.sleela)</span></h2>
+<div data-u="advuserechomodule advuserechomodule">
+<h3 id="AdvUserEchoModule">AdvUserEchoModule <span class="pill">class</span></h3>
+<p class="desc">Example user defined module: it echoes the first number doubled, and tells the</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>br</code></td><td><span class="sig">SLAdvBridge br</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>on</code></td><td><span class="sig">boolean on = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>served</code></td><td><span class="sig">int served = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>moduleName</code></td><td><span class="sig">String moduleName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>moduleKind</code></td><td><span class="sig">String moduleKind()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>moduleVersion</code></td><td><span class="sig">String moduleVersion()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>running</code></td><td><span class="sig">boolean running()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>begin</code></td><td><span class="sig">boolean begin(SLAdvBridge bridge)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>end</code></td><td><span class="sig">void end()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>handle</code></td><td><span class="sig">int handle(SLAdvMessage m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getServed</code></td><td><span class="sig">int getServed()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="advuserpingmodule">AdvUserPingModule <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/demo/AdvUserPingModule.sleela)</span></h2>
+<div data-u="advuserpingmodule advuserpingmodule">
+<h3 id="AdvUserPingModule">AdvUserPingModule <span class="pill">class</span></h3>
+<p class="desc">Example user defined module for the safety test: answers every request by</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>br</code></td><td><span class="sig">SLAdvBridge br</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>on</code></td><td><span class="sig">boolean on = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>myName</code></td><td><span class="sig">String myName = &quot;ping-a&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>partner</code></td><td><span class="sig">String partner = &quot;ping-b&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>setNames</code></td><td><span class="sig">void setNames(String mine, String other)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>moduleName</code></td><td><span class="sig">String moduleName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>moduleKind</code></td><td><span class="sig">String moduleKind()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>moduleVersion</code></td><td><span class="sig">String moduleVersion()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>running</code></td><td><span class="sig">boolean running()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>begin</code></td><td><span class="sig">boolean begin(SLAdvBridge bridge)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>end</code></td><td><span class="sig">void end()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>handle</code></td><td><span class="sig">int handle(SLAdvMessage m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="business-exchange">business-exchange <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/medium-results/business-exchange.sleela)</span></h2>
@@ -654,6 +741,30 @@
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="hstdemo">HstDemo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/trader/HstDemo.sleela)</span></h2>
+<div data-u="hstdemo hstdemo">
+<h3 id="HstDemo">HstDemo <span class="pill">class</span></h3>
+<p class="desc">Runnable check of the high speed trader engine.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>evalsPerSimSecond</code></td><td><span class="sig">int evalsPerSimSecond = 5000</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxMinute</code></td><td><span class="sig">double maxMinute = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastMinute</code></td><td><span class="sig">double lastMinute = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastPnl</code></td><td><span class="sig">double lastPnl = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastAccepted</code></td><td><span class="sig">int lastAccepted = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastWallSeconds</code></td><td><span class="sig">double lastWallSeconds = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>check</code></td><td><span class="sig">void check(String what, boolean ok)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>run</code></td><td><span class="sig">double run(SLHighSpeedTrader tr, SLHstMarket mk, int simSeconds)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>vetoReport</code></td><td><span class="sig">void vetoReport(SLHighSpeedTrader tr, SLHstPragmatics reg)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="installer-demo">installer-demo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/connect/installer-demo.sleela)</span></h2>
 <div data-u="installer-demo installerdemo">
 <h3 id="InstallerDemo">InstallerDemo <span class="pill">class</span></h3>
@@ -714,6 +825,25 @@
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
 <tr><td><code>near</code></td><td><span class="sig">boolean near(double a, double b, double tol)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="moraldemo">MoralDemo <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/moral/MoralDemo.sleela)</span></h2>
+<div data-u="moraldemo moraldemo">
+<h3 id="MoralDemo">MoralDemo <span class="pill">class</span></h3>
+<p class="desc">Runnable check of the Moral Evaluator.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>passed</code></td><td><span class="sig">int passed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">int failed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>seed</code></td><td><span class="sig">int seed = 20261113</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>check</code></td><td><span class="sig">void check(String what, boolean ok)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rnd</code></td><td><span class="sig">double rnd()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>show</code></td><td><span class="sig">void show(SLMoralEvaluator ev, String label)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>main</code></td><td><span class="sig">void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
@@ -1039,6 +1169,223 @@
 <tr><td><code>currentValue</code></td><td><span class="sig">int currentValue()</span></td><td class="desc">Read the outcome in plain terms.</td></tr>
 <tr><td><code>summary</code></td><td><span class="sig">String summary()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>advanced</code></td><td><span class="sig">SLAdvantageDeveloperModel advanced()</span></td><td class="desc">A user who becomes curious can still reach the full developer controls.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sladvbridge">SLAdvBridge <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/SLAdvBridge.sleela)</span></h2>
+<div data-u="sladvbridge sladvbridge">
+<h3 id="SLAdvBridge">SLAdvBridge <span class="pill">class</span></h3>
+<p class="desc">The Advantage bridge: the middle proponent of communication, both ways.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>toMod</code></td><td><span class="sig">SLAdvMessage[] toMod</span></td><td class="desc">Messages addressed to program flow up; every other address flows down to the medium, which routes it to a module. Both queues are bounded (1024). A refused post returns -1 and is counted: the bridge fails closed.</td></tr>
+<tr><td><code>toProg</code></td><td><span class="sig">SLAdvMessage[] toProg</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mHead</code></td><td><span class="sig">int mHead = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mCount</code></td><td><span class="sig">int mCount = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pHead</code></td><td><span class="sig">int pHead = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pCount</code></td><td><span class="sig">int pCount = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cap</code></td><td><span class="sig">int cap = 1024</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nextId</code></td><td><span class="sig">int nextId = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>posted</code></td><td><span class="sig">int posted = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>dropped</code></td><td><span class="sig">int dropped = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>up</code></td><td><span class="sig">int up = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>down</code></td><td><span class="sig">int down = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isOpen</code></td><td><span class="sig">boolean isOpen = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>built</code></td><td><span class="sig">boolean built = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>build</code></td><td><span class="sig">void build()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>openBridge</code></td><td><span class="sig">void openBridge()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>shut</code></td><td><span class="sig">void shut()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>opened</code></td><td><span class="sig">boolean opened()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getPosted</code></td><td><span class="sig">int getPosted()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getDropped</code></td><td><span class="sig">int getDropped()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getUp</code></td><td><span class="sig">int getUp()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getDown</code></td><td><span class="sig">int getDown()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pendingModules</code></td><td><span class="sig">int pendingModules()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pendingProgram</code></td><td><span class="sig">int pendingProgram()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>post</code></td><td><span class="sig">int post(SLAdvMessage m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nextForModules</code></td><td><span class="sig">SLAdvMessage nextForModules()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nextForProgram</code></td><td><span class="sig">SLAdvMessage nextForProgram()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>takeReply</code></td><td><span class="sig">SLAdvMessage takeReply(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sladvcatalog">SLAdvCatalog <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/SLAdvCatalog.sleela)</span></h2>
+<div data-u="sladvcatalog sladvcatalog">
+<h3 id="SLAdvCatalog">SLAdvCatalog <span class="pill">class</span></h3>
+<p class="desc">The catalog of Advantage modules the medium can load by name.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nameAt</code></td><td><span class="sig">String nameAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>knows</code></td><td><span class="sig">boolean knows(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>create</code></td><td><span class="sig">SLAdvModule create(String name)</span></td><td class="desc">Build a fresh module by name, or null when the name is unknown.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sladvlistener">SLAdvListener <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/SLAdvListener.sleela)</span></h2>
+<div data-u="sladvlistener sladvlistener">
+<h3 id="SLAdvListener">SLAdvListener <span class="pill iface">interface</span></h3>
+<p class="desc">Advantage listener contract: a user program implements this to be called when a</p>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>onMessage</code></td><td><span class="sig">int onMessage(SLAdvMessage m);</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sladvmedium">SLAdvMedium <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/SLAdvMedium.sleela)</span></h2>
+<div data-u="sladvmedium sladvmedium">
+<h3 id="SLAdvMedium">SLAdvMedium <span class="pill">class</span></h3>
+<p class="desc">The Advantage medium: the middle, the center a user defined program loads.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>br</code></td><td><span class="sig">SLAdvBridge br</span></td><td class="desc">The program loads the medium (the center). The medium owns the bridge and holds up to 16 modules. A module comes from the catalog by name (load) or from the program itself (attach). pump routes every pending message. Reserved names: program and medium. Messages to an unknown module get an error reply. A pump handles at most 100000 messages, so a ping-pong between modules cannot hang the program (saturated reports it).</td></tr>
+<tr><td><code>cat</code></td><td><span class="sig">SLAdvCatalog cat</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>listener</code></td><td><span class="sig">SLAdvListener listener</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mods</code></td><td><span class="sig">SLAdvModule[] mods</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>names</code></td><td><span class="sig">String[] names</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>n</code></td><td><span class="sig">int n = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxModules</code></td><td><span class="sig">int maxModules = 16</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>up</code></td><td><span class="sig">boolean up = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>saturated</code></td><td><span class="sig">boolean saturated = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>routed</code></td><td><span class="sig">int routed = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unknown</code></td><td><span class="sig">int unknown = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failures</code></td><td><span class="sig">int failures = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>begin</code></td><td><span class="sig">boolean begin()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isUp</code></td><td><span class="sig">boolean isUp()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bridge</code></td><td><span class="sig">SLAdvBridge bridge()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>catalog</code></td><td><span class="sig">SLAdvCatalog catalog()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRouted</code></td><td><span class="sig">int getRouted()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getUnknown</code></td><td><span class="sig">int getUnknown()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getFailures</code></td><td><span class="sig">int getFailures()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wasSaturated</code></td><td><span class="sig">boolean wasSaturated()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nameAt</code></td><td><span class="sig">String nameAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>indexOf</code></td><td><span class="sig">int indexOf(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>has</code></td><td><span class="sig">boolean has(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>find</code></td><td><span class="sig">SLAdvModule find(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>attachListener</code></td><td><span class="sig">void attachListener(SLAdvListener l)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>attach</code></td><td><span class="sig">boolean attach(SLAdvModule m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>load</code></td><td><span class="sig">boolean load(String name)</span></td><td class="desc">Load a catalog module by name and seat it. False when unknown or refused.</td></tr>
+<tr><td><code>unload</code></td><td><span class="sig">boolean unload(String name)</span></td><td class="desc">Unseat a module: it is ended and its slot closed up.</td></tr>
+<tr><td><code>pumpModules</code></td><td><span class="sig">int pumpModules()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deliver</code></td><td><span class="sig">int deliver()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pump</code></td><td><span class="sig">int pump()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ask</code></td><td><span class="sig">SLAdvMessage ask(SLAdvMessage req)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tell</code></td><td><span class="sig">int tell(String toName, String topicName, String text)</span></td><td class="desc">Send a request without waiting. Returns the id, or -1 when refused.</td></tr>
+<tr><td><code>shutdown</code></td><td><span class="sig">void shutdown()</span></td><td class="desc">End every module and close the bridge.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sladvmessage">SLAdvMessage <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/SLAdvMessage.sleela)</span></h2>
+<div data-u="sladvmessage sladvmessage">
+<h3 id="SLAdvMessage">SLAdvMessage <span class="pill">class</span></h3>
+<p class="desc">The envelope that travels over the Advantage bridge, in either direction.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>id</code></td><td><span class="sig">int id = 0</span></td><td class="desc">kind: 0 request, 1 reply, 2 event, 3 error. status: 0 ok, nonzero refused. Reserved addresses: program is the user defined program, medium is the host.</td></tr>
+<tr><td><code>inReplyTo</code></td><td><span class="sig">int inReplyTo = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kind</code></td><td><span class="sig">int kind = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>status</code></td><td><span class="sig">int status = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>from</code></td><td><span class="sig">String from = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>to</code></td><td><span class="sig">String to = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>topic</code></td><td><span class="sig">String topic = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>text</code></td><td><span class="sig">String text = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nums</code></td><td><span class="sig">double[] nums</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>built</code></td><td><span class="sig">boolean built = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>build</code></td><td><span class="sig">void build()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>capacity</code></td><td><span class="sig">int capacity()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>size</code></td><td><span class="sig">int size()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addressed</code></td><td><span class="sig">SLAdvMessage addressed(String fromName, String toName, String topicName, int kindCode)</span></td><td class="desc">Address the message. Returns itself so a call can be chained.</td></tr>
+<tr><td><code>withText</code></td><td><span class="sig">SLAdvMessage withText(String t)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setNum</code></td><td><span class="sig">boolean setNum(int i, double v)</span></td><td class="desc">Set number i (0..47). An out of range index is refused (false).</td></tr>
+<tr><td><code>num</code></td><td><span class="sig">double num(int i)</span></td><td class="desc">Read number i; out of range reads as 0.0.</td></tr>
+<tr><td><code>numbers</code></td><td><span class="sig">double[] numbers()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>makeReply</code></td><td><span class="sig">SLAdvMessage makeReply(String fromName, String topicName)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>makeError</code></td><td><span class="sig">SLAdvMessage makeError(String fromName, int code, String why)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sladvmodule">SLAdvModule <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/SLAdvModule.sleela)</span></h2>
+<div data-u="sladvmodule sladvmodule">
+<h3 id="SLAdvModule">SLAdvModule <span class="pill iface">interface</span></h3>
+<p class="desc">Advantage module contract: what any module must offer to sit in the medium.</p>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>moduleName</code></td><td><span class="sig">String moduleName();</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>moduleKind</code></td><td><span class="sig">String moduleKind();</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>moduleVersion</code></td><td><span class="sig">String moduleVersion();</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>begin</code></td><td><span class="sig">boolean begin(SLAdvBridge bridge);</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>handle</code></td><td><span class="sig">int handle(SLAdvMessage m);</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>end</code></td><td><span class="sig">void end();</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>running</code></td><td><span class="sig">boolean running();</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sladvmoralmodule">SLAdvMoralModule <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/moral/SLAdvMoralModule.sleela)</span></h2>
+<div data-u="sladvmoralmodule sladvmoralmodule">
+<h3 id="SLAdvMoralModule">SLAdvMoralModule <span class="pill">class</span></h3>
+<p class="desc">The Moral Evaluator as an Advantage module (loaded by name moral-evaluator).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>ev</code></td><td><span class="sig">SLMoralEvaluator ev</span></td><td class="desc">Wire layout. configure: n0 points 5..41, n1 verdict states 2 or 3. register: n0 list (0 nouns, 1 names, 2 scientific, 3 moral), text is the entry. judge: n0..n31 trade facts in SLMoralTrade wire order; reply n0 verdict (0 NO, 1 YES, 2 COMPLETE), n1 merit, n2 risk, n3 cardinal point that failed or -1, n4 weak dimension or -1, n5 active points, text reason. review: n0 verdict that was given, n1 1 if it was right. ledger reply: n0 trades, n1 NO, n2 YES, n3 COMPLETE, n4 mean merit, n5 recent merit, n6 worst merit, n7 risk of merit. A cardinal veto also sends the program an unsolicited cardinal-veto event.</td></tr>
+<tr><td><code>ts</code></td><td><span class="sig">SLTallScience ts</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>led</code></td><td><span class="sig">SLMoralMeritLedger led</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>br</code></td><td><span class="sig">SLAdvBridge br</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>on</code></td><td><span class="sig">boolean on = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>moduleName</code></td><td><span class="sig">String moduleName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>moduleKind</code></td><td><span class="sig">String moduleKind()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>moduleVersion</code></td><td><span class="sig">String moduleVersion()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>running</code></td><td><span class="sig">boolean running()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>begin</code></td><td><span class="sig">boolean begin(SLAdvBridge bridge)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>end</code></td><td><span class="sig">void end()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fail</code></td><td><span class="sig">void fail(SLAdvMessage m, int code, String why)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>okReply</code></td><td><span class="sig">SLAdvMessage okReply(SLAdvMessage m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>handle</code></td><td><span class="sig">int handle(SLAdvMessage m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sladvtradermodule">SLAdvTraderModule <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/trader/SLAdvTraderModule.sleela)</span></h2>
+<div data-u="sladvtradermodule sladvtradermodule">
+<h3 id="SLAdvTraderModule">SLAdvTraderModule <span class="pill">class</span></h3>
+<p class="desc">The high speed trader as an Advantage module (loaded by name high-speed-trader).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>tr</code></td><td><span class="sig">SLHighSpeedTrader tr</span></td><td class="desc">Wire layout. configure: n0 pragmatics 8..24, n1 trades per minute. evaluate: n0..n9 candidate, n10 now in ms; reply n0 accepted 0 or 1, n1 code, n2 score, n3 threshold, n4 1 when sent to the linked module. simulate: n0 seconds (1..600), n1 seed; reply n0 evals, n1 accepted, n2 vetoed, n3 score rejects, n4 rate rejects, n5 pnl bps, n6 threshold, n7 halted. insight: n0 pragmatic id, n1 factor. link: text is the name of a module to judge each accepted trade. set-facts: n0..n31 trade facts template for judged trades. A judged reply returns here from the linked module; NO withdraws the trade, and the program is told by event.</td></tr>
+<tr><td><code>mk</code></td><td><span class="sig">SLHstMarket mk</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>br</code></td><td><span class="sig">SLAdvBridge br</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>on</code></td><td><span class="sig">boolean on = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>linked</code></td><td><span class="sig">String linked = &quot;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clockMs</code></td><td><span class="sig">double clockMs = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>judged</code></td><td><span class="sig">int judged = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kept</code></td><td><span class="sig">int kept = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>withdrawn</code></td><td><span class="sig">int withdrawn = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>completeN</code></td><td><span class="sig">int completeN = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>facts</code></td><td><span class="sig">double[] facts</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>moduleName</code></td><td><span class="sig">String moduleName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>moduleKind</code></td><td><span class="sig">String moduleKind()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>moduleVersion</code></td><td><span class="sig">String moduleVersion()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>running</code></td><td><span class="sig">boolean running()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>begin</code></td><td><span class="sig">boolean begin(SLAdvBridge bridge)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>end</code></td><td><span class="sig">void end()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fail</code></td><td><span class="sig">void fail(SLAdvMessage m, int code, String why)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>okReply</code></td><td><span class="sig">SLAdvMessage okReply(SLAdvMessage m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>judgeFacts</code></td><td><span class="sig">void judgeFacts(double[] o, SLAdvMessage j)</span></td><td class="desc">---- candidate to trade facts for the linked judge ----</td></tr>
+<tr><td><code>handle</code></td><td><span class="sig">int handle(SLAdvMessage m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>judgedReply</code></td><td><span class="sig">int judgedReply(SLAdvMessage m)</span></td><td class="desc">---- the verdict comes back from the linked module ----</td></tr>
 </table>
 </div>
 <h2 class="section" data-u="slannouncementcontact">SLAnnouncementContact <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/physics/SLAnnouncementContact.sleela)</span></h2>
@@ -1557,6 +1904,129 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slhighspeedtrader">SLHighSpeedTrader <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/trader/SLHighSpeedTrader.sleela)</span></h2>
+<div data-u="slhighspeedtrader slhighspeedtrader">
+<h3 id="SLHighSpeedTrader">SLHighSpeedTrader <span class="pill">class</span></h3>
+<p class="desc">The high speed trader AI built from 8 to 24 pragmatics (pure computation, synthetic data).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>reg</code></td><td><span class="sig">SLHstPragmatics reg</span></td><td class="desc">The high speed trader: a pure-computation model (no orders, no network). Candidate layout o[0..9]: edgeBps, costBps, evidenceN, spreadBps, volBps, ageMs, qty (fraction of max order, 0 to 1), positionFrac (0 to 1), venueTrust (0 to 1), depthRatio (depth divided by qty). Pipeline per candidate: 24 features in 0..1, then the first P pragmatics by priority order. Any feature below its hard minimum is a veto. Else the weighted score must reach the threshold and the rate governor must have a token. Everything fails closed: not ready, halted, or malformed means no.</td></tr>
+<tr><td><code>f</code></td><td><span class="sig">double[] f</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>w</code></td><td><span class="sig">double[] w</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hm</code></td><td><span class="sig">double[] hm</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>order</code></td><td><span class="sig">int[] order</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>vetoCount</code></td><td><span class="sig">int[] vetoCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>prior</code></td><td><span class="sig">double[] prior</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>P</code></td><td><span class="sig">int P = 8</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ready</code></td><td><span class="sig">boolean ready = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>halted</code></td><td><span class="sig">boolean halted = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>threshold</code></td><td><span class="sig">double threshold = 0.60</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tradesPerMinute</code></td><td><span class="sig">double tradesPerMinute = 2000.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ratePerMs</code></td><td><span class="sig">double ratePerMs = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>burst</code></td><td><span class="sig">double burst = 8.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tokens</code></td><td><span class="sig">double tokens = 8.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastMs</code></td><td><span class="sig">double lastMs = -1.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>windowStart</code></td><td><span class="sig">double windowStart = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>windowAccepted</code></td><td><span class="sig">int windowAccepted = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>windowRateRej</code></td><td><span class="sig">int windowRateRej = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>evals</code></td><td><span class="sig">int evals = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>accepted</code></td><td><span class="sig">int accepted = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rejVeto</code></td><td><span class="sig">int rejVeto = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rejScore</code></td><td><span class="sig">int rejScore = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rejRate</code></td><td><span class="sig">int rejRate = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rejNotReady</code></td><td><span class="sig">int rejNotReady = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastCode</code></td><td><span class="sig">int lastCode = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastBucket</code></td><td><span class="sig">int lastBucket = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insights</code></td><td><span class="sig">int insights = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insightsRefused</code></td><td><span class="sig">int insightsRefused = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastScore</code></td><td><span class="sig">double lastScore = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pnl</code></td><td><span class="sig">double pnl = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>peak</code></td><td><span class="sig">double peak = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ddLimit</code></td><td><span class="sig">double ddLimit = 400.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>eta</code></td><td><span class="sig">double eta = 0.10</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>learning</code></td><td><span class="sig">boolean learning = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">boolean configure(int pragmatics, double tpm)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setLearning</code></td><td><span class="sig">void setLearning(boolean on)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setDrawdownLimit</code></td><td><span class="sig">boolean setDrawdownLimit(double lim)</span></td><td class="desc">For comparison runs only: a positive finite drawdown limit in bps.</td></tr>
+<tr><td><code>getPragmatics</code></td><td><span class="sig">int getPragmatics()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getThreshold</code></td><td><span class="sig">double getThreshold()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getEvals</code></td><td><span class="sig">int getEvals()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAccepted</code></td><td><span class="sig">int getAccepted()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRejVeto</code></td><td><span class="sig">int getRejVeto()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRejScore</code></td><td><span class="sig">int getRejScore()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRejRate</code></td><td><span class="sig">int getRejRate()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getVeto</code></td><td><span class="sig">int getVeto(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getWeight</code></td><td><span class="sig">double getWeight(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getPnl</code></td><td><span class="sig">double getPnl()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getLastCode</code></td><td><span class="sig">int getLastCode()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getLastScore</code></td><td><span class="sig">double getLastScore()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isHalted</code></td><td><span class="sig">boolean isHalted()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getInsights</code></td><td><span class="sig">int getInsights()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getInsightsRefused</code></td><td><span class="sig">int getInsightsRefused()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>resetWindowAccepted</code></td><td><span class="sig">int resetWindowAccepted()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clamp01</code></td><td><span class="sig">double clamp01(double x)</span></td><td class="desc">---- small numeric helpers ----</td></tr>
+<tr><td><code>okv</code></td><td><span class="sig">boolean okv(double x)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>haltNow</code></td><td><span class="sig">void haltNow()</span></td><td class="desc">---- human control: halt is instant, re-arm is a deliberate human act ----</td></tr>
+<tr><td><code>rearm</code></td><td><span class="sig">void rearm()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>insight</code></td><td><span class="sig">boolean insight(int id, double factor)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>refill</code></td><td><span class="sig">void refill(double nowMs)</span></td><td class="desc">---- rate governor: token bucket plus a once a second threshold controller ----</td></tr>
+<tr><td><code>features</code></td><td><span class="sig">void features(double[] o)</span></td><td class="desc">---- the 24 features, straight line, each in 0..1 where 1 is best ----</td></tr>
+<tr><td><code>evaluate</code></td><td><span class="sig">int evaluate(double[] o, double nowMs)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>learn</code></td><td><span class="sig">void learn(double realizedBps)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slhstmarket">SLHstMarket <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/trader/SLHstMarket.sleela)</span></h2>
+<div data-u="slhstmarket slhstmarket">
+<h3 id="SLHstMarket">SLHstMarket <span class="pill">class</span></h3>
+<p class="desc">A deterministic synthetic market that feeds the high speed trader.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>seed</code></td><td><span class="sig">int seed = 12345</span></td><td class="desc">Deterministic synthetic candidate stream: same seed, same stream. Mix: noise, marginal, genuine, phantom (too good to be true), stale, oversize, high position, low trust, and a rare malformed record. The hidden truth decides the realized outcome, so learning has a signal.</td></tr>
+<tr><td><code>real</code></td><td><span class="sig">boolean real = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastE</code></td><td><span class="sig">double lastE = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastC</code></td><td><span class="sig">double lastC = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastV</code></td><td><span class="sig">double lastV = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kindCount</code></td><td><span class="sig">int kindCount = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>reseed</code></td><td><span class="sig">void reseed(int s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastWasReal</code></td><td><span class="sig">boolean lastWasReal()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rnd</code></td><td><span class="sig">double rnd()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>between</code></td><td><span class="sig">double between(double lo, double hi)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>next</code></td><td><span class="sig">void next(double[] o)</span></td><td class="desc">Fill o[0..9] with the next candidate. o must have 10 elements.</td></tr>
+<tr><td><code>realized</code></td><td><span class="sig">double realized()</span></td><td class="desc">Realized outcome in bps of the candidate just generated, with noise.</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slhstpragmatics">SLHstPragmatics <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/trader/SLHstPragmatics.sleela)</span></h2>
+<div data-u="slhstpragmatics slhstpragmatics">
+<h3 id="SLHstPragmatics">SLHstPragmatics <span class="pill">class</span></h3>
+<p class="desc">The registry of the 24 pragmatics of the high speed trader AI.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>names</code></td><td><span class="sig">String[] names</span></td><td class="desc">ids 0..7 LOGIC (clear logic), 8..15 USE (logic of use), 16..23 GROUND (secure and grounded trade). The priority order interleaves the phases so any prefix of 8 to 24 keeps all three, and the first 8 are the minimal safe core: every hard gate a trade must clear before it is even scored.</td></tr>
+<tr><td><code>hardMins</code></td><td><span class="sig">double[] hardMins</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>order</code></td><td><span class="sig">int[] order</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>built</code></td><td><span class="sig">boolean built = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>build</code></td><td><span class="sig">void build()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>minPragmatics</code></td><td><span class="sig">int minPragmatics()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>maxPragmatics</code></td><td><span class="sig">int maxPragmatics()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>name</code></td><td><span class="sig">String name(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hardMin</code></td><td><span class="sig">double hardMin(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>orderAt</code></td><td><span class="sig">int orderAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>phase</code></td><td><span class="sig">String phase(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slintegrationkind">SLIntegrationKind <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/integration/SLIntegrationKind.sleela)</span></h2>
 <div data-u="slintegrationkind slintegrationkind">
 <h3 id="SLIntegrationKind">SLIntegrationKind <span class="pill">class</span></h3>
@@ -1760,6 +2230,137 @@
 <tr><td><code>lastFault</code></td><td><span class="sig">SLConnectFault lastFault()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>receipt</code></td><td><span class="sig">String receipt()</span></td><td class="desc">A log-safe settlement receipt -- alias only, never a card number.</td></tr>
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slmoralevaluator">SLMoralEvaluator <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/moral/SLMoralEvaluator.sleela)</span></h2>
+<div data-u="slmoralevaluator slmoralevaluator">
+<h3 id="SLMoralEvaluator">SLMoralEvaluator <span class="pill">class</span></h3>
+<p class="desc">The Moral Evaluator: up to 41 yes or no points, human and life centered.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>yes</code></td><td><span class="sig">boolean[] yes</span></td><td class="desc">The Moral Evaluator. A trade is judged by up to 41 yes or no points in five dimensions: 0 trades, 1 time, 2 listers, 3 united states, 4 tall science. The orientation is the human at the center and the living person: five CARDINAL points (life safe, human is the end, informed consent, no deception, lawful subject) are vetoes that no amount of merit can buy. Verdicts: 0 NO, 1 YES, 2 COMPLETE (every one of the 41 points is yes). In binary mode COMPLETE is reported as YES. Fail closed: not ready is NO.</td></tr>
+<tr><td><code>dim</code></td><td><span class="sig">int[] dim</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cardinal</code></td><td><span class="sig">boolean[] cardinal</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>order</code></td><td><span class="sig">int[] order</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pname</code></td><td><span class="sig">String[] pname</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>dimTotal</code></td><td><span class="sig">int[] dimTotal</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>dimYes</code></td><td><span class="sig">int[] dimYes</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>dimFrac</code></td><td><span class="sig">double[] dimFrac</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>active</code></td><td><span class="sig">int active = 41</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mode</code></td><td><span class="sig">int mode = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ready</code></td><td><span class="sig">boolean ready = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>threshold</code></td><td><span class="sig">double threshold = 0.80</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>dimFloor</code></td><td><span class="sig">double dimFloor = 0.50</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastMerit</code></td><td><span class="sig">double lastMerit = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastVerdict</code></td><td><span class="sig">int lastVerdict = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastCardinalFail</code></td><td><span class="sig">int lastCardinalFail = -1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastWeakDim</code></td><td><span class="sig">int lastWeakDim = -1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastReason</code></td><td><span class="sig">String lastReason = &quot;not ready&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reviews</code></td><td><span class="sig">int reviews = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>configure</code></td><td><span class="sig">boolean configure(int points, int verdictStates)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>names</code></td><td><span class="sig">void names()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getActive</code></td><td><span class="sig">int getActive()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isReady</code></td><td><span class="sig">boolean isReady()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getThreshold</code></td><td><span class="sig">double getThreshold()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getMerit</code></td><td><span class="sig">double getMerit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getRisk</code></td><td><span class="sig">double getRisk()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getVerdict</code></td><td><span class="sig">int getVerdict()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getReason</code></td><td><span class="sig">String getReason()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCardinalFail</code></td><td><span class="sig">int getCardinalFail()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getWeakDim</code></td><td><span class="sig">int getWeakDim()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getDimFrac</code></td><td><span class="sig">double getDimFrac(int d)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getAnswer</code></td><td><span class="sig">boolean getAnswer(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pointName</code></td><td><span class="sig">String pointName(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>verdictName</code></td><td><span class="sig">String verdictName(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>dimName</code></td><td><span class="sig">String dimName(int d)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>answers</code></td><td><span class="sig">void answers(SLMoralTrade t, SLTallScience ts)</span></td><td class="desc">---- the 41 yes or no answers, straight line ----</td></tr>
+<tr><td><code>evaluate</code></td><td><span class="sig">int evaluate(SLMoralTrade t, SLTallScience ts)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>review</code></td><td><span class="sig">boolean review(int verdictWas, boolean correct)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slmoralmeritledger">SLMoralMeritLedger <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/moral/SLMoralMeritLedger.sleela)</span></h2>
+<div data-u="slmoralmeritledger slmoralmeritledger">
+<h3 id="SLMoralMeritLedger">SLMoralMeritLedger <span class="pill">class</span></h3>
+<p class="desc">The ledger of verdicts and merit over many trades.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>count</code></td><td><span class="sig">int count = 0</span></td><td class="desc">Overall trades over time: a running record of verdicts and merit.</td></tr>
+<tr><td><code>nNo</code></td><td><span class="sig">int nNo = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nYes</code></td><td><span class="sig">int nYes = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nComplete</code></td><td><span class="sig">int nComplete = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sumMerit</code></td><td><span class="sig">double sumMerit = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ema</code></td><td><span class="sig">double ema = 0.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>minMerit</code></td><td><span class="sig">double minMerit = 1.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weak</code></td><td><span class="sig">int[] weak</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cardinalFails</code></td><td><span class="sig">int[] cardinalFails</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>built</code></td><td><span class="sig">boolean built = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>build</code></td><td><span class="sig">void build()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>noteTrade</code></td><td><span class="sig">void noteTrade(SLMoralEvaluator ev)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getCount</code></td><td><span class="sig">int getCount()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getNo</code></td><td><span class="sig">int getNo()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getYes</code></td><td><span class="sig">int getYes()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>getComplete</code></td><td><span class="sig">int getComplete()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>meanMerit</code></td><td><span class="sig">double meanMerit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>recentMerit</code></td><td><span class="sig">double recentMerit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>worstMerit</code></td><td><span class="sig">double worstMerit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>riskOfMerit</code></td><td><span class="sig">double riskOfMerit()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>weakCount</code></td><td><span class="sig">int weakCount(int d)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cardinalCount</code></td><td><span class="sig">int cardinalCount(int id)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slmoraltrade">SLMoralTrade <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/moral/SLMoralTrade.sleela)</span></h2>
+<div data-u="slmoraltrade slmoraltrade">
+<h3 id="SLMoralTrade">SLMoralTrade <span class="pill">class</span></h3>
+<p class="desc">The facts of one trade for the Moral Evaluator.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>endangersLife</code></td><td><span class="sig">boolean endangersLife = false</span></td><td class="desc">The facts of one trade, set by the caller. Defaults describe an exemplary trade, so a test changes only the one fact it wants to break.</td></tr>
+<tr><td><code>humanIsEnd</code></td><td><span class="sig">boolean humanIsEnd = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>consent</code></td><td><span class="sig">boolean consent = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>deceptive</code></td><td><span class="sig">boolean deceptive = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>coerced</code></td><td><span class="sig">boolean coerced = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>priceRatio</code></td><td><span class="sig">double priceRatio = 1.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasRemedy</code></td><td><span class="sig">boolean hasRemedy = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>thirdPartyHarm</code></td><td><span class="sig">boolean thirdPartyHarm = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bothBenefit</code></td><td><span class="sig">boolean bothBenefit = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>exploitsUrgency</code></td><td><span class="sig">boolean exploitsUrgency = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>coolingOffHours</code></td><td><span class="sig">double coolingOffHours = 24.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>decisionMinutes</code></td><td><span class="sig">double decisionMinutes = 30.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>timestamped</code></td><td><span class="sig">boolean timestamped = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>termDays</code></td><td><span class="sig">double termDays = 30.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>quoteAgeSeconds</code></td><td><span class="sig">double quoteAgeSeconds = 5.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tradesPerMinute</code></td><td><span class="sig">double tradesPerMinute = 100.0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>listerIdentified</code></td><td><span class="sig">boolean listerIdentified = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>listerStanding</code></td><td><span class="sig">double listerStanding = 0.9</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>listingTruthful</code></td><td><span class="sig">boolean listingTruthful = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>listerProhibited</code></td><td><span class="sig">boolean listerProhibited = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>provenanceKnown</code></td><td><span class="sig">boolean provenanceKnown = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>conflictDisclosed</code></td><td><span class="sig">boolean conflictDisclosed = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>listerCount</code></td><td><span class="sig">int listerCount = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>listerAccountable</code></td><td><span class="sig">boolean listerAccountable = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>inUsBoundary</code></td><td><span class="sig">boolean inUsBoundary = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lawfulSubject</code></td><td><span class="sig">boolean lawfulSubject = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sanctionedCounterparty</code></td><td><span class="sig">boolean sanctionedCounterparty = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>recordsKept</code></td><td><span class="sig">boolean recordsKept = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>feesAccounted</code></td><td><span class="sig">boolean feesAccounted = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>manipulative</code></td><td><span class="sig">boolean manipulative = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>protectionsHonored</code></td><td><span class="sig">boolean protectionsHonored = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>respectsUS</code></td><td><span class="sig">boolean respectsUS = true</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>wireSize</code></td><td><span class="sig">int wireSize()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fromNums</code></td><td><span class="sig">boolean fromNums(double[] n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toNums</code></td><td><span class="sig">boolean toNums(double[] n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="slnashbargaining">SLNashBargaining <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/math/SLNashBargaining.sleela)</span></h2>
@@ -2096,6 +2697,44 @@
 <tr><td><code>lastFault</code></td><td><span class="sig">SLConnectFault lastFault()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>coordinate</code></td><td><span class="sig">String coordinate()</span></td><td class="desc">A redacted, log-safe coordinate string -- never the user or secret.</td></tr>
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="sltallscience">SLTallScience <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/modules/moral/SLTallScience.sleela)</span></h2>
+<div data-u="sltallscience sltallscience">
+<h3 id="SLTallScience">SLTallScience <span class="pill">class</span></h3>
+<p class="desc">Tall Science: the United States held as a cataloged Item.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>itemName</code></td><td><span class="sig">String itemName = &quot;the United States&quot;</span></td><td class="desc">Tall Science: the United States held as an ITEM in a catalog, with the lists it carries: subject nouns, names, scientific individuals, moral individuals, and its boundary. This is a reference record for judging a trade. Nothing is bought or sold, and no person is profiled: individuals are listed as roles or public-record names supplied by the caller. The nouns and names lists are read respectively: entry i of one pairs with entry i of the other, so they must have the same length.</td></tr>
+<tr><td><code>hasItem</code></td><td><span class="sig">boolean hasItem = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>inBoundary</code></td><td><span class="sig">boolean inBoundary = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>respected</code></td><td><span class="sig">boolean respected = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nouns</code></td><td><span class="sig">String[] nouns</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>names</code></td><td><span class="sig">String[] names</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sci</code></td><td><span class="sig">String[] sci</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mor</code></td><td><span class="sig">String[] mor</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nNouns</code></td><td><span class="sig">int nNouns = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nNames</code></td><td><span class="sig">int nNames = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nSci</code></td><td><span class="sig">int nSci = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nMor</code></td><td><span class="sig">int nMor = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>built</code></td><td><span class="sig">boolean built = false</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>build</code></td><td><span class="sig">void build()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setItemName</code></td><td><span class="sig">void setItemName(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setBoundary</code></td><td><span class="sig">void setBoundary(boolean b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setRespected</code></td><td><span class="sig">void setRespected(boolean b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>declareItem</code></td><td><span class="sig">void declareItem()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>countNouns</code></td><td><span class="sig">int countNouns()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>countNames</code></td><td><span class="sig">int countNames()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>countScientific</code></td><td><span class="sig">int countScientific()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>countMoral</code></td><td><span class="sig">int countMoral()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canonical</code></td><td><span class="sig">boolean canonical()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>paired</code></td><td><span class="sig">boolean paired()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>register</code></td><td><span class="sig">boolean register(int list, String text)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>seed</code></td><td><span class="sig">void seed()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="sltechinstallerii">SLTechInstallerII <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/advantage/connect/SLTechInstallerII.sleela)</span></h2>
@@ -3804,7 +4443,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-13 18:08 UTC.
+<code>/lib</code> tree on 2026-11-13 19:52 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
