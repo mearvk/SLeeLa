@@ -97,11 +97,13 @@ Where this file and one of those disagree, the normative text wins.
 | Nested and inner types | hoisted to `Outer__Name`; inner classes hold `outer_` | `Nested` |
 | Anonymous classes, lambdas, method references | generated classes `Top__N` with `cap_` fields and `outer_`; target type from the declaration, assignment, return, field or callee signature | `Anon`, `Functional`, `Refs` |
 | `instanceof T v` | declared before the statement, assigned in the test | `Refs` |
-| Records | canonical and compact constructors, accessors, `toString`, `equals`, `hashCode` (not yet in a differential test) | none yet |
+| Records | canonical and compact constructors, accessors, `toString`, `equals`, `hashCode` | `Records` |
+| Fields and initialization | Java default values; field initializers and instance `{ }` blocks after `super(...)` (JLS 12.5); library superclass members typed | `Init` |
+| Stale output | a re-run removes what the previous run wrote, so a failed-closed file leaves nothing | suite `stale-output` check |
 | Arrays | one and many dimensions, jagged, nested initializers, `a.length` | `Grid` |
 | Concurrency | `synchronized` / `volatile` plain under `--single-thread`, else refused | `Sync` |
 | Refusals | proven by programs that must be refused | `tests/reject` (4) |
-| Whole suite | `tests/javaconv_differential_test.sh` | 18 programs + 4 refusals |
+| Whole suite | `tests/javaconv_differential_test.sh` | 20 programs + 5 refusals + stale-output check |
 
 ### 2.5 `lib/java/converter` (written in SLeeLa, per-member stubs, output `#sleela 3.1`)
 
@@ -146,7 +148,7 @@ Where this file and one of those disagree, the normative text wins.
 | `var` | stub reason 8 | `lib/java/converter` | infer from the initializer through the typed pass |
 | Class literals `X.class`, `getClass().getName()` | stub reason 9; a user exception prints the library class name | language / library | a runtime class-name query |
 | `enum` declarations in SLeeLa source (43.5); enums nested in a class, `this(...)` in an enum constructor | lowered by both converters except those two forms, refused by `sleelactl` | language / `sleelactl` | — |
-| Records not in a differential test | records lowered by `sleelactl`, unproven | `sleelactl` | add a `Records` test program |
+| `static { }` blocks; `Object.equals`/`hashCode`/`getClass` on a user type (enums included) | refused by `sleelactl` (`init-block`, `object-method`) | `sleelactl` / library | guarded static init; identity `equals` and hash |
 | `String` static members in `lib/java/converter` | stub reason 22 | `lib/java/converter` | the `JavaFormat` route `sleelactl` uses |
 | `System.out.print` without a newline | stub reason 23 | language / library (`print` always adds a newline) | a no-newline print built-in |
 | Files with non-ASCII bytes | skipped by `lib/java/converter` (12 of 15,020 JDK files) | VM `read` returns 4,095-byte plain String pieces | a byte-level read |

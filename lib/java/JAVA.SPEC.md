@@ -174,8 +174,25 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
 - Records (JLS 8.10). A record is a class with one field per component, the canonical constructor
   (a compact constructor runs its body first), an accessor per component, `toString()` as
   `Name[a=1, b=2]`, `equals` when every component is a primitive (not float/double) or a String, and
-  `hashCode` for int-like, long, boolean and String components. Implemented; **not yet covered by a
-  differential test**.
+  `hashCode` for int-like, long, boolean and String components. Test: `Records`.
+- Field defaults (JLS 4.12.5). A field without an initializer is written with the default value of
+  its type (`0`, `0.0`, `false`, `null`), because a SLeeLa field starts as `null`: an unset `int` would
+  print `null` and fail the integer laws, and an unset instance `String` would read as `""`. Test: `Init`.
+- Initialization order (JLS 12.5, 8.6). Instance field initializers and instance initializer blocks
+  run in source order inside the constructor, after `super(...)` and before the rest of the body; a
+  constructor that delegates with `this(...)` leaves them to the delegate. They are collected into a
+  generated method `javaFieldInit_<Class>()` called at that point (an implicit default constructor is
+  written when the class has none). SLeeLa alone would run them at allocation, before every
+  constructor, so a superclass constructor would see subclass fields already set. An initializer that
+  needs extra statements (a temporary) stays on the field. Enums, records and anonymous classes keep
+  field initializers on the field. Refused: `static { }` blocks (`[init-block]`). Test: `Init`.
+- Inherited library members. A call on a user class that extends a library type (`class MyEx extends
+  Exception`) is typed through the superclass chain and the model `ret` rows, so `e.getMessage()` has
+  the type `String`. Test: `Init`.
+- `java.lang.Object` methods. `equals`, `hashCode`, `getClass`, `clone`, `wait`/`notify` called on a
+  user type that does not declare them (and has no library ancestor) are refused (`[object-method]`):
+  SLeeLa has no such method, and the call would otherwise only fail later in the checker. Records
+  declare the `equals`/`hashCode` they generate. Test: `reject/ObjectMethod`.
 - Object text. An object shown as text calls `toString()` through a generated static helper
   `Owner.javaText(x)` (`null` is `"null"`), because SLeeLa would show the handle.
 - Interfaces carry no metadata fields; every class carries the Metadata Class record.
@@ -209,6 +226,8 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 | `outer.new Inner()`, local classes | rare forms | hoist local classes like nested ones |
 | `case Type t ->` patterns, record patterns, sealed exhaustiveness | binding scope in a switch | per-arm cast declaration |
 | Records: `equals`/`hashCode` for double/float/reference components | Java's rules for those | `Double.compare` and `Objects.equals` lowering |
+| `static { }` initializer blocks | class initialization runs on first use (JLS 12.4) | a guarded static init method called on first access |
+| `Object.equals`/`hashCode`/`getClass` on a type that does not declare them (enums included) | SLeeLa has no root object methods | identity `equals`, an identity hash, a runtime class name |
 | `String.format` with a non-literal format, `%e`, argument indexes | runtime format parsing | a runtime formatter in `JavaFormat` |
 | `synchronized`/`volatile` in a multi-threaded program | memory model | real monitors, or keep the single-thread policy |
 | `native` | no body | none |
@@ -226,8 +245,10 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 
 ## 7. Verification
 
-`bash tests/javaconv_differential_test.sh` runs 18 programs on a JDK and on the converted SLeeLa:
-Anon, Basics, Control, Enums, Flow, Floats, Formats, Functional, Grid, Nested, Operands, Refs, Resources,
-Shapes, Strings, Switches, Sync, Varargs, and 4 refusal programs under `tests/reject` that must be refused (a lambda
-argument to an unknown method, String identity comparison, a `synchronized` block without `--single-thread`, an operand of unknown type).
+`bash tests/javaconv_differential_test.sh` runs 20 programs on a JDK and on the converted SLeeLa:
+Anon, Basics, Control, Enums, Flow, Floats, Formats, Functional, Grid, Init, Nested, Operands, Records, Refs,
+Resources, Shapes, Strings, Switches, Sync, Varargs, and 5 refusal programs under `tests/reject` that must be refused (a lambda
+argument to an unknown method, String identity comparison, a `synchronized` block without `--single-thread`, an operand of
+unknown type, an `Object` method a user type does not declare). A last check converts a file, makes it fail closed, converts
+again and requires that the earlier output is gone (the converter keeps the list of what it wrote in `.javaconv-emitted`).
 `bash examples/java/differential/run-differential.sh` is the older hand-converted suite.

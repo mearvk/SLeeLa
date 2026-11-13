@@ -41,7 +41,11 @@ bin/sleelactl run   java-convert --self-check
 ```
 
 Exit 0: everything converted. Exit 1: some files failed closed (see
-`CONVERSION-REPORT.md/.json` in the output). Exit 2: usage/IO.
+`CONVERSION-REPORT.md/.json` in the output). Exit 2: usage/IO (including a file that cannot be written).
+
+A re-run into the same output directory first removes the files the previous run wrote (listed in
+`<out>/.javaconv-emitted`), so a file that now fails closed leaves no stale conversion behind. Only files
+in that list are deleted.
 
 ## Fail closed
 
@@ -61,16 +65,19 @@ The refusal rows are the `unsupported` records of the model.
 
 ## Status (honest)
 
-Converted and proven against a JDK (`tests/javaconv_differential_test.sh`, 18 programs plus 4 refusals):
+Converted and proven against a JDK (`tests/javaconv_differential_test.sh`, 20 programs plus 5 refusals and a
+stale-output check):
 integer, float, char and String semantics; `String.valueOf/join/format` (literal format); native `switch`
 (fallthrough, arrow cases, switch expressions); assignment and `++`/`--` as values; enums; varargs;
 try-with-resources; `synchronized`/`volatile` under `--single-thread`; arrays of any rank; anonymous
 classes, lambdas and method references (captured variables as fields); nested and inner classes;
-`instanceof` patterns. Records are implemented but not yet covered by a test.
+`instanceof` patterns; records; field default values; Java initialization order (field initializers and
+instance initializer blocks after `super(...)`); members inherited from library superclasses.
 
 Not converted (refused with a located diagnostic): operands of unknown type (no generics inference, the
 largest blocker on real JDK code), lambdas whose target interface is unknown, nested capture chains,
-`outer.new Inner()`, local classes, switch type patterns, `native`. The list with reasons is section 5
+`outer.new Inner()`, local classes, switch type patterns, `static { }` blocks, `Object` methods on a type
+that does not declare them, `native`. The list with reasons is section 5
 of [`lib/java/JAVA.SPEC.md`](../../lib/java/JAVA.SPEC.md).
 
 The JDK as a whole is not converted: the earlier whole-tree measurement (JDK 25 `java.base`, 345 of 884

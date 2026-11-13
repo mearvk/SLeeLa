@@ -9217,3 +9217,6 @@ unsupported switch-expr a switch expression must start the expression of a decla
 unsupported string-static String is a keyword type in SLeeLa, so String.valueOf / String.format / String.join cannot be called as static members yet
 unsupported nested nested/inner/anonymous types are not converted yet
 unsupported untyped operand type cannot be determined, so the Java operator semantics cannot be selected
+unsupported init-block a static initializer block, or an initializer block outside an ordinary class, is not converted yet; instance initializer blocks are converted
+unsupported member-annotation an annotation type or annotation member declaration is not converted
+unsupported object-method a java.lang.Object method (equals, hashCode, getClass ...) on a user type that does not declare it is not converted yet

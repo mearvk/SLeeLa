@@ -145,6 +145,18 @@ private:
     bool enumMode_ = false;
     bool innerMode_ = false;        // parsing members of an inner (non-static) class: constructors take the enclosing instance
     bool innerCtorSeen_ = false;
+    // Instance field initializers of the class being parsed. Java runs them in the constructor, after
+    // super(...) and before the rest of the body (JLS 12.5); SLeeLa would run them at allocation, before
+    // any constructor, which reorders side effects and lets a superclass constructor see them early.
+    // They are therefore collected here and assigned from a per-class method that each constructor calls.
+    struct ClassInit { std::vector<std::string> inits; bool ctorSeen = false; };
+    ClassInit* classInit_ = nullptr;   // null inside enums, records and anonymous classes (generated, not hoisted)
+    struct InitScope {
+        Translator* t; ClassInit* saved;
+        InitScope(Translator* t_, ClassInit* n) : t(t_), saved(t_->classInit_) { t->classInit_ = n; }
+        ~InitScope() { t->classInit_ = saved; }
+    };
+    static constexpr const char* kInitMarker = "@@FIELDINIT@@";
     std::string curSimple_;         // the source name of the class being parsed (constructors are written with it)
     std::string resolveTypeName(const std::string& n) const {
         auto it = nestedMap_.find(n);
@@ -953,10 +965,32 @@ private:
             r.ty = m->ret;
             return r;
         }
+        // A method of java.lang.Object (equals, hashCode, getClass ...) called on a type of this tree that
+        // neither declares it nor has a library ancestor: SLeeLa has no such method, so the converted call
+        // would only fail later in the checker. Refuse it here, located, instead.
+        static const std::set<std::string> kObjectMethods = {"equals", "hashCode", "getClass", "clone", "notify", "notifyAll", "wait", "finalize"};
+        if (kObjectMethods.count(name) && classes.count(recvType)) {
+            bool closed = true;
+            for (std::string c = recvType; !c.empty();) {
+                auto ci = classes.find(c);
+                if (ci == classes.end()) { closed = false; break; }
+                c = ci->second.super;
+            }
+            if (closed) fail("object-method", "java.lang.Object." + name + " on " + recvType + ", which does not declare it, has no SLeeLa equivalent yet");
+        }
         std::string owner = recvType;
         std::string prim;
         if (modelBoxed(owner, &prim) && owner != "Integer" && owner != "Long" && owner != "Double") { /* keep */ }
         const cm_rec* rec = cm_find(&M, "ret", owner.c_str(), name.c_str(), nullptr);
+        // A user type that extends a library type (class MyEx extends Exception) inherits that
+        // type's members: walk the declared superclass chain through the model rows.
+        for (std::string up = owner; !rec; ) {
+            auto ci = classes.find(up);
+            if (ci == classes.end() || ci->second.super.empty()) break;
+            up = ci->second.super;
+            if (const MethodSig* m = pickMethod(up, name, args)) { r.ty = m->ret; return r; }
+            rec = cm_find(&M, "ret", up.c_str(), name.c_str(), nullptr);
+        }
         if (rec) {
             std::string t = rec->f[2];
             if (t == "@arg0") {
@@ -2013,6 +2047,7 @@ private:
 
     // new T(args) { members }
     E parseAnonymous(const std::string& base, std::vector<E> superArgs) {
+        InitScope noHoist(this, nullptr);
         if (inGenerated()) fail("anonymous-nested", "an anonymous class inside another anonymous class or lambda is not converted");
         AnonCtx a;
         a.sub = nextAnonName();
@@ -2266,6 +2301,7 @@ private:
     // toString() "Name[a=1, b=2]" and, when every component is a primitive or a String,
     // equals(Object) and, for int-like, long, boolean and String components, hashCode().
     void parseRecord(const std::string& nestPrefix, const std::string& outerName, bool nestedStatic) {
+        InitScope noHoist(this, nullptr);
         expectKw("record");
         const bool nested = !nestPrefix.empty();
         Saved sv = saveState();
@@ -2303,6 +2339,17 @@ private:
             for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ci.methods.push_back(ms); }
             MethodSig canon; canon.name = "<init>"; canon.ret = mk("void"); canon.varargs = compVarargs; for (auto& c : comps) canon.params.push_back(c.second); ci.methods.push_back(canon);
             MethodSig ts; ts.name = "toString"; ts.ret = mk("String"); ci.methods.push_back(ts);
+            // equals / hashCode exist exactly when the record lowering generates them (see below)
+            bool simpleC = true, hashC = true;
+            for (auto& c : comps) {
+                const Ty& t = c.second;
+                const bool pr = t.dims == 0 && (kPrim.count(t.n) > 0) && t.n != "float" && t.n != "double";
+                const bool st = t.dims == 0 && t.n == "String";
+                if (!pr && !st) simpleC = false;
+                if (!(t.dims == 0 && (t.n == "int" || t.n == "short" || t.n == "byte" || t.n == "char" || t.n == "boolean" || t.n == "long" || st))) hashC = false;
+            }
+            if (simpleC) { MethodSig es; es.name = "equals"; es.ret = mk("boolean"); es.params.push_back(mk("Object")); ci.methods.push_back(es); }
+            if (hashC) { MethodSig hs; hs.name = "hashCode"; hs.ret = mk("int"); ci.methods.push_back(hs); }
         }
         size_t beforeDiags = diags.size();
         std::vector<std::string> memberLines;
@@ -2435,6 +2482,7 @@ private:
     // static values array, and values()/valueOf()/name()/ordinal()/toString()/compareTo().
     // A bare constant name in a case label is resolved by parseCaseLabel.
     void parseEnum(const std::string& nestPrefix = "") {
+        InitScope noHoist(this, nullptr);
         expectKw("enum");
         typeVars.clear();
         curIsInterface = false;
@@ -2923,6 +2971,8 @@ private:
             while (acceptOp(",")) parseType();
         }
         expectOp("{");
+        ClassInit cinit;
+        InitScope hoistScope(this, isIface ? nullptr : &cinit);
         ClassInfo& ci = classes[name];
         if (pass == 1) { ci.fields.clear(); ci.methods.clear(); ci.super = superName; ci.ifaces = ifaceNames; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : ""; }
         std::vector<std::string> memberLines;
@@ -2956,11 +3006,23 @@ private:
             for (const auto& m : ci.methods) if (m.name == "toString" && m.params.empty()) declares = true;
             if (declares) o << "  static String javaText(" << name << " x) {\n    if (x == null) { return \"null\"; }\n    return x.toString();\n  }\n";
         }
+        const std::string initCall = "javaFieldInit_" + name + "();";
+        const bool hasInits = !cinit.inits.empty();
         if (innerMode_) {
             o << "  " << outerName << " outer_;\n";
-            if (!innerCtorSeen_) o << "  " << name << "(" << outerName << " outerArg_) {\n    this.outer_ = outerArg_;\n  }\n";
+            if (!innerCtorSeen_) o << "  " << name << "(" << outerName << " outerArg_) {\n    this.outer_ = outerArg_;\n" << (hasInits ? "    " + initCall + "\n" : "") << "  }\n";
+        } else if (hasInits && !cinit.ctorSeen) {
+            o << "  " << name << "() {\n    " << initCall << "\n  }\n";   // the implicit default constructor
         }
-        for (auto& l : memberLines) o << l << "\n";
+        if (hasInits) {
+            o << "  void javaFieldInit_" << name << "() {\n";
+            for (auto& a : cinit.inits) o << a << "\n";
+            o << "  }\n";
+        }
+        for (auto& l : memberLines) {
+            if (l.find(kInitMarker) != std::string::npos) { if (hasInits) o << "    " << initCall << "\n"; continue; }
+            o << l << "\n";
+        }
         o << "}\n";
         OutFile f;
         f.typeName = name;
@@ -3001,7 +3063,27 @@ private:
 
     void parseMember(const std::string& cls, bool isIface, ClassInfo& ci, int* instanceFields) {
         Mods mods = parseModifiers();
-        if (isOp("{")) unsup("nested");                       // initializer block
+        if (isOp("{")) {                                      // initializer block
+            if (!classInit_ || mods.has("static")) unsup("init-block");
+            // An instance initializer runs with the field initializers, in source order (JLS 8.6): it
+            // joins the per-class initializer method instead of being placed in the class body.
+            scopes.clear(); usedNames.clear(); pushScope(); tmpCounter = 0; curRet = mk("void"); curIsStatic_ = false;
+            const size_t outBefore = out.size();
+            ind = 2;
+            line("{");
+            ind = 3;
+            expectOp("{");
+            pushScope();
+            while (!isOp("}")) { if (atEof()) fail("syntax", "unexpected end of file in initializer block"); parseStatement(); }
+            p++;
+            popScope();
+            ind = 2;
+            line("}");
+            ind = 1;
+            for (size_t i = outBefore; i < out.size(); i++) classInit_->inits.push_back(out[i]);
+            out.resize(outBefore);
+            return;
+        }
         if (isKw("class") || isKw("interface") || isKw("enum")) {   // a nested type is hoisted to Outer__Name
             if (!anonStack_.empty() && anonStack_.back().sub == cls && !innerMode_ && false) unsup("nested");
             bool st = mods.has("static") || isKw("interface") || isKw("enum") || curIsInterface;
@@ -3012,7 +3094,7 @@ private:
             parseTypeDecl(cls + "__", true, true);
             return;
         }
-        if (isOp("@")) unsup("nested");
+        if (isOp("@")) unsup("member-annotation");
         if (mods.has("synchronized") && !opt.singleThread) unsup("synchronized");
         if (mods.has("volatile") && !opt.singleThread) fail("volatile", "volatile requires the Java memory model; convert with --single-thread to treat it as a plain field");
         if (mods.has("native")) fail("native", "native methods have no Java body to convert");
@@ -3052,6 +3134,14 @@ private:
             }
             expectOp("{");
             pushScope();
+            if (classInit_) {
+                classInit_->ctorSeen = true;
+                // this(...) delegates: the delegate runs the initializers. Otherwise they run right after
+                // an explicit super(...), or first when the call is implicit.
+                if (isKw("this") && isOpAt(p + 1, "(")) { /* none */ }
+                else if (isKw("super") && isOpAt(p + 1, "(")) { parseStatement(); line(kInitMarker); }
+                else line(kInitMarker);
+            }
             while (!isOp("}")) { if (atEof()) fail("syntax", "unexpected end of file in constructor"); parseStatement(); }
             p++;
             popScope();
@@ -3129,17 +3219,36 @@ private:
             FieldInfo fi; fi.ty = ft; fi.isStatic = isStatic || isIface;
             if (pass == 1) ci.fields[name] = fi;
             std::string decl = std::string((isStatic || isIface) ? "static " : "") + emitType(ft) + " " + name;
+            // JLS 4.12.5: a field starts at the default value of its type. SLeeLa leaves it null, which
+            // prints as "null", breaks the integer laws, and turns an unset instance String into "".
+            std::string dflt = " = null";
+            if (ft.dims == 0) {
+                const std::string& tn = ft.n;
+                if (tn == "int" || tn == "long" || tn == "short" || tn == "byte" || tn == "char") dflt = " = 0";
+                else if (tn == "double" || tn == "float") dflt = " = 0.0";
+                else if (tn == "boolean") dflt = " = false";
+            }
+            const bool hoistable = classInit_ && !(isStatic || isIface);
+            bool hoisted = false;
             if (acceptOp("=")) {
                 scopes.clear(); usedNames.clear(); pushScope(); tmpCounter = 0; curRet = mk("void");
+                const size_t outBefore = out.size();
+                std::string init;
                 if (isOp("{")) {
-                    decl += " = " + parseArrayInit(ft);
+                    init = parseArrayInit(ft);
                 } else {
                     lambdaTarget_ = ft;
                     E v = parseExpr();
                     v = coerce(v, ft);
-                    decl += " = " + v.code;
+                    init = v.code;
                 }
+                // an initializer that needed extra statements (temporaries) stays where it is
+                if (hoistable && out.size() == outBefore) { classInit_->inits.push_back("    this." + name + " = " + init + ";"); decl += dflt; hoisted = true; }
+                else decl += " = " + init;
+            } else {
+                decl += dflt;
             }
+            (void)hoisted;
             line(decl + ";");
             if (!(isStatic || isIface)) (*instanceFields)++;
             if (acceptOp(",")) { name = ident(); continue; }

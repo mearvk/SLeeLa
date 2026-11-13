@@ -183,6 +183,17 @@ int main(int argc, char** argv) {
         javaconv::collect(text, model, o, table);
     }
 
+    // A file that now fails closed must leave NO output. Remove what an earlier run emitted (the list is
+    // kept in outRoot/.javaconv-emitted); only files this tool wrote are ever deleted.
+    const fs::path emittedList = outRoot / ".javaconv-emitted";
+    {
+        std::ifstream prev(emittedList);
+        std::string rel;
+        std::error_code rmec;
+        while (std::getline(prev, rel)) if (!rel.empty() && rel.find("..") == std::string::npos) fs::remove(outRoot / rel, rmec);
+    }
+    std::vector<std::string> emittedRel;
+
     std::vector<FileOutcome> outcomes;
     std::map<std::string, size_t> byConstruct;
     size_t emitted = 0;
@@ -213,6 +224,9 @@ int main(int argc, char** argv) {
             for (auto& f : r.files) {
                 std::ofstream o(dir / (f.typeName + ".sleela"), std::ios::binary);
                 o << f.text;
+                o.close();
+                if (!o) { std::cerr << "javaconv: cannot write " << (dir / (f.typeName + ".sleela")).string() << "\n"; return 2; }
+                emittedRel.push_back((in.second.parent_path() / (f.typeName + ".sleela")).generic_string());
                 fo.emitted++;
                 emitted++;
             }
@@ -228,6 +242,12 @@ int main(int argc, char** argv) {
         outcomes.push_back(fo);
     }
 
+    {
+        std::error_code mkec;
+        fs::create_directories(outRoot, mkec);
+        std::ofstream list(emittedList);
+        for (auto& r : emittedRel) list << r << "\n";
+    }
     size_t okFiles = 0, failed = 0;
     for (auto& o : outcomes) (o.ok ? okFiles : failed)++;
 

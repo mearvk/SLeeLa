@@ -76,3 +76,32 @@ switch expressions, assignment/`++` values, enums, varargs, `float` (`JavaFloat`
 (`JavaFormat`), try-with-resources, `--single-thread`, anonymous classes, lambdas, method references,
 nested/inner types, `instanceof` patterns, and a record lowering (untested). Differential suite: 18 programs and
 4 refusals, all matching the JDK.
+
+## Addendum: review pass (2026-11-13)
+
+A review of `sleelactl java-convert` with new probe programs (javac + java vs converted + `impl/build/sleela run`)
+found five places where the converter emitted a program that ran but did not behave like Java, or whose
+failure surfaced only in the SLeeLa checker. All were fixed in `sleelactl/convert` and the model, per the standing
+rule (no change to `impl/frontend` or `impl/core`).
+
+| Found | Java | Converted program did | Fix |
+|---|---|---|---|
+| Field without an initializer | `0` / `false` / `0.0` / `null` | printed `null`; `si += 5` failed with "shift operators require integer operands"; an unset instance `String` read as `""` | the default value of the type is written on every field (JLS 4.12.5) |
+| Field initializer order | runs after `super(...)` (JLS 12.5) | ran at allocation, so a superclass constructor saw subclass fields already set (`init v=5` instead of `v=0`) and side effects were reordered | initializers collected into `javaFieldInit_<Class>()`, called after `super(...)`; `this(...)` delegates leave it to the delegate |
+| Instance initializer block `{ }` | converted | refused as `[nested]` (wrong reason) | converted, in source order with the field initializers; `static { }` refused as `[init-block]` |
+| Members inherited from a library superclass | `e.getMessage() + e.code` is String concatenation | refused `[untyped]` | calls are typed up the declared superclass chain through the model `ret` rows |
+| `a.equals(b)` on a user class that does not declare it | `Object.equals` | converted, then the checker failed (`has no method 'equals'`) | refused at conversion, located, `[object-method]`; records declare the methods they generate |
+| Re-run into the same output directory | — | a file that now fails closed kept its earlier `.sleela` | the run removes what the previous run wrote (`<out>/.javaconv-emitted`); write errors exit 2 |
+
+Tests added: `tests/java/Init.java` (defaults, ordering, blocks, inherited members), `tests/java/Records.java`
+(records were implemented but untested), `tests/reject/ObjectMethod.java`, and a stale-output check in
+`tests/javaconv_differential_test.sh`.
+
+Verified: `tests/javaconv_differential_test.sh` pass=26 fail=0 (20 programs identical to OpenJDK 25.0.2, 5 refusals,
+stale-output check); `javaconv --self-check`; `cd impl && make check-manifest` OK (no gated file changed).
+Skipped per `validation-cadence.md`: the long suites, and the whole-JDK measurement (no presumed JDK tree in the sandbox).
+
+Still open from the review: `Object.equals`/`hashCode` on enums and plain classes (identity semantics),
+`static { }` blocks, an uncaught exception prints `uncaught language exception` instead of Java's
+`Exception in thread "main" ...` text, `System.out.println(e)` of a library exception shows the handle
+(`RuntimeException#0`), and `String.split` is missing from the String method set.

@@ -60,5 +60,17 @@ for j in "$tests"/reject/*.java; do
   fi
 done
 
+# stale output: a file that converted on an earlier run and now fails closed must leave no output behind
+mkdir -p "$tmp/stale/src"
+printf 'public class Stale { public static void main(String[] a) { System.out.println(1); } }\n' > "$tmp/stale/src/Stale.java"
+"$conv" --jdk "$tmp/stale/src" --out "$tmp/stale/out" --quiet
+printf 'public class Stale { public static void main(String[] a) { Object o = new Object(); synchronized (o) { System.out.println(1); } } }\n' > "$tmp/stale/src/Stale.java"
+"$conv" --jdk "$tmp/stale/src" --out "$tmp/stale/out" --quiet
+if [ "$?" -eq 1 ] && [ ! -e "$tmp/stale/out/Stale.sleela" ]; then
+  printf 'PASS  %-12s output of an earlier run removed when the file now fails closed\n' "stale-output"; pass=$((pass+1))
+else
+  printf 'FAIL  stale-output (a failed-closed file left Stale.sleela behind)\n'; fail=$((fail+1))
+fi
+
 echo "javaconv differential: pass=$pass fail=$fail"
 [ "$fail" -eq 0 ]

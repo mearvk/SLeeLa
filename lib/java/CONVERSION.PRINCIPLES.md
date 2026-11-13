@@ -102,7 +102,8 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | Lambdas | generated class implementing the target's one abstract method; `this` is the enclosing object | converter | `Anon`, `Functional` |
 | Method references (`Type::static`, `Type::instance`, `Type::new`, `this::m`, `local::m`) | the lambda they stand for | converter | `Refs` |
 | JDK functional interfaces (Runnable, Supplier, Consumer, Function, Predicate, Comparator, Bi/Unary/Binary forms) | seeded as known, generic parameters untyped | converter | `Functional` |
-| Records | field per component, canonical (or compact) constructor, accessors, `toString`, `equals`/`hashCode` for simple components | converter | **implemented, no test yet** |
+| Records | field per component, canonical (or compact) constructor, accessors, `toString`, `equals`/`hashCode` for simple components | converter | `Records` |
+| Field defaults and initialization order | default value on every field; field initializers and instance `{ }` blocks after `super(...)` | converter | `Init` |
 | `close()` | mapped to `closeResource()` in declarations and calls | converter `mapMember` | `Resources` |
 | Reserved or built-in member names | refused; locals renamed | converter | `Varargs` (a method named `join` was caught); no refusal test |
 | Packages, imports | dropped; library members resolve through `import java.jdk-N;` | converter | all |
@@ -124,7 +125,7 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | sleelactl registration | `sleelactl build java-convert`, `sleelactl run java-convert ...` | `bin/sleelactl.d/registry.conf` |
 | Presumed-JDK directories | `sleelactl/jdk/<N>/java` in, `sleelactl/jdk/<N>/sleela` out | `sleelactl/jdk/README.md` |
 | Support library | `JavaOperands`, `JavaFloat`, `JavaFormat`, `JavaText`, `jdk-25`/`jdk-28` units | `lib/java` |
-| Differential test | 18 programs on a JDK and on the VM, plus 4 refusals | `tests/javaconv_differential_test.sh` |
+| Differential test | 20 programs on a JDK and on the VM, plus 5 refusals and a stale-output check | `tests/javaconv_differential_test.sh` |
 | Language features the tier uses | char literal, array initializer, labels, `finally` on abrupt exit (3.1); `a.length`, multi-dimensional arrays, char as text (3.2) | `SLEELA.syntax` sections 44 to 46 |
 
 ## 3. What is left
@@ -136,9 +137,9 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | 3 | **Nested capture chains** | A lambda or anonymous class inside another generated class is refused. | Capture through the enclosing generated class. | medium |
 | 4 | **`outer.new Inner()` and local classes** | Rare forms not parsed. | Qualified inner creation; hoist local classes like nested ones. | small to medium |
 | 5 | **Switch type patterns, record patterns, sealed exhaustiveness** | Binding scope in a switch arm. | Per-arm cast declaration; exhaustiveness is not checked at run time. | medium |
-| 6 | **Records: test and the harder members** | No differential test yet; `equals`/`hashCode` omitted for `double`, `float` and reference components. | Add the test; lower `Double.compare` and `Objects.equals`. | small |
+| 6 | **Records: the harder members** | `equals`/`hashCode` omitted for `double`, `float` and reference components (test `Records` covers the rest). | Lower `Double.compare` and `Objects.equals`. | small |
 | 7 | **`String.format` beyond literals** | Non-literal formats, `%e %g %S %h %t`, argument indexes. | A runtime formatter in `JavaFormat`. | medium |
-| 8 | **Initializer blocks** | `static { }` and instance `{ }` blocks are refused. | Lower to a static method called at start / constructor prologue. | small |
+| 8 | **Static initializer blocks** | `static { }` is refused; instance `{ }` blocks are converted (test `Init`). | A guarded static init method called on first use (JLS 12.4). | small |
 | 9 | **Real concurrency** | `synchronized`/`volatile` are plain under `--single-thread`; a truly multi-threaded program is not claimed equivalent. | Monitors and a memory model on the VM, or keep the policy. | large |
 | 10 | **`native` methods** | No Java body to convert. | Hand-written bindings only. | not convertible |
 | 11 | **Library behavior** | Converted code calls `lib/java` units; many `jdk-28` units are signature stubs that return null. Equivalence of a call depends on that unit being implemented. | Implement units; the differential suite is the oracle. | very large |

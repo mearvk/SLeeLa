@@ -83,7 +83,13 @@ Run: `sleelactl build java-convert`, then
 - Refused today (see JAVA.SPEC.md section 5): `==` on Strings/boxed values, `native`, operands of unknown
   type (no generics inference), lambdas whose target interface is unknown, lambdas or anonymous classes
   nested in other generated classes, `outer.new Inner()`, local classes, `case Type t ->` patterns,
-  non-literal `String.format`. Converted since the first version: `float`, `synchronized`/`volatile`
+  non-literal `String.format`, `static { }` blocks, `Object.equals/hashCode/getClass` on a user type that does
+  not declare them. Converted since the first version: `float`, `synchronized`/`volatile`
   (only with `--single-thread`), `++`/assignment as values, nested/inner/anonymous classes, lambdas and
   method references, enums, varargs, switch expressions, try-with-resources, `instanceof` patterns.
-  Records are implemented without a test yet.
+  Records (test `Records`); field defaults, Java initialization order and instance initializer blocks (test `Init`).
+- Fields: the converter writes the Java default value on every field without an initializer and moves
+  instance field initializers into `javaFieldInit_<Class>()`, called after `super(...)`. Keep both: SLeeLa
+  fields start as `null` and SLeeLa runs initializers at allocation, before any constructor.
+- Output directories: a re-run deletes only the files listed in `<out>/.javaconv-emitted` (what the
+  previous run wrote), so a file that fails closed never leaves an old conversion behind.
