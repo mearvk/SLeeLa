@@ -308,11 +308,11 @@ program runs 23 of 24 lines identical to a real JDK. Next, in order:
 
 | # | Step | Why |
 |---|---|---|
-| 0 | **Decide the policy**: per-member fail-loud stubs (now), or fail closed per file like `java-convert` | the two converters should not disagree on what "converted" means |
-| 1 | A bundle mode (one document per program, nested types inlined) | a runnable conversion must be one document today; several files duplicate library units, and a separate `Color.sleela` loses to the JDK 28 `java.awt.Color` |
+| 0 | ~~Decide the policy~~ **decided: per-member fail-loud stubs**; shared laws use the same `conversion.model` templates | |
+| 1 | ~~A bundle mode~~ **done in 0.3.0** (`JCONV_BUNDLE=1`): 39% fewer check errors on the sample; the sample program runs as one document | |
 | 2 | Loader: resolve `Outer.Inner.sleela`; compiler: inner classes reach the enclosing instance; inline nested classes (SLEELA.syntax 14) with constructors, `extends`, statics and arrays | most `check` errors in `HashMap` / `AbstractList` (course 15, A4). Inline nesting was measured and is too limited today (converter README section 6) |
 | 3 | Library: real statics for `Float`, `Objects`, `Arrays`, `Character` | "instance method must be called on an instance" errors |
-| 4 | Expression types in the converter (a symbol table per member) | removes the near-misses: `double` / `char` text in concatenation, `int` wrap inside expressions (use `JavaOperands`), interface-typed values |
+| 4 | Expression types: **names, literals, casts, array elements done in 0.3.0** (int shifts, `double` / `char` as text). Next: return types of called methods (the `ret` rows of the model and the jdk-28 signatures), `int` `+ - *` inside unstored expressions | the remaining near-misses come from operands that are method calls |
 | 5 | Lower lambdas and method references (`lib/java/jdk-28/LOWERING.md` section 2) | the largest group of stubs in real JDK code |
 | 6 | Non-ASCII sources: a byte-safe read, or a VM helper | 12 of 15,020 JDK files are skipped |
 | 7 | A differential pair per supported construct (`samples/`), run occasionally | equivalence is shown by output, not claimed |

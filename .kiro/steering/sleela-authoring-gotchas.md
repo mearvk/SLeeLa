@@ -180,4 +180,6 @@ refuse (do not clamp or wrap) inputs that could push it past. See
   `new Outer.C[1]`, and a nested interface fail. Prefer top-level classes.
 - **`new int32[n]` held `null` before the 2026-11-13 compiler fix** (now 0, like
   `new int[n]`); `new long[n]` / `new boolean[n]` were already zero / `false`.
+- **`$` is a lexical error everywhere, even inside a `<< ... >>` block comment.**
+  Do not copy template text such as `$a` into SLeeLa comments.
 

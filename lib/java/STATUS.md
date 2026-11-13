@@ -360,9 +360,8 @@ Java types need, so none carries a private copy. `UUID` uses it; `MessageDigest`
 0b. **Diagnose the 30 failing accessor-contract packages** (section 4). They
    fail identically on the earlier compiler, so the cause is in the library or
    the generated check, not in the operand work.
-0d. **Decide the policy of `lib/java/converter`** (section 11): keep its
-   per-member fail-loud stubs, or fail closed per file as `sleelactl
-   java-convert` does (`.kiro/steering/java-to-sleela-conversion.md`).
+0d. ~~**Decide the policy of `lib/java/converter`**~~ **decided 2026-11-13:
+   per-member fail-loud stubs** (section 11).
 0c. **Fix or waive `test-osls-isa`** (the check reports native count 192 versus source count 185; what is being counted has not been inspected),
    so `make test` can be green again.
 1. **Rename the hand-implemented overload suffixes to the Java names** now
@@ -430,7 +429,8 @@ section 1.
 | SLeeLa files written / members / fail-loud stubs | 36 / 627 / 35 (5.6%; 47 in 0.1.0) |
 | Output files with a syntax error | 0 |
 | Output files passing `sleela check` | 8 of 36 |
-| `converter/samples/demo/ConvDemo.java` against a real JDK | 23 of 24 lines identical |
+| `converter/samples/demo/ConvDemo.java` against a real JDK | 28 of 28 lines identical (0.3.0, `JCONV_BUNDLE=1`) |
+| `sleela check` errors on the sample, separate files / bundled | 903 / 553 |
 
 Converter 0.2.0 (2026-11-13) declares `#sleela 3.1` and uses its array
 initializers, character literals, labels and jumps through `finally`, and lowers
@@ -441,6 +441,8 @@ classes reaching the enclosing instance, statics written as instance methods,
 calls on `Any`, interface casts) and from JDK-internal types that have no
 `jdk-28` file. A separate converter, `sleelactl java-convert` (C/C++, semantics
 in `impl/subjects/conversion/conversion.model`), landed the same day and fails
-closed per file. Which policy `lib/java/converter` follows is open (section 9,
-item 0d).
+closed per file. `lib/java/converter` keeps per-member stubs (decided
+2026-11-13); where the two share a law (`binop`, `tostr` rows of the model) it
+applies the same template. Converter 0.3.0 adds operand types (int shifts,
+`double` / `char` shown as text) and `JCONV_BUNDLE=1`.
 

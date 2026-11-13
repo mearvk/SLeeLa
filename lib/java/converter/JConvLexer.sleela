@@ -21,7 +21,7 @@ class JConvLexer {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. The lexical
      rules follow JLS chapter 3 (Java SE 28). >>
-  String metaVersion = "0.2.0";
+  String metaVersion = "0.3.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-12";

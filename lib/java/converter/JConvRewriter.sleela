@@ -16,7 +16,7 @@ material;
 class JConvRewriter {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. >>
-  String metaVersion = "0.2.0";
+  String metaVersion = "0.3.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-12";
@@ -87,7 +87,12 @@ class JConvRewriter {
   int[] mStatic;
   int mN;
   String[] fNames;
+  String[] fTypes;
   int fN;
+  < the names and declared types seen in the current member (typed pass) >
+  String[] sName;
+  String[] sType;
+  int sN;
   < class-like types declared in the current file (castable targets) >
   String[] declNames;
   int declN;
@@ -122,7 +127,11 @@ class JConvRewriter {
     this.mStatic = new int[256];
     this.mN = 0;
     this.fNames = new String[256];
+    this.fTypes = new String[256];
     this.fN = 0;
+    this.sName = new String[128];
+    this.sType = new String[128];
+    this.sN = 0;
     this.declNames = new String[64];
     this.declN = 0;
     this.siName = new String[64];
@@ -211,14 +220,17 @@ class JConvRewriter {
     return -1;
   }
 
-  void addField(String n) {
+  void addField(String n, String type) {
     if (this.fN >= arrayLength(this.fNames)) {
       String[] a = new String[this.fN * 2];
+      String[] b = new String[this.fN * 2];
       int i = 0;
-      while (i < this.fN) { a[i] = this.fNames[i]; i = i + 1; }
+      while (i < this.fN) { a[i] = this.fNames[i]; b[i] = this.fTypes[i]; i = i + 1; }
       this.fNames = a;
+      this.fTypes = b;
     }
     this.fNames[this.fN] = n;
+    this.fTypes[this.fN] = type;
     this.fN = this.fN + 1;
   }
 
@@ -1330,6 +1342,345 @@ class JConvRewriter {
       if (add[q] == "." || add[q] == "=" || add[q] == ";") { kind = 5; }
       insertAt(at, kind, add[q]);
       q = q - 1;
+    }
+  }
+
+  << ---- typed pass (rules 7a-7c) ----
+     The integer and string-conversion laws of
+     impl/subjects/conversion/conversion.model that need operand types: an int
+     shift left, shift right or unsigned shift right becomes JavaOperands.shlInt,
+     shrInt or ushrInt (binop int rows); a double or float shown as text becomes
+     Double.toString(x) and a char becomes
+     JavaText.plainIfRepresentable(JavaText.codePointU(x)) (tostr rows).
+     Types come from the fields of the type and the declarations of the member.
+     A name declared with two different types in one member is unknown; a
+     method call makes an operand unknown. Unknown operands are left as they
+     are, so the pass never guesses. >>
+  void addSym(String n, String t) {
+    int i = 0;
+    while (i < this.sN) {
+      if (this.sName[i] == n) {
+        if (this.sType[i] != t) { this.sType[i] = "?"; }
+        return;
+      }
+      i = i + 1;
+    }
+    if (this.sN < arrayLength(this.sName)) {
+      this.sName[this.sN] = n;
+      this.sType[this.sN] = t;
+      this.sN = this.sN + 1;
+    }
+  }
+
+  String typeOfName(String n) {
+    int i = 0;
+    while (i < this.sN) { if (this.sName[i] == n) { return this.sType[i]; } i = i + 1; }
+    i = 0;
+    while (i < this.fN) { if (this.fNames[i] == n) { return this.fTypes[i]; } i = i + 1; }
+    return "?";
+  }
+
+  < i int, l long, d double, c char, s String, b boolean, ? unknown >
+  String kindOfType(String t) {
+    if (t == "int32" || t == "int" || t == "short" || t == "byte") { return "i"; }
+    if (t == "char") { return "c"; }
+    if (t == "long") { return "l"; }
+    if (t == "double" || t == "float") { return "d"; }
+    if (t == "String") { return "s"; }
+    if (t == "boolean") { return "b"; }
+    return "?";
+  }
+
+  < declarations in the output list: TYPE NAME followed by = ; , ) : after a statement start, ( or , >
+  void collectSymbols() {
+    this.sN = 0;
+    int i = 0;
+    while (i + 1 < this.on) {
+      boolean startOk = (i == 0);
+      int pi = i - 1;
+      while (pi >= 0 && this.ok[pi] == 6) { pi = pi - 1; }
+      if (pi < 0) { startOk = true; }
+      if (pi >= 0) {
+        String p = this.ot[pi];
+        startOk = (p == ";" || p == "{" || p == "}" || p == "(" || p == "," || p == ":" || p == "static" || p == "final" || p == "private" || p == "public");
+      }
+      if (startOk && this.ok[i] == 1 && !isStatementWord(this.ot[i])) {
+        int j = i + 1;
+        String type = this.ot[i];
+        while (j + 1 < this.on && this.ot[j] == "[" && this.ot[j + 1] == "]") { type = type + "[]"; j = j + 2; }
+        if (j + 1 < this.on && this.ok[j] == 1 && !isStatementWord(this.ot[j])) {
+          String nxt = this.ot[j + 1];
+          if (nxt == "=" || nxt == ";" || nxt == "," || nxt == ")" || nxt == ":") { addSym(this.ot[j], type); }
+        }
+      }
+      i = i + 1;
+    }
+  }
+
+  boolean isBoundary(String t, int level) {
+    < level 1: shift operands; level 2: additive chain >
+    if (t == ";" || t == "," || t == "{" || t == "}" || t == "?" || t == ":" || t == "=" || t == "return" || t == "throw") { return true; }
+    if (t == "<" || t == ">" || t == "<=" || t == ">=" || t == "==" || t == "!=" || t == "instanceof") { return true; }
+    if (t == "&" || t == "^" || t == "|" || t == "&&" || t == "||") { return true; }
+    if (t == "+=" || t == "-=" || t == "*=" || t == "/=" || t == "%=" || t == "&=" || t == "|=" || t == "^=" || t == "<<=" || t == ">>=" || t == ">>>=") { return true; }
+    if (level == 2 && (t == "<<" || t == ">>" || t == ">>>")) { return true; }
+    return false;
+  }
+
+  < the start of the operand that ends just before position end, bounded by level >
+  int operandStart(int end, int level, boolean stopAtAdd) {
+    int j = end - 1;
+    while (j >= 0) {
+      String t = this.ot[j];
+      if (this.ok[j] == 5 && (t == ")" || t == "]")) {
+        int d = 0;
+        int m = j;
+        while (m >= 0) {
+          if (this.ot[m] == ")" || this.ot[m] == "]") { d = d + 1; }
+          if (this.ot[m] == "(" || this.ot[m] == "[") { d = d - 1; if (d == 0) { break; } }
+          m = m - 1;
+        }
+        if (m < 0) { return -1; }
+        j = m - 1;
+        continue;
+      }
+      if (this.ok[j] == 5 && (t == "(" || t == "[")) { return j + 1; }
+      if (this.ok[j] != 6 && isBoundary(t, level)) { return j + 1; }
+      if (stopAtAdd && this.ok[j] == 5 && (t == "+" || t == "-")) {
+        < a sign directly after a boundary belongs to the operand >
+        if (j == 0 || (this.ok[j - 1] == 5 && this.ot[j - 1] != ")" && this.ot[j - 1] != "]")) { j = j - 1; continue; }
+        return j + 1;
+      }
+      if (level == 1 && this.ok[j] == 5 && (t == "<<" || t == ">>" || t == ">>>")) { return j + 1; }
+      j = j - 1;
+    }
+    return 0;
+  }
+
+  < the end (exclusive) of the operand that starts at a >
+  int operandEnd(int a, int level, boolean stopAtAdd) {
+    int j = a;
+    boolean first = true;
+    while (j < this.on) {
+      String t = this.ot[j];
+      if (this.ok[j] == 5 && (t == "(" || t == "[")) {
+        int d = 0;
+        int m = j;
+        while (m < this.on) {
+          if (this.ot[m] == "(" || this.ot[m] == "[") { d = d + 1; }
+          if (this.ot[m] == ")" || this.ot[m] == "]") { d = d - 1; if (d == 0) { break; } }
+          m = m + 1;
+        }
+        j = m + 1;
+        first = false;
+        continue;
+      }
+      if (this.ok[j] == 5 && (t == ")" || t == "]")) { return j; }
+      if (this.ok[j] != 6 && isBoundary(t, level)) { return j; }
+      if (level == 1 && this.ok[j] == 5 && (t == "<<" || t == ">>" || t == ">>>")) { return j; }
+      if (stopAtAdd && !first && this.ok[j] == 5 && (t == "+" || t == "-")) { return j; }
+      first = false;
+      j = j + 1;
+    }
+    return this.on;
+  }
+
+  < the kind of the output range a .. b-1 >
+  String exprKind(int a, int b) {
+    if (a >= b) { return "?"; }
+    boolean anyS = false;
+    boolean anyD = false;
+    boolean anyL = false;
+    boolean anyI = false;
+    boolean anyB = false;
+    boolean onlyChar = true;
+    int count = 0;
+    int i = a;
+    while (i < b) {
+      int k = this.ok[i];
+      String t = this.ot[i];
+      if (k == 6) { i = i + 1; continue; }
+      if (k == 5 && t == "(") {
+        int d = 0;
+        int m = i;
+        while (m < b) {
+          if (this.ot[m] == "(") { d = d + 1; }
+          if (this.ot[m] == ")") { d = d - 1; if (d == 0) { break; } }
+          m = m + 1;
+        }
+        < a cast (T) gives the kind of T >
+        if (m == i + 2 && this.ok[i + 1] == 1) {
+          String ck = kindOfType(this.ot[i + 1]);
+          if (ck == "?") { return "?"; }
+          int e = operandEnd(m + 1, 2, true);
+          if (ck == "s") { anyS = true; } else if (ck == "d") { anyD = true; } else if (ck == "l") { anyL = true; } else if (ck == "b") { anyB = true; } else { anyI = true; if (ck != "c") { onlyChar = false; } }
+          count = count + 1;
+          i = e;
+          continue;
+        }
+        String g = exprKind(i + 1, m);
+        if (g == "?") { return "?"; }
+        if (g == "s") { anyS = true; } else if (g == "d") { anyD = true; } else if (g == "l") { anyL = true; } else if (g == "b") { anyB = true; } else { anyI = true; if (g != "c") { onlyChar = false; } }
+        count = count + 1;
+        i = m + 1;
+        continue;
+      }
+      if (k == 5) {
+        if (t == "+" || t == "-" || t == "*" || t == "/" || t == "%" || t == "~" || t == "&" || t == "|" || t == "^" || t == "<<" || t == ">>" || t == ">>>") { i = i + 1; continue; }
+        return "?";
+      }
+      if (k == 3) { anyS = true; count = count + 1; i = i + 1; continue; }
+      if (k == 2) {
+        if (t.startsWith("'")) { anyI = true; }
+        else if (t.endsWith("L")) { anyL = true; onlyChar = false; }
+        else if (t.indexOf(".") >= 0 || t.indexOf("e") >= 0) { anyD = true; onlyChar = false; }
+        else { anyI = true; onlyChar = false; }
+        count = count + 1;
+        i = i + 1;
+        continue;
+      }
+      if (k == 1) {
+        if (t == "true" || t == "false") { anyB = true; count = count + 1; i = i + 1; continue; }
+        if (t.startsWith("JavaOperands.") || t == "Double.toString" || t == "JavaText.plainIfRepresentable") {
+          < calls this pass inserted have known kinds >
+          if (t == "Double.toString" || t == "JavaText.plainIfRepresentable") { anyS = true; }
+          else if (t.endsWith("Long")) { anyL = true; } else { anyI = true; }
+          onlyChar = false;
+          int c = i + 1;
+          int d2 = 0;
+          while (c < b) {
+            if (this.ot[c] == "(") { d2 = d2 + 1; }
+            if (this.ot[c] == ")") { d2 = d2 - 1; if (d2 == 0) { break; } }
+            c = c + 1;
+          }
+          count = count + 1;
+          i = c + 1;
+          continue;
+        }
+        int j = i;
+        if (t == "this" && i + 2 < b && this.ot[i + 1] == ".") { j = i + 2; }
+        if (j + 1 < b && (this.ot[j + 1] == "(" || this.ot[j + 1] == ".")) { return "?"; }
+        String ty = typeOfName(this.ot[j]);
+        int after = j + 1;
+        while (after < b && this.ot[after] == "[") {
+          < an element of an array name: drop one [] >
+          if (!ty.endsWith("[]")) { return "?"; }
+          ty = ty.substring(0, ty.length() - 2);
+          int d3 = 0;
+          int m3 = after;
+          while (m3 < b) {
+            if (this.ot[m3] == "[") { d3 = d3 + 1; }
+            if (this.ot[m3] == "]") { d3 = d3 - 1; if (d3 == 0) { break; } }
+            m3 = m3 + 1;
+          }
+          after = m3 + 1;
+        }
+        String kk = kindOfType(ty);
+        if (kk == "?") { return "?"; }
+        if (kk == "s") { anyS = true; } else if (kk == "d") { anyD = true; } else if (kk == "l") { anyL = true; } else if (kk == "b") { anyB = true; } else { anyI = true; if (kk != "c") { onlyChar = false; } }
+        count = count + 1;
+        i = after;
+        continue;
+      }
+      return "?";
+    }
+    if (anyS) { return "s"; }
+    if (anyB) { if (count == 1) { return "b"; } return "?"; }
+    if (anyD) { return "d"; }
+    if (anyL) { return "l"; }
+    if (anyI) {
+      if (onlyChar && count == 1) { return "c"; }
+      return "i";
+    }
+    return "?";
+  }
+
+  void wrapRange(int a, int b, String fn) {
+    insertAt(b, 5, ")");
+    insertAt(a, 5, "(");
+    insertAt(a, 1, fn);
+  }
+
+  < the string conversion of a char or double operand a .. b-1, if it needs one >
+  void toStringIfNeeded(int a, int b) {
+    String k = exprKind(a, b);
+    if (k == "d") { wrapRange(a, b, "Double.toString"); }
+    else if (k == "c") {
+      insertAt(b, 5, ")");
+      insertAt(b, 5, ")");
+      insertAt(a, 5, "(");
+      insertAt(a, 1, "JavaText.codePointU");
+      insertAt(a, 5, "(");
+      insertAt(a, 1, "JavaText.plainIfRepresentable");
+    }
+  }
+
+  void typedPass() {
+    collectSymbols();
+    int i = 0;
+    while (i < this.on) {
+      int k = this.ok[i];
+      String t = this.ot[i];
+      if (k == 5 && (t == "<<" || t == ">>" || t == ">>>")) {
+        int a = operandStart(i, 1, false);
+        int e = operandEnd(i + 1, 1, false);
+        if (a >= 0 && a < i && e > i + 1 && exprKind(a, i) == "i") {
+          String fn = "JavaOperands.shlInt";
+          if (t == ">>") { fn = "JavaOperands.shrInt"; }
+          if (t == ">>>") { fn = "JavaOperands.ushrInt"; }
+          this.ot[i] = ",";
+          insertAt(e, 5, ")");
+          insertAt(a, 5, "(");
+          insertAt(a, 1, fn);
+          i = i + 2;
+          continue;
+        }
+      }
+      if (k == 5 && (t == "<<=" || t == ">>=" || t == ">>>=") && i > 0 && this.ok[i - 1] == 1 && (i == 1 || this.ot[i - 2] != ".") && kindOfType(typeOfName(this.ot[i - 1])) == "i") {
+        < x op= n on an int: x = JavaOperands.op(x, n) >
+        String fn2 = "JavaOperands.shlInt";
+        if (t == ">>=") { fn2 = "JavaOperands.shrInt"; }
+        if (t == ">>>=") { fn2 = "JavaOperands.ushrInt"; }
+        int e2 = i + 1;
+        int d = 0;
+        while (e2 < this.on) {
+          if (this.ot[e2] == "(" || this.ot[e2] == "[") { d = d + 1; }
+          if (this.ot[e2] == ")" || this.ot[e2] == "]") { d = d - 1; if (d < 0) { break; } }
+          if (d == 0 && (this.ot[e2] == ";" || this.ot[e2] == ",")) { break; }
+          e2 = e2 + 1;
+        }
+        String name = this.ot[i - 1];
+        this.ot[i] = "=";
+        insertAt(e2, 5, ")");
+        insertAt(i + 1, 5, ",");
+        insertAt(i + 1, 1, name);
+        insertAt(i + 1, 5, "(");
+        insertAt(i + 1, 1, fn2);
+        i = i + 4;
+        continue;
+      }
+      if (k == 5 && t == "+") {
+        int a2 = operandStart(i, 2, true);
+        int e3 = operandEnd(i + 1, 2, true);
+        if (a2 >= 0 && e3 > i + 1) {
+          int chain = operandStart(i, 2, false);
+          String leftK = exprKind(chain, i);
+          String rightK = exprKind(i + 1, e3);
+          if (leftK == "s" && (rightK == "d" || rightK == "c")) { toStringIfNeeded(i + 1, e3); }
+          else if (rightK == "s" && chain == a2 && (leftK == "d" || leftK == "c")) { toStringIfNeeded(a2, i); i = i + 4; }
+        }
+      }
+      if (k == 1 && t == "print" && i + 1 < this.on && this.ot[i + 1] == "(") {
+        int c = i + 1;
+        int d4 = 0;
+        while (c < this.on) {
+          if (this.ot[c] == "(") { d4 = d4 + 1; }
+          if (this.ot[c] == ")") { d4 = d4 - 1; if (d4 == 0) { break; } }
+          c = c + 1;
+        }
+        if (c < this.on) { toStringIfNeeded(i + 2, c); }
+      }
+      i = i + 1;
     }
   }
 

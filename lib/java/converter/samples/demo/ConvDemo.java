@@ -87,6 +87,19 @@ public class ConvDemo {
             case 'q': System.out.println("is q"); break;
             default: System.out.println("other");
         }
+        // typed pass: int shifts inside expressions, double and char shown as text
+        int hv = -123456789;
+        int spread = hv ^ (hv >>> 16);
+        int m = 7;
+        m >>>= 1;
+        long big2 = 1L << 40;
+        double quarter = 1.0 / 4;
+        double two = 2;
+        char letter = 'z';
+        System.out.println("hash " + spread + " " + (hv >>> 28) + " " + (hv << 3) + " " + (hv >> 30) + " " + m + " " + (big2 >>> 3));
+        System.out.println("text " + quarter + " " + two + " " + letter + " " + 3.0);
+        System.out.println(two);
+        System.out.println(quarter + " first");
         System.out.println("pattern " + describe("abc") + ", " + describe(Integer.valueOf(9)) + ", " + describe(Integer.valueOf(2)) + ", " + emptyText("") + " " + emptyText(Integer.valueOf(1)));
     }
 

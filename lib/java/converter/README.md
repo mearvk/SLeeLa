@@ -3,7 +3,7 @@
 > **Container.** Java container content (`SLEELA.syntax` section 38.4). Nothing
 > here is part of the SLeeLa specification or adds syntax to SLeeLa.
 
-Status: **0.2.0, best effort (2026-11-13).** Output declares `#sleela 3.1` and
+Status: **0.3.0, best effort (2026-11-13).** Output declares `#sleela 3.1` and
 uses its forms (SLEELA.syntax section 44): array initializers, character
 literals, labels, and jumps that run `finally`. Revise the rules here as the
 language and the library close the gaps listed in section 6. Changes since
@@ -18,8 +18,14 @@ This module is the SLeeLa-language, best-effort converter that was asked for in
 `/lib/java/converter`: it fails loud **per member** (a stub that throws), so a
 file with one unconvertible member still yields the rest of its type. It does
 not claim equivalence. Its known near-misses are listed in section 6.6; refused
-constructs are listed in section 4. Which policy `/lib/java/converter` should
-follow long term is an open decision.
+constructs are listed in section 4.
+
+**Policy (decided 2026-11-13 by the repository owner): per-member stubs.**
+`lib/java/converter` keeps the rest of a type when one member cannot be
+converted, and marks that member with a stub that throws. It does not adopt the
+whole-file refusal of `sleelactl java-convert`. Where both converters share a
+law (the `binop`, `tostr` rows of `conversion.model`), this module applies the
+same template, so the two agree on what the converted code computes.
 
 ## 1. What it is
 
@@ -59,6 +65,7 @@ JCONV_IN=/tmp/jdk-src JCONV_OUT=/tmp/jdk28-sleela JCONV_FILTER=java.base/java/ut
 | `JCONV_LIMIT` | stop after this many files | no limit |
 | `JCONV_INT` | `int32` (Java 32-bit `int`) or `int` (64-bit SLeeLa `int`) | `int32` |
 | `JCONV_COMMENTS` | `keep` or `drop` (the licence comment is always kept) | `keep` |
+| `JCONV_BUNDLE` | `1`: nested types go into the document of their top-level type, so a converted program runs as one document; `0`: one file per type (`Outer.Inner.sleela`, the library layout) | `0` |
 
 `sleela run` treats every argument as a source file, so the settings travel in
 the environment. The script names only `JConvMain.sleela`; the loader finds the
@@ -116,6 +123,10 @@ several hours. Use `JCONV_FILTER` to convert one package or module at a time.
 | 6k | `return o instanceof T v && rest;` | `if (!(o instanceof T)) { return false; } T v = (T) (o); return rest;` | the `equals` shape; same conditions |
 | 6l | Labels, `break label`, `continue label`, `return` / `break` / `continue` through `finally` | kept | SLeeLa 3.1 (44.4, 44.5) |
 | 6m | `x++` and `(a = b)` used as a value | kept | the language evaluates both (43.6 rule 12); the value wraps at 32 bits only when stored |
+| 7a | `a << n`, `a >> n`, `a >>> n` with `a` of type `int`; `x <<= n` and friends | `JavaOperands.shlInt(a, n)`, `shrInt`, `ushrInt`; `x = JavaOperands.ushrInt(x, n)` | the `binop int` rows of `conversion.model`: Java masks the count to 5 bits and works in 32 bits (`h ^ (h >>> 16)` in `HashMap.hash` was wrong before). `long` shifts are already exact and stay |
+| 7b | a `double` or `float` shown as text (string concatenation, `println`) | `Double.toString(x)` | the `tostr double` row: Java prints `2.0`, SLeeLa `2` |
+| 7c | a `char` shown as text | `JavaText.plainIfRepresentable(JavaText.codePointU(c))` | the `tostr char` row: Java prints `z`, SLeeLa `122` |
+| 7d | operand types for 7a to 7c | from the fields of the type and the declarations of the member (parameters, locals, `for`, `catch`), array elements, casts, literals | a name declared with two types in one member, or a method call, makes the operand unknown, and an unknown operand is left as written: the pass never guesses |
 | 6g | `assert` | dropped | Java runs with assertions disabled by default, so the statement is not evaluated |
 | 6h | `System.out.println(x)` | `print(x)` | `System.out.print` (no newline) is a stub (reason 23): `print` always adds one |
 
@@ -174,22 +185,24 @@ Sample: 17 files from the OpenJDK 25.0.2 `src.zip` (`Math`, `Record`, `Override`
 `Objects`, `Optional`, `OptionalInt`, `StringJoiner`, `StringTokenizer`, `UUID`,
 `Adler32`, `CRC32`), `JCONV_SCOPE=all`.
 
-| Measure | 0.1.0 | 0.2.0 |
-|---|---:|---:|
-| Java files converted | 16 of 17 | 16 of 17 (`UUID.java` skipped: non-ASCII bytes) |
-| SLeeLa files written (types, nested included) | 36 | 36 |
-| Members | 627 | 627 |
-| Members stubbed (fail loud) | 47 (7.5%) | **35 (5.6%)** |
-| Output files with a syntax error | 0 | 0 |
-| Output files with no `sleela check` error | 8 of 36 | 8 of 36 |
+| Measure | 0.1.0 | 0.2.0 | 0.3.0 | 0.3.0, `JCONV_BUNDLE=1` |
+|---|---:|---:|---:|---:|
+| Java files converted | 16 of 17 | 16 of 17 | 16 of 17 | 16 of 17 (`UUID.java` skipped: non-ASCII bytes) |
+| SLeeLa files written | 36 | 36 | 36 | 16 (one document per Java file) |
+| Types / members | 36 / 627 | 36 / 627 | 36 / 627 | 36 / 627 |
+| Members stubbed (fail loud) | 47 (7.5%) | 35 (5.6%) | 35 (5.6%) | 35 (5.6%) |
+| Files with a syntax error | 0 | 0 | 0 | 0 |
+| `sleela check` errors in total | 892 | 902 | 903 | **553** |
+| Files with no `sleela check` error | 8 of 36 | 8 of 36 | 8 of 36 | 5 of 16 |
 
-The 12 fewer stubs are the ten `for` headers with commas and two pattern
-`instanceof` members. The check errors that remain come from the library and
-the language, not from conversion slips: by message, mostly "use of undeclared
-variable" (inner classes reaching the fields of the enclosing instance),
-"struct ... has no field" (nested and inherited types that do not resolve), and
-"instance method ... must be called on an instance" (statics written as
-instance methods in the jdk-28 units).
+0.2.0 removed 12 stubs (the ten `for` headers with commas and two pattern
+`instanceof` members). Bundling removes 39% of the check errors, because a nested
+type declared in the same document resolves by its simple name; the remaining
+errors come from the library and the language, not from conversion slips: by
+message, mostly "use of undeclared variable" (inner classes reaching the fields
+of the enclosing instance), "struct ... has no field" (inherited types that do
+not resolve), and "instance method ... must be called on an instance" (statics
+written as instance methods in the jdk-28 units).
 
 **Behaviour, side by side with a real JDK.** `samples/demo/ConvDemo.java` (plain
 procedural Java: int overflow, hex / octal / binary literals, a string hash loop,
@@ -197,29 +210,26 @@ an array initializer and a nested one, `.length`, `new int[n]`, multi-declaratio
 char literals and a `switch` over them, narrowing casts, an enum, a static
 initializer, a text block, the ternary, a `for` with commas and `continue`, a
 labeled `continue` / `break`, `return` through `finally`, pattern `instanceof`
-in `if` and `return`) converts with no stub. Bundled into one document (see
-below) it prints **23 of 24 lines identical** to OpenJDK 25.0.2
-(`samples/ConvDemo.java.expected.txt` against `samples/ConvDemo.sleela.expected.txt`). The one
-difference is the documented near-miss of item 6: `(-16 >>> 28)` and `(1 << 33)`
-are computed inside an expression and never stored, so they are 64-bit
-(`68719476735`, `8589934592`; Java: `15`, `2`).
+in `if` and `return`, int shifts inside expressions including `h ^ (h >>> 16)`,
+`>>>=`, a `long` shift, `double` and `char` values in string concatenation and
+`println`) converts with no stub. With `JCONV_BUNDLE=1` it runs as one document
+and prints **all 28 lines identical** to OpenJDK 25.0.2
+(`samples/ConvDemo.java.expected.txt` against `samples/ConvDemo.sleela.expected.txt`).
 
 Reproduce:
 
 ```sh
 # from the repository root
-R=$(pwd)
-JCONV_IN=lib/java/converter/samples JCONV_OUT=/tmp/conv-demo JCONV_SCOPE=all bash lib/java/converter/run-converter.sh
-# bundle: the nested enum is its own file, and a user program does not link sibling files
-python3 -c "m=open('/tmp/conv-demo/demo/ConvDemo.sleela').read(); c=open('/tmp/conv-demo/demo/ConvDemo.Color.sleela').read(); open('/tmp/conv-demo/demo/Bundle.sleela','w').write(m+'\n'+c[c.index('class Color'):])"
-(cd /tmp/conv-demo/demo && SLEELA_HOME=$R SLEELA_LIB=$R/lib "$R/impl/build/sleela" run Bundle.sleela) | grep -v -E '^\[memory-manager\]|^verification|\[security\]|\[defender\]' > /tmp/conv-demo/sleela.out
+JCONV_IN=lib/java/converter/samples JCONV_OUT=/tmp/conv-demo JCONV_SCOPE=all JCONV_BUNDLE=1 bash lib/java/converter/run-converter.sh
+R=$(pwd); (cd /tmp/conv-demo/demo && SLEELA_HOME=$R SLEELA_LIB=$R/lib "$R/impl/build/sleela" run ConvDemo.sleela) | grep -v -E '^\[memory-manager\]|^verification|\[security\]|\[defender\]' > /tmp/conv-demo/sleela.out
 diff lib/java/converter/samples/ConvDemo.java.expected.txt /tmp/conv-demo/sleela.out
 ```
 
-A runnable conversion must be one document: several files given to `sleela run`
-duplicate the library units, and a converted type in a separate file whose name
-is also a JDK 28 type (`Color`, as `java.awt.Color`) loses to the JDK 28 tier
-(SLEELA.syntax 43.4). Declared in the same document it wins.
+A runnable conversion must be one document, which is what `JCONV_BUNDLE=1`
+writes: several files given to `sleela run` duplicate the library units, and a
+converted type in a separate file whose name is also a JDK 28 type (`Color`, as
+`java.awt.Color`) loses to the JDK 28 tier (SLEELA.syntax 43.4). Declared in the
+same document it wins.
 
 The remaining check errors in the JDK sample are not conversion slips. They are gaps of the language and
 library, in this order of weight:
@@ -249,13 +259,13 @@ library, in this order of weight:
    a UTF-8 character can be split between two pieces, and the VM has no
    byte-level view of a plain String to repair it.
 6. **Near-misses the token-level conversion cannot see (it has no expression
-   types):** a `double` in string concatenation or `println` prints in SLeeLa
-   form (`9`, not `9.0`; SLEELA.syntax 43.5); `char` variables in string
-   concatenation print as numbers (char literals are handled); Java integer
-   division by zero is a fatal VM error, not `ArithmeticException`; `int`
-   arithmetic and shifts wrap on store, not inside an expression that is never
-   stored (`lib/java/JavaOperands` has the exact forms); `switch` over enum
-   constants is not lowered.
+   types where the typed pass cannot see them):** rules 7a to 7c cover names,
+   literals, casts and array elements of known type; an operand that comes from
+   a method call (`"x" + getDouble()`) is not converted, so a `double` there
+   still prints in SLeeLa form (`9`, not `9.0`) and an `int` shift of a call
+   result is 64-bit. `int` `+ - *` wrap on store, not inside an expression that
+   is never stored. Java integer division by zero is a fatal VM error, not
+   `ArithmeticException`. `switch` over enum constants is not lowered.
 
 Close a gap in the language, VM or library first. Then remove or relax the rule
 in `JConvRules` that works around it, re-run the converter, and update this table.
@@ -282,5 +292,6 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | Version | Change |
 |---|---|
 | 0.1.0 | First cut: walk, lex, rewrite, translate, stubs, report |
+| 0.3.0 | Policy recorded: per-member stubs. Typed pass (rules 7a to 7d): `int` shifts through `JavaOperands`, `double` / `char` string conversion through `Double.toString` / `JavaText`, the same templates as the `binop` / `tostr` rows of `conversion.model`. `JCONV_BUNDLE=1`: one document per Java file, nested types inside (39% fewer check errors on the JDK sample; the sample program runs with all lines identical) |
 | 0.2.0 | Output declares `#sleela 3.1` and uses its forms: array initializers and `new T[n]` kept (the `slArray_*` / `slZeroArray_*` helpers are gone), character literals kept, labels and jumps through `finally` kept (stub reasons 4, 13, 18 retired). New lowerings: `for` headers with commas (6i), pattern `instanceof` in two exact shapes (6j, 6k). No cast to array types (the compiler rejects them). Compiler fix alongside: `new int32[n]` starts at 0 (`impl/frontend/compiler.cpp` `arrayFillKind`) |
 

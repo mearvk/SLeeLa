@@ -16,7 +16,7 @@ material;
 class JConvTranslator {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. >>
-  String metaVersion = "0.2.0";
+  String metaVersion = "0.3.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-12";
@@ -425,7 +425,7 @@ class JConvTranslator {
       } else {
         mk[count] = 1;
         String fname = fieldName(hh, endTok);
-        this.rw.addField(fname);
+        this.rw.addField(fname, fieldType(hh, endTok));
         if ((flags % 2) == 0 && kind != "interface") { this.unitFields = this.unitFields + declaratorCount(hh, endTok); }
       }
       mStart[count] = st; mHdr[count] = hh; mBody[count] = bodyOpen; mEnd[count] = endTok; mFlags[count] = flags;
@@ -433,12 +433,33 @@ class JConvTranslator {
       j = endTok + 1;
     }
     < ---- write the unit ---- >
+    boolean inBundle = this.cfg.bundle && outerStem != "";
     String outRel = stem + ".sleela";
     if (dirOf(this.rel) != "") { outRel = dirOf(this.rel) + "/" + stem + ".sleela"; }
-    if (!this.em.openOut(this.outDir + "/" + stem + ".sleela")) {
+    if (inBundle) {
+      < bundle mode: the nested type follows in the document of its top-level type >
+      this.em.blankLine();
+      this.em.comment("<< Nested Java type " + this.javaType + ", bundled into this document as a top-level class (JCONV_BUNDLE=1). >>");
+    } else if (!this.em.openOut(this.outDir + "/" + stem + ".sleela")) {
       this.rep.note("cannot write " + outRel);
       return;
     }
+    if (!inBundle) { writeFileHeader(outRel, outerStem, stem, ds, kw); }
+    else if (this.cfg.keepComments) {
+      int dc2 = ds;
+      while (dc2 < kw) { if (kd(dc2) == 6) { this.em.comment(tx(dc2)); } dc2 = dc2 + 1; }
+    }
+    String typeWord = "class";
+    if (kind == "interface" || kind == "annotation") { typeWord = "interface"; }
+    if (kind == "interface" || kind == "annotation") { mods = ""; }
+    this.em.lineOut(mods + typeWord + " " + name + heritage + " {");
+    this.em.enter();
+    if (typeWord == "class") { writeMetadata(); }
+    if (tpText != "") { this.em.lineOut("static final String JAVA_TYPE_PARAMETERS = \"" + quoteSafe(tpText) + "\";"); }
+    convertBody(kind, name, stem, open, close, constEnd, count, mk, mStart, mHdr, mBody, mEnd, mFlags, compOpen, compClose, hasCtor, hasCanonical, typeWord, inBundle);
+  }
+
+  void writeFileHeader(String outRel, String outerStem, String stem, int ds, int kw) {
     String head = "<< " + outRel + "\n   SLeeLa file for the Java type " + this.javaType + " (module " + this.moduleName + ").";
     if (outerStem != "") { head = head + "\n   Nested Java type: the file keeps the name " + stem + " (the loader does not resolve nested-type files yet, lib/java/jdk-28/PURPOSE.md row 4)."; }
     head = head + "\n   Java Source: " + this.rel + ", converted by lib/java/converter (best effort; rules in lib/java/converter/README.md)."
@@ -454,13 +475,12 @@ class JConvTranslator {
       int dc = ds;
       while (dc < kw) { if (kd(dc) == 6) { this.em.comment(tx(dc)); } dc = dc + 1; }
     }
-    String typeWord = "class";
-    if (kind == "interface" || kind == "annotation") { typeWord = "interface"; }
-    if (kind == "interface" || kind == "annotation") { mods = ""; }
-    this.em.lineOut(mods + typeWord + " " + name + heritage + " {");
-    this.em.enter();
-    if (typeWord == "class") { writeMetadata(); }
-    if (tpText != "") { this.em.lineOut("static final String JAVA_TYPE_PARAMETERS = \"" + quoteSafe(tpText) + "\";"); }
+  }
+
+  < the members of a type, its closing brace, and then its nested types >
+  void convertBody(String kind, String name, String stem, int open, int close, int constEnd, int count,
+                   int[] mk, int[] mStart, int[] mHdr, int[] mBody, int[] mEnd, int[] mFlags,
+                   int compOpen, int compClose, boolean hasCtor, boolean hasCanonical, String typeWord, boolean inBundle) {
     if (kind == "annotation") {
       this.em.comment("<< Java annotation interface: annotations carry no SLeeLa behavior. Its elements, as declared in Java:\n" + commentSafe(this.src.slice(this.lx.begins[open], this.lx.ends[close])) + " >>");
     }
@@ -479,7 +499,8 @@ class JConvTranslator {
       } else if (kk == 5) {
         int nk = mHdr[idx];
         String nn = this.rules.renameIdent(tx(nx(nk + 1)));
-        this.em.comment("< nested Java type " + this.javaType + "." + nn + ": see " + stem + "." + nn + ".sleela >");
+        if (this.cfg.bundle) { this.em.comment("< nested Java type " + this.javaType + "." + nn + ": later in this document >"); }
+        else { this.em.comment("< nested Java type " + this.javaType + "." + nn + ": see " + stem + "." + nn + ".sleela >"); }
         nestStart[nNest] = mStart[idx];
         nestKw[nNest] = nk;
         nestOpen[nNest] = mBody[idx];
@@ -499,21 +520,22 @@ class JConvTranslator {
     this.em.leave();
     this.em.lineOut("}");
     this.em.lineOut("< conversion: " + this.unitMembers + " members, " + this.unitStubs + " stubbed (fail loud, see the Java body kept beside each) >");
-    this.em.finishOut();
-    this.fileUnits = this.fileUnits + 1;
+    if (!this.cfg.bundle) { this.em.finishOut(); }
+    if (!inBundle) { this.fileUnits = this.fileUnits + 1; }
     this.fileMembers = this.fileMembers + this.unitMembers;
     this.fileStubs = this.fileStubs + this.unitStubs;
     if (typeWord == "class" && this.unitFields + 14 > 64) {
       this.rep.note(stem + " has " + this.unitFields + " instance fields; with the 14 metadata and housing fields it passes the 64-field limit (SL_MAX_STRUCT_FIELDS)");
     }
     if (this.rw.hasField("length")) { this.rep.note(stem + " declares a field named length: check the .length to arrayLength rewrites"); }
-    < now the nested types, each in its own file >
+    < now the nested types: each in its own file, or later in this document (bundle) >
     String tv = this.rw.typeVarList();
     int ni = 0;
     while (ni < nNest) {
       convertType(nestStart[ni], nestStart[ni], nestKw[ni], nestOpen[ni], nestClose[ni], stem, tv);
       ni = ni + 1;
     }
+    if (this.cfg.bundle && !inBundle) { this.em.finishOut(); }
   }
 
   int[] growInts(int[] a, int cap, int count) {
@@ -599,6 +621,31 @@ class JConvTranslator {
       k = k + 1;
     }
     return "";
+  }
+
+  < the declared type of a field (generics erased, int mapped), from its first declarator >
+  String fieldType(int hh, int endTok) {
+    int k = hh;
+    int d = 0;
+    while (k <= endTok) {
+      if (kd(k) == 5) {
+        String t = tx(k);
+        if (d == 0 && (t == "=" || t == ";" || t == ",")) {
+          int p = this.rw.pv(k);
+          int dims = 0;
+          while (isOp(p, "]")) { p = this.rw.pv(this.rw.pv(p)); dims = dims + 1; }
+          String ty = this.rw.typeTextOf(hh, p);
+          < a C-style declarator (int a[]) adds its brackets to the type >
+          int q = 0;
+          while (q < dims) { ty = ty + "[]"; q = q + 1; }
+          return ty.replace(" ", "");
+        }
+        if (t == "(" || t == "[" || t == "{") { d = d + 1; }
+        if (t == ")" || t == "]" || t == "}") { d = d - 1; }
+      }
+      k = k + 1;
+    }
+    return "?";
   }
 
   int declaratorCount(int hh, int endTok) {
@@ -779,6 +826,7 @@ class JConvTranslator {
         this.rw.rewrite(h2, endTok + 1);
         if (kk == 3 && this.unitKind == "enum") { this.rw.enumCtorFixup(); }
         this.rw.postPass();
+        this.rw.typedPass();
         this.rw.emitOut(this.em);
         this.em.endLine();
       }
@@ -810,6 +858,7 @@ class JConvTranslator {
       } else {
         this.rw.rewrite(hh, endTok + 1);
         this.rw.postPass();
+        this.rw.typedPass();
         this.rw.emitOut(this.em);
         this.em.endLine();
       }
@@ -862,6 +911,7 @@ class JConvTranslator {
     this.rw.syn(5, ";");
     this.rw.syn(5, "}");
     this.rw.postPass();
+    this.rw.typedPass();
     this.rw.emitOut(this.em);
     this.em.endLine();
   }
@@ -1112,6 +1162,7 @@ class JConvTranslator {
     }
     this.rw.syn(5, "}");
     this.rw.postPass();
+    this.rw.typedPass();
     this.rw.emitOut(this.em);
     this.em.endLine();
   }
