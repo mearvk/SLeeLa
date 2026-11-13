@@ -1,0 +1,808 @@
+<< advantage/artificial-intelligence/models/high-speed-trader/high-speed-trader.sleela
+   SLeeLa courseware model: high speed trader (4 classes in one file so it runs outside lib).
+   Run: sleela run high-speed-trader.sleela >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< SLeeLa courseware model: the registry of the 24 pragmatics of the high speed trader. >
+< Each pragmatic is one evolution of judgement: clear logic, logic of use, or secure and grounded trade. >
+< Pure data and lookups; no I/O. >
+class SLHstPragmatics {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject real origin where publicly known; unknown values use none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39500;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | nation | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity on a 1..10 scale; courseware model on synthetic data >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real citable instrument or none >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ids 0..7 LOGIC (clear logic), 8..15 USE (logic of use), 16..23 GROUND >
+  < (secure and grounded trade). The priority order interleaves the phases >
+  < so any prefix of 8 to 24 keeps all three, and the first 8 are the minimal >
+  < safe core: every hard gate a trade must clear before it is even scored. >
+  String[] names;
+  double[] hardMins;
+  int[] order;
+  boolean built = false;
+
+  void build() {
+    if (built) { return; }
+    names = new String[24];
+    hardMins = new double[24];
+    order = new int[24];
+    int i = 0;
+    while (i < 24) { hardMins[i] = 0.0; i = i + 1; }
+    names[0] = "L1 well-formed inputs";
+    names[1] = "L2 positive net edge";
+    names[2] = "L3 edge covers half spread";
+    names[3] = "L4 evidence sufficiency";
+    names[4] = "L5 plausibility vs volatility";
+    names[5] = "L6 cost realism";
+    names[6] = "L7 signal to noise";
+    names[7] = "L8 depth logic";
+    names[8] = "U1 size fits order cap";
+    names[9] = "U2 quote freshness";
+    names[10] = "U3 position headroom";
+    names[11] = "U4 cost efficiency";
+    names[12] = "U5 liquidity fit";
+    names[13] = "U6 holding risk";
+    names[14] = "U7 rate headroom";
+    names[15] = "U8 learned regime prior";
+    names[16] = "G1 venue trust";
+    names[17] = "G2 kill switch armed";
+    names[18] = "G3 price collar";
+    names[19] = "G4 position hard limit";
+    names[20] = "G5 drawdown guard";
+    names[21] = "G6 grounded evidence";
+    names[22] = "G7 staleness hard stop";
+    names[23] = "G8 trust discounted size";
+    hardMins[0] = 1.0;
+    hardMins[1] = 0.0005;
+    hardMins[8] = 0.0005;
+    hardMins[16] = 0.5;
+    hardMins[17] = 1.0;
+    hardMins[18] = 1.0;
+    hardMins[19] = 1.0;
+    hardMins[20] = 0.05;
+    hardMins[21] = 0.1;
+    hardMins[22] = 1.0;
+    hardMins[23] = 0.3;
+    order[0] = 0;  order[1] = 16; order[2] = 17; order[3] = 8;
+    order[4] = 18; order[5] = 1;  order[6] = 9;  order[7] = 19;
+    order[8] = 2;  order[9] = 10; order[10] = 20; order[11] = 3;
+    order[12] = 11; order[13] = 21; order[14] = 4; order[15] = 12;
+    order[16] = 22; order[17] = 5; order[18] = 13; order[19] = 23;
+    order[20] = 6; order[21] = 14; order[22] = 7; order[23] = 15;
+    built = true;
+  }
+
+  int count() { return 24; }
+  int minPragmatics() { return 8; }
+  int maxPragmatics() { return 24; }
+  String name(int id) { build(); return names[id]; }
+  double hardMin(int id) { build(); return hardMins[id]; }
+  int orderAt(int i) { build(); return order[i]; }
+  String phase(int id) {
+    if (id < 8) { return "logic"; }
+    if (id < 16) { return "use"; }
+    return "ground";
+  }
+}
+
+< SLeeLa courseware model: a high speed trader AI built from 8 to 24 pragmatics. >
+< Targets at least 5000 evaluations per second and about 2000 trades per minute (simulated). >
+< Pure computation on synthetic data; it places no orders and opens no connections. >
+class SLHighSpeedTrader {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject real origin where publicly known; unknown values use none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39501;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | nation | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity on a 1..10 scale; courseware model on synthetic data >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real citable instrument or none >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < The high speed trader: a pure-computation model (no orders, no network). >
+  < Candidate layout o[0..9]: edgeBps, costBps, evidenceN, spreadBps, >
+  < volBps, ageMs, qty (fraction of max order, 0 to 1), positionFrac (0 to 1), >
+  < venueTrust (0 to 1), depthRatio (depth divided by qty). >
+  < Pipeline per candidate: 24 features in 0..1, then the first P pragmatics >
+  < by priority order. Any feature below its hard minimum is a veto. Else the >
+  < weighted score must reach the threshold and the rate governor must have a >
+  < token. Everything fails closed: not ready, halted, or malformed means no. >
+  SLHstPragmatics reg;
+  double[] f;
+  double[] w;
+  double[] hm;
+  int[] order;
+  int[] vetoCount;
+  double[] prior;
+  int P = 8;
+  boolean ready = false;
+  boolean halted = false;
+  double threshold = 0.60;
+  double tradesPerMinute = 2000.0;
+  double ratePerMs = 0.0;
+  double burst = 8.0;
+  double tokens = 8.0;
+  double lastMs = -1.0;
+  double windowStart = 0.0;
+  int windowAccepted = 0;
+  int windowRateRej = 0;
+  int evals = 0;
+  int accepted = 0;
+  int rejVeto = 0;
+  int rejScore = 0;
+  int rejRate = 0;
+  int rejNotReady = 0;
+  int lastCode = 1;
+  int lastBucket = 0;
+  int insights = 0;
+  int insightsRefused = 0;
+  double lastScore = 0.0;
+  double pnl = 0.0;
+  double peak = 0.0;
+  double ddLimit = 400.0;
+  double eta = 0.10;
+  boolean learning = true;
+
+  < ---- configuration (fail closed) ---- >
+  << Returns false and leaves the trader NOT ready unless pragmatics is in
+     8..24 and tradesPerMinute is positive and finite. >>
+  boolean configure(int pragmatics, double tpm) {
+    ready = false;
+    if (pragmatics < 8 || pragmatics > 24) { return false; }
+    if (tpm != tpm || tpm <= 0.0 || tpm > 600000.0) { return false; }
+    reg = new SLHstPragmatics();
+    reg.build();
+    P = pragmatics;
+    tradesPerMinute = tpm;
+    ratePerMs = tpm / 60000.0;
+    burst = tpm / 240.0;
+    if (burst < 2.0) { burst = 2.0; }
+    tokens = burst;
+    f = new double[24];
+    w = new double[24];
+    hm = new double[24];
+    order = new int[24];
+    vetoCount = new int[24];
+    prior = new double[10];
+    int i = 0;
+    while (i < 24) {
+      f[i] = 0.0;
+      w[i] = 1.0;
+      hm[i] = reg.hardMin(i);
+      order[i] = reg.orderAt(i);
+      vetoCount[i] = 0;
+      i = i + 1;
+    }
+    i = 0;
+    while (i < 10) { prior[i] = 0.5; i = i + 1; }
+    ready = true;
+    halted = false;
+    return true;
+  }
+
+  void setLearning(boolean on) { learning = on; }
+  << For comparison runs only: a positive finite drawdown limit in bps. >>
+  boolean setDrawdownLimit(double lim) {
+    if (lim != lim || lim <= 0.0) { return false; }
+    ddLimit = lim;
+    return true;
+  }
+  int getPragmatics() { return P; }
+  double getThreshold() { return threshold; }
+  int getEvals() { return evals; }
+  int getAccepted() { return accepted; }
+  int getRejVeto() { return rejVeto; }
+  int getRejScore() { return rejScore; }
+  int getRejRate() { return rejRate; }
+  int getVeto(int id) { return vetoCount[id]; }
+  double getWeight(int id) { return w[id]; }
+  double getPnl() { return pnl; }
+  int getLastCode() { return lastCode; }
+  double getLastScore() { return lastScore; }
+  boolean isHalted() { return halted; }
+  int getInsights() { return insights; }
+  int getInsightsRefused() { return insightsRefused; }
+  int resetWindowAccepted() { int a = windowAccepted; windowAccepted = 0; return a; }
+
+  < ---- small numeric helpers ---- >
+  double clamp01(double x) {
+    if (x < 0.0) { return 0.0; }
+    if (x > 1.0) { return 1.0; }
+    return x;
+  }
+  boolean okv(double x) { return x == x && x > -1.0e12 && x < 1.0e12; }
+
+  < ---- human control: halt is instant, re-arm is a deliberate human act ---- >
+  void haltNow() { halted = true; }
+  void rearm() { if (ready) { halted = false; peak = pnl; } }
+
+  < ---- the brilliant person channel ---- >
+  << A person with insight may nudge one pragmatic weight by a factor in
+     0.5..2.0. It can never change a hard minimum, so it can never unlock a
+     veto, and an out of range request is refused, not clamped. The weight is
+     kept in 0.25..4.0. Returns true when applied. >>
+  boolean insight(int id, double factor) {
+    if (ready == false) { insightsRefused = insightsRefused + 1; return false; }
+    if (id < 0 || id > 23) { insightsRefused = insightsRefused + 1; return false; }
+    if (factor != factor || factor < 0.5 || factor > 2.0) {
+      insightsRefused = insightsRefused + 1;
+      return false;
+    }
+    double nw = w[id] * factor;
+    if (nw < 0.25) { nw = 0.25; }
+    if (nw > 4.0) { nw = 4.0; }
+    w[id] = nw;
+    insights = insights + 1;
+    return true;
+  }
+
+  < ---- rate governor: token bucket plus a once a second threshold controller ---- >
+  void refill(double nowMs) {
+    if (lastMs < 0.0) { lastMs = nowMs; windowStart = nowMs; }
+    double dt = nowMs - lastMs;
+    if (dt > 0.0) {
+      tokens = tokens + dt * ratePerMs;
+      if (tokens > burst) { tokens = burst; }
+      lastMs = nowMs;
+    }
+    if (nowMs - windowStart >= 1000.0) {
+      double target = tradesPerMinute / 60.0;
+      if (windowRateRej > 3) {
+        threshold = threshold + 0.01;
+      } else {
+        if (windowAccepted < target * 0.98) { threshold = threshold - 0.01; }
+      }
+      if (threshold < 0.30) { threshold = 0.30; }
+      if (threshold > 0.98) { threshold = 0.98; }
+      windowAccepted = 0;
+      windowRateRej = 0;
+      windowStart = nowMs;
+    }
+  }
+
+  < ---- the 24 features, straight line, each in 0..1 where 1 is best ---- >
+  void features(double[] o) {
+    double e = o[0];
+    double c = o[1];
+    double n = o[2];
+    double s = o[3];
+    double v = o[4];
+    double a = o[5];
+    double q = o[6];
+    double p = o[7];
+    double t = o[8];
+    double d = o[9];
+    boolean wf = okv(e) && okv(c) && okv(n) && okv(s) && okv(v) && okv(a)
+              && okv(q) && okv(p) && okv(t) && okv(d);
+    if (wf == false) {
+      int z = 0;
+      while (z < 24) { f[z] = 0.0; z = z + 1; }
+      return;
+    }
+    double net = e - c;
+    double hs = 0.5 * s + 0.01;
+    f[0] = 1.0;
+    if (net > 0.0) { f[1] = clamp01(net / 20.0); } else { f[1] = 0.0; }
+    f[2] = clamp01(e / (4.0 * hs));
+    if (n < 0.0) { n = 0.0; }
+    f[3] = n / (n + 3.0);
+    double lim = 3.0 * v + 1.0;
+    if (e <= lim) { f[4] = 1.0; } else { f[4] = clamp01(lim / e); }
+    f[5] = clamp01(c / hs);
+    if (net > 0.0) { f[6] = clamp01(2.0 * net / (v + 1.0)); } else { f[6] = 0.0; }
+    f[7] = clamp01(d);
+    if (q <= 0.0 || q > 1.0) { f[8] = 0.0; } else { f[8] = 1.0 - 0.5 * q; }
+    if (a <= 50.0) { f[9] = 1.0; }
+    else { if (a >= 500.0) { f[9] = 0.0; } else { f[9] = (500.0 - a) / 450.0; } }
+    f[10] = clamp01(1.0 - p);
+    if (e > 0.0 && net > 0.0) { f[11] = clamp01(net / e); } else { f[11] = 0.0; }
+    f[12] = clamp01(d / 3.0);
+    f[13] = 1.0 / (1.0 + v / 50.0);
+    f[14] = clamp01(tokens / burst);
+    int b = 0;
+    if (net > 0.0) {
+      double x = net / 5.0;
+      while (b < 9 && x >= b + 1) { b = b + 1; }
+    }
+    lastBucket = b;
+    f[15] = prior[b];
+    f[16] = clamp01(t);
+    if (halted) { f[17] = 0.0; } else { f[17] = 1.0; }
+    if (e >= 0.0 && e <= 500.0 && c >= 0.0 && c <= 500.0 && s >= 0.0 && s <= 2000.0) {
+      f[18] = 1.0;
+    } else { f[18] = 0.0; }
+    if (p >= 0.0 && p < 0.95) { f[19] = 1.0; } else { f[19] = 0.0; }
+    f[20] = clamp01(1.0 - (peak - pnl) / ddLimit);
+    f[21] = clamp01(n / 10.0);
+    if (a >= 0.0 && a < 1000.0) { f[22] = 1.0; } else { f[22] = 0.0; }
+    f[23] = clamp01(1.0 - q * (1.0 - t));
+  }
+
+  < ---- evaluate one candidate: 1 accept, 0 reject; lastCode says why ---- >
+  << lastCode: 0 accepted, 1 not ready or halted, 10 plus id vetoed by that
+     pragmatic, 100 score below threshold, 101 rate governor out of tokens. >>
+  int evaluate(double[] o, double nowMs) {
+    evals = evals + 1;
+    if (ready == false) { rejNotReady = rejNotReady + 1; lastCode = 1; return 0; }
+    refill(nowMs);
+    features(o);
+    int i = 0;
+    double sw = 0.0;
+    double sc = 0.0;
+    while (i < P) {
+      int k = order[i];
+      double fk = f[k];
+      if (fk < hm[k]) {
+        vetoCount[k] = vetoCount[k] + 1;
+        rejVeto = rejVeto + 1;
+        lastCode = 10 + k;
+        return 0;
+      }
+      sw = sw + w[k];
+      sc = sc + w[k] * fk;
+      i = i + 1;
+    }
+    double score = sc / sw;
+    lastScore = score;
+    if (score < threshold) { rejScore = rejScore + 1; lastCode = 100; return 0; }
+    if (tokens < 1.0) {
+      rejRate = rejRate + 1;
+      windowRateRej = windowRateRej + 1;
+      lastCode = 101;
+      return 0;
+    }
+    tokens = tokens - 1.0;
+    accepted = accepted + 1;
+    windowAccepted = windowAccepted + 1;
+    lastCode = 0;
+    return 1;
+  }
+
+  < ---- evolution: call right after an accepted evaluate with the realized bps ---- >
+  << Multiplicative weights over the active pragmatics: a feature that was high
+     on a win is rewarded, high on a loss is penalized. The regime prior moves
+     toward the outcome. Drawdown within 5 percent of the limit halts the trader (matching the G5 veto), and only a
+     person can re-arm it. >>
+  void learn(double realizedBps) {
+    if (ready == false) { return; }
+    boolean win = realizedBps > 0.0;
+    pnl = pnl + realizedBps;
+    if (pnl > peak) { peak = pnl; }
+    if (peak - pnl >= ddLimit * 0.95) { halted = true; }
+    if (learning == false) { return; }
+    int i = 0;
+    while (i < P) {
+      int k = order[i];
+      double d = eta * (f[k] - 0.5);
+      if (win == false) { d = 0.0 - d; }
+      double nw = w[k] * (1.0 + d);
+      if (nw < 0.25) { nw = 0.25; }
+      if (nw > 4.0) { nw = 4.0; }
+      w[k] = nw;
+      i = i + 1;
+    }
+    double target = 0.0;
+    if (win) { target = 1.0; }
+    prior[lastBucket] = 0.9 * prior[lastBucket] + 0.1 * target;
+  }
+}
+
+< SLeeLa courseware model: a deterministic synthetic market for the high speed trader. >
+< Illustrative data only; not a measurement of any real market. >
+class SLHstMarket {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject real origin where publicly known; unknown values use none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39502;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | nation | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity on a 1..10 scale; courseware model on synthetic data >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real citable instrument or none >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Deterministic synthetic candidate stream: same seed, same stream. >
+  < Mix: noise, marginal, genuine, phantom (too good to be true), stale, >
+  < oversize, high position, low trust, and a rare malformed record. >
+  < The hidden truth decides the realized outcome, so learning has a signal. >
+  int seed = 12345;
+  boolean real = false;
+  double lastE = 0.0;
+  double lastC = 0.0;
+  double lastV = 0.0;
+  int kindCount = 0;
+
+  void reseed(int s) { seed = s; }
+  boolean lastWasReal() { return real; }
+
+  double rnd() {
+    seed = (seed * 1103515245 + 12345) % 2147483648;
+    return (seed * 1.0) / 2147483648.0;
+  }
+  double between(double lo, double hi) { return lo + (hi - lo) * rnd(); }
+
+  << Fill o[0..9] with the next candidate. o must have 10 elements. >>
+  void next(double[] o) {
+    double r = rnd();
+    double e = 0.0;
+    double c = between(2.0, 9.0);
+    double n = between(0.0, 30.0);
+    double v = between(3.0, 40.0);
+    real = false;
+    if (r < 0.70) {
+      e = between(0.0, 10.0);
+    } else {
+      if (r < 0.95) {
+        e = between(8.0, 25.0);
+        real = rnd() < 0.5;
+      } else {
+        if (r < 0.975) {
+          e = between(25.0, 60.0);
+          n = between(8.0, 40.0);
+          v = between(5.0, 30.0);
+          real = rnd() < 0.9;
+        } else {
+          if (r < 0.995) {
+            e = between(80.0, 300.0);
+            v = between(1.0, 6.0);
+            n = between(0.0, 2.0);
+            real = false;
+          } else {
+            e = between(0.0, 30.0);
+          }
+        }
+      }
+    }
+    double s = between(1.0, 12.0);
+    double a = between(1.0, 200.0);
+    double q = between(0.05, 1.0);
+    double p = between(0.0, 0.9);
+    double t = between(0.6, 1.0);
+    double d = between(0.5, 6.0);
+    double x = rnd();
+    if (x < 0.003) { a = between(600.0, 3000.0); }
+    if (x > 0.990) { q = 1.5; }
+    if (x > 0.970 && x <= 0.990) { p = between(0.95, 1.0); }
+    if (x > 0.940 && x <= 0.970) { t = between(0.2, 0.5); }
+    if (x > 0.9995) { e = 1.0e30; }
+    o[0] = e;
+    o[1] = c;
+    o[2] = n;
+    o[3] = s;
+    o[4] = v;
+    o[5] = a;
+    o[6] = q;
+    o[7] = p;
+    o[8] = t;
+    o[9] = d;
+    lastE = e;
+    lastC = c;
+    lastV = v;
+    kindCount = kindCount + 1;
+  }
+
+  << Realized outcome in bps of the candidate just generated, with noise. >>
+  double realized() {
+    double noise = (rnd() - 0.5) * 6.0;
+    if (real) { return lastE * 0.8 - lastC + noise; }
+    return lastE * 0.1 - lastC * 1.2 - 0.2 * lastV + noise;
+  }
+}
+
+< SLeeLa courseware demo: runs the high speed trader at P=8, 16 and 24 and checks it. >
+< run auto-links the sibling classes in this directory. Data is synthetic and illustrative. >
+class HstDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject real origin where publicly known; unknown values use none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39503;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | nation | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity on a 1..10 scale; courseware model on synthetic data >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real citable instrument or none >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int passed = 0;
+  int failed = 0;
+  int evalsPerSimSecond = 5000;
+
+  void check(String what, boolean ok) {
+    if (ok) { passed = passed + 1; print("  PASS  " + what); }
+    else { failed = failed + 1; print("  FAIL  " + what); }
+  }
+
+  << Run one configuration for simSeconds of simulated time. Returns the
+     achieved evaluations per wall-clock second. perMinuteMax receives the
+     largest accepted count in any full simulated minute through the field. >>
+  double maxMinute = 0.0;
+  double lastMinute = 0.0;
+  double lastPnl = 0.0;
+  int lastAccepted = 0;
+  double lastWallSeconds = 0.0;
+
+  double run(SLHighSpeedTrader tr, SLHstMarket mk, int simSeconds) {
+    double[] o = new double[10];
+    int i = 0;
+    int total = simSeconds * evalsPerSimSecond;
+    int minuteStartAccepted = 0;
+    int nextMinuteAt = 60 * evalsPerSimSecond;
+    maxMinute = 0.0;
+    lastMinute = 0.0;
+    int t0 = timeMonotonicNanos();
+    while (i < total) {
+      mk.next(o);
+      double nowMs = i * 0.2;
+      int d = tr.evaluate(o, nowMs);
+      if (d == 1) { tr.learn(mk.realized()); }
+      i = i + 1;
+      if (i == nextMinuteAt) {
+        double m = tr.getAccepted() - minuteStartAccepted;
+        if (m > maxMinute) { maxMinute = m; }
+        lastMinute = m;
+        minuteStartAccepted = tr.getAccepted();
+        nextMinuteAt = nextMinuteAt + 60 * evalsPerSimSecond;
+      }
+    }
+    int t1 = timeMonotonicNanos();
+    double secs = ((t1 - t0) * 1.0) / 1.0e9;
+    lastWallSeconds = secs;
+    lastPnl = tr.getPnl();
+    lastAccepted = tr.getAccepted();
+    return (total * 1.0) / secs;
+  }
+
+  void vetoReport(SLHighSpeedTrader tr, SLHstPragmatics reg) {
+    int logicV = 0;
+    int useV = 0;
+    int groundV = 0;
+    int k = 0;
+    while (k < 24) {
+      int c = tr.getVeto(k);
+      String ph = reg.phase(k);
+      if (ph == "logic") { logicV = logicV + c; }
+      if (ph == "use") { useV = useV + c; }
+      if (ph == "ground") { groundV = groundV + c; }
+      k = k + 1;
+    }
+    print("    vetoes by phase: logic=" + logicV + " use=" + useV + " ground=" + groundV
+          + "  score-rejects=" + tr.getRejScore() + "  rate-rejects=" + tr.getRejRate());
+  }
+
+  void main() {
+    print("=== High speed trader courseware model (synthetic data, no orders, no network) ===");
+    SLHstPragmatics reg = new SLHstPragmatics();
+    reg.build();
+
+    print("-- 1. fail closed configuration --");
+    SLHighSpeedTrader bad = new SLHighSpeedTrader();
+    check("7 pragmatics refused", bad.configure(7, 2000.0) == false);
+    check("25 pragmatics refused", bad.configure(25, 2000.0) == false);
+    check("zero trades per minute refused", bad.configure(8, 0.0) == false);
+    double[] probe = new double[10];
+    SLHstMarket pm = new SLHstMarket();
+    pm.next(probe);
+    check("unconfigured trader rejects everything", bad.evaluate(probe, 0.0) == 0);
+    check("unconfigured trader reports code 1", bad.getLastCode() == 1);
+
+    print("-- 2. the minimal safe core and the full set --");
+    int[] sizes = new int[3];
+    sizes[0] = 8;
+    sizes[1] = 16;
+    sizes[2] = 24;
+    int si = 0;
+    while (si < 3) {
+      int pc = sizes[si];
+      SLHighSpeedTrader tr = new SLHighSpeedTrader();
+      SLHstMarket mk = new SLHstMarket();
+      tr.configure(pc, 2000.0);
+      double eps = run(tr, mk, 120);
+      print("  P=" + pc + "  evals/s=" + eps + "  accepted(120 sim s)=" + tr.getAccepted()
+            + "  last full minute=" + lastMinute + "  max minute=" + maxMinute
+            + "  threshold=" + tr.getThreshold() + "  pnl(bps)=" + lastPnl);
+      vetoReport(tr, reg);
+      check("P=" + pc + " sustains at least 5000 evaluations per second", eps >= 5000.0);
+      check("P=" + pc + " never exceeds 2000 trades in a simulated minute (+ burst)", maxMinute <= 2008.0);
+      check("P=" + pc + " reaches at least 1500 trades in a simulated minute", maxMinute >= 1500.0);
+      si = si + 1;
+    }
+
+    print("-- 3. evolution: learning on versus off (same stream, P=24) --");
+    SLHighSpeedTrader on = new SLHighSpeedTrader();
+    SLHighSpeedTrader off = new SLHighSpeedTrader();
+    SLHighSpeedTrader offFree = new SLHighSpeedTrader();
+    SLHstMarket m1 = new SLHstMarket();
+    SLHstMarket m2 = new SLHstMarket();
+    SLHstMarket m4 = new SLHstMarket();
+    on.configure(24, 2000.0);
+    off.configure(24, 2000.0);
+    offFree.configure(24, 2000.0);
+    off.setLearning(false);
+    offFree.setLearning(false);
+    offFree.setDrawdownLimit(1.0e12);
+    run(on, m1, 120);
+    double pnlOn = lastPnl;
+    int accOn = lastAccepted;
+    run(off, m2, 120);
+    double pnlOff = lastPnl;
+    int accOff = lastAccepted;
+    run(offFree, m4, 120);
+    double pnlFree = lastPnl;
+    int accFree = lastAccepted;
+    print("  learning ON                    : trades=" + accOn + "  pnl(bps)=" + pnlOn + "  mean=" + (pnlOn / accOn) + "  halted=" + on.isHalted());
+    print("  learning OFF (guard armed)     : trades=" + accOff + "  pnl(bps)=" + pnlOff + "  mean=" + (pnlOff / accOff) + "  halted=" + off.isHalted());
+    print("  learning OFF (guard disabled)  : trades=" + accFree + "  pnl(bps)=" + pnlFree + "  mean=" + (pnlFree / accFree) + "  halted=" + offFree.isHalted());
+    print("  weight of L5 plausibility: " + on.getWeight(4) + "  of L4 evidence: " + on.getWeight(3));
+    check("learning ON earns a higher mean per trade than learning OFF with the guard disabled", (pnlOn / accOn) > (pnlFree / accFree));
+    check("the drawdown guard halts a trader that is losing", off.isHalted());
+
+    print("-- 4. the brilliant person channel --");
+    SLHighSpeedTrader br = new SLHighSpeedTrader();
+    br.configure(24, 2000.0);
+    check("insight 1.5 on L5 accepted", br.insight(4, 1.5));
+    check("insight 5.0 refused (out of range)", br.insight(4, 5.0) == false);
+    check("insight on unknown id refused", br.insight(99, 1.2) == false);
+    check("weight moved only by the accepted insight", br.getWeight(4) == 1.5);
+    SLHstMarket m3 = new SLHstMarket();
+    double[] o = new double[10];
+    o[0] = 40.0; o[1] = 4.0; o[2] = 20.0; o[3] = 4.0; o[4] = 15.0;
+    o[5] = 10.0; o[6] = 0.3; o[7] = 0.2; o[8] = 0.9; o[9] = 4.0;
+    check("a clean strong candidate is accepted", br.evaluate(o, 1000.0) == 1);
+    br.haltNow();
+    check("halted trader refuses the same candidate", br.evaluate(o, 2000.0) == 0);
+    check("halt is reported as the kill switch veto", br.getLastCode() == 27);
+    br.insight(17, 2.0);
+    check("insight cannot unlock the kill switch", br.evaluate(o, 3000.0) == 0);
+    br.rearm();
+    check("a person can re-arm", br.evaluate(o, 4000.0) == 1);
+
+    print("-- 5. guards a candidate must clear --");
+    SLHighSpeedTrader g = new SLHighSpeedTrader();
+    g.configure(8, 2000.0);
+    o[0] = 40.0; o[1] = 4.0; o[2] = 20.0; o[3] = 4.0; o[4] = 15.0;
+    o[5] = 10.0; o[6] = 0.3; o[7] = 0.2; o[8] = 0.9; o[9] = 4.0;
+    check("baseline candidate accepted", g.evaluate(o, 1000.0) == 1);
+    o[0] = 1.0e30;
+    check("malformed input vetoed by L1", g.evaluate(o, 2000.0) == 0 && g.getLastCode() == 10);
+    o[0] = 40.0; o[7] = 0.99;
+    check("position at limit vetoed by G4", g.evaluate(o, 3000.0) == 0 && g.getLastCode() == 29);
+    o[7] = 0.2; o[8] = 0.3;
+    check("untrusted venue vetoed by G1", g.evaluate(o, 4000.0) == 0 && g.getLastCode() == 26);
+    o[8] = 0.9; o[6] = 1.5;
+    check("oversize vetoed by U1", g.evaluate(o, 5000.0) == 0 && g.getLastCode() == 18);
+    o[6] = 0.3; o[0] = 3.0;
+    check("negative net edge vetoed by L2", g.evaluate(o, 6000.0) == 0 && g.getLastCode() == 11);
+
+    print("=== checks passed=" + passed + " failed=" + failed + " ===");
+  }
+}

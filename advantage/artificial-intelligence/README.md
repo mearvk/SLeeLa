@@ -15,6 +15,11 @@ here claims a measured result; numbers in exercises are illustrative.
 | 01 | [Evidence before trust](01-evidence-before-trust.md) | Treat a model score as evidence: reward vs baseline, confidence `n/(n+prior)`, "unknown is not zero" |
 | 02 | [Assumptions of a model](02-assumptions-of-a-model.md) | Record held/doubted assumptions for neural nets, character recognition and LLMs |
 | 03 | [Counsel: choosing an AI approach](03-counsel-choosing-an-approach.md) | Rank approaches with `mean × confidence × trust` and read the cautions |
+| 04 | [The high speed trader](04-the-high-speed-trader.md) | A runnable model: 5,000+ evals/s, about 2,000 trades/min (advanced-medium) |
+| 05 | [Pragmatics and evolution](05-pragmatics-and-evolution.md) | The 24 pragmatics in three phases; online weight learning (advanced) |
+| 06 | [Fail closed, and the brilliant](06-fail-closed-and-the-brilliant.md) | Safe halting, refusal over clamping, and the insight channel (advanced) |
+
+Models live in [models/](models/README.md).
 
 ## Prerequisites
 
@@ -28,4 +33,4 @@ here claims a measured result; numbers in exercises are illustrative.
 
 - Illustrative data only; replace with your own evaluation outcomes.
 - Fetched/remote knowledge is untrusted and never scored (see `enrich`).
-- This track does not add new AI code; it teaches how to weigh the existing code.
+- Lessons 01-03 add no code; lessons 04-06 teach the courseware model in `models/`.
