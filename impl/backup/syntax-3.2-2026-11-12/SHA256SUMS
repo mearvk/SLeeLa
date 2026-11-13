@@ -1,0 +1,9 @@
+761100459fb6b426086f4b5645783b7359c8594da63be44716ee2a33fdb82b47  ./core/sleela_core.c
+05bb3b146600cd0814db4597fa0a900020c5b75282a0d050966cf0d6e45f05e9  ./core/sleela_core.h
+fa4bdbb00357cf1c6f639bb72e1bf68a87567a7a65f7341255c430a27ba10df1  ./frontend/ast.h
+b833b1aa22b5cdaa079ff1f2d39e4bec7bd744b827554f935104d699c9c1d23f  ./frontend/compiler.cpp
+44d977af2025ee7e50eeb00c2ad84bbdcd34ea6d447c5a1a112ec6724adf8e38  ./frontend/parser.cpp
+f2806e0351b461657b77e03baeb63cbe3b33a9eb03eba261306b689108db03e9  ./frontend/parser.h
+4e207a50a59ceea0f4650a4485fecdd71923ad0a7c7e3dbb6113e0968db86dc7  ./frontend/semantic.cpp
+74266c4d07a0b3e7a922b9109d4ba8898791a3ed015edcbb746d778023f08953  ./frontend/version.h
+f4392e436a43be5fededfa80375625564e22a356d4e76aa68ae45129dc8c632c  ./nordshrift/nordshrift.cpp

@@ -548,6 +548,7 @@ Program Parser::parseProgram(){
     p.nestedClassCount=(int)hoistedNested_.size();
     for(auto& h:hoistedNested_) p.classes.push_back(std::move(h));
     for(const auto& u:uses31_) p.syntax31Uses.push_back(u);
+    for(const auto& u:uses32_) p.syntax32Uses.push_back(u);
     return p;
 }
 StructDecl Parser::parseStruct(){expect(Tok::KwStruct,"'struct'");StructDecl s;s.name=expect(Tok::Ident,"struct name").text;expect(Tok::LBrace,"'{'");while(!check(Tok::RBrace)&&!check(Tok::Eof)){Field f;f.type=parseType();f.name=expect(Tok::Ident,"field name").text;expect(Tok::Semicolon,"';'");s.fields.push_back(std::move(f));}expect(Tok::RBrace,"'}'");return s;}
@@ -925,7 +926,8 @@ ExprP Parser::parsePrimary(){
         // Syntax 3.1: 'x' is the integer code of the character.
         uses31_.insert("character literal");
         long long cv=std::stoll(t.text);i_++;
-        return parsePostfix(std::make_unique<IntLit>(cv));
+        auto lit=std::make_unique<IntLit>(cv); lit->isChar=true;
+        return parsePostfix(std::move(lit));
     }
     case Tok::Double:{
         int ln=t.line,cl=t.col;const std::string nt=t.text;i_++;double dv;
@@ -970,6 +972,19 @@ ExprP Parser::parsePrimary(){
                 return parsePostfix(parseArrayLiteral(arrType));
             }
             n->typeName += "[]"; n->args.push_back(parseExpr()); expect(Tok::RBracket,"']'");
+            // Syntax 3.2: further dimensions `new T[a][b]...`; trailing empty `[]` are unsized
+            // (their elements start null): `new T[a][]`. A sized dimension may not follow an unsized one.
+            bool sawUnsized=false;
+            while(check(Tok::LBracket)){
+                i_++;
+                if(check(Tok::RBracket)){ i_++; sawUnsized=true; n->typeName += "[]"; }
+                else {
+                    if(sawUnsized) error("array dimension expression after an empty '[]' in 'new "+n->typeName+"'");
+                    n->args.push_back(parseExpr()); expect(Tok::RBracket,"']'"); n->typeName += "[]";
+                }
+                uses32_.insert("multi-dimensional array creation");
+            }
+            if(n->args.size()>8) error("array creation with more than 8 sized dimensions");
             return parsePostfix(std::move(n));
         }
         expect(Tok::LParen,"'('");if(!check(Tok::RParen)){do{n->args.push_back(parseExpr());}while(accept(Tok::Comma));}expect(Tok::RParen,"')'");

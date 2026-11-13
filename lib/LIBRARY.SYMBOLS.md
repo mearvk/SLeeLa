@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 18115
-library-packages: 121
-module-facade-symbols: 84
-total-symbol-records: 18199
+library-source-files: 18120
+library-packages: 123
+module-facade-symbols: 86
+total-symbol-records: 18206
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -227,6 +227,11 @@ antivirus	SLFedoraAntivirusProfile.sleela	lib/antivirus/platforms/GNU/Linux/Fedo
 antivirus	SLUbuntuAntivirusProfile.sleela	lib/antivirus/platforms/GNU/Linux/Ubuntu/SLUbuntuAntivirusProfile.sleela	source
 antivirus	SLWindowsAntivirusProfile.sleela	lib/antivirus/platforms/Microsoft/Windows/SLWindowsAntivirusProfile.sleela	source
 api	SLPackage.sleela	lib/api/SLPackage.sleela	facade
+array	SLArray2D.sleela	lib/array/SLArray2D.sleela	source
+array	SLDoubleArray.sleela	lib/array/SLDoubleArray.sleela	source
+array	SLIntArray.sleela	lib/array/SLIntArray.sleela	source
+array	SLPackage.sleela	lib/array/SLPackage.sleela	facade
+array	SLRefArray.sleela	lib/array/SLRefArray.sleela	source
 audio	SLPackage.sleela	lib/audio/SLPackage.sleela	facade
 autocad	SLCadCommand.sleela	lib/autocad/SLCadCommand.sleela	source
 autocad	SLCadCreator.sleela	lib/autocad/SLCadCreator.sleela	source
@@ -552,6 +557,8 @@ cdma	EVDOProfile.sleela	lib/cdma/EVDOProfile.sleela	source
 cdma	IS95Profile.sleela	lib/cdma/IS95Profile.sleela	source
 cdma	WCDMAProfile.sleela	lib/cdma/WCDMAProfile.sleela	source
 cdma	CDMADemo.sleela	lib/cdma/examples/CDMADemo.sleela	source
+char	SLChar.sleela	lib/char/SLChar.sleela	source
+char	SLPackage.sleela	lib/char/SLPackage.sleela	facade
 character	AdvertisingModel.sleela	lib/character/AdvertisingModel.sleela	source
 character	BrokerageModel.sleela	lib/character/BrokerageModel.sleela	source
 character	BusinessModel.sleela	lib/character/BusinessModel.sleela	source

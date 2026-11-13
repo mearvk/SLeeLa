@@ -57,3 +57,13 @@ The converter's blockers were taken into the language. SLEELA.syntax is now **3.
 Verified: `impl/tests/syntax31/run_syntax31_tests.sh` (8), `impl/tests/version/run_version_tests.sh`, spark/oop/lineage/exceptions suites, `make test-sleela`, nordshrift tests and the cross-version fixture (now 3.2 is the above-ceiling case), 17 `examples/java/differential` programs, and the converter differential (`Flow.java` now converts labels, finally-on-return and array initializers and matches the JDK).
 
 Decisions to review: "3.01" is read as minor 1 (= 3.1) because minors are integers (`1.10` vs `1.1`); `working-binaries/` was NOT refreshed and still reports 1.0-3.0 (`impl/build/sleela` is the 3.1 binary); the char literal is an integer, not a distinct value kind. Still open (SLEELA.syntax 44.6): `String.m(..)` statics, `new T[a][b]`, varargs, lambdas, inner/anonymous classes, enums, switch expressions, try-with-resources, `float`.
+
+## Addendum: syntax 3.2, the char and array specifications (same day)
+
+SLEELA.syntax is now **3.2**: section 45 (char) and section 46 (array). Governing code: `impl/core/sleela_core.{h,c}` (three append-only opcodes: `OP_CHARSTR` 192, `OP_ADDCHAR` 193, `OP_NEWARRAYND` 194; ISA now 195 opcodes), `impl/frontend/{lexer,ast,parser,semantic,compiler,version}`. Library: `lib/char/` (`SLChar`) and `lib/array/` (`SLIntArray`, `SLDoubleArray`, `SLRefArray`, `SLArray2D`), each with an `SLPackage` facade; `lib/vm/InstructionSet.sleela` brought up to date (it had stopped at opcode 184, so `test-osls-isa` had been failing).
+
+Verified with a freshly built binary: `impl/tests/syntax32` (11), syntax31, version, spark/oop/lineage/exceptions, nordshrift (6 targets), `test-sleela`, `test-osls-isa`, `verify-vm-source-coverage`, library inventory (123 packages, 18120 sources), 17 Java differential programs, the converter differential (14).
+
+Process lesson recorded: the build is integrity-gated, so the SHA-256 manifest must be regenerated BEFORE `make`; a stale manifest makes the build stop silently and leaves the old binary in place (two earlier test runs this session used a stale binary until I caught it).
+
+Not done (SLEELA.syntax 45.7, 46.9): Unicode tables beyond Latin-1, array covariance, `clone()`, varargs, `String` static members. The converter does not yet use `a.length`, `new T[a][b]` or the typed char (it still refuses multi-dimensional creation).

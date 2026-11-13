@@ -1,23 +1,24 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  3.1  (3.0 plus section 44; may be written 3.01)
-    Compiler:        SLeeLa Language/Runtime 1.3.2-pro  (version gate accepts syntax 1.0 .. 3.1)
+    Syntax version:  3.2  (3.1 section 44, which may be written 3.01, plus sections 45 and 46)
+    Compiler:        SLeeLa Language/Runtime 1.3.2-pro  (version gate accepts syntax 1.0 .. 3.2)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary),
                      markdown/EXTENDS.md (the two `extends` meanings, syntax 1.10)
-    Status:          Normative for the syntax 1.0..3.1 compatibility surface
+    Status:          Normative for the syntax 1.0..3.2 compatibility surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
     `#sleela 3.0`) is the grammar edition defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (supported range 1.0 .. 3.1).
-    Syntax 3.1 is the current normative edition (section 44: the character
-    literal, the array initializer, labeled statements, and return / break /
-    continue through `finally`); `#sleela 3.01` is the same edition, spelled
-    with a leading zero (44.1). Syntax 3.0 consolidated the 1.x and 2.x
+    `impl/frontend/version.{h,cpp}` (supported range 1.0 .. 3.2).
+    Syntax 3.2 is the current normative edition (section 45: the char
+    specification; section 46: the array specification, `a.length` and
+    `new T[a][b]`). Syntax 3.1 (section 44: the character literal, the array
+    initializer, labeled statements, and return / break / continue through
+    `finally`) may be written `#sleela 3.01`, a leading-zero spelling (44.1). Syntax 3.0 consolidated the 1.x and 2.x
     language surface into one specification and keeps historical feature
     gates intact; it does not silently enable a feature below that feature's
     original minimum version. Syntax 3.0 also adds the `pure` and `gasoline`
@@ -3369,9 +3370,9 @@ parser records the use and semantic analysis reports
 A character literal is one character between apostrophes. The escapes are
 `\n \t \r \b \f \s \0` (and octal up to `\377`), `\\ \' \"`, and `\uXXXX`. A
 literal outside the basic multilingual plane is a lexical error (it would be two
-UTF-16 units). Its value is the **integer UTF-16 code unit**, typed as an
-integer: SLeeLa has no separate character value kind, so `'b' - 'a'` is `1`, and
-`print('a')` prints `97`. Showing a character as text goes through the library
+UTF-16 units). Its value is the **integer UTF-16 code unit**. In syntax 3.1 it is
+typed as an integer, so `'b' - 'a'` is `1` and `print('a')` prints `97`; from
+syntax 3.2 its static type is `char` and `print('a')` shows the character (section 45). Showing a character as text goes through the library
 (`JavaText.codePointU`, `Character`), as in the converter's string conversion
 rule. An apostrophe inside a comment is still a lexical error; the literal
 exists only in code.
@@ -3401,7 +3402,7 @@ types, `0.0` for `double` / `float`, `false` for `boolean`, `null` otherwise. Fr
 `U<width>`) start at zero too (`arrayFillKind` in `impl/frontend/compiler.cpp`);
 before, `new int32[n]` held `null`. The 128-bit-backed members keep `null`.
 
-Not covered: multi-dimensional creation `new T[a][b]` (still one dimension; see 44.6).
+Multi-dimensional creation `new T[a][b]` is syntax 3.2 (46.3); below 3.2 `new T[n]` takes one dimension.
 
 ### 44.4 Labeled statements, `break label`, `continue label`
 
@@ -3471,8 +3472,8 @@ not in 3.1.
 | assignment used as a value `(a = b)` | Converter: the language evaluates it to the assigned value |
 | `switch` fallthrough, `default` not last | Converter: the compiler lowers a switch with fallthrough in source order |
 | nested static classes `Outer.Inner` | Converter: hoisted by the parser since syntax 1.11 (cap 42 per document) |
+| multi-dimensional array creation `new T[a][b]` | **done in 3.2**, 46.3 |
 | `String.valueOf` / `format` / `join` (static members of `String`) | **Syntax open**: `String` is a keyword type, so `String.m(...)` does not parse; needs a binding to `JavaStringMethods` statics and library bodies |
-| multi-dimensional array creation `new T[a][b]` | **Syntax open**: `new T[n]` takes one dimension |
 | varargs `T... xs` | **Syntax open**: no variable-arity parameter or call-site packing |
 | lambdas, method references | **Syntax open**: design in `lib/java/jdk-28/LOWERING.md` (representation `(id, env)`), no grammar yet |
 | anonymous classes, inner (non-static) classes | **Syntax open**: needs the captured enclosing instance |
@@ -3487,3 +3488,220 @@ not in 3.1.
 Regression tests: `bash impl/tests/syntax31/run_syntax31_tests.sh` (outputs in
 `impl/tests/syntax31/*.expected.txt`; the `gate_*` and `bad_*` cases must be
 rejected with the stated message) and `bash impl/tests/version/run_version_tests.sh`.
+
+
+## 45. Syntax 3.2 — the char specification
+
+This section is **normative** and **implemented in the source compiler and VM**
+(`impl/frontend`, `impl/core`). It defines the `char` type that Java source needs
+and that syntax 3.1 only approximated with an integer-valued literal (44.2). The
+library is `lib/char/` (45.8). A document declaring a syntax below 3.2 keeps the
+3.1 behavior of 44.2: a char shown as text prints its decimal code.
+
+### 45.1 The type
+
+`char` is an **unsigned 16-bit UTF-16 code unit**: the integers 0 through 65535.
+It is held in an ordinary integer slot (there is no separate runtime value kind;
+a VM-owned Java String is the UTF-16 text kind, section 41). Its size, range and
+signedness are those of Java `char` (JLS 4.2.1).
+
+### 45.2 Literal
+
+`'x'` is a character literal (44.2). From 3.2 its static type is `char`, not
+`int`. `'\u0041'` and the other escapes of 44.2 are available; the literal must
+be one UTF-16 unit.
+
+### 45.3 Static type and promotion
+
+The compiler tracks the static type `char` through: a character literal, a
+local variable, parameter, field or array element declared `char`, a `(char)`
+cast, a call whose declared return type is `char`, and a `?:` whose branch is
+a char (the type of the first branch when the second is assignable to it).
+Everything else that merely carries the integer (a value read through `Any`, a
+generic, or an untyped context) is an `int`, not a char.
+
+- **Promotion (JLS 5.6).** Every arithmetic, bitwise, shift and unary operator
+  (`+ - * / % & | ^ << >> >>> ~` and unary `-`) applied to a char yields an `int`.
+  `'a' + 1` is `98`, `-'a'` is `-97`, `'a' + 'b'` is `195`. Comparison operators
+  compare the integer codes.
+- **`++`, `--` and compound assignment** on a char variable keep the type char and
+  wrap at 16 bits: `char c = 65535; c += 2;` leaves `1`; `char d = 0; d--;` leaves `65535`.
+
+### 45.4 Narrowing
+
+Storing into a `char` keeps the **low 16 bits** (`value & 0xFFFF`): a store into
+a char variable or field, passing a char parameter, returning from a method declared
+`char`, a `(char)` cast, and (3.2) a store into an element of a `char[]` (also by
+compound assignment). `char c = 65601;` holds `65`; `(char) -1` is `65535`.
+Unlike Java, an `int` expression assigned to a `char` needs no cast and raises no
+"possible lossy conversion" diagnostic: SLeeLa narrows silently. Code that must
+reject the lossy store checks the range itself.
+
+### 45.5 A char as text
+
+Where the static type of an operand is `char` it is shown as a **one-unit String**
+in three places, and only there:
+
+1. `x + y` where either operand is a String and the other is a char (and `s += c`);
+2. the argument of `print`;
+3. the library call `SLChar.toString(c)` (a concatenation `"" + c`).
+
+If the other operand is a plain String, or in `print`, the char becomes a plain
+(UTF-8) String; a surrogate unit (0xD800..0xDFFF) or NUL (0) has no plain-String
+form and is the runtime error `an unpaired surrogate char cannot be shown in a
+plain String; use a UTF-16 String` (or the NUL message). If the other operand is a
+UTF-16 String every unit converts losslessly to a one-unit UTF-16 String. When
+neither operand of `+` is a String, `c1 + c2` is integer addition (45.3).
+
+A char that has lost its static type (passed through `Any`, a generic, or a
+method taking `int`) is an integer and shows as its decimal code.
+
+### 45.6 Lowering
+
+Two append-only opcodes (section 44 of `sleela_core.h`):
+
+- `OP_CHARSTR` (192) pops a char and pushes it as a plain String; emitted before
+  `OP_PRINT` for a char-typed `print` argument.
+- `OP_ADDCHAR` (193) with operand `a` (bit 0: left operand is a char, bit 1:
+  right operand is a char) behaves exactly as `OP_ADD`, except that when either
+  operand is a String each flagged integer operand is first converted to a one-unit
+  String of the same kind. The compiler emits it for every `+` whose operand has the
+  static type char, and the VM decides at run time whether a String is involved.
+
+The flags are computed by semantic analysis (`Binary::charMask`,
+`PrintStmt::charArg`, `AssignmentExpr::charMask`) only when the declared syntax is
+3.2 or later.
+
+### 45.7 Not done
+
+- No Unicode tables: `SLChar` classifies and maps ASCII and Latin-1 only.
+- Characters outside the basic multilingual plane are two chars (a surrogate
+  pair), as in Java; a character literal above 0xFFFF is a lexical error.
+- No boxed `Character` identity or cache; `Character` remains the library class.
+- A char given to `String.valueOf`, `format` and the like stays an integer (those
+  static members of `String` are still open, 44.6).
+
+### 45.8 Library
+
+`lib/char/SLChar.sleela` (package facade `lib/char/SLPackage.sleela`), all static:
+`MIN_VALUE`, `MAX_VALUE`, `toCode`, `fromCode`, `toString`, `isDigit`,
+`isUpperCase`, `isLowerCase`, `isLetter`, `isLetterOrDigit`, `isWhitespace`,
+`toUpperCase`, `toLowerCase`, `digitValue(c, radix)`, `forDigit(d, radix)`,
+`isHighSurrogate`, `isLowSurrogate`, `isSurrogate`, `toCodePoint(high, low)`,
+`compare`, `hashCode`. Every method except the text of `toString` works in any
+syntax version; `toString` shows the character under 3.2 and the decimal code below.
+
+Tests: `impl/tests/syntax32/char_text.sleela`, `char_int_in_3_1.sleela`,
+`lib_char.sleela`; run `bash impl/tests/syntax32/run_syntax32_tests.sh`.
+
+
+## 46. Syntax 3.2 — the array specification
+
+This section is **normative** and **implemented in the source compiler and VM**.
+It collects what an array is in SLeeLa, and adds the array length member and
+multi-dimensional creation. The initializer is 44.3. The library is `lib/array/` (46.8).
+
+### 46.1 Types and values
+
+`T[]` is an array of `T`; `T[][]`, `T[][][]`, ... are arrays of arrays, for any
+element type `T` the compiler knows (primitive, String, class, struct, `Any`). An
+array is a **reference**: a VM handle into a bounded array store (4096 live arrays,
+at most 2^25 = 33,554,432 elements each). Assignment, argument passing and
+return share the one array; `==` compares identity; the default value of an array
+variable or element is `null`. There is no implicit copy.
+
+### 46.2 Element defaults
+
+`new T[n]` fills by element type: `int long short byte char int64` with `0`;
+`double float` with `0.0`; `boolean bool` with `false`; every other element type
+(String, classes, structs, `Any`, and arrays themselves) with `null`.
+
+### 46.3 Creation
+
+`new T[n]` creates a one-dimensional array; `n` is an `int` greater than or
+equal to 0 (a negative or too-large size is a runtime error). From 3.2:
+
+    int[][]  g = new int[3][4];        < 3 rows of 4, all 0 >
+    int[][][] c = new int[2][3][4];    < rank 3 >
+    int[][]  j = new int[3][];         < 3 rows, every row null (jagged) >
+    j[0] = new int[2]; j[1] = new int[5];
+
+`new T[a][b]...` creates a **rectangular** array of arrays, outermost first: every
+dimension expression is evaluated left to right before any allocation; each row is
+a separate array object (so `g[0] != g[1]`, and a row can be replaced). Empty
+brackets must be trailing and leave those rows `null`; a sized dimension after an empty
+one (`new T[2][][3]`) is a syntax error, as is more than eight sized dimensions.
+The element default (46.2) applies to the innermost sized level; trailing unsized
+levels are `null`. A multi-dimensional creation below 3.2 is the error
+`multi-dimensional array creation requires #sleela 3.2`.
+
+Limit: because every row is an array object, a grid needs `1 + rows` of the 4096
+live-array slots (`new int[4096][1]` fails with `array allocation failed ... the
+live-array table is full`); collection of dead arrays reclaims them, so a loop that
+builds and drops many grids runs in constant space.
+
+### 46.4 The length member
+
+    int n = a.length;          < the number of elements, any array expression >
+    int w = g[0].length;       < length of row 0 >
+    int m = new int[7].length;
+
+From 3.2 `a.length` is the number of elements of the array `a`. It is read-only:
+`a.length = n` and `a.length++` are the error `the array length is read-only`. It
+is exactly `arrayLength(a)`, which remains available (and is what a library meant to
+run under any syntax uses). Below 3.2 `a.length` is the error `the array length
+member requires #sleela 3.2 (use arrayLength(a) below 3.2)`. A null array is the
+runtime error `length() on a non-array value`.
+
+### 46.5 Indexing
+
+`a[i]` reads and `a[i] = v` writes element `i`. The index must be an integer (`int`,
+or a `char`, `short`, `byte`); it is checked on every access, and an index outside
+`0 .. length-1` is the runtime error `array index out of range` (an ordinary VM
+fault, not a catchable exception, 43.5). Indexing `null` or a non-array is a runtime
+error. `a[i] op= v` evaluates `a` and `i` exactly once. Nested indexing `g[i][j]`
+indexes the row `g[i]` first.
+
+### 46.6 Type checking
+
+An element store must be assignable to the element type (`cannot assign X to
+element of T[]`); an initializer element likewise (44.3). Casts to array types and
+`instanceof` on array types remain errors: the VM keeps no element type with an
+array, so there is no array covariance and no `ArrayStoreException`.
+
+### 46.7 Lowering
+
+`OP_NEWARRAY` (fill kind in operand `a`) creates a one-dimensional array;
+`OP_ARRGET`, `OP_ARRSET`, `OP_ARRLEN` read, write and measure it. `a.length` lowers to
+`OP_ARRLEN`. **`OP_NEWARRAYND`** (194) creates the rectangular array of arrays:
+operand `a` is the number of sized dimensions `n` (2..8) in the low byte and the
+fill kind of the innermost sized level in the next byte; it pops `n` sizes (the last
+dimension on top) and pushes the outermost array. The VM keeps the array being
+built on the operand stack, a collector root, until it is stored into its parent, and
+reports `negative array size` or the live-array table message instead of leaving a
+half-built grid.
+
+### 46.8 Library
+
+`lib/array/` (package facade `SLPackage.sleela`):
+
+- `SLIntArray` over `int[]`: `checkIndex`, `copyOf`, `copyOfRange`, `concat`, `fill`,
+  `fillRange`, `isEqual`, `indexOf`, `lastIndexOf`, `contains`, `sumOf`, `minOf`,
+  `maxOf`, `swap`, `reverse`, `sort` (heapsort), `binarySearch`, `toText`.
+- `SLDoubleArray` over `double[]`: `copyOf`, `fill`, `sumOf`, `minOf`, `maxOf`,
+  `indexOf`, `isEqual`, `reverse`.
+- `SLRefArray` over `Any[]`: `isEmpty`, `lengthOf`, `checkIndex`, `copyOf`, `fill`, `same`.
+- `SLArray2D` over `int[][]` and `double[][]` (needs 3.2): `create`, `createDouble`,
+  `rows`, `cols`, `isRectangular`, `fill`, `copy`, `transpose`, `sumOf`, `toText`.
+
+The first three use `arrayLength` and run under any syntax that has arrays.
+
+### 46.9 Not done
+
+Array covariance and runtime element contracts (46.6), `clone()`, array of
+generics, variable-arity parameters `T... xs` (44.6), `new T[n]{...}`, creation
+above rank 8, and catchable index exceptions.
+
+Tests: `impl/tests/syntax32/array_nd.sleela` (including a 12,300-array
+collection stress), `lib_array.sleela`, `gate_*` and `bad_*`; run
+`bash impl/tests/syntax32/run_syntax32_tests.sh`.

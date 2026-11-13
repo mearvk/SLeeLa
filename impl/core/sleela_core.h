@@ -337,6 +337,16 @@ typedef enum {
     OP_BSHR,
     OP_BUSHR,
     OP_BNOT,
+    /* Syntax 3.2 (SLEELA.syntax sections 45 and 46). Append-only opcodes 192..194. */
+    OP_CHARSTR,     /* pops a char (UTF-16 code unit); pushes it as a one-character plain String
+                     * (an unpaired surrogate or NUL cannot be a plain String: runtime error)  */
+    OP_ADDCHAR,     /* a = bit0: left operand is a char, bit1: right operand is a char. Exactly
+                     * OP_ADD, except that when either operand is a String each flagged char
+                     * operand is first converted to a one-unit String of the same kind        */
+    OP_NEWARRAYND,  /* a = sized dimensions n (2..8) | element fill kind << 8 (OP_NEWARRAY kinds,
+                     * for the innermost sized level). Pops n sizes (last size on top); pushes
+                     * a rectangular array of arrays, outermost first. Unsized trailing
+                     * dimensions are simply null elements (fill kind 0).                      */
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
@@ -393,7 +403,10 @@ static_assert(OP_JSTR_TO_UTF8 == 183, "Java String to UTF-8 conversion is append
 static_assert(OP_JSTR_FROM_CODE_UNIT == 184, "Java String from a run-time code unit is append-only 184");
 static_assert(OP_BAND == 185, "bitwise AND is append-only opcode 185");
 static_assert(OP_BNOT == 191, "bitwise NOT is append-only opcode 191");
-static_assert(OP__COUNT == 192, "the extended ISA must contain 192 opcodes");
+static_assert(OP_CHARSTR == 192, "char to String is append-only opcode 192");
+static_assert(OP_ADDCHAR == 193, "char-aware add is append-only opcode 193");
+static_assert(OP_NEWARRAYND == 194, "multi-dimensional array creation is append-only opcode 194");
+static_assert(OP__COUNT == 195, "the extended ISA must contain 195 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -424,7 +437,10 @@ _Static_assert(OP_JSTR_TO_UTF8 == 183, "Java String to UTF-8 conversion is appen
 _Static_assert(OP_JSTR_FROM_CODE_UNIT == 184, "Java String from a run-time code unit is append-only 184");
 _Static_assert(OP_BAND == 185, "bitwise AND is append-only opcode 185");
 _Static_assert(OP_BNOT == 191, "bitwise NOT is append-only opcode 191");
-_Static_assert(OP__COUNT == 192, "the extended ISA must contain 192 opcodes");
+_Static_assert(OP_CHARSTR == 192, "char to String is append-only opcode 192");
+_Static_assert(OP_ADDCHAR == 193, "char-aware add is append-only opcode 193");
+_Static_assert(OP_NEWARRAYND == 194, "multi-dimensional array creation is append-only opcode 194");
+_Static_assert(OP__COUNT == 195, "the extended ISA must contain 195 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */

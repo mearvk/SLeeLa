@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "761100459fb6b426086f4b5645783b7359c8594da63be44716ee2a33fdb82b47"
+      "sha256": "7459a9de33b0778a0cd0c105b7469878cfc74e5423da80421e0d0923517f6fb2"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "05bb3b146600cd0814db4597fa0a900020c5b75282a0d050966cf0d6e45f05e9"
+      "sha256": "00b00e96a2a7a14fabda50bccedc04ea518e7ed013e3bebe37cc93b5fd5fd892"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -543,7 +543,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "fa4bdbb00357cf1c6f639bb72e1bf68a87567a7a65f7341255c430a27ba10df1"
+      "sha256": "f557a4df90e13bc36f813005010188af8ac2aecf872cf1e072e63a974f552653"
     },
     {
       "path": "impl/frontend/common_rails_banner.hpp",
@@ -551,7 +551,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "0eebc3d39f6446ba7b23b61486573ee52292d56813d08e6aecd2dc660fcf67fb"
+      "sha256": "208610906d2aae4c744913bb2ddd595ce7ed98711a8b106fa5014ce7339984bf"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -655,11 +655,11 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "44d977af2025ee7e50eeb00c2ad84bbdcd34ea6d447c5a1a112ec6724adf8e38"
+      "sha256": "fb33c992f605600c8f901cf637475afbef40cb7427d177ba091502bea477e0a4"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "f2806e0351b461657b77e03baeb63cbe3b33a9eb03eba261306b689108db03e9"
+      "sha256": "37907e1b8d0a9b523cdfcd8100fe10aff78c84824311dbcef38c023e7e3486a4"
     },
     {
       "path": "impl/frontend/permissible.cpp",
@@ -671,7 +671,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "4e207a50a59ceea0f4650a4485fecdd71923ad0a7c7e3dbb6113e0968db86dc7"
+      "sha256": "8a779f653beff4bbfb3fdae704b71ccb52817504bc34db84517b9c0a9ff1a54b"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -687,7 +687,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "74266c4d07a0b3e7a922b9109d4ba8898791a3ed015edcbb746d778023f08953"
+      "sha256": "d10e061f40d5d17edc7eceed019a54c81e0c3263374b3b10ecbc1b6a866b2ade"
     },
     {
       "path": "impl/frontend/wide_integer.h",
@@ -755,7 +755,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "f4392e436a43be5fededfa80375625564e22a356d4e76aa68ae45129dc8c632c"
+      "sha256": "7f1073a7e777597ddb2a929ce199fd63019a5ffc2ba1fee89c9684028cc003c1"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -1844,6 +1844,26 @@
     {
       "path": "lib/api/SLPackage.sleela",
       "sha256": "f68cdf70f68de1ccb943aa4b727cffa1de86ba7c391b904facd2bbff3498f906"
+    },
+    {
+      "path": "lib/array/SLArray2D.sleela",
+      "sha256": "f01d8f3f184978d1566ca8a957ad169fe4d79efb8066bbf5c637f2f1ffe8efee"
+    },
+    {
+      "path": "lib/array/SLDoubleArray.sleela",
+      "sha256": "bff62ca0548722e2e00b63014127feaa0d4b642c66c2d2b75f763c490b5589b0"
+    },
+    {
+      "path": "lib/array/SLIntArray.sleela",
+      "sha256": "3b72e5aaa85dc18b272d38b285f2b693160ee4278ac10a9e1dcf5cd660f201a0"
+    },
+    {
+      "path": "lib/array/SLPackage.sleela",
+      "sha256": "30cf497ac5b80ac5f17cb5ecff8c4b543b700cfd4aab8b9a9cd669383de955e1"
+    },
+    {
+      "path": "lib/array/SLRefArray.sleela",
+      "sha256": "877f3e740459af847ee9efaf56ad39216c5a7ff3ca78a9542b86a7d000f39628"
     },
     {
       "path": "lib/audio/SLPackage.sleela",
@@ -3144,6 +3164,14 @@
     {
       "path": "lib/cdma/examples/CDMADemo.sleela",
       "sha256": "6135b0ca45978e6a5a485b93be10102eec4b2c0386635e0409ad78c692b312fe"
+    },
+    {
+      "path": "lib/char/SLChar.sleela",
+      "sha256": "ce18728dd57217fde86eae8aecc32ff156ab3e1e7a8cb89b0a12a9d2ded21c79"
+    },
+    {
+      "path": "lib/char/SLPackage.sleela",
+      "sha256": "fb7a6a7bc4bdf9f0a7d7c07e267f46168bfe0562623b7759c7538a4a3d282d17"
     },
     {
       "path": "lib/character-recognition/SLCharacterRecognition.sleela",
@@ -73271,7 +73299,7 @@
     },
     {
       "path": "lib/vm/InstructionSet.sleela",
-      "sha256": "281358adc0e4c1c04729fa470fc9e9ee50fb8f46e81226c77a6fd4fc3fd0a792"
+      "sha256": "b6b12c7128ba3e7afca4f1255a3a77a94c1d2d64dcef42a856574fd9e8d8efc0"
     },
     {
       "path": "lib/vm/SLNativeMemory.sleela",

@@ -1,0 +1,13 @@
+Az5
+true false
+true false true
+true false
+true true false
+MmÉ
+15 9 -1 35
+b3
+65 B A
+65535 0
+true true false
+128512
+-2 97

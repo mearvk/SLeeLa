@@ -1,0 +1,2 @@
+#sleela 3.2
+class Bad { void main() { int[] a = new int[2]; a.length = 5; } }

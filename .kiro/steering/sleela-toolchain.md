@@ -28,8 +28,8 @@ The toolchain is **two** native executables. The committed copies in
 
 - **`sleela`** — `SLeeLa™ Language/Runtime 1.3.2-pro`, the authoritative
   compiler/runner, **supported source syntax 1.0 – 3.0**, native C/C++ Core VM.
-  (The source-built `impl/build/sleela` supports **1.0 – 3.1**; syntax 3.1, also
-  written `3.01`, is SLEELA.syntax section 44. The committed `working-binaries/`
+  (The source-built `impl/build/sleela` supports **1.0 – 3.2**; syntax 3.1, also
+  written `3.01`, is SLEELA.syntax section 44, and 3.2 is sections 45 (char) and 46 (array). The committed `working-binaries/`
   stay at 3.0 until they are refreshed, so use `impl/build/sleela` for `#sleela 3.1`.)
   Subcommands: `check <f>`, `run <f>`, `compile <f...> -o <out>`,
   `validate-artifact <f>`, `nordshrift [--emit|--roundtrip] [--target=…] <f>`,

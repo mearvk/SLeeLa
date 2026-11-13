@@ -449,7 +449,7 @@ private:
     void emitStmt(const Stmt* s){
         if(auto b=dynamic_cast<const Block*>(s)){emitBlock(*b);return;} if(auto d=dynamic_cast<const VarDecl*>(s)){emitVarDecl(*d);return;}
         if(auto a=dynamic_cast<const Assign*>(s)){emitAssign(*a);return;} if(auto e=dynamic_cast<const ExprStmt*>(s)){emitExpr(e->expr.get());emit(OP_POP);return;}
-        if(auto p=dynamic_cast<const PrintStmt*>(s)){emitExpr(p->expr.get());emit(OP_PRINT);return;} if(auto r=dynamic_cast<const ReturnStmt*>(s)){emitReturn(*r);return;}
+        if(auto p=dynamic_cast<const PrintStmt*>(s)){emitExpr(p->expr.get());if(p->charArg)emit(OP_CHARSTR);emit(OP_PRINT);return;} if(auto r=dynamic_cast<const ReturnStmt*>(s)){emitReturn(*r);return;}
         if(auto gh=dynamic_cast<const GcHintStmt*>(s)){emitGcHint(*gh);return;}
         if(auto i=dynamic_cast<const IfStmt*>(s)){emitIf(*i);return;} if(auto w=dynamic_cast<const WhileStmt*>(s)){emitWhile(*w);return;} if(auto f=dynamic_cast<const ForStmt*>(s)){emitFor(*f);return;} if(auto fe=dynamic_cast<const ForEachStmt*>(s)){emitForEach(*fe);return;}
         if(auto fa=dynamic_cast<const FieldAssign*>(s)){emitFieldAssign(*fa);return;}
@@ -851,7 +851,15 @@ private:
     }
     // Lower a (possibly compound) assignment expression. The result value is
     // left on the stack. Compound ops expand to `target = target <op> value`.
+    // Syntax 3.2: `s += c` with a char value c appends the character, not its number.
+    unsigned compoundCharMask_=0;
+    bool narrowCharStore_=false;
+    void emitBinOpC(const std::string& o){ if(o=="+"&&compoundCharMask_){ emit(OP_ADDCHAR,(int)compoundCharMask_); return; } emitBinOp(o); }
     void emitAssignmentExpr(const AssignmentExpr& a){
+        const unsigned savedCharMask=compoundCharMask_; compoundCharMask_=a.charMask;
+        struct Restore{unsigned& r;unsigned v;~Restore(){r=v;}} restoreCharMask{compoundCharMask_,savedCharMask};
+        const bool savedNarrow=narrowCharStore_; narrowCharStore_=a.narrowChar;
+        struct RestoreB{bool& r;bool v;~RestoreB(){r=v;}} restoreNarrow{narrowCharStore_,savedNarrow};
         emitAssignTo(a.target.get(), a.op=="=" ? std::string() : a.op.substr(0,a.op.size()-1), [&]{ emitExpr(a.value.get()); });
     }
     // Assign to `target` (local, field, static, member, array element), with an
@@ -863,7 +871,7 @@ private:
             // must follow the same resolution path as Assign statements.
             int slot=ctx_->slotOf(v->name);
             if(slot>=0){
-                if(!bin.empty()){emit(OP_LOADL,slot);emitValue();emitBinOp(bin);}
+                if(!bin.empty()){emit(OP_LOADL,slot);emitValue();emitBinOpC(bin);}
                 else emitValue();
                 {auto t=varType_.find(v->name);if(t!=varType_.end())coerceToDeclared(t->second);}
                 emit(OP_STOREL,slot);emit(OP_LOADL,slot);return;
@@ -871,7 +879,7 @@ private:
             int off=instanceFieldOffset(v->name);
             if(off>=0){
                 emitThis();                         // [this]
-                if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitValue();emitBinOp(bin);}
+                if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitValue();emitBinOpC(bin);}
                 else emitValue();
                 coerceToDeclared(instanceFieldType(v->name));
                 emit(OP_SETFIELD,off);              // leaves assigned value
@@ -881,7 +889,7 @@ private:
             if(g>=0){
                 const std::string key=fieldOwner_.count(v->name)?v->name:currentClass_+"::"+v->name;
                 if(fieldProtected_[key]&&fieldOwner_[key]!=currentClass_)throw std::runtime_error("protected field access denied");
-                if(!bin.empty()){emit(OP_LOADG,g);emitValue();emitBinOp(bin);}
+                if(!bin.empty()){emit(OP_LOADG,g);emitValue();emitBinOpC(bin);}
                 else emitValue();
                 emit(OP_STOREG,g);emit(OP_LOADG,g);return;
             }
@@ -890,7 +898,7 @@ private:
         if(auto m=dynamic_cast<const MemberAccess*>(target)){
             { std::string sc; if(isStaticClassRef(m->base.get(),sc)){ auto g=fieldGlobal_.find(sc+"::"+m->field);
                 if(g!=fieldGlobal_.end()){
-                    if(!bin.empty()){emit(OP_LOADG,g->second);emitValue();emitBinOp(bin);}
+                    if(!bin.empty()){emit(OP_LOADG,g->second);emitValue();emitBinOpC(bin);}
                     else emitValue();
                     emit(OP_STOREG,g->second);emit(OP_LOADG,g->second);return;
                 } } }
@@ -898,7 +906,7 @@ private:
             std::string ft=(off>=0&&off<(int)ml.fieldType.size())?ml.fieldType[(size_t)off]:"";
             // SETFIELD expects [struct, newval] and leaves newval on the stack.
             emitExpr(m->base.get());                 // [struct]
-            if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitValue();emitBinOp(bin);} // [struct, newval]
+            if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitValue();emitBinOpC(bin);} // [struct, newval]
             else emitValue();            // [struct, newval]
             coerceToDeclared(ft);
             emit(OP_SETFIELD,off);                   // [newval]
@@ -917,10 +925,11 @@ private:
                 emit(OP_DUP2);                       // [array, index, array, index]
                 emit(OP_ARRGET);                     // [array, index, cur]
                 emitValue();             // [array, index, cur, val]
-                emitBinOp(bin);                      // [array, index, newval]
+                emitBinOpC(bin);                      // [array, index, newval]
             } else {
                 emitValue();             // [array, index, value]
             }
+            if(narrowCharStore_){ emit(OP_CONST,slvm_add_const_int(vm_,0xFFFF)); emit(OP_BAND); }   // syntax 3.2: char[] element store keeps 16 bits
             emit(OP_ARRSET);                         // [value]
             return;
         }
@@ -1121,6 +1130,15 @@ private:
             }
             return;
         }
+        if(n.args.size()>=2 && n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){
+            // Syntax 3.2 multi-dimensional creation: new T[a][b]... / new T[a][b][]
+            std::string base=n.typeName; size_t rank=0;
+            while(base.size()>=2 && base.compare(base.size()-2,2,"[]")==0){ base.erase(base.size()-2); ++rank; }
+            for(const auto& d:n.args) emitExpr(d.get());
+            const int fill=(n.args.size()==rank)?arrayFillKind(base):0;
+            emit(OP_NEWARRAYND,(int)n.args.size()|(fill<<8));
+            return;
+        }
         if(n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){if(!n.args.empty())emitExpr(n.args[0].get());else emit(OP_CONST,slvm_add_const_int(vm_,0));emit(OP_NEWARRAY,arrayFillKind(n.typeName.substr(0,n.typeName.size()-2)));return;}
         auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown class or struct '"+n.typeName+"'");
         // Resolve a matching constructor before allocating so an arity/overload
@@ -1203,6 +1221,7 @@ private:
         return true;
     }
     void emitMember(const MemberAccess& m){
+        if(m.arrayLength){ emitExpr(m.base.get()); emit(OP_ARRLEN); return; }   // syntax 3.2: a.length
         // Back-propagate the terminal degree requirement to the origin.
         // next.next is the Degree-2 proposal. When that proposal is itself
         // static, its viewpoint extends by another two degrees to Degree 4.
@@ -1387,7 +1406,7 @@ private:
             return;
         }
         emitExpr(b.lhs.get());emitExpr(b.rhs.get());
-        if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="&")emit(OP_BAND);else if(o=="|")emit(OP_BOR);else if(o=="^")emit(OP_BXOR);else if(o=="<<")emit(OP_BSHL);else if(o==">>")emit(OP_BSHR);else if(o==">>>")emit(OP_BUSHR);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
+        if(o=="+"){ if(b.charMask)emit(OP_ADDCHAR,(int)b.charMask); else emit(OP_ADD); }else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="&")emit(OP_BAND);else if(o=="|")emit(OP_BOR);else if(o=="^")emit(OP_BXOR);else if(o=="<<")emit(OP_BSHL);else if(o==">>")emit(OP_BSHR);else if(o==">>>")emit(OP_BUSHR);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
 
     // SleelaUI (ui*) built-ins: map the SLeeLa-facing name to its bridge id,
     // arity-check, emit the args, then OP_UI_CALL<id>. Returns true if handled.

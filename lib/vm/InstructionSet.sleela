@@ -464,3 +464,32 @@ class SLISAJavaStringToUtf8 { String name; int code; }
 
 < OP_JSTR_FROM_CODE_UNIT 184 -- pop an integer UTF-16 code unit 0..65535 and push a one-unit VM-owned Java UTF-16 String >
 class SLISAJavaStringFromCodeUnit { String name; int code; }
+< OP_BAND 185 -- bitwise AND of two integers (64-bit two's complement); two bools give the non-short-circuit logical AND >
+class SLISBitAnd { String name; int code; }
+
+< OP_BOR 186 -- bitwise OR of two integers; two bools give the non-short-circuit logical OR >
+class SLISBitOr { String name; int code; }
+
+< OP_BXOR 187 -- bitwise XOR of two integers; two bools give the logical XOR >
+class SLISBitXor { String name; int code; }
+
+< OP_BSHL 188 -- shift an integer left; the count is masked to 0..63 >
+class SLISBitShiftLeft { String name; int code; }
+
+< OP_BSHR 189 -- arithmetic (sign extending) shift right; the count is masked to 0..63 >
+class SLISBitShiftRight { String name; int code; }
+
+< OP_BUSHR 190 -- logical (zero filling) shift right; the count is masked to 0..63 >
+class SLISBitUnsignedShiftRight { String name; int code; }
+
+< OP_BNOT 191 -- bitwise complement of one integer >
+class SLISBitNot { String name; int code; }
+
+< OP_CHARSTR 192 -- syntax 3.2 (SLEELA.syntax 45): pop a char (UTF-16 code unit) and push it as a one-character plain String; an unpaired surrogate or NUL is a runtime error >
+class SLISCharToString { String name; int code; }
+
+< OP_ADDCHAR 193 -- syntax 3.2 (SLEELA.syntax 45): operand a bit 0 = left operand is a char, bit 1 = right operand is a char; exactly OP_ADD, except that when either operand is a String each flagged char operand is first converted to a one-unit String of the same kind >
+class SLISAddChar { String name; int code; }
+
+< OP_NEWARRAYND 194 -- syntax 3.2 (SLEELA.syntax 46): operand a = sized dimensions n (2..8) | innermost fill kind << 8; pop n sizes (last on top) and push a rectangular array of arrays, outermost first >
+class SLISNewArrayND { String name; int code; }

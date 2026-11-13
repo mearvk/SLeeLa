@@ -1,0 +1,2 @@
+#sleela 3.1
+class Gate { void main() { int[][] a = new int[2][2]; print(arrayLength(a)); } }

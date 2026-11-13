@@ -55,7 +55,8 @@ static Type typeOf(const std::string& n){
  if(n=="double"){return{Kind::Double,{},{}};}
  // Java primitives without a distinct VM slot (syntax 3.0 Java signature
  // surface): char, byte and short ride the integer slot, float the double slot.
- if(n=="char"||n=="byte"||n=="short"){return{Kind::Int,{},{}};}
+ if(n=="char"){return{Kind::Int,"char",{}};}   // syntax 3.2: the name marks the static type char (an integer for every check)
+ if(n=="byte"||n=="short"){return{Kind::Int,{},{}};}
  if(n=="float"){return{Kind::Double,{},{}};}
  if(n=="bool"||n=="boolean"){return{Kind::Bool,{},{}};}
  if(n=="string"||n=="String"){return{Kind::String,{},{}};}
@@ -196,6 +197,10 @@ class Analyzer{
   // Syntax 3.1 surface (section 44): every use the parser met must be declared.
   if(syntax<SyntaxVersion{3,1}){
    for(const auto&u:p.syntax31Uses)err(u+" requires #sleela 3.1");
+  }
+  // Syntax 3.2 surface (sections 45 and 46).
+  if(syntax<SyntaxVersion{3,2}){
+   for(const auto&u:p.syntax32Uses)err(u+" requires #sleela 3.2");
   }
   // Spark marker (syntax 3.0, section 43): indicates Java style declarative.
   if(javaref::sparkDocument(p)&&syntax<SyntaxVersion{3,0})
@@ -388,7 +393,7 @@ class Analyzer{
    if(gh->aggressiveness<0||gh->aggressiveness>100){err("GC hint aggressiveness must be 0..100");return;}
    return;
   }
-  if(auto e=dynamic_cast<const ExprStmt*>(&s)){expr(*e->expr);return;} if(auto p=dynamic_cast<const PrintStmt*>(&s)){Type t=expr(*p->expr);if(t.kind==Kind::Void)err("print() cannot print void");return;}
+  if(auto e=dynamic_cast<const ExprStmt*>(&s)){expr(*e->expr);return;} if(auto p=dynamic_cast<const PrintStmt*>(&s)){Type t=expr(*p->expr);if(syntax>=SyntaxVersion{3,2}&&isCharType(t))p->charArg=true;if(t.kind==Kind::Void)err("print() cannot print void");return;}
   if(auto x=dynamic_cast<const ReturnStmt*>(&s)){Type want=tn(cur->retType);
    if(want.kind==Kind::Void){if(x->value){expr(*x->value);err("void method '"+cur->name+"' cannot return a value");}return;}
    if(!x->value){err("non-void method '"+cur->name+"' must return a value");return;}
@@ -480,6 +485,8 @@ class Analyzer{
   auto s0=fields.find(b.name);
   return s0!=fields.end()&&!s0->second.count("ref");
  }
+ const MemberAccess* curMA_=nullptr;   // the MemberAccess node whose member() call is in progress
+ static bool isCharType(const Type&t){return t.kind==Kind::Int&&t.name=="char";}
  Type member(const Expr&e,const std::string&f){
   if(auto rv=dynamic_cast<const VarExpr*>(&e)){
    if(classNames.count(rv->name) && lookup(rv->name).kind==Kind::Error){
@@ -488,9 +495,15 @@ class Analyzer{
     err("class '"+rv->name+"' has no static field '"+f+"'");return{Kind::Error,{}};
    }
   }
-  Type b=expr(e);if(b.kind==Kind::Unknown)return b;if(f=="ref"&&b.kind==Kind::Struct){auto s0=fields.find(b.name);if(s0!=fields.end()&&!s0->second.count("ref"))return{Kind::Int,{}};}if(b.kind!=Kind::Struct){err("member '"+f+"' requires a struct value, got "+nameOf(b));return{Kind::Error,{}};}auto s=fields.find(b.name);if(s==fields.end()){err("unknown struct '"+b.name+"'");return{Kind::Error,{}};}auto x=s->second.find(f);if(x==s->second.end()){err("struct '"+b.name+"' has no field '"+f+"'");return{Kind::Error,{}};}return x->second;}
+  Type b=expr(e);if(b.kind==Kind::Unknown)return b;
+  if(f=="length"&&b.kind==Kind::Array){   // syntax 3.2: a.length
+   if(syntax<SyntaxVersion{3,2})err("the array length member requires #sleela 3.2 (use arrayLength(a) below 3.2)");
+   if(curMA_)curMA_->arrayLength=true;
+   return{Kind::Int,{},{}};
+  }
+  if(f=="ref"&&b.kind==Kind::Struct){auto s0=fields.find(b.name);if(s0!=fields.end()&&!s0->second.count("ref"))return{Kind::Int,{}};}if(b.kind!=Kind::Struct){err("member '"+f+"' requires a struct value, got "+nameOf(b));return{Kind::Error,{}};}auto s=fields.find(b.name);if(s==fields.end()){err("unknown struct '"+b.name+"'");return{Kind::Error,{}};}auto x=s->second.find(f);if(x==s->second.end()){err("struct '"+b.name+"' has no field '"+f+"'");return{Kind::Error,{}};}return x->second;}
  Type expr(const Expr&e){
-  if(dynamic_cast<const IntLit*>(&e)){return{Kind::Int,{}};}
+  if(auto il=dynamic_cast<const IntLit*>(&e)){if(il->isChar)return{Kind::Int,"char",{}};return{Kind::Int,{}};}
   if(dynamic_cast<const DoubleLit*>(&e)){return{Kind::Double,{}};}
   if(dynamic_cast<const BoolLit*>(&e)){return{Kind::Bool,{}};}
   if(dynamic_cast<const StrLit*>(&e)){return{Kind::String,{}};}
@@ -524,16 +537,18 @@ class Analyzer{
    if(!structs.count(n->typeName)&&!classNames.count(n->typeName)){err("new of unknown class or struct '"+n->typeName+"'");return{Kind::Error,{}};}
    checkConstructorArgs(*n);
    return{Kind::Struct,n->typeName};}
-  if(auto m=dynamic_cast<const MemberAccess*>(&e)){if(m->field=="next"&&isNextChain(*m->base))return{Kind::Int,{}};return member(*m->base,m->field);}
-  if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="++"||u->op=="--"||u->op=="post++"||u->op=="post--"){if(syntax<SyntaxVersion{3,0})err("'"+u->op.substr(u->op.size()-2)+"' requires #sleela 3.0");else if(!numeric(t)&&t.kind!=Kind::Unknown)err("'"+u->op.substr(u->op.size()-2)+"' requires a numeric variable, got "+nameOf(t));else if(!dynamic_cast<const VarExpr*>(u->operand.get())&&!dynamic_cast<const MemberAccess*>(u->operand.get())&&!dynamic_cast<const ArrayAccess*>(u->operand.get()))err("'"+u->op.substr(u->op.size()-2)+"' needs a variable, field or array element");return t;}if(u->op=="-"&&(!numeric(t)||t.kind==Kind::Unsigned)&&t.kind!=Kind::Unknown)err("unary '-' requires signed numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));if(u->op=="~"){if(t.kind!=Kind::Int&&t.kind!=Kind::Unknown)err("unary '~' requires an integer operand, got "+nameOf(t));return{Kind::Int,{}};}return t;}
+  if(auto m=dynamic_cast<const MemberAccess*>(&e)){if(m->field=="next"&&isNextChain(*m->base))return{Kind::Int,{}};const MemberAccess* savedMA=curMA_;curMA_=m;Type mt=member(*m->base,m->field);curMA_=savedMA;return mt;}
+  if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="++"||u->op=="--"||u->op=="post++"||u->op=="post--"){if(syntax<SyntaxVersion{3,0})err("'"+u->op.substr(u->op.size()-2)+"' requires #sleela 3.0");else if(!numeric(t)&&t.kind!=Kind::Unknown)err("'"+u->op.substr(u->op.size()-2)+"' requires a numeric variable, got "+nameOf(t));else if(auto lm=dynamic_cast<const MemberAccess*>(u->operand.get()); lm&&lm->arrayLength)err("the array length is read-only");else if(!dynamic_cast<const VarExpr*>(u->operand.get())&&!dynamic_cast<const MemberAccess*>(u->operand.get())&&!dynamic_cast<const ArrayAccess*>(u->operand.get()))err("'"+u->op.substr(u->op.size()-2)+"' needs a variable, field or array element");return t;}if(u->op=="-"&&(!numeric(t)||t.kind==Kind::Unsigned)&&t.kind!=Kind::Unknown)err("unary '-' requires signed numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));if(u->op=="~"){if(t.kind!=Kind::Int&&t.kind!=Kind::Unknown)err("unary '~' requires an integer operand, got "+nameOf(t));return{Kind::Int,{}};}if(isCharType(t))return{Kind::Int,{},{}};return t;}
   if(auto b=dynamic_cast<const Binary*>(&e)){return binary(*b);}
   if(auto c=dynamic_cast<const Call*>(&e)){return call(*c);}
   if(auto m=dynamic_cast<const MethodCall*>(&e)){return fluent(*m);}
   if(auto a=dynamic_cast<const AssignmentExpr*>(&e)){
    Type g=expr(*a->value);
-   if(auto v=dynamic_cast<const VarExpr*>(a->target.get())){Type t=lookup(v->name);if(t.kind==Kind::Error){err("assignment to undeclared variable '"+v->name+"'");return{Kind::Error,{}};}if(!assignable(t,g))err("cannot assign "+nameOf(g)+" to '"+v->name+"' of type "+nameOf(t));return t;}
-   if(auto mm=dynamic_cast<const MemberAccess*>(a->target.get())){if(isImplicitRef(*mm->base,mm->field)){err("'ref' is the implicit reference of an object and is read-only");return{Kind::Error,{}};}Type t=member(*mm->base,mm->field);if(t.kind!=Kind::Error&&!assignable(t,g))err("cannot assign "+nameOf(g)+" to field '"+mm->field+"'");return t;}
-   if(auto aa=dynamic_cast<const ArrayAccess*>(a->target.get())){Type base=expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));if(base.kind==Kind::Array){Type el=typeOf(base.elem);if(!assignable(el,g))err("cannot assign "+nameOf(g)+" to element of "+nameOf(base));return el;}if(base.kind!=Kind::Unknown)err("index assignment requires an array value, got "+nameOf(base));return g;}
+   const bool strAppendChar=(a->op=="+="&&syntax>=SyntaxVersion{3,2}&&isCharType(g));
+   if(strAppendChar)a->charMask=2u;
+   if(auto v=dynamic_cast<const VarExpr*>(a->target.get())){Type t=lookup(v->name);if(t.kind==Kind::Error){err("assignment to undeclared variable '"+v->name+"'");return{Kind::Error,{}};}if(!assignable(t,g)&&!(strAppendChar&&t.kind==Kind::String))err("cannot assign "+nameOf(g)+" to '"+v->name+"' of type "+nameOf(t));return t;}
+   if(auto mm=dynamic_cast<const MemberAccess*>(a->target.get())){if(isImplicitRef(*mm->base,mm->field)){err("'ref' is the implicit reference of an object and is read-only");return{Kind::Error,{}};}const MemberAccess* savedMA2=curMA_;curMA_=mm;Type t=member(*mm->base,mm->field);curMA_=savedMA2;if(mm->arrayLength){err("the array length is read-only");return{Kind::Int,{},{}};}if(t.kind!=Kind::Error&&!assignable(t,g)&&!(strAppendChar&&t.kind==Kind::String))err("cannot assign "+nameOf(g)+" to field '"+mm->field+"'");return t;}
+   if(auto aa=dynamic_cast<const ArrayAccess*>(a->target.get())){Type base=expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));if(base.kind==Kind::Array){Type el=typeOf(base.elem);if(syntax>=SyntaxVersion{3,2}&&isCharType(el))a->narrowChar=true;if(!assignable(el,g)&&!(strAppendChar&&el.kind==Kind::String))err("cannot assign "+nameOf(g)+" to element of "+nameOf(base));return el;}if(base.kind!=Kind::Unknown)err("index assignment requires an array value, got "+nameOf(base));return g;}
    err("assignment target must be a variable, struct field, or array element");return{Kind::Error,{}};
   }
   if(auto c=dynamic_cast<const ConditionalExpr*>(&e)){requireBool(expr(*c->cond),"conditional '?:' condition");Type a=expr(*c->thenE),b=expr(*c->elseE);if(assignable(a,b))return a;if(assignable(b,a))return b;return{Kind::Unknown,{}};}
@@ -569,7 +584,7 @@ class Analyzer{
   }
   return{Kind::Struct,owner,{}};
  }
- Type binary(const Binary&b){Type l=expr(*b.lhs),r=expr(*b.rhs);if(b.op=="&&"||b.op=="||"){if(l.kind!=Kind::Bool&&l.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");if(r.kind!=Kind::Bool&&r.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");return{Kind::Bool,{}};}
+ Type binary(const Binary&b){Type l=expr(*b.lhs),r=expr(*b.rhs);if(b.op=="+"&&syntax>=SyntaxVersion{3,2})b.charMask=(isCharType(l)?1u:0u)|(isCharType(r)?2u:0u);if(b.op=="&&"||b.op=="||"){if(l.kind!=Kind::Bool&&l.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");if(r.kind!=Kind::Bool&&r.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");return{Kind::Bool,{}};}
   if(b.op=="+"||b.op=="-"||b.op=="*"||b.op=="/"||b.op=="%"){
    // Java-style: `+` with a String operand is string concatenation; the VM's
    // OP_ADD already renders either operand to text. Only `+` concatenates.

@@ -90,14 +90,14 @@ struct JavaMemberMetadata {
 
 struct Block; struct Stmt; using StmtP=std::unique_ptr<Stmt>;
 struct Expr { virtual ~Expr() = default; }; using ExprP = std::unique_ptr<Expr>;
-struct IntLit:Expr{long long value;explicit IntLit(long long v):value(v){}};
+struct IntLit:Expr{long long value;bool isChar=false;/* syntax 3.1 character literal; typed char from 3.2 */explicit IntLit(long long v):value(v){}};
 struct DoubleLit:Expr{double value;explicit DoubleLit(double v):value(v){}};
 struct BoolLit:Expr{bool value;explicit BoolLit(bool v):value(v){}};
 struct StrLit:Expr{std::string value;explicit StrLit(std::string v):value(std::move(v)){}};
 struct NullLit:Expr{};
 struct VarExpr:Expr{std::string name;explicit VarExpr(std::string n):name(std::move(n)){}};
 struct Unary:Expr{std::string op;ExprP operand;Unary(std::string o,ExprP e):op(std::move(o)),operand(std::move(e)){}};
-struct Binary:Expr{std::string op;ExprP lhs,rhs;Binary(std::string o,ExprP l,ExprP r):op(std::move(o)),lhs(std::move(l)),rhs(std::move(r)){}};
+struct Binary:Expr{std::string op;ExprP lhs,rhs;mutable unsigned charMask=0;/* syntax 3.2: bit0 lhs is char, bit1 rhs is char (set by semantic analysis for +) */Binary(std::string o,ExprP l,ExprP r):op(std::move(o)),lhs(std::move(l)),rhs(std::move(r)){}};
 struct Method;
 // `resolved` is the overload chosen by semantic analysis (syntax 3.0 overload
 // resolution); the compiler binds the call to exactly that declaration.
@@ -109,11 +109,11 @@ struct NewExpr:Expr{std::string typeName;std::vector<ExprP> args;bool hasInit=fa
 // stay free as identifiers. `word` is the system name after `ran::` (e.g.
 // "mem"). A value form such as `ran::mem` evaluates to a system quantity.
 struct RanRefExpr:Expr{std::string word;explicit RanRefExpr(std::string w):word(std::move(w)){}};
-struct MemberAccess:Expr{ExprP base;std::string field;MemberAccess(ExprP b,std::string f):base(std::move(b)),field(std::move(f)){}};
+struct MemberAccess:Expr{ExprP base;std::string field;mutable bool arrayLength=false;/* syntax 3.2: `a.length` on an array, set by semantic analysis */MemberAccess(ExprP b,std::string f):base(std::move(b)),field(std::move(f)){}};
 // --- Java expression forms (surface completeness). -------------------------
 // Compound/plain assignment as an expression (e.g. a = b, a += b). `op` is the
 // assignment operator text; `target` must be an lvalue (VarExpr/MemberAccess).
-struct AssignmentExpr:Expr{std::string op;ExprP target,value;AssignmentExpr(std::string o,ExprP t,ExprP v):op(std::move(o)),target(std::move(t)),value(std::move(v)){}};
+struct AssignmentExpr:Expr{std::string op;ExprP target,value;mutable unsigned charMask=0;/* syntax 3.2: += with a char value (bit1) */mutable bool narrowChar=false;/* syntax 3.2: the target is an element of a char[]: narrow the stored value to 16 bits */AssignmentExpr(std::string o,ExprP t,ExprP v):op(std::move(o)),target(std::move(t)),value(std::move(v)){}};
 // Ternary conditional `cond ? thenE : elseE`.
 struct ConditionalExpr:Expr{ExprP cond,thenE,elseE;ConditionalExpr(ExprP c,ExprP t,ExprP e):cond(std::move(c)),thenE(std::move(t)),elseE(std::move(e)){}};
 // `value instanceof Type`.
@@ -145,7 +145,7 @@ struct VarDecl:Stmt{std::string type,name;ExprP init;};
 struct Assign:Stmt{std::string name;ExprP value;};
 struct FieldAssign:Stmt{ExprP base;std::string field;ExprP value;};
 struct ExprStmt:Stmt{ExprP expr;ExprStmt()=default;explicit ExprStmt(ExprP e):expr(std::move(e)){}};
-struct PrintStmt:Stmt{ExprP expr;};
+struct PrintStmt:Stmt{ExprP expr;mutable bool charArg=false;/* syntax 3.2: the argument has static type char */};
 // GC-hint statement (syntax 1.9): `x = gc N;` / `x = mem N;`. `target` names the
 // value the developer is done using; `aggressiveness` is the 0..100 cleanup
 // strength. Both the `gc` and `mem` spellings produce this node. It lowers to a
@@ -360,6 +360,8 @@ struct Program {
     // Syntax 3.1 surface the parser met (e.g. "character literal"); semantic
     // analysis rejects each one in a document declaring a syntax below 3.1.
     std::vector<std::string> syntax31Uses;
+    // Syntax 3.2 surface the parser met (e.g. "multi-dimensional array creation").
+    std::vector<std::string> syntax32Uses;
 };
 
 } // namespace sleela

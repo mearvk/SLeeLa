@@ -2525,6 +2525,72 @@ void slvm_joinall(SLVM* vm) {
 
 static int native_utf8_valid(const uint8_t* s, uint32_t n);
 
+/* ---- Syntax 3.2: char as text (OP_CHARSTR / OP_ADDCHAR) --------------------
+ * A char is a UTF-16 code unit held in an integer slot. Shown as text it becomes a
+ * one-unit String. A plain String is UTF-8, so only a non-surrogate, non-NUL unit
+ * can become one; with a UTF-16 (Java) String on the other side every unit,
+ * including NUL and an isolated surrogate, converts losslessly. */
+static int char_unit_to_string(SLVM* vm, int64_t unit, int utf16, SLValue* out, const char** why) {
+    if (unit < 0 || unit > 65535) { *why = "a char value must be a UTF-16 code unit (0..65535)"; return 0; }
+    if (utf16) {
+        uint16_t u = (uint16_t)unit;
+        SLValue v = slvm_java_string_new(vm, &u, 1);
+        if (v.type != SL_UTF16) { *why = "could not create a Java String from a char"; return 0; }
+        *out = v; return 1;
+    }
+    if (unit == 0) { *why = "a NUL char cannot be shown in a plain String; use a UTF-16 String"; return 0; }
+    if (unit >= 0xD800 && unit <= 0xDFFF) { *why = "an unpaired surrogate char cannot be shown in a plain String; use a UTF-16 String"; return 0; }
+    char buf[4];
+    if (unit < 0x80) { buf[0] = (char)unit; buf[1] = 0; }
+    else if (unit < 0x800) { buf[0] = (char)(0xC0 | (unit >> 6)); buf[1] = (char)(0x80 | (unit & 0x3F)); buf[2] = 0; }
+    else { buf[0] = (char)(0xE0 | (unit >> 12)); buf[1] = (char)(0x80 | ((unit >> 6) & 0x3F)); buf[2] = (char)(0x80 | (unit & 0x3F)); buf[3] = 0; }
+    SLValue r; r.type = SL_STR; r.as.s = intern(vm, buf);
+    *out = r;
+    return 1;
+}
+
+/* ---- Syntax 3.2: rectangular multi-dimensional arrays (OP_NEWARRAYND) ------
+ * Builds an array of arrays, outermost first. Every array under construction is
+ * kept on the VM operand stack (a collector root) until it has been stored into its
+ * parent, so a collection triggered by a later allocation can never free it.
+ * Returns 0 on success (handle in *out) or -1 with a message in *why. */
+static int array_alloc_gc(SLVM* vm, SLThread* t, int64_t n) {
+    if (n < 0 || n > SL_MAX_ARRAY_LEN) return -1;
+    int h = array_alloc(vm, (int)n);
+    if (h < 0) {
+        SLGCRootContext roots = { vm, t, vm->native_callback_caller };
+        gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &roots, 0);
+        h = array_alloc(vm, (int)n);
+    }
+    return h;
+}
+static int md_new(SLVM* vm, SLThread* t, const int64_t* dims, int n, int fill, int* out, const char** why) {
+    if (dims[0] < 0) { *why = "negative array size"; return -1; }
+    int h = array_alloc_gc(vm, t, dims[0]);
+    if (h < 0) { *why = "array allocation failed (negative/too-large size, or the live-array table is full: at most 4096 arrays, and each row of a multi-dimensional array is one)"; return -1; }
+    if (n == 1) {
+        if (fill >= 1 && fill <= 3) {
+            SLValue fillv = (fill == 1) ? slval_int(0) : (fill == 2) ? slval_double(0.0) : slval_bool(0);
+            for (int j = 0; j < vm->arrays[h].len; j++) vm->arrays[h].elems[j] = fillv;
+        }
+        *out = h;
+        return 0;
+    }
+    if (t->sp >= STACK_MAX) { *why = "stack overflow"; return -1; }
+    t->stack[t->sp++] = slval_array(h);          /* root the outer array while rows are built */
+    for (int64_t i = 0; i < dims[0]; i++) {
+        int row = -1;
+        if (md_new(vm, t, dims + 1, n - 1, fill, &row, why) != 0) { t->sp--; return -1; }
+        SLArrayInstance* ai = &vm->arrays[h];
+        gc_write_barrier(&vm->gc, array_gc_object(vm, h), NULL, array_gc_object(vm, row));
+        ai->has_refs = 1;
+        ai->elems[i] = slval_array(row);
+    }
+    t->sp--;
+    *out = h;
+    return 0;
+}
+
 /* Convert only values represented by the versioned native ABI. VM-local
  * arrays/structs, 128-bit integers, and all opaque handles stay in the VM. */
 static int native_value_to_abi(SLVM* vm, SLValue source, SLNativeValue* target) {
@@ -2947,6 +3013,25 @@ static SLResult run_thread(SLThread* t) {
         case OP_STOREG: { SLValue v=POP(); pthread_mutex_lock(&vm->global_mtx); vm->globals[in.a]=v; pthread_mutex_unlock(&vm->global_mtx); } break;
         case OP_LOADL: { SLFrame* f=&t->frames[t->fp-1]; int s=f->base+in.a; if(s<0||s>=STACK_MAX) TERR("local slot out of range"); PUSH(t->stack[s]); } break;
         case OP_STOREL: { SLFrame* f=&t->frames[t->fp-1]; int s=f->base+in.a; if(s<0||s>=STACK_MAX) TERR("local slot out of range"); t->stack[s]=POP(); } break;
+        case OP_CHARSTR: {
+            SLValue c=POP(); SLValue s; const char* why="";
+            if (c.type!=SL_INT) TERR("char to String requires an integer char value");
+            if (!char_unit_to_string(vm,c.as.i,0,&s,&why)) TERR(why);
+            PUSH(s);
+        } break;
+        case OP_ADDCHAR: {
+            if (t->sp < 2) TERR("stack underflow");
+            SLValue* pb=&t->stack[t->sp-1]; SLValue* pa=&t->stack[t->sp-2];
+            const int astr=(pa->type==SL_STR||pa->type==SL_UTF16), bstr=(pb->type==SL_STR||pb->type==SL_UTF16);
+            if (astr||bstr) {
+                const int u16=(pa->type==SL_UTF16||pb->type==SL_UTF16);
+                const char* why="";
+                SLValue conv;
+                if ((in.a&1) && pa->type==SL_INT) { if(!char_unit_to_string(vm,pa->as.i,u16,&conv,&why)) TERR(why); *pa=conv; }
+                if ((in.a&2) && pb->type==SL_INT) { if(!char_unit_to_string(vm,pb->as.i,u16,&conv,&why)) TERR(why); *pb=conv; }
+            }
+        }
+        __attribute__((fallthrough));
         case OP_ADD: {
             SLValue b=POP(), a=POP();
             if (a.type==SL_UTF16 || b.type==SL_UTF16) {
@@ -3935,6 +4020,17 @@ static SLResult run_thread(SLThread* t) {
                 SLValue fillv = (in.a==1) ? slval_int(0) : (in.a==2) ? slval_double(0.0) : slval_bool(0);
                 for(int j=0;j<vm->arrays[h].len;j++) vm->arrays[h].elems[j]=fillv;
             }
+            PUSH(slval_array(h));
+        } break;
+        case OP_NEWARRAYND: {
+            const int n=in.a&0xFF, fill=(in.a>>8)&0xFF;
+            if (n<2||n>8) TERR("invalid multi-dimensional array rank");
+            int64_t dims[8];
+            for (int k=n-1;k>=0;k--) { SLValue d=POP(); if (d.type!=SL_INT) TERR("array size must be an integer"); dims[k]=d.as.i; }
+            t->safepoint_tick = 0;
+            slvm_gc_safepoint(vm, t, 4);
+            int h=-1; const char* why="array allocation failed";
+            if (md_new(vm,t,dims,n,fill,&h,&why)!=0) TERR(why);
             PUSH(slval_array(h));
         } break;
         case OP_ARRGET: {
