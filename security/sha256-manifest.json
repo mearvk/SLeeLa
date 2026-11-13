@@ -575,7 +575,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "ff55260981d1068b0530f013fb998df44ca4afd532df254f01127613bfbdcf17"
+      "sha256": "00757df5f019e77dada88e8e6c09b84a953e426eefbf8e3fc2b4837ee9ac1a43"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -623,11 +623,15 @@
     },
     {
       "path": "impl/frontend/java/java_handler.cpp",
-      "sha256": "2de2c3f53dbdc074f7312e9fd082b8eb6be2dea458df02b0d0ba1d635c08869c"
+      "sha256": "df129e995a005ff20e11914b8c658348ab98b90f7312b54a9474a6761289fe76"
     },
     {
       "path": "impl/frontend/java/java_handler.h",
       "sha256": "d7282d15ee741e08549a635a4cc03c6b9c495815a19efaa9aa219ba17e64a074"
+    },
+    {
+      "path": "impl/frontend/java/java_host.cpp",
+      "sha256": "24a4be5415f348ca7dee8137cacb46987f20a01a94f27aa2e2106f92d430bb23"
     },
     {
       "path": "impl/frontend/keyword_supporter.cpp",
@@ -639,11 +643,11 @@
     },
     {
       "path": "impl/frontend/language_handler.cpp",
-      "sha256": "3360ee36cdb94fa4db6b00352e3362e51310ac86134e02d49790de7ee800b681"
+      "sha256": "a77d300768cc744abff91d885e00e9dd235ea28862f39966db8a05c61f4337f1"
     },
     {
       "path": "impl/frontend/language_handler.h",
-      "sha256": "aed72489d12816b6a0a37889898016e1e2022cb3590e82c3b3a0900832ee5842"
+      "sha256": "61177eb46c45ee47fbbad9634fe79cb563b52e7555a331bd93aca139e21b88c0"
     },
     {
       "path": "impl/frontend/lexer.cpp",

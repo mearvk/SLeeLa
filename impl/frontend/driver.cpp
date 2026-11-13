@@ -57,7 +57,6 @@ extern "C" {
 #include "../core/sleela_memmgr.h"
 #include "../core/sleela_terminal.h"
 #include "../core/sleela_design_activity.h"
-#include "../../runtime/java_runtime_bridge.h"
 }
 #if defined(_WIN32)
 #  include <windows.h>
@@ -1767,197 +1766,6 @@ static int runArtifact(const std::string&path){
     if(r==SLR_ERROR){const char*e=slvm_error(vm);std::cerr<<"sleelvac: runtime error: "<<(e?e:"unknown")<<"\n";if(railsBannersEnabled())sleela::rails::error(std::cerr,std::string("runtime error: ")+(e?e:"unknown"));slvm_free(vm);return 1;}
     slvm_free(vm);return 0;
 }
-// Launch a child process with an argv vector, without routing Java arguments
-// through a shell or the interactive PTY. This preserves whitespace/metacharacters
-// in application arguments and returns the child's actual exit status.
-static int runExternalProcess(const std::vector<std::string>& args){
-    if(args.empty()||args[0].empty()){
-        std::cerr<<"sleela: cannot launch an empty process command.\n";
-        return 2;
-    }
-#if defined(_WIN32)
-    std::vector<std::wstring> wide;
-    wide.reserve(args.size());
-    for(const auto& arg:args){
-        int count=MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,arg.c_str(),-1,nullptr,0);
-        if(count<=0){
-            std::cerr<<"sleela: process argument is not valid UTF-8.\n";
-            return 2;
-        }
-        std::wstring value((size_t)count,L'\0');
-        if(MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,arg.c_str(),-1,&value[0],count)<=0){
-            std::cerr<<"sleela: unable to convert process argument to UTF-16.\n";
-            return 2;
-        }
-        value.resize((size_t)count-1);
-        wide.push_back(std::move(value));
-    }
-    std::vector<const wchar_t*> argv;
-    argv.reserve(wide.size()+1);
-    for(const auto& arg:wide)argv.push_back(arg.c_str());
-    argv.push_back(nullptr);
-    intptr_t status=_wspawnvp(_P_WAIT,wide[0].c_str(),argv.data());
-    if(status==-1){
-        std::cerr<<"sleela: unable to start Java process (errno "<<errno<<").\n";
-        return errno==ENOENT?127:126;
-    }
-    return (int)status;
-#else
-    std::vector<char*> argv;
-    argv.reserve(args.size()+1);
-    for(const auto& arg:args)argv.push_back(const_cast<char*>(arg.c_str()));
-    argv.push_back(nullptr);
-    pid_t child=fork();
-    if(child<0){
-        std::cerr<<"sleela: fork failed while launching Java: "<<std::strerror(errno)<<"\n";
-        return 127;
-    }
-    if(child==0){
-        execvp(argv[0],argv.data());
-        std::perror("sleela: execvp");
-        _exit(errno==ENOENT?127:126);
-    }
-    int status=0;
-    while(waitpid(child,&status,0)<0){
-        if(errno==EINTR)continue;
-        std::cerr<<"sleela: waitpid failed while collecting Java exit status: "<<std::strerror(errno)<<"\n";
-        return 127;
-    }
-    if(WIFEXITED(status))return WEXITSTATUS(status);
-    if(WIFSIGNALED(status))return 128+WTERMSIG(status);
-    return 1;
-#endif
-}
-static int runJavaFrameworkSource(const std::string&path,const std::vector<std::string>&programArgs={}){
-    std::string src;
-    if(!readFile(path,src)){
-        std::cerr<<"sleelvac: cannot open Java source '"<<path<<"'\n";
-        return 1;
-    }
-    SleelaJavaProgramRequest request{};
-    request.classpath=".";
-    request.source_file=path.c_str();
-    SleelaJavaRuntimeProbeResult probe{};
-    SleelaJavaProgramPlan plan{};
-    int dispatch=sleela_java_runtime_dispatch_source(src.data(),src.size(),path.c_str(),
-                                                      &request,&probe,&plan);
-    if(dispatch<0){
-        std::cerr<<"sleelvac: Java runtime dispatch failed for '"<<path<<"'\n";
-        return 1;
-    }
-    const char* javaMode=std::getenv("SLEELA_JAVA_MODE");
-    const char* javaEnabled=std::getenv("SLEELA_JAVA_ENABLED");
-    if((javaMode&&std::string(javaMode)=="disabled") ||
-       (javaEnabled&&std::string(javaEnabled)=="0")){
-        std::cerr<<"[java] Java execution is disabled by SLEELA_JAVA_MODE or SLEELA_JAVA_ENABLED.\n";
-        return 2;
-    }
-    if(dispatch==1 || probe.action==SLEELA_JAVA_ACTION_PROMPT_INSTALL){
-        std::cerr<<"[java] Java VM required for "<<path<<" but no local VM was found.\n"
-                 <<"       Set SLEELA_JAVA or JAVA_HOME, or install/configure a Java distribution, then retry.\n";
-        return 2;
-    }
-    /* A .java source file is Java even when it uses no GUI framework.
-       Execute it with the discovered JVM instead of treating it as a SLeeLa
-       source-ingestion unit. */
-    if(!plan.ready || !probe.java_executable[0]){
-        std::cerr<<"sleelvac: Java provider did not produce a runnable JVM handoff for '"<<path<<"'\n";
-        return 1;
-    }
-
-    /* Build a real Java process argument vector. JavaFX module options must
-       precede the source-file operand; never infer module availability merely
-       from finding the java executable. */
-    std::vector<std::string> args={probe.java_executable};
-    if(probe.kind==SLEELA_JAVA_FX){
-        const char* modulePath=std::getenv("SLEELA_JAVAFX_MODULE_PATH");
-        const char* configuredModules=std::getenv("SLEELA_JAVAFX_MODULES");
-        if(modulePath&&*modulePath){
-            args.push_back("--module-path");
-            args.emplace_back(modulePath);
-            args.push_back("--add-modules");
-            args.emplace_back((configuredModules&&*configuredModules)
-                ? configuredModules : "javafx.controls,javafx.graphics");
-        }else{
-            std::cerr<<"[javafx] no module path configured; launch will work only if "
-                        "JavaFX is already available to this Java runtime. Set "
-                        "SLEELA_JAVAFX_MODULE_PATH and optionally SLEELA_JAVAFX_MODULES.\n";
-        }
-#if !defined(_WIN32) && !defined(__APPLE__)
-        const char* display=std::getenv("DISPLAY");
-        const char* wayland=std::getenv("WAYLAND_DISPLAY");
-        if((!display||!*display)&&(!wayland||!*wayland))
-            std::cerr<<"[javafx] no DISPLAY or WAYLAND_DISPLAY detected; graphical startup may fail on this headless host.\n";
-#endif
-    }
-    /* Optional JVM options passthrough for single-file source launches, e.g.
-       SLEELA_JAVA_OPTS="--enable-preview --source 21 -ea". These are JVM flags
-       and must precede the source-file operand. Tokens are split on unquoted
-       whitespace; there is no shell, so each token becomes one argv element. */
-    if(const char* jopts=std::getenv("SLEELA_JAVA_OPTS")){
-        std::string tok; std::string s=jopts;
-        for(size_t i=0;i<=s.size();++i){
-            char c=(i<s.size())?s[i]:' ';
-            if(c==' '||c=='\t'||c=='\n'||c=='\r'){ if(!tok.empty()){args.push_back(tok);tok.clear();} }
-            else tok.push_back(c);
-        }
-    }
-    args.push_back(path);
-    for(const auto&arg:programArgs) args.push_back(arg);
-    std::cout<<"[java] secondary circuit: "<<sleela_java_runtime_kind_name(probe.kind)
-             <<" -> "<<probe.java_executable<<" -> "<<path<<"\n";
-    std::cout.flush();
-    return runExternalProcess(args);
-}
-static int runJavaApplication(const std::vector<std::string>&javaArgs,const std::string&description){
-    const char* javaMode=std::getenv("SLEELA_JAVA_MODE");
-    const char* javaEnabled=std::getenv("SLEELA_JAVA_ENABLED");
-    if((javaMode&&std::string(javaMode)=="disabled") ||
-       (javaEnabled&&std::string(javaEnabled)=="0")){
-        std::cerr<<"[java] Java execution is disabled by SLEELA_JAVA_MODE or SLEELA_JAVA_ENABLED.\n";
-        return 2;
-    }
-    SleelaJavaRuntimeProbeResult probe{};
-    if(sleela_java_runtime_probe_local_vm(&probe)!=1 ||
-       !probe.java_vm_available || !probe.java_executable[0]){
-        std::cerr<<"[java] A Java runtime is required for "<<description<<" but was not found.\n"
-                 <<"       Set SLEELA_JAVA or JAVA_HOME, or install/configure a Java distribution, then retry.\n";
-        return 2;
-    }
-    std::vector<std::string> args={probe.java_executable};
-    args.insert(args.end(),javaArgs.begin(),javaArgs.end());
-    std::cout<<"[java] external JVM: "<<probe.java_executable<<" -> "<<description<<"\n";
-    std::cout.flush();
-    return runExternalProcess(args);
-}
-static bool validJavaMainClass(const std::string&name){
-    // Accept conventional binary class names, including nested classes ($).
-    // A class name is a single argument, never a shell fragment or JVM option.
-    static const std::regex pattern(
-        R"(^[A-Za-z_$][A-Za-z0-9_$]*(\.[A-Za-z_$][A-Za-z0-9_$]*)*$)");
-    return std::regex_match(name,pattern);
-}
-static int runJavaJar(const std::string&jar,const std::vector<std::string>&programArgs){
-    std::error_code ec;
-    if(!fs::is_regular_file(fs::path(jar),ec)){
-        std::cerr<<"sleela: Java JAR not found or not a regular file: "<<jar<<"\n";
-        return 2;
-    }
-    std::vector<std::string> args={"-jar",jar};
-    args.insert(args.end(),programArgs.begin(),programArgs.end());
-    return runJavaApplication(args,"JAR "+jar);
-}
-static int runJavaClass(const std::string&classpath,const std::string&mainClass,
-                        const std::vector<std::string>&programArgs){
-    if(!validJavaMainClass(mainClass)){
-        std::cerr<<"sleela: invalid Java main class name '"<<mainClass<<"'.\n"
-                 <<"       Use a binary class name such as com.example.Main.\n";
-        return 2;
-    }
-    std::vector<std::string> args={"-cp",classpath.empty()?".":classpath,mainClass};
-    args.insert(args.end(),programArgs.begin(),programArgs.end());
-    return runJavaApplication(args,"class "+mainClass+" (classpath "+(classpath.empty()?".":classpath)+")");
-}
 static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog,syntax.declared))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
 // Combine several parsed Programs into one compilation unit by concatenating
 // their classes/structs/imports (and merging document annotations). This lets a
@@ -2129,106 +1937,23 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
             bool hasPreferredMatch=false;
             for(const auto& symbol:index.symbols())
                 if(symbol.name==name && underPreferredRoot(symbol)) hasPreferredMatch=true;
-            // Generated JDK API documentation contains .sleela envelopes whose
-            // class names duplicate the actual library classes (for example,
-            // java/early_access/jdk28/docs/api/.../String.sleela vs
-            // java/java/lang/String.sleela). Prefer a real source unit whenever
-            // one exists; only consider docs/api envelopes as a last resort.
-            // java/jdk-28/<module>/... (one SLeeLa reference file per JDK 28
-            // type, at the online API path) is the same reference tier; when
-            // only reference files match, java/jdk-28 wins over docs/api.
-            auto isJdk28Reference=[](const sleela::library::Symbol& symbol){
-                return symbol.path.rfind("java/jdk-28/",0)==0;
-            };
-            auto isReferenceUnit=[&](const sleela::library::Symbol& symbol){
-                return symbol.path.find("/docs/api/")!=std::string::npos || isJdk28Reference(symbol);
-            };
-            bool hasNonDocumentationMatch=false;
-            bool hasJdk28Match=false;
+            // Candidate narrowing for a library family that ships several kinds of
+            // unit for the same simple name (real sources, generated reference
+            // files, per-edition trees) is a language-handler policy
+            // (lang::filterLibraryCandidates, e.g. the Java tier rules); with no
+            // handler every candidate under the preferred roots stays.
+            std::vector<std::string> candidatePaths;
             for(const auto& symbol:index.symbols()){
                 if(symbol.name!=name) continue;
                 if(hasPreferredMatch && !underPreferredRoot(symbol)) continue;
-                if(!isReferenceUnit(symbol))
-                    hasNonDocumentationMatch=true;
-                if(isJdk28Reference(symbol)) hasJdk28Match=true;
+                candidatePaths.push_back(symbol.path);
             }
-            // `import java.jdk-28;` selects the JDK 28 tier (SLEELA.syntax 43):
-            // when a JDK 28 file of this name exists it wins outright. Without
-            // this, an import carried by an earlier library unit (for example
-            // `import java.jdk-25.java.util;` in a JDK-internal helper that has
-            // no JDK 28 file) adds another preferred root, and its real unit
-            // would then beat the JDK 28 file for every later name.
-            const bool jdk28Selected=std::find(preferredRoots.begin(),preferredRoots.end(),std::string("java/jdk-28"))!=preferredRoots.end();
-            const bool onlyJdk28=jdk28Selected && hasJdk28Match;
-            if(onlyJdk28) hasNonDocumentationMatch=false;
-            // JDK 28 simple-name clashes (java.util.Vector vs
-            // jdk.incubator.vector.Vector, java.util.List vs java.awt.List, ...
-            // 102 names in all) are resolved by a fixed rank instead of being
-            // reported as ambiguous, the way a Java source file that imports
-            // java.util.* means java.util.List (SLEELA.syntax 43, Java container
-            // rule; lib/java/jdk-28/README.md "Name clashes"):
-            //   1. the longest matching import root wins, so
-            //      `import java.jdk-28.java.desktop;` selects java.awt.List;
-            //   2. module: java.base, then other java.* modules, then jdk.*;
-            //   3. package: java.lang, java.util, java.io, java.nio, java.net,
-            //      java.time, java.math, java.text, then the rest;
-            //   4. fewer path segments, then the path in byte order.
-            std::vector<const sleela::library::Symbol*> jdk28Candidates;
+            const std::vector<std::string> keptPaths=sleela::lang::filterLibraryCandidates(name,candidatePaths,preferredRoots);
+            const std::set<std::string> keep(keptPaths.begin(),keptPaths.end());
             for(const auto& symbol:index.symbols()){
                 if(symbol.name!=name) continue;
-                if(onlyJdk28 && !isJdk28Reference(symbol)) continue;
                 if(hasPreferredMatch && !underPreferredRoot(symbol)) continue;
-                if(hasNonDocumentationMatch && isReferenceUnit(symbol)) continue;
-                if(!hasNonDocumentationMatch && hasJdk28Match && !isJdk28Reference(symbol)) continue;
-                if(isJdk28Reference(symbol)) jdk28Candidates.push_back(&symbol);
-            }
-            const sleela::library::Symbol* jdk28Choice=nullptr;
-            if(jdk28Candidates.size()>1){
-                auto rootLen=[&](const sleela::library::Symbol& s){
-                    size_t best=0;
-                    for(const auto& root:preferredRoots)
-                        if(s.path.rfind(root + "/",0)==0) best=std::max(best,root.size());
-                    return best;
-                };
-                auto moduleTier=[](const std::string& path){
-                    const std::string rest=path.substr(std::string("java/jdk-28/").size());
-                    if(rest.rfind("java.base/",0)==0) return 0;
-                    if(rest.rfind("java.",0)==0) return 1;
-                    return 2;
-                };
-                auto packageRank=[](const std::string& path){
-                    static const char* order[]={"/java/lang/","/java/util/","/java/io/","/java/nio/","/java/net/","/java/time/","/java/math/","/java/text/"};
-                    const std::string rest=path.substr(std::string("java/jdk-28/").size());
-                    const size_t slash=rest.find('/');
-                    const std::string pkg=slash==std::string::npos?rest:rest.substr(slash);
-                    for(int i=0;i<8;++i){
-                        const std::string o=order[i];
-                        if(pkg.rfind(o,0)==0 && pkg.find('/',o.size())==std::string::npos) return i;
-                    }
-                    return 8;
-                };
-                auto depth=[](const std::string& path){ return (int)std::count(path.begin(),path.end(),'/'); };
-                auto better=[&](const sleela::library::Symbol* a,const sleela::library::Symbol* b){
-                    const size_t ra=rootLen(*a), rb=rootLen(*b);
-                    if(ra!=rb) return ra>rb;
-                    const int ma=moduleTier(a->path), mb=moduleTier(b->path);
-                    if(ma!=mb) return ma<mb;
-                    const int pa=packageRank(a->path), pb=packageRank(b->path);
-                    if(pa!=pb) return pa<pb;
-                    const int da=depth(a->path), db=depth(b->path);
-                    if(da!=db) return da<db;
-                    return a->path<b->path;
-                };
-                jdk28Choice=jdk28Candidates[0];
-                for(const auto* c:jdk28Candidates) if(better(c,jdk28Choice)) jdk28Choice=c;
-            }
-            for(const auto& symbol:index.symbols()){
-                if(symbol.name!=name) continue;
-                if(onlyJdk28 && !isJdk28Reference(symbol)) continue;
-                if(hasPreferredMatch && !underPreferredRoot(symbol)) continue;
-                if(hasNonDocumentationMatch && isReferenceUnit(symbol)) continue;
-                if(!hasNonDocumentationMatch && hasJdk28Match && !isJdk28Reference(symbol)) continue;
-                if(jdk28Choice && isJdk28Reference(symbol) && &symbol!=jdk28Choice) continue;
+                if(!keep.count(symbol.path)) continue;
                 if(match && match->path!=symbol.path){
                     // Tie-break: a unit directly inside a preferred root (import
                     // java.jdk-25.java.util;) beats one in a sub-package of it
@@ -2364,20 +2089,7 @@ static int runFile(const std::string&path){
     sleela::rails::brandSleela(std::cout,1);
     if(slvm_is_artifact_file(path.c_str()))return runArtifact(path);
     if(hasExt(path,".xclass"))return runXclass({path});
-    if(hasExt(path,".java")){
-        std::string src;
-        if(readFile(path,src)){
-            SleelaJavaRuntimeProbeResult probe{};
-            SleelaJavaProgramRequest request{};
-            request.classpath=".";
-            request.source_file=path.c_str();
-            SleelaJavaProgramPlan plan{};
-            int dispatch=sleela_java_runtime_dispatch_source(src.data(),src.size(),path.c_str(),
-                                                              &request,&probe,&plan);
-            if(dispatch<0)return 1;
-            return runJavaFrameworkSource(path);
-        }
-    }
+    {int hostRc=0; if(sleela::lang::runHost({path},hostRc)) return hostRc;}
     if(isLangInput(path))return runLangin({path});
     return runSource(path);
 }
@@ -2617,7 +2329,7 @@ int main(int argc,char**argv){
     }
     else if(cmd=="check"){if(argc<3)return usage();rc=checkFile(argv[2]);}
     else if(cmd=="validate-artifact"){if(argc!=3)return usage();rc=validateArtifact(argv[2]);}
-    else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;if(hasExt(argv[2],".jar")){std::vector<std::string> javaArgs;for(int i=3;i<argc;++i)javaArgs.emplace_back(argv[i]);rc=runJavaJar(argv[2],javaArgs);}else if(std::string(argv[2])=="--class-path"||std::string(argv[2])=="--classpath"||std::string(argv[2])=="-cp"){if(argc<5){std::cerr<<"sleela run: expected --class-path <path> <MainClass> [arguments...]\n";return 2;}std::vector<std::string> javaArgs;for(int i=5;i<argc;++i)javaArgs.emplace_back(argv[i]);rc=runJavaClass(argv[3],argv[4],javaArgs);}else if(std::string(argv[2])=="--class"){if(argc<4){std::cerr<<"sleela run: expected --class <MainClass> [arguments...]\n";return 2;}std::vector<std::string> javaArgs;for(int i=4;i<argc;++i)javaArgs.emplace_back(argv[i]);rc=runJavaClass(".",argv[3],javaArgs);}else if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runXclass(files);}else if(isLangInput(argv[2])){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);if(hasExt(argv[2],".java")){std::string src;if(readFile(argv[2],src)){SleelaJavaRuntimeProbeResult probe{};SleelaJavaProgramRequest request{};request.classpath=".";request.source_file=argv[2];SleelaJavaProgramPlan plan{};int dispatch=sleela_java_runtime_dispatch_source(src.data(),src.size(),argv[2],&request,&probe,&plan);if(dispatch<0)return 1;{std::vector<std::string> javaArgs;for(int i=3;i<argc;++i)javaArgs.emplace_back(argv[i]);rc=runJavaFrameworkSource(argv[2],javaArgs);}}else rc=runLangin(files);}else rc=runLangin(files);}else if(argc>3){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runSourceMulti(files);}else rc=runFile(argv[2]);}
+    else if(cmd=="run"){if(argc<3)return usage();if(verifyBeforeExecution(fs::current_path()))return 1;bool hosted=false;int hostRc=0;{std::vector<std::string> hostArgs;for(int i=2;i<argc;++i)hostArgs.emplace_back(argv[i]);hosted=sleela::lang::runHost(hostArgs,hostRc);}if(hosted)rc=hostRc;else if(hasExt(argv[2],".xclass")){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runXclass(files);}else if(isLangInput(argv[2])){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runLangin(files);}else if(argc>3){std::vector<std::string>files;for(int i=2;i<argc;++i)files.push_back(argv[i]);rc=runSourceMulti(files);}else rc=runFile(argv[2]);}
     else if(cmd=="xclass"){if(argc<3)return usage();rc=xclassCmd(argc,argv);}
     else if(cmd=="langin"){if(argc<3)return usage();rc=langinCmd(argc,argv);}
     else if(cmd=="nordshrift"){if(argc<3)return usage();rc=nordshriftCmd(argc,argv);}

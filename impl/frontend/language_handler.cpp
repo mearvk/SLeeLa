@@ -47,5 +47,14 @@ std::vector<std::string> libraryNeeds(const Program& p,const std::string& src){
     return out;
 }
 void validateProgram(const Program& p){ for(auto* h:registry()) h->validateProgram(p); }
+std::vector<std::string> filterLibraryCandidates(const std::string& name,const std::vector<std::string>& paths,const std::vector<std::string>& roots){
+    std::vector<std::string> cur=paths;
+    for(auto* h:registry()) cur=h->filterLibraryCandidates(name,cur,roots);
+    return cur;
+}
+bool runHost(const std::vector<std::string>& args,int& rc){
+    for(auto* h:registry()) if(h->runHost(args,rc)) return true;
+    return false;
+}
 }
 }

@@ -22,6 +22,7 @@
 // ===========================================================================
 #include "java_handler.h"
 #include "java_compat.h"
+#include <algorithm>
 #include <regex>
 namespace sleela {
 namespace javahandler {
@@ -81,6 +82,77 @@ public:
         static const std::regex tryWord("\\btry\\b");
         if(javaStyle && std::regex_search(source,tryWord)) return {"SLJavaFaults"};
         return {};
+    }
+
+
+    // Java tier selection among library units that share a simple name.
+    // Generated JDK API documentation (docs/api envelopes) duplicates real
+    // class names; java/jdk-28/<module>/... holds one reference file per JDK 28
+    // type. Rules (SLEELA.syntax 43; lib/java/jdk-28/README.md "Name clashes"):
+    //   * a real source unit beats docs/api and jdk-28 reference files;
+    //   * with only reference files, java/jdk-28 beats docs/api;
+    //   * `import java.jdk-28;` selects the JDK 28 tier outright;
+    //   * several JDK 28 clashes (java.util.List vs java.awt.List, ...) resolve
+    //     by rank: longest matching import root, module (java.base, other java.*,
+    //     jdk.*), package (java.lang, java.util, java.io, java.nio, java.net,
+    //     java.time, java.math, java.text, rest), fewer segments, byte order.
+    std::vector<std::string> filterLibraryCandidates(const std::string&,const std::vector<std::string>& paths,const std::vector<std::string>& roots) const override {
+        static const std::string kJdk28="java/jdk-28/";
+        auto isJdk28=[&](const std::string& p){ return p.rfind(kJdk28,0)==0; };
+        auto isReference=[&](const std::string& p){ return p.find("/docs/api/")!=std::string::npos || isJdk28(p); };
+        bool hasNonDoc=false, hasJdk28=false;
+        for(const auto& p:paths){ if(!isReference(p)) hasNonDoc=true; if(isJdk28(p)) hasJdk28=true; }
+        const bool selected=std::find(roots.begin(),roots.end(),std::string("java/jdk-28"))!=roots.end();
+        const bool onlyJdk28=selected&&hasJdk28;
+        if(onlyJdk28) hasNonDoc=false;
+        std::vector<std::string> kept, jdk;
+        for(const auto& p:paths){
+            if(onlyJdk28 && !isJdk28(p)) continue;
+            if(hasNonDoc && isReference(p)) continue;
+            if(!hasNonDoc && hasJdk28 && !isJdk28(p)) continue;
+            kept.push_back(p);
+            if(isJdk28(p)) jdk.push_back(p);
+        }
+        if(jdk.size()<=1) return kept;
+        auto rootLen=[&](const std::string& p){
+            size_t best=0;
+            for(const auto& r:roots) if(p.rfind(r+"/",0)==0) best=std::max(best,r.size());
+            return best;
+        };
+        auto moduleTier=[&](const std::string& p){
+            const std::string rest=p.substr(kJdk28.size());
+            if(rest.rfind("java.base/",0)==0) return 0;
+            if(rest.rfind("java.",0)==0) return 1;
+            return 2;
+        };
+        auto packageRank=[&](const std::string& p){
+            static const char* order[]={"/java/lang/","/java/util/","/java/io/","/java/nio/","/java/net/","/java/time/","/java/math/","/java/text/"};
+            const std::string rest=p.substr(kJdk28.size());
+            const size_t slash=rest.find('/');
+            const std::string pkg=slash==std::string::npos?rest:rest.substr(slash);
+            for(int i=0;i<8;++i){
+                const std::string o=order[i];
+                if(pkg.rfind(o,0)==0 && pkg.find('/',o.size())==std::string::npos) return i;
+            }
+            return 8;
+        };
+        auto depth=[](const std::string& p){ return (int)std::count(p.begin(),p.end(),'/'); };
+        auto better=[&](const std::string& a,const std::string& b){
+            const size_t ra=rootLen(a), rb=rootLen(b);
+            if(ra!=rb) return ra>rb;
+            const int ma=moduleTier(a), mb=moduleTier(b);
+            if(ma!=mb) return ma<mb;
+            const int pa=packageRank(a), pb=packageRank(b);
+            if(pa!=pb) return pa<pb;
+            const int da=depth(a), db=depth(b);
+            if(da!=db) return da<db;
+            return a<b;
+        };
+        std::string choice=jdk[0];
+        for(const auto& c:jdk) if(better(c,choice)) choice=c;
+        std::vector<std::string> out;
+        for(const auto& p:kept) if(!isJdk28(p) || p==choice) out.push_back(p);
+        return out;
     }
 
     void validateProgram(const Program& p) const override { validateJavaCompatibilityMetadata(p); }

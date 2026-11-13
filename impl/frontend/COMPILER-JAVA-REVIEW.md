@@ -9,20 +9,21 @@ The compiler (lexer, parser, semantic analysis, code generation, driver), the VM
 runtime must not contain Java logic. Java-referencing and Java-authored documents are served
 by a **handler module** that the compiler reaches only through a neutral interface.
 
-## Architecture (Stage 1, done)
+## Architecture (Stages 1 and 2, done)
 
 | Piece | File | Role |
 |---|---|---|
 | Interface + registry | `frontend/language_handler.{h,cpp}` | `LanguageHandler` hooks; `lang::` dispatch; no language knowledge |
 | Class relations | `frontend/class_relations.{h,cpp}` (`sleela::classrel`) | extends/implements, subtype test, inheritance depth, most-derived-first, `Sleela.home` lineage (SLEELA.syntax 42, a SLeeLa feature) |
 | Java handler | `frontend/java/java_handler.{h,cpp}` | the only Java-aware code the compiler loads; self-registers |
+| Java host | `frontend/java/java_host.cpp` | JVM hand-off for `sleela run` (`.java`, `.jar`, `--class-path/-cp`, `--class`); needs the runtime bridge, so it is a separate object linked into `sleela`/`sleelvac` only |
 | Java models | `frontend/java/java_{equivalence,flow,exceptions}.*`, `java_compat.h` | moved here unchanged (qualification models) |
 
 Hooks: `documentMarkers` (the `spark` Preonem marker and its minimum syntax), `resolveReference`
 (`java.lang.X` -> `X` only for a `fromLibrary` class), `eraseSignatureType` (type variables and
 qualified types -> `Any`, `java.lang.String` -> `String`), `stringMethodLibrary`
 (`JavaStringMethods`), `faultFunction` (`SLJavaFaults::make`), `libraryNeeds` (driver seeding of
-`SLJavaFaults`), `validateProgram` (Java compatibility metadata).
+`SLJavaFaults`), `validateProgram` (Java compatibility metadata), `filterLibraryCandidates` (Java tier selection among library units sharing a name: real source over reference files, `java/jdk-28` over `docs/api`, `import java.jdk-28` selects the tier, JDK 28 clash ranking), `runHost` (JVM launch).
 
 Registration is a static `Registrar` in `java_handler.cpp`. `FE_SRC` in `impl/Makefile` lists the
 handler; removing `frontend/java/java_handler.cpp` from it removes Java support and leaves
@@ -41,16 +42,15 @@ the language, VM and runtime unchanged (every hook then answers "no opinion").
 | compiler `"SLJavaFaults::make"` | literal | `lang::faultFunction()` |
 | driver `SLJavaFaults` seeding | Java policy in driver | `lang::libraryNeeds` |
 | compiler `validateJavaCompatibilityMetadata` | direct include | `lang::validateProgram` |
+| driver tier resolution (`java/jdk-28` roots, 102-name clash ranking) | ~170 lines in the library loader | `lang::filterLibraryCandidates`; the driver keeps only the generic preferred-root and ambiguity logic |
+| driver `runJavaFrameworkSource/Application/Jar/Class`, `runExternalProcess`, `.java` branches of `run`/`runFile` | ~190 lines in driver.cpp | `java/java_host.cpp` behind `lang::runHost` |
 
 Behaviour is unchanged: all regression suites pass (see the commit message). One message changed:
 a String method with no string library now says "needs the String method library (X)".
 
 ## Still Java-flavoured in the core (documented, not moved)
 
-* **Stage 2 (driver):** `import java.jdk-N` tier resolution (preferred roots, tie-break order) and the
-  JVM host launch (`runJavaFrameworkSource`, `runJavaApplication`, `runJavaJar`, `runJavaClass`, the
-  `.java` branch of `langin`). These are policy and process-launch code; they need a host-launch
-  hook and a tier-resolution hook, and are the next extraction.
+* **Stage 2 residue (driver):** the loader still seeds nested type names (`Map.Entry` -> unit `Map.Entry`) and keeps the `isLangInput` ingestion of `.java/.kt/.scala/.groovy/.clj` through `langin` (a separate JVM-family source ingester, not the Java handler). Both are generic enough to stay; revisit if `langin` is itself made a handler.
 * **Stage 3 (VM/semantic builtins):** `javaString*` builtins (semantic.cpp/compiler.cpp) and the
   `OP_JSTR_*` opcodes/utf16 value kind (`core/sleela_core.c`, `core/sleela_java_string*.c`).
   This is a VM string kind with Java-flavoured names, not Java logic. A rename is an ISA change
@@ -66,7 +66,7 @@ a String method with no string library now says "needs the String method library
 Handler registered: syntax31 19/19, version tests, spark, oop, lineage, converter differential
 32/32, Java differential 18, runtime pressure 6, `test-sleela`, `test-nordshrift*`,
 `test-exceptions`, `test-runtime`, `test-subjects`, `test-unsigned-integer`,
-`test-java-string-vm`, `check-manifest`. Unit test
+`test-java-string-vm`, `test-java-runtime`, `check-manifest`. Stage 2 was checked against the previous binary: `run Hi.java x y`, `run --class Hi`, `run -cp . Hi a`, `run -cp` (usage), `run missing.jar`, `run --class Bad-Name`, bare `Hi.java` and `SLEELA_JAVA_ENABLED=0` give identical output and exit codes (a live JVM ran the Java cases); library resolution for `import java.jdk-28`, `java.jdk-28.java.desktop` and `java.jdk-25.java.util` (including the ambiguity error) is identical; the tier rules have a unit test. Unit test
 `impl/tests/java_references/test_java_references.cpp` builds both with the handler and with
 `-DNO_HANDLER` (no marker, no string library, no qualified-name resolution).
 Not done: a full compiler binary linked without the handler.

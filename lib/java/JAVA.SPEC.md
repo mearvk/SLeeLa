@@ -51,13 +51,14 @@ loaded through the neutral interface `impl/frontend/language_handler.h`:
 | `stringMethodLibrary` | `JavaStringMethods` provides methods on a String receiver |
 | `faultFunction` / `libraryNeeds` | `SLJavaFaults` builds the exception a VM fault throws inside a try; the driver seeds it for a Java-style document that uses try |
 | `validateProgram` | Java compatibility metadata checks |
+| `filterLibraryCandidates` | tier selection among library units with the same simple name: real source beats reference files, `java/jdk-28` beats `docs/api`, `import java.jdk-28;` selects the tier, JDK 28 clashes (`java.util.List` vs `java.awt.List`) rank by longest import root, module, package, depth |
+| `runHost` | `sleela run` of `.java`, `.jar`, `--class-path`/`-cp`/`--class` on an external JVM (`java/java_host.cpp`, linked into `sleela` and `sleelvac` only) |
 
 The compiler core knows only the interface. Removing the handler from `FE_SRC` in `impl/Makefile`
 removes Java support and changes nothing else. A Java improvement that needs a compiler hook adds a
 neutral hook to `LanguageHandler` and implements it in the handler, never a Java branch in
 `parser.cpp`, `semantic.cpp`, `compiler.cpp`, the VM or the runtime. Review, inventory and the
-staged plan (driver tier resolution and JVM host launch; the `javaString*` builtins and `OP_JSTR_*`
-VM string kind): `impl/frontend/COMPILER-JAVA-REVIEW.md`.
+staged plan (the `javaString*` builtins and `OP_JSTR_*` VM string kind are the remaining open item): `impl/frontend/COMPILER-JAVA-REVIEW.md`.
 
 ## 2. The Java tier
 

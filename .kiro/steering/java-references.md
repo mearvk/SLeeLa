@@ -21,6 +21,7 @@ static `Registrar` and is linked through `FE_SRC` in `impl/Makefile`; removing i
   `resolveReference`; `classrel` offers exact match first, then the handlers.
 - Type relations (`classrel::isSubtypeOf`, `inheritanceDepth`, `mostDerivedFirst`) are
   language-neutral.
+- Java library-tier selection (`filterLibraryCandidates`) and the JVM launch for `sleela run` (`java/java_host.cpp`, `runHost`) are handler hooks too; `driver.cpp` has no Java policy or `java` process code.
 - New Java-specific behaviour (markers, erasure, library names/seeding, validation)
   goes in `impl/frontend/java/`, as a hook on `LanguageHandler`. Do NOT add
   `Java`/`java` names, literals or branches to `parser.cpp`, `semantic.cpp`,

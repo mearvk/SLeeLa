@@ -64,6 +64,20 @@ public:
     // source text and the classes already present. Used by the driver's seeding loop.
     virtual std::vector<std::string> libraryNeeds(const Program&, const std::string& /*source*/) const { return {}; }
 
+    // Narrow the library units that share the simple name `name`. `paths` are the
+    // candidates (library-relative paths) already restricted to the preferred
+    // import roots; return the subset to keep. Used for families that ship
+    // several kinds of unit for one name (real sources, generated reference
+    // files, per-edition trees). Default: keep all.
+    virtual std::vector<std::string> filterLibraryCandidates(const std::string& /*name*/,const std::vector<std::string>& paths,const std::vector<std::string>& /*preferredRoots*/) const { return paths; }
+
+    // Execution host: offer the arguments of `sleela run <args...>` (or a single
+    // file path) to the handler. Return true when the handler ran them, with
+    // the process exit status in `rc`; false leaves the arguments to the core.
+    // A handler that launches an external runtime implements this in its own
+    // host object so the compile-time module has no runtime dependency.
+    virtual bool runHost(const std::vector<std::string>& /*args*/, int& /*rc*/) const { return false; }
+
     // Validate handler-owned metadata on the parsed program; throw on violation.
     virtual void validateProgram(const Program&) const {}
 };
@@ -87,6 +101,9 @@ std::string stringMethodLibrary();
 std::string faultFunction();
 std::vector<std::string> libraryNeeds(const Program&, const std::string& source);
 void validateProgram(const Program&);
+std::vector<std::string> filterLibraryCandidates(const std::string& name,const std::vector<std::string>& paths,const std::vector<std::string>& preferredRoots);
+// Offer `run` arguments to each handler host; true when one ran them.
+bool runHost(const std::vector<std::string>& args,int& rc);
 }
 }
 #endif
