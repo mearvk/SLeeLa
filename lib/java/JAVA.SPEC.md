@@ -141,6 +141,35 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
   those names are renamed with a trailing `_`.
 - `public static void main(String[] args)` becomes `static void main()` with
   `String[] args = new String[0];`.
+- Nested and inner types. A nested class, interface, enum or record is hoisted to a top-level type
+  named `Outer__Name` (a name used by several nested types is refused). A static nested type may use
+  the static members of its enclosing class. An inner (non-static) class holds the enclosing object in
+  the field `outer_`; its constructors take it as a leading parameter, `new Inner(...)` inside the
+  outer class passes `this`, and `Outer.this` is `outer_`. Not converted: `outer.new Inner()`,
+  local classes declared in a method. Test: `Nested`.
+- Anonymous classes, lambdas and method references. Each becomes a generated top-level class
+  `Top__N`: the captured local variables become constructor-initialised fields `cap_x` (Java requires
+  them effectively final, so copying is exact), the enclosing object becomes `outer_`, unqualified
+  names resolve first in the class, then to captured locals, then to the enclosing class. A lambda
+  class implements the one abstract method of its target interface; in a lambda `this` is the
+  enclosing object. The target type comes from a declaration, assignment, `return`, field
+  initializer, or the parameter of a method whose signature is known (a lambda argument is resolved
+  after the call is resolved). The common JDK functional interfaces (Runnable, Supplier, Consumer,
+  Function, Predicate, Comparator and the Bi/Unary/Binary forms) are known with generic parameters
+  untyped. A method reference `Type::static`, `Type::instance`, `Type::new`, `this::m` and
+  `local::m` is the lambda it stands for. Refused: a lambda or anonymous class inside another one,
+  a bound method reference on an expression that is not a local, a target interface whose source
+  was not collected. Tests: `Anon`, `Functional`, `Refs`.
+- Pattern matching. `x instanceof T v` declares `v` before the statement and tests
+  `(x instanceof T) && ((v = (T) x) != null)`; an impure subject is held in a temporary. `case Type t ->`
+  patterns and record patterns are refused. Test: `Refs`.
+- Records (JLS 8.10). A record is a class with one field per component, the canonical constructor
+  (a compact constructor runs its body first), an accessor per component, `toString()` as
+  `Name[a=1, b=2]`, `equals` when every component is a primitive (not float/double) or a String, and
+  `hashCode` for int-like, long, boolean and String components. Implemented; **not yet covered by a
+  differential test**.
+- Object text. An object shown as text calls `toString()` through a generated static helper
+  `Owner.javaText(x)` (`null` is `"null"`), because SLeeLa would show the handle.
 - Interfaces carry no metadata fields; every class carries the Metadata Class record.
 - Limits: at most 64 instance fields per class (13 are metadata).
 
@@ -162,13 +191,14 @@ that really uses several threads is not claimed. Test: `Sync`.
 
 | Construct | Why | Plan |
 |---|---|---|
-| Lambdas, method references | need a generated class per lambda with captured locals as fields, a captured outer `this`, and the target interface's single method | lower to a generated class implementing the target type; needs the target type known |
-| Anonymous classes, inner (non-static) classes | the same capture machinery (outer instance field) | the same generated-class lowering |
-| Nested and static nested classes | converter hoists only top-level types | hoist to `Outer__Inner` with name resolution |
-| `instanceof T x` patterns, record patterns, `case Type t ->` | binding scope | lower to a cast declaration after the test where the binding is used |
-| Records, sealed hierarchies | records are classes with generated members | records via generated class |
-| Operands of unknown type | no generics inference | collect generic signatures and substitute |
+| Operands of unknown type | no generics inference: generic parameters are untyped, so arithmetic on them is refused (this is what blocks most JDK lambdas and collections code) | collect generic signatures and substitute type arguments |
+| A lambda or method reference whose target is a JDK interface not in the collected tree and not in the seeded list | the abstract method is unknown | collect the JDK interfaces (convert the JDK tree) |
+| Lambda or anonymous class inside another generated class | nested capture chains | capture through the enclosing generated class |
+| `outer.new Inner()`, local classes | rare forms | hoist local classes like nested ones |
+| `case Type t ->` patterns, record patterns, sealed exhaustiveness | binding scope in a switch | per-arm cast declaration |
+| Records: `equals`/`hashCode` for double/float/reference components | Java's rules for those | `Double.compare` and `Objects.equals` lowering |
 | `String.format` with a non-literal format, `%e`, argument indexes | runtime format parsing | a runtime formatter in `JavaFormat` |
+| `synchronized`/`volatile` in a multi-threaded program | memory model | real monitors, or keep the single-thread policy |
 | `native` | no body | none |
 
 ## 6. How to extend the tier
@@ -184,8 +214,8 @@ that really uses several threads is not claimed. Test: `Sync`.
 
 ## 7. Verification
 
-`bash tests/javaconv_differential_test.sh` runs 14 programs on a JDK and on the converted SLeeLa:
-Basics, Control, Enums, Flow, Floats, Formats, Grid, Operands, Resources, Shapes, Strings,
-Switches, Sync, Varargs, and 4 refusal programs under `tests/reject` that must be refused (a lambda,
-String identity comparison, a `synchronized` block without `--single-thread`, an operand of unknown type).
+`bash tests/javaconv_differential_test.sh` runs 18 programs on a JDK and on the converted SLeeLa:
+Anon, Basics, Control, Enums, Flow, Floats, Formats, Functional, Grid, Nested, Operands, Refs, Resources,
+Shapes, Strings, Switches, Sync, Varargs, and 4 refusal programs under `tests/reject` that must be refused (a lambda
+argument to an unknown method, String identity comparison, a `synchronized` block without `--single-thread`, an operand of unknown type).
 `bash examples/java/differential/run-differential.sh` is the older hand-converted suite.

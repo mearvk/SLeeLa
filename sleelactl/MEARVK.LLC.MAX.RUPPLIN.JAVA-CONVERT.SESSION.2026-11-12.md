@@ -66,4 +66,13 @@ Verified with a freshly built binary: `impl/tests/syntax32` (11), syntax31, vers
 
 Process lesson recorded: the build is integrity-gated, so the SHA-256 manifest must be regenerated BEFORE `make`; a stale manifest makes the build stop silently and leaves the old binary in place (two earlier test runs this session used a stale binary until I caught it).
 
-Not done (SLEELA.syntax 45.7, 46.9): Unicode tables beyond Latin-1, array covariance, `clone()`, varargs, `String` static members. The converter does not yet use `a.length`, `new T[a][b]` or the typed char (it still refuses multi-dimensional creation).
+Not done (SLEELA.syntax 45.7, 46.9): Unicode tables beyond Latin-1, array covariance, `clone()`, varargs, `String` static members. (Superseded: the converter later adopted multi-dimensional creation and the typed char; see the addenda below.)
+
+## Addendum: the Java tier (2026-11-13)
+
+Per the standing rule, further Java improvements were made only in `lib/java` and `sleelactl/convert`
+(no change to `impl/frontend` or `impl/core`) and specified in `lib/java/JAVA.SPEC.md`: native switch and
+switch expressions, assignment/`++` values, enums, varargs, `float` (`JavaFloat`), `String.valueOf/join/format`
+(`JavaFormat`), try-with-resources, `--single-thread`, anonymous classes, lambdas, method references,
+nested/inner types, `instanceof` patterns, and a record lowering (untested). Differential suite: 18 programs and
+4 refusals, all matching the JDK.

@@ -61,11 +61,18 @@ The refusal rows are the `unsupported` records of the model.
 
 ## Status (honest)
 
-Run over JDK 25 `java.base` `java/lang`, `java/util`, `java/math`, `java/text` (884 files,
-2026-11-12): **345 converted, 539 failed closed** (with syntax 3.1 in place). The main blockers, in order, are nested/inner
-types, operands whose type cannot be determined without generics inference, `synchronized`,
-assignment/`++` used as a value, `float`, lambdas, `native`, varargs. The syntax blockers are tracked in SLEELA.syntax section 44.6: 3.1 delivered the array
-initializer, labeled `break`/`continue` and `return`/`break`/`continue` through `finally`; the
-remaining ones (static `String` members, multi-dimensional arrays, varargs, lambdas, enums, inner classes)
-are listed there as open. Output declares `#sleela 3.1`. The converter now emits `#sleela 3.2` and converts multi-dimensional arrays (`new T[a][b]`, jagged `new T[a][]`, nested initializers) and casts a char to a number explicitly, because 3.2 shows a char-typed value as text. Nothing is claimed beyond
-what the report and the differential test show; the JDK is not yet fully converted.
+Converted and proven against a JDK (`tests/javaconv_differential_test.sh`, 18 programs plus 4 refusals):
+integer, float, char and String semantics; `String.valueOf/join/format` (literal format); native `switch`
+(fallthrough, arrow cases, switch expressions); assignment and `++`/`--` as values; enums; varargs;
+try-with-resources; `synchronized`/`volatile` under `--single-thread`; arrays of any rank; anonymous
+classes, lambdas and method references (captured variables as fields); nested and inner classes;
+`instanceof` patterns. Records are implemented but not yet covered by a test.
+
+Not converted (refused with a located diagnostic): operands of unknown type (no generics inference, the
+largest blocker on real JDK code), lambdas whose target interface is unknown, nested capture chains,
+`outer.new Inner()`, local classes, switch type patterns, `native`. The list with reasons is section 5
+of [`lib/java/JAVA.SPEC.md`](../../lib/java/JAVA.SPEC.md).
+
+The JDK as a whole is not converted: the earlier whole-tree measurement (JDK 25 `java.base`, 345 of 884
+files) predates these lowerings and has not been repeated. Nothing is claimed beyond what the report of
+a run and the differential tests show.

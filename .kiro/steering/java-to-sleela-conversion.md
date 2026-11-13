@@ -80,7 +80,10 @@ Run: `sleelactl build java-convert`, then
 - A user program does not auto-link sibling files: a runnable conversion is a
   single bundled document (`--bundle`, default for `--file`); the library layout
   is one type per file (`--split`, default for `--jdk`).
-- `==` on Strings/boxed values, `float` arithmetic, `synchronized`, `volatile`,
-  lambdas, method references, `++`/`--` or assignment used as a value, nested/inner/
-  anonymous types, enums, varargs, try-with-resources, switch expressions are refused
-  today (the language already has some of these forms; see 44.6 "Converter"). See the `unsupported` rows of the model.
+- Refused today (see JAVA.SPEC.md section 5): `==` on Strings/boxed values, `native`, operands of unknown
+  type (no generics inference), lambdas whose target interface is unknown, lambdas or anonymous classes
+  nested in other generated classes, `outer.new Inner()`, local classes, `case Type t ->` patterns,
+  non-literal `String.format`. Converted since the first version: `float`, `synchronized`/`volatile`
+  (only with `--single-thread`), `++`/assignment as values, nested/inner/anonymous classes, lambdas and
+  method references, enums, varargs, switch expressions, try-with-resources, `instanceof` patterns.
+  Records are implemented without a test yet.
