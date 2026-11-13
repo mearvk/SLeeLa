@@ -2,6 +2,8 @@
 
 > Revision 1.04 moves the `lib/java/jdk-28/` module folders up from `docs/api/` to `lib/java/jdk-28/<module>/<package>/<Type>.sleela` and adds the 16 JDK 28 modules that export no packages (`java.se`, `jdk.jlink`, `jdk.zipfs`, ...) as folders holding a `module-summary.md`: 58 module folders and 386 folders in all. The /lib loader (`impl/frontend/driver.cpp`) now treats `java/jdk-28/` as a reference tier like `docs/api/`, so a real `lib/java/java/...` unit always wins; `working-binaries/sleela` was rebuilt with that rule. No source or symbol count change (moves only).
 >
+> Revision 1.12 adds `lib/java/converter/JConvExpr.sleela`, the expression half of the converter typed pass (precedence tree; the int wrap, division, shift and string-conversion laws of the conversion model). One new source unit (counts: 18121 to **18122** sources; 18207 to **18208** symbols).
+>
 > Revision 1.11 adds `lib/java/converter/JConvModel.sleela`, which reads the shared Java-to-SLeeLa conversion model (`impl/subjects/conversion/conversion.model`) for the converter. One new source unit (counts: 18120 to **18121** sources; 18206 to **18207** symbols).
 >
 > Revision 1.10 adds `lib/char/` and `lib/array/`, the libraries of the char specification (SLEELA.syntax section 45) and the array specification (section 46): `SLChar` (classification, case mapping, digits, surrogates, `toString`); `SLIntArray`, `SLDoubleArray`, `SLRefArray` (version-neutral helpers over `int[]`, `double[]`, `Any[]`: copy, fill, search, sum, minimum, maximum, reverse, heapsort, binary search, text) and `SLArray2D` (rectangular grids, needs syntax 3.2); each package has an `SLPackage` facade. Five new source units and two new facades (counts: 18115 to **18120** sources; 18199 to **18206** total records; 121 to **123** packages; 84 to **86** facades).
@@ -96,9 +98,9 @@
 
 **Revision:** 0.82  
 **Packages:** 123  
-**SLeeLa source units:** 18121  
+**SLeeLa source units:** 18122  
 **Module-facade symbols:** 86  
-**Total symbol records:** 18207  
+**Total symbol records:** 18208  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

@@ -5,8 +5,9 @@
    the same model that sleelactl java-convert reads, and answers the questions
    the typed pass of JConvRewriter asks: the result type of a library member
    (ret rows), the type of a library field (field rows), the SLeeLa function
-   of an int shift (binop int rows) and the string conversion template of a
-   double or char (tostr rows). Only rows of those kinds are read. When the
+   of an int shift, division and remainder (binop int rows), the 32-bit wrap
+   (the cast long int row) and the string conversion template of a double or
+   char (tostr rows). Only rows of those kinds are read. When the
    file is missing the built-in defaults below are used and the report says so. >>
 #sleela 3.0
 material;
@@ -15,7 +16,7 @@ class JConvModel {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. The data it
      reads follows the Java Language Specification and the reflected JDK API. >>
-  String metaVersion = "0.4.0";
+  String metaVersion = "0.5.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-13";
@@ -71,6 +72,10 @@ class JConvModel {
   String ushrInt;
   String tostrDouble;
   String tostrChar;
+  < binop int / and %, and cast long int (the 32-bit wrap) >
+  String divInt;
+  String remInt;
+  String toInt;
 
   JConvModel() {
     this.path = "";
@@ -88,6 +93,9 @@ class JConvModel {
     this.ushrInt = "JavaOperands.ushrInt($a, $b)";
     this.tostrDouble = "Double.toString($a)";
     this.tostrChar = "JavaText.plainIfRepresentable(JavaText.codePointU($a))";
+    this.divInt = "JavaOperands.divInt($a, $b)";
+    this.remInt = "JavaOperands.remInt($a, $b)";
+    this.toInt = "JavaOperands.toInt($a)";
   }
 
   int slotIn(String key, int size) {
@@ -184,6 +192,11 @@ class JConvModel {
             if (f3[1] == "int" && f3[2] == "<<") { this.shlInt = f3[3]; }
             if (f3[1] == "int" && f3[2] == ">>") { this.shrInt = f3[3]; }
             if (f3[1] == "int" && f3[2] == ">>>") { this.ushrInt = f3[3]; }
+            if (f3[1] == "int" && f3[2] == "/") { this.divInt = f3[3]; }
+            if (f3[1] == "int" && f3[2] == "%") { this.remInt = f3[3]; }
+          } else if (startsAt(src, a, "cast")) {
+            String[] f6 = fieldsAt(src, a, i, 4);
+            if (f6[1] == "long" && f6[2] == "int") { this.toInt = f6[3]; }
           } else if (startsAt(src, a, "tostr")) {
             String[] f4 = fieldsAt(src, a, i, 3);
             if (f4[1] == "double") { this.tostrDouble = f4[2]; }

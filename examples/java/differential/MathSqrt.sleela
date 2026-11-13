@@ -3,7 +3,8 @@
    Definition: prints, line for line, the same results as MathSqrt.java: the bits of
    Math.sqrt for 240 values, so a one-ulp error shows. Java requires sqrt to be
    correctly rounded (IEEE 754); lib/java/jdk-28 Math.sqrt rounds with the
-   Tuckerman test after Newton on an exactly scaled argument. >>
+   Tuckerman test after Newton on an exactly scaled argument. The last line checks
+   Math.abs and Math.absExact at Integer.MIN_VALUE. >>
 #sleela 3.1
 import java.jdk-28;
 material;
@@ -285,5 +286,8 @@ class MathSqrt {
       i = i + 1;
     }
     print(Double.toString(Math.sqrt(2.0)) + " " + Double.toString(Math.sqrt(-1.0)) + " " + Double.toString(Math.sqrt(0.0)) + " " + Double.toString(Math.sqrt(1.0 / 0.0)));
+    String exact = "";
+    try { exact = "" + Math.absExact(-2147483648); } catch (ArithmeticException e) { exact = e.getMessage(); }
+    print("" + Math.abs(-2147483648) + " " + Math.abs(-7) + " " + Math.absExact(-7) + " " + exact);
   }
 }

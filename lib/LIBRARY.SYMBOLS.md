@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 18121
+library-source-files: 18122
 library-packages: 123
 module-facade-symbols: 86
-total-symbol-records: 18207
+total-symbol-records: 18208
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -2034,6 +2034,7 @@ java	SLPackage.sleela	lib/java/SLPackage.sleela	facade
 java	SleelaHome.sleela	lib/java/SleelaHome.sleela	source
 java	JConvConfig.sleela	lib/java/converter/JConvConfig.sleela	source
 java	JConvEmitter.sleela	lib/java/converter/JConvEmitter.sleela	source
+java	JConvExpr.sleela	lib/java/converter/JConvExpr.sleela	source
 java	JConvLexer.sleela	lib/java/converter/JConvLexer.sleela	source
 java	JConvMain.sleela	lib/java/converter/JConvMain.sleela	source
 java	JConvModel.sleela	lib/java/converter/JConvModel.sleela	source

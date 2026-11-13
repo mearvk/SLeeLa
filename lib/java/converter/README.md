@@ -3,7 +3,9 @@
 > **Container.** Java container content (`SLEELA.syntax` section 38.4). Nothing
 > here is part of the SLeeLa specification or adds syntax to SLeeLa.
 
-Status: **0.4.0, best effort (2026-11-13).** The operand laws come from the shared
+Status: **0.5.0, best effort (2026-11-13).** Output stays at syntax **3.1** (also
+written 3.01) by the owner's decision; syntax 3.2 forms are not used
+(`.kiro/steering/java-converter-lib.md`). The operand laws come from the shared
 conversion model, `impl/subjects/conversion/conversion.model` (read by
 `JConvModel`), the same data `sleelactl java-convert` reads. Output declares `#sleela 3.1` and
 uses its forms (SLEELA.syntax section 44): array initializers, character
@@ -129,6 +131,8 @@ several hours. Use `JCONV_FILTER` to convert one package or module at a time.
 | 7a | `a << n`, `a >> n`, `a >>> n` with `a` of type `int`; `x <<= n` and friends | the function of the model's `binop int <<` / `>>` / `>>>` row (`JavaOperands.shlInt(a, n)`, `shrInt`, `ushrInt`); `x = JavaOperands.ushrInt(x, n)` | read from `conversion.model`: Java masks the count to 5 bits and works in 32 bits (`h ^ (h >>> 16)` in `HashMap.hash` was wrong before). `long` shifts are already exact and stay |
 | 7b | a `double` or `float` shown as text (string concatenation, `println`) | the model's `tostr double` template (`Double.toString(x)`) | Java prints `2.0`, SLeeLa `2` |
 | 7c | a `char` shown as text | the model's `tostr char` template (`JavaText.plainIfRepresentable(JavaText.codePointU(c))`) | Java prints `z`, SLeeLa `122` |
+| 7e | `int` `+ - * & | ^ ~` and shift left whose value leaves int arithmetic (a comparison, `/`, `%`, shift right, string text, an argument, an index, a cast to `long` / `double`, a store into a non-int) | `JavaOperands.toInt(...)` around the whole chain (the model's `cast long int` row) | these operators agree with arithmetic modulo 2^32, so one wrap where the value is used gives the Java result; a chain stored into an `int` stays native (the store wraps). `if (count + 1 < 0)` and `long x = a * b` now compute as Java does |
+| 7f | `int` `/` and `%` (and `/=`, `%=` on an int name) unless the divisor is a nonzero literal | the model's `binop int /` and `%` rows (`JavaOperands.divInt`, `remInt`) | exact, including `Integer.MIN_VALUE / -1`, and a catchable `ArithmeticException` on zero (the VM division by zero is fatal) |
 | 7d | operand types for 7a to 7c | fields of the type and declarations of the member (parameters, locals, `for`, `catch`), array elements, casts, literals, and **call chains**: `Math.sqrt(x)`, `s.charAt(i)`, `s.length()`, `sb.reverse().toString()`, `Integer.MAX_VALUE`, own methods, through the model's `ret` and `field` rows (`@arg0`: the type of the first argument) | a name declared with two types in one member, an overloaded own method with two result types, or a member the model does not type makes the operand unknown, and an unknown operand is left as written: the pass never guesses |
 | 6g | `assert` | dropped | Java runs with assertions disabled by default, so the statement is not evaluated |
 | 6h | `System.out.println(x)` | `print(x)` | `System.out.print` (no newline) is a stub (reason 23): `print` always adds one |
@@ -197,6 +201,7 @@ Sample: 17 files from the OpenJDK 25.0.2 `src.zip` (`Math`, `Record`, `Override`
 | Files with a syntax error | 0 | 0 | 0 | 0 |
 | `sleela check` errors in total | 892 | 902 | 903 | **553** |
 | Typed-pass rewrites in the output (0.4.0 with model 1.1.0 / without the model file) | | | | 40 / 40 |
+| 0.5.0 int wraps (`toInt`) / `divInt`, `remInt` calls in the output | | | | 88 / 7 (check numbers unchanged, 0 syntax errors) |
 | Files with no `sleela check` error | 8 of 36 | 8 of 36 | 8 of 36 | 5 of 16 |
 
 0.2.0 removed 12 stubs (the ten `for` headers with commas and two pattern
@@ -222,8 +227,10 @@ in `if` and `return`, int shifts inside expressions including `h ^ (h >>> 16)`,
 `>>>=`, a `long` shift, `double` and `char` values in string concatenation and
 `println`, results of `Math.sqrt`, `Math.abs`, `charAt`, `length()`, a
 `StringBuilder` chain and an own `double` method in concatenation) converts with
-no stub. With `JCONV_BUNDLE=1` it runs as one document and prints **all 29 lines
-identical** to OpenJDK 25.0.2
+no stub, as do overflow checks, a `long` from an `int` product, division and
+remainder by zero caught as `ArithmeticException`, `Integer.MIN_VALUE / -1`, the
+binary-search midpoint and `Math.abs(Integer.MIN_VALUE)`. With `JCONV_BUNDLE=1` it
+runs as one document and prints **all 31 lines identical** to OpenJDK 25.0.2
 (`samples/ConvDemo.java.expected.txt` against `samples/ConvDemo.sleela.expected.txt`).
 
 Reproduce:
@@ -269,13 +276,13 @@ library, in this order of weight:
    a UTF-8 character can be split between two pieces, and the VM has no
    byte-level view of a plain String to repair it.
 6. **Near-misses the token-level conversion cannot see (it has no expression
-   types where the typed pass cannot see them):** rules 7a to 7c cover names,
-   literals, casts and array elements of known type; an operand that comes from
-   a method call (`"x" + getDouble()`) is not converted, so a `double` there
-   still prints in SLeeLa form (`9`, not `9.0`) and an `int` shift of a call
-   result is 64-bit. `int` `+ - *` wrap on store, not inside an expression that
-   is never stored. Java integer division by zero is a fatal VM error, not
-   `ArithmeticException`. `switch` over enum constants is not lowered.
+   types where the typed pass cannot see them):** an operand whose kind is
+   unknown (a call the model does not type, an interface-typed receiver, a
+   generic result) is left as written, so a `double` there still prints in
+   SLeeLa form (`9`, not `9.0`); an `int` chain whose other operand is of unknown
+   kind is wrapped (exact, sometimes unneeded). Stores into `int` array elements
+   do not wrap in the VM, so `a[i] = x + y` keeps a 64-bit value until it is read
+   through a wrap. `switch` over enum constants is not lowered.
 
 Close a gap in the language, VM or library first. Then remove or relax the rule
 in `JConvRules` that works around it, re-run the converter, and update this table.
@@ -290,7 +297,8 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | `JConvSource` | loads a file in 4,095-byte pieces; code units and slices |
 | `JConvLexer` | Java tokens; literal and comment forms rewritten to SLeeLa |
 | `JConvRules` | the decision table (renames, types, modifiers, built-ins, stub reasons) |
-| `JConvModel` | reads the shared conversion model (`ret`, `field`, `binop int` shifts, `tostr`) |
+| `JConvModel` | reads the shared conversion model (`ret`, `field`, `binop int` shifts / division / remainder, `cast long int`, `tostr`) |
+| `JConvExpr` | the expression half of the typed pass: statements, precedence tree, wraps and calls (rules 7a to 7f) |
 | `JConvRewriter` | token-level rewriting, the fail-loud scan, declaration and cast post-pass, helpers |
 | `JConvTranslator` | files, types, members, enum / record lowering, nested types, stubs, metadata |
 | `JConvEmitter` | layout and buffered output below the 65,536-byte String limit |
@@ -303,6 +311,7 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | Version | Change |
 |---|---|
 | 0.1.0 | First cut: walk, lex, rewrite, translate, stubs, report |
+| 0.5.0 | `JConvExpr`: an expression parser (JLS precedence) on the output tokens of each member; rules 7a to 7c moved onto the tree and rules 7e, 7f added (int wrap where the value leaves int arithmetic; `divInt` / `remInt`). In the JDK sample it writes 88 wraps and 7 division calls, with 0 syntax errors and the check numbers unchanged. The sample program gains overflow checks, `long` from an `int` product, division by zero caught, `MIN / -1`, the binary-search midpoint, and runs all 31 lines identical. Library fixes found by it: jdk-28 `Math.abs(int)` at `MIN_VALUE`, `Math.absExact(int)` now throws |
 | 0.4.0 | Model-driven: `JConvModel` reads `conversion.model` (shift functions, `tostr` templates, 8,964 `ret` rows of model 1.1.0, `field` rows); the typed pass types call chains through them (rule 7d). Built-in defaults only when the file cannot be read (the summary says which). The sample program gains library and own-method calls and runs all 29 lines identical, which needed the jdk-28 `Math.sqrt` to be correctly rounded (fixed the same day) |
 | 0.3.0 | Policy recorded: per-member stubs. Typed pass (rules 7a to 7d): `int` shifts through `JavaOperands`, `double` / `char` string conversion through `Double.toString` / `JavaText`, the same templates as the `binop` / `tostr` rows of `conversion.model`. `JCONV_BUNDLE=1`: one document per Java file, nested types inside (39% fewer check errors on the JDK sample; the sample program runs with all lines identical) |
 | 0.2.0 | Output declares `#sleela 3.1` and uses its forms: array initializers and `new T[n]` kept (the `slArray_*` / `slZeroArray_*` helpers are gone), character literals kept, labels and jumps through `finally` kept (stub reasons 4, 13, 18 retired). New lowerings: `for` headers with commas (6i), pattern `instanceof` in two exact shapes (6j, 6k). No cast to array types (the compiler rejects them). Compiler fix alongside: `new int32[n]` starts at 0 (`impl/frontend/compiler.cpp` `arrayFillKind`) |

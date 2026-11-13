@@ -42,10 +42,10 @@
   static double slMinValue() { return slTwoTo(-1074); }
 
   < abs, max, min, signum, copySign, clamp >
-  public static int abs(int a) { if (a < 0) { return 0 - a; } return a; }
+  public static int abs(int a) { if (a == -2147483648) { return a; } if (a < 0) { return 0 - a; } return a; }
   public static double abs(double a) { if (a != a) { return a; } if (a <= 0.0) { return 0.0 - a; } return a; }
   @throwable("java.lang.ArithmeticException")
-  public static int absExact(int a) { if (a < 0) { return 0 - a; } return a; }
+  public static int absExact(int a) { if (a == -2147483648) { throw new ArithmeticException("Overflow to represent absolute value of Integer.MIN_VALUE"); } if (a < 0) { return 0 - a; } return a; }
   public static int max(int a, int b) { if (a > b) { return a; } return b; }
   public static double max(double a, double b) { if (a != a) { return a; } if (b != b) { return b; } if (a > b) { return a; } return b; }
   public static int min(int a, int b) { if (a < b) { return a; } return b; }

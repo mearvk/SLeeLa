@@ -9323,11 +9323,15 @@
     },
     {
       "path": "lib/java/converter/JConvConfig.sleela",
-      "sha256": "a92e0efdbd2482d2baebc194517de2b56447e27dcba12c9230e1beb8fbcc5709"
+      "sha256": "716e26339c46e8bb4dcc935252f7f7f3bb353a393b51174b75a312ebdab0d5f0"
     },
     {
       "path": "lib/java/converter/JConvEmitter.sleela",
       "sha256": "8934341fb402a6888ffa5ca87f75ce671ad1f2d6e5cd7f1d8438489a09a5aade"
+    },
+    {
+      "path": "lib/java/converter/JConvExpr.sleela",
+      "sha256": "c1bffcb851007aa8ac4c6a711088981edd84a2059c87efd26d63419b0206814d"
     },
     {
       "path": "lib/java/converter/JConvLexer.sleela",
@@ -9335,23 +9339,23 @@
     },
     {
       "path": "lib/java/converter/JConvMain.sleela",
-      "sha256": "1ab82bbdaea172d8020cf4b514626c9e6fbdb09f14d5a04bf88ae8d98714a47c"
+      "sha256": "6277b204d7ca4b61f2c7ce522d669a1ae62285d819b5b87bdcf2a7156185f01d"
     },
     {
       "path": "lib/java/converter/JConvModel.sleela",
-      "sha256": "45052ab006da3c430986519812a6e5e12ebb2f126c79e0e9507c83785d595a22"
+      "sha256": "86bf43129a98d6f823cb490c9f48616ad749d9de909cb6d895f6fca621c1bc80"
     },
     {
       "path": "lib/java/converter/JConvReport.sleela",
-      "sha256": "d5bc54c681fdf71fa94b63786d8508bdf233a43c6561aa7b7e5383c88e194d83"
+      "sha256": "e93daedc3dfe2ed8b54854e268a75761caa69e12a0fa9ded81c45ba759c3d8a7"
     },
     {
       "path": "lib/java/converter/JConvRewriter.sleela",
-      "sha256": "913db24e4bc140ce866671d872397a9b0858381e13c88d4ac570e6aad06f58b7"
+      "sha256": "8ef24f8d7998e05321cea6e5615846496cb55a0017d5a748dd378dd5ac588aaf"
     },
     {
       "path": "lib/java/converter/JConvRules.sleela",
-      "sha256": "5e2f1c6e75c402f73c5237b399ac1d1e174f36353efb30b6d6de8c72c25b74fc"
+      "sha256": "cca285e9e46e1faa13f0ef15469f6f9766032b299b87677635da390e8cac87e2"
     },
     {
       "path": "lib/java/converter/JConvSource.sleela",
@@ -9359,7 +9363,7 @@
     },
     {
       "path": "lib/java/converter/JConvTranslator.sleela",
-      "sha256": "82020835a7802c0ab4644a1f4b0725b65b2624aa919f3bc8c7fbbbf45197904b"
+      "sha256": "495a04d027b0a9305d24d5e076aac90a4bae86173324b7ad20ff6b60039bfb3b"
     },
     {
       "path": "lib/java/converter/JConvWalker.sleela",
@@ -50791,7 +50795,7 @@
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/Math.sleela",
-      "sha256": "5305c74ea77754ab95677518ee37cdc3f8a05dac711ca501351200640d9fc2de"
+      "sha256": "731b73d87536a6baa5009434c2d0dc54642e72ef94b995996540f823f284be42"
     },
     {
       "path": "lib/java/jdk-28/java.base/java/lang/Module.sleela",

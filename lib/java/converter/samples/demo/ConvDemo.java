@@ -104,6 +104,24 @@ public class ConvDemo {
         String word = "Hello";
         StringBuilder sb = new StringBuilder("abc");
         System.out.println("calls " + Math.sqrt(2.0) + " " + Math.abs(-2.5) + " " + word.charAt(1) + " " + (word.length() >>> 1) + " " + half(9) + " " + (Integer.MAX_VALUE >>> 3) + " " + sb.reverse().toString() + " " + Math.max(3, 8));
+        // int arithmetic inside expressions that are not stored (JConvExpr)
+        int mx = Integer.MAX_VALUE;
+        int sevenK = 70000;
+        boolean overflowed = mx + 1 < 0;
+        long widened = sevenK * sevenK;
+        int lo = 2000000000, hi = 2100000000;
+        int mid = (lo + hi) >>> 1;
+        int zero = 0;
+        String caught = "none";
+        try { int bad = 10 / zero; caught = "no " + bad; } catch (ArithmeticException e) { caught = "AE"; }
+        String caught2 = "none";
+        try { int bad2 = 10 % zero; caught2 = "no " + bad2; } catch (ArithmeticException e) { caught2 = "AE"; }
+        int quot = 100;
+        int dv = 7;
+        quot /= dv;
+        char cc = 'a';
+        System.out.println("arith " + overflowed + " " + widened + " " + (sevenK * sevenK) + " " + (mx * 3) / 7 + " " + mid + " " + caught + " " + caught2);
+        System.out.println("arith2 " + (Integer.MIN_VALUE / -1) + " " + (cc + 1) + " " + (mx + 1 > 0 ? "pos" : "neg") + " " + quot + " " + Math.abs(mx + 1) + " " + (-mx - 2));
         System.out.println("pattern " + describe("abc") + ", " + describe(Integer.valueOf(9)) + ", " + describe(Integer.valueOf(2)) + ", " + emptyText("") + " " + emptyText(Integer.valueOf(1)));
     }
 

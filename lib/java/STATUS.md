@@ -429,7 +429,7 @@ section 1.
 | SLeeLa files written / members / fail-loud stubs | 36 / 627 / 35 (5.6%; 47 in 0.1.0) |
 | Output files with a syntax error | 0 |
 | Output files passing `sleela check` | 8 of 36 |
-| `converter/samples/demo/ConvDemo.java` against a real JDK | 29 of 29 lines identical (0.4.0, `JCONV_BUNDLE=1`) |
+| `converter/samples/demo/ConvDemo.java` against a real JDK | 31 of 31 lines identical (0.5.0, `JCONV_BUNDLE=1`) |
 | `sleela check` errors on the sample, separate files / bundled | 903 / 553 |
 
 Converter 0.2.0 (2026-11-13) declares `#sleela 3.1` and uses its array
@@ -456,7 +456,12 @@ for magnitudes far from 1 (results wrong in the leading digits for about 1e-150)
 It now scales the argument into [2^-64, 2^64] by exact powers of two, runs Newton,
 and picks the correctly rounded root with the Tuckerman test using exact
 products (Dekker two-product), as IEEE 754 and the Java specification require.
-`examples/java/differential/MathSqrt` checks the bits for 240 values; the
+`Math.abs(int)` now returns `Integer.MIN_VALUE` for `Integer.MIN_VALUE` and
+`Math.absExact(int)` throws `ArithmeticException` there, as Java does (both found
+by converter 0.5.0, which wraps int arithmetic exactly; the converter keeps its
+output at syntax 3.1).
+`examples/java/differential/MathSqrt` checks the bits for 240 values and the
+`abs` edge cases; the
 `Math` conformance program and the `MathStatics` and `MathBigInteger` pairs still
 pass.
 

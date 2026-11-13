@@ -16,7 +16,7 @@ material;
 class JConvRewriter {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. >>
-  String metaVersion = "0.4.0";
+  String metaVersion = "0.5.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-12";
@@ -106,6 +106,8 @@ class JConvRewriter {
   boolean inBody;
   String curReturnType;
   String unitName;
+  < the expression half of the typed pass >
+  JConvExpr expr;
 
   JConvRewriter(JConvRules r, JConvConfig c) {
     this.rules = r;
@@ -143,6 +145,7 @@ class JConvRewriter {
     this.inBody = false;
     this.curReturnType = "";
     this.unitName = "";
+    this.expr = new JConvExpr(this);
   }
 
   < ---- per file and per type state ---- >
@@ -1706,44 +1709,6 @@ class JConvRewriter {
     return "?";
   }
 
-  << A one-operand template of the model (tostr rows), F(G(x)) with x the operand, written
-     around the output range a .. b-1. Returns the number of tokens inserted,
-     or 0 when the template has another shape (then nothing is written). >>
-  int applyTemplate(int a, int b, String tpl) {
-    int at = tpl.indexOf("$a");
-    if (at <= 0) { return 0; }
-    String pre = tpl.substring(0, at);
-    String post = tpl.substring(at + 2);
-    int closers = 0;
-    int q = 0;
-    while (q < post.length()) {
-      if (post.charAt(q) != 41) { return 0; }
-      closers = closers + 1;
-      q = q + 1;
-    }
-    < the prefix is name ( name ( ... >
-    String[] names = new String[8];
-    int nn = 0;
-    String rest = pre;
-    while (rest != "") {
-      int p = rest.indexOf("(");
-      if (p <= 0 || nn >= 8) { return 0; }
-      names[nn] = rest.substring(0, p).trim();
-      nn = nn + 1;
-      rest = rest.substring(p + 1);
-    }
-    if (nn != closers) { return 0; }
-    int c = 0;
-    while (c < closers) { insertAt(b, 5, ")"); c = c + 1; }
-    int k = nn - 1;
-    while (k >= 0) {
-      insertAt(a, 5, "(");
-      insertAt(a, 1, names[k]);
-      k = k - 1;
-    }
-    return nn * 3;
-  }
-
   < the function name of a two-operand template of the model, F(a, b), or "" >
   String binaryFn(String tpl) {
     if (!tpl.endsWith("($a, $b)")) { return ""; }
@@ -1759,81 +1724,10 @@ class JConvRewriter {
     return false;
   }
 
-  < the string conversion of a char or double operand a .. b-1, if it needs one; returns tokens inserted >
-  int toStringIfNeeded(int a, int b) {
-    String k = exprKind(a, b);
-    if (k == "d") { return applyTemplate(a, b, this.rules.model.tostrDouble); }
-    if (k == "c") { return applyTemplate(a, b, this.rules.model.tostrChar); }
-    return 0;
-  }
-
+  < the typed pass: the declared names, then the expression laws (JConvExpr) >
   void typedPass() {
     collectSymbols();
-    int i = 0;
-    while (i < this.on) {
-      int k = this.ok[i];
-      String t = this.ot[i];
-      if (k == 5 && (t == "<<" || t == ">>" || t == ">>>")) {
-        int a = operandStart(i, 1, false);
-        int e = operandEnd(i + 1, 1, false);
-        String fn = binaryFn(this.rules.model.shlInt);
-        if (t == ">>") { fn = binaryFn(this.rules.model.shrInt); }
-        if (t == ">>>") { fn = binaryFn(this.rules.model.ushrInt); }
-        if (fn != "" && a >= 0 && a < i && e > i + 1 && exprKind(a, i) == "i") {
-          this.ot[i] = ",";
-          insertAt(e, 5, ")");
-          insertAt(a, 5, "(");
-          insertAt(a, 1, fn);
-          i = i + 2;
-          continue;
-        }
-      }
-      if (k == 5 && (t == "<<=" || t == ">>=" || t == ">>>=") && binaryFn(this.rules.model.shlInt) != "" && i > 0 && this.ok[i - 1] == 1 && (i == 1 || this.ot[i - 2] != ".") && kindOfType(typeOfName(this.ot[i - 1])) == "i") {
-        < x op= n on an int: x = JavaOperands.op(x, n) >
-        String fn2 = binaryFn(this.rules.model.shlInt);
-        if (t == ">>=") { fn2 = binaryFn(this.rules.model.shrInt); }
-        if (t == ">>>=") { fn2 = binaryFn(this.rules.model.ushrInt); }
-        int e2 = i + 1;
-        int d = 0;
-        while (e2 < this.on) {
-          if (this.ot[e2] == "(" || this.ot[e2] == "[") { d = d + 1; }
-          if (this.ot[e2] == ")" || this.ot[e2] == "]") { d = d - 1; if (d < 0) { break; } }
-          if (d == 0 && (this.ot[e2] == ";" || this.ot[e2] == ",")) { break; }
-          e2 = e2 + 1;
-        }
-        String name = this.ot[i - 1];
-        this.ot[i] = "=";
-        insertAt(e2, 5, ")");
-        insertAt(i + 1, 5, ",");
-        insertAt(i + 1, 1, name);
-        insertAt(i + 1, 5, "(");
-        insertAt(i + 1, 1, fn2);
-        i = i + 4;
-        continue;
-      }
-      if (k == 5 && t == "+") {
-        int a2 = operandStart(i, 2, true);
-        int e3 = operandEnd(i + 1, 2, true);
-        if (a2 >= 0 && e3 > i + 1) {
-          int chain = operandStart(i, 2, false);
-          String leftK = exprKind(chain, i);
-          String rightK = exprKind(i + 1, e3);
-          if (leftK == "s" && (rightK == "d" || rightK == "c")) { toStringIfNeeded(i + 1, e3); }
-          else if (rightK == "s" && chain == a2 && (leftK == "d" || leftK == "c")) { i = i + toStringIfNeeded(a2, i) + 1; }
-        }
-      }
-      if (k == 1 && t == "print" && i + 1 < this.on && this.ot[i + 1] == "(") {
-        int c = i + 1;
-        int d4 = 0;
-        while (c < this.on) {
-          if (this.ot[c] == "(") { d4 = d4 + 1; }
-          if (this.ot[c] == ")") { d4 = d4 - 1; if (d4 == 0) { break; } }
-          c = c + 1;
-        }
-        if (c < this.on) { toStringIfNeeded(i + 2, c); }
-      }
-      i = i + 1;
-    }
+    this.expr.run();
   }
 
   < ---- emission ---- >

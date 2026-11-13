@@ -246,5 +246,8 @@ public class MathSqrt {
             System.out.println(Double.doubleToLongBits(Math.sqrt(v)));
         }
         System.out.println(Math.sqrt(2.0) + " " + Math.sqrt(-1.0) + " " + Math.sqrt(0.0) + " " + Math.sqrt(Double.POSITIVE_INFINITY));
+        String exact;
+        try { exact = "" + Math.absExact(Integer.MIN_VALUE); } catch (ArithmeticException e) { exact = e.getMessage(); }
+        System.out.println(Math.abs(Integer.MIN_VALUE) + " " + Math.abs(-7) + " " + Math.absExact(-7) + " " + exact);
     }
 }
