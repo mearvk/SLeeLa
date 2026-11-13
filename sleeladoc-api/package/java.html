@@ -139250,6 +139250,7 @@
 <tr><td><code>lexBlockComment</code></td><td><span class="sig">int lexBlockComment(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>lexString</code></td><td><span class="sig">int lexString(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>lexChar</code></td><td><span class="sig">int lexChar(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>charLiteral</code></td><td><span class="sig">String charLiteral(int v)</span></td><td class="desc">the SLeeLa 3.1 character literal for code unit v (SLEELA.syntax 44.2); a surrogate stays its integer code</td></tr>
 <tr><td><code>lexTextBlock</code></td><td><span class="sig">int lexTextBlock(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>lexNumber</code></td><td><span class="sig">int lexNumber(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>lexRadix</code></td><td><span class="sig">int lexRadix(int i, int digitsStart, int radix)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -139305,7 +139306,7 @@
 <h2 class="section" data-u="jconvrewriter">JConvRewriter <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvRewriter.sleela)</span></h2>
 <div data-u="jconvrewriter jconvrewriter">
 <h3 id="JConvRewriter">JConvRewriter <span class="pill">class</span></h3>
-<p class="desc">the token-level half of the converter. rewrite(a, b) copies the Java tokens a .. b-1 into an output token list, applying the rules of JConvRules as it goes (erasure, renames, literal forms, array forms, built-in collisions, System.out.println). scanReason finds the first construct SLeeLa cannot express yet (rule 5). postPass splits Java multi-variable declarations and inserts the checked casts that javac would insert (an erased Any value stored into a typed variable or returned from a typed method). The helper methods that array forms need are collected per type and written by emitHelpers.</p>
+<p class="desc">the token-level half of the converter. rewrite(a, b) copies the Java tokens a .. b-1 into an output token list, applying the rules of JConvRules as it goes (erasure, renames, literal forms, array forms, built-in collisions, System.out.println). scanReason finds the first construct SLeeLa cannot express yet (rule 5). postPass splits Java multi-variable declarations and inserts the checked casts that javac would insert (an erased Any value stored into a typed variable or returned from a typed method). Array initializers, char literals, labels and jumps through finally are written in their SLeeLa 3.1 forms (SLEELA.syntax 44); a for header with commas is lowered with a labeled block (44.4).</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
@@ -139324,11 +139325,10 @@
 <tr><td><code>pendN</code></td><td><span class="sig">int pendN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>tvars</code></td><td><span class="sig">String[] tvars</span></td><td class="desc">type variables in scope; they erase to Any</td></tr>
 <tr><td><code>tvN</code></td><td><span class="sig">int tvN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>hElem</code></td><td><span class="sig">String[] hElem</span></td><td class="desc">array helpers of the current type: element type and element count</td></tr>
-<tr><td><code>hCount</code></td><td><span class="sig">int[] hCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>hN</code></td><td><span class="sig">int hN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>zElem</code></td><td><span class="sig">String[] zElem</span></td><td class="desc">zero-filling array helpers of the current type: element type</td></tr>
-<tr><td><code>zN</code></td><td><span class="sig">int zN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>forCount</code></td><td><span class="sig">int forCount</span></td><td class="desc">for headers with commas lowered in the current type (labels slFor0, slFor1, ...)</td></tr>
+<tr><td><code>pat</code></td><td><span class="sig">int[] pat</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>patOk</code></td><td><span class="sig">int[] patOk</span></td><td class="desc">instanceof positions whose pattern is lowered (not a stub reason)</td></tr>
+<tr><td><code>patOkN</code></td><td><span class="sig">int patOkN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>mNames</code></td><td><span class="sig">String[] mNames</span></td><td class="desc">methods (name, 1 when static) and fields declared by the current type</td></tr>
 <tr><td><code>mStatic</code></td><td><span class="sig">int[] mStatic</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>mN</code></td><td><span class="sig">int mN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -139376,6 +139376,9 @@
 <tr><td><code>pendingIndex</code></td><td><span class="sig">int pendingIndex(int i)</span></td><td class="desc">-1 when position i has no pending replacement</td></tr>
 <tr><td><code>outText</code></td><td><span class="sig">String outText(int a, int b)</span></td><td class="desc">the output tokens a .. b-1 joined with spaces (for type texts)</td></tr>
 <tr><td><code>scanReason</code></td><td><span class="sig">int scanReason(int a, int b, boolean body)</span></td><td class="desc">---- rule 5 scan ----</td></tr>
+<tr><td><code>matchOpen</code></td><td><span class="sig">int matchOpen(int c)</span></td><td class="desc">the index of the bracket that opens the one that closes at c</td></tr>
+<tr><td><code>skipType</code></td><td><span class="sig">int skipType(int j0)</span></td><td class="desc">the index after a type that starts at j (names, dots, generics, array brackets)</td></tr>
+<tr><td><code>scanNew</code></td><td><span class="sig">int scanNew(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="jconvrules">JConvRules <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvRules.sleela)</span></h2>
@@ -301439,7 +301442,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-13 01:12 UTC.
+<code>/lib</code> tree on 2026-11-13 01:40 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
