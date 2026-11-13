@@ -2072,6 +2072,7 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
     // which only type analysis can detect. Each seed is tried once.
     std::set<std::string> seeds;
     bool stringMethodsProbed=false;
+    bool faultsSeeded=false;
     for(size_t pass=0;pass<64;++pass){
         std::set<std::string> names(seeds.begin(),seeds.end());
         const std::string scanSource = dependencyScanText(source);
@@ -2286,6 +2287,17 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
                 bool needed=false;
                 try{ needed=sleela::analyzeSemantics(program,syntax,false).needsStringMethods; }catch(const std::exception&){ needed=false; }
                 if(needed){ seeds.insert("JavaStringMethods"); continue; }
+            }
+            // SLEELA.syntax 37.5: a Java-style document with a try gets the VM
+            // fault exceptions (lib/java/support/SLJavaFaults), so a division
+            // by zero inside the try throws ArithmeticException.
+            if(!faultsSeeded && !(syntax<sleela::SyntaxVersion{3,0})){
+                faultsSeeded=true;
+                bool haveFaults=false, javaStyle=program.sparkMarked;
+                for(const auto& cls:program.classes) if(cls.name=="SLJavaFaults") { haveFaults=true; break; }
+                for(const auto& im:program.imports) if(im.rfind("java",0)==0) javaStyle=true;
+                static const std::regex tryWord("\\btry\\b");
+                if(!haveFaults && javaStyle && std::regex_search(source,tryWord)){ seeds.insert("SLJavaFaults"); continue; }
             }
             return true;
         }

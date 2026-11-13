@@ -22,6 +22,13 @@ converter (README: `lib/java/converter/README.md`). It is separate from
    Change a law in the model, not in the converter.
 4. **Verify by output.** After a converter change: convert
    `lib/java/converter/samples` with `JCONV_BUNDLE=1`, run it, and diff against
-   `samples/ConvDemo.java.expected.txt` (all lines identical); convert the JDK
+   `samples/ConvDemo.java.expected.txt` and `samples/LambdaDemo.java.expected.txt`
+   (all lines identical; the samples run from `demo/` and `lambda/`); convert the JDK
    sample and confirm **0 syntax errors** in the output. Record numbers in the
    README section 6 with the date. Long suites follow `validation-cadence.md`.
+5. **Lambdas are lowered, not given syntax.** `JConvLambda` writes the
+   `(id, env)` form of `lib/java/jdk-28/LOWERING.md` section 2 and relies on
+   calls on `Any` (SLEELA.syntax 43.7). Keep 0 syntax errors: generated tokens
+   go through `syn` (not `rewriteIdent`, which renames `Any`). Ids are per
+   document, so a runnable program with lambdas must be one `JCONV_BUNDLE=1`
+   document.

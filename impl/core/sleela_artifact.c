@@ -23,7 +23,9 @@
  * Versions 1-3 remain loadable, with native metadata disabled. */
 /* v5 (2026-11-13): each struct type also carries its extends parent and its
  * further supertypes (implemented interfaces, SLEELA.syntax 43.7). */
-#define SLART_VERSION 5u
+/* v6 (2026-11-13): the fault function index (SLEELA.syntax 37.5) follows
+ * the struct table. */
+#define SLART_VERSION 6u
 
 static int wr(FILE* f, const void* p, size_t n) { return fwrite(p, 1, n, f) == n; }
 static int rd(FILE* f, void* p, size_t n) { return fread(p, 1, n, f) == n; }
@@ -272,6 +274,7 @@ int slvm_save_file(SLVM* vm, const char* path) {
         for (int j = 0; ok && j < vm->struct_types[i].nsupers; ++j)
             ok = wr_i32(f, vm->struct_types[i].supers[j]);
     }
+    ok = ok && wr_i32(f, vm->fault_func);
 
     if (fclose(f) != 0) ok = 0;
     if (!ok) remove(path);
@@ -387,6 +390,13 @@ SLVM* slvm_load_file(const char* path) {
             }
         }
         if (ok) vm->nstruct_types = (int)nstruct;
+        /* v1-v5 carried no fault function: faults throw their message. */
+        vm->fault_func = -1;
+        if (ok && version >= 6u) {
+            int32_t ff = -1;
+            ok = rd_i32(f, &ff) && ff >= -1 && ff < (int32_t)nfunc && (ff < 0 || vm->funcs[ff].nargs == 2);
+            if (ok) vm->fault_func = ff;
+        }
     }
     fclose(f);
 

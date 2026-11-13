@@ -1,0 +1,1167 @@
+<< lib/java/converter/JConvLambda.sleela
+   Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
+   Definition: lambda and method reference lowering (lib/java/jdk-28/LOWERING.md
+   section 2). A lowered lambda is data: an id naming its body and an array of
+   the values it captured, new SLJavaLambda(id, new Any[]{...}). Java captures
+   only effectively final locals, so copying their values at the creation point
+   is exact. The body becomes a method slLambdaN(slEnv, slA, slB) of the class
+   that holds the lambda (an instance method in an instance context, which
+   keeps this, fields and methods as written; a static method otherwise). The
+   document gets one generated class SLJavaLambdaTable whose call(id, env, a, b)
+   forwards to those methods; it shadows the library default.
+   Variables of a functional interface type are written as Any (JConvRules
+   functionalInterface), so f.apply(x) dispatches at run time (SLEELA.syntax
+   43.7) to SLJavaLambda.apply or to a class of the program that implements
+   the interface.
+   Lowered: a lambda with 0 to 2 parameters, typed or not, with an expression
+   or a block body. An untyped parameter takes its type from the declaration
+   or return type the lambda is written for (Function of Integer and Integer
+   gives int32), else Any. Method references: System.out::println, and, when
+   the declaration or return type names the interface, this::m, name::m,
+   Type::m (static or, for String, unbound) and Type::new.
+   Not lowered (the member stays a fail-loud stub, reasons 1 and 2): a switch
+   arrow, more than two parameters, a capture or parameter of array type (a
+   cast to an array type does not compile), a method reference without a
+   known target. >>
+#sleela 3.0
+material;
+
+class JConvLambda {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full record: a library-family class of the Java container. It lowers the
+     constructs of the Java Language Specification sections 15.13 and 15.27. >>
+  String metaVersion = "0.6.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 3;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "The Java Language Specification, Java SE 28 Edition, sections 15.13 and 15.27";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  JConvRewriter rw;
+  << The sites of the current member, found by scanReason: start token,
+     arrow or double colon token, end (exclusive), body kind (1 expression,
+     2 block, 3 System.out::println, 4 static call, 5 bound call, 6 unbound
+     call, 7 constructor), and for kinds 4 to 7 the token of the method name
+     or new. >>
+  int[] sStart;
+  int[] sMark;
+  int[] sEnd;
+  int[] sKind;
+  int[] sName;
+  < the receiver token of a method reference >
+  int[] sRecv;
+  < parameters of each site: a range of pName / pType >
+  int[] sPFrom;
+  int[] sPN;
+  < captured locals of each site: a range of cName / cType >
+  int[] sCFrom;
+  int[] sCN;
+  < the id given when the call site was written (0 before) >
+  int[] sId;
+  < the target type range of each site (input tokens; -1 when none) >
+  int[] sT0;
+  int[] sT1;
+  int siteN;
+  String[] pName;
+  String[] pType;
+  int pN;
+  String[] cName;
+  String[] cType;
+  int cN;
+  < where the locals of the member start (-1: a field, no locals) >
+  int localsFrom;
+  < the return type of the current method as input tokens (target type of return x -> ...) >
+  int retStart;
+  int retEnd;
+  < bodies to write after the current member: site indexes, and whether static >
+  int[] queue;
+  int qN;
+  < the table of the current document >
+  String[] arms;
+  int armN;
+  int nextId;
+  < the document writes a functional interface type as Any (the table must load SLJavaLambda) >
+  boolean usesFunctional;
+  < lambdas lowered, method references lowered (for the report) >
+  int lambdasTotal;
+  int refsTotal;
+
+  JConvLambda(JConvRewriter r) {
+    this.rw = r;
+    this.sStart = new int[64];
+    this.sMark = new int[64];
+    this.sEnd = new int[64];
+    this.sKind = new int[64];
+    this.sName = new int[64];
+    this.sRecv = new int[64];
+    this.sPFrom = new int[64];
+    this.sPN = new int[64];
+    this.sCFrom = new int[64];
+    this.sCN = new int[64];
+    this.sId = new int[64];
+    this.sT0 = new int[64];
+    this.sT1 = new int[64];
+    this.siteN = 0;
+    this.pName = new String[256];
+    this.pType = new String[256];
+    this.pN = 0;
+    this.cName = new String[512];
+    this.cType = new String[512];
+    this.cN = 0;
+    this.localsFrom = -1;
+    this.retStart = -1;
+    this.retEnd = -1;
+    this.queue = new int[64];
+    this.qN = 0;
+    this.arms = new String[256];
+    this.armN = 0;
+    this.nextId = 1;
+    this.lambdasTotal = 0;
+    this.refsTotal = 0;
+    this.usesFunctional = false;
+  }
+
+  < ---- per document and per member state ---- >
+  void beginDocument() {
+    this.armN = 0;
+    this.nextId = 1;
+    this.usesFunctional = false;
+  }
+
+  void beginScan(int a, boolean body) {
+    this.siteN = 0;
+    this.pN = 0;
+    this.cN = 0;
+    this.qN = 0;
+    if (body) { this.localsFrom = a; } else { this.localsFrom = -1; }
+  }
+
+  < ---- token helpers ---- >
+  boolean isOp(int i, String s) { return this.rw.isOp(i, s); }
+  boolean isId(int i, String s) { return this.rw.isId(i, s); }
+  int nx(int i) { return this.rw.nx(i); }
+  int pv(int i) { return this.rw.pv(i); }
+  int kd(int i) {
+    if (i < 0 || i >= this.rw.lx.n) { return 0; }
+    return this.rw.K[i];
+  }
+  String tx(int i) {
+    if (i < 0 || i >= this.rw.lx.n) { return ""; }
+    return this.rw.T[i];
+  }
+  boolean isCloseAngle(int i) { return isOp(i, ">") || isOp(i, ">>") || isOp(i, ">>>"); }
+  int angleWidth(int i) {
+    if (isOp(i, ">>>")) { return 3; }
+    if (isOp(i, ">>")) { return 2; }
+    if (isOp(i, ">")) { return 1; }
+    return 0;
+  }
+
+  < the site whose call is written at token i, or -1 >
+  int siteAt(int i) {
+    int k = 0;
+    while (k < this.siteN) { if (this.sStart[k] == i) { return k; } k = k + 1; }
+    return -1;
+  }
+
+  boolean growSites() {
+    if (this.siteN < arrayLength(this.sStart)) { return true; }
+    return false;
+  }
+
+  void addParam(String n, String t) {
+    if (this.pN >= arrayLength(this.pName)) { return; }
+    this.pName[this.pN] = n;
+    this.pType[this.pN] = t;
+    this.pN = this.pN + 1;
+  }
+
+  void addCapture(String n, String t) {
+    if (this.cN >= arrayLength(this.cName)) { return; }
+    this.cName[this.cN] = n;
+    this.cType[this.cN] = t;
+    this.cN = this.cN + 1;
+  }
+
+  < ---- target typing: the functional interface a lambda is written for ---- >
+  << The input token range of the interface type the lambda at s is written
+     for: TYPE NAME = lambda (a local or a field), or return lambda (the
+     method return type). Fills tgt with the type start and end (exclusive);
+     false when there is none. >>
+  boolean targetOf(int s, int[] tgt) {
+    int p = pv(s);
+    < the body of an enclosing lambda: its result type argument >
+    int enc = enclosingSite(s);
+    if (enc >= 0 && this.sT0[enc] >= 0 && (s == nx(this.sMark[enc] + 1) || isId(p, "return"))) {
+      return resultRange(this.sT0[enc], this.sT1[enc], tgt);
+    }
+    if (isId(p, "return") && this.retStart >= 0) {
+      tgt[0] = this.retStart;
+      tgt[1] = this.retEnd;
+      return true;
+    }
+    if (!isOp(p, "=")) { return callArgTarget(s, tgt); }
+    int nm = pv(p);
+    if (kd(nm) != 1) { return false; }
+    int e = pv(nm);
+    int b = -1;
+    if (isCloseAngle(e)) {
+      int d = 0;
+      int j = e;
+      while (j >= 0) {
+        d = d + angleWidth(j);
+        if (isOp(j, "<")) {
+          d = d - 1;
+          if (d == 0) { break; }
+        }
+        j = j - 1;
+      }
+      if (j < 0) { return false; }
+      b = pv(j);
+    } else if (kd(e) == 1) {
+      b = e;
+    } else {
+      return false;
+    }
+    if (kd(b) != 1) { return false; }
+    while (isOp(pv(b), ".") && kd(pv(pv(b))) == 1) { b = pv(pv(b)); }
+    tgt[0] = b;
+    tgt[1] = nm;
+    return true;
+  }
+
+  < the innermost lambda site whose body holds token s, or -1 >
+  int enclosingSite(int s) {
+    int best = -1;
+    int k = 0;
+    while (k < this.siteN) {
+      if (this.sKind[k] <= 2 && this.sMark[k] < s && s < this.sEnd[k]) {
+        if (best < 0 || this.sMark[k] > this.sMark[best]) { best = k; }
+      }
+      k = k + 1;
+    }
+    return best;
+  }
+
+  < the type argument index of the result of a functional interface, or -1 >
+  int resultOf(String f) {
+    if (f == "Function" || f == "Supplier" || f == "Callable" || f == "UnaryOperator" || f == "BinaryOperator") {
+      if (f == "Function") { return 1; }
+      return 0;
+    }
+    if (f == "BiFunction") { return 2; }
+    if (f == "IntFunction" || f == "LongFunction" || f == "DoubleFunction") { return 0; }
+    return -1;
+  }
+
+  << The range of the result type argument of the interface type a .. b-1
+     (Function of T and R gives R) into tgt; false when there is none. >>
+  boolean resultRange(int a, int b, int[] tgt) {
+    int nameAt = -1;
+    int lt = -1;
+    int j = a;
+    while (j < b) {
+      if (kd(j) == 1) { nameAt = j; }
+      if (isOp(j, "<")) { lt = j; break; }
+      j = j + 1;
+    }
+    if (nameAt < 0 || lt < 0) { return false; }
+    int r = resultOf(tx(nameAt));
+    if (r < 0) { return false; }
+    int d = 0;
+    int idx = 0;
+    int argStart = nx(lt + 1);
+    int q = lt;
+    while (q < b) {
+      if (isOp(q, "<")) { d = d + 1; }
+      else if (isCloseAngle(q)) {
+        d = d - angleWidth(q);
+        if (d <= 0) {
+          if (idx == r) { tgt[0] = argStart; tgt[1] = q; return true; }
+          return false;
+        }
+      }
+      else if (d == 1 && isOp(q, ",")) {
+        if (idx == r) { tgt[0] = argStart; tgt[1] = q; return true; }
+        idx = idx + 1;
+        argStart = nx(q + 1);
+      }
+      q = q + 1;
+    }
+    if (idx == r && argStart < b) { tgt[0] = argStart; tgt[1] = b; return true; }
+    return false;
+  }
+
+  << A lambda passed as argument number k of a call m(...) to a method of this
+     file (unqualified, this.m or Type.m): the declared type of parameter k of
+     the first declaration of m with that many parameters. >>
+  boolean callArgTarget(int s, int[] tgt) {
+    int j = pv(s);
+    int d = 0;
+    int idx = 0;
+    int open = -1;
+    while (j >= 0) {
+      if (isOp(j, ")") || isOp(j, "]") || isOp(j, "}")) { d = d + 1; }
+      else if (isOp(j, "(") || isOp(j, "[") || isOp(j, "{")) {
+        if (d == 0) { open = j; break; }
+        d = d - 1;
+      }
+      else if (d == 0 && isOp(j, ",")) { idx = idx + 1; }
+      else if (d == 0 && isOp(j, ";")) { return false; }
+      j = pv(j);
+    }
+    if (open < 0 || !isOp(open, "(")) { return false; }
+    int nm = pv(open);
+    if (kd(nm) != 1 || this.rw.rules.isControlWord(tx(nm))) { return false; }
+    if (isOp(pv(nm), ".")) {
+      String rc = tx(pv(pv(nm)));
+      if (rc != "this" && rc != this.rw.unitName) { return false; }
+    }
+    int close = this.rw.matchClose(open);
+    int argc = countArgs(open, close);
+    < the declarations of the name in the file >
+    int t = 0;
+    while (t < this.rw.lx.n) {
+      if (kd(t) == 1 && tx(t) == tx(nm) && t != nm && isOp(nx(t + 1), "(") && typeStartBefore(t) >= 0) {
+        int po = nx(t + 1);
+        int pc = this.rw.matchClose(po);
+        if (countArgs(po, pc) == argc && paramTypeRange(po, pc, idx, tgt)) { return true; }
+      }
+      t = t + 1;
+    }
+    return false;
+  }
+
+  < the number of comma separated items between the brackets open and close >
+  int countArgs(int open, int close) {
+    if (nx(open + 1) == close) { return 0; }
+    int n = 1;
+    int d = 0;
+    int q = nx(open + 1);
+    while (q < close) {
+      if (isOp(q, "(") || isOp(q, "[") || isOp(q, "{") || isOp(q, "<")) { d = d + 1; }
+      else if (isOp(q, ")") || isOp(q, "]") || isOp(q, "}")) { d = d - 1; }
+      else if (isCloseAngle(q)) { d = d - angleWidth(q); }
+      else if (d == 0 && isOp(q, ",")) { n = n + 1; }
+      q = q + 1;
+    }
+    return n;
+  }
+
+  < the type range of parameter k of the parameter list open .. close >
+  boolean paramTypeRange(int open, int close, int k, int[] tgt) {
+    int d = 0;
+    int idx = 0;
+    int ps = nx(open + 1);
+    int q = ps;
+    while (q <= close) {
+      boolean endHere = (q == close) || (d == 0 && isOp(q, ","));
+      if (endHere) {
+        if (idx == k) {
+          int nameAt = pv(q);
+          int ts = ps;
+          while (isOp(ts, "@")) { ts = this.rw.skipAnnotation(ts); }
+          if (isId(ts, "final")) { ts = nx(ts + 1); }
+          if (kd(nameAt) != 1 || ts >= nameAt) { return false; }
+          tgt[0] = ts;
+          tgt[1] = nameAt;
+          return true;
+        }
+        idx = idx + 1;
+        ps = nx(q + 1);
+      } else if (isOp(q, "(") || isOp(q, "[") || isOp(q, "<")) { d = d + 1; }
+      else if (isOp(q, ")") || isOp(q, "]")) { d = d - 1; }
+      else if (isCloseAngle(q)) { d = d - angleWidth(q); }
+      q = q + 1;
+    }
+    return false;
+  }
+
+  << The parameter slots of a functional interface: one character per
+     parameter, a digit for a type argument index, I int, L long, D double;
+     "?" for an interface this table does not know. >>
+  String slotsOf(String f) {
+    if (f == "Runnable" || f == "Callable" || f == "Supplier" || f == "BooleanSupplier") { return ""; }
+    if (f == "IntSupplier" || f == "LongSupplier" || f == "DoubleSupplier") { return ""; }
+    if (f == "Function" || f == "UnaryOperator" || f == "Predicate" || f == "Consumer") { return "0"; }
+    if (f == "ToIntFunction" || f == "ToLongFunction" || f == "ToDoubleFunction") { return "0"; }
+    if (f == "BiFunction" || f == "BiPredicate" || f == "BiConsumer") { return "01"; }
+    if (f == "ToIntBiFunction" || f == "ToLongBiFunction" || f == "ToDoubleBiFunction") { return "01"; }
+    if (f == "BinaryOperator" || f == "Comparator") { return "00"; }
+    if (f == "IntFunction" || f == "IntPredicate" || f == "IntUnaryOperator" || f == "IntConsumer") { return "I"; }
+    if (f == "IntToLongFunction" || f == "IntToDoubleFunction") { return "I"; }
+    if (f == "LongFunction" || f == "LongPredicate" || f == "LongUnaryOperator" || f == "LongConsumer") { return "L"; }
+    if (f == "LongToIntFunction" || f == "LongToDoubleFunction") { return "L"; }
+    if (f == "DoubleFunction" || f == "DoublePredicate" || f == "DoubleUnaryOperator" || f == "DoubleConsumer") { return "D"; }
+    if (f == "DoubleToIntFunction" || f == "DoubleToLongFunction") { return "D"; }
+    if (f == "IntBinaryOperator") { return "II"; }
+    if (f == "LongBinaryOperator") { return "LL"; }
+    if (f == "DoubleBinaryOperator") { return "DD"; }
+    if (f == "ObjIntConsumer") { return "0I"; }
+    if (f == "ObjLongConsumer") { return "0L"; }
+    if (f == "ObjDoubleConsumer") { return "0D"; }
+    return "?";
+  }
+
+  < the SLeeLa type of a Java type argument name (boxes to primitives) >
+  String argType(String n) {
+    String m = n;
+    if (n == "Integer") { m = "int"; }
+    else if (n == "Long") { m = "long"; }
+    else if (n == "Short") { m = "short"; }
+    else if (n == "Byte") { m = "byte"; }
+    else if (n == "Character") { m = "char"; }
+    else if (n == "Boolean") { m = "boolean"; }
+    else if (n == "Double") { m = "double"; }
+    else if (n == "Float") { m = "float"; }
+    if (m != n) { return this.rw.rules.mapTypeName(m); }
+    if (n == "" || this.rw.isTypeVar(n)) { return "Any"; }
+    if (n == "String") { return "String"; }
+    if (this.rw.castable(n)) { return n; }
+    return "Any";
+  }
+
+  << The parameter types the target range a .. b-1 gives, one per slot, into
+     out; returns the arity, or -1 when the interface is not known. >>
+  int targetParams(int a, int b, String[] out) {
+    < the interface name: the last name before the type arguments >
+    int nameAt = -1;
+    int lt = -1;
+    int j = a;
+    while (j < b) {
+      if (kd(j) == 1) { nameAt = j; }
+      if (isOp(j, "<")) { lt = j; break; }
+      j = j + 1;
+    }
+    if (nameAt < 0) { return -1; }
+    String slots = slotsOf(tx(nameAt));
+    if (slots == "?") { return -1; }
+    < the heads of the type arguments, at depth 1 >
+    String[] heads = new String[8];
+    int hn = 0;
+    if (lt >= 0) {
+      int d = 0;
+      boolean want = true;
+      int q = lt;
+      while (q < b && hn < 8) {
+        if (isOp(q, "<")) {
+          d = d + 1;
+        } else if (isCloseAngle(q)) {
+          d = d - angleWidth(q);
+          if (d <= 0) { break; }
+        } else if (d == 1 && isOp(q, ",")) {
+          want = true;
+        } else if (d == 1 && want && kd(q) == 1 && tx(q) != "extends" && tx(q) != "super") {
+          < a qualified argument java.lang.Integer: take the last name >
+          int r = q;
+          while (isOp(nx(r + 1), ".") && kd(nx(nx(r + 1) + 1)) == 1) { r = nx(nx(r + 1) + 1); }
+          String h = tx(r);
+          if (isOp(nx(r + 1), "[")) { h = "[]"; }
+          heads[hn] = h;
+          hn = hn + 1;
+          want = false;
+          q = r;
+        } else if (d == 1 && want && isOp(q, "?")) {
+          < a wildcard alone erases to Any; with a bound the bound name follows >
+          int r2 = nx(q + 1);
+          if (!isId(r2, "extends") && !isId(r2, "super")) {
+            heads[hn] = "";
+            hn = hn + 1;
+            want = false;
+          }
+        }
+        q = q + 1;
+      }
+    }
+    int n = slots.length();
+    int k = 0;
+    while (k < n) {
+      String c = slots.substring(k, k + 1);
+      String t = "Any";
+      if (c == "I") { t = this.rw.rules.mapTypeName("int"); }
+      else if (c == "L") { t = "long"; }
+      else if (c == "D") { t = "double"; }
+      else {
+        int ix = 0;
+        if (c == "1") { ix = 1; }
+        if (ix < hn) {
+          if (heads[ix] == "[]") { t = "[]"; } else { t = argType(heads[ix]); }
+        }
+      }
+      out[k] = t;
+      k = k + 1;
+    }
+    return n;
+  }
+
+  < ---- locals in scope at a token ---- >
+  << The locals declared from localsFrom up to s, with brace scoping; the
+     ranges of other lambda sites are skipped (their parameters are not in
+     scope). Parameters of the enclosing lambda sites are added. Fills names
+     and types; returns the count. >>
+  int localsAt(int s, String[] names, String[] types, int[] depthOf) {
+    int n = 0;
+    if (this.localsFrom < 0) { return 0; }
+    int depth = 0;
+    String lastType = "";
+    int i = this.localsFrom;
+    while (i < s && n < arrayLength(names)) {
+      int k = kd(i);
+      if (k == 6) { i = i + 1; continue; }
+      < skip a lambda site that does not enclose s >
+      int si = siteAt(i);
+      if (si >= 0 && !(this.sStart[si] <= s && s < this.sEnd[si])) {
+        i = this.sEnd[si];
+        continue;
+      }
+      if (isOp(i, "{")) { depth = depth + 1; }
+      else if (isOp(i, "}")) {
+        while (n > 0 && depthOf[n - 1] >= depth) { n = n - 1; }
+        depth = depth - 1;
+      }
+      else if (isOp(i, ";") || isOp(i, ")") || isOp(i, "(") || isOp(i, "[")) { lastType = ""; }
+      if (k == 1 && !this.rw.isStatementWord(tx(i))) {
+        int after = nx(i + 1);
+        boolean declEnd = isOp(after, "=") || isOp(after, ";") || isOp(after, ",") || isOp(after, ")") || isOp(after, ":");
+        if (declEnd) {
+          int ts = typeStartBefore(i);
+          if (ts >= 0) {
+            String t = this.rw.typeTextOf(ts, i);
+            names[n] = tx(i);
+            types[n] = t;
+            depthOf[n] = depth;
+            n = n + 1;
+            lastType = t;
+          } else if (lastType != "" && isOp(pv(i), ",")) {
+            names[n] = tx(i);
+            types[n] = lastType;
+            depthOf[n] = depth;
+            n = n + 1;
+          }
+        }
+      }
+      if (isOp(i, ";")) { lastType = ""; }
+      i = i + 1;
+    }
+    < parameters of enclosing lambdas are locals of the enclosing body method >
+    int e = 0;
+    while (e < this.siteN && n < arrayLength(names)) {
+      if (this.sStart[e] < s && s < this.sEnd[e] && this.sMark[e] < s) {
+        int q = 0;
+        while (q < this.sPN[e]) {
+          names[n] = this.pName[this.sPFrom[e] + q];
+          types[n] = this.pType[this.sPFrom[e] + q];
+          depthOf[n] = 0;
+          n = n + 1;
+          q = q + 1;
+        }
+      }
+      e = e + 1;
+    }
+    return n;
+  }
+
+  << The start of the type that ends just before the name at i, when the
+     tokens read as a declaration (TYPE NAME), else -1. >>
+  int typeStartBefore(int i) {
+    int e = pv(i);
+    if (e < 0) { return -1; }
+    int b = -1;
+    if (isOp(e, "]")) {
+      int j = e;
+      while (isOp(j, "]") && isOp(pv(j), "[")) { j = pv(pv(j)); }
+      if (kd(j) == 1) { b = j; }
+      else if (isCloseAngle(j)) { e = j; }
+      else { return -1; }
+    }
+    if (b < 0 && isCloseAngle(e)) {
+      int d = 0;
+      int j = e;
+      while (j >= 0) {
+        d = d + angleWidth(j);
+        if (isOp(j, "<")) {
+          d = d - 1;
+          if (d == 0) { break; }
+        }
+        j = j - 1;
+      }
+      if (j < 0 || this.rw.genEnd(j) < 0) { return -1; }
+      b = pv(j);
+    }
+    if (b < 0 && kd(e) == 1) { b = e; }
+    if (b < 0 || kd(b) != 1) { return -1; }
+    String bt = tx(b);
+    if (this.rw.isStatementWord(bt) || bt == "instanceof" || bt == "extends" || bt == "implements" || bt == "throws") { return -1; }
+    if (bt == "yield" || bt == "else" || bt == "case" || bt == "goto") { return -1; }
+    while (isOp(pv(b), ".") && kd(pv(pv(b))) == 1) { b = pv(pv(b)); }
+    int before = pv(b);
+    if (before < 0) { return b; }
+    if (isOp(before, "(") || isOp(before, ",") || isOp(before, ";") || isOp(before, "{") || isOp(before, "}") || isOp(before, ":") || isOp(before, ")")) { return b; }
+    if (isId(before, "final") || this.rw.rules.isModifier(tx(before))) { return b; }
+    return -1;
+  }
+
+  < ---- registering a site (called by scanReason) ---- >
+  << The end (exclusive) of an expression body that starts at a: the first
+     comma, closing bracket, semicolon or unmatched colon at depth 0. >>
+  int exprEnd(int a) {
+    int j = a;
+    int d = 0;
+    int q = 0;
+    while (j < this.rw.lx.n) {
+      if (kd(j) == 5) {
+        String t = tx(j);
+        if (t == "(" || t == "[" || t == "{") { d = d + 1; }
+        else if (t == ")" || t == "]" || t == "}") {
+          if (d == 0) { return j; }
+          d = d - 1;
+        }
+        else if (d == 0 && (t == "," || t == ";")) { return j; }
+        else if (d == 0 && t == "?") { q = q + 1; }
+        else if (d == 0 && t == ":") {
+          if (q == 0) { return j; }
+          q = q - 1;
+        }
+      }
+      j = j + 1;
+    }
+    return j;
+  }
+
+  boolean isSwitchArrow(int ar) {
+    < case X -> or default -> : scan back at depth 0 to the start of the label >
+    int j = pv(ar);
+    int d = 0;
+    while (j >= 0) {
+      if (isOp(j, ")") || isOp(j, "]")) { d = d + 1; }
+      else if (isOp(j, "(") || isOp(j, "[")) {
+        if (d == 0) { return false; }
+        d = d - 1;
+      }
+      else if (d == 0 && (isOp(j, ";") || isOp(j, "{") || isOp(j, "}") || isOp(j, "->") || isOp(j, "="))) { return false; }
+      else if (d == 0 && (isId(j, "case") || isId(j, "default"))) { return true; }
+      j = pv(j);
+    }
+    return false;
+  }
+
+  < a lambda whose arrow is at ar: true when it is lowered (the site is kept) >
+  boolean registerArrow(int ar) {
+    if (!growSites()) { return false; }
+    if (isSwitchArrow(ar)) { return false; }
+    int p = pv(ar);
+    int start = -1;
+    int site = this.siteN;
+    int pFrom = this.pN;
+    String[] tparams = new String[4];
+    int arity = 0;
+    if (kd(p) == 1) {
+      start = p;
+      arity = 1;
+    } else if (isOp(p, ")")) {
+      start = this.rw.matchOpen(p);
+      < count the parameters and check their shape: name, or type name >
+      int j = nx(start + 1);
+      if (j == p) { arity = 0; }
+      else {
+        int depthCheck = 0;
+        int q = j;
+        int commas = 0;
+        while (q < p) {
+          if (isOp(q, "<")) { depthCheck = depthCheck + 1; }
+          if (isCloseAngle(q)) { depthCheck = depthCheck - angleWidth(q); }
+          if (depthCheck == 0 && isOp(q, ",")) { commas = commas + 1; }
+          if (isOp(q, "(") || isOp(q, "{") || isOp(q, "=")) { return false; }
+          q = q + 1;
+        }
+        arity = commas + 1;
+      }
+    } else {
+      return false;
+    }
+    if (arity > 2) { return false; }
+    if (start < 0) { return false; }
+    < target typing for untyped parameters >
+    int[] tgt = new int[2];
+    tgt[0] = -1;
+    tgt[1] = -1;
+    int targetArity = -1;
+    String[] slotT = new String[8];
+    if (targetOf(start, tgt)) { targetArity = targetParams(tgt[0], tgt[1], slotT); } else { tgt[0] = -1; }
+    < the parameter names and types >
+    if (kd(p) == 1) {
+      String t1 = "Any";
+      if (targetArity == 1) { t1 = slotT[0]; }
+      if (t1 == "[]") { return false; }
+      addParam(tx(p), t1);
+    } else if (arity > 0) {
+      int a0 = nx(start + 1);
+      int k = 0;
+      int q = a0;
+      while (k < arity) {
+        < one parameter: from q to the next comma at depth 0 or p >
+        int e = q;
+        int dd = 0;
+        while (e < p) {
+          if (isOp(e, "<")) { dd = dd + 1; }
+          if (isCloseAngle(e)) { dd = dd - angleWidth(e); }
+          if (dd == 0 && isOp(e, ",")) { break; }
+          e = e + 1;
+        }
+        int last = pv(e);
+        if (kd(last) != 1) { return false; }
+        int ts = q;
+        if (isId(ts, "final")) { ts = nx(ts + 1); }
+        String t = "Any";
+        if (ts != last) {
+          if (isId(ts, "var")) {
+            if (targetArity == arity) { t = slotT[k]; }
+          } else {
+            t = this.rw.typeTextOf(ts, last);
+            if (t.indexOf("[") >= 0) { return false; }
+            if (t == "Object") { t = "Any"; }
+          }
+        } else if (targetArity == arity) {
+          t = slotT[k];
+        }
+        if (t == "[]") { return false; }
+        addParam(tx(last), t);
+        k = k + 1;
+        q = nx(e + 1);
+      }
+    }
+    < the body >
+    int b0 = nx(ar + 1);
+    int end = -1;
+    int kind = 1;
+    if (isOp(b0, "{")) { end = this.rw.matchClose(b0) + 1; kind = 2; }
+    else { end = exprEnd(b0); }
+    this.sStart[site] = start;
+    this.sMark[site] = ar;
+    this.sEnd[site] = end;
+    this.sKind[site] = kind;
+    this.sName[site] = -1;
+    this.sRecv[site] = -1;
+    this.sT0[site] = tgt[0];
+    this.sT1[site] = tgt[1];
+    this.sPFrom[site] = pFrom;
+    this.sPN[site] = this.pN - pFrom;
+    this.sId[site] = 0;
+    this.siteN = this.siteN + 1;
+    if (!findCaptures(site, b0, end)) {
+      this.siteN = this.siteN - 1;
+      this.pN = pFrom;
+      return false;
+    }
+    return true;
+  }
+
+  << The enclosing locals the body a .. b-1 reads (free names). False when
+     one cannot be captured (an array, var, or unknown type). >>
+  boolean findCaptures(int site, int a, int b) {
+    String[] names = new String[256];
+    String[] types = new String[256];
+    int[] depthOf = new int[256];
+    int n = localsAt(this.sStart[site], names, types, depthOf);
+    int cFrom = this.cN;
+    int i = a;
+    while (i < b) {
+      if (kd(i) == 1 && !isOp(pv(i), ".")) {
+        String t = tx(i);
+        < the latest declaration of the name wins (inner scope) >
+        int m = n - 1;
+        while (m >= 0 && names[m] != t) { m = m - 1; }
+        boolean isParam = false;
+        int q = 0;
+        while (q < this.sPN[site]) { if (this.pName[this.sPFrom[site] + q] == t) { isParam = true; } q = q + 1; }
+        if (m >= 0 && !isParam && !isOp(nx(i + 1), "(")) {
+          boolean seen = false;
+          int c = cFrom;
+          while (c < this.cN) { if (this.cName[c] == t) { seen = true; } c = c + 1; }
+          if (!seen) {
+            String ty = types[m];
+            if (ty.indexOf("[") >= 0 || ty == "var" || ty == "") { this.cN = cFrom; return false; }
+            addCapture(t, ty);
+          }
+        }
+      }
+      i = i + 1;
+    }
+    this.sCFrom[site] = cFrom;
+    this.sCN[site] = this.cN - cFrom;
+    return true;
+  }
+
+  < a method reference at cc (the double colon): true when it is lowered >
+  boolean registerRef(int cc) {
+    if (!growSites()) { return false; }
+    int nm = nx(cc + 1);
+    int r = pv(cc);
+    if (kd(r) != 1 || kd(nm) != 1) { return false; }
+    int start = r;
+    int kind = 0;
+    < System.out::println: a Consumer, one parameter >
+    if (tx(r) == "out" && isOp(pv(r), ".") && isId(pv(pv(r)), "System") && tx(nm) == "println") {
+      start = pv(pv(r));
+      if (isOp(pv(start), ".")) { return false; }
+      kind = 3;
+    } else if (isOp(pv(r), ".")) {
+      return false;
+    }
+    int[] tgt = new int[2];
+    String[] slotT = new String[8];
+    int arity = 1;
+    if (kind == 3) {
+      slotT[0] = "Any";
+    } else {
+      if (!targetOf(start, tgt)) { return false; }
+      arity = targetParams(tgt[0], tgt[1], slotT);
+      if (arity < 0) { return false; }
+      String rt = tx(r);
+      if (tx(nm) == "new") { kind = 7; }
+      else if (rt == "this") { kind = 5; }
+      else if (rt == "String") {
+        kind = 6;
+        if (arity < 1) { return false; }
+      }
+      else if (rt == this.rw.unitName) {
+        int mi = this.rw.methodIndex(tx(nm));
+        if (mi < 0) { return false; }
+        if (this.rw.mStatic[mi] == 1) { kind = 4; } else { kind = 6; if (arity < 1) { return false; } }
+      }
+      else if (this.rw.lowerStart(rt)) { kind = 5; }
+      else { return false; }
+      if (kind == 5 && rt != "this" && this.localsFrom < 0) { return false; }
+    }
+    int site = this.siteN;
+    int pFrom = this.pN;
+    int k = 0;
+    while (k < arity) {
+      if (slotT[k] == "[]") { this.pN = pFrom; return false; }
+      String pn = "slP0";
+      if (k == 1) { pn = "slP1"; }
+      addParam(pn, slotT[k]);
+      k = k + 1;
+    }
+    this.sStart[site] = start;
+    this.sMark[site] = cc;
+    this.sEnd[site] = nm + 1;
+    this.sKind[site] = kind;
+    this.sName[site] = nm;
+    this.sRecv[site] = r;
+    this.sT0[site] = -1;
+    this.sT1[site] = -1;
+    this.sPFrom[site] = pFrom;
+    this.sPN[site] = this.pN - pFrom;
+    this.sCFrom[site] = this.cN;
+    this.sCN[site] = 0;
+    this.sId[site] = 0;
+    this.siteN = this.siteN + 1;
+    if (kind == 5 && tx(r) != "this") {
+      < name::m evaluates the receiver once, at the reference: capture it >
+      String[] names = new String[256];
+      String[] types = new String[256];
+      int[] depthOf = new int[256];
+      int n = localsAt(start, names, types, depthOf);
+      int m = n - 1;
+      while (m >= 0 && names[m] != tx(r)) { m = m - 1; }
+      if (m < 0 || types[m].indexOf("[") >= 0) {
+        this.siteN = this.siteN - 1;
+        this.pN = pFrom;
+        return false;
+      }
+      addCapture(tx(r), types[m]);
+      this.sCN[site] = 1;
+    }
+    return true;
+  }
+
+  < ---- the call site ---- >
+  << Writes new SLJavaLambda(N, new Any[]{this, captures}) for the site at
+     token i into the output list and queues its body; returns the token after
+     the site. >>
+  int lowerSite(int si) {
+    int id = this.nextId;
+    this.nextId = this.nextId + 1;
+    this.sId[si] = id;
+    if (this.sKind[si] >= 3) { this.refsTotal = this.refsTotal + 1; } else { this.lambdasTotal = this.lambdasTotal + 1; }
+    int line = this.rw.lx.lines[this.sStart[si]];
+    this.rw.push(1, "new", line);
+    this.rw.syn(1, "SLJavaLambda");
+    this.rw.syn(5, "(");
+    this.rw.syn(2, "" + id);
+    this.rw.syn(5, ",");
+    this.rw.syn(1, "new");
+    this.rw.syn(1, "Any");
+    this.rw.syn(5, "[");
+    this.rw.syn(5, "]");
+    this.rw.syn(5, "{");
+    boolean first = true;
+    if (!this.rw.curStatic) {
+      this.rw.syn(1, "this");
+      first = false;
+    }
+    int c = 0;
+    while (c < this.sCN[si]) {
+      if (!first) { this.rw.syn(5, ","); }
+      this.rw.syn(1, this.rw.rules.renameIdent(this.cName[this.sCFrom[si] + c]));
+      first = false;
+      c = c + 1;
+    }
+    this.rw.syn(5, "}");
+    this.rw.syn(5, ")");
+    if (this.qN < arrayLength(this.queue)) {
+      this.queue[this.qN] = si;
+      this.qN = this.qN + 1;
+    }
+    return this.sEnd[si];
+  }
+
+  < ---- the body methods, after the member ---- >
+  void flush(JConvEmitter em) {
+    boolean st = this.rw.curStatic;
+    int q = 0;
+    while (q < this.qN) {
+      int si = this.queue[q];
+      writeBody(em, si, st);
+      q = q + 1;
+    }
+    this.qN = 0;
+    this.rw.curStatic = st;
+  }
+
+  void declareFrom(String type, String name, String src) {
+    if (type == "Any") {
+      this.rw.syn(1, "Any");
+      this.rw.syn(1, name);
+      this.rw.syn(5, "=");
+      this.rw.syn(1, src);
+      return;
+    }
+    this.rw.syn(1, type);
+    this.rw.syn(1, name);
+    this.rw.syn(5, "=");
+    this.rw.syn(5, "(");
+    this.rw.syn(1, type);
+    this.rw.syn(5, ")");
+    this.rw.syn(1, src);
+  }
+
+  void writeBody(JConvEmitter em, int si, boolean st) {
+    int id = this.sId[si];
+    this.rw.reset();
+    this.rw.curStatic = st;
+    this.rw.inBody = true;
+    this.rw.curReturnType = "Any";
+    em.blankLine();
+    em.comment("< Java lambda body " + id + ", lowered to (id, env): SLJavaLambdaTable.call forwards here (lib/java/jdk-28/LOWERING.md section 2) >");
+    int line = this.rw.lx.lines[this.sStart[si]];
+    if (st) { this.rw.push(1, "static", line); this.rw.syn(1, "Any"); }
+    else { this.rw.push(1, "Any", line); }
+    this.rw.syn(1, "slLambda" + id);
+    this.rw.syn(5, "(");
+    this.rw.syn(1, "Any");
+    this.rw.syn(5, "[");
+    this.rw.syn(5, "]");
+    this.rw.syn(1, "slEnv");
+    this.rw.syn(5, ",");
+    this.rw.syn(1, "Any");
+    this.rw.syn(1, "slA");
+    this.rw.syn(5, ",");
+    this.rw.syn(1, "Any");
+    this.rw.syn(1, "slB");
+    this.rw.syn(5, ")");
+    this.rw.syn(5, "{");
+    < captured locals, after this in env[0] for an instance context >
+    int base = 0;
+    if (!st) { base = 1; }
+    int c = 0;
+    while (c < this.sCN[si]) {
+      String n = this.rw.rules.renameIdent(this.cName[this.sCFrom[si] + c]);
+      declareFrom(this.cType[this.sCFrom[si] + c], n, "slEnv");
+      this.rw.syn(5, "[");
+      this.rw.syn(2, "" + (base + c));
+      this.rw.syn(5, "]");
+      this.rw.syn(5, ";");
+      c = c + 1;
+    }
+    < parameters >
+    int k = 0;
+    while (k < this.sPN[si]) {
+      String src = "slA";
+      if (k == 1) { src = "slB"; }
+      declareFrom(this.pType[this.sPFrom[si] + k], this.rw.rules.renameIdent(this.pName[this.sPFrom[si] + k]), src);
+      this.rw.syn(5, ";");
+      k = k + 1;
+    }
+    int kind = this.sKind[si];
+    if (kind == 1) {
+      this.rw.syn(1, "return");
+      this.rw.rewrite(nx(this.sMark[si] + 1), this.sEnd[si]);
+      this.rw.syn(5, ";");
+    } else if (kind == 2) {
+      int open = nx(this.sMark[si] + 1);
+      this.rw.rewrite(nx(open + 1), this.sEnd[si] - 1);
+      this.rw.syn(1, "return");
+      this.rw.syn(1, "null");
+      this.rw.syn(5, ";");
+    } else {
+      writeRefCall(si);
+    }
+    this.rw.syn(5, "}");
+    this.rw.postPass();
+    this.rw.typedPass();
+    this.rw.emitOut(em);
+    em.endLine();
+    < the table arm >
+    String owner = this.rw.unitName;
+    String arm = "if (id == " + id + ") { return " + owner + ".slLambda" + id + "(env, a, b); }";
+    if (!st) { arm = "if (id == " + id + ") { return ((" + owner + ") env[0]).slLambda" + id + "(env, a, b); }"; }
+    if (this.armN >= arrayLength(this.arms)) {
+      String[] g = new String[this.armN * 2];
+      int z = 0;
+      while (z < this.armN) { g[z] = this.arms[z]; z = z + 1; }
+      this.arms = g;
+    }
+    this.arms[this.armN] = arm;
+    this.armN = this.armN + 1;
+  }
+
+  < the call a method reference stands for, with the parameters slP0, slP1 >
+  void writeRefCall(int si) {
+    int kind = this.sKind[si];
+    int n = this.sPN[si];
+    String m = this.rw.rules.renameIdent(tx(this.sName[si]));
+    int first = 0;
+    if (kind == 3) {
+      this.rw.syn(1, "print");
+      this.rw.syn(5, "(");
+      this.rw.syn(1, "slP0");
+      this.rw.syn(5, ")");
+      this.rw.syn(5, ";");
+      this.rw.syn(1, "return");
+      this.rw.syn(1, "null");
+      this.rw.syn(5, ";");
+      return;
+    }
+    this.rw.syn(1, "return");
+    if (kind == 7) {
+      this.rw.syn(1, "new");
+      this.rw.syn(1, this.rw.rules.renameIdent(tx(this.sRecv[si])));
+    } else if (kind == 4) {
+      this.rw.syn(1, this.rw.rules.renameIdent(tx(this.sRecv[si])));
+      this.rw.syn(5, ".");
+      this.rw.syn(1, m);
+    } else if (kind == 5) {
+      this.rw.syn(1, this.rw.rules.renameIdent(tx(this.sRecv[si])));
+      this.rw.syn(5, ".");
+      this.rw.syn(1, m);
+    } else {
+      < unbound: the first parameter is the receiver >
+      this.rw.syn(1, "slP0");
+      this.rw.syn(5, ".");
+      this.rw.syn(1, m);
+      first = 1;
+    }
+    this.rw.syn(5, "(");
+    int k = first;
+    while (k < n) {
+      if (k > first) { this.rw.syn(5, ","); }
+      if (k == 0) { this.rw.syn(1, "slP0"); } else { this.rw.syn(1, "slP1"); }
+      k = k + 1;
+    }
+    this.rw.syn(5, ")");
+    this.rw.syn(5, ";");
+  }
+
+  < ---- the table of the document ---- >
+  void writeTable(JConvEmitter em) {
+    if (this.armN == 0 && !this.usesFunctional) { return; }
+    em.blankLine();
+    em.comment("<< Generated by lib/java/converter: the lambda dispatch table of this document (lib/java/jdk-28/LOWERING.md section 2). It shadows lib/java/support/SLJavaLambdaTable.sleela. " + this.armN + " lambda bodies. >>");
+    em.lineOut("class SLJavaLambdaTable {");
+    em.enter();
+    em.lineOut("< ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >");
+    em.lineOut("String metaVersion = \"1.0.0\";");
+    em.lineOut("int metaId = 0;");
+    em.lineOut("String metaAuthor = \"lib/java/converter (generated)\";");
+    em.lineOut("String metaDate = \"2026-11-13\";");
+    em.lineOut("String metaCopyright = \"none\";");
+    em.lineOut("String metaTrademark = \"none\";");
+    em.lineOut("String metaCorporation = \"none\";");
+    em.lineOut("String metaOrigin = \"International\";");
+    em.lineOut("String metaBirthDate = \"2026-11-13\";");
+    em.lineOut("int metaScienceRating = 3;");
+    em.lineOut("String metaNationalSchedule = \"The Java Language Specification, sections 15.13 and 15.27\";");
+    em.lineOut("String getMetaVersion() { return metaVersion; }");
+    em.lineOut("void setMetaVersion(String v) { metaVersion = v; }");
+    em.lineOut("int getMetaId() { return metaId; }");
+    em.lineOut("void setMetaId(int v) { metaId = v; }");
+    em.lineOut("String getAuthor() { return metaAuthor; }");
+    em.lineOut("void setAuthor(String v) { metaAuthor = v; }");
+    em.lineOut("String getDate() { return metaDate; }");
+    em.lineOut("void setDate(String v) { metaDate = v; }");
+    em.lineOut("String getCopyright() { return metaCopyright; }");
+    em.lineOut("void setCopyright(String v) { metaCopyright = v; }");
+    em.lineOut("String getTrademark() { return metaTrademark; }");
+    em.lineOut("void setTrademark(String v) { metaTrademark = v; }");
+    em.lineOut("String getCorporation() { return metaCorporation; }");
+    em.lineOut("void setCorporation(String v) { metaCorporation = v; }");
+    em.lineOut("String getOrigin() { return metaOrigin; }");
+    em.lineOut("void setOrigin(String v) { metaOrigin = v; }");
+    em.lineOut("String getBirthDate() { return metaBirthDate; }");
+    em.lineOut("void setBirthDate(String v) { metaBirthDate = v; }");
+    em.lineOut("int getScienceRating() { return metaScienceRating; }");
+    em.lineOut("void setScienceRating(int v) { metaScienceRating = v; }");
+    em.lineOut("String getNationalSchedule() { return metaNationalSchedule; }");
+    em.lineOut("void setNationalSchedule(String v) { metaNationalSchedule = v; }");
+    em.blankLine();
+    em.lineOut("< names the lambda value class, so the library loader brings lib/java/support/SLJavaLambda.sleela into the program >");
+    em.lineOut("static SLJavaLambda valueClass() { return null; }");
+    em.lineOut("static Any call(int id, Any[] env, Any a, Any b) {");
+    em.enter();
+    int k = 0;
+    while (k < this.armN) {
+      em.lineOut(this.arms[k]);
+      k = k + 1;
+    }
+    em.lineOut("throw new UnsupportedOperationException(\"SLJavaLambdaTable: no lambda \" + id + \" in this document\");");
+    em.leave();
+    em.lineOut("}");
+    em.leave();
+    em.lineOut("}");
+    this.armN = 0;
+    this.usesFunctional = false;
+  }
+}

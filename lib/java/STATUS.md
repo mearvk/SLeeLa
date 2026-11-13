@@ -430,6 +430,8 @@ section 1.
 | Output files with a syntax error | 0 |
 | Output files passing `sleela check` | 8 of 36 |
 | `converter/samples/demo/ConvDemo.java` against a real JDK | 31 of 31 lines identical (0.5.0, `JCONV_BUNDLE=1`) |
+| `converter/samples/lambda/LambdaDemo.java` against a real JDK | 17 of 17 lines identical (0.6.0: lambdas and method references lowered to `(id, env)`) |
+| Eight lambda-dense `java.util` files: stubbed members | 31 (0.5.0) to 15 (0.6.0) |
 | `sleela check` errors on the sample, separate files / bundled | 903 / 553 (522 bundled with SLEELA.syntax 43.7) |
 
 Converter 0.2.0 (2026-11-13) declares `#sleela 3.1` and uses its array

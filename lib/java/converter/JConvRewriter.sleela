@@ -108,6 +108,8 @@ class JConvRewriter {
   String unitName;
   < the expression half of the typed pass >
   JConvExpr expr;
+  < lambda and method reference lowering (JConvLambda) >
+  JConvLambda lam;
 
   JConvRewriter(JConvRules r, JConvConfig c) {
     this.rules = r;
@@ -146,6 +148,7 @@ class JConvRewriter {
     this.curReturnType = "";
     this.unitName = "";
     this.expr = new JConvExpr(this);
+    this.lam = new JConvLambda(this);
   }
 
   < ---- per file and per type state ---- >
@@ -436,6 +439,7 @@ class JConvRewriter {
   < ---- rule 5 scan ---- >
   int scanReason(int a, int b, boolean body) {
     this.patOkN = 0;
+    this.lam.beginScan(a, body);
     int i = a;
     while (i < b) {
       int k = this.K[i];
@@ -443,8 +447,9 @@ class JConvRewriter {
       if (k == 6) { i = i + 1; continue; }
       if ((k == 2 || k == 3) && this.lx.flags[i] != 0) { return this.lx.flags[i]; }
       if (k == 5) {
-        if (t == "->") { return 1; }
-        if (t == "::") { return 2; }
+        < a lambda or method reference that JConvLambda lowers is not a stub reason >
+        if (t == "->" && !this.lam.registerArrow(i)) { return 1; }
+        if (t == "::" && !this.lam.registerRef(i)) { return 2; }
         if (t == "." && isId(nx(i + 1), "class")) { return 9; }
       }
       if (k == 1) {
@@ -900,6 +905,13 @@ class JConvRewriter {
   void rewrite(int a, int b) {
     int i = a;
     while (i < b) {
+      if (this.lam.siteN > 0) {
+        int si = this.lam.siteAt(i);
+        if (si >= 0) {
+          i = this.lam.lowerSite(si);
+          continue;
+        }
+      }
       int pk = pendingIndex(i);
       if (pk >= 0) {
         String rep = this.pendText[pk];
@@ -1136,10 +1148,31 @@ class JConvRewriter {
       push(1, t, 0);
       return i + 1;
     }
+    if (!afterDot && this.rules.isFunctionalInterface(t) && !isDeclName(t) && !isId(pv(i), "new") && !isId(pv(i), "instanceof")) {
+      << A variable of a functional interface type holds an SLJavaLambda or an
+         object of a class that implements the interface: it is written as Any,
+         so calls on it dispatch at run time (SLEELA.syntax 43.7). The type
+         arguments that follow are erased as usual. >>
+      int j = nx(i + 1);
+      if (isGenericAt(j)) { j = nx(genEnd(j) + 1); }
+      boolean declares = (j < this.lx.n && this.K[j] == 1) || (isOp(j, "[") && isOp(nx(j + 1), "]")) || isOp(j, "...");
+      boolean casts = isOp(j, ")") && isOp(pv(i), "(");
+      if (declares || casts) {
+        this.lam.usesFunctional = true;
+        push(1, "Any", line);
+        return i + 1;
+      }
+    }
     String out = this.rules.mapTypeName(t);
     out = this.rules.renameIdent(out);
     push(1, out, line);
     return i + 1;
+  }
+
+  boolean isDeclName(String n) {
+    int k = 0;
+    while (k < this.declN) { if (this.declNames[k] == n) { return true; } k = k + 1; }
+    return false;
   }
 
   < ---- post pass: split multi declarations, insert javac casts ---- >

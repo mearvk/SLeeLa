@@ -127,6 +127,7 @@ class JConvMain {
       }
       i = i + 1;
     }
+    print("jconv: lowered " + tr.rw.lam.lambdasTotal + " lambdas and " + tr.rw.lam.refsTotal + " method references to (id, env) (JConvLambda)");
     rep.finish(rules);
   }
 }

@@ -1,0 +1,20 @@
+#sleela 3.1
+spark;
+import java.jdk-28;
+< SLEELA.syntax 37.5: VM faults inside a try are thrown as Java exceptions; division by -1 >
+class P {
+  static int zero() { return 0; }
+  static void main() {
+    long mn = -9223372036854775807 - 1;
+    long m1 = -1;
+    print(mn / m1);
+    print(mn % m1);
+    try { print(5 / zero()); } catch (ArithmeticException e) { print("AE " + e.getMessage()); }
+    try { print(5 % zero()); } catch (RuntimeException e) { print("RE " + e.getMessage()); }
+    int[] a = new int[3];
+    try { a[5] = 1; } catch (ArrayIndexOutOfBoundsException e) { print("AIOOBE " + e.getMessage()); }
+    try { print(a[-1]); } catch (IndexOutOfBoundsException e) { print("IOOBE " + e.getMessage()); }
+    Any s = "text";
+    try { P f = (P) s; print("no"); } catch (ClassCastException e) { print("CCE"); }
+  }
+}

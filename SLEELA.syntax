@@ -2804,6 +2804,43 @@ handler, and the compiler tests the thrown value against each clause type
 with `OP_INSTANCEOF` and rethrows an unmatched value with `OP_THROW`. The
 restrictions above remain in force for documents below 3.0.
 
+### 37.5 VM faults inside a try, and division by -1 (2026-11-13)
+
+**Division by -1.** `OP_DIV` and `OP_MOD` on two integers (64-bit and
+128-bit slots) treat a divisor of `-1` separately: the quotient is the
+two's-complement negation (`MIN / -1` is `MIN`) and the remainder is `0`, as
+Java defines them (JLS 15.17.2). Before this, `MIN / -1` ran the C
+operator and the process died with SIGFPE (exit 136). This holds in every
+syntax version.
+
+**Faults are thrown inside a try.** Four VM faults are now thrown, not fatal,
+when a `try` handler is active in the thread:
+
+| Fault | Kind | Thrown message (no fault function) |
+|---|---:|---|
+| integer `/` or `%` by zero, double `%` by zero | 1 | `integer divide by zero`, `integer modulo by zero`, `modulo by zero` |
+| array index out of range (read or write) | 2 | `Index <i> out of bounds for length <n>` |
+| failed checked cast (class, interface or value tag) | 3 | `checked cast failed: ...` |
+
+With no active handler the fault stays a runtime error with the same message
+as before (`array index out of range` for an index). If the program has a
+**fault function**, the VM calls it with `(kind, message)` and it throws the
+exception; otherwise the message string itself is thrown, which only
+`catch (Any e)` catches. The compiler registers the function when
+`SLJavaFaults.make(int, String)` is loaded (`lib/java/support/SLJavaFaults.sleela`):
+it emits `__sleela_fault(kind, message)`, which throws
+`SLJavaFaults.make(kind, message)`. That returns an `ArithmeticException("/ by zero")`,
+an `ArrayIndexOutOfBoundsException(message)` or a `ClassCastException(message)`.
+So `catch (ArithmeticException e)` and `catch (RuntimeException e)` work as in
+Java. The driver loads `SLJavaFaults` for a syntax 3.0 or later document that
+contains `try` and either carries `spark` or imports a `java...` tier.
+VM API: `slvm_set_fault_function(vm, function)`; artifact format **6** stores the
+function index (formats 1-5 load with none).
+
+Not done: a double `%` by zero is a fault here, while Java gives `NaN`; a
+stale or invalid object handle in a cast stays fatal; null dereference and
+stack overflow are not converted.
+
 
 
 ## 38. Syntax 3.0 — the Java signature surface and static member access
@@ -3253,8 +3290,9 @@ A name with no JDK 28 file still resolves as before.
 - A `return`, or a `break` / `continue` that leaves the try, inside a `try`
   or `catch` block that has a `finally` was rejected at compile time in syntax
   3.0 (it would skip the finally). From syntax 3.1 the finally runs (44.5).
-- Ordinary VM faults (array index out of range, division by zero) are still
-  VM errors, not catchable exceptions (section 37).
+- Ordinary VM faults (array index out of range, division by zero, a failed
+  cast) are catchable inside a `try` since 2026-11-13 (section 37.5); outside
+  a `try` they are still VM errors.
 - The enhanced for is not supported by the Nordshrift C target or by `@native`
   methods (both report it); the Sleela and Java targets emit it as written.
 - A user subclass of a `/lib/java` Throwable reports the library class name in
@@ -3376,8 +3414,8 @@ too (as in 44.5).
    that matches nothing is thrown as the string `no method 'm' taking N
    argument(s) for the runtime value (call on an Any receiver)`, which
    `catch (Any e)` catches. No new opcode.
-4. **Not done.** A failed `(T) x` is still a VM error, not a catchable
-   `ClassCastException` (43.5). A call on `Any` sees only methods declared in
+4. **Not done.** Outside a `try`, a failed `(T) x` is still a VM error (inside
+   one it throws `ClassCastException`, 37.5). A call on `Any` sees only methods declared in
    loaded classes; it does not reach the built-in operations of arrays or of
    other VM kinds. Every loaded class declaring `m` adds one test, so a very
    common name (`toString`) with the whole `/lib/java` tree loaded makes a
@@ -3527,7 +3565,7 @@ not in 3.1.
 | multi-dimensional array creation `new T[a][b]` | **done in 3.2**, 46.3 |
 | `String.valueOf` / `format` / `join` (static members of `String`) | **Syntax open**: `String` is a keyword type, so `String.m(...)` does not parse; needs a binding to `JavaStringMethods` statics and library bodies |
 | varargs `T... xs` | **Syntax open**: no variable-arity parameter or call-site packing |
-| lambdas, method references | **Syntax open**: design in `lib/java/jdk-28/LOWERING.md` (representation `(id, env)`), no grammar yet |
+| lambdas, method references | Converter: **lowered** by `lib/java/converter` 0.6.0 (`JConvLambda`, `(id, env)` of `lib/java/jdk-28/LOWERING.md`), no new syntax; method references only where the target interface is known |
 | anonymous classes, inner (non-static) classes | **Syntax open**: needs the captured enclosing instance |
 | `enum` | **Syntax open** (43.5) |
 | switch expressions, arrow cases `case X ->`, `instanceof T x` patterns | **Syntax open** |

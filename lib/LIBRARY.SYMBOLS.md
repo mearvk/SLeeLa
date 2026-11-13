@@ -2037,6 +2037,7 @@ java	SleelaHome.sleela	lib/java/SleelaHome.sleela	source
 java	JConvConfig.sleela	lib/java/converter/JConvConfig.sleela	source
 java	JConvEmitter.sleela	lib/java/converter/JConvEmitter.sleela	source
 java	JConvExpr.sleela	lib/java/converter/JConvExpr.sleela	source
+java	JConvLambda.sleela	lib/java/converter/JConvLambda.sleela	source
 java	JConvLexer.sleela	lib/java/converter/JConvLexer.sleela	source
 java	JConvMain.sleela	lib/java/converter/JConvMain.sleela	source
 java	JConvModel.sleela	lib/java/converter/JConvModel.sleela	source
@@ -16981,6 +16982,7 @@ java	XPathNamespace.sleela	lib/java/jdk-28/jdk.xml.dom/org/w3c/dom/xpath/XPathNa
 java	XPathResult.sleela	lib/java/jdk-28/jdk.xml.dom/org/w3c/dom/xpath/XPathResult.sleela	source
 java	SLJavaBeanEvents.sleela	lib/java/support/SLJavaBeanEvents.sleela	source
 java	SLJavaBits.sleela	lib/java/support/SLJavaBits.sleela	source
+java	SLJavaFaults.sleela	lib/java/support/SLJavaFaults.sleela	source
 java	SLJavaHex.sleela	lib/java/support/SLJavaHex.sleela	source
 java	SLJavaLambda.sleela	lib/java/support/SLJavaLambda.sleela	source
 java	SLJavaLambdaTable.sleela	lib/java/support/SLJavaLambdaTable.sleela	source

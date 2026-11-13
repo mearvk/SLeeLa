@@ -280,6 +280,18 @@ public:
             emit(OP_POP); emit(OP_CONST,addNullConst()); emit(OP_RET); slvm_end_func(vm_);
             entry=(int)methods_.size();
         }
+        // SLEELA.syntax 37.5: with lib/java/support/SLJavaFaults loaded, a VM
+        // fault inside a try calls __sleela_fault(kind, message), which throws
+        // SLJavaFaults.make(kind, message) (an ArithmeticException, ...).
+        {
+            auto fm=funcIndex_.find("SLJavaFaults::make");
+            if(fm!=funcIndex_.end() && methods_[fm->second].method->isStatic && methods_[fm->second].method->params.size()==2){
+                const int stub=slvm_begin_func(vm_,"__sleela_fault",2,2);
+                emit(OP_LOADL,0); emit(OP_LOADL,1); emit(OP_CALL,fm->second); emit(OP_THROW);
+                emit(OP_CONST,addNullConst()); emit(OP_RET); slvm_end_func(vm_);
+                if(slvm_set_fault_function(vm_,stub)!=0) throw std::runtime_error("Semantic error: could not register the VM fault function");
+            }
+        }
         slvm_set_entry(vm_,entry); return entry;
     }
 private:

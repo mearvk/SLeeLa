@@ -163,7 +163,9 @@ refuse (do not clamp or wrap) inputs that could push it past. See
   typed method** without a cast. Since 2026-11-13 (SLEELA.syntax 43.7, syntax
   3.0+) a call on an `Any` receiver dispatches at run time over the loaded
   classes declaring that method, and a cast / `instanceof` / `catch` to an
-  interface works. A failed cast is still a VM error, not catchable.
+  interface works. Inside a `try` (syntax 3.0+), a failed cast, an integer `/ 0` or `% 0`
+  and an array index out of range are thrown (SLEELA.syntax 37.5); outside a `try` they
+  stay fatal VM errors. `MIN / -1` no longer crashes the VM.
 - **`String.valueOf(x)` does not parse:** `String` is a keyword and cannot be a
   static receiver. Write `"" + x`.
 - **SLeeLa has no empty statement:** `for (...) ;` is a syntax error; write `{ }`.

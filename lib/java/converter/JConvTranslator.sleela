@@ -453,7 +453,10 @@ class JConvTranslator {
       this.rep.note("cannot write " + outRel);
       return;
     }
-    if (!inBundle) { writeFileHeader(outRel, outerStem, stem, ds, kw); }
+    if (!inBundle) {
+      this.rw.lam.beginDocument();
+      writeFileHeader(outRel, outerStem, stem, ds, kw);
+    }
     else if (this.cfg.keepComments) {
       int dc2 = ds;
       while (dc2 < kw) { if (kd(dc2) == 6) { this.em.comment(tx(dc2)); } dc2 = dc2 + 1; }
@@ -529,7 +532,10 @@ class JConvTranslator {
     this.em.leave();
     this.em.lineOut("}");
     this.em.lineOut("< conversion: " + this.unitMembers + " members, " + this.unitStubs + " stubbed (fail loud, see the Java body kept beside each) >");
-    if (!this.cfg.bundle) { this.em.finishOut(); }
+    if (!this.cfg.bundle) {
+      this.rw.lam.writeTable(this.em);
+      this.em.finishOut();
+    }
     if (!inBundle) { this.fileUnits = this.fileUnits + 1; }
     this.fileMembers = this.fileMembers + this.unitMembers;
     this.fileStubs = this.fileStubs + this.unitStubs;
@@ -544,7 +550,10 @@ class JConvTranslator {
       convertType(nestStart[ni], nestStart[ni], nestKw[ni], nestOpen[ni], nestClose[ni], stem, tv);
       ni = ni + 1;
     }
-    if (this.cfg.bundle && !inBundle) { this.em.finishOut(); }
+    if (this.cfg.bundle && !inBundle) {
+      this.rw.lam.writeTable(this.em);
+      this.em.finishOut();
+    }
   }
 
   int[] growInts(int[] a, int cap, int count) {
@@ -767,6 +776,20 @@ class JConvTranslator {
     this.rw.curStatic = isStatic;
     this.rw.inBody = isMethod;
     this.rw.curReturnType = "";
+    < the return type tokens: the target type of return x -> ... (JConvLambda) >
+    this.rw.lam.retStart = -1;
+    this.rw.lam.retEnd = -1;
+    if (isMethod) {
+      int r0 = hh;
+      if (isOp(r0, "<")) {
+        int ge = this.rw.genEnd(r0);
+        if (ge > r0) { r0 = nx(ge + 1); }
+      }
+      int pp = r0;
+      while (pp < endTok && !isOp(pp, "(")) { pp = pp + 1; }
+      this.rw.lam.retStart = r0;
+      this.rw.lam.retEnd = this.rw.pv(pp);
+    }
     int reason = this.rw.scanReason(st, endTok + 1, isMethod);
     if (isNative && reason == 0) { reason = 17; }
     if (isProtected && !isStatic) { this.em.annotationLine("@JavaProtected"); }
@@ -838,6 +861,7 @@ class JConvTranslator {
         this.rw.typedPass();
         this.rw.emitOut(this.em);
         this.em.endLine();
+        this.rw.lam.flush(this.em);
       }
     } else {
       if (reason > 0) {
@@ -870,6 +894,7 @@ class JConvTranslator {
         this.rw.typedPass();
         this.rw.emitOut(this.em);
         this.em.endLine();
+        this.rw.lam.flush(this.em);
       }
     }
     this.rw.tvN = savedTv;
@@ -896,6 +921,7 @@ class JConvTranslator {
     this.rw.curStatic = isStatic;
     this.rw.inBody = true;
     this.rw.curReturnType = "";
+    this.rw.lam.retStart = -1;
     int reason = this.rw.scanReason(open, close + 1, true);
     if (reason > 0) {
       this.em.annotationLine("@throwable(\"java.lang.UnsupportedOperationException\")");
@@ -923,6 +949,7 @@ class JConvTranslator {
     this.rw.typedPass();
     this.rw.emitOut(this.em);
     this.em.endLine();
+    this.rw.lam.flush(this.em);
   }
 
   < ---- enums ---- >
@@ -1143,6 +1170,7 @@ class JConvTranslator {
     this.rw.curStatic = false;
     this.rw.inBody = true;
     this.rw.curReturnType = "";
+    this.rw.lam.retStart = -1;
     int reason = this.rw.scanReason(body, bodyEnd + 1, true);
     String params = "";
     int i = 0;
@@ -1174,5 +1202,6 @@ class JConvTranslator {
     this.rw.typedPass();
     this.rw.emitOut(this.em);
     this.em.endLine();
+    this.rw.lam.flush(this.em);
   }
 }

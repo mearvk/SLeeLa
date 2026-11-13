@@ -207,6 +207,9 @@ struct SLVM {
     SLFunc* funcs; int nfunc, funccap;
     int cur_func;
     int entry;
+    /* SLEELA.syntax 37.5: function the VM calls with (kind, message) to build
+     * the exception for a fault raised inside a try; -1: throw the message. */
+    int fault_func;
     SLValue last_result;
     SLValue last_exception;
     int has_last_exception;
@@ -742,6 +745,13 @@ int slvm_emit0(SLVM* vm, SLOp op) { return slvm_emit(vm, op, 0); }
 void slvm_patch(SLVM* vm, int at, int32_t a) { if (at >= 0 && at < vm->codelen) vm->code[at].a = a; }
 int slvm_here(SLVM* vm) { return vm->codelen; }
 void slvm_set_entry(SLVM* vm, int fi) { vm->entry = fi; }
+int slvm_set_fault_function(SLVM* vm, int fi) {
+    if (!vm || fi < -1 || fi >= vm->nfunc) return -1;
+    if (fi >= 0 && vm->funcs[fi].nargs != 2) return -1;
+    vm->fault_func = fi;
+    return 0;
+}
+int slvm_fault_function(const SLVM* vm) { return vm ? vm->fault_func : -1; }
 int slvm_find_func(const SLVM* vm, const char* name) {
     if (!vm || !name) return -1;
     for (int i = 0; i < vm->nfunc; i++)
@@ -958,6 +968,7 @@ SLVM* slvm_new(void) {
     if (!vm) return NULL;
     vm->cur_func = -1;
     vm->entry = -1;
+    vm->fault_func = -1;
     vm->last_result = slval_null();
     vm->osls_capabilities = OSLS_VM_CAP_HOST_READ;
     pthread_mutex_init(&vm->native_mtx, NULL);
@@ -2547,6 +2558,55 @@ void slvm_joinall(SLVM* vm) {
 #define JSTR_RETRY(expr) __extension__ ({ SLValue jr_=(expr); if(jr_.type!=SL_UTF16){ SLGCRootContext jroots_={ vm, t, vm->native_callback_caller }; gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &jroots_, 0); jr_=(expr); } jr_; })
 #define TERR(msg) do { strncpy(t->err, (msg), sizeof(t->err)-1); t->err[sizeof(t->err)-1]=0; set_err(vm,(msg)); return SLR_ERROR; } while (0)
 #define PUSH(v) do { if (t->sp >= STACK_MAX) TERR("stack overflow"); t->stack[t->sp++] = (v); } while (0)
+/* SLEELA.syntax 37.5: a VM fault raised while a try handler is active is
+ * thrown, not fatal. With a registered fault function (the compiler sets it
+ * when lib/java/support/SLJavaFaults is loaded) the VM calls it with the
+ * fault kind and message; it builds the Java exception and throws it. With
+ * none, the message string itself is thrown. With no active handler the
+ * fault stays a runtime error, as before. */
+#define SL_FAULT_ARITHMETIC 1
+#define SL_FAULT_INDEX 2
+#define SL_FAULT_CAST 3
+#define TFAULT(kind,msg) do { if (t->exception_handler_count > 0 && raise_fault(vm,t,(kind),(msg),&ip)) goto sl_fault_next; TERR(msg); } while (0)
+/* An index fault: the thrown message is the Java one, the fatal one unchanged. */
+#define TFAULT_INDEX(idx,len) do { char fm_[96]; snprintf(fm_, sizeof fm_, "Index %lld out of bounds for length %lld", (long long)(idx), (long long)(len)); if (t->exception_handler_count > 0 && raise_fault(vm,t,SL_FAULT_INDEX,fm_,&ip)) goto sl_fault_next; TERR("array index out of range"); } while (0)
+static int raise_fault(SLVM* vm, SLThread* t, int kind, const char* msg, int* ip) {
+    SLValue text; text.type = SL_STR; text.as.s = intern(vm, msg);
+    int ff = vm->fault_func;
+    if (ff >= 0 && ff < vm->nfunc && vm->funcs[ff].nargs == 2 && t->fp < FRAMES_MAX &&
+        t->sp + 2 + vm->funcs[ff].nlocals < STACK_MAX) {
+        SLFunc* f = &vm->funcs[ff];
+        int base = t->sp;
+        t->stack[t->sp++] = slval_int(kind);
+        t->stack[t->sp++] = text;
+        SLFrame* nf = &t->frames[t->fp++];
+        nf->ret_ip = *ip; nf->base = base; nf->nargs = 2; nf->handler_base = t->exception_handler_count;
+        for (int i = 2; i < f->nlocals; i++) t->stack[t->sp++] = slval_null();
+        *ip = f->entry;
+        return 1;
+    }
+    int hi = t->exception_handler_count - 1;
+    SLExceptionHandler h = t->exception_handlers[hi];
+    if (h.frame_depth < 1 || h.frame_depth > t->fp || h.owner_frame != h.frame_depth - 1 ||
+        h.stack_height < 0 || h.stack_height >= STACK_MAX || h.target_ip < 0 || h.target_ip >= vm->codelen)
+        return 0;
+    t->exception_handler_count = hi;
+    t->fp = h.frame_depth;
+    t->sp = h.stack_height;
+    t->stack[t->sp++] = text;
+    *ip = h.target_ip;
+    return 1;
+}
+/* Java division by -1: MIN_VALUE / -1 is MIN_VALUE and MIN_VALUE % -1 is 0
+ * (JLS 15.17.2); the C operators trap (SIGFPE) on that one pair. */
+static int64_t sl_neg_wrap64(int64_t x) { return (int64_t)(0u - (uint64_t)x); }
+static sl_int128_t sl_neg_wrap128(sl_int128_t x) {
+#if SLEELA_HAVE_INT128
+    return (sl_int128_t)(0 - (unsigned __int128)x);
+#else
+    return (sl_int128_t)(0u - (uint64_t)x);
+#endif
+}
 /* POP() fails closed on underflow. The front-end bytecode compiler is supposed
  * to keep the operand stack balanced, but a codegen defect (e.g. an opcode path
  * that pops more than it pushes) must surface as a clean VM diagnostic, not an
@@ -3090,8 +3150,8 @@ static SLResult run_thread(SLThread* t) {
         } break;
         case OP_SUB: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_int128(as_i128(a)-as_i128(b))); else if(both_int(a,b)) PUSH(slval_int(a.as.i-b.as.i)); else PUSH(slval_double(as_num(a)-as_num(b))); } break;
         case OP_MUL: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_int128(as_i128(a)*as_i128(b))); else if(both_int(a,b)) PUSH(slval_int(a.as.i*b.as.i)); else PUSH(slval_double(as_num(a)*as_num(b))); } break;
-        case OP_DIV: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)){ if(as_i128(b)==0) TERR("integer divide by zero"); PUSH(slval_int128(as_i128(a)/as_i128(b))); } else if(both_int(a,b)){if(!b.as.i) TERR("integer divide by zero"); PUSH(slval_int(a.as.i/b.as.i));} else PUSH(slval_double(as_num(a)/as_num(b))); } break;
-        case OP_MOD: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)){ if(as_i128(b)==0) TERR("integer modulo by zero"); PUSH(slval_int128(as_i128(a)%as_i128(b))); } else if(both_int(a,b)){ if(!b.as.i) TERR("integer modulo by zero"); PUSH(slval_int(a.as.i%b.as.i)); } else { double db=as_num(b); if(db==0.0) TERR("modulo by zero"); PUSH(slval_double(fmod(as_num(a),db))); } } break;
+        case OP_DIV: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)){ if(as_i128(b)==0) TFAULT(SL_FAULT_ARITHMETIC,"integer divide by zero"); PUSH(slval_int128(as_i128(b)==-1 ? sl_neg_wrap128(as_i128(a)) : as_i128(a)/as_i128(b))); } else if(both_int(a,b)){if(!b.as.i) TFAULT(SL_FAULT_ARITHMETIC,"integer divide by zero"); PUSH(slval_int(b.as.i==-1 ? sl_neg_wrap64(a.as.i) : a.as.i/b.as.i));} else PUSH(slval_double(as_num(a)/as_num(b))); } break;
+        case OP_MOD: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)){ if(as_i128(b)==0) TFAULT(SL_FAULT_ARITHMETIC,"integer modulo by zero"); PUSH(slval_int128(as_i128(b)==-1 ? 0 : as_i128(a)%as_i128(b))); } else if(both_int(a,b)){ if(!b.as.i) TFAULT(SL_FAULT_ARITHMETIC,"integer modulo by zero"); PUSH(slval_int(b.as.i==-1 ? 0 : a.as.i%b.as.i)); } else { double db=as_num(b); if(db==0.0) TFAULT(SL_FAULT_ARITHMETIC,"modulo by zero"); PUSH(slval_double(fmod(as_num(a),db))); } } break;
         case OP_NEG: { SLValue a=POP(); if(a.type==SL_INT128) PUSH(slval_int128(-a.as.i128)); else if(a.type==SL_INT) PUSH(slval_int(-a.as.i)); else PUSH(slval_double(-as_num(a))); } break;
         case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_UTF16||b.type==SL_UTF16) { if(a.type!=SL_UTF16||b.type!=SL_UTF16) e=0; else if(slvm_java_string_equals(vm,a,b,&e)!=SL_JAVA_STRING_OK) TERR("invalid Java String value"); } else if(a.type==SL_NULL||b.type==SL_NULL) e=(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else if(both_int(a,b)) e=(a.as.i==b.as.i); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)==as_i128(b)); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
         case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_UTF16||b.type==SL_UTF16) { if(a.type!=SL_UTF16||b.type!=SL_UTF16) e=1; else if(slvm_java_string_equals(vm,a,b,&e)!=SL_JAVA_STRING_OK) TERR("invalid Java String value"); else e=!e; } else if(a.type==SL_NULL||b.type==SL_NULL) e=!(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=!(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else if(both_int(a,b)) e=(a.as.i!=b.as.i); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)!=as_i128(b)); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
@@ -3883,13 +3943,15 @@ static SLResult run_thread(SLThread* t) {
             SLValue value=POP();
             if(in.a>=0) {
                 if(value.type==SL_NULL) { PUSH(value); break; }
-                if(value.type!=SL_STRUCT || !struct_valid_handle(vm,value.as.h))
+                if(value.type!=SL_STRUCT)
+                    TFAULT(SL_FAULT_CAST,"checked cast failed: value is not a class/struct instance");
+                if(!struct_valid_handle(vm,value.as.h))
                     TERR("checked cast failed: value is not a valid class/struct instance");
                 pthread_mutex_lock(&vm->struct_mtx);
                 int actualType=vm->structs[value.as.h].type;
                 int matches=struct_type_is_a(vm,actualType,in.a);
                 pthread_mutex_unlock(&vm->struct_mtx);
-                if(!matches) TERR("checked cast failed: runtime class/struct type does not match target");
+                if(!matches) TFAULT(SL_FAULT_CAST,"checked cast failed: runtime class/struct type does not match target");
             } else {
                 int targetTag=-in.a-1;
                 if(targetTag<SL_NULL || targetTag>SL_UTF16)
@@ -3938,7 +4000,7 @@ static SLResult run_thread(SLThread* t) {
                     break;
                 }
                 if((int)value.type!=targetTag)
-                    TERR("checked cast failed: runtime value tag does not match target");
+                    TFAULT(SL_FAULT_CAST,"checked cast failed: runtime value tag does not match target");
             }
             PUSH(value);
         } break;
@@ -4077,12 +4139,12 @@ static SLResult run_thread(SLThread* t) {
              * a worker exists. */
             if (t->workers_cached == 0) {
                 SLArrayInstance* ai=&vm->arrays[av.as.h];
-                if(idxv.as.i<0||idxv.as.i>=ai->len) TERR("array index out of range");
+                if(idxv.as.i<0||idxv.as.i>=ai->len) TFAULT_INDEX(idxv.as.i,ai->len);
                 PUSH(ai->elems[idxv.as.i]);
             } else {
                 pthread_mutex_lock(&vm->array_mtx);
                 SLArrayInstance* ai=&vm->arrays[av.as.h];
-                if(idxv.as.i<0||idxv.as.i>=ai->len){pthread_mutex_unlock(&vm->array_mtx);TERR("array index out of range");}
+                if(idxv.as.i<0||idxv.as.i>=ai->len){pthread_mutex_unlock(&vm->array_mtx);TFAULT_INDEX(idxv.as.i,ai->len);}
                 SLValue ev=ai->elems[idxv.as.i];
                 pthread_mutex_unlock(&vm->array_mtx);
                 PUSH(ev);
@@ -4096,7 +4158,7 @@ static SLResult run_thread(SLThread* t) {
                 /* Lock-free single-threaded fast path (see OP_ARRGET). The GC
                  * write barrier still runs -- it is correctness, not locking. */
                 SLArrayInstance* ai=&vm->arrays[av.as.h];
-                if(idxv.as.i<0||idxv.as.i>=ai->len) TERR("array index out of range");
+                if(idxv.as.i<0||idxv.as.i>=ai->len) TFAULT_INDEX(idxv.as.i,ai->len);
                 SLValue old=ai->elems[idxv.as.i];
                 if (old.type == SL_STRUCT || old.type == SL_ARRAY || val.type == SL_STRUCT || val.type == SL_ARRAY)
                     gc_write_barrier(&vm->gc, array_gc_object(vm, av.as.h),
@@ -4108,7 +4170,7 @@ static SLResult run_thread(SLThread* t) {
             } else {
                 pthread_mutex_lock(&vm->array_mtx);
                 SLArrayInstance* ai=&vm->arrays[av.as.h];
-                if(idxv.as.i<0||idxv.as.i>=ai->len){pthread_mutex_unlock(&vm->array_mtx);TERR("array index out of range");}
+                if(idxv.as.i<0||idxv.as.i>=ai->len){pthread_mutex_unlock(&vm->array_mtx);TFAULT_INDEX(idxv.as.i,ai->len);}
                 SLValue old=ai->elems[idxv.as.i];
                 if (old.type == SL_STRUCT || old.type == SL_ARRAY || val.type == SL_STRUCT || val.type == SL_ARRAY)
                     gc_write_barrier(&vm->gc, array_gc_object(vm, av.as.h),
@@ -4647,6 +4709,8 @@ static SLResult run_thread(SLThread* t) {
 
         default: log_unsupported_opcode(vm, in.op); TERR("unsupported opcode");
         }
+        continue;
+    sl_fault_next: ;
     }
 }
 

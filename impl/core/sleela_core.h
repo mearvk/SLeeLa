@@ -7,7 +7,7 @@
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
 #define SLEELA_VM_ABI_MINOR 9u
-#define SLEELA_ARTIFACT_FORMAT_VERSION 5u
+#define SLEELA_ARTIFACT_FORMAT_VERSION 6u
 #define SL_NATIVE_METHOD_ABI_VERSION 0x00010000u
 #define SL_NATIVE_METHOD_FLAG_ANNOTATED 0x00000001u
 #define SL_NATIVE_METHOD_FLAG_STATIC 0x00000002u
@@ -596,6 +596,11 @@ int slvm_set_struct_parent(SLVM* vm, int type_index, int parent_type_index);
  * OP_CHECKCAST / OP_INSTANCEOF / typed catch accept it (SLEELA.syntax 43.7).
  * Duplicates are ignored. Returns 0, or -1 on a bad index. */
 int slvm_add_struct_super(SLVM* vm, int type_index, int super_type_index);
+/* SLEELA.syntax 37.5: the function (2 parameters: int kind, String message)
+ * the VM calls to build the exception for a fault raised inside a try
+ * (kind 1 arithmetic, 2 array index, 3 checked cast); -1 clears it. */
+int slvm_set_fault_function(SLVM* vm, int function_index);
+int slvm_fault_function(const SLVM* vm);
 int slvm_begin_func(SLVM* vm, const char* name, int nargs, int nlocals);
 /* Persist descriptive @native method identity on a compiled function. This
  * never authorizes or loads a module. signature is canonical UTF-8 text;

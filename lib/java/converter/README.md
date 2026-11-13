@@ -3,7 +3,7 @@
 > **Container.** Java container content (`SLEELA.syntax` section 38.4). Nothing
 > here is part of the SLeeLa specification or adds syntax to SLeeLa.
 
-Status: **0.5.0, best effort (2026-11-13).** Output stays at syntax **3.1** (also
+Status: **0.6.0, best effort (2026-11-13).** Output stays at syntax **3.1** (also
 written 3.01) by the owner's decision; syntax 3.2 forms are not used
 (`.kiro/steering/java-converter-lib.md`). The operand laws come from the shared
 conversion model, `impl/subjects/conversion/conversion.model` (read by
@@ -132,10 +132,13 @@ several hours. Use `JCONV_FILTER` to convert one package or module at a time.
 | 7b | a `double` or `float` shown as text (string concatenation, `println`) | the model's `tostr double` template (`Double.toString(x)`) | Java prints `2.0`, SLeeLa `2` |
 | 7c | a `char` shown as text | the model's `tostr char` template (`JavaText.plainIfRepresentable(JavaText.codePointU(c))`) | Java prints `z`, SLeeLa `122` |
 | 7e | `int` `+ - * & | ^ ~` and shift left whose value leaves int arithmetic (a comparison, `/`, `%`, shift right, string text, an argument, an index, a cast to `long` / `double`, a store into a non-int) | `JavaOperands.toInt(...)` around the whole chain (the model's `cast long int` row) | these operators agree with arithmetic modulo 2^32, so one wrap where the value is used gives the Java result; a chain stored into an `int` stays native (the store wraps). `if (count + 1 < 0)` and `long x = a * b` now compute as Java does |
-| 7f | `int` `/` and `%` (and `/=`, `%=` on an int name) unless the divisor is a nonzero literal | the model's `binop int /` and `%` rows (`JavaOperands.divInt`, `remInt`) | exact, including `Integer.MIN_VALUE / -1`, and a catchable `ArithmeticException` on zero (the VM division by zero is fatal) |
+| 7f | `int` `/` and `%` (and `/=`, `%=` on an int name) unless the divisor is a nonzero literal | the model's `binop int /` and `%` rows (`JavaOperands.divInt`, `remInt`) | exact, including `Integer.MIN_VALUE / -1`, and a catchable `ArithmeticException` on zero (the VM division by zero was fatal; since SLEELA.syntax 37.5 it is catchable inside a `try` too) |
 | 7d | operand types for 7a to 7c | fields of the type and declarations of the member (parameters, locals, `for`, `catch`), array elements, casts, literals, and **call chains**: `Math.sqrt(x)`, `s.charAt(i)`, `s.length()`, `sb.reverse().toString()`, `Integer.MAX_VALUE`, own methods, through the model's `ret` and `field` rows (`@arg0`: the type of the first argument) | a name declared with two types in one member, an overloaded own method with two result types, or a member the model does not type makes the operand unknown, and an unknown operand is left as written: the pass never guesses |
 | 6g | `assert` | dropped | Java runs with assertions disabled by default, so the statement is not evaluated |
 | 6h | `System.out.println(x)` | `print(x)` | `System.out.print` (no newline) is a stub (reason 23): `print` always adds one |
+| 8a | a lambda `x -> e`, `(a, b) -> e`, `(int a, int b) -> { ... }` (0 to 2 parameters) | `new SLJavaLambda(N, new Any[]{this, k, ...})` at the site; the body becomes `Any slLambdaN(Any[] slEnv, Any slA, Any slB)` in the same class, which declares each captured local from `slEnv` and each parameter from `slA` / `slB`; the document gets one generated `SLJavaLambdaTable` whose `call` forwards `N` to it (`JConvLambda`) | defunctionalization, `lib/java/jdk-28/LOWERING.md` section 2. Java captures only effectively final locals, so copying their values at the site is exact. An instance context stores `this` in `slEnv[0]` and the body is an instance method, so fields, methods and `this` read as written. An untyped parameter takes its type from the target: a declaration `Function<Integer, Integer> f = ...`, the method return type for `return x -> ...`, the declared parameter of a method of this file the lambda is passed to, or the result type argument of an enclosing lambda (`a -> b -> ...`); boxes become primitives (`Integer` is `int32`); else `Any`. Not lowered (stub reason 1): a switch arrow, more than two parameters, a captured local or parameter of array type (a cast to an array type does not compile) |
+| 8b | a method reference | lowered like 8a: `System.out::println` (a `Consumer`); with a known target interface `this::m`, `name::m` (the receiver is evaluated once, at the reference), `Type::m` (static, or unbound for `String` and own instance methods) and `Type::new` | the arity and the parameter types come from the target interface. Without a target, or `Type::m` of another class (static or unbound cannot be told apart), stub reason 2 |
+| 8c | a variable, field, parameter, return type or cast of a functional interface type (`Function`, `Comparator`, `Runnable`, the 43 of `java.util.function`, ...) | `Any` | so `f.apply(x)` dispatches at run time (SLEELA.syntax 43.7) to `SLJavaLambda.apply` or to a program class that implements the interface. A class of the file with the same name is kept |
 
 ## 4. Fail-loud stubs (rule 5 of `JConvRules`)
 
@@ -150,8 +153,8 @@ run, and is listed in the report.
 
 | Code | Reason |
 |---:|---|
-| 1 | lambda or switch arrow |
-| 2 | method reference |
+| 1 | lambda or switch arrow (lambdas lowered since 0.6, rule 8a; still a stub: switch arrows and the lambdas 8a lists) |
+| 2 | method reference (lowered since 0.6 where rule 8b applies) |
 | 3 | anonymous class |
 | 4 | labeled statement (retired in 0.2) |
 | 5 | switch expression or multi-label case |
@@ -204,6 +207,18 @@ Sample: 17 files from the OpenJDK 25.0.2 `src.zip` (`Math`, `Record`, `Override`
 | 0.5.0 int wraps (`toInt`) / `divInt`, `remInt` calls in the output | | | | 88 / 7 (check numbers unchanged, 0 syntax errors) |
 | Same, compiler with SLEELA.syntax 43.7 (calls on `Any`, interfaces at run time) | | | | **522** (11 files with an error) |
 | Files with no `sleela check` error | 8 of 36 | 8 of 36 | 8 of 36 | 5 of 16 |
+
+**0.6.0, lambdas (2026-11-13).** The 17-file sample has no lambda outside a
+member that is a stub for another reason, so its numbers do not move (522
+check errors, 35 stubs). On the eight most lambda-dense files of OpenJDK
+25.0.2 `java.util` (`Spliterator`, `Map`, `Comparator`, `PrimitiveIterator`,
+`Formattable`, `DoubleSummaryStatistics`, `Optional`, `Currency`), with
+`JCONV_BUNDLE=1`: **31 stubbed members before, 15 after**; 17 lambdas and 3
+method references lowered. `samples/lambda/LambdaDemo.java` (typed and untyped
+parameters, captures, `this`, block bodies, a curried lambda, a lambda passed
+to a method, `System.out::println`, `Type::m`, `this::m`, `String::length`)
+runs **all 17 lines identical** to OpenJDK 25.0.2
+(`samples/LambdaDemo.java.expected.txt`, `samples/LambdaDemo.sleela.expected.txt`).
 
 0.2.0 removed 12 stubs (the ten `for` headers with commas and two pattern
 `instanceof` members). 0.4.0 changes what the converted code computes, not
@@ -301,6 +316,7 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | `JConvRules` | the decision table (renames, types, modifiers, built-ins, stub reasons) |
 | `JConvModel` | reads the shared conversion model (`ret`, `field`, `binop int` shifts / division / remainder, `cast long int`, `tostr`) |
 | `JConvExpr` | the expression half of the typed pass: statements, precedence tree, wraps and calls (rules 7a to 7f) |
+| `JConvLambda` | lambda and method reference lowering (rules 8a, 8b): sites, target typing, captures, body methods, the `SLJavaLambdaTable` of the document |
 | `JConvRewriter` | token-level rewriting, the fail-loud scan, declaration and cast post-pass, helpers |
 | `JConvTranslator` | files, types, members, enum / record lowering, nested types, stubs, metadata |
 | `JConvEmitter` | layout and buffered output below the 65,536-byte String limit |
@@ -313,6 +329,7 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | Version | Change |
 |---|---|
 | 0.1.0 | First cut: walk, lex, rewrite, translate, stubs, report |
+| 0.6.0 | `JConvLambda`: lambdas and method references lowered to `(id, env)` (rules 8a, 8b); functional interface types written as `Any` (8c), relying on SLEELA.syntax 43.7 (calls on `Any`). New sample `samples/lambda/LambdaDemo.java`, 17 of 17 lines identical. On eight lambda-dense `java.util` files the stubbed members fall from 31 to 15 |
 | 0.5.0 | `JConvExpr`: an expression parser (JLS precedence) on the output tokens of each member; rules 7a to 7c moved onto the tree and rules 7e, 7f added (int wrap where the value leaves int arithmetic; `divInt` / `remInt`). In the JDK sample it writes 88 wraps and 7 division calls, with 0 syntax errors and the check numbers unchanged. The sample program gains overflow checks, `long` from an `int` product, division by zero caught, `MIN / -1`, the binary-search midpoint, and runs all 31 lines identical. Library fixes found by it: jdk-28 `Math.abs(int)` at `MIN_VALUE`, `Math.absExact(int)` now throws |
 | 0.4.0 | Model-driven: `JConvModel` reads `conversion.model` (shift functions, `tostr` templates, 8,964 `ret` rows of model 1.1.0, `field` rows); the typed pass types call chains through them (rule 7d). Built-in defaults only when the file cannot be read (the summary says which). The sample program gains library and own-method calls and runs all 29 lines identical, which needed the jdk-28 `Math.sqrt` to be correctly rounded (fixed the same day) |
 | 0.3.0 | Policy recorded: per-member stubs. Typed pass (rules 7a to 7d): `int` shifts through `JavaOperands`, `double` / `char` string conversion through `Double.toString` / `JavaText`, the same templates as the `binop` / `tostr` rows of `conversion.model`. `JCONV_BUNDLE=1`: one document per Java file, nested types inside (39% fewer check errors on the JDK sample; the sample program runs with all lines identical) |

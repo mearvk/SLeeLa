@@ -126,6 +126,25 @@ class JConvRules {
     return n;
   }
 
+  << The functional interfaces of java.util.function, with Comparator,
+     Runnable and Callable: variables of these types are written as Any
+     (JConvLambda). >>
+  boolean isFunctionalInterface(String n) {
+    if (n == "Function" || n == "BiFunction" || n == "UnaryOperator" || n == "BinaryOperator") { return true; }
+    if (n == "Predicate" || n == "BiPredicate" || n == "Consumer" || n == "BiConsumer" || n == "Supplier") { return true; }
+    if (n == "Comparator" || n == "Runnable" || n == "Callable" || n == "BooleanSupplier") { return true; }
+    if (n == "IntFunction" || n == "IntPredicate" || n == "IntUnaryOperator" || n == "IntBinaryOperator") { return true; }
+    if (n == "IntConsumer" || n == "IntSupplier" || n == "IntToLongFunction" || n == "IntToDoubleFunction") { return true; }
+    if (n == "LongFunction" || n == "LongPredicate" || n == "LongUnaryOperator" || n == "LongBinaryOperator") { return true; }
+    if (n == "LongConsumer" || n == "LongSupplier" || n == "LongToIntFunction" || n == "LongToDoubleFunction") { return true; }
+    if (n == "DoubleFunction" || n == "DoublePredicate" || n == "DoubleUnaryOperator" || n == "DoubleBinaryOperator") { return true; }
+    if (n == "DoubleConsumer" || n == "DoubleSupplier" || n == "DoubleToIntFunction" || n == "DoubleToLongFunction") { return true; }
+    if (n == "ToIntFunction" || n == "ToLongFunction" || n == "ToDoubleFunction") { return true; }
+    if (n == "ToIntBiFunction" || n == "ToLongBiFunction" || n == "ToDoubleBiFunction") { return true; }
+    if (n == "ObjIntConsumer" || n == "ObjLongConsumer" || n == "ObjDoubleConsumer") { return true; }
+    return false;
+  }
+
   boolean isPrimitive(String n) {
     if (n == "int" || n == "long" || n == "short" || n == "byte") { return true; }
     if (n == "char" || n == "boolean" || n == "float" || n == "double") { return true; }

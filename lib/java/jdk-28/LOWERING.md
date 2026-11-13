@@ -4,9 +4,17 @@
 > the SLeeLa specification. Nothing here adds syntax to SLeeLa
 > (`SLEELA.syntax` section 38.4).
 
-Status: **DRAFT for review.** Only section 2 (the lambda representation) has a
-running prototype: `examples/java/jdk-28/LambdaLoweringProto.sleela`. Everything
-else is a design sketch and is marked *unverified*.
+Status: **DRAFT for review.** Section 2 (lambdas and method references) is
+**implemented** by `lib/java/converter` 0.6.0 (`JConvLambda`, 2026-11-13): the
+body is a method `slLambdaN(slEnv, slA, slB)` of the class holding the lambda
+(instance or static as the context), the call site is
+`new SLJavaLambda(N, new Any[]{this, captures})`, and each document gets one
+`SLJavaLambdaTable`. `samples/lambda/LambdaDemo.java` runs identical to a real
+JDK. Variables of a functional interface type are `Any`, so library code calls
+them by run-time dispatch (SLEELA.syntax 43.7), which makes rule 3 of section 1
+(no dependence on virtual dispatch) unnecessary for lambdas. The first
+prototype is `examples/java/jdk-28/LambdaLoweringProto.sleela`. Everything else
+is a design sketch and is marked *unverified*.
 
 ## 1. Principle
 
