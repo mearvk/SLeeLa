@@ -87,12 +87,12 @@ Do not add JVM execution requirements to this ledger. Java source congruence is 
 
 ### 0.3.12-dev — definite assignment and reachability foundation
 
-Added `impl/frontend/java_flow.h/.cpp`, `tests/java_flow_semantics.cpp`, and `tests/java_flow_suite.py`, plus the `java-flow` Makefile target. The model distinguishes definitely assigned and definitely unassigned facts, reports reads before assignment, checks repeated final assignment, merges conditional paths, tracks abrupt completion, and provides structured flow scaffolding for loops, switch, and try/finally. This is a source-semantic foundation; complete JLS Chapter 16 coverage remains a qualification task.
+Added `impl/frontend/java/java_flow.h/.cpp`, `tests/java_flow_semantics.cpp`, and `tests/java_flow_suite.py`, plus the `java-flow` Makefile target. The model distinguishes definitely assigned and definitely unassigned facts, reports reads before assignment, checks repeated final assignment, merges conditional paths, tracks abrupt completion, and provides structured flow scaffolding for loops, switch, and try/finally. This is a source-semantic foundation; complete JLS Chapter 16 coverage remains a qualification task.
 
 
 ### 0.3.13-dev — checked-exception foundation
 
-Added `impl/frontend/java_exceptions.h/.cpp`, `tests/java_exceptions.cpp`, and `tests/java_exceptions_suite.py`, with the `java-exceptions` Makefile target. The model is source-level: it tracks exception type hierarchy, identifies checked exceptions, verifies catch-or-declare coverage, detects shadowed/redundant catches, and checks that overriding methods do not introduce incompatible checked exceptions. Full JLS Chapter 11 propagation rules—including expression/statement-specific exception sets, try/catch/finally propagation, multi-catch, precise rethrow, resource initialization/close exceptions, and generic checked-exception inference—remain to be completed.
+Added `impl/frontend/java/java_exceptions.h/.cpp`, `tests/java_exceptions.cpp`, and `tests/java_exceptions_suite.py`, with the `java-exceptions` Makefile target. The model is source-level: it tracks exception type hierarchy, identifies checked exceptions, verifies catch-or-declare coverage, detects shadowed/redundant catches, and checks that overriding methods do not introduce incompatible checked exceptions. Full JLS Chapter 11 propagation rules—including expression/statement-specific exception sets, try/catch/finally propagation, multi-catch, precise rethrow, resource initialization/close exceptions, and generic checked-exception inference—remain to be completed.
 
 Oracle's Java Language Specification defines checked-exception compile-time checking, catch-or-specify requirements, and restrictions on checked exceptions in overriding declarations. citeturn1search0turn1search13
 

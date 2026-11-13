@@ -10,7 +10,7 @@ def main():
     cmd=["c++","-std=c++17","-O2","-Wall","-Wextra","-pedantic",
          "-I"+str(ROOT/"impl"/"frontend"),
          str(ROOT/"tests"/"java_flow_021_semantics.cpp"),
-         str(ROOT/"impl"/"frontend"/"java_flow.cpp"),"-o",str(OUT)]
+         str(ROOT/"impl"/"frontend"/"java"/"java_flow.cpp"),"-o",str(OUT)]
     try:
         subprocess.run(cmd,check=True)
         subprocess.run([str(OUT)],check=True)

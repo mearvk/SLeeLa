@@ -4,6 +4,7 @@
 #include "lexer.h"
 #include "parser.h"
 #include "semantic.h"
+#include "language_handler.h"
 #include "compiler.h"
 #include "artifact.h"
 #include "originate.h"
@@ -2280,24 +2281,22 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
         if(!changed){
             // Converged. A program that calls methods on Strings needs the
             // java.lang.String method library; ask the analyzer once.
-            bool haveStringMethods=false;
-            for(const auto& cls:program.classes) if(cls.name=="JavaStringMethods") { haveStringMethods=true; break; }
+            const std::string strLib=sleela::lang::stringMethodLibrary();
+            bool haveStringMethods=strLib.empty();
+            for(const auto& cls:program.classes) if(!strLib.empty()&&cls.name==strLib) { haveStringMethods=true; break; }
             if(!stringMethodsProbed && !haveStringMethods && !(syntax<sleela::SyntaxVersion{3,0})){
                 stringMethodsProbed=true;
                 bool needed=false;
                 try{ needed=sleela::analyzeSemantics(program,syntax,false).needsStringMethods; }catch(const std::exception&){ needed=false; }
-                if(needed){ seeds.insert("JavaStringMethods"); continue; }
+                if(needed){ seeds.insert(strLib); continue; }
             }
-            // SLEELA.syntax 37.5: a Java-style document with a try gets the VM
-            // fault exceptions (lib/java/support/SLJavaFaults), so a division
-            // by zero inside the try throws ArithmeticException.
+            // Libraries a registered language handler needs (e.g. the Java
+            // handler seeds the VM-fault exception library, SLEELA.syntax 37.5).
             if(!faultsSeeded && !(syntax<sleela::SyntaxVersion{3,0})){
                 faultsSeeded=true;
-                bool haveFaults=false, javaStyle=program.sparkMarked;
-                for(const auto& cls:program.classes) if(cls.name=="SLJavaFaults") { haveFaults=true; break; }
-                for(const auto& im:program.imports) if(im.rfind("java",0)==0) javaStyle=true;
-                static const std::regex tryWord("\\btry\\b");
-                if(!haveFaults && javaStyle && std::regex_search(source,tryWord)){ seeds.insert("SLJavaFaults"); continue; }
+                bool added=false;
+                for(const auto& n:sleela::lang::libraryNeeds(program,source)) if(seeds.insert(n).second) added=true;
+                if(added) continue;
             }
             return true;
         }

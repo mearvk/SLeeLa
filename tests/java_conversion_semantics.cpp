@@ -1,4 +1,4 @@
-#include "../impl/frontend/java_equivalence.h"
+#include "../impl/frontend/java/java_equivalence.h"
 #include <cassert>
 using namespace sleela;
 int main(){

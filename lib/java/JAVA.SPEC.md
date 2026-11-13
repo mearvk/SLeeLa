@@ -37,6 +37,28 @@ division by zero, an array index out of range and a failed cast are thrown, as
 `ArithmeticException`, `ArrayIndexOutOfBoundsException`, `ClassCastException` through
 `lib/java/support/SLJavaFaults`). The tier uses them; they are general language behavior.
 
+## 1.1 The Java handler module (compiler boundary)
+
+The few places where the SLeeLa compiler must act on a Java-authored or Java-referencing document
+are **not** compiler logic. They are the **Java handler**, `impl/frontend/java/java_handler.cpp`,
+loaded through the neutral interface `impl/frontend/language_handler.h`:
+
+| Hook | Java behaviour provided |
+|---|---|
+| `documentMarkers` | the `spark` Preonem marker, minimum `#sleela 3.0` (SLEELA.syntax 43) |
+| `resolveReference` | `java.lang.Throwable` resolves to the `/lib` class `Throwable`; a local class cannot impersonate it |
+| `eraseSignatureType` | type variables and package-qualified types erase to `Any`; `java.lang.String` to `String` |
+| `stringMethodLibrary` | `JavaStringMethods` provides methods on a String receiver |
+| `faultFunction` / `libraryNeeds` | `SLJavaFaults` builds the exception a VM fault throws inside a try; the driver seeds it for a Java-style document that uses try |
+| `validateProgram` | Java compatibility metadata checks |
+
+The compiler core knows only the interface. Removing the handler from `FE_SRC` in `impl/Makefile`
+removes Java support and changes nothing else. A Java improvement that needs a compiler hook adds a
+neutral hook to `LanguageHandler` and implements it in the handler, never a Java branch in
+`parser.cpp`, `semantic.cpp`, `compiler.cpp`, the VM or the runtime. Review, inventory and the
+staged plan (driver tier resolution and JVM host launch; the `javaString*` builtins and `OP_JSTR_*`
+VM string kind): `impl/frontend/COMPILER-JAVA-REVIEW.md`.
+
 ## 2. The Java tier
 
 | Part | Where | Role |

@@ -13,6 +13,7 @@
 #ifndef SLEELA_AST_H
 #define SLEELA_AST_H
 #include <memory>
+#include <set>
 #include <string>
 #include <vector>
 #include <utility>
@@ -350,14 +351,11 @@ struct Program {
     // section 35). Contextual, not a reserved keyword, so `artifact` stays an
     // ordinary identifier anywhere else (and in any document below 3.0).
     bool artifactMarked=false;
-    // Spark marker (syntax 3.0, SLEELA.syntax section 43). A Preonem that
-    // indicates Java style declarative: the document declares itself SLeeLa
-    // constructs written in Java style. Java support
-    // for it is handled by the interpreter and VM (frontend java_references.cpp,
-    // the compiler, the VM opcodes), never by a SLeeLa housing class. Recorded
-    // standing only; no change to parsing, typing, or codegen. Contextual, not a
-    // reserved keyword.
-    bool sparkMarked=false;
+    // Contextual Preonem document markers claimed by a registered language
+    // handler (language_handler.h; e.g. the Java handler claims `spark`,
+    // SLEELA.syntax section 43). Declarative only: a marker changes no
+    // parsing, typing or codegen. The compiler itself defines no handler marker.
+    std::set<std::string> markers;
     // Syntax 3.1 surface the parser met (e.g. "character literal"); semantic
     // analysis rejects each one in a document declaring a syntax below 3.1.
     std::vector<std::string> syntax31Uses;

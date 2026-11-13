@@ -31,7 +31,7 @@ private:
     // Java signature surface (syntax 3.0): the type variables of the enclosing
     // generic class / method declarations, erased to Any in parsed types.
     std::vector<std::vector<std::string>> typeVars_;
-    std::string javaErase(const std::string& source);
+    std::string eraseSignatureType(const std::string& source);
     bool acceptEllipsis();
     void splitAngleClosers();
     void collectStructNames();

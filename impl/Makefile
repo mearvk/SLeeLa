@@ -345,7 +345,7 @@ SOC_MATH_OBJ := $(BUILD)/sociology_math.o
 SOC_OBJ := $(BUILD)/sociology.o
 SOC_SMOKE := $(BUILD)/sociology_smoke
 CORE_SRC := core/sleela_artifact.c
-FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/java_equivalence.cpp frontend/java_references.cpp frontend/semantic.cpp frontend/compiler.cpp \
+FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/language_handler.cpp frontend/class_relations.cpp frontend/java/java_handler.cpp frontend/java/java_equivalence.cpp frontend/semantic.cpp frontend/compiler.cpp \
           frontend/version.cpp frontend/artifact.cpp frontend/originate.cpp frontend/wikigen.cpp frontend/annotation_pipeline.cpp frontend/library_index.cpp frontend/docs.cpp frontend/keyword_supporter.cpp frontend/dynamite.cpp frontend/permissible.cpp \
           annotation/Annotation.cpp annotation/ForwardingAnnotation.cpp annotation/AnnotationForwarder.cpp \
           annotation/AnnotationInterpreter.cpp annotation/AnnotationRuntime.cpp \
@@ -922,6 +922,10 @@ $(FINANCIAL_OBJ): subjects/finance/financial.cpp subjects/finance/financial.h | 
 # objects that report the old range.
 $(BUILD)/%.o: frontend/%.cpp frontend/version.h | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+# Language handler modules (frontend/java/ is the Java handler). Each lists
+# itself in FE_SRC; removing it from FE_SRC removes that language's support.
+$(BUILD)/%.o: frontend/java/%.cpp frontend/language_handler.h frontend/version.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -Ifrontend -c $< -o $@
 # The native CommonRails printing engine, compiled from the heritage C++ layer.
 $(COMMON_RAILS_OBJ): ../common-rails/heritage/printing/cpp/CommonRailsPrinting.cpp ../common-rails/heritage/printing/cpp/CommonRailsPrinting.hpp | $(BUILD)
 	$(CXX) $(CXXFLAGS) $(COMMON_RAILS_INC) -c $< -o $@

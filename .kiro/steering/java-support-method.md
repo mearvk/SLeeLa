@@ -2,7 +2,7 @@
 
 > **Superseded in part (2026-11-13).** New Java support is NOT added to the frontend or VM. It goes
 > into the Java tier (`lib/java`, `sleelactl/convert`) and is specified in `lib/java/JAVA.SPEC.md`.
-> The points below describe the existing frontend support (`spark`, `java_references`), which stays
+> The points below describe the existing frontend support (`spark`, the Java handler), which stays
 > as it is.
 
 Repo-scoped, always-on. Normative source: `SLEELA.syntax` section 43.
@@ -17,12 +17,13 @@ Repo-scoped, always-on. Normative source: `SLEELA.syntax` section 43.
    carrying `spark;` at document scope before any import or class
    (`#sleela 3.0` required). It is declarative standing only: no parsing/typing/codegen change, not a reserved
    word (`spark` stays a normal identifier elsewhere). Implemented as
-   `Program::sparkMarked`, parsed in `parser.cpp`, version-gated in
-   `semantic.cpp`, read via `javaref::sparkDocument`.
+   a marker word claimed by the Java handler (`Program::markers`), parsed in
+   `parser.cpp` through `lang::isDocumentMarker`, version-gated in `semantic.cpp`
+   from the handler minimum syntax.
 3. **Interpreter and VM level, NO housing class.** Do NOT create a SLeeLa
    housing/wrapper/dispatcher class to carry Java meaning. Put Java support in
-   the frontend (`impl/frontend/java_references.cpp` first, see
-   `java-references.md`; compiler; semantic) and in VM opcodes
+   the Java handler module (`impl/frontend/java/java_handler.cpp`, see
+   `java-references.md`) behind the neutral `language_handler.h` interface and in VM opcodes
    (`OP_JSTR_*`, `OP_INSTANCEOF`, `OP_CHECKCAST`, `OP_TRY_PUSH/POP`, `OP_THROW`).
 4. **Keep the artifacts, relative to the document.** Keep the Java-style
    supporting artifacts as they are and read them relative to the using

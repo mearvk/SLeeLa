@@ -108,7 +108,7 @@ Maintain invalid fixtures proving that claimed Java constraints are enforced, in
 - unsupported constructs with explicit diagnostics
 
 ### Q11 — Eight-layer source equivalence model
-- Q1 Lexical, Q2 Type System, Q3 Declarations, Q4 Expressions, Q5 Statements, Q6 Semantic Constraints, Q7 API Counterparts, and Q8 Source Equivalence Testing are represented by explicit frontend equivalence types in impl/frontend/java_equivalence.h.
+- Q1 Lexical, Q2 Type System, Q3 Declarations, Q4 Expressions, Q5 Statements, Q6 Semantic Constraints, Q7 API Counterparts, and Q8 Source Equivalence Testing are represented by explicit frontend equivalence types in impl/frontend/java/java_equivalence.h.
 - The source-equivalence driver must report structural, semantic, and functional-source states separately.
 - Functional-source status must remain INCOMPLETE unless the corresponding source/API semantics have actually been implemented and checked.
 
@@ -189,7 +189,7 @@ The next qualification work targets the remaining source-semantic gap in Java fl
 
 This upgrade makes Java control-flow qualification a first-class closure task. A construct is qualified only when its source fixture, normalized representation, semantic rule, positive or negative result, and unified-manifest evidence are present.
 
-Affected SLeeLa frontend: `impl/frontend/java_flow.h/.cpp`, `impl/frontend/java_exceptions.h/.cpp`, and the Java equivalence frontend. Affected qualification documents: `QUALIFICATION.JAVA.md`, `JAVA.EQUIVALENCE.TASKS.md`, `JAVA.AUTHORSHIP.TRANSITION.md`, `JAVA.COMPATIBILITY.SCOPE.md`, and `tests/JAVA.QUALIFICATION.MANIFEST.md`.
+Affected SLeeLa frontend: `impl/frontend/java/java_flow.h/.cpp`, `impl/frontend/java/java_exceptions.h/.cpp`, and the Java equivalence frontend. Affected qualification documents: `QUALIFICATION.JAVA.md`, `JAVA.EQUIVALENCE.TASKS.md`, `JAVA.AUTHORSHIP.TRANSITION.md`, `JAVA.COMPATIBILITY.SCOPE.md`, and `tests/JAVA.QUALIFICATION.MANIFEST.md`.
 
 Required next coverage: boolean-path-sensitive `&&`, `||`, `!`, and `?:`; constant boolean expressions; break/continue joins and labels; while/do/for completion; switch completion; try/catch/finally abrupt paths; constructor and blank-final definite-unassignment; lambda capture boundaries; and checked-exception propagation.
 
@@ -197,7 +197,7 @@ JLS definite-assignment rules analyze every possible execution path and give spe
 
 ### 0.3.21 executable phase — directional flow and control targets
 
-The first executable 0.3.21 layer is now represented by `impl/frontend/java_flow.cpp` and `tests/java_flow_021_semantics.cpp`. It qualifies directional true/false flow for boolean constants, `!`, `&&`, `||`, and `?:`, plus structural break/continue target validation, labeled-block break handling, and loop normal-completion joins. The deterministic entry point is `make -C tests java-flow-021`.
+The first executable 0.3.21 layer is now represented by `impl/frontend/java/java_flow.cpp` and `tests/java_flow_021_semantics.cpp`. It qualifies directional true/false flow for boolean constants, `!`, `&&`, `||`, and `?:`, plus structural break/continue target validation, labeled-block break handling, and loop normal-completion joins. The deterministic entry point is `make -C tests java-flow-021`.
 
 The implementation deliberately remains partial. Full qualification still requires Java-specific for-update flow, complete traditional and rule-based switch semantics, try/catch/finally abrupt-path replacement, constructor and blank-final definite-unassignment, lambda/capture boundaries, and shared checked-exception propagation. A passing child suite would establish only the rules it directly exercises; it would not establish whole-Chapter-16 completion.
 

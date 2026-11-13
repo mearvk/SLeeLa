@@ -1,4 +1,4 @@
-#include "../impl/frontend/java_exceptions.h"
+#include "../impl/frontend/java/java_exceptions.h"
 #include <cassert>
 #include <iostream>
 using namespace sleela;

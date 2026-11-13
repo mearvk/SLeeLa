@@ -65,11 +65,11 @@ clean:
 	rm -f memory reflection nordshrift runtime network-security neural-nets-xor character-recognition-smoke character-recognition-cli character-recognition-smoke.txt character-recognition-smoke.jsonl
 
 java-conversions:
-	$(CXX) $(CXXFLAGS) -I../impl/frontend java_conversion_semantics.cpp ../impl/frontend/java_equivalence.cpp -o java-conversions
+	$(CXX) $(CXXFLAGS) -I../impl/frontend -I../impl/frontend/java java_conversion_semantics.cpp ../impl/frontend/java/java_equivalence.cpp -o java-conversions
 	./java-conversions
 
 java-overload:
-	$(CXX) $(CXXFLAGS) -I../impl/frontend java_overload_override.cpp ../impl/frontend/java_equivalence.cpp -o java-overload
+	$(CXX) $(CXXFLAGS) -I../impl/frontend -I../impl/frontend/java java_overload_override.cpp ../impl/frontend/java/java_equivalence.cpp -o java-overload
 	./java-overload
 
 java-flow:
