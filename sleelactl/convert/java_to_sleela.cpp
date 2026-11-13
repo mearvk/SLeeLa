@@ -429,6 +429,13 @@ private:
             if (!c) fail("model", "the conversion model has no cast from '" + from + "' to '" + to.n + "'");
             if (std::string(c->f[2]) == "=") {
                 r.code = a.code;
+                // Syntax 3.2 shows a value of static type char as text in a String context; a Java
+                // (int)/(long) cast of a char is a number, so it must drop the char type explicitly.
+                if (a.ty.dims == 0 && a.ty.n == "char" && (to.n == "int" || to.n == "long")) {
+                    r.code = "(" + to.n + ") " + paren(a.code);
+                    r.isLitInt = false;
+                    return r;
+                }
                 // a plain int->int/long cast of a literal stays a literal
                 r.isLitInt = a.isLitInt && to.n == "int";
                 r.iv = a.iv;
@@ -474,16 +481,22 @@ private:
 
     // Syntax 3.1 array initializer {a, b, c} for a one-dimensional array type.
     std::string parseArrayInit(const Ty& arrayTy) {
-        if (arrayTy.dims != 1) fail("model", "array initializer is converted for one-dimensional arrays only (nested {{..}} needs multi-dimensional creation)");
+        if (arrayTy.dims < 1) fail("model", "array initializer needs an array type");
         expectOp("{");
         std::string code = "{";
         bool first = true;
         while (!isOp("}")) {
             if (atEof()) fail("syntax", "unterminated array initializer");
-            if (isOp("{")) fail("model", "nested array initializer needs multi-dimensional arrays");
-            if (isLambdaAhead()) unsup("lambda");
-            E el = coerce(parseExpr(), mk(arrayTy.n));
-            code += (first ? "" : ", ") + el.code;
+            std::string el;
+            if (isOp("{")) {
+                if (arrayTy.dims < 2) fail("syntax", "nested array initializer inside a one-dimensional array");
+                el = parseArrayInit(mk(arrayTy.n, arrayTy.dims - 1));
+            } else {
+                if (arrayTy.dims > 1) fail("syntax", "array of arrays needs a nested initializer for each element");
+                if (isLambdaAhead()) unsup("lambda");
+                el = coerce(parseExpr(), mk(arrayTy.n)).code;
+            }
+            code += (first ? "" : ", ") + el;
             first = false;
             if (!acceptOp(",")) break;
         }
@@ -914,26 +927,37 @@ private:
             }
         }
         if (isOp("[")) {
-            p++;
-            if (isOp("]")) {   // new T[]{a, b, c} (syntax 3.1)
+            // new T[a][b]..[] (syntax 3.2 multi-dimensional creation) or new T[]..{...} (initializer)
+            std::vector<std::string> sized;
+            int rank = 0;
+            bool sawUnsized = false;
+            while (isOp("[")) {
                 p++;
+                if (isOp("]")) { p++; rank++; sawUnsized = true; continue; }
+                if (sawUnsized) fail("syntax", "array dimension expression after an empty [] in 'new " + name + "'");
+                E n = parseExpr();
+                expectOp("]");
+                std::string c = classOf(n.ty);
+                if (c == "long" || c == "double") fail("model", "array size must be int");
+                sized.push_back(n.code);
+                rank++;
+            }
+            E r;
+            r.pure = false;
+            r.ty = mk(name, rank);
+            if (sized.empty()) {                       // new T[]...{ ... }
                 if (!isOp("{")) fail("syntax", "expected '{' after 'new " + name + "[]'");
-                std::string body = parseArrayInit(mk(name, 1));
-                E r;
-                r.code = "new " + name + "[]" + body;
-                r.pure = false;
-                r.ty = mk(name, 1);
+                std::string body = parseArrayInit(r.ty);
+                std::string dimsText;
+                for (int i = 0; i < rank; i++) dimsText += "[]";
+                r.code = "new " + name + dimsText + body;
                 return r;
             }
-            E n = parseExpr();
-            expectOp("]");
-            if (isOp("[")) fail("model", "multi-dimensional array creation has no SLeeLa form (new T[n] takes one dimension)");
-            std::string c = classOf(n.ty);
-            if (c == "long" || c == "double") fail("model", "array size must be int");
-            E r;
-            r.code = "new " + name + "[" + n.code + "]";
-            r.pure = false;
-            r.ty = mk(name, 1);
+            if (sized.size() > 8) fail("model", "array creation with more than 8 sized dimensions");
+            std::string dimsText;
+            for (const auto& z : sized) dimsText += "[" + z + "]";
+            for (int i = (int)sized.size(); i < rank; i++) dimsText += "[]";
+            r.code = "new " + name + dimsText;
             return r;
         }
         std::vector<E> args = parseArgs();
@@ -1703,7 +1727,7 @@ private:
           << "   Presumed JDK version: " << opt.jdkVersion << "\n"
           << "   Functional equivalence is the goal: operators follow lib/java/JavaOperands and the\n"
           << "   conversion subject model; library members resolve through the lib/java tier. >>\n"
-          << "#sleela 3.1\n"
+          << "#sleela 3.2\n"
           << "import java.jdk-" << opt.jdkVersion << ";\n"
           << "material;\n\n";
         return o.str();

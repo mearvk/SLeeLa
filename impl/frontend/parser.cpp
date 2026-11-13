@@ -965,9 +965,10 @@ ExprP Parser::parsePrimary(){
         auto n=std::make_unique<NewExpr>(type);
         if(accept(Tok::LBracket)){
             if(check(Tok::RBracket)){
-                // Syntax 3.1: new T[]{a, b, c}
+                // Syntax 3.1: new T[]{a, b, c}; syntax 3.2 also new T[][]{{..},{..}} (any rank)
                 i_++;
                 std::string arrType=n->typeName+"[]";
+                while(check(Tok::LBracket)&&peek(1).kind==Tok::RBracket){ i_+=2; arrType+="[]"; uses32_.insert("multi-dimensional array creation"); }
                 if(!check(Tok::LBrace))error("expected '{' after 'new "+n->typeName+"[]' (an array creation needs a size or an initializer)");
                 return parsePostfix(parseArrayLiteral(arrType));
             }

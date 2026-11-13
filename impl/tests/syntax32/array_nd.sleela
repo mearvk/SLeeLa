@@ -38,6 +38,8 @@ class ArrayND {
     int[] ar = new int[5];
     print(ar.length);
     print(new int[7].length);
+    int[][] viaNew = new int[][]{{7, 8}, {9}};
+    print(viaNew[0][1] + viaNew[1][0]);
     int total = 0;
     for (int k = 0; k < 300; k++) {
       int[][] t = new int[40][40];

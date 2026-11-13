@@ -3629,7 +3629,8 @@ equal to 0 (a negative or too-large size is a runtime error). From 3.2:
 `new T[a][b]...` creates a **rectangular** array of arrays, outermost first: every
 dimension expression is evaluated left to right before any allocation; each row is
 a separate array object (so `g[0] != g[1]`, and a row can be replaced). Empty
-brackets must be trailing and leave those rows `null`; a sized dimension after an empty
+brackets must be trailing and leave those rows `null`; with no sized dimension at all the
+empty brackets introduce an initializer of that rank, `new int[][]{{7, 8}, {9}}`; a sized dimension after an empty
 one (`new T[2][][3]`) is a syntax error, as is more than eight sized dimensions.
 The element default (46.2) applies to the innermost sized level; trailing unsized
 levels are `null`. A multi-dimensional creation below 3.2 is the error

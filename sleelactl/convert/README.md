@@ -63,5 +63,5 @@ types, operands whose type cannot be determined without generics inference, `syn
 assignment/`++` used as a value, `float`, lambdas, `native`, varargs. The syntax blockers are tracked in SLEELA.syntax section 44.6: 3.1 delivered the array
 initializer, labeled `break`/`continue` and `return`/`break`/`continue` through `finally`; the
 remaining ones (static `String` members, multi-dimensional arrays, varargs, lambdas, enums, inner classes)
-are listed there as open. Output declares `#sleela 3.1`. Nothing is claimed beyond
+are listed there as open. Output declares `#sleela 3.1`. The converter now emits `#sleela 3.2` and converts multi-dimensional arrays (`new T[a][b]`, jagged `new T[a][]`, nested initializers) and casts a char to a number explicitly, because 3.2 shows a char-typed value as text. Nothing is claimed beyond
 what the report and the differential test show; the JDK is not yet fully converted.

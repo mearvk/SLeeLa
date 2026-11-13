@@ -60,12 +60,12 @@ Run: `sleelactl build java-convert`, then
 
 ## Known SLeeLa limits the converter must respect (do not paper over)
 
-- Syntax 3.1 (SLEELA.syntax section 44, also spelled `3.01`) is what converted output
-  declares. It gave: the array initializer (one dimension; multi-dimensional creation
-  `new T[a][b]` is still refused), labeled `break`/`continue`, and `return`/`break`/
-  `continue` that run `finally`. The character literal exists, but the converter emits
-  the integer code typed `char`; a `char`/`double` shown as text goes through the
-  `tostr` rows (`Double.toString`, JavaText).
+- Converted output declares `#sleela 3.2` (SLEELA.syntax sections 44 to 46). It uses the
+  array initializer, multi-dimensional creation `new T[a][b]` (jagged and nested initializers
+  included), labeled `break`/`continue`, and `return`/`break`/`continue` that run `finally`.
+  The converter emits a char literal as its integer code. Because 3.2 shows a value of static
+  type `char` as text, a Java `(int)`/`(long)` cast of a char is emitted as a real cast, and a
+  `char`/`double` shown as text still goes through the `tostr` rows (`Double.toString`, JavaText).
 - The open syntax blockers are the register in SLEELA.syntax 44.6. When SLeeLa gains a
   form, update 44.6, the model `unsupported` rows, the translator and a differential
   test together. `String` is still a keyword type: `String.valueOf/format/join` are
