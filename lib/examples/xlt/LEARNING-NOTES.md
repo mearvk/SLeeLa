@@ -52,7 +52,7 @@ full-featured starter.
 
 The `usualmem` / `accuratemem` **function** modifiers are an XLT-aware language
 feature recognized by the toolchain (both `make compiler` and the current
-bundled `working-binaries/sleela`, which now supports syntax 1.0 – 3.0, accept
+bundled `working-binaries/sleela`, which now supports syntax 1.0 – 3.1, accept
 them). `ADVANCED-app.sleela` is nonetheless kept as plain SLeeLa 1.7 that
 validates on older toolchains too, with the memory tiers declared at the
 **model** level in the `.xlt` sheet. For a model-level tiered example from the

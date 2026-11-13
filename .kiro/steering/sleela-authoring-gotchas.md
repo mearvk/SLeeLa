@@ -6,14 +6,14 @@ inclusion: always
 
 Confirmed behaviours of the toolchain that `sleela check` alone will not catch.
 These were verified against the current compiler, which supports **source
-syntax 1.0 – 3.0**. Keep new/edited `.sleela` code within these rules.
+syntax 1.0 – 3.1**. Keep new/edited `.sleela` code within these rules.
 
 ## Compiler choice
 
 - The prebuilt `working-binaries/sleela` is current: it reports
-  `SLeeLa™ Language/Runtime 1.3.2-pro` and supports **syntax 1.0 – 3.0**, so it
-  checks and runs the whole tree (including `#sleela 2.x` and `#sleela 3.0`
-  files). Use it directly:
+  `SLeeLa™ Language/Runtime 1.3.2-pro` and supports **syntax 1.0 – 3.1**, so it
+  checks and runs the whole tree (including `#sleela 2.x`, `#sleela 3.0` and
+  `#sleela 3.1` files). Use it directly:
 
       ./working-binaries/sleela check <file>
       ./working-binaries/sleela run   <file>

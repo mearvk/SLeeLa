@@ -150,7 +150,7 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | 13 | **Reflection and class literals** | `getClass()`, `X.class`, `int.class`, annotation processing. | No lowering designed. | open |
 | 14 | **`float`/`double` corner cases** | Postfix `++` of a float used as a value; `-0.0` sign; hex float literals. | Case by case. | small |
 | 15 | **Two converters** | `sleelactl/convert` (C/C++) and `lib/java/converter` (SLeeLa) share the model but not the lowerings. | Align them or retire one. | medium |
-| 16 | **CI and binaries** | The differential test is not in CI; `working-binaries/` still reports syntax 3.0. | Add a CI job (needs a JDK and a source build); refresh the binaries. | small |
+| 16 | **CI and binaries** | The differential test is not in CI; `working-binaries/` was refreshed 2026-11-13 and now reports syntax 3.1. | Add a CI job (needs a JDK and a source build). | small |
 | 17 | **Name-mapping interplay with unconverted `lib/java` units** | A converted class that implements a library interface declaring `close()` does not match `closeResource()`. | Rename in the library units too, or map both. | small |
 | 18 | **Null dereference and stack overflow** | Still fatal VM errors, not `NullPointerException` / `StackOverflowError`; faults with no `try` handler are fatal (as an uncaught exception ends a Java program) | Extend the fault kinds; null needs a typed check at each dereference | medium |
 | 19 | **Methods named like a Munction verb** (`connect`, `send`, `enable`, ...) called on a receiver | The compiler gives those names the verb meaning on every receiver | Rename like `close`, in the library units too | small |

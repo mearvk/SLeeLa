@@ -58,8 +58,8 @@ Recent additions to the language, drivers, and standard library:
   `SLDoubleArray`, `SLRefArray`, `SLArray2D` helpers). Related 3.0 work: §43.7
   (interfaces are runtime supertypes; calls on `Any` receivers) and §37.5 (VM
   faults are catchable inside `try`). The source compiler accepts syntax 1.0 –
-  3.1; the committed `working-binaries/` toolchain still reports 1.0 – 3.0 until
-  it is refreshed. See [Section V](#v-language-and-runtime).
+  3.1, and the committed `working-binaries/` toolchain was rebuilt on 2026-11-13
+  and now reports the same range. See [Section V](#v-language-and-runtime).
 
 - **The `advantage` standard-library package — advantaging a dividend, with
   math, physics, integration, grading, and routable output.**
@@ -305,7 +305,7 @@ interactive deployment workflow and all installation options, see
 [Quick and Safe Install](install/README.md).
 
 ## V. Language and Runtime
-The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). Compiler/tool version and source syntax version are distinct: the source compiler accepts syntax **1.0 – 3.1**, and the committed `working-binaries/` toolchain still reports 1.0 – 3.0 until it is refreshed. The new API build is produced by `make api-docs`.
+The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). Compiler/tool version and source syntax version are distinct: the source compiler accepts syntax **1.0 – 3.1**, and the committed `working-binaries/` toolchain (rebuilt 2026-11-13) reports the same range. The new API build is produced by `make api-docs`.
 
 - **Syntax 3.01 (the same edition as 3.1; the minor is an integer).** §44 character literals, array initializers, labeled `break`/`continue`, and `return`/`break`/`continue` that run `finally`; §45 the `char` specification; §46 the array specification (`a.length`, `new T[a][b]`).
 - **Syntax 3.0** consolidates the 1.0–2.9 surface into the current normative edition, preserving all feature-specific minimum gates. It adds the **`pure` and `gasoline` document markers** (§30) — a pair of bare, contextual, declarative-only Preonems that mean nearly the same thing, each marking the document's standing by its own honesty; method and constructor overload resolution (§40) and `this(...)`/`super(...)` delegation (§43.6); Java support (§43); and host-authorized Native Drive (§36). Below 3.0, a class that declares more than one constructor is rejected.
