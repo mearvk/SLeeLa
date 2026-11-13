@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 18122
+library-source-files: 18124
 library-packages: 123
 module-facade-symbols: 86
-total-symbol-records: 18208
+total-symbol-records: 18210
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -2025,6 +2025,8 @@ java	JDK28SourceSet.sleela	lib/java/JDK28SourceSet.sleela	source
 java	JavaBridge.sleela	lib/java/JavaBridge.sleela	source
 java	JavaClass.sleela	lib/java/JavaClass.sleela	source
 java	JavaConform.sleela	lib/java/JavaConform.sleela	source
+java	JavaFloat.sleela	lib/java/JavaFloat.sleela	source
+java	JavaFormat.sleela	lib/java/JavaFormat.sleela	source
 java	JavaInvocation.sleela	lib/java/JavaInvocation.sleela	source
 java	JavaMethod.sleela	lib/java/JavaMethod.sleela	source
 java	JavaObject.sleela	lib/java/JavaObject.sleela	source

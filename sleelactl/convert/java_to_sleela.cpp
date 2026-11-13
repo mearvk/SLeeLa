@@ -1035,7 +1035,7 @@ private:
             unsup("untyped");
         }
         // identifier: local, field, or a type name used as a qualifier
-        if (w == "String" && isOpAt(p + 1, ".")) unsup("string-static");
+        if (w == "String" && isOpAt(p + 1, ".")) return parseStringStatic();
         std::string name = ident();
         if (isOp("(")) {
             std::vector<E> a = parseArgs();
@@ -1662,6 +1662,130 @@ private:
             parseBody();
         }
         line("}");
+    }
+
+    // ---- static members of String ------------------------------------------------------------
+    // String is a keyword type in SLeeLa, so String.valueOf / join / format cannot be called; the
+    // Java tier lowers them. valueOf(x) is the string conversion of x (JLS 5.1.11). join(sep, ...)
+    // goes to JavaFormat.joinArray. format(literal, args...) is expanded at conversion time into a
+    // concatenation of JavaFormat calls, one per conversion, so each argument keeps its Java type.
+    E parseStringStatic() {
+        p++;                       // String
+        expectOp(".");
+        std::string name = ident();
+        std::vector<E> args = parseArgs();
+        E r;
+        r.pure = false;
+        r.ty = mk("String");
+        if (name == "valueOf" && args.size() == 1) {
+            const E& a = args[0];
+            if (!a.ty.known() && !a.isNull) unsup("untyped");
+            if (a.ty.dims == 1 && a.ty.n == "char") fail("model", "String.valueOf(char[]) is not converted");
+            E empty = lit("\"\"", mk("String"));
+            E v = emitBinary("+", empty, a);
+            v.pure = a.pure;
+            return v;
+        }
+        if (name == "join" && args.size() >= 1) {
+            std::string sep = strOfText(args[0]);
+            if (args.size() == 2 && args[1].ty.dims == 1 && args[1].ty.n == "String") {
+                r.code = "JavaFormat.joinArray(" + sep + ", " + args[1].code + ")";
+                return r;
+            }
+            std::string body;
+            for (size_t i = 1; i < args.size(); i++) {
+                if (!(args[i].ty.dims == 0 && args[i].ty.n == "String")) fail("model", "String.join over something other than Strings or a String[] is not converted");
+                body += (i > 1 ? ", " : "") + args[i].code;
+            }
+            r.code = args.size() == 1 ? "JavaFormat.joinArray(" + sep + ", new String[0])" : "JavaFormat.joinArray(" + sep + ", new String[]{" + body + "})";
+            return r;
+        }
+        if (name == "format" && !args.empty()) return lowerFormat(args);
+        fail("string-static", "String." + name + " with " + std::to_string(args.size()) + " argument(s) is not converted");
+    }
+    std::string strOfText(const E& a) { return "(\"\" + " + strOf(a) + ")"; }
+
+    E lowerFormat(const std::vector<E>& args) {
+        // the format must be a string literal: its text is recovered from the generated code
+        const E& f = args[0];
+        if (!(f.ty.dims == 0 && f.ty.n == "String") || f.code.size() < 2 || f.code.front() != '"' || f.code.back() != '"')
+            fail("format-nonliteral", "String.format is converted only with a string literal format");
+        // unquote our own quote() output
+        std::string fmt;
+        for (size_t i = 1; i + 1 < f.code.size(); i++) {
+            char c = f.code[i];
+            if (c == '\\' && i + 2 < f.code.size()) {
+                char n = f.code[++i];
+                fmt += (n == 'n') ? '\n' : (n == 't') ? '\t' : (n == 'r') ? '\r' : n;
+            } else fmt += c;
+        }
+        std::vector<std::string> parts;
+        std::string lit;
+        size_t ai = 1;
+        auto flushLit = [&]() {
+            if (lit.empty()) return;
+            bool bad = false;
+            Tok none;
+            parts.push_back(quote(lit, none, &bad));
+            lit.clear();
+        };
+        for (size_t i = 0; i < fmt.size(); i++) {
+            if (fmt[i] != '%') { lit += fmt[i]; continue; }
+            i++;
+            if (i >= fmt.size()) fail("format-conv", "format string ends with %");
+            int flags = 0;
+            for (; i < fmt.size(); i++) {
+                char c = fmt[i];
+                if (c == '-') flags |= 1; else if (c == '0') flags |= 2; else if (c == '+') flags |= 4;
+                else if (c == ',') flags |= 8; else if (c == ' ') flags |= 16; else break;
+            }
+            int width = 0, prec = -1;
+            while (i < fmt.size() && isdigit((unsigned char)fmt[i])) width = width * 10 + (fmt[i++] - '0');
+            if (i < fmt.size() && fmt[i] == '.') { i++; prec = 0; while (i < fmt.size() && isdigit((unsigned char)fmt[i])) prec = prec * 10 + (fmt[i++] - '0'); }
+            if (i >= fmt.size()) fail("format-conv", "incomplete format specifier");
+            char conv = fmt[i];
+            if (conv == '%') { lit += '%'; continue; }
+            if (conv == 'n') { lit += '\n'; continue; }
+            if (ai >= args.size()) fail("format-arg", "the format has more conversions than arguments");
+            const E& a = args[ai++];
+            std::string w = std::to_string(width), fl = std::to_string(flags);
+            std::string cls = classOf(a.ty);
+            flushLit();
+            if (conv == 'd') {
+                if (cls != "int" && cls != "long") fail("format-arg", "%d needs an integral argument");
+                parts.push_back("JavaFormat.dec(" + a.code + ", " + w + ", " + fl + ")");
+            } else if (conv == 'x' || conv == 'X' || conv == 'o') {
+                if (cls != "int" && cls != "long") fail("format-arg", std::string("%") + conv + " needs an integral argument");
+                int bits = (a.ty.n == "long" || a.ty.n == "Long") ? 64 : (a.ty.n == "byte" || a.ty.n == "Byte") ? 8 : (a.ty.n == "short" || a.ty.n == "Short") ? 16 : 32;
+                parts.push_back("JavaFormat.radix(" + a.code + ", " + std::to_string(bits) + ", " + (conv == 'o' ? "3" : "4") + ", " + (conv == 'X' ? "true" : "false") + ", " + w + ", " + fl + ")");
+            } else if (conv == 'f') {
+                if (cls != "double" && cls != "float") fail("format-arg", "%f needs a floating point argument");
+                parts.push_back("JavaFormat.fixed(" + a.code + ", " + std::to_string(prec < 0 ? 6 : prec) + ", " + w + ", " + fl + ")");
+            } else if (conv == 's') {
+                parts.push_back("JavaFormat.text(" + strOfText(a) + ", " + std::to_string(prec) + ", " + w + ", " + fl + ")");
+            } else if (conv == 'c') {
+                std::string txt;
+                if (a.ty.dims == 0 && a.ty.n == "char") txt = strOf(a);
+                else if (cls == "int") { const cm_rec* tr = cm_find(&M, "tostr", "char", nullptr, nullptr); txt = tr ? subst(tr->f[1], a.code, "") : a.code; }
+                else fail("format-arg", "%c needs a char or int argument");
+                parts.push_back("JavaFormat.text(" + txt + ", -1, " + w + ", " + fl + ")");
+            } else if (conv == 'b') {
+                if (cls != "boolean") fail("format-arg", "%b is converted for boolean arguments only");
+                parts.push_back("JavaFormat.text((\"\" + " + a.code + "), " + std::to_string(prec) + ", " + w + ", " + fl + ")");
+            } else {
+                fail("format-conv", std::string("the conversion %") + conv + " is not converted (supported: d x X o f s c b n %)");
+            }
+        }
+        if (ai != args.size()) fail("format-arg", "the format has fewer conversions than arguments");
+        flushLit();
+        E r;
+        r.pure = false;
+        r.ty = mk("String");
+        if (parts.empty()) { r.code = "\"\""; return r; }
+        std::string code = "(" + parts[0];
+        for (size_t i = 1; i < parts.size(); i++) code += " + " + parts[i];
+        r.code = code + ")";
+        return r;
     }
 
     // ---- enum --------------------------------------------------------------------------------

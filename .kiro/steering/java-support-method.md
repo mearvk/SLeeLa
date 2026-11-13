@@ -1,5 +1,10 @@
 # Java support method (Kiro settings for this repo)
 
+> **Superseded in part (2026-11-13).** New Java support is NOT added to the frontend or VM. It goes
+> into the Java tier (`lib/java`, `sleelactl/convert`) and is specified in `lib/java/JAVA.SPEC.md`.
+> The points below describe the existing frontend support (`spark`, `java_references`), which stays
+> as it is.
+
 Repo-scoped, always-on. Normative source: `SLEELA.syntax` section 43.
 
 ## The method

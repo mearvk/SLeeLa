@@ -16,6 +16,10 @@ Java source --java_lex.c--> tokens --java_to_sleela.cpp--> SLeeLa 3.0 document(s
 | `java_to_sleela.{h,cpp}` | C++17 | typed recursive-descent translator; two passes (signatures, then bodies) |
 | `javaconv_main.cpp` | C++17 | CLI: directory walk, symbol collection over the whole tree, report |
 
+Converted constructs and the rules for extending the converter are specified in the Java Specific
+Section, [`lib/java/JAVA.SPEC.md`](../../lib/java/JAVA.SPEC.md). Java improvements go in the converter and in
+`lib/java`, never in the compiler, VM or runtime.
+
 ## The conversion subject
 
 Like `math` and `physics`, `conversion` is a subject with a model:

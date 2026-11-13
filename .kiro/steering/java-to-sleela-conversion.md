@@ -4,6 +4,12 @@ inclusion: always
 
 # IMPORTANT: Java -> SLeeLa conversion (sleelactl `java-convert`)
 
+**Standing rule (2026-11-13).** Java improvements do NOT go into the SLeeLa compiler (`impl/frontend`),
+VM (`impl/core`) or runtime. They go into the Java tier: SLeeLa library code under `lib/java` and
+lowerings in the converter (`sleelactl/convert`, `conversion.model`). They are specified in the Java
+Specific Section, `lib/java/JAVA.SPEC.md`, not in `SLEELA.syntax`, and from there into the
+documentation. Syntax 3.1/3.2 (sections 44 to 46) stays as the language features the tier uses.
+
 Standing, always-on. Registered 2026-11-12. Changes to this area must keep these rules.
 
 ## The goal

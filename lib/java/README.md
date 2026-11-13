@@ -19,6 +19,13 @@ The collection is a native SLeeLa source surface for Java-facing language and fr
 
 The inventory is deliberately distinguished from a copy of the Java implementation. A file in this directory represents a SLeeLa-side language object, binding, contract, facade, or interoperability definition unless its documentation explicitly identifies another role.
 
+## Java Specific Section
+
+The specification of everything that is specific to Java source (the Java tier, the conversion
+contract, the lowering of every converted construct, the open items and how to extend the tier) is
+[`JAVA.SPEC.md`](JAVA.SPEC.md). It is the Java Specific Section of the overall SLeeLa specification.
+Java improvements are made here and in the converter, never in the SLeeLa compiler, VM or runtime.
+
 ## The Java container
 
 `/lib/java` is the **Java container**. Java definitions (`Math`, `Integer`,

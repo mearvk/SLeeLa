@@ -22,6 +22,7 @@ governed by the Sleela Language Metadocument (SL-META-0001).
 | `.sst` semantic layer (2.0) | [`SST-2.0.model`](SST-2.0.model) |
 | Standard library inventory (`/lib`) | [`lib/LIBRARY.INDEX.md`](lib/LIBRARY.INDEX.md), [`lib/LIBRARY.SYMBOLS.md`](lib/LIBRARY.SYMBOLS.md) |
 | Architecture overview | [`markdown/ARCHITECTURE.md`](markdown/ARCHITECTURE.md) |
+| Java Specific Section (the Java tier, Java to SLeeLa conversion) | [`lib/java/JAVA.SPEC.md`](lib/java/JAVA.SPEC.md) |
 | Compiler + library resolution | [`markdown/COMPILER.md`](markdown/COMPILER.md), [`markdown/COMPILER.RESOLUTION.md`](markdown/COMPILER.RESOLUTION.md) |
 | Build system | [`markdown/BUILD.md`](markdown/BUILD.md), [`impl/BUILD-LAYOUT.md`](impl/BUILD-LAYOUT.md) |
 | Native C/C++ design | [`impl/DESIGN.md`](impl/DESIGN.md) |

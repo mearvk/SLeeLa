@@ -9298,6 +9298,10 @@
       "sha256": "27ca077e54d647bcdbecd7d356aaaaaac3642cb8fcd9e26d05ecbe4bfd277d8d"
     },
     {
+      "path": "lib/java/JavaFormat.sleela",
+      "sha256": "552b9671d1039894f8e620f759db24cd9b0db2e5d3f355f0f176813d8f7a242c"
+    },
+    {
       "path": "lib/java/JavaInvocation.sleela",
       "sha256": "8515610de0127123683dc99efb2953dfb82c6f0eccc0859a2d332d76a05867d1"
     },
