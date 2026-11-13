@@ -9299,7 +9299,7 @@
     },
     {
       "path": "lib/java/JavaFormat.sleela",
-      "sha256": "552b9671d1039894f8e620f759db24cd9b0db2e5d3f355f0f176813d8f7a242c"
+      "sha256": "7db75dd09fd70821859e48e8a0c2cdafb68c4d3e5b85ae52de05f5b8d44ab02a"
     },
     {
       "path": "lib/java/JavaInvocation.sleela",

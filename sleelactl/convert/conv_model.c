@@ -21,6 +21,7 @@ static int fields_for(const char *kind) {
         {"widen", 2},   {"compound", 2}, {"binop", 3},   {"unop", 3},
         {"cast", 3},    {"incr", 2},    {"ret", 3},      {"field", 3},
         {"call", 2},    {"unsupported", 2}, {"tostr", 2},
+        {"chartext", 3},
     };
     size_t i;
     for (i = 0; i < sizeof t / sizeof t[0]; i++)

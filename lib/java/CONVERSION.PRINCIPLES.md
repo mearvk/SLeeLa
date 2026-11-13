@@ -125,7 +125,7 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | sleelactl registration | `sleelactl build java-convert`, `sleelactl run java-convert ...` | `bin/sleelactl.d/registry.conf` |
 | Presumed-JDK directories | `sleelactl/jdk/<N>/java` in, `sleelactl/jdk/<N>/sleela` out | `sleelactl/jdk/README.md` |
 | Support library | `JavaOperands`, `JavaFloat`, `JavaFormat`, `JavaText`, `jdk-25`/`jdk-28` units | `lib/java` |
-| Differential test | 20 programs on a JDK and on the VM, plus 7 refusals and a stale-output check (28 of 28, 2026-11-13) | `tests/javaconv_differential_test.sh` |
+| Differential test | 20 programs on a JDK and on the VM, plus 9 refusals and a stale-output check (31 of 31, 2026-11-13; CI `java-convert.yml`) | `tests/javaconv_differential_test.sh` |
 | Language features the tier uses | char literal, array initializer, labels, `finally` on abrupt exit (3.1); `a.length`, multi-dimensional arrays, char as text (3.2) | `SLEELA.syntax` sections 44 to 46 |
 
 ## 3. What is left
@@ -143,7 +143,7 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | 9 | **Real concurrency** | `synchronized`/`volatile` are plain under `--single-thread`; a truly multi-threaded program is not claimed equivalent. | Monitors and a memory model on the VM, or keep the policy. | large |
 | 10 | **`native` methods** | No Java body to convert. | Hand-written bindings only. | not convertible |
 | 11 | **Library behavior** | Converted code calls `lib/java` units; many `jdk-28` units are signature stubs that return null. Equivalence of a call depends on that unit being implemented. | Implement units; the differential suite is the oracle. | very large |
-| 12 | **Whole-JDK measurement** | **Re-run 2026-11-13**: 423 of 884 files converted (429 with `--single-thread`; 344 on 2026-11-12). Largest first refusals: `nested-ambiguous` 133 files, `nested` 68, `untyped` 57. Converted files are not yet measured through `sleela check`. | Re-run on a presumed JDK tree, publish the report. | small |
+| 12 | **Whole-JDK measurement** | **Re-run 2026-11-13**: 420 of 884 files converted (426 with `--single-thread`; 344 on 2026-11-12). Largest first refusals: `nested-ambiguous` 131 files, `nested` 67, `untyped` 57. See `JAVA.CONVERSION.STATUS.md`. Converted files are not yet measured through `sleela check`. | Re-run on a presumed JDK tree, publish the report. | small |
 | 13 | **Reflection and class literals** | `getClass()`, `X.class`, `int.class`, annotation processing. | No lowering designed. | open |
 | 14 | **`float`/`double` corner cases** | Postfix `++` of a float used as a value; `-0.0` sign; hex float literals. | Case by case. | small |
 | 15 | **Two converters** | `sleelactl/convert` (C/C++) and `lib/java/converter` (SLeeLa) share the model but not the lowerings. | Align them or retire one. | medium |

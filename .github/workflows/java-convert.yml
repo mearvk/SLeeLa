@@ -1,0 +1,85 @@
+name: java-convert
+
+# Differential test of the sleelactl Java -> SLeeLa converter (sleelactl/convert).
+# Every program in sleelactl/convert/tests/java runs on a real JDK and, converted, on the
+# SLeeLa VM built from this commit; the outputs must be byte-identical. Every program in
+# tests/reject must be refused with its stated construct and write nothing.
+# Rules: .kiro/steering/java-to-sleela-conversion.md, lib/java/JAVA.SPEC.md section 7.
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - ".github/workflows/java-convert.yml"
+      - "sleelactl/convert/**"
+      - "impl/subjects/conversion/**"
+      - "lib/java/*.sleela"
+      - "lib/java/support/**"
+      - "impl/frontend/**"
+      - "impl/core/**"
+      - "tests/javaconv_differential_test.sh"
+  pull_request:
+    branches: [main, master]
+    paths:
+      - ".github/workflows/java-convert.yml"
+      - "sleelactl/convert/**"
+      - "impl/subjects/conversion/**"
+      - "lib/java/*.sleela"
+      - "lib/java/support/**"
+      - "impl/frontend/**"
+      - "impl/core/**"
+      - "tests/javaconv_differential_test.sh"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: java-convert-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  differential:
+    name: Converted programs identical to the JDK (ubuntu-latest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      SLEELA_HOME: ${{ github.workspace }}
+      SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install native compiler dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential g++ make python3 \
+            libx11-dev libfontconfig1-dev libfreetype6-dev libpng-dev zlib1g-dev
+
+      - name: Set up the reference JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+
+      - name: Verify the source manifest
+        run: make -C impl check-manifest
+
+      - name: Build the SLeeLa runtime from this commit
+        run: |
+          make -C impl build/sleela
+          impl/build/sleela version
+
+      - name: Build the converter and self-check the conversion model
+        run: |
+          make -C sleelactl/convert
+          sleelactl/convert/build/javaconv --self-check
+          python3 impl/subjects/conversion/generate_ret_rows.py --check
+
+      - name: Differential test against the JDK
+        run: |
+          java -version
+          bash tests/javaconv_differential_test.sh "$PWD/impl/build/sleela"

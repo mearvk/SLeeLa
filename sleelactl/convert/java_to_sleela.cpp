@@ -348,6 +348,11 @@ private:
         if (qual.empty() && typeVars.count(name)) t.n = "?";
         else if (qual.empty()) t.n = resolveTypeName(name);
         else t.n = qual + "__" + name;
+        // A boxed type written as a type (Integer i, (Long) o, Double[] a). The converter holds
+        // boxed values as primitives, but a declaration would name the lib/java class Integer, to
+        // which a primitive is not assignable, so the output would not compile. Type arguments
+        // (List<Integer>) are erased and do not reach this point.
+        if (qual.empty() && modelBoxed(t.n)) fail("boxed", "the boxed type " + t.n + " used as a declared or cast type is not converted yet");
         return t;
     }
 
@@ -449,6 +454,28 @@ private:
             if (x.ty.n == "float") return "JavaFloat.text(" + x.code + ")";
             const cm_rec* r = cm_find(&M, "tostr", x.ty.n.c_str(), nullptr, nullptr);
             if (r) return subst(r->f[1], x.code, "");
+        }
+        // Any other single object of a KNOWN reference type (a library type, Object, an interface):
+        // its toString() at run time, through the model row. Boxed values are held as primitives and
+        // already show as Java does, so they keep their own text. A value of unknown type ("?", an
+        // erased generic or an untyped call result such as e.getSuppressed().length) may be a
+        // primitive at run time, so it keeps the plain SLeeLa text.
+        if (x.ty.dims == 0 && !kPrim.count(x.ty.n) && x.ty.n != "String" && x.ty.n != "null" && x.ty.n != "?" && !x.isType && !modelBoxed(x.ty.n)) {
+            auto ci = classes.find(x.ty.n);
+            if (ci != classes.end() && !ci->second.isInterface && !ci->second.isEnum) {
+                // a class of this tree without toString(): Java shows Name@hash unless a library
+                // ancestor supplies toString()
+                bool libraryAncestor = false;
+                int hops = 0;
+                for (std::string c = ci->second.super; !c.empty() && ++hops <= 32;) {
+                    auto up = classes.find(c);
+                    if (up == classes.end()) { libraryAncestor = true; break; }
+                    if (up->second.super == c) break;
+                    c = up->second.super;
+                }
+                if (!libraryAncestor) fail("object-text", "an object of " + x.ty.n + ", which has no toString(), shown as text: Java prints an identity hash");
+            }
+            if (const cm_rec* r = cm_find(&M, "tostr", "reference", nullptr, nullptr)) return subst(r->f[1], x.code, "");
         }
         return x.code;
     }
@@ -1071,6 +1098,14 @@ private:
                     }
                     std::string recvType = e.ty.dims == 0 ? e.ty.n : std::string("array");
                     args = adaptArgs(pickMethod(recvType, name, args), args);
+                    // model 9c: a library parameter that takes a char as text
+                    for (size_t ai = 0; ai < args.size(); ai++) {
+                        const std::string idx = std::to_string(ai);
+                        if (args[ai].ty.dims == 0 && args[ai].ty.n == "char" && cm_find(&M, "chartext", recvType.c_str(), name.c_str(), idx.c_str())) {
+                            args[ai].code = strOf(args[ai]);
+                            args[ai].ty = mk("String");
+                        }
+                    }
                     E r = callResult(recvType, name, args, paren(e.code) + "." + mapMember(name) + "(" + joinArgs(args) + ")", false);
                     e = r;
                     continue;

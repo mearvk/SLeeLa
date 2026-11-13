@@ -445,8 +445,8 @@ reaching the enclosing instance (closed by converter 0.7.0, `JConvOuter`),
 `Any` values stored into typed variables; calls on `Any` and interface casts
 were closed on 2026-11-13 by SLEELA.syntax 43.7) and from JDK-internal types that have no
 `jdk-28` file. (Update 2026-11-13, later: `sleelactl java-convert` was re-measured on the JDK 25.0.2
-`java.base` subset of 884 files: 423 converted, 429 with `--single-thread`, against 344 on 2026-11-12; its
-differential suite is 28 of 28. See `sleelactl/convert/README.md`.) A separate converter, `sleelactl java-convert` (C/C++, semantics
+`java.base` subset of 884 files: 420 converted, 426 with `--single-thread`, against 344 on 2026-11-12; its
+differential suite is 31 of 31. See `JAVA.CONVERSION.STATUS.md`.) A separate converter, `sleelactl java-convert` (C/C++, semantics
 in `impl/subjects/conversion/conversion.model`), landed the same day and fails
 closed per file. `lib/java/converter` keeps per-member stubs (decided
 2026-11-13); where the two share a law (`binop`, `tostr` rows of the model) it
