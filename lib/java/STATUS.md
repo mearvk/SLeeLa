@@ -266,9 +266,9 @@ never taken for a constant.
 |---|---|---|
 | ~~No overload resolution~~ **done** (section 40) | Hand-implemented classes still use the earlier suffixes (`absInt`, `addAt`, `toStringRadix`); stub types write no constructors yet | Rename to the Java names class by class; write constructors where their behavior is known |
 | Hand-implemented classes expose statics as instance methods | `new Double(0.0).parseDouble("2.5")` instead of `Double.parseDouble("2.5")`. `Math`, `Integer` and `Long` in `jdk-28/` are converted (`Math.abs(x)`, `Integer.parseInt(s)`, `Long.parseLong(s)`; each differential-tested against a real JDK), and every `StrictMath` static maps to the `Math` function of the same name | Convert the remaining classes class by class now that static access works |
-| No virtual dispatch through a base-typed receiver | Overrides are not reached through a supertype; exceptions compose messages at construction | Compiler/VM: virtual dispatch |
-| Base-class field initializers don't run for subclasses; `super(...)` not lowered | Generated constructors initialize inherited state explicitly | Compiler |
-| Only `catch (Any e)`; no `finally` | Callers test with `instanceof` | VM exception milestone |
+| ~~No virtual dispatch through a base-typed receiver~~ **done** (SLEELA.syntax 43.6 rules 1, 6, 7; `impl/tests/java_references/oop/polymorphism`, `interface`, `super_method`) | Library units written before it still compose exception messages at construction | Convert them class by class |
+| ~~Base-class field initializers don't run for subclasses; `super(...)` not lowered~~ **done** (43.6 rules 2 to 5; `oop/super_args`, `implicit_super`, `this_chain`) | `/lib` units still construct themselves (no implicit `super()` for them) | — |
+| ~~Only `catch (Any e)`; no `finally`~~ **done** (43.6 rule 11; `oop/catch_typed`, `catch_rethrow`, `try_finally`) | Still open: a `return`, `break` or `continue` out of a try that has `finally` is rejected (43.5); VM faults (`/ 0`, index out of range) are not catchable | VM |
 | ~~String bridge missing~~ **done** (`javaStringToUtf8`, `javaStringFromCodeUnit`, opcodes 183-184, ABI 1.8) | Text classes carry any Unicode text; only NUL and unpaired surrogates cannot become a plain String (catchable `UnsupportedOperationException`); `java.lang.String` instance methods work on built-in strings (`JavaStringMethods`, SLEELA.syntax section 41) | Regex members and the static `String.valueOf`/`join`/`format` |
 | No lambdas or functional interfaces | No `Comparator` sorting, `compute`/`merge`, streams | Compiler |
 | ~~No bitwise operators or `L`/`f` literal suffixes~~ **done** (`& | ^ ~ << >> >>>`, compound forms, `L`/`f` suffixes, `0x`/`0b` and `_` literals all compile) | — | — |
@@ -299,6 +299,8 @@ never taken for a constant.
 | `0572108e` | Probed accessor contracts for 294 types; stricter constructor counting | 42.7% (7.1% behavior) |
 | (2026-11-11) | **Overload resolution**; all Throwable-pattern constructors; every probed accessor constructor (330 types) | **44.5%** (8.9% behavior) |
 | `3340262e` | Java operand semantics: `byte`/`short`/`char`/`int32` wrap at the Java width; `JavaOperands`; `OperandSemantics` differential test | 45.5% (10.0%), `jdk-25/` tree |
+| `07d93a81` | Both trees re-measured; coverage tool `--tier`; `COVERAGE-JDK28.md` | jdk-25 45.5% / 10.0%, jdk-28 24.4% / 8.0% |
+| `15bb3c93` | `lib/java/converter/`: Java source to SLeeLa source converter (section 11); parser: bodiless methods returning `int32` and the other series integers default to `0` | coverage unchanged (the converter writes outside `lib/java`) |
 
 The percentages above are for the `jdk-25/` tree. The `jdk-28/` tree was first
 measured on 2026-11-12: 24.4% covered, 8.0% behavior.
@@ -333,6 +335,9 @@ python3 lib/java/jdk-25/tools/jdk_api_accessors_check.py
 examples/java/run-conformance.sh
 examples/java/differential/run-differential.sh
 python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json
+
+# 6. Convert Java source to SLeeLa source (writes outside lib/java; section 11)
+JCONV_IN=/path/to/jdk-src JCONV_OUT=/tmp/jdk28-sleela JCONV_FILTER=java.base/java/util bash lib/java/converter/run-converter.sh
 ```
 
 ---
@@ -355,6 +360,9 @@ Java types need, so none carries a private copy. `UUID` uses it; `MessageDigest`
 0b. **Diagnose the 30 failing accessor-contract packages** (section 4). They
    fail identically on the earlier compiler, so the cause is in the library or
    the generated check, not in the operand work.
+0d. **Decide the policy of `lib/java/converter`** (section 11): keep its
+   per-member fail-loud stubs, or fail closed per file as `sleelactl
+   java-convert` does (`.kiro/steering/java-to-sleela-conversion.md`).
 0c. **Fix or waive `test-osls-isa`** (the check reports native count 192 versus source count 185; what is being counted has not been inspected),
    so `make test` can be green again.
 1. **Rename the hand-implemented overload suffixes to the Java names** now
@@ -403,4 +411,32 @@ because a new numeric array element reads as `null` (section 6).
 Verification: `examples/java/differential/OperandSemantics` (189 lines, identical
 to OpenJDK 25.0.2), plus the 9 conformance programs and the 16 earlier
 differential tests (17 in total), all unchanged.
+
+---
+
+## 11. Converting Java source: `lib/java/converter` (2026-11-13)
+
+A SLeeLa program that walks a Java source tree (for example a JDK `src.zip`)
+and writes one SLeeLa file per type, nested types as `Outer.Inner.sleela`. All
+Java-to-SLeeLa decisions are in `converter/JConvRules.sleela`; the full rule
+table, the stub reasons and the reproduction steps are in
+[`converter/README.md`](converter/README.md). It writes outside `lib/java`
+and refuses to write into `jdk-28/`, so it does not change the numbers in
+section 1.
+
+| Measured (OpenJDK 25.0.2 sources) | Result |
+|---|---:|
+| Sample of 17 JDK files: converted | 16 (`UUID.java` skipped: non-ASCII bytes) |
+| SLeeLa files written / members / fail-loud stubs | 36 / 627 / 47 (7.5%) |
+| Output files with a syntax error | 0 |
+| Output files passing `sleela check` | 8 of 36 |
+| `converter/samples/demo/ConvDemo.java` against a real JDK | 17 of 18 lines identical |
+
+The `check` errors come from the gaps in section 6 (nested-type files, inner
+classes reaching the enclosing instance, statics written as instance methods,
+calls on `Any`, interface casts) and from JDK-internal types that have no
+`jdk-28` file. A separate converter, `sleelactl java-convert` (C/C++, semantics
+in `impl/subjects/conversion/conversion.model`), landed the same day and fails
+closed per file. Which policy `lib/java/converter` follows is open (section 9,
+item 0d).
 

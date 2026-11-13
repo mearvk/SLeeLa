@@ -242,10 +242,10 @@ These are the compiler gaps in `STATUS.md` section 6 and
 
 | # | Prerequisite | Unblocks |
 |---|---|---|
-| A1 | Virtual dispatch through a base-typed receiver; `super(...)` lowering; base field initializers for subclasses | overrides reached through `List`, `Map`, `Comparable`; exception messages composed by `getMessage()`; the whole abstract-class family (9,732 abstract stubs) |
-| A2 | Typed `catch`, multiple catch clauses, `finally` in all paths (a `return` inside `try`/`catch` with `finally` is currently rejected) | faithful `try`-with-resources, `Closeable`/`AutoCloseable`, real exception-flow code in `java.io` / `java.net` |
+| A1 | ~~Virtual dispatch through a base-typed receiver; `super(...)` lowering; base field initializers for subclasses~~ **done** (SLEELA.syntax 43.6; `impl/tests/java_references/oop/`) | regenerate the library classes that still work around it (exception messages composed at construction) |
+| A2 | ~~Typed `catch`, multiple catch clauses, `finally`~~ **done** (43.6 rule 11). Still open: `return` / `break` / `continue` out of a try with `finally` (43.5), try-with-resources, catchable VM faults (`/ 0`) | faithful `try`-with-resources, `Closeable`/`AutoCloseable`, exception flow in `java.io` / `java.net` |
 | A3 | Lambdas and functional interfaces (`Comparator`, `Function`, `Consumer`, `Supplier`, `Predicate`) | comparator sorting, `compute` / `merge` / `forEach`, `Optional.map`, then `java.util.stream` |
-| A4 | Nested types resolved by the loader (`Map.Entry`, `Character.UnicodeBlock`) and exact-package import matching | `entrySet`, `Map.Entry`, ~hundreds of `Outer.Inner` files that are unreachable today |
+| A4 | Nested types resolved by the loader (`Map.Entry`, `Character.UnicodeBlock`) and exact-package import matching | `entrySet`, `Map.Entry`, ~hundreds of `Outer.Inner` files that are unreachable today; also the largest cause of `check` errors in converted JDK code (course 16) |
 | A5 | Live collection views (`keySet`, `values`, `entrySet`, `subList` return snapshots) | Java-correct iteration and mutation semantics |
 | A6 | Zero-fill numeric arrays by element type (new `int[]` elements read `null`) | removes explicit clearing in library code and the 2^53 `long`-sum hazard |
 | A7 | Task 14 above (array-element narrowing, `char` literals, `Infinity` text) | `char`-heavy code: `String`, `StringBuilder`, `Character`, `java.text` |
@@ -284,12 +284,41 @@ members, from the `jdk-25/` tree's `COVERAGE.md`; `java.base` first, presentatio
 5. Prefer a differential test (real JDK beside the VM) over a hand-written
    expected value; the JDK is the source of truth.
 
-**Suggested next steps:** (0) Stage 0, the `jdk-28/` parity gap, because it is the largest measured shortfall; (1) Task 14 item 1 (array-element narrowing,
+**Suggested next steps:** (A1 and A2 have landed since this was written; see the table.) (0) Stage 0, the `jdk-28/` parity gap, because it is the largest measured shortfall; (1) Task 14 item 1 (array-element narrowing,
 small and verifiable now); (2) A2, typed `catch` and `finally` (many library
 bodies are waiting on it); (3) A1, virtual dispatch (largest single unlock).
 **Moral — Count what runs, not what is declared.** A signature that throws
 `UnsupportedOperationException` is a promise, not a feature; the progress bar
 counts only behavior that a real JDK agrees with.
+
+---
+
+## 16. The Java converter (`lib/java/converter`): from first cut to useful
+
+**Ingredients:** [`lib/java/converter/README.md`](../lib/java/converter/README.md)
+(rule table, stub reasons, measurements); `lib/java/STATUS.md` section 11; a JDK
+`src.zip` (OpenJDK 25.0.2 is installed in the sandbox); the separate
+`sleelactl java-convert` and its steering
+`.kiro/steering/java-to-sleela-conversion.md`.
+**Method:** state on 2026-11-13 (`15bb3c93`): a SLeeLa program that converts a
+Java source tree to one SLeeLa file per type. On a 17-file JDK sample: 16
+converted, 36 SLeeLa files, 627 members, 47 fail-loud stubs (7.5%), **0 syntax
+errors**, 8 of 36 files pass `sleela check`; its own sample program runs 17 of
+18 lines identical to a real JDK. Next, in order:
+
+| # | Step | Why |
+|---|---|---|
+| 0 | **Decide the policy**: per-member fail-loud stubs (now), or fail closed per file like `java-convert` | the two converters should not disagree on what "converted" means |
+| 1 | A bundle mode (one document per program, nested types inlined) | a runnable conversion must be one document today; several files duplicate library units, and a separate `Color.sleela` loses to the JDK 28 `java.awt.Color` |
+| 2 | Loader: resolve `Outer.Inner.sleela`; compiler: inner classes reach the enclosing instance | most `check` errors in `HashMap` / `AbstractList` (course 15, A4) |
+| 3 | Library: real statics for `Float`, `Objects`, `Arrays`, `Character` | "instance method must be called on an instance" errors |
+| 4 | Expression types in the converter (a symbol table per member) | removes the near-misses: `double` / `char` text in concatenation, `int` wrap inside expressions (use `JavaOperands`), interface-typed values |
+| 5 | Lower lambdas and method references (`lib/java/jdk-28/LOWERING.md` section 2) | the largest group of stubs in real JDK code |
+| 6 | Non-ASCII sources: a byte-safe read, or a VM helper | 12 of 15,020 JDK files are skipped |
+| 7 | A differential pair per supported construct (`samples/`), run occasionally | equivalence is shown by output, not claimed |
+
+**Moral — A converter is measured by what runs.** Count the files that check
+and the lines that match a real JDK, never the files written.
 
 ---
 

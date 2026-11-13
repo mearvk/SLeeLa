@@ -179,6 +179,15 @@ operations are gated at 3.0.
 
 ## Deferred keywords and semantics
 
+> **Status 2026-11-13.** Items 3 to 7 (virtual dispatch, base-class field
+> initializers, `super(...)`, implicit subtype assignment, typed and multiple
+> `catch` with `finally`) are now done in the compiler (SLEELA.syntax 43.6;
+> regression `impl/tests/java_references/oop/`). Item 10 is done for the
+> bitwise operators, `L` / `f` suffixes and the `byte` / `short` / `char` /
+> `int32` widths (`STATUS.md` section 10); `char` literals are still open. The
+> workarounds in the generated classes remain until those classes are
+> regenerated. The current list of differences is `STATUS.md` section 6.
+
 Each of these is a compiler or VM change. Each workaround above maps to one
 item here. When an item lands, its workaround can be removed by editing the
 generators in [`tools/implementation/`](tools/implementation/) and

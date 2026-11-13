@@ -34,6 +34,16 @@ Java SE / JDK 28 types. The files are at the online API path
 `jdk-28/<module>/<package>/<Type>.sleela`, with a folder for each of the 58 JDK 28
 modules. Each file names its JDK 28 API page as its Java Source.
 
+## Converting Java source to SLeeLa
+
+[`converter/`](converter/README.md) is a SLeeLa program that walks a Java
+source tree (for example a JDK `src.zip`, `<module>/<package>/<Type>.java`) and
+writes one SLeeLa file per type to an output tree outside `lib/java`. Every
+Java-to-SLeeLa decision is in `converter/JConvRules.sleela`. A member that uses
+a construct SLeeLa cannot express yet becomes a stub that throws
+`UnsupportedOperationException` naming the reason. Status and measurements:
+[`STATUS.md`](STATUS.md) section 11.
+
 ## Machine-Readable Inventory
 
 `MANIFEST.json` is the machine-readable contract for this directory. It records the expected inventory count and the rules used by CI to validate the collection.
