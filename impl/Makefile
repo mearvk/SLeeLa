@@ -435,7 +435,7 @@ else
 endif
 ALL_OBJECTS := $(CORE_OBJ) $(JAVA_STRING_OBJ) $(OSLS_OBJS) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(COMMON_RAILS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE) $(UTF16_OBJ) $(UTF16_SMOKE) $(JAVA_STRING_OBJ) $(JAVA_STRING_SMOKE)
 
-.PHONY: all install install-all uninstall uninstall-all sleelvac libslcore test-platform test-ref test-osls-isa test-osls-vm stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security regen-manifest check-manifest build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer test-native-ipc-handles test-native-call test-native-method-metadata test-native-method-aot test-native-concurrency test-java-utf16 test-java-string test-java-string-vm test-exceptions test-lineage
+.PHONY: all install install-all uninstall uninstall-all sleelvac libslcore test-platform test-ref test-osls-isa test-osls-vm stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security regen-manifest check-manifest build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer test-native-ipc-handles test-native-call test-native-method-metadata test-native-method-aot test-native-concurrency test-java-utf16 test-java-string test-java-string-vm test-exceptions test-lineage test-runtime-pressure
 
 
 all: verify-security $(SLEELA_BIN) $(SLEELAVC_BIN) $(NORDSHRIFT_BIN) $(SLCORE_LIB) stage
@@ -495,7 +495,7 @@ verify-security:
 	@if [ ! -f "$(VERIFY_MANIFEST)" ]; then echo "sleela: trusted SHA-256 manifest not found: $(VERIFY_MANIFEST)" >&2; exit 1; fi
 	@if [ ! -r "$(VERIFY_TOOL)" ]; then echo "sleela: verification tool not readable: $(VERIFY_TOOL)" >&2; exit 1; fi
 	@command -v $(firstword $(PYTHON)) >/dev/null 2>&1 || { echo "sleela: $(PYTHON) is required for SHA-256 verification" >&2; exit 1; }
-	@$(PYTHON) "$(VERIFY_TOOL)" $(VERIFY_ARGS)
+	@$(PYTHON) "$(VERIFY_TOOL)" $(VERIFY_ARGS) || { echo "sleela: the source tree does not match the trusted manifest, so NOTHING was rebuilt: any existing build/sleela is the PREVIOUS build and does not contain your edits." >&2; echo "sleela: if the edit was intended, review it and run 'make regen-manifest' (or tools/generate-sha256-manifest.py), then rebuild." >&2; exit 1; }
 
 # regen-manifest: rewrite the trusted manifest from the current source tree.
 # Use this AFTER you have intentionally edited verified source (the interpreter
@@ -1033,7 +1033,7 @@ $(BUILD)/driver_sleelvac.o: frontend/driver.cpp frontend/compiler.h frontend/art
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-osls-isa test-osls-vm test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-lineage test-ref test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-unsigned-integer test-runtime test-memmgr test-native-ipc-handles test-native-call test-native-method-metadata test-native-method-aot test-native-concurrency
+test: verify-security test-osls-isa test-osls-vm test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-lineage test-ref test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-unsigned-integer test-runtime test-memmgr test-native-ipc-handles test-native-call test-native-method-metadata test-native-method-aot test-native-concurrency test-runtime-pressure
 test-osls-isa:
 	@cd $(CURDIR)/.. && $(PYTHON) tools/verify-osls-isa-extension.py
 
@@ -1173,6 +1173,11 @@ test-platform: $(THREAD_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(IO_PLATFORM_SMOK
 	@$(TERMINAL_PLATFORM_SMOKE)
 	@$(LIBRARY_PLATFORM_SMOKE)
 	@$(TIME_PLATFORM_SMOKE)
+
+# test-runtime-pressure: garbage collection under churn, the bounded live-object tables, allocation inside
+# a finally block, and worker threads (impl/tests/runtime/pressure).
+test-runtime-pressure: $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json} bash impl/tests/runtime/pressure/run_pressure_tests.sh $(CURDIR)/$(SLEELA_BIN)
 
 test-runtime: $(RUNTIME_SMOKE) $(GC_MODERN_SMOKE)
 	@echo "=== SLVM runtime services -- behavioral smoke ==="; $(RUNTIME_SMOKE)

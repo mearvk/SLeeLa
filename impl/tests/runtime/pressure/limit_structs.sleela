@@ -1,0 +1,3 @@
+#sleela 3.1
+class Cell { int v; }
+class StructLimit { void main() { Cell[] hold = new Cell[5000]; for (int i = 0; i < 5000; i++) { Cell c = new Cell(); hold[i] = c; } print("unreachable"); } }

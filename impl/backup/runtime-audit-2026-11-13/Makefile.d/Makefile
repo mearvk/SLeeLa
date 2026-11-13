@@ -1,0 +1,1232 @@
+# =============================================================================
+# Makefile for Sleela (C/C++ core + front end) and Nordshrift (.sst -> triple).
+# =============================================================================
+CC ?= gcc
+CXX ?= g++
+SUBJECT_INCLUDES := -Isubjects/native -Isubjects/math -Isubjects/physics \
+                    -Isubjects/economics -Isubjects/inference -Isubjects/astrophysics -Isubjects/sociology \
+                    -Isubjects/chemistry -Isubjects/finance
+
+# ---------------------------------------------------------------------------
+# Platform detection. The C/C++ core is OS-neutral (it goes through the
+# sleela_thread/net/io abstraction layer), so the only per-OS differences are
+# the thread flag, the link libraries, and the executable suffix.
+#   * Linux/macOS (POSIX): -pthread, link libdl (dlopen) + libm.
+#   * Windows 10+ (MinGW):  Win32 threads (no -pthread), link Winsock (ws2_32)
+#                           and IP Helper (iphlpapi); no libdl (LoadLibrary is used via sleela_library),
+#                           binaries get a .exe suffix.
+# GNU Make on Windows/MinGW sets OS=Windows_NT.
+# ---------------------------------------------------------------------------
+ifeq ($(OS),Windows_NT)
+  PLATFORM := windows
+  EXE := .exe
+  THREADFLAG :=
+  PLATFORM_LIBS := -lws2_32 -liphlpapi -lopengl32 -lgdi32 -lm
+else
+  EXE :=
+  THREADFLAG := -pthread
+  UNAME_S := $(shell uname -s)
+  ifeq ($(UNAME_S),Darwin)
+    # macOS (Darwin, Apple clang): dlopen lives in libSystem, so there is no
+    # separate -ldl to link (and passing it can error on some SDKs). clock_gettime
+    # is also in libSystem, so no -lrt. -pthread is accepted by clang.
+    PLATFORM := macos
+    PLATFORM_LIBS := -lm
+  else
+    PLATFORM := linux
+    PLATFORM_LIBS := -ldl -lm
+  endif
+endif
+
+CFLAGS ?= -std=c11 -O2 -Wall -Wextra $(THREADFLAG)
+CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra $(THREADFLAG)
+# Automatic header-dependency tracking. -MMD writes a .d file per object listing
+# every (non-system) header it includes; -MP adds phony targets so a deleted
+# header does not break the build. These .d files are -included below so that
+# editing ANY header recompiles exactly the objects that include it. This closes
+# a class of stale-object bugs (e.g. editing a struct layout in a shared header
+# while a dependent object was compiled against the old layout -> ABI mismatch).
+DEPFLAGS := -MMD -MP
+# -I the native CommonRails "heritage" printing layer so the front end's
+# common_rails_banner.hpp adapter (and thus the compiler/Nordshrift) can route
+# their banners through the one shared professional-printing surface.
+COMMON_RAILS_INC := -I../common-rails/heritage/printing/cpp
+CPPFLAGS += -Ifrontend $(SUBJECT_INCLUDES) -I../bash $(COMMON_RAILS_INC) $(DEPFLAGS)
+LDFLAGS ?= $(THREADFLAG)
+LIBS ?= $(PLATFORM_LIBS)
+BUILD := build
+PYTHON ?= python3
+STAGE := $(BUILD)/sleela-package
+STAGE_BIN := $(STAGE)/bin
+STAGE_CONFIG := $(STAGE)/Config
+STAGE_OPTIONS := $(STAGE)/Options
+STAGE_LIB := $(STAGE)/lib
+STAGE_DOCS := $(STAGE)/docs
+SLEELA_BIN := $(BUILD)/sleela$(EXE)
+SLEELAVC_BIN := $(BUILD)/sleelvac$(EXE)
+NORDSHRIFT_BIN := $(BUILD)/nordshrift$(EXE)
+# Reusable static archive of the native VM Core engine + its OS-abstraction
+# backends. This is the single "base engine" the premium SLVM generations under
+# ../sleela-virtual-machine/0NN link against so each one is a real, runnable VM
+# (slvm_new/slcore_exchange/slvm_load_file/slvm_run/slvm_free) instead of a
+# parallel toy interpreter. Its public API is impl/core/sleela_core.h.
+SLCORE_LIB := $(BUILD)/libslcore.a
+THREAD_SMOKE := $(BUILD)/thread_smoke
+THREAD_SMOKE_OBJ := $(BUILD)/thread_smoke_test.o
+SOCKET_SMOKE_OBJ := $(BUILD)/socket_smoke_test.o
+THREAD_PLATFORM_SMOKE := $(BUILD)/thread_platform_smoke
+SOCKET_SMOKE := $(BUILD)/socket_smoke
+SYNCHRO_SMOKE := $(BUILD)/synchro_smoke
+MUNCTION_SMOKE := $(BUILD)/munction_smoke
+BESTOF_SMOKE := $(BUILD)/bestof_smoke
+IO_PLATFORM_SMOKE := $(BUILD)/io_platform_smoke
+NET_PLATFORM_SMOKE := $(BUILD)/net_platform_smoke
+PATH_PLATFORM_SMOKE := $(BUILD)/path_platform_smoke
+TERMINAL_PLATFORM_SMOKE := $(BUILD)/terminal_platform_smoke
+LIBRARY_PLATFORM_SMOKE := $(BUILD)/library_platform_smoke
+TIME_PLATFORM_SMOKE := $(BUILD)/time_platform_smoke
+SYSTEM_MONITOR_SMOKE := $(BUILD)/system_monitor_smoke
+MEDIA_OBJ := $(BUILD)/sleela_media.o
+MEDIA_FORMATS_OBJ := $(BUILD)/sleela_media_formats.o
+MEDIA_SMOKE := $(BUILD)/media_smoke
+AUDIO_MIXER_OBJ := $(BUILD)/sleela_audio_mixer.o
+AUDIO_MIXER_SMOKE := $(BUILD)/audio_mixer_smoke
+AUDIO_NATIVE_OBJ := $(BUILD)/sleela_audio_bridge.o
+AUDIO_CPP_OBJ := $(BUILD)/sleela_audio.o
+AI_OBJ := $(BUILD)/sleela_ai.o
+AI_SMOKE := $(BUILD)/ai_smoke
+REGEX_OBJ := $(BUILD)/sleela_regex.o
+REGEX_SMOKE := $(BUILD)/regex_smoke
+PIXEL_TERMINAL_SMOKE := $(BUILD)/pixel_terminal_smoke
+PIXEL_TERMINAL_OBJ := $(BUILD)/pixel_terminal.o
+CATALOG_OBJ := $(BUILD)/sheet_catalog.o
+XCLASS_OBJ := $(BUILD)/xclass_loader.o
+LANGIN_OBJ := $(BUILD)/langin.o
+CORE_OBJ := $(BUILD)/sleela_core.o
+UTF16_OBJ := $(BUILD)/sleela_utf16.o
+UTF16_SMOKE := $(BUILD)/sleela_utf16_smoke
+JAVA_STRING_OBJ := $(BUILD)/sleela_java_string.o
+JAVA_STRING_SMOKE := $(BUILD)/sleela_java_string_smoke
+JAVA_STRING_VM_SMOKE := $(BUILD)/sleela_java_string_vm_smoke
+EXCEPTION_VM_SMOKE := $(BUILD)/exception_vm_smoke
+JAVA_STRING_CODEC_OBJ := $(BUILD)/sleela_java_string_codec.o
+OSLS_DIR := ../os-level-support
+OSLS_CORE_OBJ := $(BUILD)/osls_core.o
+OSLS_EXT_OBJ := $(BUILD)/osls_extended.o
+OSLS_EXT2_OBJ := $(BUILD)/osls_extended2.o
+OSLS_VM_OBJ := $(BUILD)/osls_vm_bridge.o
+NATIVE_LOADER_DIR := ../os-level-support/loader
+NATIVE_LOADER_OBJ := $(BUILD)/native_loader.o
+NATIVE_MODULE_TABLE_OBJ := $(BUILD)/native_module_table.o
+OSLS_VM_CAP_SMOKE := $(BUILD)/osls_vm_capability_smoke
+OSLS_VM_CAP_SMOKE_OBJ := $(BUILD)/osls_vm_capability_test.o
+IPC_HANDLE_SMOKE := $(BUILD)/native_ipc_handle_smoke
+NATIVE_CALL_SMOKE := $(BUILD)/native_call_smoke
+NATIVE_CALL_SMOKE_OBJ := $(BUILD)/native_call_smoke.o
+NATIVE_METHOD_METADATA_SMOKE := $(BUILD)/native_method_metadata_smoke
+NATIVE_METHOD_METADATA_SMOKE_OBJ := $(BUILD)/native_method_metadata_smoke.o
+NATIVE_METHOD_METADATA_ARTIFACT := $(BUILD)/native_method_metadata_compile_artifact.sleela
+ifeq ($(PLATFORM),macos)
+  NATIVE_CALL_FIXTURE := $(BUILD)/native_call_fixture.dylib
+  NATIVE_CALL_FIXTURE_FLAGS := -dynamiclib
+else ifeq ($(PLATFORM),windows)
+  NATIVE_CALL_FIXTURE := $(BUILD)/native_call_fixture.dll
+  NATIVE_CALL_FIXTURE_FLAGS := -shared
+else
+  NATIVE_CALL_FIXTURE := $(BUILD)/native_call_fixture.so
+  NATIVE_CALL_FIXTURE_FLAGS := -shared
+endif
+# Shared-library code needs position-independent relocations on ELF and Mach-O.
+# Keep the flag platform-scoped because MinGW/MSVC-compatible Windows builds do
+# not accept the POSIX -fPIC option.
+ifneq ($(PLATFORM),windows)
+  NATIVE_CALL_FIXTURE_CFLAGS := -fPIC
+endif
+NATIVE_CALL_SOURCE := $(BUILD)/native_drive_compile_source.sleela
+NATIVE_CALL_ARTIFACT := $(BUILD)/native_drive_compile_artifact.sleela
+# Deterministic native call/close regression. POSIX uses file markers and
+# pthreads; Windows uses named kernel events and Win32 threads.
+NATIVE_CONCURRENCY_SMOKE := $(BUILD)/native_concurrency_smoke$(EXE)
+NATIVE_CONCURRENCY_SMOKE_OBJ := $(BUILD)/native_concurrency_smoke.o
+ifeq ($(PLATFORM),windows)
+  NATIVE_CONCURRENCY_FIXTURE := $(BUILD)/native_concurrency_fixture.dll
+  NATIVE_CONCURRENCY_FIXTURE_FLAGS := -shared
+  NATIVE_CONCURRENCY_FIXTURE_CFLAGS :=
+  NATIVE_CONCURRENCY_SOURCE := tests/native_drive/native_concurrency_smoke_win32.c
+  NATIVE_CONCURRENCY_FIXTURE_SOURCE := tests/native_drive/native_concurrency_fixture_win32.c
+else ifeq ($(PLATFORM),macos)
+  NATIVE_CONCURRENCY_FIXTURE := $(BUILD)/native_concurrency_fixture.dylib
+  NATIVE_CONCURRENCY_FIXTURE_FLAGS := -dynamiclib
+  NATIVE_CONCURRENCY_FIXTURE_CFLAGS := -fPIC
+  NATIVE_CONCURRENCY_SOURCE := tests/native_drive/native_concurrency_smoke.c
+  NATIVE_CONCURRENCY_FIXTURE_SOURCE := tests/native_drive/native_concurrency_fixture.c
+else
+  NATIVE_CONCURRENCY_FIXTURE := $(BUILD)/native_concurrency_fixture.so
+  NATIVE_CONCURRENCY_FIXTURE_FLAGS := -shared
+  NATIVE_CONCURRENCY_FIXTURE_CFLAGS := -fPIC
+  NATIVE_CONCURRENCY_SOURCE := tests/native_drive/native_concurrency_smoke.c
+  NATIVE_CONCURRENCY_FIXTURE_SOURCE := tests/native_drive/native_concurrency_fixture.c
+endif
+OSLS_OBJS := $(OSLS_CORE_OBJ) $(OSLS_EXT_OBJ) $(OSLS_EXT2_OBJ) $(OSLS_VM_OBJ) $(NATIVE_LOADER_OBJ) $(NATIVE_MODULE_TABLE_OBJ)
+ifeq ($(PLATFORM),windows)
+  OSLS_DEFS := -D_CRT_SECURE_NO_WARNINGS
+else
+  OSLS_DEFS := -D_POSIX_C_SOURCE=200809L -D_DEFAULT_SOURCE
+endif
+THREAD_OBJ := $(BUILD)/sleela_thread.o
+IO_OBJ := $(BUILD)/sleela_io.o
+NET_OBJ := $(BUILD)/sleela_net.o
+SYNCHRO_OBJ := $(BUILD)/sleela_synchro.o
+MUNCTION_OBJ := $(BUILD)/sleela_munction.o
+BESTOF_OBJ := $(BUILD)/sleela_bestof.o
+# Idea System(TM) realtime canvas: the VM links the real native C/C++
+# render+physics core by default, so `sleela <program>` can drive it. The
+# physics core is OpenMP C++; the GL render layer stays optional (stub here).
+IDEA_CANVAS_DIR := ../idea/realtime
+REGISTRY_OBJ := $(BUILD)/sleela_registry.o
+IDEA_CANVAS_BR_OBJ   := $(BUILD)/sleela_idea_canvas.o
+IDEA_CANVAS_SIM_OBJ  := $(BUILD)/idea_canvas_sim.o
+IDEA_CANVAS_STUB_OBJ := $(BUILD)/idea_canvas_gl_stub.o
+IDEA_CANVAS_GPU_OBJ  := $(BUILD)/idea_canvas_gpu.o
+# Platform GL context source, selected by OS (open standards: WGL/CGL/EGL).
+ifeq ($(PLATFORM),windows)
+  IDEA_CANVAS_CTX_SRC := $(IDEA_CANVAS_DIR)/idea_canvas_ctx_wgl.cpp
+  IDEA_CANVAS_CTX_OBJ := $(BUILD)/idea_canvas_ctx_wgl.o
+else ifeq ($(PLATFORM),macos)
+  IDEA_CANVAS_CTX_SRC := $(IDEA_CANVAS_DIR)/idea_canvas_ctx_cgl.mm
+  IDEA_CANVAS_CTX_OBJ := $(BUILD)/idea_canvas_ctx_cgl.o
+else
+  IDEA_CANVAS_CTX_SRC := $(IDEA_CANVAS_DIR)/idea_canvas_ctx_egl.cpp
+  IDEA_CANVAS_CTX_OBJ := $(BUILD)/idea_canvas_ctx_egl.o
+endif
+IDEA_CANVAS_OBJS := $(IDEA_CANVAS_BR_OBJ) $(IDEA_CANVAS_SIM_OBJ) $(IDEA_CANVAS_STUB_OBJ) $(IDEA_CANVAS_GPU_OBJ) $(IDEA_CANVAS_CTX_OBJ)
+
+# ---- SleelaUI (user-interface/) native toolkit + the ui* VM bridge ----------
+# The ui* SLVM built-ins (uiAppCreate/uiButton/...) lower to OP_UI_CALL and
+# route through core/sleela_ui_vm.c into SleelaUI's C ABI, so a SLeeLa program
+# raises a real host window. We compile the toolkit core here and select the
+# native backend + its system libraries per OS (X11/FreeType/Fontconfig on
+# Linux, GDI/user32 on Windows, Cocoa/CoreText on macOS).
+SLUI_DIR      := ../user-interface
+SLUI_CORE_SRC := $(wildcard $(SLUI_DIR)/src/*.cpp)
+SLUI_CORE_OBJ := $(patsubst $(SLUI_DIR)/src/%.cpp,$(BUILD)/slui/%.o,$(SLUI_CORE_SRC))
+SLUI_NANOJPEG_OBJ := $(BUILD)/slui/nanojpeg.o
+SLUI_VM_OBJ   := $(BUILD)/sleela_ui_vm.o
+ifeq ($(PLATFORM),windows)
+  SLUI_BACKEND_SRC := $(SLUI_DIR)/src/backend/win32.cpp
+  SLUI_BACKEND_DEF := -DSLUI_BACKEND_WIN32_BUILD
+  SLUI_BACKEND_CFLAGS :=
+  SLUI_LIBS := -lgdi32 -luser32 -lshell32
+else ifeq ($(PLATFORM),macos)
+  SLUI_BACKEND_SRC := $(SLUI_DIR)/src/backend/cocoa.mm
+  SLUI_BACKEND_DEF := -DSLUI_BACKEND_COCOA_BUILD
+  SLUI_BACKEND_CFLAGS :=
+  SLUI_LIBS := -framework Cocoa -framework CoreText -framework CoreGraphics
+else
+  SLUI_BACKEND_SRC := $(SLUI_DIR)/src/backend/x11.cpp
+  SLUI_BACKEND_DEF := -DSLUI_BACKEND_X11_BUILD
+  SLUI_BACKEND_CFLAGS := $(shell pkg-config --cflags freetype2 fontconfig 2>/dev/null)
+  SLUI_LIBS := -lX11 $(shell pkg-config --libs freetype2 fontconfig 2>/dev/null)
+  ifeq ($(strip $(SLUI_LIBS)),-lX11)
+    SLUI_LIBS := -lX11 -lfreetype -lfontconfig
+  endif
+endif
+SLUI_BACKEND_OBJ := $(BUILD)/slui/backend.o
+# Optional system image codecs for the SleelaUI Image widget (and Button icons).
+# JPEG is always available via bundled NanoJPEG; PNG (libpng) and AVIF (libavif)
+# are compiled in when pkg-config finds them, mirroring user-interface/Makefile.
+# Without these, Image still decodes JPEG; with them, a gallery can show PNG too.
+SLUI_IMAGE_CFLAGS :=
+SLUI_IMAGE_LIBS :=
+SLUI_PNG_LIBS := $(shell pkg-config --libs libpng 2>/dev/null)
+SLUI_AVIF_LIBS := $(shell pkg-config --libs libavif 2>/dev/null)
+ifneq ($(strip $(SLUI_PNG_LIBS)),)
+  SLUI_IMAGE_CFLAGS += -DSLUI_HAVE_LIBPNG $(shell pkg-config --cflags libpng 2>/dev/null)
+  SLUI_IMAGE_LIBS += $(SLUI_PNG_LIBS)
+endif
+ifneq ($(strip $(SLUI_AVIF_LIBS)),)
+  SLUI_IMAGE_CFLAGS += -DSLUI_HAVE_LIBAVIF $(shell pkg-config --cflags libavif 2>/dev/null)
+  SLUI_IMAGE_LIBS += $(SLUI_AVIF_LIBS)
+endif
+SLUI_LIBS += $(SLUI_IMAGE_LIBS)
+# Shared native Wi-Fi manager plus the selected platform provider. The VM bridge
+# calls this C API directly; the same source is used by the C++ wrapper.
+WIFI_DIR := ../wifi-common
+WIFI_MANAGER_OBJ := $(BUILD)/wifi_manager.o
+WIFI_VM_BRIDGE_OBJ := $(BUILD)/wifi_vm_bridge.o
+ifeq ($(PLATFORM),windows)
+  WIFI_BACKEND_SRC := $(WIFI_DIR)/src/wifi_backend_windows.c
+  WIFI_BACKEND_OBJ := $(BUILD)/wifi_backend_windows.o
+  SLUI_LIBS += -lwlanapi -lole32
+else ifeq ($(PLATFORM),macos)
+  WIFI_BACKEND_SRC := $(WIFI_DIR)/src/wifi_backend_macos.mm
+  WIFI_BACKEND_OBJ := $(BUILD)/wifi_backend_macos.o
+  SLUI_LIBS += -framework CoreWLAN -framework Foundation -framework Security
+else
+  WIFI_BACKEND_SRC := $(WIFI_DIR)/src/wifi_backend_nmcli.c
+  WIFI_BACKEND_OBJ := $(BUILD)/wifi_backend_nmcli.o
+endif
+WIFI_OBJS := $(WIFI_MANAGER_OBJ) $(WIFI_BACKEND_OBJ) $(WIFI_VM_BRIDGE_OBJ)
+# Ballum(TM): pixel-level display control. The uiBallum* VM built-ins lower to
+# OP_UI_CALL and route through core/ballum_vm_bridge.c into the native Ballum
+# manager (ballum/). One backend is compiled per OS (open standards: X11/XRANDR
+# on Linux, Core Graphics on macOS, Win32 GDI on Windows 10+); the always-present
+# "unavailable" fallback keeps the VM linkable on any host.
+BALLUM_DIR := ../ballum
+BALLUM_MANAGER_OBJ := $(BUILD)/ballum_manager.o
+BALLUM_SELECT_OBJ := $(BUILD)/ballum_backend_select.o
+BALLUM_UNAVAIL_OBJ := $(BUILD)/ballum_backend_unavailable.o
+BALLUM_VM_BRIDGE_OBJ := $(BUILD)/ballum_vm_bridge.o
+BALLUM_BACKEND_OBJ := $(BUILD)/ballum_backend_os.o
+ifeq ($(PLATFORM),windows)
+  BALLUM_BACKEND_SRC := $(BALLUM_DIR)/src/ballum_backend_windows.c
+  BALLUM_BACKEND_DEF := -DBALLUM_BACKEND_WINDOWS
+  SLUI_LIBS += -lgdi32 -luser32
+else ifeq ($(PLATFORM),macos)
+  BALLUM_BACKEND_SRC := $(BALLUM_DIR)/src/ballum_backend_macos.mm
+  BALLUM_BACKEND_DEF := -DBALLUM_BACKEND_MACOS
+  SLUI_LIBS += -framework CoreGraphics -framework ApplicationServices
+else
+  # Linux uses the X11/XRANDR backend when its development headers are present.
+  # Where they are absent (e.g. a headless CI image), fall back to compiling the
+  # X11 source with the guard undefined -- it becomes an empty TU and the
+  # selector resolves ballum_backend_default() to the 'unavailable' fallback, so
+  # the VM still links and Ballum reports BACKEND_UNAVAILABLE at runtime.
+  BALLUM_BACKEND_SRC := $(BALLUM_DIR)/src/ballum_backend_x11.c
+  BALLUM_HAVE_X11 := $(shell printf '\#include <X11/extensions/Xrandr.h>\nint main(void){return 0;}\n' | $(CC) -xc - -o /dev/null 2>/dev/null && echo yes)
+  ifeq ($(BALLUM_HAVE_X11),yes)
+    BALLUM_BACKEND_DEF := -DBALLUM_BACKEND_X11
+    SLUI_LIBS += -lXrandr
+  else
+    BALLUM_BACKEND_DEF :=
+  endif
+endif
+BALLUM_IMAGE_OBJ := $(BUILD)/ballum_image.o
+BALLUM_EFFECTS_OBJ := $(BUILD)/ballum_effects.o
+BALLUM_OBJS := $(BALLUM_MANAGER_OBJ) $(BALLUM_SELECT_OBJ) $(BALLUM_UNAVAIL_OBJ) $(BALLUM_BACKEND_OBJ) $(BALLUM_VM_BRIDGE_OBJ) $(BALLUM_IMAGE_OBJ) $(BALLUM_EFFECTS_OBJ)
+SLUI_OBJS := $(SLUI_CORE_OBJ) $(SLUI_NANOJPEG_OBJ) $(SLUI_BACKEND_OBJ) $(SLUI_VM_OBJ) $(WIFI_OBJS) $(BALLUM_OBJS)
+# OpenMP is opt-in on macOS/Windows because Apple clang and some MinGW
+# distributions do not ship a compatible OpenMP runtime. Linux GCC enables it
+# by default; callers can override IDEA_CANVAS_OMP explicitly on any platform.
+ifeq ($(PLATFORM),linux)
+  IDEA_CANVAS_OMP ?= -fopenmp
+else
+  IDEA_CANVAS_OMP ?=
+endif
+PATH_OBJ := $(BUILD)/sleela_path.o
+TERMINAL_OBJ := $(BUILD)/sleela_terminal.o
+LIBRARY_OBJ := $(BUILD)/sleela_library.o
+OS_OBJ := $(BUILD)/sleela_os.o
+TIME_OBJ := $(BUILD)/sleela_time.o
+MEMORY_OBJ := $(BUILD)/sleela_memory.o
+MEMMGR_OBJ := $(BUILD)/sleela_memmgr.o
+MEMMGR_G2_OBJ := $(BUILD)/sleela_memmgr_grade2.o
+MEMMGR_G3_OBJ := $(BUILD)/sleela_memmgr_grade3.o
+PLATFORM_OBJ := $(BUILD)/sleela_platform.o
+SYSTEM_MONITOR_OBJ := $(BUILD)/sleela_system_monitor.o
+DESIGN_ACTIVITY_OBJ := $(BUILD)/sleela_design_activity.o
+GC_OBJ := $(BUILD)/garbage_collector.o
+SECURITY_OBJ := $(BUILD)/security_supervisor.o
+PARAMETERS_OBJ := $(BUILD)/Parameters.o
+# Defined here (before the $(SLEELA_BIN) rule at line ~443) so the sleela link
+# line actually picks it up; the vm-config smoke target below reuses it. The
+# driver's `sleela vm lock/unlock/status` calls into this object.
+VM_CONFIG_OBJ := $(BUILD)/vm_config.o
+VM_CONFIG_SMOKE := $(BUILD)/vm_config_smoke
+JAVA_RUNTIME_PROBE_OBJ := $(BUILD)/java_runtime_probe.o
+JAVA_RUNTIME_BRIDGE_OBJ := $(BUILD)/java_runtime_bridge.o
+CHEMISTRY_OBJ := $(BUILD)/chemistry.o
+FINANCIAL_OBJ := $(BUILD)/financial.o
+ASTRO_MATH_OBJ := $(BUILD)/astrophysics_math.o
+ASTRO_OBJ := $(BUILD)/astrophysics.o
+ASTRO_STORE_OBJ := $(BUILD)/observation_store.o
+ASTRO_SMOKE := $(BUILD)/astrophysics_smoke
+SOC_MATH_OBJ := $(BUILD)/sociology_math.o
+SOC_OBJ := $(BUILD)/sociology.o
+SOC_SMOKE := $(BUILD)/sociology_smoke
+CORE_SRC := core/sleela_artifact.c
+FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/java_equivalence.cpp frontend/java_references.cpp frontend/semantic.cpp frontend/compiler.cpp \
+          frontend/version.cpp frontend/artifact.cpp frontend/originate.cpp frontend/wikigen.cpp frontend/annotation_pipeline.cpp frontend/library_index.cpp frontend/docs.cpp frontend/keyword_supporter.cpp frontend/dynamite.cpp frontend/permissible.cpp \
+          annotation/Annotation.cpp annotation/ForwardingAnnotation.cpp annotation/AnnotationForwarder.cpp \
+          annotation/AnnotationInterpreter.cpp annotation/AnnotationRuntime.cpp \
+          subjects/native/native_api.cpp \
+          subjects/math/math_native.cpp subjects/physics/physics_native.cpp subjects/astrophysics/astrophysics_native.cpp subjects/sociology/sociology_native.cpp \
+          subjects/economics/economics_native.cpp \
+          subjects/inference/inference_native.cpp \
+          subjects/chemistry/chemistry_api.cpp subjects/finance/financial_api.cpp
+FE_OBJ := $(patsubst %.cpp,$(BUILD)/%.o,$(notdir $(FE_SRC)))
+DRIVER_OBJ := $(BUILD)/driver.o
+# The sleelvac compiler is an INDEPENDENT binary: same front-end source, but its
+# driver object is compiled with -DSLEELA_PRODUCT_SLEELVAC so its product
+# identity (the `version` banner) is baked in at compile time rather than chosen
+# from argv[0]. This guarantees `sleela version` always reports the runtime.
+DRIVER_SLEELVAC_OBJ := $(BUILD)/driver_sleelvac.o
+HTTP_SERVER_OBJ := $(BUILD)/http_server.o
+HTTP_SERVER_CLI_OBJ := $(BUILD)/http_server_cli.o
+HTTP2_SERVER_OBJ := $(BUILD)/http2_server.o
+HTTP3_SERVER_OBJ := $(BUILD)/http3_server.o
+
+# ---------------------------------------------------------------------------
+# Vendored nghttp2 (HTTP/2 library used by the grade-2 server).
+# The library source is committed as ../include/nghttp2-1.70.0.zip so the build
+# does not depend on a system-installed libnghttp2. It is unpacked under build/,
+# its generated version header is produced from the shipped template, and the
+# core library sources are compiled into a static archive we link directly.
+# This keeps the build self-contained on Linux, macOS, and (MinGW) Windows.
+# ---------------------------------------------------------------------------
+NGHTTP2_VERSION := 1.70.0
+NGHTTP2_VERSION_NUM := 0x014600
+NGHTTP2_ZIP := ../include/nghttp2-$(NGHTTP2_VERSION).zip
+NGHTTP2_DIR := $(BUILD)/nghttp2-$(NGHTTP2_VERSION)
+NGHTTP2_INC := $(NGHTTP2_DIR)/lib/includes
+NGHTTP2_VERHDR := $(NGHTTP2_INC)/nghttp2/nghttp2ver.h
+NGHTTP2_LIB := $(BUILD)/libnghttp2.a
+# Build-time feature defines for the vendored sources (no autotools config.h).
+# On POSIX, pull in the byte-order helpers (htonl/htons) via arpa/inet.h and
+# netinet/in.h; on Windows (MinGW) nghttp2_net.h provides _byteswap_* shims.
+ifeq ($(PLATFORM),windows)
+  NGHTTP2_DEFS := -DNGHTTP2_STATICLIB
+else
+  NGHTTP2_DEFS := -DNGHTTP2_STATICLIB -DHAVE_ARPA_INET_H=1 -DHAVE_NETINET_IN_H=1
+endif
+NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
+          nordshrift/source_resolve.cpp nordshrift/lowering.cpp nordshrift/sleela_emit.cpp \
+          nordshrift/native_method_emit.cpp nordshrift/object_compat.cpp nordshrift/subject_model.cpp nordshrift/input_object.cpp \
+          nordshrift/component_manifest.cpp nordshrift/ledger_emit.cpp \
+          nordshrift/nordshrift.cpp
+NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
+# Shared ledger core (lives under ../ledger, reused by the standalone tool).
+LEDGER_CORE_OBJ := $(BUILD)/ledger_core.o
+NS_OBJ += $(LEDGER_CORE_OBJ)
+# The subset of Nordshrift the `sleela` binary links for its `nordshrift`
+# round-trip subcommand: only the emitter (transpile a Sleela Program to a
+# target). It deliberately EXCLUDES nordshrift.cpp (which has its own main()).
+NS_EMIT_OBJ := $(BUILD)/ns_sleela_emit.o $(BUILD)/ns_native_method_emit.o $(BUILD)/ns_lowering.o
+# Preferred-router policy (used by the native HTTP servers the `sleela` binary
+# links). Lives under ../preferred-routers.
+PREFERRED_ROUTER_OBJ := $(BUILD)/preferred_router.o
+# Native CommonRails "heritage" printing engine (ostream-based, no deps). The
+# front end's common_rails_banner.hpp forwards to it, so the compiler and
+# Nordshrift share the /lib/common-rails PrintRail look. Lives under
+# ../common-rails/heritage/printing/cpp.
+COMMON_RAILS_OBJ := $(BUILD)/common_rails_printing.o
+VERIFY_TOOL := ../tools/verify-before-execution.py
+# Generator for the trusted manifest (consumed by regen-manifest/check-manifest).
+GENERATE_TOOL := ../tools/generate-sha256-manifest.py
+# Resolve the trusted manifest for both root-dispatched and direct builds.
+# A stale template value (/path/to/...) is not a real installation path; use
+# the repository-relative manifest instead. Real explicit paths remain honored.
+ifneq ($(filter /path/to/%,$(SLEELA_SHA256_MANIFEST) $(VERIFY_MANIFEST)),)
+  VERIFY_MANIFEST := ../security/sha256-manifest.json
+else ifeq ($(origin VERIFY_MANIFEST),undefined)
+  ifneq ($(strip $(SLEELA_SHA256_MANIFEST)),)
+    VERIFY_MANIFEST := $(SLEELA_SHA256_MANIFEST)
+  else
+    VERIFY_MANIFEST := ../security/sha256-manifest.json
+  endif
+endif
+VERIFY_ARGS = --manifest "$(VERIFY_MANIFEST)" --root "$(CURDIR)/.."
+# Python launcher differs between Windows and POSIX shells. Keep the security
+# gate in the build itself, but select a launcher that exists on each platform.
+ifeq ($(OS),Windows_NT)
+  PYTHON ?= py -3
+else
+  PYTHON ?= python3
+endif
+ALL_OBJECTS := $(CORE_OBJ) $(JAVA_STRING_OBJ) $(OSLS_OBJS) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(COMMON_RAILS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE) $(UTF16_OBJ) $(UTF16_SMOKE) $(JAVA_STRING_OBJ) $(JAVA_STRING_SMOKE)
+
+.PHONY: all install install-all uninstall uninstall-all sleelvac libslcore test-platform test-ref test-osls-isa test-osls-vm stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security regen-manifest check-manifest build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer test-native-ipc-handles test-native-call test-native-method-metadata test-native-method-aot test-native-concurrency test-java-utf16 test-java-string test-java-string-vm test-exceptions test-lineage
+
+
+all: verify-security $(SLEELA_BIN) $(SLEELAVC_BIN) $(NORDSHRIFT_BIN) $(SLCORE_LIB) stage
+
+# Build a stable, self-describing runtime layout. Build objects remain in build/;
+# the staged result contains only runtime-facing files and the default Config
+# and Options sets. Config is intentionally consolidated so a fresh build has
+# one authoritative default configuration set.
+stage: verify-security $(SLEELA_BIN) $(SLEELAVC_BIN) $(NORDSHRIFT_BIN)
+	@rm -rf $(STAGE)
+	@mkdir -p $(STAGE_BIN) $(STAGE_CONFIG) $(STAGE_OPTIONS) $(STAGE_LIB) $(STAGE_DOCS)
+	@cp $(SLEELA_BIN) $(STAGE_BIN)/
+	@cp $(SLEELAVC_BIN) $(STAGE_BIN)/
+	@cp $(NORDSHRIFT_BIN) $(STAGE_BIN)/
+	@cp ../sleela.conf.example $(STAGE_CONFIG)/sleela.conf
+	@cp ../config/vm.conf $(STAGE_CONFIG)/vm.conf
+	@cp ../config/config-location.conf $(STAGE_CONFIG)/config-location.conf
+	@cp ../MEMORY_MANAGER.md $(STAGE_DOCS)/MEMORY_MANAGER.md 2>/dev/null || true
+	@cp ../PURPOSE.md $(STAGE_DOCS)/PURPOSE.md 2>/dev/null || true
+	@printf '%s\n' '# SLeeLa Build Options' '' 'The staged runtime uses the defaults in Config/sleela.conf.' '' 'Available command-line memory options:' '' '  --memory-manager       Use the default 2 GiB ceiling' '  --memory-manager=SIZE  Set 256M through 2G' '  --mm=SIZE              Short form of --memory-manager=SIZE' > $(STAGE_OPTIONS)/OPTIONS.md
+	@printf '%s\n' '# SLeeLa Runtime Layout' '' 'bin/       Executables' 'Config/    Consolidated default configuration (including VM generation)' 'Options/   Runtime/build option reference' 'lib/       Reserved for runtime libraries' 'docs/      Runtime documentation' > $(STAGE)/README.md
+	@printf '%s\n' '# SLeeLa VM Selection' '' 'Config/vm.conf selects VM generation 1-11.' 'Selection precedence: CLI, SLEELA_VM_VERSION, Config/vm.conf, compiled default.' > $(STAGE_DOCS)/VM-SELECTION.md
+	@echo "=== staged SLeeLa runtime: $(STAGE) ==="
+
+package: stage
+	@echo "=== SLeeLa package layout ready: $(STAGE) ==="
+
+# Convenience entry point when working from impl/: delegate to the repository's
+# canonical installer so sleela, sleelvac, nordshrift, runtime files, and config
+# are installed together. PREFIX and DESTDIR match the root Makefile interface.
+PREFIX ?= /usr/local
+DESTDIR ?=
+SLEELA_MANIFEST_CONSENT ?=
+install: all
+	$(MAKE) -C .. install PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)"
+
+# Refresh EVERY standard location at once: user-local (both layouts),
+# /usr/local, and any stray binaries in EXTRA_BINDIRS (default /usr/bin).
+install-all: all
+	$(MAKE) -C .. install-all SLEELA_MANIFEST_CONSENT="$(SLEELA_MANIFEST_CONSENT)"
+
+# Remove the installed products via the repository-level tracked uninstaller.
+uninstall:
+	$(MAKE) -C .. uninstall PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)"
+
+# Remove SLeeLa from EVERY standard location (mirror of install-all). Use this
+# instead of 'uninstall' when SLeeLa is installed in more than one place.
+uninstall-all:
+	$(MAKE) -C .. uninstall-all
+build-verified: verify-security $(SLEELA_BIN) $(SLEELAVC_BIN) $(NORDSHRIFT_BIN) stage
+rebuild-verified:
+	$(MAKE) clean
+	$(MAKE) build-verified
+
+verify-security:
+	@if [ -z "$(VERIFY_MANIFEST)" ]; then echo "sleela: SHA-256 verification is required before build; set SLEELA_SHA256_MANIFEST or VERIFY_MANIFEST to a trusted JSON manifest" >&2; exit 1; fi
+	@if [ ! -f "$(VERIFY_MANIFEST)" ]; then echo "sleela: trusted SHA-256 manifest not found: $(VERIFY_MANIFEST)" >&2; exit 1; fi
+	@if [ ! -r "$(VERIFY_TOOL)" ]; then echo "sleela: verification tool not readable: $(VERIFY_TOOL)" >&2; exit 1; fi
+	@command -v $(firstword $(PYTHON)) >/dev/null 2>&1 || { echo "sleela: $(PYTHON) is required for SHA-256 verification" >&2; exit 1; }
+	@$(PYTHON) "$(VERIFY_TOOL)" $(VERIFY_ARGS)
+
+# regen-manifest: rewrite the trusted manifest from the current source tree.
+# Use this AFTER you have intentionally edited verified source (the interpreter
+# core, front end, etc.) and confirmed the diff is what you meant to change.
+# Regenerating blindly would defeat the fail-closed gate, so review first.
+regen-manifest:
+	@command -v $(firstword $(PYTHON)) >/dev/null 2>&1 || { echo "sleela: $(PYTHON) is required to regenerate the manifest" >&2; exit 1; }
+	@if [ ! -r "$(GENERATE_TOOL)" ]; then echo "sleela: manifest generator not readable: $(GENERATE_TOOL)" >&2; exit 1; fi
+	@$(PYTHON) "$(GENERATE_TOOL)" --root "$(CURDIR)/.." --output "$(VERIFY_MANIFEST)"
+
+# check-manifest: fail if the committed manifest is out of sync with the source
+# tree, WITHOUT rewriting it. This is the drift guard for CI and pre-commit: it
+# regenerates into a temp file and diffs against the committed manifest, so a
+# stale manifest is caught before it blocks a verified build - while preserving
+# the fail-closed guarantee (nothing on disk is modified).
+check-manifest:
+	@command -v $(firstword $(PYTHON)) >/dev/null 2>&1 || { echo "sleela: $(PYTHON) is required to check the manifest" >&2; exit 1; }
+	@if [ ! -r "$(GENERATE_TOOL)" ]; then echo "sleela: manifest generator not readable: $(GENERATE_TOOL)" >&2; exit 1; fi
+	@if [ ! -f "$(VERIFY_MANIFEST)" ]; then echo "sleela: trusted SHA-256 manifest not found: $(VERIFY_MANIFEST)" >&2; exit 1; fi
+	@tmp="$$(mktemp)"; \
+	 $(PYTHON) "$(GENERATE_TOOL)" --root "$(CURDIR)/.." --stdout > "$$tmp" || { rm -f "$$tmp"; exit 1; }; \
+	 if diff -u "$(VERIFY_MANIFEST)" "$$tmp" >/dev/null 2>&1; then \
+	   rm -f "$$tmp"; echo "check-manifest: OK - manifest matches the source tree"; \
+	 else \
+	   echo "check-manifest: FAIL - $(VERIFY_MANIFEST) is out of sync with the source tree" >&2; \
+	   echo "  The following entries differ (committed vs regenerated):" >&2; \
+	   diff -u "$(VERIFY_MANIFEST)" "$$tmp" | grep -E '^[-+][[:space:]]+"' >&2 || true; \
+	   echo "  Run 'make regen-manifest' (after reviewing the source diff) and commit the result." >&2; \
+	   rm -f "$$tmp"; exit 1; \
+	 fi
+
+# verify-security is an order-only prerequisite: it must run before any
+# artifact is produced, but must never appear in $^ (some smoke-test link
+# rules link with $^, and a phony target name would leak onto the link line).
+$(ALL_OBJECTS): | verify-security
+
+# Sleelvac is the named compiler executable, built as an INDEPENDENT binary. It
+# shares the whole front end with `sleela` but links its own driver object
+# (compiled with -DSLEELA_PRODUCT_SLEELVAC), so its `version` identity is fixed
+# at compile time and `sleela version` can never surface the Sleelvac banner.
+$(SLEELAVC_BIN): $(UTF16_OBJ) $(JAVA_STRING_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(COMMON_RAILS_OBJ) $(NGHTTP2_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS) $(NGHTTP2_LIB)
+
+sleelvac: $(SLEELAVC_BIN)
+
+$(SLEELA_BIN): $(UTF16_OBJ) $(JAVA_STRING_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(VM_CONFIG_OBJ) $(FE_OBJ) $(LEDGER_CORE_OBJ) $(DRIVER_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(NS_EMIT_OBJ) $(PREFERRED_ROUTER_OBJ) $(COMMON_RAILS_OBJ) $(NGHTTP2_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $(filter-out $(NGHTTP2_LIB),$^) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS) $(NGHTTP2_LIB)
+$(AUDIO_NATIVE_OBJ): core/sleela_audio_bridge.cpp core/sleela_audio_bridge.h ../audio/cpp/include/sleela_audio.hpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) -Icore -I.. -c $< -o $@
+
+$(AUDIO_CPP_OBJ): ../audio/cpp/src/sleela_audio.cpp ../audio/cpp/include/sleela_audio.hpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) -I../audio/cpp/include -c $< -o $@
+
+$(NORDSHRIFT_BIN): $(UTF16_OBJ) $(JAVA_STRING_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(DESIGN_ACTIVITY_OBJ) $(NS_OBJ) $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(FE_OBJ) $(CATALOG_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(COMMON_RAILS_OBJ)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+$(THREAD_PLATFORM_SMOKE): core/thread_platform_smoke.c $(THREAD_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore core/thread_platform_smoke.c $(THREAD_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+# sleela_core.o (sleela_artifact.c) calls into the OS-abstraction backends
+# (net/io/path/library/terminal), so any target that links the core must also
+# link those objects, not just the core + time.
+$(THREAD_SMOKE_OBJ): core/thread_smoke.c | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(SOCKET_SMOKE_OBJ): core/socket_smoke.c | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(THREAD_SMOKE): $(THREAD_SMOKE_OBJ) $(UTF16_OBJ) $(CORE_OBJ) $(JAVA_STRING_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) $(GC_OBJ)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+$(SOCKET_SMOKE): $(SOCKET_SMOKE_OBJ) $(UTF16_OBJ) $(CORE_OBJ) $(JAVA_STRING_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) $(GC_OBJ)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+$(SYNCHRO_SMOKE): core/synchro_smoke.c $(SYNCHRO_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore core/synchro_smoke.c $(SYNCHRO_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(BESTOF_SMOKE): core/bestof_smoke.c $(BESTOF_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore core/bestof_smoke.c $(BESTOF_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(MUNCTION_SMOKE): core/munction_smoke.c $(MUNCTION_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore core/munction_smoke.c $(MUNCTION_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(IO_PLATFORM_SMOKE): core/io_platform_smoke.c $(IO_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore core/io_platform_smoke.c $(IO_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(NET_PLATFORM_SMOKE): core/net_platform_smoke.c $(NET_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore core/net_platform_smoke.c $(NET_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(PATH_PLATFORM_SMOKE): core/path_platform_smoke.c $(PATH_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore core/path_platform_smoke.c $(PATH_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(TERMINAL_PLATFORM_SMOKE): core/terminal_platform_smoke.c $(TERMINAL_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore core/terminal_platform_smoke.c $(TERMINAL_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(LIBRARY_PLATFORM_SMOKE): core/library_platform_smoke.c $(LIBRARY_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore core/library_platform_smoke.c $(LIBRARY_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(TIME_PLATFORM_SMOKE): core/time_platform_smoke.c $(TIME_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore core/time_platform_smoke.c $(TIME_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(THREAD_OBJ): core/sleela_thread.c core/sleela_thread.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_thread.c -o $@
+$(IO_OBJ): core/sleela_io.c core/sleela_io.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_io.c -o $@
+$(NET_OBJ): core/sleela_net.c core/sleela_net.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_net.c -o $@
+$(SYNCHRO_OBJ): core/sleela_synchro.c core/sleela_synchro.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_synchro.c -o $@
+$(MUNCTION_OBJ): core/sleela_munction.c core/sleela_munction.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_munction.c -o $@
+$(REGISTRY_OBJ): ../registry/sleela_registry.c ../registry/sleela_registry.h | $(BUILD)
+	$(CC) $(CFLAGS) -Wno-misleading-indentation -c ../registry/sleela_registry.c -o $@
+$(IDEA_CANVAS_BR_OBJ): core/sleela_idea_canvas.c core/sleela_idea_canvas.h $(IDEA_CANVAS_DIR)/idea_canvas.h | $(BUILD)
+	$(CC) $(CFLAGS) -DSLEELA_WITH_IDEA_CANVAS -Icore -I$(IDEA_CANVAS_DIR) -c core/sleela_idea_canvas.c -o $@
+$(IDEA_CANVAS_SIM_OBJ): $(IDEA_CANVAS_DIR)/idea_canvas_sim.cpp $(IDEA_CANVAS_DIR)/idea_canvas.h $(IDEA_CANVAS_DIR)/idea_canvas_internal.hpp | $(BUILD)
+	$(CXX) -std=c++20 -O2 $(THREADFLAG) $(IDEA_CANVAS_OMP) -I$(IDEA_CANVAS_DIR) -c $(IDEA_CANVAS_DIR)/idea_canvas_sim.cpp -o $@
+$(IDEA_CANVAS_STUB_OBJ): $(IDEA_CANVAS_DIR)/idea_canvas_gl_stub.cpp $(IDEA_CANVAS_DIR)/idea_canvas.h $(IDEA_CANVAS_DIR)/idea_canvas_internal.hpp | $(BUILD)
+	$(CXX) -std=c++20 -O2 $(THREADFLAG) -I$(IDEA_CANVAS_DIR) -c $(IDEA_CANVAS_DIR)/idea_canvas_gl_stub.cpp -o $@
+# GPU backend (stub form by default; define IDEA_CANVAS_WITH_GL + add EGL/OSMesa
+# to IDEA_CANVAS_OMP/LIBS to build the real offscreen GPU compute path).
+$(IDEA_CANVAS_GPU_OBJ): $(IDEA_CANVAS_DIR)/idea_canvas_gpu.cpp $(IDEA_CANVAS_DIR)/idea_canvas.h $(IDEA_CANVAS_DIR)/idea_canvas_internal.hpp | $(BUILD)
+	$(CXX) -std=c++20 -O2 $(THREADFLAG) -I$(IDEA_CANVAS_DIR) -c $(IDEA_CANVAS_DIR)/idea_canvas_gpu.cpp -o $@
+# Platform GL context layer, OS-selected (WGL on Windows, CGL on macOS, EGL on
+# Linux). Default/no-GL build is a compilable stub reporting unsupported.
+$(IDEA_CANVAS_CTX_OBJ): $(IDEA_CANVAS_CTX_SRC) $(IDEA_CANVAS_DIR)/idea_canvas_ctx.h | $(BUILD)
+	$(CXX) -std=c++20 -O2 $(THREADFLAG) -I$(IDEA_CANVAS_DIR) -c $(IDEA_CANVAS_CTX_SRC) -o $@
+# ---- SleelaUI toolkit objects + the ui* VM bridge --------------------------
+$(BUILD)/slui/%.o: $(SLUI_DIR)/src/%.cpp | $(BUILD)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) $(DEPFLAGS) -I$(SLUI_DIR)/include -I$(SLUI_DIR)/src $(SLUI_BACKEND_DEF) $(SLUI_IMAGE_CFLAGS) -c $< -o $@
+$(SLUI_NANOJPEG_OBJ): $(SLUI_DIR)/src/nanojpeg.c $(SLUI_DIR)/src/nanojpeg.h | $(BUILD)
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) -Wno-shift-negative-value -I$(SLUI_DIR)/src -c $< -o $@
+
+$(SLUI_BACKEND_OBJ): $(SLUI_BACKEND_SRC) | $(BUILD)
+	@mkdir -p $(dir $@)
+	$(CXX) $(CXXFLAGS) -I$(SLUI_DIR)/include -I$(SLUI_DIR)/src $(SLUI_BACKEND_DEF) $(SLUI_BACKEND_CFLAGS) -c $< -o $@
+$(SLUI_VM_OBJ): core/sleela_ui_vm.c core/sleela_ui_vm.h core/sleela_ui_ids.h core/wifi_vm_bridge.h core/ballum_vm_bridge.h $(SLUI_DIR)/include/sleela_ui.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_ui_vm.c -o $@
+
+$(WIFI_MANAGER_OBJ): $(WIFI_DIR)/src/wifi_manager.c $(WIFI_DIR)/include/sleela_wifi/wifi_manager.h | $(BUILD)
+	$(CC) $(CFLAGS) -I$(WIFI_DIR)/include -c $< -o $@
+$(WIFI_VM_BRIDGE_OBJ): core/wifi_vm_bridge.c core/wifi_vm_bridge.h $(WIFI_DIR)/include/sleela_wifi/wifi_manager.h | $(BUILD)
+	$(CC) $(CFLAGS) -I$(WIFI_DIR)/include -Icore -c $< -o $@
+ifeq ($(PLATFORM),macos)
+$(WIFI_BACKEND_OBJ): $(WIFI_BACKEND_SRC) $(WIFI_DIR)/include/sleela_wifi/wifi_manager.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) -I$(WIFI_DIR)/include -c $< -o $@
+else
+$(WIFI_BACKEND_OBJ): $(WIFI_BACKEND_SRC) $(WIFI_DIR)/include/sleela_wifi/wifi_manager.h | $(BUILD)
+	$(CC) $(CFLAGS) -I$(WIFI_DIR)/include -c $< -o $@
+endif
+# ---- Ballum: native manager, backend selector, fallback, per-OS backend, bridge
+BALLUM_INC := -I$(BALLUM_DIR)/include
+$(BALLUM_MANAGER_OBJ): $(BALLUM_DIR)/src/ballum_manager.c $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
+	$(CC) $(CFLAGS) $(BALLUM_INC) -c $< -o $@
+$(BALLUM_SELECT_OBJ): $(BALLUM_DIR)/src/ballum_backend_select.c $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
+	$(CC) $(CFLAGS) $(BALLUM_INC) $(BALLUM_BACKEND_DEF) -c $< -o $@
+$(BALLUM_UNAVAIL_OBJ): $(BALLUM_DIR)/src/ballum_backend_unavailable.c $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
+	$(CC) $(CFLAGS) $(BALLUM_INC) -c $< -o $@
+$(BALLUM_VM_BRIDGE_OBJ): core/ballum_vm_bridge.c core/ballum_vm_bridge.h $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h $(BALLUM_DIR)/include/sleela_ballum/ballum_image.h $(BALLUM_DIR)/include/sleela_ballum/ballum_effects.h | $(BUILD)
+	$(CC) $(CFLAGS) $(BALLUM_INC) -Icore -c $< -o $@
+# Image handler: decodes JPEG via the bundled nanojpeg (in user-interface/src).
+$(BALLUM_IMAGE_OBJ): $(BALLUM_DIR)/src/ballum_image.c $(BALLUM_DIR)/include/sleela_ballum/ballum_image.h | $(BUILD)
+	$(CC) $(CFLAGS) $(BALLUM_INC) -I$(SLUI_DIR)/src -c $< -o $@
+# Transition effects: pure per-pixel compositing, no deps.
+$(BALLUM_EFFECTS_OBJ): $(BALLUM_DIR)/src/ballum_effects.c $(BALLUM_DIR)/include/sleela_ballum/ballum_effects.h | $(BUILD)
+	$(CC) $(CFLAGS) $(BALLUM_INC) -c $< -o $@
+ifeq ($(PLATFORM),macos)
+$(BALLUM_BACKEND_OBJ): $(BALLUM_BACKEND_SRC) $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(BALLUM_INC) $(BALLUM_BACKEND_DEF) -c $< -o $@
+else
+$(BALLUM_BACKEND_OBJ): $(BALLUM_BACKEND_SRC) $(BALLUM_DIR)/include/sleela_ballum/ballum_manager.h | $(BUILD)
+	$(CC) $(CFLAGS) $(BALLUM_INC) $(BALLUM_BACKEND_DEF) -c $< -o $@
+endif
+$(BESTOF_OBJ): core/sleela_bestof.c core/sleela_bestof.h ../os-level-support/osls_vm_bridge.h ../os-level-support/loader/native_module_table.h ../os-level-support/loader/native_loader.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_bestof.c -o $@
+$(PATH_OBJ): core/sleela_path.c core/sleela_path.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_path.c -o $@
+$(TERMINAL_OBJ): core/sleela_terminal.c core/sleela_terminal.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_terminal.c -o $@
+$(LIBRARY_OBJ): core/sleela_library.c core/sleela_library.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_library.c -o $@
+$(OS_OBJ): core/sleela_os.c core/sleela_os.h core/sleela_platform.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_os.c -o $@
+$(TIME_OBJ): core/sleela_time.c core/sleela_time.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_time.c -o $@
+$(MEMORY_OBJ): core/sleela_memory.c core/sleela_memory.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_memory.c -o $@
+$(DESIGN_ACTIVITY_OBJ): core/sleela_design_activity.c core/sleela_design_activity.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_design_activity.c -o $@
+$(MEMMGR_OBJ): core/sleela_memmgr.c core/sleela_memmgr.h core/sleela_memory.h core/sleela_thread.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_memmgr.c -o $@
+$(MEMMGR_G2_OBJ): core/sleela_memmgr_grade2.c core/sleela_memmgr_grade2.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_memmgr_grade2.c -o $@
+$(MEMMGR_G3_OBJ): core/sleela_memmgr_grade3.c core/sleela_memmgr_grade3.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_memmgr_grade3.c -o $@
+$(PLATFORM_OBJ): core/sleela_platform.c core/sleela_platform.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_platform.c -o $@
+$(SYSTEM_MONITOR_OBJ): core/sleela_system_monitor.c core/sleela_system_monitor.h core/sleela_platform.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_system_monitor.c -o $@
+
+$(SYSTEM_MONITOR_SMOKE): tests/core/system_monitor_smoke.c $(SYSTEM_MONITOR_OBJ) $(PLATFORM_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/system_monitor_smoke.c $(SYSTEM_MONITOR_OBJ) $(PLATFORM_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(MEDIA_OBJ): core/sleela_media.c core/sleela_media.h core/sleela_media_formats.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_media.c -o $@
+$(MEDIA_FORMATS_OBJ): core/sleela_media_formats.c core/sleela_media_formats.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_media_formats.c -o $@
+$(AUDIO_MIXER_OBJ): core/sleela_audio_mixer.c core/sleela_audio_mixer.h core/sleela_media.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_audio_mixer.c -o $@
+$(AUDIO_MIXER_SMOKE): tests/core/audio_mixer_smoke.c $(AUDIO_MIXER_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/audio_mixer_smoke.c $(AUDIO_MIXER_OBJ) -o $@ $(LDFLAGS) $(LIBS) -lm
+$(AI_OBJ): core/sleela_ai.c core/sleela_ai.h core/sleela_media.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_ai.c -o $@
+$(REGEX_OBJ): core/sleela_regex.c core/sleela_regex.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c core/sleela_regex.c -o $@
+$(REGEX_SMOKE): tests/core/regex_smoke.c $(REGEX_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/regex_smoke.c $(REGEX_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+test-regex: $(REGEX_SMOKE)
+	@echo "=== SLeeLa Regex native foundation ==="; $(REGEX_SMOKE)
+$(AI_SMOKE): tests/core/ai_smoke.c $(AI_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/ai_smoke.c $(AI_OBJ) -o $@ $(LDFLAGS) $(LIBS) -lm
+test-ai: $(AI_SMOKE)
+	@echo "=== SLeeLa AI API ==="; $(AI_SMOKE)
+
+$(MEDIA_SMOKE): tests/core/media_smoke.c $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/media_smoke.c $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) -o $@ $(LDFLAGS) $(LIBS) -lm
+test-audio-mixer: $(AUDIO_MIXER_SMOKE)
+	@echo "=== SLeeLa Audio Mixer ==="; $(AUDIO_MIXER_SMOKE)
+test-media: $(MEDIA_SMOKE)
+	@echo "=== SLeeLa Audio/Video Media API ==="; $(MEDIA_SMOKE)
+test-system-monitor: $(SYSTEM_MONITOR_SMOKE)
+	@echo "=== SLeeLa Heuristic System Monitor ==="; $(SYSTEM_MONITOR_SMOKE)
+
+MEMMGR_GRADES_SMOKE := $(BUILD)/memmgr_grades_smoke
+$(MEMMGR_GRADES_SMOKE): tests/core/memmgr_grades_smoke.c $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) | verify-security $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/memmgr_grades_smoke.c $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+test-memmgr-grades: $(MEMMGR_GRADES_SMOKE)
+	@echo "=== SLeeLa Memory Manager Grades II/III ==="; $(MEMMGR_GRADES_SMOKE)
+
+$(PIXEL_TERMINAL_OBJ): ../bash/pixel_terminal.cpp ../bash/pixel_terminal.hpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../bash/pixel_terminal.cpp -o $@
+$(PIXEL_TERMINAL_SMOKE): ../bash/pixel_terminal_smoke.cpp ../bash/pixel_terminal.hpp $(PIXEL_TERMINAL_OBJ) | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) ../bash/pixel_terminal_smoke.cpp $(PIXEL_TERMINAL_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(GC_OBJ): ../runtime/garbage_collector.c ../runtime/garbage_collector.h | $(BUILD)
+	$(CC) $(CFLAGS) -c ../runtime/garbage_collector.c -o $@
+$(VM_CONFIG_OBJ): ../runtime/vm_config.c ../runtime/vm_config.h | $(BUILD)
+	$(CC) $(CFLAGS) -c ../runtime/vm_config.c -o $@
+$(VM_CONFIG_SMOKE): ../runtime/vm_config_smoke.c ../runtime/vm_config.h $(VM_CONFIG_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -I../runtime ../runtime/vm_config_smoke.c $(VM_CONFIG_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+test-vm-config: $(VM_CONFIG_SMOKE)
+	@echo "=== SLeeLa VM generation configuration ==="; (cd .. && $(CURDIR)/$(VM_CONFIG_SMOKE))
+
+$(SECURITY_OBJ): ../runtime/security_supervisor.c ../runtime/security_supervisor.h | $(BUILD)
+	$(CC) $(CFLAGS) -c ../runtime/security_supervisor.c -o $@
+$(PARAMETERS_OBJ): ../runtime/Parameters.c ../runtime/Parameters.h | $(BUILD)
+	$(CC) $(CFLAGS) -c ../runtime/Parameters.c -o $@
+$(OSLS_CORE_OBJ): $(OSLS_DIR)/osls.c $(OSLS_DIR)/osls.h | $(BUILD)
+	$(CC) $(CFLAGS) $(OSLS_DEFS) -I$(OSLS_DIR) -c $< -o $@
+$(OSLS_EXT_OBJ): $(OSLS_DIR)/osls_extended.c $(OSLS_DIR)/osls.h | $(BUILD)
+	$(CC) $(CFLAGS) $(OSLS_DEFS) -I$(OSLS_DIR) -c $< -o $@
+$(OSLS_EXT2_OBJ): $(OSLS_DIR)/osls_extended2.c $(OSLS_DIR)/osls.h $(OSLS_DIR)/osls_vm_bridge.h | $(BUILD)
+	$(CC) $(CFLAGS) $(OSLS_DEFS) -I$(OSLS_DIR) -c $< -o $@
+$(OSLS_VM_OBJ): $(OSLS_DIR)/osls_vm_bridge.c $(OSLS_DIR)/osls_vm_bridge.h $(OSLS_DIR)/osls.h | $(BUILD)
+	$(CC) $(CFLAGS) $(OSLS_DEFS) -I$(OSLS_DIR) -c $< -o $@
+$(NATIVE_LOADER_OBJ): $(NATIVE_LOADER_DIR)/native_loader.c $(NATIVE_LOADER_DIR)/native_loader.h | $(BUILD)
+	$(CC) $(CFLAGS) -I$(NATIVE_LOADER_DIR) -c $< -o $@
+$(NATIVE_MODULE_TABLE_OBJ): $(NATIVE_LOADER_DIR)/native_module_table.c $(NATIVE_LOADER_DIR)/native_module_table.h $(NATIVE_LOADER_DIR)/native_loader.h | $(BUILD)
+	$(CC) $(CFLAGS) -I$(NATIVE_LOADER_DIR) -c $< -o $@
+
+$(CORE_OBJ): $(CORE_SRC) core/sleela_core.c core/sleela_core.h core/sleela_java_string.h ../runtime/garbage_collector.h core/sleela_thread.h core/pthread.h core/sleela_synchro.h core/sleela_munction.h core/sleela_bestof.h ../os-level-support/osls_vm_bridge.h ../os-level-support/loader/native_module_table.h ../os-level-support/loader/native_loader.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $(CORE_SRC) -o $@
+
+# The reusable Core archive contains the engine, OS abstractions, GC, and
+# every runtime bridge required by OP_UI_CALL. In particular, premium VM runners
+# consume this archive rather than the native executable's direct object list,
+# so include SleelaUI plus its Wi-Fi and Ballum VM bridges, managers, image/effect
+# helpers, and the selected native backend here. Platform link libraries are
+# propagated to each final runner separately by the VM-family Makefiles.
+SLCORE_OBJS := $(CORE_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) \
+  $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) \
+  $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TIME_OBJ) \
+  $(MEMORY_OBJ) $(MEMMGR_OBJ) $(GC_OBJ) $(SLUI_OBJS) $(UTF16_OBJ) $(JAVA_STRING_OBJ) $(JAVA_STRING_CODEC_OBJ)
+$(SLCORE_LIB): $(SLCORE_OBJS)
+	$(AR) rcs $@ $(SLCORE_OBJS)
+$(UTF16_OBJ): core/sleela_utf16.c core/sleela_utf16.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(UTF16_SMOKE): core/sleela_utf16_smoke.c $(UTF16_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore $^ -o $@
+test-java-utf16: $(UTF16_SMOKE)
+	@$(UTF16_SMOKE)
+$(JAVA_STRING_OBJ): core/sleela_java_string.c core/sleela_java_string.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(JAVA_STRING_SMOKE): core/sleela_java_string_smoke.c $(JAVA_STRING_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Icore $^ -o $@
+test-java-string: $(JAVA_STRING_SMOKE)
+	@$(JAVA_STRING_SMOKE)
+$(JAVA_STRING_CODEC_OBJ): core/sleela_java_string_codec.c core/sleela_java_string_codec.h core/sleela_java_string.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(JAVA_STRING_VM_SMOKE): core/sleela_java_string_vm_smoke.c $(SLCORE_LIB) $(JAVA_STRING_CODEC_OBJ) | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) -Icore $< $(JAVA_STRING_CODEC_OBJ) $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+test-java-string-vm: $(JAVA_STRING_VM_SMOKE)
+	@$(JAVA_STRING_VM_SMOKE)
+# test-exceptions is deliberately opt-in while the exception VM milestone is reviewed.
+$(EXCEPTION_VM_SMOKE): tests/exceptions/exception_vm_smoke.c $(SLCORE_LIB) | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+test-exceptions: $(EXCEPTION_VM_SMOKE)
+	@$(EXCEPTION_VM_SMOKE)
+
+test-java-string-source: $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/java_transition/java_utf16_source.sleela
+$(OSLS_VM_CAP_SMOKE_OBJ): tests/osls_vm/osls_vm_capability_test.c | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(OSLS_VM_CAP_SMOKE): $(OSLS_VM_CAP_SMOKE_OBJ) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+$(IPC_HANDLE_SMOKE): tests/native_drive/native_ipc_handle_smoke.c $(SLCORE_LIB) | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+test-native-ipc-handles: $(IPC_HANDLE_SMOKE)
+	@$(IPC_HANDLE_SMOKE)
+
+$(NATIVE_CALL_SMOKE_OBJ): tests/native_drive/native_call_smoke.c core/sleela_core.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(NATIVE_CALL_FIXTURE): tests/native_drive/native_call_fixture.c ../os-level-support/loader/native_loader.h core/sleela_utf16.c core/sleela_utf16.h | $(BUILD)
+	$(CC) $(CFLAGS) $(NATIVE_CALL_FIXTURE_CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_CALL_FIXTURE_FLAGS) -I../os-level-support/loader -Icore $< core/sleela_utf16.c -o $@
+$(NATIVE_CALL_SMOKE): $(NATIVE_CALL_SMOKE_OBJ) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+$(NATIVE_CALL_SOURCE): tests/native_drive/native_drive_compile.sleela $(NATIVE_CALL_FIXTURE) | $(BUILD)
+	sed 's|@NATIVE_PLUGIN_PATH@|$(abspath $(NATIVE_CALL_FIXTURE))|g' $< > $@
+$(NATIVE_CALL_ARTIFACT): $(NATIVE_CALL_SOURCE) $(SLEELA_BIN)
+	$(SLEELA_BIN) compile $(NATIVE_CALL_SOURCE) -o $@
+test-native-call: $(SLEELA_BIN) $(NATIVE_CALL_SMOKE) $(NATIVE_CALL_FIXTURE) $(NATIVE_CALL_ARTIFACT)
+	$(NATIVE_CALL_SMOKE) $(NATIVE_CALL_ARTIFACT) $(abspath $(NATIVE_CALL_FIXTURE))
+
+# Artifact metadata regression: version-4 method identities survive round trips,
+# corrupt digests are rejected, and version-3 artifacts load interpreted-only.
+$(NATIVE_METHOD_METADATA_SMOKE_OBJ): tests/native_drive/native_method_metadata_smoke.c core/sleela_core.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(NATIVE_METHOD_METADATA_SMOKE): $(NATIVE_METHOD_METADATA_SMOKE_OBJ) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+$(NATIVE_METHOD_METADATA_ARTIFACT): tests/native_drive/native_method_metadata_compile.sleela $(SLEELA_BIN) | $(BUILD)
+	$(SLEELA_BIN) compile $< -o $@
+test-native-method-metadata: $(NATIVE_METHOD_METADATA_SMOKE) $(NATIVE_METHOD_METADATA_ARTIFACT) $(NATIVE_CALL_FIXTURE)
+	@$(NATIVE_METHOD_METADATA_SMOKE) $(NATIVE_METHOD_METADATA_ARTIFACT) $(abspath $(NATIVE_CALL_FIXTURE))
+
+# End-to-end test for generated per-method typed-ABI plugins.
+NATIVE_METHOD_AOT_SOURCE := tests/native_drive/native_method_aot_compile.sleela
+NATIVE_METHOD_AOT_SEMANTIC_REJECT_SOURCE := tests/native_drive/native_method_aot_semantic_reject.sleela
+NATIVE_METHOD_AOT_LIBRARY_SOURCE := tests/native_drive/native_method_aot_library.sleela
+NATIVE_METHOD_NOT_HANDLED_SOURCE := tests/native_drive/native_method_not_handled.sleela
+NATIVE_METHOD_NOT_HANDLED_ARTIFACT := $(BUILD)/native_method_not_handled.artifact.sleela
+NATIVE_METHOD_NOT_HANDLED_SMOKE_C := tests/native_drive/native_method_not_handled_smoke.c
+NATIVE_METHOD_NOT_HANDLED_SMOKE := $(BUILD)/native_method_not_handled_smoke$(EXE)
+NATIVE_METHOD_BOUNDARY_SOURCE := tests/native_drive/native_method_boundary.sleela
+NATIVE_METHOD_ERROR_SOURCE := tests/native_drive/native_method_error.sleela
+NATIVE_METHOD_BOUNDARY_ARTIFACT := $(BUILD)/native_method_boundary.artifact.sleela
+NATIVE_METHOD_ERROR_ARTIFACT := $(BUILD)/native_method_error.artifact.sleela
+NATIVE_METHOD_BOUNDARY_PLUGIN_SOURCE := tests/native_drive/native_method_boundary_plugin.c
+NATIVE_METHOD_BOUNDARY_PLUGIN := $(BUILD)/native_method_boundary_plugin$(if $(filter macos,$(PLATFORM)),.dylib,$(if $(filter windows,$(PLATFORM)),.dll,.so))
+NATIVE_METHOD_BOUNDARY_SMOKE_SOURCE := tests/native_drive/native_method_boundary_smoke.c
+NATIVE_METHOD_BOUNDARY_SMOKE_OBJ := $(BUILD)/native_method_boundary_smoke.o
+NATIVE_METHOD_BOUNDARY_SMOKE := $(BUILD)/native_method_boundary_smoke$(EXE)
+NATIVE_METHOD_AOT_C := $(BUILD)/native_method_aot.generated.c
+NATIVE_METHOD_AOT_ARTIFACT := $(BUILD)/native_method_aot.artifact.sleela
+NATIVE_METHOD_AOT_SMOKE := $(BUILD)/native_method_aot_smoke$(EXE)
+NATIVE_METHOD_AOT_SMOKE_OBJ := $(BUILD)/native_method_aot_smoke.o
+ifeq ($(PLATFORM),macos)
+  NATIVE_METHOD_AOT_PLUGIN := $(BUILD)/native_method_aot.generated.dylib
+  NATIVE_METHOD_AOT_PLUGIN_FLAGS := -dynamiclib
+else ifeq ($(PLATFORM),windows)
+  NATIVE_METHOD_AOT_PLUGIN := $(BUILD)/native_method_aot.generated.dll
+  NATIVE_METHOD_AOT_PLUGIN_FLAGS := -shared
+else
+  NATIVE_METHOD_AOT_PLUGIN := $(BUILD)/native_method_aot.generated.so
+  NATIVE_METHOD_AOT_PLUGIN_FLAGS := -shared
+endif
+ifneq ($(PLATFORM),windows)
+  NATIVE_METHOD_AOT_PLUGIN_CFLAGS := -fPIC
+endif
+ifneq ($(PLATFORM),windows)
+  NATIVE_METHOD_BOUNDARY_PLUGIN_CFLAGS := -fPIC
+endif
+ifeq ($(PLATFORM),macos)
+  NATIVE_METHOD_BOUNDARY_PLUGIN_FLAGS := -dynamiclib
+else
+  NATIVE_METHOD_BOUNDARY_PLUGIN_FLAGS := -shared
+endif
+$(NATIVE_METHOD_AOT_C): $(NATIVE_METHOD_AOT_SOURCE) $(SLEELA_BIN) | $(BUILD)
+	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; $(CURDIR)/$(SLEELA_BIN) aot --emit impl/$(NATIVE_METHOD_AOT_SOURCE) > $(CURDIR)/$@
+$(NATIVE_METHOD_AOT_PLUGIN): $(NATIVE_METHOD_AOT_C) ../os-level-support/loader/native_loader.h
+	$(CC) $(CFLAGS) $(NATIVE_METHOD_AOT_PLUGIN_CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_METHOD_AOT_PLUGIN_FLAGS) -I../os-level-support/loader $< -o $@
+$(NATIVE_METHOD_AOT_ARTIFACT): $(NATIVE_METHOD_AOT_SOURCE) $(SLEELA_BIN) | $(BUILD)
+	$(SLEELA_BIN) compile $< -o $@
+$(NATIVE_METHOD_AOT_SMOKE_OBJ): tests/native_drive/native_method_aot_smoke.c core/sleela_core.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(NATIVE_METHOD_AOT_SMOKE): $(NATIVE_METHOD_AOT_SMOKE_OBJ) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+
+$(NATIVE_METHOD_BOUNDARY_ARTIFACT): $(NATIVE_METHOD_BOUNDARY_SOURCE) $(SLEELA_BIN) | $(BUILD)
+	$(SLEELA_BIN) compile $< -o $@
+$(NATIVE_METHOD_ERROR_ARTIFACT): $(NATIVE_METHOD_ERROR_SOURCE) $(SLEELA_BIN) | $(BUILD)
+	$(SLEELA_BIN) compile $< -o $@
+$(NATIVE_METHOD_BOUNDARY_PLUGIN): $(NATIVE_METHOD_BOUNDARY_PLUGIN_SOURCE) ../os-level-support/loader/native_loader.h | $(BUILD)
+	$(CC) $(CFLAGS) $(NATIVE_METHOD_BOUNDARY_PLUGIN_CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_METHOD_BOUNDARY_PLUGIN_FLAGS) -I../os-level-support/loader $< -o $@
+$(NATIVE_METHOD_BOUNDARY_SMOKE_OBJ): $(NATIVE_METHOD_BOUNDARY_SMOKE_SOURCE) core/sleela_core.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(NATIVE_METHOD_BOUNDARY_SMOKE): $(NATIVE_METHOD_BOUNDARY_SMOKE_OBJ) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+
+# A separate artifact binds a method that the generated AOT plugin does not
+# export. Its NOT_HANDLED response must execute the bytecode body exactly once.
+$(NATIVE_METHOD_NOT_HANDLED_ARTIFACT): $(NATIVE_METHOD_NOT_HANDLED_SOURCE) $(SLEELA_BIN) | $(BUILD)
+	$(SLEELA_BIN) compile $< -o $@
+$(NATIVE_METHOD_NOT_HANDLED_SMOKE): $(NATIVE_METHOD_NOT_HANDLED_SMOKE_C) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+test-native-method-aot: $(SLEELA_BIN) $(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD_AOT_PLUGIN) $(NATIVE_METHOD_AOT_ARTIFACT) $(NATIVE_METHOD_AOT_SEMANTIC_REJECT_SOURCE) $(NATIVE_METHOD_AOT_LIBRARY_SOURCE) $(NATIVE_METHOD_NOT_HANDLED_SMOKE) $(NATIVE_METHOD_NOT_HANDLED_ARTIFACT) $(NATIVE_METHOD_BOUNDARY_SMOKE) $(NATIVE_METHOD_BOUNDARY_PLUGIN) $(NATIVE_METHOD_BOUNDARY_ARTIFACT) $(NATIVE_METHOD_ERROR_ARTIFACT)
+	$(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD_AOT_ARTIFACT) $(abspath $(NATIVE_METHOD_AOT_PLUGIN))
+	$(NATIVE_METHOD_NOT_HANDLED_SMOKE) $(NATIVE_METHOD_NOT_HANDLED_ARTIFACT) $(abspath $(NATIVE_METHOD_AOT_PLUGIN))
+	$(NATIVE_METHOD_BOUNDARY_SMOKE) $(NATIVE_METHOD_BOUNDARY_ARTIFACT) $(NATIVE_METHOD_ERROR_ARTIFACT) $(abspath $(NATIVE_METHOD_BOUNDARY_PLUGIN))
+	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; log="$(CURDIR)/$(BUILD)/native_method_aot_semantic_reject.log"; if $(CURDIR)/$(SLEELA_BIN) aot --list impl/$(NATIVE_METHOD_AOT_SEMANTIC_REJECT_SOURCE) > "$$log" 2>&1; then echo "native-method-aot: semantic-invalid source was incorrectly accepted" >&2; cat "$$log" >&2; exit 1; fi; grep -q "must be bool" "$$log" || { echo "native-method-aot: rejection did not come from semantic boolean-condition validation" >&2; cat "$$log" >&2; exit 1; }; echo "native-method-aot: semantic-invalid source correctly refused"
+	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; log="$(CURDIR)/$(BUILD)/native_method_aot_library.log"; $(CURDIR)/$(SLEELA_BIN) aot --list impl/$(NATIVE_METHOD_AOT_LIBRARY_SOURCE) > "$$log" 2>&1 || { cat "$$log" >&2; exit 1; }; grep -q "all 1 @native method(s) are translatable" "$$log" || { echo "native-method-aot: library unit without main was not accepted" >&2; cat "$$log" >&2; exit 1; }; echo "native-method-aot: library unit without main correctly accepted"
+# Native call/close concurrency regression; part of `make test` and the Native Drive CI workflow.
+$(NATIVE_CONCURRENCY_FIXTURE): $(NATIVE_CONCURRENCY_FIXTURE_SOURCE) ../os-level-support/loader/native_loader.h | $(BUILD)
+	$(CC) $(CFLAGS) $(NATIVE_CONCURRENCY_FIXTURE_CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_CONCURRENCY_FIXTURE_FLAGS) -I../os-level-support/loader $< -o $@
+$(NATIVE_CONCURRENCY_SMOKE_OBJ): $(NATIVE_CONCURRENCY_SOURCE) core/sleela_core.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(NATIVE_CONCURRENCY_SMOKE): $(NATIVE_CONCURRENCY_SMOKE_OBJ) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+test-native-concurrency: $(NATIVE_CONCURRENCY_SMOKE) $(NATIVE_CONCURRENCY_FIXTURE)
+	$(NATIVE_CONCURRENCY_SMOKE) $(abspath $(NATIVE_CONCURRENCY_FIXTURE))
+libslcore: $(SLCORE_LIB)
+	@echo "=== reusable Core engine archive: $(SLCORE_LIB) ==="
+$(CHEMISTRY_OBJ): subjects/chemistry/chemistry.cpp subjects/chemistry/chemistry.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c subjects/chemistry/chemistry.cpp -o $@
+$(FINANCIAL_OBJ): subjects/finance/financial.cpp subjects/finance/financial.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c subjects/finance/financial.cpp -o $@
+# version.h carries the supported-syntax range (minSupportedSyntax/
+# maxSupportedSyntax) that several front-end units bake in; list it as a
+# prerequisite so changing the range forces a rebuild rather than leaving stale
+# objects that report the old range.
+$(BUILD)/%.o: frontend/%.cpp frontend/version.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+# The native CommonRails printing engine, compiled from the heritage C++ layer.
+$(COMMON_RAILS_OBJ): ../common-rails/heritage/printing/cpp/CommonRailsPrinting.cpp ../common-rails/heritage/printing/cpp/CommonRailsPrinting.hpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(COMMON_RAILS_INC) -c $< -o $@
+$(BUILD)/native_api.o: subjects/native/native_api.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/math_native.o: subjects/math/math_native.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/astrophysics_math.o: subjects/astrophysics/astrophysics_math.c subjects/astrophysics/astrophysics_math.h | $(BUILD)
+	$(CC) $(CFLAGS) -Isubjects/astrophysics -c $< -o $@
+$(ASTRO_OBJ): subjects/astrophysics/astrophysics.cpp subjects/astrophysics/astrophysics.hpp $(ASTRO_MATH_OBJ) | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -Isubjects/astrophysics -c $< -o $@
+$(ASTRO_STORE_OBJ): subjects/astrophysics/observation_store.c subjects/astrophysics/observation_store.h | $(BUILD)
+	$(CC) $(CFLAGS) -Isubjects/astrophysics -c $< -o $@
+$(ASTRO_SMOKE): tests/subjects/astrophysics_smoke.c $(ASTRO_MATH_OBJ) $(ASTRO_STORE_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Isubjects/astrophysics $< $(ASTRO_MATH_OBJ) $(ASTRO_STORE_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+test-astrophysics: $(ASTRO_SMOKE) $(ASTRO_OBJ)
+	@echo "=== SLeeLa Astrophysics subject library ==="; $(ASTRO_SMOKE)
+$(SOC_MATH_OBJ): subjects/sociology/sociology_math.c subjects/sociology/sociology_math.h | $(BUILD)
+	$(CC) $(CFLAGS) -Isubjects/sociology -c $< -o $@
+$(SOC_OBJ): subjects/sociology/sociology.cpp subjects/sociology/sociology.hpp $(SOC_MATH_OBJ) | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -Isubjects/sociology -c $< -o $@
+$(SOC_SMOKE): tests/subjects/sociology_smoke.c $(SOC_MATH_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -Isubjects/sociology $< $(SOC_MATH_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+test-sociology: $(SOC_SMOKE) $(SOC_OBJ)
+	@echo "=== SLeeLa Sociology subject library ==="; $(SOC_SMOKE)
+
+
+$(BUILD)/physics_native.o: subjects/physics/physics_native.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/astrophysics_native.o: subjects/astrophysics/astrophysics_native.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/sociology_native.o: subjects/sociology/sociology_native.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/Annotation.o: annotation/Annotation.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/ForwardingAnnotation.o: annotation/ForwardingAnnotation.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/AnnotationForwarder.o: annotation/AnnotationForwarder.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/AnnotationInterpreter.o: annotation/AnnotationInterpreter.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/AnnotationRuntime.o: annotation/AnnotationRuntime.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/economics_native.o: subjects/economics/economics_native.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/inference_native.o: subjects/inference/inference_native.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/chemistry_api.o: subjects/chemistry/chemistry_api.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/financial_api.o: subjects/finance/financial_api.cpp | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/sheet_catalog.o: catalog/sheet_catalog.cpp catalog/sheet_catalog.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/xclass_loader.o: xclass/xclass_loader.cpp xclass/xclass_loader.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/langin.o: langin/langin.cpp langin/langin.h xclass/xclass_loader.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c langin/langin.cpp -o $@
+NS_HEADERS := $(wildcard nordshrift/*.h)
+$(BUILD)/ns_%.o: nordshrift/%.cpp $(NS_HEADERS) | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(LEDGER_CORE_OBJ): ../ledger/ledger_core.cpp ../ledger/ledger_core.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
+$(BUILD)/http_server.o: ../http-servers/common/http_server.cpp ../http-servers/common/http_server.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../http-servers/common/http_server.cpp -o $@
+$(BUILD)/http_server_cli.o: frontend/http_server_cli.cpp frontend/http_server_cli.h ../http-servers/common/http_server.h ../http-servers/2/http2/http2_server.h ../http-servers/3/http3/http3_server.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c frontend/http_server_cli.cpp -o $@
+$(BUILD)/http2_server.o: ../http-servers/2/http2/http2_server.cpp ../http-servers/2/http2/http2_server.h $(NGHTTP2_VERHDR) | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -I$(NGHTTP2_INC) -DNGHTTP2_STATICLIB -c ../http-servers/2/http2/http2_server.cpp -o $@
+
+# --- Vendored nghttp2 static library ----------------------------------------
+# Unpack the committed source tree once; the stamp file guards re-extraction.
+$(NGHTTP2_DIR)/.unpacked: $(NGHTTP2_ZIP) | $(BUILD)
+	@echo "=== unpacking vendored nghttp2 $(NGHTTP2_VERSION) ==="
+	@rm -rf $(NGHTTP2_DIR)
+	@cd $(BUILD) && $(PYTHON) -c "import zipfile; zipfile.ZipFile('../$(NGHTTP2_ZIP)').extractall('.')"
+	@touch $@
+
+# Generate the version header from the shipped autotools/cmake template.
+$(NGHTTP2_VERHDR): $(NGHTTP2_DIR)/.unpacked
+	@sed -e 's/@PACKAGE_VERSION@/$(NGHTTP2_VERSION)/' \
+	     -e 's/@PACKAGE_VERSION_NUM@/$(NGHTTP2_VERSION_NUM)/' \
+	     $(NGHTTP2_DIR)/lib/includes/nghttp2/nghttp2ver.h.in > $@
+
+# Compile the core library sources (lib/*.c) into a static archive. The sources
+# are built standalone (no config.h; HAVE_CONFIG_H is left undefined) with
+# NGHTTP2_STATICLIB so no symbol-visibility/DLL attributes are emitted.
+$(NGHTTP2_LIB): $(NGHTTP2_VERHDR)
+	@echo "=== building vendored libnghttp2.a ==="
+	@$(CC) $(CFLAGS) $(NGHTTP2_DEFS) -I$(NGHTTP2_INC) -I$(NGHTTP2_DIR)/lib \
+	    -c $(NGHTTP2_DIR)/lib/*.c
+	@mv nghttp2_*.o sfparse.o $(BUILD)/ 2>/dev/null || true
+	@$(AR) rcs $@ $(BUILD)/nghttp2_*.o $(BUILD)/sfparse.o
+	@rm -f $(BUILD)/nghttp2_*.o $(BUILD)/sfparse.o
+$(PREFERRED_ROUTER_OBJ): ../preferred-routers/preferred_router.cpp ../preferred-routers/preferred_router.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../preferred-routers/preferred_router.cpp -o $@
+$(BUILD)/http3_server.o: ../http-servers/3/http3/http3_server.cpp ../http-servers/3/http3/http3_server.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c ../http-servers/3/http3/http3_server.cpp -o $@
+
+$(JAVA_RUNTIME_PROBE_OBJ): ../runtime/java_runtime_probe.c ../runtime/java_runtime_probe.h | $(BUILD)
+	$(CC) $(CFLAGS) -c $< -o $@
+$(JAVA_RUNTIME_BRIDGE_OBJ): ../runtime/java_runtime_bridge.c ../runtime/java_runtime_bridge.h ../runtime/java_runtime_probe.h | $(BUILD)
+	$(CC) $(CFLAGS) -c $< -o $@
+$(BUILD)/driver.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/version.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h frontend/http_server_cli.h ../runtime/vm_config.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -I../runtime -c $< -o $@
+# Same source, compiled with the compiler product identity for the independent
+# sleelvac binary. Keeps driver.o (runtime) untouched.
+$(BUILD)/driver_sleelvac.o: frontend/driver.cpp frontend/compiler.h frontend/artifact.h frontend/version.h subjects/native/native_api.h subjects/chemistry/chemistry_api.h subjects/finance/financial_api.h frontend/http_server_cli.h ../runtime/vm_config.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -I../runtime -DSLEELA_PRODUCT_SLEELVAC -c $< -o $@
+$(BUILD):
+	mkdir -p $(BUILD)
+
+test: verify-security test-osls-isa test-osls-vm test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-lineage test-ref test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-unsigned-integer test-runtime test-memmgr test-native-ipc-handles test-native-call test-native-method-metadata test-native-method-aot test-native-concurrency
+test-osls-isa:
+	@cd $(CURDIR)/.. && $(PYTHON) tools/verify-osls-isa-extension.py
+
+test-osls-vm: $(SLEELA_BIN) $(OSLS_VM_CAP_SMOKE)
+	@cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/osls_vm/osls_vm_bindings.sleela
+	@cd $(CURDIR)/.. && bash impl/tests/osls_vm/run_osls_vm_negative.sh $(CURDIR)/$(SLEELA_BIN)
+	@$(OSLS_VM_CAP_SMOKE)
+
+test-thread-platform: $(THREAD_PLATFORM_SMOKE)
+	@echo "=== OS-aware threading backend ==="; SLEELA_THREAD_PLATFORM=auto $(THREAD_PLATFORM_SMOKE)
+test-threads: $(THREAD_SMOKE)
+	@echo "=== core threading smoke (128 threads) ==="; $(THREAD_SMOKE) 128
+test-java-runtime: $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && bash test-suites/java-runtime-probe.sh
+	@cd $(CURDIR)/.. && bash test-suites/java-runtime-bridge.sh
+
+test-sleela: $(SLEELA_BIN)
+	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && found=0; for f in impl/examples/*.sleela; do [ -f "$f" ] || continue; found=1; echo "=== $f ==="; $(CURDIR)/$(SLEELA_BIN) run "$f" || exit 1; done; if [ "$found" -eq 0 ]; then echo "No legacy impl/examples/*.sleela files; skipping this optional loop."; fi
+
+test-lineage: $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && bash impl/tests/lineage/run_lineage_tests.sh $(CURDIR)/$(SLEELA_BIN)
+test-class-dispatch: $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && bash impl/tests/class_dispatch/run_class_dispatch_tests.sh $(CURDIR)/$(SLEELA_BIN)
+test-ref: $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && bash impl/tests/refs/run_ref_tests.sh $(CURDIR)/$(SLEELA_BIN)
+test-version: $(SLEELA_BIN)
+	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && bash impl/tests/version/run_version_tests.sh $(CURDIR)/$(SLEELA_BIN)
+test-syntax-1.8: $(SLEELA_BIN)
+	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && bash tests/sleela-syntax-1.8/run_syntax_1_8_tests.sh $(CURDIR)/$(SLEELA_BIN)
+test-nordshrift: $(NORDSHRIFT_BIN)
+	@export SLEELA_SHA256_MANIFEST=${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && echo "=== check examples/nordshrift/subject-libraries.sst ===" && $(CURDIR)/$(NORDSHRIFT_BIN) check examples/nordshrift/subject-libraries.sst
+	@export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && for f in impl/nordshrift/examples/*.sst; do echo "=== check $$f ==="; $(CURDIR)/$(NORDSHRIFT_BIN) check $$f || exit 1; done
+	@export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && echo "=== build impl/nordshrift/examples/demo/build.sst (target sleela -> runnable artifact) ===" && $(CURDIR)/$(NORDSHRIFT_BIN) build impl/nordshrift/examples/demo/build.sst || exit 1
+test-nordshrift-compiler: $(NORDSHRIFT_BIN)
+	@cd $(CURDIR)/.. && bash impl/tests/nordshrift/run_compiler_resolution_tests.sh $(CURDIR)/$(NORDSHRIFT_BIN)
+test-nordshrift-semantic: $(NORDSHRIFT_BIN)
+	@cd $(CURDIR)/.. && bash impl/tests/nordshrift/run_semantic_analysis_tests.sh $(CURDIR)/$(NORDSHRIFT_BIN)
+test-nordshrift-compat: $(NORDSHRIFT_BIN)
+	@bash ../impl/tests/nordshrift/run_cross_version_tests.sh $(NORDSHRIFT_BIN)
+
+test-nordshrift-e2e: $(NORDSHRIFT_BIN) $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && bash impl/tests/nordshrift/run_end_to_end_tests.sh $(CURDIR)/$(NORDSHRIFT_BIN) $(CURDIR)/$(SLEELA_BIN)
+# CommonRails cross-engine conformance: the Sleela PrintRail class and the
+# native C++ heritage printing engine must render the progress square
+# byte-identically, and each engine's single-line output is pinned to a
+# fixture. Guards against the two implementations of the shared contract
+# drifting apart.
+test-common-rails: $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && bash impl/tests/common_rails/run_common_rails_conformance_tests.sh
+test-runtime-artifact-abi: $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && bash impl/tests/version/run_artifact_abi_tests.sh $(CURDIR)/$(SLEELA_BIN)
+
+test-network: $(SOCKET_SMOKE)
+	@echo "=== core networking smoke (TCP loopback) ==="; $(SOCKET_SMOKE)
+test-synchro: $(SYNCHRO_SMOKE)
+	@echo "=== Synchro honest-measurement smoke ==="; $(SYNCHRO_SMOKE)
+test-munction: $(MUNCTION_SMOKE)
+	@echo "=== Munction reach-composition smoke ==="; $(MUNCTION_SMOKE)
+test-bestof: $(BESTOF_SMOKE)
+	@echo "=== Best-of route/accuracy selection smoke ==="; $(BESTOF_SMOKE)
+test-network-platform: $(NET_PLATFORM_SMOKE)
+	@echo "=== OS-aware networking backend ==="; SLEELA_NET_PLATFORM=auto $(NET_PLATFORM_SMOKE)
+test-io-platform: $(IO_PLATFORM_SMOKE)
+	@echo "=== OS-aware file I/O backend ==="; SLEELA_IO_PLATFORM=auto $(IO_PLATFORM_SMOKE)
+test-path-platform: $(PATH_PLATFORM_SMOKE)
+	@echo "=== OS-aware paths/filesystem backend ==="; $(PATH_PLATFORM_SMOKE)
+test-terminal-platform: $(TERMINAL_PLATFORM_SMOKE)
+	@echo "=== OS-aware terminal/PTY backend ==="; SLEELA_TERMINAL_PLATFORM=auto $(TERMINAL_PLATFORM_SMOKE)
+test-library-platform: $(LIBRARY_PLATFORM_SMOKE)
+	@echo "=== OS-aware native library loader ==="; $(LIBRARY_PLATFORM_SMOKE)
+test-time-platform: $(TIME_PLATFORM_SMOKE)
+	@echo "=== precision time platform ==="; $(TIME_PLATFORM_SMOKE)
+test-pixel-terminal: $(PIXEL_TERMINAL_SMOKE)
+	@echo "=== native pixel terminal smoke ==="; $(PIXEL_TERMINAL_SMOKE)
+test-catalog: $(NORDSHRIFT_BIN)
+	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; echo "=== nordshrift objects (summary) ==="; $(NORDSHRIFT_BIN) objects | head -4 || exit 1; echo "=== relevance --target=c Thread ==="; $(NORDSHRIFT_BIN) relevance --target=c Thread || exit 1; echo "=== relevance --target=java (tally) ==="; $(NORDSHRIFT_BIN) relevance --target=java | tail -1 || exit 1
+# Shared runner for a single subject *_values.sleela program: builds the
+# binary, then asserts the program runs cleanly, emits no FAIL line, and
+# produces exactly its EXPECTED_PASS count. $(1) is the subject basename.
+SUBJECT_TEST_ENV = export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}
+define RUN_SUBJECT_VALUES
+	@$(SUBJECT_TEST_ENV); cd $(CURDIR)/.. && \
+	  f=impl/tests/subjects/$(1)_values.sleela; \
+	  echo "=== $(1) numeric assertions ($$f) ==="; \
+	  out="$$($(CURDIR)/$(SLEELA_BIN) run $$f 2>/dev/null)" || { echo "  FAIL ($$f did not run)"; exit 1; }; \
+	  printf '%s\n' "$$out" | grep -E '^(PASS|FAIL) '; \
+	  fails=$$(printf '%s\n' "$$out" | grep -c '^FAIL '); \
+	  passes=$$(printf '%s\n' "$$out" | grep -c '^PASS '); \
+	  expected=$$(grep -oE 'EXPECTED_PASS=[0-9]+' $$f | head -1 | cut -d= -f2); \
+	  if [ "$$fails" -ne 0 ]; then echo "  $(1): $$fails FAILED"; exit 1; fi; \
+	  if [ -n "$$expected" ] && [ "$$passes" -ne "$$expected" ]; then echo "  $(1): expected $$expected checks, got $$passes"; exit 1; fi; \
+	  echo "  $(1): $$passes checks passed"
+endef
+
+test-math: $(SLEELA_BIN) $(BUILD)/math_native.o
+	$(call RUN_SUBJECT_VALUES,math)
+test-physics: $(SLEELA_BIN) $(BUILD)/physics_native.o
+	$(call RUN_SUBJECT_VALUES,physics)
+test-economics: $(SLEELA_BIN) $(BUILD)/economics_native.o
+	$(call RUN_SUBJECT_VALUES,economics)
+test-inference: $(SLEELA_BIN) $(BUILD)/inference_native.o
+	$(call RUN_SUBJECT_VALUES,inference)
+test-chemistry: $(SLEELA_BIN) $(CHEMISTRY_OBJ)
+	$(call RUN_SUBJECT_VALUES,chemistry)
+test-financial: $(SLEELA_BIN) $(FINANCIAL_OBJ)
+	$(call RUN_SUBJECT_VALUES,financial)
+# Run all subject numeric assertions through the shared harness.
+test-subjects: $(SLEELA_BIN)
+	@$(SUBJECT_TEST_ENV); cd $(CURDIR)/.. && bash impl/tests/subjects/run_subject_tests.sh $(CURDIR)/$(SLEELA_BIN)
+clean:
+	rm -rf $(BUILD)
+
+build-runtime: verify-security $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ)
+	@echo "=== SLVM runtime services built: GC + Security Supervisor + Parameters ==="
+
+# Behavioral smoke test for the runtime services: links the test against the
+# GC and security-supervisor objects and asserts real behavior (mark-sweep
+# reclamation, byte accounting, destructor invocation, and class/role quota
+# enforcement) rather than merely compiling them.
+RUNTIME_SMOKE := $(BUILD)/runtime_smoke
+GC_MODERN_SMOKE := $(BUILD)/gc_modern_smoke
+CONFIG_LOCATION_OBJ := $(BUILD)/config_location.o
+CONFIG_LOCATION_SMOKE := $(BUILD)/config_location_smoke
+$(RUNTIME_SMOKE): tests/runtime/runtime_smoke.c $(GC_OBJ) $(SECURITY_OBJ) | verify-security $(BUILD)
+	$(CC) $(CFLAGS) -I../runtime tests/runtime/runtime_smoke.c $(GC_OBJ) $(SECURITY_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+$(GC_MODERN_SMOKE): tests/runtime/gc_modern_smoke.c $(GC_OBJ) | verify-security $(BUILD)
+	$(CC) $(CFLAGS) -I../runtime tests/runtime/gc_modern_smoke.c $(GC_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+
+# Cross-platform source smoke suite. These tests exercise the native
+# OS abstraction layer (threads, sockets, I/O, paths, terminal, loader, time).
+test-platform: $(THREAD_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(IO_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(TIME_PLATFORM_SMOKE)
+	@echo "=== SLeeLa native platform smoke suite ($(PLATFORM)) ==="
+	@$(THREAD_PLATFORM_SMOKE)
+	@$(NET_PLATFORM_SMOKE)
+	@$(IO_PLATFORM_SMOKE)
+	@$(PATH_PLATFORM_SMOKE)
+	@$(TERMINAL_PLATFORM_SMOKE)
+	@$(LIBRARY_PLATFORM_SMOKE)
+	@$(TIME_PLATFORM_SMOKE)
+
+test-runtime: $(RUNTIME_SMOKE) $(GC_MODERN_SMOKE)
+	@echo "=== SLVM runtime services -- behavioral smoke ==="; $(RUNTIME_SMOKE)
+	@echo "=== SLeeLa modern generational/incremental GC smoke ==="; $(GC_MODERN_SMOKE)
+
+# Behavioral smoke test for the Memory Manager: links against the manager and
+# the OS allocator/thread objects and asserts real behavior (untracked-when-
+# disabled, exact byte/alloc accounting across alloc/calloc/realloc/free, and a
+# hard byte limit that fails allocation closed).
+DESIGN_ACTIVITY_SMOKE := $(BUILD)/design_activity_smoke
+MEMMGR_SMOKE := $(BUILD)/memmgr_smoke
+$(DESIGN_ACTIVITY_SMOKE): tests/core/design_activity_smoke.c $(DESIGN_ACTIVITY_OBJ) | verify-security $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/design_activity_smoke.c $(DESIGN_ACTIVITY_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+
+$(MEMMGR_SMOKE): tests/core/memmgr_smoke.c $(MEMMGR_OBJ) $(MEMORY_OBJ) $(THREAD_OBJ) | verify-security $(BUILD)
+	$(CC) $(CFLAGS) -Icore tests/core/memmgr_smoke.c $(MEMMGR_OBJ) $(MEMORY_OBJ) $(THREAD_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+
+test-design-activity: $(DESIGN_ACTIVITY_SMOKE)
+	@echo "=== SLeeLa Design Activity -- behavioral smoke ==="; $(DESIGN_ACTIVITY_SMOKE)
+
+test-memmgr: $(MEMMGR_SMOKE)
+	@echo "=== SLeeLa Memory Manager -- behavioral smoke ==="; $(MEMMGR_SMOKE)
+
+JAVA_AUTHORSHIP_TEST := $(BUILD)/java_authorship_metadata.test
+test-java-authorship: $(SLEELA_BIN)
+	@echo "=== Java authorship transition metadata ==="
+	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/java_transition/java_authorship_metadata.sleela
+
+
+test-java-generic: $(SLEELA_BIN)
+	@echo "=== Java generic signature transition ==="
+	@cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/java_transition/generic_signatures.sleela
+
+test-java-declaration-metadata: $(SLEELA_BIN)
+	@echo "=== Java declaration annotation metadata ==="
+	@cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/java_transition/declaration_metadata.sleela
+
+$(CONFIG_LOCATION_OBJ): ../runtime/config_location.c ../runtime/config_location.h | $(BUILD)
+	$(CC) $(CFLAGS) -c ../runtime/config_location.c -o $@
+$(CONFIG_LOCATION_SMOKE): ../runtime/config_location_smoke.c ../runtime/config_location.h $(CONFIG_LOCATION_OBJ) | $(BUILD)
+	$(CC) $(CFLAGS) -I../runtime ../runtime/config_location_smoke.c $(CONFIG_LOCATION_OBJ) -o $@ $(LDFLAGS) $(LIBS)
+test-config-location: $(CONFIG_LOCATION_SMOKE)
+	@echo "=== SLeeLa configuration location policy ==="; (cd .. && $(CONFIG_LOCATION_SMOKE))
+
+UNSIGNED_INTEGER_TEST := $(BUILD)/unsigned_integer.test
+$(UNSIGNED_INTEGER_TEST): tests/unsigned_integer_test.cpp frontend/unsigned_integer.h | $(BUILD)
+	$(CXX) $(CXXFLAGS) -Ifrontend tests/unsigned_integer_test.cpp -o $@
+test-unsigned-integer: $(UNSIGNED_INTEGER_TEST)
+	@echo "=== SLeeLa arbitrary-width unsigned integer tests ==="; $(UNSIGNED_INTEGER_TEST)
+
+# ---- Automatic header-dependency include -----------------------------------
+# Pull in the per-object .d files written by $(DEPFLAGS) (-MMD -MP). Each lists
+# the headers its object includes, so editing any header recompiles exactly the
+# dependent objects. The wildcard is empty on a clean tree (no .d yet), which is
+# fine -- the first build creates them. '-include' never errors on missing files.
+-include $(wildcard $(BUILD)/*.d)
+-include $(wildcard $(BUILD)/slui/*.d)

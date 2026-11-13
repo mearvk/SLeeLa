@@ -1,0 +1,14 @@
+#sleela 3.1
+class Cell { int v; }
+class StructChurn {
+  void main() {
+    Cell[] cells = new Cell[3000];
+    for (int i = 0; i < 3000; i++) { Cell c0 = new Cell(); c0.v = i; cells[i] = c0; }
+    for (int k = 0; k < 30000; k++) { Cell c = new Cell(); c.v = k; }
+    int cs = 0;
+    for (int i = 0; i < 3000; i++) { Cell c1 = cells[i]; cs = cs + c1.v; }
+    print("live structs intact " + cs);
+    for (int k = 0; k < 30000; k++) { int[] a = new int[2]; Cell c = new Cell(); c.v = k; a[0] = c.v; }
+    print("mixed churn ok");
+  }
+}

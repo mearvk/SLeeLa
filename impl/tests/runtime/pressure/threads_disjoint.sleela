@@ -1,0 +1,18 @@
+#sleela 3.1
+class ThreadsDisjoint {
+  static int[] a = new int[1000];
+  static int[] b = new int[1000];
+  static void workA() { for (int r = 0; r < 300; r++) { for (int i = 0; i < 1000; i++) { a[i] = a[i] + 1; } int[] t = new int[2]; t[0] = r; } }
+  static void workB() { for (int r = 0; r < 300; r++) { for (int i = 0; i < 1000; i++) { b[i] = b[i] + 2; } int[] t = new int[2]; t[0] = r; } }
+  void main() {
+    int[] pre = new int[10];
+    pre[3] = 7;
+    spawn(workA);
+    spawn(workB);
+    for (int k = 0; k < 2000; k++) { int[] t = new int[3]; t[0] = k; }
+    join();
+    int sa = 0; int sb = 0;
+    for (int i = 0; i < 1000; i++) { sa = sa + a[i]; sb = sb + b[i]; }
+    print("a " + sa + " b " + sb + " pre " + pre[3]);
+  }
+}

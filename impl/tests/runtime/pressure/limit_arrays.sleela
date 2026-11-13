@@ -1,0 +1,2 @@
+#sleela 3.1
+class ArrayLimit { void main() { int[][] hold = new int[5000][]; for (int i = 0; i < 5000; i++) { hold[i] = new int[1]; } print("unreachable"); } }

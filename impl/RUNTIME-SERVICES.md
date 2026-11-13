@@ -10,13 +10,13 @@ This document maps the common runtime-services contract to the current native `/
 | Threading | Core `SPAWN`/`JOINALL`/locks/mailboxes, pthread compatibility boundary, Windows threading adapter | Structured concurrency with ownership, cancellation propagation, join results, safe points |
 | Cancellation | `impl/fundamental/CancellationToken.hpp` exists as an atomic shared cancellation primitive | Propagate tokens through VM scopes and blocking I/O; cancellation must be observable at safe points |
 | Memory | `/impl/MEMORY_SYSTEM_OS.md` provides allocation/page/time primitives | Add VM heap ownership, precise roots, write barriers, safepoints, and incremental/generational GC |
-| Garbage collection | No dedicated GC implementation or GC-specific ISA opcode was found in the current construction | **Architecture gap:** GC remains a runtime service, not an opcode; implement it behind the common contract before claiming production GC |
+| Garbage collection | Implemented in `runtime/garbage_collector.c`: tracing mark-sweep with incremental marking, a young/old split, a remembered set and write barriers (`gc_write_barrier`), VM root scanning (`gc_mark_vm_roots`) and a managed-heap limit (1 GiB, `SLEELA_GC_LIMIT_BYTES`). Allocation polls it at safepoints and, when a bounded table is full, runs one complete collection and retries (arrays, structs, Java Strings). GC is a runtime service, not an opcode. | See `impl/RUNTIME-AUDIT.md` for what is verified and what is open (mark cost, native resources, thread-safety of the fast paths) |
 | Teardown | `slvm_free` and file cleanup exist; VM generations 7/8/10 have lifecycle/quiesce/recovery states | Ordered, idempotent quiesce/cancel/drain/join/close/finalize/stop state machine |
 | Recovery | SLVM/7–11 contain checkpoint/resource/filesystem identity concepts | Stale native resources fail closed and are reacquired after epoch changes |
 
 ## Construction rule
 
-The Core VM remains the semantic execution substrate. Runtime services sit below the 98-opcode ISA and above the operating-system adapters. They may implement an opcode synchronously or asynchronously without changing its source meaning.
+The Core VM remains the semantic execution substrate. Runtime services sit below the ISA (195 opcodes, `lib/vm/InstructionSet.sleela`) and above the operating-system adapters. They may implement an opcode synchronously or asynchronously without changing its source meaning.
 
 GC is intentionally not represented as a fake `GC` opcode. Allocation, safepoints, root scanning, barriers, and collection are runtime mechanisms. File descriptors, sockets, threads, pipes, and pending I/O are explicit resources and require deterministic close/cancel behavior even when the owning language object becomes unreachable.
 

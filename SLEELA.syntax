@@ -3730,7 +3730,7 @@ levels are `null`. A multi-dimensional creation below 3.1 is the error
 
 Limit: because every row is an array object, a grid needs `1 + rows` of the 4096
 live-array slots (`new int[4096][1]` fails with `array allocation failed ... the
-live-array table is full`); collection of dead arrays reclaims them, so a loop that
+live-array table is full`); collection of dead arrays reclaims them (a full table first triggers a complete collection and one retry), so a loop that
 builds and drops many grids runs in constant space.
 
 ### 46.4 The length member
