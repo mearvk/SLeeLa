@@ -139131,7 +139131,7 @@
 <h2 class="section" data-u="jconvconfig">JConvConfig <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvConfig.sleela)</span></h2>
 <div data-u="jconvconfig jconvconfig">
 <h3 id="JConvConfig">JConvConfig <span class="pill">class</span></h3>
-<p class="desc">the converter settings. A SLeeLa program receives no command-line arguments (sleela run reads every argument as a source file), so the settings come from environment variables: JCONV_IN root of the Java source tree (required) JCONV_OUT root of the SLeeLa output tree (default: ./jdk28-converted) JCONV_SCOPE api (default): only the types listed in lib/java/jdk-28/INDEX.tsv; all: every .java file JCONV_FILTER convert only paths that start with this prefix (for example java.base/java/util) JCONV_LIMIT stop after this many files (0 or unset: no limit) JCONV_INT int32 (default, Java 32-bit int) or int (64-bit SLeeLa int) JCONV_COMMENTS keep (default) or drop; the leading licence comment is always kept</p>
+<p class="desc">the converter settings. A SLeeLa program receives no command-line</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
@@ -139142,6 +139142,7 @@
 <tr><td><code>limit</code></td><td><span class="sig">int limit</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>intType</code></td><td><span class="sig">String intType</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>keepComments</code></td><td><span class="sig">boolean keepComments</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bundle</code></td><td><span class="sig">boolean bundle</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>sleelaHome</code></td><td><span class="sig">String sleelaHome</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>problem</code></td><td><span class="sig">String problem</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>apiKeys</code></td><td><span class="sig">String[] apiKeys</span></td><td class="desc">api scope: open-addressing set of &lt;module&gt;/&lt;package path&gt;/&lt;Type&gt; keys</td></tr>
@@ -139333,7 +139334,11 @@
 <tr><td><code>mStatic</code></td><td><span class="sig">int[] mStatic</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>mN</code></td><td><span class="sig">int mN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>fNames</code></td><td><span class="sig">String[] fNames</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fTypes</code></td><td><span class="sig">String[] fTypes</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>fN</code></td><td><span class="sig">int fN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sName</code></td><td><span class="sig">String[] sName</span></td><td class="desc">the names and declared types seen in the current member (typed pass)</td></tr>
+<tr><td><code>sType</code></td><td><span class="sig">String[] sType</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sN</code></td><td><span class="sig">int sN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>declNames</code></td><td><span class="sig">String[] declNames</span></td><td class="desc">class-like types declared in the current file (castable targets)</td></tr>
 <tr><td><code>declN</code></td><td><span class="sig">int declN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>siName</code></td><td><span class="sig">String[] siName</span></td><td class="desc">single static imports of the file: member name and its class</td></tr>
@@ -139355,7 +139360,7 @@
 <tr><td><code>typeVarList</code></td><td><span class="sig">String typeVarList()</span></td><td class="desc">the type variables in scope as a comma list, for nested types</td></tr>
 <tr><td><code>addMethod</code></td><td><span class="sig">void addMethod(String n, boolean isStatic)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>methodIndex</code></td><td><span class="sig">int methodIndex(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
-<tr><td><code>addField</code></td><td><span class="sig">void addField(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addField</code></td><td><span class="sig">void addField(String n, String type)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>hasField</code></td><td><span class="sig">boolean hasField(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>nx</code></td><td><span class="sig">int nx(int i)</span></td><td class="desc">---- input helpers ----</td></tr>
 <tr><td><code>pv</code></td><td><span class="sig">int pv(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -301442,7 +301447,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-13 01:41 UTC.
+<code>/lib</code> tree on 2026-11-13 01:55 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
