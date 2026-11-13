@@ -3,14 +3,20 @@
 // A compact, dependency-free parser for the advantages.xml schema. It walks
 // the document element-by-element, understanding exactly the tags this
 // module emits: <advantages>, <sourceAdvantage>, <name>, <description>,
-// <assumptions>/<assumption>, and <knowledge>/<string>. Anything else is
-// skipped. This avoids pulling in an external XML library while still
+// <assumptions>/<assumption> (optional status="held|doubted">),
+// <knowledge>/<string>, <knowledgeSource>, and <evidence>/<observation>.
+// Unknown tags are skipped, but malformed values in the fields that feed the
+// math (numbers, assumption status, duplicate ids, stray <observation>) are
+// rejected with an error rather than silently coerced. This avoids pulling in an external XML library while still
 // loading the data faithfully into memory for analysis.
 #include "advantage_store.hpp"
 
 #include <cctype>
+#include <cerrno>
+#include <cmath>
+#include <cstdlib>
 #include <fstream>
-#include <sstream>
+#include <string>
 
 namespace advantage {
 
@@ -30,6 +36,12 @@ std::size_t AdvantageStore::assumptionCount() const {
 std::size_t AdvantageStore::knowledgeCount() const {
     std::size_t n = 0;
     for (const auto& s : sources) n += s.knowledge.size();
+    return n;
+}
+
+std::size_t AdvantageStore::evidenceCount() const {
+    std::size_t n = 0;
+    for (const auto& s : sources) n += s.evidence.size();
     return n;
 }
 
@@ -126,15 +138,24 @@ bool readTag(Scanner& sc, Tag& tag) {
     return true;
 }
 
-// Pull a single attribute value out of a raw attribute string.
+// Pull a single attribute value out of a raw attribute string. The name must
+// match whole: it has to start the string or follow whitespace, so looking up
+// "weight" can never be satisfied by "xweight" and "id" never by "uuid".
 std::string attr(const std::string& attrs, const std::string& key) {
-    std::string needle = key + "=\"";
-    std::size_t p = attrs.find(needle);
-    if (p == std::string::npos) return "";
-    p += needle.size();
-    std::size_t q = attrs.find('"', p);
-    if (q == std::string::npos) return "";
-    return unescape(attrs.substr(p, q - p));
+    const std::string needle = key + "=\"";
+    std::size_t p = 0;
+    while ((p = attrs.find(needle, p)) != std::string::npos) {
+        const bool boundary =
+            p == 0 || std::isspace(static_cast<unsigned char>(attrs[p - 1]));
+        if (boundary) {
+            std::size_t v = p + needle.size();
+            std::size_t q = attrs.find('"', v);
+            if (q == std::string::npos) return "";
+            return unescape(attrs.substr(v, q - v));
+        }
+        p += 1;
+    }
+    return "";
 }
 
 // Read text content from the current position up to the next '<'.
@@ -144,29 +165,65 @@ std::string readText(Scanner& sc) {
     return trim(unescape(sc.s.substr(start, sc.i - start)));
 }
 
+// Strict number parse: the whole string must be a finite number. Fails
+// closed so a typo in the XML can never silently become 0.
+bool parseNumber(const std::string& text, double& out) {
+    if (text.empty()) return false;
+    char* end = nullptr;
+    errno = 0;
+    double v = std::strtod(text.c_str(), &end);
+    if (errno != 0 || end == text.c_str() || *end != '\0') return false;
+    if (!std::isfinite(v)) return false;
+    out = v;
+    return true;
+}
+
 }  // namespace
 
 bool loadFromString(const std::string& xml,
                     AdvantageStore& out,
                     std::string& error) {
     out = AdvantageStore{};
+    if (xml.size() > kMaxDocumentBytes) {
+        error = "document exceeds the " + std::to_string(kMaxDocumentBytes) +
+                "-byte limit";
+        return false;
+    }
     Scanner sc(xml);
     Tag tag;
 
     SourceAdvantage* current = nullptr;
     bool inAssumptions = false;
     bool inKnowledge = false;
+    bool inEvidence = false;
+    bool sawRoot = false;
+    bool closedRoot = false;
 
     while (readTag(sc, tag)) {
         if (tag.type == Tag::Skip) continue;
 
         if (tag.type == Tag::Start || tag.type == Tag::Empty) {
             if (tag.name == "advantages") {
+                sawRoot = true;
                 out.version = attr(tag.attrs, "version");
             } else if (tag.name == "sourceAdvantage") {
+                if (out.sources.size() >= kMaxSources) {
+                    error = "more than " + std::to_string(kMaxSources) +
+                            " sourceAdvantage elements";
+                    return false;
+                }
                 out.sources.emplace_back();
                 current = &out.sources.back();
                 current->id = attr(tag.attrs, "id");
+                if (!current->id.empty()) {
+                    for (std::size_t k = 0; k + 1 < out.sources.size(); ++k) {
+                        if (out.sources[k].id == current->id) {
+                            error = "duplicate sourceAdvantage id '" +
+                                    current->id + "'";
+                            return false;
+                        }
+                    }
+                }
                 current->kind = attr(tag.attrs, "kind");
             } else if (tag.name == "knowledgeSource") {
                 // Declared remote origin. Recorded only; never fetched here.
@@ -180,13 +237,54 @@ bool loadFromString(const std::string& xml,
                 inAssumptions = true;
             } else if (tag.name == "knowledge") {
                 inKnowledge = true;
+            } else if (tag.name == "evidence" && current) {
+                inEvidence = tag.type == Tag::Start;
+                std::string w = attr(tag.attrs, "weight");
+                if (!w.empty() && !parseNumber(w, current->evidenceWeight)) {
+                    error = "source '" + current->id +
+                            "': invalid evidence weight '" + w + "'";
+                    return false;
+                }
+                if (current->evidenceWeight < 0.0) {
+                    error = "source '" + current->id +
+                            "': evidence weight must not be negative";
+                    return false;
+                }
+            } else if (tag.name == "observation" && current && inEvidence) {
+                Observation ob;
+                if (!parseNumber(attr(tag.attrs, "reward"), ob.reward) ||
+                    !parseNumber(attr(tag.attrs, "baseline"), ob.baseline)) {
+                    error = "source '" + current->id +
+                            "': <observation> needs numeric reward and baseline";
+                    return false;
+                }
+                if (current->evidence.size() >= kMaxObservationsPerSource) {
+                    error = "source '" + current->id + "': more than " +
+                            std::to_string(kMaxObservationsPerSource) +
+                            " observations";
+                    return false;
+                }
+                current->evidence.push_back(ob);
+            } else if (tag.name == "observation") {
+                error = "<observation> must appear inside <evidence> within a "
+                        "<sourceAdvantage>";
+                return false;
             } else if (current && tag.type == Tag::Start) {
                 if (tag.name == "name") {
                     current->name = readText(sc);
                 } else if (tag.name == "description") {
                     current->description = readText(sc);
                 } else if (tag.name == "assumption" && inAssumptions) {
+                    const std::string status = attr(tag.attrs, "status");
+                    if (!status.empty() && status != "held" &&
+                        status != "doubted") {
+                        error = "source '" + current->id +
+                                "': assumption status must be 'held' or "
+                                "'doubted', got '" + status + "'";
+                        return false;
+                    }
                     current->assumptions.push_back(readText(sc));
+                    current->assumptionHeld.push_back(status != "doubted");
                 } else if (tag.name == "string" && inKnowledge) {
                     current->knowledge.push_back(readText(sc));
                 }
@@ -194,10 +292,25 @@ bool loadFromString(const std::string& xml,
         } else if (tag.type == Tag::End) {
             if (tag.name == "assumptions") inAssumptions = false;
             else if (tag.name == "knowledge") inKnowledge = false;
+            else if (tag.name == "evidence") inEvidence = false;
+            else if (tag.name == "advantages") closedRoot = true;
             else if (tag.name == "sourceAdvantage") current = nullptr;
         }
     }
 
+    // The tag scanner stops quietly at end of input or at a tag with no
+    // closing '>'. Either way, anything left open means the document was cut
+    // short, and a partial store must not pass for a complete one.
+    if (!sc.eof()) {
+        error = "malformed document: tag is missing its closing '>'";
+        return false;
+    }
+    if (current != nullptr || inAssumptions || inKnowledge || inEvidence ||
+        !sawRoot || !closedRoot) {
+        error = "truncated document: unclosed element (expected "
+                "</advantages> after every </sourceAdvantage>)";
+        return false;
+    }
     if (out.sources.empty()) {
         error = "no <sourceAdvantage> elements found";
         return false;
@@ -214,9 +327,28 @@ bool loadFromFile(const std::string& path,
         error = "could not open file: " + path;
         return false;
     }
-    std::ostringstream ss;
-    ss << in.rdbuf();
-    return loadFromString(ss.str(), out, error);
+    // Learn the size first so an enormous file is rejected without being
+    // pulled into memory, and a small one allocates only what it needs.
+    in.seekg(0, std::ios::end);
+    const std::streamoff len = in.tellg();
+    if (len < 0) {
+        error = "could not determine size of file: " + path;
+        return false;
+    }
+    if (static_cast<std::size_t>(len) > kMaxDocumentBytes) {
+        out = AdvantageStore{};
+        error = "document exceeds the " + std::to_string(kMaxDocumentBytes) +
+                "-byte limit";
+        return false;
+    }
+    in.seekg(0, std::ios::beg);
+    std::string text(static_cast<std::size_t>(len), '\0');
+    in.read(&text[0], len);
+    if (static_cast<std::streamoff>(in.gcount()) != len) {
+        error = "short read from file: " + path;
+        return false;
+    }
+    return loadFromString(text, out, error);
 }
 
 }  // namespace advantage

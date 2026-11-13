@@ -1,8 +1,10 @@
+#include <algorithm>
 #include "semantic.h"
 #include "unsigned_integer.h"
 #include "wide_integer.h"
 #include "annotation_pipeline.h"
 #include <map>
+#include "java_references.h"
 #include <set>
 #include <string>
 #include <functional>
@@ -51,8 +53,15 @@ static Type typeOf(const std::string& n){
  // 64-bit (true 128-bit arithmetic is a documented follow-up).
  if(n=="long"||n=="int64"||n=="int128"){return{Kind::Int,{},{}};}
  if(n=="double"){return{Kind::Double,{},{}};}
+ // Java primitives without a distinct VM slot (syntax 3.0 Java signature
+ // surface): char, byte and short ride the integer slot, float the double slot.
+ if(n=="char"){return{Kind::Int,"char",{}};}   // syntax 3.2: the name marks the static type char (an integer for every check)
+ if(n=="byte"||n=="short"){return{Kind::Int,{},{}};}
+ if(n=="float"){return{Kind::Double,{},{}};}
  if(n=="bool"||n=="boolean"){return{Kind::Bool,{},{}};}
  if(n=="string"||n=="String"){return{Kind::String,{},{}};}
+ // The Java UTF-16 String kind, a String at type-check time (instanceof utf16).
+ if(n=="utf16"){return{Kind::String,{},{}};}
   if(n=="Any"){return{Kind::Any,"Any",{}};}
  return{Kind::Struct,n,{}};
 }
@@ -61,12 +70,20 @@ static std::string nameOf(const Type&t){
 }
 static bool same(const Type&a,const Type&b){return a.kind==b.kind&&((a.kind!=Kind::Struct&&a.kind!=Kind::Array&&a.kind!=Kind::Unsigned)||a.name==b.name);}
 static bool numeric(const Type&t){return t.kind==Kind::Int||t.kind==Kind::Double||t.kind==Kind::Unsigned;}
+// Loaded classes for the Java subtype rule (SLEELA.syntax 43.6); set by
+// Analyzer::run for the duration of one analysis (syntax 1.10+), else null.
+static const javaref::ClassIndex* g_javaClasses=nullptr;
 static bool assignable(const Type&to,const Type&from){
+ if(to.kind==Kind::Struct&&to.name=="Object") return true;
+ // Java widening reference conversion: a subclass / implementing class is
+ // assignable to its superclass or interface.
+ if(g_javaClasses&&to.kind==Kind::Struct&&from.kind==Kind::Struct&&to.name!=from.name
+    &&javaref::isSubtypeOf(*g_javaClasses,from.name,to.name)) return true;
  return to.kind==Kind::Unknown||from.kind==Kind::Unknown||to.kind==Kind::Any||(to.kind==Kind::Double&&from.kind==Kind::Int)||(from.kind==Kind::Null&&(to.kind==Kind::Any||to.kind==Kind::Struct||to.kind==Kind::String||to.kind==Kind::Array))||same(to,from);
 }
 static bool builtin(const std::string&n){
  static const std::set<std::string> s={
- "javaStringFromCodeUnits","javaStringFromUtf8","javaStringLength","javaStringCharAt","javaStringCodePointAt","javaStringCodePointCount","javaStringOffsetByCodePoints","javaStringSubstring","javaStringConcat","javaStringHashCode","javaStringCompareTo","spawn","join","lock","unlock","send","recv","structPack","structUnpack","listen","accept","connect","sockread","sockwrite","sockclose",
+ "javaStringFromCodeUnits","javaStringFromUtf8","javaStringToUtf8","javaStringFromCodeUnit","javaStringLength","javaStringCharAt","javaStringCodePointAt","javaStringCodePointCount","javaStringOffsetByCodePoints","javaStringSubstring","javaStringConcat","javaStringHashCode","javaStringCompareTo","spawn","join","lock","unlock","send","recv","structPack","structUnpack","listen","accept","connect","sockread","sockwrite","sockclose",
  "pipe","pipePeer","fifoCreate","npfsCreate","openFile","read","write","close","unlinkFile",
  "timeUtcMillis","timeUtcNanos","timeMonotonicNanos","timePrecisionMillis","timeLocation","timeHttpDate","timeJson","timeNtp","timeSetLocation","sleep",
  "Munction.start","synchroOpen","synchroDispatch","synchroReport","synchroClose","synchroSent","synchroReceived","synchroMean","synchroMin","synchroMax","synchroP95","synchroLoss",
@@ -84,7 +101,8 @@ static bool builtin(const std::string&n){
  "ideaCanvasIntensityAt","ideaCanvasHasRenderer","ideaCanvasOpenWindow","ideaCanvasShouldClose",
  "ideaCanvasPresent","ideaCanvasRun",
  "ideaCanvasSetBackendPolicy","ideaCanvasPolicy","ideaCanvasActiveBackend","ideaCanvasGpuAvailable","ideaCanvasMeasuredHz","ideaCanvasMigrate",
- "bigmul","bigadd","bigdivmod","bigsub","bigdiv","bigisqrt"};
+ "bigmul","bigadd","bigdivmod","bigsub","bigdiv","bigisqrt",
+ "nativeOpen","nativeCall","nativeClose"};
  if(s.count(n)!=0) return true;
  // SleelaUI (ui*) bridge built-ins: any ui<Capital>... name is a native UI
  // call lowered by the compiler to OP_UI_CALL (see sleela_ui_ids.h / the
@@ -97,7 +115,7 @@ struct MethodSig{const Method* m=nullptr;std::string owner;};
 class Analyzer{
  const Program&p; const SyntaxVersion&syntax; const bool requireMain; SemanticResult r;
  std::set<std::string> structs; std::set<std::string> classNames; std::map<std::string,std::map<std::string,Type>> fields;
- std::map<std::string,MethodSig> methods; std::map<std::string,Type> globals; std::map<std::string,std::string> owners;
+ std::map<std::string,MethodSig> methods; std::map<std::string,std::vector<MethodSig>> overloads; std::map<std::string,Type> globals; std::map<std::string,std::string> owners;
  std::map<std::string,std::string> superOf; // derived class -> resolved base (syntax 1.10)
  struct Scope{std::map<std::string,Type> vars;}; std::vector<Scope> scopes; const Method* cur=nullptr; std::string cls;
  void err(const std::string&s){r.errors.push_back("Semantic error: "+s);}
@@ -113,6 +131,8 @@ class Analyzer{
    if(syntax<SyntaxVersion{2,2} || t.empty() || t.back()!='>') return false;
    return known(t.substr(0,generic));
   }
+  if(t=="char"||t=="byte"||t=="short"||t=="float") return true;
+  if(t=="utf16") return true;
   return t=="void"||t=="int"||t=="long"||t=="int64"||t=="int128"||unsignedTypeName(t)||signedWideTypeName(t)||t=="double"||t=="bool"||t=="boolean"||t=="string"||t=="String"||t=="Any"||structs.count(t)||classNames.count(t);
  }
  Type tn(const std::string&t)const{return known(t)?typeOf(t):Type{Kind::Error,t};}
@@ -174,6 +194,17 @@ class Analyzer{
   // enacted, legislature-grade artifact graded unto time and space.
   if(p.artifactMarked&&syntax<SyntaxVersion{3,0})
    err("the artifact document marker requires #sleela 3.0");
+  // Syntax 3.1 surface (section 44): every use the parser met must be declared.
+  if(syntax<SyntaxVersion{3,1}){
+   for(const auto&u:p.syntax31Uses)err(u+" requires #sleela 3.1");
+  }
+  // Syntax 3.2 surface (sections 45 and 46).
+  if(syntax<SyntaxVersion{3,2}){
+   for(const auto&u:p.syntax32Uses)err(u+" requires #sleela 3.2");
+  }
+  // Spark marker (syntax 3.0, section 43): indicates Java style declarative.
+  if(javaref::sparkDocument(p)&&syntax<SyntaxVersion{3,0})
+   err("the spark document marker requires #sleela 3.0");
   // @mix consequent fields (syntax 2.9): a field annotated `@mix` may repeat
   // its name; the group is understood as consequent (array/list). Top-down
   // order gives indexes 1,2,3,... unless `@mix(1,2,3,...)` assigns them, in
@@ -246,7 +277,7 @@ class Analyzer{
     methodDeclarations[key].push_back(&m);
     if(!known(m.retType))err("unknown return type '"+m.retType+"' for method '"+m.name+"'");
     if(m.isProtected&&!m.isStatic)err("protected method '"+m.name+"' must also be static");
-    methods[key]={&m,c.name};if(m.name=="main")methods["main"]={&m,c.name};}
+    methods[key]={&m,c.name};overloads[key].push_back({&m,c.name});if(m.name=="main")methods["main"]={&m,c.name};}
   }
   // --- OOD inheritance (syntax 1.10): resolve `class D extends B`. ----------
   // A derived class inherits the base class's instance fields and methods.
@@ -258,20 +289,9 @@ class Analyzer{
    // index classes by name for superclass lookup
    std::map<std::string,const ClassDecl*> byName;
    for(const auto&c:p.classes) byName[c.name]=&c;
-   // Resolve a qualified Java superclass against the simple class name of the
-   // uniquely selected /lib source unit. Only library-origin classes may be
-   // used for this fallback, so a local class named Object cannot impersonate
-   // java.lang.Object.
-   auto resolveBaseName=[&](const std::string& declared)->std::string{
-    if(byName.count(declared)) return declared;
-    const std::size_t dot=declared.rfind('.');
-    if(dot!=std::string::npos){
-     const std::string simple=declared.substr(dot+1);
-     auto it=byName.find(simple);
-     if(it!=byName.end() && it->second->fromLibrary) return simple;
-    }
-    return declared;
-   };
+   // Java superclass references resolve through java_references.cpp (shared with
+   // the compiler so check and run agree).
+   auto resolveBaseName=[&](const std::string& declared)->std::string{ return javaref::resolveBaseName(byName,declared); };
    // validate: known base, no cycles
    for(const auto&c:p.classes){
     const std::string sup=resolveBaseName(c.java.superclass);
@@ -301,7 +321,7 @@ class Analyzer{
      const std::string pfx=sup+"::";
      std::vector<std::pair<std::string,MethodSig>> toAdd;
      for(const auto&kv:methods){ const std::string&bk=kv.first; if(bk.rfind(pfx,0)!=0) continue; std::string mname=bk.substr(pfx.size()); if(mname=="main") continue; const std::string dk=name+"::"+mname; if(!methods.count(dk)) toAdd.push_back({dk,kv.second}); }
-     for(auto&e:toAdd) methods[e.first]=e.second;
+     for(auto&e:toAdd){ methods[e.first]=e.second; auto ob=overloads.find(sup+e.first.substr(e.first.find("::"))); if(ob!=overloads.end()&&!overloads.count(e.first)) overloads[e.first]=ob->second; }
      superOf[name]=sup;
     }
     inProgress.erase(name);
@@ -326,12 +346,22 @@ class Analyzer{
   }
  }
  void push(){scopes.push_back({});} void pop(){scopes.pop_back();}
+ std::vector<std::string> labels_;   // syntax 3.1: labels enclosing the statement being checked
  bool declare(const std::string&n,const Type&t){auto&v=scopes.back().vars;if(v.count(n)){err("duplicate local variable '"+n+"'");return false;}v[n]=t;return true;}
  Type lookup(const std::string&n)const{for(auto i=scopes.rbegin();i!=scopes.rend();++i){auto x=i->vars.find(n);if(x!=i->vars.end())return x->second;}auto cf=fields.find(cls);if(cf!=fields.end()){auto x=cf->second.find(n);if(x!=cf->second.end())return x->second;}auto g=globals.find(cls+"::"+n);if(g!=globals.end())return g->second;g=globals.find(n);if(g!=globals.end())return g->second;if(n=="next")return{Kind::Int,{}};return{Kind::Error,n};}
  void declarations(){
   if(requireMain&&!methods.count("main"))err("no 'main' method found");
   for(const auto&c:p.classes){for(const auto&f:c.fields){if(f.isProtected&&!f.isStatic)err("protected field '"+f.name+"' must also be static");}
    for(const auto&m:c.methods){std::set<std::string> seen;for(const auto&x:m.params){if(!known(x.type))err("unknown parameter type '"+x.type+"'");if(x.type=="void")err("parameter '"+x.name+"' cannot be void");if(!seen.insert(x.name).second)err("duplicate parameter '"+x.name+"' in method '"+m.name+"'");}}}
+ }
+ // A field initializer that constructs an object (`static Flag YES = new Flag(true);`)
+ // is analyzed so constructor overload resolution picks the same constructor it
+ // would in a method body; without this the compiler fell back to the first
+ // constructor of matching arity.
+ void fieldInit(const ClassDecl&owner,const Field&f){
+  auto ne=dynamic_cast<const NewExpr*>(f.init.get());
+  if(!ne||ne->args.empty()||(ne->typeName.size()>=2&&ne->typeName.compare(ne->typeName.size()-2,2,"[]")==0))return;
+  cur=nullptr;cls=owner.name;scopes.clear();push();expr(*f.init);pop();
  }
  void method(const ClassDecl&owner,const Method&m){cur=&m;cls=owner.name;scopes.clear();push();if(!m.isStatic)declare("this",Type{Kind::Struct,owner.name,{}});for(const auto&x:m.params)declare(x.name,tn(x.type));block(*m.body);if(m.name=="main"&&m.retType!="void")err("main must return void");pop();}
  void block(const Block&b){for(const auto&s:b.stmts)stmt(*s);}
@@ -351,7 +381,7 @@ class Analyzer{
    Type t=tn(d->type);if(t.kind==Kind::Error){err("unknown variable type '"+d->type+"'");return;}if(t.kind==Kind::Void){err("variable '"+d->name+"' cannot be void");return;}if(d->init){Type g=expr(*d->init);if(!assignable(t,g))err("initializer for variable '"+d->name+"' has type "+nameOf(g)+", expected "+nameOf(t));}declare(d->name,t);return;
   }
   if(auto a=dynamic_cast<const Assign*>(&s)){Type t=lookup(a->name);if(t.kind==Kind::Error){err("assignment to undeclared variable '"+a->name+"'");return;}Type g=expr(*a->value);if(!assignable(t,g))err("cannot assign "+nameOf(g)+" to '"+a->name+"' of type "+nameOf(t));return;}
-  if(auto f=dynamic_cast<const FieldAssign*>(&s)){Type t=member(*f->base,f->field),g=expr(*f->value);if(t.kind!=Kind::Error&&!assignable(t,g))err("cannot assign "+nameOf(g)+" to field '"+f->field+"' of type "+nameOf(t));return;}
+  if(auto f=dynamic_cast<const FieldAssign*>(&s)){if(isImplicitRef(*f->base,f->field)){err("'ref' is the implicit reference of an object and is read-only");return;}Type t=member(*f->base,f->field),g=expr(*f->value);if(t.kind!=Kind::Error&&!assignable(t,g))err("cannot assign "+nameOf(g)+" to field '"+f->field+"' of type "+nameOf(t));return;}
   if(auto gh=dynamic_cast<const GcHintStmt*>(&s)){
    // GC hint (syntax 1.9): `x = gc N;` / `x = mem N;`. The target must be an
    // in-scope value the developer is releasing, and the aggressiveness must be
@@ -363,7 +393,7 @@ class Analyzer{
    if(gh->aggressiveness<0||gh->aggressiveness>100){err("GC hint aggressiveness must be 0..100");return;}
    return;
   }
-  if(auto e=dynamic_cast<const ExprStmt*>(&s)){expr(*e->expr);return;} if(auto p=dynamic_cast<const PrintStmt*>(&s)){Type t=expr(*p->expr);if(t.kind==Kind::Void)err("print() cannot print void");return;}
+  if(auto e=dynamic_cast<const ExprStmt*>(&s)){expr(*e->expr);return;} if(auto p=dynamic_cast<const PrintStmt*>(&s)){Type t=expr(*p->expr);if(syntax>=SyntaxVersion{3,2}&&isCharType(t))p->charArg=true;if(t.kind==Kind::Void)err("print() cannot print void");return;}
   if(auto x=dynamic_cast<const ReturnStmt*>(&s)){Type want=tn(cur->retType);
    if(want.kind==Kind::Void){if(x->value){expr(*x->value);err("void method '"+cur->name+"' cannot return a value");}return;}
    if(!x->value){err("non-void method '"+cur->name+"' must return a value");return;}
@@ -371,14 +401,25 @@ class Analyzer{
   if(auto i=dynamic_cast<const IfStmt*>(&s)){requireBool(expr(*i->cond),"if condition");stmt(*i->thenS);if(i->elseS)stmt(*i->elseS);return;}
   if(auto w=dynamic_cast<const WhileStmt*>(&s)){checkLoopSpill(w->spill);requireBool(expr(*w->cond),"while condition");stmt(*w->body);return;}
   if(auto f=dynamic_cast<const ForStmt*>(&s)){checkLoopSpill(f->spill);push();if(f->init)stmt(*f->init);if(f->cond)requireBool(expr(*f->cond),"for condition");if(f->threadStable)requireBool(expr(*f->threadStable),"for thread-stability guard");if(f->heapHealthy)requireBool(expr(*f->heapHealthy),"for VM heap-health guard");if(f->update)stmt(*f->update);stmt(*f->body);pop();return;}
+  if(auto fe=dynamic_cast<const ForEachStmt*>(&s)){forEach(*fe);return;}
   if(auto d=dynamic_cast<const DoStmt*>(&s)){checkLoopSpill(d->spill);stmt(*d->body);requireBool(expr(*d->cond),"do-while condition");return;}
-  if(dynamic_cast<const BreakStmt*>(&s))return;
-  if(dynamic_cast<const ContinueStmt*>(&s))return;
+  if(auto b=dynamic_cast<const BreakStmt*>(&s)){if(!b->label.empty()&&std::find(labels_.begin(),labels_.end(),b->label)==labels_.end())err("break to undefined label '"+b->label+"'");return;}
+  if(auto c=dynamic_cast<const ContinueStmt*>(&s)){if(!c->label.empty()&&std::find(labels_.begin(),labels_.end(),c->label)==labels_.end())err("continue to undefined label '"+c->label+"'");return;}
+  if(auto ls=dynamic_cast<const LabeledStmt*>(&s)){
+   if(std::find(labels_.begin(),labels_.end(),ls->label)!=labels_.end())err("label '"+ls->label+"' is already in use");
+   labels_.push_back(ls->label);stmt(*ls->body);labels_.pop_back();return;}
   if(auto t=dynamic_cast<const ThrowStmt*>(&s)){expr(*t->value);return;}
   if(auto a=dynamic_cast<const AssertStmt*>(&s)){requireBool(expr(*a->cond),"assert condition");if(a->message)expr(*a->message);return;}
   if(auto y=dynamic_cast<const YieldStmt*>(&s)){expr(*y->value);return;}
   if(auto sy=dynamic_cast<const SynchronizedStmt*>(&s)){expr(*sy->monitor);push();block(*sy->body);pop();return;}
-  if(auto tr=dynamic_cast<const TryStmt*>(&s)){push();block(*tr->body);pop();for(const auto&c:tr->catches){push();declare(c.variable,c.type.empty()?Type{Kind::Unknown,{}}:tn(c.type));block(*c.body);pop();}if(tr->finallyBlock){push();block(*tr->finallyBlock);pop();}return;}
+  if(auto tr=dynamic_cast<const TryStmt*>(&s)){push();block(*tr->body);pop();for(const auto&c:tr->catches){push();
+   // Typed / multi-catch (43.6): each alternative must name a loaded class
+   // (or Any); a multi-catch variable is typed by its single alternative only.
+   Type ct{Kind::Unknown,{}};
+   if(c.types.size()==1){ const std::string t=g_javaClasses?javaref::resolveBaseName(*g_javaClasses,c.types[0]):c.types[0]; ct=t=="Any"?Type{Kind::Any,"Any",{}}:tn(t); }
+   if(!(syntax<SyntaxVersion{3,0})){ bool shadows=false; for(const auto& sc:scopes) if(sc.vars.count(c.variable)) shadows=true; if(shadows) err("catch variable '"+c.variable+"' shadows a local variable in scope"); }
+   if(!(syntax<SyntaxVersion{3,0})) for(const auto& a:c.types){ const std::string t=g_javaClasses?javaref::resolveBaseName(*g_javaClasses,a):a; if(t!="Any"&&!classNames.count(t)) err("catch type '"+a+"' is not a loaded class"); }
+   declare(c.variable,ct.kind==Kind::Error?Type{Kind::Unknown,{}}:ct);block(*c.body);pop();}if(tr->finallyBlock){push();block(*tr->finallyBlock);pop();}return;}
   if(auto sw=dynamic_cast<const SwitchStmt*>(&s)){expr(*sw->selector);push();for(const auto&c:sw->cases){for(const auto&l:c.labels)expr(*l);for(const auto&st:c.statements)stmt(*st);}pop();return;}
   err("unknown statement kind");
  }
@@ -401,14 +442,27 @@ class Analyzer{
  // rather than silently narrowing behavior. Argument subexpressions are always
  // analyzed (even on the error paths) so nested type errors are still reported.
  void checkConstructorArgs(const NewExpr&n){
+  if(n.args.empty()&&syntax<SyntaxVersion{1,8}) return;
   if(syntax<SyntaxVersion{1,8}){for(const auto&a:n.args)expr(*a);err("constructor arguments for '"+n.typeName+"' require syntax 1.8");return;}
-  const Method* ctor=nullptr; int ctorCount=0;
+  std::vector<const Method*> ctors;
   for(const auto&c:p.classes) if(c.name==n.typeName)
-   for(const auto&m:c.methods) if(m.java.constructor){ctorCount++; if(m.params.size()==n.args.size())ctor=&m;}
-  if(ctorCount==0){for(const auto&a:n.args)expr(*a);err("class '"+n.typeName+"' declares no constructor to accept "+std::to_string(n.args.size())+" argument(s)");return;}
-  if(ctorCount>1){for(const auto&a:n.args)expr(*a);err("class '"+n.typeName+"' declares multiple constructors; syntax 1.8 does not support constructor overload resolution");return;}
-  if(!ctor){for(const auto&a:n.args)expr(*a);err("constructor of '"+n.typeName+"' expects a different number of arguments than "+std::to_string(n.args.size()));return;}
-  for(size_t i=0;i<n.args.size();++i){Type g=expr(*n.args[i]),w=tn(ctor->params[i].type);if(!assignable(w,g))err("constructor argument "+std::to_string(i+1)+" to '"+n.typeName+"' has type "+nameOf(g)+", expected "+nameOf(w));}
+   for(const auto&m:c.methods) if(m.java.constructor) ctors.push_back(&m);
+  std::vector<Type> at=argTypesOf(n.args);
+  if(n.args.empty()){ for(const Method* m:ctors) if(m->params.empty()){ n.resolved=m; break; } return; }
+  if(ctors.empty()){err("class '"+n.typeName+"' declares no constructor to accept "+std::to_string(n.args.size())+" argument(s)");return;}
+  // Constructor overload resolution (syntax 3.0): same rule as methods.
+  const Method* ctor=nullptr; int bestScore=-1;
+  for(const Method* m:ctors){
+   if(m->params.size()!=n.args.size()) continue;
+   int score=0; bool ok=true;
+   for(size_t i=0;i<at.size();++i){Type w=tn(m->params[i].type); if(!assignable(w,at[i])){ok=false;break;} if(w.kind==at[i].kind&&(w.kind!=Kind::Struct||w.name==at[i].name)) score+=2; else if(w.kind!=Kind::Any) score+=1;}
+   if(ok&&score>bestScore){ctor=m;bestScore=score;}
+  }
+  if(!ctor) for(const Method* m:ctors) if(m->params.size()==n.args.size()){ctor=m;break;}
+  if(!ctor){err("class '"+n.typeName+"' declares no constructor to accept "+std::to_string(n.args.size())+" argument(s)");return;}
+  if(ctors.size()>1&&syntax<SyntaxVersion{3,0}){err("class '"+n.typeName+"' declares multiple constructors; constructor overload resolution requires syntax 3.0");return;}
+  n.resolved=ctor;
+  for(size_t i=0;i<n.args.size();++i){Type w=tn(ctor->params[i].type);if(!assignable(w,at[i]))err("constructor argument "+std::to_string(i+1)+" to '"+n.typeName+"' has type "+nameOf(at[i])+", expected "+nameOf(w));}
  }
  // The `next` / `next.next` / `next.next.next.next` system-degree idiom (see
  // compiler emitVar/emitMember): `next` is Degree 1 and each `.next` step is a
@@ -419,9 +473,37 @@ class Analyzer{
   if(auto m=dynamic_cast<const MemberAccess*>(&e))return m->field=="next"&&isNextChain(*m->base);
   return false;
  }
- Type member(const Expr&e,const std::string&f){Type b=expr(e);if(b.kind==Kind::Unknown)return b;if(b.kind!=Kind::Struct){err("member '"+f+"' requires a struct value, got "+nameOf(b));return{Kind::Error,{}};}auto s=fields.find(b.name);if(s==fields.end()){err("unknown struct '"+b.name+"'");return{Kind::Error,{}};}auto x=s->second.find(f);if(x==s->second.end()){err("struct '"+b.name+"' has no field '"+f+"'");return{Kind::Error,{}};}return x->second;}
+ // True when `base.ref` names the implicit object reference: the base is a
+ // class/struct value whose declared fields do not include a field named ref.
+ // Evaluated quietly so the caller reports any diagnostics exactly once.
+ bool isImplicitRef(const Expr&base,const std::string&f){
+  if(f!="ref")return false;
+  const size_t keep=r.errors.size();
+  Type b=expr(base);
+  r.errors.resize(keep);
+  if(b.kind!=Kind::Struct)return false;
+  auto s0=fields.find(b.name);
+  return s0!=fields.end()&&!s0->second.count("ref");
+ }
+ const MemberAccess* curMA_=nullptr;   // the MemberAccess node whose member() call is in progress
+ static bool isCharType(const Type&t){return t.kind==Kind::Int&&t.name=="char";}
+ Type member(const Expr&e,const std::string&f){
+  if(auto rv=dynamic_cast<const VarExpr*>(&e)){
+   if(classNames.count(rv->name) && lookup(rv->name).kind==Kind::Error){
+    auto g=globals.find(rv->name+"::"+f);
+    if(g!=globals.end()) return g->second;
+    err("class '"+rv->name+"' has no static field '"+f+"'");return{Kind::Error,{}};
+   }
+  }
+  Type b=expr(e);if(b.kind==Kind::Unknown)return b;
+  if(f=="length"&&b.kind==Kind::Array){   // syntax 3.2: a.length
+   if(syntax<SyntaxVersion{3,2})err("the array length member requires #sleela 3.2 (use arrayLength(a) below 3.2)");
+   if(curMA_)curMA_->arrayLength=true;
+   return{Kind::Int,{},{}};
+  }
+  if(f=="ref"&&b.kind==Kind::Struct){auto s0=fields.find(b.name);if(s0!=fields.end()&&!s0->second.count("ref"))return{Kind::Int,{}};}if(b.kind!=Kind::Struct){err("member '"+f+"' requires a struct value, got "+nameOf(b));return{Kind::Error,{}};}auto s=fields.find(b.name);if(s==fields.end()){err("unknown struct '"+b.name+"'");return{Kind::Error,{}};}auto x=s->second.find(f);if(x==s->second.end()){err("struct '"+b.name+"' has no field '"+f+"'");return{Kind::Error,{}};}return x->second;}
  Type expr(const Expr&e){
-  if(dynamic_cast<const IntLit*>(&e)){return{Kind::Int,{}};}
+  if(auto il=dynamic_cast<const IntLit*>(&e)){if(il->isChar)return{Kind::Int,"char",{}};return{Kind::Int,{}};}
   if(dynamic_cast<const DoubleLit*>(&e)){return{Kind::Double,{}};}
   if(dynamic_cast<const BoolLit*>(&e)){return{Kind::Bool,{}};}
   if(dynamic_cast<const StrLit*>(&e)){return{Kind::String,{}};}
@@ -442,28 +524,43 @@ class Analyzer{
    // first arg is the length. `new T()` is a struct instantiation.
    if(n->typeName.size()>=2 && n->typeName.compare(n->typeName.size()-2,2,"[]")==0){
     if(!known(n->typeName)){err("new of unknown array type '"+n->typeName+"'");return{Kind::Error,{}};}
+    if(n->hasInit){
+     const std::string et=n->typeName.substr(0,n->typeName.size()-2);
+     Type want=typeOf(et);
+     if(known(et))for(const auto&a:n->init){Type g=expr(*a);if(!assignable(want,g))err("array initializer element has type "+nameOf(g)+", expected "+nameOf(want));}
+     else err("array initializer element type '"+et+"' is not a known type");
+     return typeOf(n->typeName);
+    }
     for(const auto&a:n->args){Type s=expr(*a);if(s.kind!=Kind::Int&&s.kind!=Kind::Unknown)err("array size must be int, got "+nameOf(s));}
     return typeOf(n->typeName);
    }
    if(!structs.count(n->typeName)&&!classNames.count(n->typeName)){err("new of unknown class or struct '"+n->typeName+"'");return{Kind::Error,{}};}
-   if(!n->args.empty())checkConstructorArgs(*n);
+   checkConstructorArgs(*n);
    return{Kind::Struct,n->typeName};}
-  if(auto m=dynamic_cast<const MemberAccess*>(&e)){if(m->field=="next"&&isNextChain(*m->base))return{Kind::Int,{}};return member(*m->base,m->field);}
-  if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="-"&&(!numeric(t)||t.kind==Kind::Unsigned)&&t.kind!=Kind::Unknown)err("unary '-' requires signed numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));return t;}
+  if(auto m=dynamic_cast<const MemberAccess*>(&e)){if(m->field=="next"&&isNextChain(*m->base))return{Kind::Int,{}};const MemberAccess* savedMA=curMA_;curMA_=m;Type mt=member(*m->base,m->field);curMA_=savedMA;return mt;}
+  if(auto u=dynamic_cast<const Unary*>(&e)){Type t=expr(*u->operand);if(u->op=="++"||u->op=="--"||u->op=="post++"||u->op=="post--"){if(syntax<SyntaxVersion{3,0})err("'"+u->op.substr(u->op.size()-2)+"' requires #sleela 3.0");else if(!numeric(t)&&t.kind!=Kind::Unknown)err("'"+u->op.substr(u->op.size()-2)+"' requires a numeric variable, got "+nameOf(t));else if(auto lm=dynamic_cast<const MemberAccess*>(u->operand.get()); lm&&lm->arrayLength)err("the array length is read-only");else if(!dynamic_cast<const VarExpr*>(u->operand.get())&&!dynamic_cast<const MemberAccess*>(u->operand.get())&&!dynamic_cast<const ArrayAccess*>(u->operand.get()))err("'"+u->op.substr(u->op.size()-2)+"' needs a variable, field or array element");return t;}if(u->op=="-"&&(!numeric(t)||t.kind==Kind::Unsigned)&&t.kind!=Kind::Unknown)err("unary '-' requires signed numeric operand, got "+nameOf(t));if(u->op=="!"&&t.kind!=Kind::Bool&&t.kind!=Kind::Unknown)err("unary '!' requires bool operand, got "+nameOf(t));if(u->op=="~"){if(t.kind!=Kind::Int&&t.kind!=Kind::Unknown)err("unary '~' requires an integer operand, got "+nameOf(t));return{Kind::Int,{}};}if(isCharType(t))return{Kind::Int,{},{}};return t;}
   if(auto b=dynamic_cast<const Binary*>(&e)){return binary(*b);}
   if(auto c=dynamic_cast<const Call*>(&e)){return call(*c);}
   if(auto m=dynamic_cast<const MethodCall*>(&e)){return fluent(*m);}
   if(auto a=dynamic_cast<const AssignmentExpr*>(&e)){
    Type g=expr(*a->value);
-   if(auto v=dynamic_cast<const VarExpr*>(a->target.get())){Type t=lookup(v->name);if(t.kind==Kind::Error){err("assignment to undeclared variable '"+v->name+"'");return{Kind::Error,{}};}if(!assignable(t,g))err("cannot assign "+nameOf(g)+" to '"+v->name+"' of type "+nameOf(t));return t;}
-   if(auto mm=dynamic_cast<const MemberAccess*>(a->target.get())){Type t=member(*mm->base,mm->field);if(t.kind!=Kind::Error&&!assignable(t,g))err("cannot assign "+nameOf(g)+" to field '"+mm->field+"'");return t;}
-   if(auto aa=dynamic_cast<const ArrayAccess*>(a->target.get())){Type base=expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));if(base.kind==Kind::Array){Type el=typeOf(base.elem);if(!assignable(el,g))err("cannot assign "+nameOf(g)+" to element of "+nameOf(base));return el;}if(base.kind!=Kind::Unknown)err("index assignment requires an array value, got "+nameOf(base));return g;}
+   const bool strAppendChar=(a->op=="+="&&syntax>=SyntaxVersion{3,2}&&isCharType(g));
+   if(strAppendChar)a->charMask=2u;
+   if(auto v=dynamic_cast<const VarExpr*>(a->target.get())){Type t=lookup(v->name);if(t.kind==Kind::Error){err("assignment to undeclared variable '"+v->name+"'");return{Kind::Error,{}};}if(!assignable(t,g)&&!(strAppendChar&&t.kind==Kind::String))err("cannot assign "+nameOf(g)+" to '"+v->name+"' of type "+nameOf(t));return t;}
+   if(auto mm=dynamic_cast<const MemberAccess*>(a->target.get())){if(isImplicitRef(*mm->base,mm->field)){err("'ref' is the implicit reference of an object and is read-only");return{Kind::Error,{}};}const MemberAccess* savedMA2=curMA_;curMA_=mm;Type t=member(*mm->base,mm->field);curMA_=savedMA2;if(mm->arrayLength){err("the array length is read-only");return{Kind::Int,{},{}};}if(t.kind!=Kind::Error&&!assignable(t,g)&&!(strAppendChar&&t.kind==Kind::String))err("cannot assign "+nameOf(g)+" to field '"+mm->field+"'");return t;}
+   if(auto aa=dynamic_cast<const ArrayAccess*>(a->target.get())){Type base=expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));if(base.kind==Kind::Array){Type el=typeOf(base.elem);if(syntax>=SyntaxVersion{3,2}&&isCharType(el))a->narrowChar=true;if(!assignable(el,g)&&!(strAppendChar&&el.kind==Kind::String))err("cannot assign "+nameOf(g)+" to element of "+nameOf(base));return el;}if(base.kind!=Kind::Unknown)err("index assignment requires an array value, got "+nameOf(base));return g;}
    err("assignment target must be a variable, struct field, or array element");return{Kind::Error,{}};
   }
   if(auto c=dynamic_cast<const ConditionalExpr*>(&e)){requireBool(expr(*c->cond),"conditional '?:' condition");Type a=expr(*c->thenE),b=expr(*c->elseE);if(assignable(a,b))return a;if(assignable(b,a))return b;return{Kind::Unknown,{}};}
   if(auto io=dynamic_cast<const InstanceOfExpr*>(&e)){expr(*io->value);Type target=tn(io->typeName);if(target.kind==Kind::Error)err("instanceof uses unknown type "+io->typeName);if(target.kind==Kind::Any||target.kind==Kind::Void)err("instanceof target must be a concrete runtime type");if(target.kind==Kind::Array)err("instanceof on array types requires runtime array element contracts, which are not yet available");return{Kind::Bool,{}};}
   if(auto ca=dynamic_cast<const CastExpr*>(&e)){expr(*ca->operand);Type target=tn(ca->typeName);if(target.kind==Kind::Error)err("cast uses unknown type "+ca->typeName);if(target.kind==Kind::Array)err("casts to array types require runtime array element contracts, which are not yet available");return target;}
-  if(dynamic_cast<const SuperExpr*>(&e))return{Kind::Unknown,{}};
+  if(dynamic_cast<const SuperExpr*>(&e)){
+   // `super` is `this` viewed as the base class (43.6).
+   auto so=superOf.find(cls);
+   if(cur&&!cur->isStatic&&so!=superOf.end())return{Kind::Struct,so->second,{}};
+   return{Kind::Unknown,{}};
+  }
+  if(dynamic_cast<const LineageExpr*>(&e))return{Kind::String,{}};
   if(dynamic_cast<const ThisExpr*>(&e)){if(cls.empty()||!cur||cur->isStatic){err("'this' is only available in an instance method");return{Kind::Error,{}};}return{Kind::Struct,cls,{}};}
   if(auto aa=dynamic_cast<const ArrayAccess*>(&e)){Type base=expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));if(base.kind==Kind::Array)return typeOf(base.elem);if(base.kind==Kind::Unknown)return{Kind::Unknown,{}};err("index access requires an array value, got "+nameOf(base));return{Kind::Error,{}};}
   if(auto mr=dynamic_cast<const MethodReferenceExpr*>(&e)){expr(*mr->base);return{Kind::Unknown,{}};}
@@ -487,7 +584,7 @@ class Analyzer{
   }
   return{Kind::Struct,owner,{}};
  }
- Type binary(const Binary&b){Type l=expr(*b.lhs),r=expr(*b.rhs);if(b.op=="&&"||b.op=="||"){if(l.kind!=Kind::Bool&&l.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");if(r.kind!=Kind::Bool&&r.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");return{Kind::Bool,{}};}
+ Type binary(const Binary&b){Type l=expr(*b.lhs),r=expr(*b.rhs);if(b.op=="+"&&syntax>=SyntaxVersion{3,2})b.charMask=(isCharType(l)?1u:0u)|(isCharType(r)?2u:0u);if(b.op=="&&"||b.op=="||"){if(l.kind!=Kind::Bool&&l.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");if(r.kind!=Kind::Bool&&r.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");return{Kind::Bool,{}};}
   if(b.op=="+"||b.op=="-"||b.op=="*"||b.op=="/"||b.op=="%"){
    // Java-style: `+` with a String operand is string concatenation; the VM's
    // OP_ADD already renders either operand to text. Only `+` concatenates.
@@ -502,6 +599,15 @@ class Analyzer{
    if(!numeric(l)&&l.kind!=Kind::Unknown){err("operator '"+b.op+"' requires numeric operands");}
    if(!numeric(r)&&r.kind!=Kind::Unknown){err("operator '"+b.op+"' requires numeric operands");}
    return{(l.kind==Kind::Double||r.kind==Kind::Double)?Kind::Double:Kind::Int,{}};}
+  if(b.op=="&"||b.op=="|"||b.op=="^"){
+   const bool lk=(l.kind==Kind::Int||l.kind==Kind::Bool),rk=(r.kind==Kind::Int||r.kind==Kind::Bool);
+   const bool lu=(l.kind==Kind::Unknown),ru=(r.kind==Kind::Unknown);
+   if((!lk&&!lu)||(!rk&&!ru)||(lk&&rk&&(l.kind==Kind::Bool)!=(r.kind==Kind::Bool)))
+    err("operator '"+b.op+"' requires two integer operands or two bool operands, got "+nameOf(l)+" and "+nameOf(r));
+   return{(l.kind==Kind::Bool||r.kind==Kind::Bool)?Kind::Bool:Kind::Int,{}};}
+  if(b.op=="<<"||b.op==">>"||b.op==">>>"){
+   if((l.kind!=Kind::Int&&l.kind!=Kind::Unknown)||(r.kind!=Kind::Int&&r.kind!=Kind::Unknown))err("shift operator '"+b.op+"' requires integer operands, got "+nameOf(l)+" and "+nameOf(r));
+   return{Kind::Int,{}};}
   if(b.op=="<"||b.op=="<="||b.op==">"||b.op==">="){if(l.kind==Kind::Unsigned||r.kind==Kind::Unsigned){if(l.kind!=Kind::Unsigned||r.kind!=Kind::Unsigned||l.name!=r.name)err("comparison '"+b.op+"' requires unsigned operands of the same width");}else if((!numeric(l)||!numeric(r))&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("comparison '"+b.op+"' requires numeric operands");return{Kind::Bool,{}};}
   if(b.op=="=="||b.op=="!="){if(!assignable(l,r)&&!assignable(r,l)&&l.kind!=Kind::Unknown&&r.kind!=Kind::Unknown)err("equality operands have incompatible types "+nameOf(l)+" and "+nameOf(r));return{Kind::Bool,{}};}
   // ::: structural-offload send: the left operand is the String data source;
@@ -515,6 +621,31 @@ class Analyzer{
   }
   err("unknown binary operator '"+b.op+"'");return{Kind::Error,{}};
  }
+ // Overload resolution (syntax 3.0): among the declarations of key with the
+ // call's arity, choose the one whose parameter types accept the arguments,
+ // preferring exact type matches; ties keep the first declaration. Returns the
+ // single declaration (or the last-declared one) when there is no choice.
+ const MethodSig* pickOverload(const std::string& key,const std::vector<Type>& argTypes){
+  auto ov=overloads.find(key);
+  if(ov==overloads.end()||ov->second.size()<2){auto it=methods.find(key);return it==methods.end()?nullptr:&it->second;}
+  const MethodSig* best=nullptr; int bestScore=-1;
+  for(const auto& cand:ov->second){
+   const Method& m=*cand.m;
+   if(m.params.size()!=argTypes.size()) continue;
+   int score=0; bool ok=true;
+   for(size_t i=0;i<argTypes.size();++i){
+    Type w=tn(m.params[i].type); const Type& g=argTypes[i];
+    if(!assignable(w,g)){ok=false;break;}
+    if(w.kind==g.kind&&(w.kind!=Kind::Struct||w.name==g.name)) score+=2;
+    else if(w.kind!=Kind::Any&&!(w.kind==Kind::Struct&&w.name=="Object")) score+=1;
+   }
+   if(ok&&score>bestScore){best=&cand;bestScore=score;}
+  }
+  if(best) return best;
+  for(const auto& cand:ov->second) if(cand.m->params.size()==argTypes.size()) return &cand;
+  auto it=methods.find(key); return it==methods.end()?nullptr:&it->second;
+ }
+ std::vector<Type> argTypesOf(const std::vector<ExprP>& args){std::vector<Type> t;for(const auto&a:args)t.push_back(expr(*a));return t;}
  Type call(const Call&c){auto it=methods.find(cls+"::"+c.callee);if(it==methods.end())it=methods.find(c.callee);if(it==methods.end()&&c.callee.rfind("__native_",0)==0){
    // Synthesized native helpers are stored as qualified class methods. Match
    // the complete helper symbol across native owners, not just chemistry.
@@ -522,7 +653,7 @@ class Analyzer{
     const auto sep=entry.first.rfind("::");
     if(sep!=std::string::npos&&entry.first.compare(sep+2,std::string::npos,c.callee)==0&&entry.first.substr(0,sep).rfind("__Native",0)==0){it=methods.find(entry.first);break;}
    }
-  }if(it!=methods.end()){const Method&m=*it->second.m;if(c.args.size()!=m.params.size())err("method '"+c.callee+"' expects "+std::to_string(m.params.size())+" argument(s), got "+std::to_string(c.args.size()));size_t n=c.args.size()<m.params.size()?c.args.size():m.params.size();for(size_t i=0;i<n;i++){Type g=expr(*c.args[i]),w=tn(m.params[i].type);if(!assignable(w,g))err("argument "+std::to_string(i+1)+" to '"+c.callee+"' has type "+nameOf(g)+", expected "+nameOf(w));}if(m.isProtected&&it->second.owner!=cls)err("protected method access denied for '"+c.callee+"'");return tn(m.retType);}
+  }if(it!=methods.end()){std::vector<Type> at=argTypesOf(c.args);if(const MethodSig* pk=pickOverload(it->first,at)){it=methods.find(it->first);c.resolved=pk->m;}const Method&m=c.resolved?*c.resolved:*it->second.m;if(c.args.size()!=m.params.size())err("method '"+c.callee+"' expects "+std::to_string(m.params.size())+" argument(s), got "+std::to_string(c.args.size()));size_t n=c.args.size()<m.params.size()?c.args.size():m.params.size();for(size_t i=0;i<n;i++){Type g=at[i],w=tn(m.params[i].type);if(!assignable(w,g))err("argument "+std::to_string(i+1)+" to '"+c.callee+"' has type "+nameOf(g)+", expected "+nameOf(w));}if(m.isProtected&&it->second.owner!=cls)err("protected method access denied for '"+c.callee+"'");return tn(m.retType);}
   // `spawn(method)` names a zero-arg method to run on a new thread; its single
   // argument is a method name, not a value, so it is not resolved as a variable.
   if(c.callee=="spawn"){if(c.args.size()!=1){err("spawn(method) takes exactly one argument");return{Kind::Unknown,{}};}auto v=dynamic_cast<const VarExpr*>(c.args[0].get());if(!v||(!methods.count(v->name)&&!methods.count(cls+"::"+v->name)))err("spawn(method) argument must be a declared method name");return{Kind::Unknown,{}};}
@@ -538,6 +669,18 @@ class Analyzer{
    if(argTypes.size()!=1)err("javaStringFromUtf8(value) takes exactly one argument");
    if(!argTypes.empty() && argTypes[0].kind!=Kind::String && argTypes[0].kind!=Kind::Unknown)
     err("javaStringFromUtf8 requires a legacy UTF-8 String argument");
+   return{Kind::String,{}};
+  }
+  if(n=="javaStringToUtf8"){
+   if(argTypes.size()!=1)err("javaStringToUtf8(value) takes exactly one argument");
+   if(!argTypes.empty() && argTypes[0].kind!=Kind::String && argTypes[0].kind!=Kind::Unknown)
+    err("javaStringToUtf8 requires an SL_UTF16 Java String argument");
+   return{Kind::String,{}};
+  }
+  if(n=="javaStringFromCodeUnit"){
+   if(argTypes.size()!=1)err("javaStringFromCodeUnit(codeUnit) takes exactly one argument");
+   if(!argTypes.empty() && argTypes[0].kind!=Kind::Int && argTypes[0].kind!=Kind::Unsigned && argTypes[0].kind!=Kind::Unknown)
+    err("javaStringFromCodeUnit requires an integer code unit");
    return{Kind::String,{}};
   }
   const std::set<std::string> javaStringUnary={"javaStringLength","javaStringHashCode"};
@@ -559,6 +702,24 @@ class Analyzer{
      n=="javaStringHashCode"||n=="javaStringCompareTo") return{Kind::Int,{}};
   if(n=="javaStringSubstring"||n=="javaStringConcat") return{Kind::String,{}};
   if(n=="arrayNew")return{Kind::Array,"array",{}};
+  // Native Drive (syntax 3.0): host-authorized in-process native modules. The
+  // compiler lowers these to OP_NATIVE_OPEN/CALL/CLOSE; the checker validates
+  // version and shape so check/run agree with compile.
+  if(n=="nativeOpen"||n=="nativeCall"||n=="nativeClose"){
+   if(syntax<SyntaxVersion{3,0})err("Native Drive requires #sleela 3.0");
+   if(n=="nativeOpen"){
+    if(argTypes.size()!=1)err("nativeOpen(path) takes exactly one String argument");
+    else if(argTypes[0].kind!=Kind::String&&argTypes[0].kind!=Kind::Unknown)err("nativeOpen(path) requires a String path");
+    return{Kind::Int,{}};
+   }
+   if(n=="nativeClose"){
+    if(argTypes.size()!=1)err("nativeClose(handle) takes exactly one argument");
+    return{Kind::Int,{}};
+   }
+   if(argTypes.size()<2||argTypes.size()>4096)err("nativeCall(handle, method, ...args) requires a handle, method String, and at most 4094 arguments");
+   else if(argTypes[1].kind!=Kind::String&&argTypes[1].kind!=Kind::Unknown)err("nativeCall method name must be a String");
+   return{Kind::Unknown,{}};
+  }
   if(n=="arrayLength")return{Kind::Int,{}};
   if(n=="arrayPush" || n=="arraySet"){
    const size_t valueArg=(n=="arrayPush"?1:2);
@@ -590,28 +751,204 @@ class Analyzer{
   if(n.size()>2 && n[0]=='u' && n[1]=='i' && n[2]>='A' && n[2]<='Z'){return{Kind::Int,{}};}
   return{Kind::Unknown,{}};
  }
+ // Enhanced for (SLEELA.syntax 43.6).
+ const Method* instanceMethod(const std::string& cls,const std::string& name,size_t argc){
+  auto it=methods.find(cls+"::"+name); if(it==methods.end()) return nullptr;
+  auto ov=overloads.find(it->first);
+  if(ov!=overloads.end()) for(const auto& sig:ov->second) if(sig.m&&!sig.m->isStatic&&sig.m->params.size()==argc) return sig.m;
+  return (it->second.m&&!it->second.m->isStatic&&it->second.m->params.size()==argc)?it->second.m:nullptr;
+ }
+ void forEach(const ForEachStmt& f){
+  if(syntax<SyntaxVersion{3,0}){err("the enhanced for 'for (T v : xs)' requires #sleela 3.0");return;}
+  Type it=expr(*f.iterable); Type want=tn(f.type);
+  if(want.kind==Kind::Error){err("unknown loop variable type '"+f.type+"'");return;}
+  Type elem{Kind::Unknown,{}};
+  if(it.kind==Kind::Array){ elem=typeOf(it.elem); f.overIterable=false; }
+  else if(it.kind==Kind::Struct){
+   const Method* im=instanceMethod(it.name,"iterator",0);
+   if(!im){err("enhanced for over '"+it.name+"' needs an array or an object with iterator()");return;}
+   Type rt=tn(im->retType);
+   if(rt.kind!=Kind::Struct){err("'"+it.name+".iterator()' must return an iterator object, got "+nameOf(rt));return;}
+   const Method* hn=instanceMethod(rt.name,"hasNext",0); const Method* nx=instanceMethod(rt.name,"next",0);
+   if(!hn||!nx){err("iterator type '"+rt.name+"' needs hasNext() and next()");return;}
+   f.overIterable=true; f.iterableType=it.name; f.iteratorType=rt.name; f.iteratorM=im; f.hasNextM=hn; f.nextM=nx;
+   elem=tn(nx->retType);
+  }
+  else if(it.kind!=Kind::Unknown&&it.kind!=Kind::Error){err("enhanced for needs an array or an iterable object, got "+nameOf(it));return;}
+  // Element types Any/Unknown (erased generics) bind without a cast, as Java's
+  // compiler-inserted checkcast does; otherwise the element must be assignable.
+  if(elem.kind!=Kind::Any&&elem.kind!=Kind::Unknown&&!assignable(want,elem))
+   err("enhanced for variable '"+f.name+"' has type "+nameOf(want)+", elements are "+nameOf(elem));
+  push(); declare(f.name,want); stmt(*f.body); pop();
+ }
+ // super(args) / this(args) constructor invocation (SLEELA.syntax 43.6).
+ Type constructorInvocation(const MethodCall&m){
+  if(!cur||!cur->java.constructor){err(std::string(m.superConstructor?"super":"this")+"(...) is only allowed in a constructor");return{Kind::Void,{}};}
+  std::vector<Type> at=argTypesOf(m.args);
+  if(syntax<SyntaxVersion{3,0}) return{Kind::Void,{}};   // below 3.0: lineage-only, arguments not used
+  std::string target=cls;
+  if(m.superConstructor){
+   auto so=superOf.find(cls);
+   if(so==superOf.end()){ if(!m.args.empty()) err("super(...) with arguments in '"+cls+"' needs a loaded base class"); return{Kind::Void,{}}; }
+   target=so->second;
+  }
+  const Method* best=nullptr; int bestScore=-1; bool any=false;
+  for(const auto&c:p.classes) if(c.name==target) for(const auto&mm:c.methods){
+   if(!mm.java.constructor) continue; any=true;
+   if(mm.params.size()!=at.size()) continue;
+   if(m.thisConstructor&&&mm==cur) continue;
+   int score=0; bool ok=true;
+   for(size_t i=0;i<at.size();++i){Type w=tn(mm.params[i].type); if(!assignable(w,at[i])){ok=false;break;} if(same(w,at[i])) score+=2; else score+=1;}
+   if(ok&&score>bestScore){best=&mm;bestScore=score;}
+  }
+  if(!best){
+   if(m.args.empty()&&!any) return{Kind::Void,{}};   // implicit default constructor
+   err("no constructor of '"+target+"' takes "+std::to_string(at.size())+" argument(s) of these types");
+   return{Kind::Void,{}};
+  }
+  m.resolved=best; return{Kind::Void,{}};
+ }
+ // Best own (declared, non-static, non-constructor) overload of `name` in
+ // class c whose parameters accept argTypes; null when none does.
+ const Method* ownInstanceOverload(const ClassDecl& c,const std::string& name,const std::vector<Type>& argTypes,size_t skip=0){
+  const Method* best=nullptr; int bestScore=-1;
+  for(const auto& mm:c.methods){
+   if(mm.name!=name||mm.isStatic!=(skip>0)||mm.java.constructor||mm.params.size()!=argTypes.size()) continue;
+   int score=0; bool ok=true;
+   for(size_t i=skip;i<argTypes.size();++i){
+    Type w=tn(mm.params[i].type); const Type& g=argTypes[i];
+    if(!assignable(w,g)){ok=false;break;}
+    if(w.kind==g.kind&&(w.kind!=Kind::Struct||w.name==g.name)) score+=2;
+    else if(w.kind!=Kind::Any&&!(w.kind==Kind::Struct&&w.name=="Object")) score+=1;
+   }
+   if(ok&&score>bestScore){best=&mm;bestScore=score;}
+  }
+  return best;
+ }
+ // SLEELA.syntax 43.7: x.m(args) where x is Any.
+ Type anyReceiverCall(const MethodCall& m){
+  std::vector<Type> at=argTypesOf(m.args);
+  std::map<std::string,const Method*> byOwner; std::vector<std::string> owners;
+  for(const auto& c:p.classes){
+   if(c.name=="JavaStringMethods") continue;
+   if(const Method* mm=ownInstanceOverload(c,m.method,at)){ byOwner[c.name]=mm; owners.push_back(c.name); }
+  }
+  m.anyReceiver=true; m.anyTargets.clear(); m.anyStringTarget=nullptr; m.anyReturn.clear();
+  for(const auto& o:javaref::mostDerivedFirst(*g_javaClasses,owners)) m.anyTargets.emplace_back(o,byOwner[o]);
+  // The value may be a String at run time: ask the driver to load the
+  // java.lang.String method library (it re-analyzes with it loaded).
+  if(!classNames.count("JavaStringMethods")) r.needsStringMethods=true;
+  if(classNames.count("JavaStringMethods")){
+   for(const auto& c:p.classes) if(c.name=="JavaStringMethods"){
+    std::vector<Type> st=at; st.insert(st.begin(),Type{Kind::String,{},{}});
+    m.anyStringTarget=ownInstanceOverload(c,m.method,st,1);
+    break;
+   }
+  }
+  if(m.anyTargets.empty()&&!m.anyStringTarget){
+   err("no loaded class declares an instance method '"+m.method+"' taking "+std::to_string(m.args.size())+" argument(s) of these types (call on an Any receiver)");
+   return{Kind::Error,{}};
+  }
+  std::vector<const Method*> all; for(const auto& t:m.anyTargets) all.push_back(t.second); if(m.anyStringTarget) all.push_back(m.anyStringTarget);
+  Type ret=tn(all.front()->retType); bool agree=true;
+  for(const Method* x:all) if(!same(tn(x->retType),ret)){agree=false;break;}
+  if(!agree) return{Kind::Any,{}};
+  m.anyReturn=all.front()->retType;
+  return ret;
+ }
  Type fluent(const MethodCall&m){
+  if(m.superConstructor||m.thisConstructor) return constructorInvocation(m);
   if(m.method=="start"){if(auto r=dynamic_cast<const VarExpr*>(m.receiver.get())){if(r->name=="Munction"){if(m.args.size()!=1)err("Munction.start(name) takes one argument");else{Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction.start name must be string");}return{Kind::Unknown,{}};}}}
+  // The builtin `Ptr` namespace: Ptr.valid(p), Ptr.id(p), ... operate on an
+  // object reference (an int obtained from `obj.ref`). Like `Munction`, it is
+  // special only when no class/struct/variable named Ptr is in scope.
+  if(auto rf=dynamic_cast<const VarExpr*>(m.receiver.get())){
+   if(rf->name=="Ptr" && !classNames.count("Ptr") && !structs.count("Ptr") && lookup("Ptr").kind==Kind::Error){
+    static const std::map<std::string,std::pair<int,Kind>> refFns={
+     {"valid",{1,Kind::Bool}},{"old",{1,Kind::Bool}},{"id",{1,Kind::Int}},{"gen",{1,Kind::Int}},
+     {"type",{1,Kind::Int}},{"fields",{1,Kind::Int}},{"bytes",{1,Kind::Int}},{"age",{1,Kind::Int}},
+     {"live",{0,Kind::Int}},{"limit",{0,Kind::Int}}};
+    auto fn=refFns.find(m.method);
+    if(fn==refFns.end()){err("Ptr has no function '"+m.method+"' (valid, old, id, gen, type, fields, bytes, age, live, limit)");return{Kind::Error,{}};}
+    if((int)m.args.size()!=fn->second.first){err("Ptr."+m.method+"() expects "+std::to_string(fn->second.first)+" argument(s), got "+std::to_string(m.args.size()));return{Kind::Error,{}};}
+    for(const auto&a:m.args){Type t=expr(*a);if(t.kind!=Kind::Int&&t.kind!=Kind::Unknown&&t.kind!=Kind::Null)err("Ptr."+m.method+"() takes a ref (int), got "+nameOf(t));}
+    return{fn->second.second,{}};
+   }
+  }
+  // Static access through the class name (Java): Class.method(args), when the
+  // receiver names a class and is not a variable in scope.
+  if(auto rv=dynamic_cast<const VarExpr*>(m.receiver.get())){
+   if(classNames.count(rv->name) && lookup(rv->name).kind==Kind::Error){
+    auto st=methods.find(rv->name+"::"+m.method);
+    if(st==methods.end() && m.method=="deref"){
+     // Implicit `Class.deref(ref)`: the object if the ref is valid and an
+     // instance of this class, else null. Never raises on a stale ref.
+     if(m.args.size()!=1){err("'"+rv->name+".deref' expects 1 argument, got "+std::to_string(m.args.size()));return{Kind::Error,{}};}
+     Type t=expr(*m.args[0]);if(t.kind!=Kind::Int&&t.kind!=Kind::Unknown&&t.kind!=Kind::Null)err("'"+rv->name+".deref' takes a ref (int), got "+nameOf(t));
+     return{Kind::Struct,rv->name};
+    }
+    if(st==methods.end()){err("class '"+rv->name+"' has no method '"+m.method+"'");return{Kind::Error,{}};}
+    std::vector<Type> at=argTypesOf(m.args);
+    const MethodSig* pk=pickOverload(st->first,at); m.resolved=pk->m;
+    const Method& target=*pk->m;
+    if(!target.isStatic){err("instance method '"+rv->name+"::"+m.method+"' must be called on an instance");return{Kind::Error,{}};}
+    if(m.args.size()!=target.params.size())err("method '"+m.method+"' expects "+std::to_string(target.params.size())+" argument(s), got "+std::to_string(m.args.size()));
+    for(size_t i=0;i<m.args.size()&&i<target.params.size();++i){Type g=at[i],w=tn(target.params[i].type);if(!assignable(w,g))err("argument to '"+m.method+"' has type "+nameOf(g)+", expected "+nameOf(w));}
+    if(target.isProtected&&pk->owner!=cls)err("protected method access denied for '"+m.method+"'");
+    return tn(target.retType);
+   }
+  }
   Type rcv=expr(*m.receiver);
   static const std::set<std::string> v={"connect","enable","send","thatch","consume","latch","closeWithReceipt","close","reception"};
   if(v.count(m.method)){if(m.method=="consume"||m.method=="latch"||m.method=="close"||m.method=="reception"||m.method=="closeWithReceipt"){if(!m.args.empty())err("Munction "+m.method+"() takes no arguments");}else{if(m.args.size()!=1)err("Munction "+m.method+"() takes exactly one argument");if(!m.args.empty()){Type t=expr(*m.args[0]);if(t.kind!=Kind::String&&t.kind!=Kind::Unknown)err("Munction "+m.method+" argument must be string");}}return m.method=="closeWithReceipt"?Type{Kind::String,{}}:rcv;}
+  // Java String instance methods (syntax 3.0): `s.length()`, `"x".equals(y)`.
+  // The call binds to the static JavaStringMethods.<method>(String self, ...)
+  // in /lib, overloads resolved with the receiver as the first argument.
+  if(rcv.kind==Kind::String && !(syntax<SyntaxVersion{3,0})){
+   if(!classNames.count("JavaStringMethods")){
+    r.needsStringMethods=true;
+    err("method '"+m.method+"' on a String needs the java.lang.String method library (JavaStringMethods), which is not loaded");
+    return{Kind::Error,{}};
+   }
+   auto sm=methods.find("JavaStringMethods::"+m.method);
+   if(sm==methods.end()){err("String has no method '"+m.method+"'");return{Kind::Error,{}};}
+   std::vector<Type> at=argTypesOf(m.args);
+   at.insert(at.begin(),Type{Kind::String,{},{}});
+   const MethodSig* pk=pickOverload(sm->first,at); m.resolved=pk->m; m.stringReceiver=true;
+   const Method& target=*pk->m;
+   if(!target.isStatic){err("String method '"+m.method+"' must be a static JavaStringMethods method");return{Kind::Error,{}};}
+   if(at.size()!=target.params.size())err("String method '"+m.method+"' expects "+std::to_string(target.params.size()>0?target.params.size()-1:0)+" argument(s), got "+std::to_string(m.args.size()));
+   for(size_t i=1;i<at.size()&&i<target.params.size();++i){Type g=at[i],w=tn(target.params[i].type);if(!assignable(w,g))err("argument to String method '"+m.method+"' has type "+nameOf(g)+", expected "+nameOf(w));}
+   return tn(target.retType);
+  }
+  // SLEELA.syntax 43.7: a call on an Any receiver (an erased generic, a
+  // dynamically typed value) dispatches at run time over every loaded class
+  // that declares an instance method of this name taking these arguments,
+  // most derived first; a String/utf16 value goes to JavaStringMethods.
+  if(rcv.kind==Kind::Any && !(syntax<SyntaxVersion{3,0}) && g_javaClasses) return anyReceiverCall(m);
   if(rcv.kind!=Kind::Struct){err("method '"+m.method+"' requires a class or struct receiver");return{Kind::Error,{}};}
   auto it=methods.find(rcv.name+"::"+m.method);if(it==methods.end()){err("class '"+rcv.name+"' has no method '"+m.method+"'");return{Kind::Error,{}};}
-  const Method& target=*it->second.m;if(target.isStatic)err("static method '"+rcv.name+"::"+m.method+"' must be called through its class");
+  std::vector<Type> at=argTypesOf(m.args);
+  const MethodSig* pk=pickOverload(it->first,at); m.resolved=pk->m;
+  const Method& target=*pk->m;if(target.isStatic)err("static method '"+rcv.name+"::"+m.method+"' must be called through its class");
   if(m.args.size()!=target.params.size())err("method '"+m.method+"' expects "+std::to_string(target.params.size())+" argument(s), got "+std::to_string(m.args.size()));
-  for(size_t i=0;i<m.args.size()&&i<target.params.size();++i){Type g=expr(*m.args[i]),w=tn(target.params[i].type);if(!assignable(w,g))err("argument to '"+m.method+"' has type "+nameOf(g)+", expected "+nameOf(w));}
-  if(target.isProtected&&it->second.owner!=cls)err("protected method access denied for '"+m.method+"'");
+  for(size_t i=0;i<m.args.size()&&i<target.params.size();++i){Type g=at[i],w=tn(target.params[i].type);if(!assignable(w,g))err("argument to '"+m.method+"' has type "+nameOf(g)+", expected "+nameOf(w));}
+  if(target.isProtected&&pk->owner!=cls)err("protected method access denied for '"+m.method+"'");
   return tn(target.retType);
 }
 public:
  Analyzer(const Program&x,const SyntaxVersion&s,bool needMain):p(x),syntax(s),requireMain(needMain){}
  SemanticResult run(){
+  javaref::ClassIndex javaClasses; for(const auto&c:p.classes) javaClasses[c.name]=&c;
+  struct ClassesGuard{ ~ClassesGuard(){ g_javaClasses=nullptr; } } classesGuard;
+  if(!(syntax<SyntaxVersion{1,10})) g_javaClasses=&javaClasses;
   collect();
   declarations();
   for(const auto&d:frontend::validateLanguageAnnotations(p.annotations)){
     if(d.severity==frontend::AnnotationDiagnostic::Severity::Error) err(d.message);
     else r.warnings.push_back("Semantic warning: "+d.message);
   }
+  for(const auto&c:p.classes)for(const auto&f:c.fields)fieldInit(c,f);
   for(const auto&c:p.classes)for(const auto&m:c.methods)method(c,m);
   return r;
 }

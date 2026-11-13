@@ -15,6 +15,7 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <utility>
 #include "../annotation/Annotation.hpp"
 
 namespace sleela {
@@ -90,27 +91,30 @@ struct JavaMemberMetadata {
 
 struct Block; struct Stmt; using StmtP=std::unique_ptr<Stmt>;
 struct Expr { virtual ~Expr() = default; }; using ExprP = std::unique_ptr<Expr>;
-struct IntLit:Expr{long long value;explicit IntLit(long long v):value(v){}};
+struct IntLit:Expr{long long value;bool isChar=false;/* syntax 3.1 character literal; typed char from 3.2 */explicit IntLit(long long v):value(v){}};
 struct DoubleLit:Expr{double value;explicit DoubleLit(double v):value(v){}};
 struct BoolLit:Expr{bool value;explicit BoolLit(bool v):value(v){}};
 struct StrLit:Expr{std::string value;explicit StrLit(std::string v):value(std::move(v)){}};
 struct NullLit:Expr{};
 struct VarExpr:Expr{std::string name;explicit VarExpr(std::string n):name(std::move(n)){}};
 struct Unary:Expr{std::string op;ExprP operand;Unary(std::string o,ExprP e):op(std::move(o)),operand(std::move(e)){}};
-struct Binary:Expr{std::string op;ExprP lhs,rhs;Binary(std::string o,ExprP l,ExprP r):op(std::move(o)),lhs(std::move(l)),rhs(std::move(r)){}};
-struct Call:Expr{std::string callee;std::vector<ExprP> args;explicit Call(std::string c):callee(std::move(c)){}};
-struct MethodCall:Expr{ExprP receiver;std::string method;std::vector<ExprP> args;MethodCall(ExprP r,std::string m):receiver(std::move(r)),method(std::move(m)){}};
-struct NewExpr:Expr{std::string typeName;std::vector<ExprP> args;explicit NewExpr(std::string t):typeName(std::move(t)){}};
+struct Binary:Expr{std::string op;ExprP lhs,rhs;mutable unsigned charMask=0;/* syntax 3.2: bit0 lhs is char, bit1 rhs is char (set by semantic analysis for +) */Binary(std::string o,ExprP l,ExprP r):op(std::move(o)),lhs(std::move(l)),rhs(std::move(r)){}};
+struct Method;
+// `resolved` is the overload chosen by semantic analysis (syntax 3.0 overload
+// resolution); the compiler binds the call to exactly that declaration.
+struct Call:Expr{std::string callee;std::vector<ExprP> args;mutable const Method* resolved=nullptr;explicit Call(std::string c):callee(std::move(c)){}};
+struct MethodCall:Expr{ExprP receiver;std::string method;std::vector<ExprP> args;mutable const Method* resolved=nullptr;/* set by semantic analysis when the receiver is a String: the call is the static JavaStringMethods.<method>(receiver, args...) recorded in resolved */mutable bool stringReceiver=false;/* Java constructor invocation statement (SLEELA.syntax 43.6): super(args) / this(args) inside a constructor; receiver is SuperExpr/ThisExpr and resolved is the target constructor */bool superConstructor=false;bool thisConstructor=false;/* SLEELA.syntax 43.7: a call on an Any receiver. anyTargets are the (owner class, method) candidates, most derived first; anyStringTarget is the JavaStringMethods function for a String/utf16 receiver (or null); anyReturn is the common declared return type of every candidate (empty when they differ, then the call is Any) */mutable bool anyReceiver=false;mutable std::vector<std::pair<std::string,const Method*>> anyTargets;mutable const Method* anyStringTarget=nullptr;mutable std::string anyReturn;MethodCall(ExprP r,std::string m):receiver(std::move(r)),method(std::move(m)){}};
+struct NewExpr:Expr{std::string typeName;std::vector<ExprP> args;bool hasInit=false;std::vector<ExprP> init;/* syntax 3.1 array initializer {a,b,c} */mutable const Method* resolved=nullptr;explicit NewExpr(std::string t):typeName(std::move(t)){}};
 // `ran::<word>` -- the System / already-Ran-in-RAM reference. The `ran::`
 // qualifier names a system meaning explicitly, so ordinary words (mem, gc, ...)
 // stay free as identifiers. `word` is the system name after `ran::` (e.g.
 // "mem"). A value form such as `ran::mem` evaluates to a system quantity.
 struct RanRefExpr:Expr{std::string word;explicit RanRefExpr(std::string w):word(std::move(w)){}};
-struct MemberAccess:Expr{ExprP base;std::string field;MemberAccess(ExprP b,std::string f):base(std::move(b)),field(std::move(f)){}};
+struct MemberAccess:Expr{ExprP base;std::string field;mutable bool arrayLength=false;/* syntax 3.2: `a.length` on an array, set by semantic analysis */MemberAccess(ExprP b,std::string f):base(std::move(b)),field(std::move(f)){}};
 // --- Java expression forms (surface completeness). -------------------------
 // Compound/plain assignment as an expression (e.g. a = b, a += b). `op` is the
 // assignment operator text; `target` must be an lvalue (VarExpr/MemberAccess).
-struct AssignmentExpr:Expr{std::string op;ExprP target,value;AssignmentExpr(std::string o,ExprP t,ExprP v):op(std::move(o)),target(std::move(t)),value(std::move(v)){}};
+struct AssignmentExpr:Expr{std::string op;ExprP target,value;mutable unsigned charMask=0;/* syntax 3.2: += with a char value (bit1) */mutable bool narrowChar=false;/* syntax 3.2: the target is an element of a char[]: narrow the stored value to 16 bits */AssignmentExpr(std::string o,ExprP t,ExprP v):op(std::move(o)),target(std::move(t)),value(std::move(v)){}};
 // Ternary conditional `cond ? thenE : elseE`.
 struct ConditionalExpr:Expr{ExprP cond,thenE,elseE;ConditionalExpr(ExprP c,ExprP t,ExprP e):cond(std::move(c)),thenE(std::move(t)),elseE(std::move(e)){}};
 // `value instanceof Type`.
@@ -119,6 +123,11 @@ struct InstanceOfExpr:Expr{ExprP value;std::string typeName;InstanceOfExpr(ExprP
 struct CastExpr:Expr{std::string typeName;ExprP operand;CastExpr(std::string t,ExprP e):typeName(std::move(t)),operand(std::move(e)){}};
 // `super` / `this` primary expressions.
 struct SuperExpr:Expr{};
+// Sleela.home lineage references (SLEELA.syntax section 42). Resolved at compile
+// time against the loaded classes: Parents walks `depth` superclass levels up
+// (clamped to the root; depth 0 is the VM), Vm is Sleela.VM/System/OS, and the
+// Init* kinds give the starting value of the per-class lineage fields.
+struct LineageExpr:Expr{enum Kind{Parents,Vm,InitParent,InitChild,InitRoot,Boot};Kind kind;int depth=0;explicit LineageExpr(Kind k,int d=0):kind(k),depth(d){}};
 struct ThisExpr:Expr{};
 // Array element access `base[index]`.
 struct ArrayAccess:Expr{ExprP base,index;ArrayAccess(ExprP b,ExprP i):base(std::move(b)),index(std::move(i)){}};
@@ -137,7 +146,7 @@ struct VarDecl:Stmt{std::string type,name;ExprP init;};
 struct Assign:Stmt{std::string name;ExprP value;};
 struct FieldAssign:Stmt{ExprP base;std::string field;ExprP value;};
 struct ExprStmt:Stmt{ExprP expr;ExprStmt()=default;explicit ExprStmt(ExprP e):expr(std::move(e)){}};
-struct PrintStmt:Stmt{ExprP expr;};
+struct PrintStmt:Stmt{ExprP expr;mutable bool charArg=false;/* syntax 3.2: the argument has static type char */};
 // GC-hint statement (syntax 1.9): `x = gc N;` / `x = mem N;`. `target` names the
 // value the developer is done using; `aggressiveness` is the 0..100 cleanup
 // strength. Both the `gc` and `mem` spellings produce this node. It lowers to a
@@ -164,14 +173,23 @@ struct LoopSpill{bool hasSpill=false;long spillPauseMs=0;std::string spillJudges
 struct WhileStmt:Stmt{ExprP cond;StmtP body;long loopSleepMs=0;LoopSpill spill;};
 struct ForStmt:Stmt{StmtP init;ExprP cond;StmtP update,body;ExprP threadStable,heapHealthy;long loopSleepMs=0;LoopSpill spill;};
 // --- Java statement forms (surface completeness). --------------------------
+// Enhanced for (SLEELA.syntax 43.6): `for (T v : xs) body`. Over an array it
+// walks the elements by index; over an object it calls xs.iterator(), then
+// hasNext()/next() on the result. Semantic analysis records which, and the
+// resolved methods, in the mutable fields.
+struct ForEachStmt:Stmt{std::string type,name;ExprP iterable;StmtP body;mutable bool overIterable=false;mutable std::string iterableType,iteratorType;mutable const Method* iteratorM=nullptr;mutable const Method* hasNextM=nullptr;mutable const Method* nextM=nullptr;};
 struct DoStmt:Stmt{StmtP body;ExprP cond;long loopSleepMs=0;LoopSpill spill;};
 struct BreakStmt:Stmt{std::string label;};
 struct ContinueStmt:Stmt{std::string label;};
+// Syntax 3.1: `label: statement` -- the target of a labeled break / continue.
+struct LabeledStmt:Stmt{std::string label;StmtP body;};
 struct ThrowStmt:Stmt{ExprP value;};
 struct AssertStmt:Stmt{ExprP cond;ExprP message;};
 struct YieldStmt:Stmt{ExprP value;};
 struct SynchronizedStmt:Stmt{ExprP monitor;std::unique_ptr<Block> body;};
-struct CatchClause{std::string type,variable;std::unique_ptr<Block> body;};
+// `type` is the declared text (alternatives joined by '|'); `types` holds each
+// alternative of a multi-catch `catch (A | B e)` (SLEELA.syntax 43.6).
+struct CatchClause{std::string type,variable;std::unique_ptr<Block> body;std::vector<std::string> types;};
 struct TryStmt:Stmt{std::unique_ptr<Block> body;std::vector<CatchClause> catches;std::unique_ptr<Block> finallyBlock;};
 struct SwitchCase{bool isDefault=false;std::vector<ExprP> labels;std::vector<StmtP> statements;};
 struct SwitchStmt:Stmt{ExprP selector;std::vector<SwitchCase> cases;};
@@ -332,6 +350,19 @@ struct Program {
     // section 35). Contextual, not a reserved keyword, so `artifact` stays an
     // ordinary identifier anywhere else (and in any document below 3.0).
     bool artifactMarked=false;
+    // Spark marker (syntax 3.0, SLEELA.syntax section 43). A Preonem that
+    // indicates Java style declarative: the document declares itself SLeeLa
+    // constructs written in Java style. Java support
+    // for it is handled by the interpreter and VM (frontend java_references.cpp,
+    // the compiler, the VM opcodes), never by a SLeeLa housing class. Recorded
+    // standing only; no change to parsing, typing, or codegen. Contextual, not a
+    // reserved keyword.
+    bool sparkMarked=false;
+    // Syntax 3.1 surface the parser met (e.g. "character literal"); semantic
+    // analysis rejects each one in a document declaring a syntax below 3.1.
+    std::vector<std::string> syntax31Uses;
+    // Syntax 3.2 surface the parser met (e.g. "multi-dimensional array creation").
+    std::vector<std::string> syntax32Uses;
 };
 
 } // namespace sleela

@@ -1,0 +1,256 @@
+<< lib/java/jdk-28/java.desktop/java/beans/PropertyChangeSupport.sleela
+   SLeeLa file for the Java type java.beans.PropertyChangeSupport (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/beans/PropertyChangeSupport.html
+   Java kind: class; extends java.lang.Object; implements java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+import java.jdk-28;
+
+class PropertyChangeSupport {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 7262;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.beans.PropertyChangeSupport";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/beans/PropertyChangeSupport.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java implementation (JDK 28 additions, SLeeLa logic) ---- >
+  < ---- java.beans.PropertyChangeSupport: bound-property listeners and events ---- >
+  << Written from the JDK 28 API specification of java.beans.PropertyChangeSupport.
+     It keeps listeners for all properties and listeners for one named
+     property. A null listener, or a null name when one is required, is
+     ignored. Adding or removing a PropertyChangeListenerProxy acts on the
+     named list of its property. firePropertyChange sends no event when the
+     old and new values are both non-null and equal. Each event goes first to
+     the listeners for all properties, then to the listeners of its property,
+     each in the order they were added. getPropertyChangeListeners() returns
+     the listeners for all properties followed by one
+     PropertyChangeListenerProxy per named listener. Listeners are SLJavaLambda
+     values (or proxies of them), see SLJavaBeanEvents. Equality of the values
+     is SLeeLa equality: by value for numbers, booleans and Strings, by
+     identity for objects (PURPOSE.md row 31). >>
+  Any sourceBean;
+  Any[] allListeners;
+  int allCount;
+  String[] namedNames;
+  Any[] namedListeners;
+  int namedCount;
+
+  public PropertyChangeSupport(java.lang.Object sourceBean) {
+    if (sourceBean == null) { throw new NullPointerException(); }
+    this.sourceBean = sourceBean;
+    this.allListeners = new Any[4];
+    this.allCount = 0;
+    this.namedNames = new String[4];
+    this.namedListeners = new Any[4];
+    this.namedCount = 0;
+  }
+
+  public void addPropertyChangeListener(java.beans.PropertyChangeListener listener) {
+    if (listener == null) { return; }
+    if (listener instanceof PropertyChangeListenerProxy) {
+      PropertyChangeListenerProxy p = (PropertyChangeListenerProxy) listener;
+      addPropertyChangeListener(p.getPropertyName(), p.getListener());
+      return;
+    }
+    if (this.allCount >= arrayLength(this.allListeners)) { this.allListeners = growAny(this.allListeners, this.allCount); }
+    this.allListeners[this.allCount] = listener;
+    this.allCount = this.allCount + 1;
+  }
+  public void addPropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) {
+    if (listener == null || propertyName == null) { return; }
+    if (this.namedCount >= arrayLength(this.namedListeners)) {
+      this.namedListeners = growAny(this.namedListeners, this.namedCount);
+      String[] g = new String[arrayLength(this.namedListeners)];
+      int i = 0;
+      while (i < this.namedCount) { g[i] = this.namedNames[i]; i = i + 1; }
+      this.namedNames = g;
+    }
+    this.namedNames[this.namedCount] = propertyName;
+    this.namedListeners[this.namedCount] = listener;
+    this.namedCount = this.namedCount + 1;
+  }
+  public void removePropertyChangeListener(java.beans.PropertyChangeListener listener) {
+    if (listener == null) { return; }
+    if (listener instanceof PropertyChangeListenerProxy) {
+      PropertyChangeListenerProxy p = (PropertyChangeListenerProxy) listener;
+      removePropertyChangeListener(p.getPropertyName(), p.getListener());
+      return;
+    }
+    int i = 0;
+    while (i < this.allCount) {
+      if (this.allListeners[i] == listener) {
+        int j = i;
+        while (j < this.allCount - 1) { this.allListeners[j] = this.allListeners[j + 1]; j = j + 1; }
+        this.allCount = this.allCount - 1;
+        this.allListeners[this.allCount] = null;
+        return;
+      }
+      i = i + 1;
+    }
+  }
+  public void removePropertyChangeListener(java.lang.String propertyName, java.beans.PropertyChangeListener listener) {
+    if (listener == null || propertyName == null) { return; }
+    int i = 0;
+    while (i < this.namedCount) {
+      if (this.namedListeners[i] == listener && this.namedNames[i] == propertyName) {
+        int j = i;
+        while (j < this.namedCount - 1) {
+          this.namedListeners[j] = this.namedListeners[j + 1];
+          this.namedNames[j] = this.namedNames[j + 1];
+          j = j + 1;
+        }
+        this.namedCount = this.namedCount - 1;
+        this.namedListeners[this.namedCount] = null;
+        this.namedNames[this.namedCount] = null;
+        return;
+      }
+      i = i + 1;
+    }
+  }
+  public Any[] getPropertyChangeListeners() {
+    Any[] out = new Any[this.allCount + this.namedCount];
+    int i = 0;
+    while (i < this.allCount) { out[i] = this.allListeners[i]; i = i + 1; }
+    int j = 0;
+    while (j < this.namedCount) {
+      out[i + j] = new PropertyChangeListenerProxy(this.namedNames[j], this.namedListeners[j]);
+      j = j + 1;
+    }
+    return out;
+  }
+  public Any[] getPropertyChangeListeners(java.lang.String propertyName) {
+    int n = 0;
+    int i = 0;
+    while (i < this.namedCount) { if (propertyName != null && this.namedNames[i] == propertyName) { n = n + 1; } i = i + 1; }
+    Any[] out = new Any[n];
+    n = 0;
+    i = 0;
+    while (i < this.namedCount) {
+      if (propertyName != null && this.namedNames[i] == propertyName) { out[n] = this.namedListeners[i]; n = n + 1; }
+      i = i + 1;
+    }
+    return out;
+  }
+  public boolean hasListeners(java.lang.String propertyName) {
+    if (this.allCount > 0) { return true; }
+    if (propertyName == null) { return false; }
+    int i = 0;
+    while (i < this.namedCount) { if (this.namedNames[i] == propertyName) { return true; } i = i + 1; }
+    return false;
+  }
+
+  public void firePropertyChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) {
+    if (oldValue == null || newValue == null || oldValue != newValue) {
+      firePropertyChange(new PropertyChangeEvent(this.sourceBean, propertyName, oldValue, newValue));
+    }
+  }
+  public void firePropertyChange(java.beans.PropertyChangeEvent event) {
+    PropertyChangeEvent e = (PropertyChangeEvent) event;
+    Any oldValue = e.getOldValue();
+    Any newValue = e.getNewValue();
+    if (oldValue != null && newValue != null && oldValue == newValue) { return; }
+    String name = e.getPropertyName();
+    Any[] all = snapshot(this.allListeners, this.allCount);
+    int i = 0;
+    while (i < arrayLength(all)) { SLJavaBeanEvents.notifyPropertyChange(all[i], e); i = i + 1; }
+    if (name != null) {
+      Any[] named = getPropertyChangeListeners(name);
+      int j = 0;
+      while (j < arrayLength(named)) { SLJavaBeanEvents.notifyPropertyChange(named[j], e); j = j + 1; }
+    }
+  }
+  public void fireIndexedPropertyChange(java.lang.String propertyName, int index, java.lang.Object oldValue, java.lang.Object newValue) {
+    if (oldValue == null || newValue == null || oldValue != newValue) {
+      firePropertyChange(new IndexedPropertyChangeEvent(this.sourceBean, propertyName, oldValue, newValue, index));
+    }
+  }
+
+  < listeners added or removed while an event is delivered do not change that delivery >
+  Any[] snapshot(Any[] a, int n) {
+    Any[] out = new Any[n];
+    int i = 0;
+    while (i < n) { out[i] = a[i]; i = i + 1; }
+    return out;
+  }
+  Any[] growAny(Any[] a, int n) {
+    Any[] g = new Any[arrayLength(a) * 2];
+    int i = 0;
+    while (i < n) { g[i] = a[i]; i = i + 1; }
+    return g;
+  }
+  < ---- END java implementation ---- >
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public PropertyChangeSupport bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  < ---- END java signatures ---- >
+}

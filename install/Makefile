@@ -161,6 +161,7 @@ install-check:
 	@grep -q 'sleela-native-service.py' Makefile
 	@python3 -c 'import json; p="../security/sha256-manifest.json"; paths={x["path"] for x in json.load(open(p, encoding="utf-8"))["files"]}; required={"tools/sleela-native-drive.py","tools/sleela-native-service.py"}; missing=required-paths; assert not missing, "Native Drive manifest entries missing: "+", ".join(sorted(missing))'
 	@grep -q 'System-wide' README.md
+	@sh ../bin/sleelactl check-registry --strict >/dev/null || { sh ../bin/sleelactl check-registry --strict; exit 1; }
 	@echo "Installer entry points, Native Drive staging, trusted-manifest entries, and compiled-product checks present for Linux, macOS, and Windows 10+."
 
 # install: scope-aware entry point. Offers the SHA-256 manifest step, then
@@ -409,11 +410,17 @@ do-install:
 	install -m 755 "$(REPO_ROOT)/bin/sleelactl" "$(DESTDIR)$(BINDIR)/sleelactl"
 	install -d "$(RUNTIME_DIR)/bin/sleelactl.d"
 	install -m 644 "$(REPO_ROOT)/bin/sleelactl.d/registry.conf" "$(RUNTIME_DIR)/bin/sleelactl.d/registry.conf"
+	@echo "Generating sleelactl shell completions into $(DATA_DIR)/completions"
+	install -d "$(DATA_DIR)/completions"
+	SLEELACTL_REGISTRY="$(REPO_ROOT)/bin/sleelactl.d/registry.conf" sh "$(REPO_ROOT)/bin/sleelactl" completion bash > "$(DATA_DIR)/completions/sleelactl.bash"
+	SLEELACTL_REGISTRY="$(REPO_ROOT)/bin/sleelactl.d/registry.conf" sh "$(REPO_ROOT)/bin/sleelactl" completion zsh > "$(DATA_DIR)/completions/sleelactl.zsh"
 	@echo "Staging standard library (MODULES=$(MODULES); SERVERS=$(SERVERS); EXCLUDE=$(EFFECTIVE_EXCLUDE))"
 	python3 "$(REPO_ROOT)/install/install-runtime.py" stage-lib "$(REPO_ROOT)" "$(RUNTIME_DIR)/lib" "$(MODULES)" "$(EFFECTIVE_EXCLUDE)"
 	install -m 644 "$(REPO_ROOT)/tools/verify-before-execution.py" "$(RUNTIME_DIR)/tools/"
 	install -m 644 "$(REPO_ROOT)/tools/sleela-native-drive.py" "$(RUNTIME_DIR)/tools/"
 	install -m 644 "$(REPO_ROOT)/tools/sleela-native-service.py" "$(RUNTIME_DIR)/tools/"
+	install -d "$(RUNTIME_DIR)/include"
+	install -m 644 "$(REPO_ROOT)/os-level-support/loader/native_loader.h" "$(RUNTIME_DIR)/include/"
 	install -m 644 "$(REPO_ROOT)/security/sha256-manifest.json" "$(RUNTIME_DIR)/security/"
 	if [ -f "$(REPO_ROOT)/SHEET.sheet" ]; then install -m 644 "$(REPO_ROOT)/SHEET.sheet" "$(RUNTIME_DIR)/SHEET.sheet"; fi
 	python3 "$(REPO_ROOT)/install/install-runtime.py" copy-manifest "$(REPO_ROOT)" "$(RUNTIME_DIR)" "$(MODULES)" "$(EFFECTIVE_EXCLUDE)"

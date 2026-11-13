@@ -101,6 +101,7 @@ struct JavaGen {
             out << "\n"; return;
         }
         if (auto w = dynamic_cast<const WhileStmt*>(s)) { ind(n); out << "while ("; emitExpr(w->cond.get()); out << ") {\n"; emitStmt(w->body.get(), n+1); ind(n); out << "}\n"; return; }
+        if (auto fe = dynamic_cast<const ForEachStmt*>(s)) { ind(n); out << "for (" << fe->type << " " << fe->name << " : "; emitExpr(fe->iterable.get()); out << ") {\n"; emitStmt(fe->body.get(), n+1); ind(n); out << "}\n"; return; }
         if (auto f = dynamic_cast<const ForStmt*>(s)) {
             ind(n); out << "for (";
             if (f->init) emitInline(f->init.get());
@@ -173,6 +174,7 @@ struct SleelaGen {
         if (auto r = dynamic_cast<const ReturnStmt*>(s)) { ind(n); out << "return"; if (r->value) { out << " "; emitExpr(r->value.get()); } out << ";\n"; return; }
         if (auto i = dynamic_cast<const IfStmt*>(s)) { ind(n); out << "if ("; emitExpr(i->cond.get()); out << ") {\n"; emitStmt(i->thenS.get(), n+1); ind(n); out << "}"; if (i->elseS) { out << " else {\n"; emitStmt(i->elseS.get(), n+1); ind(n); out << "}"; } out << "\n"; return; }
         if (auto w = dynamic_cast<const WhileStmt*>(s)) { ind(n); out << "while ("; emitExpr(w->cond.get()); out << ") {\n"; emitStmt(w->body.get(), n+1); ind(n); out << "}\n"; return; }
+        if (auto fe = dynamic_cast<const ForEachStmt*>(s)) { ind(n); out << "for (" << fe->type << " " << fe->name << " : "; emitExpr(fe->iterable.get()); out << ") {\n"; emitStmt(fe->body.get(), n+1); ind(n); out << "}\n"; return; }
         if (auto f = dynamic_cast<const ForStmt*>(s)) { ind(n); out << "for ("; if (f->init) emitInline(f->init.get()); out << "; "; if (f->cond) emitExpr(f->cond.get()); out << "; "; if (f->update) emitInline(f->update.get()); out << ") {\n"; emitStmt(f->body.get(), n+1); ind(n); out << "}\n"; return; }
     }
     void emitInline(const Stmt* s) {
@@ -279,6 +281,7 @@ struct CGen {
         if (auto r = dynamic_cast<const ReturnStmt*>(s)) { ind(n); out << "return "; if (r->value) emitExpr(r->value.get()); else out << "nsv_int(0)"; out << ";\n"; return; }
         if (auto i = dynamic_cast<const IfStmt*>(s)) { ind(n); out << "if (nsv_truth("; emitExpr(i->cond.get()); out << ")) {\n"; emitStmt(i->thenS.get(), n+1); ind(n); out << "}"; if (i->elseS) { out << " else {\n"; emitStmt(i->elseS.get(), n+1); ind(n); out << "}"; } out << "\n"; return; }
         if (auto w = dynamic_cast<const WhileStmt*>(s)) { ind(n); out << "while (nsv_truth("; emitExpr(w->cond.get()); out << ")) {\n"; emitStmt(w->body.get(), n+1); ind(n); out << "}\n"; return; }
+        if (dynamic_cast<const ForEachStmt*>(s)) throw std::runtime_error("the enhanced for is not supported by the C target");
         if (auto f = dynamic_cast<const ForStmt*>(s)) {
             ind(n); out << "{\n";
             if (f->init) { ind(n+1); emitInlineDecl(f->init.get()); out << ";\n"; }

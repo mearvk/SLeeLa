@@ -1,0 +1,22 @@
+== Lesson 30: paper decision ==
+-- master (onion) --
+  Mill A total = 63600 cents
+  Mill B total = 82700 cents
+  Mill C total = 89100 cents
+  Mill D total = 47000 cents
+  Mill E total = 58100 cents
+  Mill F total = 47000 cents
+  Mill G total = 49600 cents
+  Mill H total = 66200 cents
+  master picks Mill D
+-- student, first pass: every entry observed --
+  Mill A total = 63600 cents
+  Mill B total = 82700 cents
+  Mill C total = 89100 cents
+  Mill D total = 47000 cents
+  Mill E total = 58100 cents
+  Mill F total = 47000 cents
+  Mill G total = 49600 cents
+  Mill H total = 66200 cents
+  student picks Mill D
+  verdict: AGREE, work accepted

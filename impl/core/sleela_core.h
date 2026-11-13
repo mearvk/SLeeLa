@@ -6,8 +6,13 @@
 
 /* Stable VM artifact/runtime ABI identifiers. */
 #define SLEELA_VM_ABI_MAJOR 1u
-#define SLEELA_VM_ABI_MINOR 6u
-#define SLEELA_ARTIFACT_FORMAT_VERSION 3u
+#define SLEELA_VM_ABI_MINOR 9u
+#define SLEELA_ARTIFACT_FORMAT_VERSION 6u
+#define SL_NATIVE_METHOD_ABI_VERSION 0x00010000u
+#define SL_NATIVE_METHOD_FLAG_ANNOTATED 0x00000001u
+#define SL_NATIVE_METHOD_FLAG_STATIC 0x00000002u
+#define SL_NATIVE_METHOD_FLAG_INSTANCE 0x00000004u
+#define SL_NATIVE_METHOD_FLAGS_MASK (SL_NATIVE_METHOD_FLAG_ANNOTATED | SL_NATIVE_METHOD_FLAG_STATIC | SL_NATIVE_METHOD_FLAG_INSTANCE)
 #include <stdint.h>
 #include "../../os-level-support/osls_vm_bridge.h"
 #include "../../os-level-support/loader/native_module_table.h"
@@ -97,7 +102,7 @@ typedef enum {
      * SLValues. An array value carries a VM-local handle into a bounded array
      * store, the same handle discipline as structs. Appended at the end of the
      * opcode enum so existing serialized-artifact opcode numbers are unchanged. */
-    OP_NEWARRAY,   /* pops int size; pushes a fresh array handle with `size` null elements */
+    OP_NEWARRAY,   /* pops int size; pushes a fresh array handle; operand a = element default: 0 null, 1 int 0, 2 double 0.0, 3 bool false */
     OP_ARRGET,     /* pops index then array; pushes element (TERR on out-of-range)              */
     OP_ARRSET,     /* pops value then index then array; writes element; pushes value            */
     OP_ARRLEN,     /* pops array; pushes int length                                             */
@@ -277,11 +282,96 @@ typedef enum {
     OP_TRY_PUSH,
     OP_TRY_POP,
     OP_THROW,
+    /* Native IPC worker ABI. OPEN consumes a host-authorized worker capability
+     * name (not an arbitrary executable path) and pushes an opaque VM-local
+     * worker handle. CALL has operand a=argc and stack layout
+     * [worker-handle, method-name String, arg0, ..., argN-1]; it pushes one
+     * scalar/UTF-8 result. CLOSE consumes the handle and pushes null.
+     *
+     * These IDs are reserved and artifact-validated, but runtime dispatch stays
+     * fail-closed until the native process supervisor and VM worker table are
+     * integrated. Appended; never renumber prior opcodes. */
+    OP_IPC_OPEN,
+    OP_IPC_CALL,
+    OP_IPC_CLOSE,
+    /* Object reference ("ref"): the second, VM-level view of an object.
+     * One opcode; operand a packs a selector and, for DEREF, a class type:
+     *     a = (typeIndex << 4) | selector          (see SLRefSelector)
+     * A ref is an ordinary SL_INT, packed as (generation << 32) | (slot + 1),
+     * so 0 is the null ref. It is a WEAK, generation-checked handle: it does
+     * not keep the object alive, and a slot reused after a sweep carries a new
+     * generation, so a stale ref is detected, never aliased. It is never a
+     * machine address. Every use is validated (slot in range, active,
+     * generation matches); a ref that fails validation reads as invalid.
+     * Stack effect by selector:
+     *   OF      pops object-or-null, pushes ref
+     *   DEREF   pops ref, pushes the object if valid and an instance of the
+     *           class operand, else null
+     *   VALID/OLD       pop ref, push bool
+     *   ID/GEN/TYPE/FIELDS/BYTES/AGE  pop ref, push int (-1 when invalid)
+     *   LIVE/LIMIT      pop nothing, push int (VM-wide object counts)
+     * Appended; never renumber prior opcodes. */
+    OP_REF,
+    /* Java UTF-16 String bridges back to legacy UTF-8 Strings. TO_UTF8 pops an
+     * SL_UTF16 value and pushes the equivalent SL_STR; it fails closed on an
+     * unpaired surrogate, an embedded NUL (SL_STR is NUL-terminated) or text
+     * longer than SL_MAX_STRTEXT bytes, so the conversion is never lossy.
+     * FROM_CODE_UNIT pops an integer code unit 0..65535 and pushes a one-unit
+     * SL_UTF16 value, the run-time companion of the compile-time
+     * javaStringFromCodeUnits. Both take no operand. Appended; never renumber
+     * prior opcodes. */
+    OP_JSTR_TO_UTF8,
+    OP_JSTR_FROM_CODE_UNIT,
+    /* Bitwise operators (ABI 1.9). Binary ops pop b then a and push a OP b; the
+     * VM integer slot is 64 bits, so integer operands use 64-bit two's
+     * complement exactly as Java long does. BAND/BOR/BXOR also accept two bool
+     * operands (Java non-short-circuit logical form) and push a bool. Shift
+     * counts are masked to 0..63 as in Java long; SHR is arithmetic (sign
+     * extending) and USHR is logical (zero filling). BNOT pops one integer and
+     * pushes its bitwise complement. Operands of any other type fail closed.
+     * Appended; never renumber prior opcodes. */
+    OP_BAND,
+    OP_BOR,
+    OP_BXOR,
+    OP_BSHL,
+    OP_BSHR,
+    OP_BUSHR,
+    OP_BNOT,
+    /* Syntax 3.2 (SLEELA.syntax sections 45 and 46). Append-only opcodes 192..194. */
+    OP_CHARSTR,     /* pops a char (UTF-16 code unit); pushes it as a one-character plain String
+                     * (an unpaired surrogate or NUL cannot be a plain String: runtime error)  */
+    OP_ADDCHAR,     /* a = bit0: left operand is a char, bit1: right operand is a char. Exactly
+                     * OP_ADD, except that when either operand is a String each flagged char
+                     * operand is first converted to a one-unit String of the same kind        */
+    OP_NEWARRAYND,  /* a = sized dimensions n (2..8) | element fill kind << 8 (OP_NEWARRAY kinds,
+                     * for the innermost sized level). Pops n sizes (last size on top); pushes
+                     * a rectangular array of arrays, outermost first. Unsized trailing
+                     * dimensions are simply null elements (fill kind 0).                      */
     /* Sentinel: one past the last real opcode. Artifact validation uses this so
      * every defined opcode is accepted and adding a new opcode above never
      * requires updating the validator's upper bound again. KEEP LAST. */
     OP__COUNT
 } SLOp;
+
+/* Selectors for OP_REF (the low 4 bits of operand a). */
+typedef enum {
+    SLREF_OF = 0,
+    SLREF_DEREF,
+    SLREF_VALID,
+    SLREF_ID,
+    SLREF_GEN,
+    SLREF_TYPE,
+    SLREF_FIELDS,
+    SLREF_BYTES,
+    SLREF_AGE,
+    SLREF_OLD,
+    SLREF_LIVE,
+    SLREF_LIMIT,
+    SLREF_COUNT
+} SLRefSelector;
+#define SLREF_PACK(sel, typeIndex) ((int32_t)(((int32_t)(typeIndex) << 4) | (int32_t)(sel)))
+#define SLREF_SEL(a) ((int)((a) & 15))
+#define SLREF_TYPEIDX(a) ((int)((a) >> 4))
 
 #if defined(__cplusplus)
 static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
@@ -305,7 +395,18 @@ static_assert(OP_JSTR_FROM_UTF8 == 175, "Java String UTF-8 conversion is append-
 static_assert(OP_TRY_PUSH == 176, "OP_TRY_PUSH is append-only opcode 176");
 static_assert(OP_TRY_POP == 177, "OP_TRY_POP is append-only opcode 177");
 static_assert(OP_THROW == 178, "OP_THROW is append-only opcode 178");
-static_assert(OP__COUNT == 179, "the extended ISA must contain 179 opcodes");
+static_assert(OP_IPC_OPEN == 179, "OP_IPC_OPEN is append-only opcode 179");
+static_assert(OP_IPC_CALL == 180, "OP_IPC_CALL is append-only opcode 180");
+static_assert(OP_IPC_CLOSE == 181, "OP_IPC_CLOSE is append-only opcode 181");
+static_assert(OP_REF == 182, "OP_REF is append-only opcode 182");
+static_assert(OP_JSTR_TO_UTF8 == 183, "Java String to UTF-8 conversion is append-only 183");
+static_assert(OP_JSTR_FROM_CODE_UNIT == 184, "Java String from a run-time code unit is append-only 184");
+static_assert(OP_BAND == 185, "bitwise AND is append-only opcode 185");
+static_assert(OP_BNOT == 191, "bitwise NOT is append-only opcode 191");
+static_assert(OP_CHARSTR == 192, "char to String is append-only opcode 192");
+static_assert(OP_ADDCHAR == 193, "char-aware add is append-only opcode 193");
+static_assert(OP_NEWARRAYND == 194, "multi-dimensional array creation is append-only opcode 194");
+static_assert(OP__COUNT == 195, "the extended ISA must contain 195 opcodes");
 #else
 _Static_assert(OP_OS_PLATFORM == 103, "legacy OS opcode range must begin at 103");
 _Static_assert(OP_OS_PCLOSE == 123, "legacy OS opcode range must end at 123");
@@ -328,11 +429,23 @@ _Static_assert(OP_JSTR_FROM_UTF8 == 175, "Java String UTF-8 conversion is append
 _Static_assert(OP_TRY_PUSH == 176, "OP_TRY_PUSH is append-only opcode 176");
 _Static_assert(OP_TRY_POP == 177, "OP_TRY_POP is append-only opcode 177");
 _Static_assert(OP_THROW == 178, "OP_THROW is append-only opcode 178");
-_Static_assert(OP__COUNT == 179, "the extended ISA must contain 179 opcodes");
+_Static_assert(OP_IPC_OPEN == 179, "OP_IPC_OPEN is append-only opcode 179");
+_Static_assert(OP_IPC_CALL == 180, "OP_IPC_CALL is append-only opcode 180");
+_Static_assert(OP_IPC_CLOSE == 181, "OP_IPC_CLOSE is append-only opcode 181");
+_Static_assert(OP_REF == 182, "OP_REF is append-only opcode 182");
+_Static_assert(OP_JSTR_TO_UTF8 == 183, "Java String to UTF-8 conversion is append-only 183");
+_Static_assert(OP_JSTR_FROM_CODE_UNIT == 184, "Java String from a run-time code unit is append-only 184");
+_Static_assert(OP_BAND == 185, "bitwise AND is append-only opcode 185");
+_Static_assert(OP_BNOT == 191, "bitwise NOT is append-only opcode 191");
+_Static_assert(OP_CHARSTR == 192, "char to String is append-only opcode 192");
+_Static_assert(OP_ADDCHAR == 193, "char-aware add is append-only opcode 193");
+_Static_assert(OP_NEWARRAYND == 194, "multi-dimensional array creation is append-only opcode 194");
+_Static_assert(OP__COUNT == 195, "the extended ISA must contain 195 opcodes");
 #endif
 /* GC-hint aggressiveness bands for OP_GC_HINT (operand a). */
 #define SL_GC_HINT_MAX  100   /* clamp ceiling for the 0..100 aggressiveness scale */
 #define SL_GC_HINT_FULL 100   /* at this level the hint requests a full collection */
+#define SL_MAX_IPC_WORKERS 64   /* live native IPC workers per VM */
 #define SL_MAX_OS_PROCESSES 64    /* live spawned child processes per VM        */
 /* Synchro stat selectors for OP_SYN_STAT (operand a). */
 #define SL_SYN_STAT_SENT 0
@@ -394,6 +507,15 @@ typedef enum { SLX_RESET = 0, SLX_ADD_CONST, SLX_DECLARE_GLOBAL, SLX_BEGIN_FUNC,
  * i0 = field count; out receives the type index. */
 typedef struct { SLValue value; const char* name; const char* const* names; int32_t op; int32_t a; int32_t i0; int32_t i1; int32_t i2; int32_t out; } SLExchangeArg;
 SLVM* slvm_new(void);
+/* Register an already-authorized opaque worker with VM-local ownership.
+ * Registration does not launch or authorize a worker. The close callback is
+ * invoked exactly once after all acquired leases have been released. */
+int32_t slvm_ipc_worker_register(SLVM* vm, void* worker,
+                                 void (*close_fn)(void*, void*), void* context);
+void* slvm_ipc_worker_acquire(SLVM* vm, int32_t handle);
+void slvm_ipc_worker_release(SLVM* vm, int32_t handle);
+int slvm_ipc_worker_close(SLVM* vm, int32_t handle);
+
 /* True when Sleela source values use the bounded VM-owned memory/handle model. */
 int slvm_memory_safe_mode(const SLVM* vm);
 void slvm_set_audio_native_renderer(SLVM* vm, SLAudioNativeRenderFn fn, void* user);
@@ -430,6 +552,13 @@ SLNativeStatus slvm_native_module_call(SLVM* vm, SLNativeHandle handle,
                                        const char* method, uint32_t argc,
                                        const SLNativeValue* argv, SLNativeValue* out_result);
 SLNativeStatus slvm_native_module_close(SLVM* vm, SLNativeHandle handle);
+/* Bind/unbind an annotated static function to an already-authorized module.
+ * The native export is selected by the exact canonical signature in metadata.
+ * These calls do not load modules or grant authorization. Call only while the
+ * VM is quiescent (not concurrently with slvm_run, slvm_free, or other binding
+ * changes). Bound modules cannot be closed until every method is unbound. */
+int slvm_bind_native_method(SLVM* vm, int function_index, SLNativeHandle handle);
+int slvm_unbind_native_method(SLVM* vm, int function_index);
 /* Set the host capabilities available to OSLS bindings before execution.
  * The default is read-only host inspection; pass 0 to deny OSLS access. */
 int slvm_set_osls_capabilities(SLVM* vm, uint64_t capabilities);
@@ -463,13 +592,42 @@ int slvm_declare_global(SLVM* vm, const char* name);
  * the offsets used by OP_GETFIELD / OP_SETFIELD. */
 int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_names, int nfields);
 int slvm_set_struct_parent(SLVM* vm, int type_index, int parent_type_index);
+/* Add a further supertype (an implemented interface) to a struct type, so
+ * OP_CHECKCAST / OP_INSTANCEOF / typed catch accept it (SLEELA.syntax 43.7).
+ * Duplicates are ignored. Returns 0, or -1 on a bad index. */
+int slvm_add_struct_super(SLVM* vm, int type_index, int super_type_index);
+/* SLEELA.syntax 37.5: the function (2 parameters: int kind, String message)
+ * the VM calls to build the exception for a fault raised inside a try
+ * (kind 1 arithmetic, 2 array index, 3 checked cast); -1 clears it. */
+int slvm_set_fault_function(SLVM* vm, int function_index);
+int slvm_fault_function(const SLVM* vm);
 int slvm_begin_func(SLVM* vm, const char* name, int nargs, int nlocals);
+/* Persist descriptive @native method identity on a compiled function. This
+ * never authorizes or loads a module. signature is canonical UTF-8 text;
+ * identity is a deterministic 64-bit digest computed by the VM. */
+int slvm_set_func_native_metadata(SLVM* vm, int function_index,
+                                  uint32_t flags, uint32_t abi_version,
+                                  const char* signature);
+/* Returns 1 for annotated metadata, 0 for an unannotated/legacy function,
+ * and -1 for invalid arguments or function index. signature_out is borrowed
+ * read-only storage owned by the VM. */
+int slvm_get_func_native_metadata(const SLVM* vm, int function_index,
+                                  uint32_t* flags_out, uint32_t* abi_version_out,
+                                  uint64_t* signature_id_out,
+                                  const char** signature_out);
 void slvm_end_func(SLVM* vm);
 int slvm_emit(SLVM* vm, SLOp op, int32_t a);
 int slvm_emit0(SLVM* vm, SLOp op);
 void slvm_patch(SLVM* vm, int at, int32_t a);
 int slvm_here(SLVM* vm);
 void slvm_set_entry(SLVM* vm, int func_index);
+/* Returns the index of the function whose qualified name (e.g. "Class::method")
+ * matches name exactly, or -1 when absent or arguments are invalid. Intended
+ * for embedders/tests that select a non-main entry with slvm_set_entry(). */
+int slvm_find_func(const SLVM* vm, const char* name);
+/* Load an artifact and select the named function as its entry. Returns NULL
+ * (freeing any partial VM) when the load fails or the function is absent. */
+SLVM* slvm_load_file_with_entry(const char* path, const char* entry_name);
 SLResult slvm_run(SLVM* vm);
 SLValue slvm_result(SLVM* vm);
 /* Returns 1 and copies the last uncaught language exception payload when one

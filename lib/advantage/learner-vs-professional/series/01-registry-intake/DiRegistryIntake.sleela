@@ -1,0 +1,89 @@
+<< lib/advantage/learner-vs-professional/series/01-registry-intake/DiRegistryIntake.sleela
+   SLeeLa courseware.
+   Definition: Device Instructor intake: the shared registry refuses input until a field of observation is declared and keeps one carrier per noun. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Lesson 1. The Device Instructor accepts registry input only after the >
+< field of observation is declared, only if each noun has one carrier, and >
+< only if that carrier is the field or a noun already registered. Anything >
+< not registered is answered as not observed. >
+class DiRegistryIntake {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39101;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  SLNounRegistry reg = new SLNounRegistry();
+
+  void tryRegister(String noun, String carrier) {
+    int code = reg.register(noun, carrier);
+    print("  register " + noun + " -> " + carrier + " : " + reg.reason(code));
+  }
+
+  void main() {
+    print("== Lesson 1: registry intake ==");
+    print("-- before the field is declared --");
+    tryRegister("red box", "toy shelf");
+
+    print("-- declare the field, then register carriers and nouns --");
+    reg.declareField("toy shelf");
+    tryRegister("red box", "toy shelf");
+    tryRegister("blue box", "toy shelf");
+    tryRegister("ball", "red box");
+    tryRegister("book", "blue box");
+    tryRegister("block", "toy shelf");
+
+    print("-- placement check: a second carrier for ball --");
+    tryRegister("ball", "blue box");
+
+    print("-- carrier check: a carrier nobody has registered --");
+    tryRegister("kite", "green box");
+
+    print("-- direct observation --");
+    print("  " + reg.chain("ball"));
+    print("  " + reg.chain("block"));
+    print("  " + reg.chain("kite"));
+
+    print("-- instructor tally --");
+    print("  accepted=" + reg.acceptedCount() + " refused=" + reg.refusedCount() + " registered=" + reg.size());
+  }
+}

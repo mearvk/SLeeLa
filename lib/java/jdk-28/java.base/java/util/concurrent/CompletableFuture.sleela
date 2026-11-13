@@ -1,0 +1,275 @@
+<< lib/java/jdk-28/java.base/java/util/concurrent/CompletableFuture.sleela
+   SLeeLa file for the Java type java.util.concurrent.CompletableFuture (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/CompletableFuture.html
+   Java kind: class; extends java.lang.Object; implements java.util.concurrent.Future, java.util.concurrent.CompletionStage
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class CompletableFuture {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 2557;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.concurrent.CompletableFuture";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/CompletableFuture.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<T>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "T"; } return null; }
+  public CompletableFuture bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @throwable("java.lang.UnsupportedOperationException")
+  public CompletableFuture() { }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException")
+  public Any get() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InterruptedException, java.util.concurrent.ExecutionException, java.util.concurrent.TimeoutException")
+  public Any get(long timeout, Any unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any copy() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any join() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any state() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isDone() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean cancel(boolean mayInterruptIfRunning) { return false; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any handle(Any fn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean complete(Any value) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any allOf(Any... cfs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCancelled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any resultNow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any exceptionNow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean completeExceptionally(Any ex) { return false; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any supplyAsync(Any supplier, Any executor) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any supplyAsync(Any supplier) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any newIncompleteFuture() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any toCompletableFuture() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getNow(Any valueIfAbsent) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any defaultExecutor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any completeAsync(Any supplier, Any executor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any completeAsync(Any supplier) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any whenComplete(Any action) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any exceptionallyComposeAsync(Any fn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any exceptionallyComposeAsync(Any fn, Any executor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any exceptionallyCompose(Any fn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any exceptionallyAsync(Any fn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any exceptionallyAsync(Any fn, Any executor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any exceptionally(Any fn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any whenCompleteAsync(Any action) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any whenCompleteAsync(Any action, Any executor) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any handleAsync(Any fn) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any handleAsync(Any fn, Any executor) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenComposeAsync(Any fn) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenComposeAsync(Any fn, Any executor) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenCompose(Any fn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any runAfterEitherAsync(Any other, Any action) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any runAfterEitherAsync(Any other, Any action, Any executor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any runAfterEither(Any other, Any action) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any acceptEitherAsync(Any other, Any action, Any executor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any acceptEitherAsync(Any other, Any action) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any acceptEither(Any other, Any action) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any applyToEitherAsync(Any other, Any fn, Any executor) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any applyToEitherAsync(Any other, Any fn) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any applyToEither(Any other, Any fn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any runAfterBothAsync(Any other, Any action) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any runAfterBothAsync(Any other, Any action, Any executor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any runAfterBoth(Any other, Any action) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenAcceptBothAsync(Any other, Any action) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenAcceptBothAsync(Any other, Any action, Any executor) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenAcceptBoth(Any other, Any action) { return null; }
+  @generic("<U, V>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenCombineAsync(Any other, Any fn, Any executor) { return null; }
+  @generic("<U, V>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenCombineAsync(Any other, Any fn) { return null; }
+  @generic("<U, V>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenCombine(Any other, Any fn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenRunAsync(Any action) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenRunAsync(Any action, Any executor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenRun(Any action) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenAcceptAsync(Any action, Any executor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenAcceptAsync(Any action) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenAccept(Any action) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenApplyAsync(Any fn, Any executor) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenApplyAsync(Any fn) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any thenApply(Any fn) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any runAsync(Any runnable, Any executor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any runAsync(Any runnable) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any completedFuture(Any value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any anyOf(Any... cfs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCompletedExceptionally() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void obtrudeValue(Any value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void obtrudeException(Any ex) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNumberOfDependents() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any minimalCompletionStage() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any orTimeout(long timeout, Any unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any completeOnTimeout(Any value, long timeout, Any unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any delayedExecutor(long delay, Any unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any delayedExecutor(long delay, Any unit, Any executor) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any completedStage(Any value) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any failedFuture(Any ex) { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any failedStage(Any ex) { return null; }
+  < ---- END java signatures ---- >
+}

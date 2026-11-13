@@ -1,0 +1,488 @@
+<< lib/java/jdk-28/java.base/java/util/Collections.sleela
+   SLeeLa file for the Java type java.util.Collections (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Collections.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+import java.jdk-28;
+
+class Collections {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.1.0";
+  int metaId = 2480;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.Collections";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Collections.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.Collections members (procedural implementation in SLeeLa) ---- >
+  << The java.util.Collections static algorithms as instance methods over the
+     list, set and map classes of this package (ArrayList, LinkedList,
+     Vector, Stack, ArrayDeque, HashSet, TreeSet, PriorityQueue, HashMap,
+     TreeMap). Lists are rewritten in place through their List API. Natural
+     ordering only (Comparator dispatch is a later semantics pass). The
+     unmodifiable / synchronized wrappers return copies (no write guard yet).
+     shuffle uses a java.util.Random with the Java algorithm. >>
+  Collections() { gcSlot = 0; utfOps = 0; }
+
+  int sizeOf(Any list) { return arrayLength(elementsOf(list)); }
+  << Overwrite element i of a list of this package. >>
+  void setAt(Any list, int i, Any v) {
+    if (list instanceof ArrayList) { ArrayList a = (ArrayList) list; a.set(i, v); return; }
+    if (list instanceof LinkedList) { LinkedList b = (LinkedList) list; b.set(i, v); return; }
+    if (list instanceof Vector) { Vector c = (Vector) list; c.set(i, v); return; }
+    throw new UnsupportedOperationException("not a java.util list implemented in SLeeLa");
+  }
+  void writeBack(Any list, Any[] xs) {
+    int i = 0;
+    while (i < arrayLength(xs)) { setAt(list, i, xs[i]); i = i + 1; }
+  }
+  void sort(Any list) {
+    Any[] xs = elementsOf(list);
+    Arrays A = new Arrays();
+    A.sortObjects(xs);
+    writeBack(list, xs);
+  }
+  void reverse(Any list) {
+    Any[] xs = elementsOf(list);
+    int n = arrayLength(xs);
+    Any[] r = new Any[n];
+    int i = 0;
+    while (i < n) { r[i] = xs[n - 1 - i]; i = i + 1; }
+    writeBack(list, r);
+  }
+  void swap(Any list, int i, int j) {
+    Any[] xs = elementsOf(list);
+    Any t = xs[i];
+    setAt(list, i, xs[j]);
+    setAt(list, j, t);
+  }
+  void fill(Any list, Any obj) {
+    int n = sizeOf(list);
+    int i = 0;
+    while (i < n) { setAt(list, i, obj); i = i + 1; }
+  }
+  << Rotate by distance: element i moves to (i + distance) mod size. >>
+  void rotate(Any list, int distance) {
+    Any[] xs = elementsOf(list);
+    int n = arrayLength(xs);
+    if (n == 0) { return; }
+    int d = distance % n;
+    if (d < 0) { d = d + n; }
+    Any[] r = new Any[n];
+    int i = 0;
+    while (i < n) { r[(i + d) % n] = xs[i]; i = i + 1; }
+    writeBack(list, r);
+  }
+  << Fisher-Yates shuffle driven by the given Random (Java algorithm). >>
+  void shuffle(Any list, Random rnd) {
+    Any[] xs = elementsOf(list);
+    int i = arrayLength(xs);
+    while (i > 1) {
+      int j = rnd.nextIntBound(i);
+      Any t = xs[i - 1];
+      xs[i - 1] = xs[j];
+      xs[j] = t;
+      i = i - 1;
+    }
+    writeBack(list, xs);
+  }
+  Any max(Any coll) {
+    Any[] xs = elementsOf(coll);
+    if (arrayLength(xs) == 0) { throw new NoSuchElementException(null); }
+    Any best = xs[0];
+    int i = 1;
+    while (i < arrayLength(xs)) { if (compareValues(xs[i], best) > 0) { best = xs[i]; } i = i + 1; }
+    return best;
+  }
+  Any min(Any coll) {
+    Any[] xs = elementsOf(coll);
+    if (arrayLength(xs) == 0) { throw new NoSuchElementException(null); }
+    Any best = xs[0];
+    int i = 1;
+    while (i < arrayLength(xs)) { if (compareValues(xs[i], best) < 0) { best = xs[i]; } i = i + 1; }
+    return best;
+  }
+  int frequency(Any c, Any o) {
+    Any[] xs = elementsOf(c);
+    int n = 0;
+    int i = 0;
+    while (i < arrayLength(xs)) { if (same(xs[i], o)) { n = n + 1; } i = i + 1; }
+    return n;
+  }
+  boolean disjoint(Any c1, Any c2) {
+    Any[] a = elementsOf(c1);
+    Any[] b = elementsOf(c2);
+    int i = 0;
+    while (i < arrayLength(a)) {
+      int j = 0;
+      while (j < arrayLength(b)) { if (same(a[i], b[j])) { return false; } j = j + 1; }
+      i = i + 1;
+    }
+    return true;
+  }
+  int binarySearch(Any list, Any key) {
+    Arrays A = new Arrays();
+    return A.binarySearchObjects(elementsOf(list), key);
+  }
+  int indexOfSubList(Any source, Any target) {
+    Any[] s = elementsOf(source);
+    Any[] t = elementsOf(target);
+    int n = arrayLength(s);
+    int m = arrayLength(t);
+    int i = 0;
+    while (i + m <= n) {
+      int j = 0;
+      while (j < m && same(s[i + j], t[j])) { j = j + 1; }
+      if (j == m) { return i; }
+      i = i + 1;
+    }
+    return -1;
+  }
+  boolean addAll(Any c, Any[] elements) {
+    boolean changed = false;
+    int i = 0;
+    while (i < arrayLength(elements)) {
+      Any e = elements[i];
+      if (c instanceof ArrayList) { ArrayList a = (ArrayList) c; a.add(e); changed = true; }
+      if (c instanceof LinkedList) { LinkedList b = (LinkedList) c; b.add(e); changed = true; }
+      if (c instanceof Vector) { Vector v = (Vector) c; v.add(e); changed = true; }
+      if (c instanceof HashSet) { HashSet h = (HashSet) c; if (h.add(e)) { changed = true; } }
+      if (c instanceof TreeSet) { TreeSet t = (TreeSet) c; if (t.add(e)) { changed = true; } }
+      i = i + 1;
+    }
+    return changed;
+  }
+  ArrayList nCopies(int n, Any o) {
+    if (n < 0) { throw new IllegalArgumentException("List length = " + n); }
+    ArrayList l = new ArrayList();
+    int i = 0;
+    while (i < n) { l.add(o); i = i + 1; }
+    return l;
+  }
+  ArrayList emptyList() { return new ArrayList(); }
+  HashSet emptySet() { return new HashSet(); }
+  HashMap emptyMap() { return new HashMap(); }
+  ArrayList singletonList(Any o) { ArrayList l = new ArrayList(); l.add(o); return l; }
+  HashSet singleton(Any o) { HashSet s = new HashSet(); s.add(o); return s; }
+  HashMap singletonMap(Any key, Any value) { HashMap m = new HashMap(); m.put(key, value); return m; }
+  ArrayList list(Any c) {
+    ArrayList l = new ArrayList();
+    l.addAll(c);
+    return l;
+  }
+  ArrayList unmodifiableList(Any list) { return list(list); }
+
+  < value semantics shared by the collections (hash, equality, natural order) >
+  int gcSlot;
+  int utfOps;
+  << Periodic short-term GC hint: Java UTF-16 String handles used for hashing
+     and ordering are reclaimed by the collector, not on scope exit. >>
+  void utfTick() {
+    utfOps = utfOps + 1;
+    if (utfOps % 512 == 0) { gcSlot = gc 40; }
+  }
+  << Java hashCode of a value: int and long as Integer/Long.hashCode, boolean
+     as Boolean.hashCode, double as Double.hashCode, everything else as the
+     Java String hash of its SLeeLa text (a String hashes exactly as in Java;
+     an object hashes by its identity text). >>
+  int hashOf(Any o) {
+    if (o == null) { return 0; }
+    if (o instanceof boolean) { if ((boolean) o) { return 1231; } return 1237; }
+    if (o instanceof int) { return wrapHash((long) ((int) o)); }
+    if (o instanceof long) { return wrapHash((long) o); }
+    if (o instanceof double) { Double d = new Double((double) o); return d.hashCode(); }
+    utfTick();
+    return javaStringHashCode(javaStringFromUtf8("" + o));
+  }
+  int wrapHash(long v) {
+    long hi = v / 4294967296;
+    long lo = v % 4294967296;
+    if (lo < 0) { lo = lo + 4294967296; hi = hi - 1; }
+    if (hi < 0) { hi = hi + 4294967296; }
+    long h = lo;
+    if (hi != 0) {
+      long r = 0;
+      long bit = 1;
+      long x = lo;
+      long y = hi;
+      int i = 0;
+      while (i < 32) {
+        if ((x % 2) != (y % 2)) { r = r + bit; }
+        x = x / 2; y = y / 2; bit = bit * 2; i = i + 1;
+      }
+      h = r;
+    }
+    if (h > 2147483647) { h = h - 4294967296; }
+    return (int) h;
+  }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  << Value equality: numbers and strings by value, objects by identity. >>
+  boolean same(Any a, Any b) { return a == b; }
+  << Natural ordering (Comparable): numbers numerically, everything else by
+     Java String.compareTo of the SLeeLa text. >>
+  int compareValues(Any a, Any b) {
+    if (a == null || b == null) { throw new NullPointerException(null); }
+    boolean an = a instanceof int || a instanceof long || a instanceof double;
+    boolean bn = b instanceof int || b instanceof long || b instanceof double;
+    if (an && bn) {
+      double x = (double) a;
+      double y = (double) b;
+      if (x < y) { return -1; }
+      if (x > y) { return 1; }
+      return 0;
+    }
+    if (a instanceof boolean && b instanceof boolean) {
+      boolean p = (boolean) a;
+      boolean q = (boolean) b;
+      if (p == q) { return 0; }
+      if (p) { return 1; }
+      return -1;
+    }
+    utfTick();
+    return javaStringCompareTo(javaStringFromUtf8("" + a), javaStringFromUtf8("" + b));
+  }
+  String textOf(Any o) {
+    if (o == null) { return "null"; }
+    return "" + o;
+  }
+  << Elements of any collection implemented in this package, as an array. >>
+  Any[] elementsOf(Any c) {
+    if (c == null) { throw new NullPointerException(null); }
+    if (c instanceof ArrayList) { ArrayList x1 = (ArrayList) c; return x1.toArray(); }
+    if (c instanceof LinkedList) { LinkedList x2 = (LinkedList) c; return x2.toArray(); }
+    if (c instanceof ArrayDeque) { ArrayDeque x3 = (ArrayDeque) c; return x3.toArray(); }
+    if (c instanceof Vector) { Vector x4 = (Vector) c; return x4.toArray(); }
+    if (c instanceof HashSet) { HashSet x5 = (HashSet) c; return x5.toArray(); }
+    if (c instanceof TreeSet) { TreeSet x6 = (TreeSet) c; return x6.toArray(); }
+    if (c instanceof PriorityQueue) { PriorityQueue x7 = (PriorityQueue) c; return x7.toArray(); }
+    throw new UnsupportedOperationException("not a java.util collection implemented in SLeeLa");
+  }
+  IndexOutOfBoundsException outOfBounds(int index, int length) {
+    return new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + length);
+  }
+  < ---- END java implementation ---- >
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Collections bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static Any EMPTY_SET = null;
+  static Any EMPTY_LIST = null;
+  static Any EMPTY_MAP = null;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any min(Any coll, Any comp) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any max(Any coll, Any comp) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void sort(Any list, Any c) { }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void copy(Any dest, Any src) { }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean replaceAll(Any list, Any oldVal, Any newVal) { return false; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any emptyEnumeration() { return null; }
+  @generic("<E>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any newSetFromMap(Any map) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any unmodifiableSet(Any s) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any enumeration(Any c) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any synchronizedSet(Any s) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any synchronizedCollection(Any c) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any emptyIterator() { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any reverseOrder(Any cmp) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any reverseOrder() { return null; }
+  @generic("<K, V>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any unmodifiableMap(Any m) { return null; }
+  @generic("<K, V>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any unmodifiableSortedMap(Any m) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int binarySearch(Any list, Any key, Any c) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void shuffle(Any list) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int lastIndexOfSubList(Any source, Any target) { return 0; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any unmodifiableCollection(Any c) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any unmodifiableSequencedCollection(Any c) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any unmodifiableSequencedSet(Any s) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any unmodifiableSortedSet(Any s) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any unmodifiableNavigableSet(Any s) { return null; }
+  @generic("<K, V>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any unmodifiableSequencedMap(Any m) { return null; }
+  @generic("<K, V>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any unmodifiableNavigableMap(Any m) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any synchronizedSortedSet(Any s) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any synchronizedNavigableSet(Any s) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any synchronizedList(Any list) { return null; }
+  @generic("<K, V>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any synchronizedMap(Any m) { return null; }
+  @generic("<K, V>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any synchronizedSortedMap(Any m) { return null; }
+  @generic("<K, V>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any synchronizedNavigableMap(Any m) { return null; }
+  @generic("<E>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any checkedCollection(Any c, Any type) { return null; }
+  @generic("<E>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any checkedQueue(Any queue, Any type) { return null; }
+  @generic("<E>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any checkedSet(Any s, Any type) { return null; }
+  @generic("<E>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any checkedSortedSet(Any s, Any type) { return null; }
+  @generic("<E>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any checkedNavigableSet(Any s, Any type) { return null; }
+  @generic("<E>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any checkedList(Any list, Any type) { return null; }
+  @generic("<K, V>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any checkedMap(Any m, Any keyType, Any valueType) { return null; }
+  @generic("<K, V>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any checkedSortedMap(Any m, Any keyType, Any valueType) { return null; }
+  @generic("<K, V>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any checkedNavigableMap(Any m, Any keyType, Any valueType) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any emptyListIterator() { return null; }
+  @generic("<E>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any emptySortedSet() { return null; }
+  @generic("<E>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any emptyNavigableSet() { return null; }
+  @generic("<K, V>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final Any emptySortedMap() { return null; }
+  @generic("<K, V>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static final Any emptyNavigableMap() { return null; }
+  @generic("<E>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any newSequencedSetFromMap(Any map) { return null; }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any asLifoQueue(Any deque) { return null; }
+  < ---- END java signatures ---- >
+}

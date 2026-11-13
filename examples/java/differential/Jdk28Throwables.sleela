@@ -1,0 +1,66 @@
+<< examples/java/differential/Jdk28Throwables.sleela
+   SLeeLa side of the Jdk28Throwables differential test.
+   Definition: Prints, line for line, the same results as Jdk28Throwables.java for the
+   java.lang / java.io / java.util exception constructors and Throwable behavior of the
+   JDK 28 tier (import java.jdk-28): messages, causes, initCause, suppressed lists. >>
+#sleela 3.0
+import java.jdk-28;
+material;
+
+< Java container: the names used here are housed in /lib/java (selected by the import above) and are not part of the SLeeLa specification, see SLEELA.syntax 38.4. >
+class Jdk28Throwables {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+
+  void main() {
+    IllegalArgumentException a = new IllegalArgumentException("bad");
+    print(a.toString() + " | " + a.getMessage() + " | " + (a.getCause() == null));
+    IllegalStateException s = new IllegalStateException("wrapped", (Throwable) new ArithmeticException("div"));
+    print(s.toString() + " | " + s.getCause().toString());
+    RuntimeException r = new RuntimeException();
+    print(r.toString() + " | " + r.getMessage() + " | " + r.getLocalizedMessage());
+    IOException root = new IOException("disk full");
+    IOException w = new IOException((Throwable) root);
+    print(w.getMessage() + " | " + (w.getCause() == (Throwable) root));
+    IOException both = new IOException("copy failed", (Throwable) root);
+    print(both.toString() + " | " + both.getCause().toString());
+    NoSuchElementException ns = new NoSuchElementException("gone");
+    print(ns.toString() + " | " + (ns instanceof RuntimeException) + " " + (ns instanceof Exception));
+    UnsupportedOperationException un = new UnsupportedOperationException((Throwable) null);
+    print(un.getMessage() + " | " + (un.getCause() == null));
+    Exception e = new Exception("first");
+    try { e.initCause((Throwable) root); e.initCause((Throwable) root); } catch (IllegalStateException ise) { print(ise.getMessage()); }
+    try { new Exception("x").initCause((Throwable) null); print("null cause ok"); } catch (IllegalStateException ise) { print(ise.getMessage()); }
+    Exception self = new Exception("self");
+    try { self.initCause((Throwable) self); } catch (IllegalArgumentException iae) { print(iae.getMessage()); }
+    Exception sup = new Exception("main");
+    sup.addSuppressed((Throwable) new IllegalStateException("one"));
+    sup.addSuppressed((Throwable) new IOException("two"));
+    Throwable[] list = sup.getSuppressed();
+    Throwable l0 = list[0];
+    Throwable l1 = list[1];
+    print(arrayLength(list) + " " + l0.toString() + " " + l1.toString());
+    try { sup.addSuppressed((Throwable) sup); } catch (IllegalArgumentException iae) { print(iae.getMessage()); }
+    try { sup.addSuppressed((Throwable) null); } catch (NullPointerException npe) { print(npe.getMessage()); }
+    Error err = new Error("fatal", (Throwable) new RuntimeException("cause"));
+    print(err.toString() + " | " + err.getCause().getMessage());
+    print(new StackOverflowError().toString() + " | " + new ArrayIndexOutOfBoundsException("idx").toString() + " | " + new NumberFormatException("nf").toString());
+    print((new NumberFormatException("q") instanceof IllegalArgumentException) + " " + (new FileNotFoundException("f") instanceof IOException));
+    Throwable t = new Throwable("plain");
+    print(t.toString());
+  }
+}

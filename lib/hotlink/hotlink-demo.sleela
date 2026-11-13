@@ -1,0 +1,244 @@
+<< lib/hotlink/hotlink-demo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Runnable, self-checking demonstrator for the hot-link backing
+     model. It seeds the standard matrix, then drives the linker: observer
+     modules are hot-attached, the vertical-integration stack is expanded one
+     tier per kind (0 to 16), connections are allowed only where the matrix
+     declares them, value moves only along approved connections, and the
+     refusal paths (cold type, trust floor, caps, duplicate, cycle, native
+     authorizer and pinned digest, detach) all fail closed. Prints PASS or FAIL
+     per check and a tally. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import advantage.integration;
+< Family: hotlink. Run: sleela run lib/hotlink/hotlink-demo.sleela >
+class HotLinkDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39225;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int passed;
+  int failed;
+  void check(String label, boolean ok) {
+    if (ok) { passed = passed + 1; print("  PASS  " + label); }
+    else { failed = failed + 1; print("  FAIL  " + label); }
+  }
+  void banner(String t) { print(""); print("== " + t); }
+
+  void main() {
+    passed = 0; failed = 0;
+
+    banner("1. the matrix");
+    SLHotLinkMatrix raw = new SLHotLinkMatrix();
+    raw.configure();
+    SLHotLinker early = new SLHotLinker();
+    check("an unsealed matrix is refused by the linker", !early.configure(raw, null));
+    check("standard() seeds with no refusals", raw.standard() == 0);
+    check("9 class types", raw.rowTotal() == 9);
+    check("11 declared links", raw.linkTotal() == 11);
+    check("matrix is sealed", raw.isSealed());
+    check("rows cannot be added after sealing", !raw.addRow("late.type", "linked", "hot", "port", 1, 4, -1, -1, 0, "none", "declared"));
+    SLHotLinkMatrix m2 = new SLHotLinkMatrix();
+    m2.configure();
+    check("native row without authorizer is refused", !m2.addRow("n.bad", "native", "hot", "native-abi", 2, 1, -1, -1, 0, "host-pinned", "unverified"));
+    check("native row without a pinned digest is refused", !m2.addRow("n.bad", "native", "hot", "native-abi", 2, 1, -1, -1, 1, "none", "unverified"));
+    check("trust 3 is out of range", !m2.addRow("t.bad", "linked", "hot", "port", 3, 1, -1, -1, 0, "none", "declared"));
+    check("unknown vocabulary is refused", !m2.addRow("v.bad", "teleport", "hot", "port", 1, 1, -1, -1, 0, "none", "declared"));
+    check("a good row is accepted", m2.addRow("a.one", "linked", "hot", "compartment", 1, 4, 0, 3, 0, "none", "declared"));
+    check("overlapping kind ranges are refused", !m2.addRow("a.two", "linked", "hot", "compartment", 1, 4, 3, 5, 0, "none", "declared"));
+    check("duplicate ids are refused", !m2.addRow("a.one", "linked", "hot", "port", 1, 4, -1, -1, 0, "none", "declared"));
+    check("a link to an unknown type is refused", !m2.addEdge("a.one", "nobody", "feed", 1));
+    check("a feed self-link is refused", !m2.addEdge("a.one", "a.one", "feed", 1));
+    check("a contain self-link is allowed", m2.addEdge("a.one", "a.one", "contain", 1));
+    m2.addRow("a.three", "linked", "hot", "port", 1, 4, -1, -1, 0, "none", "declared");
+    m2.addEdge("a.one", "a.three", "feed", 1);
+    check("a type-level cycle is refused", !m2.addEdge("a.three", "a.one", "feed", 1));
+    check("kind 2 maps to vi.engineering-bay", raw.typeForKind(2) == "vi.engineering-bay");
+    check("kind 12 maps to vi.plain", raw.typeForKind(12) == "vi.plain");
+    check("kind 17 maps to nothing", raw.typeForKind(17) == "");
+
+    banner("2. observer modules attach hot");
+    SLObserverDocument doc = new SLObserverDocument();
+    doc.configure("hotlink-document.txt");
+    SLDocumentObserver obs = new SLDocumentObserver();
+    obs.configure(doc);
+    SLHotLinker linker = new SLHotLinker();
+    check("linker accepts the sealed matrix", linker.configure(raw, obs));
+    SLObserverSummaryModule.Responder summary = new SLObserverSummaryModule.Responder();
+    summary.attach("summary");
+    check("worker (trust 1) attaches an observer module", linker.attachModule("observer.responder", "summary", 1, summary.portOf()) >= 0);
+    check("the observer admitted its port", obs.indexOfPort("summary") >= 0);
+    SLObserverSummaryModule.Responder anon = new SLObserverSummaryModule.Responder();
+    anon.attach("anon");
+    check("anonymous (trust 0) is refused", linker.attachModule("observer.responder", "anon", 0, anon.portOf()) < 0);
+    check("a refused module never reaches the observer", obs.indexOfPort("anon") < 0);
+    check("duplicate name refused", linker.attachModule("observer.responder", "summary", 1, summary.portOf()) < 0);
+    SLObserverSummaryModule.Responder odd = new SLObserverSummaryModule.Responder();
+    odd.attach("odd");
+    check("port name must equal instance name", linker.attachModule("observer.responder", "other", 1, odd.portOf()) < 0);
+    check("a cold type is refused while running", linker.attach("extends.module", "sub", 1, "") < 0);
+    check("an unknown type is refused", linker.attach("mystery.type", "m", 2, "") < 0);
+    check("bad names are refused", linker.attach("vi.plain", "*", 2, "") < 0);
+
+    banner("3. the vertical stack expands, one tier per kind");
+    SLHotLinkIntegration vi = new SLHotLinkIntegration();
+    vi.configure("hot-stack", linker);
+    check("a worker cannot add a nested-model (floor 2)", vi.expand("nest-x", "nested", 0, 1) == null);
+    check("an executive can add a nested-model", vi.expand("nest1", "nested one", 0, 2) != null);
+    int ok = 0;
+    int kind = 1;
+    while (kind <= 16) {
+      if (vi.expand("tier" + kind, "tier " + kind, kind, 1) != null) { ok = ok + 1; }
+      kind = kind + 1;
+    }
+    check("kinds 1 to 16 all expand (16 tiers)", ok == 16);
+    check("17 tiers in the model", vi.stack().getTierCount() == 17);
+    check("kind 17 has no class type", vi.expand("tier17", "none", 17, 2) == null);
+    check("12 plain compartments (kinds 5 to 16) sit under the cap of 16", linker.countOfType("vi.plain") == 12);
+
+    banner("4. connectedness is declared, not assumed");
+    check("module feeds a plain compartment", linker.linkPair("summary", "tier5"));
+    check("duplicate connection refused", !linker.linkPair("summary", "tier5"));
+    check("a compartment cannot feed back to a module", !linker.linkPair("tier5", "summary"));
+    check("a module may not connect to itself", !linker.linkPair("summary", "summary"));
+    check("bay feeds trial", linker.linkPair("tier2", "tier3"));
+    check("trial feeds newton tray", linker.linkPair("tier3", "tier4"));
+    check("trial may not feed back to the bay", !linker.linkPair("tier3", "tier2"));
+    check("bay may not feed the newton tray directly", !linker.linkPair("tier2", "tier4"));
+    check("fan-out limit of 4 holds", linker.linkPair("summary", "tier6") && linker.linkPair("summary", "tier7") && linker.linkPair("summary", "tier8") && !linker.linkPair("summary", "tier9"));
+
+    banner("5. value moves only along approved connections");
+    check("connected module deposits into its compartment", vi.deposit("summary", "tier5", 5) > 0);
+    check("an unconnected deposit stores nothing", vi.deposit("summary", "tier9", 5) == 0);
+    check("deposit into the bay needs a declared link", vi.deposit("summary", "tier2", 3) == 0);
+    check("the module may be linked to the bay", linker.linkPair("summary", "tier2"));
+    int stored = vi.deposit("summary", "tier2", 4);
+    check("then the bay receives units", stored > 0);
+    int moved = vi.feed("tier2", "tier3", stored);
+    check("and they flow bay to trial", moved == stored);
+    check("an unconnected pair cannot be fed", vi.feed("tier4", "tier5", 1) == 0);
+
+    banner("6. nested models: contain links and the cycle guard");
+    check("a second nested model", vi.expand("nest2", "nested two", 0, 2) != null);
+    check("nest1 contains nest2", linker.linkPair("nest1", "nest2"));
+    check("nest2 may not contain nest1 (cycle)", !linker.linkPair("nest2", "nest1"));
+    check("a nested model may contain a plain compartment", linker.linkPair("nest1", "tier10"));
+    check("a nested model may contain a bay", linker.linkPair("nest1", "tier2"));
+    check("a contain link moves no value", vi.feed("nest1", "tier2", 1) == 0);
+    check("the refusal says the link is not a feed", linker.trailAt(linker.trailSize() - 1) == "refused: feed nest1 -> tier2 (link is not a feed)");
+    SLHotLinkIntegration vi2 = new SLHotLinkIntegration();
+    vi2.configure("second-stack", linker);
+    vi2.expand("b2", "bay", 2, 1);
+    vi2.expand("p2", "plain", 5, 1);
+    vi2.expand("t2", "trial", 3, 1);
+    check("bay feeds trial across a gap", linker.linkPair("b2", "t2"));
+    check("a feed across non-adjacent tiers is refused", vi2.feed("b2", "t2", 1) == 0);
+    check("the refusal says the tiers are not adjacent", linker.trailAt(linker.trailSize() - 1) == "refused: feed b2 -> t2 (tiers not adjacent)");
+
+    banner("7. native code needs the host: authorizer, pin, digest");
+    check("unverified types are forbidden by default", linker.attach("native.extension", "plug", 2, "abc") < 0);
+    linker.permitUnverified(true);
+    check("still refused with no authorizer", linker.attach("native.extension", "plug", 2, "abc") < 0);
+    linker.grantAuthorizer();
+    check("still refused with no pinned digest", linker.attach("native.extension", "plug", 2, "abc") < 0);
+    check("pinning an unpinned type is refused", !linker.pinDigest("vi.plain", "abc"));
+    check("the host pins the digest", linker.pinDigest("native.extension", "sha256-expected"));
+    check("a pin cannot be changed", !linker.pinDigest("native.extension", "sha256-other"));
+    check("a wrong digest is refused", linker.attach("native.extension", "plug", 2, "sha256-wrong") < 0);
+    check("a worker cannot attach native code", linker.attach("native.extension", "plug", 1, "sha256-expected") < 0);
+    check("the right digest at trust 2 is approved", linker.attach("native.extension", "plug", 2, "sha256-expected") >= 0);
+    check("native feeds an observer module", linker.linkPair("plug", "summary"));
+    linker.revokeAuthorizer();
+    check("revoking the authorizer detaches native code", !linker.isLinked("plug"));
+    check("and removes its links", !linker.isConnected("plug", "summary"));
+
+    banner("7b. listener lifecycle through the linker");
+    SLObserverSummaryModule.Responder life = new SLObserverSummaryModule.Responder();
+    life.attach("life");
+    check("attach a lifecycle listener", linker.attachModule("observer.responder", "life", 1, life.portOf()) >= 0);
+    check("pause below the trust floor is refused", !linker.pauseModule("life", 0));
+    check("pause a non-module instance is refused", !linker.pauseModule("tier5", 2));
+    check("pause an unknown instance is refused", !linker.pauseModule("nobody", 2));
+    check("pause the listener", linker.pauseModule("life", 1));
+    check("the observer shows it paused", obs.portStateAt(obs.indexOfPort("life")) == 3);
+    check("pause twice is refused by the observer", !linker.pauseModule("life", 1));
+    check("alter below the trust floor is refused", !linker.alterModule("life", 0, 1, 0, 0, -1, -1));
+    check("alter the paused listener", linker.alterModule("life", 1, 1, 0, 0, 0, 10));
+    check("a deaf filter is refused", !linker.alterModule("life", 1, 0, 0, 0, -1, -1));
+    check("resume the listener", linker.resumeModule("life", 1));
+    check("resume a running listener is refused", !linker.resumeModule("life", 1));
+    check("reinstate an active listener is refused", !linker.reinstateModule("life", 1));
+    SLObserverSummaryModule.Responder life2 = new SLObserverSummaryModule.Responder();
+    life2.attach("life");
+    check("link the listener before the swap", linker.linkPair("life", "tier6"));
+    check("replace below the trust floor is refused", !linker.replaceModule("life", 0, life2.portOf()));
+    check("hot-swap the listener behind the same instance", linker.replaceModule("life", 1, life2.portOf()));
+    check("the instance kept its name and type", linker.isLinked("life") && linker.typeOfName("life") == "observer.responder");
+    check("the new port is live in the observer", obs.portStateAt(obs.indexOfPort("life")) == 0);
+    check("the old port is retired", life.portOf().getState() == 2);
+    check("links survive a swap", linker.isConnected("life", "tier6"));
+    check("detach retires the listener", linker.detach("life"));
+    check("lifecycle verbs are refused after detach", !linker.pauseModule("life", 1) && !linker.resumeModule("life", 1) && !linker.replaceModule("life", 1, life2.portOf()));
+
+    banner("8. detach");
+    check("detach a module", linker.detach("summary"));
+    check("its port is retired in the observer", obs.portStateAt(obs.indexOfPort("summary")) == 2);
+    check("its links are gone", !linker.isConnected("summary", "tier5"));
+    check("a detached name cannot be reused", linker.attach("vi.plain", "summary", 1, "") < 0);
+    check("a detached module cannot be connected", !linker.linkPair("summary", "tier5"));
+    check("the stacks are unaffected", vi.stack().getTierCount() == 18 && vi2.stack().getTierCount() == 3);
+
+    banner("audit trail (tail)");
+    int total = linker.trailSize();
+    int from = (total > 8) ? (total - 8) : 0;
+    int t = from;
+    while (t < total) { print("  " + linker.trailAt(t)); t = t + 1; }
+
+    banner("result");
+    print("  passed " + passed + ", failed " + failed);
+    print("  instances " + linker.instanceTotal() + ", live " + linker.liveCount()
+        + ", links " + linker.liveLinks() + ", refused " + linker.refusedCount());
+  }
+}

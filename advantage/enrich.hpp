@@ -4,7 +4,9 @@
 // SAFETY POSTURE (all gates default-closed):
 //   * Enrichment is OFF unless a policy is explicitly passed.
 //   * Only schemes in the allowlist are permitted; the default allowlist is
-//     { "https", "file" } -- no plaintext http, no ssh/sftp by default.
+//     { "https" } -- no plaintext http, no ssh/sftp, and no file:// (which
+//     reads LOCAL files and is not covered by the host allowlist) unless the
+//     caller opts in explicitly.
 //   * Only hosts in `allowedHosts` are permitted; the default is EMPTY, which
 //     allows nothing. A caller must name every host it trusts.
 //   * TLS certificate + hostname verification stays ON (inherited from the
@@ -38,8 +40,8 @@ struct EnrichPolicy {
     // Directory for the content-addressed download store.
     std::string storeDir = "./advantage-store";
 
-    // Permitted URL schemes. Default: https + file only.
-    std::vector<std::string> allowedSchemes = {"https", "file"};
+    // Permitted URL schemes. Default: https only. Add "file" deliberately.
+    std::vector<std::string> allowedSchemes = {"https"};
 
     // Permitted hosts (exact match, case-insensitive). EMPTY => deny all
     // network hosts. file:// has no host and is governed by allowedSchemes.

@@ -1,0 +1,22 @@
+== Lesson 3: system readiness ==
+-- nothing reported yet --
+  memory MB reading=-1 need>=512 : NOT OBSERVED
+  storage MB reading=-1 need>=1024 : NOT OBSERVED
+  display reading=-1 need>=1 : NOT OBSERVED
+  input device reading=-1 need>=1 : NOT OBSERVED
+  clock set reading=-1 need>=1 : NOT OBSERVED
+  verdict: NOT ready, 5 check(s) to fix
+-- partial, flawed report --
+  memory MB reading=2048 need>=512 : ready
+  storage MB reading=300 need>=1024 : BELOW MINIMUM
+  display reading=1 need>=1 : ready
+  input device reading=-7 need>=1 : IMPLAUSIBLE reading
+  clock set reading=-1 need>=1 : NOT OBSERVED
+  verdict: NOT ready, 3 check(s) to fix
+-- corrected report --
+  memory MB reading=2048 need>=512 : ready
+  storage MB reading=8192 need>=1024 : ready
+  display reading=1 need>=1 : ready
+  input device reading=1 need>=1 : ready
+  clock set reading=1 need>=1 : ready
+  verdict: the instructor is ready to receive input

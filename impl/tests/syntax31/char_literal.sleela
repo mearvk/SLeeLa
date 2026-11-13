@@ -1,0 +1,21 @@
+#sleela 3.1
+class CharLiteral {
+  void main() {
+    int a = 'a';
+    int nl = '\n';
+    int cap = '\u0041';
+    int quote = '\'';
+    int back = '\\';
+    int e = '\u00e9';
+    int utf = 'é';
+    print(a);
+    print(nl);
+    print(cap);
+    print(quote);
+    print(back);
+    print(e);
+    print(utf);
+    print('z' - 'a');
+    if ('b' > 'a') { print("ordered"); }
+  }
+}

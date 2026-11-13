@@ -1,0 +1,43 @@
+== Use case 6: round-lot fill and Bezout ==
+  ok   gcd of the two lot sizes = 10
+  ok   70 can be filled
+  ok   70 uses 20-lots = 2
+  ok   70 uses 30-lots = 1
+  ok   75 cannot (10 does not divide 75)
+  ok   10 cannot (gcd divides it but it is too small)
+  ok   90 can be filled
+  ok   90 uses 20-lots (fewest) = 0
+  ok   90 uses 30-lots = 3
+  ok   110 can be filled
+  ok   110 uses 20-lots = 1
+  ok   110 uses 30-lots = 3
+  ok   the fill adds back to 110
+  buy the 20-lots on day 5 : ok
+  buy the 30-lots on day 5 : ok
+  ok   shares held = 110
+  ok   invariants hold
+  ok   status when a fill exists = 0
+  ok   75 has no fill
+  ok   status when none exists = 1
+  ok   a negative order is out of range
+  ok   status when out of range = 2
+-- closed form agrees with the plain scan on every order 0..300 --
+  ok   orders where the two methods agree = 301
+  ok   orders where they differ = 0
+-- a large order is still instant --
+  ok   one trillion shares by two large lots is answered, not rejected
+  ok   one trillion shares by lots of 89999989 and 89999971 has no fill
+  ok   status says none exists = 1
+  ok   lots above the lot bound are rejected, not computed
+  ok   rejection status = 2
+-- Bezout certificates --
+  ok   egcd(20,30) gcd = 10
+  ok   coefficient x = -1
+  ok   coefficient y = 1
+  ok   20*x + 30*y = gcd
+  ok   egcd(240,46) gcd = 2
+  ok   coefficient x = -9
+  ok   coefficient y = 47
+  ok   240*x + 46*y = gcd
+  ok   egcd refuses a negative input = -1
+  checks passed=36 failed=0

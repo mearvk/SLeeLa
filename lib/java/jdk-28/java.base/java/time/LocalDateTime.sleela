@@ -1,0 +1,396 @@
+<< lib/java/jdk-28/java.base/java/time/LocalDateTime.sleela
+   SLeeLa file for the Java type java.time.LocalDateTime (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/time/LocalDateTime.html
+   Java kind: class; extends java.lang.Object; implements java.time.temporal.Temporal, java.time.temporal.TemporalAdjuster, java.time.chrono.ChronoLocalDateTime, java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+import java.jdk-28;
+
+class LocalDateTime {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.1.0";
+  int metaId = 5585;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.time.LocalDateTime";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/time/LocalDateTime.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.time.LocalDateTime members (procedural implementation in SLeeLa) ---- >
+  << A date-time without zone: a LocalDate plus a LocalTime. The constructor
+     is LocalDateTime.of(date, time); time arithmetic carries into the date. >>
+  LocalDate date;
+  LocalTime time;
+  LocalDateTime(LocalDate date, LocalTime time) {
+    if (date == null) { throw new NullPointerException("date"); }
+    if (time == null) { throw new NullPointerException("time"); }
+    this.date = date;
+    this.time = time;
+  }
+  LocalDateTime of(int year, int month, int dayOfMonth, int hour, int minute, int second, int nanoOfSecond) {
+    return new LocalDateTime(new LocalDate(year, month, dayOfMonth), new LocalTime(hour, minute, second, nanoOfSecond));
+  }
+  LocalDateTime ofEpochSecond(long epochSecond, int nanoOfSecond, int offsetSeconds) {
+    checkField("NanoOfSecond", nanoOfSecond, 0, 999999999);
+    long localSecond = epochSecond + offsetSeconds;
+    long localEpochDay = floorDiv(localSecond, 86400);
+    long secsOfDay = floorMod(localSecond, 86400);
+    LocalDate d = this.date.ofEpochDay(localEpochDay);
+    LocalTime t = new LocalTime((int) (secsOfDay / 3600), (int) ((secsOfDay / 60) % 60), (int) (secsOfDay % 60), nanoOfSecond);
+    return new LocalDateTime(d, t);
+  }
+  LocalDateTime parse(String text) {
+    parseBegin(text);
+    long y = parseYear();
+    expectUnit(45);
+    long m = digits(2, 2);
+    expectUnit(45);
+    long d = digits(2, 2);
+    expectUnit(84);
+    long nod = parseTimeNanos();
+    parseEnd();
+    LocalTime t0 = new LocalTime(0, 0, 0, 0);
+    return new LocalDateTime(new LocalDate((int) y, (int) m, (int) d), t0.ofNanoOfDay(nod));
+  }
+  LocalDate toLocalDate() { return this.date; }
+  LocalTime toLocalTime() { return this.time; }
+  int getYear() { return this.date.getYear(); }
+  int getMonthValue() { return this.date.getMonthValue(); }
+  Month getMonth() { return this.date.getMonth(); }
+  int getDayOfMonth() { return this.date.getDayOfMonth(); }
+  int getDayOfYear() { return this.date.getDayOfYear(); }
+  DayOfWeek getDayOfWeek() { return this.date.getDayOfWeek(); }
+  int getHour() { return this.time.getHour(); }
+  int getMinute() { return this.time.getMinute(); }
+  int getSecond() { return this.time.getSecond(); }
+  int getNano() { return this.time.getNano(); }
+  LocalDateTime with(LocalDate newDate, LocalTime newTime) {
+    if (newDate == this.date && newTime == this.time) { return this; }
+    return new LocalDateTime(newDate, newTime);
+  }
+  LocalDateTime plusYears(long n) { return with(this.date.plusYears(n), this.time); }
+  LocalDateTime plusMonths(long n) { return with(this.date.plusMonths(n), this.time); }
+  LocalDateTime plusWeeks(long n) { return with(this.date.plusWeeks(n), this.time); }
+  LocalDateTime plusDays(long n) { return with(this.date.plusDays(n), this.time); }
+  << Java plusWithOverflow: add a nano amount, carrying whole days into the date. >>
+  LocalDateTime plusNanosCarry(long hours, long minutes, long seconds, long nanos) {
+    if (hours == 0 && minutes == 0 && seconds == 0 && nanos == 0) { return this; }
+    long totDays = nanos / 86400000000000 + seconds / 86400 + minutes / 1440 + hours / 24;
+    long totNanos = nanos % 86400000000000 + (seconds % 86400) * 1000000000 + (minutes % 1440) * 60000000000 + (hours % 24) * 3600000000000;
+    long curNoD = this.time.toNanoOfDay();
+    totNanos = totNanos + curNoD;
+    totDays = totDays + floorDiv(totNanos, 86400000000000);
+    long newNoD = floorMod(totNanos, 86400000000000);
+    LocalTime nt = this.time;
+    if (newNoD != curNoD) { nt = this.time.ofNanoOfDay(newNoD); }
+    return with(this.date.plusDays(totDays), nt);
+  }
+  LocalDateTime plusHours(long n) { return plusNanosCarry(n, 0, 0, 0); }
+  LocalDateTime plusMinutes(long n) { return plusNanosCarry(0, n, 0, 0); }
+  LocalDateTime plusSeconds(long n) { return plusNanosCarry(0, 0, n, 0); }
+  LocalDateTime plusNanos(long n) { return plusNanosCarry(0, 0, 0, n); }
+  LocalDateTime minusYears(long n) { return plusYears(0 - n); }
+  LocalDateTime minusMonths(long n) { return plusMonths(0 - n); }
+  LocalDateTime minusWeeks(long n) { return plusWeeks(0 - n); }
+  LocalDateTime minusDays(long n) { return plusDays(0 - n); }
+  LocalDateTime minusHours(long n) { return plusHours(0 - n); }
+  LocalDateTime minusMinutes(long n) { return plusMinutes(0 - n); }
+  LocalDateTime minusSeconds(long n) { return plusSeconds(0 - n); }
+  LocalDateTime minusNanos(long n) { return plusNanos(0 - n); }
+  LocalDateTime withYear(int y) { return with(this.date.withYear(y), this.time); }
+  LocalDateTime withMonth(int m) { return with(this.date.withMonth(m), this.time); }
+  LocalDateTime withDayOfMonth(int d) { return with(this.date.withDayOfMonth(d), this.time); }
+  LocalDateTime withDayOfYear(int d) { return with(this.date.withDayOfYear(d), this.time); }
+  LocalDateTime withHour(int h) { return with(this.date, this.time.withHour(h)); }
+  LocalDateTime withMinute(int m) { return with(this.date, this.time.withMinute(m)); }
+  LocalDateTime withSecond(int s) { return with(this.date, this.time.withSecond(s)); }
+  LocalDateTime withNano(int n) { return with(this.date, this.time.withNano(n)); }
+  << Seconds from the epoch for a zone offset given in seconds. >>
+  long toEpochSecond(int offsetSeconds) {
+    long epochDay = this.date.toEpochDay();
+    long secs = epochDay * 86400 + this.time.toSecondOfDay();
+    return secs - offsetSeconds;
+  }
+  int compareTo(LocalDateTime other) {
+    int c = this.date.compareTo(other.toLocalDate());
+    if (c == 0) { c = this.time.compareTo(other.toLocalTime()); }
+    return c;
+  }
+  boolean isAfter(LocalDateTime other) { return compareTo(other) > 0; }
+  boolean isBefore(LocalDateTime other) { return compareTo(other) < 0; }
+  boolean isEqual(LocalDateTime other) { return compareTo(other) == 0; }
+  boolean equals(Any obj) {
+    if (obj instanceof LocalDateTime) { LocalDateTime o = (LocalDateTime) obj; return compareTo(o) == 0; }
+    return false;
+  }
+  int hashCode() { return xorInt(this.date.hashCode(), this.time.hashCode()); }
+  String toString() { return this.date.toString() + "T" + this.time.toString(); }
+
+  < shared java.time helpers >
+  long floorDiv(long x, long y) {
+    long q = x / y;
+    if ((x % y != 0) && ((x < 0) != (y < 0))) { q = q - 1; }
+    return q;
+  }
+  long floorMod(long x, long y) { return x - floorDiv(x, y) * y; }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  << Bitwise xor of two 32-bit two-complement ints. >>
+  int xorInt(int a, int b) {
+    long x = a;
+    long y = b;
+    if (x < 0) { x = x + 4294967296; }
+    if (y < 0) { y = y + 4294967296; }
+    long r = 0;
+    long bit = 1;
+    int k = 0;
+    while (k < 32) {
+      if ((x % 2) != (y % 2)) { r = r + bit; }
+      x = x / 2; y = y / 2; bit = bit * 2; k = k + 1;
+    }
+    return wrap32(r);
+  }
+  String pad(long v, int width) {
+    String s = "" + v;
+    int n = javaStringLength(javaStringFromUtf8(s));
+    while (n < width) { s = "0" + s; n = n + 1; }
+    return s;
+  }
+  boolean leap(long y) { return (y % 4 == 0) && ((y % 100 != 0) || (y % 400 == 0)); }
+  int monthLength(int m, boolean isLeap) {
+    if (m == 2) { if (isLeap) { return 29; } return 28; }
+    if (m == 4 || m == 6 || m == 9 || m == 11) { return 30; }
+    return 31;
+  }
+  void checkField(String field, long value, long lo, long hi) {
+    if (value < lo || value > hi) {
+      throw new DateTimeException("Invalid value for " + field + " (valid values " + lo + " - " + hi + "): " + value);
+    }
+  }
+  String monthName(int m) {
+    if (m == 1) { return "JANUARY"; } if (m == 2) { return "FEBRUARY"; } if (m == 3) { return "MARCH"; }
+    if (m == 4) { return "APRIL"; } if (m == 5) { return "MAY"; } if (m == 6) { return "JUNE"; }
+    if (m == 7) { return "JULY"; } if (m == 8) { return "AUGUST"; } if (m == 9) { return "SEPTEMBER"; }
+    if (m == 10) { return "OCTOBER"; } if (m == 11) { return "NOVEMBER"; }
+    return "DECEMBER";
+  }
+  << Year rendering of ISO-8601 local dates: four digits zero padded, a sign
+     for negative years, and a leading + beyond 9999. >>
+  String yearText(long y) {
+    long a = y;
+    if (a < 0) { a = 0 - a; }
+    if (a < 1000) {
+      if (y < 0) { return "-" + pad(a, 4); }
+      return pad(a, 4);
+    }
+    if (y > 9999) { return "+" + y; }
+    return "" + y;
+  }
+  << Nano-of-second suffix in the Java style: 3, 6 or 9 digits, as needed. >>
+  String nanoText(long nano) {
+    if (nano % 1000000 == 0) { return "." + pad(nano / 1000000, 3); }
+    if (nano % 1000 == 0) { return "." + pad(nano / 1000, 6); }
+    return "." + pad(nano, 9);
+  }
+  < parse helpers over a Java UTF-16 copy of the text >
+  String parseText;
+  String parseUnits;
+  int parsePos;
+  int parseLen;
+  void parseBegin(String text) {
+    if (text == null) { throw new NullPointerException("text"); }
+    this.parseText = text;
+    this.parseUnits = javaStringFromUtf8(text);
+    this.parsePos = 0;
+    this.parseLen = javaStringLength(this.parseUnits);
+  }
+  DateTimeParseException parseError() {
+    return new DateTimeParseException("Text '" + this.parseText + "' could not be parsed at index " + this.parsePos, this.parseText, this.parsePos);
+  }
+  int peekUnit() {
+    if (this.parsePos >= this.parseLen) { return -1; }
+    return javaStringCharAt(this.parseUnits, this.parsePos);
+  }
+  void expectUnit(int c) {
+    if (peekUnit() != c) { throw parseError(); }
+    this.parsePos = this.parsePos + 1;
+  }
+  long digits(int minCount, int maxCount) {
+    long v = 0;
+    int n = 0;
+    while (n < maxCount && peekUnit() >= 48 && peekUnit() <= 57) {
+      v = v * 10 + (peekUnit() - 48);
+      this.parsePos = this.parsePos + 1;
+      n = n + 1;
+    }
+    if (n < minCount) { throw parseError(); }
+    return v;
+  }
+  void parseEnd() { if (this.parsePos != this.parseLen) { throw parseError(); } }
+  long parseYear() {
+    int c = peekUnit();
+    if (c == 43 || c == 45) {
+      this.parsePos = this.parsePos + 1;
+      long y = digits(4, 10);
+      if (c == 45) { return 0 - y; }
+      return y;
+    }
+    return digits(4, 4);
+  }
+  << time part HH:mm[:ss[.fraction]] as nano-of-day >>
+  long parseTimeNanos() {
+    long h = digits(2, 2);
+    expectUnit(58);
+    long mi = digits(2, 2);
+    long s = 0;
+    long nano = 0;
+    if (peekUnit() == 58) {
+      this.parsePos = this.parsePos + 1;
+      s = digits(2, 2);
+      if (peekUnit() == 46) {
+        this.parsePos = this.parsePos + 1;
+        int start = this.parsePos;
+        long f = digits(1, 9);
+        int n = this.parsePos - start;
+        while (n < 9) { f = f * 10; n = n + 1; }
+        nano = f;
+      }
+    }
+    checkField("HourOfDay", h, 0, 23);
+    checkField("MinuteOfHour", mi, 0, 59);
+    checkField("SecondOfMinute", s, 0, 59);
+    return ((h * 60 + mi) * 60 + s) * 1000000000 + nano;
+  }
+  < ---- END java implementation ---- >
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public LocalDateTime bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static Any MIN = null;
+  static Any MAX = null;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int get(Any field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getLong(Any field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any of(Any date, Any time) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any of(int year, int month, int dayOfMonth, int hour, int minute) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any of(int year, Any month, int dayOfMonth, int hour, int minute, int second) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any of(int year, Any month, int dayOfMonth, int hour, int minute) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any of(int year, int month, int dayOfMonth, int hour, int minute, int second) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String format(Any formatter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any from(Any temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSupported(Any unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any parse(Any text, Any formatter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any with(Any adjuster) { return null; }
+  @generic("<R>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any query(Any query) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any range(Any field) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any now() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any now(Any zone) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any minus(Any amountToSubtract) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any minus(long amountToSubtract, Any unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any plus(long amountToAdd, Any unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any plus(Any amountToAdd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long until(Any endExclusive, Any unit) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any truncatedTo(Any unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any adjustInto(Any temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any ofInstant(Any instant, Any zone) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any atOffset(Any offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any atZone(Any zone) { return null; }
+  < ---- END java signatures ---- >
+}

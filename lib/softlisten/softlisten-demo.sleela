@@ -1,0 +1,355 @@
+<< lib/softlisten/softlisten-demo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Runnable, self-checking demonstrator for soft offers and soft
+     listeners. Offers wait at a desk, unagreed, while the Malice, Ties and
+     Loader listeners ascertain them: deny-listed lines and tokens, false and
+     dead and undeclared ties, loader issues from a dry run of the hot-link
+     linker, and conflicts with the live document. Shows HOLD findings that
+     clear when the world changes, BLOCK findings that never do, the consuming
+     model agreeing through the observer and the linker, and the soft listeners
+     themselves being paused, altered and retired (failing closed). Prints PASS
+     or FAIL per check and a tally. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import advantage.integration;
+import hotlink;
+< Family: softlisten. Run: sleela run lib/softlisten/softlisten-demo.sleela >
+class SoftListenDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39233;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int passed;
+  int failed;
+  SLObserverDocument doc;
+  SLDocumentObserver obs;
+  SLHotLinker linker;
+  SLHotLinkIntegration vi;
+  SLSoftOfferDesk desk;
+
+  void check(String label, boolean ok) {
+    if (ok) { passed = passed + 1; print("  PASS  " + label); }
+    else { failed = failed + 1; print("  FAIL  " + label); }
+  }
+  void banner(String t) { print(""); print("== " + t); }
+
+  < Host cycle: deliver, let the desk listen, route. >
+  void settle() {
+    while (obs.beginCycle()) { desk.pump(); obs.endCycle(); }
+  }
+  int worstOf(int id) { SLSoftOffer o = desk.offerById(id); return o.worst(); }
+  boolean has(int id, String code) { SLSoftOffer o = desk.offerById(id); return o.hasCode(code); }
+  int stateOf(int id) { SLSoftOffer o = desk.offerById(id); return o.getState(); }
+
+  < A one-token document offer. kind: 0 insert, 1 replace, 2 delete. >
+  int lineOffer(String who, int trust, int kind, int line, String text, String seenOld, String token) {
+    SLSoftOffer o = desk.begin(who, trust, kind);
+    o.aimAtLine(line, text, seenOld);
+    if (token != "") { o.addToken(token); }
+    return desk.submit(o);
+  }
+
+  void main() {
+    passed = 0; failed = 0;
+    doc = new SLObserverDocument();
+    doc.configure("soft-document.txt");
+    obs = new SLDocumentObserver();
+    obs.configure(doc);
+    SLHotLinkMatrix matrix = new SLHotLinkMatrix();
+    matrix.configure();
+    matrix.standard();
+    linker = new SLHotLinker();
+    linker.configure(matrix, obs);
+    vi = new SLHotLinkIntegration();
+    vi.configure("soft-stack", linker);
+    desk = new SLSoftOfferDesk();
+    desk.configure(obs, linker, vi);
+    check("the desk listens to the observer", desk.attachToObserver());
+    vi.expand("tier5", "supply", 5, 1);
+
+    banner("1. a soft offer changes nothing until it is agreed");
+    int a = lineOffer("alice", 1, 0, 0, "hello", "", "hello");
+    check("the offer is lodged", a > 0);
+    check("it is assessed and waiting", stateOf(a) == 1);
+    check("a clean line offer has no findings", worstOf(a) == -1);
+    check("the document is untouched", doc.revisionNow() == 0 && doc.lineCount() == 0);
+    check("an anonymous agreer is refused", !desk.agree(a, 0, false));
+    check("the consuming model agrees", desk.agree(a, 1, false));
+    check("only now the document has the line", doc.lineAt(0) == "hello" && doc.revisionNow() == 1);
+    check("an agreed offer cannot be agreed again", !desk.agree(a, 1, false));
+    check("an agreed offer cannot be declined", !desk.decline(a, 1, "late"));
+    settle();
+
+    banner("2. the Malice listener");
+    int b = lineOffer("bob", 1, 0, 1, "rm -rf /", "", "rm");
+    check("a deny-listed line is blocked", has(b, "deny-line") && worstOf(b) == 3);
+    check("a blocked offer cannot be agreed", !desk.agree(b, 2, true));
+    check("the document is still untouched", doc.lineCount() == 1);
+    check("decline it", desk.decline(b, 1, "malicious"));
+    int c = lineOffer("carol", 1, 0, 1, "click here", "", "<script>");
+    check("a deny-listed token is blocked", has(c, "deny-token") && worstOf(c) == 3);
+    check("alter Malice to lenient", desk.alterListener("malice", 0));
+    desk.reassess(c);
+    check("lenient downgrades a block to a hold", worstOf(c) == 2);
+    check("a hold still cannot be agreed", !desk.agree(c, 2, true));
+    desk.alterListener("malice", 1);
+    desk.reassess(c);
+    check("normal restores the block", worstOf(c) == 3);
+    desk.decline(c, 1, "script token");
+    int d = lineOffer("dave", 1, 0, 1, "", "", "");
+    check("an empty text is a warning", has(d, "empty-text") && worstOf(d) == 1);
+    check("a warning needs acknowledgement", !desk.agree(d, 1, false));
+    desk.alterListener("malice", 2);
+    desk.reassess(d);
+    check("strict turns the warning into a hold", worstOf(d) == 2);
+    desk.alterListener("malice", 1);
+    desk.decline(d, 1, "empty");
+    SLSoftOffer wide = desk.begin("erin", 1, 0);
+    wide.aimAtLine(1, "padded", "");
+    int t = 0;
+    while (t < 9) { wide.addToken("w" + t); t = t + 1; }
+    int e = desk.submit(wide);
+    check("tokens past the 8 inspected are reported, not ignored", has(e, "tokens-clipped") && worstOf(e) == 2);
+    desk.decline(e, 1, "too wide");
+    int s1 = lineOffer("sam", 1, 0, 1, "twice", "", "twice");
+    int s2 = lineOffer("sam", 1, 0, 1, "twice", "", "twice");
+    check("a repeated offer is flagged", has(s2, "duplicate-offer") && !has(s1, "duplicate-offer"));
+    int s3 = lineOffer("sam", 1, 0, 1, "three", "", "");
+    int s4 = lineOffer("sam", 1, 0, 1, "four", "", "");
+    check("a fifth open offer from one person is refused", lineOffer("sam", 1, 0, 1, "five", "", "") < 0);
+    check("only the offerer can withdraw", !desk.withdraw(s1, "mallory") && desk.withdraw(s1, "sam"));
+    desk.withdraw(s2, "sam"); desk.withdraw(s3, "sam"); desk.withdraw(s4, "sam");
+    int r = lineOffer("observer", 1, 0, 1, "spoof", "", "");
+    check("a reserved offerer name is blocked", has(r, "reserved-offerer") && worstOf(r) == 3);
+    desk.decline(r, 1, "spoof");
+
+    banner("3. the Ties listener: false, dead and undeclared ties");
+    SLSoftOffer ghost = desk.begin("frank", 1, 0);
+    ghost.aimAtLine(1, "see also ghost", "");
+    ghost.addTie("ghost");
+    int f = desk.submit(ghost);
+    check("a tie to nothing known is a false tie (hold)", has(f, "false-tie") && worstOf(f) == 2);
+    check("so it cannot be agreed yet", !desk.agree(f, 1, true));
+    check("the host registers the anchor", desk.registerAnchor("ghost"));
+    desk.reassess(f);
+    check("the hold clears when the world changes", worstOf(f) == -1);
+    check("and it can then be agreed", desk.agree(f, 1, false) && doc.lineAt(1) == "see also ghost");
+    linker.attach("vi.plain", "ephemeral", 1, "");
+    linker.detach("ephemeral");
+    SLSoftOffer dead = desk.begin("gina", 1, 0);
+    dead.aimAtLine(2, "built on ephemeral", "");
+    dead.addTie("ephemeral");
+    int g = desk.submit(dead);
+    check("a tie to a detached instance is dead (block)", has(g, "dead-tie") && worstOf(g) == 3);
+    desk.decline(g, 1, "dead tie");
+    desk.registerAnchor("hank");
+    SLSoftOffer selfy = desk.begin("hank", 1, 0);
+    selfy.aimAtLine(2, "points at me", "");
+    selfy.addTie("hank");
+    selfy.addTie("tier5");
+    selfy.addTie("tier5");
+    int h = desk.submit(selfy);
+    check("self-tie and duplicate-tie are warnings", has(h, "self-tie") && has(h, "duplicate-tie") && worstOf(h) == 1);
+    desk.decline(h, 1, "tidy up");
+
+    banner("4. the Loader listener: a dry run of the linker");
+    SLObserverSummaryModule.Responder m1 = new SLObserverSummaryModule.Responder();
+    m1.attach("sum1");
+    SLSoftOffer mo = desk.begin("ivy", 1, 3);
+    mo.aimAtModule("observer.responder", "sum1", "", m1.portOf());
+    mo.addTie("tier5");
+    int mid = desk.submit(mo);
+    check("a good module offer passes the dry run", has(mid, "preflight-ok") && worstOf(mid) == 0);
+    check("nothing joined the observer yet", obs.indexOfPort("sum1") < 0 && !linker.isLinked("sum1"));
+    check("a worker cannot agree a module offer", !desk.agree(mid, 1, true));
+    check("an executive can", desk.agree(mid, 2, false));
+    check("the module is on the observer roster", obs.indexOfPort("sum1") >= 0);
+    check("its claimed tie was made real", linker.isConnected("sum1", "tier5"));
+
+    SLObserverSummaryModule.Responder m2 = new SLObserverSummaryModule.Responder();
+    m2.attach("sum2");
+    SLSoftOffer unk = desk.begin("jon", 1, 3);
+    unk.aimAtModule("mystery.type", "sum2", "", m2.portOf());
+    int u = desk.submit(unk);
+    check("an unknown type is blocked", has(u, "unknown-type") && worstOf(u) == 3);
+    desk.decline(u, 1, "unknown");
+    SLSoftOffer cold = desk.begin("jon", 1, 3);
+    cold.aimAtModule("extends.module", "sum2", "", m2.portOf());
+    int cd = desk.submit(cold);
+    check("a cold type is blocked", has(cd, "loader-permanent") && worstOf(cd) == 3);
+    desk.decline(cd, 1, "cold");
+    SLSoftOffer low = desk.begin("kim", 0, 3);
+    low.aimAtModule("observer.responder", "sum2", "", m2.portOf());
+    int lw = desk.submit(low);
+    check("a trust below the floor is blocked", has(lw, "loader-permanent") && worstOf(lw) == 3);
+    desk.decline(lw, 1, "trust");
+    SLSoftOffer mism = desk.begin("lee", 1, 3);
+    mism.aimAtModule("observer.responder", "other-name", "", m2.portOf());
+    int mm = desk.submit(mism);
+    check("a port named differently is blocked", has(mm, "port-name-mismatch") && worstOf(mm) == 3);
+    desk.decline(mm, 1, "name");
+    SLObserverSummaryModule.Responder used = new SLObserverSummaryModule.Responder();
+    used.attach("sum3");
+    used.portOf().setState(2);
+    SLSoftOffer reuse = desk.begin("max", 1, 3);
+    reuse.aimAtModule("observer.responder", "sum3", "", used.portOf());
+    int ru = desk.submit(reuse);
+    check("a used port is blocked", has(ru, "port-not-fresh") && worstOf(ru) == 3);
+    desk.decline(ru, 1, "used");
+    SLSoftOffer wrong = desk.begin("ned", 1, 3);
+    wrong.aimAtModule("vi.plain", "sum2", "", m2.portOf());
+    int wc = desk.submit(wrong);
+    check("a compartment type offered as a module is blocked", has(wc, "wrong-contract") && worstOf(wc) == 3);
+    desk.decline(wc, 1, "contract");
+    vi.expand("nest1", "nested", 0, 2);
+    SLSoftOffer undeclared = desk.begin("oz", 1, 3);
+    undeclared.aimAtModule("observer.responder", "sum2", "", m2.portOf());
+    undeclared.addTie("nest1");
+    int ud = desk.submit(undeclared);
+    check("a tie the matrix does not declare is blocked", has(ud, "undeclared-tie") && worstOf(ud) == 3);
+    desk.decline(ud, 1, "undeclared");
+
+    banner("5. loader issues that clear: a HOLD on a full cap");
+    vi.expand("nest2", "nested", 0, 2);
+    vi.expand("nest3", "nested", 0, 2);
+    vi.expand("nest4", "nested", 0, 2);
+    SLSoftOffer tier = desk.begin("pat", 2, 4);
+    tier.aimAtTier("nest5", "fifth nested model", 0);
+    int tr = desk.submit(tier);
+    check("the cap of 4 nested models is a hold, not a block", has(tr, "loader-transient") && worstOf(tr) == 2);
+    check("so it cannot be agreed yet", !desk.agree(tr, 2, true));
+    int tiersBefore = vi.stack().getTierCount();
+    linker.detach("nest4");
+    desk.reassess(tr);
+    check("room appears, the hold clears", worstOf(tr) == 0);
+    check("the tier offer is agreed", desk.agree(tr, 2, false));
+    check("the vertical stack grew by one tier", vi.stack().getTierCount() == tiersBefore + 1);
+    SLSoftOffer nokind = desk.begin("quin", 2, 4);
+    nokind.aimAtTier("nest9", "nowhere", 17);
+    int nk = desk.submit(nokind);
+    check("a kind with no class type is blocked", has(nk, "no-type-for-kind") && worstOf(nk) == 3);
+    desk.decline(nk, 1, "no kind");
+    SLSoftOffer bay = desk.begin("rae", 1, 4);
+    bay.aimAtTier("bay-x", "new bay", 2);
+    bay.addTie("tier5");
+    int by = desk.submit(bay);
+    check("a bay claiming a tie to a plain compartment is undeclared", has(by, "undeclared-tie") && worstOf(by) == 3);
+    desk.decline(by, 1, "bay to plain");
+
+    banner("6. the use model: conflicts with the live document");
+    int rep = lineOffer("sue", 1, 1, 0, "hello world", "hello", "hello");
+    check("a replace that matches the line is clean", worstOf(rep) == -1);
+    obs.edit(1, 0, "changed under you", "host");
+    settle();
+    check("a document change re-checks the open offers", has(rep, "conflict") && worstOf(rep) == 2);
+    check("the conflicting offer cannot be agreed", !desk.agree(rep, 1, true));
+    check("withdraw it", desk.withdraw(rep, "sue"));
+    check("a withdrawn offer cannot be agreed", !desk.agree(rep, 1, true));
+    int far = lineOffer("tom", 1, 0, 50, "far away", "", "");
+    check("an insert past the end is a hold", has(far, "out-of-range") && worstOf(far) == 2);
+    desk.decline(far, 1, "range");
+    int del = lineOffer("uma", 1, 2, 1, "", "see also ghost", "");
+    check("a delete that matches is clean", worstOf(del) == -1);
+    int linesBefore = doc.lineCount();
+    check("and is agreed through the observer", desk.agree(del, 1, false) && doc.lineCount() == linesBefore - 1);
+
+    banner("7. the soft listeners are themselves listeners");
+    check("pause Malice", desk.pauseListener("malice"));
+    check("pausing twice is refused", !desk.pauseListener("malice"));
+    int p1 = lineOffer("vic", 1, 0, 1, "harmless", "", "harmless");
+    check("with Malice paused an offer cannot look clean", has(p1, "listener-unavailable") && worstOf(p1) == 2);
+    check("so it cannot be agreed", !desk.agree(p1, 1, true));
+    check("resume Malice", desk.resumeListener("malice"));
+    desk.reassess(p1);
+    check("the hold clears", worstOf(p1) == -1);
+    check("and the offer is agreed", desk.agree(p1, 1, false));
+    check("a bad level is refused", !desk.alterListener("malice", 3));
+    check("an unknown listener is refused", !desk.pauseListener("nobody"));
+    check("extend the deny list at run time", desk.addDenyToken("evil-token"));
+    int p2 = lineOffer("wes", 1, 0, 1, "x", "", "evil-token");
+    check("the new token is enforced at once", has(p2, "deny-token") && worstOf(p2) == 3);
+    desk.decline(p2, 1, "new token");
+    check("retire Loader (final)", desk.retireListener("loader"));
+    check("a retired listener cannot be resumed", !desk.resumeListener("loader"));
+    SLObserverSummaryModule.Responder m4 = new SLObserverSummaryModule.Responder();
+    m4.attach("sum4");
+    SLSoftOffer late = desk.begin("xia", 1, 3);
+    late.aimAtModule("observer.responder", "sum4", "", m4.portOf());
+    int lt = desk.submit(late);
+    check("with Loader retired a module offer can never be cleared", has(lt, "listener-unavailable") && !desk.agree(lt, 2, true));
+    desk.decline(lt, 1, "no loader");
+
+    banner("8. desk safety");
+    SLSoftOffer stray = new SLSoftOffer();
+    stray.configure(999, "zed", 1, 0);
+    check("an offer not issued by the desk is refused", desk.submit(stray) < 0);
+    SLSoftOffer once = desk.begin("yan", 1, 0);
+    once.aimAtLine(1, "once", "");
+    int o1 = desk.submit(once);
+    check("a lodged offer cannot be lodged twice", desk.submit(once) < 0);
+    desk.decline(o1, 1, "tidy");
+    SLSoftOffer badKind = desk.begin("yan", 1, 9);
+    check("an unknown kind is refused", desk.submit(badKind) < 0);
+    int openBefore = desk.openTotal();
+    int offersBefore = desk.offerTotal();
+    int dropped = desk.compact();
+    check("compact drops closed offers only", dropped > 0 && desk.openTotal() == openBefore && desk.offerTotal() == offersBefore - dropped);
+    check("the audit trail recorded the refusals", desk.refusedAgreeCount() > 5);
+
+    banner("audit trail (tail)");
+    int total = desk.trailSize();
+    int from = (total > 8) ? (total - 8) : 0;
+    int k = from;
+    while (k < total) { print("  " + desk.trailAt(k)); k = k + 1; }
+
+    banner("result");
+    print("  passed " + passed + ", failed " + failed);
+    print("  agreed " + desk.agreedCount() + ", declined " + desk.declinedCount()
+        + ", refused agrees " + desk.refusedAgreeCount()
+        + ", findings: malice " + desk.listenerIssued("malice")
+        + " ties " + desk.listenerIssued("ties")
+        + " loader " + desk.listenerIssued("loader"));
+  }
+}

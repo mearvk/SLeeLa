@@ -1,0 +1,12 @@
+#sleela 3.0
+spark;
+material;
+import java.jdk-25.java.lang;
+class P {
+  void main() {
+    try {
+      try { throw new IllegalStateException("inner"); }
+      catch (IllegalArgumentException e) { print("wrong"); }
+    } catch (IllegalStateException e) { print("outer " + e.getMessage()); }
+  }
+}

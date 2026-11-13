@@ -1,0 +1,92 @@
+<< lib/advantage/learner-vs-professional/courseware/long-term-potencies/03-honest-empty-and-invalid/TaPotency03HonestEmptyAndInvalid.sleela
+   SLeeLa courseware lesson.
+   Definition: Entry 3: term potency and age potency on an empty book and on an invalid ('before the book day') today, each answered honestly rather than guessed. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Entry 3 of 4, long-term-potencies. Neither potency method invents an >
+< answer when the underlying book has nothing to report: an empty book >
+< answers -2 (term) or -1 (age, inherited from SLLongBook.oldestAge, which >
+< does not distinguish 'flat' from 'invalid today'); a day before the book >
+< day answers -1 for both. >
+class TaPotency03HonestEmptyAndInvalid {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39353;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+  void expect(String label, int got, int want) {
+    if (got == want) { print("  ok   " + label + " = " + got); passed = passed + 1; }
+    else { print("  FAIL " + label + " got " + got + " want " + want); failed = failed + 1; }
+  }
+  void expectTrue(String label, boolean got) {
+    if (got) { print("  ok   " + label); passed = passed + 1; }
+    else { print("  FAIL " + label); failed = failed + 1; }
+  }
+  void summary() { print("  checks passed=" + passed + " failed=" + failed); }
+
+
+  void act(SLLongBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+  void main() {
+    SLLongBook flat = new SLLongBook();
+    SLTermPotency p = new SLTermPotency();
+    print("== Entry 3: honest answers for empty and invalid inputs ==");
+    print("-- a flat (empty) book has no share of anything, and no age --");
+    expect("term potency on an empty book", p.termPotencyBp(flat, 10, 365), 0 - 2);
+    expect("age potency on an empty book", p.agePotencyBp(flat, 10), 0 - 1);
+    expectTrue("not half long term when there is nothing to be long term", !p.atLeastHalfLongTerm(flat, 10, 365));
+    print("-- buy, then ask about a day that has already passed (invalid 'today') --");
+    act(flat, "buy 10 @ 100 on day 50", flat.buy(50, 10, 100, 0));
+    expect("term potency asked for day 10 (before the book day, 50)", p.termPotencyBp(flat, 10, 365), 0 - 1);
+    expect("age potency asked for day 10", p.agePotencyBp(flat, 10), 0 - 1);
+    print("-- the book day itself is always valid, even with age 0 --");
+    expect("term potency on day 50 itself (age 0, not long term)", p.termPotencyBp(flat, 50, 365), 0);
+    expect("age potency on day 50 itself (one lot, age 0 -> full potency by definition)", p.agePotencyBp(flat, 50), 10000);
+    expectTrue("invariants hold", flat.invariantsHold());
+    summary();
+  }
+}

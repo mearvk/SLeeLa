@@ -1,0 +1,60 @@
+<< lib/java/JavaFloat.sleela
+   Java binary32 (float) support for SLeeLa.
+   Definition: SLeeLa has no 32-bit floating point value. The Java tier holds a float in a double
+   and rounds it to the nearest binary32 value (round half even, with overflow to infinity and
+   gradual underflow) after every operation, using the rounding of java.lang.Float. For the
+   operations + - * / and %, rounding the double result equals the correctly rounded binary32
+   result, because a double carries more than 2*24+2 significant bits. The converter
+   (sleelactl java-convert) emits f32 around each float operation and text for showing a float.
+   See lib/java/JAVA.SPEC.md, section on floating point. >>
+#sleela 3.0
+material;
+import java.jdk-28;
+
+class JavaFloat {
+  << Full descriptive record for a Java-tier support class. Values are faithful to the origin
+     of the subject: the float semantics are those of JLS 4.2.3 and 15.17 (Java SE 28). >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "The Java Language Specification, Java SE 28 Edition (JLS 4.2.3, 5.1.2, 15.17)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < The one Float whose rounding and text routines every call shares. >
+  static Float shared = new Float(0.0);
+
+  < The binary32 value nearest to d, held in a double. >
+  static double f32(double d) { Float fl = shared; return fl.fround(d); }
+
+  < Float.toString of a value already rounded to binary32. >
+  static String text(double f) { Float fl = shared; return fl.toStringOf(f); }
+}

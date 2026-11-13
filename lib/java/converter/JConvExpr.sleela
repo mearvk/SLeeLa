@@ -1,0 +1,915 @@
+<< lib/java/converter/JConvExpr.sleela
+   Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
+   Definition: the expression half of the typed pass. It reads the statements of
+   one converted member (the output token list of JConvRewriter), parses every
+   expression into a precedence tree, and writes the Java int laws of the
+   conversion model where they change a result:
+   - int add, subtract, multiply, and, or, xor, not and shift left agree with
+     arithmetic modulo 2^32, so a chain of them needs one wrap (the cast long
+     int row, JavaOperands.toInt) only where its value leaves int arithmetic: a
+     comparison, a division, a shift right, a string, an argument, an index, a
+     cast to long or double, a store into anything that is not an int. A chain
+     stored into an int stays native (the store wraps);
+   - int division and remainder by anything but a nonzero literal use the
+     binop int division and remainder rows (exact, ArithmeticException on zero);
+   - int shifts use the binop int shift rows;
+   - a double, float or char shown as text uses the tostr rows.
+   Operand kinds come from JConvRewriter (declared names, model ret rows). An
+   expression that does not parse, or an operand of unknown kind, is left as
+   written. >>
+#sleela 3.0
+material;
+
+class JConvExpr {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full record: a library-family class of the Java container. The laws it
+     applies are JLS 15.17 to 15.19 and 5.1.11, as rows of conversion.model. >>
+  String metaVersion = "0.5.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 4;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "The Java Language Specification, Java SE 28 Edition, 15.17 to 15.19";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  JConvRewriter rw;
+  << nodes: type (1 primary, 2 binary, 3 prefix, 4 ternary, 5 assignment, 6 cast,
+     7 parentheses, 8 postfix), operator, children, token range, operator position, kind >>
+  int[] nT;
+  String[] nOp;
+  int[] nL;
+  int[] nR;
+  int[] nC;
+  int[] nA;
+  int[] nB;
+  int[] nP;
+  String[] nK;
+  int nN;
+  < edits: position, token, token kind, type (1 open, 2 close, 3 replace), order, sequence >
+  int[] eAt;
+  String[] eTok;
+  int[] eKind;
+  int[] eTyp;
+  int[] eOrd;
+  int[] eSeq;
+  int eN;
+  < the parse cursor and its limit; failed when the range is not one expression >
+  int pos;
+  int lim;
+  boolean failed;
+  < expressions still to analyse: range and consumer (0 value, 1 int store or unused, 2 print argument) >
+  int[] qA;
+  int[] qB;
+  int[] qH;
+  int qN;
+  < counts for the report >
+  int wraps;
+  int calls;
+
+  JConvExpr(JConvRewriter r) {
+    this.rw = r;
+    this.nT = new int[256];
+    this.nOp = new String[256];
+    this.nL = new int[256];
+    this.nR = new int[256];
+    this.nC = new int[256];
+    this.nA = new int[256];
+    this.nB = new int[256];
+    this.nP = new int[256];
+    this.nK = new String[256];
+    this.nN = 0;
+    this.eAt = new int[256];
+    this.eTok = new String[256];
+    this.eKind = new int[256];
+    this.eTyp = new int[256];
+    this.eOrd = new int[256];
+    this.eSeq = new int[256];
+    this.eN = 0;
+    this.qA = new int[256];
+    this.qB = new int[256];
+    this.qH = new int[256];
+    this.qN = 0;
+    this.pos = 0;
+    this.lim = 0;
+    this.failed = false;
+    this.wraps = 0;
+    this.calls = 0;
+  }
+
+  < ---- token helpers ---- >
+  String tk(int i) {
+    if (i < 0 || i >= this.lim) { return ""; }
+    return this.rw.ot[i];
+  }
+  boolean isOpTok(int i, String s) { return i >= 0 && i < this.rw.on && this.rw.ok[i] == 5 && this.rw.ot[i] == s; }
+
+  int closeOf(int i) { return this.rw.closeOut(i); }
+
+  < the first top-level ; from p (brackets and braces counted), or b >
+  int stmtEnd(int p, int b) {
+    int d = 0;
+    int i = p;
+    while (i < b) {
+      String t = this.rw.ot[i];
+      if (this.rw.ok[i] == 5) {
+        if (t == "(" || t == "[" || t == "{") { d = d + 1; }
+        if (t == ")" || t == "]" || t == "}") { d = d - 1; if (d < 0) { return i; } }
+        if (d == 0 && t == ";") { return i; }
+      }
+      i = i + 1;
+    }
+    return b;
+  }
+
+  void enqueue(int a, int b, int h) {
+    if (a >= b) { return; }
+    if (this.qN >= arrayLength(this.qA)) {
+      int cap = arrayLength(this.qA) * 2;
+      int[] x = new int[cap];
+      int[] y = new int[cap];
+      int[] z = new int[cap];
+      int i = 0;
+      while (i < this.qN) { x[i] = this.qA[i]; y[i] = this.qB[i]; z[i] = this.qH[i]; i = i + 1; }
+      this.qA = x;
+      this.qB = y;
+      this.qH = z;
+    }
+    this.qA[this.qN] = a;
+    this.qB[this.qN] = b;
+    this.qH[this.qN] = h;
+    this.qN = this.qN + 1;
+  }
+
+  < the top-level commas of a .. b-1 split it into ranges, each enqueued with consumer h >
+  void enqueueList(int a, int b, int h) {
+    int d = 0;
+    int s = a;
+    int i = a;
+    while (i < b) {
+      String t = this.rw.ot[i];
+      if (this.rw.ok[i] == 5) {
+        if (t == "(" || t == "[" || t == "{") { d = d + 1; }
+        if (t == ")" || t == "]" || t == "}") { d = d - 1; }
+        if (d == 0 && t == ",") { enqueue(s, i, h); s = i + 1; }
+      }
+      i = i + 1;
+    }
+    enqueue(s, b, h);
+  }
+
+  boolean intLike(String k) { return k == "i" || k == "c"; }
+
+  < ---- the statements of the member ---- >
+  boolean isModifierWord(String t) {
+    return t == "public" || t == "private" || t == "protected" || t == "static" || t == "final" || t == "abstract"
+      || t == "synchronized" || t == "native" || t == "default" || t == "transient" || t == "volatile";
+  }
+
+  < a method or constructor header at p: returns the position of its body or ; , or -1 >
+  int headerEnd(int p, int b) {
+    int i = p;
+    while (i < b && this.rw.ok[i] == 1 && isModifierWord(this.rw.ot[i])) { i = i + 1; }
+    int words = 0;
+    while (i < b && (this.rw.ok[i] == 1 || this.rw.ot[i] == "[" || this.rw.ot[i] == "]" || this.rw.ot[i] == "...")) {
+      if (this.rw.ok[i] == 1) { words = words + 1; }
+      i = i + 1;
+    }
+    if (i >= b || this.rw.ot[i] != "(" || words < 1) { return -1; }
+    int c = closeOf(i);
+    int j = c + 1;
+    if (j < b && this.rw.ot[j] == "throws") {
+      while (j < b && this.rw.ot[j] != "{" && this.rw.ot[j] != ";") { j = j + 1; }
+    }
+    if (j < b && (this.rw.ot[j] == "{" || (this.rw.ot[j] == ";" && words >= 2))) {
+      if (words >= 2 || this.rw.ot[j] == "{") { return j; }
+    }
+    return -1;
+  }
+
+  < a declaration at p: TYPE NAME followed by = , ; ; returns the type, or "" >
+  String declType(int p, int b) {
+    int i = p;
+    while (i < b && this.rw.ok[i] == 1 && isModifierWord(this.rw.ot[i])) { i = i + 1; }
+    if (i >= b || this.rw.ok[i] != 1 || this.rw.isStatementWord(this.rw.ot[i])) { return ""; }
+    String type = this.rw.ot[i];
+    int j = i + 1;
+    while (j + 1 < b && this.rw.ot[j] == "." && this.rw.ok[j + 1] == 1) { type = type + "." + this.rw.ot[j + 1]; j = j + 2; }
+    while (j + 1 < b && this.rw.ot[j] == "[" && this.rw.ot[j + 1] == "]") { type = type + "[]"; j = j + 2; }
+    if (j + 1 >= b || this.rw.ok[j] != 1) { return ""; }
+    String n = this.rw.ot[j + 1];
+    if (n != "=" && n != "," && n != ";") { return ""; }
+    this.declAt = j;
+    return type;
+  }
+  int declAt;
+
+  void scanStatements(int a, int b) {
+    int p = a;
+    while (p < b) {
+      int k = this.rw.ok[p];
+      String t = this.rw.ot[p];
+      if (k == 6 || t == ";" || t == "{" || t == "}") { p = p + 1; continue; }
+      if (k == 1 && (t == "else" || t == "do" || t == "try" || t == "finally")) { p = p + 1; continue; }
+      if (k == 1 && (t == "if" || t == "while" || t == "switch" || t == "synchronized") && isOpTok(p + 1, "(")) {
+        int c = closeOf(p + 1);
+        enqueue(p + 2, c, 0);
+        p = c + 1;
+        continue;
+      }
+      if (k == 1 && t == "catch" && isOpTok(p + 1, "(")) { p = closeOf(p + 1) + 1; continue; }
+      if (k == 1 && t == "for" && isOpTok(p + 1, "(")) {
+        int c2 = closeOf(p + 1);
+        scanForHeader(p + 2, c2);
+        p = c2 + 1;
+        continue;
+      }
+      if (k == 1 && (t == "case" || (t == "default" && isOpTok(p + 1, ":")))) {
+        while (p < b && !isOpTok(p, ":")) { p = p + 1; }
+        p = p + 1;
+        continue;
+      }
+      if (k == 1 && t == "return") {
+        int e = stmtEnd(p, b);
+        int h = 0;
+        if (intLike(this.rw.kindOfType(this.rw.curReturnType))) { h = 1; }
+        enqueue(p + 1, e, h);
+        p = e + 1;
+        continue;
+      }
+      if (k == 1 && t == "throw") { int e2 = stmtEnd(p, b); enqueue(p + 1, e2, 0); p = e2 + 1; continue; }
+      if (k == 1 && (t == "break" || t == "continue")) { p = stmtEnd(p, b) + 1; continue; }
+      if (k == 1 && p + 1 < b && isOpTok(p + 1, ":")) { p = p + 2; continue; }
+      if (k == 1 && t == "print" && isOpTok(p + 1, "(")) {
+        int c3 = closeOf(p + 1);
+        enqueue(p + 2, c3, 2);
+        p = c3 + 1;
+        continue;
+      }
+      int he = headerEnd(p, b);
+      if (he >= 0) { p = he + 1; continue; }
+      String dt = declType(p, b);
+      if (dt != "") {
+        int e3 = stmtEnd(p, b);
+        int h3 = 0;
+        if (intLike(this.rw.kindOfType(dt))) { h3 = 1; }
+        < each declarator: name = init >
+        int i = this.declAt;
+        while (i < e3) {
+          int d = 0;
+          int j = i;
+          int eq = -1;
+          while (j < e3) {
+            String u = this.rw.ot[j];
+            if (this.rw.ok[j] == 5) {
+              if (u == "(" || u == "[" || u == "{") { d = d + 1; }
+              if (u == ")" || u == "]" || u == "}") { d = d - 1; }
+              if (d == 0 && u == "=" && eq < 0) { eq = j; }
+              if (d == 0 && u == ",") { break; }
+            }
+            j = j + 1;
+          }
+          if (eq >= 0) { enqueue(eq + 1, j, h3); }
+          i = j + 1;
+        }
+        p = e3 + 1;
+        continue;
+      }
+      int e4 = stmtEnd(p, b);
+      enqueue(p, e4, 1);
+      p = e4 + 1;
+    }
+  }
+
+  void scanForHeader(int a, int c) {
+    int s1 = -1;
+    int s2 = -1;
+    int colon = -1;
+    int d = 0;
+    int i = a;
+    while (i < c) {
+      String t = this.rw.ot[i];
+      if (this.rw.ok[i] == 5) {
+        if (t == "(" || t == "[" || t == "{") { d = d + 1; }
+        if (t == ")" || t == "]" || t == "}") { d = d - 1; }
+        if (d == 0 && t == ";") { if (s1 < 0) { s1 = i; } else if (s2 < 0) { s2 = i; } }
+        if (d == 0 && t == ":" && colon < 0) { colon = i; }
+      }
+      i = i + 1;
+    }
+    if (s1 < 0) {
+      if (colon >= 0) { enqueue(colon + 1, c, 0); }
+      return;
+    }
+    if (s2 < 0) { return; }
+    String dt = declType(a, s1 + 1);
+    if (dt != "") {
+      int eq = this.declAt + 1;
+      int h = 0;
+      if (intLike(this.rw.kindOfType(dt))) { h = 1; }
+      if (isOpTok(eq, "=")) { enqueue(eq + 1, s1, h); }
+    } else {
+      enqueueList(a, s1, 1);
+    }
+    enqueue(s1 + 1, s2, 0);
+    enqueueList(s2 + 1, c, 1);
+  }
+
+  < ---- the parser (JLS precedence) ---- >
+  int node(int type, String op, int l, int r, int a, int b, int p, String k) {
+    if (this.nN >= arrayLength(this.nT)) {
+      int cap = arrayLength(this.nT) * 2;
+      this.nT = growI(this.nT, cap);
+      this.nL = growI(this.nL, cap);
+      this.nR = growI(this.nR, cap);
+      this.nC = growI(this.nC, cap);
+      this.nA = growI(this.nA, cap);
+      this.nB = growI(this.nB, cap);
+      this.nP = growI(this.nP, cap);
+      this.nOp = growS(this.nOp, cap);
+      this.nK = growS(this.nK, cap);
+    }
+    int n = this.nN;
+    this.nT[n] = type;
+    this.nOp[n] = op;
+    this.nL[n] = l;
+    this.nR[n] = r;
+    this.nC[n] = -1;
+    this.nA[n] = a;
+    this.nB[n] = b;
+    this.nP[n] = p;
+    this.nK[n] = k;
+    this.nN = n + 1;
+    return n;
+  }
+
+  int[] growI(int[] a, int cap) {
+    int[] b = new int[cap];
+    int i = 0;
+    while (i < this.nN) { b[i] = a[i]; i = i + 1; }
+    return b;
+  }
+
+  String[] growS(String[] a, int cap) {
+    String[] b = new String[cap];
+    int i = 0;
+    while (i < this.nN) { b[i] = a[i]; i = i + 1; }
+    return b;
+  }
+
+  boolean atOp(String s) { return this.pos < this.lim && this.rw.ok[this.pos] == 5 && this.rw.ot[this.pos] == s; }
+
+  boolean isAssignOp(String t) {
+    return t == "=" || t == "+=" || t == "-=" || t == "*=" || t == "/=" || t == "%=" || t == "&=" || t == "|=" || t == "^="
+      || t == "<<=" || t == ">>=" || t == ">>>=";
+  }
+
+  int parseAssign() {
+    int start = this.pos;
+    int l = parseTernary();
+    if (this.failed) { return l; }
+    if (this.pos < this.lim && this.rw.ok[this.pos] == 5 && isAssignOp(this.rw.ot[this.pos])) {
+      int p = this.pos;
+      String op = this.rw.ot[p];
+      this.pos = this.pos + 1;
+      int r = parseAssign();
+      return node(5, op, l, r, start, this.pos, p, this.nK[l]);
+    }
+    return l;
+  }
+
+  int parseTernary() {
+    int start = this.pos;
+    int c = parseBin(2);
+    if (this.failed) { return c; }
+    if (atOp("?")) {
+      this.pos = this.pos + 1;
+      int a = parseAssign();
+      if (this.failed || !atOp(":")) { this.failed = true; return c; }
+      this.pos = this.pos + 1;
+      int b = parseTernary();
+      if (this.failed) { return c; }
+      String k = this.nK[a];
+      if (k != this.nK[b]) { k = merge(this.nK[a], this.nK[b]); }
+      int n = node(4, "?", a, b, start, this.pos, -1, k);
+      this.nC[n] = c;
+      return n;
+    }
+    return c;
+  }
+
+  boolean opAtLevel(int lvl, String t) {
+    if (lvl == 2) { return t == "||"; }
+    if (lvl == 3) { return t == "&&"; }
+    if (lvl == 4) { return t == "|"; }
+    if (lvl == 5) { return t == "^"; }
+    if (lvl == 6) { return t == "&"; }
+    if (lvl == 7) { return t == "==" || t == "!="; }
+    if (lvl == 8) { return t == "<" || t == ">" || t == "<=" || t == ">="; }
+    if (lvl == 9) { return t == "<<" || t == ">>" || t == ">>>"; }
+    if (lvl == 10) { return t == "+" || t == "-"; }
+    if (lvl == 11) { return t == "*" || t == "/" || t == "%"; }
+    return false;
+  }
+
+  int parseBin(int lvl) {
+    if (lvl > 11) { return parseUnary(); }
+    int start = this.pos;
+    int l = parseBin(lvl + 1);
+    while (!this.failed && this.pos < this.lim) {
+      String t = this.rw.ot[this.pos];
+      int k = this.rw.ok[this.pos];
+      if (lvl == 8 && k == 1 && t == "instanceof") {
+        int p = this.pos;
+        this.pos = this.pos + 1;
+        < the type: names, dots, array brackets, and the string kinds written by the rewriter >
+        while (this.pos < this.lim && (this.rw.ok[this.pos] == 1 || this.rw.ot[this.pos] == "." || this.rw.ot[this.pos] == "[" || this.rw.ot[this.pos] == "]")) {
+          if (this.rw.ok[this.pos] == 1 && this.pos > p + 1 && this.rw.ok[this.pos - 1] == 1) { break; }
+          this.pos = this.pos + 1;
+        }
+        l = node(2, "instanceof", l, -1, start, this.pos, p, "b");
+        continue;
+      }
+      if (k != 5 || !opAtLevel(lvl, t)) { break; }
+      int p2 = this.pos;
+      this.pos = this.pos + 1;
+      int r = parseBin(lvl + 1);
+      if (this.failed) { return l; }
+      l = node(2, t, l, r, start, this.pos, p2, binKind(t, this.nK[l], this.nK[r]));
+    }
+    return l;
+  }
+
+  boolean castTypeWord(String t) {
+    return t == "int32" || t == "int" || t == "long" || t == "short" || t == "byte" || t == "char" || t == "double" || t == "float" || t == "boolean" || t == "String";
+  }
+
+  int parseUnary() {
+    if (this.pos >= this.lim) { this.failed = true; return -1; }
+    int start = this.pos;
+    String t = this.rw.ot[this.pos];
+    int k = this.rw.ok[this.pos];
+    if (k == 5 && (t == "-" || t == "+" || t == "~" || t == "!" || t == "++" || t == "--")) {
+      this.pos = this.pos + 1;
+      int c = parseUnary();
+      if (this.failed) { return c; }
+      String kk = this.nK[c];
+      if (t == "!") { kk = "b"; }
+      else if (t == "-" || t == "+" || t == "~") { kk = promote(kk); }
+      return node(3, t, c, -1, start, this.pos, start, kk);
+    }
+    if (k == 5 && t == "(" && this.pos + 2 < this.lim && this.rw.ok[this.pos + 1] == 1 && this.rw.ot[this.pos + 2] == ")") {
+      String ty = this.rw.ot[this.pos + 1];
+      int after = this.pos + 3;
+      boolean primStart = after < this.lim && (this.rw.ok[after] == 1 || this.rw.ok[after] == 2 || this.rw.ok[after] == 3 || this.rw.ot[after] == "(" || this.rw.ot[after] == "!" || this.rw.ot[after] == "~");
+      if (castTypeWord(ty) && (primStart || (after < this.lim && (this.rw.ot[after] == "-" || this.rw.ot[after] == "+")))) {
+        this.pos = after;
+        int c2 = parseUnary();
+        if (this.failed) { return c2; }
+        return node(6, ty, c2, -1, start, this.pos, start, this.rw.kindOfType(ty));
+      }
+      if (this.rw.upperStart(ty) && primStart && this.rw.ok[after] != 2) {
+        this.pos = after;
+        int c3 = parseUnary();
+        if (this.failed) { return c3; }
+        return node(6, ty, c3, -1, start, this.pos, start, this.rw.kindOfType(ty));
+      }
+    }
+    int pr = parsePrimary();
+    if (this.failed) { return pr; }
+    if (this.pos < this.lim && this.rw.ok[this.pos] == 5 && (this.rw.ot[this.pos] == "++" || this.rw.ot[this.pos] == "--")) {
+      this.pos = this.pos + 1;
+      return node(8, this.rw.ot[this.pos - 1], pr, -1, start, this.pos, this.pos - 1, this.nK[pr]);
+    }
+    return pr;
+  }
+
+  < calls and indexes inside a primary are analysed as expressions of their own >
+  void queueGroup(int open) {
+    int c = closeOf(open);
+    if (this.rw.ot[open] == "(") { enqueueList(open + 1, c, 0); }
+    else { enqueue(open + 1, c, 0); }
+  }
+
+  int parsePrimary() {
+    int start = this.pos;
+    String t = this.rw.ot[this.pos];
+    int k = this.rw.ok[this.pos];
+    if (k == 5 && t == "(") {
+      int c = closeOf(this.pos);
+      if (c >= this.lim) { this.failed = true; return -1; }
+      int saved = this.lim;
+      this.lim = c;
+      this.pos = this.pos + 1;
+      int e = parseAssign();
+      boolean whole = (this.pos == c);
+      this.lim = saved;
+      this.pos = c + 1;
+      if (this.failed || !whole) { this.failed = true; return -1; }
+      if (this.pos < this.lim && (this.rw.ot[this.pos] == "." || this.rw.ot[this.pos] == "[")) {
+        < (expr).member: a chain whose kind the rewriter cannot see >
+        scanChainRest();
+        return node(1, "", -1, -1, start, this.pos, -1, "?");
+      }
+      return node(7, "()", e, -1, start, this.pos, -1, this.nK[e]);
+    }
+    if (k == 2 || k == 3 || k == 4) {
+      this.pos = this.pos + 1;
+      return node(1, "", -1, -1, start, this.pos, -1, this.rw.exprKind(start, this.pos));
+    }
+    if (k == 1 && t == "new") {
+      this.pos = this.pos + 1;
+      while (this.pos < this.lim && (this.rw.ok[this.pos] == 1 || this.rw.ot[this.pos] == ".")) { this.pos = this.pos + 1; }
+      while (this.pos < this.lim && (this.rw.ot[this.pos] == "(" || this.rw.ot[this.pos] == "[" || this.rw.ot[this.pos] == "{")) {
+        int c2 = closeOf(this.pos);
+        if (this.rw.ot[this.pos] == "{") { enqueueList(this.pos + 1, c2, 0); }
+        else if (c2 > this.pos + 1) { queueGroup(this.pos); }
+        this.pos = c2 + 1;
+      }
+      scanChainRest();
+      return node(1, "", -1, -1, start, this.pos, -1, "?");
+    }
+    if (k == 5 && t == "{") {
+      < an array initializer as an expression >
+      int c4 = closeOf(this.pos);
+      enqueueList(this.pos + 1, c4, 0);
+      this.pos = c4 + 1;
+      return node(1, "", -1, -1, start, this.pos, -1, "?");
+    }
+    if (k == 1) {
+      this.pos = this.pos + 1;
+      scanChainRest();
+      return node(1, "", -1, -1, start, this.pos, -1, this.rw.exprKind(start, this.pos));
+    }
+    this.failed = true;
+    return -1;
+  }
+
+  < .name, (args), [index] after a primary start >
+  void scanChainRest() {
+    while (this.pos < this.lim) {
+      String u = this.rw.ot[this.pos];
+      if (u == "." && this.pos + 1 < this.lim && this.rw.ok[this.pos + 1] == 1) { this.pos = this.pos + 2; continue; }
+      if ((u == "(" || u == "[") && this.rw.ok[this.pos] == 5) {
+        int c = closeOf(this.pos);
+        if (c >= this.lim) { this.failed = true; return; }
+        if (c > this.pos + 1) { queueGroup(this.pos); }
+        this.pos = c + 1;
+        continue;
+      }
+      return;
+    }
+  }
+
+  < ---- kinds ---- >
+  String promote(String k) {
+    if (k == "c") { return "i"; }
+    return k;
+  }
+
+  String merge(String a, String b) {
+    if (a == "?" || b == "?") { return "?"; }
+    if (a == "d" || b == "d") { return "d"; }
+    if (a == "l" || b == "l") { return "l"; }
+    if (intLike(a) && intLike(b)) { return "i"; }
+    if (a == b) { return a; }
+    return "?";
+  }
+
+  String binKind(String op, String a, String b) {
+    if (op == "==" || op == "!=" || op == "<" || op == ">" || op == "<=" || op == ">=" || op == "&&" || op == "||") { return "b"; }
+    if (op == "+" && (a == "s" || b == "s")) { return "s"; }
+    if ((op == "&" || op == "|" || op == "^") && a == "b" && b == "b") { return "b"; }
+    if (op == "<<" || op == ">>" || op == ">>>") {
+      if (intLike(a)) { return "i"; }
+      if (a == "l") { return "l"; }
+      return "?";
+    }
+    return merge(a, b);
+  }
+
+  < true when node n is an int value that may lie outside the int range (unwrapped arithmetic) >
+  boolean arith(int n) {
+    if (n < 0) { return false; }
+    int t = this.nT[n];
+    String op = this.nOp[n];
+    if (this.nK[n] != "i") { return false; }
+    if (t == 2 && (op == "+" || op == "-" || op == "*")) { return true; }
+    if (t == 2 && (op == "&" || op == "|" || op == "^")) { return arith(this.nL[n]) || arith(this.nR[n]); }
+    < a negated literal (other than 2147483648) is in the int range >
+    if (t == 3 && op == "-" && this.nT[this.nL[n]] == 1 && this.nB[this.nL[n]] == this.nA[this.nL[n]] + 1 && this.rw.ok[this.nA[this.nL[n]]] == 2 && this.rw.ot[this.nA[this.nL[n]]] != "2147483648") { return false; }
+    if (t == 3 && op == "-") { return true; }
+    if (t == 3 && (op == "~" || op == "+")) { return arith(this.nL[n]); }
+    if (t == 7) { return arith(this.nL[n]); }
+    if (t == 4) { return arith(this.nL[n]) || arith(this.nR[n]); }
+    return false;
+  }
+
+  < ---- the laws ---- >
+  void sub(int c, boolean h, int depth) {
+    if (c < 0) { return; }
+    analyze(c, h, depth + 1);
+    if (!h && arith(c)) { wrapOne(this.nA[c], this.nB[c], this.rw.rules.model.toInt, 2 * (depth + 1)); this.wraps = this.wraps + 1; }
+  }
+
+  boolean nonzeroLiteral(int n) {
+    if (n < 0 || this.nT[n] != 1 || this.nB[n] != this.nA[n] + 1) { return false; }
+    int i = this.nA[n];
+    if (this.rw.ok[i] != 2) { return false; }
+    String t = this.rw.ot[i];
+    if (t.startsWith("'") || t.startsWith("(") || t.indexOf(".") >= 0) { return false; }
+    return t != "0" && t != "0L";
+  }
+
+  < a target that is one name (or this.name): its tokens can be repeated >
+  boolean simpleTarget(int n) {
+    if (n < 0 || this.nT[n] != 1) { return false; }
+    int a = this.nA[n];
+    int b = this.nB[n];
+    if (b == a + 1 && this.rw.ok[a] == 1) { return true; }
+    return b == a + 3 && this.rw.ot[a] == "this" && this.rw.ot[a + 1] == "." && this.rw.ok[a + 2] == 1;
+  }
+
+  boolean endsWithIndex(int n) { return n >= 0 && this.nB[n] > this.nA[n] && this.rw.ot[this.nB[n] - 1] == "]"; }
+
+  void analyze(int n, boolean h, int depth) {
+    if (n < 0) { return; }
+    int t = this.nT[n];
+    String op = this.nOp[n];
+    String k = this.nK[n];
+    int l = this.nL[n];
+    int r = this.nR[n];
+    if (t == 1 || t == 8) { return; }
+    if (t == 7) { analyze(l, h, depth + 1); return; }
+    if (t == 6) {
+      boolean ch = intLike(this.rw.kindOfType(op));
+      sub(l, ch, depth);
+      return;
+    }
+    if (t == 3) {
+      if (op == "-" || op == "~" || op == "+") { sub(l, k == "i", depth); } else { sub(l, false, depth); }
+      return;
+    }
+    if (t == 4) {
+      sub(this.nC[n], false, depth);
+      sub(l, h, depth);
+      sub(r, h, depth);
+      return;
+    }
+    if (t == 5) {
+      String tk2 = this.nK[l];
+      boolean vh = intLike(tk2) && !endsWithIndex(l);
+      if ((op == "/=" || op == "%=") && tk2 == "i" && simpleTarget(l) && !nonzeroLiteral(r)) {
+        String tpl = this.rw.rules.model.divInt;
+        if (op == "%=") { tpl = this.rw.rules.model.remInt; }
+        compoundCall(n, tpl, depth);
+        sub(r, false, depth);
+        return;
+      }
+      if ((op == "<<=" || op == ">>=" || op == ">>>=") && tk2 == "i" && simpleTarget(l)) {
+        String tpl2 = this.rw.rules.model.shlInt;
+        if (op == ">>=") { tpl2 = this.rw.rules.model.shrInt; }
+        if (op == ">>>=") { tpl2 = this.rw.rules.model.ushrInt; }
+        compoundCall(n, tpl2, depth);
+        sub(r, true, depth);
+        return;
+      }
+      if (op == "=" || op == "+=" || op == "-=" || op == "*=" || op == "&=" || op == "|=" || op == "^=") { sub(r, vh, depth); }
+      else { sub(r, false, depth); }
+      return;
+    }
+    < binary >
+    if (k == "i" && (op == "+" || op == "-" || op == "*" || op == "&" || op == "|" || op == "^")) {
+      sub(l, true, depth);
+      sub(r, true, depth);
+      return;
+    }
+    if (k == "s" && op == "+") {
+      sub(l, false, depth);
+      sub(r, false, depth);
+      tostrIfNeeded(l, depth);
+      tostrIfNeeded(r, depth);
+      return;
+    }
+    if (k == "i" && (op == "/" || op == "%")) {
+      sub(l, false, depth);
+      sub(r, false, depth);
+      if (!nonzeroLiteral(r)) {
+        String tpl3 = this.rw.rules.model.divInt;
+        if (op == "%") { tpl3 = this.rw.rules.model.remInt; }
+        opCall(n, tpl3, depth);
+      }
+      return;
+    }
+    if (k == "i" && (op == "<<" || op == ">>" || op == ">>>")) {
+      String tpl4 = this.rw.rules.model.shlInt;
+      if (op == ">>") { tpl4 = this.rw.rules.model.shrInt; }
+      if (op == ">>>") { tpl4 = this.rw.rules.model.ushrInt; }
+      < shift right needs its left operand in the int range; the others agree modulo 2^32 >
+      sub(l, op != ">>", depth);
+      sub(r, true, depth);
+      opCall(n, tpl4, depth);
+      return;
+    }
+    sub(l, false, depth);
+    sub(r, false, depth);
+  }
+
+  void tostrIfNeeded(int c, int depth) {
+    if (c < 0) { return; }
+    String k = this.nK[c];
+    if (k == "d") { wrapOne(this.nA[c], this.nB[c], this.rw.rules.model.tostrDouble, 2 * depth); this.calls = this.calls + 1; }
+    else if (k == "c") { wrapOne(this.nA[c], this.nB[c], this.rw.rules.model.tostrChar, 2 * depth); this.calls = this.calls + 1; }
+  }
+
+  < ---- edits ---- >
+  void edit(int at, String tok, int kind, int typ, int ord, int seq) {
+    if (this.eN >= arrayLength(this.eAt)) {
+      int cap = arrayLength(this.eAt) * 2;
+      int[] a = new int[cap];
+      String[] b = new String[cap];
+      int[] c = new int[cap];
+      int[] d = new int[cap];
+      int[] e = new int[cap];
+      int[] f = new int[cap];
+      int i = 0;
+      while (i < this.eN) { a[i] = this.eAt[i]; b[i] = this.eTok[i]; c[i] = this.eKind[i]; d[i] = this.eTyp[i]; e[i] = this.eOrd[i]; f[i] = this.eSeq[i]; i = i + 1; }
+      this.eAt = a;
+      this.eTok = b;
+      this.eKind = c;
+      this.eTyp = d;
+      this.eOrd = e;
+      this.eSeq = f;
+    }
+    this.eAt[this.eN] = at;
+    this.eTok[this.eN] = tok;
+    this.eKind[this.eN] = kind;
+    this.eTyp[this.eN] = typ;
+    this.eOrd[this.eN] = ord;
+    this.eSeq[this.eN] = seq;
+    this.eN = this.eN + 1;
+  }
+
+  < a one-operand template F(G(x)) written around a .. b-1 >
+  void wrapOne(int a, int b, String tpl, int ord) {
+    int at = tpl.indexOf("$a");
+    if (at <= 0) { return; }
+    String pre = tpl.substring(0, at);
+    String post = tpl.substring(at + 2);
+    int closers = 0;
+    int q = 0;
+    while (q < post.length()) {
+      if (post.charAt(q) != 41) { return; }
+      closers = closers + 1;
+      q = q + 1;
+    }
+    String[] names = new String[8];
+    int nn = 0;
+    String rest = pre;
+    while (rest != "") {
+      int p = rest.indexOf("(");
+      if (p <= 0 || nn >= 8) { return; }
+      names[nn] = rest.substring(0, p).trim();
+      nn = nn + 1;
+      rest = rest.substring(p + 1);
+    }
+    if (nn != closers) { return; }
+    int s = 0;
+    int i = 0;
+    while (i < nn) {
+      edit(a, names[i], 1, 1, ord, s);
+      edit(a, "(", 5, 1, ord, s + 1);
+      s = s + 2;
+      i = i + 1;
+    }
+    i = 0;
+    while (i < closers) { edit(b, ")", 5, 2, ord, i); i = i + 1; }
+  }
+
+  < a binary node written as F(left, right): the operator becomes a comma >
+  void opCall(int n, String tpl, int depth) {
+    String fn = this.rw.binaryFn(tpl);
+    if (fn == "") { return; }
+    int ord = 2 * depth + 1;
+    edit(this.nA[n], fn, 1, 1, ord, 0);
+    edit(this.nA[n], "(", 5, 1, ord, 1);
+    edit(this.nP[n], ",", 5, 3, ord, 0);
+    edit(this.nB[n], ")", 5, 2, ord, 0);
+    this.calls = this.calls + 1;
+  }
+
+  < x op= y on an int name written as x = F(x, y) >
+  void compoundCall(int n, String tpl, int depth) {
+    String fn = this.rw.binaryFn(tpl);
+    if (fn == "") { return; }
+    int l = this.nL[n];
+    int ord = 2 * depth + 1;
+    int at = this.nP[n] + 1;
+    edit(this.nP[n], "=", 5, 3, ord, 0);
+    edit(at, fn, 1, 1, ord, 0);
+    edit(at, "(", 5, 1, ord, 1);
+    int s = 2;
+    int i = this.nA[l];
+    while (i < this.nB[l]) { edit(at, this.rw.ot[i], this.rw.ok[i], 1, ord, s); s = s + 1; i = i + 1; }
+    edit(at, ",", 5, 1, ord, s);
+    edit(this.nB[n], ")", 5, 2, ord, 0);
+    this.calls = this.calls + 1;
+  }
+
+  << Apply the edits. Replacements first (they keep positions). Then insertions,
+     last position first; at one position an opening is applied before a
+     closing (so the closing ends up first), openings from the innermost node
+     out and in reverse sequence, closings from the outermost node in. >>
+  boolean before(int x, int y) {
+    if (this.eAt[x] != this.eAt[y]) { return this.eAt[x] > this.eAt[y]; }
+    if (this.eTyp[x] != this.eTyp[y]) { return this.eTyp[x] < this.eTyp[y]; }
+    if (this.eTyp[x] == 1) {
+      if (this.eOrd[x] != this.eOrd[y]) { return this.eOrd[x] > this.eOrd[y]; }
+      return this.eSeq[x] > this.eSeq[y];
+    }
+    return this.eOrd[x] < this.eOrd[y];
+  }
+
+  void applyEdits() {
+    int i = 0;
+    while (i < this.eN) {
+      if (this.eTyp[i] == 3) { this.rw.ot[this.eAt[i]] = this.eTok[i]; }
+      i = i + 1;
+    }
+    int[] idx = new int[this.eN + 1];
+    int m = 0;
+    i = 0;
+    while (i < this.eN) {
+      if (this.eTyp[i] != 3) { idx[m] = i; m = m + 1; }
+      i = i + 1;
+    }
+    < insertion sort by the order above >
+    int a = 1;
+    while (a < m) {
+      int x = idx[a];
+      int b = a - 1;
+      while (b >= 0 && before(x, idx[b])) { idx[b + 1] = idx[b]; b = b - 1; }
+      idx[b + 1] = x;
+      a = a + 1;
+    }
+    int j = 0;
+    while (j < m) {
+      int e = idx[j];
+      this.rw.insertAt(this.eAt[e], this.eKind[e], this.eTok[e]);
+      j = j + 1;
+    }
+  }
+
+  < ---- the member ---- >
+  void run() {
+    this.eN = 0;
+    this.qN = 0;
+    scanStatements(0, this.rw.on);
+    int done = 0;
+    while (done < this.qN) {
+      int a = this.qA[done];
+      int b = this.qB[done];
+      int h = this.qH[done];
+      done = done + 1;
+      this.nN = 0;
+      this.pos = a;
+      this.lim = b;
+      this.failed = false;
+      int root = parseAssign();
+      if (this.failed || root < 0 || this.pos != b) { continue; }
+      analyze(root, h == 1, 0);
+      if (h != 1 && arith(root)) { wrapOne(this.nA[root], this.nB[root], this.rw.rules.model.toInt, 0); this.wraps = this.wraps + 1; }
+      if (h == 2) { tostrIfNeeded(root, 0); }
+    }
+    applyEdits();
+  }
+}

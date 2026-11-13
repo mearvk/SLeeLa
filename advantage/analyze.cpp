@@ -5,26 +5,30 @@
 //
 // Optionally enriches the store from declared remote <knowledgeSource>
 // elements via the secure transport layer. Enrichment is OFF unless --enrich
-// is passed, and even then only https/file schemes and explicitly allowed
-// hosts are permitted.
+// is passed, and even then only https (plus file:// via --allow-file) and
+// explicitly allowed hosts are permitted.
 //
 // Usage:
 //   analyze [advantages.xml]
 //           [--enrich]
 //           [--allow-host HOST]...   (repeatable; required to reach a host)
 //           [--allow-http]           (also permit plaintext http -- discouraged)
+//           [--allow-file]           (also permit file:// -- reads LOCAL files)
+//           [--counsel]              (rank sources by evidence + assumptions)
 //           [--store DIR]            (content-addressed download store)
 #include <iostream>
 #include <string>
 #include <vector>
 
 #include "advantage_store.hpp"
+#include "counsel.hpp"
 #include "enrich.hpp"
 
 int main(int argc, char** argv) {
     std::string path = "advantages.xml";
     advantage::EnrichPolicy policy;  // enabled == false by default (safe)
     bool pathSet = false;
+    bool wantCounsel = false;
 
     for (int i = 1; i < argc; ++i) {
         std::string a = argv[i];
@@ -34,6 +38,10 @@ int main(int argc, char** argv) {
             policy.allowedHosts.push_back(argv[++i]);
         } else if (a == "--allow-http") {
             policy.allowedSchemes.push_back("http");
+        } else if (a == "--allow-file") {
+            policy.allowedSchemes.push_back("file");
+        } else if (a == "--counsel") {
+            wantCounsel = true;
         } else if (a == "--store" && i + 1 < argc) {
             policy.storeDir = argv[++i];
         } else if (!a.empty() && a[0] == '-') {
@@ -71,7 +79,15 @@ int main(int argc, char** argv) {
     std::cout << "Source advantages: " << store.sources.size() << "\n";
     std::cout << "Total assumptions: " << store.assumptionCount() << "\n";
     std::cout << "Total knowledge strings: " << store.knowledgeCount() << "\n";
+    std::cout << "Total observations: " << store.evidenceCount() << "\n";
     std::cout << "----------------------------------------\n";
+
+    if (wantCounsel) {
+        std::cout << "Counsel (ranked; score = mean advantage x confidence x trust)\n";
+        std::cout << "----------------------------------------\n";
+        advantage::renderCounsel(std::cout, advantage::counsel(store));
+        return 0;
+    }
 
     for (const auto& s : store.sources) {
         std::cout << s.name << "  [id=" << s.id << ", kind=" << s.kind << "]\n";

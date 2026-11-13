@@ -1,0 +1,13 @@
+4
+big
+circ
+3
+circ
+true
+false
+true
+false
+7
+no area
+caught oops
+5

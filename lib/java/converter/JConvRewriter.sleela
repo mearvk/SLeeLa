@@ -1,0 +1,1874 @@
+<< lib/java/converter/JConvRewriter.sleela
+   Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
+   Definition: the token-level half of the converter. rewrite(a, b) copies the
+   Java tokens a .. b-1 into an output token list, applying the rules of
+   JConvRules as it goes (erasure, renames, literal forms, array forms,
+   built-in collisions, System.out.println). scanReason finds the first
+   construct SLeeLa cannot express yet (rule 5). postPass splits Java
+   multi-variable declarations and inserts the checked casts that javac would
+   insert (an erased Any value stored into a typed variable or returned from a
+   typed method). Array initializers, char literals, labels and jumps through
+   finally are written in their SLeeLa 3.1 forms (SLEELA.syntax 44); a for
+   header with commas is lowered with a labeled block (44.4). >>
+#sleela 3.0
+material;
+
+class JConvRewriter {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full record: a library-family class of the Java container. >>
+  String metaVersion = "0.5.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 4;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "The Java Language Specification, Java SE 28 Edition";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  JConvRules rules;
+  JConvConfig cfg;
+  JConvLexer lx;
+  < the input token kinds and texts (shared with the lexer) >
+  int[] K;
+  String[] T;
+  < the output token list >
+  int[] ok;
+  String[] ot;
+  int[] ol;
+  < the last source line of each output token (comments span lines) >
+  int[] oe;
+  int on;
+  < input positions whose token is replaced (text "" drops it) >
+  int[] pendAt;
+  String[] pendText;
+  int pendN;
+  < type variables in scope; they erase to Any >
+  String[] tvars;
+  int tvN;
+  < for headers with commas lowered in the current type (labels slFor0, slFor1, ...) >
+  int forCount;
+  << the last pattern found by patternAt: E start, E end, type start, type end,
+     variable, rest start (or -1), end, instanceof position >>
+  int[] pat;
+  < instanceof positions whose pattern is lowered (not a stub reason) >
+  int[] patOk;
+  int patOkN;
+  < methods (name, 1 when static) and fields declared by the current type >
+  String[] mNames;
+  int[] mStatic;
+  String[] mRet;
+  int mN;
+  String[] fNames;
+  String[] fTypes;
+  int fN;
+  < the names and declared types seen in the current member (typed pass) >
+  String[] sName;
+  String[] sType;
+  int sN;
+  < class-like types declared in the current file (castable targets) >
+  String[] declNames;
+  int declN;
+  < single static imports of the file: member name and its class >
+  String[] siName;
+  String[] siClass;
+  int siN;
+  < member context >
+  boolean curStatic;
+  boolean inBody;
+  String curReturnType;
+  String unitName;
+  < the expression half of the typed pass >
+  JConvExpr expr;
+  < lambda and method reference lowering (JConvLambda) >
+  JConvLambda lam;
+  < inner classes and the enclosing instance (JConvOuter) >
+  JConvOuter outer;
+
+  JConvRewriter(JConvRules r, JConvConfig c) {
+    this.rules = r;
+    this.cfg = c;
+    this.ok = new int[512];
+    this.ot = new String[512];
+    this.ol = new int[512];
+    this.oe = new int[512];
+    this.on = 0;
+    this.pendAt = new int[512];
+    this.pendText = new String[512];
+    this.pendN = 0;
+    this.tvars = new String[32];
+    this.tvN = 0;
+    this.forCount = 0;
+    this.pat = new int[8];
+    this.patOk = new int[64];
+    this.patOkN = 0;
+    this.mNames = new String[256];
+    this.mStatic = new int[256];
+    this.mRet = new String[256];
+    this.mN = 0;
+    this.fNames = new String[256];
+    this.fTypes = new String[256];
+    this.fN = 0;
+    this.sName = new String[128];
+    this.sType = new String[128];
+    this.sN = 0;
+    this.declNames = new String[64];
+    this.declN = 0;
+    this.siName = new String[64];
+    this.siClass = new String[64];
+    this.siN = 0;
+    this.curStatic = false;
+    this.inBody = false;
+    this.curReturnType = "";
+    this.unitName = "";
+    this.expr = new JConvExpr(this);
+    this.lam = new JConvLambda(this);
+    this.outer = new JConvOuter();
+  }
+
+  < ---- per file and per type state ---- >
+  void beginFile(JConvLexer l) {
+    this.lx = l;
+    this.K = l.kinds;
+    this.T = l.texts;
+    this.siN = 0;
+    this.declN = 0;
+    this.outer.beginFile();
+  }
+
+  void beginUnit(String name) {
+    this.unitName = name;
+    this.tvN = 0;
+    this.forCount = 0;
+    this.mN = 0;
+    this.fN = 0;
+  }
+
+  void addStaticImport(String member, String cls) {
+    if (this.siN < arrayLength(this.siName)) {
+      this.siName[this.siN] = member;
+      this.siClass[this.siN] = cls;
+      this.siN = this.siN + 1;
+    }
+  }
+
+  void addDeclName(String n) {
+    if (this.declN < arrayLength(this.declNames)) {
+      this.declNames[this.declN] = n;
+      this.declN = this.declN + 1;
+    }
+  }
+
+  void addTypeVar(String n) {
+    if (this.tvN < arrayLength(this.tvars)) {
+      this.tvars[this.tvN] = n;
+      this.tvN = this.tvN + 1;
+    }
+  }
+
+  boolean isTypeVar(String n) {
+    int i = 0;
+    while (i < this.tvN) { if (this.tvars[i] == n) { return true; } i = i + 1; }
+    return false;
+  }
+
+  < the type variables in scope as a comma list, for nested types >
+  String typeVarList() {
+    String s = "";
+    int i = 0;
+    while (i < this.tvN) {
+      if (i > 0) { s = s + ","; }
+      s = s + this.tvars[i];
+      i = i + 1;
+    }
+    return s;
+  }
+
+  < a method of the current type; overloads with different results make the result unknown >
+  void addMethod(String n, boolean isStatic, String ret) {
+    int e = methodIndex(n);
+    if (e >= 0) {
+      if (this.mRet[e] != ret) { this.mRet[e] = "?"; }
+      return;
+    }
+    if (this.mN >= arrayLength(this.mNames)) {
+      String[] a = new String[this.mN * 2];
+      int[] b = new int[this.mN * 2];
+      String[] c = new String[this.mN * 2];
+      int i = 0;
+      while (i < this.mN) { a[i] = this.mNames[i]; b[i] = this.mStatic[i]; c[i] = this.mRet[i]; i = i + 1; }
+      this.mNames = a;
+      this.mStatic = b;
+      this.mRet = c;
+    }
+    this.mRet[this.mN] = ret;
+    this.mNames[this.mN] = n;
+    if (isStatic) { this.mStatic[this.mN] = 1; } else { this.mStatic[this.mN] = 0; }
+    this.mN = this.mN + 1;
+  }
+
+  int methodIndex(String n) {
+    int i = 0;
+    while (i < this.mN) { if (this.mNames[i] == n) { return i; } i = i + 1; }
+    return -1;
+  }
+
+  void addField(String n, String type) {
+    if (this.fN >= arrayLength(this.fNames)) {
+      String[] a = new String[this.fN * 2];
+      String[] b = new String[this.fN * 2];
+      int i = 0;
+      while (i < this.fN) { a[i] = this.fNames[i]; b[i] = this.fTypes[i]; i = i + 1; }
+      this.fNames = a;
+      this.fTypes = b;
+    }
+    this.fNames[this.fN] = n;
+    this.fTypes[this.fN] = type;
+    this.fN = this.fN + 1;
+  }
+
+  boolean hasField(String n) {
+    int i = 0;
+    while (i < this.fN) { if (this.fNames[i] == n) { return true; } i = i + 1; }
+    return false;
+  }
+
+  < ---- input helpers ---- >
+  int nx(int i) {
+    int j = i;
+    while (j < this.lx.n && this.K[j] == 6) { j = j + 1; }
+    return j;
+  }
+
+  int pv(int i) {
+    int j = i - 1;
+    while (j >= 0 && this.K[j] == 6) { j = j - 1; }
+    return j;
+  }
+
+  boolean isOp(int i, String s) {
+    if (i < 0 || i >= this.lx.n) { return false; }
+    return this.K[i] == 5 && this.T[i] == s;
+  }
+
+  boolean isId(int i, String s) {
+    if (i < 0 || i >= this.lx.n) { return false; }
+    return this.K[i] == 1 && this.T[i] == s;
+  }
+
+  boolean upperStart(String s) {
+    if (s == null || s == "") { return false; }
+    int c = s.charAt(0);
+    return c >= 65 && c <= 90;
+  }
+
+  boolean lowerStart(String s) {
+    if (s == null || s == "") { return false; }
+    int c = s.charAt(0);
+    return c >= 97 && c <= 122;
+  }
+
+  < the index of the bracket that closes the one at i ( ( [ { ) >
+  int matchClose(int i) {
+    int d = 0;
+    int j = i;
+    while (j < this.lx.n) {
+      if (this.K[j] == 5) {
+        String t = this.T[j];
+        if (t == "(" || t == "[" || t == "{") { d = d + 1; }
+        else if (t == ")" || t == "]" || t == "}") {
+          d = d - 1;
+          if (d == 0) { return j; }
+        }
+      }
+      j = j + 1;
+    }
+    return this.lx.n - 1;
+  }
+
+  << The end of a generic type argument or parameter list that opens at i,
+     or -1 when the angle bracket is a comparison. Only type-shaped tokens may
+     appear inside: names, dots, commas, wildcards, bounds, array brackets. >>
+  int genEnd(int i) {
+    int d = 0;
+    int j = i;
+    int steps = 0;
+    while (j < this.lx.n && steps < 400) {
+      int k = this.K[j];
+      String t = this.T[j];
+      if (k == 6) { j = j + 1; continue; }
+      if (k == 5) {
+        if (t == "<") { d = d + 1; }
+        else if (t == ">") { d = d - 1; }
+        else if (t == ">>") { d = d - 2; }
+        else if (t == ">>>") { d = d - 3; }
+        else if (t == "." || t == "," || t == "?" || t == "&" || t == "[" || t == "]" || t == "@") { }
+        else { return -1; }
+        if (d == 0) { return j; }
+        if (d < 0) { return -1; }
+      } else if (k == 1) {
+        if (t == "new" || t == "return" || t == "instanceof" || t == "this" || t == "null" || t == "true" || t == "false") { return -1; }
+      } else {
+        return -1;
+      }
+      j = j + 1;
+      steps = steps + 1;
+    }
+    return -1;
+  }
+
+  boolean isGenericAt(int i) {
+    if (!isOp(i, "<")) { return false; }
+    int p = pv(i);
+    if (p < 0) { return false; }
+    boolean okPrev = (this.K[p] == 1 && upperStart(this.T[p])) || isOp(p, ".");
+    if (!okPrev) { return false; }
+    return genEnd(i) >= 0;
+  }
+
+  < ---- output list ---- >
+  void reset() {
+    this.on = 0;
+    this.pendN = 0;
+  }
+
+  void growOut() {
+    int cap = arrayLength(this.ok) * 2;
+    int[] k2 = new int[cap];
+    String[] t2 = new String[cap];
+    int[] l2 = new int[cap];
+    int[] e2 = new int[cap];
+    int i = 0;
+    while (i < this.on) { k2[i] = this.ok[i]; t2[i] = this.ot[i]; l2[i] = this.ol[i]; e2[i] = this.oe[i]; i = i + 1; }
+    this.ok = k2;
+    this.ot = t2;
+    this.ol = l2;
+    this.oe = e2;
+  }
+
+  void push(int kind, String text, int line) {
+    if (this.on >= arrayLength(this.ok)) { growOut(); }
+    this.ok[this.on] = kind;
+    this.ot[this.on] = text;
+    this.ol[this.on] = line;
+    this.oe[this.on] = line;
+    this.on = this.on + 1;
+  }
+
+  void pushComment(String text, int line, int endLine) {
+    push(6, text, line);
+    this.oe[this.on - 1] = endLine;
+  }
+
+  < a generated token on the current line >
+  void syn(int kind, String text) { push(kind, text, 0); }
+
+  void insertAt(int at, int kind, String text) {
+    if (this.on >= arrayLength(this.ok)) { growOut(); }
+    int i = this.on;
+    while (i > at) {
+      this.ok[i] = this.ok[i - 1];
+      this.ot[i] = this.ot[i - 1];
+      this.ol[i] = this.ol[i - 1];
+      this.oe[i] = this.oe[i - 1];
+      i = i - 1;
+    }
+    this.ok[at] = kind;
+    this.ot[at] = text;
+    this.ol[at] = 0;
+    this.oe[at] = 0;
+    this.on = this.on + 1;
+  }
+
+  void addPending(int at, String text) {
+    if (this.pendN < arrayLength(this.pendAt)) {
+      this.pendAt[this.pendN] = at;
+      this.pendText[this.pendN] = text;
+      this.pendN = this.pendN + 1;
+    }
+  }
+
+  < -1 when position i has no pending replacement >
+  int pendingIndex(int i) {
+    int k = 0;
+    while (k < this.pendN) { if (this.pendAt[k] == i) { return k; } k = k + 1; }
+    return -1;
+  }
+
+  < the output tokens a .. b-1 joined with spaces (for type texts) >
+  String outText(int a, int b) {
+    String s = "";
+    int i = a;
+    while (i < b) {
+      if (this.ok[i] != 6) {
+        String t = this.ot[i];
+        boolean tight = (t == "." || t == "[" || t == "]" || t == "...");
+        boolean prevTight = (i > a && (this.ot[i - 1] == "." || this.ot[i - 1] == "["));
+        if (s != "" && !tight && !prevTight) { s = s + " "; }
+        s = s + t;
+      }
+      i = i + 1;
+    }
+    return s;
+  }
+
+  < ---- rule 5 scan ---- >
+  int scanReason(int a, int b, boolean body) {
+    this.patOkN = 0;
+    this.lam.beginScan(a, body);
+    int i = a;
+    while (i < b) {
+      int k = this.K[i];
+      String t = this.T[i];
+      if (k == 6) { i = i + 1; continue; }
+      if ((k == 2 || k == 3) && this.lx.flags[i] != 0) { return this.lx.flags[i]; }
+      if (k == 5) {
+        < a lambda or method reference that JConvLambda lowers is not a stub reason >
+        if (t == "->" && !this.lam.registerArrow(i)) { return 1; }
+        if (t == "::" && !this.lam.registerRef(i)) { return 2; }
+        if (t == "." && isId(nx(i + 1), "class")) { return 9; }
+      }
+      if (k == 1) {
+        if (t == "new") {
+          int r = scanNew(i);
+          if (r != 0) { return r; }
+        }
+        if (t == "case") {
+          int j = nx(i + 1);
+          int d = 0;
+          while (j < b) {
+            if (isOp(j, "(") || isOp(j, "[") || isOp(j, "{")) { d = d + 1; }
+            if (isOp(j, ")") || isOp(j, "]") || isOp(j, "}")) { d = d - 1; }
+            if (d == 0 && (isOp(j, ":") || isOp(j, "->"))) { break; }
+            if (d == 0 && isOp(j, ",")) { return 5; }
+            j = j + 1;
+          }
+        }
+        if (t == "switch") {
+          int p = pv(i);
+          boolean stmt = isOp(p, ";") || isOp(p, "{") || isOp(p, "}") || isOp(p, ":") || isId(p, "else") || isOp(p, ")") || p < a;
+          if (!stmt) { return 5; }
+        }
+        if (t == "yield" && body) {
+          int q = nx(i + 1);
+          if (!isOp(q, "(") && !isOp(q, ".") && !isOp(q, "=") && !isOp(pv(i), ".")) { return 5; }
+        }
+        if (t == "if" && isOp(nx(i + 1), "(") && ifPatternLowerable(i)) { addPatOk(this.pat[7]); }
+        if (t == "return" && returnPatternLowerable(i)) { addPatOk(this.pat[7]); }
+        if (t == "instanceof" && !isPatOk(i)) {
+          int j = nx(i + 1);
+          if (isId(j, "final")) { j = nx(j + 1); }
+          j = skipType(j);
+          if (j < this.lx.n && (this.K[j] == 1 || isOp(j, "("))) { return 6; }
+        }
+        if (t == "try" && isOp(nx(i + 1), "(")) { return 7; }
+        if (t == "var" && body && this.K[nx(i + 1)] == 1 && !isOp(pv(i), ".")) { return 8; }
+        if (isOp(nx(i + 1), ".") && (isId(nx(nx(i + 1) + 1), "this") || (isId(nx(nx(i + 1) + 1), "super") && t != "this"))) {
+          < Outer.this of the enclosing class, and Own.this, are lowered (JConvOuter) >
+          boolean qthis = isId(nx(nx(i + 1) + 1), "this") && !isOp(pv(i), ".");
+          boolean lowered = qthis && (t == this.unitName || (t == this.outer.outerName && this.outer.outerInstance));
+          if (!lowered) { return 10; }
+        }
+        if (t == "String" && isOp(nx(i + 1), ".") && !isOp(pv(i), ".") && this.K[nx(nx(i + 1) + 1)] == 1) {
+          << String is a SLeeLa keyword, so it cannot be a static receiver. valueOf is
+             not lowered to a concatenation: a double or char would print in SLeeLa
+             form, a near miss (steering java-to-sleela-conversion.md rule 2). >>
+          return 22;
+        }
+        if (t == "System" && isOp(nx(i + 1), ".")) {
+          < print adds a newline, so System.out.print without ln has no exact form >
+          int s1 = nx(nx(i + 1) + 1);
+          int s3 = nx(nx(s1 + 1) + 1);
+          if ((isId(s1, "out") || isId(s1, "err")) && isId(s3, "print")) { return 23; }
+        }
+        if (t == "for" && isOp(nx(i + 1), "(") && forHasComma(nx(i + 1)) && !forLowerable(i)) { return 11; }
+        if (body && (t == "class" || t == "interface" || t == "enum") && !isOp(pv(i), ".")) { return 14; }
+      }
+      i = i + 1;
+    }
+    return 0;
+  }
+
+  < the index of the bracket that opens the one that closes at c >
+  int matchOpen(int c) {
+    int d = 0;
+    int j = c;
+    while (j >= 0) {
+      if (this.K[j] == 5) {
+        String t = this.T[j];
+        if (t == ")" || t == "]" || t == "}") { d = d + 1; }
+        else if (t == "(" || t == "[" || t == "{") {
+          d = d - 1;
+          if (d == 0) { return j; }
+        }
+      }
+      j = j - 1;
+    }
+    return 0;
+  }
+
+  < the index after a type that starts at j (names, dots, generics, array brackets) >
+  int skipType(int j0) {
+    int j = j0;
+    while (j < this.lx.n) {
+      if (this.K[j] == 1 && !isId(j, "instanceof")) {
+        j = nx(j + 1);
+        if (isOp(j, ".")) { j = nx(j + 1); continue; }
+        if (isOp(j, "<")) {
+          int e = genEnd(j);
+          if (e >= 0) { j = nx(e + 1); }
+        }
+        while (isOp(j, "[") && isOp(nx(j + 1), "]")) { j = nx(nx(j + 1) + 1); }
+        return j;
+      }
+      return j;
+    }
+    return j;
+  }
+
+  int scanNew(int i) {
+    int j = nx(i + 1);
+    while (j < this.lx.n && (this.K[j] == 1 || isOp(j, "."))) { j = nx(j + 1); }
+    if (isOp(j, "<")) {
+      int e = genEnd(j);
+      if (e >= 0) { j = nx(e + 1); }
+    }
+    if (isOp(j, "(")) {
+      int c = matchClose(j);
+      if (isOp(nx(c + 1), "{")) { return 3; }
+      return 0;
+    }
+    if (isOp(j, "[")) {
+      int groups = 0;
+      while (isOp(j, "[")) {
+        int c = matchClose(j);
+        groups = groups + 1;
+        j = nx(c + 1);
+      }
+      if (groups >= 2) { return 12; }
+    }
+    return 0;
+  }
+
+  < ---- for headers with commas (lowered with a labeled block, SLEELA.syntax 44.4) ---- >
+  < the top-level commas of the range a .. b-1 (outside brackets and generic arguments) >
+  int[] commasIn(int a, int b) {
+    int[] found = new int[16];
+    int n = 0;
+    int j = a;
+    while (j < b) {
+      if (isOp(j, "(") || isOp(j, "[") || isOp(j, "{")) { j = matchClose(j) + 1; continue; }
+      if (isOp(j, "<") && isGenericAt(j)) { j = genEnd(j) + 1; continue; }
+      if (isOp(j, ",") && n < 15) { found[n + 1] = j; n = n + 1; }
+      j = j + 1;
+    }
+    found[0] = n;
+    return found;
+  }
+
+  boolean forHasComma(int p) {
+    int[] cs = commasIn(p + 1, matchClose(p));
+    return cs[0] > 0;
+  }
+
+  < the two top-level semicolons of a for header, or -1 >
+  int forSemi(int p, int which) {
+    int c = matchClose(p);
+    int seen = 0;
+    int j = p + 1;
+    while (j < c) {
+      if (isOp(j, "(") || isOp(j, "[") || isOp(j, "{")) { j = matchClose(j) + 1; continue; }
+      if (isOp(j, ";")) {
+        seen = seen + 1;
+        if (seen == which) { return j; }
+      }
+      j = j + 1;
+    }
+    return -1;
+  }
+
+  < the end of a simple (non-compound) statement starting at s, or -1 >
+  int simpleStatementEnd(int s) {
+    if (isId(s, "if") || isId(s, "for") || isId(s, "while") || isId(s, "do") || isId(s, "switch") || isId(s, "try") || isId(s, "synchronized")) { return -1; }
+    int j = s;
+    while (j < this.lx.n) {
+      if (isOp(j, "(") || isOp(j, "[") || isOp(j, "{")) { j = matchClose(j) + 1; continue; }
+      if (isOp(j, ";")) { return j; }
+      j = j + 1;
+    }
+    return -1;
+  }
+
+  < the last token of the body of the for statement at i, or -1 when it is not lowerable >
+  int forBodyEnd(int i) {
+    int p = nx(i + 1);
+    if (forSemi(p, 2) < 0) { return -1; }
+    int b = nx(matchClose(p) + 1);
+    if (isOp(b, "{")) { return matchClose(b); }
+    return simpleStatementEnd(b);
+  }
+
+  boolean forLowerable(int i) { return forBodyEnd(i) >= 0; }
+
+  < true when position q lies in the body of a loop that starts after b0 >
+  boolean inNestedLoop(int q, int b0) {
+    int j = b0 + 1;
+    while (j < q) {
+      if (isId(j, "for") || isId(j, "while")) {
+        int hp = nx(j + 1);
+        if (isOp(hp, "(")) {
+          int s = nx(matchClose(hp) + 1);
+          int e = s;
+          if (isOp(s, "{")) { e = matchClose(s); } else { e = simpleStatementEnd(s); }
+          if (e < 0) { e = q; }
+          if (s <= q && q <= e) { return true; }
+        }
+      }
+      if (isId(j, "do")) {
+        int s = nx(j + 1);
+        if (isOp(s, "{") && s <= q && q <= matchClose(s)) { return true; }
+      }
+      j = j + 1;
+    }
+    return false;
+  }
+
+  << for (init1, init2; cond; upd1, upd2) body becomes
+       { init1; init2; for (; cond; ) { slForN: { body } upd1; upd2; } }
+     and every continue of this loop becomes break slForN, so the updates run
+     on continue exactly as in Java. A label written on the Java loop now
+     labels the outer block, which break leaves as before. >>
+  int lowerForComma(int i) {
+    int p = nx(i + 1);
+    int c = matchClose(p);
+    int s1 = forSemi(p, 1);
+    int s2 = forSemi(p, 2);
+    int bodyEnd = forBodyEnd(i);
+    if (s1 < 0 || s2 < 0 || bodyEnd < 0) { return -1; }
+    int b = nx(c + 1);
+    boolean block = isOp(b, "{");
+    String javaLabel = "";
+    if (this.on >= 2 && this.ot[this.on - 1] == ":" && this.ok[this.on - 2] == 1) { javaLabel = this.ot[this.on - 2]; }
+    String lab = "slFor" + this.forCount;
+    this.forCount = this.forCount + 1;
+    < continue statements of this loop >
+    int q = b;
+    while (q <= bodyEnd) {
+      if (isId(q, "continue")) {
+        int nq = nx(q + 1);
+        if (this.K[nq] == 1 && isOp(nx(nq + 1), ";")) {
+          if (this.T[nq] == javaLabel) { addPending(q, "break " + lab); addPending(nq, ""); }
+        } else if (!inNestedLoop(q, b)) {
+          addPending(q, "break " + lab);
+        }
+      }
+      q = q + 1;
+    }
+    int line = this.lx.lines[i];
+    push(5, "{", line);
+    < initializers: a declaration stays one statement (the post pass splits it), an expression list is split here >
+    int ia = nx(p + 1);
+    if (ia < s1) {
+      boolean decl = this.K[ia] == 1 && this.K[skipType(ia)] == 1;
+      if (!decl) {
+        int[] cs = commasIn(p + 1, s1);
+        int k = 0;
+        while (k < cs[0]) { addPending(cs[k + 1], ";"); k = k + 1; }
+      }
+      rewrite(p + 1, s1);
+      syn(5, ";");
+    }
+    syn(1, "for");
+    syn(5, "(");
+    syn(5, ";");
+    rewrite(s1 + 1, s2);
+    syn(5, ";");
+    syn(5, ")");
+    syn(5, "{");
+    syn(1, lab);
+    syn(5, ":");
+    if (block) {
+      rewrite(b, bodyEnd + 1);
+    } else {
+      syn(5, "{");
+      rewrite(b, bodyEnd + 1);
+      syn(5, "}");
+    }
+    if (nx(s2 + 1) < c) {
+      int[] us = commasIn(s2 + 1, c);
+      int k2 = 0;
+      while (k2 < us[0]) { addPending(us[k2 + 1], ";"); k2 = k2 + 1; }
+      rewrite(s2 + 1, c);
+      syn(5, ";");
+    }
+    syn(5, "}");
+    syn(5, "}");
+    return bodyEnd + 1;
+  }
+
+  < ---- pattern matching instanceof, two exact shapes ---- >
+  void addPatOk(int i) {
+    if (this.patOkN < arrayLength(this.patOk)) { this.patOk[this.patOkN] = i; this.patOkN = this.patOkN + 1; }
+  }
+
+  boolean isPatOk(int i) {
+    int k = 0;
+    while (k < this.patOkN) { if (this.patOk[k] == i) { return true; } k = k + 1; }
+    return false;
+  }
+
+  < a name chain without calls or operators (it is evaluated twice) >
+  boolean simpleInput(int a, int b) {
+    if (a >= b) { return false; }
+    int j = a;
+    boolean wantName = true;
+    while (j < b) {
+      if (this.K[j] == 6) { j = j + 1; continue; }
+      if (wantName) {
+        if (this.K[j] != 1) { return false; }
+        wantName = false;
+      } else {
+        if (!isOp(j, ".")) { return false; }
+        wantName = true;
+      }
+      j = j + 1;
+    }
+    return !wantName;
+  }
+
+  < the type text of input tokens a .. b-1 through the normal rules >
+  String typeTextOf(int a, int b) {
+    int save = this.on;
+    rewrite(a, b);
+    String t = outText(save, this.on);
+    this.on = save;
+    return t;
+  }
+
+  << E instanceof T v [&& rest] filling a .. end-1 exactly; fills pat. The
+     rest may not hold a top-level || or ? (precedence would change). >>
+  boolean patternAt(int a, int end) {
+    int inst = -1;
+    int j = a;
+    while (j < end) {
+      if (isOp(j, "(") || isOp(j, "[") || isOp(j, "{")) { j = matchClose(j) + 1; continue; }
+      if (isId(j, "instanceof")) { inst = j; break; }
+      j = j + 1;
+    }
+    if (inst < 0 || !simpleInput(a, inst)) { return false; }
+    int t0 = nx(inst + 1);
+    if (isId(t0, "final")) { t0 = nx(t0 + 1); }
+    int t1 = skipType(t0);
+    if (t1 <= t0 || t1 >= end || this.K[t1] != 1) { return false; }
+    int after = nx(t1 + 1);
+    int rest = -1;
+    if (after != end) {
+      if (!isOp(after, "&&")) { return false; }
+      rest = nx(after + 1);
+      int q = rest;
+      while (q < end) {
+        if (isOp(q, "(") || isOp(q, "[") || isOp(q, "{")) { q = matchClose(q) + 1; continue; }
+        if (isOp(q, "||") || isOp(q, "?")) { return false; }
+        q = q + 1;
+      }
+    }
+    if (!castable(typeTextOf(t0, t1))) { return false; }
+    this.pat[0] = a; this.pat[1] = inst; this.pat[2] = t0; this.pat[3] = t1;
+    this.pat[4] = t1; this.pat[5] = rest; this.pat[6] = end; this.pat[7] = inst;
+    return true;
+  }
+
+  boolean ifPatternLowerable(int i) {
+    int p = nx(i + 1);
+    int c = matchClose(p);
+    if (!patternAt(nx(p + 1), c)) { return false; }
+    int s = nx(c + 1);
+    int e = -1;
+    if (isOp(s, "{")) { e = matchClose(s); } else { e = simpleStatementEnd(s); }
+    if (e < 0) { return false; }
+    if (this.pat[5] >= 0 && isId(nx(e + 1), "else")) { return false; }
+    return true;
+  }
+
+  boolean returnPatternLowerable(int i) {
+    int e = simpleStatementEnd(i);
+    if (e < 0) { return false; }
+    if (!patternAt(nx(i + 1), e)) { return false; }
+    return this.pat[5] >= 0;
+  }
+
+  void pushRange(int a, int b) { rewrite(a, b); }
+
+  < if (E instanceof T v [&& rest]) S  ->  if (E instanceof T) { T v = (T) (E); [if (rest)] S } >
+  int lowerIfPattern(int i) {
+    int p = nx(i + 1);
+    int c = matchClose(p);
+    patternAt(nx(p + 1), c);
+    int e0 = this.pat[0];
+    int inst = this.pat[1];
+    int t0 = this.pat[2];
+    int t1 = this.pat[3];
+    int v = this.pat[4];
+    int rest = this.pat[5];
+    String type = typeTextOf(t0, t1);
+    String vname = this.rules.renameIdent(this.T[v]);
+    int s = nx(c + 1);
+    int e = -1;
+    if (isOp(s, "{")) { e = matchClose(s); } else { e = simpleStatementEnd(s); }
+    push(1, "if", this.lx.lines[i]);
+    syn(5, "(");
+    rewrite(e0, inst);
+    syn(1, "instanceof");
+    syn(1, type);
+    syn(5, ")");
+    syn(5, "{");
+    syn(1, type);
+    syn(1, vname);
+    syn(5, "=");
+    syn(5, "(");
+    syn(1, type);
+    syn(5, ")");
+    syn(5, "(");
+    rewrite(e0, inst);
+    syn(5, ")");
+    syn(5, ";");
+    if (rest >= 0) {
+      syn(1, "if");
+      syn(5, "(");
+      rewrite(rest, c);
+      syn(5, ")");
+    }
+    rewrite(s, e + 1);
+    syn(5, "}");
+    return e + 1;
+  }
+
+  < return E instanceof T v && rest;  ->  if (!(E instanceof T)) { return false; } T v = (T) (E); return rest; >
+  int lowerReturnPattern(int i) {
+    int e = simpleStatementEnd(i);
+    patternAt(nx(i + 1), e);
+    int e0 = this.pat[0];
+    int inst = this.pat[1];
+    String type = typeTextOf(this.pat[2], this.pat[3]);
+    String vname = this.rules.renameIdent(this.T[this.pat[4]]);
+    int rest = this.pat[5];
+    push(1, "if", this.lx.lines[i]);
+    syn(5, "(");
+    syn(5, "!");
+    syn(5, "(");
+    rewrite(e0, inst);
+    syn(1, "instanceof");
+    syn(1, type);
+    syn(5, ")");
+    syn(5, ")");
+    syn(5, "{");
+    syn(1, "return");
+    syn(1, "false");
+    syn(5, ";");
+    syn(5, "}");
+    syn(1, type);
+    syn(1, vname);
+    syn(5, "=");
+    syn(5, "(");
+    syn(1, type);
+    syn(5, ")");
+    syn(5, "(");
+    rewrite(e0, inst);
+    syn(5, ")");
+    syn(5, ";");
+    syn(1, "return");
+    rewrite(rest, e);
+    syn(5, ";");
+    return e + 1;
+  }
+
+  < ---- the rewrite ---- >
+  void rewrite(int a, int b) {
+    int i = a;
+    while (i < b) {
+      if (this.lam.siteN > 0) {
+        int si = this.lam.siteAt(i);
+        if (si >= 0) {
+          i = this.lam.lowerSite(si);
+          continue;
+        }
+      }
+      int pk = pendingIndex(i);
+      if (pk >= 0) {
+        String rep = this.pendText[pk];
+        if (rep == "))") { push(5, ")", this.lx.lines[i]); syn(5, ")"); }
+        else if (rep != "") { push(5, rep, this.lx.lines[i]); }
+        i = i + 1;
+        continue;
+      }
+      int k = this.K[i];
+      String t = this.T[i];
+      int line = this.lx.lines[i];
+      if (k == 6) {
+        if (this.cfg.keepComments) { pushComment(t, line, this.lx.flags[i]); }
+        i = i + 1;
+        continue;
+      }
+      if (k == 4) {
+        boolean concat = false;
+        if (this.on >= 2 && this.ot[this.on - 1] == "+" && this.ok[this.on - 2] == 3) { concat = true; }
+        int nn = nx(i + 1);
+        if (isOp(nn, "+") && nx(nn + 1) < this.lx.n && this.K[nx(nn + 1)] == 3) { concat = true; }
+        if (concat) { push(3, this.lx.alts[i], line); } else { push(2, t, line); }
+        i = i + 1;
+        continue;
+      }
+      if (k == 2 || k == 3) {
+        push(k, t, line);
+        i = i + 1;
+        continue;
+      }
+      if (k == 5) {
+        i = rewriteOp(i, b);
+        continue;
+      }
+      i = rewriteIdent(i, b);
+    }
+  }
+
+  int rewriteOp(int i, int b) {
+    String t = this.T[i];
+    int line = this.lx.lines[i];
+    if (t == "@" && !isId(nx(i + 1), "interface")) { return skipAnnotation(i); }
+    if (t == "<" && isGenericAt(i)) { return genEnd(i) + 1; }
+    if (t == "." && isId(nx(i + 1), "length") && !isOp(nx(nx(i + 1) + 1), "(")) {
+      int rs = recvStart(this.on);
+      if (rs >= 0 && !(this.on - rs == 1 && this.ot[rs] == "this")) {
+        insertAt(rs, 1, "arrayLength");
+        insertAt(rs + 1, 5, "(");
+        push(5, ")", 0);
+        return nx(i + 1) + 1;
+      }
+    }
+    if (t == "[" && this.on >= 2 && this.ok[this.on - 1] == 1 && (this.ok[this.on - 2] == 1 || this.ot[this.on - 2] == "]") && isOp(nx(i + 1), "]")) {
+      < C-style array declarator: int a[] becomes int[] a >
+      int j = i;
+      int dims = 0;
+      while (isOp(j, "[") && isOp(nx(j + 1), "]")) { dims = dims + 1; j = nx(nx(j + 1) + 1); }
+      if (isOp(j, "=") || isOp(j, ";") || isOp(j, ",") || isOp(j, ")") || isOp(j, ":")) {
+        int nameAt = this.on - 1;
+        int d = 0;
+        while (d < dims) {
+          insertAt(nameAt, 5, "]");
+          insertAt(nameAt, 5, "[");
+          d = d + 1;
+        }
+        return j;
+      }
+    }
+    if (t == ";") {
+      < an empty statement as the body of for / while / if becomes an empty block >
+      int p = pv(i);
+      if (isOp(p, ")")) {
+        int o = matchOpen(p);
+        int kw = pv(o);
+        boolean doWhile = false;
+        if (isId(kw, "while") && isOp(pv(kw), "}")) {
+          < the semicolon that ends do { ... } while (...); is not a loop body >
+          int ob = matchOpen(pv(kw));
+          doWhile = isId(pv(ob), "do");
+        }
+        if (!doWhile && (isId(kw, "for") || isId(kw, "while") || isId(kw, "if"))) {
+          push(5, "{", line);
+          syn(5, "}");
+          return i + 1;
+        }
+      }
+      if (isId(p, "else")) {
+        push(5, "{", line);
+        syn(5, "}");
+        return i + 1;
+      }
+    }
+    push(5, t, line);
+    return i + 1;
+  }
+
+  < an annotation: @ Name(.Name)* with an optional argument list >
+  int skipAnnotation(int i) {
+    int j = nx(i + 1);
+    if (j < this.lx.n && this.K[j] == 1) { j = nx(j + 1); }
+    while (isOp(j, ".") && this.K[nx(j + 1)] == 1) { j = nx(nx(j + 1) + 1); }
+    if (isOp(j, "(")) { j = matchClose(j) + 1; }
+    return j;
+  }
+
+  << The start of the receiver expression that ends just before output index
+     end (a name chain with calls and indexes), or -1. >>
+  int recvStart(int end) {
+    int j = end - 1;
+    while (j >= 0) {
+      String t = this.ot[j];
+      if (t == ")" || t == "]") {
+        int d = 0;
+        int m = j;
+        while (m >= 0) {
+          String u = this.ot[m];
+          if (u == ")" || u == "]") { d = d + 1; }
+          if (u == "(" || u == "[") {
+            d = d - 1;
+            if (d == 0) { break; }
+          }
+          m = m - 1;
+        }
+        if (m < 0) { return -1; }
+        j = m;
+        if (t == "]") { j = j - 1; continue; }
+        if (j - 1 >= 0 && this.ok[j - 1] == 1 && !this.rules.isControlWord(this.ot[j - 1])) { j = j - 1; }
+      } else if (this.ok[j] == 1 || this.ok[j] == 2 || this.ok[j] == 3) {
+        if (this.rules.isControlWord(t)) { return -1; }
+      } else {
+        return -1;
+      }
+      if (j - 1 >= 0 && this.ot[j - 1] == ".") { j = j - 2; continue; }
+      return j;
+    }
+    return -1;
+  }
+
+  boolean simpleRange(int a, int b) {
+    int i = a;
+    while (i < b) {
+      if (this.ot[i] == "(") { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+
+  int rewriteIdent(int i, int b) {
+    String t = this.T[i];
+    int line = this.lx.lines[i];
+    boolean afterDot = (this.on > 0 && this.ot[this.on - 1] == ".");
+    if (t == "if" && !afterDot && isOp(nx(i + 1), "(") && ifPatternLowerable(i)) { return lowerIfPattern(i); }
+    if (t == "return" && !afterDot && returnPatternLowerable(i)) { return lowerReturnPattern(i); }
+    if (t == "for" && isOp(nx(i + 1), "(") && forHasComma(nx(i + 1))) {
+      int r = lowerForComma(i);
+      if (r >= 0) { return r; }
+    }
+    if (t == "assert" && !afterDot) {
+      < Java runs with assertions disabled by default: the statement is not evaluated >
+      int j = i;
+      while (j < b && !isOp(j, ";")) {
+        if (isOp(j, "(") || isOp(j, "[") || isOp(j, "{")) { j = matchClose(j); }
+        j = j + 1;
+      }
+      return j + 1;
+    }
+    if (t == "final" && this.inBody) { return i + 1; }
+    if (t == "instanceof" && isId(nx(i + 1), "String") && !(this.K[nx(nx(i + 1) + 1)] == 1)) {
+      int rs = recvStart(this.on);
+      if (rs >= 0 && simpleRange(rs, this.on)) {
+        < a Java String is either SLeeLa string kind: plain or Java UTF-16 >
+        int len = this.on - rs;
+        int[] ck = new int[len];
+        String[] ct = new String[len];
+        int q = 0;
+        while (q < len) { ck[q] = this.ok[rs + q]; ct[q] = this.ot[rs + q]; q = q + 1; }
+        insertAt(rs, 5, "(");
+        syn(1, "instanceof");
+        syn(1, "string");
+        syn(5, "||");
+        q = 0;
+        while (q < len) { syn(ck[q], ct[q]); q = q + 1; }
+        syn(1, "instanceof");
+        syn(1, "utf16");
+        syn(5, ")");
+        return nx(i + 1) + 1;
+      }
+    }
+    if (t == "System" && isOp(nx(i + 1), ".")) {
+      int a1 = nx(nx(i + 1) + 1);
+      int a2 = nx(a1 + 1);
+      int a3 = nx(a2 + 1);
+      int a4 = nx(a3 + 1);
+      if ((isId(a1, "out") || isId(a1, "err")) && isOp(a2, ".") && isId(a3, "println") && isOp(a4, "(")) {
+        push(1, "print", line);
+        push(5, "(", 0);
+        if (isOp(nx(a4 + 1), ")")) { syn(3, "\"\""); }
+        return a4 + 1;
+      }
+    }
+    if (!afterDot && this.rules.isQualifiedRoot(t) && isOp(nx(i + 1), ".")) {
+      < java.util.List becomes List; the JDK 28 tier resolves the simple name >
+      int j = i;
+      while (j < this.lx.n && this.K[j] == 1 && lowerStart(this.T[j]) && isOp(nx(j + 1), ".") && this.K[nx(nx(j + 1) + 1)] == 1) {
+        j = nx(nx(j + 1) + 1);
+      }
+      if (j > i && this.K[j] == 1 && upperStart(this.T[j])) { return rewriteIdent(j, b); }
+    }
+    if (!afterDot && isTypeVar(t) && !isOp(nx(i + 1), ".") && !isOp(nx(i + 1), "(")) {
+      push(1, "Any", line);
+      return i + 1;
+    }
+    if (!afterDot && isOp(nx(i + 1), ".") && isId(nx(nx(i + 1) + 1), "this")) {
+      < Own.this is this; Outer.this is the enclosing instance this.slOuter (JConvOuter) >
+      int after = nx(nx(i + 1) + 1) + 1;
+      if (t == this.unitName) {
+        push(1, "this", line);
+        this.outer.qualifiedThisTotal = this.outer.qualifiedThisTotal + 1;
+        return after;
+      }
+      if (t == this.outer.outerName && this.outer.outerInstance && !this.curStatic) {
+        push(1, "this", line);
+        syn(5, ".");
+        syn(1, "slOuter");
+        this.outer.qualifiedThisTotal = this.outer.qualifiedThisTotal + 1;
+        return after;
+      }
+    }
+    if (t == "new" && !afterDot && this.outer.innerN > 0) {
+      int r = lowerNewInner(i);
+      if (r >= 0) { return r; }
+    }
+    if (!afterDot && this.outer.oN > 0) {
+      int r2 = prefixOuterName(i);
+      if (r2 >= 0) { return r2; }
+    }
+    if (!afterDot && this.siN > 0) {
+      int s = 0;
+      while (s < this.siN) {
+        if (this.siName[s] == t) {
+          push(1, this.siClass[s], line);
+          syn(5, ".");
+          push(1, this.rules.renameIdent(t), 0);
+          return i + 1;
+        }
+        s = s + 1;
+      }
+    }
+    if (!afterDot && this.rules.isBuiltinCallName(t) && isOp(nx(i + 1), "(")) {
+      int mi = methodIndex(t);
+      if (mi >= 0 && this.mStatic[mi] == 1) {
+        push(1, this.unitName, line);
+        syn(5, ".");
+      } else if (!this.curStatic) {
+        push(1, "this", line);
+        syn(5, ".");
+      }
+      push(1, t, 0);
+      return i + 1;
+    }
+    if (!afterDot && this.rules.isFunctionalInterface(t) && !isDeclName(t) && !isId(pv(i), "new") && !isId(pv(i), "instanceof")) {
+      << A variable of a functional interface type holds an SLJavaLambda or an
+         object of a class that implements the interface: it is written as Any,
+         so calls on it dispatch at run time (SLEELA.syntax 43.7). The type
+         arguments that follow are erased as usual. >>
+      int j = nx(i + 1);
+      if (isGenericAt(j)) { j = nx(genEnd(j) + 1); }
+      boolean declares = (j < this.lx.n && this.K[j] == 1) || (isOp(j, "[") && isOp(nx(j + 1), "]")) || isOp(j, "...");
+      boolean casts = isOp(j, ")") && isOp(pv(i), "(");
+      if (declares || casts) {
+        this.lam.usesFunctional = true;
+        push(1, "Any", line);
+        return i + 1;
+      }
+    }
+    String out = this.rules.mapTypeName(t);
+    out = this.rules.renameIdent(out);
+    push(1, out, line);
+    return i + 1;
+  }
+
+  << new Inner(args) of an inner class: the enclosing instance is passed
+     first, this in its outer class, this.slOuter in a sibling inner class.
+     -1 when the expression is not that shape or has no enclosing instance. >>
+  int lowerNewInner(int i) {
+    int j = nx(i + 1);
+    if (j >= this.lx.n || this.K[j] != 1) { return -1; }
+    String ow = this.outer.outerOf(this.T[j]);
+    if (ow == "" || this.curStatic) { return -1; }
+    int k = nx(j + 1);
+    if (isGenericAt(k)) { k = nx(genEnd(k) + 1); }
+    if (!isOp(k, "(")) { return -1; }
+    < an anonymous class body after the arguments is a stub (reason 3) >
+    if (isOp(nx(matchClose(k) + 1), "{")) { return -1; }
+    String via = "";
+    if (this.unitName == ow) { via = "this"; }
+    else if (this.outer.outerName == ow && this.outer.outerInstance) { via = "this.slOuter"; }
+    if (via == "") { return -1; }
+    push(1, "new", this.lx.lines[i]);
+    push(1, this.rules.renameIdent(this.T[j]), this.lx.lines[j]);
+    syn(5, "(");
+    if (via == "this") { syn(1, "this"); }
+    else { syn(1, "this"); syn(5, "."); syn(1, "slOuter"); }
+    if (!isOp(nx(k + 1), ")")) { syn(5, ","); }
+    return k + 1;
+  }
+
+  << An unqualified name of the enclosing class inside a nested class:
+     this.slOuter.name or Outer.name (JConvOuter). -1 when the name is a local,
+     a member of the nested class, possibly inherited, or being declared. >>
+  int prefixOuterName(int i) {
+    String t = this.T[i];
+    if (isOp(pv(i), ".") || isId(pv(i), "new")) { return -1; }
+    int nn = nx(i + 1);
+    if (nn < this.lx.n && this.K[nn] == 1) { return -1; }
+    boolean isCall = isOp(nn, "(");
+    String rt = this.rules.renameIdent(t);
+    int om = this.outer.outerMember(rt, isCall);
+    if (om < 0) { return -1; }
+    if (isCall && methodIndex(rt) >= 0) { return -1; }
+    if (!isCall && hasField(rt)) { return -1; }
+    if (this.lam.typeStartBefore(i) >= 0) { return -1; }
+    if (this.outer.mayInherit(t, isCall, this.rules.model)) { return -1; }
+    String[] names = new String[256];
+    String[] types = new String[256];
+    int[] depthOf = new int[256];
+    int n = this.lam.localsAt(i, names, types, depthOf);
+    int q = 0;
+    while (q < n) { if (names[q] == t) { return -1; } q = q + 1; }
+    int line = this.lx.lines[i];
+    if (this.outer.oStatic[om] == 1) {
+      push(1, this.outer.outerName, line);
+      syn(5, ".");
+      syn(1, rt);
+    } else if (this.outer.outerInstance && !this.curStatic) {
+      push(1, "this", line);
+      syn(5, ".");
+      syn(1, "slOuter");
+      syn(5, ".");
+      syn(1, rt);
+    } else {
+      return -1;
+    }
+    this.outer.prefixTotal = this.outer.prefixTotal + 1;
+    return i + 1;
+  }
+
+  boolean isDeclName(String n) {
+    int k = 0;
+    while (k < this.declN) { if (this.declNames[k] == n) { return true; } k = k + 1; }
+    return false;
+  }
+
+  < ---- post pass: split multi declarations, insert javac casts ---- >
+  boolean isStatementWord(String t) {
+    if (t == "return" || t == "throw" || t == "new" || t == "if" || t == "else" || t == "while") { return true; }
+    if (t == "for" || t == "do" || t == "switch" || t == "case" || t == "try" || t == "catch") { return true; }
+    if (t == "finally" || t == "synchronized" || t == "assert" || t == "break" || t == "continue") { return true; }
+    if (t == "this" || t == "super" || t == "print" || t == "default" || t == "void" || t == "class") { return true; }
+    if (t == "interface" || t == "import" || t == "package") { return true; }
+    return false;
+  }
+
+  boolean isDeclModifier(String t) {
+    return t == "static" || t == "final" || t == "transient" || t == "volatile" || t == "private" || t == "public" || t == "protected";
+  }
+
+  boolean castable(String type) {
+    if (type == "" || type == "Any" || type == "Object" || type == "var") { return false; }
+    if (this.rules.isPrimitive(type) || type == "String") { return true; }
+    < a cast to an array type is rejected by the compiler (no runtime array element contracts) >
+    if (type.endsWith("]")) { return false; }
+    if (type.indexOf(".") >= 0 || type.indexOf(" ") >= 0) { return false; }
+    int i = 0;
+    while (i < this.declN) { if (this.declNames[i] == type) { return true; } i = i + 1; }
+    return this.cfg.kindOf(type) == 1;
+  }
+
+  boolean trivialRhs(int a, int b) {
+    if (a >= b) { return true; }
+    int k = this.ok[a];
+    String t = this.ot[a];
+    if (b - a == 1 && (k == 2 || k == 3)) { return true; }
+    if (t == "new" || t == "null" || t == "true" || t == "false") { return true; }
+    if ((k == 2 || k == 3) && b - a == 1) { return true; }
+    if (t == "(" && a + 2 < b && this.ok[a + 1] == 1 && this.ot[a + 2] == ")") { return true; }
+    if (t == "{") { return true; }
+    if (k == 5 && t == "-" && b - a == 2 && this.ok[a + 1] == 2) { return true; }
+    return false;
+  }
+
+  < copy output tokens a .. b-1 into the new list >
+  int[] nk;
+  String[] nt;
+  int[] nl;
+  int[] ne;
+  int nn;
+
+  void npush(int k, String t, int l) {
+    if (this.nn >= arrayLength(this.nk)) {
+      int cap = arrayLength(this.nk) * 2;
+      int[] k2 = new int[cap];
+      String[] t2 = new String[cap];
+      int[] l2 = new int[cap];
+      int[] e2 = new int[cap];
+      int i = 0;
+      while (i < this.nn) { k2[i] = this.nk[i]; t2[i] = this.nt[i]; l2[i] = this.nl[i]; e2[i] = this.ne[i]; i = i + 1; }
+      this.nk = k2;
+      this.nt = t2;
+      this.nl = l2;
+      this.ne = e2;
+    }
+    this.nk[this.nn] = k;
+    this.nt[this.nn] = t;
+    this.nl[this.nn] = l;
+    this.ne[this.nn] = l;
+    this.nn = this.nn + 1;
+  }
+
+  void ncopy(int a, int b) {
+    int i = a;
+    while (i < b) { npush(this.ok[i], this.ot[i], this.ol[i]); this.ne[this.nn - 1] = this.oe[i]; i = i + 1; }
+  }
+
+  < copy a declarator name = rhs, casting the rhs to type when javac would >
+  void ncopyDeclarator(int a, int b, String type) {
+    int eq = -1;
+    int i = a;
+    while (i < b) { if (this.ot[i] == "=" && this.ok[i] == 5) { eq = i; break; } i = i + 1; }
+    if (eq < 0 || !castable(type) || trivialRhs(eq + 1, b)) { ncopy(a, b); return; }
+    ncopy(a, eq + 1);
+    npush(5, "(", 0);
+    npush(1, type, 0);
+    npush(5, ")", 0);
+    npush(5, "(", 0);
+    ncopy(eq + 1, b);
+    npush(5, ")", 0);
+  }
+
+  < the end (index of ;) of the statement that starts at p, at bracket depth 0 >
+  int statementEnd(int p) {
+    int d = 0;
+    int i = p;
+    while (i < this.on) {
+      if (this.ok[i] == 5) {
+        String t = this.ot[i];
+        if (t == "(" || t == "[" || t == "{") { d = d + 1; }
+        if (t == ")" || t == "]" || t == "}") { d = d - 1; if (d < 0) { return -1; } }
+        if (t == ";" && d == 0) { return i; }
+      }
+      i = i + 1;
+    }
+    return -1;
+  }
+
+  void postPass() {
+    this.nk = new int[this.on + 64];
+    this.nt = new String[this.on + 64];
+    this.nl = new int[this.on + 64];
+    this.ne = new int[this.on + 64];
+    this.nn = 0;
+    int i = 0;
+    boolean start = true;
+    while (i < this.on) {
+      if (this.ok[i] == 6) { npush(6, this.ot[i], this.ol[i]); this.ne[this.nn - 1] = this.oe[i]; i = i + 1; continue; }
+      if (start) {
+        int used = tryDeclaration(i);
+        if (used > i) { i = used; start = true; continue; }
+        used = tryReturn(i);
+        if (used > i) { i = used; start = true; continue; }
+      }
+      String t = this.ot[i];
+      npush(this.ok[i], t, this.ol[i]);
+      start = (this.ok[i] == 5 && (t == ";" || t == "{" || t == "}" || t == ":"));
+      i = i + 1;
+    }
+    this.ok = this.nk;
+    this.ot = this.nt;
+    this.ol = this.nl;
+    this.oe = this.ne;
+    this.on = this.nn;
+  }
+
+  < a declaration statement at p: returns the index after it, or p when it is not one >
+  int tryDeclaration(int p) {
+    int q = p;
+    while (q < this.on && this.ok[q] == 1 && isDeclModifier(this.ot[q])) { q = q + 1; }
+    if (q >= this.on || this.ok[q] != 1 || isStatementWord(this.ot[q])) { return p; }
+    int q2 = q + 1;
+    while (q2 + 1 < this.on && this.ot[q2] == "." && this.ok[q2 + 1] == 1) { q2 = q2 + 2; }
+    while (q2 + 1 < this.on && this.ot[q2] == "[" && this.ot[q2 + 1] == "]") { q2 = q2 + 2; }
+    if (q2 + 1 >= this.on || this.ok[q2] != 1) { return p; }
+    String nextT = this.ot[q2 + 1];
+    if (nextT != "=" && nextT != "," && nextT != ";") { return p; }
+    int e = statementEnd(q2);
+    if (e < 0) { return p; }
+    String type = outText(q, q2);
+    < top-level commas >
+    int d = 0;
+    int a = q2;
+    int i = q2;
+    boolean first = true;
+    while (i <= e) {
+      String t = this.ot[i];
+      if (this.ok[i] == 5 && (t == "(" || t == "[" || t == "{")) { d = d + 1; }
+      if (this.ok[i] == 5 && (t == ")" || t == "]" || t == "}")) { d = d - 1; }
+      if (i == e || (d == 0 && this.ok[i] == 5 && t == ",")) {
+        ncopy(p, q2);
+        ncopyDeclarator(a, i, type);
+        npush(5, ";", 0);
+        first = false;
+        a = i + 1;
+      }
+      i = i + 1;
+    }
+    return e + 1;
+  }
+
+  int tryReturn(int p) {
+    if (this.ot[p] != "return" || this.ok[p] != 1) { return p; }
+    if (!castable(this.curReturnType)) { return p; }
+    int e = statementEnd(p);
+    if (e < 0 || trivialRhs(p + 1, e)) { return p; }
+    npush(1, "return", this.ol[p]);
+    npush(5, "(", 0);
+    npush(1, this.curReturnType, 0);
+    npush(5, ")", 0);
+    npush(5, "(", 0);
+    ncopy(p + 1, e);
+    npush(5, ")", 0);
+    npush(5, ";", 0);
+    return e + 1;
+  }
+
+  < ---- enum constructor: the name and ordinal come first ---- >
+  void enumCtorFixup() {
+    int p = 0;
+    while (p < this.on && this.ot[p] != "(") { p = p + 1; }
+    if (p >= this.on) { return; }
+    boolean empty = (p + 1 < this.on && this.ot[p + 1] == ")");
+    if (!empty) { insertAt(p + 1, 5, ","); }
+    insertAt(p + 1, 1, "enumOrdinal");
+    insertAt(p + 1, 1, "int");
+    insertAt(p + 1, 5, ",");
+    insertAt(p + 1, 1, "enumName");
+    insertAt(p + 1, 1, "String");
+    int d = 0;
+    int b = p;
+    while (b < this.on) {
+      if (this.ot[b] == "(") { d = d + 1; }
+      if (this.ot[b] == ")") { d = d - 1; if (d == 0) { break; } }
+      b = b + 1;
+    }
+    while (b < this.on && this.ot[b] != "{") { b = b + 1; }
+    if (b >= this.on) { return; }
+    int at = b + 1;
+    < keep an explicit this(...) call first >
+    if (at + 1 < this.on && this.ot[at] == "this" && this.ot[at + 1] == "(") { return; }
+    String[] add = new String[14];
+    add[0] = "this"; add[1] = "."; add[2] = "enumName"; add[3] = "="; add[4] = "enumName"; add[5] = ";";
+    add[6] = "this"; add[7] = "."; add[8] = "enumOrdinal"; add[9] = "="; add[10] = "enumOrdinal"; add[11] = ";";
+    int q = 11;
+    while (q >= 0) {
+      int kind = 1;
+      if (add[q] == "." || add[q] == "=" || add[q] == ";") { kind = 5; }
+      insertAt(at, kind, add[q]);
+      q = q - 1;
+    }
+  }
+
+  << ---- typed pass (rules 7a-7c) ----
+     The integer and string-conversion laws of
+     impl/subjects/conversion/conversion.model that need operand types: an int
+     shift left, shift right or unsigned shift right becomes JavaOperands.shlInt,
+     shrInt or ushrInt (binop int rows); a double or float shown as text becomes
+     Double.toString(x) and a char becomes
+     JavaText.plainIfRepresentable(JavaText.codePointU(x)) (tostr rows).
+     Types come from the fields of the type and the declarations of the member.
+     A name declared with two different types in one member is unknown; a
+     method call makes an operand unknown. Unknown operands are left as they
+     are, so the pass never guesses. >>
+  void addSym(String n, String t) {
+    int i = 0;
+    while (i < this.sN) {
+      if (this.sName[i] == n) {
+        if (this.sType[i] != t) { this.sType[i] = "?"; }
+        return;
+      }
+      i = i + 1;
+    }
+    if (this.sN < arrayLength(this.sName)) {
+      this.sName[this.sN] = n;
+      this.sType[this.sN] = t;
+      this.sN = this.sN + 1;
+    }
+  }
+
+  String typeOfName(String n) {
+    int i = 0;
+    while (i < this.sN) { if (this.sName[i] == n) { return this.sType[i]; } i = i + 1; }
+    i = 0;
+    while (i < this.fN) { if (this.fNames[i] == n) { return this.fTypes[i]; } i = i + 1; }
+    return "?";
+  }
+
+  < the closing bracket in the output list for the bracket at i >
+  int closeOut(int i) {
+    int d = 0;
+    int m = i;
+    while (m < this.on) {
+      String u = this.ot[m];
+      if (u == "(" || u == "[") { d = d + 1; }
+      if (u == ")" || u == "]") { d = d - 1; if (d == 0) { return m; } }
+      m = m + 1;
+    }
+    return this.on - 1;
+  }
+
+  < the end of the first argument of the call whose parenthesis opens at p >
+  int firstArgEnd(int p) {
+    int c = closeOut(p);
+    int d = 0;
+    int m = p + 1;
+    while (m < c) {
+      String u = this.ot[m];
+      if (u == "(" || u == "[") { d = d + 1; }
+      if (u == ")" || u == "]") { d = d - 1; }
+      if (d == 0 && u == ",") { return m; }
+      m = m + 1;
+    }
+    return c;
+  }
+
+  String typeOfKind(String k) {
+    if (k == "i") { return "int"; }
+    if (k == "l") { return "long"; }
+    if (k == "d") { return "double"; }
+    if (k == "c") { return "char"; }
+    if (k == "s") { return "String"; }
+    if (k == "b") { return "boolean"; }
+    return "?";
+  }
+
+  << The static type of the name chain that starts at output position i (a
+     local, a field, this, a class name for static members, or a call of a
+     method of this type), followed through .member, .member(...) and [index].
+     Member results come from the ret and field rows of the conversion model;
+     @arg0 takes the type of the first argument. "?" when any step is unknown.
+     chainEnd is set to the position after the chain. >>
+  int chainEnd;
+  String chainType(int i, int b) {
+    String cur = "";
+    boolean isStatic = false;
+    int j = i;
+    String t = this.ot[j];
+    this.chainEnd = i + 1;
+    if (t == "this") {
+      cur = this.unitName;
+      j = j + 1;
+    } else if (j + 1 < b && this.ot[j + 1] == "(") {
+      < an unqualified call: arrayLength, or a method of this type >
+      if (t == "arrayLength") { cur = "int"; }
+      else {
+        int mi = methodIndex(t);
+        if (mi < 0) { return "?"; }
+        cur = this.mRet[mi];
+      }
+      j = closeOut(j + 1) + 1;
+    } else {
+      cur = typeOfName(t);
+      if (cur == "?") {
+        if (upperStart(t)) { cur = t; isStatic = true; } else { return "?"; }
+      }
+      j = j + 1;
+    }
+    while (j < b) {
+      String u = this.ot[j];
+      if (u == "[") {
+        if (!cur.endsWith("[]")) { return "?"; }
+        cur = cur.substring(0, cur.length() - 2);
+        isStatic = false;
+        j = closeOut(j) + 1;
+        continue;
+      }
+      if (u == "." && j + 1 < b && this.ok[j + 1] == 1) {
+        String m = this.ot[j + 1];
+        if (j + 2 < b && this.ot[j + 2] == "(") {
+          String r = "";
+          if (cur == this.unitName) {
+            int mi2 = methodIndex(m);
+            if (mi2 >= 0) { r = this.mRet[mi2]; }
+          }
+          if (r == "") { r = this.rules.model.retOf(cur, m); }
+          if (r == "@arg0") { r = typeOfKind(exprKind(j + 3, firstArgEnd(j + 2))); }
+          if (r == "" || r == "?") { return "?"; }
+          cur = r;
+          isStatic = false;
+          j = closeOut(j + 2) + 1;
+          continue;
+        }
+        String f = "";
+        if (cur == this.unitName) { f = typeOfName(m); if (f == "?") { f = ""; } }
+        if (f == "") { f = this.rules.model.fieldOf(cur, m); }
+        if (f == "") { return "?"; }
+        cur = f;
+        isStatic = false;
+        j = j + 2;
+        continue;
+      }
+      break;
+    }
+    if (isStatic) { return "?"; }
+    this.chainEnd = j;
+    return cur;
+  }
+
+  < i int, l long, d double, c char, s String, b boolean, ? unknown >
+  String kindOfType(String t) {
+    if (t == "int32" || t == "int" || t == "short" || t == "byte") { return "i"; }
+    if (t == "Integer" || t == "Short" || t == "Byte") { return "i"; }
+    if (t == "Long") { return "l"; }
+    if (t == "Double" || t == "Float") { return "d"; }
+    if (t == "Character") { return "c"; }
+    if (t == "Boolean") { return "b"; }
+    if (t == "char") { return "c"; }
+    if (t == "long") { return "l"; }
+    if (t == "double" || t == "float") { return "d"; }
+    if (t == "String") { return "s"; }
+    if (t == "boolean") { return "b"; }
+    return "?";
+  }
+
+  < declarations in the output list: TYPE NAME followed by = ; , ) : after a statement start, ( or , >
+  void collectSymbols() {
+    this.sN = 0;
+    int i = 0;
+    while (i + 1 < this.on) {
+      boolean startOk = (i == 0);
+      int pi = i - 1;
+      while (pi >= 0 && this.ok[pi] == 6) { pi = pi - 1; }
+      if (pi < 0) { startOk = true; }
+      if (pi >= 0) {
+        String p = this.ot[pi];
+        startOk = (p == ";" || p == "{" || p == "}" || p == "(" || p == "," || p == ":" || p == "static" || p == "final" || p == "private" || p == "public");
+      }
+      if (startOk && this.ok[i] == 1 && !isStatementWord(this.ot[i])) {
+        int j = i + 1;
+        String type = this.ot[i];
+        while (j + 1 < this.on && this.ot[j] == "[" && this.ot[j + 1] == "]") { type = type + "[]"; j = j + 2; }
+        if (j + 1 < this.on && this.ok[j] == 1 && !isStatementWord(this.ot[j])) {
+          String nxt = this.ot[j + 1];
+          if (nxt == "=" || nxt == ";" || nxt == "," || nxt == ")" || nxt == ":") { addSym(this.ot[j], type); }
+        }
+      }
+      i = i + 1;
+    }
+  }
+
+  boolean isBoundary(String t, int level) {
+    < level 1: shift operands; level 2: additive chain >
+    if (t == ";" || t == "," || t == "{" || t == "}" || t == "?" || t == ":" || t == "=" || t == "return" || t == "throw") { return true; }
+    if (t == "<" || t == ">" || t == "<=" || t == ">=" || t == "==" || t == "!=" || t == "instanceof") { return true; }
+    if (t == "&" || t == "^" || t == "|" || t == "&&" || t == "||") { return true; }
+    if (t == "+=" || t == "-=" || t == "*=" || t == "/=" || t == "%=" || t == "&=" || t == "|=" || t == "^=" || t == "<<=" || t == ">>=" || t == ">>>=") { return true; }
+    if (level == 2 && (t == "<<" || t == ">>" || t == ">>>")) { return true; }
+    return false;
+  }
+
+  < the start of the operand that ends just before position end, bounded by level >
+  int operandStart(int end, int level, boolean stopAtAdd) {
+    int j = end - 1;
+    while (j >= 0) {
+      String t = this.ot[j];
+      if (this.ok[j] == 5 && (t == ")" || t == "]")) {
+        int d = 0;
+        int m = j;
+        while (m >= 0) {
+          if (this.ot[m] == ")" || this.ot[m] == "]") { d = d + 1; }
+          if (this.ot[m] == "(" || this.ot[m] == "[") { d = d - 1; if (d == 0) { break; } }
+          m = m - 1;
+        }
+        if (m < 0) { return -1; }
+        j = m - 1;
+        continue;
+      }
+      if (this.ok[j] == 5 && (t == "(" || t == "[")) { return j + 1; }
+      if (this.ok[j] != 6 && isBoundary(t, level)) { return j + 1; }
+      if (stopAtAdd && this.ok[j] == 5 && (t == "+" || t == "-")) {
+        < a sign directly after a boundary belongs to the operand >
+        if (j == 0 || (this.ok[j - 1] == 5 && this.ot[j - 1] != ")" && this.ot[j - 1] != "]")) { j = j - 1; continue; }
+        return j + 1;
+      }
+      if (level == 1 && this.ok[j] == 5 && (t == "<<" || t == ">>" || t == ">>>")) { return j + 1; }
+      j = j - 1;
+    }
+    return 0;
+  }
+
+  < the end (exclusive) of the operand that starts at a >
+  int operandEnd(int a, int level, boolean stopAtAdd) {
+    int j = a;
+    boolean first = true;
+    while (j < this.on) {
+      String t = this.ot[j];
+      if (this.ok[j] == 5 && (t == "(" || t == "[")) {
+        int d = 0;
+        int m = j;
+        while (m < this.on) {
+          if (this.ot[m] == "(" || this.ot[m] == "[") { d = d + 1; }
+          if (this.ot[m] == ")" || this.ot[m] == "]") { d = d - 1; if (d == 0) { break; } }
+          m = m + 1;
+        }
+        j = m + 1;
+        first = false;
+        continue;
+      }
+      if (this.ok[j] == 5 && (t == ")" || t == "]")) { return j; }
+      if (this.ok[j] != 6 && isBoundary(t, level)) { return j; }
+      if (level == 1 && this.ok[j] == 5 && (t == "<<" || t == ">>" || t == ">>>")) { return j; }
+      if (stopAtAdd && !first && this.ok[j] == 5 && (t == "+" || t == "-")) { return j; }
+      first = false;
+      j = j + 1;
+    }
+    return this.on;
+  }
+
+  < the kind of the output range a .. b-1 >
+  String exprKind(int a, int b) {
+    if (a >= b) { return "?"; }
+    boolean anyS = false;
+    boolean anyD = false;
+    boolean anyL = false;
+    boolean anyI = false;
+    boolean anyB = false;
+    boolean onlyChar = true;
+    int count = 0;
+    int i = a;
+    while (i < b) {
+      int k = this.ok[i];
+      String t = this.ot[i];
+      if (k == 6) { i = i + 1; continue; }
+      if (k == 5 && t == "(") {
+        int d = 0;
+        int m = i;
+        while (m < b) {
+          if (this.ot[m] == "(") { d = d + 1; }
+          if (this.ot[m] == ")") { d = d - 1; if (d == 0) { break; } }
+          m = m + 1;
+        }
+        < a cast (T) gives the kind of T >
+        if (m == i + 2 && this.ok[i + 1] == 1) {
+          String ck = kindOfType(this.ot[i + 1]);
+          if (ck == "?") { return "?"; }
+          int e = operandEnd(m + 1, 2, true);
+          if (ck == "s") { anyS = true; } else if (ck == "d") { anyD = true; } else if (ck == "l") { anyL = true; } else if (ck == "b") { anyB = true; } else { anyI = true; if (ck != "c") { onlyChar = false; } }
+          count = count + 1;
+          i = e;
+          continue;
+        }
+        String g = exprKind(i + 1, m);
+        if (g == "?") { return "?"; }
+        if (g == "s") { anyS = true; } else if (g == "d") { anyD = true; } else if (g == "l") { anyL = true; } else if (g == "b") { anyB = true; } else { anyI = true; if (g != "c") { onlyChar = false; } }
+        count = count + 1;
+        i = m + 1;
+        continue;
+      }
+      if (k == 5) {
+        if (t == "+" || t == "-" || t == "*" || t == "/" || t == "%" || t == "~" || t == "&" || t == "|" || t == "^" || t == "<<" || t == ">>" || t == ">>>") { i = i + 1; continue; }
+        return "?";
+      }
+      if (k == 3) { anyS = true; count = count + 1; i = i + 1; continue; }
+      if (k == 2) {
+        if (t.startsWith("'")) { anyI = true; }
+        else if (t.endsWith("L")) { anyL = true; onlyChar = false; }
+        else if (t.indexOf(".") >= 0 || t.indexOf("e") >= 0) { anyD = true; onlyChar = false; }
+        else { anyI = true; onlyChar = false; }
+        count = count + 1;
+        i = i + 1;
+        continue;
+      }
+      if (k == 1) {
+        if (t == "true" || t == "false") { anyB = true; count = count + 1; i = i + 1; continue; }
+        if (t.startsWith("JavaOperands.") || isTostrName(t)) {
+          < calls this pass inserted have known kinds >
+          if (isTostrName(t)) { anyS = true; }
+          else if (t.endsWith("Long")) { anyL = true; } else { anyI = true; }
+          onlyChar = false;
+          int c = i + 1;
+          int d2 = 0;
+          while (c < b) {
+            if (this.ot[c] == "(") { d2 = d2 + 1; }
+            if (this.ot[c] == ")") { d2 = d2 - 1; if (d2 == 0) { break; } }
+            c = c + 1;
+          }
+          count = count + 1;
+          i = c + 1;
+          continue;
+        }
+        String ty = chainType(i, b);
+        int after = this.chainEnd;
+        String kk = kindOfType(ty);
+        if (kk == "?") { return "?"; }
+        if (kk == "s") { anyS = true; } else if (kk == "d") { anyD = true; } else if (kk == "l") { anyL = true; } else if (kk == "b") { anyB = true; } else { anyI = true; if (kk != "c") { onlyChar = false; } }
+        count = count + 1;
+        i = after;
+        continue;
+      }
+      return "?";
+    }
+    if (anyS) { return "s"; }
+    if (anyB) { if (count == 1) { return "b"; } return "?"; }
+    if (anyD) { return "d"; }
+    if (anyL) { return "l"; }
+    if (anyI) {
+      if (onlyChar && count == 1) { return "c"; }
+      return "i";
+    }
+    return "?";
+  }
+
+  < the function name of a two-operand template of the model, F(a, b), or "" >
+  String binaryFn(String tpl) {
+    if (!tpl.endsWith("($a, $b)")) { return ""; }
+    return tpl.substring(0, tpl.length() - 8).trim();
+  }
+
+  < the outermost function of a tostr template (its result is a String) >
+  boolean isTostrName(String t) {
+    String d = this.rules.model.tostrDouble;
+    String c = this.rules.model.tostrChar;
+    if (d.indexOf("(") > 0 && d.substring(0, d.indexOf("(")).trim() == t) { return true; }
+    if (c.indexOf("(") > 0 && c.substring(0, c.indexOf("(")).trim() == t) { return true; }
+    return false;
+  }
+
+  < the typed pass: the declared names, then the expression laws (JConvExpr) >
+  void typedPass() {
+    collectSymbols();
+    this.expr.run();
+  }
+
+  < ---- emission ---- >
+  void emitOut(JConvEmitter em) {
+    int i = 0;
+    while (i < this.on) {
+      if (this.ok[i] == 6) { em.commentToken(this.ot[i], this.ol[i], this.oe[i]); }
+      else { em.token(this.ok[i], this.ot[i], this.ol[i]); }
+      i = i + 1;
+    }
+  }
+}

@@ -17,11 +17,24 @@ public:
 private:
     std::vector<Token> toks_; size_t i_=0;
     std::set<std::string> structNames_;
+    // Syntax 3.1 surface seen while parsing; copied to Program::syntax31Uses.
+    std::set<std::string> uses31_;
+    std::set<std::string> uses32_;   // syntax 3.2 surface seen (multi-dimensional creation)
+    ExprP parseArrayLiteral(const std::string& arrayType);
+    ExprP parseInitializer(const std::string& declType);
     // Nested classes (syntax 1.11) hoisted out of their enclosing class during
     // parseClass, in declaration order, each already named "Outer.Inner" and
     // flagged isNested. parseProgram appends these to Program.classes and
     // enforces the per-document cap of 42.
     std::vector<ClassDecl> hoistedNested_;
+    bool inInterface_=false;  // parsing an interface body (bodiless methods are abstract)
+    bool usesLineage_=false;  // the class being parsed uses Sleela.home / super(...)
+    // Java signature surface (syntax 3.0): the type variables of the enclosing
+    // generic class / method declarations, erased to Any in parsed types.
+    std::vector<std::vector<std::string>> typeVars_;
+    std::string javaErase(const std::string& source);
+    bool acceptEllipsis();
+    void splitAngleClosers();
     void collectStructNames();
     const Token& peek(int off=0) const; const Token& cur() const { return toks_[i_]; }
     bool check(Tok k) const { return cur().kind==k; } bool accept(Tok k);
@@ -34,6 +47,7 @@ private:
     std::vector<std::string> parseTypeList(Tok terminator);
     std::vector<std::string> parseTypeParameters();
     std::string parseGenericType();
+    std::string parseTypeArgument();
     void parseThrows(std::vector<std::string>& out);
     StructDecl parseStruct();
     ClassDecl parseClass(unsigned classModifiers=0, std::vector<annotation::Annotation> annotations={}, int depth=1);

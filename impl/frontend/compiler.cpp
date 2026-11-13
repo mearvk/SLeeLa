@@ -4,6 +4,10 @@
 #include "compiler.h"
 #include "semantic.h"
 #include "java_compat.h"
+#include "java_references.h"
+#include <algorithm>
+#include <tuple>
+#include <optional>
 #include "unsigned_integer.h"
 #include "wide_integer.h"
 
@@ -146,6 +150,7 @@ public:
         // extends chain is resolved base-first; <=1.9 keeps the flat layout.
         std::map<std::string,const ClassDecl*> classByName;
         for(const auto& c:prog_.classes) classByName[c.name]=&c;
+        lineageClasses_=classByName;
         const bool inheritance = !(syntax_<SyntaxVersion{1,10});
         std::map<std::string,std::vector<const Field*>> instanceFieldsOf; // resolved, in layout order
         std::set<std::string> laidOut; std::set<std::string> layoutInProgress;
@@ -155,7 +160,7 @@ public:
             const ClassDecl* cls=classByName[name];
             std::vector<const Field*> ordered; std::set<std::string> seen;
             if(inheritance){
-                const std::string& sup=cls->java.superclass;
+                const std::string sup=javaref::superclassOf(classByName,*cls);
                 if(!sup.empty()&&classByName.count(sup)&&!layoutInProgress.count(sup)){
                     resolveFields(sup);
                     for(const Field* bf:instanceFieldsOf[sup]) if(seen.insert(bf->name).second) ordered.push_back(bf);
@@ -195,23 +200,46 @@ public:
         }
         if(inheritance) {
             for(const auto& cls:prog_.classes) {
-                const std::string& parent=cls.java.superclass;
+                const std::string parent=javaref::superclassOf(classByName,cls);
                 if(parent.empty() || !structLayout_.count(parent) || !structLayout_.count(cls.name)) continue;
                 const int rc=slvm_set_struct_parent(vm_,structLayout_.at(cls.name).typeIndex,structLayout_.at(parent).typeIndex);
                 if(rc!=0) throw std::runtime_error("Semantic error: could not register runtime parent class for '"+cls.name+"'");
             }
+            // SLEELA.syntax 43.7: the implemented interfaces (and an
+            // interface's extends edge) are runtime supertypes too, so
+            // (Shape) x, x instanceof Shape and catch (Shape e) agree with
+            // the static assignable rule (43.6 rule 1). Direct edges only;
+            // the VM follows them transitively.
+            for(const auto& cls:prog_.classes) {
+                if(!structLayout_.count(cls.name)) continue;
+                const int self=structLayout_.at(cls.name).typeIndex;
+                for(const auto& i:cls.java.interfaces){
+                    const std::string r=javaref::resolveBaseName(classByName,javaref::stripTypeArguments(i));
+                    if(r.empty() || r==cls.name || !structLayout_.count(r)) continue;
+                    if(slvm_add_struct_super(vm_,self,structLayout_.at(r).typeIndex)!=0)
+                        throw std::runtime_error("Semantic error: could not register runtime interface '"+r+"' for '"+cls.name+"'");
+                }
+            }
         }
         for(const auto& cls:prog_.classes) for(const auto& f:cls.fields) if(f.isStatic){
             const std::string key=cls.name+"::"+f.name;
-            fieldGlobal_[key]=slvm_declare_global(vm_,key.c_str()); fieldProtected_[key]=f.isProtected; fieldOwner_[key]=cls.name; fields_.push_back(&f);
+            fieldGlobal_[key]=slvm_declare_global(vm_,key.c_str()); staticFieldType_[key]=f.type; fieldProtected_[key]=f.isProtected; fieldOwner_[key]=cls.name; fields_.push_back(&f);
             if(structLayout_.count(f.type)) varType_[key]=f.type;
         }
+        std::map<std::string,int> overloadCount;
         for(const auto& cls:prog_.classes) for(const auto& m:cls.methods){
-            const std::string key=cls.name+"::"+m.name;
+            const std::string baseKey=cls.name+"::"+m.name;
+            // Each overload gets its own function; the first keeps the plain
+            // key, later ones "Class::name#k". The plain key stays bound to
+            // the last declaration (the pre-overload behavior) for callers
+            // that resolve by name alone.
+            const int k=overloadCount[baseKey]++;
+            const std::string key = k==0 ? baseKey : baseKey+"#"+std::to_string(k);
             MethodInfo mi; mi.method=&m; mi.nlocals=countLocals(m)+(m.isStatic?0:1);
-            methodKeyByPtr_[&m]=key; methodOwner_[key]=cls.name;
+            methodKeyByPtr_[&m]=key; methodOwner_[key]=cls.name; methodOwner_[baseKey]=cls.name;
             if(m.isProtected) protectedMethods_.insert(key);
-            funcIndex_[key]=(int)methods_.size(); methods_.push_back(mi);
+            funcIndexByPtr_[&m]=(int)methods_.size();
+            funcIndex_[key]=(int)methods_.size(); funcIndex_[baseKey]=(int)methods_.size(); methods_.push_back(mi);
             if(m.name=="main") funcIndex_["main"]=(int)methods_.size()-1;
         }
         // OOD inheritance (syntax 1.10): make a base method callable as
@@ -224,7 +252,7 @@ public:
             std::function<void(const std::string&)> inheritMethods=[&](const std::string& name){
                 if(aliased.count(name)||!classByName.count(name)) return;
                 if(!aliasInProgress.insert(name).second) return; // cycle guard
-                const std::string& sup=classByName[name]->java.superclass;
+                const std::string sup=javaref::superclassOf(classByName,*classByName[name]);
                 if(sup.empty()||!classByName.count(sup)||aliasInProgress.count(sup)){ aliasInProgress.erase(name); aliased.insert(name); return; }
                 inheritMethods(sup);
                 // Alias the base's RESOLVED function set (its own + inherited),
@@ -252,6 +280,18 @@ public:
             emit(OP_POP); emit(OP_CONST,addNullConst()); emit(OP_RET); slvm_end_func(vm_);
             entry=(int)methods_.size();
         }
+        // SLEELA.syntax 37.5: with lib/java/support/SLJavaFaults loaded, a VM
+        // fault inside a try calls __sleela_fault(kind, message), which throws
+        // SLJavaFaults.make(kind, message) (an ArithmeticException, ...).
+        {
+            auto fm=funcIndex_.find("SLJavaFaults::make");
+            if(fm!=funcIndex_.end() && methods_[fm->second].method->isStatic && methods_[fm->second].method->params.size()==2){
+                const int stub=slvm_begin_func(vm_,"__sleela_fault",2,2);
+                emit(OP_LOADL,0); emit(OP_LOADL,1); emit(OP_CALL,fm->second); emit(OP_THROW);
+                emit(OP_CONST,addNullConst()); emit(OP_RET); slvm_end_func(vm_);
+                if(slvm_set_fault_function(vm_,stub)!=0) throw std::runtime_error("Semantic error: could not register the VM fault function");
+            }
+        }
         slvm_set_entry(vm_,entry); return entry;
     }
 private:
@@ -260,9 +300,13 @@ private:
     // position (offset) and declared type, in declaration order.
     struct StructLayout { std::string name; int typeIndex=-1; std::map<std::string,int> fieldOffset; std::vector<std::string> fieldType; };
     const Program& prog_; SLVM* vm_; const catalog::Catalog* cat_; SyntaxVersion syntax_;
-    std::map<std::string,int> funcIndex_; std::map<std::string,std::string> methodOwner_; std::map<const Method*,std::string> methodKeyByPtr_; std::set<std::string> protectedMethods_; std::vector<MethodInfo> methods_;
-    std::map<std::string,int> fieldGlobal_; std::map<std::string,bool> fieldProtected_; std::map<std::string,std::string> fieldOwner_; std::vector<const Field*> fields_; MethodCtx* ctx_=nullptr;
+    std::map<std::string,int> funcIndex_; std::map<std::string,std::string> methodOwner_; std::map<const Method*,std::string> methodKeyByPtr_; std::map<const Method*,int> funcIndexByPtr_; std::set<std::string> protectedMethods_; std::vector<MethodInfo> methods_;
+    std::map<std::string,int> fieldGlobal_; std::map<std::string,std::string> staticFieldType_; std::map<std::string,bool> fieldProtected_; std::map<std::string,std::string> fieldOwner_; std::vector<const Field*> fields_; MethodCtx* ctx_=nullptr;
     std::string currentClass_;
+    // Sleela.home lineage (SLEELA.syntax section 42), resolved against the loaded classes.
+    std::map<std::string,const ClassDecl*> lineageClasses_;
+    // The lineage logic lives in java_references.cpp (javaref::lineage*).
+    std::string lineageValue(const LineageExpr& x) const { return javaref::lineageValue(lineageClasses_,currentClass_,x); }
     std::map<std::string,StructLayout> structLayout_;
     // Track the declared type of each in-scope local/global so member access
     // can resolve `x.field` to the right struct layout. Names not present are
@@ -272,6 +316,12 @@ private:
     int fieldSlot(const std::string& name) const { auto it=fieldGlobal_.find(currentClass_+"::"+name); if(it!=fieldGlobal_.end())return it->second;it=fieldGlobal_.find(name);return it==fieldGlobal_.end()?-1:it->second; }
     int instanceFieldOffset(const std::string& name) const { auto it=structLayout_.find(currentClass_);if(it==structLayout_.end())return -1;auto f=it->second.fieldOffset.find(name);return f==it->second.fieldOffset.end()?-1:f->second; }
     int runtimeTypeOperand(const std::string& name) const {
+        // String is always the built-in type, as in the type checker (typeOf):
+        // the generated /lib/java envelope class java.lang.String must not
+        // turn a (String) cast or instanceof into a class check. utf16 names the
+        // VM-owned Java UTF-16 String kind (syntax 3.0, `x instanceof utf16`).
+        if(name=="String" || name=="string") return -(SL_STR+1);
+        if(name=="utf16") return -(SL_UTF16+1);
         auto st=structLayout_.find(name);
         if(st!=structLayout_.end()) return st->second.typeIndex;
         // The base-2 signed series int32..int16777216 (syntax 2.7) rides the
@@ -289,9 +339,9 @@ private:
         if(name=="int128") return -(SL_INT128+1);
         // The arbitrary-width U<width> family rides the 64-bit slot.
         if(name=="int" || name=="long" || name=="int64" || UnsignedInteger::isValidTypeName(name)) return -(SL_INT+1);
-        if(name=="double") return -(SL_DOUBLE+1);
+        if(name=="double" || name=="float") return -(SL_DOUBLE+1);
+        if(name=="char" || name=="byte" || name=="short") return -(SL_INT+1);
         if(name=="bool" || name=="boolean") return -(SL_BOOL+1);
-        if(name=="String" || name=="string") return -(SL_STR+1);
         if(name.size()>=2 && name.compare(name.size()-2,2,"[]")==0) return -(SL_ARRAY+1);
         throw std::runtime_error("Semantic error: no runtime type descriptor for '"+name+"'");
     }
@@ -303,7 +353,29 @@ private:
     // double/int128-typed store. Other target types need no coercion (int, long,
     // int64 share the 64-bit representation; class/array/String stores are
     // exact).
-    void coerceToDeclared(const std::string& declType){
+    // Java operand semantics for the fixed-width integral types. SLeeLa keeps
+    // every integer in one 64-bit slot, so the Java widths byte (8), short (16),
+    // char (16, unsigned) and int32 (32) are enforced where a value is stored
+    // into, or cast to, one of those types. Signed widths sign-extend by shifting
+    // left then arithmetic-right (existing OP_BSHL/OP_BSHR); char masks to 16 bits.
+    // `int` and `long` are unchanged: `int` stays the 64-bit workhorse the rest of
+    // the library relies on, so Java 32-bit `int` wrap-around is requested with
+    // int32 or an explicit (int32) cast.
+    static int javaNarrowBits(const std::string& t){
+        if(t=="byte") return 8;
+        if(t=="short") return 16;
+        if(t=="int32") return 32;
+        return 0;
+    }
+    void emitJavaNarrow(const std::string& t){
+        if(t=="char"){ emit(OP_CONST,slvm_add_const_int(vm_,0xFFFF)); emit(OP_BAND); return; }
+        const int bits=javaNarrowBits(t);
+        if(!bits) return;
+        emit(OP_CONST,slvm_add_const_int(vm_,64-bits)); emit(OP_BSHL);
+        emit(OP_CONST,slvm_add_const_int(vm_,64-bits)); emit(OP_BSHR);
+    }
+    void coerceToDeclared(const std::string& declType, bool narrow=true){
+        if(narrow && (declType=="char" || javaNarrowBits(declType))){ emitJavaNarrow(declType); return; }
         // Widen into a double, or into a 128-bit-backed signed integer (int128
         // and the wider base-2 series members int256..int16777216). Narrow
         // series members (int32, int64) share the 64-bit representation and need
@@ -311,7 +383,7 @@ private:
         const bool wide128 = declType=="int128"
             || (SignedWideInteger::isValidTypeName(declType) && !SignedWideInteger::fitsNativeNarrow(declType))
             || (UnsignedWideInteger::isValidTypeName(declType) && !UnsignedWideInteger::fitsNativeNarrow(declType));
-        if(declType=="double"||wide128)
+        if(declType=="double"||declType=="float"||wide128)
             emit(OP_CHECKCAST,runtimeTypeOperand(declType));
     }
     // Emit call arguments, widening each integer argument to a declared double
@@ -332,11 +404,29 @@ private:
         else if(auto w=dynamic_cast<const WhileStmt*>(s)) countInStmt(w->body.get(),n);
         else if(auto f=dynamic_cast<const ForStmt*>(s)){if(f->init)countInStmt(f->init.get(),n);countInStmt(f->body.get(),n);}
         else if(auto d=dynamic_cast<const DoStmt*>(s)) countInStmt(d->body.get(),n);
+        else if(auto fe=dynamic_cast<const ForEachStmt*>(s)){ n+=3; /* loop variable, source, index/iterator */ countInStmt(fe->body.get(),n); }
         else if(auto sy=dynamic_cast<const SynchronizedStmt*>(s)) countInBlock(*sy->body,n);
-        else if(auto tr=dynamic_cast<const TryStmt*>(s)){countInBlock(*tr->body,n);for(const auto& c:tr->catches){n++;countInBlock(*c.body,n);}if(tr->finallyBlock)countInBlock(*tr->finallyBlock,n);}
+        else if(auto lb=dynamic_cast<const LabeledStmt*>(s)) countInStmt(lb->body.get(),n);
+        else if(auto tr=dynamic_cast<const TryStmt*>(s)){n+=2;/* thrown-value temp + __retval */countInBlock(*tr->body,n);for(const auto& c:tr->catches){n++;countInBlock(*c.body,n);}if(tr->finallyBlock){/* finally is emitted up to 4 times (normal, after a catch, before a rethrow, from a catch body) */for(int k=0;k<4;++k)countInBlock(*tr->finallyBlock,n);}}
         else if(auto sw=dynamic_cast<const SwitchStmt*>(s)){n++;/* selector temp */for(const auto& c:sw->cases)for(const auto& st:c.statements)countInStmt(st.get(),n);}
     }
     int here(){return slvm_here(vm_);} int emit(SLOp op,int a=0){return slvm_emit(vm_,op,a);} void patch(int at,int target){slvm_patch(vm_,at,target);}
+    bool hasNativeAnnotation(const Method& method) const {
+        for (const auto& annotation : method.java.annotations)
+            if (annotation.name == "native" && annotation.marker) return true;
+        return false;
+    }
+    std::string nativeMethodSignature(const std::string& key, const Method& method) const {
+        std::string signature = key;
+        signature += method.isStatic ? "|static|argc=" : "|instance|argc=";
+        signature += std::to_string(method.params.size()) + "|";
+        for (const auto& parameter : method.params) {
+            signature += std::to_string(parameter.type.size()) + ":" + parameter.type;
+        }
+        signature += "|return=" + std::to_string(method.retType.size()) + ":" + method.retType;
+        signature += "|abi=1.0";
+        return signature;
+    }
     void emitMethod(MethodInfo& mi){
         const Method& m=*mi.method; const std::string key=methodKeyByPtr_.at(&m); currentClass_=methodOwner_.at(key);
         MethodCtx ctx; if(!m.isStatic)ctx.declare("this"); for(const auto& p:m.params)ctx.declare(p.name);
@@ -344,7 +434,16 @@ private:
         for(const auto& p:m.params) varType_[p.name]=p.type;
         if(!m.isStatic)varType_["this"]=currentClass_;
         const std::string savedRet=currentRetType_; currentRetType_=m.retType;
-        slvm_begin_func(vm_,key.c_str(),(int)m.params.size()+(m.isStatic?0:1),mi.nlocals); ctx_=&ctx;
+        const int functionIndex=slvm_begin_func(vm_,key.c_str(),(int)m.params.size()+(m.isStatic?0:1),mi.nlocals);
+        if(hasNativeAnnotation(m)){
+            const uint32_t flags=SL_NATIVE_METHOD_FLAG_ANNOTATED |
+                (m.isStatic?SL_NATIVE_METHOD_FLAG_STATIC:SL_NATIVE_METHOD_FLAG_INSTANCE);
+            const std::string signature=nativeMethodSignature(key,m);
+            if(slvm_set_func_native_metadata(vm_,functionIndex,flags,
+                    SL_NATIVE_METHOD_ABI_VERSION,signature.c_str())!=0)
+                throw std::runtime_error("Compiler error: could not register unique @native method identity for '"+key+"'");
+        }
+        ctx_=&ctx;
         // Initialise static fields before main runs. These compile to VM
         // globals; their initialisers must execute regardless of which class
         // declares them, so a static read from a non-entry class (e.g. a
@@ -362,6 +461,13 @@ private:
             }
             currentClass_=savedClass;
         }
+        if(m.java.constructor && !(syntax_<SyntaxVersion{3,0}) && !startsWithConstructorInvocation(m) && !isLibraryClass(currentClass_)){
+            // Java implicit super() (43.6) before the constructor body. Only for
+            // the program's own classes: /lib units construct themselves (their
+            // constructors set inherited state, and unimplemented library
+            // constructors throw UnsupportedOperationException).
+            std::string owner; if(const Method* bc=implicitBaseCtor(currentClass_,owner)){ emitThis(); emit(OP_CALL,ctorFuncIndex(owner,bc)); emit(OP_POP); }
+        }
         emitBlock(*m.body);ctx_=nullptr;emit(OP_CONST,addNullConst());emit(OP_RET);slvm_end_func(vm_);
         varType_=savedTypes; currentRetType_=savedRet;
     }
@@ -370,9 +476,9 @@ private:
     void emitStmt(const Stmt* s){
         if(auto b=dynamic_cast<const Block*>(s)){emitBlock(*b);return;} if(auto d=dynamic_cast<const VarDecl*>(s)){emitVarDecl(*d);return;}
         if(auto a=dynamic_cast<const Assign*>(s)){emitAssign(*a);return;} if(auto e=dynamic_cast<const ExprStmt*>(s)){emitExpr(e->expr.get());emit(OP_POP);return;}
-        if(auto p=dynamic_cast<const PrintStmt*>(s)){emitExpr(p->expr.get());emit(OP_PRINT);return;} if(auto r=dynamic_cast<const ReturnStmt*>(s)){emitReturn(*r);return;}
+        if(auto p=dynamic_cast<const PrintStmt*>(s)){emitExpr(p->expr.get());if(p->charArg)emit(OP_CHARSTR);emit(OP_PRINT);return;} if(auto r=dynamic_cast<const ReturnStmt*>(s)){emitReturn(*r);return;}
         if(auto gh=dynamic_cast<const GcHintStmt*>(s)){emitGcHint(*gh);return;}
-        if(auto i=dynamic_cast<const IfStmt*>(s)){emitIf(*i);return;} if(auto w=dynamic_cast<const WhileStmt*>(s)){emitWhile(*w);return;} if(auto f=dynamic_cast<const ForStmt*>(s)){emitFor(*f);return;}
+        if(auto i=dynamic_cast<const IfStmt*>(s)){emitIf(*i);return;} if(auto w=dynamic_cast<const WhileStmt*>(s)){emitWhile(*w);return;} if(auto f=dynamic_cast<const ForStmt*>(s)){emitFor(*f);return;} if(auto fe=dynamic_cast<const ForEachStmt*>(s)){emitForEach(*fe);return;}
         if(auto fa=dynamic_cast<const FieldAssign*>(s)){emitFieldAssign(*fa);return;}
         if(auto d=dynamic_cast<const DoStmt*>(s)){emitDo(*d);return;}
         if(auto sw=dynamic_cast<const SwitchStmt*>(s)){emitSwitch(*sw);return;}
@@ -381,8 +487,9 @@ private:
         if(auto t=dynamic_cast<const ThrowStmt*>(s)){emitExpr(t->value.get());emit(OP_THROW);return;}
         if(auto a=dynamic_cast<const AssertStmt*>(s)){emitExpr(a->cond.get());emit(OP_POP);return;}
         if(auto y=dynamic_cast<const YieldStmt*>(s)){emitExpr(y->value.get());emit(OP_POP);return;}
-        if(dynamic_cast<const BreakStmt*>(s)){emitBreak();return;}
-        if(dynamic_cast<const ContinueStmt*>(s)){emitContinue();return;}
+        if(auto bs=dynamic_cast<const BreakStmt*>(s)){emitBreak(bs->label);return;}
+        if(auto cs=dynamic_cast<const ContinueStmt*>(s)){emitContinue(cs->label);return;}
+        if(auto ls=dynamic_cast<const LabeledStmt*>(s)){emitLabeled(*ls);return;}
         throw std::runtime_error("Semantic error: unknown statement kind");
     }
     void emitBlock(const Block& b){for(const auto& s:b.stmts)emitStmt(s.get());}
@@ -435,17 +542,81 @@ private:
         if(r.word=="mem"){emit(OP_RAN_MEM);return;}
         throw std::runtime_error("Semantic error: unknown system reference 'ran::"+r.word+"'");
     }
-    void emitReturn(const ReturnStmt& r){if(r.value){emitExpr(r.value.get());coerceToDeclared(currentRetType_);}else emit(OP_CONST,addNullConst());emit(OP_RET);}
+    void emitReturn(const ReturnStmt& r){
+        if(r.value){emitExpr(r.value.get());coerceToDeclared(currentRetType_);}else emit(OP_CONST,addNullConst());
+        if(!regions_.empty()){
+            // Syntax 3.1: leave every enclosing try region (running its finally) before returning.
+            const int slot=ctx_->declare("__retval"); emit(OP_STOREL,slot);
+            unwindTo(0);
+            emit(OP_LOADL,slot);
+        }
+        emit(OP_RET);
+    }
     void emitFieldAssign(const FieldAssign& fa){int off=-1;const StructLayout& ml=memberLayout(fa.base.get(),fa.field,off);std::string ft=(off>=0&&off<(int)ml.fieldType.size())?ml.fieldType[(size_t)off]:"";emitExpr(fa.base.get());emitExpr(fa.value.get());coerceToDeclared(ft);emit(OP_SETFIELD,off);emit(OP_POP);}
     void emitIf(const IfStmt& s){emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitStmt(s.thenS.get());if(s.elseS){int jend=emit(OP_JMP,0);patch(jf,here());emitStmt(s.elseS.get());patch(jend,here());}else patch(jf,here());}
     // Loop context for break/continue: each enclosing loop records the jump
     // sites that must be patched to the loop exit (break) and to the loop's
     // continue target (continue). We patch them when the loop finishes.
-    struct LoopCtx{std::vector<int> breaks;std::vector<int> continues;int tryDepth=0;};
+    struct LoopCtx{std::vector<int> breaks;std::vector<int> continues;int tryDepth=0;std::string label;bool isSwitch=false;bool isBlock=false;};
+    // Syntax 3.1: a label applies to the next loop/switch context pushed.
+    std::string pendingLabel_;
+    LoopCtx newCtx(bool sw=false,bool blk=false){LoopCtx c;c.tryDepth=tryDepth_;c.isSwitch=sw;c.isBlock=blk;c.label=pendingLabel_;pendingLabel_.clear();return c;}
+    // One entry per live OP_TRY_PUSH frame, innermost last. `fin` is the finally
+    // block that must run when control leaves the region by break, continue or
+    // return (syntax 3.1; SLEELA.syntax 44.4). tryDepth_ == regions_.size().
+    struct Region{const Block* fin;};
+    std::vector<Region> regions_;
+    void pushRegion(const Block* fin){regions_.push_back({fin});++tryDepth_;}
+    void popRegion(){regions_.pop_back();--tryDepth_;}
+    // Leave every region above index `downTo`: pop its handler frame and run its
+    // finally inline, innermost first. While one finally is emitted only the
+    // regions outside it are live, so a jump inside that finally unwinds
+    // correctly and an exception from it propagates outward.
+    void unwindTo(size_t downTo){
+        const std::vector<Region> saved=regions_; const int savedDepth=tryDepth_; const int savedGuard=finallyGuard_;
+        for(size_t i=saved.size();i>downTo;--i){
+            regions_.assign(saved.begin(),saved.begin()+(long)(i-1)); tryDepth_=(int)(i-1);
+            emit(OP_TRY_POP);
+            if(saved[i-1].fin) emitBlock(*saved[i-1].fin);
+        }
+        regions_=saved; tryDepth_=savedDepth; finallyGuard_=savedGuard;
+    }
+    int findTarget(const std::string& label,bool forContinue){
+        for(size_t i=loops_.size();i-->0;){
+            const LoopCtx& c=loops_[i];
+            if(!label.empty()){ if(c.label==label){ if(forContinue&&(c.isSwitch||c.isBlock)) return -2; return (int)i; } continue; }
+            if(c.isBlock) continue;
+            if(forContinue&&c.isSwitch) continue;
+            return (int)i;
+        }
+        return -1;
+    }
     std::vector<LoopCtx> loops_;
     int tryDepth_=0;
-    void emitBreak(){if(loops_.empty())throw std::runtime_error("Semantic error: 'break' used outside a loop or switch");if(tryDepth_>loops_.back().tryDepth)throw std::runtime_error("Semantic error: break may not leave a protected try region until abrupt-completion cleanup is implemented");loops_.back().breaks.push_back(emit(OP_JMP,0));}
-    void emitContinue(){if(loops_.empty())throw std::runtime_error("Semantic error: 'continue' used outside a loop");if(tryDepth_>loops_.back().tryDepth)throw std::runtime_error("Semantic error: continue may not leave a protected try region until abrupt-completion cleanup is implemented");loops_.back().continues.push_back(emit(OP_JMP,0));}
+    void emitBreak(const std::string& label=""){
+        if(!label.empty()&&syntax_<SyntaxVersion{3,1}) throw std::runtime_error("Semantic error: labeled break requires #sleela 3.1");
+        int t=findTarget(label,false);
+        if(t<0) throw std::runtime_error(label.empty()?"Semantic error: 'break' used outside a loop or switch":"Semantic error: break to undefined label '"+label+"'");
+        unwindTo((size_t)loops_[(size_t)t].tryDepth);
+        loops_[(size_t)t].breaks.push_back(emit(OP_JMP,0));
+    }
+    void emitContinue(const std::string& label=""){
+        if(!label.empty()&&syntax_<SyntaxVersion{3,1}) throw std::runtime_error("Semantic error: labeled continue requires #sleela 3.1");
+        int t=findTarget(label,true);
+        if(t==-2) throw std::runtime_error("Semantic error: continue to label '"+label+"' which does not label a loop");
+        if(t<0) throw std::runtime_error(label.empty()?"Semantic error: 'continue' used outside a loop":"Semantic error: continue to undefined label '"+label+"'");
+        unwindTo((size_t)loops_[(size_t)t].tryDepth);
+        loops_[(size_t)t].continues.push_back(emit(OP_JMP,0));
+    }
+    void emitLabeled(const LabeledStmt& l){
+        const Stmt* b=l.body.get();
+        const bool loopLike=dynamic_cast<const WhileStmt*>(b)||dynamic_cast<const DoStmt*>(b)||dynamic_cast<const ForStmt*>(b)||dynamic_cast<const ForEachStmt*>(b)||dynamic_cast<const SwitchStmt*>(b);
+        if(loopLike){ pendingLabel_=l.label; emitStmt(b); pendingLabel_.clear(); return; }
+        pendingLabel_=l.label; loops_.push_back(newCtx(false,true));
+        emitStmt(b);
+        for(int br:loops_.back().breaks)patch(br,here());
+        loops_.pop_back();
+    }
     // Per-iteration delay requested by a loop-timing annotation (@loopDelay /
     // @loopBudget). Emits `push <ms>; OP_SLEEP`, which the VM executes each
     // iteration. Emitted at the top of the loop body so the delay happens once
@@ -459,15 +630,61 @@ private:
     // sleep. The judges/witnesses subjects are retained as AST metadata only and
     // have no runtime effect. ms<=0 emits nothing.
     void emitSpillStart(const LoopSpill& spill){if(spill.hasSpill && spill.spillPauseMs>0){emit(OP_CONST,slvm_add_const_int(vm_,(int64_t)spill.spillPauseMs));emit(OP_SLEEP);}}
-    void emitWhile(const WhileStmt& s){emitSpillStart(s.spill);loops_.push_back({{}, {}, tryDepth_});int top=here();emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());for(int c:loops_.back().continues)patch(c,top);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
-    void emitDo(const DoStmt& s){emitSpillStart(s.spill);loops_.push_back({{}, {}, tryDepth_});int top=here();emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
-    void emitFor(const ForStmt& s){emitSpillStart(s.spill);loops_.push_back({{}, {}, tryDepth_});if(s.init)emitStmt(s.init.get());int top=here();std::vector<int> exits;if(s.cond){emitExpr(s.cond.get());exits.push_back(emit(OP_JMPF,0));}if(s.threadStable){emitExpr(s.threadStable.get());exits.push_back(emit(OP_JMPF,0));}if(s.heapHealthy){emitExpr(s.heapHealthy.get());exits.push_back(emit(OP_JMPF,0));}emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);if(s.update)emitStmt(s.update.get());emit(OP_JMP,top);int end=here();for(int j:exits)patch(j,end);for(int b:loops_.back().breaks)patch(b,end);loops_.pop_back();}
+    void emitWhile(const WhileStmt& s){emitSpillStart(s.spill);loops_.push_back(newCtx());int top=here();emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());for(int c:loops_.back().continues)patch(c,top);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
+    void emitDo(const DoStmt& s){emitSpillStart(s.spill);loops_.push_back(newCtx());int top=here();emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
+    void emitFor(const ForStmt& s){emitSpillStart(s.spill);loops_.push_back(newCtx());if(s.init)emitStmt(s.init.get());int top=here();std::vector<int> exits;if(s.cond){emitExpr(s.cond.get());exits.push_back(emit(OP_JMPF,0));}if(s.threadStable){emitExpr(s.threadStable.get());exits.push_back(emit(OP_JMPF,0));}if(s.heapHealthy){emitExpr(s.heapHealthy.get());exits.push_back(emit(OP_JMPF,0));}emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);if(s.update)emitStmt(s.update.get());emit(OP_JMP,top);int end=here();for(int j:exits)patch(j,end);for(int b:loops_.back().breaks)patch(b,end);loops_.pop_back();}
+    // Enhanced for (SLEELA.syntax 43.6). Array: index loop with OP_ARRLEN /
+    // OP_ARRGET. Object: xs.iterator(), then hasNext()/next() (virtual calls).
+    int forEachCounter_=0;
+    void emitForEach(const ForEachStmt& s){
+        if(syntax_<SyntaxVersion{3,0}) throw std::runtime_error("Semantic error: the enhanced for requires #sleela 3.0");
+        const std::string tag=std::to_string(forEachCounter_++);
+        const int vSlot=ctx_->declare(s.name);
+        const int srcSlot=ctx_->declare("__fe_src#"+tag);
+        const int curSlot=ctx_->declare("__fe_cur#"+tag);
+        const auto savedType=varType_.find(s.name)!=varType_.end()?std::optional<std::string>(varType_[s.name]):std::nullopt;
+        varType_[s.name]=s.type;
+        loops_.push_back(newCtx());
+        std::vector<int> exits; int top=0;
+        emitExpr(s.iterable.get());
+        const std::vector<ExprP> noArgs;
+        if(!s.overIterable){
+            emit(OP_STOREL,srcSlot);
+            emit(OP_CONST,slvm_add_const_int(vm_,0)); emit(OP_STOREL,curSlot);
+            top=here();
+            emit(OP_LOADL,curSlot); emit(OP_LOADL,srcSlot); emit(OP_ARRLEN); emit(OP_LT); exits.push_back(emit(OP_JMPF,0));
+            emit(OP_LOADL,srcSlot); emit(OP_LOADL,curSlot); emit(OP_ARRGET); coerceToDeclared(s.type,false); emit(OP_STOREL,vSlot);
+        } else {
+            if(!s.iteratorM||!s.hasNextM||!s.nextM) throw std::runtime_error("Semantic error: enhanced for over '"+s.iterableType+"' was not resolved");
+            emitInstanceCall(s.iterableType,s.iteratorM,methodFuncIndex(s.iterableType,s.iteratorM),noArgs);
+            emit(OP_STOREL,curSlot);
+            top=here();
+            emit(OP_LOADL,curSlot); emitInstanceCall(s.iteratorType,s.hasNextM,methodFuncIndex(s.iteratorType,s.hasNextM),noArgs); exits.push_back(emit(OP_JMPF,0));
+            emit(OP_LOADL,curSlot); emitInstanceCall(s.iteratorType,s.nextM,methodFuncIndex(s.iteratorType,s.nextM),noArgs); coerceToDeclared(s.type,false); emit(OP_STOREL,vSlot);
+        }
+        emitStmt(s.body.get());
+        const int contTarget=here(); for(int c:loops_.back().continues) patch(c,contTarget);
+        if(!s.overIterable){ emit(OP_LOADL,curSlot); emit(OP_CONST,slvm_add_const_int(vm_,1)); emit(OP_ADD); emit(OP_STOREL,curSlot); }
+        emit(OP_JMP,top);
+        const int end=here(); for(int j:exits) patch(j,end); for(int b:loops_.back().breaks) patch(b,end);
+        loops_.pop_back();
+        if(savedType) varType_[s.name]=*savedType; else varType_.erase(s.name);
+    }
+    // Function index of an instance method resolved by semantic analysis.
+    int methodFuncIndex(const std::string& owner,const Method* m){
+        int fi=resolvedIndex(m);
+        if(fi<0){ auto t=funcIndex_.find(owner+"::"+m->name); if(t!=funcIndex_.end()) fi=t->second; }
+        if(fi<0) throw std::runtime_error("Semantic error: method '"+owner+"::"+m->name+"' is not registered");
+        return fi;
+    }
     void emitSynchronized(const SynchronizedStmt& s){emitExpr(s.monitor.get());emit(OP_POP);emitBlock(*s.body);}
     void emitTry(const TryStmt& s){
-        // First source-level exception milestone: one catch-all clause whose
-        // binding is Any. The VM currently dispatches catch-all handlers only;
-        // accepting a narrower declared type here would silently promise typed
-        // matching that the runtime does not implement.
+        if(syntax_<SyntaxVersion{3,0}){ emitTryMilestone(s); return; }
+        emitTryJava(s);
+    }
+    // Below syntax 3.0: the first exception milestone, unchanged -- one
+    // catch-all clause whose binding is Any, no finally.
+    void emitTryMilestone(const TryStmt& s){
         if(s.catches.size()!=1)
             throw std::runtime_error("Semantic error: this exception milestone supports exactly one catch clause");
         if(s.finallyBlock)
@@ -482,30 +699,115 @@ private:
         const bool hadPriorType=priorType!=varType_.end();
         const std::string savedType=hadPriorType?priorType->second:std::string();
         varType_[clause.variable]="Any";
-
         const int push=emit(OP_TRY_PUSH,0);
-        ++tryDepth_;
+        pushRegion(nullptr);
         emitBlock(*s.body);
-        --tryDepth_;
+        popRegion();
         emit(OP_TRY_POP);
         const int skipHandler=emit(OP_JMP,0);
         patch(push,here());
-
         // OP_THROW restores the operand stack and pushes the thrown value for
         // the selected handler. Store it immediately so it is rooted in a
         // normal local slot before the catch body can allocate or call out.
         emit(OP_STOREL,catchSlot);
         emitBlock(*clause.body);
         patch(skipHandler,here());
-
         if(hadPriorType) varType_[clause.variable]=savedType;
         else varType_.erase(clause.variable);
+    }
+    // Syntax 3.0 Java try (SLEELA.syntax 43.6 rule 11). One VM handler catches
+    // everything; the clauses then test the thrown value with OP_INSTANCEOF in
+    // source order, and an unmatched value is rethrown with OP_THROW. finally
+    // runs on normal completion, after a matched catch body, and before any
+    // rethrow (including an exception thrown by a catch body). A return, break
+    // or continue that would leave a finally-protected block is rejected,
+    // because it would skip the finally.
+    int tryCounter_=0;
+    int finallyGuard_=0;
+    void emitTryJava(const TryStmt& s){
+        const std::string tag=std::to_string(tryCounter_++);
+        const int exSlot=ctx_->declare("__try_ex#"+tag);
+        const bool hasFinally=(bool)s.finallyBlock;
+        // Resolve each clause's alternatives to runtime type operands.
+        struct Clause{ const CatchClause* c; bool catchAll; std::vector<int> ops; std::string varType; };
+        std::vector<Clause> clauses;
+        for(const auto& c:s.catches){
+            Clause cl{&c,false,{},"Any"};
+            for(const auto& alt:c.types.empty()?std::vector<std::string>{c.type}:c.types){
+                const std::string t=javaref::resolveBaseName(lineageClasses_,alt);
+                if(t=="Any"){ cl.catchAll=true; continue; }
+                if(!structLayout_.count(t)) throw std::runtime_error("Semantic error: catch type '"+alt+"' is not a loaded class");
+                cl.ops.push_back(runtimeTypeOperand(t));
+            }
+            if(c.types.size()==1 && !cl.catchAll) cl.varType=javaref::resolveBaseName(lineageClasses_,c.types[0]);
+            clauses.push_back(std::move(cl));
+        }
+        auto emitFinally=[&]{ if(hasFinally) emitBlock(*s.finallyBlock); };
+        int rethrowHandlerPush=-1;
+        // After OP_TRY_POP of the catch-phase frame its region is no longer live.
+        auto emitFinallyPopped=[&]{
+            if(rethrowHandlerPush>=0){ const std::vector<Region> saved=regions_; const int d=tryDepth_; regions_.pop_back(); --tryDepth_; emitFinally(); regions_=saved; tryDepth_=d; }
+            else emitFinally();
+        };
+        std::vector<int> toEnd;
+        // try body
+        const int push=emit(OP_TRY_PUSH,0);
+        pushRegion(hasFinally?s.finallyBlock.get():nullptr); if(hasFinally) ++finallyGuard_;
+        emitBlock(*s.body);
+        popRegion(); if(hasFinally) --finallyGuard_;
+        emit(OP_TRY_POP);
+        emitFinally();
+        toEnd.push_back(emit(OP_JMP,0));
+        // handler
+        patch(push,here());
+        emit(OP_STOREL,exSlot);
+        if(hasFinally && !clauses.empty()){
+            // An exception from a catch body must still run finally.
+            rethrowHandlerPush=emit(OP_TRY_PUSH,0); pushRegion(s.finallyBlock.get());
+        }
+        for(const auto& cl:clauses){
+            std::vector<int> nextClause;
+            if(!cl.catchAll){
+                std::vector<int> matched;
+                for(size_t k=0;k<cl.ops.size();++k){
+                    emit(OP_LOADL,exSlot); emit(OP_INSTANCEOF,cl.ops[k]);
+                    if(k+1<cl.ops.size()){ const int jf=emit(OP_JMPF,0); matched.push_back(emit(OP_JMP,0)); patch(jf,here()); }
+                    else nextClause.push_back(emit(OP_JMPF,0));
+                }
+                for(int m:matched) patch(m,here());
+            }
+            const int slot=ctx_->declare(cl.c->variable);
+            const auto prior=varType_.find(cl.c->variable); const bool had=prior!=varType_.end(); const std::string saved=had?prior->second:std::string();
+            varType_[cl.c->variable]=cl.varType;
+            emit(OP_LOADL,exSlot); emit(OP_STOREL,slot);
+            if(hasFinally) ++finallyGuard_;
+            emitBlock(*cl.c->body);
+            if(hasFinally) --finallyGuard_;
+            if(had) varType_[cl.c->variable]=saved; else varType_.erase(cl.c->variable);
+            if(rethrowHandlerPush>=0) emit(OP_TRY_POP);
+            emitFinallyPopped();
+            toEnd.push_back(emit(OP_JMP,0));
+            for(int n:nextClause) patch(n,here());
+        }
+        // no clause matched: finally, then rethrow
+        if(rethrowHandlerPush>=0) emit(OP_TRY_POP);
+        emitFinallyPopped();
+        emit(OP_LOADL,exSlot); emit(OP_THROW);
+        if(rethrowHandlerPush>=0){
+            popRegion();
+            // exception raised inside a catch body: finally, then propagate it
+            patch(rethrowHandlerPush,here());
+            emit(OP_STOREL,exSlot);
+            emitFinally();
+            emit(OP_LOADL,exSlot); emit(OP_THROW);
+        }
+        for(int e:toEnd) patch(e,here());
     }
     void emitSwitch(const SwitchStmt& s){
         // Lower a switch to a dispatch chain: evaluate the selector once into a
         // temp local, test each label with ==, and jump to the matching case
         // body. Fall-through follows source order; `break` jumps to the end.
-        loops_.push_back({{}, {}, tryDepth_});
+        loops_.push_back(newCtx(true));
         int sel=ctx_->nextSlot++; emitExpr(s.selector.get()); emit(OP_STOREL,sel);
         // Dispatch section: for each label, (selector==label) ? enter body.
         // Record one enter-jump per label, tagged with its owning case index.
@@ -543,6 +845,13 @@ private:
             if(x->op==":::"){emitExpr(x->lhs.get());emitExpr(x->rhs.get());emit(OP_SSEND);return;}
             emitBinary(*x);return;
         } if(auto x=dynamic_cast<const Call*>(e)){emitCall(*x);return;}
+        if(auto x=dynamic_cast<const LineageExpr*>(e); x&&x->kind==LineageExpr::Boot){
+            // VM boot: place Security2 above the VM and walk it boot -> init -> start -> ready.
+            if(!lineageClasses_.count("Security2")){emit(OP_CONST,addNullConst());return;}
+            MethodCall boot(std::make_unique<NewExpr>("Security2"),"boot"); boot.args.push_back(std::make_unique<StrLit>("Sleela.System"));
+            emitExpr(&boot); return;
+        }
+        if(auto x=dynamic_cast<const LineageExpr*>(e)){emit(OP_CONST,slvm_add_const_str(vm_,lineageValue(*x).c_str()));return;}
         if(auto x=dynamic_cast<const NewExpr*>(e)){emitNew(*x);return;} if(auto x=dynamic_cast<const MemberAccess*>(e)){emitMember(*x);return;}
         if(auto x=dynamic_cast<const MethodCall*>(e)){emitMethodCall(*x);return;}
         if(auto x=dynamic_cast<const AssignmentExpr*>(e)){emitAssignmentExpr(*x);return;}
@@ -550,6 +859,9 @@ private:
         if(auto x=dynamic_cast<const CastExpr*>(e)){
              emitExpr(x->operand.get());
              if(x->typeName!="Any") emit(OP_CHECKCAST,runtimeTypeOperand(x->typeName));
+             // Java narrowing cast: (byte)/(short)/(char)/(int32) wrap to their width
+             // after the double->integer truncation that OP_CHECKCAST(int) performs.
+             if(x->typeName=="char" || javaNarrowBits(x->typeName)) emitJavaNarrow(x->typeName);
              return;
          }
         if(auto x=dynamic_cast<const InstanceOfExpr*>(e)){
@@ -557,7 +869,7 @@ private:
              emit(OP_INSTANCEOF,runtimeTypeOperand(x->typeName));
              return;
          }
-        if(dynamic_cast<const SuperExpr*>(e)){emit(OP_CONST,addNullConst());return;}
+        if(dynamic_cast<const SuperExpr*>(e)){ if(ctx_&&ctx_->slotOf("this")>=0) emitThis(); else emit(OP_CONST,addNullConst()); return; }
         if(dynamic_cast<const ThisExpr*>(e)){emitThis();return;}
         if(auto x=dynamic_cast<const ArrayAccess*>(e)){emitExpr(x->base.get());emitExpr(x->index.get());emit(OP_ARRGET);return;}
         if(auto x=dynamic_cast<const MethodReferenceExpr*>(e)){emitExpr(x->base.get());return;}
@@ -566,24 +878,36 @@ private:
     }
     // Lower a (possibly compound) assignment expression. The result value is
     // left on the stack. Compound ops expand to `target = target <op> value`.
+    // Syntax 3.2: `s += c` with a char value c appends the character, not its number.
+    unsigned compoundCharMask_=0;
+    bool narrowCharStore_=false;
+    void emitBinOpC(const std::string& o){ if(o=="+"&&compoundCharMask_){ emit(OP_ADDCHAR,(int)compoundCharMask_); return; } emitBinOp(o); }
     void emitAssignmentExpr(const AssignmentExpr& a){
-        std::string bin = a.op.size()==2 ? std::string(1,a.op[0]) : std::string();
-        if(auto v=dynamic_cast<const VarExpr*>(a.target.get())){
+        const unsigned savedCharMask=compoundCharMask_; compoundCharMask_=a.charMask;
+        struct Restore{unsigned& r;unsigned v;~Restore(){r=v;}} restoreCharMask{compoundCharMask_,savedCharMask};
+        const bool savedNarrow=narrowCharStore_; narrowCharStore_=a.narrowChar;
+        struct RestoreB{bool& r;bool v;~RestoreB(){r=v;}} restoreNarrow{narrowCharStore_,savedNarrow};
+        emitAssignTo(a.target.get(), a.op=="=" ? std::string() : a.op.substr(0,a.op.size()-1), [&]{ emitExpr(a.value.get()); });
+    }
+    // Assign to `target` (local, field, static, member, array element), with an
+    // optional compound operator `bin`; leaves the assigned value on the stack.
+    void emitAssignTo(const Expr* target,const std::string& bin,const std::function<void()>& emitValue){
+        if(auto v=dynamic_cast<const VarExpr*>(target)){
             // Resolve the target before emitting the RHS. Assignment expressions
             // are also used for statement-level assignments, so instance fields
             // must follow the same resolution path as Assign statements.
             int slot=ctx_->slotOf(v->name);
             if(slot>=0){
-                if(!bin.empty()){emit(OP_LOADL,slot);emitExpr(a.value.get());emitBinOp(bin);}
-                else emitExpr(a.value.get());
+                if(!bin.empty()){emit(OP_LOADL,slot);emitValue();emitBinOpC(bin);}
+                else emitValue();
                 {auto t=varType_.find(v->name);if(t!=varType_.end())coerceToDeclared(t->second);}
                 emit(OP_STOREL,slot);emit(OP_LOADL,slot);return;
             }
             int off=instanceFieldOffset(v->name);
             if(off>=0){
                 emitThis();                         // [this]
-                if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitExpr(a.value.get());emitBinOp(bin);}
-                else emitExpr(a.value.get());
+                if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitValue();emitBinOpC(bin);}
+                else emitValue();
                 coerceToDeclared(instanceFieldType(v->name));
                 emit(OP_SETFIELD,off);              // leaves assigned value
                 return;
@@ -592,24 +916,30 @@ private:
             if(g>=0){
                 const std::string key=fieldOwner_.count(v->name)?v->name:currentClass_+"::"+v->name;
                 if(fieldProtected_[key]&&fieldOwner_[key]!=currentClass_)throw std::runtime_error("protected field access denied");
-                if(!bin.empty()){emit(OP_LOADG,g);emitExpr(a.value.get());emitBinOp(bin);}
-                else emitExpr(a.value.get());
+                if(!bin.empty()){emit(OP_LOADG,g);emitValue();emitBinOpC(bin);}
+                else emitValue();
                 emit(OP_STOREG,g);emit(OP_LOADG,g);return;
             }
             throw std::runtime_error("Semantic error: assignment to undeclared variable '"+v->name+"'");
         }
-        if(auto m=dynamic_cast<const MemberAccess*>(a.target.get())){
+        if(auto m=dynamic_cast<const MemberAccess*>(target)){
+            { std::string sc; if(isStaticClassRef(m->base.get(),sc)){ auto g=fieldGlobal_.find(sc+"::"+m->field);
+                if(g!=fieldGlobal_.end()){
+                    if(!bin.empty()){emit(OP_LOADG,g->second);emitValue();emitBinOpC(bin);}
+                    else emitValue();
+                    emit(OP_STOREG,g->second);emit(OP_LOADG,g->second);return;
+                } } }
             int off=-1;const StructLayout& ml=memberLayout(m->base.get(),m->field,off);
             std::string ft=(off>=0&&off<(int)ml.fieldType.size())?ml.fieldType[(size_t)off]:"";
             // SETFIELD expects [struct, newval] and leaves newval on the stack.
             emitExpr(m->base.get());                 // [struct]
-            if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitExpr(a.value.get());emitBinOp(bin);} // [struct, newval]
-            else emitExpr(a.value.get());            // [struct, newval]
+            if(!bin.empty()){emit(OP_DUP);emit(OP_GETFIELD,off);emitValue();emitBinOpC(bin);} // [struct, newval]
+            else emitValue();            // [struct, newval]
             coerceToDeclared(ft);
             emit(OP_SETFIELD,off);                   // [newval]
             return;
         }
-        if(auto aa=dynamic_cast<const ArrayAccess*>(a.target.get())){
+        if(auto aa=dynamic_cast<const ArrayAccess*>(target)){
             // OP_ARRSET expects [array, index, value] and leaves value on the stack.
             emitExpr(aa->base.get());                // [array]
             emitExpr(aa->index.get());               // [array, index]
@@ -621,18 +951,19 @@ private:
                 // second time (e.g. a[i++] += 1 would increment i twice).
                 emit(OP_DUP2);                       // [array, index, array, index]
                 emit(OP_ARRGET);                     // [array, index, cur]
-                emitExpr(a.value.get());             // [array, index, cur, val]
-                emitBinOp(bin);                      // [array, index, newval]
+                emitValue();             // [array, index, cur, val]
+                emitBinOpC(bin);                      // [array, index, newval]
             } else {
-                emitExpr(a.value.get());             // [array, index, value]
+                emitValue();             // [array, index, value]
             }
+            if(narrowCharStore_){ emit(OP_CONST,slvm_add_const_int(vm_,0xFFFF)); emit(OP_BAND); }   // syntax 3.2: char[] element store keeps 16 bits
             emit(OP_ARRSET);                         // [value]
             return;
         }
         throw std::runtime_error("Semantic error: assignment target must be a variable, struct field, or array element");
     }
     void emitConditional(const ConditionalExpr& c){emitExpr(c.cond.get());int jf=emit(OP_JMPF,0);emitExpr(c.thenE.get());int jend=emit(OP_JMP,0);patch(jf,here());emitExpr(c.elseE.get());patch(jend,here());}
-    void emitBinOp(const std::string& o){if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else throw std::runtime_error("Semantic error: unsupported compound assignment operator '"+o+"='");}
+    void emitBinOp(const std::string& o){if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="&")emit(OP_BAND);else if(o=="|")emit(OP_BOR);else if(o=="^")emit(OP_BXOR);else if(o=="<<")emit(OP_BSHL);else if(o==">>")emit(OP_BSHR);else if(o==">>>")emit(OP_BUSHR);else throw std::runtime_error("Semantic error: unsupported compound assignment operator '"+o+"='");}
     // Determine the struct type name an expression evaluates to, or "" if it is
     // not statically known to be a struct. Used to resolve field offsets.
     std::string exprStructType(const Expr* e){
@@ -659,7 +990,10 @@ private:
             return "";
         }
         if(dynamic_cast<const ThisExpr*>(e))return currentClass_;
-        if(auto m=dynamic_cast<const MemberAccess*>(e)){std::string bt=exprStructType(m->base.get());if(bt.empty())return "";auto lit=structLayout_.find(bt);if(lit==structLayout_.end())return "";int idx=-1;auto oit=lit->second.fieldOffset.find(m->field);if(oit!=lit->second.fieldOffset.end())idx=oit->second;if(idx<0)return "";return lit->second.fieldType[idx];}
+        if(dynamic_cast<const SuperExpr*>(e))return javaref::lineageParentOf(lineageClasses_,currentClass_);
+        if(auto m=dynamic_cast<const MemberAccess*>(e)){
+            { std::string sc; if(isStaticClassRef(m->base.get(),sc)){ auto ft=staticFieldType_.find(sc+"::"+m->field); if(ft!=staticFieldType_.end()) return structLayout_.count(ft->second)?ft->second:std::string(); } }
+            std::string bt=exprStructType(m->base.get());if(bt.empty())return "";auto lit=structLayout_.find(bt);if(lit==structLayout_.end())return "";int idx=-1;auto oit=lit->second.fieldOffset.find(m->field);if(oit!=lit->second.fieldOffset.end())idx=oit->second;if(idx<0)return "";return lit->second.fieldType[idx];}
         if(auto ca=dynamic_cast<const CastExpr*>(e))return ca->typeName;
         if(auto n=dynamic_cast<const NewExpr*>(e))return n->typeName;
         // A Guide chain evaluates to its constructed head instance, so its
@@ -672,11 +1006,20 @@ private:
         // method's return type when it names a known struct/class. Empty when
         // the return type is scalar or the method cannot be resolved.
         if(auto mc=dynamic_cast<const MethodCall*>(e)){
-            std::string rt=exprStructType(mc->receiver.get());
+            // A String-receiver call returns its JavaStringMethods method's type.
+            if(mc->stringReceiver && mc->resolved){ const std::string& ret=mc->resolved->retType; return structLayout_.count(ret)?ret:std::string(); }
+            if(mc->anyReceiver) return structLayout_.count(mc->anyReturn)?mc->anyReturn:std::string();
+            std::string rt;
+            bool viaClassName=false;
+            { std::string sc; if(isStaticClassRef(mc->receiver.get(),sc)){ rt=sc; viaClassName=true; } }
+            if(rt.empty()) rt=exprStructType(mc->receiver.get());
             if(rt.empty()) return "";
             auto fi=funcIndex_.find(rt+"::"+mc->method);
-            if(fi==funcIndex_.end()) return "";
-            const std::string& ret=methods_[fi->second].method->retType;
+            if(fi==funcIndex_.end()){
+                if(viaClassName && mc->method=="deref" && structLayout_.count(rt)) return rt;
+                return "";
+            }
+            const std::string& ret = mc->resolved ? mc->resolved->retType : methods_[fi->second].method->retType;
             if(structLayout_.count(ret)) return ret;
             return "";
         }
@@ -706,21 +1049,167 @@ private:
                 if(m.params.size()==argc) match=&m;
             }
         if(ctorCount==0) return nullptr;
-        if(ctorCount>1) throw std::runtime_error("Semantic error: class '"+className+"' declares multiple constructors; syntax 1.8 does not support constructor overload resolution");
+        if(ctorCount>1 && syntax_<SyntaxVersion{3,0}) throw std::runtime_error("Semantic error: class '"+className+"' declares multiple constructors; constructor overload resolution requires syntax 3.0");
         if(!match) throw std::runtime_error("Semantic error: no constructor of '"+className+"' takes "+std::to_string(argc)+" argument(s)");
         return match;
     }
+    // ---- Java constructor chaining and virtual dispatch (SLEELA.syntax 43.6) ----
+    // Function index of a constructor declared in `owner`.
+    int ctorFuncIndex(const std::string& owner,const Method* ctor){
+        int fi=resolvedIndex(ctor);
+        if(fi<0){ auto t=funcIndex_.find(owner+"::"+ctor->name); if(t!=funcIndex_.end()) fi=t->second; }
+        if(fi<0) throw std::runtime_error("Semantic error: constructor of '"+owner+"' is not registered");
+        return fi;
+    }
+    bool isLibraryClass(const std::string& n) const { auto it=lineageClasses_.find(n); return it!=lineageClasses_.end()&&it->second->fromLibrary; }
+    // Java's implicit super(): the no-arg constructor of the nearest loaded
+    // ancestor of `cls` that declares any constructor (nullptr when there is
+    // none, or when that ancestor has no no-arg constructor). Sets `owner`.
+    const Method* implicitBaseCtor(const std::string& cls,std::string& owner){
+        std::set<std::string> seen; std::string c=javaref::lineageParentOf(lineageClasses_,cls);
+        while(!c.empty() && seen.insert(c).second){
+            const ClassDecl* d=lineageClasses_.at(c); bool any=false;
+            for(const auto& m:d->methods) if(m.java.constructor){ any=true; if(m.params.empty()){ owner=c; return &m; } }
+            if(any) return nullptr;
+            c=javaref::lineageParentOf(lineageClasses_,c);
+        }
+        return nullptr;
+    }
+    // True when a constructor body starts with an explicit super(...) / this(...)
+    // (including the lineage-only super("constructor") of section 42.5).
+    static bool startsWithConstructorInvocation(const Method& m){
+        if(!m.body||m.body->stmts.empty()) return false;
+        const Stmt* s=m.body->stmts.front().get();
+        if(auto a=dynamic_cast<const Assign*>(s)) return a->name=="__lin_root";
+        if(auto b=dynamic_cast<const Block*>(s)) for(const auto& x:b->stmts) if(auto es=dynamic_cast<const ExprStmt*>(x.get())) if(auto mc=dynamic_cast<const MethodCall*>(es->expr.get())) if(mc->superConstructor) return true;
+        if(auto es=dynamic_cast<const ExprStmt*>(s)) if(auto mc=dynamic_cast<const MethodCall*>(es->expr.get())) return mc->superConstructor||mc->thisConstructor;
+        return false;
+    }
+    // super(args) / this(args): call the resolved constructor on `this`.
+    void emitConstructorInvocation(const MethodCall& mc){
+        if(syntax_<SyntaxVersion{3,0}) return;   // below 3.0 the arguments are not evaluated (42.7)
+        if(!mc.resolved) return;                  // implicit default constructor: nothing to run
+        const std::string owner = mc.superConstructor ? javaref::lineageParentOf(lineageClasses_,currentClass_) : currentClass_;
+        emitThis(); emitArgsCoerced(mc.args,mc.resolved); emit(OP_CALL,ctorFuncIndex(owner,mc.resolved));
+        // leave a value: the ExprStmt pops it
+    }
+    // Overrides of `method` (declared in or inherited by `staticType`) in loaded
+    // subclasses / implementors, deepest first, as (runtime type, function).
+    std::vector<std::pair<int,int>> virtualTargets(const std::string& staticType,const Method* method){
+        std::vector<std::tuple<int,int,int>> found; // depth, typeIndex, funcIndex
+        for(const auto& cls:prog_.classes){
+            if(cls.name==staticType || !javaref::isSubtypeOf(lineageClasses_,cls.name,staticType)) continue;
+            auto lay=structLayout_.find(cls.name); if(lay==structLayout_.end()) continue;
+            for(const auto& dm:cls.methods){
+                if(dm.isStatic||dm.java.constructor||dm.name!=method->name||dm.params.size()!=method->params.size()||&dm==method) continue;
+                bool sameParams=true; for(size_t i=0;i<dm.params.size();++i) if(dm.params[i].type!=method->params[i].type){sameParams=false;break;}
+                if(!sameParams) continue;
+                auto fi=funcIndexByPtr_.find(&dm); if(fi==funcIndexByPtr_.end()) continue;
+                found.emplace_back(javaref::inheritanceDepth(lineageClasses_,cls.name),lay->second.typeIndex,fi->second);
+                break;
+            }
+        }
+        std::stable_sort(found.begin(),found.end(),[](const auto& a,const auto& b){return std::get<0>(a)>std::get<0>(b);});
+        std::vector<std::pair<int,int>> out; for(const auto& f:found) out.emplace_back(std::get<1>(f),std::get<2>(f));
+        return out;
+    }
+    // Receiver is on the stack. Java virtual dispatch (43.6): test it against
+    // each loaded override, deepest first, else call `fidx`.
+    void emitInstanceCall(const std::string& staticType,const Method* method,int fidx,const std::vector<ExprP>& args){
+        if(!(syntax_<SyntaxVersion{3,0})){
+            const auto targets=virtualTargets(staticType,method);
+            if(!targets.empty()){
+                std::vector<int> ends;
+                for(const auto& t:targets){
+                    emit(OP_DUP); emit(OP_INSTANCEOF,t.first); const int skip=emit(OP_JMPF,0);
+                    emitArgsCoerced(args,method); emit(OP_CALL,t.second); ends.push_back(emit(OP_JMP,0));
+                    patch(skip,here());
+                }
+                emitArgsCoerced(args,method); emit(OP_CALL,fidx);
+                for(int e:ends) patch(e,here());
+                return;
+            }
+        }
+        emitArgsCoerced(args,method); emit(OP_CALL,fidx);
+    }
+    // SLEELA.syntax 43.7: a method call on an Any receiver. Semantic analysis
+    // listed the loaded classes declaring the method, most derived first. Per
+    // candidate: DUP, INSTANCEOF <class>, JMPF, arguments, CALL. A String and
+    // a utf16 value call the JavaStringMethods function with the receiver as
+    // its first argument. No match throws a message string.
+    void emitAnyReceiverCall(const MethodCall& mc){
+        emitExpr(mc.receiver.get());
+        std::vector<int> ends;
+        for(const auto& t:mc.anyTargets){
+            auto lay=structLayout_.find(t.first); int fi=resolvedIndex(t.second);
+            if(lay==structLayout_.end()||fi<0) continue;
+            emit(OP_DUP); emit(OP_INSTANCEOF,lay->second.typeIndex); const int skip=emit(OP_JMPF,0);
+            emitArgsCoerced(mc.args,t.second); emit(OP_CALL,fi); ends.push_back(emit(OP_JMP,0));
+            patch(skip,here());
+        }
+        if(mc.anyStringTarget){
+            const int fi=resolvedIndex(mc.anyStringTarget);
+            if(fi>=0) for(int kind:{-(SL_STR+1),-(SL_UTF16+1)}){
+                emit(OP_DUP); emit(OP_INSTANCEOF,kind); const int skip=emit(OP_JMPF,0);
+                for(size_t i=0;i<mc.args.size();++i){ emitExpr(mc.args[i].get()); coerceToDeclared(mc.anyStringTarget->params[i+1].type); }
+                emit(OP_CALL,fi); ends.push_back(emit(OP_JMP,0));
+                patch(skip,here());
+            }
+        }
+        emit(OP_POP);
+        const std::string msg="no method '"+mc.method+"' taking "+std::to_string(mc.args.size())+" argument(s) for the runtime value (call on an Any receiver)";
+        emit(OP_CONST,slvm_add_const_str(vm_,msg.c_str())); emit(OP_THROW);
+        for(int e:ends) patch(e,here());
+    }
+    // Element default for `new T[n]`: Java numeric and boolean arrays start at
+    // zero/false, not null (see OP_NEWARRAY operand a).
+    static int arrayFillKind(const std::string& elem){
+        if(elem=="int"||elem=="long"||elem=="short"||elem=="byte"||elem=="char"||elem=="int64") return 1;
+        // The 64-bit-backed series members (int32, uint32, uint64, U<width>) start
+        // at 0 too; the 128-bit-backed members keep the null default.
+        if((SignedWideInteger::isValidTypeName(elem)&&SignedWideInteger::fitsNativeNarrow(elem))
+           ||(UnsignedWideInteger::isValidTypeName(elem)&&UnsignedWideInteger::fitsNativeNarrow(elem))
+           ||UnsignedInteger::isValidTypeName(elem)) return 1;
+        if(elem=="double"||elem=="float") return 2;
+        if(elem=="bool"||elem=="boolean") return 3;
+        return 0;
+    }
     void emitNew(const NewExpr& n){
-        if(n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){if(!n.args.empty())emitExpr(n.args[0].get());else emit(OP_CONST,slvm_add_const_int(vm_,0));emit(OP_NEWARRAY);return;}
+        if(n.hasInit){
+            // Syntax 3.1 array initializer: allocate, then store each element.
+            const std::string et=n.typeName.substr(0,n.typeName.size()-2);
+            emit(OP_CONST,slvm_add_const_int(vm_,(int64_t)n.init.size()));
+            emit(OP_NEWARRAY,arrayFillKind(et));
+            for(size_t i=0;i<n.init.size();++i){
+                emit(OP_DUP); emit(OP_CONST,slvm_add_const_int(vm_,(int64_t)i));
+                emitExpr(n.init[i].get()); coerceToDeclared(et);
+                emit(OP_ARRSET); emit(OP_POP);
+            }
+            return;
+        }
+        if(n.args.size()>=2 && n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){
+            // Syntax 3.2 multi-dimensional creation: new T[a][b]... / new T[a][b][]
+            std::string base=n.typeName; size_t rank=0;
+            while(base.size()>=2 && base.compare(base.size()-2,2,"[]")==0){ base.erase(base.size()-2); ++rank; }
+            for(const auto& d:n.args) emitExpr(d.get());
+            const int fill=(n.args.size()==rank)?arrayFillKind(base):0;
+            emit(OP_NEWARRAYND,(int)n.args.size()|(fill<<8));
+            return;
+        }
+        if(n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){if(!n.args.empty())emitExpr(n.args[0].get());else emit(OP_CONST,slvm_add_const_int(vm_,0));emit(OP_NEWARRAY,arrayFillKind(n.typeName.substr(0,n.typeName.size()-2)));return;}
         auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown class or struct '"+n.typeName+"'");
         // Resolve a matching constructor before allocating so an arity/overload
         // error is reported without leaving a half-built instance plan.
-        const Method* ctor = n.args.empty() ? findConstructor(n.typeName,0) : findConstructor(n.typeName,n.args.size());
+        const Method* ctor = n.resolved ? n.resolved : (n.args.empty() ? findConstructor(n.typeName,0) : findConstructor(n.typeName,n.args.size()));
         if(!n.args.empty() && !ctor) throw std::runtime_error("Semantic error: class '"+n.typeName+"' has no constructor to accept "+std::to_string(n.args.size())+" argument(s)");
         emit(OP_NEWSTRUCT,it->second.typeIndex);
         // Initialize class fields per instance. A duplicated handle is consumed
         // by SETFIELD while the original stays on the stack as the new value.
-        for(const auto& cls:prog_.classes) if(cls.name==n.typeName){
+        // Initialize instance fields base-first along the extends chain (43.6):
+        // a class's inherited fields get their declared initializers too.
+        std::vector<std::string> chain{n.typeName};
+        if(!(syntax_<SyntaxVersion{3,0})){ std::set<std::string> seen{n.typeName}; std::string c=javaref::lineageParentOf(lineageClasses_,n.typeName); while(!c.empty()&&seen.insert(c).second){ chain.insert(chain.begin(),c); c=javaref::lineageParentOf(lineageClasses_,c); } }
+        for(const auto& chainName:chain) for(const auto& cls:prog_.classes) if(cls.name==chainName){
             for(const auto& f:cls.fields) if(!f.isStatic){
                 auto off=it->second.fieldOffset.find(f.name);if(off==it->second.fieldOffset.end())continue;
                 emit(OP_DUP);
@@ -738,12 +1227,17 @@ private:
         // receiver, push the constructor arguments, and call the constructor
         // method; its (null) return value is discarded so the fully initialized
         // instance remains on the stack as the value of `new Type(args)`.
+        if(!ctor && !(syntax_<SyntaxVersion{3,0}) && !isLibraryClass(n.typeName)){
+            // Java default constructor: runs the implicit super() chain.
+            std::string owner; if(const Method* bc=implicitBaseCtor(n.typeName,owner)){ emit(OP_DUP); emit(OP_CALL,ctorFuncIndex(owner,bc)); emit(OP_POP); }
+        }
         if(ctor){
-            auto target=funcIndex_.find(n.typeName+"::"+ctor->name);
-            if(target==funcIndex_.end()) throw std::runtime_error("Semantic error: constructor of '"+n.typeName+"' is not registered");
+            int fidx=resolvedIndex(ctor);
+            if(fidx<0){ auto target=funcIndex_.find(n.typeName+"::"+ctor->name); if(target!=funcIndex_.end()) fidx=target->second; }
+            if(fidx<0) throw std::runtime_error("Semantic error: constructor of '"+n.typeName+"' is not registered");
             emit(OP_DUP);
-            for(const auto& a:n.args) emitExpr(a.get());
-            emit(OP_CALL,target->second);
+            emitArgsCoerced(n.args,ctor);
+            emit(OP_CALL,fidx);
             emit(OP_POP);
         }
     }
@@ -765,7 +1259,26 @@ private:
             emit(OP_POP);                 // [instance]            -- discard the Guide's return
         }
     }
+    // Static access through a class name (Java Class.member): the name is not
+    // a local, an instance field or a static of the current class, and the
+    // class declares the member.
+    // Function index of the overload chosen by semantic analysis, or -1.
+    int resolvedIndex(const Method* m) const {
+        if(!m) return -1;
+        auto f=funcIndexByPtr_.find(m); return f==funcIndexByPtr_.end()?-1:f->second;
+    }
+    bool isStaticClassRef(const Expr* e, std::string& cls) const {
+        auto v=dynamic_cast<const VarExpr*>(e);
+        if(!v) return false;
+        if(ctx_ && ctx_->slotOf(v->name)>=0) return false;
+        if(instanceFieldOffset(v->name)>=0) return false;
+        if(fieldGlobal_.count(currentClass_+"::"+v->name)) return false;
+        if(!structLayout_.count(v->name)) return false;
+        cls=v->name;
+        return true;
+    }
     void emitMember(const MemberAccess& m){
+        if(m.arrayLength){ emitExpr(m.base.get()); emit(OP_ARRLEN); return; }   // syntax 3.2: a.length
         // Back-propagate the terminal degree requirement to the origin.
         // next.next is the Degree-2 proposal. When that proposal is itself
         // static, its viewpoint extends by another two degrees to Degree 4.
@@ -787,13 +1300,50 @@ private:
                 }
             }
         }
+        { std::string sc; if(isStaticClassRef(m.base.get(),sc)){ auto g=fieldGlobal_.find(sc+"::"+m.field);
+            if(g!=fieldGlobal_.end()){ emit(OP_LOADG,g->second); return; } } }
+        if(m.field=="ref"){
+            // Implicit object reference: x.ref. A declared field named ref wins.
+            const std::string rtn=exprStructType(m.base.get());
+            auto rl=rtn.empty()?structLayout_.end():structLayout_.find(rtn);
+            if(rl!=structLayout_.end() && !rl->second.fieldOffset.count("ref")){
+                emitExpr(m.base.get()); emit(OP_REF,SLREF_PACK(SLREF_OF,0)); return;
+            }
+        }
         int off=-1;memberLayout(m.base.get(),m.field,off);emitExpr(m.base.get());emit(OP_GETFIELD,off);
+    }
+    // True when `e` is the bare name `Ptr` and nothing named Ptr is in scope, so
+    // the builtin Ptr namespace applies (mirrors how Munction is recognised).
+    bool isRefNamespace(const Expr* e) const {
+        auto v=dynamic_cast<const VarExpr*>(e);
+        if(!v||v->name!="Ptr") return false;
+        if(ctx_ && ctx_->slotOf("Ptr")>=0) return false;
+        if(instanceFieldOffset("Ptr")>=0) return false;
+        if(fieldGlobal_.count(currentClass_+"::Ptr")) return false;
+        if(structLayout_.count("Ptr")) return false;
+        return true;
+    }
+    // Lower Ptr.<fn>(...). Each is one OP_REF whose operand selects the view.
+    void emitRefCall(const MethodCall& mc){
+        struct Fn{ const char* name; int sel; int argc; };
+        static const Fn fns[]={
+            {"valid",SLREF_VALID,1},{"old",SLREF_OLD,1},{"id",SLREF_ID,1},{"gen",SLREF_GEN,1},
+            {"type",SLREF_TYPE,1},{"fields",SLREF_FIELDS,1},{"bytes",SLREF_BYTES,1},{"age",SLREF_AGE,1},
+            {"live",SLREF_LIVE,0},{"limit",SLREF_LIMIT,0}};
+        for(const Fn& f:fns){
+            if(mc.method!=f.name) continue;
+            if((int)mc.args.size()!=f.argc) throw std::runtime_error("Semantic error: Ptr."+mc.method+"() expects "+std::to_string(f.argc)+" argument(s), got "+std::to_string(mc.args.size()));
+            if(f.argc==1) emitExpr(mc.args[0].get());
+            emit(OP_REF,SLREF_PACK(f.sel,0)); return;
+        }
+        throw std::runtime_error("Semantic error: Ptr has no function '"+mc.method+"'");
     }
     // Lower a fluent `.method(args)` call. Munction reach verbs consume the
     // receiver's reach handle and push it back (so the chain keeps flowing);
     // closeWithReceipt/reception push a String. This is the source surface for
     // the reach-composition sentence (syntax 1.3).
     void emitMethodCall(const MethodCall& mc){
+        if(mc.superConstructor||mc.thisConstructor){ emitConstructorInvocation(mc); if(syntax_<SyntaxVersion{3,0}||!mc.resolved) emit(OP_CONST,addNullConst()); return; }
         const std::string& m=mc.method;
         auto oneArgStr=[&](const char* verb){ if(mc.args.size()!=1) throw std::runtime_error("Semantic error: Munction "+std::string(verb)+"(...) takes exactly one argument"); };
         auto noArg=[&](const char* verb){ if(!mc.args.empty()) throw std::runtime_error("Semantic error: Munction "+std::string(verb)+"() takes no arguments"); };
@@ -821,14 +1371,52 @@ private:
             if(m=="reception"){noArg("reception");emit(OP_MUN_RECEPTION);return;}
             /* close / closeWithReceipt */ noArg(m.c_str());emit(OP_MUN_CLOSE);return;
         }
+        if(isRefNamespace(mc.receiver.get())){ emitRefCall(mc); return; }
+        { std::string sc; if(isStaticClassRef(mc.receiver.get(),sc)){
+            auto st=funcIndex_.find(sc+"::"+m);
+            if(st==funcIndex_.end() && m=="deref"){
+                // Implicit Class.deref(ref): the object if the ref is valid and an
+                // instance of Class, else null.
+                if(mc.args.size()!=1) throw std::runtime_error("Semantic error: '"+sc+".deref' expects 1 argument, got "+std::to_string(mc.args.size()));
+                emitExpr(mc.args[0].get());
+                emit(OP_REF,SLREF_PACK(SLREF_DEREF,structLayout_.at(sc).typeIndex)); return;
+            }
+            int ri=resolvedIndex(mc.resolved);
+            if(ri>=0 || (st!=funcIndex_.end() && methods_[st->second].method->isStatic)){
+                const int fi = ri>=0 ? ri : st->second;
+                const Method* sm=methods_[fi].method;
+                if(sm->isStatic){
+                if((int)mc.args.size()!=(int)sm->params.size())throw std::runtime_error("Semantic error: method '"+sc+"::"+m+"' expects "+std::to_string(sm->params.size())+" argument(s), got "+std::to_string(mc.args.size()));
+                emitArgsCoerced(mc.args,sm);emit(OP_CALL,fi);return;
+                }
+            } } }
+        // Java String instance method (semantic analysis bound it to the static
+        // JavaStringMethods.<m>(String self, ...)): push the receiver as the
+        // first argument, then the arguments, and call the resolved function.
+        if(mc.stringReceiver){
+            int fi=resolvedIndex(mc.resolved);
+            if(fi<0)throw std::runtime_error("Semantic error: String method '"+m+"' did not resolve to a JavaStringMethods function");
+            const Method* sm=methods_[fi].method;
+            if((int)mc.args.size()+1!=(int)sm->params.size())throw std::runtime_error("Semantic error: String method '"+m+"' expects "+std::to_string(sm->params.size()>0?sm->params.size()-1:0)+" argument(s), got "+std::to_string(mc.args.size()));
+            emitExpr(mc.receiver.get());
+            for(size_t i=0;i<mc.args.size();++i){ emitExpr(mc.args[i].get()); coerceToDeclared(sm->params[i+1].type); }
+            emit(OP_CALL,fi);
+            return;
+        }
+        if(mc.anyReceiver){ emitAnyReceiverCall(mc); return; }
         const std::string receiverType=exprStructType(mc.receiver.get());
         auto target=funcIndex_.find(receiverType+"::"+m);
-        if(target==funcIndex_.end())throw std::runtime_error("Semantic error: class '"+(receiverType.empty()?std::string("<unknown>"):receiverType)+"' has no method '"+m+"'");
-        const Method* method=methods_[target->second].method;
+        int fidx = target==funcIndex_.end() ? -1 : target->second;
+        { int ri=resolvedIndex(mc.resolved); if(ri>=0 && target!=funcIndex_.end()) fidx=ri; }
+        if(fidx<0)throw std::runtime_error("Semantic error: class '"+(receiverType.empty()?std::string("<unknown>"):receiverType)+"' has no method '"+m+"'");
+        const Method* method=methods_[fidx].method;
         if(method->isStatic)throw std::runtime_error("Semantic error: static method '"+receiverType+"::"+m+"' must be called through its class");
         if((int)mc.args.size()!=(int)method->params.size())throw std::runtime_error("Semantic error: method '"+receiverType+"::"+m+"' expects "+std::to_string(method->params.size())+" argument(s), got "+std::to_string(mc.args.size()));
         if(method->isProtected&&receiverType!=currentClass_)throw std::runtime_error("protected method access denied");
-        emitExpr(mc.receiver.get());emitArgsCoerced(mc.args,method);emit(OP_CALL,target->second);
+        emitExpr(mc.receiver.get());
+        // `super.m()` is never virtual.
+        if(dynamic_cast<const SuperExpr*>(mc.receiver.get())){ emitArgsCoerced(mc.args,method); emit(OP_CALL,fidx); return; }
+        emitInstanceCall(receiverType,method,fidx,mc.args);
     }
     void emitVar(const VarExpr& v){
         if(v.name=="next"){emit(OP_CONST,slvm_add_const_int(vm_,kNextSystemDegree));return;}
@@ -837,7 +1425,16 @@ private:
         int g=fieldSlot(v.name);if(g>=0){emit(OP_LOADG,g);return;}
         throw std::runtime_error("Semantic error: use of undeclared variable '"+v.name+"'");
     }
-    void emitUnary(const Unary& u){emitExpr(u.operand.get());if(u.op=="-")emit(OP_NEG);else if(u.op=="!")emit(OP_NOT);else throw std::runtime_error("Semantic error: unknown unary operator '"+u.op+"'");}
+    void emitUnary(const Unary& u){
+        // Java ++ / -- (SLEELA.syntax 43.6 rule 12): x += 1 leaves the new value;
+        // the postfix form then undoes the step on the stack copy (old value).
+        if(u.op=="++"||u.op=="--"||u.op=="post++"||u.op=="post--"){
+            const bool inc=(u.op=="++"||u.op=="post++"); const bool post=u.op.rfind("post",0)==0;
+            emitAssignTo(u.operand.get(), inc?"+":"-", [&]{ emit(OP_CONST,slvm_add_const_int(vm_,1)); });
+            if(post){ emit(OP_CONST,slvm_add_const_int(vm_,1)); emit(inc?OP_SUB:OP_ADD); }
+            return;
+        }
+        emitExpr(u.operand.get());if(u.op=="-")emit(OP_NEG);else if(u.op=="!")emit(OP_NOT);else if(u.op=="~")emit(OP_BNOT);else throw std::runtime_error("Semantic error: unknown unary operator '"+u.op+"'");}
     void emitBinary(const Binary& b){
         const std::string&o=b.op;
         // Short-circuit boolean operators: the right side must NOT be evaluated
@@ -867,7 +1464,7 @@ private:
             return;
         }
         emitExpr(b.lhs.get());emitExpr(b.rhs.get());
-        if(o=="+")emit(OP_ADD);else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
+        if(o=="+"){ if(b.charMask)emit(OP_ADDCHAR,(int)b.charMask); else emit(OP_ADD); }else if(o=="-")emit(OP_SUB);else if(o=="*")emit(OP_MUL);else if(o=="/")emit(OP_DIV);else if(o=="%")emit(OP_MOD);else if(o=="&")emit(OP_BAND);else if(o=="|")emit(OP_BOR);else if(o=="^")emit(OP_BXOR);else if(o=="<<")emit(OP_BSHL);else if(o==">>")emit(OP_BSHR);else if(o==">>>")emit(OP_BUSHR);else if(o=="==")emit(OP_EQ);else if(o=="!=")emit(OP_NE);else if(o=="<")emit(OP_LT);else if(o=="<=")emit(OP_LE);else if(o==">")emit(OP_GT);else if(o==">=")emit(OP_GE);else throw std::runtime_error("Semantic error: unknown binary operator '"+o+"'");}
 
     // SleelaUI (ui*) built-ins: map the SLeeLa-facing name to its bridge id,
     // arity-check, emit the args, then OP_UI_CALL<id>. Returns true if handled.
@@ -1005,6 +1602,21 @@ private:
             if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: javaStringFromUtf8 requires #sleela 3.0");
             if(c.args.size()!=1)throw std::runtime_error("Semantic error: javaStringFromUtf8(value) takes exactly one argument");
             emitExpr(c.args[0].get()); emit(OP_JSTR_FROM_UTF8); return true;
+        }
+        // Convert a VM-owned Java UTF-16 String back to a legacy UTF-8 String.
+        // Lossless or refused at run time: unpaired surrogates, embedded NUL
+        // and text beyond SL_MAX_STRTEXT bytes fail closed.
+        if(n=="javaStringToUtf8"){
+            if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: javaStringToUtf8 requires #sleela 3.0");
+            if(c.args.size()!=1)throw std::runtime_error("Semantic error: javaStringToUtf8(value) takes exactly one argument");
+            emitExpr(c.args[0].get()); emit(OP_JSTR_TO_UTF8); return true;
+        }
+        // Build a one-unit Java UTF-16 String from a run-time code unit 0..65535
+        // (the run-time companion of the compile-time javaStringFromCodeUnits).
+        if(n=="javaStringFromCodeUnit"){
+            if(syntax_<SyntaxVersion{3,0})throw std::runtime_error("Semantic error: javaStringFromCodeUnit requires #sleela 3.0");
+            if(c.args.size()!=1)throw std::runtime_error("Semantic error: javaStringFromCodeUnit(codeUnit) takes exactly one argument");
+            emitExpr(c.args[0].get()); emit(OP_JSTR_FROM_CODE_UNIT); return true;
         }
         // Runtime operations on VM-owned Java UTF-16 String values.
         if(n=="javaStringLength" || n=="javaStringHashCode"){
@@ -1375,11 +1987,12 @@ private:
         if(tryEmitBuiltin(c))return;
         auto it=funcIndex_.find(currentClass_+"::"+c.callee);
         if(it!=funcIndex_.end()){
-            const Method* target=methods_[it->second].method;
+            int fidx=it->second; { int ri=resolvedIndex(c.resolved); if(ri>=0) fidx=ri; }
+            const Method* target=methods_[fidx].method;
             if((int)c.args.size()!=(int)target->params.size())throw std::runtime_error("Semantic error: method '"+currentClass_+"::"+c.callee+"' expects "+std::to_string(target->params.size())+" argument(s), got "+std::to_string(c.args.size()));
             if(target->isProtected&&methodOwner_[currentClass_+"::"+c.callee]!=currentClass_)throw std::runtime_error("protected method access denied");
-            if(!target->isStatic)emitThis();
-            emitArgsCoerced(c.args,target);emit(OP_CALL,it->second);return;
+            if(!target->isStatic){ emitThis(); emitInstanceCall(currentClass_,target,fidx,c.args); return; }
+            emitArgsCoerced(c.args,target);emit(OP_CALL,fidx);return;
         }
         // Native subject helpers are synthesized as qualified class methods.
         // Resolve all __Native* helper names consistently with semantic analysis.

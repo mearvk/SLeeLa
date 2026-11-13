@@ -1,0 +1,213 @@
+<< lib/java/jdk-28/java.desktop/java/awt/Toolkit.sleela
+   SLeeLa file for the Java type java.awt.Toolkit (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/Toolkit.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Toolkit {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9196;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.awt.Toolkit";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/java/awt/Toolkit.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Toolkit bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < public and protected instance fields >
+  Any desktopProperties;
+  Any desktopPropsSupport;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Toolkit() { }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static String getProperty(String key, String defaultValue) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void sync() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addPropertyChangeListener(String name, Any pcl) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static synchronized Any getDefaultToolkit() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.awt.HeadlessException")
+  public Any getColorModel() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public Any createImage(byte[] imagedata, int imageoffset, int imagelength) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any createImage(byte[] imagedata) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public Any createImage(Any producer) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public Any createImage(String filename) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean prepareImage(Any image, int width, int height, Any observer) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public int checkImage(Any image, int width, int height, Any observer) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getPropertyChangeListeners(String propertyName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getPropertyChangeListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removePropertyChangeListener(String name, Any pcl) { }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public void setDynamicLayout(boolean dynamic) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  boolean isDynamicLayoutSet() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public boolean isDynamicLayoutActive() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public Any getScreenInsets(Any gc_) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getPrintJob(Any frame, String jobtitle, Any jobAttributes, Any pageAttributes) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public Any getPrintJob(Any frame, String jobtitle, Any props) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public Any getSystemSelection() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.IndexOutOfBoundsException, java.awt.HeadlessException")
+  public Any createCustomCursor(Any cursor, Any hotSpot, String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public Any getBestCursorSize(int preferredWidth, int preferredHeight) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public int getMaximumCursorColors() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public boolean isFrameStateSupported(int state) { return false; }
+  @JavaProtected
+  @throwable("java.lang.AbstractMethodError")
+  Any getSystemEventQueueImpl() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final synchronized Any getDesktopProperty(String propertyName) { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void initializeDesktopProperties() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any lazilyLoadDesktopProperty(String name) { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  final void setDesktopProperty(String name, Any newValue) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  void loadSystemColors(int[] systemColors) { }
+  @throwable("java.lang.AbstractMethodError, java.awt.HeadlessException")
+  public Any getScreenSize() { return null; }
+  @throwable("java.lang.AbstractMethodError, java.awt.HeadlessException")
+  public int getScreenResolution() { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public String[] getFontList() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public void beep() { }
+  @throwable("java.lang.AbstractMethodError, java.awt.HeadlessException")
+  public Any getSystemClipboard() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public int getMenuShortcutKeyMask() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public int getMenuShortcutKeyMaskEx() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.UnsupportedOperationException")
+  public boolean getLockingKeyState(int keyCode) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.UnsupportedOperationException")
+  public void setLockingKeyState(int keyCode, boolean on) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final Any getSystemEventQueue() { return null; }
+  @generic("<T extends java.awt.dnd.DragGestureRecognizer>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any createDragGestureRecognizer(Any abstractRecognizerClass, Any ds, Any c, int srcActions, Any dgl) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAlwaysOnTopSupported() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isModalityTypeSupported(Any modalityType) { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean isModalExclusionTypeSupported(Any modalExclusionType) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addAWTEventListener(Any listener, long eventMask) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeAWTEventListener(Any listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getAWTEventListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getAWTEventListeners(long eventMask) { return null; }
+  @throwable("java.lang.AbstractMethodError, java.awt.HeadlessException")
+  public Any mapInputMethodHighlight(Any highlight) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.awt.HeadlessException")
+  public boolean areExtraMouseButtonsEnabled() { return false; }
+  @throwable("java.lang.AbstractMethodError")
+  public Any getFontMetrics(Any font) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public Any getImage(String filename) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public Any getImage(Any url) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  protected static Any getNativeContainer(Any c) { return null; }
+  < ---- END java signatures ---- >
+}

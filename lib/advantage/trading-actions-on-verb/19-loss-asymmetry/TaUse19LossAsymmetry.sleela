@@ -1,0 +1,126 @@
+<< lib/advantage/trading-actions-on-verb/19-loss-asymmetry/TaUse19LossAsymmetry.sleela
+   SLeeLa trading-action use case.
+   Definition: Long versus short risk: a long loss is capped by its cost, a short loss is not capped by its proceeds; markToMarket shows the open loss before any cover. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Use case 19 (style, short). 100 shares at 5000. A long position cannot lose >
+< more than it paid (the price cannot go below 1 cent). A short position can lose >
+< more than it received. Here the price rises to 3x and the short loses twice >
+< its proceeds. The mirror law: the short profit equals minus the long profit >
+<  for the same prices. >
+class TaUse19LossAsymmetry {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39319;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+
+  void expect(String label, int got, int want) {
+    if (got == want) {
+      print("  ok   " + label + " = " + got);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label + " got " + got + " want " + want);
+      failed = failed + 1;
+    }
+  }
+
+  void expectTrue(String label, boolean got) {
+    if (got) {
+      print("  ok   " + label);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label);
+      failed = failed + 1;
+    }
+  }
+
+  void summary() {
+    print("  checks passed=" + passed + " failed=" + failed);
+  }
+
+  void act(SLLongBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+  void act2(SLShortBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+  void main() {
+    SLShortBook shortBook = new SLShortBook();
+    SLLongBook longBook = new SLLongBook();
+    print("== Use case 19: loss asymmetry ==");
+    act2(shortBook, "short 100 @ 5000 on day 0", shortBook.shortSell(0, 100, 5000, 0));
+    act(longBook, "buy 100 @ 5000 on day 0", longBook.buy(0, 100, 5000, 0));
+    expect("proceeds received by the short", shortBook.proceedsHeld(), 500000);
+    expect("cost paid by the long", longBook.costBasis(), 500000);
+    print("-- open loss at three prices --");
+    expect("short at 5000 (flat)", shortBook.markToMarket(5000), 0);
+    expect("short at 10000 (price doubled)", shortBook.markToMarket(10000), 0 - 500000);
+    expect("short at 15000 (price tripled)", shortBook.markToMarket(15000), 0 - 1000000);
+    expectTrue("the short loss at 15000 is larger than its proceeds", 0 - shortBook.markToMarket(15000) > shortBook.proceedsHeld());
+    print("-- the long worst case: the price falls to 1 cent --");
+    act(longBook, "sell 100 @ 1 on day 1", longBook.sell(1, 100, 1, 0));
+    expect("long realized loss", longBook.realizedGross(), -499900);
+    expectTrue("the long loss is smaller than its cost", 0 - longBook.realizedGross() < 500000);
+    print("-- cover the short at 15000 --");
+    act2(shortBook, "cover 100 @ 15000 on day 1", shortBook.cover(1, 100, 15000, 0));
+    expect("short realized loss", shortBook.realizedGross(), 0 - 1000000);
+    print("-- mirror law: same prices, opposite sign --");
+    SLShortBook s2 = new SLShortBook();
+    SLLongBook l2 = new SLLongBook();
+    s2.shortSell(0, 100, 5000, 0);
+    l2.buy(0, 100, 5000, 0);
+    s2.cover(1, 100, 4000, 0);
+    l2.sell(1, 100, 4000, 0);
+    expect("long profit", l2.realizedGross(), 0 - 100000);
+    expect("short profit", s2.realizedGross(), 100000);
+    expectTrue("short profit = minus long profit", s2.realizedGross() == 0 - l2.realizedGross());
+    expect("markToMarket rejects a zero price", shortBook.markToMarket(0), 0 - 4000000000000001);
+    expectTrue("invariants hold", shortBook.invariantsHold() && longBook.invariantsHold() && s2.invariantsHold());
+    summary();
+  }
+}

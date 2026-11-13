@@ -120,8 +120,12 @@ NATIVE_LOADER_OBJ := $(BUILD)/native_loader.o
 NATIVE_MODULE_TABLE_OBJ := $(BUILD)/native_module_table.o
 OSLS_VM_CAP_SMOKE := $(BUILD)/osls_vm_capability_smoke
 OSLS_VM_CAP_SMOKE_OBJ := $(BUILD)/osls_vm_capability_test.o
+IPC_HANDLE_SMOKE := $(BUILD)/native_ipc_handle_smoke
 NATIVE_CALL_SMOKE := $(BUILD)/native_call_smoke
 NATIVE_CALL_SMOKE_OBJ := $(BUILD)/native_call_smoke.o
+NATIVE_METHOD_METADATA_SMOKE := $(BUILD)/native_method_metadata_smoke
+NATIVE_METHOD_METADATA_SMOKE_OBJ := $(BUILD)/native_method_metadata_smoke.o
+NATIVE_METHOD_METADATA_ARTIFACT := $(BUILD)/native_method_metadata_compile_artifact.sleela
 ifeq ($(PLATFORM),macos)
   NATIVE_CALL_FIXTURE := $(BUILD)/native_call_fixture.dylib
   NATIVE_CALL_FIXTURE_FLAGS := -dynamiclib
@@ -341,7 +345,7 @@ SOC_MATH_OBJ := $(BUILD)/sociology_math.o
 SOC_OBJ := $(BUILD)/sociology.o
 SOC_SMOKE := $(BUILD)/sociology_smoke
 CORE_SRC := core/sleela_artifact.c
-FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/java_equivalence.cpp frontend/semantic.cpp frontend/compiler.cpp \
+FE_SRC := frontend/lexer.cpp frontend/parser.cpp frontend/java_equivalence.cpp frontend/java_references.cpp frontend/semantic.cpp frontend/compiler.cpp \
           frontend/version.cpp frontend/artifact.cpp frontend/originate.cpp frontend/wikigen.cpp frontend/annotation_pipeline.cpp frontend/library_index.cpp frontend/docs.cpp frontend/keyword_supporter.cpp frontend/dynamite.cpp frontend/permissible.cpp \
           annotation/Annotation.cpp annotation/ForwardingAnnotation.cpp annotation/AnnotationForwarder.cpp \
           annotation/AnnotationInterpreter.cpp annotation/AnnotationRuntime.cpp \
@@ -387,7 +391,7 @@ else
 endif
 NS_SRC := nordshrift/sst_lexer.cpp nordshrift/sst_parser.cpp \
           nordshrift/source_resolve.cpp nordshrift/lowering.cpp nordshrift/sleela_emit.cpp \
-          nordshrift/object_compat.cpp nordshrift/subject_model.cpp nordshrift/input_object.cpp \
+          nordshrift/native_method_emit.cpp nordshrift/object_compat.cpp nordshrift/subject_model.cpp nordshrift/input_object.cpp \
           nordshrift/component_manifest.cpp nordshrift/ledger_emit.cpp \
           nordshrift/nordshrift.cpp
 NS_OBJ := $(patsubst nordshrift/%.cpp,$(BUILD)/ns_%.o,$(NS_SRC))
@@ -397,7 +401,7 @@ NS_OBJ += $(LEDGER_CORE_OBJ)
 # The subset of Nordshrift the `sleela` binary links for its `nordshrift`
 # round-trip subcommand: only the emitter (transpile a Sleela Program to a
 # target). It deliberately EXCLUDES nordshrift.cpp (which has its own main()).
-NS_EMIT_OBJ := $(BUILD)/ns_sleela_emit.o $(BUILD)/ns_lowering.o
+NS_EMIT_OBJ := $(BUILD)/ns_sleela_emit.o $(BUILD)/ns_native_method_emit.o $(BUILD)/ns_lowering.o
 # Preferred-router policy (used by the native HTTP servers the `sleela` binary
 # links). Lives under ../preferred-routers.
 PREFERRED_ROUTER_OBJ := $(BUILD)/preferred_router.o
@@ -431,7 +435,7 @@ else
 endif
 ALL_OBJECTS := $(CORE_OBJ) $(JAVA_STRING_OBJ) $(OSLS_OBJS) $(AUDIO_NATIVE_OBJ) $(AUDIO_CPP_OBJ) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(TERMINAL_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONITOR_OBJ) $(MEDIA_OBJ) $(MEDIA_FORMATS_OBJ) $(AUDIO_MIXER_OBJ) $(AI_OBJ) $(DESIGN_ACTIVITY_OBJ) $(GC_OBJ) $(SECURITY_OBJ) $(PARAMETERS_OBJ) $(JAVA_RUNTIME_PROBE_OBJ) $(JAVA_RUNTIME_BRIDGE_OBJ) $(VM_CONFIG_OBJ) $(CONFIG_LOCATION_OBJ) $(FE_OBJ) $(DRIVER_OBJ) $(DRIVER_SLEELVAC_OBJ) $(CATALOG_OBJ) $(XCLASS_OBJ) $(LANGIN_OBJ) $(CHEMISTRY_OBJ) $(FINANCIAL_OBJ) $(PIXEL_TERMINAL_OBJ) $(HTTP_SERVER_OBJ) $(HTTP_SERVER_CLI_OBJ) $(HTTP2_SERVER_OBJ) $(HTTP3_SERVER_OBJ) $(NS_OBJ) $(COMMON_RAILS_OBJ) $(THREAD_SMOKE) $(SOCKET_SMOKE) $(SYNCHRO_SMOKE) $(MUNCTION_SMOKE) $(BESTOF_SMOKE) $(IO_PLATFORM_SMOKE) $(NET_PLATFORM_SMOKE) $(PATH_PLATFORM_SMOKE) $(TERMINAL_PLATFORM_SMOKE) $(LIBRARY_PLATFORM_SMOKE) $(PIXEL_TERMINAL_SMOKE) $(THREAD_PLATFORM_SMOKE) $(UTF16_OBJ) $(UTF16_SMOKE) $(JAVA_STRING_OBJ) $(JAVA_STRING_SMOKE)
 
-.PHONY: all install install-all uninstall uninstall-all sleelvac libslcore test-platform test-osls-isa test-osls-vm stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security regen-manifest check-manifest build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer test-native-call test-native-concurrency test-java-utf16 test-java-string test-java-string-vm test-exceptions
+.PHONY: all install install-all uninstall uninstall-all sleelvac libslcore test-platform test-ref test-osls-isa test-osls-vm stage package build-verified rebuild-verified clean test test-java-runtime test-sleela test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-chemistry test-financial test-math test-physics test-economics test-inference test-subjects verify-security regen-manifest check-manifest build-runtime test-runtime test-memmgr test-memmgr-grades test-system-monitor test-media test-audio-mixer test-ai test-regex test-astrophysics test-sociology test-design-activity test-unsigned-integer test-native-ipc-handles test-native-call test-native-method-metadata test-native-method-aot test-native-concurrency test-java-utf16 test-java-string test-java-string-vm test-exceptions test-lineage
 
 
 all: verify-security $(SLEELA_BIN) $(SLEELAVC_BIN) $(NORDSHRIFT_BIN) $(SLCORE_LIB) stage
@@ -777,12 +781,12 @@ test-java-string: $(JAVA_STRING_SMOKE)
 $(JAVA_STRING_CODEC_OBJ): core/sleela_java_string_codec.c core/sleela_java_string_codec.h core/sleela_java_string.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
 $(JAVA_STRING_VM_SMOKE): core/sleela_java_string_vm_smoke.c $(SLCORE_LIB) $(JAVA_STRING_CODEC_OBJ) | $(BUILD)
-	$(CXX) $(CXXFLAGS) -Icore $< $(JAVA_STRING_CODEC_OBJ) $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) -Icore $< $(JAVA_STRING_CODEC_OBJ) $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 test-java-string-vm: $(JAVA_STRING_VM_SMOKE)
 	@$(JAVA_STRING_VM_SMOKE)
 # test-exceptions is deliberately opt-in while the exception VM milestone is reviewed.
 $(EXCEPTION_VM_SMOKE): tests/exceptions/exception_vm_smoke.c $(SLCORE_LIB) | $(BUILD)
-	$(CXX) $(CXXFLAGS) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 test-exceptions: $(EXCEPTION_VM_SMOKE)
 	@$(EXCEPTION_VM_SMOKE)
 
@@ -792,6 +796,11 @@ $(OSLS_VM_CAP_SMOKE_OBJ): tests/osls_vm/osls_vm_capability_test.c | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
 $(OSLS_VM_CAP_SMOKE): $(OSLS_VM_CAP_SMOKE_OBJ) $(SLCORE_LIB)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+$(IPC_HANDLE_SMOKE): tests/native_drive/native_ipc_handle_smoke.c $(SLCORE_LIB) | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+test-native-ipc-handles: $(IPC_HANDLE_SMOKE)
+	@$(IPC_HANDLE_SMOKE)
+
 $(NATIVE_CALL_SMOKE_OBJ): tests/native_drive/native_call_smoke.c core/sleela_core.h | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
 $(NATIVE_CALL_FIXTURE): tests/native_drive/native_call_fixture.c ../os-level-support/loader/native_loader.h core/sleela_utf16.c core/sleela_utf16.h | $(BUILD)
@@ -805,7 +814,94 @@ $(NATIVE_CALL_ARTIFACT): $(NATIVE_CALL_SOURCE) $(SLEELA_BIN)
 test-native-call: $(SLEELA_BIN) $(NATIVE_CALL_SMOKE) $(NATIVE_CALL_FIXTURE) $(NATIVE_CALL_ARTIFACT)
 	$(NATIVE_CALL_SMOKE) $(NATIVE_CALL_ARTIFACT) $(abspath $(NATIVE_CALL_FIXTURE))
 
-# Explicit opt-in regression target; it remains outside default and CI aggregates.
+# Artifact metadata regression: version-4 method identities survive round trips,
+# corrupt digests are rejected, and version-3 artifacts load interpreted-only.
+$(NATIVE_METHOD_METADATA_SMOKE_OBJ): tests/native_drive/native_method_metadata_smoke.c core/sleela_core.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(NATIVE_METHOD_METADATA_SMOKE): $(NATIVE_METHOD_METADATA_SMOKE_OBJ) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+$(NATIVE_METHOD_METADATA_ARTIFACT): tests/native_drive/native_method_metadata_compile.sleela $(SLEELA_BIN) | $(BUILD)
+	$(SLEELA_BIN) compile $< -o $@
+test-native-method-metadata: $(NATIVE_METHOD_METADATA_SMOKE) $(NATIVE_METHOD_METADATA_ARTIFACT) $(NATIVE_CALL_FIXTURE)
+	@$(NATIVE_METHOD_METADATA_SMOKE) $(NATIVE_METHOD_METADATA_ARTIFACT) $(abspath $(NATIVE_CALL_FIXTURE))
+
+# End-to-end test for generated per-method typed-ABI plugins.
+NATIVE_METHOD_AOT_SOURCE := tests/native_drive/native_method_aot_compile.sleela
+NATIVE_METHOD_AOT_SEMANTIC_REJECT_SOURCE := tests/native_drive/native_method_aot_semantic_reject.sleela
+NATIVE_METHOD_AOT_LIBRARY_SOURCE := tests/native_drive/native_method_aot_library.sleela
+NATIVE_METHOD_NOT_HANDLED_SOURCE := tests/native_drive/native_method_not_handled.sleela
+NATIVE_METHOD_NOT_HANDLED_ARTIFACT := $(BUILD)/native_method_not_handled.artifact.sleela
+NATIVE_METHOD_NOT_HANDLED_SMOKE_C := tests/native_drive/native_method_not_handled_smoke.c
+NATIVE_METHOD_NOT_HANDLED_SMOKE := $(BUILD)/native_method_not_handled_smoke$(EXE)
+NATIVE_METHOD_BOUNDARY_SOURCE := tests/native_drive/native_method_boundary.sleela
+NATIVE_METHOD_ERROR_SOURCE := tests/native_drive/native_method_error.sleela
+NATIVE_METHOD_BOUNDARY_ARTIFACT := $(BUILD)/native_method_boundary.artifact.sleela
+NATIVE_METHOD_ERROR_ARTIFACT := $(BUILD)/native_method_error.artifact.sleela
+NATIVE_METHOD_BOUNDARY_PLUGIN_SOURCE := tests/native_drive/native_method_boundary_plugin.c
+NATIVE_METHOD_BOUNDARY_PLUGIN := $(BUILD)/native_method_boundary_plugin$(if $(filter macos,$(PLATFORM)),.dylib,$(if $(filter windows,$(PLATFORM)),.dll,.so))
+NATIVE_METHOD_BOUNDARY_SMOKE_SOURCE := tests/native_drive/native_method_boundary_smoke.c
+NATIVE_METHOD_BOUNDARY_SMOKE_OBJ := $(BUILD)/native_method_boundary_smoke.o
+NATIVE_METHOD_BOUNDARY_SMOKE := $(BUILD)/native_method_boundary_smoke$(EXE)
+NATIVE_METHOD_AOT_C := $(BUILD)/native_method_aot.generated.c
+NATIVE_METHOD_AOT_ARTIFACT := $(BUILD)/native_method_aot.artifact.sleela
+NATIVE_METHOD_AOT_SMOKE := $(BUILD)/native_method_aot_smoke$(EXE)
+NATIVE_METHOD_AOT_SMOKE_OBJ := $(BUILD)/native_method_aot_smoke.o
+ifeq ($(PLATFORM),macos)
+  NATIVE_METHOD_AOT_PLUGIN := $(BUILD)/native_method_aot.generated.dylib
+  NATIVE_METHOD_AOT_PLUGIN_FLAGS := -dynamiclib
+else ifeq ($(PLATFORM),windows)
+  NATIVE_METHOD_AOT_PLUGIN := $(BUILD)/native_method_aot.generated.dll
+  NATIVE_METHOD_AOT_PLUGIN_FLAGS := -shared
+else
+  NATIVE_METHOD_AOT_PLUGIN := $(BUILD)/native_method_aot.generated.so
+  NATIVE_METHOD_AOT_PLUGIN_FLAGS := -shared
+endif
+ifneq ($(PLATFORM),windows)
+  NATIVE_METHOD_AOT_PLUGIN_CFLAGS := -fPIC
+endif
+ifneq ($(PLATFORM),windows)
+  NATIVE_METHOD_BOUNDARY_PLUGIN_CFLAGS := -fPIC
+endif
+ifeq ($(PLATFORM),macos)
+  NATIVE_METHOD_BOUNDARY_PLUGIN_FLAGS := -dynamiclib
+else
+  NATIVE_METHOD_BOUNDARY_PLUGIN_FLAGS := -shared
+endif
+$(NATIVE_METHOD_AOT_C): $(NATIVE_METHOD_AOT_SOURCE) $(SLEELA_BIN) | $(BUILD)
+	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; $(CURDIR)/$(SLEELA_BIN) aot --emit impl/$(NATIVE_METHOD_AOT_SOURCE) > $(CURDIR)/$@
+$(NATIVE_METHOD_AOT_PLUGIN): $(NATIVE_METHOD_AOT_C) ../os-level-support/loader/native_loader.h
+	$(CC) $(CFLAGS) $(NATIVE_METHOD_AOT_PLUGIN_CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_METHOD_AOT_PLUGIN_FLAGS) -I../os-level-support/loader $< -o $@
+$(NATIVE_METHOD_AOT_ARTIFACT): $(NATIVE_METHOD_AOT_SOURCE) $(SLEELA_BIN) | $(BUILD)
+	$(SLEELA_BIN) compile $< -o $@
+$(NATIVE_METHOD_AOT_SMOKE_OBJ): tests/native_drive/native_method_aot_smoke.c core/sleela_core.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(NATIVE_METHOD_AOT_SMOKE): $(NATIVE_METHOD_AOT_SMOKE_OBJ) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+
+$(NATIVE_METHOD_BOUNDARY_ARTIFACT): $(NATIVE_METHOD_BOUNDARY_SOURCE) $(SLEELA_BIN) | $(BUILD)
+	$(SLEELA_BIN) compile $< -o $@
+$(NATIVE_METHOD_ERROR_ARTIFACT): $(NATIVE_METHOD_ERROR_SOURCE) $(SLEELA_BIN) | $(BUILD)
+	$(SLEELA_BIN) compile $< -o $@
+$(NATIVE_METHOD_BOUNDARY_PLUGIN): $(NATIVE_METHOD_BOUNDARY_PLUGIN_SOURCE) ../os-level-support/loader/native_loader.h | $(BUILD)
+	$(CC) $(CFLAGS) $(NATIVE_METHOD_BOUNDARY_PLUGIN_CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_METHOD_BOUNDARY_PLUGIN_FLAGS) -I../os-level-support/loader $< -o $@
+$(NATIVE_METHOD_BOUNDARY_SMOKE_OBJ): $(NATIVE_METHOD_BOUNDARY_SMOKE_SOURCE) core/sleela_core.h | $(BUILD)
+	$(CC) $(CFLAGS) -Icore -c $< -o $@
+$(NATIVE_METHOD_BOUNDARY_SMOKE): $(NATIVE_METHOD_BOUNDARY_SMOKE_OBJ) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+
+# A separate artifact binds a method that the generated AOT plugin does not
+# export. Its NOT_HANDLED response must execute the bytecode body exactly once.
+$(NATIVE_METHOD_NOT_HANDLED_ARTIFACT): $(NATIVE_METHOD_NOT_HANDLED_SOURCE) $(SLEELA_BIN) | $(BUILD)
+	$(SLEELA_BIN) compile $< -o $@
+$(NATIVE_METHOD_NOT_HANDLED_SMOKE): $(NATIVE_METHOD_NOT_HANDLED_SMOKE_C) $(SLCORE_LIB)
+	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
+test-native-method-aot: $(SLEELA_BIN) $(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD_AOT_PLUGIN) $(NATIVE_METHOD_AOT_ARTIFACT) $(NATIVE_METHOD_AOT_SEMANTIC_REJECT_SOURCE) $(NATIVE_METHOD_AOT_LIBRARY_SOURCE) $(NATIVE_METHOD_NOT_HANDLED_SMOKE) $(NATIVE_METHOD_NOT_HANDLED_ARTIFACT) $(NATIVE_METHOD_BOUNDARY_SMOKE) $(NATIVE_METHOD_BOUNDARY_PLUGIN) $(NATIVE_METHOD_BOUNDARY_ARTIFACT) $(NATIVE_METHOD_ERROR_ARTIFACT)
+	$(NATIVE_METHOD_AOT_SMOKE) $(NATIVE_METHOD_AOT_ARTIFACT) $(abspath $(NATIVE_METHOD_AOT_PLUGIN))
+	$(NATIVE_METHOD_NOT_HANDLED_SMOKE) $(NATIVE_METHOD_NOT_HANDLED_ARTIFACT) $(abspath $(NATIVE_METHOD_AOT_PLUGIN))
+	$(NATIVE_METHOD_BOUNDARY_SMOKE) $(NATIVE_METHOD_BOUNDARY_ARTIFACT) $(NATIVE_METHOD_ERROR_ARTIFACT) $(abspath $(NATIVE_METHOD_BOUNDARY_PLUGIN))
+	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; log="$(CURDIR)/$(BUILD)/native_method_aot_semantic_reject.log"; if $(CURDIR)/$(SLEELA_BIN) aot --list impl/$(NATIVE_METHOD_AOT_SEMANTIC_REJECT_SOURCE) > "$$log" 2>&1; then echo "native-method-aot: semantic-invalid source was incorrectly accepted" >&2; cat "$$log" >&2; exit 1; fi; grep -q "must be bool" "$$log" || { echo "native-method-aot: rejection did not come from semantic boolean-condition validation" >&2; cat "$$log" >&2; exit 1; }; echo "native-method-aot: semantic-invalid source correctly refused"
+	@cd $(CURDIR)/.. && export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; log="$(CURDIR)/$(BUILD)/native_method_aot_library.log"; $(CURDIR)/$(SLEELA_BIN) aot --list impl/$(NATIVE_METHOD_AOT_LIBRARY_SOURCE) > "$$log" 2>&1 || { cat "$$log" >&2; exit 1; }; grep -q "all 1 @native method(s) are translatable" "$$log" || { echo "native-method-aot: library unit without main was not accepted" >&2; cat "$$log" >&2; exit 1; }; echo "native-method-aot: library unit without main correctly accepted"
+# Native call/close concurrency regression; part of `make test` and the Native Drive CI workflow.
 $(NATIVE_CONCURRENCY_FIXTURE): $(NATIVE_CONCURRENCY_FIXTURE_SOURCE) ../os-level-support/loader/native_loader.h | $(BUILD)
 	$(CC) $(CFLAGS) $(NATIVE_CONCURRENCY_FIXTURE_CFLAGS) -DSL_NATIVE_PLUGIN_BUILD $(NATIVE_CONCURRENCY_FIXTURE_FLAGS) -I../os-level-support/loader $< -o $@
 $(NATIVE_CONCURRENCY_SMOKE_OBJ): $(NATIVE_CONCURRENCY_SOURCE) core/sleela_core.h | $(BUILD)
@@ -937,7 +1033,7 @@ $(BUILD)/driver_sleelvac.o: frontend/driver.cpp frontend/compiler.h frontend/art
 $(BUILD):
 	mkdir -p $(BUILD)
 
-test: verify-security test-osls-isa test-osls-vm test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-unsigned-integer test-runtime test-memmgr
+test: verify-security test-osls-isa test-osls-vm test-java-runtime test-java-authorship test-system-monitor test-sleela test-class-dispatch test-lineage test-ref test-design-activity test-regex test-version test-nordshrift test-nordshrift-compiler test-nordshrift-semantic test-nordshrift-e2e test-nordshrift-compat test-common-rails test-runtime-artifact-abi test-threads test-thread-platform test-network test-network-platform test-synchro test-munction test-bestof test-io-platform test-path-platform test-terminal-platform test-library-platform test-time-platform test-pixel-terminal test-catalog test-math test-physics test-economics test-inference test-chemistry test-financial test-astrophysics test-sociology test-unsigned-integer test-runtime test-memmgr test-native-ipc-handles test-native-call test-native-method-metadata test-native-method-aot test-native-concurrency
 test-osls-isa:
 	@cd $(CURDIR)/.. && $(PYTHON) tools/verify-osls-isa-extension.py
 
@@ -957,8 +1053,12 @@ test-java-runtime: $(SLEELA_BIN)
 test-sleela: $(SLEELA_BIN)
 	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && found=0; for f in impl/examples/*.sleela; do [ -f "$f" ] || continue; found=1; echo "=== $f ==="; $(CURDIR)/$(SLEELA_BIN) run "$f" || exit 1; done; if [ "$found" -eq 0 ]; then echo "No legacy impl/examples/*.sleela files; skipping this optional loop."; fi
 
+test-lineage: $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && bash impl/tests/lineage/run_lineage_tests.sh $(CURDIR)/$(SLEELA_BIN)
 test-class-dispatch: $(SLEELA_BIN)
 	@cd $(CURDIR)/.. && bash impl/tests/class_dispatch/run_class_dispatch_tests.sh $(CURDIR)/$(SLEELA_BIN)
+test-ref: $(SLEELA_BIN)
+	@cd $(CURDIR)/.. && bash impl/tests/refs/run_ref_tests.sh $(CURDIR)/$(SLEELA_BIN)
 test-version: $(SLEELA_BIN)
 	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=$${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && bash impl/tests/version/run_version_tests.sh $(CURDIR)/$(SLEELA_BIN)
 test-syntax-1.8: $(SLEELA_BIN)

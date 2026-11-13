@@ -1,0 +1,73 @@
+#sleela 3.0
+<< pointers-demo.sleela -- the runnable reference for object references
+   (POINTERS.md at the repository root).
+
+   Every object has two tiers:
+
+     Tier 1  the OOD public interface: what the class declares (its fields,
+             methods and constructor), reached the ordinary way.
+     Tier 2  the complete VM-level model of the same object: its slot, its
+             generation, its layout, its size and its age in the collector,
+             reached through the implicit member  target.ref  and the Ptr
+             namespace.
+
+   A ref is a weak, generation-checked int. It is NOT a machine address: the
+   VM never shows a raw pointer, and every use of a ref is validated. >>
+
+class Target {
+    String label;
+    Target(String s) {
+        this.label = s;
+    }
+    String getLabel() {
+        return this.label;
+    }
+}
+
+class PointersDemo {
+    static int fleeting() {
+        Target brief = new Target("brief");
+        return brief.ref;
+    }
+
+    static void main() {
+        print("== Tier 1: the public interface ==");
+        Target target = new Target("suppose");
+        print("label = " + target.getLabel());
+
+        print("");
+        print("== Tier 2: the VM view, through target.ref ==");
+        int p = target.ref;
+        print("ref (packed handle) : " + p);
+        print("valid               : " + Ptr.valid(p));
+        print("slot id             : " + Ptr.id(p));
+        print("slot generation     : " + Ptr.gen(p));
+        print("layout (type) index : " + Ptr.type(p));
+        print("field slots         : " + Ptr.fields(p));
+        print("instance bytes (GC) : " + Ptr.bytes(p));
+        print("collector age       : " + Ptr.age(p));
+        print("old generation      : " + Ptr.old(p));
+        print("live objects in VM  : " + Ptr.live());
+        print("object store limit  : " + Ptr.limit());
+
+        print("");
+        print("== The way back: Target.deref(p) ==");
+        Target back = Target.deref(p);
+        print("same object         : " + (back == target));
+        print("label via the ref   : " + back.getLabel());
+
+        print("");
+        print("== Weak, and never aliased ==");
+        int q = fleeting();
+        print("ref to a short-lived object, before collection: slot " + Ptr.id(q) + " generation " + Ptr.gen(q));
+        int d = 0;
+        d = gc 100;
+        print("after a full collection, still valid?          : " + Ptr.valid(q));
+        Target later = new Target("later");
+        int r = later.ref;
+        print("a new object reuses slot " + Ptr.id(r) + " at generation " + Ptr.gen(r));
+        print("old ref equals new ref?                        : " + (q == r));
+        print("old ref still reaches an object?               : " + (Target.deref(q) != null));
+        print("the surviving object is now old                : " + Ptr.old(p));
+    }
+}

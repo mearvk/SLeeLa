@@ -1,0 +1,284 @@
+<< lib/java/jdk-28/java.desktop/javax/swing/JInternalFrame.sleela
+   SLeeLa file for the Java type javax.swing.JInternalFrame (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/JInternalFrame.html
+   Java kind: class; extends javax.swing.JComponent; implements javax.accessibility.Accessible, javax.swing.WindowConstants, javax.swing.RootPaneContainer
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class JInternalFrame extends JComponent {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 4991;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.JInternalFrame";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/JInternalFrame.html";
+  String javaKind = "class";
+  String javaSuper = "javax.swing.JComponent";
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JInternalFrame bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final String CONTENT_PANE_PROPERTY = "contentPane";
+  static final String MENU_BAR_PROPERTY = "JMenuBar";
+  static final String TITLE_PROPERTY = "title";
+  static final String LAYERED_PANE_PROPERTY = "layeredPane";
+  static final String ROOT_PANE_PROPERTY = "rootPane";
+  static final String GLASS_PANE_PROPERTY = "glassPane";
+  static final String FRAME_ICON_PROPERTY = "frameIcon";
+  static final String IS_SELECTED_PROPERTY = "selected";
+  static final String IS_CLOSED_PROPERTY = "closed";
+  static final String IS_MAXIMUM_PROPERTY = "maximum";
+  static final String IS_ICON_PROPERTY = "icon";
+  < public and protected instance fields >
+  Any rootPane;
+  boolean rootPaneCheckingEnabled;
+  boolean closable;
+  boolean isClosed;
+  boolean maximizable;
+  boolean isMaximum;
+  boolean iconable;
+  boolean isIcon;
+  boolean resizable;
+  boolean isSelected;
+  Any frameIcon;
+  String title;
+  Any desktopIcon;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @throwable("java.lang.UnsupportedOperationException")
+  public JInternalFrame(String title) { super("constructor"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JInternalFrame(String title, boolean resizable, boolean closable, boolean maximizable, boolean iconifiable) { super("constructor"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JInternalFrame(String title, boolean resizable, boolean closable) { super("constructor"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JInternalFrame(String title, boolean resizable, boolean closable, boolean maximizable) { super("constructor"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JInternalFrame(String title, boolean resizable) { super("constructor"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JInternalFrame() { super("constructor"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void remove(Any comp) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getLayer() { return 0; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void dispose() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void moveToFront() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void pack() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getTitle() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTitle(String title) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setResizable(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isResizable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMenuBar(Any m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getMenuBar() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setFocusCycleRoot(boolean focusCycleRoot) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void show() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void hide() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(Any ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
+  public void setSelected(boolean selected) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void paintComponent(Any g) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void reshape(int x, int y, int width, int height) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void toFront() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void toBack() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getRootPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getLayeredPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getContentPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final String getWarningString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
+  public void setMaximum(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCursor(Any cursor) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createRootPane() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void setRootPane(Any root) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void setRootPaneCheckingEnabled(boolean enabled) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setJMenuBar(Any m) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getJMenuBar() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isRootPaneCheckingEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setContentPane(Any c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayeredPane(Any layered) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getGlassPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setGlassPane(Any glass) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDefaultCloseOperation(int operation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDefaultCloseOperation() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
+  public void setIcon(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isClosable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getDesktopIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getDesktopPane() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getNormalBounds() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setNormalBounds(Any r) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void restoreSubcomponentFocus() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void fireInternalFrameEvent(int id) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void moveToBack() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayer(Any layer) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayer(int layer) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setClosable(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException, java.beans.PropertyVetoException")
+  public void setClosed(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setIconifiable(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isIconifiable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setMaximizable(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMaximizable() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFrameIcon(Any icon) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getFrameIcon() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getLastCursor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDesktopIcon(Any d) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addInternalFrameListener(Any l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeInternalFrameListener(Any l) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getInternalFrameListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void doDefaultCloseAction() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setLayout(Any manager) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void addImpl(Any comp, Any constraints, int index) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final boolean isFocusCycleRoot() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getFocusOwner() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getMostRecentFocusOwner() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final Any getFocusCycleRootAncestor() { return null; }
+  < ---- END java signatures ---- >
+}

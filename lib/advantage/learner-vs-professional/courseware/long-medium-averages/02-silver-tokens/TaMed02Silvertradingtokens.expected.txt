@@ -1,0 +1,18 @@
+== Entry 2: silver trading tokens, a medium-term trade ==
+  buy 200 @ 8000 on day 0, fee 10 : ok
+  buy 150 @ 7900 on day 1, fee 10 : ok
+  sell 300 @ 8200 on day 2, fee 15 : ok
+-- result --
+  ok   lots remaining = 1
+  ok   shares/units held = 50
+  ok   cost basis of what remains, cents = 395000
+  ok   cost of the units sold, cents = 2390000
+  ok   profit of that sale, cents = 70000
+  ok   realized gross so far, cents = 70000
+  ok   realized net of fees, cents = 69965
+  ok   fees paid so far = 35
+  ok   actions recorded on the sell day = 1
+  ok   remaining capacity on that day (of 2000) = 1999
+  ok   the medium-term cap (2000/day) was never approached here
+  ok   invariants hold
+  checks passed=12 failed=0

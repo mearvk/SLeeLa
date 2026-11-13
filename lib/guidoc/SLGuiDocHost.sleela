@@ -1,0 +1,172 @@
+<< lib/guidoc/SLGuiDocHost.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiDocHost — the host side of the document GUI: how a
+     host sees the screen. outline() renders the visible GUI as plain text lines
+     (the terminal and headless view: window, menus, tabs, editor rows, entry,
+     status, dialog), and mountPlan() lists every visible node in tree order
+     with its tag, parent, background and foreground colour tokens, enabled
+     flag and text, which is exactly what a windowing host needs to mount real
+     widgets. Every node carries its white role, and colours are resolved by
+     role through SLGuiDocWhite, so no style string is ever parsed. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import ui;
+< Family: guidoc. Both methods fill an output array and return the line count; >
+< a full output array stops the listing (it never overflows). >
+class SLGuiDocHost {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39250;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int emit(String[] out, int cap, int n, String line) {
+    if (n >= cap) { return n; }
+    out[n] = line;
+    return n + 1;
+  }
+
+  < The visible GUI as text. Returns the number of lines written. >
+  int outline(SLGuiDocApp app, String[] out, int cap) {
+    SLGuiDocView v = app.widgets();
+    SLGuiDocSpec spec = app.specification();
+    SLGuiDocWhite white = app.look();
+    int n = 0;
+    n = emit(out, cap, n, "window: " + v.textOf("win"));
+    String bar = "menus:";
+    int m = 0;
+    while (m < spec.menuTotal()) {
+      String label = spec.menuLabelAt(m);
+      bar = bar + ((spec.menuIdAt(m) == app.menuOpen()) ? (" [" + label + "]") : (" " + label));
+      m = m + 1;
+    }
+    n = emit(out, cap, n, bar);
+    int i = 0;
+    while (i < spec.itemTotal()) {
+      String nid = "mi-" + spec.itemIdAt(i);
+      if (v.isVisible(nid)) {
+        n = emit(out, cap, n, "    " + v.textOf(nid) + (v.isEnabled(nid) ? "" : "   (disabled)"));
+      }
+      i = i + 1;
+    }
+    String tabs = "tabs:";
+    int shown = 0;
+    int t = 0;
+    while (t < spec.getMaxTabs()) {
+      if (v.isVisible("tab-" + t)) {
+        tabs = tabs + ((t == app.activeIndex()) ? (" [" + v.textOf("tab-" + t) + "]") : (" " + v.textOf("tab-" + t)));
+        shown = shown + 1;
+      }
+      t = t + 1;
+    }
+    if (shown == 0) { tabs = tabs + " (none)"; }
+    n = emit(out, cap, n, tabs);
+    n = emit(out, cap, n, "editor:");
+    int r = 0;
+    while (r < spec.getEditorRows()) {
+      String gut = v.textOf("gut-" + r);
+      String txt = v.textOf("row-" + r);
+      if (gut != "" || txt != "") {
+        boolean sel = v.roleOf("row-" + r) == "row-selected";
+        n = emit(out, cap, n, "  " + gut + " | " + txt + (sel ? "    <" : ""));
+      }
+      r = r + 1;
+    }
+    n = emit(out, cap, n, "entry: [" + v.textOf("entry") + "]" + (v.isEnabled("entry") ? "" : " (disabled)"));
+    n = emit(out, cap, n, "status: " + v.textOf("status-left") + " | " + v.textOf("status-mid") + " | " + v.textOf("status-right"));
+    if (v.isVisible("dlg")) {
+      String d = "dialog: " + v.textOf("dlg-title");
+      if (v.isVisible("dlg-path")) { d = d + " [" + v.textOf("dlg-path") + "]"; }
+      n = emit(out, cap, n, d + "   buttons: " + v.textOf("dlg-ok") + " / " + v.textOf("dlg-cancel"));
+    }
+    return n;
+  }
+
+  < Every visible node in tree order, as a mount instruction for a host. >
+  int mountPlan(SLGuiDocApp app, String[] out, int cap) {
+    SLGuiDocView v = app.widgets();
+    SLGuiDocWhite white = app.look();
+    int n = 0;
+    int i = 0;
+    while (i < v.nodeCount()) {
+      if (v.visibleAt(i)) {
+        String role = v.roleAt(i);
+        String line = "mount " + v.tagAt(i) + " " + v.idAt(i) + " in " + ((v.parentAt(i) == "") ? "-" : v.parentAt(i));
+        line = line + " role " + ((role == "") ? "-" : role) + " bg " + white.bgOf(role) + " fg " + white.fgOf(role);
+        if (!v.enabledAt(i)) { line = line + " disabled"; }
+        if (v.commandAt(i) != "") { line = line + " cmd " + v.commandAt(i); }
+        if (v.textAt(i) != "") { line = line + " text " + v.textAt(i); }
+        n = emit(out, cap, n, line);
+      }
+      i = i + 1;
+    }
+    return n;
+  }
+
+  < The single entry point for a windowing host. Everything a real window can >
+  < report is one of these events, and nothing else reaches the GUI: >
+  <   press  id          a widget was activated (menu, menu item, tab, row, button) >
+  <   type   id value    the user typed into an entry widget >
+  <   key    value       a key chord, e.g. Ctrl+S, Up, Enter, Esc >
+  <   close              the window close button >
+  <   tick               a turn of the host loop: repaint if a document changed >
+  < Returns the number of commands run (press), 1 or 0 (key, close, tick), >
+  < 0 (type), or -1 for an unknown event kind. >
+  int event(SLGuiDocApp app, String kind, String id, String value) {
+    if (kind == "press") { return app.click(id); }
+    if (kind == "type") { app.type(id, value); return 0; }
+    if (kind == "key") { return app.accelerate(value) ? 1 : 0; }
+    if (kind == "close") { return app.requestClose() ? 1 : 0; }
+    if (kind == "tick") { return app.refresh() ? 1 : 0; }
+    return -1;
+  }
+
+  < How many nodes mountPlan() would list (visible nodes). >
+  int visibleNodes(SLGuiDocApp app) {
+    SLGuiDocView v = app.widgets();
+    int n = 0;
+    int i = 0;
+    while (i < v.nodeCount()) { if (v.visibleAt(i)) { n = n + 1; } i = i + 1; }
+    return n;
+  }
+}

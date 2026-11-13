@@ -1,0 +1,184 @@
+<< lib/guidoc/SLGuiDocView.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiDocView — the widget tree of the document GUI: the
+     window, menu bar and menus, tab strip, editor (line gutter and rows),
+     entry, status line and file dialog. Each node has a tag, text, white role (and so a style),
+     visibility, enabled flag and a command; pressing a node latches it and the
+     controller takes the latch. It is self-contained on purpose: a host walks
+     nodeCount() / idAt() / tagAt() / textAt() / styleAt() to mount it on real
+     widgets, and calls press(id) when one is activated. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import ui;
+< Family: guidoc. 128 nodes. Tags: window menubar menu menuitem tabbar tab >
+< editor gutter row entry label button dialog. >
+class SLGuiDocView {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39246;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int MAX_NODES = 128;
+  String[] ids;
+  String[] tags;
+  String[] texts;
+  String[] roles;
+  String[] parents;
+  String[] cmds;
+  int[] args;
+  int[] enabled;
+  int[] visible;
+  int[] latch;
+  int count;
+  SLGuiDocWhite white;
+
+  void configure(SLGuiDocWhite look) {
+    white = look;
+    ids = new String[128]; tags = new String[128]; texts = new String[128];
+    roles = new String[128]; parents = new String[128]; cmds = new String[128];
+    args = new int[128]; enabled = new int[128]; visible = new int[128]; latch = new int[128];
+    int i = 0;
+    while (i < 128) {
+      ids[i] = ""; tags[i] = ""; texts[i] = ""; roles[i] = ""; parents[i] = ""; cmds[i] = "";
+      args[i] = 0; enabled[i] = 1; visible[i] = 1; latch[i] = 0;
+      i = i + 1;
+    }
+    count = 0;
+  }
+
+  int nodeCount() { return count; }
+  String idAt(int i) { return (i >= 0 && i < count) ? ids[i] : ""; }
+  String tagAt(int i) { return (i >= 0 && i < count) ? tags[i] : ""; }
+  String textAt(int i) { return (i >= 0 && i < count) ? texts[i] : ""; }
+  < The white role of a node and the style string made from it. >
+  String roleAt(int i) { return (i >= 0 && i < count) ? roles[i] : ""; }
+  String styleAt(int i) { return (i >= 0 && i < count) ? white.style(roles[i]) : ""; }
+  String parentAt(int i) { return (i >= 0 && i < count) ? parents[i] : ""; }
+  String commandAt(int i) { return (i >= 0 && i < count) ? cmds[i] : ""; }
+  int argAt(int i) { return (i >= 0 && i < count) ? args[i] : 0; }
+  boolean visibleAt(int i) { return i >= 0 && i < count && visible[i] == 1; }
+  boolean enabledAt(int i) { return i >= 0 && i < count && enabled[i] == 1; }
+
+  int indexOf(String id) {
+    int i = 0;
+    while (i < count) { if (ids[i] == id) { return i; } i = i + 1; }
+    return -1;
+  }
+  boolean add(String parent, String tag, String id, String text, String role) {
+    if (count >= 128 || indexOf(id) >= 0) { return false; }
+    ids[count] = id; tags[count] = tag; texts[count] = text; roles[count] = role;
+    parents[count] = parent; cmds[count] = ""; args[count] = 0;
+    enabled[count] = 1; visible[count] = 1; latch[count] = 0;
+    count = count + 1;
+    return true;
+  }
+  void bind(String id, String command, int arg) {
+    int i = indexOf(id);
+    if (i >= 0) { cmds[i] = command; args[i] = arg; }
+  }
+  void setText(String id, String t) {
+    int i = indexOf(id);
+    if (i >= 0) { texts[i] = (t == null) ? "" : t; }
+  }
+  String textOf(String id) {
+    int i = indexOf(id);
+    return (i >= 0) ? texts[i] : "";
+  }
+  < Give a node a white role (its style follows). >
+  void setStyle(String id, String role) {
+    int i = indexOf(id);
+    if (i >= 0) { roles[i] = role; }
+  }
+  String roleOf(String id) {
+    int i = indexOf(id);
+    return (i >= 0) ? roles[i] : "";
+  }
+  String styleOf(String id) {
+    int i = indexOf(id);
+    return (i >= 0) ? white.style(roles[i]) : "";
+  }
+  void setVisible(String id, boolean on) {
+    int i = indexOf(id);
+    if (i >= 0) { visible[i] = on ? 1 : 0; }
+  }
+  boolean isVisible(String id) {
+    int i = indexOf(id);
+    return i >= 0 && visible[i] == 1;
+  }
+  void setEnabled(String id, boolean on) {
+    int i = indexOf(id);
+    if (i >= 0) { enabled[i] = on ? 1 : 0; }
+  }
+  boolean isEnabled(String id) {
+    int i = indexOf(id);
+    return i >= 0 && enabled[i] == 1;
+  }
+
+  < A host reports the user typed into an entry. >
+  void type(String id, String t) {
+    int i = indexOf(id);
+    if (i >= 0 && tags[i] == "entry" && enabled[i] == 1 && visible[i] == 1) { texts[i] = t; }
+  }
+  < A host reports a node was activated. Only an enabled, visible node with a >
+  < command latches; anything else is ignored. >
+  boolean press(String id) {
+    int i = indexOf(id);
+    if (i < 0 || enabled[i] == 0 || visible[i] == 0 || cmds[i] == "") { return false; }
+    latch[i] = 1;
+    return true;
+  }
+  < Take one latched press (the lowest node index), or -1 when idle. >
+  int takePress() {
+    int i = 0;
+    while (i < count) {
+      if (latch[i] == 1) { latch[i] = 0; return i; }
+      i = i + 1;
+    }
+    return -1;
+  }
+  void clearPresses() {
+    int i = 0;
+    while (i < count) { latch[i] = 0; i = i + 1; }
+  }
+}

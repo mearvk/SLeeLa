@@ -1,0 +1,17 @@
+42
+42
+42
+42
+true
+false
+true
+hello world
+106
+107
+printed by a method reference
+42
+101
+4
+2
+42
+sum 55

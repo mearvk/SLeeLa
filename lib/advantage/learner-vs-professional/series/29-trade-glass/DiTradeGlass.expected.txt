@@ -1,0 +1,28 @@
+== Lesson 29: glass decision ==
+-- master (onion) --
+  Maker A total = 57200 cents
+  Maker B total = 54200 cents
+  Maker C total = 90600 cents
+  Maker D total = 84500 cents
+  Maker E total = 48700 cents
+  Maker F total = 78800 cents
+  master picks Maker E
+-- student, first pass: the quote of Maker B was entered in dollars, not cents --
+  Maker A total = 57200 cents
+  Maker B total = 3017 cents
+  Maker C total = 90600 cents
+  Maker D total = 84500 cents
+  Maker E total = 48700 cents
+  Maker F total = 78800 cents
+  student picks Maker B
+  Maker B quote: student 517, master 51700 -> re-observe
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Maker A total = 57200 cents
+  Maker B total = 54200 cents
+  Maker C total = 90600 cents
+  Maker D total = 84500 cents
+  Maker E total = 48700 cents
+  Maker F total = 78800 cents
+  student picks Maker E
+  verdict: AGREE, work accepted

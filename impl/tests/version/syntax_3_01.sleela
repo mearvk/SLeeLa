@@ -1,0 +1,2 @@
+#sleela 3.01
+class Syntax301 { void main() { print("3.01 is accepted and means 3.1"); } }

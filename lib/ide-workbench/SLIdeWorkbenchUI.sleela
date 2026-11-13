@@ -81,6 +81,9 @@ class SLIdeWorkbenchUI {
   SLNotebook notebook;
   SLStatusBar status;
   SLLoadingIndicator loading;
+  SLIdeMenuBar menuBar;
+  SLIdeToolbar toolbar;
+  SLIdeLanguageBar languageBar;
 
   < State models (the SLeeLa logic layer). >
   SLIdeTabGroup tabs;
@@ -147,6 +150,11 @@ class SLIdeWorkbenchUI {
     compileH = dom.onClick("cmd-compile", "onCompile");
     saveH = dom.onClick("cmd-save", "onSave");
     closeH = dom.onClick("cmd-close", "onClose");
+
+    < Native SLeeLa IDE menus, toolbar and language selector mount below chrome. >
+    dom.appendElement("root", "frame", "ide-menu-host");
+    dom.appendElement("root", "frame", "ide-toolbar-host");
+    dom.appendElement("root", "frame", "ide-language-host");
   }
 
   < The body + status, as DOM containers whose mounted widget handles host the >
@@ -177,6 +185,13 @@ class SLIdeWorkbenchUI {
     < Mount the DOM so the container handles exist, then attach specialised >
     < SleelaUI widgets into those handles. >
     app.refresh();
+
+    SLWidget menuHost = adopt(dom.getElementById("ide-menu-host").widgetHandle());
+    menuBar = new SLIdeMenuBar(); menuBar.createIn(menuHost);
+    SLWidget toolbarHost = adopt(dom.getElementById("ide-toolbar-host").widgetHandle());
+    toolbar = new SLIdeToolbar(); toolbar.createIn(toolbarHost);
+    SLWidget languageHost = adopt(dom.getElementById("ide-language-host").widgetHandle());
+    languageBar = new SLIdeLanguageBar(); languageBar.createIn(languageHost);
 
     SLWidget left = adopt(dom.getElementById("ide-left").widgetHandle());
     tree = new SLTreeView();
@@ -246,6 +261,15 @@ class SLIdeWorkbenchUI {
     < their handlers run through the same bus as the commands. >
     routeContentEvents();
 
+    int menuAction = menuBar.poll();
+    if (menuAction >= 0) { dispatchMenuAction(menuAction); }
+    int toolbarAction = toolbar.poll();
+    if (toolbarAction >= 0) { dispatchToolbarAction(toolbarAction); }
+    int language = languageBar.poll();
+    if (language >= 0 && status != null) {
+      status.setText("Language: " + languageBar.languageName());
+    }
+
     if (openH != null && openH.take())           { onOpenSelected(); }
     if (compileH != null && compileH.take())     { onCompile(); }
     if (saveH != null && saveH.take())           { onSave(); }
@@ -253,6 +277,32 @@ class SLIdeWorkbenchUI {
     if (tabChangeH != null && tabChangeH.take())   { onTabChange(tabChangeH.value()); }
     if (closeH != null && closeH.take())         { return onClose(); }
     return true;
+  }
+
+  < Menu and toolbar actions share the same workbench command path. Host-only
+     operations remain explicit requests until the file/process services bind. >
+  void dispatchMenuAction(int action) {
+    if (action == 0) { status.setText("New file requested"); }
+    else if (action == 1) { onOpenSelected(); }
+    else if (action == 2 || action == 3) { onSave(); }
+    else if (action == 9) { onCompile(); }
+    else if (action == 10) { status.setText("Run requested — runtime service pending"); }
+    else { status.setText("IDE menu action: " + menuBar.commandName(action)); }
+  }
+
+  void dispatchToolbarAction(int action) {
+    if (action == SLIdeToolbar.ACTION_OPEN) { onOpenSelected(); }
+    else if (action == SLIdeToolbar.ACTION_SAVE) { onSave(); }
+    else if (action == SLIdeToolbar.ACTION_BUILD) { onCompile(); }
+    else if (action == SLIdeToolbar.ACTION_RUN) {
+      status.setText("Run requested — runtime service pending");
+    } else if (action == SLIdeToolbar.ACTION_DEBUG) {
+      status.setText("Debug requested — debugger adapter pending");
+    } else if (action == SLIdeToolbar.ACTION_STOP) {
+      status.setText("Stop requested — process service pending");
+    } else {
+      status.setText("New file requested");
+    }
   }
 
   < Translate raw content-control state changes into DOM events on the bus. >

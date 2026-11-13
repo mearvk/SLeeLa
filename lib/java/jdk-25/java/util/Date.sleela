@@ -1,0 +1,213 @@
+<< lib/java/java/util/Date.sleela
+   SLeeLa Java 28 source envelope.
+   Definition: SLeeLa source declaration for the Java type java.util.Date.
+   Java behavior is supplied through the SLeeLa Java conformance boundary. >>
+#sleela 3.0
+material;
+
+class Date {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 2993;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-29";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "OpenJDK (JDK 28 API)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  < java.util.Date declares getDate and setDate (day of month), so the metadata date accessors are named getMetaDate and setMetaDate here >
+  String getMetaDate() { return metaDate; }
+  void setMetaDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  String javaType = "java.util.Date";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.util.Date members (procedural implementation in SLeeLa) ---- >
+  << java.util.Date over a millisecond count since 1970-01-01T00:00:00Z. All
+     calendar fields are computed in UTC with the proleptic Gregorian rules
+     (days-from-civil arithmetic), which is what Java reports when the default
+     time zone is UTC; getTimezoneOffset is therefore 0 and toString prints
+     the zone as UTC. The deprecated field constructors and setters are lenient
+     like Java: out-of-range months, days and times roll over. parse(String),
+     clone, toInstant, from, toLocaleString and toGMTString keep their
+     exact-signature stubs. >>
+  long fastTime = 0;
+
+  public Date() { this.fastTime = timeUtcMillis(); }
+  public Date(long date) { this.fastTime = date; }
+  public Date(int year, int month, int date) { this.fastTime = UTC(year, month, date, 0, 0, 0); }
+  public Date(int year, int month, int date, int hrs, int min) { this.fastTime = UTC(year, month, date, hrs, min, 0); }
+  public Date(int year, int month, int date, int hrs, int min, int sec) { this.fastTime = UTC(year, month, date, hrs, min, sec); }
+
+  public long getTime() { return this.fastTime; }
+  public void setTime(long time) { this.fastTime = time; }
+  public boolean before(Date when) { return this.fastTime < when.fastTime; }
+  public boolean after(Date when) { return this.fastTime > when.fastTime; }
+  public boolean equals(java.lang.Object obj) {
+    if (obj == null) { return false; }
+    Date other = (Date) obj;
+    return this.fastTime == other.fastTime;
+  }
+  public int compareTo(Date anotherDate) {
+    if (this.fastTime < anotherDate.fastTime) { return 0 - 1; }
+    if (this.fastTime > anotherDate.fastTime) { return 1; }
+    return 0;
+  }
+  public int getTimezoneOffset() { return 0; }
+
+  public int getYear() { return civilYear(dayNumber()) - 1900; }
+  public int getMonth() { return civilMonth(dayNumber()) - 1; }
+  public int getDay() { return (int) fmod(dayNumber() + 4, 7); }
+  public int getHours() { return (int) (fmod(this.fastTime, 86400000) / 3600000); }
+  public int getMinutes() { return (int) (fmod(this.fastTime, 3600000) / 60000); }
+  public int getSeconds() { return (int) (fmod(this.fastTime, 60000) / 1000); }
+  public int getDate() { return civilDay(dayNumber()); }
+
+  public void setYear(int year) { assemble(year + 1900, getMonth(), getDate(), this.fastTime); }
+  public void setMonth(int month) { assemble(getYear() + 1900, month, getDate(), this.fastTime); }
+  public void setDate(int date) { assemble(getYear() + 1900, getMonth(), date, this.fastTime); }
+  public void setHours(int hours) { this.fastTime = this.fastTime + (hours - getHours()) * 3600000; }
+  public void setMinutes(int minutes) { this.fastTime = this.fastTime + (minutes - getMinutes()) * 60000; }
+  public void setSeconds(int seconds) { this.fastTime = this.fastTime + (seconds - getSeconds()) * 1000; }
+
+  public static long UTC(int year, int month, int date, int hrs, int min, int sec) {
+    long y = year + 1900 + fdiv(month, 12);
+    long m = fmod(month, 12) + 1;
+    long days = daysFromCivil(y, m, 1) + (date - 1);
+    return ((days * 24 + hrs) * 60 + min) * 60000 + sec * 1000;
+  }
+
+  public java.lang.String toString() {
+    int dw = getDay();
+    int mo = getMonth();
+    return dowName(dw) + " " + monName(mo) + " " + pad2(getDate()) + " " + pad2(getHours()) + ":" + pad2(getMinutes()) + ":" + pad2(getSeconds()) + " UTC " + (getYear() + 1900);
+  }
+
+  < ---- helpers: floor arithmetic and civil calendar (Hinnant days algorithms) ---- >
+  static long fdiv(long a, long b) {
+    long q = a / b;
+    if ((a % b != 0) && ((a < 0) != (b < 0))) { q = q - 1; }
+    return q;
+  }
+  static long fmod(long a, long b) { return a - fdiv(a, b) * b; }
+  long dayNumber() { return fdiv(this.fastTime, 86400000); }
+  static long daysFromCivil(long yIn, long m, long d) {
+    long y = yIn;
+    if (m <= 2) { y = y - 1; }
+    long era = fdiv(y, 400);
+    long yoe = y - era * 400;
+    long mp = m - 3;
+    if (m <= 2) { mp = m + 9; }
+    long doy = (153 * mp + 2) / 5 + d - 1;
+    long doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
+    return era * 146097 + doe - 719468;
+  }
+  static long civilDoy(long days) {
+    long z = days + 719468;
+    long era = fdiv(z, 146097);
+    long doe = z - era * 146097;
+    long yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
+    return doe - (365 * yoe + yoe / 4 - yoe / 100);
+  }
+  static int civilYear(long days) {
+    long z = days + 719468;
+    long era = fdiv(z, 146097);
+    long doe = z - era * 146097;
+    long yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
+    long y = yoe + era * 400;
+    long mp = (5 * civilDoy(days) + 2) / 153;
+    if (mp >= 10) { y = y + 1; }
+    return (int) y;
+  }
+  static int civilMonth(long days) {
+    long mp = (5 * civilDoy(days) + 2) / 153;
+    if (mp < 10) { return (int) (mp + 3); }
+    return (int) (mp - 9);
+  }
+  static int civilDay(long days) {
+    long doy = civilDoy(days);
+    long mp = (5 * doy + 2) / 153;
+    return (int) (doy - (153 * mp + 2) / 5 + 1);
+  }
+  void assemble(long year, long month0, long day, long millisOfDayBase) {
+    long y = year + fdiv(month0, 12);
+    long m = fmod(month0, 12) + 1;
+    long days = daysFromCivil(y, m, 1) + (day - 1);
+    this.fastTime = days * 86400000 + fmod(millisOfDayBase, 86400000);
+  }
+  static String pad2(int n) {
+    if (n < 10) { return "0" + n; }
+    return "" + n;
+  }
+  static String dowName(int i) {
+    if (i == 0) { return "Sun"; }
+    if (i == 1) { return "Mon"; }
+    if (i == 2) { return "Tue"; }
+    if (i == 3) { return "Wed"; }
+    if (i == 4) { return "Thu"; }
+    if (i == 5) { return "Fri"; }
+    return "Sat";
+  }
+  static String monName(int i) {
+    if (i == 0) { return "Jan"; }
+    if (i == 1) { return "Feb"; }
+    if (i == 2) { return "Mar"; }
+    if (i == 3) { return "Apr"; }
+    if (i == 4) { return "May"; }
+    if (i == 5) { return "Jun"; }
+    if (i == 6) { return "Jul"; }
+    if (i == 7) { return "Aug"; }
+    if (i == 8) { return "Sep"; }
+    if (i == 9) { return "Oct"; }
+    if (i == 10) { return "Nov"; }
+    return "Dec";
+  }
+  < ---- END java implementation ---- >
+
+  < ---- BEGIN java signatures (generated by tools/jdk_api_signatures.py) ---- >
+  << Exact Java signatures (from the JDK). A method body that is not yet
+     SLeeLa logic throws: AbstractMethodError for an abstract method, else
+     UnsupportedOperationException naming the Java signature. >>
+  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.hashCode()"); }
+  public java.lang.Object clone() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.clone()"); }
+  public static java.util.Date from(java.time.Instant instant) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.from(java.time.Instant)"); }
+  public static long parse(java.lang.String s) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.parse(java.lang.String)"); }
+  public java.time.Instant toInstant() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.toInstant()"); }
+  public java.lang.String toLocaleString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.toLocaleString()"); }
+  public java.lang.String toGMTString() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.Date.toGMTString()"); }
+  < ---- END java signatures ---- >
+}

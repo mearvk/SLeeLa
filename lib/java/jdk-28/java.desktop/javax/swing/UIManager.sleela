@@ -1,0 +1,170 @@
+<< lib/java/jdk-28/java.desktop/javax/swing/UIManager.sleela
+   SLeeLa file for the Java type javax.swing.UIManager (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/UIManager.html
+   Java kind: class; extends java.lang.Object; implements java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class UIManager {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9391;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.UIManager";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/UIManager.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public UIManager bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @throwable("java.lang.UnsupportedOperationException")
+  public UIManager() { }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any get(Any key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any get(Any key, Any l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any put(Any key, Any value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean getBoolean(Any key) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean getBoolean(Any key, Any l) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getInt(Any key, Any l) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static int getInt(Any key) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static String getString(Any key, Any l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static String getString(Any key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any[] getInstalledLookAndFeels() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void setInstalledLookAndFeels(Any[] infos) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void installLookAndFeel(Any info) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void installLookAndFeel(String name, String className) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException, java.lang.InstantiationException, java.lang.IllegalAccessException, javax.swing.UnsupportedLookAndFeelException")
+  public static void setLookAndFeel(String className) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.UnsupportedLookAndFeelException")
+  public static void setLookAndFeel(Any newLookAndFeel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static String getCrossPlatformLookAndFeelClassName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getLookAndFeelDefaults() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static String getSystemLookAndFeelClassName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.swing.UnsupportedLookAndFeelException")
+  public static Any createLookAndFeel(String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addAuxiliaryLookAndFeel(Any laf) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean removeAuxiliaryLookAndFeel(Any laf) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any[] getAuxiliaryLookAndFeels() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void addPropertyChangeListener(Any listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any[] getPropertyChangeListeners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static void removePropertyChangeListener(Any listener) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getUI(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getDefaults() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getBorder(Any key, Any l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getBorder(Any key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getDimension(Any key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getDimension(Any key, Any l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getColor(Any key, Any l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getColor(Any key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getIcon(Any key, Any l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getIcon(Any key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getLookAndFeel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getInsets(Any key, Any l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getInsets(Any key) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getFont(Any key, Any l) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getFont(Any key) { return null; }
+  < ---- END java signatures ---- >
+}

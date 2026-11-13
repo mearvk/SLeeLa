@@ -1,0 +1,282 @@
+<< lib/java/converter/JConvConfig.sleela
+   Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
+   Definition: the converter settings. A SLeeLa program receives no command-line
+   arguments (sleela run reads every argument as a source file), so the settings
+   come from environment variables:
+     JCONV_IN        root of the Java source tree (required)
+     JCONV_OUT       root of the SLeeLa output tree (default: ./jdk28-converted)
+     JCONV_SCOPE     api (default): only the types listed in
+                     lib/java/jdk-28/INDEX.tsv; all: every .java file
+     JCONV_FILTER    convert only paths that start with this prefix
+                     (for example java.base/java/util)
+     JCONV_LIMIT     stop after this many files (0 or unset: no limit)
+     JCONV_INT       int32 (default, Java 32-bit int) or int (64-bit SLeeLa int)
+     JCONV_COMMENTS  keep (default) or drop; the leading licence comment is
+                     always kept
+     JCONV_MODEL     the conversion model to read (default:
+                     SLEELA_HOME/impl/subjects/conversion/conversion.model)
+     JCONV_BUNDLE    0 (default): one file per type, nested types as
+                     Outer.Inner.sleela (the library layout); 1: nested types
+                     go into the document of their top-level type, so a
+                     converted program runs as one document >>
+#sleela 3.0
+material;
+
+class JConvConfig {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full record: a library-family class of the Java container. >>
+  String metaVersion = "0.5.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String inRoot;
+  String outRoot;
+  String scope;
+  String filter;
+  int limit;
+  String intType;
+  boolean keepComments;
+  boolean bundle;
+  String modelPath;
+  String sleelaHome;
+  String problem;
+  < api scope: open-addressing set of <module>/<package path>/<Type> keys >
+  String[] apiKeys;
+  int apiCount;
+  << type kinds from INDEX.tsv by simple file name (List, Map.Entry):
+     1 class-like (class, enum, record), 2 interface or annotation, 3 both
+     (the name is used by types of both kinds in different packages) >>
+  String[] kindKeys;
+  int[] kindValues;
+  boolean indexLoaded;
+
+  JConvConfig() {
+    this.inRoot = "";
+    this.outRoot = "";
+    this.scope = "api";
+    this.filter = "";
+    this.limit = 0;
+    this.intType = "int32";
+    this.keepComments = true;
+    this.bundle = false;
+    this.modelPath = "";
+    this.sleelaHome = "";
+    this.problem = "";
+    this.apiKeys = new String[16384];
+    this.apiCount = 0;
+    this.kindKeys = new String[16384];
+    this.kindValues = new int[16384];
+    this.indexLoaded = false;
+  }
+
+  String env(String name, String fallback) {
+    String v = osGetEnv(name);
+    if (v == null || v == "") { return fallback; }
+    return v;
+  }
+
+  int parseCount(String s) {
+    int v = 0;
+    int i = 0;
+    while (i < s.length()) {
+      int c = s.charAt(i);
+      if (c < 48 || c > 57) { return 0; }
+      v = v * 10 + (c - 48);
+      i = i + 1;
+    }
+    return v;
+  }
+
+  String trimSlash(String p) {
+    String r = p;
+    while (r.length() > 1 && r.endsWith("/")) { r = r.substring(0, r.length() - 1); }
+    return r;
+  }
+
+  boolean readSettings() {
+    this.inRoot = trimSlash(env("JCONV_IN", ""));
+    this.outRoot = trimSlash(env("JCONV_OUT", osCurrentDir() + "/jdk28-converted"));
+    this.scope = env("JCONV_SCOPE", "api");
+    this.filter = env("JCONV_FILTER", "");
+    this.limit = parseCount(env("JCONV_LIMIT", "0"));
+    this.intType = env("JCONV_INT", "int32");
+    this.keepComments = (env("JCONV_COMMENTS", "keep") != "drop");
+    this.bundle = (env("JCONV_BUNDLE", "0") == "1");
+    this.modelPath = env("JCONV_MODEL", trimSlash(env("SLEELA_HOME", ".")) + "/impl/subjects/conversion/conversion.model");
+    this.sleelaHome = trimSlash(env("SLEELA_HOME", ""));
+    if (this.inRoot == "") { this.problem = "JCONV_IN is not set (the root of the Java source tree)"; return false; }
+    if (osIsDir(this.inRoot) != 1) { this.problem = "JCONV_IN is not a directory: " + this.inRoot; return false; }
+    if (this.intType != "int32" && this.intType != "int") { this.problem = "JCONV_INT must be int32 or int"; return false; }
+    if (this.scope != "api" && this.scope != "all") { this.problem = "JCONV_SCOPE must be api or all"; return false; }
+    if (this.outRoot == this.inRoot) { this.problem = "JCONV_OUT must differ from JCONV_IN"; return false; }
+    if (this.sleelaHome != "" && this.outRoot.startsWith(this.sleelaHome + "/lib/java/jdk-28")) {
+      this.problem = "JCONV_OUT must not be inside lib/java/jdk-28 (the curated tier is never overwritten)";
+      return false;
+    }
+    boolean ok = loadApiIndex();
+    if (this.scope == "api") { return ok; }
+    this.problem = "";
+    return true;
+  }
+
+  < ---- api scope ---- >
+  int slot(String key) {
+    int h = key.hashCode();
+    if (h < 0) { h = 0 - h; }
+    return h % arrayLength(this.apiKeys);
+  }
+
+  void addApiKey(String key) {
+    int s = slot(key);
+    while (this.apiKeys[s] != null) {
+      if (this.apiKeys[s] == key) { return; }
+      s = (s + 1) % arrayLength(this.apiKeys);
+    }
+    this.apiKeys[s] = key;
+    this.apiCount = this.apiCount + 1;
+  }
+
+  void addKind(String name, int k) {
+    int s = slotIn(name, arrayLength(this.kindKeys));
+    while (this.kindKeys[s] != null) {
+      if (this.kindKeys[s] == name) {
+        if (this.kindValues[s] != k) { this.kindValues[s] = 3; }
+        return;
+      }
+      s = (s + 1) % arrayLength(this.kindKeys);
+    }
+    this.kindKeys[s] = name;
+    this.kindValues[s] = k;
+  }
+
+  < 0 unknown, 1 class-like, 2 interface, 3 both >
+  int kindOf(String name) {
+    if (!this.indexLoaded) { return 0; }
+    int s = slotIn(name, arrayLength(this.kindKeys));
+    while (this.kindKeys[s] != null) {
+      if (this.kindKeys[s] == name) { return this.kindValues[s]; }
+      s = (s + 1) % arrayLength(this.kindKeys);
+    }
+    return 0;
+  }
+
+  int slotIn(String key, int size) {
+    int h = key.hashCode();
+    if (h < 0) { h = 0 - h; }
+    return h % size;
+  }
+
+  boolean hasApiKey(String key) {
+    int s = slot(key);
+    while (this.apiKeys[s] != null) {
+      if (this.apiKeys[s] == key) { return true; }
+      s = (s + 1) % arrayLength(this.apiKeys);
+    }
+    return false;
+  }
+
+  << Reads lib/java/jdk-28/INDEX.tsv. Column 4 is the SLeeLa file
+     lib/java/jdk-28/<module>/<package>/<Type>.sleela; the key drops the prefix
+     and the extension. A nested type (Outer.Inner) is in scope through its
+     top-level file, so only the part before the first dot of the file name
+     is kept. >>
+  boolean loadApiIndex() {
+    String path = this.sleelaHome + "/lib/java/jdk-28/INDEX.tsv";
+    if (this.sleelaHome == "" || osExists(path) != 1) {
+      this.problem = "JCONV_SCOPE=api needs SLEELA_HOME with lib/java/jdk-28/INDEX.tsv (or set JCONV_SCOPE=all)";
+      return false;
+    }
+    JConvSource s = new JConvSource();
+    if (!s.load(path)) { this.problem = "cannot read " + path + ": " + s.failure; return false; }
+    String prefix = "lib/java/jdk-28/";
+    int i = 0;
+    int lineStart = 0;
+    while (i <= s.length) {
+      if (i == s.length || s.at(i) == 10) {
+        if (i > lineStart && s.at(lineStart) != 35) {
+          < find the fourth column >
+          int col = 0;
+          int a = lineStart;
+          int k = lineStart;
+          int fileStart = -1;
+          int fileEnd = -1;
+          int kindStart = -1;
+          int kindEnd = -1;
+          while (k <= i) {
+            if (k == i || s.at(k) == 9) {
+              if (col == 2) { kindStart = a; kindEnd = k; }
+              if (col == 3) { fileStart = a; fileEnd = k; }
+              col = col + 1;
+              a = k + 1;
+            }
+            k = k + 1;
+          }
+          if (fileStart >= 0) {
+            String f = s.slice(fileStart, fileEnd);
+            if (f.startsWith(prefix) && f.endsWith(".sleela")) {
+              String key = f.substring(prefix.length(), f.length() - 7);
+              int slash = key.lastIndexOf("/");
+              String simple = key.substring(slash + 1);
+              if (kindStart >= 0) {
+                String kind = s.slice(kindStart, kindEnd);
+                int kv = 1;
+                if (kind == "interface" || kind == "annotation") { kv = 2; }
+                if (kind != "type") { addKind(simple, kv); }
+              }
+              int dot = key.indexOf(".", slash + 1);
+              if (dot > slash) { key = key.substring(0, dot); }
+              addApiKey(key);
+            }
+          }
+        }
+        lineStart = i + 1;
+      }
+      i = i + 1;
+    }
+    if (this.apiCount == 0) { this.problem = "no types read from " + path; return false; }
+    this.indexLoaded = true;
+    return true;
+  }
+
+  < whether a relative .java path is selected by scope, filter >
+  boolean selects(String rel) {
+    if (this.filter != "" && !rel.startsWith(this.filter)) { return false; }
+    if (this.scope == "all") { return true; }
+    String key = rel.substring(0, rel.length() - 5);
+    return hasApiKey(key);
+  }
+}

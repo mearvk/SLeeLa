@@ -1,0 +1,65 @@
+<< lib/java/support/SLJavaFaults.sleela
+   The Java exceptions for VM faults (SLEELA.syntax 37.5). When a program
+   loads this unit, the compiler registers make(kind, message) with the VM.
+   A fault raised inside a try (an int division or remainder by zero, an
+   array index out of range, a failed checked cast) then calls it, and the
+   object it returns is thrown, so catch (ArithmeticException e) and
+   catch (RuntimeException e) see what Java code expects. Outside a try a
+   fault stays a VM runtime error, as before. The driver loads this unit for
+   a syntax 3.0 or later document that imports a /lib/java tier or carries
+   the spark marker. >>
+#sleela 3.0
+material;
+
+class SLJavaFaults {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Shared support
+     class of the /lib/java Java container; written for SLeeLa, not copied
+     from the JDK. The messages follow the Java Language Specification
+     section 15.17.2 and section 15.10.4 and the java.lang exception classes. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39409;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "The Java Language Specification, sections 15.10.4 (Run-Time Evaluation of Array Access) and 15.17.2 (Division Operator)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < kind: 1 arithmetic, 2 array index, 3 checked cast (the VM fault kinds) >
+  static Any make(int kind, String message) {
+    if (kind == 1) { return new ArithmeticException("/ by zero"); }
+    if (kind == 2) { return new ArrayIndexOutOfBoundsException(message); }
+    if (kind == 3) { return new ClassCastException(message); }
+    return message;
+  }
+}

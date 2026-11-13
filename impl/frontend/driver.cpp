@@ -22,6 +22,7 @@
 #include "../xclass/xclass_loader.h"
 #include "../langin/langin.h"
 #include "../nordshrift/sleela_emit.h"
+#include "../nordshrift/native_method_emit.h"
 #include "http_server_cli.h"
 #include "../core/sleela_audio_bridge.h"
 #include "common_rails_banner.hpp"
@@ -166,7 +167,9 @@ static std::string shellQuote(const std::string&s){
     std::string q="'";for(char c:s){if(c=='\'')q+="'\\''";else q+=c;}return q+"'";
 #endif
 }
-static int runCommand(const std::string&cmd){std::cout<<"[defender] $ "<<cmd<<"\n";return std::system(cmd.c_str())==0?0:1;}
+// The command echo is a diagnostic: keep it on stderr so stdout stays clean for
+// machine-consumed output (e.g. `sleela aot --emit` C source piped to a compiler).
+static int runCommand(const std::string&cmd){std::cerr<<"[defender] $ "<<cmd<<"\n";return std::system(cmd.c_str())==0?0:1;}
 // ---------------------------------------------------------------------------
 // Defender opt-in / safety gates.
 //
@@ -327,7 +330,7 @@ static fs::path rootFromManifest(const fs::path&manifest){
         return candidate;
     return fs::path();
 }
-static int verifyBeforeExecution(const fs::path&cwd){
+static int verifyBeforeExecution(const fs::path&cwd, bool quiet=false){
     // Resolve the SLeeLa root first so a configured installation works even
     // when the caller is a separate client project and has no local verifier.
     fs::path root=findRepoRoot(cwd);
@@ -351,7 +354,7 @@ static int verifyBeforeExecution(const fs::path&cwd){
             const char* home=std::getenv("SLEELA_HOME");
             bool homePinned = home && *home;
             if(!homePinned && manifestRoot!=root){
-                std::cout<<"[security] anchoring verification to the manifest's own root: "
+                (quiet ? std::cerr : std::cout)<<"[security] anchoring verification to the manifest's own root: "
                          <<manifestRoot.string()<<"\n";
                 root=manifestRoot;
             }
@@ -376,7 +379,8 @@ static int verifyBeforeExecution(const fs::path&cwd){
 #else
     std::string cmd="python3 "+shellQuote(tool.string())+" --manifest "+shellQuote(manifest.string())+" --root "+shellQuote(root.string());
 #endif
-    std::cout<<"[security] SHA-256 verification required before build/execution/diagnostics\n";
+    if(quiet) cmd += " 1>&2";
+    else std::cout<<"[security] SHA-256 verification required before build/execution/diagnostics\n";
     return runCommand(cmd);
 }
 static const char* defenderRepo(){
@@ -1715,12 +1719,12 @@ static void runKeywordSupporterPass(const std::string& path, sleela::Program& pr
     sleela::frontend::materializeSupporterFolders(records, docsRoot); // best-effort
 }
 static bool parseSource(const std::string&path,std::string&src,sleela::Program&prog,sleela::VersionResolution&version){if(!readFile(path,src)){std::cerr<<"sleelvac: cannot open '"<<path<<"'\n";return false;}if(!checkSyntaxVersion(path,src))return false;version=sleela::resolveSyntaxVersion(src);try{sleela::Lexer lexer(src);auto tokens=lexer.tokenize();sleela::Parser parser(std::move(tokens));prog=parser.parseProgram();sleela::Program validation;validation.imports=prog.imports;validation.imports.erase(std::remove_if(validation.imports.begin(),validation.imports.end(),[](const std::string& module){return !sleela::native::isModuleAvailable(module);}),validation.imports.end());sleela::native::validateImports(validation);runKeywordSupporterPass(path,prog);return true;}catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return false;}}
-static bool loadReferencedLibraryUnits(const std::string& source, sleela::Program& program);
+static bool loadReferencedLibraryUnits(const std::string& source, sleela::Program& program, const sleela::SyntaxVersion& syntax);
 static int checkFile(const std::string&path){
     if(verifyBeforeExecution(fs::current_path()))return 1;
     std::string src;sleela::Program prog;sleela::VersionResolution v;
     if(!parseSource(path,src,prog,v))return 1;
-    if(!loadReferencedLibraryUnits(src,prog))return 1;
+    if(!loadReferencedLibraryUnits(src,prog,v.declared))return 1;
     try{
         sleela::SemanticResult sem=sleela::analyzeSemantics(prog,v.declared);
         for(const auto&w:sem.warnings) std::cerr<<"sleelvac: "<<path<<": warning: "<<w<<"\n";
@@ -1729,7 +1733,7 @@ static int checkFile(const std::string&path){
     }catch(const std::exception&ex){std::cerr<<"sleelvac: "<<path<<": "<<ex.what()<<"\n";return 1;}
     std::cout<<path<<": ok (syntax "<<(v.pragmaPresent?"declared ":"assumed ")<<v.declared.str()<<")\n";return 0;
 }
-static int compileFile(const std::string&sourcePath,const std::string&outputPath){sleela::rails::brandSleelvac(std::cout,1);if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(sourcePath,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();try{int rc=sleela::compileToArtifact(prog,outputPath,&cat,syntax.declared);if(rc!=0)return 1;std::cout<<"sleelvac: "<<sourcePath<<" -> "<<outputPath<<" (runnable Sleela Core artifact)\n";if(railsBannersEnabled())sleela::rails::complete(std::cerr,"compiled "+sourcePath+" -> "+outputPath);
+static int compileFile(const std::string&sourcePath,const std::string&outputPath){sleela::rails::brandSleelvac(std::cout,1);if(verifyBeforeExecution(fs::current_path()))return 1;std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(sourcePath,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog,syntax.declared))return 1;catalog::Catalog cat=loadCatalog();try{int rc=sleela::compileToArtifact(prog,outputPath,&cat,syntax.declared);if(rc!=0)return 1;std::cout<<"sleelvac: "<<sourcePath<<" -> "<<outputPath<<" (runnable Sleela Core artifact)\n";if(railsBannersEnabled())sleela::rails::complete(std::cerr,"compiled "+sourcePath+" -> "+outputPath);
     // Author-marked documents (syntax 2.4) get a second, originated source
     // document alongside the artifact: every member located, originated, and
     // branded with a therefore-brander. Clean and united.
@@ -1953,14 +1957,14 @@ static int runJavaClass(const std::string&classpath,const std::string&mainClass,
     args.insert(args.end(),programArgs.begin(),programArgs.end());
     return runJavaApplication(args,"class "+mainClass+" (classpath "+(classpath.empty()?".":classpath)+")");
 }
-static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
+static int runSource(const std::string&path){std::string src;sleela::Program prog;sleela::VersionResolution syntax;if(!parseSource(path,src,prog,syntax))return 1;if(!loadReferencedLibraryUnits(src,prog,syntax.declared))return 1;catalog::Catalog cat=loadCatalog();return compileAndRun(prog,cat,syntax.declared);}
 // Combine several parsed Programs into one compilation unit by concatenating
 // their classes/structs/imports (and merging document annotations). This lets a
 // user split a program across multiple .sleela files passed at run/compile time;
 // downstream stages already treat the whole Program as one unit and will report
 // any duplicate struct/class/method across files.
 static void mergeProgram(sleela::Program& into,sleela::Program&& from);
-static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::Program& program){
+static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::Program& program,const sleela::SyntaxVersion& syntax){
     // Source libraries are compiled into the same Program/artifact as the client.
     // This deliberately resolves only class-like unit names referenced by source,
     // rather than blindly parsing every file under /lib (which can introduce
@@ -2032,14 +2036,71 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
         }
         return output;
     };
+    // A nested Java type lives in a file named Outer.Inner.sleela that declares
+    // a top-level `class Inner`. The parser spells nested types Outer__Inner
+    // (syntax 1.11), so rewrite the declared name and every unqualified use of it
+    // inside the unit to the mangled name. Identifiers after '.', and everything
+    // inside comments and string literals, are left alone.
+    auto renameNestedUnit = [&](const std::string& unitText, const std::string& stem) {
+        const std::size_t lastDot = stem.rfind('.');
+        if(lastDot == std::string::npos || lastDot == 0 || lastDot + 1 >= stem.size()) return unitText;
+        if(!std::isupper(static_cast<unsigned char>(stem[0]))) return unitText;
+        const std::string inner = stem.substr(lastDot + 1);
+        std::string mangled;
+        for(char ch : stem) { if(ch == '.') mangled += "__"; else mangled.push_back(ch); }
+        const std::string masked = dependencyScanText(unitText);
+        std::vector<std::size_t> hits;
+        std::size_t at = 0;
+        while((at = masked.find(inner, at)) != std::string::npos) {
+            const std::size_t end = at + inner.size();
+            auto wordChar = [](char c){ return std::isalnum(static_cast<unsigned char>(c)) || c == '_'; };
+            bool boundaryBefore = (at == 0) || !wordChar(masked[at - 1]);
+            bool boundaryAfter  = (end >= masked.size()) || !wordChar(masked[end]);
+            std::size_t back = at;
+            while(back > 0 && (masked[back - 1] == ' ' || masked[back - 1] == '\t')) --back;
+            const bool afterDot = back > 0 && masked[back - 1] == '.';
+            if(boundaryBefore && boundaryAfter && !afterDot) hits.push_back(at);
+            at = end;
+        }
+        std::string out = unitText;
+        for(std::size_t i = hits.size(); i-- > 0;) out.replace(hits[i], inner.size(), mangled);
+        return out;
+    };
     // Resolve in passes so a loaded unit can pull in its own referenced units.
+    // Names the loader must resolve even though no source text mentions them:
+    // a method called on a String binds to class JavaStringMethods (syntax 3.0),
+    // which only type analysis can detect. Each seed is tried once.
+    std::set<std::string> seeds;
+    bool stringMethodsProbed=false;
+    bool faultsSeeded=false;
     for(size_t pass=0;pass<64;++pass){
-        std::set<std::string> names;
+        std::set<std::string> names(seeds.begin(),seeds.end());
         const std::string scanSource = dependencyScanText(source);
         for(std::sregex_iterator it(scanSource.begin(),scanSource.end(),identifier),end;it!=end;++it){
             const std::string name=it->str();
+            // A name that follows '.' is a member or the tail of a qualified
+            // name (java.util.List): it is not a library unit reference. The
+            // Java signature surface erases package-qualified types to Any.
+            const auto pos=static_cast<std::size_t>(it->position());
+            std::size_t back=pos;
+            while(back>0 && (scanSource[back-1]==' '||scanSource[back-1]=='\t')) --back;
+            if(!name.empty() && std::isupper(static_cast<unsigned char>(name[0])) && back>0 && scanSource[back-1]=='.'){
+                // Nested Java types (Map.Entry, Base64.Encoder) live in files
+                // named Outer.Inner.sleela. A capitalized name after `Outer.` is
+                // the tail of a nested-type reference: seed the dotted unit name
+                // so the loader finds the nested file. Unknown seeds are ignored.
+                std::size_t q=back-1;
+                while(q>0 && (scanSource[q-1]==' '||scanSource[q-1]=='\t')) --q;
+                const std::size_t e=q;
+                while(q>0 && (std::isalnum(static_cast<unsigned char>(scanSource[q-1]))||scanSource[q-1]=='_')) --q;
+                if(q<e && std::isupper(static_cast<unsigned char>(scanSource[q])))
+                    names.insert(scanSource.substr(q,e-q)+"."+name);
+            }
+            if(back>0 && scanSource[back-1]=='.') continue;
             if(!name.empty() && std::isupper(static_cast<unsigned char>(name[0]))) names.insert(name);
         }
+        // Sleela.home / Sleela.VM / .System / .OS: the VM boot places Security2 above the VM.
+        if(scanSource.find("Sleela.home")!=std::string::npos||scanSource.find("Sleela.VM")!=std::string::npos||scanSource.find("Sleela.System")!=std::string::npos||scanSource.find("Sleela.OS")!=std::string::npos) names.insert("Security2");
         bool changed=false;
         for(const auto& name:names){
             if(loadedPaths.count(name)) continue;
@@ -2072,19 +2133,113 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
             // java/early_access/jdk28/docs/api/.../String.sleela vs
             // java/java/lang/String.sleela). Prefer a real source unit whenever
             // one exists; only consider docs/api envelopes as a last resort.
+            // java/jdk-28/<module>/... (one SLeeLa reference file per JDK 28
+            // type, at the online API path) is the same reference tier; when
+            // only reference files match, java/jdk-28 wins over docs/api.
+            auto isJdk28Reference=[](const sleela::library::Symbol& symbol){
+                return symbol.path.rfind("java/jdk-28/",0)==0;
+            };
+            auto isReferenceUnit=[&](const sleela::library::Symbol& symbol){
+                return symbol.path.find("/docs/api/")!=std::string::npos || isJdk28Reference(symbol);
+            };
             bool hasNonDocumentationMatch=false;
+            bool hasJdk28Match=false;
             for(const auto& symbol:index.symbols()){
                 if(symbol.name!=name) continue;
                 if(hasPreferredMatch && !underPreferredRoot(symbol)) continue;
-                if(symbol.path.find("/docs/api/")==std::string::npos)
+                if(!isReferenceUnit(symbol))
                     hasNonDocumentationMatch=true;
+                if(isJdk28Reference(symbol)) hasJdk28Match=true;
+            }
+            // `import java.jdk-28;` selects the JDK 28 tier (SLEELA.syntax 43):
+            // when a JDK 28 file of this name exists it wins outright. Without
+            // this, an import carried by an earlier library unit (for example
+            // `import java.jdk-25.java.util;` in a JDK-internal helper that has
+            // no JDK 28 file) adds another preferred root, and its real unit
+            // would then beat the JDK 28 file for every later name.
+            const bool jdk28Selected=std::find(preferredRoots.begin(),preferredRoots.end(),std::string("java/jdk-28"))!=preferredRoots.end();
+            const bool onlyJdk28=jdk28Selected && hasJdk28Match;
+            if(onlyJdk28) hasNonDocumentationMatch=false;
+            // JDK 28 simple-name clashes (java.util.Vector vs
+            // jdk.incubator.vector.Vector, java.util.List vs java.awt.List, ...
+            // 102 names in all) are resolved by a fixed rank instead of being
+            // reported as ambiguous, the way a Java source file that imports
+            // java.util.* means java.util.List (SLEELA.syntax 43, Java container
+            // rule; lib/java/jdk-28/README.md "Name clashes"):
+            //   1. the longest matching import root wins, so
+            //      `import java.jdk-28.java.desktop;` selects java.awt.List;
+            //   2. module: java.base, then other java.* modules, then jdk.*;
+            //   3. package: java.lang, java.util, java.io, java.nio, java.net,
+            //      java.time, java.math, java.text, then the rest;
+            //   4. fewer path segments, then the path in byte order.
+            std::vector<const sleela::library::Symbol*> jdk28Candidates;
+            for(const auto& symbol:index.symbols()){
+                if(symbol.name!=name) continue;
+                if(onlyJdk28 && !isJdk28Reference(symbol)) continue;
+                if(hasPreferredMatch && !underPreferredRoot(symbol)) continue;
+                if(hasNonDocumentationMatch && isReferenceUnit(symbol)) continue;
+                if(!hasNonDocumentationMatch && hasJdk28Match && !isJdk28Reference(symbol)) continue;
+                if(isJdk28Reference(symbol)) jdk28Candidates.push_back(&symbol);
+            }
+            const sleela::library::Symbol* jdk28Choice=nullptr;
+            if(jdk28Candidates.size()>1){
+                auto rootLen=[&](const sleela::library::Symbol& s){
+                    size_t best=0;
+                    for(const auto& root:preferredRoots)
+                        if(s.path.rfind(root + "/",0)==0) best=std::max(best,root.size());
+                    return best;
+                };
+                auto moduleTier=[](const std::string& path){
+                    const std::string rest=path.substr(std::string("java/jdk-28/").size());
+                    if(rest.rfind("java.base/",0)==0) return 0;
+                    if(rest.rfind("java.",0)==0) return 1;
+                    return 2;
+                };
+                auto packageRank=[](const std::string& path){
+                    static const char* order[]={"/java/lang/","/java/util/","/java/io/","/java/nio/","/java/net/","/java/time/","/java/math/","/java/text/"};
+                    const std::string rest=path.substr(std::string("java/jdk-28/").size());
+                    const size_t slash=rest.find('/');
+                    const std::string pkg=slash==std::string::npos?rest:rest.substr(slash);
+                    for(int i=0;i<8;++i){
+                        const std::string o=order[i];
+                        if(pkg.rfind(o,0)==0 && pkg.find('/',o.size())==std::string::npos) return i;
+                    }
+                    return 8;
+                };
+                auto depth=[](const std::string& path){ return (int)std::count(path.begin(),path.end(),'/'); };
+                auto better=[&](const sleela::library::Symbol* a,const sleela::library::Symbol* b){
+                    const size_t ra=rootLen(*a), rb=rootLen(*b);
+                    if(ra!=rb) return ra>rb;
+                    const int ma=moduleTier(a->path), mb=moduleTier(b->path);
+                    if(ma!=mb) return ma<mb;
+                    const int pa=packageRank(a->path), pb=packageRank(b->path);
+                    if(pa!=pb) return pa<pb;
+                    const int da=depth(a->path), db=depth(b->path);
+                    if(da!=db) return da<db;
+                    return a->path<b->path;
+                };
+                jdk28Choice=jdk28Candidates[0];
+                for(const auto* c:jdk28Candidates) if(better(c,jdk28Choice)) jdk28Choice=c;
             }
             for(const auto& symbol:index.symbols()){
                 if(symbol.name!=name) continue;
+                if(onlyJdk28 && !isJdk28Reference(symbol)) continue;
                 if(hasPreferredMatch && !underPreferredRoot(symbol)) continue;
-                if(hasNonDocumentationMatch &&
-                   symbol.path.find("/docs/api/")!=std::string::npos) continue;
+                if(hasNonDocumentationMatch && isReferenceUnit(symbol)) continue;
+                if(!hasNonDocumentationMatch && hasJdk28Match && !isJdk28Reference(symbol)) continue;
+                if(jdk28Choice && isJdk28Reference(symbol) && &symbol!=jdk28Choice) continue;
                 if(match && match->path!=symbol.path){
+                    // Tie-break: a unit directly inside a preferred root (import
+                    // java.jdk-25.java.util;) beats one in a sub-package of it
+                    // (java/util/prefs/Base64 vs java/util/Base64).
+                    auto directlyUnder=[&](const sleela::library::Symbol& sy){
+                        const std::string dir=fs::path(sy.path).parent_path().generic_string();
+                        for(const auto& root:preferredRoots) if(dir==root) return true;
+                        return false;
+                    };
+                    const bool dm=directlyUnder(*match), ds=directlyUnder(symbol);
+                    if(ds && !dm){ match=&symbol; continue; }
+                    if(dm && !ds) continue;
                     std::cerr<<"sleelvac: ambiguous library symbol '"<<name<<"' in /lib ("
                              <<match->path<<" and "<<symbol.path<<"); add a versioned import such as 'import gui.version-military;' to select the intended library line.\n";
                     return false;
@@ -2099,6 +2254,7 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
                 return false;
             }
             try{
+                unitSource=renameNestedUnit(unitSource,match->name);
                 sleela::Lexer lexer(unitSource);
                 sleela::Parser parser(lexer.tokenize());
                 sleela::Program unit=parser.parseProgram();
@@ -2121,7 +2277,30 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
                 return false;
             }
         }
-        if(!changed) return true;
+        if(!changed){
+            // Converged. A program that calls methods on Strings needs the
+            // java.lang.String method library; ask the analyzer once.
+            bool haveStringMethods=false;
+            for(const auto& cls:program.classes) if(cls.name=="JavaStringMethods") { haveStringMethods=true; break; }
+            if(!stringMethodsProbed && !haveStringMethods && !(syntax<sleela::SyntaxVersion{3,0})){
+                stringMethodsProbed=true;
+                bool needed=false;
+                try{ needed=sleela::analyzeSemantics(program,syntax,false).needsStringMethods; }catch(const std::exception&){ needed=false; }
+                if(needed){ seeds.insert("JavaStringMethods"); continue; }
+            }
+            // SLEELA.syntax 37.5: a Java-style document with a try gets the VM
+            // fault exceptions (lib/java/support/SLJavaFaults), so a division
+            // by zero inside the try throws ArithmeticException.
+            if(!faultsSeeded && !(syntax<sleela::SyntaxVersion{3,0})){
+                faultsSeeded=true;
+                bool haveFaults=false, javaStyle=program.sparkMarked;
+                for(const auto& cls:program.classes) if(cls.name=="SLJavaFaults") { haveFaults=true; break; }
+                for(const auto& im:program.imports) if(im.rfind("java",0)==0) javaStyle=true;
+                static const std::regex tryWord("\\btry\\b");
+                if(!haveFaults && javaStyle && std::regex_search(source,tryWord)){ seeds.insert("SLJavaFaults"); continue; }
+            }
+            return true;
+        }
     }
     std::cerr<<"sleelvac: library dependency expansion exceeded 64 passes; possible dependency cycle.\n";
     return false;
@@ -2144,7 +2323,7 @@ static int runSourceMulti(const std::vector<std::string>& paths){
     for(const auto& path:paths){
         std::string src; sleela::Program prog; sleela::VersionResolution syntax;
         if(!parseSource(path,src,prog,syntax))return 1;
-        if(!loadReferencedLibraryUnits(src,prog))return 1;
+        if(!loadReferencedLibraryUnits(src,prog,syntax.declared))return 1;
         if(!haveSyntax){firstSyntax=syntax;haveSyntax=true;}
         mergeProgram(merged,std::move(prog));
     }
@@ -2160,7 +2339,7 @@ static int compileFilesMulti(const std::vector<std::string>& paths,const std::st
     for(const auto& path:paths){
         std::string src; sleela::Program prog; sleela::VersionResolution syntax;
         if(!parseSource(path,src,prog,syntax))return 1;
-        if(!loadReferencedLibraryUnits(src,prog))return 1;
+        if(!loadReferencedLibraryUnits(src,prog,syntax.declared))return 1;
         if(!haveSyntax){firstSyntax=syntax;haveSyntax=true;}
         mergeProgram(merged,std::move(prog));
     }
@@ -2205,39 +2384,41 @@ static int runFile(const std::string&path){
 }
 // `sleela nordshrift [--emit] [--target=sleela|java|c] <file.sleela>`  (SLeeLa -> Nordshrift)
 // `sleela nordshrift --roundtrip <file.sleela>`  (SLeeLa -> Nordshrift(Sleela) -> re-parse -> run + verify)
-/* ---- `sleela aot` : ahead-of-time native (C/C++) emission for @native -------
- * Part 1 of the SLeeLa->native path: find methods marked with the @native
- * annotation and emit C/C++ for them -- but ONLY when every such method is
- * within the currently supported "offloadable subset" (scalars, control flow,
- * local calls). It FAILS CLOSED: if a @native method uses anything the emitter
- * cannot yet translate (objects/new, arrays, strings beyond buffers, imports,
- * threads, the ::: offload operator, the standard library), `sleela aot`
- * refuses with a precise reason and emits nothing, so a half-translated method
- * can never be produced. The actual compile+link and VM dispatch are later
- * stages; this command establishes the @native surface and the honest subset
- * gate. No native binary is produced yet -- `--emit` prints the C/C++ a later
- * stage would compile. */
+/* ---- `sleela aot` : independently addressable native method emission -------
+ * Emits a standalone typed-ABI C plugin, one C entry body per supported
+ * annotated static method. Eligibility is deliberately fail-closed: no
+ * instance receiver, VM objects, arrays, closures, raw pointers, method calls,
+ * string literals/operations, or print side effects cross this first ABI.
+ * The command emits source only; the host separately compiles, authorizes,
+ * opens, and binds the resulting plugin. */
 static bool methodHasNative(const sleela::Method& m){
-    for(const auto& a:m.java.annotations) if(a.name=="native") return true;
+    for(const auto& a:m.java.annotations) if(a.name=="native" && a.marker) return true;
     return false;
 }
 /* Walk a @native method body and report the FIRST construct outside the
- * supported subset, or empty string if the whole method is translatable.
- * Mirrors exactly what the CGen emitter (impl/nordshrift/sleela_emit.cpp)
- * can translate today: scalar literals/vars, unary/binary ops, free calls,
- * and the Block/VarDecl/Assign/Expr/Print/Return/If/While/For statements. */
+ * independently emitted ABI-v1 subset. This intentionally excludes calls,
+ * print side effects, string literals/operators, division/remainder, VM
+ * composites, and loop timing/spill annotations. The emitter performs a
+ * second typed validation pass before writing any C source. */
+static bool nativeAbiType(const std::string& t, bool result);
 static std::string nativeUnsupportedReason(const sleela::Expr* e);
 static std::string nativeUnsupportedReason(const sleela::Stmt* s);
 static std::string nativeUnsupportedReason(const sleela::Expr* e){
     using namespace sleela;
     if(!e) return "";
     if(dynamic_cast<const IntLit*>(e)||dynamic_cast<const DoubleLit*>(e)||
-       dynamic_cast<const BoolLit*>(e)||dynamic_cast<const NullLit*>(e)||
-       dynamic_cast<const VarExpr*>(e)) return "";
+       dynamic_cast<const BoolLit*>(e)||dynamic_cast<const VarExpr*>(e)) return "";
+    if(dynamic_cast<const NullLit*>(e)) return "null is not representable in native ABI v1";
     if(dynamic_cast<const StrLit*>(e)) return "String literals are not in the @native subset yet";
-    if(auto u=dynamic_cast<const Unary*>(e)) return nativeUnsupportedReason(u->operand.get());
+    if(auto u=dynamic_cast<const Unary*>(e)){
+        if(u->op!="-" && u->op!="+" && u->op!="!") return "unsupported unary operator '"+u->op+"'";
+        return nativeUnsupportedReason(u->operand.get());
+    }
     if(auto b=dynamic_cast<const Binary*>(e)){
-        if(b->op==":::") return "the ::: structural-offload operator is not in the @native subset yet";
+        static const char* ops[]={"+","-","*","/","%","==","!=","<","<=",">",">=","&&","||"};
+        bool supported=false; for(const char* op:ops) if(b->op==op) supported=true;
+        if(!supported) return "unsupported binary operator '"+b->op+"'";
+        if(b->op=="/" || b->op=="%") return "division and remainder are not yet supported by native ABI v1";
         std::string l=nativeUnsupportedReason(b->lhs.get()); if(!l.empty())return l;
         return nativeUnsupportedReason(b->rhs.get());
     }
@@ -2250,10 +2431,7 @@ static std::string nativeUnsupportedReason(const sleela::Expr* e){
         r=nativeUnsupportedReason(cnd->thenE.get()); if(!r.empty())return r;
         return nativeUnsupportedReason(cnd->elseE.get());
     }
-    if(auto c=dynamic_cast<const Call*>(e)){
-        for(const auto& a:c->args){std::string r=nativeUnsupportedReason(a.get()); if(!r.empty())return r;}
-        return "";
-    }
+    if(dynamic_cast<const Call*>(e)) return "calls to other methods are not yet supported in an independently emitted method";
     if(dynamic_cast<const MethodCall*>(e)) return "qualified/instance calls (receiver.method(...)) are not in the @native subset yet";
     if(dynamic_cast<const NewExpr*>(e)) return "object construction ('new') is not in the @native subset yet";
     if(dynamic_cast<const ArrayAccess*>(e)) return "array indexing is not in the @native subset yet";
@@ -2263,23 +2441,31 @@ static std::string nativeUnsupportedReason(const sleela::Stmt* s){
     using namespace sleela;
     if(!s) return "";
     if(auto b=dynamic_cast<const Block*>(s)){for(const auto&st:b->stmts){std::string r=nativeUnsupportedReason(st.get()); if(!r.empty())return r;}return "";}
-    if(auto v=dynamic_cast<const VarDecl*>(s)) return nativeUnsupportedReason(v->init.get());
+    if(auto v=dynamic_cast<const VarDecl*>(s)){
+        if(!nativeAbiType(v->type,false)) return "unsupported local type '"+v->type+"'";
+        return nativeUnsupportedReason(v->init.get());
+    }
+    if(dynamic_cast<const LabeledStmt*>(s)) return "labeled statements (syntax 3.1) are not in the @native subset yet";
     if(auto a=dynamic_cast<const Assign*>(s)){std::string r=nativeUnsupportedReason(a->value.get()); if(!r.empty())return r; return "";}
     if(auto e=dynamic_cast<const ExprStmt*>(s)) return nativeUnsupportedReason(e->expr.get());
-    if(auto p=dynamic_cast<const PrintStmt*>(s)) return nativeUnsupportedReason(p->expr.get());
+    if(dynamic_cast<const PrintStmt*>(s)) return "print side effects are not supported in independently emitted native methods";
     if(auto r=dynamic_cast<const ReturnStmt*>(s)) return nativeUnsupportedReason(r->value.get());
     if(auto i=dynamic_cast<const IfStmt*>(s)){std::string r=nativeUnsupportedReason(i->cond.get()); if(!r.empty())return r; r=nativeUnsupportedReason(i->thenS.get()); if(!r.empty())return r; return nativeUnsupportedReason(i->elseS.get());}
-    if(auto w=dynamic_cast<const WhileStmt*>(s)){std::string r=nativeUnsupportedReason(w->cond.get()); if(!r.empty())return r; return nativeUnsupportedReason(w->body.get());}
-    if(auto f=dynamic_cast<const ForStmt*>(s)){std::string r=nativeUnsupportedReason(f->init.get()); if(!r.empty())return r; r=nativeUnsupportedReason(f->cond.get()); if(!r.empty())return r; r=nativeUnsupportedReason(f->update.get()); if(!r.empty())return r; return nativeUnsupportedReason(f->body.get());}
+    if(auto w=dynamic_cast<const WhileStmt*>(s)){if(w->loopSleepMs>0 || w->spill.hasSpill)return "loop timing/spill annotations are not supported by native ABI v1";std::string r=nativeUnsupportedReason(w->cond.get()); if(!r.empty())return r; return nativeUnsupportedReason(w->body.get());}
+    if(dynamic_cast<const ForEachStmt*>(s)) return "the enhanced for is not supported by native ABI v1";
+    if(auto f=dynamic_cast<const ForStmt*>(s)){if(f->loopSleepMs>0 || f->spill.hasSpill || f->threadStable || f->heapHealthy)return "loop timing/spill/stability annotations are not supported by native ABI v1";std::string r=nativeUnsupportedReason(f->init.get()); if(!r.empty())return r; r=nativeUnsupportedReason(f->cond.get()); if(!r.empty())return r; r=nativeUnsupportedReason(f->update.get()); if(!r.empty())return r; return nativeUnsupportedReason(f->body.get());}
     return "a statement form outside the @native subset was used";
 }
+static bool nativeAbiType(const std::string& t, bool result){
+    return t=="int" || t=="double" || t=="boolean" || t=="String" || (result && t=="void");
+}
 static void aotUsage(){
-    std::cerr<<"sleela aot — ahead-of-time native (C/C++) emission for @native methods\n"
-               "  sleela aot --list <file.sleela>    list the @native methods found\n"
-               "  sleela aot --emit <file.sleela>    emit C/C++ for them (fails closed on unsupported constructs)\n"
+    std::cerr<<"sleela aot — per-method native plugin source generation for @native methods\n"
+               "  sleela aot --list <file.sleela>    list @native methods and eligibility\n"
+               "  sleela aot --emit <file.sleela>    emit standalone typed-ABI C plugin source\n"
                "  sleela aot <file.sleela>           same as --list\n"
-               "\nPart 1: establishes the @native surface and the honest offloadable-subset gate.\n"
-               "No native binary is produced yet; compile+link and VM dispatch are later stages.\n";
+               "\nABI v1: static methods; int, double, boolean, and length-delimited String values.\n"
+               "Compile the emitted C source as a trusted shared library with native_loader.h on the include path.\n";
 }
 static int aotCmd(int argc,char**argv){
     enum{LIST,EMIT}mode=LIST; std::string file;
@@ -2291,16 +2477,39 @@ static int aotCmd(int argc,char**argv){
         else file=a;
     }
     if(file.empty()){std::cerr<<"sleela aot: need a <file.sleela>\n";aotUsage();return 2;}
-    if(verifyBeforeExecution(fs::current_path()))return 1;
+    if(verifyBeforeExecution(fs::current_path(), mode==EMIT))return 1;
     std::string src;sleela::Program prog;sleela::VersionResolution ver;
     if(!parseSource(file,src,prog,ver))return 1;
+    // AOT is a code-generation path, not a semantic-analysis bypass. Load the
+    // same referenced library units as check/compile, then run the normal
+    // analyzer without requiring an executable entry point (AOT inputs may be
+    // library units). Keep this before subset reporting/emission so invalid
+    // source can never be advertised as eligible or translated.
+    try{
+        if(!loadReferencedLibraryUnits(src,prog,ver.declared))return 1;
+        sleela::SemanticResult sem=sleela::analyzeSemantics(prog,ver.declared,false);
+        for(const auto&w:sem.warnings)
+            std::cerr<<"sleela aot: "<<file<<": warning: "<<w<<"\n";
+        if(!sem.ok()){
+            for(const auto&e:sem.errors)
+                std::cerr<<"sleela aot: "<<file<<": error: "<<e<<"\n";
+            return 1;
+        }
+    }catch(const std::exception&ex){
+        std::cerr<<"sleela aot: "<<file<<": semantic analysis failed: "<<ex.what()<<"\n";
+        return 1;
+    }
     // Collect @native methods and their fail-closed subset verdict.
     struct NM{std::string cls,name,reason;};
     std::vector<NM> found;
     for(const auto& c:prog.classes){
         for(const auto& m:c.methods){
             if(!methodHasNative(m)) continue;
-            std::string reason=nativeUnsupportedReason(m.body.get());
+            std::string reason;
+            if(!m.isStatic) reason="instance methods are excluded until a receiver ABI is defined";
+            if(reason.empty() && !nativeAbiType(m.retType,true)) reason="unsupported native return type '"+m.retType+"'";
+            for(const auto& p:m.params) if(reason.empty() && !nativeAbiType(p.type,false)) reason="unsupported native parameter type '"+p.type+"'";
+            if(reason.empty()) reason=nativeUnsupportedReason(m.body.get());
             found.push_back({c.name,m.name,reason});
         }
     }
@@ -2320,28 +2529,16 @@ static int aotCmd(int argc,char**argv){
                    "refusing to emit (fail-closed). Remove @native or keep the method within the subset.\n";
         return 1;
     }
-    if(mode==LIST){std::cout<<"sleela aot: all "<<found.size()<<" @native method(s) are translatable; use --emit to produce C/C++.\n";return 0;}
-    // EMIT: all @native methods are in-subset. Try the C emitter. NOTE: the
-    // current CGen (impl/nordshrift/sleela_emit.cpp) emits the WHOLE program,
-    // including main()/other methods that may use constructs (new, method
-    // calls, strings) outside the subset -- so a whole-program emit can still
-    // fail even when every @native method is translatable. That is expected in
-    // Part 1: the per-@native-method emitter and the compile+link step are
-    // later stages. We attempt the emit and, if the whole-program CGen cannot
-    // render the surrounding code, say so honestly without claiming success.
     std::string cform;
-    try{cform=nordshrift::emitProgram(prog,nordshrift::TargetLang::C,"");}
+    try{cform=nordshrift::emitNativeMethods(prog);}
     catch(const std::exception&ex){
-        std::cerr<<"sleela aot: the "<<found.size()<<" @native method(s) are in-subset, but the "
-                   "whole-program C emitter could not render the surrounding code yet:\n"
-                   "  "<<ex.what()<<"\n"
-                   "sleela aot: Part 1 verifies @native eligibility; per-method emission and "
-                   "compile/link are later stages. No C/C++ written.\n";
-        return 2;   // distinct from the fail-closed subset rejection (1)
+        std::cerr<<"sleela aot: per-method native emission refused: "<<ex.what()<<"\n";
+        return mode==LIST ? 1 : 2;
     }
+    if(mode==LIST){std::cout<<"sleela aot: all "<<found.size()<<" @native method(s) are translatable; use --emit to produce standalone typed-ABI C plugin source.\n";return 0;}
     std::cout<<cform;
-    std::cerr<<"sleela aot: emitted C/C++ (whole-program) covering "<<found.size()
-             <<" @native method(s). (Part 1: not yet compiled/linked; that is a later stage.)\n";
+    std::cerr<<"sleela aot: emitted "<<found.size()
+             <<" independently addressable native method(s) using typed ABI v1.0.\n";
     return 0;
 }
 static int nordshriftCmd(int argc,char**argv){

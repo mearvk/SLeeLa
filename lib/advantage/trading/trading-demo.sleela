@@ -1,0 +1,332 @@
+<< lib/advantage/trading/trading-demo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Runnable demonstration + validation of the advantage/trading subject (eleven
+   trading models, rate budget, and counsel). >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< `run` auto-links the sibling classes in advantage/trading, so no imports are >
+< needed. Every figure is checked against a hand-computed anchor that matches >
+< the C and C++ implementations in the top-level advantage module. Inputs are >
+< illustrative, not market data. >
+class TradingDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39016;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 7;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+
+  < ---- tiny test harness ---- >
+  void expectNear(String label, double got, double want, double tol) {
+    double d = got - want;
+    if (d < 0.0) { d = 0.0 - d; }
+    boolean ok = d <= tol;
+    if (ok) { passed = passed + 1; } else { failed = failed + 1; }
+    print("  " + label + " = " + got + " (want " + want + ") ? " + ok);
+  }
+
+  void expectTrue(String label, boolean cond) {
+    if (cond) { passed = passed + 1; } else { failed = failed + 1; }
+    print("  " + label + " ? " + cond);
+  }
+
+  < A rejected evaluation must carry a reason and report zero everywhere. >
+  void expectRejected(String label, SLTradingResult r) {
+    boolean ok = r.isOk() == false && r.getTotalCost() == 0.0
+              && r.getExpectedProceeds() == 0.0;
+    if (ok) { passed = passed + 1; } else { failed = failed + 1; }
+    print("  " + label + " rejected ? " + ok);
+  }
+
+  void main() {
+    print("== advantage/trading: eleven models, rate budget, counsel ==");
+    print("All inputs below are illustrative anchors, not market data.");
+
+    double zero = 0.0;
+    double nan = zero / zero;
+    double inf = 1.0e308 * 10.0;
+
+    print("");
+    print("-- 1 arbitrage (5000 units, 1.000 -> 1.012) --");
+    SLTradingArbitrage arb = new SLTradingArbitrage();
+    SLTradingResult ra = arb.evaluate(1.0, 1.012, 5000.0, 0.003, 0.001, 0.001, 8.0, 0.0, 0.01);
+    expectNear("cost", ra.getTotalCost(), 5028.0, 0.0001);
+    expectNear("proceeds", ra.getExpectedProceeds(), 5049.88, 0.0001);
+    expectNear("profit", ra.getExpectedProfit(), 21.88, 0.0001);
+    expectNear("break-even sell price", arb.breakeven(1.0, 1.012, 5000.0, 0.003, 0.001, 0.001, 8.0, 0.0, 0.01), 5028.0 / 4990.0, 0.0000001);
+
+    print("");
+    print("-- 2 market making (20000 units, bid .9985 ask 1.0015, fills 90 percent) --");
+    SLTradingMarketMaking mm = new SLTradingMarketMaking();
+    SLTradingResult rm = mm.evaluate(0.9985, 1.0015, 20000.0, 0.0005, 0.9, 0.01, 2.0, 0.0, 0.01);
+    expectNear("cost", rm.getTotalCost(), 19981.99, 0.01);
+    expectNear("proceeds", rm.getExpectedProceeds(), 19994.03, 0.01);
+    expectNear("quote bid", mm.bid(100.0, 0.01), 99.0, 0.0000001);
+    expectNear("quote ask", mm.ask(100.0, 0.01), 101.0, 0.0000001);
+    SLTradingResult rebate = mm.evaluate(0.99, 1.01, 10.0, -0.0005, 0.9, 0.1, 0.0, 0.0, 0.0);
+    expectTrue("maker rebate (negative fee) is accepted", rebate.isOk());
+    expectRejected("fee of exactly -1", mm.evaluate(0.99, 1.01, 10.0, -1.0, 0.9, 0.1, 0.0, 0.0, 0.0));
+    expectRejected("ask below bid", mm.evaluate(0.99, 0.98, 10.0, 0.001, 0.9, 0.1, 0.0, 0.0, 0.0));
+
+    print("");
+    print("-- 3 refurbishment (distribution of outcomes) --");
+    double[] rp = new double[2];
+    double[] rv = new double[2];
+    rp[0] = 0.5; rp[1] = 0.5; rv[0] = 100.0; rv[1] = 0.0;
+    SLTradingRefurbishment ref = new SLTradingRefurbishment();
+    SLTradingResult rr = ref.evaluate(10.0, 1.0, 5.0, 0.0, 0.1, 0.0, 0.0, rp, rv, 2);
+    expectNear("cost", rr.getTotalCost(), 15.0, 0.0000001);
+    expectNear("proceeds", rr.getExpectedProceeds(), 45.0, 0.0000001);
+    expectNear("profit", rr.getExpectedProfit(), 30.0, 0.0000001);
+    rp[1] = 0.4;
+    expectRejected("probabilities summing to 0.9", ref.evaluate(10.0, 1.0, 5.0, 0.0, 0.1, 0.0, 0.0, rp, rv, 2));
+    rp[1] = 0.5;
+    expectRejected("zero outcomes", ref.evaluate(10.0, 1.0, 5.0, 0.0, 0.1, 0.0, 0.0, rp, rv, 0));
+    expectRejected("17 outcomes", ref.evaluate(10.0, 1.0, 5.0, 0.0, 0.1, 0.0, 0.0, rp, rv, 17));
+
+    print("");
+    print("-- 4 regional arbitrage --");
+    SLTradingRegional reg = new SLTradingRegional();
+    SLTradingResult rg = reg.evaluate(10.0, 20.0, 2.0, 0.0, 0.1, 1.0, 3.0, 0.0, 0.0, 0.0, 0.0);
+    expectNear("cost", rg.getTotalCost(), 25.0, 0.0000001);
+    expectNear("proceeds", rg.getExpectedProceeds(), 36.0, 0.0000001);
+    SLTradingResult rgLost = reg.evaluate(10.0, 20.0, 2.0, 0.0, 0.1, 1.0, 3.0, 0.0, 0.0, 1.0, 0.5);
+    expectNear("certain loss: proceeds are the salvage", rgLost.getExpectedProceeds(), 10.0, 0.0000001);
+    expectNear("premium 100 -> 105", reg.premium(100.0, 105.0), 0.05, 0.0000001);
+    expectTrue("premium of a zero price is flagged", reg.pricesOk(0.0, 105.0) == false);
+
+    print("");
+    print("-- 5 supply aggregation --");
+    double[] lots = new double[3];
+    lots[0] = 10.0; lots[1] = 20.0; lots[2] = 30.0;
+    SLTradingAggregation agg = new SLTradingAggregation();
+    SLTradingResult rag = agg.evaluate(100.0, 5.0, 0.5, 1.0, 2.0, 0.1, 0.0, 0.0, lots, 3);
+    expectNear("cost", rag.getTotalCost(), 65.0, 0.0000001);
+    expectNear("proceeds", rag.getExpectedProceeds(), 51.75, 0.0000001);
+    lots[1] = -5.0;
+    expectRejected("negative lot price", agg.evaluate(100.0, 5.0, 0.5, 1.0, 2.0, 0.1, 0.0, 0.0, lots, 3));
+    lots[1] = 20.0;
+
+    print("");
+    print("-- 6 informational asymmetry (one candidate) --");
+    SLTradingAsymmetry asy = new SLTradingAsymmetry();
+    SLTradingResult ras = asy.evaluate(100.0, 300.0, 50.0, 0.5, 0.5, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0);
+    expectNear("cost", ras.getTotalCost(), 51.0, 0.0000001);
+    expectNear("proceeds", ras.getExpectedProceeds(), 87.5, 0.0000001);
+    SLTradingResult rasLose = asy.evaluate(100.0, 300.0, 50.0, 0.5, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0);
+    expectNear("never wins: you only pay to look", rasLose.getTotalCost(), 1.0, 0.0000001);
+    expectNear("never wins: no proceeds", rasLose.getExpectedProceeds(), 0.0, 0.0000001);
+    expectNear("discount 40 listed vs 100 estimated", asy.discount(40.0, 100.0), 0.6, 0.0000001);
+
+    print("");
+    print("-- 7 consignment --");
+    SLTradingConsignment con = new SLTradingConsignment();
+    SLTradingResult rc = con.evaluate(1000.0, 0.2, 0.5, 0.05, 10.0, 5.0, 0.1, 100.0, 7.0);
+    expectNear("cost", rc.getTotalCost(), 45.0, 0.0000001);
+    expectNear("proceeds", rc.getExpectedProceeds(), 100.0, 0.0000001);
+    expectNear("days to sell is carried as hold days", rc.getHoldDays(), 7.0, 0.0000001);
+    expectRejected("commission of exactly 1", con.evaluate(1000.0, 1.0, 0.5, 0.05, 10.0, 5.0, 0.1, 100.0, 7.0));
+
+    print("");
+    print("-- 8 distressed inventory --");
+    SLTradingDistressed dis = new SLTradingDistressed();
+    SLTradingResult rd = dis.evaluate(100.0, 10.0, 20.0, 0.5, 2.0, 0.1, 1.0, 3.0, 10.0, 1.0, 5.0, 0.5, 4.0);
+    expectNear("cost", rd.getTotalCost(), 74.0, 0.0000001);
+    expectNear("proceeds", rd.getExpectedProceeds(), 50.0, 0.0000001);
+    SLTradingResult rdLose = dis.evaluate(100.0, 10.0, 20.0, 0.5, 2.0, 0.1, 1.0, 3.0, 10.0, 1.0, 5.0, 0.0, 4.0);
+    expectNear("never wins the lot: cost is the pursuit only", rdLose.getTotalCost(), 4.0, 0.0000001);
+
+    print("");
+    print("-- 9 virtual inventory (sell before source) --");
+    SLTradingVirtual vir = new SLTradingVirtual();
+    SLTradingResult rv9 = vir.evaluate(100.0, 60.0, 1.0, 0.1, 0.0, 5.0, 0.0, 0.2, 10.0, 2.0, 3.0);
+    expectNear("cost", rv9.getTotalCost(), 56.0, 0.0000001);
+    expectNear("proceeds", rv9.getExpectedProceeds(), 72.0, 0.0000001);
+    SLTradingResult rvFail = vir.evaluate(100.0, 60.0, 1.0, 0.1, 0.0, 5.0, 0.0, 1.0, 10.0, 2.0, 3.0);
+    expectNear("always fails: no proceeds", rvFail.getExpectedProceeds(), 0.0, 0.0000001);
+    expectNear("always fails: cost is fixed plus the failure loss", rvFail.getTotalCost(), 12.0, 0.0000001);
+
+    print("");
+    print("-- 10 synthetic bundling --");
+    double[] sv = new double[2];
+    double[] sp = new double[2];
+    double[] sf = new double[2];
+    sv[0] = 50.0; sp[0] = 1.0; sf[0] = 0.0;
+    sv[1] = 0.0;  sp[1] = 0.0; sf[1] = 30.0;
+    SLTradingSynthetic syn = new SLTradingSynthetic();
+    SLTradingResult rs = syn.evaluate(100.0, 5.0, 2.0, 0.1, 0.1, 1.0, 3.0, sv, sp, sf, 2);
+    expectNear("cost", rs.getTotalCost(), 112.0, 0.0000001);
+    expectNear("proceeds", rs.getExpectedProceeds(), 70.5, 0.0000001);
+    expectRejected("zero outputs", syn.evaluate(100.0, 5.0, 2.0, 0.1, 0.1, 1.0, 3.0, sv, sp, sf, 0));
+    expectRejected("65 outputs", syn.evaluate(100.0, 5.0, 2.0, 0.1, 0.1, 1.0, 3.0, sv, sp, sf, 65));
+
+    print("");
+    print("-- 11 event momentum --");
+    double[] mp = new double[2];
+    double[] mx = new double[2];
+    mp[0] = 0.5; mp[1] = 0.5; mx[0] = 20.0; mx[1] = 10.0;
+    SLTradingMomentum mom = new SLTradingMomentum();
+    SLTradingResult rmo = mom.evaluate(10.0, 2.0, 0.01, 0.01, 0.01, 0.02, 1.0, 0.0, 0.0, 0.5, 0.1, mp, mx, 2);
+    expectNear("cost", rmo.getTotalCost(), 21.4, 0.0000001);
+    expectNear("proceeds", rmo.getExpectedProceeds(), 15.55, 0.0000001);
+    expectNear("hype decay after two half-lives", mom.hypeDecay(1.0, 7.0, 14.0), 0.25, 0.0000001);
+    expectNear("hype decay on day zero", mom.hypeDecay(1.0, 7.0, 0.0), 1.0, 0.0000001);
+    expectNear("hype decay after half a half-life", mom.hypeDecay(1.0, 7.0, 3.5), 0.7071067811865476, 0.000001);
+    expectNear("hype decay with a zero half-life is flagged", mom.hypeDecay(1.0, 0.0, 5.0), -1.0, 0.0000001);
+
+    print("");
+    print("-- fail closed: NaN, infinity, negatives are always rejected --");
+    expectRejected("NaN buy price", arb.evaluate(nan, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
+    expectRejected("infinite quantity", arb.evaluate(1.0, 1.0, inf, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
+    expectRejected("negative price", arb.evaluate(-1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
+    expectRejected("sell fee plus slippage of 1", arb.evaluate(1.0, 1.0, 1.0, 0.0, 0.6, 0.4, 0.0, 0.0, 0.0));
+    expectRejected("holding time over the cap", arb.evaluate(1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 40000.0));
+    expectNear("break-even is -1 for invalid input", arb.breakeven(nan, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0), -1.0, 0.0000001);
+    SLTradingResult overflow = arb.evaluate(1.0e12, 1.0e12, 1.0e12, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    expectTrue("amounts at the 1e12 cap stay finite and are accepted", overflow.isOk());
+
+    print("");
+    print("-- bridge: a trade as an advantage --");
+    SLTradingResult bridge = new SLTradingResult();
+    bridge.configure(100.0, 110.0, 365.0);
+    expectNear("baseline at 5 percent for a year", bridge.baseline(0.05), 105.0, 0.0000001);
+    expectNear("advantage = 110 - 105", bridge.advantage(0.05), 5.0, 0.0000001);
+    expectNear("invalid rate gives no advantage", bridge.advantage(-0.1), 0.0, 0.0000001);
+    expectNear("rate above 10 gives no advantage", bridge.advantage(11.0), 0.0, 0.0000001);
+
+    print("");
+    print("-- rate budget (numbers already parsed; -1.0 = header absent) --");
+    SLTradingRateBudget rb = new SLTradingRateBudget();
+    rb.init();
+    expectTrue("observe 100 limit / 40 left / 30 s to reset", rb.observe(100.0, 40.0, 30.0, -1.0));
+    expectNear("spread: 30000 ms / (40 - 2)", rb.nextDelayMs(2.0, 100.0, 60000.0), 30000.0 / 38.0, 0.0001);
+    rb.observe(-1.0, 2.0, -1.0, -1.0);
+    expectNear("at the reserve: wait out the window", rb.nextDelayMs(2.0, 100.0, 60000.0), 30000.0, 0.0001);
+    rb.observe(-1.0, 40.0, -1.0, 5.0);
+    expectNear("an explicit Retry-After wins", rb.nextDelayMs(2.0, 100.0, 60000.0), 5000.0, 0.0001);
+    rb.observe(-1.0, -1.0, -1.0, -1.0);
+    expectNear("a response without Retry-After lifts the back-off", rb.nextDelayMs(2.0, 100.0, 60000.0), 30000.0 / 38.0, 0.0001);
+    expectTrue("a bad value is rejected", rb.observe(100.0, nan, 30.0, -1.0) == false);
+    expectNear("state unchanged after a bad value", rb.getRemaining(), 40.0, 0.0000001);
+    expectTrue("a negative value other than -1 is rejected", rb.observe(100.0, -5.0, 30.0, -1.0) == false);
+    rb.observe(-1.0, -1.0, -1.0, 600.0);
+    expectTrue("Retry-After of 600 s exceeds a 60 s cap: stop", rb.mustStop(2.0, 100.0, 60000.0));
+    expectNear("epoch reset 1700000030 at now 1700000000 = 30 s", rb.secondsUntilReset(1700000030.0, 1700000000.0), 30.0, 0.0000001);
+    expectNear("an epoch already passed is 0 s", rb.secondsUntilReset(1700000000.0, 1700000100.0), 0.0, 0.0000001);
+    SLTradingRateBudget fresh = new SLTradingRateBudget();
+    fresh.init();
+    expectNear("unknown state falls back to the minimum interval", fresh.nextDelayMs(2.0, 250.0, 60000.0), 250.0, 0.0000001);
+    expectNear("invalid options give -1", fresh.nextDelayMs(-1.0, 250.0, 60000.0), -1.0, 0.0000001);
+
+    print("");
+    print("-- counsel: parity with the C++ module (score = mean x confidence x trust) --");
+    SLTradingApproach genius = new SLTradingApproach();
+    genius.configure("genius", "Genius", 3, 3);
+    genius.addObservation(9.0, 2.0);
+    genius.addObservation(1.0, 2.0);
+    SLTradingApproach spring = new SLTradingApproach();
+    spring.configure("source-spring", "Source / Spring", 3, 3);
+    spring.addObservation(3.0, 2.0);
+    spring.addObservation(2.5, 2.0);
+    spring.addObservation(3.5, 2.5);
+    spring.addObservation(2.8, 2.0);
+    SLTradingApproach kid = new SLTradingApproach();
+    kid.configure("kid", "Kid", 2, 3);
+    kid.addObservation(2.0, 1.5);
+    kid.addObservation(2.2, 1.5);
+    kid.addObservation(1.8, 1.5);
+    kid.addObservation(2.4, 1.5);
+    SLTradingApproach empty = new SLTradingApproach();
+    empty.configure("untested", "Untested", 3, 3);
+
+    expectNear("genius mean", genius.mean(), 3.0, 0.0000001);
+    expectNear("genius spread", genius.spread(), 5.656854249, 0.000001);
+    expectNear("genius confidence (n=2, prior 3)", genius.confidence(3.0), 0.4, 0.0000001);
+    expectNear("genius score", genius.score(3.0), 1.2, 0.000001);
+    expectNear("spring mean", spring.mean(), 0.825, 0.0000001);
+    expectNear("spring spread", spring.spread(), 0.2363, 0.0001);
+    expectNear("spring score", spring.score(3.0), 0.4714, 0.0001);
+    expectNear("kid trust (2 of 3 held)", kid.trust(), 0.6666666667, 0.000001);
+    expectNear("kid score", kid.score(3.0), 0.2286, 0.0001);
+    expectNear("no evidence scores 0 (unknown, not zero)", empty.score(3.0), 0.0, 0.0000001);
+    expectTrue("no evidence is flagged", empty.cautions(3.0, 3) != "");
+
+    SLTradingCounsel counsel = new SLTradingCounsel();
+    counsel.init();
+    counsel.add(kid);
+    counsel.add(empty);
+    counsel.add(genius);
+    counsel.add(spring);
+    int[] order = counsel.rank(3.0);
+    expectTrue("ranked best-first: genius, spring, kid, untested",
+               order[0] == 2 && order[1] == 3 && order[2] == 0 && order[3] == 1);
+    print("  ranking:");
+    int pos = 0;
+    while (pos < counsel.size()) {
+      print("    " + counsel.line(pos, order, 3.0));
+      print("      cautions: " + counsel.cautionsFor(pos, order, 3.0, 3));
+      pos = pos + 1;
+    }
+
+    print("");
+    print("-- counsel: a model evaluation becomes evidence (per unit of capital) --");
+    SLTradingApproach digital = new SLTradingApproach();
+    digital.configure("arbitrage-digital", "Digital Arbitrage", 2, 3);
+    expectTrue("the evaluated trade is recorded", digital.addTrade(ra, 0.05, true));
+    expectTrue("a rejected trade is not recorded", digital.addTrade(arb.evaluate(nan, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0), 0.05, true) == false);
+    expectTrue("an invalid rate is not recorded", digital.addTrade(ra, 11.0, true) == false);
+    expectTrue("evidence count is 1", digital.getCount() == 1);
+    expectNear("per-unit advantage = advantage / cost", digital.mean(), ra.advantage(0.05) / ra.getTotalCost(), 0.0000001);
+    expectNear("per-unit advantage matches the C++ hand value", digital.mean(), 0.00435, 0.00001);
+
+    print("");
+    print("passed " + passed + ", failed " + failed);
+    if (failed == 0) {
+      print("ALL CHECKS PASSED");
+    } else {
+      print("CHECKS FAILED");
+    }
+  }
+}

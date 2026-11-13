@@ -1,0 +1,4 @@
+# Build artifacts for the advantage module.
+*.o
+advantage
+analyze

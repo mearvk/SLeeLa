@@ -1,0 +1,150 @@
+<< lib/java/jdk-28/java.management/javax/management/StandardMBean.sleela
+   SLeeLa file for the Java type javax.management.StandardMBean (module java.management). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.management/javax/management/StandardMBean.html
+   Java kind: class; extends java.lang.Object; implements javax.management.DynamicMBean, javax.management.MBeanRegistration
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class StandardMBean {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8551;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.management.StandardMBean";
+  String javaModule = "java.management";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.management/javax/management/StandardMBean.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public StandardMBean bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  StandardMBean(Any mbeanInterface, boolean isMXBean) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException, javax.management.NotCompliantMBeanException")
+  StandardMBean(Any mbeanInterface) { }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException, javax.management.NotCompliantMBeanException")
+  public StandardMBean(Any implementation, Any mbeanInterface) { }
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public StandardMBean(Any implementation, Any mbeanInterface, boolean isMXBean) { }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any[] getConstructors(Any[] ctors, Any impl) { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  String getClassName(Any info) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getAttributes(String[] attributes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.AttributeNotFoundException, javax.management.InvalidAttributeValueException, javax.management.MBeanException, javax.management.ReflectionException")
+  public void setAttribute(Any attribute) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.AttributeNotFoundException, javax.management.MBeanException, javax.management.ReflectionException")
+  public Any getAttribute(String attribute) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any setAttributes(Any attributes) { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  String getParameterName(Any op, Any param, int sequence) { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  String getDescription(Any op, Any param, int sequence) { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  String getDescription(Any info) { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  int getImpact(Any info) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void postRegister(Any registrationDone) { }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
+  public void preDeregister() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void postDeregister() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final Any getMBeanInterface() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any getCachedMBeanInfo() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getImplementationClass() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void cacheMBeanInfo(Any info) { }
+  @throwable("java.lang.UnsupportedOperationException, javax.management.NotCompliantMBeanException")
+  public void setImplementation(Any implementation) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getMBeanInfo() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getImplementation() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.Exception")
+  public Any preRegister(Any server, Any name) { return null; }
+  < ---- END java signatures ---- >
+}

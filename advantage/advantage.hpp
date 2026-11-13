@@ -26,6 +26,19 @@ inline double mean(const std::vector<double>& rewards,
     return advantage_mean(rewards.data(), baselines.data(), count, weight);
 }
 
+// Like mean(), but refuses mismatched series instead of silently truncating
+// to the shorter one. Returns false (and leaves `out` untouched) when the
+// lengths differ; an empty pair of series is valid and yields 0.0.
+inline bool mean_checked(const std::vector<double>& rewards,
+                         const std::vector<double>& baselines,
+                         double weight,
+                         double& out) {
+    if (rewards.size() != baselines.size()) return false;
+    out = advantage_mean(rewards.data(), baselines.data(), rewards.size(),
+                         weight);
+    return true;
+}
+
 }  // namespace advantage
 
 #endif  // ADVANTAGE_HPP

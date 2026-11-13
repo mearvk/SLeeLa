@@ -1,0 +1,252 @@
+<< lib/java/jdk-28/java.base/java/lang/Class.sleela
+   SLeeLa file for the Java type java.lang.Class (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/Class.html
+   Java kind: class; extends java.lang.Object; implements java.io.Serializable, java.lang.reflect.GenericDeclaration, java.lang.reflect.Type, java.lang.reflect.AnnotatedElement, java.lang.invoke.TypeDescriptor.OfField, java.lang.constant.Constable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Class {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 2338;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.lang.Class";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/Class.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<T>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 1; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "T"; } return null; }
+  public Class bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any forName(Any module, String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException")
+  public static Any forName(String className) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException")
+  public static Any forName(String name, boolean initialize, Any loader) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getModule() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getProtectionDomain() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public native boolean isAssignableFrom(Any cls) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public native boolean isInstance(Any obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public native boolean isHidden() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public native Any getSuperclass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any cast(Any obj) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any componentType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any describeConstable() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isInterface() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isPrimitive() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isArray() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getComponentType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getModifiers() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAnnotation() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEnum() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRecord() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getTypeParameters() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSealed() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getInterfaces() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getClassLoader() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.InstantiationException, java.lang.IllegalAccessException")
+  public Any newInstance() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isMemberClass() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isLocalClass() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAnonymousClass() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getEnclosingClass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any arrayType() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getSimpleName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getCanonicalName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getDeclaredClasses() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getResourceAsStream(String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getResource(String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getPackageName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean desiredAssertionStatus() { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchMethodException")
+  public Any getMethod(String name, Any... parameterTypes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAnnotationPresent(Any annotationClass) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getNestHost() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String descriptorString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getPermittedSubclasses() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String toGenericString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any forPrimitiveName(String primitiveName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSynthetic() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getGenericSuperclass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getPackage() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getGenericInterfaces() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any accessFlags() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getSigners() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getEnclosingMethod() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getEnclosingConstructor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getDeclaringClass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getTypeName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getClasses() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getFields() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getMethods() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getConstructors() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchFieldException")
+  public Any getField(String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchMethodException")
+  public Any getConstructor(Any... parameterTypes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getDeclaredFields() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getRecordComponents() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getDeclaredMethods() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getDeclaredConstructors() { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchFieldException")
+  public Any getDeclaredField(String name) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchMethodException")
+  public Any getDeclaredMethod(String name, Any... parameterTypes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchMethodException")
+  public Any getDeclaredConstructor(Any... parameterTypes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getEnumConstants() { return null; }
+  @generic("<U>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any asSubclass(Any clazz) { return null; }
+  @generic("<A extends java.lang.annotation.Annotation>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getAnnotation(Any annotationClass) { return null; }
+  @generic("<A extends java.lang.annotation.Annotation>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getAnnotationsByType(Any annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getAnnotations() { return null; }
+  @generic("<A extends java.lang.annotation.Annotation>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getDeclaredAnnotation(Any annotationClass) { return null; }
+  @generic("<A extends java.lang.annotation.Annotation>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getDeclaredAnnotationsByType(Any annotationClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getDeclaredAnnotations() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getAnnotatedSuperclass() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getAnnotatedInterfaces() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isNestmateOf(Any c) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getNestMembers() { return null; }
+  < ---- END java signatures ---- >
+}

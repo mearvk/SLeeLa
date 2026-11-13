@@ -1,0 +1,77 @@
+<< examples/java/differential/LongStatics.sleela
+   SLeeLa side of the LongStatics differential test.
+   Definition: Prints, line for line, the same results as LongStatics.java for the
+   static members of java.lang.Long called as Long.method(...) (parse, radix text,
+   64-bit bit twiddling, unsigned arithmetic, constants, valueOf, decode, instance
+   conversions and which exception (NumberFormatException / ArithmeticException) is thrown;
+   the jdk-28 throwable classes do not carry messages yet, so only the kind is compared). >>
+#sleela 3.0
+import java.jdk-28;
+material;
+
+< Java container: the names used here are housed in /lib/java (selected by the import above) and are not part of the SLeeLa specification, see SLEELA.syntax 38.4. >
+class LongStatics {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+  String getDate() { return metaDate; }
+  String getCopyright() { return metaCopyright; }
+  String getTrademark() { return metaTrademark; }
+  String getCorporation() { return metaCorporation; }
+  String getOrigin() { return metaOrigin; }
+  String getBirthDate() { return metaBirthDate; }
+  int getScienceRating() { return metaScienceRating; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+
+  String s(long x) { return "" + x; }
+  String s(String x) { return x; }
+  String s(boolean x) { if (x) { return "true"; } return "false"; }
+  long lv(Any o) { Long i = (Long) o; return i.longValue(); }
+  String em(Any e) {
+    if (e instanceof NumberFormatException) { return "NFE"; }
+    if (e instanceof ArithmeticException) { return "AE"; }
+    return "other";
+  }
+  String m1() { try { Long.parseLong("abc"); return "ok"; } catch (Any ex) { return em(ex); } }
+  String m2() { try { Long.parseLong(""); return "ok"; } catch (Any ex) { return em(ex); } }
+  String m3() { try { Long.parseLong("9223372036854775808"); return "ok"; } catch (Any ex) { return em(ex); } }
+  String m4() { try { Long.parseLong("zz", 16); return "ok"; } catch (Any ex) { return em(ex); } }
+  String m5() { try { Long.parseLong("-"); return "ok"; } catch (Any ex) { return em(ex); } }
+  String m6() { try { Long.parseLong("12", 1); return "ok"; } catch (Any ex) { return em(ex); } }
+  String m7() { try { Long.parseLong("12", 37); return "ok"; } catch (Any ex) { return em(ex); } }
+  String m8() { try { Long.parseUnsignedLong("-5"); return "ok"; } catch (Any ex) { return em(ex); } }
+  String m9() { try { Long.parseUnsignedLong("18446744073709551616"); return "ok"; } catch (Any ex) { return em(ex); } }
+  String m10() { try { Long.divideUnsigned(1, 0); return "ok"; } catch (Any ex) { return em(ex); } }
+  String m11() { try { Long.parseLong(null); return "ok"; } catch (Any ex) { return em(ex); } }
+  String m12() { try { Long.decode(""); return "ok"; } catch (Any ex) { return em(ex); } }
+
+  void main() {
+    print(s(Long.parseLong("42")) + " " + s(Long.parseLong("-9223372036854775808")) + " " + s(Long.parseLong("9223372036854775807")) + " " + s(Long.parseLong("-ff", 16)) + " " + s(Long.parseLong("+1010", 2)) + " " + s(Long.parseUnsignedLong("18446744073709551615")) + " " + s(Long.parseUnsignedLong("ff", 16)));
+    print(s(Long.toString(255)) + " " + s(Long.toString(-255, 16)) + " " + s(Long.toString(Long.MIN_VALUE)) + " " + s(Long.toString(Long.MIN_VALUE, 2)) + " " + s(Long.toBinaryString(10)) + " " + s(Long.toBinaryString(-1)) + " " + s(Long.toHexString(-255)) + " " + s(Long.toOctalString(-1)));
+    print(s(Long.toUnsignedString(-1)) + " " + s(Long.toUnsignedString(-1, 36)) + " " + s(Long.toUnsignedString(5)) + " " + s(Long.toHexString(Long.MAX_VALUE)));
+    print(s(Long.bitCount(255)) + " " + s(Long.bitCount(-1)) + " " + s(Long.reverse(1)) + " " + s(Long.reverseBytes(72623859790382856)) + " " + s(Long.highestOneBit(100)) + " " + s(Long.lowestOneBit(96)) + " " + s(Long.highestOneBit(-1)) + " " + s(Long.lowestOneBit(Long.MIN_VALUE)));
+    print(s(Long.numberOfLeadingZeros(1)) + " " + s(Long.numberOfLeadingZeros(0)) + " " + s(Long.numberOfLeadingZeros(-1)) + " " + s(Long.numberOfTrailingZeros(8)) + " " + s(Long.numberOfTrailingZeros(0)));
+    print(s(Long.rotateLeft(1, 63)) + " " + s(Long.rotateRight(1, 1)) + " " + s(Long.rotateLeft(-9223372036854775807, 1)) + " " + s(Long.rotateRight(6, 65)) + " " + s(Long.rotateLeft(5, -1)));
+    print(s(Long.signum(-9)) + " " + s(Long.signum(0)) + " " + s(Long.compare(3, 9)) + " " + s(Long.compare(9, 3)) + " " + s(Long.compareUnsigned(-1, 1)) + " " + s(Long.compareUnsigned(1, -1)) + " " + s(Long.compareUnsigned(7, 7)));
+    print(s(Long.divideUnsigned(-1, 2)) + " " + s(Long.remainderUnsigned(-1, 10)) + " " + s(Long.divideUnsigned(100, 7)) + " " + s(Long.remainderUnsigned(100, 7)) + " " + s(Long.divideUnsigned(-1, -1)));
+    print(s(Long.MAX_VALUE) + " " + s(Long.MIN_VALUE) + " " + s(Long.SIZE) + " " + s(Long.BYTES) + " " + s(Long.sum(Long.MAX_VALUE, 1)) + " " + s(Long.max(3, 9)) + " " + s(Long.min(3, 9)) + " " + s(Long.hashCode(77)) + " " + s(Long.hashCode(-1)) + " " + s(Long.hashCode(Long.MAX_VALUE)) + " " + s(Long.hashCode(4294967296)));
+    print(s(lv(Long.valueOf(12))) + " " + s(lv(Long.valueOf("34"))) + " " + s(lv(Long.decode("31"))) + " " + s(lv(Long.decode("-010"))) + " " + s(lv(Long.valueOf("7f", 16))) + " " + s(lv(Long.decode("#FF"))) + " " + s(lv(Long.decode("-9223372036854775808"))));
+    print(s(Long.compress(61680, 65280)) + " " + s(Long.expand(171, 61680)) + " " + s(Long.compress(-1, Long.MIN_VALUE)) + " " + s(Long.expand(1, Long.MIN_VALUE)));
+    Long a = (Long) Long.valueOf(300);
+    print(s(a.byteValue()) + " " + s(a.shortValue()) + " " + s(a.intValue()) + " " + s(((Long) Long.valueOf(-5000000000)).intValue()) + " " + s(a.longValue()) + " " + s(a.doubleValue() == 300.0) + " " + s(a.hashCode()) + " " + s(a.equals(Long.valueOf(300))) + " " + s(a.equals(Long.valueOf(301))) + " " + s(a.compareTo(Long.valueOf(1))) + " " + s(a.toString()));
+    print(m1() + " | " + m2() + " | " + m3() + " | " + m4() + " | " + m5() + " | " + m6() + " | " + m7() + " | " + m8() + " | " + m9() + " | " + m10() + " | " + m11() + " | " + m12());
+  }
+}

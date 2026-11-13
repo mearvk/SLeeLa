@@ -1,0 +1,64 @@
+<< lib/advantage/learner-vs-professional/series/17-trade-smartphones/DiTradeSmartphones.sleela
+   SLeeLa courseware lesson.
+   Definition: Device Instructor trading decision 17: smartphones, with the student and the Purchase Master compared entry by entry. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Lesson 17. A trading decision over 3 options for one lot, in integer >
+< cents. The Purchase Master totals each option through the onion. The >
+< student registers the entries with this slip: quote in dollars, not cents. >
+< Ties go to the earlier listed option (see the tie norm in lesson 6). >
+< Quotes are illustrative inputs, not market data. >
+class DiTradeSmartphones {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39117;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void main() {
+    SLDecisionDesk desk = new SLDecisionDesk();
+    desk.setup("smartphone purchase, one lot");
+    desk.addOption("Distributor A", 61000, 1500, -1000);
+    desk.addOption("Distributor B", 60500, 2000, -500);
+    desk.addOption("Distributor C", 62000, 500, 0);
+    desk.decide("Lesson 17: smartphones decision", 5, 1);
+  }
+}

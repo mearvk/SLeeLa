@@ -1,0 +1,46 @@
+import hashlib, importlib.util, sys, unittest
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+_spec=importlib.util.spec_from_file_location("sleela_ipc_worker",Path(__file__).resolve().parents[1]/"sleela-ipc-worker.py")
+ipc=importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(ipc)
+
+class IPCWorkerTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.script=Path(ipc.__file__).resolve()
+        cls.python=Path(sys.executable).resolve()
+        cls.digest=hashlib.sha256(cls.python.read_bytes()).hexdigest()
+    def worker(self):
+        return ipc.Worker([str(self.python),str(self.script),"--worker"],self.digest,
+                          cwd=str(self.script.parent),timeout=10)
+    def test_handshake_and_multiple_requests(self):
+        w=self.worker()
+        try:
+            self.assertEqual(w.call("math.ping"),"pong")
+            self.assertIn("pi.compute",w.call("math.capabilities"))
+            self.assertEqual(w.call("bigint.add","12345678901234567890","10"),"12345678901234567900")
+            self.assertEqual(w.call("bigint.mul","123456789","987654321"),"121932631112635269")
+        finally: w.close()
+    def test_pi_reference(self):
+        w=self.worker()
+        try: self.assertEqual(w.call("pi.compute",50),"3.14159265358979323846264338327950288419716939937510")
+        finally: w.close()
+    def test_twenty_thousand_pi_digits_match_reference_hash(self):
+        w=self.worker()
+        try:
+            value=w.call("pi.compute",20000)
+            self.assertEqual(len(value),20002)
+            self.assertEqual(value[:52],"3.14159265358979323846264338327950288419716939937510")
+            self.assertEqual(hashlib.sha256(value.encode()).hexdigest(),
+                "977f8d4251b4f633100b4d2dbc214b874c45353b0e3debe41046753777fd6efc")
+        finally: w.close()
+    def test_executable_integrity_fails_closed(self):
+        with self.assertRaises(ipc.IPCError):
+            ipc.Worker([str(self.python),str(self.script),"--worker"],"0"*64,cwd=str(self.script.parent))
+    def test_frame_bounds_and_bad_magic(self):
+        import io
+        with self.assertRaises(ipc.IPCError): ipc._frame(ipc.REQUEST,1,b"x"*(ipc.MAX_PAYLOAD+1))
+        with self.assertRaises(ipc.IPCError): ipc._read_frame(io.BytesIO(b"NOPE"+b"\0"*20))
+
+if __name__=="__main__": unittest.main()

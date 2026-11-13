@@ -1,0 +1,263 @@
+<< lib/advantage/learner-vs-professional/series/SLDecisionDesk.sleela
+   SLeeLa courseware.
+   Definition: Shared desk for the trading-decision lessons: the Purchase Master runs the Sequitur onion, the student totals registered entries, and the desk compares them entry by entry. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< The desk holds up to eight options, each with a quote, a fee and a discount in >
+< integer cents. The Purchase Master totals each option through the advantage >
+< onion. The student registers the same entries in a noun registry, possibly >
+< with one slip, and totals them by hand. The desk names every differing >
+< entry. Tie norm: when two totals are equal the earlier listed option wins. >
+< Slip kinds: 0 none, 1 missed discount, 2 fee counted twice, 3 discount sign >
+< flipped, 4 option not observed, 5 quote entered in dollars not cents, >
+< 6 discount filed under the next option (wrapping round). >
+class SLDecisionDesk {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39130;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String fieldName = "";
+  int n = 0;
+  String[] names = new String[8];
+  int[] q = new int[8];
+  int[] f = new int[8];
+  int[] d = new int[8];
+  SLNounRegistry sreg = new SLNounRegistry();
+
+  void setup(String fieldLabel) {
+    fieldName = fieldLabel;
+    n = 0;
+  }
+
+  void addOption(String name, int quote, int fee, int discount) {
+    names[n] = name;
+    q[n] = quote;
+    f[n] = fee;
+    d[n] = discount;
+    n = n + 1;
+  }
+
+  < The Purchase Master: one option through the advantage onion. >
+  int masterTotal(int i) {
+    SLAdvantageDeveloperModel dev = new SLAdvantageDeveloperModel();
+    dev.init(names[i], "trade decision", q[i]);
+    dev.setAdditions(f[i]);
+    dev.setSubtraction(d[i]);
+    dev.runPass();
+    return dev.getDividend().getCurrent();
+  }
+
+  < The tie norm: the first option stays unless the second is strictly cheaper. >
+  boolean keepFirst(int a, int b) { return a <= b; }
+
+  int masterPick() {
+    int best = 0;
+    int i = 1;
+    while (i < n) {
+      if (!keepFirst(masterTotal(best), masterTotal(i))) { best = i; }
+      i = i + 1;
+    }
+    return best;
+  }
+
+  < The student: register the entries, with one slip of the given kind at >
+  < option k. Entry names are the option name plus quote, fee or discount. >
+  void buildStudent(int kind, int k) {
+    sreg = new SLNounRegistry();
+    sreg.declareField(fieldName);
+    int i = 0;
+    while (i < n) {
+      boolean skip = (kind == 4 && i == k);
+      if (!skip) { sreg.register(names[i], fieldName); }
+      i = i + 1;
+    }
+    i = 0;
+    while (i < n) {
+      boolean skip2 = (kind == 4 && i == k);
+      if (!skip2) {
+        int qv = q[i];
+        if (kind == 5 && i == k) { qv = q[i] / 100; }
+        sreg.registerValue(names[i] + " quote", names[i], qv);
+        sreg.registerValue(names[i] + " fee", names[i], f[i]);
+        if (kind == 2 && i == k) { sreg.registerValue(names[i] + " fee again", names[i], f[i]); }
+        if (d[i] != 0 && !(kind == 1 && i == k)) {
+          int dv = d[i];
+          if (kind == 3 && i == k) { dv = 0 - d[i]; }
+          String owner = names[i];
+          if (kind == 6 && i == k) { owner = names[(i + 1) % n]; }
+          sreg.registerValue(names[i] + " discount", owner, dv);
+        }
+      }
+      i = i + 1;
+    }
+  }
+
+  < Student total for an option, or -1 when the student did not observe it. >
+  int studentTotal(int i) {
+    if (!sreg.has(names[i])) { return -1; }
+    return sreg.totalUnder(names[i]);
+  }
+
+  int studentPick() {
+    int best = -1;
+    int i = 0;
+    while (i < n) {
+      int t = studentTotal(i);
+      if (t >= 0) {
+        if (best < 0) { best = i; }
+        else if (!keepFirst(studentTotal(best), t)) { best = i; }
+      }
+      i = i + 1;
+    }
+    return best;
+  }
+
+  String pickName(int i) {
+    if (i < 0) { return "nobody"; }
+    return names[i];
+  }
+
+  < Compare one entry: present, carrier and value. Returns 1 when it differs. >
+  int checkEntry(String entry, String owner, boolean masterHas, int mv) {
+    boolean sh = sreg.has(entry);
+    if (masterHas && !sh) {
+      print("  " + entry + ": student did not register it, master has " + mv);
+      return 1;
+    }
+    if (!masterHas && sh) {
+      print("  " + entry + ": student only, master has no such entry");
+      return 1;
+    }
+    if (masterHas && sh && sreg.carrierOf(entry) != owner) {
+      print("  " + entry + ": student filed it under " + sreg.carrierOf(entry) + ", master files it under " + owner + " -> re-observe");
+      return 1;
+    }
+    if (masterHas && sh && sreg.valueOf(entry) != mv) {
+      print("  " + entry + ": student " + sreg.valueOf(entry) + ", master " + mv + " -> re-observe");
+      return 1;
+    }
+    return 0;
+  }
+
+  < Prints every differing entry and returns how many there are. >
+  int compare() {
+    int diffs = 0;
+    int i = 0;
+    while (i < n) {
+      if (!sreg.has(names[i])) {
+        print("  " + names[i] + ": master only, student did not observe it");
+        diffs = diffs + 1;
+      } else {
+        diffs = diffs + checkEntry(names[i] + " quote", names[i], true, q[i]);
+        diffs = diffs + checkEntry(names[i] + " fee", names[i], true, f[i]);
+        diffs = diffs + checkEntry(names[i] + " discount", names[i], d[i] != 0, d[i]);
+        diffs = diffs + checkEntry(names[i] + " fee again", names[i], false, 0);
+      }
+      i = i + 1;
+    }
+    return diffs;
+  }
+
+  void showMaster() {
+    print("-- master (onion) --");
+    int i = 0;
+    while (i < n) {
+      print("  " + names[i] + " total = " + masterTotal(i) + " cents");
+      i = i + 1;
+    }
+    print("  master picks " + names[masterPick()]);
+  }
+
+  void showStudent() {
+    int i = 0;
+    while (i < n) {
+      int t = studentTotal(i);
+      if (t < 0) { print("  " + names[i] + " not observed"); }
+      else { print("  " + names[i] + " total = " + t + " cents"); }
+      i = i + 1;
+    }
+    print("  student picks " + pickName(studentPick()));
+  }
+
+  boolean verdict() {
+    int dc = compare();
+    boolean same = (studentPick() == masterPick());
+    if (dc == 0 && same) {
+      print("  verdict: AGREE, work accepted");
+      return true;
+    }
+    if (same) {
+      print("  verdict: same pick, but " + dc + " entry difference(s) -> not accepted");
+    } else {
+      print("  verdict: " + dc + " entry difference(s) and the picks differ -> not accepted");
+    }
+    return false;
+  }
+
+  String slipWords(int kind, int k) {
+    if (kind == 0) { return "every entry observed"; }
+    if (kind == 1) { return "the discount of " + names[k] + " was missed"; }
+    if (kind == 2) { return "the fee of " + names[k] + " was counted twice"; }
+    if (kind == 3) { return "the discount of " + names[k] + " was entered with the wrong sign"; }
+    if (kind == 4) { return names[k] + " was not observed"; }
+    if (kind == 6) { return "the discount of " + names[k] + " was filed under " + names[(k + 1) % n]; }
+    return "the quote of " + names[k] + " was entered in dollars, not cents";
+  }
+
+  < Runs one full decision: master, first student pass, and if needed the >
+  < re-observation and a second comparison. >
+  void decide(String title, int kind, int k) {
+    print("== " + title + " ==");
+    showMaster();
+    print("-- student, first pass: " + slipWords(kind, k) + " --");
+    buildStudent(kind, k);
+    showStudent();
+    boolean ok = verdict();
+    if (!ok) {
+      print("-- student re-observes and registers every entry --");
+      buildStudent(0, 0);
+      showStudent();
+      verdict();
+    }
+  }
+}

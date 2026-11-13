@@ -1,0 +1,63 @@
+== Entry 4: exhaustive cross-check against an independent Python model ==
+  seed 1: buy 49 @ 1133 on day 36 : ok
+  seed 1: buy 8 @ 8217 on day 52 : ok
+  ok   seed 1: term potency bp (threshold 30, day 349) = 10000
+  ok   seed 1: age potency bp (day 349) = 9904
+  ok   seed 1: invariants hold
+  seed 2: buy 6 @ 6015 on day 5 : ok
+  ok   seed 2: term potency bp (threshold 365, day 80) = 0
+  ok   seed 2: age potency bp (day 80) = 10000
+  ok   seed 2: invariants hold
+  seed 3: buy 35 @ 2236 on day 37 : ok
+  seed 3: buy 39 @ 7866 on day 60 : ok
+  ok   seed 3: term potency bp (threshold 30, day 425) = 10000
+  ok   seed 3: age potency bp (day 425) = 9664
+  ok   seed 3: invariants hold
+  seed 4: buy 7 @ 6589 on day 19 : ok
+  seed 4: buy 10 @ 1576 on day 49 : ok
+  ok   seed 4: term potency bp (threshold 365, day 540) = 10000
+  ok   seed 4: age potency bp (day 540) = 9654
+  ok   seed 4: invariants hold
+  seed 5: buy 48 @ 5974 on day 16 : ok
+  seed 5: buy 45 @ 8784 on day 66 : ok
+  seed 5: buy 30 @ 4180 on day 67 : ok
+  seed 5: buy 4 @ 2669 on day 108 : ok
+  seed 5: buy 24 @ 7785 on day 115 : ok
+  ok   seed 5: term potency bp (threshold 365, day 564) = 10000
+  ok   seed 5: age potency bp (day 564) = 9197
+  ok   seed 5: invariants hold
+  seed 6: buy 6 @ 8046 on day 52 : ok
+  seed 6: buy 17 @ 703 on day 100 : ok
+  seed 6: buy 10 @ 9708 on day 100 : ok
+  seed 6: buy 49 @ 6213 on day 130 : ok
+  seed 6: buy 50 @ 458 on day 150 : ok
+  ok   seed 6: term potency bp (threshold 30, day 513) = 10000
+  ok   seed 6: age potency bp (day 513) = 8351
+  ok   seed 6: invariants hold
+  seed 7: buy 10 @ 6568 on day 60 : ok
+  seed 7: buy 4 @ 1286 on day 101 : ok
+  seed 7: buy 35 @ 1642 on day 153 : ok
+  ok   seed 7: term potency bp (threshold 90, day 279) = 10000
+  ok   seed 7: age potency bp (day 279) = 6803
+  ok   seed 7: invariants hold
+  seed 8: buy 25 @ 2169 on day 23 : ok
+  seed 8: buy 46 @ 817 on day 35 : ok
+  ok   seed 8: term potency bp (threshold 180, day 101) = 0
+  ok   seed 8: age potency bp (day 101) = 8974
+  ok   seed 8: invariants hold
+  seed 9: buy 24 @ 4476 on day 39 : ok
+  seed 9: buy 12 @ 205 on day 47 : ok
+  seed 9: buy 33 @ 7697 on day 68 : ok
+  seed 9: buy 39 @ 1424 on day 125 : ok
+  ok   seed 9: term potency bp (threshold 30, day 268) = 10000
+  ok   seed 9: age potency bp (day 268) = 8209
+  ok   seed 9: invariants hold
+  seed 10: buy 28 @ 8006 on day 2 : ok
+  seed 10: buy 1 @ 3476 on day 38 : ok
+  seed 10: buy 32 @ 4646 on day 67 : ok
+  seed 10: buy 11 @ 663 on day 108 : ok
+  seed 10: buy 32 @ 5470 on day 141 : ok
+  ok   seed 10: term potency bp (threshold 365, day 619) = 10000
+  ok   seed 10: age potency bp (day 619) = 8784
+  ok   seed 10: invariants hold
+  checks passed=30 failed=0

@@ -1,0 +1,18 @@
+== Entry 9: steel washers, a medium-term trade ==
+  buy 2000 @ 300 on day 0, fee 1 : ok
+  buy 1500 @ 310 on day 1, fee 1 : ok
+  sell 3000 @ 320 on day 2, fee 3 : ok
+-- result --
+  ok   lots remaining = 1
+  ok   shares/units held = 500
+  ok   cost basis of what remains, cents = 155000
+  ok   cost of the units sold, cents = 910000
+  ok   profit of that sale, cents = 50000
+  ok   realized gross so far, cents = 50000
+  ok   realized net of fees, cents = 49995
+  ok   fees paid so far = 5
+  ok   actions recorded on the sell day = 1
+  ok   remaining capacity on that day (of 2000) = 1999
+  ok   the medium-term cap (2000/day) was never approached here
+  ok   invariants hold
+  checks passed=12 failed=0

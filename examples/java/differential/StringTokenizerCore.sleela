@@ -1,0 +1,72 @@
+<< examples/java/differential/StringTokenizerCore.sleela
+   SLeeLa side of the StringTokenizerCore differential test.
+   Definition: Prints, line for line, the same results as StringTokenizerCore.java
+   for java.util.StringTokenizer: default and custom delimiters, returnDelims,
+   countTokens, nextToken(delim), the Enumeration view and the exceptions. >>
+#sleela 3.0
+material;
+import java.jdk-25.java.util;
+class StringTokenizerCore {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+
+  String run(String label, StringTokenizer t) {
+    String sb = label + " n=" + t.countTokens() + " :";
+    while (t.hasMoreTokens()) { sb = sb + " [" + t.nextToken() + "]"; }
+    sb = sb + " n=" + t.countTokens() + " more=" + yn(t.hasMoreElements());
+    print(sb);
+    return sb;
+  }
+  String yn(boolean x) { if (x) { return "true"; } return "false"; }
+
+  void main() {
+    run("default", new StringTokenizer("the quick\tbrown\nfox\r\fjumps"));
+    run("leading", new StringTokenizer("   a  b   "));
+    run("empty", new StringTokenizer(""));
+    run("onlydelims", new StringTokenizer("   \t "));
+    run("comma", new StringTokenizer("a,b,,c,", ","));
+    run("multi", new StringTokenizer("a=b;c=d", "=;"));
+    run("retdelims", new StringTokenizer("a,b,,c,", ",", true));
+    run("retdelims2", new StringTokenizer(",,x", ",", true));
+    run("retdelims3", new StringTokenizer("1+2*3", "+*", true));
+    run("nodelims", new StringTokenizer("abc", ""));
+    run("single", new StringTokenizer("abc", "x"));
+
+    StringTokenizer t = new StringTokenizer("a b,c d", " ");
+    String r1 = t.nextToken();
+    int c1 = t.countTokens();
+    String r2 = t.nextToken(",");
+    int c2 = t.countTokens();
+    String r3 = t.nextToken();
+    print(r1 + "|" + c1 + "|" + r2 + "|" + c2 + "|" + r3 + "|" + yn(t.hasMoreTokens()));
+    StringTokenizer e = new StringTokenizer("p q");
+    boolean h1 = e.hasMoreElements();
+    Any x1 = e.nextElement();
+    Any x2 = e.nextElement();
+    print(yn(h1) + " " + x1 + " " + x2 + " " + yn(e.hasMoreElements()));
+    try { e.nextToken(); } catch (Any ca) { Throwable th = (Throwable) ca; print(th.toString()); }
+    try { e.nextElement(); } catch (Any cb) { Throwable th = (Throwable) cb; print(th.toString()); }
+    try { new StringTokenizer(null); } catch (Any cc) { print("NPE"); }
+    StringTokenizer nd = new StringTokenizer("abc", null);
+    try { nd.hasMoreTokens(); } catch (Any cd) { print("NPE delim"); }
+    StringTokenizer sw = new StringTokenizer("x-y z", "-");
+    String s1 = sw.nextToken();
+    String s2 = sw.nextToken(" ");
+    String s3 = sw.nextToken("-");
+    print(s1 + " " + s2 + " " + s3);
+  }
+}

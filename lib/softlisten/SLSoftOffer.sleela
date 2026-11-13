@@ -1,0 +1,187 @@
+<< lib/softlisten/SLSoftOffer.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLSoftOffer — a contribution someone has OFFERED to the
+     standing system but that the consuming model has not agreed to yet. An
+     offer is plain data: who offered it, at what trust, what it would do (a
+     document edit, a module, a vertical-integration tier), the tokens it
+     carries, the ties it claims to other things, and the findings the soft
+     listeners have attached. It changes nothing until it is agreed. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import advantage.integration;
+import hotlink;
+< Family: softlisten. Kinds: 0 insert line, 1 replace line, 2 delete line, >
+< 3 module (observer port), 4 tier (vertical-integration compartment). >
+< State: 0 offered, 1 assessed, 2 agreed, 3 declined, 4 withdrawn. >
+< Severity: 0 info, 1 warn, 2 hold (not agreeable yet), 3 block (never). >
+class SLSoftOffer {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39231;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int id;
+  String offerer;
+  int trust;
+  int kind;
+  int state;
+  < document offers >
+  int line;
+  String text;
+  < what the offerer saw on that line (replace and delete), for conflict checks >
+  String expectOld;
+  < module and tier offers >
+  String typeId;
+  String instName;
+  String digest;
+  int kindOrd;
+  SLObserverPort port;
+  < tokens (the host splits the text) and claimed ties >
+  String[] tokens;
+  int tokenCount;
+  int tokensClipped;
+  String[] ties;
+  int tieCount;
+  int tiesClipped;
+  < findings attached by soft listeners >
+  String[] fListener;
+  int[] fSeverity;
+  String[] fCode;
+  String[] fDetail;
+  int fCount;
+  int fLost;
+
+  void configure(int offerId, String who, int trustLevel, int what) {
+    id = offerId; offerer = who; trust = trustLevel; kind = what; state = 0;
+    line = 0; text = ""; expectOld = ""; typeId = ""; instName = ""; digest = "";
+    kindOrd = -1; port = null;
+    tokens = new String[8]; ties = new String[8];
+    tokenCount = 0; tokensClipped = 0; tieCount = 0; tiesClipped = 0;
+    fListener = new String[16]; fSeverity = new int[16];
+    fCode = new String[16]; fDetail = new String[16];
+    int i = 0;
+    while (i < 8) { tokens[i] = ""; ties[i] = ""; i = i + 1; }
+    int j = 0;
+    while (j < 16) { fListener[j] = ""; fSeverity[j] = 0; fCode[j] = ""; fDetail[j] = ""; j = j + 1; }
+    fCount = 0; fLost = 0;
+  }
+  int getId() { return id; }
+  String getOfferer() { return offerer; }
+  int getTrust() { return trust; }
+  int getKind() { return kind; }
+  int getState() { return state; }
+  void setState(int s) { state = s; }
+  boolean isOpen() { return state == 0 || state == 1; }
+  boolean isDocumentOffer() { return kind >= 0 && kind <= 2; }
+
+  void aimAtLine(int atLine, String newText, String seenOld) {
+    line = atLine; text = newText; expectOld = seenOld;
+  }
+  void aimAtModule(String type, String name, String digestPresented, SLObserverPort p) {
+    typeId = type; instName = name; digest = digestPresented; port = p;
+  }
+  void aimAtTier(String name, String label, int kindOrdinal) {
+    instName = name; text = label; kindOrd = kindOrdinal;
+  }
+  int getLine() { return line; }
+  String getText() { return text; }
+  String getExpectOld() { return expectOld; }
+  String getTypeId() { return typeId; }
+  String getInstName() { return instName; }
+  String getDigest() { return digest; }
+  int getKindOrd() { return kindOrd; }
+  SLObserverPort getPort() { return port; }
+
+  < Up to 8 tokens and 8 ties are kept; more are counted as clipped. >
+  void addToken(String t) {
+    if (tokenCount < 8) { tokens[tokenCount] = t; tokenCount = tokenCount + 1; }
+    else { tokensClipped = tokensClipped + 1; }
+  }
+  void addTie(String t) {
+    if (tieCount < 8) { ties[tieCount] = t; tieCount = tieCount + 1; }
+    else { tiesClipped = tiesClipped + 1; }
+  }
+  int tokenTotal() { return tokenCount; }
+  String tokenAt(int i) { return (i >= 0 && i < tokenCount) ? tokens[i] : ""; }
+  int clippedTokens() { return tokensClipped; }
+  int tieTotal() { return tieCount; }
+  String tieAt(int i) { return (i >= 0 && i < tieCount) ? ties[i] : ""; }
+  int clippedTies() { return tiesClipped; }
+
+  < ---- findings ---------------------------------------------------------- >
+
+  void clearFindings() { fCount = 0; fLost = 0; }
+  void addFinding(String listener, int severity, String code, String detail) {
+    if (fCount >= 16) { fLost = fLost + 1; return; }
+    fListener[fCount] = listener; fSeverity[fCount] = severity;
+    fCode[fCount] = code; fDetail[fCount] = detail;
+    fCount = fCount + 1;
+  }
+  int findingTotal() { return fCount; }
+  int findingsLost() { return fLost; }
+  String findingListener(int i) { return (i >= 0 && i < fCount) ? fListener[i] : ""; }
+  int findingSeverity(int i) { return (i >= 0 && i < fCount) ? fSeverity[i] : -1; }
+  String findingCode(int i) { return (i >= 0 && i < fCount) ? fCode[i] : ""; }
+  String findingDetail(int i) { return (i >= 0 && i < fCount) ? fDetail[i] : ""; }
+  < The worst severity found, or -1 with no findings. A lost finding counts >
+  < as a block: if the record overflowed, the offer is not trusted. >
+  int worst() {
+    int w = -1;
+    int i = 0;
+    while (i < fCount) { if (fSeverity[i] > w) { w = fSeverity[i]; } i = i + 1; }
+    if (fLost > 0) { w = 3; }
+    return w;
+  }
+  boolean hasCode(String code) {
+    int i = 0;
+    while (i < fCount) { if (fCode[i] == code) { return true; } i = i + 1; }
+    return false;
+  }
+  int countAt(int severity) {
+    int n = 0;
+    int i = 0;
+    while (i < fCount) { if (fSeverity[i] == severity) { n = n + 1; } i = i + 1; }
+    return n;
+  }
+}

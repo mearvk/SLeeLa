@@ -1,0 +1,239 @@
+<< lib/java/jdk-28/java.base/java/util/Base64.Decoder.sleela
+   SLeeLa file for the Java type java.util.Base64.Decoder (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Base64.Decoder.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   Nested Java type: the file keeps the documented name Base64.Decoder.
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Decoder {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 3053;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.Base64.Decoder";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Base64.Decoder.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java implementation (JDK 28, SLeeLa logic) ---- >
+  << java.util.Base64.Decoder in SLeeLa, written from the JDK 28 API
+     specification. The basic and URL-safe decoders reject any character
+     outside their alphabet; the MIME decoder skips such characters. A =
+     ends the data; a dangling single character, a missing second =, or
+     anything but MIME separators after the data is an
+     IllegalArgumentException, with the same messages as the JDK. The
+     ByteBuffer and InputStream forms stay as stubs. >>
+  boolean isURL;
+  boolean isMIME;
+
+  Decoder(boolean isURL, boolean isMIME) {
+    this.isURL = isURL;
+    this.isMIME = isMIME;
+  }
+
+  int slDecodedOutLength(byte[] src) {
+    int sp = 0;
+    int sl = arrayLength(src);
+    int paddings = 0;
+    int len = sl;
+    if (len == 0) { return 0; }
+    if (len < 2) {
+      if (isMIME && Base64.slFromBase64(0, isURL) == -1) { return 0; }
+      throw new IllegalArgumentException("Input byte[] should at least have 2 bytes for base64 bytes");
+    }
+    if (isMIME) {
+      int n = 0;
+      while (sp < sl) {
+        int b = src[sp] & 255;
+        sp = sp + 1;
+        if (b == 61) {
+          len = len - (sl - sp + 1);
+          break;
+        }
+        if (Base64.slFromBase64(b, isURL) == -1) { n = n + 1; }
+      }
+      len = len - n;
+    } else {
+      if (src[sl - 1] == 61) {
+        paddings = paddings + 1;
+        if (src[sl - 2] == 61) { paddings = paddings + 1; }
+      }
+    }
+    if (paddings == 0 && (len & 3) != 0) { paddings = 4 - (len & 3); }
+    return 3 * ((len + 3) / 4) - paddings;
+  }
+
+  int slDecode0(byte[] src, byte[] dst) {
+    int sl = arrayLength(src);
+    int sp = 0;
+    int dp = 0;
+    int bits = 0;
+    int shiftto = 18;
+    while (sp < sl) {
+      int b = src[sp] & 255;
+      sp = sp + 1;
+      b = Base64.slFromBase64(b, isURL);
+      if (b < 0) {
+        if (b == -2) {
+          if (shiftto == 6) {
+            if (sp == sl) { throw new IllegalArgumentException("Input byte array has wrong 4-byte ending unit"); }
+            int nx = src[sp];
+            sp = sp + 1;
+            if (nx != 61) { throw new IllegalArgumentException("Input byte array has wrong 4-byte ending unit"); }
+          }
+          if (shiftto == 18) { throw new IllegalArgumentException("Input byte array has wrong 4-byte ending unit"); }
+          break;
+        }
+        if (isMIME) { continue; }
+        throw new IllegalArgumentException("Illegal base64 character " + Integer.toString(src[sp - 1], 16));
+      }
+      bits = bits | (b << shiftto);
+      shiftto = shiftto - 6;
+      if (shiftto < 0) {
+        dst[dp] = slByte(bits >> 16);
+        dst[dp + 1] = slByte(bits >> 8);
+        dst[dp + 2] = slByte(bits);
+        dp = dp + 3;
+        shiftto = 18;
+        bits = 0;
+      }
+    }
+    if (shiftto == 6) {
+      dst[dp] = slByte(bits >> 16);
+      dp = dp + 1;
+    } else if (shiftto == 0) {
+      dst[dp] = slByte(bits >> 16);
+      dst[dp + 1] = slByte(bits >> 8);
+      dp = dp + 2;
+    } else if (shiftto == 12) {
+      throw new IllegalArgumentException("Last unit does not have enough valid bits");
+    }
+    while (sp < sl) {
+      if (isMIME) {
+        int c = src[sp] & 255;
+        sp = sp + 1;
+        if (Base64.slFromBase64(c, isURL) < 0) { continue; }
+      }
+      throw new IllegalArgumentException("Input byte array has incorrect ending byte at " + sp);
+    }
+    return dp;
+  }
+  static int slByte(int v) {
+    int m = v & 255;
+    if (m > 127) { return m - 256; }
+    return m;
+  }
+  byte[] slBytesOf(java.lang.String s) {
+    String u = javaStringFromUtf8(s);
+    int n = javaStringLength(u);
+    byte[] out = new byte[n];
+    int i = 0;
+    while (i < n) {
+      int c = javaStringCharAt(u, i);
+      if (c > 255) { c = 63; }
+      out[i] = slByte(c);
+      i = i + 1;
+    }
+    return out;
+  }
+
+  public byte[] decode(byte[] src) {
+    if (src == null) { throw new NullPointerException(); }
+    int len = slDecodedOutLength(src);
+    byte[] scratch = new byte[len + 3];
+    int ret = slDecode0(src, scratch);
+    byte[] dst = new byte[ret];
+    int i = 0;
+    while (i < ret) { dst[i] = scratch[i]; i = i + 1; }
+    return dst;
+  }
+  public byte[] decode(java.lang.String src) {
+    if (src == null) { throw new NullPointerException(); }
+    return decode(slBytesOf(src));
+  }
+  public int decode(byte[] src, byte[] dst) {
+    if (src == null || dst == null) { throw new NullPointerException(); }
+    int len = slDecodedOutLength(src);
+    if (arrayLength(dst) < len || len == -1) {
+      throw new IllegalArgumentException("Output byte array is too small for decoding all input bytes");
+    }
+    byte[] scratch = new byte[len + 3];
+    int ret = slDecode0(src, scratch);
+    int i = 0;
+    while (i < ret) { dst[i] = scratch[i]; i = i + 1; }
+    return ret;
+  }
+  < ---- END java implementation ---- >
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Decoder bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any decode(Any buffer) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any wrap(Any is) { return null; }
+  < ---- END java signatures ---- >
+}

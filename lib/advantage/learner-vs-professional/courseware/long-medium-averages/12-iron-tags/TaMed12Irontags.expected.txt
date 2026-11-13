@@ -1,0 +1,18 @@
+== Entry 12: iron tags, a medium-term trade ==
+  buy 1200 @ 700 on day 0, fee 2 : ok
+  buy 900 @ 710 on day 1, fee 2 : ok
+  sell 1800 @ 730 on day 2, fee 5 : ok
+-- result --
+  ok   lots remaining = 1
+  ok   shares/units held = 300
+  ok   cost basis of what remains, cents = 213000
+  ok   cost of the units sold, cents = 1266000
+  ok   profit of that sale, cents = 48000
+  ok   realized gross so far, cents = 48000
+  ok   realized net of fees, cents = 47991
+  ok   fees paid so far = 9
+  ok   actions recorded on the sell day = 1
+  ok   remaining capacity on that day (of 2000) = 1999
+  ok   the medium-term cap (2000/day) was never approached here
+  ok   invariants hold
+  checks passed=12 failed=0

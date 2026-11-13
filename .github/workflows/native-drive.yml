@@ -1,6 +1,24 @@
 name: Native Drive
 
 on:
+  push:
+    paths:
+      - '.github/workflows/native-drive.yml'
+      - 'impl/native-drive/**'
+      - 'impl/tests/native_drive/**'
+      - 'tools/tests/test_native_drive.py'
+      - 'tools/tests/test_sleela_ipc_worker.py'
+      - 'tools/sleela-ipc-worker.py'
+      - 'tools/sleela-native-drive.py'
+      - 'bin/sleelactl'
+      - 'impl/Makefile'
+      - 'impl/core/**'
+      - 'impl/frontend/**'
+      - 'impl/nordshrift/native_method_emit.cpp'
+      - 'os-level-support/loader/native_loader.h'
+      - 'os-level-support/loader/tests/**'
+      - 'os-level-support/loader/CMakeLists.txt'
+      - 'security/sha256-manifest.json'
   workflow_dispatch:
 
 permissions:
@@ -42,6 +60,62 @@ jobs:
           if ($errors.Count -gt 0) { $errors | Format-List; exit 1 }
       - name: Run Native Drive tests
         run: python -m unittest discover -s tools/tests -p "test_native_drive.py" -v
+      - name: Install Linux UI development headers required by the VM archive
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libx11-dev libfreetype6-dev libfontconfig1-dev libpng-dev zlib1g-dev
+      - name: Build and run Native IPC VM handle lifecycle tests (POSIX)
+        if: runner.os != 'Windows'
+        run: make -C impl test-native-ipc-handles
+      - name: Build sleela and run native dispatch / @native AOT regressions (Linux)
+        if: runner.os == 'Linux'
+        env:
+          SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+        run: |
+          make -C impl -j"$(nproc)" build/sleela
+          make -C impl test-native-call test-native-method-metadata test-native-method-aot test-native-concurrency
+      - name: sleelactl end-to-end @native plugin build (Linux)
+        if: runner.os == 'Linux'
+        env:
+          SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+        run: |
+          mkdir -p build
+          bin/sleelactl build native-drive impl/tests/native_drive/native_method_aot_compile.sleela --require-sleela-abi -o build/native-method-aot-e2e.so
+          nm -D build/native-method-aot-e2e.so | grep -q ' T sl_native_call$'
+      - name: Run persistent Native IPC worker tests
+        run: python -m unittest discover -s tools/tests -p "test_sleela_ipc_worker.py" -v
+      - name: Compile and run Native IPC codec smoke test (POSIX)
+        if: runner.os != 'Windows'
+        run: |
+          mkdir -p build
+          cc -std=c11 -Wall -Wextra -Werror impl/tests/native_drive/native_ipc_protocol_smoke.c -o build/native-ipc-protocol-smoke
+          ./build/native-ipc-protocol-smoke
+      - name: Initialize MSVC environment
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: Compile and run Native IPC codec smoke test (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force build | Out-Null
+          cl /nologo /std:c11 /W4 impl/tests/native_drive/native_ipc_protocol_smoke.c /Febuild/native-ipc-protocol-smoke.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          .\build\native-ipc-protocol-smoke.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Compile and run Native IPC client smoke test (POSIX)
+        if: runner.os != 'Windows'
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror impl/native-drive/native_ipc_client.c impl/tests/native_drive/native_ipc_client_smoke.c -o build/native-ipc-client-smoke
+          ./build/native-ipc-client-smoke
+      - name: Compile and run Native IPC client smoke test (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          cl /nologo /std:c11 /W4 impl/native-drive/native_ipc_client.c impl/tests/native_drive/native_ipc_client_smoke.c /Febuild/native-ipc-client-smoke.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          .\\build\\native-ipc-client-smoke.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Configure native loader ABI tests
         run: cmake -S os-level-support -B build/native-loader -DBUILD_TESTING=ON
       - name: Build native loader ABI tests

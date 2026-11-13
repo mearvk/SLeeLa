@@ -1,0 +1,189 @@
+<< lib/advantage/learner-vs-professional/series/SLNounRegistry.sleela
+   SLeeLa courseware.
+   Definition: Shared registry of nouns and noun-carriers inside one declared field of observation, used by every Device Instructor lesson. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< The registry is the first thing a learner builds. A field of observation is >
+< declared once. Every noun then has exactly one carrier, and a carrier is >
+< either the field itself (a root carrier) or a noun already registered. So a >
+< carrier is itself a noun, and a chain always leads back to the field. >
+class SLNounRegistry {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39100;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String field = "";
+  String[] nouns = new String[32];
+  String[] carriers = new String[32];
+  int[] values = new int[32];
+  int count = 0;
+  int accepted = 0;
+  int refused = 0;
+
+  void declareField(String name) { field = name; }
+  String fieldName() { return field; }
+  int size() { return count; }
+  int acceptedCount() { return accepted; }
+  int refusedCount() { return refused; }
+  String nounAt(int i) { return nouns[i]; }
+  String carrierAt(int i) { return carriers[i]; }
+
+  < Returns the index of a noun, or -1 when it is not registered. >
+  int indexOf(String noun) {
+    int i = 0;
+    while (i < count) {
+      if (nouns[i] == noun) { return i; }
+      i = i + 1;
+    }
+    return -1;
+  }
+
+  boolean has(String noun) { return indexOf(noun) >= 0; }
+
+  < Result codes: 0 accepted, 1 field not declared, 2 noun already placed, >
+  < 3 registry full, 4 carrier is neither the field nor a registered noun. >
+  int register(String noun, String carrier) {
+    if (field == "") { refused = refused + 1; return 1; }
+    if (indexOf(noun) >= 0) { refused = refused + 1; return 2; }
+    if (count >= 32) { refused = refused + 1; return 3; }
+    if (carrier != field && indexOf(carrier) < 0) { refused = refused + 1; return 4; }
+    nouns[count] = noun;
+    carriers[count] = carrier;
+    values[count] = 0;
+    count = count + 1;
+    accepted = accepted + 1;
+    return 0;
+  }
+
+  < Registers a noun that also holds an integer value, for example cents. >
+  int registerValue(String noun, String carrier, int value) {
+    int code = register(noun, carrier);
+    if (code == 0) { values[count - 1] = value; }
+    return code;
+  }
+
+  String reason(int code) {
+    if (code == 0) { return "accepted"; }
+    if (code == 1) { return "refused: declare the field of observation first"; }
+    if (code == 2) { return "refused: noun already has a carrier (one place only)"; }
+    if (code == 3) { return "refused: registry is full"; }
+    return "refused: carrier is not the field and not a registered noun";
+  }
+
+  < The immediate carrier, or an empty string when the noun is not observed. >
+  String carrierOf(String noun) {
+    int i = indexOf(noun);
+    if (i < 0) { return ""; }
+    return carriers[i];
+  }
+
+  < The stored value, or -1 when the noun is not observed. Use has() first >
+  < when -1 could be a real value. >
+  int valueOf(String noun) {
+    int i = indexOf(noun);
+    if (i < 0) { return -1; }
+    return values[i];
+  }
+
+  < Number of hops from the noun up to the field, or -1 when not observed. >
+  int depthOf(String noun) {
+    if (indexOf(noun) < 0) { return -1; }
+    int hops = 1;
+    String cur = carrierOf(noun);
+    while (cur != field && hops <= count) {
+      cur = carrierOf(cur);
+      hops = hops + 1;
+    }
+    return hops;
+  }
+
+  < The chain from the noun up to the field, for example: >
+  < order 2 -> order list -> customer-17 -> (field) >
+  String chain(String noun) {
+    if (indexOf(noun) < 0) { return "not observed (not in field " + field + ")"; }
+    String s = noun;
+    String cur = noun;
+    int guard = 0;
+    while (cur != field && guard <= count) {
+      cur = carrierOf(cur);
+      s = s + " -> " + cur;
+      guard = guard + 1;
+    }
+    return s;
+  }
+
+  < How many nouns this carrier holds directly. >
+  int carries(String carrier) {
+    int n = 0;
+    int i = 0;
+    while (i < count) {
+      if (carriers[i] == carrier) { n = n + 1; }
+      i = i + 1;
+    }
+    return n;
+  }
+
+  < Sum of the values of every noun this carrier holds, directly or deeper. >
+  int totalUnder(String carrier) {
+    int sum = 0;
+    int i = 0;
+    while (i < count) {
+      if (isUnder(nouns[i], carrier)) { sum = sum + values[i]; }
+      i = i + 1;
+    }
+    return sum;
+  }
+
+  < True when the carrier appears anywhere on the noun chain below the field. >
+  boolean isUnder(String noun, String carrier) {
+    String cur = carrierOf(noun);
+    int guard = 0;
+    while (cur != "" && guard <= count) {
+      if (cur == carrier) { return true; }
+      if (cur == field) { return false; }
+      cur = carrierOf(cur);
+      guard = guard + 1;
+    }
+    return false;
+  }
+}

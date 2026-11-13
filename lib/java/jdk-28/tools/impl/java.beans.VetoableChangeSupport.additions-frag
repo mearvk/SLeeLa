@@ -1,0 +1,172 @@
+  < ---- java.beans.VetoableChangeSupport: constrained-property listeners and vetoes ---- >
+  << Written from the JDK 28 API specification of java.beans.VetoableChangeSupport.
+     Listener bookkeeping is the same as in PropertyChangeSupport (listeners for
+     all properties, listeners for one named property, proxies unwrapped, null
+     ignored). fireVetoableChange sends no event when the old and new values are
+     both non-null and equal. Otherwise each listener, those for all properties
+     first, gets the event in turn. If one vetoes (throws
+     PropertyVetoException), every listener that had already accepted the
+     change gets an event that reverts it (new and old value swapped), any veto
+     of that revert is ignored, and the original PropertyVetoException is
+     thrown again. Listeners are SLJavaLambda values (or proxies of them), see
+     SLJavaBeanEvents. >>
+  Any sourceBean;
+  Any[] allListeners;
+  int allCount;
+  String[] namedNames;
+  Any[] namedListeners;
+  int namedCount;
+
+  public VetoableChangeSupport(java.lang.Object sourceBean) {
+    if (sourceBean == null) { throw new NullPointerException(); }
+    this.sourceBean = sourceBean;
+    this.allListeners = new Any[4];
+    this.allCount = 0;
+    this.namedNames = new String[4];
+    this.namedListeners = new Any[4];
+    this.namedCount = 0;
+  }
+
+  public void addVetoableChangeListener(java.beans.VetoableChangeListener listener) {
+    if (listener == null) { return; }
+    if (listener instanceof VetoableChangeListenerProxy) {
+      VetoableChangeListenerProxy p = (VetoableChangeListenerProxy) listener;
+      addVetoableChangeListener(p.getPropertyName(), p.getListener());
+      return;
+    }
+    if (this.allCount >= arrayLength(this.allListeners)) { this.allListeners = growAny(this.allListeners, this.allCount); }
+    this.allListeners[this.allCount] = listener;
+    this.allCount = this.allCount + 1;
+  }
+  public void addVetoableChangeListener(java.lang.String propertyName, java.beans.VetoableChangeListener listener) {
+    if (listener == null || propertyName == null) { return; }
+    if (this.namedCount >= arrayLength(this.namedListeners)) {
+      this.namedListeners = growAny(this.namedListeners, this.namedCount);
+      String[] g = new String[arrayLength(this.namedListeners)];
+      int i = 0;
+      while (i < this.namedCount) { g[i] = this.namedNames[i]; i = i + 1; }
+      this.namedNames = g;
+    }
+    this.namedNames[this.namedCount] = propertyName;
+    this.namedListeners[this.namedCount] = listener;
+    this.namedCount = this.namedCount + 1;
+  }
+  public void removeVetoableChangeListener(java.beans.VetoableChangeListener listener) {
+    if (listener == null) { return; }
+    if (listener instanceof VetoableChangeListenerProxy) {
+      VetoableChangeListenerProxy p = (VetoableChangeListenerProxy) listener;
+      removeVetoableChangeListener(p.getPropertyName(), p.getListener());
+      return;
+    }
+    int i = 0;
+    while (i < this.allCount) {
+      if (this.allListeners[i] == listener) {
+        int j = i;
+        while (j < this.allCount - 1) { this.allListeners[j] = this.allListeners[j + 1]; j = j + 1; }
+        this.allCount = this.allCount - 1;
+        this.allListeners[this.allCount] = null;
+        return;
+      }
+      i = i + 1;
+    }
+  }
+  public void removeVetoableChangeListener(java.lang.String propertyName, java.beans.VetoableChangeListener listener) {
+    if (listener == null || propertyName == null) { return; }
+    int i = 0;
+    while (i < this.namedCount) {
+      if (this.namedListeners[i] == listener && this.namedNames[i] == propertyName) {
+        int j = i;
+        while (j < this.namedCount - 1) {
+          this.namedListeners[j] = this.namedListeners[j + 1];
+          this.namedNames[j] = this.namedNames[j + 1];
+          j = j + 1;
+        }
+        this.namedCount = this.namedCount - 1;
+        this.namedListeners[this.namedCount] = null;
+        this.namedNames[this.namedCount] = null;
+        return;
+      }
+      i = i + 1;
+    }
+  }
+  public Any[] getVetoableChangeListeners() {
+    Any[] out = new Any[this.allCount + this.namedCount];
+    int i = 0;
+    while (i < this.allCount) { out[i] = this.allListeners[i]; i = i + 1; }
+    int j = 0;
+    while (j < this.namedCount) {
+      out[i + j] = new VetoableChangeListenerProxy(this.namedNames[j], this.namedListeners[j]);
+      j = j + 1;
+    }
+    return out;
+  }
+  public Any[] getVetoableChangeListeners(java.lang.String propertyName) {
+    int n = 0;
+    int i = 0;
+    while (i < this.namedCount) { if (propertyName != null && this.namedNames[i] == propertyName) { n = n + 1; } i = i + 1; }
+    Any[] out = new Any[n];
+    n = 0;
+    i = 0;
+    while (i < this.namedCount) {
+      if (propertyName != null && this.namedNames[i] == propertyName) { out[n] = this.namedListeners[i]; n = n + 1; }
+      i = i + 1;
+    }
+    return out;
+  }
+  public boolean hasListeners(java.lang.String propertyName) {
+    if (this.allCount > 0) { return true; }
+    if (propertyName == null) { return false; }
+    int i = 0;
+    while (i < this.namedCount) { if (this.namedNames[i] == propertyName) { return true; } i = i + 1; }
+    return false;
+  }
+
+  public void fireVetoableChange(java.lang.String propertyName, java.lang.Object oldValue, java.lang.Object newValue) {
+    if (oldValue == null || newValue == null || oldValue != newValue) {
+      fireVetoableChange(new PropertyChangeEvent(this.sourceBean, propertyName, oldValue, newValue));
+    }
+  }
+  public void fireVetoableChange(java.beans.PropertyChangeEvent event) {
+    PropertyChangeEvent e = (PropertyChangeEvent) event;
+    Any oldValue = e.getOldValue();
+    Any newValue = e.getNewValue();
+    if (oldValue != null && newValue != null && oldValue == newValue) { return; }
+    String name = e.getPropertyName();
+    Any[] named = new Any[0];
+    if (name != null) { named = getVetoableChangeListeners(name); }
+    int na = this.allCount;
+    int nn = arrayLength(named);
+    Any[] targets = new Any[na + nn];
+    int i = 0;
+    while (i < na) { targets[i] = this.allListeners[i]; i = i + 1; }
+    int j = 0;
+    while (j < nn) { targets[na + j] = named[j]; j = j + 1; }
+    int current = 0;
+    try {
+      while (current < na + nn) {
+        SLJavaBeanEvents.notifyVetoableChange(targets[current], e);
+        current = current + 1;
+      }
+    } catch (Any thrown) {
+      if (thrown instanceof PropertyVetoException) {
+        PropertyChangeEvent revert = new PropertyChangeEvent(this.sourceBean, name, newValue, oldValue);
+        int k = 0;
+        while (k < current) {
+          try { SLJavaBeanEvents.notifyVetoableChange(targets[k], revert); }
+          catch (Any again) {
+            if (!(again instanceof PropertyVetoException)) { Throwable t2 = (Throwable) again; throw t2; }
+          }
+          k = k + 1;
+        }
+      }
+      Throwable t = (Throwable) thrown;
+      throw t;
+    }
+  }
+
+  Any[] growAny(Any[] a, int n) {
+    Any[] g = new Any[arrayLength(a) * 2];
+    int i = 0;
+    while (i < n) { g[i] = a[i]; i = i + 1; }
+    return g;
+  }

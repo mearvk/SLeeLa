@@ -1,0 +1,104 @@
+<< examples/java/JavaUtilUtilitiesConformance.sleela
+   SLeeLa Java SE/JDK 28 conformance program.
+   Definition: Exercises the SLeeLa implementation of java.util Arrays, Collections, Random, Optional and Objects
+   under lib/java and prints one FAIL line per mismatch, then a summary line.
+   Expected values are the outputs of the Java SE 28 API for the same calls. >>
+#sleela 3.0
+material;
+import java.jdk-25.java.lang;
+import java.jdk-25.java.util;
+class JavaUtilUtilitiesConformance {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class conformance program. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-10";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-10";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+  String getDate() { return metaDate; }
+  String getCopyright() { return metaCopyright; }
+  String getTrademark() { return metaTrademark; }
+  String getCorporation() { return metaCorporation; }
+  String getOrigin() { return metaOrigin; }
+  String getBirthDate() { return metaBirthDate; }
+  int getScienceRating() { return metaScienceRating; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+
+
+  int bad = 0;
+  void eq(String name, String got, String want) {
+    if (got != want) { bad = bad + 1; print("FAIL " + name + " got=[" + got + "] want=[" + want + "]"); }
+  }
+  void main() {
+    Arrays A = new Arrays();
+    int[] a = new int[6];
+    a[0] = 5; a[1] = -2; a[2] = 9; a[3] = 0; a[4] = 5; a[5] = 1;
+    A.sort(a);
+    eq("sort", A.toString(a), "[-2, 0, 1, 5, 5, 9]");
+    eq("bs", "" + A.binarySearch(a, 9) + "," + A.binarySearch(a, 2), "5,-4");
+    int[] c = A.copyOf(a, 8);
+    eq("copyOf", A.toString(c), "[-2, 0, 1, 5, 5, 9, 0, 0]");
+    eq("copyOfRange", A.toString(A.copyOfRange(a, 1, 3)), "[0, 1]");
+    eq("equals", "" + A.equals(a, A.copyOf(a, 6)) + A.equals(a, c), "truefalse");
+    int[] h = new int[3];
+    h[0] = 1; h[1] = 2; h[2] = 3;
+    eq("hash", "" + A.hashCode(h), "30817");
+    double[] d = new double[4];
+    d[0] = 2.5; d[1] = -1.0; d[2] = 0.1; d[3] = 1.0e10;
+    A.sortDoubles(d);
+    eq("sortD", A.toStringDoubles(d), "[-1.0, 0.1, 2.5, 1.0E10]");
+    Any[] o = new Any[3];
+    o[0] = "pear"; o[1] = "apple"; o[2] = "fig";
+    A.sortObjects(o);
+    eq("sortO", A.toStringObjects(o), "[apple, fig, pear]");
+    ArrayList l = A.asList(o);
+    Collections C = new Collections();
+    C.reverse(l);
+    eq("reverse", l.toString(), "[pear, fig, apple]");
+    C.sort(l);
+    eq("csort", l.toString() + C.max(l) + C.min(l) + C.frequency(l, "fig"), "[apple, fig, pear]pearapple1");
+    C.rotate(l, 1);
+    eq("rotate", l.toString(), "[pear, apple, fig]");
+    C.swap(l, 0, 2);
+    eq("swap", l.toString(), "[fig, apple, pear]");
+    eq("nCopies", C.nCopies(3, "x").toString(), "[x, x, x]");
+    Random r = new Random(42);
+    eq("rnd", "" + r.nextInt() + "," + r.nextInt(), "-1170105035,234785527");
+    Random r2 = new Random(42);
+    Double D = new Double(0.0);
+    eq("rndD", D.toStringOf(r2.nextDouble()), "0.7275636800328681");
+    Random r3 = new Random(42);
+    eq("rndB", "" + r3.nextIntBound(10) + r3.nextIntBound(10) + r3.nextIntBound(10), "038");
+    Random r5 = new Random(7);
+    eq("rnd16", "" + r5.nextIntBound(16) + "," + r5.nextIntBound(16) + "," + r5.nextIntBound(16) + "," + r5.nextIntBound(16) + "," + r5.nextIntBound(16) + "," + r5.nextIntBound(1000), "11,10,11,0,5,254");
+    Random r4 = new Random(0);
+    eq("rndL", "" + r4.nextLong(), "-4962768465676381896");
+    Optional op = new Optional(null);
+    Optional p = op.of("v");
+    eq("opt", p.toString() + op.empty().toString() + p.isPresent() + op.ofNullable(null).isEmpty() + p.orElse("w") + op.orElse("w"), "Optional[v]Optional.emptytruetruevw");
+    boolean nse = false;
+    try { op.get(); } catch (Any e) { nse = e instanceof NoSuchElementException; }
+    if (!nse) { bad = bad + 1; print("FAIL optional get"); }
+    OptionalInt oi = new OptionalInt(false, 0);
+    eq("optInt", oi.of(7).toString() + oi.empty().toString() + oi.of(7).getAsInt(), "OptionalInt[7]OptionalInt.empty7");
+    Objects O = new Objects();
+    eq("objects", "" + O.equals("a", "a") + O.hashCode("hello") + O.toString(null) + O.isNull(null), "true99162322nulltrue");
+    boolean npe = false;
+    try { O.requireNonNull(null, "x must not be null"); } catch (Any e2) { NullPointerException n = (NullPointerException) e2; npe = n.getMessage() == "x must not be null"; }
+    if (!npe) { bad = bad + 1; print("FAIL requireNonNull"); }
+    boolean ioobe = false;
+    try { O.checkIndex(3, 3); } catch (Any e3) { IndexOutOfBoundsException x = (IndexOutOfBoundsException) e3; ioobe = x.getMessage() == "Index 3 out of bounds for length 3"; }
+    if (!ioobe) { bad = bad + 1; print("FAIL checkIndex"); }
+    print("failures=" + bad);
+  }
+}

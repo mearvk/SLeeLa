@@ -1,0 +1,10 @@
+#sleela 3.0
+spark;
+material;
+class P { void main() {
+  long big = 3000000000L; print(big * 2);
+  int million = 1_000_000; print(million + 1);
+  double d = 2d; print(d / 4);
+  double f = 1.5f; print(f * 2);
+  print(0xFFL);
+} }

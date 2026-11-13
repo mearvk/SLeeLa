@@ -1,0 +1,63 @@
+<< examples/java/JavaLangCharacterConformance.sleela
+   SLeeLa Java SE/JDK 28 conformance program.
+   Definition: Exercises the SLeeLa implementation of java.lang.Character and Boolean
+   under lib/java and prints one FAIL line per mismatch, then a summary line.
+   Expected values are the outputs of the Java SE 28 API for the same calls. >>
+#sleela 3.0
+material;
+import java.jdk-25.java.lang;
+import java.jdk-25.java.util;
+class JavaLangCharacterConformance {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class conformance program. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-10";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-10";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+  String getDate() { return metaDate; }
+  String getCopyright() { return metaCopyright; }
+  String getTrademark() { return metaTrademark; }
+  String getCorporation() { return metaCorporation; }
+  String getOrigin() { return metaOrigin; }
+  String getBirthDate() { return metaBirthDate; }
+  int getScienceRating() { return metaScienceRating; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+
+
+  int bad = 0;
+  void eq(String name, String got, String want) {
+    if (got != want) { bad = bad + 1; print("FAIL " + name + " got=[" + got + "] want=[" + want + "]"); }
+  }
+  void main() {
+    Character C = new Character(0);
+    eq("upper", "" + C.toUpperCase(97) + "," + C.toUpperCase(255) + "," + C.toUpperCase(945) + "," + C.toUpperCase(1072) + "," + C.toUpperCase(257) + "," + C.toUpperCase(65), "65,376,913,1040,256,65");
+    eq("lower", "" + C.toLowerCase(65) + "," + C.toLowerCase(304) + "," + C.toLowerCase(931) + "," + C.toLowerCase(1025) + "," + C.toLowerCase(7680), "97,105,963,1105,7681");
+    eq("letter", "" + C.isLetter(65) + C.isLetter(48) + C.isLetter(20013) + C.isLetter(1488) + C.isLetter(215), "truefalsetruetruefalse");
+    eq("digit", "" + C.isDigit(48) + C.isDigit(1633) + C.isDigit(65) + C.digit(1633, 10) + C.digit(102, 16) + C.digit(71, 16), "truetruefalse115-1");
+    eq("ws", "" + C.isWhitespace(32) + C.isWhitespace(160) + C.isWhitespace(10) + C.isSpaceChar(160) + C.isWhitespace(12288), "truefalsetruetruetrue");
+    eq("case", "" + C.isUpperCase(65) + C.isLowerCase(65) + C.isLowerCase(223) + C.isTitleCase(453), "truefalsetruetrue");
+    eq("surr", "" + C.toCodePoint(55357, 56832) + "," + C.highSurrogate(128512) + "," + C.lowSurrogate(128512) + "," + C.charCount(128512), "128512,55357,56832,2");
+    int[] cs = C.toChars(128512);
+    eq("toChars", "" + arrayLength(cs) + "," + cs[0] + "," + cs[1], "2,55357,56832");
+    eq("forDigit", "" + C.forDigit(11, 16) + "," + C.forDigit(5, 10), "98,53");
+    eq("ascii", C.toStringOf(65) + C.toStringOf(34) + C.toStringOf(126) + new Character(122).toString(), "A\"~z");
+    eq("ident", "" + C.isJavaIdentifierStart(36) + C.isJavaIdentifierStart(49) + C.isJavaIdentifierPart(49), "truefalsetrue");
+    boolean threw = false;
+    try { C.toChars(1114112); } catch (Any e) { threw = e instanceof IllegalArgumentException; }
+    if (!threw) { bad = bad + 1; print("FAIL toChars invalid"); }
+    Boolean B = new Boolean(false);
+    eq("bool", "" + B.parseBoolean("TrUe") + B.parseBoolean("yes") + B.parseBoolean(null) + new Boolean(true).hashCode() + B.compare(true, false) + B.logicalXor(true, true), "truefalsefalse12311false");
+    print("failures=" + bad);
+  }
+}

@@ -1,0 +1,90 @@
+<< lib/advantage/trading/SLTradingConsignment.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Consignment and zero inventory: earn a commission without owning anything,
+   pricing labor and counterparty risk. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Model 7 of the trading subject. Capital risk is traded for trust risk. Digital: >
+< a local OTC or escrow desk. Physical: staging and selling for movers. >
+class SLTradingConsignment {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39008;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  < ---- shared validation, created on first use ---- >
+  SLTradingCheck chk;
+  SLTradingCheck check() {
+    if (chk == null) { chk = new SLTradingCheck(); }
+    return chk;
+  }
+
+  << Match buyers and sellers for a commission and hold no inventory. Labor and
+     fixed costs are paid whether or not the item sells; platform fees and
+     chargeback losses arise only if it does. Almost no capital is tied up, so
+     return on cost can look enormous: labor and counterparty risk are the real
+     inputs. >>
+  SLTradingResult evaluate(double salePrice, double commissionRate,
+                           double saleProbability, double platformFeeRate,
+                           double laborCost, double fixedCosts,
+                           double chargebackProbability, double chargebackLoss,
+                           double daysToSell) {
+    SLTradingCheck c = check();
+    if (c.isPositive(salePrice) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isRate(commissionRate) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isProb(saleProbability) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isRate(platformFeeRate) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(laborCost) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(fixedCosts) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isProb(chargebackProbability) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(chargebackLoss) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isDays(daysToSell) == false) { return c.fail(c.rangeMessage()); }
+
+    double p = saleProbability;
+    double cost = laborCost + fixedCosts
+                + p * (platformFeeRate * salePrice
+                       + chargebackProbability * chargebackLoss);
+    return c.finish(cost, p * commissionRate * salePrice, daysToSell);
+  }
+}

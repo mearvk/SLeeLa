@@ -61,6 +61,30 @@ def _capture_pipes(pairs, limit: int, processes: Sequence[subprocess.Popen]):
 def _join_capture(threads) -> None:
     for thread in threads: thread.join()
 
+_SCRIPT_DIR = pathlib.Path(__file__).resolve().parent
+
+def _find_sleela(explicit: str | None) -> str | None:
+    """Resolve the sleela CLI: --sleela, $SLEELA, $SLEELA_BIN, PATH, then the
+    repository build (impl/build/sleela) beside this script."""
+    for candidate in (explicit, os.environ.get("SLEELA"), os.environ.get("SLEELA_BIN"), "sleela"):
+        if candidate:
+            resolved = shutil.which(candidate)
+            if resolved: return resolved
+    local = _SCRIPT_DIR.parent / "impl" / "build" / ("sleela.exe" if os.name == "nt" else "sleela")
+    return str(local) if local.is_file() and os.access(local, os.X_OK) else None
+
+def _native_include_dir(explicit: str | None) -> pathlib.Path | None:
+    """Directory holding native_loader.h for compiling generated @native plugins:
+    --native-include, $SLEELA_NATIVE_INCLUDE, the repository loader tree, or the
+    installed runtime include/ directory."""
+    candidates = [explicit, os.environ.get("SLEELA_NATIVE_INCLUDE"),
+                  _SCRIPT_DIR.parent / "os-level-support" / "loader",
+                  _SCRIPT_DIR.parent / "include"]
+    for candidate in candidates:
+        if candidate and (pathlib.Path(candidate) / "native_loader.h").is_file():
+            return pathlib.Path(candidate).resolve()
+    return None
+
 def _compiler(language: str, explicit: str | None) -> str:
     candidate = explicit or os.environ.get("CC" if language == "c" else "CXX")
     candidate = candidate or ("cl" if os.name == "nt" else ("cc" if language == "c" else "c++"))
@@ -135,8 +159,11 @@ def build(args: argparse.Namespace) -> int:
         print("native-drive: --language sleela requires a .sleela source file", file=sys.stderr); return EXIT_USAGE
     if language in {"c", "cpp"} and any(p.suffix.lower() == ".sleela" for p in sources):
         print("native-drive: SLeeLa source must use --language sleela", file=sys.stderr); return EXIT_USAGE
-    if language == "sleela" and args.kind == "shared":
-        print("native-drive: SLeeLa AOT shared-library output is not supported until native entry-point ABI emission exists", file=sys.stderr)
+    if args.kind is None:
+        args.kind = "shared" if language == "sleela" else "executable"
+    if language == "sleela" and args.kind != "shared":
+        print("native-drive: sleela aot --emit produces a typed-ABI @native method plugin, not a program; "
+              "build it with --kind shared (the default for .sleela input)", file=sys.stderr)
         return EXIT_USAGE
     output = pathlib.Path(args.output).expanduser().resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -147,8 +174,11 @@ def build(args: argparse.Namespace) -> int:
             temp_dir = pathlib.Path(temp_name)
             compile_source = source
             if language == "sleela":
-                sleela = shutil.which(args.sleela or os.environ.get("SLEELA", "sleela"))
+                sleela = _find_sleela(args.sleela)
                 if not sleela: raise RuntimeError("sleela CLI not found; set SLEELA or pass --sleela")
+                include_dir = _native_include_dir(args.native_include)
+                if not include_dir:
+                    raise RuntimeError("native_loader.h not found; set SLEELA_NATIVE_INCLUDE or pass --native-include")
                 emitted = _run_checked([sleela, "aot", "--emit", str(source)], args.timeout)
                 if emitted.returncode:
                     sys.stderr.write(emitted.stderr); return EXIT_BUILD
@@ -165,6 +195,8 @@ def build(args: argparse.Namespace) -> int:
             is_msvc = os.name == "nt" and pathlib.Path(compiler).name.lower() in {"cl", "cl.exe"}
             if is_msvc:
                 command = [compiler, "/nologo", "/O2"]
+                if language == "sleela":
+                    command.extend(["/DSL_NATIVE_PLUGIN_BUILD", f"/I{include_dir}"])
                 command.append("/std:c11" if cc_language == "c" else "/std:c++17")
                 if args.kind == "shared":
                     command.extend(["/LD", *compile_inputs, "/link", f"/OUT:{staged}"])
@@ -173,6 +205,8 @@ def build(args: argparse.Namespace) -> int:
             else:
                 standard = "-std=c11" if cc_language == "c" else "-std=c++17"
                 command = [compiler, standard, "-O2"]
+                if language == "sleela":
+                    command.extend(["-DSL_NATIVE_PLUGIN_BUILD", f"-I{include_dir}"])
                 if args.kind == "shared":
                     command.extend(["-shared"] if os.name == "nt" else
                                    (["-dynamiclib", "-fPIC"] if sys.platform == "darwin" else ["-shared", "-fPIC"]))
@@ -293,7 +327,7 @@ def pipe_processes(args: argparse.Namespace) -> int:
 
 def xclass_command(args: argparse.Namespace) -> int:
     """Use the production SecureJDK .xclass loader already shipped by sleela."""
-    sleela = shutil.which(args.sleela or os.environ.get("SLEELA", "sleela"))
+    sleela = _find_sleela(args.sleela)
     if not sleela:
         print("native-drive xclass: sleela CLI not found; set SLEELA or pass --sleela", file=sys.stderr)
         return EXIT_RUN
@@ -315,12 +349,14 @@ def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(prog="native-drive",
         description="Build C/C++ or supported @native SLeeLa source and run processes without a shell.")
     sub = root.add_subparsers(dest="action", required=True)
-    b = sub.add_parser("build", help="compile C, C++, or SLeeLa AOT output into an executable")
+    b = sub.add_parser("build", help="compile C/C++ into an executable or shared library, or @native SLeeLa methods into a typed-ABI plugin")
     b.add_argument("sources", nargs="+"); b.add_argument("-o", "--output", required=True)
     b.add_argument("--language", choices=("auto", "c", "cpp", "sleela"), default="auto")
-    b.add_argument("--kind", choices=("executable", "shared"), default="executable")
+    b.add_argument("--kind", choices=("executable", "shared"), default=None,
+                   help="output kind; default executable for C/C++, shared (typed-ABI plugin) for .sleela")
     b.add_argument("--require-sleela-abi", action="store_true", help="verify required SLeeLa ABI export symbols before publishing; the loader checks the ABI version value")
     b.add_argument("--compiler"); b.add_argument("--sleela")
+    b.add_argument("--native-include", help="directory containing native_loader.h (for .sleela @native plugins)")
     b.add_argument("--timeout", type=_positive_float, default=120.0)
     b.add_argument("--compiler-arg", action="append", default=[], help="extra compiler/linker argv item; repeat as needed")
     b.set_defaults(handler=build)

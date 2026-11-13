@@ -1,0 +1,125 @@
+<< lib/java/java/util/StringTokenizer.sleela
+   SLeeLa Java 28 source envelope.
+   Definition: SLeeLa source declaration for the Java type java.util.StringTokenizer.
+   Java behavior is supplied through the SLeeLa Java conformance boundary. >>
+#sleela 3.0
+material;
+
+class StringTokenizer {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.1.0";
+  int metaId = 8675;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-29";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "OpenJDK (JDK 28 API)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  String javaType = "java.util.StringTokenizer";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.util.StringTokenizer members (procedural implementation in SLeeLa) ---- >
+  << Splits a string into tokens at delimiter characters. With returnDelims
+     false a run of delimiters separates tokens and is skipped; with true each
+     delimiter is itself a one-character token. nextToken(delim) replaces the
+     delimiter set for this and every later call. >>
+  String text;
+  String delimiters;
+  int currentPosition;
+  int maxPosition;
+  boolean retDelims;
+
+  public StringTokenizer(java.lang.String str, java.lang.String delim, boolean returnDelims) {
+    if (str == null) { throw new NullPointerException(); }
+    this.text = str;
+    this.delimiters = delim;
+    this.currentPosition = 0;
+    this.maxPosition = str.length();
+    this.retDelims = returnDelims;
+  }
+  public StringTokenizer(java.lang.String str, java.lang.String delim) { this(str, delim, false); }
+  public StringTokenizer(java.lang.String str) { this(str, " \t\n\r\f", false); }
+
+  boolean isDelimiter(int c) {
+    if (this.delimiters == null) { throw new NullPointerException(); }
+    return this.delimiters.indexOf(c) >= 0;
+  }
+  int skipDelimiters(int start) {
+    int position = start;
+    if (this.retDelims) { return position; }
+    while (position < this.maxPosition && isDelimiter(this.text.charAt(position))) { position = position + 1; }
+    return position;
+  }
+  int scanToken(int start) {
+    int position = start;
+    while (position < this.maxPosition && !isDelimiter(this.text.charAt(position))) { position = position + 1; }
+    if (this.retDelims && start == position && position < this.maxPosition) {
+      position = position + 1;
+    }
+    return position;
+  }
+
+  public boolean hasMoreTokens() { return skipDelimiters(this.currentPosition) < this.maxPosition; }
+  public java.lang.String nextToken() {
+    int start = skipDelimiters(this.currentPosition);
+    if (start >= this.maxPosition) { throw new NoSuchElementException(); }
+    this.currentPosition = scanToken(start);
+    return this.text.substring(start, this.currentPosition);
+  }
+  public java.lang.String nextToken(java.lang.String delim) {
+    this.delimiters = delim;
+    return nextToken();
+  }
+  public boolean hasMoreElements() { return hasMoreTokens(); }
+  public java.lang.Object nextElement() { return nextToken(); }
+  public int countTokens() {
+    int count = 0;
+    int position = this.currentPosition;
+    while (position < this.maxPosition) {
+      position = skipDelimiters(position);
+      if (position >= this.maxPosition) { return count; }
+      position = scanToken(position);
+      count = count + 1;
+    }
+    return count;
+  }
+  < ---- END java implementation ---- >
+
+}

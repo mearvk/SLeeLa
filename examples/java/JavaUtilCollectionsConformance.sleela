@@ -1,0 +1,143 @@
+<< examples/java/JavaUtilCollectionsConformance.sleela
+   SLeeLa Java SE/JDK 28 conformance program.
+   Definition: Exercises the SLeeLa implementation of java.util lists, deques, maps, sets and priority queue
+   under lib/java and prints one FAIL line per mismatch, then a summary line.
+   Expected values are the outputs of the Java SE 28 API for the same calls. >>
+#sleela 3.0
+material;
+import java.jdk-25.java.lang;
+import java.jdk-25.java.util;
+class JavaUtilCollectionsConformance {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class conformance program. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-10";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-10";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+  String getDate() { return metaDate; }
+  String getCopyright() { return metaCopyright; }
+  String getTrademark() { return metaTrademark; }
+  String getCorporation() { return metaCorporation; }
+  String getOrigin() { return metaOrigin; }
+  String getBirthDate() { return metaBirthDate; }
+  int getScienceRating() { return metaScienceRating; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+
+
+  int bad = 0;
+  void eq(String name, String got, String want) {
+    if (got != want) { bad = bad + 1; print("FAIL " + name + " got=[" + got + "] want=[" + want + "]"); }
+  }
+  void main() {
+    ArrayList a = new ArrayList();
+    a.add("b"); a.add("a"); a.add("c"); a.add(3); a.addAt(0, "z");
+    eq("list", a.toString(), "[z, b, a, c, 3]");
+    eq("get", "" + a.get(1) + a.size() + a.indexOf("c") + a.contains(3) + a.contains("q"), "b53truefalse");
+    a.remove(4);
+    a.removeObject("z");
+    a.sort(null);
+    eq("sorted", a.toString(), "[a, b, c]");
+    a.set(1, "B");
+    eq("set", a.toString() + a.getFirst() + a.getLast(), "[a, B, c]ac");
+    ArrayList n = new ArrayList();
+    n.add(5); n.add(-1); n.add(2.5); n.add(10);
+    n.sort(null);
+    eq("numsort", n.toString(), "[-1, 2.5, 5, 10]");
+    eq("hash", "" + n.hashCode() + "," + a.reversed().toString(), "" + n.hashCode() + ",[c, B, a]");
+    ArrayList ab = new ArrayList();
+    ab.add("a"); ab.add("b");
+    eq("listHash", "" + ab.hashCode(), "4066");
+    Iterator it = a.iterator();
+    String seen = "";
+    while (it.hasNext()) { seen = seen + it.next(); }
+    eq("iter", seen, "aBc");
+    boolean oob = false;
+    try { a.get(7); } catch (Any e) { oob = e instanceof IndexOutOfBoundsException; IndexOutOfBoundsException x = (IndexOutOfBoundsException) e; eq("oobMsg", x.getMessage(), "Index 7 out of bounds for length 3"); }
+    if (!oob) { bad = bad + 1; print("FAIL oob"); }
+    LinkedList q = new LinkedList();
+    q.offer(1); q.offer(2); q.push(0); q.offerLast(3);
+    eq("deque", q.toString() + q.peekFirst() + q.peekLast(), "[0, 1, 2, 3]03");
+    eq("poll", "" + q.poll() + q.pollLast() + q.size(), "032");
+    ArrayDeque d = new ArrayDeque();
+    int i = 0;
+    while (i < 50) { d.addLast(i); i = i + 1; }
+    while (i < 60) { d.addFirst(i); i = i + 1; }
+    eq("adeque", "" + d.size() + "," + d.peekFirst() + "," + d.peekLast() + "," + d.removeFirst() + "," + d.removeLast(), "60,59,49,59,49");
+    boolean npe = false;
+    try { d.add(null); } catch (Any e2) { npe = e2 instanceof NullPointerException; }
+    if (!npe) { bad = bad + 1; print("FAIL deque null"); }
+    Stack s = new Stack();
+    s.push("x"); s.push("y"); s.push("z");
+    eq("stack", "" + s.peek() + s.pop() + s.search("x") + s.size() + s.empty() + s.toString(), "zz22false[x, y]");
+    boolean ese = false;
+    Stack e0 = new Stack();
+    try { e0.pop(); } catch (Any e3) { ese = e3 instanceof EmptyStackException; }
+    if (!ese) { bad = bad + 1; print("FAIL empty stack"); }
+    HashMap m = new HashMap();
+    m.put("one", 1); m.put("two", 2); m.put("three", 3); m.put(42, "answer");
+    eq("map", m.toString(), "{one=1, two=2, three=3, 42=answer}");
+    eq("mapget", "" + m.get("two") + m.get(42) + m.get("none") + m.getOrDefault("x", 9) + m.containsKey("one") + m.containsValue(3), "2answernull9truetrue");
+    eq("mapput", "" + m.put("one", 11) + m.get("one") + m.size(), "1114");
+    m.remove("two");
+    eq("mapremove", m.toString() + m.size(), "{one=11, three=3, 42=answer}3");
+    eq("keyset", m.keySet().toString() + m.values().toString(), "[one, three, 42][11, 3, answer]");
+    HashMap big = new HashMap();
+    int k = 0;
+    while (k < 300) { big.put("k" + k, k * k); k = k + 1; }
+    k = 0;
+    int okc = 0;
+    while (k < 300) { if (big.get("k" + k) == k * k) { okc = okc + 1; } k = k + 1; }
+    k = 0;
+    while (k < 300) { if (k % 2 == 0) { big.remove("k" + k); } k = k + 1; }
+    eq("bigmap", "" + okc + "," + big.size() + "," + big.get("k3") + "," + big.get("k4"), "300,150,9,null");
+    HashMap h2 = new HashMap();
+    h2.put("a", 1);
+    eq("maphash", "" + h2.hashCode(), "96");
+    ArrayList es = m.entrySet();
+    KeyValueHolder e1 = (KeyValueHolder) es.get(0);
+    eq("entry", "" + e1.getKey() + "=" + e1.getValue() + " " + e1.toString(), "one=11 one=11");
+    HashSet hs = new HashSet();
+    hs.add("x"); hs.add("y"); hs.add("x"); hs.add(1);
+    eq("set", hs.toString() + hs.size() + hs.contains("y") + hs.remove("y") + hs.contains("y"), "[x, y, 1]3truetruefalse");
+    TreeMap tm = new TreeMap();
+    tm.put("pear", 3); tm.put("apple", 1); tm.put("fig", 2); tm.put("zucchini", 4);
+    eq("treemap", tm.toString() + tm.firstKey() + tm.lastKey(), "{apple=1, fig=2, pear=3, zucchini=4}applezucchini");
+    eq("nav", "" + tm.floorKey("grape") + tm.ceilingKey("grape") + tm.higherKey("pear") + tm.lowerKey("apple"), "figpearzucchininull");
+    eq("headtail", tm.headMap("pear").toString() + tm.tailMap("pear").toString(), "{apple=1, fig=2}{pear=3, zucchini=4}");
+    TreeSet ts = new TreeSet();
+    ts.add(5); ts.add(1); ts.add(3); ts.add(9); ts.add(3);
+    eq("treeset", ts.toString() + ts.first() + ts.last() + ts.floor(4) + ts.higher(5) + ts.size(), "[1, 3, 5, 9]19394");
+    eq("treeset2", "" + ts.size(), "4");
+    PriorityQueue pq = new PriorityQueue();
+    pq.add(5); pq.add(1); pq.add(8); pq.add(3); pq.add(2);
+    String order = "";
+    while (!pq.isEmpty()) { order = order + pq.poll() + " "; }
+    eq("pq", order, "1 2 3 5 8 ");
+    PriorityQueue ps = new PriorityQueue();
+    ps.add("delta"); ps.add("alpha"); ps.add("charlie"); ps.add("bravo");
+    eq("pqs", "" + ps.poll() + ps.poll() + ps.peek(), "alphabravocharlie");
+    Vector v = new Vector();
+    v.addElement("p"); v.insertElementAt("q", 0);
+    eq("vector", v.toString() + v.firstElement() + v.elementAt(1), "[q, p]qp");
+    ArrayList u = new ArrayList();
+    u.add("a"); u.add("b");
+    eq("equals", "" + u.equals(ab) + u.equals(a), "truefalse");
+    a.addAll(ts);
+    eq("addAll", a.toString(), "[a, B, c, 1, 3, 5, 9]");
+    LinkedHashMap lm = new LinkedHashMap();
+    lm.put("z", 1); lm.put("a", 2);
+    eq("lhm", lm.toString() + lm.keySet().toString(), "{z=1, a=2}[z, a]");
+    print("failures=" + bad);
+  }
+}

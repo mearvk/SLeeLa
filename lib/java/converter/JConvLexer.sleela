@@ -1,0 +1,596 @@
+<< lib/java/converter/JConvLexer.sleela
+   Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
+   Definition: splits one Java compilation unit into tokens held in parallel
+   arrays. Literal tokens are rewritten to their SLeeLa spelling as they are
+   read, so later passes never see a Java-only literal form:
+   - string literals and text blocks become SLeeLa string literals with the
+     Java escapes decoded and re-encoded (text blocks lose incidental
+     indentation as JLS 3.10.6 states);
+   - a char literal becomes its integer code, with a one-character string
+     literal kept beside it for string concatenation;
+   - octal, hexadecimal and binary int literals become decimal, wrapped to the
+     Java int range (0xFFFFFFFF is -1, as in Java);
+   - comments become angle-bracket block comments with any inner closing pair
+     separated, so the comment cannot end early.
+   Token kinds: 1 identifier or keyword, 2 number, 3 string, 4 char, 5 operator,
+   6 comment. >>
+#sleela 3.0
+material;
+
+class JConvLexer {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full record: a library-family class of the Java container. The lexical
+     rules follow JLS chapter 3 (Java SE 28). >>
+  String metaVersion = "0.3.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "The Java Language Specification, Java SE 28 Edition, chapter 3";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  JConvSource src;
+  JConvRules rules;
+  < token arrays: kind, SLeeLa text, source line, flag (a rule 5 reason code or 0) >
+  int[] kinds;
+  String[] texts;
+  int[] lines;
+  int[] flags;
+  < source offsets of each token, for keeping original Java text >
+  int[] begins;
+  int[] ends;
+  < char tokens: the one-character string literal form >
+  String[] alts;
+  int n;
+  int line;
+  < scratch code units for literal decoding >
+  int[] buf;
+  int bufN;
+
+  JConvLexer(JConvRules r) {
+    this.rules = r;
+    this.n = 0;
+    this.line = 1;
+    this.bufN = 0;
+    this.buf = new int[256];
+    allocate(1024);
+  }
+
+  void allocate(int cap) {
+    this.kinds = new int[cap];
+    this.texts = new String[cap];
+    this.lines = new int[cap];
+    this.flags = new int[cap];
+    this.begins = new int[cap];
+    this.ends = new int[cap];
+    this.alts = new String[cap];
+  }
+
+  void grow() {
+    int cap = arrayLength(this.kinds) * 2;
+    int[] k2 = new int[cap];
+    String[] t2 = new String[cap];
+    int[] l2 = new int[cap];
+    int[] f2 = new int[cap];
+    int[] b2 = new int[cap];
+    int[] e2 = new int[cap];
+    String[] a2 = new String[cap];
+    int i = 0;
+    while (i < this.n) {
+      k2[i] = this.kinds[i];
+      t2[i] = this.texts[i];
+      l2[i] = this.lines[i];
+      f2[i] = this.flags[i];
+      b2[i] = this.begins[i];
+      e2[i] = this.ends[i];
+      a2[i] = this.alts[i];
+      i = i + 1;
+    }
+    this.kinds = k2;
+    this.texts = t2;
+    this.lines = l2;
+    this.flags = f2;
+    this.begins = b2;
+    this.ends = e2;
+    this.alts = a2;
+  }
+
+  void push(int kind, String text, int line, int flag, int b, int e) {
+    if (this.n >= arrayLength(this.kinds)) { grow(); }
+    this.kinds[this.n] = kind;
+    this.texts[this.n] = text;
+    this.lines[this.n] = line;
+    this.flags[this.n] = flag;
+    this.begins[this.n] = b;
+    this.ends[this.n] = e;
+    this.alts[this.n] = null;
+    this.n = this.n + 1;
+  }
+
+  < ---- character classes ---- >
+  boolean isIdStart(int c) {
+    return (c >= 97 && c <= 122) || (c >= 65 && c <= 90) || c == 95 || c == 36;
+  }
+  boolean isIdPart(int c) { return isIdStart(c) || (c >= 48 && c <= 57); }
+  boolean isDigit(int c) { return c >= 48 && c <= 57; }
+  boolean isHexDigit(int c) { return isDigit(c) || (c >= 97 && c <= 102) || (c >= 65 && c <= 70); }
+  int hexValue(int c) {
+    if (isDigit(c)) { return c - 48; }
+    if (c >= 97 && c <= 102) { return c - 87; }
+    if (c >= 65 && c <= 70) { return c - 55; }
+    return 0;
+  }
+
+  < ---- scratch buffer of decoded code units ---- >
+  void bufReset() { this.bufN = 0; }
+  void bufAdd(int c) {
+    if (this.bufN >= arrayLength(this.buf)) {
+      int[] b2 = new int[arrayLength(this.buf) * 2];
+      int i = 0;
+      while (i < this.bufN) { b2[i] = this.buf[i]; i = i + 1; }
+      this.buf = b2;
+    }
+    this.buf[this.bufN] = c;
+    this.bufN = this.bufN + 1;
+  }
+
+  < the scratch buffer as a SLeeLa string literal; 0 on success, 16 on an unpaired surrogate >
+  int encodeError;
+  String encodeBuf() {
+    this.encodeError = 0;
+    String out = "\"";
+    String run = "";
+    int runLen = 0;
+    int i = 0;
+    while (i < this.bufN) {
+      int c = this.buf[i];
+      String piece = "";
+      if (c == 34) { piece = "\\\""; }
+      else if (c == 92) { piece = "\\\\"; }
+      else if (c == 10) { piece = "\\n"; }
+      else if (c == 9) { piece = "\\t"; }
+      else if (c == 13) { piece = "\\r"; }
+      else if (c == 8) { piece = "\\b"; }
+      else if (c == 12) { piece = "\\f"; }
+      else if (c == 0) { piece = "\\0"; }
+      else if (c >= 32 && c < 127) { piece = this.rules.charText(c); }
+      else if (c >= 55296 && c <= 56319 && i + 1 < this.bufN && this.buf[i + 1] >= 56320 && this.buf[i + 1] <= 57343) {
+        < a surrogate pair is written as the character itself in UTF-8 >
+        piece = javaStringToUtf8(javaStringConcat(javaStringFromCodeUnit(c), javaStringFromCodeUnit(this.buf[i + 1])));
+        i = i + 1;
+      }
+      else if (c >= 55296 && c <= 57343) { this.encodeError = 16; piece = "?"; }
+      else { piece = "\\u" + hex4(c); }
+      run = run + piece;
+      runLen = runLen + 1;
+      if (runLen > 2048) { out = out + run; run = ""; runLen = 0; }
+      i = i + 1;
+    }
+    return out + run + "\"";
+  }
+
+  String hex4(int v) {
+    String digits = "0123456789ABCDEF";
+    String s = "";
+    int k = 0;
+    int x = v;
+    while (k < 4) {
+      s = digits.substring(x % 16, x % 16 + 1) + s;
+      x = x / 16;
+      k = k + 1;
+    }
+    return s;
+  }
+
+  < ---- escapes (JLS 3.10.7); returns the index after the escape and adds the unit to buf ---- >
+  int decodeEscape(int i) {
+    int c = this.src.at(i + 1);
+    if (c == 98) { bufAdd(8); return i + 2; }
+    if (c == 116) { bufAdd(9); return i + 2; }
+    if (c == 110) { bufAdd(10); return i + 2; }
+    if (c == 102) { bufAdd(12); return i + 2; }
+    if (c == 114) { bufAdd(13); return i + 2; }
+    if (c == 115) { bufAdd(32); return i + 2; }
+    if (c == 34 || c == 39 || c == 92) { bufAdd(c); return i + 2; }
+    if (c == 117) {
+      int j = i + 1;
+      while (this.src.at(j) == 117) { j = j + 1; }
+      int v = 0;
+      int k = 0;
+      while (k < 4) { v = v * 16 + hexValue(this.src.at(j + k)); k = k + 1; }
+      bufAdd(v);
+      return j + 4;
+    }
+    if (c >= 48 && c <= 55) {
+      < octal escape: up to three digits, at most 377 >
+      int v = c - 48;
+      int j = i + 2;
+      int lim = 2;
+      if (c > 51) { lim = 1; }
+      while (lim > 0 && this.src.at(j) >= 48 && this.src.at(j) <= 55) {
+        v = v * 8 + (this.src.at(j) - 48);
+        j = j + 1;
+        lim = lim - 1;
+      }
+      bufAdd(v);
+      return j;
+    }
+    bufAdd(c);
+    return i + 2;
+  }
+
+  < ---- the lexer ---- >
+  void lex(JConvSource s) {
+    this.src = s;
+    this.n = 0;
+    this.line = 1;
+    int i = 0;
+    int len = s.length;
+    while (i < len) {
+      int c = s.at(i);
+      if (c == 10) { this.line = this.line + 1; i = i + 1; }
+      else if (c == 32 || c == 9 || c == 13 || c == 12) { i = i + 1; }
+      else if (c == 47 && s.at(i + 1) == 47) { i = lexLineComment(i); }
+      else if (c == 47 && s.at(i + 1) == 42) { i = lexBlockComment(i); }
+      else if (isIdStart(c)) { i = lexIdent(i); }
+      else if (isDigit(c) || (c == 46 && isDigit(s.at(i + 1)))) { i = lexNumber(i); }
+      else if (c == 34 && s.at(i + 1) == 34 && s.at(i + 2) == 34) { i = lexTextBlock(i); }
+      else if (c == 34) { i = lexString(i); }
+      else if (c == 39) { i = lexChar(i); }
+      else { i = lexOperator(i); }
+    }
+  }
+
+  int lexIdent(int i) {
+    int j = i;
+    while (isIdPart(this.src.at(j))) { j = j + 1; }
+    push(1, this.src.slice(i, j), this.line, 0, i, j);
+    return j;
+  }
+
+  < a comment line with the Javadoc gutter removed and closing pairs separated >
+  String commentLine(int a, int b) {
+    int i = a;
+    while (i < b && (this.src.at(i) == 32 || this.src.at(i) == 9)) { i = i + 1; }
+    if (i < b && this.src.at(i) == 42 && this.src.at(i + 1) != 47) {
+      i = i + 1;
+      if (i < b && this.src.at(i) == 32) { i = i + 1; }
+    }
+    int e = b;
+    while (e > i && (this.src.at(e - 1) == 32 || this.src.at(e - 1) == 9 || this.src.at(e - 1) == 13)) { e = e - 1; }
+    String t = this.src.slice(i, e);
+    < repeat: a run such as >>> leaves a pair after one pass >
+    while (t.indexOf(">>") >= 0) { t = t.replace(">>", "> >"); }
+    while (t.indexOf("<<") >= 0) { t = t.replace("<<", "< <"); }
+    return t;
+  }
+
+  int lexLineComment(int i) {
+    int j = i + 2;
+    while (j < this.src.length && this.src.at(j) != 10) { j = j + 1; }
+    String body = commentLine(i + 2, j);
+    push(6, "<< " + body + " >>", this.line, this.line, i, j);
+    return j;
+  }
+
+  int lexBlockComment(int i) {
+    int startLine = this.line;
+    int j = i + 2;
+    if (this.src.at(j) == 42 && this.src.at(j + 1) != 47) { j = j + 1; }
+    int bodyStart = j;
+    while (j < this.src.length && !(this.src.at(j) == 42 && this.src.at(j + 1) == 47)) {
+      if (this.src.at(j) == 10) { this.line = this.line + 1; }
+      j = j + 1;
+    }
+    int bodyEnd = j;
+    int after = j + 2;
+    if (after > this.src.length) { after = this.src.length; }
+    < rebuild the comment line by line >
+    String text = "";
+    int lineCount = 0;
+    int a = bodyStart;
+    int k = bodyStart;
+    while (k <= bodyEnd) {
+      if (k == bodyEnd || this.src.at(k) == 10) {
+        String part = commentLine(a, k);
+        if (!(part == "" && (lineCount == 0 || k == bodyEnd))) {
+          if (lineCount > 0) { text = text + "\n   "; }
+          text = text + part;
+          lineCount = lineCount + 1;
+        }
+        a = k + 1;
+      }
+      k = k + 1;
+    }
+    < the flag of a comment token holds its last source line >
+    push(6, "<< " + text + " >>", startLine, this.line, i, after);
+    return after;
+  }
+
+  int lexString(int i) {
+    bufReset();
+    int j = i + 1;
+    while (j < this.src.length && this.src.at(j) != 34 && this.src.at(j) != 10) {
+      if (this.src.at(j) == 92) { j = decodeEscape(j); }
+      else { bufAdd(this.src.at(j)); j = j + 1; }
+    }
+    String lit = encodeBuf();
+    push(3, lit, this.line, this.encodeError, i, j + 1);
+    return j + 1;
+  }
+
+  int lexChar(int i) {
+    bufReset();
+    int j = i + 1;
+    if (this.src.at(j) == 92) { j = decodeEscape(j); }
+    else { bufAdd(this.src.at(j)); j = j + 1; }
+    while (j < this.src.length && this.src.at(j) != 39 && this.src.at(j) != 10) { j = j + 1; }
+    int v = 0;
+    if (this.bufN > 0) { v = this.buf[0]; }
+    String alt = encodeBuf();
+    if (this.encodeError != 0) { alt = "\"?\""; }
+    push(4, charLiteral(v), this.line, 0, i, j + 1);
+    this.alts[this.n - 1] = alt;
+    return j + 1;
+  }
+
+  < the SLeeLa 3.1 character literal for code unit v (SLEELA.syntax 44.2); a surrogate stays its integer code >
+  String charLiteral(int v) {
+    if (v == 39) { return "'\\''"; }
+    if (v == 92) { return "'\\\\'"; }
+    if (v == 10) { return "'\\n'"; }
+    if (v == 9) { return "'\\t'"; }
+    if (v == 13) { return "'\\r'"; }
+    if (v == 8) { return "'\\b'"; }
+    if (v == 12) { return "'\\f'"; }
+    if (v == 0) { return "'\\0'"; }
+    if (v >= 32 && v < 127) { return "'" + this.rules.charText(v) + "'"; }
+    if (v >= 55296 && v <= 57343) { return "" + v; }
+    return "'\\u" + hex4(v) + "'";
+  }
+
+  << Text block (JLS 3.10.6): content after the line terminator of the opening
+     delimiter, incidental indentation removed (the closing delimiter line
+     counts), trailing spaces removed, escapes decoded last. >>
+  int lexTextBlock(int i) {
+    int startLine = this.line;
+    int j = i + 3;
+    while (this.src.at(j) != 10 && j < this.src.length) { j = j + 1; }
+    j = j + 1;
+    int contentStart = j;
+    while (j < this.src.length && !(this.src.at(j) == 34 && this.src.at(j + 1) == 34 && this.src.at(j + 2) == 34 && this.src.at(j - 1) != 92)) {
+      if (this.src.at(j) == 10) { this.line = this.line + 1; }
+      j = j + 1;
+    }
+    int contentEnd = j;
+    < split into lines: record starts and ends >
+    int[] ls = new int[64];
+    int[] le = new int[64];
+    int nl = 0;
+    int a = contentStart;
+    int k = contentStart;
+    while (k <= contentEnd) {
+      if (k == contentEnd || this.src.at(k) == 10) {
+        if (nl >= arrayLength(ls)) {
+          int[] ls2 = new int[nl * 2];
+          int[] le2 = new int[nl * 2];
+          int q = 0;
+          while (q < nl) { ls2[q] = ls[q]; le2[q] = le[q]; q = q + 1; }
+          ls = ls2;
+          le = le2;
+        }
+        int e = k;
+        if (e > a && this.src.at(e - 1) == 13) { e = e - 1; }
+        ls[nl] = a;
+        le[nl] = e;
+        nl = nl + 1;
+        a = k + 1;
+      }
+      k = k + 1;
+    }
+    < the last line is the text before the closing delimiter >
+    boolean lastBlank = true;
+    int q = ls[nl - 1];
+    while (q < le[nl - 1]) {
+      if (this.src.at(q) != 32 && this.src.at(q) != 9) { lastBlank = false; }
+      q = q + 1;
+    }
+    int minIndent = 1000000;
+    int li = 0;
+    while (li < nl) {
+      int p = ls[li];
+      while (p < le[li] && (this.src.at(p) == 32 || this.src.at(p) == 9)) { p = p + 1; }
+      boolean blank = (p == le[li]);
+      if (!blank || li == nl - 1) {
+        int ind = p - ls[li];
+        if (ind < minIndent) { minIndent = ind; }
+      }
+      li = li + 1;
+    }
+    if (minIndent == 1000000) { minIndent = 0; }
+    bufReset();
+    int lastContent = nl;
+    if (lastBlank) { lastContent = nl - 1; }
+    li = 0;
+    while (li < lastContent) {
+      int p = ls[li] + minIndent;
+      int e = le[li];
+      while (e > ls[li] && (this.src.at(e - 1) == 32 || this.src.at(e - 1) == 9)) { e = e - 1; }
+      while (p < e) {
+        if (this.src.at(p) == 92 && this.src.at(p + 1) == 10) { p = e; }
+        else if (this.src.at(p) == 92 && p + 1 >= e) { p = e; }
+        else if (this.src.at(p) == 92) { p = decodeEscape(p); }
+        else { bufAdd(this.src.at(p)); p = p + 1; }
+      }
+      boolean joined = (le[li] > ls[li] && this.src.at(le[li] - 1) == 92);
+      if (li < lastContent - 1 || lastBlank) {
+        if (!joined) { bufAdd(10); }
+      }
+      li = li + 1;
+    }
+    String lit = encodeBuf();
+    push(3, lit, startLine, this.encodeError, i, contentEnd + 3);
+    return contentEnd + 3;
+  }
+
+  << Numbers. Underscores are removed. A hexadecimal, octal or binary literal
+     is written in decimal, wrapped to the int or long range as Java reads it.
+     A leading or trailing decimal point gets its zero. >>
+  int lexNumber(int i) {
+    int j = i;
+    int c0 = this.src.at(i);
+    int c1 = this.src.at(i + 1);
+    if (c0 == 48 && (c1 == 120 || c1 == 88)) { return lexRadix(i, i + 2, 16); }
+    if (c0 == 48 && (c1 == 98 || c1 == 66)) { return lexRadix(i, i + 2, 2); }
+    < decimal or octal >
+    String digits = "";
+    boolean isFloat = false;
+    while (isDigit(this.src.at(j)) || this.src.at(j) == 95) {
+      if (this.src.at(j) != 95) { digits = digits + this.rules.charText(this.src.at(j)); }
+      j = j + 1;
+    }
+    String text = digits;
+    int digEnd = j;
+    if (this.src.at(j) == 46 && isDigit(this.src.at(j + 1))) {
+      isFloat = true;
+      j = j + 1;
+      String frac = "";
+      while (isDigit(this.src.at(j)) || this.src.at(j) == 95) {
+        if (this.src.at(j) != 95) { frac = frac + this.rules.charText(this.src.at(j)); }
+        j = j + 1;
+      }
+      if (text == "") { text = "0"; }
+      text = text + "." + frac;
+    } else if (this.src.at(j) == 46 && !isIdStart(this.src.at(j + 1))) {
+      isFloat = true;
+      j = j + 1;
+      text = text + ".0";
+    }
+    if (this.src.at(j) == 101 || this.src.at(j) == 69) {
+      isFloat = true;
+      if (text.indexOf(".") < 0) { text = text + ".0"; }
+      text = text + "e";
+      j = j + 1;
+      if (this.src.at(j) == 43 || this.src.at(j) == 45) { text = text + this.rules.charText(this.src.at(j)); j = j + 1; }
+      while (isDigit(this.src.at(j))) { text = text + this.rules.charText(this.src.at(j)); j = j + 1; }
+    }
+    int sfx = this.src.at(j);
+    if (sfx == 102 || sfx == 70 || sfx == 100 || sfx == 68) {
+      isFloat = true;
+      if (text.indexOf(".") < 0 && text.indexOf("e") < 0) { text = text + ".0"; }
+      j = j + 1;
+      push(2, text, this.line, 0, i, j);
+      return j;
+    }
+    boolean isLong = (sfx == 76 || sfx == 108);
+    if (isLong) { j = j + 1; }
+    if (!isFloat && digits.length() > 1 && digits.substring(0, 1) == "0") {
+      < Java octal: rewrite through the radix path >
+      return finishRadix(i, j, i + 1, digEnd, 8, isLong);
+    }
+    if (isLong) { text = text + "L"; }
+    push(2, text, this.line, 0, i, j);
+    return j;
+  }
+
+  int lexRadix(int i, int digitsStart, int radix) {
+    int j = digitsStart;
+    boolean hexFloat = false;
+    while (isHexDigit(this.src.at(j)) || this.src.at(j) == 95 || (radix == 16 && this.src.at(j) == 46)) {
+      if (this.src.at(j) == 46) { hexFloat = true; }
+      j = j + 1;
+    }
+    if (radix == 16 && (this.src.at(j) == 112 || this.src.at(j) == 80)) {
+      hexFloat = true;
+      j = j + 1;
+      if (this.src.at(j) == 43 || this.src.at(j) == 45) { j = j + 1; }
+      while (isDigit(this.src.at(j))) { j = j + 1; }
+      if (this.src.at(j) == 102 || this.src.at(j) == 70 || this.src.at(j) == 100 || this.src.at(j) == 68) { j = j + 1; }
+    }
+    if (hexFloat) {
+      push(2, "0.0", this.line, 15, i, j);
+      return j;
+    }
+    int digitsEnd = j;
+    boolean isLong = (this.src.at(j) == 76 || this.src.at(j) == 108);
+    if (isLong) { j = j + 1; }
+    return finishRadix(i, j, digitsStart, digitsEnd, radix, isLong);
+  }
+
+  < value of the digits a .. b-1 in the given radix, wrapped to int or long; end is the token end >
+  int finishRadix(int i, int end, int a, int b, int radix, boolean isLong) {
+    long v = 0;
+    int k = a;
+    while (k < b) {
+      int c = this.src.at(k);
+      if (c != 95) { v = v * radix + hexValue(c); }
+      k = k + 1;
+    }
+    String text = "";
+    if (isLong) {
+      if (v == -9223372036854775807L - 1) { text = "(-9223372036854775807L - 1)"; }
+      else if (v < 0) { text = "(" + v + "L)"; }
+      else { text = "" + v + "L"; }
+    } else {
+      if (v >= 2147483648 && v <= 4294967295) { v = v - 4294967296; }
+      if (v < 0) { text = "(" + v + ")"; } else { text = "" + v; }
+    }
+    push(2, text, this.line, 0, i, end);
+    return end;
+  }
+
+  < operators and separators, longest match first >
+  int lexOperator(int i) {
+    int c = this.src.at(i);
+    int c1 = this.src.at(i + 1);
+    int c2 = this.src.at(i + 2);
+    int c3 = this.src.at(i + 3);
+    int w = 1;
+    if (c == 62 && c1 == 62 && c2 == 62 && c3 == 61) { w = 4; }
+    else if (c == 62 && c1 == 62 && c2 == 62) { w = 3; }
+    else if (c == 60 && c1 == 60 && c2 == 61) { w = 3; }
+    else if (c == 62 && c1 == 62 && c2 == 61) { w = 3; }
+    else if (c == 46 && c1 == 46 && c2 == 46) { w = 3; }
+    else if (c == 45 && c1 == 62) { w = 2; }
+    else if (c == 58 && c1 == 58) { w = 2; }
+    else if ((c == 43 && c1 == 43) || (c == 45 && c1 == 45)) { w = 2; }
+    else if ((c == 38 && c1 == 38) || (c == 124 && c1 == 124)) { w = 2; }
+    else if ((c == 60 && c1 == 60) || (c == 62 && c1 == 62)) { w = 2; }
+    else if (c1 == 61 && (c == 61 || c == 33 || c == 60 || c == 62 || c == 43 || c == 45 || c == 42 || c == 47 || c == 37 || c == 38 || c == 124 || c == 94)) { w = 2; }
+    String t = "";
+    int k = 0;
+    while (k < w) { t = t + this.rules.charText(this.src.at(i + k)); k = k + 1; }
+    push(5, t, this.line, 0, i, i + w);
+    return i + w;
+  }
+}

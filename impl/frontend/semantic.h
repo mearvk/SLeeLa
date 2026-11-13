@@ -8,6 +8,10 @@ namespace sleela {
 struct SemanticResult {
     std::vector<std::string> errors;
     std::vector<std::string> warnings;
+    // A method was called on a String while the java.lang.String method
+    // library (class JavaStringMethods) was not loaded; the driver loads it
+    // and re-runs analysis.
+    bool needsStringMethods = false;
     bool ok() const { return errors.empty(); }
 };
 // Preserve the original two-argument symbol for existing callers and objects.

@@ -1,0 +1,220 @@
+<< lib/java/JavaFormat.sleela
+   java.util.Formatter subset and String.join for the Java tier.
+   Definition: The converter (sleelactl java-convert) lowers String.format with a literal format
+   string, at conversion time, into a concatenation of these calls, one per conversion, so every
+   argument keeps its static Java type: %d dec, %x %X %o radix, %f fixed, %s text, with the flags
+   - 0 + , and space, a width and a precision. Rounding follows Java: HALF_UP on the shortest
+   decimal digits of the double. See lib/java/JAVA.SPEC.md. >>
+#sleela 3.0
+material;
+import java.jdk-28;
+
+class JavaFormat {
+  << Full descriptive record for a Java-tier support class. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "java.util.Formatter, Java SE 28 API Specification (format string syntax: %d %s %c %b %x %o %f %n %%)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  < Flag bits shared with the converter lowering of String.format. >
+  static final int LEFT = 1;
+  static final int ZERO = 2;
+  static final int PLUS = 4;
+  static final int COMMA = 8;
+  static final int SPACE = 16;
+
+  static String spaces(int n) {
+    String r = "";
+    for (int i = 0; i < n; i++) { r = r + " "; }
+    return r;
+  }
+
+  static String zeros(int n) {
+    String r = "";
+    for (int i = 0; i < n; i++) { r = r + "0"; }
+    return r;
+  }
+
+  < Pads s with spaces to width; LEFT puts the padding after s. >
+  static String fit(String s, int width, int flags) {
+    int n = width - s.length();
+    if (n <= 0) { return s; }
+    if ((flags & 1) != 0) { return s + spaces(n); }
+    return spaces(n) + s;
+  }
+
+  static String group(String digits) {
+    int n = digits.length();
+    String r = "";
+    for (int i = 0; i < n; i++) {
+      if (i > 0 && (n - i) % 3 == 0) { r = r + ","; }
+      r = r + digits.substring(i, i + 1);
+    }
+    return r;
+  }
+
+  < Sign, body and padding for a number; ZERO pads with zeros after the sign. >
+  static String signed(boolean neg, String body, int width, int flags) {
+    String sign = "";
+    if (neg) { sign = "-"; }
+    else if ((flags & 4) != 0) { sign = "+"; }
+    else if ((flags & 16) != 0) { sign = " "; }
+    String s = sign + body;
+    if ((flags & 2) != 0 && (flags & 1) == 0) {
+      int n = width - s.length();
+      if (n > 0) { return sign + zeros(n) + body; }
+      return s;
+    }
+    return fit(s, width, flags);
+  }
+
+  < %d for int, long, short and byte. >
+  static String dec(long v, int width, int flags) {
+    String t = "" + v;
+    boolean neg = t.charAt(0) == 45;
+    String digits = t;
+    if (neg) { digits = t.substring(1); }
+    if ((flags & 8) != 0) { digits = group(digits); }
+    return signed(neg, digits, width, flags);
+  }
+
+  static String digitChar(int n) { return "0123456789abcdef".substring(n, n + 1); }
+
+  < Unsigned digits of v in base 2^shift; bits is 8, 16, 32 or 64 (byte, short, int, long). >
+  static String radixDigits(long v, int bits, int shift) {
+    long x = v;
+    if (bits < 64) { x = v & ((1 << bits) - 1); }
+    if (x == 0) { return "0"; }
+    long mask = 15;
+    if (shift == 3) { mask = 7; }
+    String r = "";
+    int count = 0;
+    while (x != 0 && count < 64) {
+      int nib = (int) (x & mask);
+      r = digitChar(nib) + r;
+      x = x >>> shift;
+      count++;
+    }
+    return r;
+  }
+
+  < %x and %X (shift 4) and %o (shift 3) with Java two-complement text for negatives. >
+  static String radix(long v, int bits, int shift, boolean upper, int width, int flags) {
+    String d = radixDigits(v, bits, shift);
+    if (upper) { d = d.toUpperCase(); }
+    return signed(false, d, width, flags & 3);
+  }
+
+  static String incr(String num) {
+    int i = num.length() - 1;
+    String r = "";
+    boolean carry = true;
+    while (i >= 0) {
+      int c = num.charAt(i);
+      if (carry) {
+        if (c == 57) { r = "0" + r; }
+        else { r = digitChar(c + 1 - 48) + r; carry = false; }
+      } else {
+        r = num.substring(i, i + 1) + r;
+      }
+      i--;
+    }
+    if (carry) { r = "1" + r; }
+    return r;
+  }
+
+  static int parseExp(String s) {
+    boolean neg = false;
+    int i = 0;
+    if (s.charAt(0) == 45) { neg = true; i = 1; }
+    int v = 0;
+    while (i < s.length()) { v = v * 10 + (s.charAt(i) - 48); i++; }
+    if (neg) { return 0 - v; }
+    return v;
+  }
+
+  < %f: Java rounds the shortest decimal digits of the double (Double.toString) half up. >
+  static String fixed(double d, int prec, int width, int flags) {
+    if (d != d) { return fit("NaN", width, flags & 1); }
+    boolean neg = d < 0.0;
+    double a = d;
+    if (neg) { a = 0.0 - d; }
+    if (a > 1.7976931348623157E308) { return signed(neg, "Infinity", width, flags & 29); }
+    String t = Double.toString(a);
+    int ePos = t.indexOf("E");
+    String mant = t;
+    int exp = 0;
+    if (ePos >= 0) { mant = t.substring(0, ePos); exp = parseExp(t.substring(ePos + 1)); }
+    int dot = mant.indexOf(".");
+    String ip = mant.substring(0, dot);
+    String fp = mant.substring(dot + 1);
+    String digits = ip + fp;
+    int intLen = ip.length() + exp;
+    while (digits.length() > 1 && digits.charAt(0) == 48) { digits = digits.substring(1); intLen--; }
+    int keep = intLen + prec;
+    int n = digits.length();
+    String num = "0";
+    if (keep >= n) { num = digits + zeros(keep - n); }
+    else if (keep >= 0) {
+      boolean up = digits.charAt(keep) >= 53;
+      if (keep > 0) { num = digits.substring(0, keep); }
+      if (up) { num = incr(num); }
+    }
+    while (num.length() > 1 && num.charAt(0) == 48) { num = num.substring(1); }
+    while (num.length() <= prec) { num = "0" + num; }
+    String whole = num.substring(0, num.length() - prec);
+    String frac = num.substring(num.length() - prec);
+    if ((flags & 8) != 0) { whole = group(whole); }
+    String body = whole;
+    if (prec > 0) { body = whole + "." + frac; }
+    return signed(neg, body, width, flags);
+  }
+
+  < %s with optional precision (truncation) and width. >
+  static String text(String s, int prec, int width, int flags) {
+    String t = s;
+    if (prec >= 0 && t.length() > prec) { t = t.substring(0, prec); }
+    return fit(t, width, flags & 1);
+  }
+
+  < String.join(sep, parts). >
+  static String joinArray(String sep, String[] parts) {
+    String r = "";
+    for (int i = 0; i < arrayLength(parts); i++) {
+      if (i > 0) { r = r + sep; }
+      r = r + parts[i];
+    }
+    return r;
+  }
+}

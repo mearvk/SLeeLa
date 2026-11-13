@@ -1,0 +1,14 @@
+== Entry 3: honest answers for empty and invalid inputs ==
+-- a flat (empty) book has no share of anything, and no age --
+  ok   term potency on an empty book = -2
+  ok   age potency on an empty book = -1
+  ok   not half long term when there is nothing to be long term
+-- buy, then ask about a day that has already passed (invalid 'today') --
+  buy 10 @ 100 on day 50 : ok
+  ok   term potency asked for day 10 (before the book day, 50) = -1
+  ok   age potency asked for day 10 = -1
+-- the book day itself is always valid, even with age 0 --
+  ok   term potency on day 50 itself (age 0, not long term) = 0
+  ok   age potency on day 50 itself (one lot, age 0 -> full potency by definition) = 10000
+  ok   invariants hold
+  checks passed=8 failed=0

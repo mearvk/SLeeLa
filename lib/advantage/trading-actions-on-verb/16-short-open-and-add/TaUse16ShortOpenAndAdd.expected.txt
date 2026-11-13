@@ -1,0 +1,13 @@
+== Use case 16: short, open and add ==
+  short 100 @ 5000 on day 0, fee 100 : ok
+  short 50 @ 4800 on day 30, fee 100 : ok
+-- the book --
+  ok   lots = 2
+  ok   shares short = 150
+  ok   sale proceeds held, cents = 740000
+  ok   average sale price floor = 4933
+  ok   average sale price remainder = 50
+  ok   fees paid = 200
+  ok   average * shares + remainder = proceeds
+  ok   invariants hold
+  checks passed=8 failed=0

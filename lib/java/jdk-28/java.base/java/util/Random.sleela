@@ -1,0 +1,260 @@
+<< lib/java/jdk-28/java.base/java/util/Random.sleela
+   SLeeLa file for the Java type java.util.Random (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Random.html
+   Java kind: class; extends java.lang.Object; implements java.util.random.RandomGenerator, java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+import java.jdk-28;
+
+class Random {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.1.0";
+  int metaId = 7431;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.Random";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Random.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.Random members (procedural implementation in SLeeLa) ---- >
+  << The Java 48-bit linear congruential generator, bit for bit: seed' =
+     (seed * 0x5DEECE66D + 0xB) mod 2^48, and next(bits) is the top bits of
+     the new seed, seed / 2^(48 - bits).
+     Given the same seed it yields exactly the Java sequence for nextInt,
+     nextInt(bound), nextLong, nextBoolean, nextDouble and nextFloat;
+     nextGaussian uses the same polar method, with sqrt/log from this
+     package StrictMath (accurate to about 1e-15 rather than fdlibm-exact). The constructor takes the seed (Java Random(long seed));
+     the overloaded nextInt(bound) is nextIntBound. >>
+  long seed;
+  double nextNextGaussian;
+  boolean haveNextNextGaussian;
+  Random(long s) { setSeed(s); }
+
+  long mask48(long v) {
+    long m = v % 281474976710656;
+    if (m < 0) { m = m + 281474976710656; }
+    return m;
+  }
+  << Bitwise xor of two non-negative values below 2^48. >>
+  long xor48(long a, long b) {
+    long r = 0;
+    long bit = 1;
+    long x = a;
+    long y = b;
+    int i = 0;
+    while (i < 48) {
+      if ((x % 2) != (y % 2)) { r = r + bit; }
+      x = x / 2; y = y / 2; bit = bit * 2; i = i + 1;
+    }
+    return r;
+  }
+  void setSeed(long s) {
+    seed = xor48(mask48(s), 25214903917);
+    haveNextNextGaussian = false;
+    nextNextGaussian = 0.0;
+  }
+  int toInt32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  << The low 48 bits of seed * 0x5DEECE66D + 0xB, without 64-bit overflow:
+     the multiplier is split into 24-bit halves. >>
+  int next(int bits) {
+    long lo = seed % 16777216;
+    long hi = seed / 16777216;
+    long mlo = 15525485;
+    long mhi = 1502;
+    long cross = mask48((hi * mlo + lo * mhi) % 16777216 * 16777216);
+    long low = lo * mlo;
+    seed = mask48(low + cross + 11);
+    long div = 1;
+    int k = 0;
+    while (k < 48 - bits) { div = div * 2; k = k + 1; }
+    return toInt32(seed / div);
+  }
+  int nextInt() { return next(32); }
+  int nextIntBound(int bound) {
+    if (bound <= 0) { throw new IllegalArgumentException("bound must be positive"); }
+    long b = bound;
+    boolean pow2 = false;
+    long t = 1;
+    while (t < b) { t = t * 2; }
+    if (t == b) { pow2 = true; }
+    if (pow2) {
+      long r = next(31);
+      return toInt32(b * r / 2147483648);
+    }
+    int bits = next(31);
+    int val = bits % bound;
+    while (bits - val + (bound - 1) > 2147483647) {
+      bits = next(31);
+      val = bits % bound;
+    }
+    return val;
+  }
+  int nextIntRange(int origin, int bound) {
+    if (origin >= bound) { throw new IllegalArgumentException("bound must be greater than origin"); }
+    return origin + nextIntBound(bound - origin);
+  }
+  long nextLong() {
+    long hi = next(32);
+    long lo = next(32);
+    return hi * 4294967296 + lo;
+  }
+  boolean nextBoolean() { return next(1) != 0; }
+  double nextDouble() {
+    long a = next(26);
+    long b = next(27);
+    double v = a * 134217728 + b;
+    return v / 9007199254740992.0;
+  }
+  double nextFloat() {
+    double v = next(24);
+    return v / 16777216.0;
+  }
+  << Polar method of Box, Muller and Marsaglia, caching the second value
+     exactly as java.util.Random does (StrictMath.sqrt / StrictMath.log). >>
+  double nextGaussian() {
+    if (haveNextNextGaussian) {
+      haveNextNextGaussian = false;
+      return nextNextGaussian;
+    }
+        double v1 = 0.0;
+    double v2 = 0.0;
+    double s = 0.0;
+    boolean again = true;
+    while (again) {
+      v1 = 2 * nextDouble() - 1;
+      v2 = 2 * nextDouble() - 1;
+      s = v1 * v1 + v2 * v2;
+      again = s >= 1 || s == 0;
+    }
+    double multiplier = StrictMath.sqrt(-2 * StrictMath.log(s) / s);
+    nextNextGaussian = v2 * multiplier;
+    haveNextNextGaussian = true;
+    return v1 * multiplier;
+  }
+  void nextBytes(int[] bytes) {
+    int i = 0;
+    int n = arrayLength(bytes);
+    while (i < n) {
+      int rnd = nextInt();
+      long u = rnd;
+      if (u < 0) { u = u + 4294967296; }
+      int k = 0;
+      while (k < 4 && i < n) {
+        int b = (int) (u % 256);
+        if (b > 127) { b = b - 256; }
+        bytes[i] = b;
+        u = u / 256;
+        i = i + 1;
+        k = k + 1;
+      }
+    }
+  }
+  < ---- END java implementation ---- >
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Random bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @throwable("java.lang.UnsupportedOperationException")
+  public Random() { }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any from(Any generator) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int nextInt(int bound) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any longs(long streamSize) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any longs(long streamSize, long randomNumberOrigin, long randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any longs(long randomNumberOrigin, long randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any longs() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any ints(long streamSize, int randomNumberOrigin, int randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any ints(int randomNumberOrigin, int randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any ints(long streamSize) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any ints() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any doubles(long streamSize) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any doubles() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any doubles(long streamSize, double randomNumberOrigin, double randomNumberBound) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any doubles(double randomNumberOrigin, double randomNumberBound) { return null; }
+  < ---- END java signatures ---- >
+}

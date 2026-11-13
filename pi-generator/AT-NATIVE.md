@@ -1,142 +1,114 @@
-# `@native` and Native Drive — ahead-of-time native C/C++ path
+# `@native`, VM dispatch, and Native Drive
 
-This document describes the current `@native` AOT boundary and the Native Drive
-integration. `sleela aot` still finds annotated methods, verifies the supported
-offloadable subset, and emits C source. The new `tools/sleela-native-drive.py`
-can compile direct C/C++ inputs into executables or shared libraries and can
-compile SLeeLa AOT output into a native executable. Unsupported SLeeLa constructs are still rejected; the existing
-C/C++ frontend classes under `lib/cpu` are not full production parsers.
+This page distinguishes four facilities that must not be conflated: AOT
+annotation analysis, typed in-process native dispatch, VM-owned worker handles,
+and the external Native IPC worker process.
 
-*MEARVK LLC — 2026.*
+## 1. The `@native` annotation
 
----
-
-## The `@native` annotation
-
-Mark a hot method with `@native` to request ahead-of-time native compilation:
-
-```sleela
-#sleela 2.5
-material;
-class Hot {
-  @native
-  int sumTo(int n) {
-    int total = 0;
-    int i = 1;
-    while (i <= n) { total = total + i; i = i + 1; }
-    return total;
-  }
-}
-```
-
-- `@native` is a **marker** annotation (no arguments).
-- It reuses the reserved `native` modifier keyword as the annotation name; the
-  parser accepts it after `@` (an annotation name lives in its own namespace).
-- It is registered as a **known language annotation** (so it is not warned as
-  unknown metadata) and is validated like other markers.
-- It is **behaviour-neutral today**: a program with `@native` methods checks and
-  runs exactly as before — `@native` only *requests* native treatment, which the
-  later stages will fulfil.
-
-## `sleela aot`
-
-```
-sleela aot --list <file.sleela>    list the @native methods and their verdict
-sleela aot --emit <file.sleela>    emit C/C++ (stdout) for an in-subset program
-sleela aot <file.sleela>           same as --list
-```
-
-- **`--list`** prints, per `@native` method, either `ok (within the offloadable
-  subset)` or `REFUSED — <reason>`. If any method is refused, the command exits
-  non-zero (fail-closed) and emits nothing.
-- **`--emit`** emits C/C++ to **stdout** (the per-method report goes to stderr,
-  so stdout is the code). It uses the Nordshrift C target
-  (`impl/nordshrift/sleela_emit.cpp`).
-
-### Exit codes
-
-| Code | Meaning |
-|---|---|
-| 0 | all `@native` methods in-subset (and, for `--emit`, C/C++ emitted) |
-| 1 | a `@native` method is **outside the subset** — refused, nothing emitted |
-| 2 | methods are in-subset, but the whole-program C emitter cannot render the surrounding code yet (a Part-1 limitation, reported honestly) |
-
-## The offloadable subset (Part 1)
-
-A `@native` method is accepted only if its body uses **only**: integer/double/
-boolean/null literals and variables; unary and binary arithmetic/comparison
-operators; assignment; free (unqualified) calls; and the `if` / `while` / `for`
-control-flow and `return` / `print` statements.
-
-It is **refused** (with the exact reason) for: `String` literals, object
-construction (`new`), instance/qualified calls (`receiver.method(...)`), array
-indexing, the `:::` structural-offload operator, and anything else. These are
-the gaps the later stages will close; refusing them now keeps Part 1 honest.
-
-## Native Drive integration
-
-The Native Drive accepts one or more `.c`, `.cc`, `.cpp`, and `.cxx` translation
-units and compiles them through Clang/GCC or MSVC where available. It can emit
-an executable or shared library; `--require-sleela-abi` inspects for the required
-export names without loading/executing the library. The existing native loader
-checks the actual ABI version when an explicitly trusted module is opened.
-The authoritative VM now owns a bounded nine-slot module table with
-generation-checked opaque handles. Hosts must install a one-time authorization
-callback before any module can open; without it, all loads are denied. The host
-API exposes `slvm_native_module_open/run/close`, and VM destruction closes
-remaining modules. This is a host-facing lifecycle API, not a bytecode opcode:
-SLeeLa methods are not yet dispatched into native symbols. For `.sleela`, it invokes `sleela aot --emit` and compiles the emitted C
-translation unit. The emitter remains whole-program, not per-method. The tool
-also provides shell-free argv process execution, stdin-file input, captured
-stdout/stderr, two-process stdout-to-stdin piping, and timeouts. XClass operations
-are delegated to the existing production XClass loader. A separate
-`sleela-native-service.py` renders hardened systemd unit files; installation,
-enabling, and starting are separate explicit actions. `sleelactl` exposes the
-Native Drive as a tool:
+`@native` is a marker annotation for ahead-of-time native compilation. It is
+behaviour-neutral in ordinary VM execution: it does not authorize a module,
+load a library, start a process, or route a method call. The AOT commands remain:
 
 ```sh
-sleelactl info native-drive
-sleelactl build native-drive source.cpp -o build/source
-sleelactl run native-drive --capture -- build/source
-sleelactl inspect native-drive xclass --mode info Example.xclass
-sleelactl inspect native-drive service --name worker --executable /opt/worker --working-directory /var/lib/worker
+sleela aot --list source.sleela
+sleela aot --emit source.sleela
 ```
 
-See [`../impl/native-drive/README.md`](../impl/native-drive/README.md).
+The AOT subset is deliberately narrow and fail-closed. It accepts only the
+constructs explicitly supported by the emitter; unsupported constructs are
+refused. The emitter produces a typed-ABI v1 plugin with one independently
+addressable entry point per `@native` method, keyed by the canonical method
+signature persisted in artifact v4. `sleelactl build native-drive file.sleela
+-o file.so` compiles that plugin; a host binds it explicitly with
+`slvm_bind_native_method()`. `@native` is not an IPC or process-launch
+annotation.
 
-## What is NOT here yet
+## 2. Existing syntax-3.0 in-process native dispatch
 
-- A native C/C++ parser that lowers full language grammars into SLeeLa SLIR.
-  Direct C/C++ builds use the system compiler; the `lib/cpu/SLFrontendC` and
-  `SLFrontendCpp` classes remain limited lowering models.
-- Per-method SLeeLa native entry-point emission and a typed calling convention.
-- Automatic registration of SLeeLa methods with the native loader, bytecode
-  dispatch into native symbols, a typed SLeeLa value/object ABI, interpreter
-  fallback, and differential conformance checks. The VM currently exposes only
-  the host-facing authorized module lifecycle API.
-- Expanded AOT coverage for strings, arrays, object layouts, exceptions, and
-  language-specific ABI details.
-- Declarative process annotations wired into the parser and runtime capability
-  enforcement. `impl/native-drive/annotations.schema.json` is currently a
-  versioned metadata contract, not an implemented annotation feature.
-- Windows Service Control Manager and macOS launchd service backends. Linux
-  systemd rendering, install, enable, start, status, restart, stop, disable, and
-  explicit one-level rollback are available through `sleelactl` delegation.
+The VM implements the append-only `OP_NATIVE_OPEN`, `OP_NATIVE_CALL`, and
+`OP_NATIVE_CLOSE` operations, exposed as:
 
-The process CLI is an explicit host-process tool, not a sandbox. ABI symbol
-inspection is not an ABI-version check or trust decision; the loader performs
-version validation at load time, and native constructors may execute during
-loading. Do not run untrusted native code under elevated privileges.
+- `nativeOpen(path)`: host-authorized shared-library open; returns a
+  generation-checked VM-owned handle.
+- `nativeCall(handle, method, ...args)`: invokes a named method through the
+  versioned typed ABI.
+- `nativeClose(handle)`: closes and invalidates the handle.
 
-## Verify
+The ABI supports null, boolean, signed int64, binary64 double, and
+length-delimited UTF-8. It never exposes VM arrays, structs, object handles,
+pointers, or raw `SLValue` objects. A plugin may return NOT_HANDLED to permit
+same-name bytecode fallback; a handled error, stale handle, denied path, or
+ABI mismatch is not silently retried in the interpreter.
 
-```sh
-cd impl && SLEELA_SHA256_MANIFEST="$(pwd)/../security/sha256-manifest.json" make build/sleela && cd ..
+The host must install an explicit authorization callback. A path identifies a
+candidate; it does not grant authority. In-process native code is trusted code,
+not a sandbox. Callback names require a separate host allowlist, callbacks are
+synchronous, and recursive native operations are rejected.
 
-# a method using 'new'/arrays is refused:
-sleela aot --list some.sleela            # => REFUSED ... (reason)
+See [Native Drive](../impl/native-drive/README.md) and the
+[loader contract](../os-level-support/loader/README.md).
 
-# an in-subset whole program emits compilable C:
-sleela aot --emit scalar-only.sleela 2>/dev/null | sed -n '/^#include/,$p' > out.c
-gcc -std=c11 -O2 -c out.c -o out.o       # compiles
-```
+## 3. VM-owned IPC worker handles
+
+The VM core exposes a bounded table of 64 opaque IPC worker references through
+`slvm_ipc_worker_register`, `slvm_ipc_worker_acquire`,
+`slvm_ipc_worker_release`, and `slvm_ipc_worker_close`.
+
+Registration accepts an already-created and already-authorized worker plus a
+close callback; registration does not launch or authorize a process. Handles
+carry a slot and nonzero generation. Leases prevent a worker from being closed
+while an operation is using it. Close prevents new acquisitions, waits for
+leases to drain, invalidates the generation, and invokes the close callback
+outside the table lock. VM shutdown closes registered workers. Registration is
+rejected once shutdown begins.
+
+This is a VM ownership/lifecycle API, not yet a source-level worker dispatch
+feature. The reserved Native IPC bytecode opcodes remain fail-closed until a
+host supervisor adapter and capability policy are connected.
+
+## 4. Native IPC v1 process worker
+
+The repository now includes a persistent Python reference worker and host-side
+supervisor in `tools/sleela-ipc-worker.py`. It provides:
+
+- A version-1 `SLIP` framed protocol with a 24-byte little-endian header,
+  request IDs, and a 16 MiB payload ceiling.
+- A handshake before requests, exact stream reads, scalar request/response
+  encoding, and rejection of malformed frames and trailing bytes.
+- Persistent child-process ownership using an argv vector and
+  `shell=False`, an explicit working directory, an environment allowlist,
+  SHA-256 verification of the launched executable, request timeouts, bounded
+  stderr capture, and graceful shutdown followed by terminate/kill fallback.
+- A reference worker implementing `math.ping`, `math.capabilities`,
+  `bigint.add`, `bigint.sub`, `bigint.mul`, and `pi.compute`.
+
+The reference `pi.compute` service uses Python arbitrary-precision integers
+and Chudnovsky binary splitting. Its 20,000-fractional-digit test checks the
+output length, known prefix, and a pinned SHA-256 digest. This validates the
+reference worker's IPC request/response path; it does **not** demonstrate that
+SLeeLa's VM math module or `sleelactl` computed those digits.
+
+The C transport-neutral client and the C frame/scalar/request/limb codecs are
+separate building blocks. The canonical base-1e9 limb codec is not yet the
+payload representation used by the Python reference worker's big-integer
+methods, which currently accept decimal strings.
+
+## 5. Required integration gates
+
+1. Connect the process supervisor to the VM-owned worker-handle lifecycle.
+2. Add a host-controlled capability/authorization adapter and connect it to
+   the reserved bytecode operations; source metadata must never grant authority.
+3. Extend integrity policy to cover every executable input that matters,
+   including interpreter/script or worker payloads, not only `argv[0]`.
+4. Decide and implement the production big-integer wire representation:
+   canonical base-1e9 limbs or a separately specified bounded decimal format.
+5. Add fault-injection coverage for timeout, cancellation, child crash,
+   output flood, malformed response, and cleanup/reaping.
+6. Route SLeeLa's actual Pi/math workload through the authorized VM worker path,
+   then compare results with an independent reference and record wall time,
+   CPU time, peak memory, output hash, commands, and runner details on Linux,
+   Windows, and macOS.
+
+The 20,000-digit Python reference-worker test is a correctness fixture, not a
+SLeeLa runtime performance result. Do not extrapolate a VM speed-up from it.

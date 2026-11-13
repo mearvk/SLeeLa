@@ -1,0 +1,8 @@
+== Lesson 4: agreement ==
+-- first comparison --
+  ball: student says blue box, master says red box -> re-observe
+  block: master only, student did not observe it
+  verdict: 2 difference(s), not yet accepted
+-- student starts over: re-observes ball and adds block --
+-- second comparison --
+  verdict: AGREE, work accepted

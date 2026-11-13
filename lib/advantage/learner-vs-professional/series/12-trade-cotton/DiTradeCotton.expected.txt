@@ -1,0 +1,12 @@
+== Lesson 12: cotton decision ==
+-- master (onion) --
+  Gin A total = 46200 cents
+  Gin B total = 45700 cents
+  Gin C total = 45400 cents
+  master picks Gin C
+-- student, first pass: every entry observed --
+  Gin A total = 46200 cents
+  Gin B total = 45700 cents
+  Gin C total = 45400 cents
+  student picks Gin C
+  verdict: AGREE, work accepted

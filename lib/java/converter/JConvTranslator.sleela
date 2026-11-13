@@ -1,0 +1,1370 @@
+<< lib/java/converter/JConvTranslator.sleela
+   Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
+   Definition: the structural half of the converter. For one Java file it reads
+   the package, imports and type declarations, and writes one SLeeLa file per
+   type, nested types included (Outer.Inner.sleela, as lib/java/jdk-28 names
+   them). For each type it writes the SLeeLa document header, the Java licence
+   comment, the Metadata Class block (classes), the explicit housing fields
+   javaType, javaModule and javaSource (SLEELA.syntax 38.4), then every member
+   through JConvRewriter. Enums and records are lowered to classes. A member that
+   uses a construct SLeeLa cannot express yet becomes a fail-loud stub that
+   throws UnsupportedOperationException naming the reason, with the Java body
+   kept beside it as a comment. >>
+#sleela 3.0
+material;
+
+class JConvTranslator {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full record: a library-family class of the Java container. >>
+  String metaVersion = "0.5.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 4;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "The Java Language Specification, Java SE 28 Edition";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  JConvRules rules;
+  JConvConfig cfg;
+  JConvReport rep;
+  JConvEmitter em;
+  JConvLexer lx;
+  JConvRewriter rw;
+  JConvSource src;
+  < the file in progress >
+  String rel;
+  String moduleName;
+  String pkgName;
+  String outDir;
+  String dateText;
+  < tokens 0 .. licenceEnd-1 are the leading comments of the file >
+  int licenceEnd;
+  boolean oracle;
+  < the type in progress >
+  String unitName;
+  String unitKind;
+  < the enclosing class when the type being written is an inner class (JConvOuter), else empty; and whether it declares slOuter >
+  String innerOf;
+  boolean innerBase;
+  String javaType;
+  int unitMembers;
+  int unitStubs;
+  int unitFields;
+  int initCounter;
+  < totals of the file >
+  int fileUnits;
+  int fileTypes;
+  int fileMembers;
+  int fileStubs;
+
+  JConvTranslator(JConvRules r, JConvConfig c, JConvReport p, String date) {
+    this.rules = r;
+    this.cfg = c;
+    this.rep = p;
+    this.dateText = date;
+    this.em = new JConvEmitter();
+    this.lx = new JConvLexer(r);
+    this.rw = new JConvRewriter(r, c);
+    this.src = new JConvSource();
+    this.rel = "";
+    this.moduleName = "";
+    this.pkgName = "";
+    this.outDir = "";
+    this.licenceEnd = 0;
+    this.oracle = false;
+    this.unitName = "";
+    this.unitKind = "";
+    this.innerOf = "";
+    this.innerBase = false;
+    this.javaType = "";
+  }
+
+  < ---- small helpers ---- >
+  int nx(int i) { return this.rw.nx(i); }
+  boolean isOp(int i, String s) { return this.rw.isOp(i, s); }
+  boolean isId(int i, String s) { return this.rw.isId(i, s); }
+  String tx(int i) { return this.lx.texts[i]; }
+  int kd(int i) { return this.lx.kinds[i]; }
+
+  String dirOf(String path) {
+    int s = path.lastIndexOf("/");
+    if (s < 0) { return ""; }
+    return path.substring(0, s);
+  }
+
+  < create a directory and its parents >
+  boolean makeDirs(String path) {
+    if (osIsDir(path) == 1) { return true; }
+    int i = 1;
+    while (i <= path.length()) {
+      if (i == path.length() || path.substring(i, i + 1) == "/") {
+        String part = path.substring(0, i);
+        if (osIsDir(part) != 1) { osMakeDir(part); }
+      }
+      i = i + 1;
+    }
+    return osIsDir(path) == 1;
+  }
+
+  < a source text safe inside an angle-bracket block comment >
+  String commentSafe(String s) {
+    String t = s;
+    while (t.indexOf(">>") >= 0) { t = t.replace(">>", "> >"); }
+    while (t.indexOf("<<") >= 0) { t = t.replace("<<", "< <"); }
+    return t;
+  }
+
+  String quoteSafe(String s) { return s.replace("\\", "\\\\").replace("\"", "\\\""); }
+
+  < ---- one file ---- >
+  void translateFile(String relPath) {
+    this.rel = relPath;
+    this.rep.startFile();
+    this.fileUnits = 0;
+    this.fileTypes = 0;
+    this.fileMembers = 0;
+    this.fileStubs = 0;
+    String path = this.cfg.inRoot + "/" + relPath;
+    if (!this.src.load(path)) {
+      this.rep.note(this.src.failure);
+      this.rep.fileLine("skipped", relPath, 0, 0, 0, 0);
+      return;
+    }
+    this.lx.lex(this.src);
+    this.rw.beginFile(this.lx);
+    this.moduleName = "unknown";
+    int slash = relPath.indexOf("/");
+    if (slash > 0 && relPath.substring(0, slash).indexOf(".") > 0) { this.moduleName = relPath.substring(0, slash); }
+    this.pkgName = "";
+    this.outDir = this.cfg.outRoot;
+    if (dirOf(relPath) != "") { this.outDir = this.cfg.outRoot + "/" + dirOf(relPath); }
+    if (!makeDirs(this.outDir)) {
+      this.rep.note("cannot create " + this.outDir);
+      this.rep.fileLine("failed", relPath, 0, 0, 0, 0);
+      return;
+    }
+    int n = this.lx.n;
+    int i = 0;
+    while (i < n && kd(i) == 6) { i = i + 1; }
+    this.licenceEnd = i;
+    this.oracle = false;
+    int c = 0;
+    while (c < this.licenceEnd) {
+      if (tx(c).indexOf("Oracle") >= 0) { this.oracle = true; }
+      c = c + 1;
+    }
+    i = nx(i);
+    if (isId(i, "package")) {
+      int j = nx(i + 1);
+      String p = "";
+      while (j < n && !isOp(j, ";")) { if (kd(j) != 6) { p = p + tx(j); } j = j + 1; }
+      this.pkgName = p;
+      i = nx(j + 1);
+    }
+    while (isId(i, "import")) {
+      int j = nx(i + 1);
+      boolean isStatic = false;
+      if (isId(j, "static")) { isStatic = true; j = nx(j + 1); }
+      int last = -1;
+      int prev = -1;
+      while (j < n && !isOp(j, ";")) {
+        if (kd(j) == 1) { prev = last; last = j; }
+        j = j + 1;
+      }
+      if (isStatic && last >= 0 && prev >= 0 && !isOp(nx(last + 1), "*") && !isOp(this.rw.pv(j), "*")) {
+        this.rw.addStaticImport(tx(last), tx(prev));
+      }
+      if (isStatic && isOp(this.rw.pv(j), "*")) { this.rep.note("static import on demand not resolved: " + tx(last)); }
+      i = nx(j + 1);
+    }
+    < class-like type names declared anywhere in the file are cast targets >
+    int q = i;
+    while (q < n) {
+      if ((isId(q, "class") || isId(q, "enum") || isId(q, "record")) && !isOp(this.rw.pv(q), ".") && q + 1 < n && kd(nx(q + 1)) == 1) {
+        this.rw.addDeclName(tx(nx(q + 1)));
+      }
+      q = q + 1;
+    }
+    < top-level type declarations >
+    int typeStart = i;
+    while (i < n) {
+      if (kd(i) == 6 || isOp(i, ";")) { i = i + 1; continue; }
+      int ds = typeStart;
+      int h = skipModifiers(i);
+      int kw = typeKeywordAt(h);
+      if (kw < 0) {
+        this.rep.note("unexpected token at top level: " + tx(i));
+        i = i + 1;
+        typeStart = i;
+        continue;
+      }
+      int open = bodyOpenAfter(kw);
+      if (open < 0) { this.rep.note("no type body found"); break; }
+      int close = this.rw.matchClose(open);
+      convertType(ds, i, kw, open, close, "", "");
+      i = close + 1;
+      typeStart = i;
+    }
+    this.rep.fileLine("converted", relPath, this.fileUnits, this.fileTypes, this.fileMembers, this.fileStubs);
+  }
+
+  < the index after annotations and modifiers starting at i >
+  int skipModifiers(int i0) {
+    int i = nx(i0);
+    while (i < this.lx.n) {
+      if (isOp(i, "@") && !isId(nx(i + 1), "interface")) { i = nx(this.rw.skipAnnotation(i)); continue; }
+      if (kd(i) == 1 && this.rules.isModifier(tx(i))) { i = nx(i + 1); continue; }
+      if (isId(i, "non") && isOp(nx(i + 1), "-") && isId(nx(nx(i + 1) + 1), "sealed")) { i = nx(nx(nx(i + 1) + 1) + 1); continue; }
+      return i;
+    }
+    return i;
+  }
+
+  < the index of the type keyword at h (for @interface, of interface), or -1 >
+  int typeKeywordAt(int h) {
+    if (isOp(h, "@") && isId(nx(h + 1), "interface")) { return nx(h + 1); }
+    if (isId(h, "class") || isId(h, "interface") || isId(h, "enum")) { return h; }
+    if (isId(h, "record") && kd(nx(h + 1)) == 1) {
+      int a = nx(nx(h + 1) + 1);
+      if (isOp(a, "(") || isOp(a, "<")) { return h; }
+    }
+    return -1;
+  }
+
+  int bodyOpenAfter(int kw) {
+    int j = nx(kw + 1);
+    while (j < this.lx.n) {
+      if (isOp(j, "{")) { return j; }
+      if (isOp(j, "(")) { j = this.rw.matchClose(j) + 1; continue; }
+      if (isOp(j, ";")) { return -1; }
+      j = j + 1;
+    }
+    return -1;
+  }
+
+  < ---- one type ---- >
+  void convertType(int ds, int ms, int kw, int open, int close, String outerStem, String outerTv) {
+    String kwText = tx(kw);
+    boolean isAnno = (kwText == "interface" && isOp(this.rw.pv(kw), "@"));
+    String kind = kwText;
+    if (isAnno) { kind = "annotation"; }
+    int nameIdx = nx(kw + 1);
+    String name = this.rules.renameIdent(tx(nameIdx));
+    String stem = name;
+    if (outerStem != "") { stem = outerStem + "." + name; }
+    this.unitName = name;
+    this.unitKind = kind;
+    this.javaType = stem;
+    if (this.pkgName != "") { this.javaType = this.pkgName + "." + stem; }
+    this.unitMembers = 0;
+    this.unitStubs = 0;
+    this.unitFields = 0;
+    this.initCounter = 0;
+    this.fileTypes = this.fileTypes + 1;
+    this.rw.beginUnit(name);
+    if (outerStem == "") { this.rw.outer.clearContext(); }
+    < type variables visible from an enclosing type >
+    if (outerTv != "") {
+      String rest = outerTv;
+      while (rest != "") {
+        int cm = rest.indexOf(",");
+        if (cm < 0) { this.rw.addTypeVar(rest); rest = ""; }
+        else { this.rw.addTypeVar(rest.substring(0, cm)); rest = rest.substring(cm + 1); }
+      }
+    }
+    < header: type parameters, record components, extends / implements >
+    int h = nx(nameIdx + 1);
+    String tpText = "";
+    if (isOp(h, "<")) {
+      int e = this.rw.genEnd(h);
+      if (e > h) {
+        tpText = this.src.slice(this.lx.begins[h], this.lx.ends[e]);
+        collectTypeParams(h, e);
+        h = nx(e + 1);
+      }
+    }
+    int compOpen = -1;
+    int compClose = -1;
+    if (kind == "record" && isOp(h, "(")) {
+      compOpen = h;
+      compClose = this.rw.matchClose(h);
+      h = nx(compClose + 1);
+    }
+    String heritage = heritageText(h, open);
+    < modifiers of the type >
+    String mods = "";
+    int m = ms;
+    while (m < kw) {
+      if (kd(m) == 1 && (tx(m) == "abstract" || tx(m) == "final")) { mods = mods + tx(m) + " "; }
+      if (isOp(m, "@") && !isId(nx(m + 1), "interface")) { m = this.rw.skipAnnotation(m); continue; }
+      m = m + 1;
+    }
+    boolean isStaticNested = false;
+    m = ms;
+    while (m < kw) { if (isId(m, "static")) { isStaticNested = true; } m = m + 1; }
+    < an inner class gets its enclosing instance (JConvOuter) >
+    this.innerOf = "";
+    this.innerBase = false;
+    setSupersOf(h, open);
+    if (outerStem != "" && !isStaticNested && kind == "class" && this.rw.outer.outerOf(name) != "") {
+      this.innerOf = this.rw.outer.outerOf(name);
+      this.innerBase = this.rw.outer.outerOf(this.rw.outer.superName) != this.innerOf;
+    } else if (outerStem != "" && !isStaticNested && kind == "class") {
+      this.rep.note("inner class " + stem + ": the enclosing instance is not captured");
+    }
+    < pre-scan of the members >
+    int cap = 64;
+    int[] mk = new int[cap];
+    int[] mStart = new int[cap];
+    int[] mHdr = new int[cap];
+    int[] mBody = new int[cap];
+    int[] mEnd = new int[cap];
+    int[] mFlags = new int[cap];
+    int count = 0;
+    int bodyStart = open + 1;
+    int constEnd = -1;
+    if (kind == "enum") {
+      constEnd = enumConstantsEnd(open, close);
+      bodyStart = constEnd + 1;
+      if (constEnd >= close) { bodyStart = close; }
+    }
+    boolean hasCtor = false;
+    boolean hasCanonical = false;
+    int j = bodyStart;
+    while (j < close && kind != "annotation") {
+      if (count >= cap) {
+        int cap2 = cap * 2;
+        mk = growInts(mk, cap2, count);
+        mStart = growInts(mStart, cap2, count);
+        mHdr = growInts(mHdr, cap2, count);
+        mBody = growInts(mBody, cap2, count);
+        mEnd = growInts(mEnd, cap2, count);
+        mFlags = growInts(mFlags, cap2, count);
+        cap = cap2;
+      }
+      if (kd(j) == 6) { mk[count] = 6; mStart[count] = j; mEnd[count] = j; count = count + 1; j = j + 1; continue; }
+      if (isOp(j, ";")) { j = j + 1; continue; }
+      int st = j;
+      int flags = memberFlags(st);
+      int hh = skipModifiers(st);
+      int tk = typeKeywordAt(hh);
+      if (isOp(hh, "{")) {
+        mk[count] = 4; mStart[count] = st; mHdr[count] = hh; mBody[count] = hh; mEnd[count] = this.rw.matchClose(hh); mFlags[count] = flags;
+        j = mEnd[count] + 1;
+        count = count + 1;
+        continue;
+      }
+      if (tk >= 0) {
+        int o2 = bodyOpenAfter(tk);
+        int c2 = this.rw.matchClose(o2);
+        mk[count] = 5; mStart[count] = st; mHdr[count] = tk; mBody[count] = o2; mEnd[count] = c2; mFlags[count] = flags;
+        j = c2 + 1;
+        count = count + 1;
+        continue;
+      }
+      if (kind == "record" && kd(hh) == 1 && tx(hh) == tx(nameIdx) && isOp(nx(hh + 1), "{")) {
+        < compact canonical constructor >
+        int cb = nx(hh + 1);
+        mk[count] = 7; mStart[count] = st; mHdr[count] = hh; mBody[count] = cb; mEnd[count] = this.rw.matchClose(cb); mFlags[count] = flags;
+        hasCanonical = true;
+        j = mEnd[count] + 1;
+        count = count + 1;
+        continue;
+      }
+      < field or method >
+      int d = 0;
+      int k = hh;
+      boolean seenEq = false;
+      int paren = -1;
+      int bodyOpen = -1;
+      int endTok = -1;
+      while (k < close) {
+        if (kd(k) == 5) {
+          String t = tx(k);
+          if (d == 0 && t == "=" ) { seenEq = true; }
+          if (d == 0 && t == "(" && !seenEq && paren < 0) { paren = k; }
+          if (d == 0 && t == ";") { endTok = k; break; }
+          if (d == 0 && t == "{") {
+            if (paren >= 0 && !seenEq) { bodyOpen = k; endTok = this.rw.matchClose(k); break; }
+            k = this.rw.matchClose(k) + 1;
+            continue;
+          }
+          if (t == "(" || t == "[") { d = d + 1; }
+          if (t == ")" || t == "]") { d = d - 1; }
+        }
+        k = k + 1;
+      }
+      if (endTok < 0) { endTok = close - 1; }
+      if (paren >= 0) {
+        mk[count] = 2;
+        String mname = tx(this.rw.pv(paren));
+        boolean isCtor = (mname == tx(nameIdx));
+        if (isCtor) {
+          mk[count] = 3;
+          hasCtor = true;
+          if (kind == "record" && paramCount(paren) == componentCount(compOpen, compClose)) { hasCanonical = true; }
+        }
+        String mret = "";
+        if (!isCtor) {
+          int rs = hh;
+          if (isOp(rs, "<")) {
+            int ge = this.rw.genEnd(rs);
+            if (ge > rs) { rs = nx(ge + 1); }
+          }
+          mret = this.rw.typeTextOf(rs, this.rw.pv(paren)).replace(" ", "");
+        }
+        this.rw.addMethod(this.rules.renameIdent(mname), (flags % 2) == 1, mret);
+      } else {
+        mk[count] = 1;
+        String fname = fieldName(hh, endTok);
+        this.rw.addField(fname, fieldType(hh, endTok));
+        if ((flags % 2) == 0 && kind != "interface") { this.unitFields = this.unitFields + declaratorCount(hh, endTok); }
+      }
+      mStart[count] = st; mHdr[count] = hh; mBody[count] = bodyOpen; mEnd[count] = endTok; mFlags[count] = flags;
+      count = count + 1;
+      j = endTok + 1;
+    }
+    < ---- write the unit ---- >
+    boolean inBundle = this.cfg.bundle && outerStem != "";
+    String outRel = stem + ".sleela";
+    if (dirOf(this.rel) != "") { outRel = dirOf(this.rel) + "/" + stem + ".sleela"; }
+    if (inBundle) {
+      < bundle mode: the nested type follows in the document of its top-level type >
+      this.em.blankLine();
+      this.em.comment("<< Nested Java type " + this.javaType + ", bundled into this document as a top-level class (JCONV_BUNDLE=1). >>");
+    } else if (!this.em.openOut(this.outDir + "/" + stem + ".sleela")) {
+      this.rep.note("cannot write " + outRel);
+      return;
+    }
+    if (!inBundle) {
+      this.rw.lam.beginDocument();
+      writeFileHeader(outRel, outerStem, stem, ds, kw);
+    }
+    else if (this.cfg.keepComments) {
+      int dc2 = ds;
+      while (dc2 < kw) { if (kd(dc2) == 6) { this.em.comment(tx(dc2)); } dc2 = dc2 + 1; }
+    }
+    String typeWord = "class";
+    if (kind == "interface" || kind == "annotation") { typeWord = "interface"; }
+    if (kind == "interface" || kind == "annotation") { mods = ""; }
+    this.em.lineOut(mods + typeWord + " " + name + heritage + " {");
+    this.em.enter();
+    if (typeWord == "class") { writeMetadata(); }
+    if (this.innerOf != "" && this.innerBase) {
+      this.em.lineOut("< the enclosing instance (JLS 8.1.3), set by every constructor from its first parameter (JConvOuter) >");
+      this.em.lineOut(this.innerOf + " slOuter;");
+      this.em.blankLine();
+      this.unitFields = this.unitFields + 1;
+    }
+    if (tpText != "") { this.em.lineOut("static final String JAVA_TYPE_PARAMETERS = \"" + quoteSafe(tpText) + "\";"); }
+    convertBody(kind, name, stem, open, close, constEnd, count, mk, mStart, mHdr, mBody, mEnd, mFlags, compOpen, compClose, hasCtor, hasCanonical, typeWord, inBundle);
+  }
+
+  void writeFileHeader(String outRel, String outerStem, String stem, int ds, int kw) {
+    String head = "<< " + outRel + "\n   SLeeLa file for the Java type " + this.javaType + " (module " + this.moduleName + ").";
+    if (outerStem != "") { head = head + "\n   Nested Java type: the file keeps the name " + stem + " (the loader does not resolve nested-type files yet, lib/java/jdk-28/PURPOSE.md row 4)."; }
+    head = head + "\n   Java Source: " + this.rel + ", converted by lib/java/converter (best effort; rules in lib/java/converter/README.md)."
+      + "\n   Derived from the Java source: the licence comment of that source follows and applies to this file. >>";
+    this.em.comment(head);
+    int lc = 0;
+    while (lc < this.licenceEnd) { this.em.comment(tx(lc)); lc = lc + 1; }
+    this.em.lineOut("#sleela 3.1");
+    this.em.lineOut("spark;");
+    this.em.lineOut("import java.jdk-28;");
+    this.em.blankLine();
+    if (this.cfg.keepComments) {
+      int dc = ds;
+      while (dc < kw) { if (kd(dc) == 6) { this.em.comment(tx(dc)); } dc = dc + 1; }
+    }
+  }
+
+  < the members of a type, its closing brace, and then its nested types >
+  void convertBody(String kind, String name, String stem, int open, int close, int constEnd, int count,
+                   int[] mk, int[] mStart, int[] mHdr, int[] mBody, int[] mEnd, int[] mFlags,
+                   int compOpen, int compClose, boolean hasCtor, boolean hasCanonical, String typeWord, boolean inBundle) {
+    if (kind == "annotation") {
+      this.em.comment("<< Java annotation interface: annotations carry no SLeeLa behavior. Its elements, as declared in Java:\n" + commentSafe(this.src.slice(this.lx.begins[open], this.lx.ends[close])) + " >>");
+    }
+    if (kind == "enum") { writeEnumConstants(open, constEnd, name); }
+    registerInners(name, kind, count, mk, mStart, mHdr);
+    this.rw.outer.addTypeMembers(name, framedMembers());
+    < nested types are written after this unit >
+    int[] nestStart = new int[count + 1];
+    int[] nestKw = new int[count + 1];
+    int[] nestOpen = new int[count + 1];
+    int[] nestClose = new int[count + 1];
+    int nNest = 0;
+    int idx = 0;
+    while (idx < count) {
+      int kk = mk[idx];
+      if (kk == 6) {
+        if (this.cfg.keepComments) { this.em.commentToken(tx(mStart[idx]), this.lx.lines[mStart[idx]], this.lx.flags[mStart[idx]]); }
+      } else if (kk == 5) {
+        int nk = mHdr[idx];
+        String nn = this.rules.renameIdent(tx(nx(nk + 1)));
+        if (this.cfg.bundle) { this.em.comment("< nested Java type " + this.javaType + "." + nn + ": later in this document >"); }
+        else { this.em.comment("< nested Java type " + this.javaType + "." + nn + ": see " + stem + "." + nn + ".sleela >"); }
+        nestStart[nNest] = mStart[idx];
+        nestKw[nNest] = nk;
+        nestOpen[nNest] = mBody[idx];
+        nestClose[nNest] = mEnd[idx];
+        nNest = nNest + 1;
+      } else if (kk == 4) {
+        convertInitializer(mHdr[idx], mEnd[idx], (mFlags[idx] % 2) == 1);
+      } else if (kk == 7) {
+        convertCompactCtor(mBody[idx], mEnd[idx], compOpen, compClose, name);
+      } else {
+        convertMember(mStart[idx], mHdr[idx], mBody[idx], mEnd[idx], mFlags[idx], kk);
+      }
+      idx = idx + 1;
+    }
+    if (this.innerOf != "" && !hasCtor) {
+      this.em.blankLine();
+      this.em.comment("< default constructor of an inner class: it takes the enclosing instance (JConvOuter) >");
+      if (this.innerBase) { this.em.lineOut(name + "(" + this.innerOf + " slOuterArg) { this.slOuter = slOuterArg; }"); }
+      else { this.em.lineOut(name + "(" + this.innerOf + " slOuterArg) { super(slOuterArg); }"); }
+    }
+    if (kind == "enum") { writeEnumMachinery(open, constEnd, name, hasCtor); }
+    if (kind == "record") { writeRecordMembers(compOpen, compClose, name, hasCanonical); }
+    this.em.leave();
+    this.em.lineOut("}");
+    this.em.lineOut("< conversion: " + this.unitMembers + " members, " + this.unitStubs + " stubbed (fail loud, see the Java body kept beside each) >");
+    if (!this.cfg.bundle) {
+      this.rw.lam.writeTable(this.em);
+      this.em.finishOut();
+    }
+    if (!inBundle) { this.fileUnits = this.fileUnits + 1; }
+    this.fileMembers = this.fileMembers + this.unitMembers;
+    this.fileStubs = this.fileStubs + this.unitStubs;
+    if (typeWord == "class" && this.unitFields + 14 > 64) {
+      this.rep.note(stem + " has " + this.unitFields + " instance fields; with the 14 metadata and housing fields it passes the 64-field limit (SL_MAX_STRUCT_FIELDS)");
+    }
+    if (this.rw.hasField("length")) { this.rep.note(stem + " declares a field named length: check the .length to arrayLength rewrites"); }
+    < now the nested types: each in its own file, or later in this document (bundle) >
+    String tv = this.rw.typeVarList();
+    < the members of this type, for the nested types (JConvOuter) >
+    int sn = this.rw.mN;
+    String[] snName = new String[sn + this.rw.fN + 1];
+    int[] snStatic = new int[sn + this.rw.fN + 1];
+    int[] snMethod = new int[sn + this.rw.fN + 1];
+    int si = 0;
+    while (si < sn) { snName[si] = this.rw.mNames[si]; snStatic[si] = this.rw.mStatic[si]; snMethod[si] = 1; si = si + 1; }
+    int fq = 0;
+    while (fq < count) {
+      if (mk[fq] == 1) {
+        snName[si] = this.rules.renameIdent(fieldName(mHdr[fq], mEnd[fq]));
+        snStatic[si] = mFlags[fq] % 2;
+        snMethod[si] = 0;
+        si = si + 1;
+      }
+      fq = fq + 1;
+    }
+    int ni = 0;
+    while (ni < nNest) {
+      this.rw.outer.clearContext();
+      this.rw.outer.outerName = name;
+      String nestName = this.rules.renameIdent(tx(nx(nestKw[ni] + 1)));
+      this.rw.outer.outerInstance = this.rw.outer.outerOf(nestName) == name;
+      int sq = 0;
+      while (sq < si) { this.rw.outer.addOuterMember(snName[sq], snStatic[sq] == 1, snMethod[sq] == 1); sq = sq + 1; }
+      convertType(nestStart[ni], nestStart[ni], nestKw[ni], nestOpen[ni], nestClose[ni], stem, tv);
+      ni = ni + 1;
+    }
+    this.rw.outer.clearContext();
+    if (this.cfg.bundle && !inBundle) {
+      this.rw.lam.writeTable(this.em);
+      this.em.finishOut();
+    }
+  }
+
+  int[] growInts(int[] a, int cap, int count) {
+    int[] b = new int[cap];
+    int i = 0;
+    while (i < count) { b[i] = a[i]; i = i + 1; }
+    return b;
+  }
+
+  < bit 1 static, bit 2 protected, bit 4 native, bit 8 abstract >
+  int memberFlags(int st) {
+    int f = 0;
+    int i = nx(st);
+    while (i < this.lx.n) {
+      if (isOp(i, "@") && !isId(nx(i + 1), "interface")) { i = nx(this.rw.skipAnnotation(i)); continue; }
+      if (kd(i) == 1 && this.rules.isModifier(tx(i))) {
+        if (tx(i) == "static") { f = f + 1; }
+        if (tx(i) == "protected") { f = f + 2; }
+        if (tx(i) == "native") { f = f + 4; }
+        if (tx(i) == "abstract") { f = f + 8; }
+        i = nx(i + 1);
+        continue;
+      }
+      return f;
+    }
+    return f;
+  }
+
+  void collectTypeParams(int h, int e) {
+    int d = 0;
+    int i = h;
+    while (i <= e) {
+      if (isOp(i, "<")) { d = d + 1; }
+      if (isOp(i, ">")) { d = d - 1; }
+      if (isOp(i, ">>")) { d = d - 2; }
+      if (isOp(i, ">>>")) { d = d - 3; }
+      if (d == 1 && kd(i) == 1) {
+        int p = this.rw.pv(i);
+        if (isOp(p, "<") || isOp(p, ",")) { this.rw.addTypeVar(tx(i)); }
+      }
+      i = i + 1;
+    }
+  }
+
+  < extends / implements text (generics erased, permits dropped) >
+  String heritageText(int h, int open) {
+    this.rw.reset();
+    this.rw.curStatic = false;
+    this.rw.inBody = false;
+    int i = h;
+    while (i < open) {
+      if (isId(i, "permits")) {
+        i = nx(i + 1);
+        while (i < open && !isId(i, "extends") && !isId(i, "implements")) { i = i + 1; }
+        continue;
+      }
+      if (kd(i) == 6) { i = i + 1; continue; }
+      int e = i + 1;
+      while (e < open && !isId(e, "permits")) { e = e + 1; }
+      this.rw.rewrite(i, e);
+      i = e;
+    }
+    String s = this.rw.outText(0, this.rw.on);
+    this.rw.reset();
+    if (s == "") { return ""; }
+    return " " + s;
+  }
+
+  String fieldName(int hh, int endTok) {
+    int k = hh;
+    int d = 0;
+    while (k <= endTok) {
+      if (kd(k) == 5) {
+        String t = tx(k);
+        if (d == 0 && (t == "=" || t == ";" || t == ",")) {
+          int p = this.rw.pv(k);
+          while (isOp(p, "]")) { p = this.rw.pv(this.rw.pv(p)); }
+          return tx(p);
+        }
+        if (t == "(" || t == "[" || t == "{") { d = d + 1; }
+        if (t == ")" || t == "]" || t == "}") { d = d - 1; }
+      }
+      k = k + 1;
+    }
+    return "";
+  }
+
+  < the declared type of a field (generics erased, int mapped), from its first declarator >
+  String fieldType(int hh, int endTok) {
+    int k = hh;
+    int d = 0;
+    while (k <= endTok) {
+      if (kd(k) == 5) {
+        String t = tx(k);
+        if (d == 0 && (t == "=" || t == ";" || t == ",")) {
+          int p = this.rw.pv(k);
+          int dims = 0;
+          while (isOp(p, "]")) { p = this.rw.pv(this.rw.pv(p)); dims = dims + 1; }
+          String ty = this.rw.typeTextOf(hh, p);
+          < a C-style declarator (int a[]) adds its brackets to the type >
+          int q = 0;
+          while (q < dims) { ty = ty + "[]"; q = q + 1; }
+          return ty.replace(" ", "");
+        }
+        if (t == "(" || t == "[" || t == "{") { d = d + 1; }
+        if (t == ")" || t == "]" || t == "}") { d = d - 1; }
+      }
+      k = k + 1;
+    }
+    return "?";
+  }
+
+  int declaratorCount(int hh, int endTok) {
+    int c = 1;
+    int d = 0;
+    int k = hh;
+    while (k < endTok) {
+      if (kd(k) == 5) {
+        String t = tx(k);
+        if (t == "(" || t == "[" || t == "{") { d = d + 1; }
+        if (t == ")" || t == "]" || t == "}") { d = d - 1; }
+        if (d == 0 && t == ",") { c = c + 1; }
+      }
+      k = k + 1;
+    }
+    return c;
+  }
+
+  int paramCount(int paren) {
+    int close = this.rw.matchClose(paren);
+    if (nx(paren + 1) == close) { return 0; }
+    int c = 1;
+    int d = 0;
+    int k = paren + 1;
+    while (k < close) {
+      if (isOp(k, "(") || isOp(k, "[") || isOp(k, "{")) { d = d + 1; }
+      if (isOp(k, ")") || isOp(k, "]") || isOp(k, "}")) { d = d - 1; }
+      if (isOp(k, "<") && this.rw.isGenericAt(k)) { k = this.rw.genEnd(k) + 1; continue; }
+      if (d == 0 && isOp(k, ",")) { c = c + 1; }
+      k = k + 1;
+    }
+    return c;
+  }
+
+  int componentCount(int a, int b) {
+    if (a < 0) { return -1; }
+    return paramCount(a);
+  }
+
+  < ---- metadata (Metadata Class metapattern) and explicit housing ---- >
+  void writeMetadata() {
+    String author = "unknown";
+    String copyright = "unknown";
+    String trademark = "none";
+    String corporation = "unknown";
+    String schedule = "none";
+    if (this.oracle) {
+      author = "Oracle / OpenJDK";
+      copyright = "GPLv2 with Classpath Exception (OpenJDK)";
+      trademark = "Java";
+      corporation = "Oracle Corporation";
+      if (this.moduleName.startsWith("java.") || this.moduleName.startsWith("jdk.")) { schedule = "Java SE 28 API Specification (JDK 28 early access)"; }
+    }
+    this.em.lineOut("< ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >");
+    this.em.lineOut("<< Eleven catalogued attributes with getter/setter pairs. Values are faithful to the Java source");
+    this.em.lineOut("   this file was converted from; metaScienceRating 3 marks unverified converted code. >>");
+    this.em.lineOut("String metaVersion = \"0.1.0\";");
+    this.em.lineOut("int metaId = 0;");
+    this.em.lineOut("String metaAuthor = \"" + author + "\";");
+    this.em.lineOut("String metaDate = \"" + this.dateText + "\";");
+    this.em.lineOut("String metaCopyright = \"" + copyright + "\";");
+    this.em.lineOut("String metaTrademark = \"" + trademark + "\";");
+    this.em.lineOut("String metaCorporation = \"" + corporation + "\";");
+    this.em.lineOut("< metaOrigin: National | <nation> | International | Galactic >");
+    this.em.lineOut("String metaOrigin = \"International\";");
+    this.em.lineOut("String metaBirthDate = \"" + this.dateText + "\";");
+    this.em.lineOut("< metaScienceRating: maturity/robustness on a 1..10 scale >");
+    this.em.lineOut("int metaScienceRating = 3;");
+    this.em.lineOut("< metaNationalSchedule: a real, citable instrument or \"none\" >");
+    this.em.lineOut("String metaNationalSchedule = \"" + schedule + "\";");
+    this.em.blankLine();
+    this.em.lineOut("String getMetaVersion() { return metaVersion; }");
+    this.em.lineOut("void setMetaVersion(String v) { metaVersion = v; }");
+    this.em.lineOut("int getMetaId() { return metaId; }");
+    this.em.lineOut("void setMetaId(int v) { metaId = v; }");
+    this.em.lineOut("String getAuthor() { return metaAuthor; }");
+    this.em.lineOut("void setAuthor(String v) { metaAuthor = v; }");
+    this.em.lineOut("String getDate() { return metaDate; }");
+    this.em.lineOut("void setDate(String v) { metaDate = v; }");
+    this.em.lineOut("String getCopyright() { return metaCopyright; }");
+    this.em.lineOut("void setCopyright(String v) { metaCopyright = v; }");
+    this.em.lineOut("String getTrademark() { return metaTrademark; }");
+    this.em.lineOut("void setTrademark(String v) { metaTrademark = v; }");
+    this.em.lineOut("String getCorporation() { return metaCorporation; }");
+    this.em.lineOut("void setCorporation(String v) { metaCorporation = v; }");
+    this.em.lineOut("String getOrigin() { return metaOrigin; }");
+    this.em.lineOut("void setOrigin(String v) { metaOrigin = v; }");
+    this.em.lineOut("String getBirthDate() { return metaBirthDate; }");
+    this.em.lineOut("void setBirthDate(String v) { metaBirthDate = v; }");
+    this.em.lineOut("int getScienceRating() { return metaScienceRating; }");
+    this.em.lineOut("void setScienceRating(int v) { metaScienceRating = v; }");
+    this.em.lineOut("String getNationalSchedule() { return metaNationalSchedule; }");
+    this.em.lineOut("void setNationalSchedule(String v) { metaNationalSchedule = v; }");
+    this.em.blankLine();
+    this.em.lineOut("< Java container housing (SLEELA.syntax 38.4) >");
+    this.em.lineOut("String javaType = \"" + this.javaType + "\";");
+    this.em.lineOut("String javaModule = \"" + this.moduleName + "\";");
+    this.em.lineOut("String javaSource = \"" + quoteSafe(this.rel) + "\";");
+    this.em.blankLine();
+  }
+
+  < ---- inner classes (JConvOuter) ---- >
+  << The non-static classes declared in a class, enum or record are inner
+     classes: register them with their enclosing class. >>
+  void registerInners(String name, String kind, int count, int[] mk, int[] mStart, int[] mHdr) {
+    if (kind == "interface" || kind == "annotation") { return; }
+    int idx = 0;
+    while (idx < count) {
+      if (mk[idx] == 5 && isId(mHdr[idx], "class")) {
+        boolean st = false;
+        int m = mStart[idx];
+        while (m < mHdr[idx]) { if (isId(m, "static")) { st = true; } m = m + 1; }
+        if (!st) { this.rw.outer.addInner(this.rules.renameIdent(tx(nx(mHdr[idx] + 1))), name); }
+      }
+      idx = idx + 1;
+    }
+  }
+
+  < the method and field names of the current type, comma framed: ,a,b, >
+  String framedMembers() {
+    String s = ",";
+    int i = 0;
+    while (i < this.rw.mN) { s = s + this.rw.mNames[i] + ","; i = i + 1; }
+    i = 0;
+    while (i < this.rw.fN) { s = s + this.rw.fNames[i] + ","; i = i + 1; }
+    return s;
+  }
+
+  < the superclass and interfaces of the type header h .. open-1 (erased simple names) >
+  void setSupersOf(int h, int open) {
+    String sup = "";
+    String[] ifs = new String[16];
+    int n = 0;
+    int mode = 0;
+    int i = h;
+    while (i < open) {
+      if (isId(i, "extends")) { mode = 1; }
+      else if (isId(i, "implements")) { mode = 2; }
+      else if (isId(i, "permits")) { mode = 3; }
+      else if (isOp(i, "<")) {
+        int e = this.rw.genEnd(i);
+        if (e > i) { i = e; }
+      }
+      else if (kd(i) == 1 && (mode == 1 || mode == 2) && !isOp(nx(i + 1), ".")) {
+        String nm = this.rules.renameIdent(tx(i));
+        if (mode == 1 && this.unitKind != "interface") { sup = nm; }
+        else if (n < 16) { ifs[n] = nm; n = n + 1; }
+      }
+      i = i + 1;
+    }
+    this.rw.outer.setSupers(sup, ifs, n);
+  }
+
+  << A constructor of an inner class: the first parameter slOuterArg, and
+     this.slOuter = slOuterArg; after an explicit super(...) of a library or
+     top-level superclass, or at the start of the body. this(...) and super(...)
+     of an inner superclass of the same outer pass slOuterArg on. withBody is
+     false for a stub (only the parameter is added). >>
+  void innerCtorFixup(boolean withBody) {
+    int p = 0;
+    while (p < this.rw.on && this.rw.ot[p] != "(") { p = p + 1; }
+    if (p >= this.rw.on) { return; }
+    boolean empty = (p + 1 < this.rw.on && this.rw.ot[p + 1] == ")");
+    if (!empty) { this.rw.insertAt(p + 1, 5, ","); }
+    this.rw.insertAt(p + 1, 1, "slOuterArg");
+    this.rw.insertAt(p + 1, 1, this.innerOf);
+    this.rw.outer.ctorTotal = this.rw.outer.ctorTotal + 1;
+    if (!withBody) { return; }
+    < the body brace: after the parameter list closes >
+    int d = 0;
+    int b = p;
+    while (b < this.rw.on) {
+      if (this.rw.ot[b] == "(") { d = d + 1; }
+      if (this.rw.ot[b] == ")") {
+        d = d - 1;
+        if (d == 0) { break; }
+      }
+      b = b + 1;
+    }
+    while (b < this.rw.on && this.rw.ot[b] != "{") { b = b + 1; }
+    if (b >= this.rw.on) { return; }
+    int f = b + 1;
+    while (f < this.rw.on && this.rw.ok[f] == 6) { f = f + 1; }
+    boolean callsThis = f + 1 < this.rw.on && this.rw.ot[f] == "this" && this.rw.ot[f + 1] == "(";
+    boolean callsSuper = f + 1 < this.rw.on && this.rw.ot[f] == "super" && this.rw.ot[f + 1] == "(";
+    if (callsThis || (callsSuper && !this.innerBase)) {
+      boolean noArgs = (f + 2 < this.rw.on && this.rw.ot[f + 2] == ")");
+      if (!noArgs) { this.rw.insertAt(f + 2, 5, ","); }
+      this.rw.insertAt(f + 2, 1, "slOuterArg");
+      return;
+    }
+    int at = b + 1;
+    if (callsSuper) {
+      int dd = 0;
+      int q = f;
+      while (q < this.rw.on) {
+        if (this.rw.ot[q] == "(" || this.rw.ot[q] == "{") { dd = dd + 1; }
+        if (this.rw.ot[q] == ")" || this.rw.ot[q] == "}") { dd = dd - 1; }
+        if (dd == 0 && this.rw.ot[q] == ";") { break; }
+        q = q + 1;
+      }
+      at = q + 1;
+    }
+    this.rw.insertAt(at, 5, ";");
+    this.rw.insertAt(at, 1, "slOuterArg");
+    this.rw.insertAt(at, 5, "=");
+    this.rw.insertAt(at, 1, "slOuter");
+    this.rw.insertAt(at, 5, ".");
+    this.rw.insertAt(at, 1, "this");
+  }
+
+  < ---- members ---- >
+  void convertMember(int st, int hh, int bodyOpen, int endTok, int flags, int kk) {
+    this.unitMembers = this.unitMembers + 1;
+    boolean isStatic = (flags % 2) == 1;
+    boolean isProtected = ((flags / 2) % 2) == 1;
+    boolean isNative = ((flags / 4) % 2) == 1;
+    boolean isMethod = (kk == 2 || kk == 3);
+    this.rw.reset();
+    this.rw.curStatic = isStatic;
+    this.rw.inBody = isMethod;
+    this.rw.curReturnType = "";
+    < the return type tokens: the target type of return x -> ... (JConvLambda) >
+    this.rw.lam.retStart = -1;
+    this.rw.lam.retEnd = -1;
+    if (isMethod) {
+      int r0 = hh;
+      if (isOp(r0, "<")) {
+        int ge = this.rw.genEnd(r0);
+        if (ge > r0) { r0 = nx(ge + 1); }
+      }
+      int pp = r0;
+      while (pp < endTok && !isOp(pp, "(")) { pp = pp + 1; }
+      this.rw.lam.retStart = r0;
+      this.rw.lam.retEnd = this.rw.pv(pp);
+    }
+    int reason = this.rw.scanReason(st, endTok + 1, isMethod);
+    if (isNative && reason == 0) { reason = 17; }
+    if (isProtected && !isStatic) { this.em.annotationLine("@JavaProtected"); }
+    < modifiers >
+    boolean sawStatic = false;
+    boolean sawFinal = false;
+    int i = nx(st);
+    while (i < hh) {
+      if (isOp(i, "@") && !isId(nx(i + 1), "interface")) { i = this.rw.skipAnnotation(i); continue; }
+      if (kd(i) == 1) {
+        String t = tx(i);
+        boolean drop = this.rules.isDroppedModifier(t) || t == "native" || (t == "protected" && !isStatic);
+        if (t == "static") { sawStatic = true; }
+        if (t == "final") { sawFinal = true; }
+        if (!drop) { this.rw.push(1, t, this.lx.lines[i]); }
+      }
+      i = i + 1;
+    }
+    if (this.unitKind == "interface" && !isMethod) {
+      if (!sawStatic) { this.rw.syn(1, "static"); }
+      if (!sawFinal) { this.rw.syn(1, "final"); }
+    }
+    int savedTv = this.rw.tvN;
+    int h2 = hh;
+    if (isMethod && isOp(hh, "<")) {
+      int e = this.rw.genEnd(hh);
+      if (e > hh) {
+        this.em.annotationLine("@generic(\"" + quoteSafe(this.src.slice(this.lx.begins[hh], this.lx.ends[e])) + "\")");
+        collectTypeParams(hh, e);
+        h2 = nx(e + 1);
+      }
+    }
+    if (isMethod) {
+      int paren = h2;
+      while (paren < endTok && !isOp(paren, "(")) { paren = paren + 1; }
+      int nameAt = this.rw.pv(paren);
+      String mname = this.rules.renameIdent(tx(nameAt));
+      < return type text, for javac casts on return >
+      int save = this.rw.on;
+      this.rw.rewrite(h2, nameAt);
+      String retType = this.rw.outText(save, this.rw.on);
+      this.rw.on = save;
+      this.rw.curReturnType = retType;
+      if (reason > 0) {
+        int headerEnd = endTok;
+        if (bodyOpen >= 0) { headerEnd = bodyOpen; }
+        this.em.annotationLine("@throwable(\"java.lang.UnsupportedOperationException\")");
+        this.rw.rewrite(h2, headerEnd);
+        if (kk == 3 && this.unitKind == "enum") { this.rw.enumCtorFixup(); }
+        if (kk == 3 && this.innerOf != "") { innerCtorFixup(false); }
+        this.rw.syn(5, "{");
+        this.rw.syn(1, "throw");
+        this.rw.syn(1, "new");
+        this.rw.syn(1, "UnsupportedOperationException");
+        this.rw.syn(5, "(");
+        this.rw.syn(3, "\"not converted to SLeeLa (" + this.rules.reasonText(reason) + "): " + this.javaType + "." + mname + "\"");
+        this.rw.syn(5, ")");
+        this.rw.syn(5, ";");
+        this.rw.syn(5, "}");
+        this.rw.emitOut(this.em);
+        this.em.endLine();
+        if (this.cfg.keepComments && bodyOpen >= 0) {
+          this.em.comment("<< Java body of " + mname + ", kept for manual conversion (" + this.rules.reasonText(reason) + "):\n" + commentSafe(this.src.slice(this.lx.begins[bodyOpen], this.lx.ends[endTok])) + " >>");
+        }
+        stubbed(reason);
+      } else {
+        this.rw.rewrite(h2, endTok + 1);
+        if (kk == 3 && this.unitKind == "enum") { this.rw.enumCtorFixup(); }
+        if (kk == 3 && this.innerOf != "") { innerCtorFixup(true); }
+        this.rw.postPass();
+        this.rw.typedPass();
+        this.rw.emitOut(this.em);
+        this.em.endLine();
+        this.rw.lam.flush(this.em);
+      }
+    } else {
+      if (reason > 0) {
+        < field whose initializer cannot be expressed: keep the declaration, Java zero value >
+        int eq = hh;
+        int d = 0;
+        while (eq < endTok) {
+          if (isOp(eq, "(") || isOp(eq, "[") || isOp(eq, "{")) { d = d + 1; }
+          if (isOp(eq, ")") || isOp(eq, "]") || isOp(eq, "}")) { d = d - 1; }
+          if (d == 0 && isOp(eq, "=")) { break; }
+          eq = eq + 1;
+        }
+        int save = this.rw.on;
+        this.rw.rewrite(hh, eq);
+        int typeEnd = this.rw.on - 1;
+        String ftype = this.rw.outText(save, typeEnd);
+        this.rw.syn(5, "=");
+        this.rw.syn(1, this.rules.zeroOf(ftype));
+        this.rw.syn(5, ";");
+        this.rw.emitOut(this.em);
+        this.em.endLine();
+        if (this.cfg.keepComments) {
+          this.em.comment("<< Java initializer not converted (" + this.rules.reasonText(reason) + "); the field holds the Java zero value:\n" + commentSafe(this.src.slice(this.lx.begins[eq], this.lx.ends[endTok])) + " >>");
+        }
+        this.rep.note("field " + this.unitName + "." + fieldName(hh, endTok) + ": initializer not converted (" + this.rules.reasonText(reason) + ")");
+        stubbed(reason);
+      } else {
+        this.rw.rewrite(hh, endTok + 1);
+        this.rw.postPass();
+        this.rw.typedPass();
+        this.rw.emitOut(this.em);
+        this.em.endLine();
+        this.rw.lam.flush(this.em);
+      }
+    }
+    this.rw.tvN = savedTv;
+  }
+
+  void stubbed(int reason) {
+    this.unitStubs = this.unitStubs + 1;
+    this.rep.countReason(reason);
+  }
+
+  << Initializer blocks run where Java runs them: a static block as the
+     initializer of a static field (class initialization, in source order), an
+     instance block as the initializer of an instance field (each new
+     instance, before the constructor body). >>
+  void convertInitializer(int open, int close, boolean isStatic) {
+    this.unitMembers = this.unitMembers + 1;
+    int k = this.initCounter;
+    this.initCounter = this.initCounter + 1;
+    String pre = "";
+    if (isStatic) { pre = "static "; }
+    String nm = "slStaticInit" + k;
+    if (!isStatic) { nm = "slInstanceInit" + k; }
+    this.rw.reset();
+    this.rw.curStatic = isStatic;
+    this.rw.inBody = true;
+    this.rw.curReturnType = "";
+    this.rw.lam.retStart = -1;
+    int reason = this.rw.scanReason(open, close + 1, true);
+    if (reason > 0) {
+      this.em.annotationLine("@throwable(\"java.lang.UnsupportedOperationException\")");
+      this.em.lineOut(pre + "int " + nm + "() { throw new UnsupportedOperationException(\"not converted to SLeeLa (" + this.rules.reasonText(reason) + "): " + this.javaType + " initializer\"); }");
+      if (this.cfg.keepComments) {
+        this.em.comment("<< Java initializer block, not run (" + this.rules.reasonText(reason) + "):\n" + commentSafe(this.src.slice(this.lx.begins[open], this.lx.ends[close])) + " >>");
+      }
+      this.rep.note(this.unitName + ": initializer block not run (" + this.rules.reasonText(reason) + ")");
+      stubbed(reason);
+      return;
+    }
+    if (!isStatic) { this.unitFields = this.unitFields + 1; }
+    this.em.lineOut(pre + "int " + nm + "_ = " + nm + "();");
+    if (isStatic) { this.rw.syn(1, "static"); }
+    this.rw.syn(1, "int");
+    this.rw.syn(1, nm);
+    this.rw.syn(5, "(");
+    this.rw.syn(5, ")");
+    this.rw.rewrite(open, close);
+    this.rw.syn(1, "return");
+    this.rw.syn(2, "0");
+    this.rw.syn(5, ";");
+    this.rw.syn(5, "}");
+    this.rw.postPass();
+    this.rw.typedPass();
+    this.rw.emitOut(this.em);
+    this.em.endLine();
+    this.rw.lam.flush(this.em);
+  }
+
+  < ---- enums ---- >
+  int enumConstantsEnd(int open, int close) {
+    int d = 0;
+    int k = open + 1;
+    while (k < close) {
+      if (isOp(k, "(") || isOp(k, "[") || isOp(k, "{")) { k = this.rw.matchClose(k) + 1; continue; }
+      if (isOp(k, ";")) { return k; }
+      k = k + 1;
+    }
+    return close;
+  }
+
+  void writeEnumConstants(int open, int constEnd, String name) {
+    int k = open + 1;
+    int ord = 0;
+    while (k < constEnd) {
+      if (kd(k) == 6) {
+        if (this.cfg.keepComments) { this.em.commentToken(tx(k), this.lx.lines[k], this.lx.flags[k]); }
+        k = k + 1;
+        continue;
+      }
+      if (isOp(k, ",")) { k = k + 1; continue; }
+      if (isOp(k, "@")) { k = this.rw.skipAnnotation(k); continue; }
+      if (kd(k) != 1) { k = k + 1; continue; }
+      String cname = tx(k);
+      int after = nx(k + 1);
+      this.rw.reset();
+      this.rw.curStatic = true;
+      this.rw.inBody = false;
+      this.rw.push(1, "static", this.lx.lines[k]);
+      this.rw.syn(1, "final");
+      this.rw.syn(1, name);
+      this.rw.syn(1, cname);
+      this.rw.syn(5, "=");
+      this.rw.syn(1, "new");
+      this.rw.syn(1, name);
+      this.rw.syn(5, "(");
+      this.rw.syn(3, "\"" + cname + "\"");
+      this.rw.syn(5, ",");
+      this.rw.syn(2, "" + ord);
+      if (isOp(after, "(")) {
+        int c = this.rw.matchClose(after);
+        if (nx(after + 1) != c) {
+          this.rw.syn(5, ",");
+          this.rw.rewrite(after + 1, c);
+        }
+        after = nx(c + 1);
+      }
+      this.rw.syn(5, ")");
+      this.rw.syn(5, ";");
+      this.rw.emitOut(this.em);
+      this.em.endLine();
+      this.unitMembers = this.unitMembers + 1;
+      if (isOp(after, "{")) {
+        int bc = this.rw.matchClose(after);
+        this.rep.note("enum constant " + name + "." + cname + ": its class body is dropped (reason 20)");
+        this.rep.countReason(20);
+        if (this.cfg.keepComments) {
+          this.em.comment("<< Java body of enum constant " + cname + ", not converted (" + this.rules.reasonText(20) + "):\n" + commentSafe(this.src.slice(this.lx.begins[after], this.lx.ends[bc])) + " >>");
+        }
+        after = nx(bc + 1);
+      }
+      ord = ord + 1;
+      k = after;
+    }
+  }
+
+  void writeEnumMachinery(int open, int constEnd, String name, boolean hasCtor) {
+    < collect constant names >
+    String[] names = new String[64];
+    int n = 0;
+    int k = open + 1;
+    boolean expectName = true;
+    while (k < constEnd) {
+      if (kd(k) == 6) { k = k + 1; continue; }
+      if (isOp(k, "@")) { k = this.rw.skipAnnotation(k); continue; }
+      if (expectName && kd(k) == 1) {
+        if (n >= arrayLength(names)) {
+          String[] n2 = new String[n * 2];
+          int q = 0;
+          while (q < n) { n2[q] = names[q]; q = q + 1; }
+          names = n2;
+        }
+        names[n] = tx(k);
+        n = n + 1;
+        expectName = false;
+        k = k + 1;
+        continue;
+      }
+      if (isOp(k, "(") || isOp(k, "{")) { k = this.rw.matchClose(k) + 1; continue; }
+      if (isOp(k, ",")) { expectName = true; }
+      k = k + 1;
+    }
+    this.em.blankLine();
+    this.em.lineOut("< ---- java.lang.Enum behavior (converter: the enum is a class with one final instance per constant) ---- >");
+    this.em.lineOut("String enumName;");
+    this.em.lineOut("int enumOrdinal;");
+    this.unitFields = this.unitFields + 2;
+    if (!hasCtor) { this.em.lineOut(name + "(String enumName, int enumOrdinal) { this.enumName = enumName; this.enumOrdinal = enumOrdinal; }"); }
+    if (this.rw.methodIndex("name") < 0) { this.em.lineOut("public final String name() { return this.enumName; }"); }
+    if (this.rw.methodIndex("ordinal") < 0) { this.em.lineOut("public final int ordinal() { return this.enumOrdinal; }"); }
+    if (this.rw.methodIndex("toString") < 0) { this.em.lineOut("public String toString() { return this.enumName; }"); }
+    if (this.rw.methodIndex("compareTo") < 0) { this.em.lineOut("public final int compareTo(" + name + " o) { return this.enumOrdinal - o.enumOrdinal; }"); }
+    String vals = "public static " + name + "[] values() { " + name + "[] v = new " + name + "[" + n + "];";
+    int i = 0;
+    while (i < n) { vals = vals + " v[" + i + "] = " + names[i] + ";"; i = i + 1; }
+    this.em.lineOut(vals + " return v; }");
+    String vo = "public static " + name + " valueOf(String name) {";
+    i = 0;
+    while (i < n) { vo = vo + " if (name == \"" + names[i] + "\") { return " + names[i] + "; }"; i = i + 1; }
+    String pfx = this.javaType;
+    this.em.lineOut(vo + " if (name == null) { throw new NullPointerException(\"Name is null\"); } throw new IllegalArgumentException(\"No enum constant " + pfx + ".\" + name); }");
+    this.unitMembers = this.unitMembers + 1;
+  }
+
+  < ---- records ---- >
+
+  void writeRecordMembers(int a, int b, String name, boolean hasCanonical) {
+    if (a < 0) { return; }
+    String[] ctype = new String[32];
+    String[] cname = new String[32];
+    int n = recordComponents(a, b, ctype, cname);
+    this.em.blankLine();
+    this.em.lineOut("< ---- java.lang.Record behavior (converter: components, canonical constructor, accessors) ---- >");
+    int i = 0;
+    while (i < n) { this.em.lineOut("final " + ctype[i] + " " + cname[i] + ";"); i = i + 1; }
+    this.unitFields = this.unitFields + n;
+    if (!hasCanonical) {
+      String params = "";
+      String body = "";
+      i = 0;
+      while (i < n) {
+        if (i > 0) { params = params + ", "; }
+        params = params + ctype[i] + " " + cname[i];
+        body = body + " this." + cname[i] + " = " + cname[i] + ";";
+        i = i + 1;
+      }
+      this.em.lineOut(name + "(" + params + ") {" + body + " }");
+    }
+    i = 0;
+    while (i < n) {
+      if (this.rw.methodIndex(cname[i]) < 0) { this.em.lineOut("public " + ctype[i] + " " + cname[i] + "() { return this." + cname[i] + "; }"); }
+      i = i + 1;
+    }
+    if (this.rw.methodIndex("toString") < 0) {
+      String s = "public String toString() { return \"" + name + "[\"";
+      i = 0;
+      while (i < n) {
+        if (i > 0) { s = s + " + \", \""; }
+        s = s + " + \"" + cname[i] + "=\" + this." + cname[i];
+        i = i + 1;
+      }
+      this.em.lineOut(s + " + \"]\"; }");
+    }
+    if (this.rw.methodIndex("equals") < 0) {
+      String e = "public boolean equals(Any o) { if (!(o instanceof " + name + ")) { return false; } " + name + " other = (" + name + ") o; return true";
+      i = 0;
+      while (i < n) {
+        if (this.rules.isPrimitive(ctype[i])) { e = e + " && this." + cname[i] + " == other." + cname[i]; }
+        else { e = e + " && Objects.equals(this." + cname[i] + ", other." + cname[i] + ")"; }
+        i = i + 1;
+      }
+      this.em.lineOut(e + "; }");
+    }
+    if (this.rw.methodIndex("hashCode") < 0) {
+      < the record hashCode algorithm is unspecified by Java; this one combines the components >
+      String hc = "public int hashCode() { int32 h = 0;";
+      i = 0;
+      while (i < n) {
+        String part = "Objects.hashCode(this." + cname[i] + ")";
+        if (ctype[i] == "boolean") { part = "(this." + cname[i] + " ? 1231 : 1237)"; }
+        else if (ctype[i] == "double" || ctype[i] == "float") { part = "(int32) this." + cname[i]; }
+        else if (ctype[i] == "long") { part = "(int32) (this." + cname[i] + " ^ (this." + cname[i] + " >>> 32))"; }
+        else if (this.rules.isPrimitive(ctype[i])) { part = "this." + cname[i]; }
+        hc = hc + " h = 31 * h + " + part + ";";
+        i = i + 1;
+      }
+      this.em.lineOut(hc + " return h; }");
+    }
+  }
+
+  int recordComponents(int a, int b, String[] ctype, String[] cname) {
+    int n = 0;
+    int s = a + 1;
+    int d = 0;
+    int k = a + 1;
+    while (k <= b && n < 32) {
+      boolean end = (k == b);
+      if (!end && (isOp(k, "(") || isOp(k, "["))) { d = d + 1; }
+      if (!end && (isOp(k, ")") || isOp(k, "]"))) { d = d - 1; }
+      if (!end && isOp(k, "<") && this.rw.isGenericAt(k)) { k = this.rw.genEnd(k) + 1; continue; }
+      if (end || (d == 0 && isOp(k, ","))) {
+        int last = this.rw.pv(k);
+        if (last > s && kd(last) == 1) {
+          int save = this.rw.on;
+          this.rw.rewrite(s, last);
+          ctype[n] = this.rw.outText(save, this.rw.on);
+          this.rw.on = save;
+          cname[n] = this.rules.renameIdent(tx(last));
+          n = n + 1;
+        }
+        s = k + 1;
+      }
+      k = k + 1;
+    }
+    return n;
+  }
+
+  < a compact canonical constructor: its body runs, then the components are assigned >
+  void convertCompactCtor(int body, int bodyEnd, int a, int b, String name) {
+    this.unitMembers = this.unitMembers + 1;
+    String[] ctype = new String[32];
+    String[] cname = new String[32];
+    int n = recordComponents(a, b, ctype, cname);
+    this.rw.reset();
+    this.rw.curStatic = false;
+    this.rw.inBody = true;
+    this.rw.curReturnType = "";
+    this.rw.lam.retStart = -1;
+    int reason = this.rw.scanReason(body, bodyEnd + 1, true);
+    String params = "";
+    int i = 0;
+    while (i < n) {
+      if (i > 0) { params = params + ", "; }
+      params = params + ctype[i] + " " + cname[i];
+      i = i + 1;
+    }
+    if (reason > 0) {
+      this.em.annotationLine("@throwable(\"java.lang.UnsupportedOperationException\")");
+      this.em.lineOut(name + "(" + params + ") { throw new UnsupportedOperationException(\"not converted to SLeeLa (" + this.rules.reasonText(reason) + "): " + this.javaType + " compact constructor\"); }");
+      stubbed(reason);
+      return;
+    }
+    this.em.lineOut(name + "(" + params + ")");
+    this.rw.rewrite(body, bodyEnd);
+    i = 0;
+    while (i < n) {
+      this.rw.syn(1, "this");
+      this.rw.syn(5, ".");
+      this.rw.syn(1, cname[i]);
+      this.rw.syn(5, "=");
+      this.rw.syn(1, cname[i]);
+      this.rw.syn(5, ";");
+      i = i + 1;
+    }
+    this.rw.syn(5, "}");
+    this.rw.postPass();
+    this.rw.typedPass();
+    this.rw.emitOut(this.em);
+    this.em.endLine();
+    this.rw.lam.flush(this.em);
+  }
+}

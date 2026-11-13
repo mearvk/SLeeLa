@@ -1,0 +1,240 @@
+<< lib/java/converter/JConvRules.sleela
+   Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
+   Definition: the single table of functional and declarative decisions the
+   converter makes when it turns Java source into SLeeLa source. Every rename,
+   type mapping, modifier rule, built-in collision and unsupported construct is
+   decided here, so a revision of the conversion is a revision of this class.
+   The reasons for each rule are in lib/java/converter/README.md (section 3). >>
+#sleela 3.0
+material;
+
+class JConvRules {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full record: a library-family class of the Java container. The rules it
+     encodes follow the Java Language Specification and SLEELA.syntax. >>
+  String metaVersion = "0.5.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 4;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "The Java Language Specification, Java SE 28 Edition";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < ---- configuration chosen by JConvConfig ---- >
+  << intType is the SLeeLa spelling of Java int: "int32" (default) wraps at
+     32 bits on every store, cast, parameter and return, as Java does; "int"
+     keeps the 64-bit SLeeLa int. >>
+  String intType;
+  < one-character plain strings for codes 32..126, built once >
+  String[] ascii;
+  < the conversion model (impl/subjects/conversion/conversion.model), read as data >
+  JConvModel model;
+
+  JConvRules() {
+    this.intType = "int32";
+    this.model = new JConvModel();
+    this.ascii = new String[128];
+    int c = 32;
+    while (c < 127) {
+      this.ascii[c] = javaStringToUtf8(javaStringFromCodeUnit(c));
+      c = c + 1;
+    }
+  }
+
+  void useIntType(String t) { this.intType = t; }
+
+  void useModel(JConvModel m) { this.model = m; }
+
+  String charText(int c) {
+    if (c >= 32 && c < 127) { return this.ascii[c]; }
+    return "?";
+  }
+
+  < ---- rule 1: identifiers that SLeeLa reserves or binds differently ---- >
+  << A Java identifier that is a SLeeLa keyword, or that collides with a VM
+     built-in reached by an unqualified or member call, is renamed by a trailing
+     underscore (lib/java/jdk-28/PURPOSE.md row 27). The rename is applied to the
+     declaration and to every use in the converted unit, so it is consistent
+     across all converted files. >>
+  boolean isRenamedIdent(String n) {
+    if (n == "print" || n == "close" || n == "record" || n == "struct") { return true; }
+    if (n == "require" || n == "usualgc" || n == "usualmem" || n == "sealed") { return true; }
+    if (n == "int64" || n == "int128" || n == "Sleela" || n == "yield") { return true; }
+    if (n == "Any" || n == "utf16") { return true; }
+    return false;
+  }
+
+  String renameIdent(String n) {
+    String out = n;
+    if (isRenamedIdent(n)) { out = n + "_"; }
+    < a dollar sign is not a SLeeLa identifier character >
+    if (out.indexOf("$") >= 0) { out = out.replace("$", "_S_"); }
+    return out;
+  }
+
+  << VM built-ins (SLEELA.syntax and impl/frontend/semantic.cpp). An
+     unqualified call to one of these names inside a class binds to the
+     built-in, so the translator qualifies such calls with this. or the class
+     name when the class declares the method. >>
+  boolean isBuiltinCallName(String n) {
+    if (n == "read" || n == "write" || n == "sleep" || n == "join") { return true; }
+    if (n == "lock" || n == "unlock" || n == "send" || n == "recv") { return true; }
+    if (n == "spawn" || n == "listen" || n == "accept" || n == "connect") { return true; }
+    if (n == "pipe" || n == "openFile" || n == "arrayLength" || n == "arrayGet") { return true; }
+    if (n == "arraySet" || n == "arrayPush" || n == "arrayNew" || n == "conduct") { return true; }
+    if (n == "role" || n == "insight" || n == "congruent" || n == "route") { return true; }
+    if (n == "structPack" || n == "structUnpack" || n == "unlinkFile") { return true; }
+    return false;
+  }
+
+  < ---- rule 2: types ---- >
+  << Java primitive spellings to SLeeLa. byte, short and char wrap at their
+     Java width on store and cast (impl/frontend/compiler.cpp emitJavaNarrow);
+     int follows intType; long, float, double and boolean are kept. >>
+  String mapTypeName(String n) {
+    if (n == "int") { return this.intType; }
+    return n;
+  }
+
+  << The functional interfaces of java.util.function, with Comparator,
+     Runnable and Callable: variables of these types are written as Any
+     (JConvLambda). >>
+  boolean isFunctionalInterface(String n) {
+    if (n == "Function" || n == "BiFunction" || n == "UnaryOperator" || n == "BinaryOperator") { return true; }
+    if (n == "Predicate" || n == "BiPredicate" || n == "Consumer" || n == "BiConsumer" || n == "Supplier") { return true; }
+    if (n == "Comparator" || n == "Runnable" || n == "Callable" || n == "BooleanSupplier") { return true; }
+    if (n == "IntFunction" || n == "IntPredicate" || n == "IntUnaryOperator" || n == "IntBinaryOperator") { return true; }
+    if (n == "IntConsumer" || n == "IntSupplier" || n == "IntToLongFunction" || n == "IntToDoubleFunction") { return true; }
+    if (n == "LongFunction" || n == "LongPredicate" || n == "LongUnaryOperator" || n == "LongBinaryOperator") { return true; }
+    if (n == "LongConsumer" || n == "LongSupplier" || n == "LongToIntFunction" || n == "LongToDoubleFunction") { return true; }
+    if (n == "DoubleFunction" || n == "DoublePredicate" || n == "DoubleUnaryOperator" || n == "DoubleBinaryOperator") { return true; }
+    if (n == "DoubleConsumer" || n == "DoubleSupplier" || n == "DoubleToIntFunction" || n == "DoubleToLongFunction") { return true; }
+    if (n == "ToIntFunction" || n == "ToLongFunction" || n == "ToDoubleFunction") { return true; }
+    if (n == "ToIntBiFunction" || n == "ToLongBiFunction" || n == "ToDoubleBiFunction") { return true; }
+    if (n == "ObjIntConsumer" || n == "ObjLongConsumer" || n == "ObjDoubleConsumer") { return true; }
+    return false;
+  }
+
+  boolean isPrimitive(String n) {
+    if (n == "int" || n == "long" || n == "short" || n == "byte") { return true; }
+    if (n == "char" || n == "boolean" || n == "float" || n == "double") { return true; }
+    if (n == "int32") { return true; }
+    return false;
+  }
+
+  < the Java zero value of an element type, as SLeeLa source text >
+  String zeroOf(String t) {
+    if (t == "boolean") { return "false"; }
+    if (t == "double" || t == "float") { return "0.0"; }
+    if (isPrimitive(t)) { return "0"; }
+    return "null";
+  }
+
+  < the default return statement text for a stub of return type t >
+  String defaultReturn(String t) {
+    if (t == "void" || t == "") { return ""; }
+    return "return " + zeroOf(t) + ";";
+  }
+
+  < roots of fully qualified Java names; a.b.C with such a root becomes C >
+  boolean isQualifiedRoot(String n) {
+    if (n == "java" || n == "javax" || n == "jdk" || n == "sun" || n == "com" || n == "org") { return true; }
+    return false;
+  }
+
+  < ---- rule 3: modifiers ---- >
+  << Dropped because SLeeLa has no meaning for them, or rejects them:
+     strictfp (Java 17 made all floating point strict), sealed / non-sealed and
+     permits (a compile-time check only). native methods get a fail-loud body.
+     protected on an instance member becomes the @JavaProtected annotation,
+     because SLeeLa reserves protected for static members. final on locals and
+     parameters is dropped (SLeeLa rejects it there); final on fields is kept. >>
+  boolean isModifier(String n) {
+    if (n == "public" || n == "private" || n == "protected" || n == "static") { return true; }
+    if (n == "final" || n == "abstract" || n == "native" || n == "synchronized") { return true; }
+    if (n == "transient" || n == "volatile" || n == "strictfp" || n == "default") { return true; }
+    if (n == "sealed") { return true; }
+    return false;
+  }
+
+  boolean isDroppedModifier(String n) {
+    if (n == "strictfp" || n == "sealed") { return true; }
+    return false;
+  }
+
+  < ---- rule 4: Java keywords that start a type declaration ---- >
+  boolean isTypeKeyword(String n) {
+    if (n == "class" || n == "interface" || n == "enum" || n == "record") { return true; }
+    return false;
+  }
+
+  < keywords that are followed by a parenthesis but are not calls >
+  boolean isControlWord(String n) {
+    if (n == "if" || n == "for" || n == "while" || n == "switch" || n == "catch") { return true; }
+    if (n == "synchronized" || n == "return" || n == "throw" || n == "new" || n == "else") { return true; }
+    if (n == "do" || n == "try" || n == "case" || n == "assert" || n == "instanceof") { return true; }
+    return false;
+  }
+
+  << ---- rule 5: constructs SLeeLa cannot express yet ----
+     A member whose tokens contain one of these is converted to a fail-loud
+     stub: its body throws UnsupportedOperationException naming the reason, and
+     the original Java body is kept beside it as a block comment. The reason
+     codes are listed in README.md section 4. >>
+  String reasonText(int code) {
+    if (code == 1) { return "lambda or switch arrow"; }
+    if (code == 2) { return "method reference"; }
+    if (code == 3) { return "anonymous class"; }
+    if (code == 4) { return "labeled statement (retired in 0.2: SLeeLa 3.1 has labels)"; }
+    if (code == 5) { return "switch expression or multi-label case"; }
+    if (code == 6) { return "pattern matching instanceof (outside the two lowered shapes)"; }
+    if (code == 7) { return "try-with-resources"; }
+    if (code == 8) { return "local variable type inference (var)"; }
+    if (code == 9) { return "class literal"; }
+    if (code == 10) { return "qualified this or super"; }
+    if (code == 11) { return "comma in a for header whose body is a compound statement"; }
+    if (code == 12) { return "multi-dimensional array"; }
+    if (code == 13) { return "return, break or continue inside try with finally (retired in 0.2: SLeeLa 3.1 runs the finally)"; }
+    if (code == 14) { return "local or nested class inside a method"; }
+    if (code == 15) { return "hexadecimal floating point literal"; }
+    if (code == 16) { return "unpaired surrogate in a string or char literal"; }
+    if (code == 17) { return "native method"; }
+    if (code == 18) { return "nested array initializer (retired in 0.2: SLeeLa 3.1 has array initializers)"; }
+    if (code == 19) { return "explicit generic method type arguments"; }
+    if (code == 20) { return "enum constant with a body"; }
+    if (code == 21) { return "compact record constructor"; }
+    if (code == 22) { return "static member of java.lang.String"; }
+    if (code == 23) { return "System.out.print without a newline"; }
+    return "unsupported construct";
+  }
+}

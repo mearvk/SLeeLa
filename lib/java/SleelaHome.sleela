@@ -1,0 +1,73 @@
+<< lib/java/SleelaHome.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The basic holder behind Sleela.home (SLEELA.syntax section 42).
+   It carries the reference to the VM and the nearest descendant as public
+   fields. The VM reference can be Sleela.VM, Sleela.System or Sleela.OS. >>
+#sleela 3.0
+material;
+
+class SleelaHome {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39357;
+  String metaAuthor = "mearvk";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "none";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "unknown";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 2;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < The VM reference (Sleela.VM, Sleela.System, Sleela.OS are the same one). >
+  public Any vm = null;
+
+  < The nearest descendant of the asking class. For the head of a lineage this is the class itself. >
+  public Any nearestDescendant = null;
+
+  public SleelaHome() {
+  }
+
+  public SleelaHome(Any vmReference, Any descendant) {
+    vm = vmReference;
+    nearestDescendant = descendant;
+  }
+
+  boolean hasVm() {
+    return vm != null;
+  }
+
+  boolean hasNearestDescendant() {
+    return nearestDescendant != null;
+  }
+}

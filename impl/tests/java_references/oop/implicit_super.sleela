@@ -1,0 +1,7 @@
+#sleela 3.0
+spark;
+material;
+class Base { int hits = 0; String tag; Base() { tag = "base-ctor"; hits = hits + 1; } }
+class Mid extends Base { int m = 5; }
+class Leaf extends Mid { Leaf() { m = m + 1; } }
+class P { void main() { Mid a = new Mid(); print(a.tag); print(a.hits); Leaf b = new Leaf(); print(b.tag); print(b.m); } }

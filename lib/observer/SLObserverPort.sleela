@@ -1,0 +1,201 @@
+<< lib/observer/SLObserverPort.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLObserverPort — the bounded mailbox a module is admitted
+     through. The observer delivers into the inbox and collects from the
+     outbox; the module only ever reads its own inbox and writes its own outbox,
+     so a misbehaving module can hurt nothing but itself (full inbox drops,
+     outbox overflow and reported faults count toward quarantine). >>
+#sleela 2.5
+material;
+< Family: observer. Capacity is fixed: 16 inbound, 8 outbound per cycle. >
+< State: 0 admitted, 1 quarantined, 2 retired, 3 paused. >
+class SLObserverPort {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39202;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int MAX_IN = 16;
+  int MAX_OUT = 8;
+  String name;
+  int state;
+  int faults;
+  String lastFault;
+  SLObserverMessage[] inbox;
+  int inCount;
+  SLObserverMessage[] outbox;
+  int outCount;
+  int received;
+  int sent;
+  int dropped;
+  < what this listener wants: which edit ops, and which line range >
+  int wantInsert;
+  int wantReplace;
+  int wantDelete;
+  int lineFirst;
+  int lineLast;
+  int missed;
+  int filtered;
+
+  void configure(String portName) {
+    name = portName; state = 0; faults = 0; lastFault = "";
+    inbox = new SLObserverMessage[16];
+    outbox = new SLObserverMessage[8];
+    inCount = 0; outCount = 0; received = 0; sent = 0; dropped = 0;
+    wantInsert = 1; wantReplace = 1; wantDelete = 1; lineFirst = -1; lineLast = -1;
+    missed = 0; filtered = 0;
+  }
+  String getName() { return name; }
+  int getState() { return state; }
+  void setState(int s) { state = s; if (s != 0) { inCount = 0; outCount = 0; } }
+  boolean isActive() { return state == 0; }
+  boolean isPaused() { return state == 3; }
+  int missedCount() { return missed; }
+  int filteredCount() { return filtered; }
+  void noteMissed() { missed = missed + 1; }
+  void noteFiltered() { filtered = filtered + 1; }
+  void clearMissed() { missed = 0; }
+  void clearFaults() { faults = 0; lastFault = ""; }
+  < Set what this listener wants. Both line bounds -1 means every line. >
+  void setWant(int ins, int rep, int del, int first, int last) {
+    wantInsert = ins; wantReplace = rep; wantDelete = del; lineFirst = first; lineLast = last;
+  }
+  < Does this listener want a CHANGE message? Other kinds always pass. >
+  boolean wantsChange(SLObserverMessage m) {
+    if (m.getKind() != 5) { return true; }
+    int op = m.getOp();
+    if (op == 0 && wantInsert == 0) { return false; }
+    if (op == 1 && wantReplace == 0) { return false; }
+    if (op == 2 && wantDelete == 0) { return false; }
+    if (lineFirst >= 0) {
+      if (m.getLine() < lineFirst || m.getLine() > lineLast) { return false; }
+    }
+    return true;
+  }
+  int faultCount() { return faults; }
+  String faultText() { return lastFault; }
+  void fault(String why) { faults = faults + 1; lastFault = why; }
+  int receivedCount() { return received; }
+  int sentCount() { return sent; }
+  int droppedCount() { return dropped; }
+
+  < ---- observer side ------------------------------------------------------ >
+
+  < Deliver into the inbox. A closed port or a full inbox drops, never blocks. >
+  boolean deliver(SLObserverMessage m) {
+    if (m == null || state != 0) { dropped = dropped + 1; return false; }
+    if (inCount >= 16) { dropped = dropped + 1; return false; }
+    inbox[inCount] = m;
+    inCount = inCount + 1;
+    received = received + 1;
+    return true;
+  }
+  SLObserverMessage takeOut() {
+    if (outCount == 0) { return null; }
+    SLObserverMessage m = outbox[0];
+    int i = 0;
+    while (i + 1 < outCount) {
+      SLObserverMessage t = outbox[i + 1];
+      outbox[i] = t;
+      i = i + 1;
+    }
+    outCount = outCount - 1;
+    return m;
+  }
+  int outPending() { return outCount; }
+
+  < ---- module side -------------------------------------------------------- >
+
+  boolean hasMail() { return state == 0 && inCount > 0; }
+  int mailCount() { return (state == 0) ? inCount : 0; }
+  SLObserverMessage next() {
+    if (inCount == 0) { return null; }
+    SLObserverMessage m = inbox[0];
+    int i = 0;
+    while (i + 1 < inCount) {
+      SLObserverMessage t = inbox[i + 1];
+      inbox[i] = t;
+      i = i + 1;
+    }
+    inCount = inCount - 1;
+    return m;
+  }
+
+  < Queue an outbound message. An overflowing outbox counts as a fault. >
+  boolean say(SLObserverMessage m) {
+    if (m == null || state != 0) { return false; }
+    if (outCount >= 8) { fault("outbox overflow"); return false; }
+    outbox[outCount] = m;
+    outCount = outCount + 1;
+    sent = sent + 1;
+    return true;
+  }
+  boolean note(String to, String body) {
+    SLObserverMessage m = new SLObserverMessage();
+    m.configure(0, name, to, body);
+    return say(m);
+  }
+  boolean ask(String to, String body) {
+    SLObserverMessage m = new SLObserverMessage();
+    m.configure(1, name, to, body);
+    return say(m);
+  }
+  < Answer a received message: addressed to its sender, same conversation depth. >
+  boolean reply(SLObserverMessage original, String body) {
+    if (original == null) { return false; }
+    SLObserverMessage m = new SLObserverMessage();
+    m.configure(2, name, original.getFrom(), body);
+    m.setHops(original.getHops());
+    return say(m);
+  }
+  < Ask the observer to edit the document (op 0 insert, 1 replace, 2 delete). >
+  < The edit is only applied if baseRevision is still current. >
+  boolean propose(int op, int line, String body, int baseRevision) {
+    SLObserverMessage m = new SLObserverMessage();
+    m.configure(3, name, "observer", body);
+    m.setOp(op); m.setLine(line); m.setRevision(baseRevision);
+    return say(m);
+  }
+  boolean reportFault(String why) {
+    SLObserverMessage m = new SLObserverMessage();
+    m.configure(4, name, "observer", why);
+    return say(m);
+  }
+}

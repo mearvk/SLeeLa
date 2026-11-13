@@ -1,0 +1,100 @@
+<< examples/java/differential/OperandSemantics.sleela
+   SLeeLa side of the OperandSemantics differential test.
+   Definition: Prints, line for line, the same results as OperandSemantics.java for the
+   Java operators on int, long, byte, short, char and double. Plain int rows go
+   through lib/java JavaOperands; the typed-local rows use int32, byte, short and
+   char directly, which wrap at their declared Java width. >>
+#sleela 3.0
+import java.jdk-28;
+material;
+
+< Java container: the names used here are housed in /lib/java and are not part of the SLeeLa specification, see SLEELA.syntax 38.4. >
+class OperandSemantics {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "The Java Language Specification, Java SE 28 Edition (JLS 4, 5, 15)";
+
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+  String getDate() { return metaDate; }
+  String getCopyright() { return metaCopyright; }
+  String getTrademark() { return metaTrademark; }
+  String getCorporation() { return metaCorporation; }
+  String getOrigin() { return metaOrigin; }
+  String getBirthDate() { return metaBirthDate; }
+  int getScienceRating() { return metaScienceRating; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+
+  String s(long x) { return "" + x; }
+
+  String div(int x, int y) {
+    try { return s(JavaOperands.divInt(x, y)); } catch (Any e) { return "AE"; }
+  }
+  String rem(int x, int y) {
+    try { return s(JavaOperands.remInt(x, y)); } catch (Any e) { return "AE"; }
+  }
+  String divL(long x, long y) {
+    try { return s(JavaOperands.divLong(x, y)); } catch (Any e) { return "AE"; }
+  }
+  String remL(long x, long y) {
+    try { return s(JavaOperands.remLong(x, y)); } catch (Any e) { return "AE"; }
+  }
+
+  void main() {
+    int[] xs = new int[10];
+    xs[0] = 0; xs[1] = 1; xs[2] = -1; xs[3] = 7; xs[4] = -7; xs[5] = 2147483647; xs[6] = -2147483648; xs[7] = 65535; xs[8] = -32769; xs[9] = 123456789;
+    int[] ys = new int[9];
+    ys[0] = 0; ys[1] = 1; ys[2] = -1; ys[3] = 3; ys[4] = 31; ys[5] = 32; ys[6] = 33; ys[7] = 2147483647; ys[8] = -2147483648;
+    for (int a = 0; a < 10; a = a + 1) {
+      int x = xs[a];
+      for (int b = 0; b < 9; b = b + 1) {
+        int y = ys[b];
+        print("int " + s(x) + " " + s(y) + " " + s(JavaOperands.addInt(x, y)) + " " + s(JavaOperands.subInt(x, y)) + " " + s(JavaOperands.mulInt(x, y)) + " " + div(x, y) + " " + rem(x, y)
+          + " " + s(JavaOperands.shlInt(x, y)) + " " + s(JavaOperands.shrInt(x, y)) + " " + s(JavaOperands.ushrInt(x, y)) + " " + s(x & y) + " " + s(x | y) + " " + s(x ^ y));
+      }
+      print("un " + s(x) + " " + s(JavaOperands.negInt(x)) + " " + s(~x) + " " + s(JavaOperands.toByte(x)) + " " + s(JavaOperands.toShort(x)) + " " + s(JavaOperands.toChar(x)));
+    }
+    long[] ls = new long[8];
+    ls[0] = 0L; ls[1] = 1L; ls[2] = -1L; ls[3] = 9007199254740993L; ls[4] = 9223372036854775807L; ls[5] = -9223372036854775807L - 1; ls[6] = 4294967296L; ls[7] = -4294967297L;
+    long[] ns = new long[8];
+    ns[0] = 0L; ns[1] = 1L; ns[2] = -1L; ns[3] = 3L; ns[4] = 63L; ns[5] = 64L; ns[6] = 65L; ns[7] = -9223372036854775807L - 1;
+    for (int a = 0; a < 8; a = a + 1) {
+      long x = ls[a];
+      for (int b = 0; b < 8; b = b + 1) {
+        long y = ns[b];
+        int sc = (int) (y & 63);
+        print("long " + s(x) + " " + s(y) + " " + s(x + y) + " " + s(x - y) + " " + s(x * y) + " " + divL(x, y) + " " + remL(x, y)
+          + " " + s(JavaOperands.shlLong(x, sc)) + " " + s(JavaOperands.shrLong(x, sc)) + " " + s(JavaOperands.ushrLong(x, sc)));
+      }
+      print("l2 " + s(x) + " " + s(JavaOperands.toInt(x)) + " " + s(JavaOperands.toShort(x)) + " " + s(JavaOperands.toByte(x)) + " " + s(JavaOperands.toChar(x)));
+    }
+    double[] ds = new double[15];
+    ds[0] = 0.0 / 0.0; ds[1] = 1.0 / 0.0; ds[2] = -1.0 / 0.0; ds[3] = 3.99; ds[4] = -3.99; ds[5] = 1e10; ds[6] = -1e10; ds[7] = 2147483647.5; ds[8] = -2147483648.5;
+    ds[9] = 9.3e18; ds[10] = -9.3e18; ds[11] = 1e300; ds[12] = 70000.9; ds[13] = -129.5; ds[14] = 65536.0;
+    for (int a = 0; a < 15; a = a + 1) {
+      double d = ds[a];
+      print("dbl " + s(JavaOperands.d2i(d)) + " " + s(JavaOperands.d2l(d)) + " " + s(JavaOperands.d2s(d)) + " " + s(JavaOperands.d2b(d)) + " " + s(JavaOperands.d2c(d)));
+    }
+    byte b = 127; b = b + 1;
+    short sh = 32767; sh = sh + 1;
+    char ch = 65535; ch = ch + 1;
+    int32 i = 2147483647; i = i + 1;
+    print("typed " + s(b) + " " + s(sh) + " " + s(ch) + " " + s(i));
+    byte acc = 0;
+    for (int k = 0; k < 300; k = k + 1) { acc = acc + 1; }
+    int32 h = 0;
+    for (int k = 0; k < 40; k = k + 1) { h = 31 * h + (k * 7919); }
+    print("loop " + s(acc) + " " + s(h));
+  }
+}

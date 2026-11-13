@@ -1,0 +1,234 @@
+<< lib/advantage/trading-actions-on-verb/15-euclid-exhaustive/TaUse15EuclidExhaustive.sleela
+   SLeeLa trading-action use case.
+   Definition: Euclid, exhaustively: gcd, lcm, Bezout, integer square root, closed-form fills and distance are each checked against a slower independent method over every small case. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Use case 15 (Euclidean). Each fast routine in SLEuclid is compared with a >
+< slower method that is too simple to be wrong: brute-force divisors for gcd, >
+< a linear search for the square root, and the plain scan for exact fills. >
+< Small cases are tested exhaustively; the 64-bit ceiling is tested at its edge. >
+< Python confirms the pair counts, so a loop that silently stopped early would >
+< show as a wrong count. >
+class TaUse15EuclidExhaustive {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39315;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+
+  void expect(String label, int got, int want) {
+    if (got == want) {
+      print("  ok   " + label + " = " + got);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label + " got " + got + " want " + want);
+      failed = failed + 1;
+    }
+  }
+
+  void expectTrue(String label, boolean got) {
+    if (got) {
+      print("  ok   " + label);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label);
+      failed = failed + 1;
+    }
+  }
+
+  void summary() {
+    print("  checks passed=" + passed + " failed=" + failed);
+  }
+
+  void act(SLLongBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+
+  < Brute-force gcd: try every divisor from the larger input downwards. >
+  int brute(int a, int b) {
+    if (a == 0 && b == 0) { return 0; }
+    if (a == 0) { return b; }
+    if (b == 0) { return a; }
+    int d = a;
+    if (b > a) { d = b; }
+    while (d > 1) {
+      if (a % d == 0 && b % d == 0) { return d; }
+      d = d - 1;
+    }
+    return 1;
+  }
+
+  < Linear floor square root: grow r while the next square still fits. >
+  int linearRoot(int n) {
+    int r = 0;
+    while ((r + 1) * (r + 1) <= n) { r = r + 1; }
+    return r;
+  }
+
+  void main() {
+    SLEuclid e = new SLEuclid();
+    print("== Use case 15: Euclid, exhaustively ==");
+    print("-- gcd against a brute-force divisor search, all pairs 0..60 --");
+    int pairs = 0;
+    int bad = 0;
+    int a = 0;
+    while (a <= 60) {
+      int b = 0;
+      while (b <= 60) {
+        if (e.gcd(a, b) != brute(a, b)) { bad = bad + 1; }
+        pairs = pairs + 1;
+        b = b + 1;
+      }
+      a = a + 1;
+    }
+    expect("pairs tested", pairs, 3721);
+    expect("pairs where gcd differs from brute force", bad, 0);
+    print("-- lcm * gcd = a * b, all pairs 1..60 --");
+    pairs = 0;
+    bad = 0;
+    a = 1;
+    while (a <= 60) {
+      int b2 = 1;
+      while (b2 <= 60) {
+        if (e.lcm(a, b2) * e.gcd(a, b2) != a * b2) { bad = bad + 1; }
+        pairs = pairs + 1;
+        b2 = b2 + 1;
+      }
+      a = a + 1;
+    }
+    expect("pairs tested", pairs, 3600);
+    expect("pairs where the identity fails", bad, 0);
+    print("-- extended Euclid: a*x + b*y = gcd, all pairs 0..60 --");
+    pairs = 0;
+    bad = 0;
+    a = 0;
+    while (a <= 60) {
+      int b3 = 0;
+      while (b3 <= 60) {
+        int g = e.egcd(a, b3);
+        if (g != e.gcd(a, b3) || !e.bezoutHolds(a, b3, g)) { bad = bad + 1; }
+        pairs = pairs + 1;
+        b3 = b3 + 1;
+      }
+      a = a + 1;
+    }
+    expect("pairs tested", pairs, 3721);
+    expect("pairs where the certificate fails", bad, 0);
+    print("-- isqrt against a linear search, n = 0..3000 --");
+    int tested = 0;
+    bad = 0;
+    int n = 0;
+    while (n <= 3000) {
+      if (e.isqrt(n) != linearRoot(n)) { bad = bad + 1; }
+      tested = tested + 1;
+      n = n + 1;
+    }
+    expect("values tested", tested, 3001);
+    expect("values where isqrt differs", bad, 0);
+    print("-- isqrt at perfect squares and one below, k = 1..3000 --");
+    bad = 0;
+    int k = 1;
+    while (k <= 3000) {
+      if (e.isqrt(k * k) != k || e.isqrt(k * k - 1) != k - 1) { bad = bad + 1; }
+      k = k + 1;
+    }
+    expect("squares where the floor is wrong", bad, 0);
+    print("-- isqrt at the exact-comparison ceiling (2^53 - 1) --");
+    expect("isqrt(94906265^2)", e.isqrt(94906265 * 94906265), 94906265);
+    expect("isqrt(94906265^2 - 1)", e.isqrt(94906265 * 94906265 - 1), 94906264);
+    expect("isqrt(94906266^2 - 1) is above the limit", e.isqrt(94906266 * 94906266 - 1), 0 - 1);
+    expect("isqrt(9007199254740991)", e.isqrt(9007199254740991), 94906265);
+    expect("isqrt(9007199254740992) is refused", e.isqrt(9007199254740992), 0 - 1);
+    expect("a refused value is not a wrong answer", e.isqrt(9223372030926249000), 0 - 1);
+    print("-- closed-form fill against the scan, a,b = 1..12 and c = 0..150 --");
+    int combos = 0;
+    bad = 0;
+    int fa = 1;
+    while (fa <= 12) {
+      int fb = 1;
+      while (fb <= 12) {
+        int c = 0;
+        while (c <= 150) {
+          boolean fast = e.canFill(c, fa, fb);
+          int x1 = e.fillA;
+          int y1 = e.fillB;
+          boolean slow = e.canFillScan(c, fa, fb);
+          boolean ok = (fast == slow);
+          if (ok && fast) { ok = (x1 == e.fillA && y1 == e.fillB && x1 * fa + y1 * fb == c); }
+          if (!ok) { bad = bad + 1; }
+          combos = combos + 1;
+          c = c + 1;
+        }
+        fb = fb + 1;
+      }
+      fa = fa + 1;
+    }
+    expect("combinations tested", combos, 21744);
+    expect("combinations where the methods differ", bad, 0);
+    print("-- distance is symmetric and zero on itself, 200 pseudo-random vectors --");
+    bad = 0;
+    int seed = 99;
+    int round = 0;
+    int[] u = new int[4];
+    int[] v = new int[4];
+    while (round < 200) {
+      int j = 0;
+      while (j < 4) {
+        seed = (seed * 1103515245 + 12345) % 2147483648;
+        u[j] = (seed / 65536) % 2001 - 1000;
+        seed = (seed * 1103515245 + 12345) % 2147483648;
+        v[j] = (seed / 65536) % 2001 - 1000;
+        j = j + 1;
+      }
+      if (e.distSq(u, v, 4) != e.distSq(v, u, 4)) { bad = bad + 1; }
+      if (e.distSq(u, u, 4) != 0) { bad = bad + 1; }
+      if (e.dist(u, v, 4) * e.dist(u, v, 4) > e.distSq(u, v, 4)) { bad = bad + 1; }
+      round = round + 1;
+    }
+    expect("vectors where a property fails", bad, 0);
+    summary();
+  }
+}

@@ -1,0 +1,125 @@
+<< examples/java/differential/UUIDCore.sleela
+   SLeeLa side of the UUIDCore differential test.
+   Definition: Prints, line for line, the same results as UUIDCore.java for
+   java.util.UUID: the constructor and accessors, toString, fromString (valid
+   input and every exception message), version, variant, timestamp,
+   clockSequence, node, hashCode, equals, compareTo, nameUUIDFromBytes (MD5)
+   and the shape of randomUUID. >>
+#sleela 3.0
+material;
+import java.jdk-25.java.util;
+class UUIDCore {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+
+  void show(UUID u) {
+    print(u.toString() + " v" + u.version() + " var" + u.variant() + " " + u.getMostSignificantBits()
+      + " " + u.getLeastSignificantBits() + " h" + u.hashCode());
+  }
+  void parse(String s) {
+    try { UUID u = UUID.fromString(s); show(u); }
+    catch (Any e) { Throwable t = (Throwable) e; print(s + " !! " + t.toString()); }
+  }
+  byte[] bytes(int n) {
+    byte[] b = new byte[n];
+    int i = 0;
+    while (i < n) {
+      int v = (i * 7 + 3) % 256;
+      if (v > 127) { v = v - 256; }
+      b[i] = v;
+      i = i + 1;
+    }
+    return b;
+  }
+  byte[] text(String s) {
+    byte[] b = new byte[s.length()];
+    int i = 0;
+    while (i < arrayLength(b)) { b[i] = s.charAt(i); i = i + 1; }
+    return b;
+  }
+  String yn(boolean x) { if (x) { return "true"; } return "false"; }
+  void trial(UUID u, int which) {
+    try {
+      if (which == 0) { u.timestamp(); }
+      if (which == 1) { u.clockSequence(); }
+      if (which == 2) { u.node(); }
+    } catch (Any e) { Throwable t = (Throwable) e; print(t.toString()); }
+  }
+
+  void main() {
+    show(new UUID(0, 0));
+    show(new UUID(-1, -1));
+    show(new UUID(1314564453825188563, -6605018797301088256));
+    show(new UUID(-9223372036854775807 - 1, 9223372036854775807));
+    show(new UUID(9223372036854775807, -9223372036854775807 - 1));
+    show(new UUID(1234605616436508552, -7373874951294615808));
+    show(new UUID(4295098371, -9222246136947933179));
+    show(new UUID(1311768467463740911, -4549198573597622271));
+
+    parse("123e4567-e89b-12d3-a456-426614174000");
+    parse("00000000-0000-0000-0000-000000000000");
+    parse("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF");
+    parse("1-2-3-4-5");
+    parse("7fffffffffffffff-1-2-3-4");
+    parse("1-2-3-4-+5");
+    parse("");
+    parse("abc");
+    parse("1-2-3-4");
+    parse("1-2-3-4-5-6");
+    parse("zz-1-2-3-4");
+    parse("1--2-3-4");
+    parse("1-2-3-4-");
+    parse("fffffffffffffffff-1-2-3-4");
+    parse("8000000000000000-1-2-3-4");
+    parse("+-1-2-3-4");
+    parse("1-2-3-4- 5");
+    parse("123e4567-e89b-12d3-a456-42661417400g");
+    parse("123e4567-e89b-12d3-a456-4266141740000000000000000000000000");
+    parse("1-2-3-4-ffffffffffffffff");
+
+    UUID t = UUID.fromString("c232ab00-9414-11ec-b3c8-9f6bdeced846");
+    print("" + t.version() + " " + t.timestamp() + " " + t.clockSequence() + " " + t.node());
+    UUID v4 = UUID.fromString("123e4567-e89b-42d3-a456-426614174000");
+    trial(v4, 0);
+    trial(v4, 1);
+    trial(v4, 2);
+
+    UUID a = new UUID(5, 6);
+    UUID b = new UUID(5, 6);
+    UUID c = new UUID(5, 7);
+    UUID d = new UUID(-1, 0);
+    UUID e = new UUID(1, 0);
+    print(yn(a.equals(b)) + " " + yn(a.equals(c)) + " " + yn(a.equals(null)) + " " + yn(a.equals("x")) + " " + yn(a.equals(a)));
+    print("" + a.compareTo(b) + " " + a.compareTo(c) + " " + c.compareTo(a) + " " + d.compareTo(e) + " " + e.compareTo(d));
+    try { a.compareTo(null); } catch (Any x) { print("java.lang.NullPointerException"); }
+
+    show(UUID.nameUUIDFromBytes(text("")));
+    show(UUID.nameUUIDFromBytes(text("a")));
+    show(UUID.nameUUIDFromBytes(text("hello")));
+    show(UUID.nameUUIDFromBytes(text("The quick brown fox jumps over the lazy dog")));
+    int[] sizes = new int[13];
+    sizes[0] = 1; sizes[1] = 54; sizes[2] = 55; sizes[3] = 56; sizes[4] = 57; sizes[5] = 63; sizes[6] = 64;
+    sizes[7] = 65; sizes[8] = 119; sizes[9] = 120; sizes[10] = 128; sizes[11] = 255; sizes[12] = 256;
+    int i = 0;
+    while (i < 13) { show(UUID.nameUUIDFromBytes(bytes(sizes[i]))); i = i + 1; }
+
+    UUID r1 = UUID.randomUUID();
+    UUID r2 = UUID.randomUUID();
+    print("" + r1.version() + " " + r1.variant() + " " + r2.version() + " " + r2.variant()
+      + " " + yn(r1.equals(r2)) + " " + r1.toString().length() + " " + yn(UUID.fromString(r1.toString()).equals(r1)));
+  }
+}

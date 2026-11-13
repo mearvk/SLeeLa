@@ -1,0 +1,95 @@
+<< examples/java/JavaLangIntegralConformance.sleela
+   SLeeLa Java SE/JDK 28 conformance program.
+   Definition: Exercises the SLeeLa implementation of java.lang.Integer, Long, Short, Byte and StrictMath
+   under lib/java and prints one FAIL line per mismatch, then a summary line.
+   Expected values are the outputs of the Java SE 28 API for the same calls. >>
+#sleela 3.0
+material;
+class JavaLangIntegralConformance {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class conformance program. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-10";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-10";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+  String getDate() { return metaDate; }
+  String getCopyright() { return metaCopyright; }
+  String getTrademark() { return metaTrademark; }
+  String getCorporation() { return metaCorporation; }
+  String getOrigin() { return metaOrigin; }
+  String getBirthDate() { return metaBirthDate; }
+  int getScienceRating() { return metaScienceRating; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+
+
+  int bad = 0;
+  void eq(String name, String got, String want) {
+    if (got != want) { bad = bad + 1; print("FAIL " + name + " got=[" + got + "] want=[" + want + "]"); }
+  }
+  void main() {
+    Integer I = new Integer(0);
+    eq("parse", "" + I.parseInt("-2147483648"), "-2147483648");
+    eq("parse+", "" + I.parseInt("+123"), "123");
+    eq("radix", "" + I.parseIntRadix("ff", 16), "255");
+    eq("radixNeg", "" + I.parseIntRadix("-1010", 2), "-10");
+    eq("wrap", "" + I.sum(2147483647, 1), "-2147483648");
+    eq("hex", I.toHexString(-1), "ffffffff");
+    eq("hex255", I.toHexString(255), "ff");
+    eq("bin", I.toBinaryString(10), "1010");
+    eq("oct", I.toOctalString(8), "10");
+    eq("tostrRadix", I.toStringRadix(-255, 16), "-ff");
+    eq("unsigned", I.toUnsignedString(-1), "4294967295");
+    eq("bitCount", "" + I.bitCount(-1) + "," + I.bitCount(7), "32,3");
+    eq("nlz", "" + I.numberOfLeadingZeros(1) + "," + I.numberOfLeadingZeros(0) + "," + I.numberOfLeadingZeros(-1), "31,32,0");
+    eq("ntz", "" + I.numberOfTrailingZeros(8), "3");
+    eq("hob", "" + I.highestOneBit(100) + "," + I.lowestOneBit(100), "64,4");
+    eq("rotl", "" + I.rotateLeft(-2147483648, 1), "1");
+    eq("rotr", "" + I.rotateRight(1, 1), "-2147483648");
+    eq("reverse", "" + I.reverse(1), "-2147483648");
+    eq("revBytes", I.toHexString(I.reverseBytes(305419896)), "78563412");
+    eq("divU", "" + I.divideUnsigned(-1, 2), "2147483647");
+    eq("cmpU", "" + I.compareUnsigned(-1, 1), "1");
+    eq("decode", "" + I.decode("0x1F").intValue() + "," + I.decode("-#10").intValue() + "," + I.decode("010").intValue(), "31,-16,8");
+    Integer a = new Integer(42);
+    eq("tostr", a.toString(), "42");
+    eq("equals", "" + a.equals(new Integer(42)) + a.equals("42"), "truefalse");
+    eq("cmp", "" + a.compareTo(new Integer(7)), "1");
+    eq("byteValue", "" + new Integer(300).byteValue(), "44");
+    boolean nfe = false;
+    try { I.parseInt("2147483648"); } catch (Any e) { nfe = e instanceof NumberFormatException; NumberFormatException x = (NumberFormatException) e; eq("nfeMsg", x.getMessage(), "For input string: \"2147483648\""); }
+    if (!nfe) { bad = bad + 1; print("FAIL overflow parse"); }
+    boolean nfe2 = false;
+    try { I.parseInt("12a"); } catch (Any e2) { nfe2 = e2 instanceof NumberFormatException; }
+    if (!nfe2) { bad = bad + 1; print("FAIL bad digit"); }
+    Long L = new Long(0);
+    eq("lparse", "" + L.parseLong("-9223372036854775808"), "-9223372036854775808");
+    eq("lmax", "" + L.parseLong("9223372036854775807"), "9223372036854775807");
+    eq("lhex", L.toHexString(-1), "ffffffffffffffff");
+    eq("lhex2", L.toHexString(-9223372036854775807 - 1), "8000000000000000");
+    eq("lunsigned", L.toUnsignedString(-1), "18446744073709551615");
+    eq("lbit", "" + L.bitCount(-1), "64");
+    eq("lhash", "" + new Long(-1).hashCode() + "," + new Long(4294967296).hashCode() + "," + new Long(123).hashCode(), "0,1,123");
+    eq("lnlz", "" + L.numberOfLeadingZeros(1), "63");
+    Short S = new Short(0);
+    eq("short", "" + S.parseShort("-32768") + "," + S.sum(32767, 1) + "," + S.toUnsignedInt(-1), "-32768,-32768,65535");
+    Byte B = new Byte(0);
+    eq("byte", "" + B.parseByte("127") + "," + new Byte(200).intValue() + "," + B.toUnsignedInt(-1), "127,-56,255");
+    boolean bover = false;
+    try { B.parseByte("128"); } catch (Any e3) { bover = true; }
+    if (!bover) { bad = bad + 1; print("FAIL byte overflow"); }
+    StrictMath sm = new StrictMath();
+    eq("strict", "" + sm.sqrt(16.0), "4");
+    print("failures=" + bad);
+  }
+}

@@ -1,0 +1,19 @@
+== Lesson 20: fuel decision ==
+-- master (onion) --
+  Depot A total = 75000 cents
+  Depot B total = 75500 cents
+  Depot C total = 75200 cents
+  master picks Depot A
+-- student, first pass: the fee of Depot A was counted twice --
+  Depot A total = 76500 cents
+  Depot B total = 75500 cents
+  Depot C total = 75200 cents
+  student picks Depot C
+  Depot A fee again: student only, master has no such entry
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Depot A total = 75000 cents
+  Depot B total = 75500 cents
+  Depot C total = 75200 cents
+  student picks Depot A
+  verdict: AGREE, work accepted

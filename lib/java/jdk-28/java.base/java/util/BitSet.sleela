@@ -1,0 +1,401 @@
+<< lib/java/jdk-28/java.base/java/util/BitSet.sleela
+   SLeeLa file for the Java type java.util.BitSet (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/BitSet.html
+   Java kind: class; extends java.lang.Object; implements java.lang.Cloneable, java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+import java.jdk-28;
+
+class BitSet {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.1.0";
+  int metaId = 1850;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.BitSet";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/BitSet.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.BitSet members (procedural implementation in SLeeLa) ---- >
+  << A growable vector of bits. Storage is one boolean per bit; the Java
+     long-word view is reproduced where it is observable (size() is a
+     multiple of 64, toLongArray / valueOf / hashCode use the 64-bit word
+     layout). The constructor takes the initial size in bits. Java overloads
+     carry suffixes: set(i, value) is setTo, set(from, to) is setRange,
+     set(from, to, value) is setRangeTo, clear(from, to) is clearRange,
+     clear() is clearAll, get(from, to) is getRange, flip(from, to) is
+     flipRange. >>
+  boolean[] bits;
+  int wordsInUse;
+  BitSet(int nbits) {
+    if (nbits < 0) { throw new NegativeArraySizeException("nbits < 0: " + nbits); }
+    int words = (nbits + 63) / 64;
+    this.bits = newBits(words * 64);
+    this.wordsInUse = 0;
+  }
+  boolean[] newBits(int n) {
+    boolean[] b = new boolean[n];
+    int i = 0;
+    while (i < n) { b[i] = false; i = i + 1; }
+    return b;
+  }
+  void ensure(int bitIndex) {
+    int cap = arrayLength(this.bits);
+    if (bitIndex < cap) { return; }
+    int need = (bitIndex / 64 + 1) * 64;
+    int nc = cap * 2;
+    if (nc < need) { nc = need; }
+    boolean[] nb = newBits(nc);
+    int i = 0;
+    while (i < cap) { nb[i] = this.bits[i]; i = i + 1; }
+    this.bits = nb;
+  }
+  void checkIndex(int bitIndex) {
+    if (bitIndex < 0) { throw new IndexOutOfBoundsException("bitIndex < 0: " + bitIndex); }
+  }
+  void checkRange(int fromIndex, int toIndex) {
+    if (fromIndex < 0) { throw new IndexOutOfBoundsException("fromIndex < 0: " + fromIndex); }
+    if (toIndex < 0) { throw new IndexOutOfBoundsException("toIndex < 0: " + toIndex); }
+    if (fromIndex > toIndex) { throw new IndexOutOfBoundsException("fromIndex: " + fromIndex + " > toIndex: " + toIndex); }
+  }
+  void set(int bitIndex) { setTo(bitIndex, true); }
+  void setTo(int bitIndex, boolean value) {
+    checkIndex(bitIndex);
+    if (value) { ensure(bitIndex); this.bits[bitIndex] = true; }
+    else { if (bitIndex < arrayLength(this.bits)) { this.bits[bitIndex] = false; } }
+  }
+  void setRange(int fromIndex, int toIndex) { setRangeTo(fromIndex, toIndex, true); }
+  void setRangeTo(int fromIndex, int toIndex, boolean value) {
+    checkRange(fromIndex, toIndex);
+    int i = fromIndex;
+    while (i < toIndex) { setTo(i, value); i = i + 1; }
+  }
+  void clear(int bitIndex) { setTo(bitIndex, false); }
+  void clearRange(int fromIndex, int toIndex) { setRangeTo(fromIndex, toIndex, false); }
+  void clearAll() {
+    int i = 0;
+    while (i < arrayLength(this.bits)) { this.bits[i] = false; i = i + 1; }
+  }
+  boolean get(int bitIndex) {
+    checkIndex(bitIndex);
+    if (bitIndex >= arrayLength(this.bits)) { return false; }
+    return this.bits[bitIndex];
+  }
+  BitSet getRange(int fromIndex, int toIndex) {
+    checkRange(fromIndex, toIndex);
+    BitSet r = new BitSet(0);
+    int i = fromIndex;
+    while (i < toIndex) { if (get(i)) { r.set(i - fromIndex); } i = i + 1; }
+    return r;
+  }
+  void flip(int bitIndex) { setTo(bitIndex, !get(bitIndex)); }
+  void flipRange(int fromIndex, int toIndex) {
+    checkRange(fromIndex, toIndex);
+    int i = fromIndex;
+    while (i < toIndex) { flip(i); i = i + 1; }
+  }
+  << Index of the highest set bit plus one. >>
+  int length() {
+    int i = arrayLength(this.bits) - 1;
+    while (i >= 0) { if (this.bits[i]) { return i + 1; } i = i - 1; }
+    return 0;
+  }
+  int size() { return arrayLength(this.bits); }
+  boolean isEmpty() { return length() == 0; }
+  int cardinality() {
+    int n = 0;
+    int i = 0;
+    while (i < arrayLength(this.bits)) { if (this.bits[i]) { n = n + 1; } i = i + 1; }
+    return n;
+  }
+  int nextSetBit(int fromIndex) {
+    if (fromIndex < 0) { throw new IndexOutOfBoundsException("fromIndex < 0: " + fromIndex); }
+    int i = fromIndex;
+    while (i < arrayLength(this.bits)) { if (this.bits[i]) { return i; } i = i + 1; }
+    return -1;
+  }
+  int nextClearBit(int fromIndex) {
+    if (fromIndex < 0) { throw new IndexOutOfBoundsException("fromIndex < 0: " + fromIndex); }
+    int i = fromIndex;
+    while (i < arrayLength(this.bits)) { if (!this.bits[i]) { return i; } i = i + 1; }
+    return i;
+  }
+  int previousSetBit(int fromIndex) {
+    if (fromIndex < -1) { throw new IndexOutOfBoundsException("fromIndex < -1: " + fromIndex); }
+    int i = fromIndex;
+    while (i >= 0) { if (get(i)) { return i; } i = i - 1; }
+    return -1;
+  }
+  int previousClearBit(int fromIndex) {
+    if (fromIndex < -1) { throw new IndexOutOfBoundsException("fromIndex < -1: " + fromIndex); }
+    int i = fromIndex;
+    while (i >= 0) { if (!get(i)) { return i; } i = i - 1; }
+    return -1;
+  }
+  void and(BitSet set) {
+    int i = 0;
+    while (i < arrayLength(this.bits)) { if (this.bits[i] && !set.get(i)) { this.bits[i] = false; } i = i + 1; }
+  }
+  void or(BitSet set) {
+    int n = set.length();
+    int i = 0;
+    while (i < n) { if (set.get(i)) { setTo(i, true); } i = i + 1; }
+  }
+  void xor(BitSet set) {
+    int n = set.length();
+    int i = 0;
+    while (i < n) { if (set.get(i)) { flip(i); } i = i + 1; }
+  }
+  void andNot(BitSet set) {
+    int i = 0;
+    while (i < arrayLength(this.bits)) { if (this.bits[i] && set.get(i)) { this.bits[i] = false; } i = i + 1; }
+  }
+  boolean intersects(BitSet set) {
+    int i = 0;
+    while (i < arrayLength(this.bits)) { if (this.bits[i] && set.get(i)) { return true; } i = i + 1; }
+    return false;
+  }
+  << The 64-bit word w of the Java long[] layout (bit i of word w is bit 64w+i). >>
+  long word(int w) {
+    long v = 0;
+    long p = 1;
+    int i = 0;
+    while (i < 63) {
+      if (get(w * 64 + i)) { v = v + p; }
+      p = p * 2;
+      i = i + 1;
+    }
+    if (get(w * 64 + 63)) { v = v + (-9223372036854775807 - 1); }
+    return v;
+  }
+  long[] toLongArray() {
+    int n = (length() + 63) / 64;
+    long[] out = new long[n];
+    int w = 0;
+    while (w < n) { out[w] = word(w); w = w + 1; }
+    return out;
+  }
+  BitSet valueOf(long[] longs) {
+    BitSet r = new BitSet(arrayLength(longs) * 64);
+    int w = 0;
+    while (w < arrayLength(longs)) {
+      long v = longs[w];
+      boolean top = v < 0;
+      if (top) { v = v - (-9223372036854775807 - 1); }
+      int i = 0;
+      while (i < 63) {
+        if (v % 2 == 1) { r.set(w * 64 + i); }
+        v = v / 2;
+        i = i + 1;
+      }
+      if (top) { r.set(w * 64 + 63); }
+      w = w + 1;
+    }
+    return r;
+  }
+  int[] toByteArray() {
+    int n = (length() + 7) / 8;
+    int[] out = new int[n];
+    int k = 0;
+    while (k < n) {
+      int v = 0;
+      int p = 1;
+      int i = 0;
+      while (i < 8) { if (get(k * 8 + i)) { v = v + p; } p = p * 2; i = i + 1; }
+      if (v > 127) { v = v - 256; }
+      out[k] = v;
+      k = k + 1;
+    }
+    return out;
+  }
+  << Java hashCode: h = 1234 xor-accumulated with word[i] * (i + 1), folded
+     to 32 bits; computed on 32-bit halves. >>
+  int hashCode() {
+    initNibbles();
+    long hHi = 0;
+    long hLo = 1234;
+    int n = (length() + 63) / 64;
+    int i = n - 1;
+    while (i >= 0) {
+      long prodHi = 0;
+      long prodLo = 0;
+      mul64(word(i), i + 1);
+      hHi = xor32(hHi, this.mulHi);
+      hLo = xor32(hLo, this.mulLo);
+      i = i - 1;
+    }
+    long r = xor32(hHi, hLo);
+    if (r > 2147483647) { r = r - 4294967296; }
+    return (int) r;
+  }
+  long mulHi;
+  long mulLo;
+  << The low 64 bits of v * k (k small, positive) as unsigned 32-bit halves. >>
+  void mul64(long v, int k) {
+    long lo = v % 4294967296;
+    long hi = v / 4294967296;
+    if (lo < 0) { lo = lo + 4294967296; hi = hi - 1; }
+    if (hi < 0) { hi = hi + 4294967296; }
+    long pl = lo * k;
+    long carry = pl / 4294967296;
+    this.mulLo = pl % 4294967296;
+    this.mulHi = (hi * k + carry) % 4294967296;
+  }
+  boolean equals(Any obj) {
+    if (obj instanceof BitSet) {
+      BitSet o = (BitSet) obj;
+      int n = length();
+      if (o.length() != n) { return false; }
+      int i = 0;
+      while (i < n) { if (get(i) != o.get(i)) { return false; } i = i + 1; }
+      return true;
+    }
+    return false;
+  }
+  BitSet clone() {
+    BitSet r = new BitSet(arrayLength(this.bits));
+    r.or(this);
+    return r;
+  }
+  String toString() {
+    String sb = "{";
+    boolean first = true;
+    int i = 0;
+    while (i < arrayLength(this.bits)) {
+      if (this.bits[i]) {
+        if (!first) { sb = sb + ", "; }
+        sb = sb + i;
+        first = false;
+      }
+      i = i + 1;
+    }
+    return sb + "}";
+  }
+  << Bitwise operations on unsigned 32-bit values through a 4-bit table
+     (the VM has no bitwise operators). >>
+  int[] nib;
+  void initNibbles() {
+    this.nib = new int[256];
+    int a = 0;
+    while (a < 16) {
+      int b = 0;
+      while (b < 16) {
+        int r = 0;
+        int bit = 1;
+        int x = a;
+        int y = b;
+        int k = 0;
+        while (k < 4) {
+          if ((x % 2) != (y % 2)) { r = r + bit; }
+          x = x / 2; y = y / 2; bit = bit * 2; k = k + 1;
+        }
+        this.nib[a * 16 + b] = r;
+        b = b + 1;
+      }
+      a = a + 1;
+    }
+  }
+  long xor32(long a, long b) {
+    long r = 0;
+    long mul = 1;
+    long x = a;
+    long y = b;
+    int k = 0;
+    while (k < 8) {
+      r = r + this.nib[(int) ((x % 16) * 16 + (y % 16))] * mul;
+      x = x / 16; y = y / 16; mul = mul * 16; k = k + 1;
+    }
+    return r;
+  }
+  < ---- END java implementation ---- >
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BitSet bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @throwable("java.lang.UnsupportedOperationException")
+  public BitSet() { }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any get(int fromIndex, int toIndex) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear(int fromIndex, int toIndex) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clear() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any stream() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void set(int fromIndex, int toIndex) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void set(int bitIndex, boolean value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void set(int fromIndex, int toIndex, boolean value) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void flip(int fromIndex, int toIndex) { }
+  < ---- END java signatures ---- >
+}

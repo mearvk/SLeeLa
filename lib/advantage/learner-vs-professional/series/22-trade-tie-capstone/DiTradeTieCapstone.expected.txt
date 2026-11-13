@@ -1,0 +1,22 @@
+== Lesson 22: tie capstone decision ==
+-- master (onion) --
+  Vendor A total = 495000 cents
+  Vendor B total = 502000 cents
+  Vendor C total = 495000 cents
+  Vendor D total = 500000 cents
+  master picks Vendor A
+-- student, first pass: Vendor A was not observed --
+  Vendor A not observed
+  Vendor B total = 502000 cents
+  Vendor C total = 495000 cents
+  Vendor D total = 500000 cents
+  student picks Vendor C
+  Vendor A: master only, student did not observe it
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Vendor A total = 495000 cents
+  Vendor B total = 502000 cents
+  Vendor C total = 495000 cents
+  Vendor D total = 500000 cents
+  student picks Vendor A
+  verdict: AGREE, work accepted

@@ -1,10 +1,11 @@
 # SLeeLa 3.0 — 대한민국 (KR)
-
 <p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela/sleela-wordmark.svg" alt="SLeeLa — The Now. The Ingredient." width="560"></p>
+<p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
 
 <p align="center"><strong>네이티브 시스템 언어, 컴파일러, 런타임 및 가상 머신 생태계.</strong></p>
+<p align="center"><a href="https://github.com/mearvk/SLeeLa/actions"><img alt="GitHub Actions" src="https://img.shields.io/github/actions/workflow/status/mearvk/SLeeLa/test-suite.yml?branch=main&label=test%20suite"></a> <a href="docs/PLATFORM-SUPPORT.md"><img alt="Platform matrix" src="https://img.shields.io/badge/platforms-Linux%20%7C%20macOS%20%7C%20Windows-273238"></a></p>
 
-> **국가별 국제판 — 번역 진행 중.** 이 파일은 한국어판 작업용 안내 문서입니다. 아래 한국어 섹션은 번역되었지만 README.md의 모든 기술 섹션을 완역한 문서는 아닙니다. 규범적 기술 내용은 영어 원문을 기준으로 확인해 주세요.
+> **국가별 국제판(한국어).** 이 파일은 한국어 국가별 에디션으로, README의 I~XIX 섹션을 한국어로 제공합니다. 기술 식별자, 명령, 코드, 파일명 및 링크는 원문 그대로 유지합니다.
 
 **The Now. The Ingredient.** 프로그래밍 언어는 문법만으로 이루어지지 않습니다. 소프트웨어를 실제로 사용할 수 있게 하는 컴파일러, 런타임, 라이브러리, 도구 및 플랫폼 계약도 언어의 일부입니다.
 
@@ -29,24 +30,47 @@
 
 ## II. 최근 추가 사항
 
-언어, 드라이버 및 표준 라이브러리에 추가된 주요 기능입니다. 기술 식별자, 구문, 명령 및 파일명은 원문 그대로 유지합니다.
+언어, 드라이버 및 표준 라이브러리에 최근 추가된 기능:
 
-- **표준 라이브러리 패키지 `advantage`.** [`lib/advantage/`](lib/advantage/README.md)는 모델에 대한 고유 배당을 다루는 계층형 **Sequitur onion**(dividend → review → concerns → maths → additions → subtraction → regrouping → iteration)을 구현합니다. 간단한 사용자 모델과 전체 제어 기능을 갖춘 개발자 모델을 제공하며, 다섯 영역을 포함합니다. `math/`는 양자 간 거래 경제학, 공동 이익 최대화, 내시 협상 및 양자 newsvendor 임계 비율을 다룹니다. `physics/`는 신뢰 필드를 계량 텐서, 거래 측지선 등으로 표현하는 구조경제학적 모델링 유추를 제공합니다. `integration/`은 재귀적으로 구성 가능한 수직 통합 모델, `grading/`은 A–D 모듈 평가기, `output/`은 터미널·CommonRails 형식 출력면·소켓/커넥터로 전달하는 출력 경로를 제공합니다. C/C++ 소비자 구현은 [`advantage/`](advantage/README.md)에 있습니다.
-- **루프 타이밍 주석 — `@loopDelay` / `@loopBudget` 및 `sleep(ms)`.** `for`, `while`, `do` 루프 바로 앞에 작성하는 동작 주석으로 실제 실행 대기 시간을 삽입합니다. `@loopDelay(ms = 250)`은 반복마다 고정 지연을 적용하고, `@loopBudget(seconds = 10, iterations = 1000)`은 알려진 반복 횟수를 전체 시간 예산에 분배합니다. 두 주석은 추가 전용 opcode **`OP_SLEEP`**(ISA 157)으로 낮춰지며, 내장 함수 `sleep(<ms>)`도 이 명령을 사용합니다. 사양은 [`SLEELA.syntax` §32](SLEELA.syntax), API는 [LOOP_TIMING_API.md](api/sleela/3.0/LOOP_TIMING_API.md), 실행 예제는 [loop-timing-annotation-demo.sleela](examples/loop-timing-annotation-demo.sleela)를 참조하세요.
-- **명령줄의 SleelaDoc — `sleela docs`.** `sleela docs`는 문서화 가능한 주제를 나열하고, `sleela docs crypto`는 패키지를, `sleela docs stringbuilder`는 클래스를 찾습니다. 각 페이지에는 정의, 설계 목적, 관계, 구조, 사용자 개념 및 5단계 숙련도 체계가 포함됩니다. `@intent`, `@thesis`, `@axiom`, `@param`, `@see`, `@mastery` 태그로 문서를 보강할 수 있습니다. `sleela docs --generate [dir]`는 오프라인 조회용 일반 텍스트 코퍼스를 생성하며, `make sleeladoc`은 코퍼스와 해당 `.sleela` 소스를 `sleeladoc/build/sleeladoc.jar`에 묶습니다. 자세한 내용은 [`lib/sleeladoc/README.md`](lib/sleeladoc/README.md)를 참조하세요.
-- **SleelaDoc 및 HTML 문서 사이트.** [`lib/sleeladoc`](lib/sleeladoc/README.md)은 `.sleela` 단위의 문서 주석을 Markdown 또는 HTML API 페이지로 변환합니다. 전체 `/lib`를 탐색할 수 있는 HTML 사이트는 [`sleeladoc-api/`](sleeladoc-api/README.md)에 생성됩니다. 컴파일러는 `--wiki` 옵션으로 MediaWiki 페이지도 출력할 수 있습니다. 관련 문서: [SLEELADOC](manifesto/SLEELADOC.md), [SLEELADOC.WIKI](manifesto/SLEELADOC.WIKI.md).
-- **XML Document Object Model(`lib/xml`).** 요소, 텍스트, 주석, CDATA 및 처리 명령 노드 트리, 순서가 있는 자식 노드, 이름 있는 속성, 압축/정형 직렬화, XML 1.0 §2.4 이스케이프, 문자 셀 파서 및 품질 레지스터 `SLXmlAspect`를 제공합니다. 노드 동등성은 동일성, 동일 주제, 구조의 세 단계로 판단하며 반사적·대칭적·결정적입니다. [`lib/xml/README.md`](lib/xml/README.md)와 [실행 예제](lib/xml/xml-dom.sleela)를 참조하세요.
-- **확장 정수 기본형.** `int`, `long`, `int64`는 동일하게 동작하는 64비트 부호 있는 정수입니다. `int128`은 현재 64비트 기반으로 허용되며 실제 128비트 구현은 후속 작업으로 문서화되어 있습니다. 부호 있는 `int32`~`int16777216`(구문 2.7) 및 부호 없는 `uint32`~`uint16777216`(구문 2.8) 계열도 추가되었습니다. [`SLEELA.syntax`](SLEELA.syntax) §§21, 24, 25를 참조하세요.
-- **`@mix` 연속 필드(구문 2.9).** 각 선언에 `@mix`가 붙으면 클래스에서 같은 이름의 인스턴스 필드를 여러 개 선언할 수 있습니다. 그룹은 기본적으로 `1,2,3,…` 순서로 인덱싱되며 `@mix(1,2,3,...)`로 직접 지정할 수도 있습니다. 인덱스 수는 필드 수와 일치해야 합니다. [`SLEELA.syntax` §28](SLEELA.syntax)을 참조하세요.
-- **Preonems — Natural Process 문서 마커.** `author`/`authorial`, `material`, `memory`, `determine`, `object`, `field`, `pure`, `gasoline`, `artifact`는 선언형 문서 마커입니다. 문맥과 구문 버전에 따라 적용되며 파싱, 타입 검사 또는 코드 생성에는 영향을 주지 않습니다. 마커 위치 밖에서는 일반 식별자로 남습니다. [`SLEELA.syntax`](SLEELA.syntax) §§18–20, 23, 26, 30, 35를 참조하세요.
-- **Nordshrift의 전체 라이브러리 접근.** 구문 3.0에서 Nordshrift는 컴파일러와 동일한 재귀적 `/lib` 색인을 사용하여 모든 패키지와 `.sleela` 단위를 찾습니다. `nordshrift check`는 전체 트리의 개수를 보고합니다.
-- **재귀 스탠션.** [`recursion/stanchion/`](recursion/stanchion/README.md)에는 문서화된 7개 기본 타입 계약을 위한 C 및 C++ 참조 프로토타입과 일반·응용·과학·교육용 예제가 포함됩니다. 검증된 자료로 취급하기 전에 참조 소스를 직접 컴파일하고 테스트해야 합니다.
-- **꺾쇠 괄호 주석(`<` / `<<`).** 프런트엔드는 `< line >` 및 `<< block >>` 형식의 주석을 인식합니다. [`SLEELA.syntax` §1.1](SLEELA.syntax)을 참조하세요.
-- **기수 정수 리터럴.** `int` 리터럴은 밑줄 구분자 `_`와 함께 16진수(`0x`), 2진수(`0b`), 8진수(`0o`) 형식을 지원합니다. SLeeLa 소스 언어와 [`.xlt` CPU 모델 형식](lib/xlt/README.md) 모두에 적용됩니다.
-- **라이브러리 전반의 Metadata Class 표준.** 출처, 적법성 및 관할 범위를 기록하는 설명형 메타데이터 패턴이 `/lib` 아래 클래스가 포함된 모든 `.sleela` 파일에 적용됩니다. [`SLEELA.syntax` §15](SLEELA.syntax) 및 [튜토리얼 13과](tutorial/13-metadata-class.md)를 참조하세요.
-- **텍스트 및 String 계열 확장.** `lib/text`는 `charAt`, `substring`, `indexOf`, `reverse`, 열 정렬 및 위치 기반 템플릿 기능을 제공합니다. [튜토리얼](tutorial/14-text-and-strings.md)과 [실행 예제](lib/text/text-string-demo.sleela)를 참조하세요.
-- **Nordshrift 시트의 String 선언.** `.sst` 시트는 타입이 지정된 `strings:` 블록을 선언할 수 있으며, 이 내용은 빌드 구성요소 매니페스트에 반영됩니다. [Nordshrift Sheet Reference](wiki/Nordshrift-Sheet-Reference.md)를 참조하세요.
-- **opcode 및 함수 호출 방식으로 실행되는 CPU 모델.** 각 `SL<ARCH>CPU`는 fetch-decode-execute 루프를 통한 네이티브 명령 스트림 실행과 공유 VM 기반의 동등한 호출을 통한 다른 프로세스 코드 실행을 지원합니다. [`lib/cpu/EXECUTION.md` §5](lib/cpu/EXECUTION.md)를 참조하세요.
+- **표준 라이브러리 `advantage` 패키지 — 수학, 물리, 통합, 등급 평가, 라우팅 가능한 출력을 갖춘 배당의 우위화(advantaging).**
+  [`lib/advantage/`](lib/advantage/README.md)는 *모델에 대한 고유 배당을 우위화하는 것*을 계층형 **Sequitur onion**(dividend → review → concerns → maths → additions → subtraction → regrouping → iteration)으로 캡슐화합니다. 안쪽과 바깥쪽으로 이동할 수 있고 완전한 동적 갱신과 restitute(복원)를 지원하며, 간단한 **사용자 모델**과 전체 제어가 가능한 **개발자 모델**로 노출됩니다. 다섯 가지 주제 영역을 포함합니다. **`math/`**는 양자 간 무역 경제학(공동 이익 최대화, 내시 협상, 양자 뉴스벤더 임계 비율), **`physics/`**는 구조경제학의 "신뢰 필드 물리학"(계량 텐서로서의 신뢰, 거래 측지선, 발표 접촉 구조, CIR+점프 신뢰 감쇠 SDE — 모델링 유추이며 그렇게 표시되어 있음), **`integration/`**은 자본주의/소매업을 위한 재귀적으로 구성 가능한 수직 통합 모델(구획, 엔지니어링 베이, 시험 구획, 뉴턴 중앙값 트레이, 시스템 정교성 점수), **`grading/`**은 각 모듈과 승리/패배/채점기/절대 모듈의 임의 집합을 A–D로 평가하는 정교성 회로 채점기, **`output/`**은 모듈 출력을 터미널, **CommonRails** 형식 표면 또는 소켓/커넥터(네이티브 `slnet_write`용으로 프레이밍)로 보내는 라우팅 가능한 emit 접합부입니다. 모든 클래스는 Metadata-Class 레코드를 가지며, 실행 가능한 다섯 개의 데모가 각 주제를 검증하고, 보조 문서인
+  [`DEFINITIONS.md`](lib/advantage/DEFINITIONS.md),
+  [`MATH.md`](lib/advantage/MATH.md),
+  [`PHYSICS.md`](lib/advantage/PHYSICS.md)가 이를 설명합니다. [`advantage/`](advantage/README.md) 아래의 네이티브 C/C++ 소비자(C 코어 `advantage_value`/`advantage_mean`, XML 지식 저장소, 보안 HTTPS/SFTP/SSH 수집 + 키스토어 + DH/ECDH 전송 라이브러리)는 모델을 실제
+  [거래 예제](advantage/examples/README.md)에 연결합니다. 예제는 추정된 인터넷 출처에서 나온 긍정적 거래, 대상 관련성 순서(Traders, Consumers, Helpers, Healers), 그리고 A–D로 순위를 매긴 여덟 개의 모델(D = 가장 Cement, A = 가장 Brand)입니다.
+- **루프 타이밍 주석 — `@loopDelay` / `@loopBudget`(+ 내장 함수 `sleep(ms)`).** SLeeLa 최초의 **문장 수준 동작** 주석입니다. `for` / `while` / `do` 루프 앞의 독립된 줄에 작성하며, 루프 실행에 실제 대기 시간을 삽입합니다. `@loopDelay(ms = 250)` / `@loopDelay(seconds = 2)`는 반복마다 고정된 시간만큼 대기하고(인수만 쓴 `@loopDelay(250)`은 밀리초로 간주), `@loopBudget(seconds = 10, iterations = 1000)`은 알려진 반복 횟수를 전체 실제 시간 예산에 걸쳐 고르게 분배합니다. 둘 다 새로운 추가 전용 opcode **`OP_SLEEP`**(ISA 157)로 낮춰지며, 어디서든 호출할 수 있는 범용 내장 함수 **`sleep(<ms>)`**도 이 opcode를 사용합니다. 대기는 이식 가능한 방식(`nanosleep` / `Sleep`)으로 구현됩니다. 사양은 [`SLEELA.syntax` §32](SLEELA.syntax), API 참조는 [`api/sleela/3.0/LOOP_TIMING_API.md`](api/sleela/3.0/LOOP_TIMING_API.md), 실행 가능한 예제는
+  [`examples/loop-timing-annotation-demo.sleela`](examples/loop-timing-annotation-demo.sleela)입니다.
+  세션 추가 사항 색인(이 항목, 네이티브 `OP_BIGMUL` 큰 정수 곱셈, 독립 실행형 도구 **[local-generator](local-generator/README.md)** 및 **[pi-generator](pi-generator/README.md)** 포함)은
+  [`api/sleela/3.0/SESSION-ADDITIONS-API.md`](api/sleela/3.0/SESSION-ADDITIONS-API.md)에 있습니다.
+  생성된 세 개의 API 표면
+  ([`sleeladoc-api/`](sleeladoc-api/README.md),
+  [`docs/api/`](docs/api/README.md), 그리고 불변의
+  [`api/sleela/3.0/version-014/`](api/sleela/3.0/version-014/index.html)
+  스냅샷)은 `make api-docs`로 다시 빌드되었으며, `vm` 패키지 페이지에 새로운 `SLISASleep` / `SLISABigMul` 명령 항목이 추가되었습니다.
+- **명령줄의 SleelaDoc — `sleela docs`.** 이제 터미널에서 SleelaDoc을 바로 사용할 수 있습니다. `sleela docs`는 문서화 가능한 모든 주제를 나열하고, `sleela docs crypto`는 패키지를 보여 주며, `sleela docs stringbuilder`는 클래스를(대소문자를 구분하지 않고, 표준 라이브러리 접두사 `SL`을 통해 `SLStringBuilder`로) 찾아 풍부한 페이지를 출력합니다. 페이지에는 **정의, 설계 목적, 관계, 구조, 사용자 clay, 5단계 숙련도 사다리**가 포함되며, 비슷한 철자의 경우 순위가 매겨진 "혹시 이것을 찾으셨나요" 결과가 표시됩니다. 작성자는 SleelaDoc `@` 태그(`@intent`, `@thesis`, `@axiom`, `@param`, `@see`, `@mastery`)를 추가하는 것만으로 어떤 페이지든 보강할 수 있습니다. `sleela docs --generate [dir]`는 (클래스당 한 페이지 + `TOPICS.index`로 이루어진) 일반 텍스트 코퍼스를 작성하고, CLI는 이를 오프라인에서 읽습니다. **`make sleeladoc`**은 그 코퍼스**와 해당 `.sleela` 소스**를 `sleeladoc/build/sleeladoc.jar`에 묶습니다. 퍼사드 전용 주제(예: `psychiatry`, `politico`)의 경우 `sleela docs --facade <topic>`이 런타임에 파일 시스템을 검색하여 실제 **폴더(그다음 자연스러운 흐름으로 파일)**를 나열하며, 사용자가 재정의할 수 있는 한도인 **6 MB / 6000개 파일 / 6분** 안에서 동작합니다. `lib/sleeladoc` 단위는 현재 에디션인 **`#sleela 3.0`**으로 유지됩니다. [`man/man1/sleela.1`](man/man1/sleela.1)과 [`lib/sleeladoc/README.md`](lib/sleeladoc/README.md)를 참조하세요.
+- **SleelaDoc — 생성된 HTML 사이트를 갖춘 Javadoc 스타일 문서화 솔루션.** **SleelaDoc**은 SLeeLa의 소스 내 문서 주석 규약(`@doc` / `@page`를 표지로 하는 꺾쇠 괄호 주석, [`manifesto/SLEELADOC.md`](manifesto/SLEELADOC.md) 참조)이며, [`lib/sleeladoc`](lib/sleeladoc/README.md)은 `javadoc`이 Java를 렌더링하는 것과 같은 방식으로 `.sleela` 단위를 Markdown 또는 HTML API 페이지로 렌더링하는 **추출기**로서 *의도*를 문서화합니다. **전체 `/lib`에 대한 탐색 가능한 완전한 HTML 문서 사이트**는 `tools/generate-sleeladoc-api.py`에 의해 [`/sleeladoc-api`](sleeladoc-api/README.md)에 생성됩니다(`sleeladoc-api/index.html`을 여세요. 파랑 / 연한 파랑 / 연한 회색 / 흰색의 깔끔한 스타일, 패키지 → 클래스 → 멤버 계층 구조, *Student 2* 독자를 위해 작성된 용어집을 제공합니다). 컴파일러는 컴파일의 부산물로 작성자가 표시한 문서 출력(`--wiki` MediaWiki 페이지 + 원본 소스의 쌍둥이)도 내보내며, 이는 [`manifesto/SLEELADOC.WIKI.md`](manifesto/SLEELADOC.WIKI.md)에 문서화되어 있습니다. 실행 가능한 예제:
+  [`lib/sleeladoc/sleeladoc-demo.sleela`](lib/sleeladoc/sleeladoc-demo.sleela).
+- **XML Document Object Model(`lib/xml`).** SLeeLa 측 XML DOM으로, 요소/텍스트/주석/CDATA/처리 명령 노드의 트리를 소유하며 순서 있는 자식 노드와 이름 있는 속성을 가진 문서, 직렬화기(압축/정형, XML 1.0 §2.4 이스케이프), 문자 셀 파서, 품질 레지스터 `SLXmlAspect`를 제공합니다. 노드 동등성은 신뢰의 세 단계(동일성 → 동일 주제 → 구조)로 판단되며 반사적·대칭적·결정적입니다. [`lib/xml/README.md`](lib/xml/README.md)와 실행 가능한
+  [`lib/xml/xml-dom.sleela`](lib/xml/xml-dom.sleela)를 참조하세요.
+- **확장 부호 있는 정수 기본형(`long`, `int64`, `int128`).** `int`, `long`, `int64`는 모두 64비트 부호 있는 정수이며 타입 검사와 실행이 동일합니다. `int128`은 정수 타입으로 허용됩니다(현재는 64비트 기반이며 실제 128비트는 문서화된 후속 작업). 2진 부호 있는 계열 `int32`..`int16777216`(구문 2.7)과 대응하는 부호 없는 계열 `uint32`..`uint16777216`(구문 2.8)이 이를 확장합니다. [`SLEELA.syntax`](SLEELA.syntax) §21, §24, §25를 참조하세요.
+- **`@mix` 연속(consequent) 필드(구문 2.9).** 반복되는 각 선언에 `@mix`가 붙어 있으면 클래스는 **같은 이름**의 인스턴스 필드를 여러 개 선언할 수 있습니다. 언어는 이 그룹을 연속된 것(인덱스를 키로 하는 배열/리스트)으로 이해하며, 기본적으로 위에서 아래로 `1,2,3,…` 순서이고 수동으로는 `@mix(1,2,3,...)`를 쓰되 인덱스 수가 필드 수와 일치해야 합니다. [`SLEELA.syntax`](SLEELA.syntax) §28을 참조하세요.
+- **문서 마커 — Natural Process, 명칭은 Preonems(`author`/`authorial`, `material`, `memory`, `determine`, `object`, `field`).**
+  이 단독 문서 마커 단어들은 통틀어 **Preonems**라고 부릅니다(마커 하나는 *Preonem*, 집합은 *Preonems* — [`SLEELA.syntax`](SLEELA.syntax) §26.1 참조). 문서가 만들어지는 순서에서 문서가 *무엇인지*를 나타내는 일급의 선언 전용 문서 마커입니다. `author`/`authorial`(구문 2.4, 전문가 위원회가 처리하며 동작상 효과를 가진 유일한 구성원), `material;`(확정된 Source)과 `memory;`(구문 2.5), `determine;`(구문 2.6, 의사·의료인 또는 ghost가 추가로 처리하여 법적 손길에 의한 완성에 이르도록 열려 있는 문서), 그리고 가장 새로운 둘인 **`object;`**(존재하는 것의 목록에 자리 잡은 확정된 대상 — **구문 2.8에서 구체화되어 구체적 지위를 부여받음**)와 **`field;`**(대상들이 서고 움직이는 관계의 토대)입니다. 이 둘은 구문 2.6부터 게이트가 적용됩니다. 각각 단독으로 쓰이고 문맥에 의존하며 프런트엔드가 구문 버전으로 제어하고, 파싱·타입 검사·코드 생성에는 영향을 주지 않습니다. 마커 위치 밖에서는 모두 일반 식별자로 남습니다(따라서 `field`는 클래스 멤버나 `.field` 접근을 방해하지 않습니다). [`SLEELA.syntax`](SLEELA.syntax) §18–§20, §23, §26을 참조하세요.
+- **구문 3.0의 Nordshrift와 전체 라이브러리 접근.** Nordshrift는 컴파일러와 동일한 재귀적 `/lib` 색인을 통해 해석하여 모든 패키지와 `.sleela` 단위에 도달합니다. `nordshrift check`는 전체 트리의 개수를 보고합니다.
+- **재귀 스탠션.** [`recursion/stanchion/`](recursion/stanchion/README.md) 디렉터리에 문서화된 7개 기본 타입 계약을 위한 전용 C 및 C++ 참조 프로토타입과 일반·응용·과학·교육용 예제가 추가되었습니다. 이들은 참조 소스입니다. 검증된 것으로 취급하기 전에 컴파일하고 테스트하세요.
+
+- **꺾쇠 괄호 주석(`<` / `<<`).** 새로운 앞으로의 주석 스타일인
+  `< line >` 및 `<< block >>`을 SLeeLa 프런트엔드가 어휘 분석하며,
+  [`SLEELA.syntax`](SLEELA.syntax) §1.1에 문서화되어 있습니다.
+- **기수 정수 리터럴.** `int` 리터럴은 이제 `_` 자릿수 구분자와 함께 16진수(`0x`), 2진수(`0b`), 8진수(`0o`) 형식을 허용합니다. SLeeLa 소스 언어([`SLEELA.syntax`](SLEELA.syntax) §1.4)와
+  [`.xlt` CPU 모델 형식](lib/xlt/README.md) 모두에서 사용할 수 있습니다.
+- **라이브러리 전반의 Metadata Class 표준.** 설명형 메타데이터 메타패턴(출처, 적법성, 관할 범위)이 이제 `/lib` 아래 클래스가 포함된 모든 `.sleela` 파일에 적용됩니다. [`SLEELA.syntax`](SLEELA.syntax) §15 및
+  [튜토리얼 과](tutorial/13-metadata-class.md)를 참조하세요.
+- **더 풍부한 텍스트 / String 계열.** `lib/text`는 언어 내의 실용적인 도우미, 실제 `charAt`/`substring`/`indexOf`/`reverse`/열 정렬을 제공하는 문자 셀 뷰, 그리고 실제 위치 기반 템플릿 기능을 추가했습니다. [텍스트 및 String 튜토리얼](tutorial/14-text-and-strings.md)과 실행 가능한
+  [`lib/text/text-string-demo.sleela`](lib/text/text-string-demo.sleela)를 참조하세요.
+- **Nordshrift 시트의 일급 `String`.** `.sst` 시트는 타입이 지정된 `strings:` 블록을 선언할 수 있으며, 이는 빌드의 구성요소 매니페스트에 반영됩니다.
+  [Nordshrift Sheet Reference](wiki/Nordshrift-Sheet-Reference.md)를 참조하세요.
+- **opcode와 함수 호출 동등성으로 실행되는 CPU 모델.** 모든 `SL<ARCH>CPU`는 fetch-decode-execute 루프를 통해 네이티브 명령 스트림을 실행하는 기반 *그리고* 공유 VM 기반에서 동등한 호출로 가정된 다른 프로세스의 코드를 실행하는 기반을 모두 상속합니다 — [`lib/cpu/EXECUTION.md`](lib/cpu/EXECUTION.md) §5를 참조하세요.
 
 ## III. 빌드 및 테스트
 
@@ -112,7 +136,9 @@ make clean-install       # 주요 패키지만 안내형 설치
 
 ## V. 언어 및 런타임
 
-공식 문법은 [`SLEELA.syntax`](SLEELA.syntax)에 정의되어 있습니다. 저장소가 문서화하는 현재 문법 버전은 **3.0**입니다. 컴파일러/도구 버전과 소스 문법 버전은 서로 다릅니다. 문법 3.0에는 **`pure` 및 `gasoline` 문서 마커**(§30)가 추가되었습니다. 두 마커는 문서의 지위를 각자의 정직성에 따라 나타내는 문맥 의존적 선언형 Preonem입니다. 문법 3.0은 1.0~2.9의 언어 표면을 통합하면서 각 기능별 최소 버전 조건을 유지합니다. 이전 2.9 버전에는 **`@mix` 연속 필드**(§28)가 추가되어, 같은 이름의 인스턴스 필드 여러 개를 하나의 인덱스 그룹으로 취급할 수 있습니다(기본 `1,2,3,…` 또는 그룹 필드 수와 일치하는 `@mix(1,2,3,...)`). 또한 `long`/`int64`/`int128`(§21)을 바탕으로 한 부호 있는 정수 계열 `int32`~`int16777216`(§24)과 부호 없는 정수 계열 `uint32`~`uint16777216`(§25), 키워드 지원 문서(§22), 그리고 Preonems가 이어집니다. Preonems에는 `author`/`authorial`(§18), `material`/`memory`(§19~§20), `determine`(§23), `object`/`field`(§26), `pure`/`gasoline`(§30), 시간과 공간에 걸쳐 입법부 수준의 지위를 나타내는 `artifact`(§35)가 포함됩니다. 전체 명칭 Preonems는 §26.1에 정의되어 있습니다. 생성자 오버로드 해석과 `this(...)`/기반 클래스 생성자 위임은 검증된 문법 1.8 계약의 범위 밖입니다. 기능에 의존하기 전에 문법 및 구현 참고 자료를 확인하세요. SleelaDoc의 아홉 소스 단위는 현재 `#sleela 3.0`을 선언하며, 공통 컴파일러 게이트는 소스 문법 1.0~3.0을 허용합니다.
+공식 문법은 [`SLEELA.syntax`](SLEELA.syntax)에 정의되어 있습니다. 저장소가 문서화하는 현재 문법 버전은 **3.0**입니다. 컴파일러/도구 버전과 소스 문법 버전은 서로 다릅니다. 문법 3.0에는 **`pure` 및 `gasoline` 문서 마커**(§30)가 추가되었습니다. 두 마커는 문서의 지위를 각자의 정직성에 따라 나타내는 문맥 의존적 선언형 Preonem입니다. 문법 3.0은 1.0~2.9의 언어 표면을 통합하면서 각 기능별 최소 버전 조건을 유지합니다. 이전 2.9 버전에는 **`@mix` 연속 필드**(§28)가 추가되어, 같은 이름의 인스턴스 필드 여러 개를 하나의 인덱스 그룹으로 취급할 수 있습니다(기본 `1,2,3,…` 또는 그룹 필드 수와 일치하는 `@mix(1,2,3,...)`). 또한 `long`/`int64`/`int128`(§21)을 바탕으로 한 부호 있는 정수 계열 `int32`~`int16777216`(§24)과 부호 없는 정수 계열 `uint32`~`uint16777216`(§25), 키워드 지원 문서(§22), 그리고 Preonems가 이어집니다. Preonems에는 `author`/`authorial`(§18), `material`/`memory`(§19~§20), `determine`(§23), `object`/`field`(§26), `pure`/`gasoline`(§30), 시간과 공간에 걸쳐 입법부 수준의 지위를 나타내는 `artifact`(§35)가 포함됩니다. 전체 명칭 Preonems는 §26.1에 정의되어 있습니다. 생성자 오버로드 해석과 `this(...)`/기반 클래스 생성자 위임은 검증된 문법 1.8 계약의 범위 밖입니다. 기능에 의존하기 전에 문법 및 구현 참고 자료를 확인하세요. SleelaDoc의 아홉 소스 단위는 현재 `#sleela 3.0`을 선언하며, 공통 컴파일러 게이트는 소스 문법 1.0~3.0을 허용합니다. 새 API 빌드는 `make api-docs`로 생성됩니다.
+
+저장소에는 네이티브 C/C++ 구현, SLVM 생성 참조, 표준 라이브러리 모듈, 테스트, 예제 및 플랫폼 통합이 포함되어 있습니다. 구현 및 검증 상태는 모듈마다 다릅니다. 모든 모듈이 동일하게 완전하다고 가정하지 말고 해당 사양과 현재 CI 결과를 확인하세요.
 
 ## VI. 엔지니어링 원칙
 
@@ -141,40 +167,57 @@ SLeeLa에는 **Vim**과 **Emacs**용으로 조정된 전문 다크 테마와 네
 
 ### 11개 스킴과 색상
 
-각 행의 색상 순서는 배경, 전경, 키워드, 타입, 문자열, 주석입니다.
-
 | 스킴 | 배경 | 전경 | 키워드 | 타입 | 문자열 | 주석 |
 |---|---|---|---|---|---|---|
-| American Professional | `#101820` | `#F4F7FA` | `#7FB3FF` | `#73DACA` | `#F2C078` | `#8A96A3` |
-| Pan-Eurasian | `#111827` | `#F0F2F5` | `#7AA7E8` | `#69C9B3` | `#D7B56D` | `#8995A5` |
-| Russian and Slavic — Medium | `#202733` | `#E8EAF0` | `#A9C0DD` | `#8FC4B2` | `#D6BD8B` | `#9AA3AF` |
-| Central Asian / Silk Road | `#1C2529` | `#F5F0E5` | `#7FADE0` | `#45C6C2` | `#D9B56D` | `#92A3A0` |
-| East Asian | `#171A1C` | `#F2EFE7` | `#D97878` | `#72C7A5` | `#D8B76A` | `#969F9B` |
-| ICC — International Criminal Court | `#0E1A2B` | `#EAF0F7` | `#5B8FD6` | `#7FB7C9` | `#D9B25A` | `#7E8CA0` |
-| SCOTUS — U.S. Supreme Court | `#1A1416` | `#F3EEE6` | `#9E2B35` | `#8FA9B8` | `#C9A24B` | `#8C8178` |
-| Greek (Hellenic) | `#0A1A30` | `#FFFFFF` | `#2E7BD6` | `#5E9FE0` | `#9FC3EC` | `#6E86A6` |
-| Turkish (Al Bayrak) | `#2A0609` | `#FFFFFF` | `#F23D48` | `#F0A9AE` | `#F0C9A9` | `#A8767A` |
-| Kiro | `#0B0B12` | `#F5F5FA` | `#A98EDA` | `#6E8BE0` | `#E8C547` | `#6A6482` |
-| SLeeLa | `#08080E` | `#FFFFFF` | `#B07CFF` | `#5A7CFF` | `#FFD21E` | `#6E5F9E` |
+| **American Professional** | <span style="display:inline-block;width:1em;height:1em;background:#101820;border:1px solid #888"></span> `#101820` | <span style="display:inline-block;width:1em;height:1em;background:#F4F7FA;border:1px solid #888"></span> `#F4F7FA` | <span style="display:inline-block;width:1em;height:1em;background:#7FB3FF;border:1px solid #888"></span> `#7FB3FF` | <span style="display:inline-block;width:1em;height:1em;background:#73DACA;border:1px solid #888"></span> `#73DACA` | <span style="display:inline-block;width:1em;height:1em;background:#F2C078;border:1px solid #888"></span> `#F2C078` | <span style="display:inline-block;width:1em;height:1em;background:#8A96A3;border:1px solid #888"></span> `#8A96A3` |
+| **Pan-Eurasian** | <span style="display:inline-block;width:1em;height:1em;background:#111827;border:1px solid #888"></span> `#111827` | <span style="display:inline-block;width:1em;height:1em;background:#F0F2F5;border:1px solid #888"></span> `#F0F2F5` | <span style="display:inline-block;width:1em;height:1em;background:#7AA7E8;border:1px solid #888"></span> `#7AA7E8` | <span style="display:inline-block;width:1em;height:1em;background:#69C9B3;border:1px solid #888"></span> `#69C9B3` | <span style="display:inline-block;width:1em;height:1em;background:#D7B56D;border:1px solid #888"></span> `#D7B56D` | <span style="display:inline-block;width:1em;height:1em;background:#8995A5;border:1px solid #888"></span> `#8995A5` |
+| **Russian and Slavic — Medium** | <span style="display:inline-block;width:1em;height:1em;background:#202733;border:1px solid #888"></span> `#202733` | <span style="display:inline-block;width:1em;height:1em;background:#E8EAF0;border:1px solid #888"></span> `#E8EAF0` | <span style="display:inline-block;width:1em;height:1em;background:#A9C0DD;border:1px solid #888"></span> `#A9C0DD` | <span style="display:inline-block;width:1em;height:1em;background:#8FC4B2;border:1px solid #888"></span> `#8FC4B2` | <span style="display:inline-block;width:1em;height:1em;background:#D6BD8B;border:1px solid #888"></span> `#D6BD8B` | <span style="display:inline-block;width:1em;height:1em;background:#9AA3AF;border:1px solid #888"></span> `#9AA3AF` |
+| **Central Asian / Silk Road** | <span style="display:inline-block;width:1em;height:1em;background:#1C2529;border:1px solid #888"></span> `#1C2529` | <span style="display:inline-block;width:1em;height:1em;background:#F5F0E5;border:1px solid #888"></span> `#F5F0E5` | <span style="display:inline-block;width:1em;height:1em;background:#7FADE0;border:1px solid #888"></span> `#7FADE0` | <span style="display:inline-block;width:1em;height:1em;background:#45C6C2;border:1px solid #888"></span> `#45C6C2` | <span style="display:inline-block;width:1em;height:1em;background:#D9B56D;border:1px solid #888"></span> `#D9B56D` | <span style="display:inline-block;width:1em;height:1em;background:#92A3A0;border:1px solid #888"></span> `#92A3A0` |
+| **East Asian** | <span style="display:inline-block;width:1em;height:1em;background:#171A1C;border:1px solid #888"></span> `#171A1C` | <span style="display:inline-block;width:1em;height:1em;background:#F2EFE7;border:1px solid #888"></span> `#F2EFE7` | <span style="display:inline-block;width:1em;height:1em;background:#D97878;border:1px solid #888"></span> `#D97878` | <span style="display:inline-block;width:1em;height:1em;background:#72C7A5;border:1px solid #888"></span> `#72C7A5` | <span style="display:inline-block;width:1em;height:1em;background:#D8B76A;border:1px solid #888"></span> `#D8B76A` | <span style="display:inline-block;width:1em;height:1em;background:#969F9B;border:1px solid #888"></span> `#969F9B` |
+| **ICC — International Criminal Court** | <span style="display:inline-block;width:1em;height:1em;background:#0E1A2B;border:1px solid #888"></span> `#0E1A2B` | <span style="display:inline-block;width:1em;height:1em;background:#EAF0F7;border:1px solid #888"></span> `#EAF0F7` | <span style="display:inline-block;width:1em;height:1em;background:#5B8FD6;border:1px solid #888"></span> `#5B8FD6` | <span style="display:inline-block;width:1em;height:1em;background:#7FB7C9;border:1px solid #888"></span> `#7FB7C9` | <span style="display:inline-block;width:1em;height:1em;background:#D9B25A;border:1px solid #888"></span> `#D9B25A` | <span style="display:inline-block;width:1em;height:1em;background:#7E8CA0;border:1px solid #888"></span> `#7E8CA0` |
+| **SCOTUS — U.S. Supreme Court** | <span style="display:inline-block;width:1em;height:1em;background:#1A1416;border:1px solid #888"></span> `#1A1416` | <span style="display:inline-block;width:1em;height:1em;background:#F3EEE6;border:1px solid #888"></span> `#F3EEE6` | <span style="display:inline-block;width:1em;height:1em;background:#9E2B35;border:1px solid #888"></span> `#9E2B35` | <span style="display:inline-block;width:1em;height:1em;background:#8FA9B8;border:1px solid #888"></span> `#8FA9B8` | <span style="display:inline-block;width:1em;height:1em;background:#C9A24B;border:1px solid #888"></span> `#C9A24B` | <span style="display:inline-block;width:1em;height:1em;background:#8C8178;border:1px solid #888"></span> `#8C8178` |
+| **Greek (Hellenic)** | <span style="display:inline-block;width:1em;height:1em;background:#0A1A30;border:1px solid #888"></span> `#0A1A30` | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | <span style="display:inline-block;width:1em;height:1em;background:#2E7BD6;border:1px solid #888"></span> `#2E7BD6` | <span style="display:inline-block;width:1em;height:1em;background:#5E9FE0;border:1px solid #888"></span> `#5E9FE0` | <span style="display:inline-block;width:1em;height:1em;background:#9FC3EC;border:1px solid #888"></span> `#9FC3EC` | <span style="display:inline-block;width:1em;height:1em;background:#6E86A6;border:1px solid #888"></span> `#6E86A6` |
+| **Turkish (Al Bayrak)** | <span style="display:inline-block;width:1em;height:1em;background:#2A0609;border:1px solid #888"></span> `#2A0609` | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | <span style="display:inline-block;width:1em;height:1em;background:#F23D48;border:1px solid #888"></span> `#F23D48` | <span style="display:inline-block;width:1em;height:1em;background:#F0A9AE;border:1px solid #888"></span> `#F0A9AE` | <span style="display:inline-block;width:1em;height:1em;background:#F0C9A9;border:1px solid #888"></span> `#F0C9A9` | <span style="display:inline-block;width:1em;height:1em;background:#A8767A;border:1px solid #888"></span> `#A8767A` |
+| **Kiro** | <span style="display:inline-block;width:1em;height:1em;background:#0B0B12;border:1px solid #888"></span> `#0B0B12` | <span style="display:inline-block;width:1em;height:1em;background:#F5F5FA;border:1px solid #888"></span> `#F5F5FA` | <span style="display:inline-block;width:1em;height:1em;background:#A98EDA;border:1px solid #888"></span> `#A98EDA` | <span style="display:inline-block;width:1em;height:1em;background:#6E8BE0;border:1px solid #888"></span> `#6E8BE0` | <span style="display:inline-block;width:1em;height:1em;background:#E8C547;border:1px solid #888"></span> `#E8C547` | <span style="display:inline-block;width:1em;height:1em;background:#6A6482;border:1px solid #888"></span> `#6A6482` |
+| **SLeeLa** | <span style="display:inline-block;width:1em;height:1em;background:#08080E;border:1px solid #888"></span> `#08080E` | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | <span style="display:inline-block;width:1em;height:1em;background:#B07CFF;border:1px solid #888"></span> `#B07CFF` | <span style="display:inline-block;width:1em;height:1em;background:#5A7CFF;border:1px solid #888"></span> `#5A7CFF` | <span style="display:inline-block;width:1em;height:1em;background:#FFD21E;border:1px solid #888"></span> `#FFD21E` | <span style="display:inline-block;width:1em;height:1em;background:#6E5F9E;border:1px solid #888"></span> `#6E5F9E` |
 
-### 국가 국기 색상(기준 팔레트)
+#### 국가 국기 색상(기준 팔레트)
 
-Greek 및 Turkish 스킴은 각 국가의 **공식 국기 색상**을 바탕으로 합니다. 위 스킴의 배경과 강조색은 편집기에서 사용하기 쉽도록 원래 색상을 어둡게 조정한 해석입니다.
+Greek 및 Turkish 스킴은 두 나라의 **공식 국기 색상**에서 유래했으며, 공표된 정확한 16진수 값과 함께 표시합니다. 위 스킴의 배경/강조색은 이 원래 색상을 어둡게 하여 편집기에 맞게 해석한 것이며, 아래 표는 "국가적으로 공표된 색상" 참조입니다.
 
 | 국가 | 색상 | 16진수 | 근거 및 의미 |
 |---|---|---|---|
-| Greece | Blue | `#0D5EAF` | 법률 851/1978에 따른 국기 파랑. 하늘과 바다를 뜻하며 문장학상 azure입니다. |
-| Greece | White | `#FFFFFF` | 국기의 흰색. 독립 투쟁의 순수함을 뜻하고 십자가는 동방 정교회를 나타냅니다. |
-| Türkiye | Red (al bayrak) | `#E30A17` | 터키 국기법에 따른 빨강. 전통적으로 순교자의 피와 오스만 주권을 뜻합니다. |
-| Türkiye | White | `#FFFFFF` | 국기의 흰색. 초승달과 별은 평화, 순수함, 튀르크/이슬람 유산의 상징입니다. |
+| **그리스** | Blue | <span style="display:inline-block;width:1em;height:1em;background:#0D5EAF;border:1px solid #888"></span> `#0D5EAF` | 국기의 파랑(법률 851/1978). 하늘과 바다를 뜻하며 문장학상 *azure*로 기술됩니다. |
+| **그리스** | White | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | 국기의 흰색. 독립 투쟁의 순수함을 뜻하고 십자가는 동방 정교회를 나타냅니다. |
+| **Türkiye** | Red(*al bayrak*) | <span style="display:inline-block;width:1em;height:1em;background:#E30A17;border:1px solid #888"></span> `#E30A17` | 국기의 빨강(터키 국기법). 바탕색이며 전통적으로 순교자의 피와 오스만 주권을 뜻합니다. |
+| **Türkiye** | White | <span style="display:inline-block;width:1em;height:1em;background:#FFFFFF;border:1px solid #888"></span> `#FFFFFF` | 국기의 흰색. 초승달과 별은 평화, 순수함, 튀르크/이슬람 유산의 상징입니다. |
 
-각 스킴은 편집기 전경색에 국기의 **흰색**을 사용하고 키워드, 커서, 선택 영역 및 상태 표시줄에는 정확한 국기 **파랑**(`#0D5EAF`) 또는 **빨강**(`#E30A17`)을 사용합니다. 이는 해석에 따른 디자인 팔레트이며 어느 국가의 공식 표현도 아닙니다. 색상의 의미는 그리스 공화국 외교부의 국가 상징 설명과 터키 국기법의 전통을 따릅니다.
+각 스킴은 편집기 전경색을 국가의 **흰색**에, 키워드·커서·선택 영역·상태 표시줄을 정확한 국가 **파랑**(`#0D5EAF`) 또는 **빨강**(`#E30A17`)에 고정하므로, 중요한 색상은 말 그대로 국가의 색입니다. 이는 해석에 따른 디자인 팔레트이며, 국기 색상 참조는 출처를 밝히기 위해 제공되는 것으로 어느 국가의 공식 표현도 아닙니다. 색상의 의미는 그리스 공화국 외교부의 국가 상징 설명과 터키 국기법의 전통을 따릅니다.
 
-### SVG 스와치와 추가 색상
 
-[American Professional](lib/linux-editors/palettes/american-professional.svg), [Pan-Eurasian](lib/linux-editors/palettes/pan-eurasian.svg), [Russian and Slavic](lib/linux-editors/palettes/russian-slavic-medium.svg), [Central Asian / Silk Road](lib/linux-editors/palettes/central-asian-silk-road.svg), [East Asian](lib/linux-editors/palettes/east-asian.svg), [ICC](lib/linux-editors/palettes/icc.svg), [SCOTUS](lib/linux-editors/palettes/scotus.svg), [Greek](lib/linux-editors/palettes/greek.svg), [Turkish](lib/linux-editors/palettes/turkish.svg), [Kiro](lib/linux-editors/palettes/kiro.svg), [SLeeLa](lib/linux-editors/palettes/sleela.svg) SVG 스와치는 배경, 전경, 키워드, 타입, 문자열, 주석 순서로 여섯 색상을 보여 줍니다. 함수, 상수, 선택 영역, 진단 및 전처리기 지시문에는 추가 강조색이 사용됩니다. Russian and Slavic 팔레트는 차분한 전문적 외관을 위해 중간 강도의 슬레이트, 파랑, 세이지, 루비, 앤티크 골드를 사용합니다.
+### 색상 스와치 표
+
+아래 팔레트 셀은 **SVG 스와치**를 사용하므로 GitHub에서 빈 HTML 색상 셀이 아니라 실제 색상이 렌더링됩니다. 각 띠는 배경, 전경, 키워드, 타입, 문자열, 주석의 여섯 색상을 이 순서로 보여 줍니다. 정확한 16진수 코드는 위 참조 표와 같은 스킴 순서로 각 스와치 옆에 나열되어 있습니다.
+
+| 스킴 | 렌더링된 팔레트 색상 | 16진수 코드(배경 · 전경 · 키워드 · 타입 · 문자열 · 주석) |
+|---|---|---|
+| **American Professional** | ![American Professional palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/american-professional.svg) | `#101820` · `#F4F7FA` · `#7FB3FF` · `#73DACA` · `#F2C078` · `#8A96A3` |
+| **Pan-Eurasian** | ![Pan-Eurasian palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/pan-eurasian.svg) | `#111827` · `#F0F2F5` · `#7AA7E8` · `#69C9B3` · `#D7B56D` · `#8995A5` |
+| **Russian and Slavic — Medium** | ![Russian and Slavic Medium palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/russian-slavic-medium.svg) | `#202733` · `#E8EAF0` · `#A9C0DD` · `#8FC4B2` · `#D6BD8B` · `#9AA3AF` |
+| **Central Asian / Silk Road** | ![Central Asian Silk Road palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/central-asian-silk-road.svg) | `#1C2529` · `#F5F0E5` · `#7FADE0` · `#45C6C2` · `#D9B56D` · `#92A3A0` |
+| **East Asian** | ![East Asian palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/east-asian.svg) | `#171A1C` · `#F2EFE7` · `#D97878` · `#72C7A5` · `#D8B76A` · `#969F9B` |
+| **ICC — International Criminal Court** | ![ICC palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/icc.svg) | `#0E1A2B` · `#EAF0F7` · `#5B8FD6` · `#7FB7C9` · `#D9B25A` · `#7E8CA0` |
+| **SCOTUS — U.S. Supreme Court** | ![SCOTUS palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/scotus.svg) | `#1A1416` · `#F3EEE6` · `#9E2B35` · `#8FA9B8` · `#C9A24B` · `#8C8178` |
+| **Greek (Hellenic)** | ![Greek Hellenic palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/greek.svg) | `#0A1A30` · `#FFFFFF` · `#2E7BD6` · `#5E9FE0` · `#9FC3EC` · `#6E86A6` |
+| **Turkish (Al Bayrak)** | ![Turkish Al Bayrak palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/turkish.svg) | `#2A0609` · `#FFFFFF` · `#F23D48` · `#F0A9AE` · `#F0C9A9` · `#A8767A` |
+| **Kiro** | ![Kiro palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/kiro.svg) | `#0B0B12` · `#F5F5FA` · `#A98EDA` · `#6E8BE0` · `#E8C547` · `#6A6482` |
+| **SLeeLa** | ![SLeeLa palette: background, foreground, keywords, types, strings, comments](lib/linux-editors/palettes/sleela.svg) | `#08080E` · `#FFFFFF` · `#B07CFF` · `#5A7CFF` · `#FFD21E` · `#6E5F9E` |
+
+함수, 상수, 선택 영역, 진단 및 전처리기 지시문에는 추가 강조색이 사용됩니다. Russian and Slavic 팔레트는 더 차분한 전문적 외관을 위해 중간 강도의 슬레이트, 파랑, 세이지, 루비, 앤티크 골드를 의도적으로 사용합니다.
 
 ### Vim 스킴 설치
+
+저장소 루트에서 실행합니다.
 
 ```sh
 mkdir -p ~/.vim/{syntax,ftdetect,colors}
@@ -183,7 +226,7 @@ cp lib/linux-editors/vim/ftdetect/sleela.vim ~/.vim/ftdetect/
 cp lib/linux-editors/vim/colors/sleela-*.vim ~/.vim/colors/
 ```
 
-SLeeLa 구문 강조와 스킴을 활성화하려면 `~/.vimrc`에 다음을 추가합니다.
+SLeeLa 구문 강조를 활성화하고 스킴을 선택하려면 `~/.vimrc`에 다음을 추가합니다.
 
 ```vim
 syntax enable
@@ -191,9 +234,23 @@ set background=dark
 colorscheme sleela-american
 ```
 
-선택 가능한 이름은 `sleela-american`, `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, `sleela-turkish`, `sleela-kiro`, `sleela-sleela`입니다. 예를 들어 `colorscheme sleela-russian-slavic`, `colorscheme sleela-greek`, `colorscheme sleela-turkish`를 사용할 수 있습니다. Vim을 다시 시작하거나 `:source $MYVIMRC`를 실행합니다.
+다음 colorscheme 이름 중 정확히 하나를 선택하세요.
+
+- `sleela-american`
+- `sleela-eurasia`
+- `sleela-russian-slavic`
+- `sleela-silk-road`
+- `sleela-east-asian`
+- `sleela-greek`
+- `sleela-turkish`
+- `sleela-kiro`
+- `sleela-sleela`
+
+예를 들어 중간 강도의 Russian and Slavic 팔레트에는 `colorscheme sleela-russian-slavic`을, Hellenic 및 Al Bayrak 팔레트에는 `colorscheme sleela-greek` / `colorscheme sleela-turkish`를 사용합니다. Vim을 다시 시작하거나 `:source $MYVIMRC`로 설정을 다시 불러오세요.
 
 ### Emacs 스킴 설치
+
+로컬 테마 디렉터리를 만들고 저장소 루트에서 모드 및 테마 파일을 복사합니다.
 
 ```sh
 mkdir -p ~/.emacs.d/sleela
@@ -201,7 +258,7 @@ cp lib/linux-editors/emacs/sleela-mode.el ~/.emacs.d/sleela/
 cp lib/linux-editors/emacs/sleela-*-theme.el ~/.emacs.d/sleela/
 ```
 
-`~/.emacs` 또는 `~/.emacs.d/init.el`에 추가합니다.
+`~/.emacs` 또는 `~/.emacs.d/init.el`에 다음을 추가합니다.
 
 ```elisp
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/sleela"))
@@ -210,9 +267,11 @@ cp lib/linux-editors/emacs/sleela-*-theme.el ~/.emacs.d/sleela/
 (load-theme 'sleela-american t)
 ```
 
-다른 스킴을 사용하려면 `sleela-american`을 `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, `sleela-turkish`, `sleela-kiro`, `sleela-sleela` 중 하나로 바꿉니다. Emacs가 테마 신뢰 여부를 묻는다면 수락하기 전에 로컬 테마 파일을 확인하세요.
+다른 스킴을 선택하려면 `sleela-american`을 `sleela-eurasia`, `sleela-russian-slavic`, `sleela-silk-road`, `sleela-east-asian`, `sleela-greek`, `sleela-turkish`, `sleela-kiro`, `sleela-sleela` 중 하나로 바꿉니다. Emacs가 테마를 신뢰할지 묻는다면 수락하기 전에 로컬 테마 파일을 확인하세요.
 
 ### 네이티브 C/C++ 팔레트 미리 보기
+
+작은 네이티브 팔레트 유틸리티는 스킴을 나열하고, 터미널 색상을 출력하며, 개별 색상을 조회할 수 있습니다.
 
 ```sh
 make -C linux-editors
@@ -222,7 +281,9 @@ make -C linux-editors
 make -C linux-editors test
 ```
 
-하위 호환성을 위해 `--theme` 없이 `--palette` 또는 `--hex COLOR`를 실행하면 American Professional이 선택됩니다. 빌드와 테스트 결과는 대상 시스템 및 CI에서 확인해야 합니다. 명령이 문서화되었다는 사실만으로 테스트 통과가 입증되지는 않습니다. 자세한 내용은 [편집기 통합 안내서](linux-editors/README.md)를 참조하세요.
+하위 호환성을 위해 `--theme` 없이 `--palette` 또는 `--hex COLOR`를 실행하면 American Professional이 선택됩니다. 빌드와 테스트 결과는 대상 시스템과 CI에서 확인해야 합니다. 명령이 문서화되어 있다는 사실 자체가 그 명령이 통과했다는 증거는 아닙니다.
+
+전체 팔레트 설명과 유틸리티 세부 사항은 [편집기 통합 안내서](linux-editors/README.md)를 참조하세요.
 
 ## IX. 기여하기
 
@@ -308,9 +369,7 @@ make creator          # autocad/ 디렉터리에서 실행: Creator 데모 -> ou
 
 ---
 
-## XV. Bitcoin Conjegeum
-
-<img src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="25" height="25" alt="Debian">
+## <img src="https://github.com/mearvk/SLeeLa/blob/master/images/debian-logo.png" width="25" height="25" alt="Debian"> XV. Bitcoin Conjegeum
 
 ![CremeOak](https://github.com/mearvk/Java.Web.Server.Telnet.Front.Java.21/raw/main/images/national-bitcoin-icc-logo-005.jpg)
 
@@ -353,7 +412,7 @@ python3 utf-4088/tools/generate_catalogue.py \
 
 ## XVIII. 최근 추가 사항 — Pi 상수, Modium/Registry 시작, sleelactl Math 및 `@native`
 
-이 섹션은 2026-11 작업에서 추가된 기능을 최신 그룹부터 기록합니다. 모두 `master`에 커밋되어 있습니다.
+이 섹션은 2026-11 작업에서 추가된 기능을 최신 그룹부터 기록합니다. 링크된 소스 파일과 그 검증 상태가 기준이며, 검토 중인 변경 사항은 `master`에 반영되기 전까지 병합된 것으로 설명하지 않습니다.
 
 ### 100,000,000자리 Pi 카탈로그 상수
 
@@ -368,16 +427,16 @@ python3 utf-4088/tools/generate_catalogue.py \
 - 안내형(“beautiful”) 설치 프로그램은 이제 `make` 설치 프로그램과 동일하게 SLeeLa 제어 플레인인 `sleelactl`과 모듈 레지스트리를 설치합니다. [문서](bin/SLEELACTL.md)를 참조하세요.
 - `sleelactl`에는 런타임에 컴파일된 네이티브 C/C++ subject 라이브러리를 위한 새로운 `subject` 종류가 추가되었고, 첫 subject로 `math`가 등록되었습니다. `sleelactl run math`는 subject 참조 데모를 통해 네이티브 `__NativeMath` 백엔드(`impl/subjects/math/math_native.cpp`)를 처음부터 끝까지 실행합니다. `sleelactl info math`는 접근 방법(`import math;`)을 설명합니다. subject 종류는 `run`과 `info`만 제공합니다. `sleela check`는 SHEET에 등록된 네이티브 subject를 로드하지 않으므로 의도적으로 `check` 동사는 제공하지 않습니다.
 
-### `@native` 및 `sleela aot` — SLeeLa에서 네이티브 C/C++로 가는 경로의 1단계
+### `@native`, Native Drive 및 다중 언어 실행
 
-새로운 **`@native`** 메서드 주석은 핫 메서드의 AOT(Ahead-of-Time) 네이티브 컴파일을 요청합니다. 새 `sleela aot` 명령은 `@native` 메서드를 찾아 각 메서드가 지원되는 *오프로딩 가능 부분집합*에 속하는지 확인한 뒤 C/C++를 출력합니다. 번역할 수 없는 구문이 있으면 정확한 이유를 제시하며 **fail closed** 방식으로 거부하므로 반쯤 번역된 메서드는 생성되지 않습니다.
+새로운 **`@native`** 메서드 주석은 핫 메서드의 AOT(Ahead-of-Time) 네이티브 컴파일을 요청합니다. 새 `sleela aot` 명령은 `@native` 메서드를 찾아 각 메서드가 지원되는 *오프로딩 가능 부분집합*에 속하는지 확인한 뒤 C/C++를 출력합니다. 아직 번역할 수 없는 구문이 있으면 정확한 이유를 제시하며 **fail closed** 방식으로 거부하므로, 반쯤 번역된 메서드는 생성되지 않습니다.
 
 ```sh
 sleela aot --list <file.sleela>    # 메서드별 판정: ok / REFUSED (사유)
 sleela aot --emit <file.sleela>    # 부분집합에 속하는 프로그램의 C/C++ 출력(stdout)
 ```
 
-현재 `@native`는 동작에 영향을 주지 않습니다. 프로그램은 이전과 동일하게 검사 및 실행되며, 주석은 네이티브 처리를 **요청만** 합니다. 이것은 1단계로, 주석 표면과 지원 범위를 정직하게 제한하는 게이트를 마련합니다. 출력된 C/C++를 공유 객체로 컴파일하고 인터프리터 대체 경로를 두어 VM에서 디스패치하는 기능은 이후 단계입니다. 자세한 내용, 지원 부분집합 및 종료 코드는 [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md)를 참조하세요.
+`@native`는 여전히 AOT 처리를 요청하는 것이며, 지원되지 않는 구문은 출력 전에 거부됩니다. [Native Drive](impl/native-drive/README.md)는 호스트 컴파일러(MSVC 포함)를 통한 다중 단위 C/C++ 실행 파일 및 공유 라이브러리 빌드, 지원되는 SLeeLa AOT 출력, 네이티브 로더 ABI에 대한 심볼 검사, 셸을 거치지 않는 프로세스 실행, stdin/stdout/stderr 처리, 다단계 파이프 연결, XClass에서 프로덕션 로더로의 위임을 지원합니다. `sleelactl`은 해당 빌드/실행 명령을 노출하며 `inspect native-drive`를 통해 XClass 검사와 명시적 systemd 유닛 렌더링/설치를 중계합니다. VM은 필수 호스트 인가와 세대 검사가 적용된 핸들을 갖춘, 크기가 제한된 네이티브 모듈 핸들 테이블을 소유합니다. 이제 구문 3.0에는 `nativeOpen`, `nativeCall`, `nativeClose`가 추가되었습니다. 추가 전용 바이트코드 디스패치는 별도로 버전 관리되는 null/bool/int64/double/UTF-8 ABI를 가로지르며, VM이 소유한 배열, 구조체 및 기타 복합 값은 인터프리터 내부에 머물고 동일한 이름의 바이트코드 대체 경로를 사용할 수 있습니다. 플러그인은 선택적으로 버전이 지정된 호스트 콜백 테이블을 받아 중첩된 VM 실행을 통해 정확한 SLeeLa 함수를 호출할 수 있으며, 이때 일시 중단된 스택의 GC 루팅, 호스트 콜백 이름의 명시적 허용 목록이 적용되고 재귀적인 네이티브 API 호출은 거부됩니다. 네이티브 코드는 여전히 신뢰되는 프로세스 내 코드이며 샌드박스가 아닙니다. 소스 프로세스 정책 주석에는 버전이 지정된 스키마가 있지만 아직 구문 분석되거나 강제되지는 않습니다. 세부 사항, 보안 경계 및 일곱 개 워크스트림 대장은 [Native Drive](impl/native-drive/README.md)와 [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md)를 참조하세요.
 
 ## XIX. 국제 README 에디션
 

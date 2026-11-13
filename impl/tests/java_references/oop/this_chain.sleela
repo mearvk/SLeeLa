@@ -1,0 +1,5 @@
+#sleela 3.0
+spark;
+material;
+class Pt { int x; int y; Pt() { this(1, 2); } Pt(int x, int y) { this.x = x; this.y = y; } int sum() { return x + y; } }
+class P { void main() { Pt p = new Pt(); print(p.sum()); Pt q = new Pt(10, 20); print(q.sum()); } }

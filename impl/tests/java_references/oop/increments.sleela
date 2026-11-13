@@ -1,0 +1,13 @@
+#sleela 3.0
+spark;
+material;
+class Box { int n = 0; static int total = 0; }
+class P { int f = 10; void main() {
+  int i = 5; int a = i++; int b = ++i; print(a); print(b); print(i);
+  int j = 3; j--; --j; print(j);
+  Box x = new Box(); x.n++; ++x.n; print(x.n);
+  int[] arr = new int[2]; arr[1]++; arr[1]++; print(arr[1]);
+  f++; print(f); Box.total++; print(Box.total);
+  double d = 1.5; d++; print(d);
+  int s = 0; for (int k = 0; k < 4; k++) { s += k; } print(s);
+} }

@@ -23,12 +23,14 @@
 <li><a href="../package/alphabet.html">alphabet</a></li>
 <li><a href="../package/antivirus.html">antivirus</a></li>
 <li><a href="../package/api.html">api</a></li>
+<li><a href="../package/array.html">array</a></li>
 <li><a href="../package/audio.html">audio</a></li>
 <li><a href="../package/autocad.html">autocad</a></li>
 <li><a href="../package/ballum.html">ballum</a></li>
 <li><a href="../package/bash.html">bash</a></li>
 <li><a href="../package/boolean.html">boolean</a></li>
 <li><a href="../package/cdma.html">cdma</a></li>
+<li><a href="../package/char.html">char</a></li>
 <li><a href="../package/character.html">character</a></li>
 <li><a href="../package/character-recognition.html">character-recognition</a></li>
 <li><a href="../package/churn.html">churn</a></li>
@@ -56,6 +58,8 @@
 <li><a href="../package/gameplay.html">gameplay</a></li>
 <li><a href="../package/governance.html">governance</a></li>
 <li><a href="../package/gui.html">gui</a></li>
+<li><a href="../package/guidoc.html">guidoc</a></li>
+<li><a href="../package/hotlink.html">hotlink</a></li>
 <li><a href="../package/html.html">html</a></li>
 <li><a href="../package/http.html">http</a></li>
 <li><a href="../package/http-1.0.html">http-1.0</a></li>
@@ -92,6 +96,7 @@
 <li><a href="../package/net.html">net</a></li>
 <li><a href="../package/neural-nets.html">neural-nets</a></li>
 <li><a href="../package/nordshrift.html">nordshrift</a></li>
+<li><a href="../package/observer.html">observer</a></li>
 <li><a href="../package/opcodes.html">opcodes</a></li>
 <li><a href="../package/operating-system.html">operating-system</a></li>
 <li><a href="../package/os-level-support.html">os-level-support</a></li>
@@ -117,6 +122,7 @@
 <li><a href="../package/sleeladoc.html">sleeladoc</a></li>
 <li><a href="../package/slrtp.html">slrtp</a></li>
 <li><a href="../package/social-model.html">social-model</a></li>
+<li><a href="../package/softlisten.html">softlisten</a></li>
 <li><a href="../package/sommeliers.html">sommeliers</a></li>
 <li><a href="../package/spatial.html">spatial</a></li>
 <li><a href="../package/sst.html">sst</a></li>
@@ -141,7 +147,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; ide-workbench</div>
 <h1>Package <code>ide-workbench</code></h1>
-<div class="lead">This package contains <strong>10</strong> source unit(s) defining <strong>10</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>13</strong> source unit(s) defining <strong>13</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="ide-workbench-demo">ide-workbench-demo <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/ide-workbench-demo.sleela)</span></h2>
 <div data-u="ide-workbench-demo ideworkbenchdemo">
@@ -267,6 +273,64 @@
 <tr><td><code>isSleela</code></td><td><span class="sig">boolean isSleela()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slidelanguagebar">SLIdeLanguageBar <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeLanguageBar.sleela)</span></h2>
+<div data-u="slidelanguagebar slidelanguagebar">
+<h3 id="SLIdeLanguageBar">SLIdeLanguageBar <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>LANG_SLEELA</code></td><td><span class="sig">static final int LANG_SLEELA=0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>LANG_C</code></td><td><span class="sig">static final int LANG_C=1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>LANG_CPP</code></td><td><span class="sig">static final int LANG_CPP=2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>LANG_JAVA</code></td><td><span class="sig">static final int LANG_JAVA=3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>row</code></td><td><span class="sig">SLBox row</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>buttons</code></td><td><span class="sig">SLButton[] buttons</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>labels</code></td><td><span class="sig">String[] labels</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>active</code></td><td><span class="sig">int active</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pending</code></td><td><span class="sig">int pending</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>createIn</code></td><td><span class="sig">void createIn(SLWidget parent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>poll</code></td><td><span class="sig">int poll()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>takeLanguage</code></td><td><span class="sig">int takeLanguage()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>selectedLanguage</code></td><td><span class="sig">int selectedLanguage()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>languageName</code></td><td><span class="sig">String languageName()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="slidemenubar">SLIdeMenuBar <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeMenuBar.sleela)</span></h2>
+<div data-u="slidemenubar slidemenubar">
+<h3 id="SLIdeMenuBar">SLIdeMenuBar <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>MENU_FILE</code></td><td><span class="sig">static final int MENU_FILE = 0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MENU_EDIT</code></td><td><span class="sig">static final int MENU_EDIT = 1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MENU_VIEW</code></td><td><span class="sig">static final int MENU_VIEW = 2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MENU_NAVIGATE</code></td><td><span class="sig">static final int MENU_NAVIGATE = 3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MENU_CODE</code></td><td><span class="sig">static final int MENU_CODE = 4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MENU_RUN</code></td><td><span class="sig">static final int MENU_RUN = 5</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MENU_TOOLS</code></td><td><span class="sig">static final int MENU_TOOLS = 6</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>MENU_HELP</code></td><td><span class="sig">static final int MENU_HELP = 7</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>root</code></td><td><span class="sig">SLBox root</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>menuRow</code></td><td><span class="sig">SLBox menuRow</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>commandRow</code></td><td><span class="sig">SLBox commandRow</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>menus</code></td><td><span class="sig">SLButton[] menus</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>commands</code></td><td><span class="sig">SLButton[] commands</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>activeMenu</code></td><td><span class="sig">int activeMenu</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pendingCommand</code></td><td><span class="sig">int pendingCommand</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>menuNames</code></td><td><span class="sig">String[] menuNames</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>commandNames</code></td><td><span class="sig">String[] commandNames</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>commandOwners</code></td><td><span class="sig">int[] commandOwners</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>createIn</code></td><td><span class="sig">void createIn(SLWidget parent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>refreshCommands</code></td><td><span class="sig">void refreshCommands()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>poll</code></td><td><span class="sig">int poll()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>takeCommand</code></td><td><span class="sig">int takeCommand()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>selectedMenu</code></td><td><span class="sig">int selectedMenu()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>commandName</code></td><td><span class="sig">String commandName(int index)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slideprojecttree">SLIdeProjectTree <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeProjectTree.sleela)</span></h2>
 <div data-u="slideprojecttree slideprojecttree">
 <h3 id="SLIdeProjectTree">SLIdeProjectTree <span class="pill">class</span></h3>
@@ -331,6 +395,31 @@
 <tr><td><code>watchSetWithinGuiBound</code></td><td><span class="sig">boolean watchSetWithinGuiBound()</span></td><td class="desc">True when the OS-watch registration must respect the 1..14 bound.</td></tr>
 </table>
 </div>
+<h2 class="section" data-u="slidetoolbar">SLIdeToolbar <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeToolbar.sleela)</span></h2>
+<div data-u="slidetoolbar slidetoolbar">
+<h3 id="SLIdeToolbar">SLIdeToolbar <span class="pill">class</span></h3>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>ACTION_NEW</code></td><td><span class="sig">static final int ACTION_NEW=0</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ACTION_OPEN</code></td><td><span class="sig">static final int ACTION_OPEN=1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ACTION_SAVE</code></td><td><span class="sig">static final int ACTION_SAVE=2</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ACTION_BUILD</code></td><td><span class="sig">static final int ACTION_BUILD=3</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ACTION_RUN</code></td><td><span class="sig">static final int ACTION_RUN=4</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ACTION_DEBUG</code></td><td><span class="sig">static final int ACTION_DEBUG=5</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ACTION_STOP</code></td><td><span class="sig">static final int ACTION_STOP=6</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>row</code></td><td><span class="sig">SLBox row</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>buttons</code></td><td><span class="sig">SLButton[] buttons</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>labels</code></td><td><span class="sig">String[] labels</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pending</code></td><td><span class="sig">int pending</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>createIn</code></td><td><span class="sig">void createIn(SLWidget parent)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>poll</code></td><td><span class="sig">int poll()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>takeAction</code></td><td><span class="sig">int takeAction()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>actionName</code></td><td><span class="sig">String actionName(int action)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="slideworkbench">SLIdeWorkbench <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/ide-workbench/SLIdeWorkbench.sleela)</span></h2>
 <div data-u="slideworkbench slideworkbench">
 <h3 id="SLIdeWorkbench">SLIdeWorkbench <span class="pill">class</span></h3>
@@ -385,6 +474,9 @@
 <tr><td><code>notebook</code></td><td><span class="sig">SLNotebook notebook</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>status</code></td><td><span class="sig">SLStatusBar status</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>loading</code></td><td><span class="sig">SLLoadingIndicator loading</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>menuBar</code></td><td><span class="sig">SLIdeMenuBar menuBar</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toolbar</code></td><td><span class="sig">SLIdeToolbar toolbar</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>languageBar</code></td><td><span class="sig">SLIdeLanguageBar languageBar</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>tabs</code></td><td><span class="sig">SLIdeTabGroup tabs</span></td><td class="desc">State models (the SLeeLa logic layer).</td></tr>
 <tr><td><code>projectModel</code></td><td><span class="sig">SLIdeProjectTree projectModel</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>diagnostics</code></td><td><span class="sig">SLIdeDiagnosticsPanel diagnostics</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -405,6 +497,8 @@
 <tr><td><code>openFile</code></td><td><span class="sig">int openFile(String documentId, String path, String[] lines, int lineCount, String revision)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>activeEditorView</code></td><td><span class="sig">SLTextView activeEditorView()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>pollCommands</code></td><td><span class="sig">boolean pollCommands()</span></td><td class="desc">Read the command handler latches once per loop turn and act. The latches are raised by SLGuiHostAdapter when the real buttons fire, so there is no direct widget polling here. Returns false when Close emptied the tabs.</td></tr>
+<tr><td><code>dispatchMenuAction</code></td><td><span class="sig">void dispatchMenuAction(int action)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>dispatchToolbarAction</code></td><td><span class="sig">void dispatchToolbarAction(int action)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>routeContentEvents</code></td><td><span class="sig">void routeContentEvents()</span></td><td class="desc">Translate raw content-control state changes into DOM events on the bus. A tab click raises TOGGLE(&quot;ide-notebook&quot;, &lt;index&gt;); a tree row selection raises CHANGE(&quot;ide-tree&quot;, &lt;nodeId&gt;). The host adapter already turns command button presses into events; these two controls are specialised widgets, so the shell bridges their state into the same dispatch path here.</td></tr>
 <tr><td><code>onTreeActivate</code></td><td><span class="sig">String onTreeActivate(String nodeId)</span></td><td class="desc">Handler for a tree CHANGE: the selected id is the DOM event&#x27;s value. Returns the id of a selected leaf (a file the host should open), else null.</td></tr>
 <tr><td><code>onTabChange</code></td><td><span class="sig">void onTabChange(String indexStr)</span></td><td class="desc">Handler for a notebook TOGGLE: focus the newly-active tab.</td></tr>
@@ -447,7 +541,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-09 16:07 UTC.
+<code>/lib</code> tree on 2026-11-13 04:33 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>

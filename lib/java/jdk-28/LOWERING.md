@@ -4,9 +4,17 @@
 > the SLeeLa specification. Nothing here adds syntax to SLeeLa
 > (`SLEELA.syntax` section 38.4).
 
-Status: **DRAFT for review.** Only section 2 (the lambda representation) has a
-running prototype: `examples/java/jdk-28/LambdaLoweringProto.sleela`. Everything
-else is a design sketch and is marked *unverified*.
+Status: **DRAFT for review.** Section 2 (lambdas and method references) is
+**implemented** by `lib/java/converter` 0.6.0 (`JConvLambda`, 2026-11-13): the
+body is a method `slLambdaN(slEnv, slA, slB)` of the class holding the lambda
+(instance or static as the context), the call site is
+`new SLJavaLambda(N, new Any[]{this, captures})`, and each document gets one
+`SLJavaLambdaTable`. `samples/lambda/LambdaDemo.java` runs identical to a real
+JDK. Variables of a functional interface type are `Any`, so library code calls
+them by run-time dispatch (SLEELA.syntax 43.7), which makes rule 3 of section 1
+(no dependence on virtual dispatch) unnecessary for lambdas. The first
+prototype is `examples/java/jdk-28/LambdaLoweringProto.sleela`. Everything else
+is a design sketch and is marked *unverified*.
 
 ## 1. Principle
 
@@ -113,6 +121,11 @@ target typing" (`impl/frontend/java_equivalence.cpp`); the translator needs that
 target type, so lowering runs after overload resolution.
 
 ### 2.4 Inner, local and anonymous classes (row 33)
+
+*Inner classes implemented* by `lib/java/converter` 0.7.0 (`JConvOuter`,
+2026-11-13): the enclosing instance is the field `slOuter`, set from the first
+constructor parameter `slOuterArg`; `Outer.this` is `this.slOuter`. Local and
+anonymous classes are still stubs there (`sleelactl java-convert` lowers them).
 
 Same idea, no `id`: the class becomes a **named top-level class** with the
 captured locals and the outer `this` as explicit fields, set by its constructor.

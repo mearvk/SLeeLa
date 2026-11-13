@@ -1,0 +1,189 @@
+<< lib/java/jdk-28/java.base/java/util/Base64.Encoder.sleela
+   SLeeLa file for the Java type java.util.Base64.Encoder (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Base64.Encoder.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   Nested Java type: the file keeps the documented name Base64.Encoder.
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Encoder {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 3595;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.Base64.Encoder";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/Base64.Encoder.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java implementation (JDK 28, SLeeLa logic) ---- >
+  << java.util.Base64.Encoder in SLeeLa, written from the JDK 28 API
+     specification. The encoder holds the alphabet choice, the MIME line
+     separator, the line length (0 or less means no line breaks) and whether
+     padding with = is written. A line break is written after exactly
+     linemax output characters, and only when more output follows. The
+     ByteBuffer and OutputStream forms stay as stubs. >>
+  boolean isURL;
+  byte[] newline;
+  int linemax;
+  boolean doPadding;
+
+  Encoder(boolean isURL, byte[] newline, int linemax, boolean doPadding) {
+    this.isURL = isURL;
+    this.newline = newline;
+    this.linemax = linemax;
+    this.doPadding = doPadding;
+  }
+
+  int slOutLength(int srclen) {
+    int len = 0;
+    if (doPadding) {
+      len = 4 * ((srclen + 2) / 3);
+    } else {
+      int r = srclen % 3;
+      len = 4 * (srclen / 3);
+      if (r != 0) { len = len + r + 1; }
+    }
+    if (linemax > 0) { len = len + (len - 1) / linemax * arrayLength(newline); }
+    return len;
+  }
+  int slNewline(byte[] dst, int dp) {
+    int at = dp;
+    int i = 0;
+    while (i < arrayLength(newline)) { dst[at] = newline[i]; at = at + 1; i = i + 1; }
+    return at;
+  }
+  int slEncode0(byte[] src, byte[] dst) {
+    boolean url = isURL;
+    int sl = arrayLength(src);
+    int sp = 0;
+    int dp = 0;
+    int col = 0;
+    while (sp + 3 <= sl) {
+      if (linemax > 0 && col == linemax) { dp = slNewline(dst, dp); col = 0; }
+      int bits = ((src[sp] & 255) << 16) | ((src[sp + 1] & 255) << 8) | (src[sp + 2] & 255);
+      sp = sp + 3;
+      dst[dp] = Base64.slToBase64((bits >> 18) & 63, url);
+      dst[dp + 1] = Base64.slToBase64((bits >> 12) & 63, url);
+      dst[dp + 2] = Base64.slToBase64((bits >> 6) & 63, url);
+      dst[dp + 3] = Base64.slToBase64(bits & 63, url);
+      dp = dp + 4;
+      col = col + 4;
+    }
+    if (sp < sl) {
+      if (linemax > 0 && col == linemax) { dp = slNewline(dst, dp); col = 0; }
+      int b0 = src[sp] & 255;
+      dst[dp] = Base64.slToBase64(b0 >> 2, url);
+      if (sp + 1 == sl) {
+        dst[dp + 1] = Base64.slToBase64((b0 << 4) & 63, url);
+        dp = dp + 2;
+        if (doPadding) { dst[dp] = 61; dst[dp + 1] = 61; dp = dp + 2; }
+      } else {
+        int b1 = src[sp + 1] & 255;
+        dst[dp + 1] = Base64.slToBase64(((b0 << 4) & 63) | (b1 >> 4), url);
+        dst[dp + 2] = Base64.slToBase64((b1 << 2) & 63, url);
+        dp = dp + 3;
+        if (doPadding) { dst[dp] = 61; dp = dp + 1; }
+      }
+    }
+    return dp;
+  }
+
+  public byte[] encode(byte[] src) {
+    if (src == null) { throw new NullPointerException(); }
+    byte[] dst = new byte[slOutLength(arrayLength(src))];
+    slEncode0(src, dst);
+    return dst;
+  }
+  public int encode(byte[] src, byte[] dst) {
+    if (src == null || dst == null) { throw new NullPointerException(); }
+    int len = slOutLength(arrayLength(src));
+    if (arrayLength(dst) < len) {
+      throw new IllegalArgumentException("Output byte array is too small for encoding all input bytes");
+    }
+    return slEncode0(src, dst);
+  }
+  public java.lang.String encodeToString(byte[] src) {
+    byte[] out = encode(src);
+    String s = "";
+    int i = 0;
+    while (i < arrayLength(out)) { s = s + Base64.slChar(out[i]); i = i + 1; }
+    return s;
+  }
+  public Base64.Encoder withoutPadding() {
+    if (!doPadding) { return this; }
+    return new Base64.Encoder(isURL, newline, linemax, false);
+  }
+  < ---- END java implementation ---- >
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Encoder bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any wrap(Any os) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any encode(Any buffer) { return null; }
+  < ---- END java signatures ---- >
+}

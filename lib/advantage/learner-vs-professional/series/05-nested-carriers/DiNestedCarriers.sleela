@@ -1,0 +1,95 @@
+<< lib/advantage/learner-vs-professional/series/05-nested-carriers/DiNestedCarriers.sleela
+   SLeeLa courseware.
+   Definition: Device Instructor lesson on nested carriers: a carrier can itself be carried, every chain leads back to the field, and each noun has exactly one place. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Lesson 5. A record carries a list, and the list carries orders. The student >
+< states the chain for any noun, and the placement check refuses a second >
+< place, a carrier that is not registered, and a missing field. >
+class DiNestedCarriers {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39105;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  SLNounRegistry reg = new SLNounRegistry();
+
+  void tryRegister(String noun, String carrier) {
+    int code = reg.register(noun, carrier);
+    print("  register " + noun + " -> " + carrier + " : " + reg.reason(code));
+  }
+
+  void main() {
+    print("== Lesson 5: nested carriers ==");
+    reg.declareField("customer file");
+
+    print("-- build the record, its fields and its list --");
+    tryRegister("customer-17", "customer file");
+    tryRegister("name", "customer-17");
+    tryRegister("city", "customer-17");
+    tryRegister("order list", "customer-17");
+    tryRegister("order 1", "order list");
+    tryRegister("order 2", "order list");
+    tryRegister("order 3", "order list");
+
+    print("-- the chain for each noun --");
+    print("  " + reg.chain("customer-17") + "   depth=" + reg.depthOf("customer-17"));
+    print("  " + reg.chain("city") + "   depth=" + reg.depthOf("city"));
+    print("  " + reg.chain("order 2") + "   depth=" + reg.depthOf("order 2"));
+
+    print("-- what each carrier holds directly --");
+    print("  customer-17 holds " + reg.carries("customer-17"));
+    print("  order list holds " + reg.carries("order list"));
+    print("  order 1 holds " + reg.carries("order 1"));
+
+    print("-- placement checks --");
+    tryRegister("order 2", "customer-17");
+    tryRegister("order 4", "order archive");
+    tryRegister("order 5", "order 5");
+
+    print("-- outside the field --");
+    print("  " + reg.chain("order 9"));
+
+    print("-- instructor tally --");
+    print("  accepted=" + reg.acceptedCount() + " refused=" + reg.refusedCount() + " registered=" + reg.size());
+  }
+}

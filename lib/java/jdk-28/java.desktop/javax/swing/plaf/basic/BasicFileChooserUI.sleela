@@ -1,0 +1,227 @@
+<< lib/java/jdk-28/java.desktop/javax/swing/plaf/basic/BasicFileChooserUI.sleela
+   SLeeLa file for the Java type javax.swing.plaf.basic.BasicFileChooserUI (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/basic/BasicFileChooserUI.html
+   Java kind: class; extends javax.swing.plaf.FileChooserUI
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class BasicFileChooserUI extends FileChooserUI {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1672;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.plaf.basic.BasicFileChooserUI";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/basic/BasicFileChooserUI.html";
+  String javaKind = "class";
+  String javaSuper = "javax.swing.plaf.FileChooserUI";
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BasicFileChooserUI bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < public and protected instance fields >
+  Any directoryIcon;
+  Any fileIcon;
+  Any computerIcon;
+  Any hardDriveIcon;
+  Any floppyDriveIcon;
+  Any newFolderIcon;
+  Any upFolderIcon;
+  Any homeFolderIcon;
+  Any listViewIcon;
+  Any detailsViewIcon;
+  Any viewMenuIcon;
+  int saveButtonMnemonic;
+  int openButtonMnemonic;
+  int cancelButtonMnemonic;
+  int updateButtonMnemonic;
+  int helpButtonMnemonic;
+  int directoryOpenButtonMnemonic;
+  String saveButtonText;
+  String openButtonText;
+  String cancelButtonText;
+  String updateButtonText;
+  String helpButtonText;
+  String directoryOpenButtonText;
+  String saveButtonToolTipText;
+  String openButtonToolTipText;
+  String cancelButtonToolTipText;
+  String updateButtonToolTipText;
+  String helpButtonToolTipText;
+  String directoryOpenButtonToolTipText;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicFileChooserUI(Any b) { super("constructor"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getFileName() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void installListeners(Any fc) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void setDirectory(Any f) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any getDirectory() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installUI(Any c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallUI(Any c) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any createListSelectionListener(Any fc) { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void createModel() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clearIconCache() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getFileChooser() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getApproveSelectionAction() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getCancelSelectionAction() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getChangeToParentDirectoryAction() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void installIcons(Any fc) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void installStrings(Any fc) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallIcons(Any fc) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallStrings(Any fc) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any getApproveButton(Any fc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getDirectoryName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDirectoryName(String dirname) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getAccessoryPanel() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createDoubleClickListener(Any fc, Any list) { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean isDirectorySelected() { return false; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void setDirectorySelected(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getNewFolderAction() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getGoHomeAction() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getUpdateAction() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getDefaultButton(Any fc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getAcceptAllFileFilter(Any fc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void ensureFileIsVisible(Any fc, Any f) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void rescanCurrentDirectory(Any fc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getDialogTitle(Any fc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getFileView(Any fc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getApproveButtonToolTipText(Any fc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getApproveButtonMnemonic(Any fc) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getApproveButtonText(Any fc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFileName(String filename) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any createUI(Any c) { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void installDefaults(Any fc) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallListeners(Any fc) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallDefaults(Any fc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void installComponents(Any fc) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any createPropertyChangeListener(Any fc) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallComponents(Any fc) { }
+  < ---- END java signatures ---- >
+}

@@ -1,0 +1,132 @@
+<< lib/advantage/trading-actions-on-verb/24-margin-call-and-cover/TaUse24MarginCallAndCover.sleela
+   SLeeLa trading-action use case.
+   Definition: Short margin call: the deposit that restores the margin, and the fewest shares to cover found by binary search and confirmed by a scan; when equity is negative a cover cannot help. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Use case 24 (style, short margin, illustrative). 100 shares sold short at 5000, >
+< collateral 750000 (proceeds plus a 250000 deposit), requirement 30 percent. >
+< The price rises to 7000 and a call is due. Covering at the mark leaves equity >
+< unchanged and lowers the requirement, so adequacy is monotone in the shares >
+< covered and a binary search applies. At 8000 equity itself is negative, so no >
+< cover can restore the margin and only a deposit can. >
+class TaUse24MarginCallAndCover {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39324;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+
+  void expect(String label, int got, int want) {
+    if (got == want) {
+      print("  ok   " + label + " = " + got);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label + " got " + got + " want " + want);
+      failed = failed + 1;
+    }
+  }
+
+  void expectTrue(String label, boolean got) {
+    if (got) {
+      print("  ok   " + label);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label);
+      failed = failed + 1;
+    }
+  }
+
+  void summary() {
+    print("  checks passed=" + passed + " failed=" + failed);
+  }
+
+  void act(SLLongBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+
+  void act2(SLShortBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+  void main() {
+    SLShortBook book = new SLShortBook();
+    SLShortMargin m = new SLShortMargin();
+    print("== Use case 24: a margin call and the fewest shares to cover ==");
+    act2(book, "short 100 @ 5000 on day 0", book.shortSell(0, 100, 5000, 0));
+    int collateral = book.proceedsHeld() + 250000;
+    expect("collateral = proceeds 500000 + deposit 250000", collateral, 750000);
+    print("-- price 5000, requirement 30 percent --");
+    expect("equity", m.equity(collateral, 100, 5000), 250000);
+    expect("required", m.required(m.shortValue(100, 5000), 3000), 150000);
+    expect("excess", m.excess(collateral, 100, 5000, 3000), 100000);
+    expectTrue("no call is due", !m.callDue(collateral, 100, 5000, 3000));
+    print("-- price rises to 7000 --");
+    expect("equity", m.equity(collateral, 100, 7000), 50000);
+    expect("required", m.required(m.shortValue(100, 7000), 3000), 210000);
+    expect("excess", m.excess(collateral, 100, 7000, 3000), -160000);
+    expectTrue("a call is due", m.callDue(collateral, 100, 7000, 3000));
+    expect("deposit that restores the margin", m.callAmount(collateral, 100, 7000, 3000), 160000);
+    expect("excess after that deposit", m.excess(collateral + 160000, 100, 7000, 3000), 0);
+    print("-- or cover: the fewest shares --");
+    expect("fewest shares to cover (binary search)", m.sharesToCover(collateral, 100, 7000, 3000), 77);
+    expect("fewest shares to cover (scan)", m.sharesToCoverScan(collateral, 100, 7000, 3000), 77);
+    expectTrue("covering one fewer is not enough", !m.enoughAfterCover(collateral, 100, 7000, 3000, 76));
+    expectTrue("covering that many is enough", m.enoughAfterCover(collateral, 100, 7000, 3000, 77));
+    act2(book, "cover 77 @ 7000 on day 10", book.cover(10, 77, 7000, 0));
+    int collateral2 = collateral - 77 * 7000;
+    expect("collateral after paying for the cover", collateral2, 211000);
+    expect("shares still short", book.totalShort(), 23);
+    expect("equity is unchanged by a cover at the mark", m.equity(collateral2, book.totalShort(), 7000), 50000);
+    expect("excess after the cover", m.excess(collateral2, book.totalShort(), 7000, 3000), 1700);
+    expectTrue("no call is due now", !m.callDue(collateral2, book.totalShort(), 7000, 3000));
+    print("-- price 8000: equity is negative, covering cannot help --");
+    expect("equity", m.equity(collateral, 100, 8000), -50000);
+    expect("fewest shares to cover", m.sharesToCover(collateral, 100, 8000, 3000), 0 - 1);
+    expect("deposit needed", m.callAmount(collateral, 100, 8000, 3000), 290000);
+    expectTrue("invariants hold", book.invariantsHold());
+    summary();
+  }
+}

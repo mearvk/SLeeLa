@@ -1,0 +1,33 @@
+#sleela 3.0
+struct Point {
+    int x;
+    int y;
+}
+
+class NativeBoundaryFixture {
+    @native
+    static int arrayTotal(int[] values) {
+        return values[0] + values[1];
+    }
+
+    @native
+    static int pointTotal(Point point) {
+        return point.x + point.y;
+    }
+
+    static int check() {
+        int[] values = new int[2];
+        values[0] = 10;
+        values[1] = 20;
+        Point point = new Point();
+        point.x = 5;
+        point.y = 7;
+        return arrayTotal(values) + pointTotal(point);
+    }
+
+    // Syntax 3.0 requires void main; the smoke harness selects check() as
+    // its entry with slvm_find_func() so it can assert the returned value.
+    static void main() {
+        int result = check();
+    }
+}

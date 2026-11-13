@@ -1,0 +1,249 @@
+<< lib/java/support/SLJavaMd5.sleela
+MD5 message digest for the Java container (UUID.nameUUIDFromBytes, later
+   MessageDigest). Written from RFC 1321; reference-grade, not constant-time. >>
+#sleela 3.0
+material;
+
+class SLJavaMd5 {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Shared support
+     class of the /lib/java Java container; written for SLeeLa, not copied from
+     the JDK. MD5 follows RFC 1321 by R. Rivest (IETF, April 1992). >>
+  String metaVersion = "1.0.0";
+  int metaId = 39403;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "IETF RFC 1321: The MD5 Message-Digest Algorithm (April 1992)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  << MD5 (RFC 1321) of a byte array: the 16 digest bytes as ints 0 .. 255.
+     Input bytes may be signed (-128 .. 127). >>
+  static int[] digest(byte[] data) {
+    long[] k = new long[64];
+    int[] s = new int[64];
+    k[0] = 3614090360;
+    k[1] = 3905402710;
+    k[2] = 606105819;
+    k[3] = 3250441966;
+    k[4] = 4118548399;
+    k[5] = 1200080426;
+    k[6] = 2821735955;
+    k[7] = 4249261313;
+    k[8] = 1770035416;
+    k[9] = 2336552879;
+    k[10] = 4294925233;
+    k[11] = 2304563134;
+    k[12] = 1804603682;
+    k[13] = 4254626195;
+    k[14] = 2792965006;
+    k[15] = 1236535329;
+    k[16] = 4129170786;
+    k[17] = 3225465664;
+    k[18] = 643717713;
+    k[19] = 3921069994;
+    k[20] = 3593408605;
+    k[21] = 38016083;
+    k[22] = 3634488961;
+    k[23] = 3889429448;
+    k[24] = 568446438;
+    k[25] = 3275163606;
+    k[26] = 4107603335;
+    k[27] = 1163531501;
+    k[28] = 2850285829;
+    k[29] = 4243563512;
+    k[30] = 1735328473;
+    k[31] = 2368359562;
+    k[32] = 4294588738;
+    k[33] = 2272392833;
+    k[34] = 1839030562;
+    k[35] = 4259657740;
+    k[36] = 2763975236;
+    k[37] = 1272893353;
+    k[38] = 4139469664;
+    k[39] = 3200236656;
+    k[40] = 681279174;
+    k[41] = 3936430074;
+    k[42] = 3572445317;
+    k[43] = 76029189;
+    k[44] = 3654602809;
+    k[45] = 3873151461;
+    k[46] = 530742520;
+    k[47] = 3299628645;
+    k[48] = 4096336452;
+    k[49] = 1126891415;
+    k[50] = 2878612391;
+    k[51] = 4237533241;
+    k[52] = 1700485571;
+    k[53] = 2399980690;
+    k[54] = 4293915773;
+    k[55] = 2240044497;
+    k[56] = 1873313359;
+    k[57] = 4264355552;
+    k[58] = 2734768916;
+    k[59] = 1309151649;
+    k[60] = 4149444226;
+    k[61] = 3174756917;
+    k[62] = 718787259;
+    k[63] = 3951481745;
+    s[0] = 7;
+    s[1] = 12;
+    s[2] = 17;
+    s[3] = 22;
+    s[4] = 7;
+    s[5] = 12;
+    s[6] = 17;
+    s[7] = 22;
+    s[8] = 7;
+    s[9] = 12;
+    s[10] = 17;
+    s[11] = 22;
+    s[12] = 7;
+    s[13] = 12;
+    s[14] = 17;
+    s[15] = 22;
+    s[16] = 5;
+    s[17] = 9;
+    s[18] = 14;
+    s[19] = 20;
+    s[20] = 5;
+    s[21] = 9;
+    s[22] = 14;
+    s[23] = 20;
+    s[24] = 5;
+    s[25] = 9;
+    s[26] = 14;
+    s[27] = 20;
+    s[28] = 5;
+    s[29] = 9;
+    s[30] = 14;
+    s[31] = 20;
+    s[32] = 4;
+    s[33] = 11;
+    s[34] = 16;
+    s[35] = 23;
+    s[36] = 4;
+    s[37] = 11;
+    s[38] = 16;
+    s[39] = 23;
+    s[40] = 4;
+    s[41] = 11;
+    s[42] = 16;
+    s[43] = 23;
+    s[44] = 4;
+    s[45] = 11;
+    s[46] = 16;
+    s[47] = 23;
+    s[48] = 6;
+    s[49] = 10;
+    s[50] = 15;
+    s[51] = 21;
+    s[52] = 6;
+    s[53] = 10;
+    s[54] = 15;
+    s[55] = 21;
+    s[56] = 6;
+    s[57] = 10;
+    s[58] = 15;
+    s[59] = 21;
+    s[60] = 6;
+    s[61] = 10;
+    s[62] = 15;
+    s[63] = 21;
+    int n = arrayLength(data);
+    int total = (n + 8) / 64 * 64 + 64;
+    int[] buf = new int[total];
+    < array elements start out null, which would turn the sums below into doubles >
+    int i = 0;
+    while (i < total) { buf[i] = 0; i = i + 1; }
+    i = 0;
+    while (i < n) { buf[i] = SLJavaBits.mod(data[i], 256); i = i + 1; }
+    buf[n] = 128;
+    long bits = n * 8;
+    i = 0;
+    while (i < 8) { buf[total - 8 + i] = bits % 256; bits = bits / 256; i = i + 1; }
+    long a0 = 1732584193;
+    long b0 = 4023233417;
+    long c0 = 2562383102;
+    long d0 = 271733878;
+    int blk = 0;
+    while (blk < total) {
+      long[] m = new long[16];
+      int w = 0;
+      while (w < 16) {
+        int p = blk + w * 4;
+        m[w] = buf[p] + buf[p + 1] * 256 + buf[p + 2] * 65536 + buf[p + 3] * 16777216;
+        w = w + 1;
+      }
+      long a = a0;
+      long b = b0;
+      long c = c0;
+      long d = d0;
+      int r = 0;
+      while (r < 64) {
+        long f = 0;
+        int g = 0;
+        if (r < 16) { f = SLJavaBits.or32(SLJavaBits.and32(b, c), SLJavaBits.and32(SLJavaBits.not32(b), d)); g = r; }
+        else if (r < 32) { f = SLJavaBits.or32(SLJavaBits.and32(d, b), SLJavaBits.and32(SLJavaBits.not32(d), c)); g = (5 * r + 1) % 16; }
+        else if (r < 48) { f = SLJavaBits.xor32(SLJavaBits.xor32(b, c), d); g = (3 * r + 5) % 16; }
+        else { f = SLJavaBits.xor32(c, SLJavaBits.or32(b, SLJavaBits.not32(d))); g = 7 * r % 16; }
+        f = (f + a + k[r] + m[g]) % 4294967296;
+        a = d;
+        d = c;
+        c = b;
+        b = (b + SLJavaBits.rotl32(f, s[r])) % 4294967296;
+        r = r + 1;
+      }
+      a0 = (a0 + a) % 4294967296;
+      b0 = (b0 + b) % 4294967296;
+      c0 = (c0 + c) % 4294967296;
+      d0 = (d0 + d) % 4294967296;
+      blk = blk + 64;
+    }
+    int[] out = new int[16];
+    long[] words = new long[4];
+    words[0] = a0;
+    words[1] = b0;
+    words[2] = c0;
+    words[3] = d0;
+    int q = 0;
+    while (q < 16) {
+      long word = words[q / 4];
+      int sh = q % 4;
+      while (sh > 0) { word = word / 256; sh = sh - 1; }
+      out[q] = word % 256;
+      q = q + 1;
+    }
+    return out;
+  }
+}

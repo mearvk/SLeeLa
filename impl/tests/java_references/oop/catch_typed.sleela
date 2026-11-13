@@ -1,0 +1,20 @@
+#sleela 3.0
+spark;
+material;
+import java.jdk-25.java.lang;
+class P {
+  static void boom(int k) {
+    if (k == 1) { throw new IllegalArgumentException("arg"); }
+    if (k == 2) { throw new IllegalStateException("state"); }
+    if (k == 3) { throw new ArithmeticException("math"); }
+  }
+  void main() {
+    for (int k = 1; k <= 3; k++) {
+      try { boom(k); }
+      catch (IllegalArgumentException e) { print("IAE " + e.getMessage()); }
+      catch (IllegalStateException | ArithmeticException e) { print("multi " + k); }
+    }
+    try { boom(2); } catch (RuntimeException e) { print("base " + e.getMessage()); }
+    try { boom(1); } catch (java.lang.IllegalArgumentException e) { print("qualified"); }
+  }
+}

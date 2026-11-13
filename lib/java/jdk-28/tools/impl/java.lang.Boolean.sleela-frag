@@ -1,0 +1,41 @@
+  << java.lang.Boolean in SLeeLa, written from the JDK 28 API specification
+     (Java Source above). TRUE and FALSE are shared instances, and valueOf
+     returns them, so valueOf(true) == Boolean.TRUE as in Java. parseBoolean is
+     true only for the text "true" in any letter case, and false for anything
+     else including null. getBoolean reads a system property, and the SLeeLa
+     VM has none, so it is always false. >>
+  static Boolean TRUE = new Boolean(true);
+  static Boolean FALSE = new Boolean(false);
+  boolean value;
+
+  public Boolean(boolean value) { this.value = value; }
+  public Boolean(java.lang.String s) { this.value = parseBoolean(s); }
+
+  public boolean booleanValue() { return value; }
+  public java.lang.String toString() { if (value) { return "true"; } return "false"; }
+  public int hashCode() { if (value) { return 1231; } return 1237; }
+  public boolean equals(java.lang.Object obj) {
+    if (obj instanceof Boolean) { Boolean o = (Boolean) obj; return o.value == value; }
+    return false;
+  }
+  public int compareTo(java.lang.Boolean b) { Boolean o = (Boolean) b; return compare(value, o.value); }
+
+  public static boolean parseBoolean(java.lang.String s) {
+    if (s == null) { return false; }
+    String u = javaStringFromUtf8(s);
+    if (javaStringLength(u) != 4) { return false; }
+    return (javaStringCharAt(u, 0) | 32) == 116 && (javaStringCharAt(u, 1) | 32) == 114 && (javaStringCharAt(u, 2) | 32) == 117 && (javaStringCharAt(u, 3) | 32) == 101;
+  }
+  public static java.lang.Boolean valueOf(boolean b) { if (b) { return TRUE; } return FALSE; }
+  public static java.lang.Boolean valueOf(java.lang.String s) { return valueOf(parseBoolean(s)); }
+  public static java.lang.String toString(boolean b) { if (b) { return "true"; } return "false"; }
+  public static int hashCode(boolean value) { if (value) { return 1231; } return 1237; }
+  public static int compare(boolean x, boolean y) {
+    if (x == y) { return 0; }
+    if (x) { return 1; }
+    return -1;
+  }
+  public static boolean getBoolean(java.lang.String name) { return false; }
+  public static boolean logicalAnd(boolean a, boolean b) { return a && b; }
+  public static boolean logicalOr(boolean a, boolean b) { return a || b; }
+  public static boolean logicalXor(boolean a, boolean b) { return a != b; }

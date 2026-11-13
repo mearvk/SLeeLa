@@ -1,0 +1,16 @@
+== Lesson 9: copper decision ==
+-- master (onion) --
+  Smelter A total = 307000 cents
+  Smelter B total = 310000 cents
+  master picks Smelter A
+-- student, first pass: the discount of Smelter A was entered with the wrong sign --
+  Smelter A total = 325000 cents
+  Smelter B total = 310000 cents
+  student picks Smelter B
+  Smelter A discount: student 9000, master -9000 -> re-observe
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Smelter A total = 307000 cents
+  Smelter B total = 310000 cents
+  student picks Smelter A
+  verdict: AGREE, work accepted

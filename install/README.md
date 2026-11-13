@@ -17,9 +17,12 @@ install\\sleela-clean-install.cmd               # Windows 10+ (PowerShell launch
 
 `make clean-install` and the `make build` → `advanced-build` prompt dispatch by host OS.
 The macOS script is Bash 3.2-compatible. Windows uses native PowerShell and requires
-native `impl/build/sleela.exe`, `sleelvac.exe`, and `nordshrift.exe` outputs; it will
-not relabel non-Windows binaries as `.exe`. All three scripts share the same guided,
-block-by-block module selection and verify the staged integrity manifest before deployment.
+native MinGW-w64 toolchain and Python 3. The PowerShell installer invokes
+`build-windows.ps1` for a native build; with `-NoBuild`, it requires the
+existing `impl/build/sleela.exe`, `sleelvac.exe`, and `nordshrift.exe`
+artifacts and will not relabel non-Windows binaries as `.exe`. All three
+scripts share the same guided, block-by-block module selection and verify the
+staged integrity manifest before deployment.
 
 It installs the binaries (`sleela`, `sleelvac`, `nordshrift`), the standard
 library, protocols, and support modules — and **excludes** servers, IDEs/editors,
@@ -62,8 +65,8 @@ options) remains available for advanced deployments.
 
 At the start, choose:
 
-- **User-local (recommended):** Linux/macOS default `$HOME/.local/sleela`; Windows default `%LOCALAPPDATA%\\SLeeLa`. The installer places compiled executables in the installation's `bin/` directory and can configure only the current user's PATH.
-- **System-wide:** Linux/macOS default runtime root `/usr/local/lib/sleela`, executables exposed through `/usr/local/bin`, and startup configuration in `/etc/sleela/startup.conf`. The installer uses `sudo` for privileged writes. Windows default is `%ProgramFiles%\\SLeeLa`, requires an elevated PowerShell, and adds the install's `bin/` directory to the machine PATH.
+- **User-local (recommended):** Linux/macOS default `$HOME/.local/sleela`; Windows default `%LOCALAPPDATA%\\SLeeLa`. The installer places compiled executables in the installation's `bin/` directory and can configure only the current user's PATH. On Windows, the runtime support tree is `%LOCALAPPDATA%\\SLeeLa\\lib\\sleela`, matching the executable-relative runtime lookup.
+- **System-wide:** Linux/macOS default runtime root `/usr/local/lib/sleela`, executables exposed through `/usr/local/bin`, and startup configuration in `/etc/sleela/startup.conf`. The installer uses `sudo` for privileged writes. Windows default is `%ProgramFiles%\\SLeeLa`, requires an elevated PowerShell, and adds the install's `bin/` directory to the machine PATH. Its runtime support tree is `%ProgramFiles%\\SLeeLa\\lib\\sleela`.
 
 The Linux/macOS user-local destination can be overridden with `SLEELA_INSTALL_ROOT`; system runtime root can be overridden with `SLEELA_SYSTEM_ROOT`. On Windows, pass `-Destination` to choose the destination explicitly.
 

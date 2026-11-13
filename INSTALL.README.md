@@ -191,10 +191,13 @@ sleelactl list                 # every module and its nature
 sleelactl status all           # running status across the board
 sleelactl start server-edition # start the server daemon
 sleelactl enable antivirus     # enable the antivirus coordinator at boot
-sleelactl load codecs 2        # load a codec by id
+sleelactl probe codecs         # run the codec registry reference pipeline
 sleelactl available database   # data-source availability
 sleelactl validate http-9.0    # validate a protocol spec
 sleelactl build decompiler     # build a tool CLI
+sleelactl where                # resolved root, registry, runtime, service manager
+sleelactl check-registry       # validate the module registry
+eval "$(sleelactl completion bash)"   # tab completion (installed copies: <prefix>/share/sleela/completions/)
 ```
 
 Full reference: `bin/SLEELACTL.md`. The module → nature map is the plain-text

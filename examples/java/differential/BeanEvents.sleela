@@ -1,0 +1,156 @@
+<< examples/java/differential/BeanEvents.sleela
+   SLeeLa side of the BeanEvents differential test.
+   Definition: Prints, line for line, the same results as BeanEvents.java for
+   java.beans on the JDK 28 tier: PropertyChangeSupport (listeners for all
+   properties and for one property, proxies, no event for equal values,
+   indexed events, removal), PropertyChangeEvent and IndexedPropertyChangeEvent
+   (toString, propagation id, null source), and VetoableChangeSupport (a veto,
+   the revert event to listeners that had accepted, PropertyVetoException).
+   The Java lambdas are written in their lowered form
+   (lib/java/jdk-28/LOWERING.md section 2): each lambda site is an
+   SLJavaLambda with an id and its captured values, and the class
+   SLJavaLambdaTable below holds the bodies. This is the code a translator
+   emits for BeanEvents.java. >>
+#sleela 3.0
+material;
+import java.jdk-28;
+
+< the lowered lambda bodies of BeanEvents.java, one arm per lambda site >
+class SLJavaLambdaTable {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+
+  static Any call(int id, Any[] env, Any a, Any b) {
+    < 1: PropertyChangeListener all = e -> System.out.println("all: " + ...) >
+    if (id == 1) {
+      PropertyChangeEvent e = (PropertyChangeEvent) a;
+      print("all: " + e.getPropertyName() + " " + e.getOldValue() + " -> " + e.getNewValue());
+      return null;
+    }
+    < 2: PropertyChangeListener width = e -> System.out.println(tag + ": " + ...), captures tag >
+    if (id == 2) {
+      PropertyChangeEvent e2 = (PropertyChangeEvent) a;
+      String tag = "" + env[0];
+      print(tag + ": " + e2.getOldValue() + " -> " + e2.getNewValue() + " from " + e2.getSource());
+      return null;
+    }
+    < 3: VetoableChangeListener log = e -> System.out.println("log: " + ...) >
+    if (id == 3) {
+      PropertyChangeEvent e3 = (PropertyChangeEvent) a;
+      print("log: " + e3.getPropertyName() + " " + e3.getOldValue() + " -> " + e3.getNewValue());
+      return null;
+    }
+    < 4: VetoableChangeListener guard = e -> { print; if ("forbidden".equals(newValue)) throw new PropertyVetoException(...) } >
+    if (id == 4) {
+      PropertyChangeEvent e4 = (PropertyChangeEvent) a;
+      print("guard: " + e4.getOldValue() + " -> " + e4.getNewValue());
+      Any nv = e4.getNewValue();
+      if (nv instanceof string) {
+        if (nv == "forbidden") { throw new PropertyVetoException("no forbidden names", e4); }
+      }
+      return null;
+    }
+    throw new UnsupportedOperationException("BeanEvents: no lambda " + id);
+  }
+}
+
+class BeanEvents {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+
+  void main() {
+    String source = "bean";
+    PropertyChangeSupport pcs = new PropertyChangeSupport(source);
+    print("" + pcs.hasListeners("width") + " " + arrayLength(pcs.getPropertyChangeListeners()));
+
+    SLJavaLambda all = new SLJavaLambda(1, new Any[0], "java.beans.PropertyChangeListener");
+    String tag = "W";
+    Any[] captured = new Any[1];
+    captured[0] = tag;
+    SLJavaLambda width = new SLJavaLambda(2, captured, "java.beans.PropertyChangeListener");
+    pcs.addPropertyChangeListener(all);
+    pcs.addPropertyChangeListener("width", width);
+    pcs.addPropertyChangeListener(null);
+    print("" + pcs.hasListeners("width") + " " + pcs.hasListeners("height") + " " + arrayLength(pcs.getPropertyChangeListeners())
+      + " " + arrayLength(pcs.getPropertyChangeListeners("width")) + " " + arrayLength(pcs.getPropertyChangeListeners("height")));
+    Any[] ls = pcs.getPropertyChangeListeners();
+    Any first = ls[0];
+    Any second = ls[1];
+    PropertyChangeListenerProxy px = (PropertyChangeListenerProxy) second;
+    print("" + (first == all) + " " + (second instanceof PropertyChangeListenerProxy) + " " + px.getPropertyName()
+      + " " + (px.getListener() == width));
+
+    pcs.firePropertyChange("width", 100, 200);
+    pcs.firePropertyChange("width", 200, 200);
+    pcs.firePropertyChange("height", null, "tall");
+    pcs.firePropertyChange("title", "a", "a");
+    pcs.firePropertyChange("title", null, null);
+    pcs.firePropertyChange("flag", false, true);
+    pcs.firePropertyChange(new PropertyChangeEvent(source, null, 1, 2));
+    pcs.fireIndexedPropertyChange("width", 3, "x", "y");
+
+    PropertyChangeEvent ev = new PropertyChangeEvent(source, "p", "o", "n");
+    print(ev.toString());
+    ev.setPropagationId("pid");
+    print("" + ev.getPropagationId() + " " + ev.toString());
+    IndexedPropertyChangeEvent iev = new IndexedPropertyChangeEvent(source, "cells", "a", "b", 7);
+    print("" + iev.getIndex() + " " + iev.getPropertyName() + " " + iev.toString());
+    try { PropertyChangeEvent bad = new PropertyChangeEvent(null, "p", 1, 2); }
+    catch (Any x) { IllegalArgumentException iae = (IllegalArgumentException) x; print("IAE " + iae.getMessage()); }
+
+    pcs.removePropertyChangeListener(all);
+    pcs.firePropertyChange("width", 1, 2);
+    pcs.removePropertyChangeListener(new PropertyChangeListenerProxy("width", width));
+    pcs.firePropertyChange("width", 2, 3);
+    print("" + pcs.hasListeners("width") + " " + arrayLength(pcs.getPropertyChangeListeners()));
+
+    VetoableChangeSupport vcs = new VetoableChangeSupport(source);
+    SLJavaLambda log = new SLJavaLambda(3, new Any[0], "java.beans.VetoableChangeListener");
+    SLJavaLambda guard = new SLJavaLambda(4, new Any[0], "java.beans.VetoableChangeListener");
+    vcs.addVetoableChangeListener(log);
+    vcs.addVetoableChangeListener("name", guard);
+    try {
+      vcs.fireVetoableChange("name", "alice", "bob");
+      print("accepted bob");
+      vcs.fireVetoableChange("name", "bob", "forbidden");
+      print("accepted forbidden");
+    } catch (Any v) {
+      PropertyVetoException pve = (PropertyVetoException) v;
+      PropertyChangeEvent pe = pve.getPropertyChangeEvent();
+      print("vetoed: " + pve.getMessage() + " " + pe.getNewValue());
+    }
+    try { vcs.fireVetoableChange("name", "same", "same"); print("no event for equal values"); }
+    catch (Any v2) { print("unexpected"); }
+    print("" + vcs.hasListeners("name") + " " + arrayLength(vcs.getVetoableChangeListeners()) + " " + arrayLength(vcs.getVetoableChangeListeners("name")));
+    try { PropertyChangeSupport none = new PropertyChangeSupport(null); }
+    catch (Any n) { print("NPE"); }
+  }
+}

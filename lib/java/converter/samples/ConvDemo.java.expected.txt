@@ -1,0 +1,31 @@
+wrap -2147483648
+hex -1 127 oct 15 bin 10
+hash 1794106052
+sum 28 len 5
+zero 0
+decl 12
+char x code 65
+narrow -56 4464
+kind 0 fizz
+kind 1 one
+kind 2 two
+kind 3 fizz
+enum GREEN 2 3
+static 40
+loop 1023 shift 15 2
+text [alpha
+  beta] 13
+big
+comma-for 30
+label 32
+finally 6 ran
+grid 2 5
+is q
+hash -123418033 15 -987654312 -1 3 137438953472
+text 0.25 2.0 z 3.0
+2.0
+0.25 first
+calls 1.4142135623730951 2.5 e 2 4.5 268435455 cba 8
+arith true 605032704 605032704 306783377 2050000000 AE AE
+arith2 -2147483648 98 neg 14 -2147483648 2147483647
+pattern str 3, big 9, other, true false

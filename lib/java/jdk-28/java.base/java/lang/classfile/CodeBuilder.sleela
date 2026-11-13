@@ -1,0 +1,493 @@
+<< lib/java/jdk-28/java.base/java/lang/classfile/CodeBuilder.sleela
+   SLeeLa file for the Java type java.lang.classfile.CodeBuilder (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/classfile/CodeBuilder.html
+   Java kind: interface; implements java.lang.classfile.ClassFileBuilder
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class CodeBuilder {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 2450;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.lang.classfile.CodeBuilder";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/classfile/CodeBuilder.html";
+  String javaKind = "interface";
+  String javaSuper = "";
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public CodeBuilder bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lineNumber(int line) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any block(Any handler) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any swap() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any pop() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any fieldAccess(Any opcode, Any owner, String name, Any type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any fieldAccess(Any opcode, Any ref) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any loadLocal(Any tk, int slot) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any storeLocal(Any tk, int slot) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any checkcast(Any type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any getstatic(Any owner, String name, Any type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any getstatic(Any ref) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any invokevirtual(Any ref) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any invokevirtual(Any owner, String name, Any type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dup() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any aload(int slot) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any invokestatic(Any owner, String name, Any type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any invokestatic(Any owner, String name, Any type, boolean isInterface) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any invokestatic(Any ref) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any arrayLoad(Any tk) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any aaload() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any arrayStore(Any tk) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any aastore() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any arraylength() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public Any newLabel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ifeq(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any goto_w(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any labelBinding(Any label) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any exceptionCatch(Any start, Any end, Any handler, Any catchType) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any athrow() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any aconst_null() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any pop2() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any getfield(Any ref) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any getfield(Any owner, String name, Any type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any tableswitch(Any defaultTarget, Any cases) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any tableswitch(int low, int high, Any defaultTarget, Any cases) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any goto_(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any loadConstant(double value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any loadConstant(long value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any loadConstant(int value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any loadConstant(Any value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any loadConstant(float value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ifne(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any iconst_0() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lconst_0() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any fconst_0() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dconst_0() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any return_() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any return_(Any tk) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any conversion(Any fromType, Any toType) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public Any endLabel() { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int parameterSlot(int paramNo) { return 0; }
+  @throwable("java.lang.AbstractMethodError")
+  public int receiverSlot() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any astore(int slot) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public Any startLabel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any istore(int slot) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lstore(int slot) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dstore(int slot) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any fstore(int slot) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any iload(int slot) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lload(int slot) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dload(int slot) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any fload(int slot) { return null; }
+  @throwable("java.lang.AbstractMethodError")
+  public int allocateLocal(Any typeKind) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any invokespecial(Any ref) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any invokespecial(Any owner, String name, Any type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any invokespecial(Any owner, String name, Any type, boolean isInterface) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any branch(Any op, Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any nop() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any anewarray(Any classEntry) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any areturn() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any bipush(int b) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any d2f() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any d2i() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any d2l() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dadd() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dcmpg() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dcmpl() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dconst_1() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ddiv() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dmul() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dneg() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any drem() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dreturn() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dsub() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dup2() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dup2_x1() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dup2_x2() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dup_x1() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dup_x2() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any f2d() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any f2i() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any f2l() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any fadd() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any fcmpg() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any fcmpl() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any fconst_1() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any fconst_2() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any fdiv() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any fmul() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any fneg() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any frem() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any freturn() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any fsub() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any i2b() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any i2c() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any i2d() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any i2f() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any i2l() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any i2s() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any iadd() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any iand() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any iconst_1() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any iconst_2() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any iconst_3() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any iconst_4() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any iconst_5() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any iconst_m1() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any idiv() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any if_acmpeq(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any if_acmpne(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any if_icmpeq(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any if_icmpge(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any if_icmpgt(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any if_icmple(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any if_icmplt(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any if_icmpne(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ifnonnull(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ifnull(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ifge(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ifgt(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ifle(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any iflt(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any iinc(int slot, int val) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any imul() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ineg() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any instanceOf(Any target) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any invokedynamic(Any ref) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any invokeinterface(Any ref) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any invokeinterface(Any owner, String name, Any type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ior() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any irem() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ireturn() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ishl() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ishr() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any isub() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any iushr() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ixor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lookupswitch(Any defaultTarget, Any cases) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any l2d() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any l2f() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any l2i() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ladd() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any land() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lcmp() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lconst_1() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ldc(Any value) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ldiv() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lmul() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lneg() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lrem() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lreturn() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lshl() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lshr() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lsub() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lushr() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lxor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any monitorenter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any monitorexit() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any multianewarray(Any array, int dims) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any new_(Any clazz) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any newarray(Any typeKind) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any sipush(int s) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ifThen(Any thenHandler) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ifThen(Any opcode, Any thenHandler) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ifThenElse(Any thenHandler, Any elseHandler) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any ifThenElse(Any opcode, Any thenHandler, Any elseHandler) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any localVariable(int slot, String name, Any descriptor, Any startScope, Any endScope) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any localVariable(int slot, Any nameEntry, Any descriptorEntry, Any startScope, Any endScope) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any localVariableType(int slot, Any nameEntry, Any signatureEntry, Any startScope, Any endScope) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any localVariableType(int slot, String name, Any signature, Any startScope, Any endScope) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any transforming(Any transform, Any handler) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any trying(Any tryHandler, Any catchesHandler) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any newBoundLabel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any exceptionCatchAll(Any start, Any end, Any handler) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any characterRange(Any startScope, Any endScope, int characterRangeStart, int characterRangeEnd, int flags) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any baload() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any bastore() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any caload() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any castore() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any daload() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any dastore() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any faload() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any fastore() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any iaload() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any iastore() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any laload() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any lastore() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any putfield(Any owner, String name, Any type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any putfield(Any ref) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any putstatic(Any owner, String name, Any type) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any putstatic(Any ref) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any saload() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public default Any sastore() { return null; }
+  < ---- END java signatures ---- >
+}

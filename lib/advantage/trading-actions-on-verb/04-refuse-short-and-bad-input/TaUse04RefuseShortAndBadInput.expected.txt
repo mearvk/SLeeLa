@@ -1,0 +1,23 @@
+== Use case 4: refuse short and bad input ==
+  buy 100 @ 5000 on day 10, fee 100 : ok
+  sell 101 @ 5100 (more than held) : refused: sell exceeds the holding (long only, no short)
+  ok   code for sell above holding = 3
+  ok   code for zero quantity = 1
+  ok   code for negative quantity = 1
+  ok   code for zero price = 2
+  ok   code for negative fee = 6
+  ok   code for day going backwards = 5
+  ok   code for a quantity above the size bound = 8
+  ok   code for a price above the size bound = 8
+  ok   code for a fee above the size bound = 8
+  ok   code for a day above the day bound = 8
+  ok   code for a hold above the day bound = 8
+  ok   book unchanged after every refusal
+  ok   invariants hold
+-- exact sell is fine, then flat means no more sells --
+  sell 100 @ 5100 on day 12, fee 100 : ok
+  ok   shares held = 0
+  ok   code for selling from flat = 3
+  ok   code for flatten from flat = 7
+  ok   invariants hold
+  checks passed=17 failed=0

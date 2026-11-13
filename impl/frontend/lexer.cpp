@@ -35,7 +35,7 @@ std::string utf8FromCodePoint(uint32_t cp) {
 }
 const char* tokName(Tok t) {
     switch(t) {
-        case Tok::Int:return "int-literal"; case Tok::Double:return "double-literal"; case Tok::Str:return "string-literal";
+        case Tok::Int:return "int-literal"; case Tok::Double:return "double-literal"; case Tok::Str:return "string-literal"; case Tok::Char:return "char-literal";
         case Tok::Ident:return "identifier"; case Tok::At:return "@";
         case Tok::KwClass:return "class"; case Tok::KwInterface:return "interface"; case Tok::KwEnum:return "enum"; case Tok::KwRecord:return "record"; case Tok::KwStruct:return "struct";
         case Tok::KwStatic:return "static"; case Tok::KwProtected:return "protected"; case Tok::KwPublic:return "public"; case Tok::KwPrivate:return "private";
@@ -52,7 +52,7 @@ const char* tokName(Tok t) {
         case Tok::LParen:return "("; case Tok::RParen:return ")"; case Tok::LBrace:return "{"; case Tok::RBrace:return "}";
         case Tok::LBracket:return "["; case Tok::RBracket:return "]"; case Tok::Semicolon:return ";"; case Tok::Comma:return ","; case Tok::Dot:return ".";
         case Tok::Assign:return "="; case Tok::Plus:return "+"; case Tok::Minus:return "-"; case Tok::Star:return "*"; case Tok::Slash:return "/";
-        case Tok::Percent:return "%"; case Tok::PlusAssign:return "+="; case Tok::MinusAssign:return "-="; case Tok::StarAssign:return "*="; case Tok::SlashAssign:return "/="; case Tok::PercentAssign:return "%=";
+        case Tok::Percent:return "%"; case Tok::PlusAssign:return "+="; case Tok::MinusAssign:return "-="; case Tok::StarAssign:return "*="; case Tok::SlashAssign:return "/="; case Tok::PercentAssign:return "%="; case Tok::AndAssign:return "&="; case Tok::OrAssign:return "|="; case Tok::XorAssign:return "^="; case Tok::ShlAssign:return "<<="; case Tok::ShrAssign:return ">>="; case Tok::UshrAssign:return ">>>=";
         case Tok::Increment:return "++"; case Tok::Decrement:return "--"; case Tok::ShiftLeft:return "<<"; case Tok::ShiftRight:return ">>"; case Tok::UnsignedShiftRight:return ">>>";
         case Tok::EqEq:return "=="; case Tok::NotEq:return "!="; case Tok::Lt:return "<"; case Tok::Le:return "<=";
         case Tok::Gt:return ">"; case Tok::Ge:return ">="; case Tok::AndAnd:return "&&"; case Tok::OrOr:return "||"; case Tok::BitAnd:return "&"; case Tok::BitOr:return "|"; case Tok::BitXor:return "^"; case Tok::BitNot:return "~";
@@ -76,6 +76,7 @@ void Lexer::skipTrivia(){
         else break;
     }
 }
+static bool identChar(char c){return std::isalnum((unsigned char)c)||c=='_';}
 Token Lexer::makeNumber(){
     int L=line_,C=col_;std::string s;
     // Radix-prefixed integer literals: 0x/0X hex, 0b/0B binary, 0o/0O octal.
@@ -87,12 +88,14 @@ Token Lexer::makeNumber(){
             s+=advance();s+=advance();                 // consume "0x"
             if(!isHex(peek()))error("hexadecimal literal has no digits after '0x'");
             while(isHex(peek())||peek()=='_'){char c=advance();if(c!='_')s+=c;}
+            if((peek()=='L'||peek()=='l')&&!identChar(peek(1)))advance();
             return Token{Tok::Int,s,L,C};
         }
         if(p1=='b'||p1=='B'){
             s+=advance();s+=advance();                 // consume "0b"
             if(peek()!='0'&&peek()!='1')error("binary literal has no digits after '0b'");
             while(peek()=='0'||peek()=='1'||peek()=='_'){char c=advance();if(c!='_')s+=c;}
+            if((peek()=='L'||peek()=='l')&&!identChar(peek(1)))advance();
             return Token{Tok::Int,s,L,C};
         }
         if(p1=='o'||p1=='O'){
@@ -100,10 +103,46 @@ Token Lexer::makeNumber(){
             s+='0';                                     // keep a leading 0 so stoll base 0 reads octal
             if(peek()<'0'||peek()>'7')error("octal literal has no digits after '0o'");
             while((peek()>='0'&&peek()<='7')||peek()=='_'){char c=advance();if(c!='_')s+=c;}
+            if((peek()=='L'||peek()=='l')&&!identChar(peek(1)))advance();
             return Token{Tok::Int,s,L,C};
         }
     }
-    bool d=false;while(std::isdigit((unsigned char)peek()))s+=advance();if(peek()=='.'&&std::isdigit((unsigned char)peek(1))){d=true;s+=advance();while(std::isdigit((unsigned char)peek()))s+=advance();}if(peek()=='e'||peek()=='E'){s+=advance();if(peek()=='+'||peek()=='-')s+=advance();while(std::isdigit((unsigned char)peek()))s+=advance();}return Token{d||peek()=='e'||peek()=='E'?Tok::Double:Tok::Int,s,L,C};}
+    // Java numeric literal forms (SLEELA.syntax 43.6): `_` between digits
+    // (1_000_000), the long suffix L/l, and the floating suffixes d/D/f/F.
+    auto digitsWithUnderscores=[&]{ while(std::isdigit((unsigned char)peek())||(peek()=='_'&&std::isdigit((unsigned char)peek(1)))){char c=advance();if(c!='_')s+=c;} };
+    bool d=false;digitsWithUnderscores();if(peek()=='.'&&std::isdigit((unsigned char)peek(1))){d=true;s+=advance();digitsWithUnderscores();}if(peek()=='e'||peek()=='E'){d=true;s+=advance();if(peek()=='+'||peek()=='-')s+=advance();while(std::isdigit((unsigned char)peek()))s+=advance();}
+    if(!d&&(peek()=='L'||peek()=='l')&&!identChar(peek(1))){advance();return Token{Tok::Int,s,L,C};}
+    if((peek()=='d'||peek()=='D'||peek()=='f'||peek()=='F')&&!identChar(peek(1))){advance();if(!d)s+=".0";return Token{Tok::Double,s,L,C};}
+    return Token{d?Tok::Double:Tok::Int,s,L,C};}
+// Syntax 3.1: character literal 'x'. It denotes the UTF-16 code unit of the
+// character as an integer constant (SLeeLa has no separate char value kind).
+Token Lexer::makeChar(){
+    int L=line_,C=col_;advance();
+    if(atEnd()||peek()=='\n')error("unterminated character literal");
+    if(peek()=='\'')error("empty character literal");
+    uint32_t cp=0;char c=advance();
+    if(c=='\\'){
+        if(atEnd())error("unterminated escape sequence");
+        char e=advance();
+        switch(e){
+            case'n':cp='\n';break;case't':cp='\t';break;case'r':cp='\r';break;case'b':cp='\b';break;case'f':cp='\f';break;
+            case's':cp=' ';break;case'\\':cp='\\';break;case'\'':cp='\'';break;case'"':cp='"';break;
+            case'0':case'1':case'2':case'3':case'4':case'5':case'6':case'7':{cp=(uint32_t)(e-'0');int n=1;while(n<3&&peek()>='0'&&peek()<='7'&&cp*8+(uint32_t)(peek()-'0')<=255){cp=cp*8+(uint32_t)(advance()-'0');n++;}break;}
+            case'u':{while(peek()=='u')advance();for(int i=0;i<4;i++){if(atEnd())error("unterminated unicode escape");char hex=advance();int v=0;if(hex>='0'&&hex<='9')v=hex-'0';else if(hex>='a'&&hex<='f')v=10+(hex-'a');else if(hex>='A'&&hex<='F')v=10+(hex-'A');else error("invalid unicode escape");cp=(cp<<4)|(uint32_t)v;}break;}
+            default:error(std::string("invalid escape sequence '\\")+e+"' in character literal");
+        }
+    }else if((unsigned char)c<0x80){cp=(unsigned char)c;}
+    else{
+        int extra=((unsigned char)c>=0xF0)?3:((unsigned char)c>=0xE0)?2:((unsigned char)c>=0xC0)?1:-1;
+        if(extra<0)error("invalid UTF-8 in character literal");
+        cp=(uint32_t)((unsigned char)c&(0x3F>>extra));
+        for(int i=0;i<extra;i++){if(atEnd())error("invalid UTF-8 in character literal");cp=(cp<<6)|((uint32_t)(unsigned char)advance()&0x3F);}
+    }
+    if(cp>0xFFFF)error("character literal outside the basic multilingual plane");
+    if(atEnd()||peek()!='\'')error("a character literal holds exactly one character");
+    advance();
+    return Token{Tok::Char,std::to_string(cp),L,C};
+}
 Token Lexer::makeString(){int L=line_,C=col_;advance();std::string out;while(!atEnd()&&peek()!='"'){char c=advance();if(c=='\\'){if(atEnd())error("unterminated escape sequence");char e=advance();switch(e){case'n':out+='\n';break;case't':out+='\t';break;case'r':out+='\r';break;case'b':out+='\b';break;case'f':out+='\f';break;case'0':out+='\0';break;case'\\':out+='\\';break;case'"':out+='"';break;case'u':{uint32_t cp=0;for(int i=0;i<4;i++){if(atEnd())error("unterminated unicode escape");char hex=advance();int v=0;if(hex>='0'&&hex<='9')v=hex-'0';else if(hex>='a'&&hex<='f')v=10+(hex-'a');else if(hex>='A'&&hex<='F')v=10+(hex-'A');else error("invalid unicode escape");cp=(cp<<4)|v;}out+=utf8FromCodePoint(cp);break;}default:out+=e;break;}}else out+=c;}if(atEnd())error("unterminated string literal");advance();return Token{Tok::Str,out,L,C};}
 static const std::unordered_map<std::string,int> kContextualBuiltins13={
     {"Munction",1},{"start",1},{"connect",1},{"enable",1},{"send",1},{"thatch",1},{"consume",1},{"latch",1},{"closeWithReceipt",1},{"reception",1},
@@ -143,13 +182,16 @@ Token Lexer::makeIdentOrKeyword(){
         {"new",Tok::KwNew},{"null",Tok::KwNull},{"true",Tok::KwTrue},{"false",Tok::KwFalse},{"print",Tok::KwPrint},
         {"void",Tok::KwVoid},{"int",Tok::KwIntT},{"long",Tok::KwLongT},{"int64",Tok::KwInt64T},{"int128",Tok::KwInt128T},{"double",Tok::KwDoubleT},{"boolean",Tok::KwBoolT},{"String",Tok::KwStringT}
     };
-    int L=line_,C=col_;std::string s;while(std::isalnum((unsigned char)peek())||peek()=='_'||peek()=='-')s+=advance();
+    // A '-' continues an identifier (jdk-25, version-mual) only when an identifier
+    // character follows it, so Java `j--`, `j-=1` and a trailing '-' end the name
+    // (SLEELA.syntax 43.6 rule 12).
+    int L=line_,C=col_;std::string s;while(std::isalnum((unsigned char)peek())||peek()=='_'||(peek()=='-'&&identChar(peek(1))))s+=advance();
     auto it=kw.find(s);return Token{it!=kw.end()?it->second:Tok::Ident,s,L,C};
 }
 std::vector<Token> Lexer::tokenize(){
     std::vector<Token> toks;
     for(;;){skipTrivia();if(atEnd()){toks.push_back(Token{Tok::Eof,"",line_,col_});break;}int L=line_,C=col_;char c=peek();
-        if(std::isdigit((unsigned char)c)){toks.push_back(makeNumber());continue;} if(c=='"'){toks.push_back(makeString());continue;}
+        if(std::isdigit((unsigned char)c)){toks.push_back(makeNumber());continue;} if(c=='"'){toks.push_back(makeString());continue;} if(c=='\''){toks.push_back(makeChar());continue;}
         if(std::isalpha((unsigned char)c)||c=='_'){toks.push_back(makeIdentOrKeyword());continue;}
         advance();auto emit=[&](Tok k,const char*txt){toks.push_back(Token{k,txt,L,C});};
         switch(c){
@@ -160,13 +202,13 @@ std::vector<Token> Lexer::tokenize(){
             case'!':emit(match('=')?Tok::NotEq:Tok::Not,"!");break;
             case'+':if(match('+'))emit(Tok::Increment,"++");else if(match('='))emit(Tok::PlusAssign,"+=");else emit(Tok::Plus,"+");break;
             case'-':if(match('-'))emit(Tok::Decrement,"--");else if(match('='))emit(Tok::MinusAssign,"-=");else if(match('>'))emit(Tok::Arrow,"->");else emit(Tok::Minus,"-");break;
-            case'*':emit(match('=')?Tok::StarAssign:Tok::Star,"*");break;case'/':emit(match('=')?Tok::SlashAssign:Tok::Slash,"/");break;
-            case'%':emit(match('=')?Tok::PercentAssign:Tok::Percent,"%");break;
-            case'<':if(match('<'))emit(Tok::ShiftLeft,"<<");else emit(match('=')?Tok::Le:Tok::Lt,"<");break;
-            case'>':if(match('>')){if(match('>'))emit(Tok::UnsignedShiftRight,">>>");else emit(Tok::ShiftRight,">>");}else emit(match('=')?Tok::Ge:Tok::Gt,">");break;
-            case'&':if(match('&'))emit(Tok::AndAnd,"&&");else emit(Tok::BitAnd,"&");break;
-            case'|':if(match('|'))emit(Tok::OrOr,"||");else emit(Tok::BitOr,"|");break;
-            case'^':emit(Tok::BitXor,"^");break;case'~':emit(Tok::BitNot,"~");break;
+            case'*':if(match('='))emit(Tok::StarAssign,"*=");else emit(Tok::Star,"*");break;case'/':if(match('='))emit(Tok::SlashAssign,"/=");else emit(Tok::Slash,"/");break;
+            case'%':if(match('='))emit(Tok::PercentAssign,"%=");else emit(Tok::Percent,"%");break;
+            case'<':if(match('<')){if(match('='))emit(Tok::ShlAssign,"<<=");else emit(Tok::ShiftLeft,"<<");}else emit(match('=')?Tok::Le:Tok::Lt,"<");break;
+            case'>':if(match('>')){if(match('>')){if(match('='))emit(Tok::UshrAssign,">>>=");else emit(Tok::UnsignedShiftRight,">>>");}else if(match('='))emit(Tok::ShrAssign,">>=");else emit(Tok::ShiftRight,">>");}else emit(match('=')?Tok::Ge:Tok::Gt,">");break;
+            case'&':if(match('&'))emit(Tok::AndAnd,"&&");else if(match('='))emit(Tok::AndAssign,"&=");else emit(Tok::BitAnd,"&");break;
+            case'|':if(match('|'))emit(Tok::OrOr,"||");else if(match('='))emit(Tok::OrAssign,"|=");else emit(Tok::BitOr,"|");break;
+            case'^':if(match('='))emit(Tok::XorAssign,"^=");else emit(Tok::BitXor,"^");break;case'~':emit(Tok::BitNot,"~");break;
             case'?':emit(Tok::Question,"?");break;case':':if(match(':')){if(match(':'))emit(Tok::TripleColon,":::");else emit(Tok::DoubleColon,"::");}else emit(Tok::Colon,":");break;
             default:error(std::string("unexpected character '")+c+"'");
         }

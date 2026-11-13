@@ -1,0 +1,443 @@
+<< lib/java/jdk-28/java.desktop/javax/swing/JTable.sleela
+   SLeeLa file for the Java type javax.swing.JTable (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/JTable.html
+   Java kind: class; extends javax.swing.JComponent; implements javax.swing.event.TableModelListener, javax.swing.Scrollable, javax.swing.event.TableColumnModelListener, javax.swing.event.ListSelectionListener, javax.swing.event.CellEditorListener, javax.accessibility.Accessible, javax.swing.event.RowSorterListener
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class JTable extends JComponent {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 5085;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.JTable";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/JTable.html";
+  String javaKind = "class";
+  String javaSuper = "javax.swing.JComponent";
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public JTable bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final int AUTO_RESIZE_OFF = 0;
+  static final int AUTO_RESIZE_NEXT_COLUMN = 1;
+  static final int AUTO_RESIZE_SUBSEQUENT_COLUMNS = 2;
+  static final int AUTO_RESIZE_LAST_COLUMN = 3;
+  static final int AUTO_RESIZE_ALL_COLUMNS = 4;
+  < public and protected instance fields >
+  Any dataModel;
+  Any columnModel;
+  Any selectionModel;
+  Any tableHeader;
+  int rowHeight;
+  int rowMargin;
+  Any gridColor;
+  boolean showHorizontalLines;
+  boolean showVerticalLines;
+  int autoResizeMode;
+  boolean autoCreateColumnsFromModel;
+  Any preferredViewportSize;
+  boolean rowSelectionAllowed;
+  boolean cellSelectionEnabled;
+  Any editorComp;
+  Any cellEditor;
+  int editingColumn;
+  int editingRow;
+  Any defaultRenderersByColumnClass;
+  Any defaultEditorsByColumnClass;
+  Any selectionForeground;
+  Any selectionBackground;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTable(Any dm, Any cm, Any sm) { super("constructor"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTable(int numRows, int numColumns) { super("constructor"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTable(Any rowData, Any columnNames) { super("constructor"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTable(Any[][] rowData, Any[] columnNames) { super("constructor"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTable() { super("constructor"); }
+  @throwable("java.lang.UnsupportedOperationException")
+  public JTable(Any dm) { super("constructor"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  String paramString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void updateUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionModel(Any selectionModel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUI(Any ui) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getUI() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getSelectionModel() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  boolean processKeyBinding(Any ks, Any e, int condition, boolean pressed) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getUIClassID() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getToolTipText(Any event) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEditing() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void valueChanged(Any e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRowHeight(int row) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRowHeight() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRowHeight(int rowHeight) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRowHeight(int row, int rowHeight) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCellEditor(Any anEditor) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createDefaultColumnModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setColumnModel(Any columnModel) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createDefaultSelectionModel() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createDefaultDataModel() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void initializeLocalVars() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void configureEnclosingScrollPane() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getTableHeader() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void unconfigureEnclosingScrollPane() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void resizeAndRepaint() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRowMargin(int rowMargin) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getColumnModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setShowHorizontalLines(boolean showHorizontalLines) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setShowVerticalLines(boolean showVerticalLines) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getColumnCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getColumn(Any identifier) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void createDefaultColumnsFromModel() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeColumn(Any aColumn) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addColumn(Any aColumn) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void createDefaultRenderers() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getDefaultRenderer(Any columnClass) { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void createDefaultEditors() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getDefaultEditor(Any columnClass) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int rowAtPoint(Any point) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int columnAtPoint(Any point) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getCellRect(int row, int column, boolean includeSpacing) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addRowSelectionInterval(int index0, int index1) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addColumnSelectionInterval(int index0, int index1) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getSelectedRows() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int[] getSelectedColumns() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRowSelectionInterval(int index0, int index1) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setColumnSelectionInterval(int index0, int index1) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRowSorter(Any sorter) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionMode(int selectionMode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getColumnSelectionAllowed() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setColumnSelectionAllowed(boolean columnSelectionAllowed) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setRowSelectionAllowed(boolean rowSelectionAllowed) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getRowSelectionAllowed() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeEditor() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSelectedColumnCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isColumnSelected(int column) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCellSelected(int row, int column) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int convertColumnIndexToModel(int viewColumnIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int convertColumnIndexToView(int modelColumnIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getRowSorter() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int convertRowIndexToView(int modelRowIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int convertRowIndexToModel(int viewRowIndex) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getColumnName(int column) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getColumnClass(int column) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getValueAt(int row, int column) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setValueAt(Any aValue, int row, int column) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void moveColumn(int column, int targetColumn) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRowMargin() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAutoResizeMode(int mode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void sizeColumnsToFit(int resizingColumn) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void sizeColumnsToFit(boolean lastColumnOnly) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any prepareRenderer(Any renderer, int row, int column) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean editCellAt(int row, int column) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean editCellAt(int row, int column, Any e) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any prepareEditor(Any editor, int row, int column) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEditingRow(int aRow) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setEditingColumn(int aColumn) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void tableChanged(Any e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getAutoCreateRowSorter() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void sorterChanged(Any e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSelectedRow() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getAutoCreateColumnsFromModel() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getFillsViewportHeight() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getSurrendersFocusOnKeystroke() { return false; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createDefaultTableHeader() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setTableHeader(Any tableHeader) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setShowGrid(boolean showGrid) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSurrendersFocusOnKeystroke(boolean surrendersFocusOnKeystroke) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setPreferredScrollableViewportSize(Any size) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any createScrollPaneForTable(Any aTable) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setIntercellSpacing(Any intercellSpacing) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getIntercellSpacing() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setGridColor(Any gridColor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getGridColor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getShowHorizontalLines() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getShowVerticalLines() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAutoResizeMode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAutoCreateColumnsFromModel(boolean autoCreateColumnsFromModel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDefaultRenderer(Any columnClass, Any renderer) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDefaultEditor(Any columnClass, Any editor) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setAutoCreateRowSorter(boolean autoCreateRowSorter) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setUpdateSelectionOnSort(boolean update) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getUpdateSelectionOnSort() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setCellSelectionEnabled(boolean cellSelectionEnabled) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getCellSelectionEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeRowSelectionInterval(int index0, int index1) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeColumnSelectionInterval(int index0, int index1) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSelectedColumn() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSelectedRowCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void changeSelection(int rowIndex, int columnIndex, boolean toggle, boolean extend) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getSelectionForeground() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionForeground(Any selectionForeground) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getSelectionBackground() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setSelectionBackground(Any selectionBackground) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getCellRenderer(int row, int column) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setDragEnabled(boolean b) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getDragEnabled() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final void setDropMode(Any dropMode) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final Any getDropMode() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final Any getDropLocation() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getPreferredScrollableViewportSize() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getScrollableUnitIncrement(Any visibleRect, int orientation, int direction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getScrollableBlockIncrement(Any visibleRect, int orientation, int direction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getScrollableTracksViewportWidth() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean getScrollableTracksViewportHeight() { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getCellEditor() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getCellEditor(int row, int column) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getRowCount() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isRowSelected(int row) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void selectAll() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getModel() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void clearSelection() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setModel(Any dataModel) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getPrintable(Any printMode, Any headerFormat, Any footerFormat) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void editingStopped(Any e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void editingCanceled(Any e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isCellEditable(int row, int column) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getEditorComponent() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getEditingColumn() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getEditingRow() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void columnAdded(Any e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void columnRemoved(Any e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void columnMoved(Any e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void columnMarginChanged(Any e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void columnSelectionChanged(Any e) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void setFillsViewportHeight(boolean fillsViewportHeight) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getAccessibleContext() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void addNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void removeNotify() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void doLayout() { }
+  < ---- END java signatures ---- >
+}

@@ -1,0 +1,151 @@
+<< lib/security/Security2.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Security2 sits above the VM in colocated memory. It is placed
+   when the VM boots and follows the VM through init and start. Until the VM
+   has fully initialized, the Sleela.home lineage references (parent, child,
+   parents) point to Security2 instead of the VM (SLEELA.syntax section 42.6).
+   Phases are small integers: 0 = off, 1 = booting, 2 = initializing,
+   3 = started, 4 = ready (fully initialized). >>
+#sleela 3.0
+material;
+
+class Security2 {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39358;
+  String metaAuthor = "mearvk";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "none";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "unknown";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 2;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  static final int PHASE_OFF = 0;
+  static final int PHASE_BOOTING = 1;
+  static final int PHASE_INITIALIZING = 2;
+  static final int PHASE_STARTED = 3;
+  static final int PHASE_READY = 4;
+
+  < Current boot phase of the VM that Security2 sits above. >
+  public int phase = 0;
+
+  < The VM reference. Null until the VM exists; Security2 holds it from boot. >
+  public Any vm = null;
+
+  < True while Security2 shares the memory region of the VM it sits above. >
+  public boolean colocated = false;
+
+  < Specsheet reference Security2 returns. The location is none because no published source is on record. >
+  public String specsheetName = "International Guidelines 2.0";
+  public String specsheetLocation = "none";
+
+  public Security2() {
+  }
+
+  < Date and time as JSON from the VM clock (timeJson). >
+  String dateTime() {
+    return timeJson();
+  }
+
+  < Date and time as an HTTP date string. >
+  String dateTimeHttp() {
+    return timeHttpDate();
+  }
+
+  < UTC milliseconds since the epoch. >
+  int utcMillis() {
+    return timeUtcMillis();
+  }
+
+  < The specsheet reference: name, and where it can be read (none if unknown). >
+  String specsheet() {
+    return specsheetName + " (" + specsheetLocation + ")";
+  }
+
+  < The VM boots: Security2 is placed above it in colocated memory. >
+  void onBoot(Any vmReference) {
+    vm = vmReference;
+    colocated = true;
+    phase = 1;
+  }
+
+  < The VM initializes. 2 = initializing. >
+  void onInit() {
+    if (phase == 1) {
+      phase = 2;
+    }
+  }
+
+  < The VM starts. 3 = started. >
+  void onStart() {
+    if (phase == 2) {
+      phase = 3;
+    }
+  }
+
+  < The VM is fully initialized. 4 = ready. Lineage references now point to the VM. >
+  void onReady() {
+    if (phase == 3) {
+      phase = 4;
+    }
+  }
+
+  < The VM boot sequence: place above the VM, then init, start, ready. Returns this. >
+  Security2 boot(Any vmReference) {
+    onBoot(vmReference);
+    onInit();
+    onStart();
+    onReady();
+    return this;
+  }
+
+  boolean isReady() {
+    return phase == 4;
+  }
+
+  < What Sleela.home.parent, child and parents resolve to for the VM end. >
+  < Before the VM is fully initialized that is Security2 itself, afterwards the VM. >
+  Any lineageTarget() {
+    if (phase == 4) {
+      return vm;
+    }
+    return this;
+  }
+
+  int currentPhase() {
+    return phase;
+  }
+}

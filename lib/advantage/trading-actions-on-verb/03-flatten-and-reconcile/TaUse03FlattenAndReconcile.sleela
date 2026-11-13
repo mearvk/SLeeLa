@@ -1,0 +1,107 @@
+<< lib/advantage/trading-actions-on-verb/03-flatten-and-reconcile/TaUse03FlattenAndReconcile.sleela
+   SLeeLa trading-action use case.
+   Definition: Trading long, flatten: the last sell empties the book and total profit reconciles to proceeds minus cost minus fees. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Use case 3 (style). Flatten the position, then reconcile. Profit must equal >
+< proceeds - cost sold - fees. A loss on the last sale is allowed; flattening a >
+< flat book is refused (code 7) rather than ignored. >
+class TaUse03FlattenAndReconcile {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39303;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+
+  void expect(String label, int got, int want) {
+    if (got == want) {
+      print("  ok   " + label + " = " + got);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label + " got " + got + " want " + want);
+      failed = failed + 1;
+    }
+  }
+
+  void expectTrue(String label, boolean got) {
+    if (got) {
+      print("  ok   " + label);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label);
+      failed = failed + 1;
+    }
+  }
+
+  void summary() {
+    print("  checks passed=" + passed + " failed=" + failed);
+  }
+
+  void act(SLLongBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+  void main() {
+    SLLongBook book = new SLLongBook();
+    print("== Use case 3: flatten and reconcile ==");
+    act(book, "buy 100 @ 5000 on day 0, fee 100", book.buy(0, 100, 5000, 100));
+    act(book, "buy 50 @ 5200 on day 30, fee 100", book.buy(30, 50, 5200, 100));
+    act(book, "sell 80 @ 5500 on day 60, fee 100", book.sell(60, 80, 5500, 100));
+    act(book, "flatten @ 5000 on day 100, fee 100", book.flatten(100, 5000, 100));
+    print("-- the last sale --");
+    expect("cost of the last 70 shares", book.lastSaleCost, 360000);
+    expect("profit of the last sale (a loss)", book.lastSalePnl, -10000);
+    print("-- reconcile --");
+    expect("shares held", book.totalQty(), 0);
+    expect("lots", book.lotCount(), 0);
+    expect("realized gross", book.realizedGross(), 30000);
+    expect("fees paid", book.fees(), 400);
+    expect("realized net", book.realizedNet(), 29600);
+    expectTrue("net = proceeds - cost sold - fees", book.realizedNet() == 790000 - 760000 - 400);
+    act(book, "flatten again on day 101", book.flatten(101, 5000, 100));
+    expectTrue("invariants hold", book.invariantsHold());
+    summary();
+  }
+}

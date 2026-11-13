@@ -1,0 +1,44 @@
+#sleela 3.0
+import java.jdk-28;
+material;
+
+< Java container: see lib/java/support/SLJavaPropertyModel.sleela. Not part of the SLeeLa specification. >
+
+<< The general Java property model: one bean with typed, bound and
+   constrained properties, a lowered lambda listener, and the same values read
+   from and written to java.util.Properties. >>
+class SLJavaLambdaTable {
+  static Any call(int id, Any[] env, Any a, Any b) {
+    PropertyChangeEvent e = (PropertyChangeEvent) a;
+    if (id == 1) { print("changed " + e.getPropertyName() + ": " + e.getOldValue() + " -> " + e.getNewValue()); return null; }
+    if (id == 2) {
+      Any nv = e.getNewValue();
+      if (nv instanceof string) { if (nv == "") { throw new PropertyVetoException("title must not be empty", e); } }
+      return null;
+    }
+    return null;
+  }
+}
+class PropertyModelRun {
+  void main() {
+    SLJavaPropertyModel m = new SLJavaPropertyModel("window");
+    m.define("width", "int").bound(true).withDefault(640);
+    m.define("title", "java.lang.String").bound(true).constrained(true).withDefault("untitled");
+    m.define("ratio", "double");
+    m.define("visible", "boolean").bound(true);
+    m.addPropertyChangeListener(new SLJavaLambda(1, new Any[0]));
+    m.addVetoableChangeListener("title", new SLJavaLambda(2, new Any[0]));
+    print(m.describe());
+    m.set("width", 800);
+    m.set("title", "Editor");
+    try { m.set("title", ""); } catch (Any x) { PropertyVetoException v = (PropertyVetoException) x; print("vetoed: " + v.getMessage()); }
+    try { m.set("width", "wide"); } catch (Any y) { ClassCastException c = (ClassCastException) y; print(c.getMessage()); }
+    Properties p = new Properties();
+    p.setProperty("win.ratio", "1.5");
+    p.setProperty("win.visible", "true");
+    print(m.loadFrom(p, "win."));
+    print(m.storeTo(p, "win."));
+    print(p.getProperty("win.width") + " " + p.getProperty("win.title") + " " + p.getProperty("win.ratio"));
+    print(m.describe());
+  }
+}

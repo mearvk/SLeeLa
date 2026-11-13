@@ -1,0 +1,25 @@
+#sleela 3.0
+class NativeDeclineFixture {
+    static int fallbackCalls = 0;
+
+    @native
+    static int fallback(int ignored) {
+        fallbackCalls = fallbackCalls + 1;
+        return fallbackCalls;
+    }
+
+    static int check() {
+        // Static initialisers are emitted into main's prologue; the harness
+        // enters at check() directly, so establish the counter here.
+        fallbackCalls = 0;
+        int first = fallback(0);
+        int second = fallback(0);
+        return first * 10 + second;
+    }
+
+    // Syntax 3.0 requires void main; the smoke harness selects check() as
+    // its entry with slvm_find_func() so it can assert the returned value.
+    static void main() {
+        int result = check();
+    }
+}

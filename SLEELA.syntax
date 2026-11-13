@@ -1,21 +1,25 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  3.0  (1.0..2.9 language surface consolidated)
-    Compiler:        SLeeLa Language/Runtime 1.3.2-pro  (version gate accepts syntax 1.0 .. 3.0)
+    Syntax version:  3.2  (3.1 section 44, which may be written 3.01, plus sections 45 and 46)
+    Compiler:        SLeeLa Language/Runtime 1.3.2-pro  (version gate accepts syntax 1.0 .. 3.2)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary),
                      markdown/EXTENDS.md (the two `extends` meanings, syntax 1.10)
-    Status:          Normative for the syntax 1.0..3.0 compatibility surface
+    Status:          Normative for the syntax 1.0..3.2 compatibility surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
     `#sleela 3.0`) is the grammar edition defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (supported range 1.0 .. 3.0).
-    Syntax 3.0 is the current normative edition. It consolidates the 1.x and
-    2.x language surface into one specification and keeps historical feature
+    `impl/frontend/version.{h,cpp}` (supported range 1.0 .. 3.2).
+    Syntax 3.2 is the current normative edition (section 45: the char
+    specification; section 46: the array specification, `a.length` and
+    `new T[a][b]`). Syntax 3.1 (section 44: the character literal, the array
+    initializer, labeled statements, and return / break / continue through
+    `finally`) may be written `#sleela 3.01`, a leading-zero spelling (44.1). Syntax 3.0 consolidated the 1.x and 2.x
+    language surface into one specification and keeps historical feature
     gates intact; it does not silently enable a feature below that feature's
     original minimum version. Syntax 3.0 also adds the `pure` and `gasoline`
     document markers (section 30) — a pair of bare, contextual,
@@ -2793,3 +2797,1003 @@ new opcodes instead of interpreting them as existing instructions. Typed
 exception classes, rethrow semantics, selected language-fault conversion,
 and finally/abrupt completion remain future work.
 
+**Syntax 3.0 update (section 43.6 rule 11).** In a `#sleela 3.0` document the
+source compiler builds typed `catch`, multi-catch and `finally` on these same
+three opcodes, with no VM change: the VM still registers one catch-all
+handler, and the compiler tests the thrown value against each clause type
+with `OP_INSTANCEOF` and rethrows an unmatched value with `OP_THROW`. The
+restrictions above remain in force for documents below 3.0.
+
+### 37.5 VM faults inside a try, and division by -1 (2026-11-13)
+
+**Division by -1.** `OP_DIV` and `OP_MOD` on two integers (64-bit and
+128-bit slots) treat a divisor of `-1` separately: the quotient is the
+two's-complement negation (`MIN / -1` is `MIN`) and the remainder is `0`, as
+Java defines them (JLS 15.17.2). Before this, `MIN / -1` ran the C
+operator and the process died with SIGFPE (exit 136). This holds in every
+syntax version.
+
+**Faults are thrown inside a try.** Four VM faults are now thrown, not fatal,
+when a `try` handler is active in the thread:
+
+| Fault | Kind | Thrown message (no fault function) |
+|---|---:|---|
+| integer `/` or `%` by zero, double `%` by zero | 1 | `integer divide by zero`, `integer modulo by zero`, `modulo by zero` |
+| array index out of range (read or write) | 2 | `Index <i> out of bounds for length <n>` |
+| failed checked cast (class, interface or value tag) | 3 | `checked cast failed: ...` |
+
+With no active handler the fault stays a runtime error with the same message
+as before (`array index out of range` for an index). If the program has a
+**fault function**, the VM calls it with `(kind, message)` and it throws the
+exception; otherwise the message string itself is thrown, which only
+`catch (Any e)` catches. The compiler registers the function when
+`SLJavaFaults.make(int, String)` is loaded (`lib/java/support/SLJavaFaults.sleela`):
+it emits `__sleela_fault(kind, message)`, which throws
+`SLJavaFaults.make(kind, message)`. That returns an `ArithmeticException("/ by zero")`,
+an `ArrayIndexOutOfBoundsException(message)` or a `ClassCastException(message)`.
+So `catch (ArithmeticException e)` and `catch (RuntimeException e)` work as in
+Java. The driver loads `SLJavaFaults` for a syntax 3.0 or later document that
+contains `try` and either carries `spark` or imports a `java...` tier.
+VM API: `slvm_set_fault_function(vm, function)`; artifact format **6** stores the
+function index (formats 1-5 load with none).
+
+Not done: a double `%` by zero is a fault here, while Java gives `NaN`; a
+stale or invalid object handle in a cast stays fatal; null dereference and
+stack overflow are not converted.
+
+
+
+## 38. Syntax 3.0 — the Java signature surface and static member access
+
+This section is **normative**. It lets a SLeeLa class declare members with
+the exact spelling of their Java API signatures (as `/lib/java` does), and
+lets source reach static members through the class name.
+
+### 38.1 Java signature types
+
+- `char`, `byte` and `short` are accepted as types and use the integer slot.
+  `float` is accepted and uses the double slot.
+- A type variable declared by the enclosing class (`class HashMap<K, V>`) or
+  by the method (`<T> T[] toArray(T[] a)`) erases to `Any`.
+- A package-qualified reference type (`java.util.Collection<? extends E>`,
+  `java.lang.Object`, `java.util.Map.Entry<K, V>`) erases to `Any`.
+  `java.lang.String` erases to `String`. Array suffixes are kept.
+- Type-argument lists accept keyword types (`Map<String, int[]>`), array
+  type arguments, and `>>` / `>>>` closers of nested lists.
+- `T... name` declares an array parameter (varargs).
+- A method may declare type parameters (`public static <T> java.util.List<T>
+  asList(T... a)`).
+- A qualified-name segment may spell a keyword (`java.lang.String`,
+  `javax.print.Doc`).
+- A value of any type is assignable to `Object`.
+
+### 38.2 Static access through the class name
+
+`Class.member` reads, and `Class.member = value` writes, a static field.
+`Class.method(args)` calls a static method. This applies when `Class` names a
+class and is not a local variable or a field in scope. An instance method
+reached this way is rejected (`instance method 'C::m' must be called on an
+instance`).
+
+### 38.3 Library unit references
+
+An identifier that follows `.` is a member name or the tail of a qualified
+name. It does not cause a `/lib` unit with that simple name to be loaded, so
+package-qualified signature types never trigger an ambiguous simple-name
+resolution.
+
+
+### 38.4 Java definitions live in the Java container (not in this specification)
+
+This subsection is **normative**. No Java type, member, constant or behavior is
+part of the SLeeLa language definition. `Math`, `StrictMath`, `Integer`, `Long`,
+`String` as a Java class, `Throwable` and every other JDK name are *library
+content*, defined in the **Java container**, the `/lib/java` family, and nowhere
+in this document. The language contributes only the mechanisms of 38.1 to 38.3
+(signature spelling, static access, library unit references).
+
+1. **Implicit housing.** A Java name in a program is housed in the Java container
+   by the import that selects it: `import java.jdk-28;` (or a narrower
+   `import java.jdk-25.java.util;`) makes `Math.abs(x)` mean the unit
+   `java/jdk-28/java.base/java/lang/Math.sleela`. Without such an import a bare
+   `Math` is not a Java reference and no Java meaning is implied.
+2. **Explicit housing.** Every Java-tier unit names its container in its own text:
+   `javaType`, `javaModule` and `javaSource` fields, and the header line "SLeeLa
+   file for the Java type ...". A translator or tool that records a Java
+   reference records it as `<container>:<javaType>` (for example
+   `java.jdk-28:java.lang.Math`), never as a bare SLeeLa name.
+3. **No reservation.** The Java container reserves no identifier in the language.
+   A user class named `Math` is an ordinary class; the container's `Math` is
+   reached only through the selecting import, and a real unit of the same name
+   under the program's own tree wins (the reference-tier rule of 38.3).
+4. **Documentation.** Any document that describes a Java-derived behavior
+   (mappings, conformance notes, examples) states that the behavior belongs to
+   the Java container and not to the SLeeLa specification.
+
+
+## 39. Object references (`x.ref`, `Ptr`, `Class.deref`)
+
+This section is **normative**. It gives every class or struct instance an
+implicit second view: the VM-level reference of the object. The design rationale,
+the two-tier model, and the measured VM details are in `/POINTERS.md`.
+
+### 39.1 Forms
+
+```
+ref-expr    ::= primary "." "ref"
+deref-expr  ::= class-name "." "deref" "(" expr ")"
+ptr-call    ::= "Ptr" "." ptr-fn "(" [ expr ] ")"
+ptr-fn      ::= "valid" | "old" | "id" | "gen" | "type" | "fields"
+              | "bytes" | "age" | "live" | "limit"
+```
+
+| Form | Type | Meaning |
+|---|---|---|
+| `x.ref` | `int` | the reference of object `x`; `0` when `x` is `null` |
+| `Class.deref(p)` | `Class` | the object `p` names if valid and an instance of `Class`, else `null` |
+| `Ptr.valid(p)`, `Ptr.old(p)` | `boolean` | slot holds the same incarnation; promoted to the old generation |
+| `Ptr.id/gen/type/fields/bytes/age(p)` | `int` | slot index, incarnation, layout index, field slots, collector size in bytes, collections survived; `-1` when `p` is not valid |
+| `Ptr.live()`, `Ptr.limit()` | `int` | active objects in the VM; the object-store ceiling |
+
+### 39.2 Meaning
+
+A reference is an ordinary `int` that packs a slot of the VM's bounded instance
+store and a 31-bit incarnation counter of that slot,
+`(generation << 32) | (slot + 1)`; `0` is the null reference. It is **never a
+machine address**. The collector bumps a slot's generation each time it reclaims
+the slot, so a reference taken before a reclamation never names the object that
+later reuses the slot. A reference does not keep its object alive (it is not an
+object value and is not traced).
+
+Every use is validated: the slot must be in range and occupied, the generation
+must equal the slot's current generation, and, for `deref`, the object must be an
+instance of the named class (a subclass qualifies). A null, stale, forged or
+wrong-class reference never traps and never reaches memory: `deref` yields
+`null`, boolean views yield `false`, and integer views yield `-1`. `deref` returns
+an ordinary strong object value, and it shades the object if a collection is
+marking so that value cannot be freed.
+
+### 39.3 Resolution rules
+
+- `x.ref` applies when `x` has a class or struct type and that type declares no
+  field named `ref`; a declared field named `ref` is always the member. `ref` is
+  not a keyword.
+- `x.ref` is **read-only**: `x.ref = v;` is a compile error.
+- `Class.deref(p)` applies when `Class` names a class and declares no method named
+  `deref`, and is not a variable in scope.
+- The `Ptr` namespace applies only when no class, struct, variable, parameter or
+  field named `Ptr` is in scope (the same rule that recognises `Munction`).
+- `Ptr.*` and `Class.deref` require an `int` argument (or `null`); any other type
+  is a compile error.
+- These forms are **not version-gated**: `x.ref` on a type with no `ref` field was
+  already a compile error in every edition, so no previously valid program
+  changes meaning.
+- Arithmetic on references is not a supported operation. A reference is an
+  `int`, so `p + 1` compiles, but the result is validated like any other
+  reference and may name a different live object.
+
+### 39.4 Runtime
+
+One appended opcode, `OP_REF` (182), implements all of it; its operand packs a
+selector (low 4 bits) and, for `deref`, the class layout index above them. The
+artifact ABI minor version advances to 7 and the artifact layout is unchanged;
+older runtimes reject artifacts containing the new opcode. Artifact validation
+checks the selector and class operand. References are not persisted: they are
+meaningful only within one run of one VM.
+
+
+## 40. Syntax 3.0 — method and constructor overload resolution
+
+This section is **normative**. A class may declare several methods with the
+same name, and several constructors, when their parameter lists differ.
+Semantic analysis binds each call (`m(args)`, `x.m(args)`, `Class.m(args)`,
+`new T(args)`) to exactly one declaration:
+
+1. **Candidates.** Only declarations with the call's number of arguments
+   are candidates.
+2. **Applicability.** A candidate is applicable when every argument is
+   assignable to its parameter type.
+3. **Ranking.** Each argument scores 2 when its type is exactly the
+   parameter type, 1 when it is assignable to a more specific parameter
+   (not `Any` or `Object`), and 0 otherwise. The applicable candidate with
+   the highest total wins.
+4. **Ties.** On a tie, the first declaration in source order wins.
+5. **Arguments.** Integer arguments to `double` parameters are widened, as
+   for single declarations.
+
+Each overload compiles to its own function. A call resolved by name alone,
+outside semantic analysis, binds to the last declaration of that name, which
+is the behavior before this section. Below syntax 3.0, a class that declares
+more than one constructor is rejected, as before.
+
+## 41. Syntax 3.0 — method calls on String values
+
+This section is **normative**. A method may be called on any expression of
+type `String` (a variable, a field, a literal, a call result, or a chain):
+`s.length()`, `"x".equals(y)`, `name.trim().toLowerCase()`.
+
+1. **Binding.** The call binds to the static method of the same name in the
+   library class `JavaStringMethods` (`/lib/java/implementations/java/lang/`),
+   with the receiver passed as the first argument (`self`). Overloads are
+   resolved by section 40, the receiver counting as the first argument, so
+   `s.indexOf(111)` and `s.indexOf("o")` select different declarations.
+2. **Precedence.** The Munction fluent verbs (`connect`, `enable`, `send`,
+   `thatch`, `consume`, `latch`, `closeWithReceipt`, `close`, `reception`)
+   keep their meaning on every receiver and are not String methods.
+3. **Loading.** `JavaStringMethods` is loaded only when a program calls a
+   method on a String; semantic analysis detects it and the library loader
+   adds the class. A name the class does not declare is the error
+   `String has no method '<name>'`.
+4. **Both String kinds.** A method accepts either runtime kind (a legacy plain
+   String or a VM-owned Java UTF-16 String). Indexes count UTF-16 code units,
+   and a String result is a plain String whenever the text has one (no NUL,
+   no unpaired surrogate).
+5. **Below syntax 3.0** a method call on a String remains the error
+   `method '<name>' requires a class or struct receiver`.
+
+The type name `utf16` denotes the VM-owned Java UTF-16 String kind: it
+type-checks as `String`, and `x instanceof utf16` is true only for that kind
+(`x instanceof string` only for a plain String). A cast to `String` accepts a
+value of either kind, and `String` in a cast or `instanceof` always denotes
+the built-in type, never a library class of that name.
+
+
+## 42. Syntax 3.0 — the implied lineage structure (`Sleela.home`, `Sleela.System`)
+
+This section is **normative and implemented in the source compiler (impl/frontend)**
+(status: implemented; see 42.7 for the exact limits). It gives every class an implied static
+lineage structure, so a translated Java hierarchy needs no declared parent or
+child fields.
+
+### 42.1 The `Sleela` reference
+
+`Sleela` is a reserved language name. `Sleela.VM`, `Sleela.System` and
+`Sleela.OS` are interchangeable names for the one reference to the SLeeLa VM;
+every such reference the VM offers is reachable through `Sleela`. Wherever this
+section says `Sleela.System`, `Sleela.VM` and `Sleela.OS` are equivalent. `Sleela.home` is the implied static lineage structure of the
+enclosing class and is the bean setter for its links. A source identifier named
+`Sleela` is an error; a translator renames it.
+
+### 42.2 Creation
+
+`Sleela.home` exists on every class. It is created when the class is first
+referenced statically, at compile time, and again at run time. It is available
+once a lineage keyword (`extends`, `super`) is used in the class or one of its
+ancestors.
+
+### 42.2a Static inclusion and going live
+
+`SleelaHome` (`/lib/java/SleelaHome.sleela`) is included statically in every
+class that uses `Sleela.home`, with no import. Until a file is loaded its
+`vm` and `nearestDescendant` fields are `null` (inert). When the VM loads a
+file, or several files, it fills those fields for every class in them and the
+structure becomes live: `vm` is the VM reference and `nearestDescendant` is set
+from the loaded lineage. Classes loaded later become live as they load.
+
+### 42.3 Links
+
+For `class A extends B`, `class B extends C`, `class C extends D`:
+
+| Expression | Value |
+|---|---|
+| `Sleela.home.parent` in `A` | `B` |
+| `Sleela.home.child` in `A` | `Sleela.System` (the VM) |
+| `Sleela.home.child` in `B` | `A` |
+| `Sleela.home.parent` in `D` (the root) | `Sleela.System` |
+| `Sleela.home.parents("-")` | one level up (`B` from `A`); each `-` is one level |
+| `Sleela.home.parents("---")` in `A` | `D` |
+| `Sleela.home.parents("")` | `Sleela.System` |
+| `Sleela.home.parents("...")` in `A` | `D`; `.` is the same as `-`, one level each, and they may be mixed (`"-."` is two levels) |
+
+The VM links to the most-derived class and the root links back to the VM, so
+the lineage is a cycle of references: `VM -> A -> B -> C -> D -> VM`, with
+`child` running the opposite way. `parents(...)` with more dashes than there are ancestors
+clamps to the root: for a three-ancestor lineage `parents("----")` matches
+`parents("---")` and returns `D`. Only the empty string `parents("")` returns
+`Sleela.System`.
+
+### 42.3a What the VM returns
+
+The VM reference is map-like (a `HashMap` or similar, assumed for now). It
+holds the VM reference itself and the nearest descendant of the asking class
+(its basic holder is the library class `SleelaHome`, `/lib/java/SleelaHome.sleela`,
+with public fields `vm` and `nearestDescendant`)
+(for the `child` of the most-derived class `A`, the VM; for `D` asked from the
+VM side, `A`'s lineage head). Lookup is by name through the map interface. The
+key names are `vm` and `nearestDescendant`, the same as the public fields of
+`SleelaHome`.
+
+### 42.4 Setting a link
+
+A link is set left to right, value first:
+
+    B -> Sleela.home.parent
+
+`->` here is the lineage set operator. It is valid only with a
+`Sleela.home.parent` or `Sleela.home.child` target on its right.
+
+### 42.5 Constructors
+
+`super("constructor")` in a constructor of `A` is `Sleela.home.parents("---")`
+for a three-ancestor lineage: it addresses the backmost (root) class. The
+intermediate classes are initialized by the language, not by source code.
+The exact single literal `"constructor"` is lineage-only. From syntax 3.0 any
+other `super(args)` also invokes the base-class constructor (section 43.6).
+
+### 42.6 Security2 above the VM during boot
+
+`Security2` (`/lib/security/Security2.sleela`) sits above the VM in colocated
+memory. The VM places it when it boots and it follows the VM through init and
+start, with phases 1 = booting, 2 = initializing, 3 = started, 4 = ready.
+Until the VM is fully initialized (phase 4) the references that would reach the
+VM (`Sleela.home.child` of the most-derived class, `Sleela.home.parent` of the
+root, `Sleela.home.parents("")`, and the `Sleela.VM` / `Sleela.System` /
+`Sleela.OS` names) point to `Security2`. At phase 4 they are re-pointed to the
+VM. Status: implemented as the boot sequence in 42.7.
+
+`Security2` also returns the date and time (`dateTime()` as JSON, `dateTimeHttp()`,
+`utcMillis()`, from the VM clock) and the specsheet reference
+`International Guidelines 2.0` (`specsheet()`). The specsheet location is
+`none` until a published source is recorded.
+
+### 42.7 Implementation notes (source compiler)
+
+- **Lowering.** `Sleela.home.parent`, `.child`, `.root` and `.security` read the
+  static String fields `__lin_parent`, `__lin_child`, `__lin_root` and
+  `__lin_security`, which the parser adds to any class that uses `Sleela.home`,
+  `Sleela.VM|System|OS` or `super(...)`. They are static, so they use no
+  instance layout slot (the 64-field cap is untouched).
+- **Values are class names.** A lineage reference is the String name of a class
+  (`"B"`) or `"Sleela.System"` for the VM end. Initial values are resolved at
+  compile time from the loaded classes: `parent` is the superclass if it is
+  loaded, `child` is the first loaded class that extends this one, `root` is the
+  backmost loaded ancestor.
+- **`parents("---")`** is resolved at compile time; the argument must be a string
+  literal of dashes and/or dots. It does not see later `->` changes.
+- **`->`** stores into the link; a bare capitalised name on the left is a class
+  name, anything else is an expression.
+- **`super(...)`** as a statement stores the root class name in `__lin_root`.
+  For `super("constructor")`, and for any `super(...)` below syntax 3.0, its
+  arguments are parsed but not evaluated. From 3.0 any other argument list
+  also calls the base constructor (section 43.6).
+- **Where.** The lineage resolution (`parent`, `root`, `child`, `parents`) is in
+  `impl/frontend/java_references.cpp` (`javaref::lineage*`) and follows the same
+  `extends` resolution as the rest of the frontend (section 43.3).
+- **Boot.** If the program uses `Sleela`, the loader adds `Security2`, and
+  `__lin_security` is initialized at program start by `new Security2().boot(...)`,
+  which runs boot, init, start, ready. User code starts after phase 4, so
+  user code always sees the VM; the earlier phases are observable only inside
+  `Security2`.
+- **Reading during load.** The lineage fields are static initializers, so they
+  are set before any user code runs; a class never observes a half-loaded
+  lineage. A read during load sees the compile-time values above.
+- **jdk-28 files.** `tools/jdk28_add_lineage.py` writes `extends <Parent>` and a
+  root-directed `super("constructor");` into every jdk-28 class stub whose JDK
+  superclass also has a jdk-28 file (1,647 files). The jdk-28 tree is a
+  reference tier: when a `lib/java/jdk-25` unit of the same name exists, the
+  loader uses that one.
+- **Not done.** `child` has no list of several children; `parent`/`child` do not
+  change `extends` or method dispatch; there is no VM-level (C) lineage
+  structure.
+
+
+## 43. Syntax 3.0 — Java support (the `spark` Preonem: Java style declarative; interpreter/VM level)
+
+This section is **normative**. It states how SLeeLa supports Java source style.
+It extends section 38 (the Java signature surface and the Java container) and
+does not move any Java definition into this specification (38.4 still holds).
+
+### 43.1 The method
+
+1. **SLeeLa constructs.** Java source style is written as ordinary SLeeLa
+   constructs: classes, `extends`, constructors, overloads (section 40), String
+   method calls (section 41), `instanceof`, casts, `try`/`catch`/`throw`
+   (section 37) and the lineage of section 42. There is no second language
+   inside a SLeeLa document.
+2. **Interpreter and VM level, no housing class.** Java support is the work of
+   the interpreter (frontend: parser, semantic analysis, compiler) and of the
+   VM (its opcodes). It is **not** provided by a SLeeLa housing, wrapper, or
+   dispatcher class that a program must route through. A translator or tool
+   must not invent such a class to carry Java meaning; it lowers the construct
+   to the frontend and VM mechanisms named in 43.4.
+3. **Artifacts are kept, relative to the document.** The supporting Java-style
+   artifacts are kept as they are and are read relative to the document that
+   uses them and to their own documents: the Java container units under
+   `/lib/java` with their `javaType` / `javaModule` / `javaSource` fields and
+   header line (38.4), the container documents (`lib/java/README.md`,
+   `STATUS.md`, `COVERAGE.md`, `JDK28-SOURCE-ENVELOPE.md`), and the differential
+   tests (`examples/java/differential/`). They are reference material and test
+   oracles, not runtime housing.
+
+### 43.2 The `spark` Preonem
+
+    #sleela 3.0
+    spark;
+    material;
+    import java.jdk-28;
+
+    class Box extends java.lang.Object { ... }
+
+`spark` is a Preonem (document marker, see the Preonem family of sections 18,
+27, 30 and 35). **`spark;` indicates Java style declarative**: the document
+declares that it is SLeeLa constructs written in Java style, supported under
+43.1. The marker is the declaration; it is not an instruction to the compiler.
+Rules:
+
+- A single, modifier-less, type-less word at document scope, **before any
+  content** (before the first import, class, struct or `extends to`). A trailing
+  `;` is optional and a repeat marker is harmless.
+- It requires `#sleela 3.0`; in an older-declared document it is the error
+  "the spark document marker requires #sleela 3.0".
+- It is contextual, not a reserved keyword: `spark` stays an ordinary
+  identifier everywhere else (a field named `spark`, as in `churn/5`, is
+  unaffected).
+- It is **Java style declarative**: it records the document's standing and changes nothing
+  about parsing, typing or code generation. A document without it gets the same
+  Java support; the marker states the intent and lets tools find such
+  documents. It grants no execution authority and claims no external status.
+- The name follows the `/5` Spark (`churn/5/SPARKS.md`): a guiding note, not
+  evidence. VALUE is not SPARK: the marker is not a conformance claim; the
+  differential tests are.
+
+### 43.3 Extends and the qualified Java name
+
+`class D extends java.lang.Throwable` and `class D extends Throwable` resolve
+to the same base when `Throwable` is a `/lib` unit. A qualified name falls back
+to its simple name **only** for a class loaded from `/lib`, so a local class
+named `Object` cannot impersonate `java.lang.Object`. Semantic analysis, the
+instance-field layout, the runtime parent link, method inheritance and the
+`Sleela.home` lineage all resolve the edge the same way, so `sleela check` and
+`sleela run` agree.
+
+### 43.4 Where the support lives (source compiler)
+
+| Java source style | Interpreter / VM mechanism |
+|---|---|
+| `extends` (simple or qualified), lineage, `super("constructor")` | `impl/frontend/java_references.cpp` (`javaref::resolveBaseName`, `superclassOf`, `lineage*`); VM parent link `slvm_set_struct_parent` |
+| Subtype assignment (`Animal a = new Dog()`), `implements` | `javaref::isSubtypeOf` in the semantic `assignable` rule |
+| `super(args)`, `this(args)`, implicit `super()`, default constructor | parser (`MethodCall` with `superConstructor` / `thisConstructor`); semantic constructor resolution; compiler `OP_CALL` on `this` |
+| Overridden methods (virtual dispatch), `super.m()` | compiler lowering with `OP_DUP` / `OP_INSTANCEOF` / `OP_JMPF` / `OP_CALL` (43.6) |
+| Abstract and interface methods without a body | parser (synthesized default-value body) |
+| Enhanced for `for (T v : xs)` | `ForEachStmt`: parser, semantic (array or `iterator()`), compiler lowering |
+| `L`, `d`, `f` suffixes, `1_000` | lexer |
+| typed / multi `catch`, `finally` | compiler lowering on `OP_TRY_PUSH` / `OP_TRY_POP` / `OP_INSTANCEOF` / `OP_THROW` |
+| `++` / `--` | compiler (`emitAssignTo`, as `+= 1` / `-= 1`); lexer `-` rule |
+| Field inheritance | compiler instance layout, base fields first (section 42.7) |
+| Overloads and constructors | compiler overload resolution (section 40) |
+| `java.lang.String` methods, UTF-16 strings | compiler `javaString*` built-ins → `OP_JSTR_*` opcodes (166 onward) |
+| `instanceof`, casts | `OP_INSTANCEOF`, `OP_CHECKCAST`; the VM type table holds the `extends` parent and the implemented interfaces (`slvm_add_struct_super`, 43.7) |
+| Method call on an `Any` receiver | semantic `anyReceiverCall`, `javaref::mostDerivedFirst`; compiler `emitAnyReceiverCall` (43.7) |
+| `try` / `catch` / `throw` | `OP_TRY_PUSH`, `OP_TRY_POP`, `OP_THROW` (section 37) |
+| Generics | erasure to `Any` (38.1); type arguments kept as data |
+| Source-level Java rules (conversions, promotion, overload/override, inference) | `impl/frontend/java_equivalence.cpp` model |
+| `import java.jdk-28;` tier selection | `impl/frontend/driver.cpp` library loader: when the program's preferred roots include `java/jdk-28` and a JDK 28 file of the requested name exists, that file wins over every other unit of the name |
+| Exact `long` comparison | `OP_EQ`/`OP_NE`/`OP_LT`/`OP_LE`/`OP_GT`/`OP_GE` compare two `SL_INT` operands as int64, not through `double` |
+
+**JDK 28 tier rule.** `import java.jdk-28;` is authoritative for every name that
+has a JDK 28 file. Before this rule, an import carried by an earlier library unit
+(for example `import java.jdk-25.java.util;` in `KeyValueHolder`, a JDK-internal
+helper with no JDK 28 file) added a second preferred root, and its real unit then
+beat the JDK 28 file for every later name (`TreeMap`, `Vector`, `LinkedList`).
+A name with no JDK 28 file still resolves as before.
+
+### 43.5 Not done
+
+- The `java_equivalence` model is built but not yet called by semantic
+  analysis; `java_flow.cpp` and `java_exceptions.cpp` are not yet linked.
+- There is no direct Java-bytecode path: `sleela run Foo.java` hands the file
+  to a JVM. Equivalence is checked by output (`run-differential.sh`), not by
+  comparing JVM bytecode with VM opcodes.
+- Not yet supported Java style (each fails at check time, not silently):
+  `enum` declarations and non-static `protected` methods (a SLeeLa rule:
+  protected methods are static).
+- A `return`, or a `break` / `continue` that leaves the try, inside a `try`
+  or `catch` block that has a `finally` was rejected at compile time in syntax
+  3.0 (it would skip the finally). From syntax 3.1 the finally runs (44.5).
+- Ordinary VM faults (array index out of range, division by zero, a failed
+  cast) are catchable inside a `try` since 2026-11-13 (section 37.5); outside
+  a `try` they are still VM errors.
+- The enhanced for is not supported by the Nordshrift C target or by `@native`
+  methods (both report it); the Sleela and Java targets emit it as written.
+- A user subclass of a `/lib/java` Throwable reports the library class name in
+  `toString()` (`java.lang.IllegalStateException: boom`, not `AppError: boom`):
+  the name comes from the unit's `javaType` field, and there is no runtime
+  `getClass().getName()` yet.
+- `print` of a double prints SLeeLa form (`9`), not Java form (`9.0`).
+- `spark` has no behavioral effect; any future effect must be added here first.
+- Regression tests: `bash impl/tests/java_references/spark/run_spark_tests.sh`
+  and `bash impl/tests/java_references/oop/run_oop_tests.sh`.
+
+### 43.6 Java object behavior (syntax 3.0)
+
+These rules hold in every `#sleela 3.0` document; `spark` does not switch them
+on (it stays declarative, 43.2). Below 3.0 nothing in this subsection applies.
+
+1. **Subtypes.** A class is assignable to any loaded superclass and to any
+   interface it implements, directly or through its superclasses
+   (`Animal a = new Dog();`, `Shape s = new Square(3.0);`).
+2. **`super(args)`.** In a constructor, `super(args)` records the lineage root
+   (42.7) and then calls the base-class constructor whose parameters accept the
+   arguments (best match, as in section 40), on the same object. The single
+   literal `super("constructor")` stays lineage-only (42.5). With arguments
+   and no loaded base class, or no matching base constructor, it is an error.
+3. **`this(args)`.** In a constructor, `this(args)` calls another constructor
+   of the same class on the same object.
+4. **Implicit `super()`.** A constructor of the program's own class that does
+   not start with `super(...)` or `this(...)` first runs the no-arg
+   constructor of the nearest loaded ancestor that declares constructors. A
+   class with no constructor gets the same as its default constructor. `/lib`
+   units are excluded: they construct themselves, and an unimplemented library
+   constructor throws `UnsupportedOperationException`.
+5. **Inherited field initializers.** `new D()` runs the declared initializers
+   of every instance field along the `extends` chain, base first.
+6. **Virtual dispatch.** An instance call `x.m(args)`, or an unqualified
+   `m(args)` inside an instance method, runs the most-derived override of `m`
+   (same name and parameter types) for the object's runtime class. The
+   compiler lowers it to existing opcodes: for each loaded override, deepest
+   first, `DUP`, `INSTANCEOF <class>`, `JMPF`, arguments, `CALL`; the
+   statically resolved method is the fallback. No new opcode or artifact field
+   is involved.
+7. **`super.m(args)`** calls the base-class method on `this` and is never
+   virtual.
+8. **Bodiless methods.** `abstract T m(...);` and an interface method
+   `T m(...);` (not `static` or `default`) parse; the method gets a body that
+   returns the default value of `T` (`0`, `0.0`, `false` or `null`) and is
+   reached only when no override exists. `0` is the default for every integer
+   type, including the signed and unsigned series (`int32`, `uint64`, `int128`,
+   `U256`, ...); before 2026-11-13 a series type got `null`.
+9. **Enhanced for.** `for ([final] T v : xs) body`. Over an array it visits the
+   elements in index order (`OP_ARRLEN`, `OP_ARRGET`). Over an object it calls
+   `xs.iterator()`, then `hasNext()` / `next()` on the result, each by virtual
+   dispatch (rule 6), e.g. `for (String s : list)` over `java.util.ArrayList`.
+   An element typed `Any` (an erased generic) binds to `v` without a cast, as
+   Java's inserted checkcast would; any other element type must be assignable
+   to `T`. `break` and `continue` work as in a basic for. Loop annotations
+   (`@loopDelay`, `@loopBudget`, `@spill`) are not accepted on it.
+10. **Numeric literals.** `_` between digits (`1_000_000`), the long suffix
+   `L` / `l` (`3000000000L`, `0xFFL`), and the floating suffixes `d` / `D` /
+   `f` / `F` (`2d`, `1.5f`, a double). SLeeLa `int` is 64-bit, so `L` changes
+   no value.
+11. **try / catch / finally.** `catch (T e)` catches a thrown object that is an
+   instance of class `T` or a subclass; clauses are tried in source order and
+   an unmatched value is rethrown to the next enclosing handler. `catch (A | B
+   e)` catches either. `catch (Any e)` catches everything. A catch type may be
+   qualified (`java.lang.IllegalArgumentException`) and must be a loaded
+   class. `finally` runs when the try completes normally, after a matched
+   catch body, and before an unmatched or newly thrown exception propagates.
+   A catch variable may not shadow a local variable in scope (a field is
+   fine), and the same name may be reused by later clauses and later trys.
+   Lowering: one `OP_TRY_PUSH` handler around the body; the handler stores the
+   thrown value, tests each clause with `OP_INSTANCEOF`, and ends with
+   `OP_THROW`; the finally block is emitted on each exit path (as javac does);
+   a second handler around the catch bodies runs finally for an exception
+   thrown from a catch body.
+12. **`++` and `--`.** Prefix and postfix, on a local, field, static field,
+   object field or array element of numeric type (`i++`, `++x.n`, `arr[k]--`,
+   `Box.total++`). The prefix form yields the new value, the postfix form the
+   old one. Lowered as `x += 1` / `x -= 1`. A `-` continues an identifier
+   (`jdk-25`, `version-mual`) only when an identifier character follows it, so
+   `j--`, `j-=1` and a trailing `-` end the name.
+
+
+### 43.7 Interfaces at run time, and calls on `Any` (2026-11-13)
+
+These rules hold in every `#sleela 3.0` and later document. They remove
+rejections and wrong answers; they add no syntax, so 3.0 documents get them
+too (as in 44.5).
+
+1. **Interfaces are runtime supertypes.** The VM type table records, for each
+   class, its `extends` parent and each interface it names in `implements`
+   (and an interface's own `extends`). `x instanceof I`, `(I) x` and
+   `catch (I e)` now accept an object whose class implements `I` directly,
+   through a superclass, or through another interface. Before this, only the
+   `extends` chain was checked at run time, so `(Shape) c` on a `Circ
+   implements Shape` failed with `checked cast failed` while the assignment
+   `Shape s = c;` was accepted at check time.
+   Compiler: `slvm_add_struct_super(vm, class, interface)` after the parent
+   links. VM: `struct_type_is_a` follows parent and supertype edges
+   transitively (cycle-bounded). The artifact format is **5**: each struct
+   type also stores its parent index and supertype list. A format 1-4
+   artifact loads with no hierarchy (every type a root); before format 5 a
+   loaded artifact had parent index 0 for every type.
+2. **Calls on `Any`.** `x.m(args)` where the static type of `x` is `Any` (an
+   erased generic `T`, a `List.get` result, a field typed `Any`) no longer
+   fails with `method 'm' requires a class or struct receiver`. Semantic
+   analysis collects every loaded class that declares an instance method `m`
+   whose parameters accept the argument types (one overload per class, chosen
+   as in section 40), and `JavaStringMethods.m(String, args)` when that
+   library is loaded. If there is none, it is an error: `no loaded class
+   declares an instance method 'm' taking N argument(s) of these types (call
+   on an Any receiver)`. The call has the candidates' common declared return
+   type when they all agree, else `Any`.
+3. **Lowering.** The receiver is evaluated once. For each candidate class,
+   most derived first (a class before every listed class it is a subtype
+   of; `javaref::mostDerivedFirst`): `DUP`, `INSTANCEOF <class>`, `JMPF`,
+   arguments, `CALL`. Then a `String` branch and a `utf16` branch to the
+   `JavaStringMethods` function, the receiver as its first argument. A value
+   that matches nothing is thrown as the string `no method 'm' taking N
+   argument(s) for the runtime value (call on an Any receiver)`, which
+   `catch (Any e)` catches. No new opcode.
+4. **Not done.** Outside a `try`, a failed `(T) x` is still a VM error (inside
+   one it throws `ClassCastException`, 37.5). A call on `Any` sees only methods declared in
+   loaded classes; it does not reach the built-in operations of arrays or of
+   other VM kinds. Every loaded class declaring `m` adds one test, so a very
+   common name (`toString`) with the whole `/lib/java` tree loaded makes a
+   long chain.
+
+
+## 44. Syntax 3.1 — Java conversion blockers (character literal, array initializer, labels, abrupt completion through finally)
+
+This section is **normative** and **implemented in the source compiler
+(impl/frontend)**. It is the syntax the Java-to-SLeeLa converter
+(`sleelactl run java-convert`, `sleelactl/convert`, rules in
+`.kiro/steering/java-to-sleela-conversion.md`) needs in order to produce
+functionally equivalent SLeeLa for a presumed JDK. Where the converter refused a
+Java construct because SLeeLa had no form for it, this section either gives the
+form (44.2 - 44.5) or records the blocker as open (44.6). Nothing here changes a
+document that declares a syntax below 3.1.
+
+### 44.1 Version
+
+The syntax version after 3.0 is **3.1**. The minor is an integer, so
+`#sleela 3.01` and `#sleela 3.1` name the same edition (a leading zero is
+accepted and normalized; `version.cpp` reads the minor as a number). The
+supported range is 1.0 .. 3.1; `#sleela 3.2` is rejected as a future edition. A
+source with no `#sleela` line defaults to the ceiling, 3.1.
+
+Every 3.1 form below is gated: in a document declaring a syntax below 3.1 the
+parser records the use and semantic analysis reports
+`<form> requires #sleela 3.1` (for example `character literal requires #sleela 3.1`).
+
+### 44.2 Character literal
+
+    int a = 'a';         < 97 >
+    int nl = '\n';       < 10 >
+    int cap = '\u0041';  < 65 >
+    int e = 'é';         < 233 >
+
+A character literal is one character between apostrophes. The escapes are
+`\n \t \r \b \f \s \0` (and octal up to `\377`), `\\ \' \"`, and `\uXXXX`. A
+literal outside the basic multilingual plane is a lexical error (it would be two
+UTF-16 units). Its value is the **integer UTF-16 code unit**. In syntax 3.1 it is
+typed as an integer, so `'b' - 'a'` is `1` and `print('a')` prints `97`; from
+syntax 3.2 its static type is `char` and `print('a')` shows the character (section 45). Showing a character as text goes through the library
+(`JavaText.codePointU`, `Character`), as in the converter's string conversion
+rule. An apostrophe inside a comment is still a lexical error; the literal
+exists only in code.
+
+### 44.3 Array initializer
+
+    int[] a = {3, 1, 2};
+    String[] s = {"x", "y"};
+    double[] d = {1, 2.5};                 < the 1 is widened to a double >
+    static int[] primes = {2, 3, 5, 7};    < a field >
+    int[] n = new int[]{4, 5, 6};          < an expression >
+    int[] e = {};                          < empty; a trailing comma is allowed >
+
+`{e1, e2, ...}` after `=` in a local or field declaration whose declared type
+is an array `T[]`, and `new T[]{e1, ...}` anywhere an expression is allowed,
+create an array of exactly that length and store each element, left to right,
+widening it to `T` as an assignment does. Each element must be assignable to
+`T` (`array initializer element has type X, expected T` otherwise). Nested
+braces initialize an array of arrays when the element type is itself an array
+type the compiler knows. `{...}` on a non-array declaration is an error;
+`new T[n]{...}` (size and initializer together) is not accepted.
+Lowering: `OP_NEWARRAY` with the element fill kind, then per element `OP_DUP`,
+the index, the value, `OP_ARRSET`, `OP_POP`; the array is left on the stack.
+The fill kind also sets the start value of `new T[n]`: zero for the integer
+types, `0.0` for `double` / `float`, `false` for `boolean`, `null` otherwise. From
+2026-11-13 the 64-bit-backed series members (`int32`, `uint32`, `uint64`,
+`U<width>`) start at zero too (`arrayFillKind` in `impl/frontend/compiler.cpp`);
+before, `new int32[n]` held `null`. The 128-bit-backed members keep `null`.
+
+Multi-dimensional creation `new T[a][b]` is syntax 3.2 (46.3); below 3.2 `new T[n]` takes one dimension.
+
+### 44.4 Labeled statements, `break label`, `continue label`
+
+    outer: for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        if (hit(i, j)) { break outer; }
+        if (skip(j))   { continue outer; }
+      }
+    }
+    block: { work(); if (done) { break block; } more(); }
+
+`label: statement` labels the statement. `break label;` leaves the labeled
+statement (a loop, a switch, or any statement, including a block);
+`continue label;` starts the next iteration of the labeled **loop** (continue to
+a label that does not label a loop is an error). An unlabeled `break` leaves the
+innermost loop or switch and never a labeled plain block; an unlabeled
+`continue` continues the innermost loop, **skipping an enclosing switch**. (In
+syntax 3.0 a `continue` inside a `switch` inside a loop jumped to an unpatched
+target; that defect is fixed for every syntax version.) A label is visible only
+inside the statement it labels and may not repeat while in scope. An undefined
+label is `break to undefined label 'x'` / `continue to undefined label 'x'`.
+Before 3.1 the parser accepted `break label` and silently treated it as an
+unlabeled break; from 3.1 that spelling is a gated feature, and below 3.1 it is
+an error rather than a silent miscompile.
+
+### 44.5 `return`, `break`, `continue` through `finally`
+
+In syntax 3.0 a `return`, or a `break` / `continue` that leaves the try, inside
+a `try` or `catch` block with a `finally` was a compile-time error (43.5)
+because the VM would have skipped the finally. From 3.1 the finally **runs**:
+the compiler keeps one entry per live exception-handler frame and, at such a
+jump, pops each frame (`OP_TRY_POP`) and emits that region's `finally` inline,
+innermost first, before the jump. Specifically:
+
+- `return expr;` evaluates `expr`, stores it in a method-local temporary,
+  runs every enclosing `finally`, then returns the stored value. A `return`
+  inside a `finally` replaces it (Java semantics).
+- `break`, `break label`, `continue`, `continue label` run only the `finally`
+  blocks of the try statements they actually leave (those between the jump and
+  its target), not those outside the target.
+- While one `finally` is emitted, only the regions outside it are live, so a
+  jump or an exception inside that `finally` unwinds correctly outward.
+- A jump out of a `catch` body of a try that has a `finally` pops the
+  catch-phase handler and runs the `finally`; a try without a `finally` needs
+  no cleanup (its handler frame was consumed by the catch).
+- The compiler reserves the `__retval` slot for any method containing a try.
+
+The 3.0 errors `return inside a try or catch block that has finally is not
+supported yet` and `break may not leave a protected try region` no longer occur.
+This applies to documents declaring syntax 3.0 as well, because it removes a
+rejection rather than adding a form.
+
+### 44.6 Blocker register (what the JDK conversion still needs)
+
+Java-specific constructs (lambdas, enums, varargs, `String` statics, `float`, try-with-resources,
+`synchronized`) are NOT language changes. They are handled by the Java tier and specified in the
+Java Specific Section, `lib/java/JAVA.SPEC.md`. Rows below that say "Syntax open" describe what the
+language lacks; the tier lowers the Java construct to existing language forms instead.
+
+Status after 3.1. "Converter" means the language already has the form and the
+converter does not use it yet; "Syntax" means SLeeLa needs a new form and it is
+not in 3.1.
+
+| Java construct | Status |
+|---|---|
+| character literal | **done**, 44.2 |
+| array initializer `{..}`, `new T[]{..}` | **done**, 44.3 |
+| labeled `break` / `continue` / blocks | **done**, 44.4 |
+| `return` / `break` / `continue` through `finally` | **done**, 44.5 |
+| `continue` inside `switch` inside a loop | **fixed**, 44.4 |
+| `++` / `--` used as a value | Converter: the language has it (43.6 rule 12); the converter must first lower the Java 32-bit wrap (`JavaOperands`) |
+| assignment used as a value `(a = b)` | Converter: the language evaluates it to the assigned value |
+| `switch` fallthrough, `default` not last | Converter: the compiler lowers a switch with fallthrough in source order |
+| nested static classes `Outer.Inner` | Converter: hoisted by the parser since syntax 1.11 (cap 42 per document) |
+| multi-dimensional array creation `new T[a][b]` | **done in 3.2**, 46.3 |
+| `String.valueOf` / `format` / `join` (static members of `String`) | **Syntax open**: `String` is a keyword type, so `String.m(...)` does not parse; needs a binding to `JavaStringMethods` statics and library bodies |
+| varargs `T... xs` | **Syntax open**: no variable-arity parameter or call-site packing |
+| lambdas, method references | Converter: **lowered** by `lib/java/converter` 0.6.0 (`JConvLambda`, `(id, env)` of `lib/java/jdk-28/LOWERING.md`), no new syntax; method references only where the target interface is known |
+| inner (non-static) classes | Converter: **lowered** by `lib/java/converter` 0.7.0 (`JConvOuter`: an explicit `slOuter` field and `slOuterArg` constructor parameter), no new syntax |
+| anonymous classes, local classes | Converter: `sleelactl java-convert` lowers them to generated classes; `lib/java/converter` still stubs them |
+| `enum` | **Syntax open** (43.5) |
+| switch expressions, arrow cases `case X ->`, `instanceof T x` patterns | **Syntax open** |
+| try-with-resources | **Syntax open**: needs `close()` on exit, and `close` is a reserved built-in name (the converter refuses `close` members) |
+| `float` (binary32) arithmetic | **Open**: no binary32 operator set |
+| `synchronized` method, `volatile`, Java memory model | **Open**: `synchronized (x) {}` parses but takes no lock |
+| `native` methods | Not convertible: no Java body |
+| `print` of a double shows `9`, Java shows `9.0` | Converter routes through `Double.toString` (conversion model `tostr` rows) |
+
+Regression tests: `bash impl/tests/syntax31/run_syntax31_tests.sh` (outputs in
+`impl/tests/syntax31/*.expected.txt`; the `gate_*` and `bad_*` cases must be
+rejected with the stated message) and `bash impl/tests/version/run_version_tests.sh`.
+
+
+## 45. Syntax 3.2 — the char specification
+
+This section is **normative** and **implemented in the source compiler and VM**
+(`impl/frontend`, `impl/core`). It defines the `char` type that Java source needs
+and that syntax 3.1 only approximated with an integer-valued literal (44.2). The
+library is `lib/char/` (45.8). A document declaring a syntax below 3.2 keeps the
+3.1 behavior of 44.2: a char shown as text prints its decimal code.
+
+### 45.1 The type
+
+`char` is an **unsigned 16-bit UTF-16 code unit**: the integers 0 through 65535.
+It is held in an ordinary integer slot (there is no separate runtime value kind;
+a VM-owned Java String is the UTF-16 text kind, section 41). Its size, range and
+signedness are those of Java `char` (JLS 4.2.1).
+
+### 45.2 Literal
+
+`'x'` is a character literal (44.2). From 3.2 its static type is `char`, not
+`int`. `'\u0041'` and the other escapes of 44.2 are available; the literal must
+be one UTF-16 unit.
+
+### 45.3 Static type and promotion
+
+The compiler tracks the static type `char` through: a character literal, a
+local variable, parameter, field or array element declared `char`, a `(char)`
+cast, a call whose declared return type is `char`, and a `?:` whose branch is
+a char (the type of the first branch when the second is assignable to it).
+Everything else that merely carries the integer (a value read through `Any`, a
+generic, or an untyped context) is an `int`, not a char.
+
+- **Promotion (JLS 5.6).** Every arithmetic, bitwise, shift and unary operator
+  (`+ - * / % & | ^ << >> >>> ~` and unary `-`) applied to a char yields an `int`.
+  `'a' + 1` is `98`, `-'a'` is `-97`, `'a' + 'b'` is `195`. Comparison operators
+  compare the integer codes.
+- **`++`, `--` and compound assignment** on a char variable keep the type char and
+  wrap at 16 bits: `char c = 65535; c += 2;` leaves `1`; `char d = 0; d--;` leaves `65535`.
+
+### 45.4 Narrowing
+
+Storing into a `char` keeps the **low 16 bits** (`value & 0xFFFF`): a store into
+a char variable or field, passing a char parameter, returning from a method declared
+`char`, a `(char)` cast, and (3.2) a store into an element of a `char[]` (also by
+compound assignment). `char c = 65601;` holds `65`; `(char) -1` is `65535`.
+Unlike Java, an `int` expression assigned to a `char` needs no cast and raises no
+"possible lossy conversion" diagnostic: SLeeLa narrows silently. Code that must
+reject the lossy store checks the range itself.
+
+### 45.5 A char as text
+
+Where the static type of an operand is `char` it is shown as a **one-unit String**
+in three places, and only there:
+
+1. `x + y` where either operand is a String and the other is a char (and `s += c`);
+2. the argument of `print`;
+3. the library call `SLChar.toString(c)` (a concatenation `"" + c`).
+
+If the other operand is a plain String, or in `print`, the char becomes a plain
+(UTF-8) String; a surrogate unit (0xD800..0xDFFF) or NUL (0) has no plain-String
+form and is the runtime error `an unpaired surrogate char cannot be shown in a
+plain String; use a UTF-16 String` (or the NUL message). If the other operand is a
+UTF-16 String every unit converts losslessly to a one-unit UTF-16 String. When
+neither operand of `+` is a String, `c1 + c2` is integer addition (45.3).
+
+A char that has lost its static type (passed through `Any`, a generic, or a
+method taking `int`) is an integer and shows as its decimal code.
+
+### 45.6 Lowering
+
+Two append-only opcodes (section 44 of `sleela_core.h`):
+
+- `OP_CHARSTR` (192) pops a char and pushes it as a plain String; emitted before
+  `OP_PRINT` for a char-typed `print` argument.
+- `OP_ADDCHAR` (193) with operand `a` (bit 0: left operand is a char, bit 1:
+  right operand is a char) behaves exactly as `OP_ADD`, except that when either
+  operand is a String each flagged integer operand is first converted to a one-unit
+  String of the same kind. The compiler emits it for every `+` whose operand has the
+  static type char, and the VM decides at run time whether a String is involved.
+
+The flags are computed by semantic analysis (`Binary::charMask`,
+`PrintStmt::charArg`, `AssignmentExpr::charMask`) only when the declared syntax is
+3.2 or later.
+
+### 45.7 Not done
+
+- No Unicode tables: `SLChar` classifies and maps ASCII and Latin-1 only.
+- Characters outside the basic multilingual plane are two chars (a surrogate
+  pair), as in Java; a character literal above 0xFFFF is a lexical error.
+- No boxed `Character` identity or cache; `Character` remains the library class.
+- A char given to `String.valueOf`, `format` and the like stays an integer (those
+  static members of `String` are still open, 44.6).
+
+### 45.8 Library
+
+`lib/char/SLChar.sleela` (package facade `lib/char/SLPackage.sleela`), all static:
+`MIN_VALUE`, `MAX_VALUE`, `toCode`, `fromCode`, `toString`, `isDigit`,
+`isUpperCase`, `isLowerCase`, `isLetter`, `isLetterOrDigit`, `isWhitespace`,
+`toUpperCase`, `toLowerCase`, `digitValue(c, radix)`, `forDigit(d, radix)`,
+`isHighSurrogate`, `isLowSurrogate`, `isSurrogate`, `toCodePoint(high, low)`,
+`compare`, `hashCode`. Every method except the text of `toString` works in any
+syntax version; `toString` shows the character under 3.2 and the decimal code below.
+
+Tests: `impl/tests/syntax32/char_text.sleela`, `char_int_in_3_1.sleela`,
+`lib_char.sleela`; run `bash impl/tests/syntax32/run_syntax32_tests.sh`.
+
+
+## 46. Syntax 3.2 — the array specification
+
+This section is **normative** and **implemented in the source compiler and VM**.
+It collects what an array is in SLeeLa, and adds the array length member and
+multi-dimensional creation. The initializer is 44.3. The library is `lib/array/` (46.8).
+
+### 46.1 Types and values
+
+`T[]` is an array of `T`; `T[][]`, `T[][][]`, ... are arrays of arrays, for any
+element type `T` the compiler knows (primitive, String, class, struct, `Any`). An
+array is a **reference**: a VM handle into a bounded array store (4096 live arrays,
+at most 2^25 = 33,554,432 elements each). Assignment, argument passing and
+return share the one array; `==` compares identity; the default value of an array
+variable or element is `null`. There is no implicit copy.
+
+### 46.2 Element defaults
+
+`new T[n]` fills by element type: `int long short byte char int64` with `0`;
+`double float` with `0.0`; `boolean bool` with `false`; every other element type
+(String, classes, structs, `Any`, and arrays themselves) with `null`.
+
+### 46.3 Creation
+
+`new T[n]` creates a one-dimensional array; `n` is an `int` greater than or
+equal to 0 (a negative or too-large size is a runtime error). From 3.2:
+
+    int[][]  g = new int[3][4];        < 3 rows of 4, all 0 >
+    int[][][] c = new int[2][3][4];    < rank 3 >
+    int[][]  j = new int[3][];         < 3 rows, every row null (jagged) >
+    j[0] = new int[2]; j[1] = new int[5];
+
+`new T[a][b]...` creates a **rectangular** array of arrays, outermost first: every
+dimension expression is evaluated left to right before any allocation; each row is
+a separate array object (so `g[0] != g[1]`, and a row can be replaced). Empty
+brackets must be trailing and leave those rows `null`; with no sized dimension at all the
+empty brackets introduce an initializer of that rank, `new int[][]{{7, 8}, {9}}`; a sized dimension after an empty
+one (`new T[2][][3]`) is a syntax error, as is more than eight sized dimensions.
+The element default (46.2) applies to the innermost sized level; trailing unsized
+levels are `null`. A multi-dimensional creation below 3.2 is the error
+`multi-dimensional array creation requires #sleela 3.2`.
+
+Limit: because every row is an array object, a grid needs `1 + rows` of the 4096
+live-array slots (`new int[4096][1]` fails with `array allocation failed ... the
+live-array table is full`); collection of dead arrays reclaims them, so a loop that
+builds and drops many grids runs in constant space.
+
+### 46.4 The length member
+
+    int n = a.length;          < the number of elements, any array expression >
+    int w = g[0].length;       < length of row 0 >
+    int m = new int[7].length;
+
+From 3.2 `a.length` is the number of elements of the array `a`. It is read-only:
+`a.length = n` and `a.length++` are the error `the array length is read-only`. It
+is exactly `arrayLength(a)`, which remains available (and is what a library meant to
+run under any syntax uses). Below 3.2 `a.length` is the error `the array length
+member requires #sleela 3.2 (use arrayLength(a) below 3.2)`. A null array is the
+runtime error `length() on a non-array value`.
+
+### 46.5 Indexing
+
+`a[i]` reads and `a[i] = v` writes element `i`. The index must be an integer (`int`,
+or a `char`, `short`, `byte`); it is checked on every access, and an index outside
+`0 .. length-1` is the runtime error `array index out of range` (an ordinary VM
+fault, not a catchable exception, 43.5). Indexing `null` or a non-array is a runtime
+error. `a[i] op= v` evaluates `a` and `i` exactly once. Nested indexing `g[i][j]`
+indexes the row `g[i]` first.
+
+### 46.6 Type checking
+
+An element store must be assignable to the element type (`cannot assign X to
+element of T[]`); an initializer element likewise (44.3). Casts to array types and
+`instanceof` on array types remain errors: the VM keeps no element type with an
+array, so there is no array covariance and no `ArrayStoreException`.
+
+### 46.7 Lowering
+
+`OP_NEWARRAY` (fill kind in operand `a`) creates a one-dimensional array;
+`OP_ARRGET`, `OP_ARRSET`, `OP_ARRLEN` read, write and measure it. `a.length` lowers to
+`OP_ARRLEN`. **`OP_NEWARRAYND`** (194) creates the rectangular array of arrays:
+operand `a` is the number of sized dimensions `n` (2..8) in the low byte and the
+fill kind of the innermost sized level in the next byte; it pops `n` sizes (the last
+dimension on top) and pushes the outermost array. The VM keeps the array being
+built on the operand stack, a collector root, until it is stored into its parent, and
+reports `negative array size` or the live-array table message instead of leaving a
+half-built grid.
+
+### 46.8 Library
+
+`lib/array/` (package facade `SLPackage.sleela`):
+
+- `SLIntArray` over `int[]`: `checkIndex`, `copyOf`, `copyOfRange`, `concat`, `fill`,
+  `fillRange`, `isEqual`, `indexOf`, `lastIndexOf`, `contains`, `sumOf`, `minOf`,
+  `maxOf`, `swap`, `reverse`, `sort` (heapsort), `binarySearch`, `toText`.
+- `SLDoubleArray` over `double[]`: `copyOf`, `fill`, `sumOf`, `minOf`, `maxOf`,
+  `indexOf`, `isEqual`, `reverse`.
+- `SLRefArray` over `Any[]`: `isEmpty`, `lengthOf`, `checkIndex`, `copyOf`, `fill`, `same`.
+- `SLArray2D` over `int[][]` and `double[][]` (needs 3.2): `create`, `createDouble`,
+  `rows`, `cols`, `isRectangular`, `fill`, `copy`, `transpose`, `sumOf`, `toText`.
+
+The first three use `arrayLength` and run under any syntax that has arrays.
+
+### 46.9 Not done
+
+Array covariance and runtime element contracts (46.6), `clone()`, array of
+generics, variable-arity parameters `T... xs` (44.6), `new T[n]{...}`, creation
+above rank 8, and catchable index exceptions.
+
+Tests: `impl/tests/syntax32/array_nd.sleela` (including a 12,300-array
+collection stress), `lib_array.sleela`, `gate_*` and `bad_*`; run
+`bash impl/tests/syntax32/run_syntax32_tests.sh`.

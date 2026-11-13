@@ -1,0 +1,103 @@
+<< lib/advantage/learner-vs-professional/courseware/long-term-potencies/01-ages-as-the-book-ages/TaPotency01AgesAsTheBookAges.sleela
+   SLeeLa courseware lesson.
+   Definition: Entry 1: term potency and age potency measured at three checkpoints as a two-lot portfolio crosses the long-term threshold. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Entry 1 of 4, long-term-potencies. One lot is checked at exactly its >
+< 365-day age (not yet long term: SLLongBook.isLongTerm needs STRICTLY more >
+< than the threshold), then a second, younger lot is added and the book is >
+< checked again at day 500 (only the older lot has crossed) and day 900 >
+< (both have). Every check happens on or after the book's own last action >
+< day, since SLLongBook.oldestAge and weightedAgeFloor both refuse an >
+< earlier "today" -- a day-365 check performed AFTER the day-400 buy would >
+< itself be such an earlier, invalid "today", which is why the buys and >
+< checks below are interleaved in this exact order. Both potency figures >
+< are read directly from SLLongBook's own age/term queries through >
+< SLTermPotency, defined in that class's header comment. >
+class TaPotency01AgesAsTheBookAges {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39351;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+  void expect(String label, int got, int want) {
+    if (got == want) { print("  ok   " + label + " = " + got); passed = passed + 1; }
+    else { print("  FAIL " + label + " got " + got + " want " + want); failed = failed + 1; }
+  }
+  void expectTrue(String label, boolean got) {
+    if (got) { print("  ok   " + label); passed = passed + 1; }
+    else { print("  FAIL " + label); failed = failed + 1; }
+  }
+  void summary() { print("  checks passed=" + passed + " failed=" + failed); }
+
+
+  void act(SLLongBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+  void main() {
+    SLLongBook book = new SLLongBook();
+    SLTermPotency p = new SLTermPotency();
+    print("== Entry 1: term and age potency as a portfolio ages ==");
+    act(book, "buy 40 @ 5000 on day 0", book.buy(0, 40, 5000, 0));
+    print("-- day 365, before the second buy: the one lot is exactly 365 days old --");
+    print("-- (365 is NOT long term: isLongTerm needs STRICTLY more than the threshold) --");
+    expect("term potency, threshold 365", p.termPotencyBp(book, 365, 365), 0);
+    expect("age potency (one lot, so weighted age equals oldest age)", p.agePotencyBp(book, 365), 10000);
+    expectTrue("not yet long term at exactly 365 days", !p.atLeastHalfLongTerm(book, 365, 365));
+    print("-- day 400: add a second, younger lot --");
+    act(book, "buy 60 @ 5100 on day 400", book.buy(400, 60, 5100, 0));
+    print("-- day 500 (the day-0 lot, 40 units, has crossed 365 days; the day-400 lot has not) --");
+    expect("term potency, threshold 365", p.termPotencyBp(book, 500, 365), 4000);
+    expect("age potency", p.agePotencyBp(book, 500), 5200);
+    expectTrue("still not half (40 of 100 units)", !p.atLeastHalfLongTerm(book, 500, 365));
+    print("-- day 900 (both lots have crossed 365 days: full term potency) --");
+    expect("term potency, threshold 365", p.termPotencyBp(book, 900, 365), 10000);
+    expect("age potency", p.agePotencyBp(book, 900), 7333);
+    expectTrue("now fully long term", p.atLeastHalfLongTerm(book, 900, 365));
+    expectTrue("invariants hold", book.invariantsHold());
+    summary();
+  }
+}

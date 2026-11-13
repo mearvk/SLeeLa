@@ -1,0 +1,19 @@
+== Lesson 14: lithium decision ==
+-- master (onion) --
+  Refiner A total = 632000 cents
+  Refiner B total = 640000 cents
+  Refiner C total = 634000 cents
+  master picks Refiner A
+-- student, first pass: the fee of Refiner A was counted twice --
+  Refiner A total = 644000 cents
+  Refiner B total = 640000 cents
+  Refiner C total = 634000 cents
+  student picks Refiner C
+  Refiner A fee again: student only, master has no such entry
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Refiner A total = 632000 cents
+  Refiner B total = 640000 cents
+  Refiner C total = 634000 cents
+  student picks Refiner A
+  verdict: AGREE, work accepted

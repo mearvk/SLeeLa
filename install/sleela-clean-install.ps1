@@ -95,36 +95,41 @@ if ((Ask-YesNo "Install EVERYTHING — every optional module?" "no") -eq "yes") 
   }
 }
 if (-not $NoBuild) {
-  Heading "Building SLeeLa"
-  $make = Get-Command make -ErrorAction SilentlyContinue
-  if (-not $make) { throw "The Windows native build requires the project's supported make/build environment. Build the Windows products first and rerun with -NoBuild." }
-  & $make.Source -C $RepoRoot core
-  if ($LASTEXITCODE -ne 0) { throw "Build failed; installation was not changed." }
+  Heading "Building SLeeLa with the native Windows toolchain"
+  $buildScript = Join-Path $RepoRoot "build-windows.ps1"
+  if (-not (Test-Path $buildScript -PathType Leaf)) { throw "Windows build entry point is missing: $buildScript" }
+  & $buildScript
+  if ($LASTEXITCODE -ne 0) { throw "Windows native build failed; installation was not changed." }
 }
 Heading "Staging and integrity verification"
 $stage = Join-Path ([IO.Path]::GetTempPath()) ("sleela-clean-" + [guid]::NewGuid().ToString("N"))
 try {
-  foreach ($d in @("bin","lib","config","tools","security")) { New-Item -ItemType Directory -Force -Path (Join-Path $stage $d) | Out-Null }
+  # Installed executables live at <prefix>\bin. The runtime root MUST be
+  # <prefix>\lib\sleela because impl/frontend/driver.cpp derives it from the
+  # executable path and then looks for lib\, tools\, security\ and SHEET.sheet.
+  $runtimeRoot = Join-Path $stage "lib\sleela"
+  foreach ($d in @("bin","lib","config","tools","security")) { New-Item -ItemType Directory -Force -Path (Join-Path $runtimeRoot $d) | Out-Null }
+  New-Item -ItemType Directory -Force -Path (Join-Path $stage "bin") | Out-Null
   $manifestPath = Join-Path $RepoRoot "security\sha256-manifest.json"
   $verifier = Join-Path $RepoRoot "tools\verify-before-execution.py"
   if (-not (Test-Path $manifestPath) -or -not (Test-Path $verifier)) { throw "Integrity manifest/verifier missing." }
-  Copy-Item -Force $manifestPath (Join-Path $stage "security")
-  Copy-Item -Force $verifier (Join-Path $stage "tools")
+  Copy-Item -Force $manifestPath (Join-Path $runtimeRoot "security")
+  Copy-Item -Force $verifier (Join-Path $runtimeRoot "tools")
   $manifest = Get-Content $manifestPath -Raw | ConvertFrom-Json
   foreach ($entry in $manifest.files) {
     $relative = $entry.path.Replace("/", "\")
     $source = Join-Path $RepoRoot $relative
     if (-not (Test-Path $source -PathType Leaf)) { throw "Manifest source missing: $($entry.path)" }
-    $target = Join-Path $stage $relative
+    $target = Join-Path $runtimeRoot $relative
     New-Item -ItemType Directory -Force -Path (Split-Path -Parent $target) | Out-Null
     Copy-Item -Force $source $target
   }
   $py = Get-Command py -ErrorAction SilentlyContinue
-  if ($py) { & $py.Source -3 (Join-Path $stage "tools\verify-before-execution.py") --manifest (Join-Path $stage "security\sha256-manifest.json") --root $stage }
+  if ($py) { & $py.Source -3 (Join-Path $runtimeRoot "tools\verify-before-execution.py") --manifest (Join-Path $runtimeRoot "security\sha256-manifest.json") --root $runtimeRoot }
   else {
     $python = Get-Command python -ErrorAction SilentlyContinue
     if (-not $python) { throw "Python 3 is required for SHA-256 integrity verification." }
-    & $python.Source (Join-Path $stage "tools\verify-before-execution.py") --manifest (Join-Path $stage "security\sha256-manifest.json") --root $stage
+    & $python.Source (Join-Path $runtimeRoot "tools\verify-before-execution.py") --manifest (Join-Path $runtimeRoot "security\sha256-manifest.json") --root $runtimeRoot
   }
   if ($LASTEXITCODE -ne 0) { throw "Staged SHA-256 verification failed. Installation was not changed." }
   foreach ($product in @("sleela","sleelvac","nordshrift")) {
@@ -135,19 +140,31 @@ try {
   }
   foreach ($entry in Get-ChildItem $libRoot -Directory) {
     if ($excluded -contains $entry.Name) { continue }
-    Copy-Item -Recurse -Force $entry.FullName (Join-Path $stage "lib")
+    Copy-Item -Recurse -Force $entry.FullName (Join-Path $runtimeRoot "lib")
   }
-  Get-ChildItem $libRoot -File -Filter "*.md" | Copy-Item -Destination (Join-Path $stage "lib") -Force
+  Get-ChildItem $libRoot -File -Filter "*.md" | Copy-Item -Destination (Join-Path $runtimeRoot "lib") -Force
   # Stage selected top-level (non-lib/) programs into their own directories.
   foreach ($prog in $toplevelInclude) {
     $progSrc = Join-Path $RepoRoot $prog
     if (Test-Path $progSrc -PathType Container) { Copy-Item -Recurse -Force $progSrc $stage }
   }
-  if (Test-Path (Join-Path $RepoRoot "SHEET.sheet")) { Copy-Item -Force (Join-Path $RepoRoot "SHEET.sheet") $stage }
+  if (Test-Path (Join-Path $RepoRoot "SHEET.sheet")) { Copy-Item -Force (Join-Path $RepoRoot "SHEET.sheet") $runtimeRoot }
   $servers = if ($excluded -contains "http") { "excluded" } else { "included" }
   $ides = if ($excluded -contains "ide") { "excluded" } else { "included" }
   $wifi = if ($excluded -contains "wifi") { "excluded" } else { "included" }
-  @("# Generated by SLeeLa Clean Install for Windows","install.mode=$Mode","install.root=$Destination","package=main","servers=$servers","ides=$ides","wifi=$wifi") | Set-Content -Encoding UTF8 (Join-Path $stage "config\startup.conf")
+  @("# Generated by SLeeLa Clean Install for Windows","install.mode=$Mode","install.root=$Destination","package=main","servers=$servers","ides=$ides","wifi=$wifi") | Set-Content -Encoding UTF8 (Join-Path $runtimeRoot "config\startup.conf")
+  # Final layout guard: fail before touching the destination if the installed
+  # executable-relative runtime contract is not satisfied.
+  foreach ($required in @(
+    (Join-Path $stage "bin\sleela.exe"),
+    (Join-Path $stage "bin\sleelvac.exe"),
+    (Join-Path $stage "bin\nordshrift.exe"),
+    (Join-Path $runtimeRoot "tools\verify-before-execution.py"),
+    (Join-Path $runtimeRoot "security\sha256-manifest.json"),
+    (Join-Path $runtimeRoot "lib")
+  )) {
+    if (-not (Test-Path $required)) { throw "Staged Windows runtime is incomplete: $required. Installation was not changed." }
+  }
   Heading "Installing"
   if (Test-Path $Destination) {
     $backupRoot = if ($Mode -eq "user") { Join-Path $env:LOCALAPPDATA "SLeeLa-backups" } else { Join-Path $env:ProgramData "SLeeLa-backups" }
@@ -164,7 +181,7 @@ try {
   $parts = @($path -split ';' | Where-Object { $_ -and $_ -ne $bin })
   [Environment]::SetEnvironmentVariable("Path", (($parts + $bin) -join ';'), $scopePath)
   Write-Host "SLeeLa $Release installed." -ForegroundColor Green
-  Write-Host "Binaries: $bin"; Write-Host "Configuration: $(Join-Path $Destination 'config\startup.conf')"
+  Write-Host "Binaries: $bin"; Write-Host "Runtime: $(Join-Path $Destination 'lib\sleela')"; Write-Host "Configuration: $(Join-Path $Destination 'lib\sleela\config\startup.conf')"
   Write-Host "Modules excluded: $($excluded.Count)"
   Write-Host "Top-level programs installed: $($toplevelInclude.Count)$(if ($toplevelInclude.Count -gt 0) { ' (' + ($toplevelInclude -join ', ') + ')' })"
 } finally { if (Test-Path $stage) { Remove-Item -Recurse -Force $stage } }

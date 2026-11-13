@@ -10,6 +10,20 @@ and streams them to a local file.
   second and whose output matches an independent reference exactly. Raise it to
   produce more digits (read the performance note first).
 
+## Native IPC status and reference worker
+
+The separate Native IPC reference worker and its 20,000-digit correctness
+fixture are documented here:
+
+- [Native/AOT and IPC architecture](AT-NATIVE.md)
+- [Native IPC implementation status](NATIVE-IPC-IMPLEMENTATION-2026-11-09.md)
+- [Native IPC protocol and lifecycle](../impl/native-drive/IPC-PROTOCOL.md)
+- [20,000-digit IPC verification record](PI-IPC-20K-BENCHMARK.md)
+
+Important distinction: the 20,000-digit IPC fixture currently runs the Python
+reference worker. It is not a measurement of this SLeeLa Pi generator, the
+SLeeLa VM math kernel, or `sleelactl` performance.
+
 ## Algorithm
 
 The source declares `#sleela 2.9` so it is accepted by both the older

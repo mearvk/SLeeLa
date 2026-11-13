@@ -1,0 +1,120 @@
+<< lib/advantage/trading/SLTradingArbitrage.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Arbitrage: the same asset at two prices on two venues, net of both-leg fees,
+   slippage, fixed and holding costs, with a break-even sell price. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Model 1 of the trading subject. Buy low on one venue, sell high on another. >
+< Digital: a token on a DEX sold on a CEX. Physical: a regional listing relisted >
+< on a premium venue. Costs are explicit so a gap that costs consume is a loss. >
+class SLTradingArbitrage {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39002;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  < ---- shared validation, created on first use ---- >
+  SLTradingCheck chk;
+  SLTradingCheck check() {
+    if (chk == null) { chk = new SLTradingCheck(); }
+    return chk;
+  }
+
+  boolean inputsOk(double buyPrice, double sellPrice, double quantity,
+                   double buyFeeRate, double sellFeeRate, double slippageRate,
+                   double fixedCosts, double holdingCostPerDay, double holdDays) {
+    SLTradingCheck c = check();
+    if (c.isPositive(buyPrice) == false) { return false; }
+    if (c.isPositive(sellPrice) == false) { return false; }
+    if (c.isPositive(quantity) == false) { return false; }
+    if (c.isRate(buyFeeRate) == false) { return false; }
+    if (c.isRate(sellFeeRate) == false) { return false; }
+    if (c.isRate(slippageRate) == false) { return false; }
+    < the sell leg must keep a positive share of its notional >
+    if (sellFeeRate + slippageRate >= 1.0) { return false; }
+    if (c.isAmount(fixedCosts) == false) { return false; }
+    if (c.isAmount(holdingCostPerDay) == false) { return false; }
+    if (c.isDays(holdDays) == false) { return false; }
+    return true;
+  }
+
+  double totalCost(double buyPrice, double quantity, double buyFeeRate,
+                   double slippageRate, double fixedCosts,
+                   double holdingCostPerDay, double holdDays) {
+    return quantity * buyPrice * (1.0 + buyFeeRate + slippageRate)
+         + fixedCosts + holdingCostPerDay * holdDays;
+  }
+
+  SLTradingResult evaluate(double buyPrice, double sellPrice, double quantity,
+                           double buyFeeRate, double sellFeeRate,
+                           double slippageRate, double fixedCosts,
+                           double holdingCostPerDay, double holdDays) {
+    SLTradingCheck c = check();
+    if (inputsOk(buyPrice, sellPrice, quantity, buyFeeRate, sellFeeRate,
+                 slippageRate, fixedCosts, holdingCostPerDay, holdDays) == false) {
+      return c.fail(c.rangeMessage());
+    }
+    double cost = totalCost(buyPrice, quantity, buyFeeRate, slippageRate,
+                            fixedCosts, holdingCostPerDay, holdDays);
+    double proceeds = quantity * sellPrice * (1.0 - sellFeeRate - slippageRate);
+    return c.finish(cost, proceeds, holdDays);
+  }
+
+  < Lowest sell price per unit at which the arbitrage breaks even. >
+  < Returns -1.0 when the inputs are invalid. >
+  double breakeven(double buyPrice, double sellPrice, double quantity,
+                   double buyFeeRate, double sellFeeRate, double slippageRate,
+                   double fixedCosts, double holdingCostPerDay, double holdDays) {
+    SLTradingCheck c = check();
+    if (inputsOk(buyPrice, sellPrice, quantity, buyFeeRate, sellFeeRate,
+                 slippageRate, fixedCosts, holdingCostPerDay, holdDays) == false) {
+      return -1.0;
+    }
+    double cost = totalCost(buyPrice, quantity, buyFeeRate, slippageRate,
+                            fixedCosts, holdingCostPerDay, holdDays);
+    double v = cost / (quantity * (1.0 - sellFeeRate - slippageRate));
+    if (c.isFinite(v) == false) { return -1.0; }
+    return v;
+  }
+}

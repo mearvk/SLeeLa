@@ -6,7 +6,15 @@
 #include <string>
 namespace sleela {
 struct SyntaxVersion { int major=0, minor=0; std::string str() const { return std::to_string(major)+"."+std::to_string(minor); } bool operator<(const SyntaxVersion&o)const{return major!=o.major?major<o.major:minor<o.minor;} bool operator>(const SyntaxVersion&o)const{return o<*this;} bool operator==(const SyntaxVersion&o)const{return major==o.major&&minor==o.minor;} bool operator<=(const SyntaxVersion&o)const{return !(*this>o);} bool operator>=(const SyntaxVersion&o)const{return !(*this<o);} };
-// Supported source-syntax range the toolchain drives: 1.0 .. 3.0. Features
+// Supported source-syntax range the toolchain drives: 1.0 .. 3.2 (3.1 may be
+// written 3.01: the minor is an integer, so a leading zero is accepted).
+// Syntax 3.2 (sections 45 and 46 of SLEELA.syntax) adds the char specification
+// (a typed char literal, char shown as text, char promotion) and the array
+// specification (a.length, multi-dimensional creation new T[a][b]).
+// Syntax 3.1 (section 44 of SLEELA.syntax) adds the character literal, the
+// array initializer, labeled statements with labeled break/continue, and
+// return/break/continue through finally (the finally now runs).
+// Previously: 1.0 .. 3.0. Features
 // introduced in later minors are still gated individually (a 1.0 source that
 // uses, e.g., network built-ins errors with "requires #sleela 1.1"), but the
 // floor itself is 1.0 so the runtime can drive the whole 1.0 .. 3.0 range.
@@ -88,7 +96,7 @@ struct SyntaxVersion { int major=0, minor=0; std::string str() const { return st
 // ordinary identifier anywhere else (and in any document below 3.0)
 // (section 35 of SLEELA.syntax).
 inline SyntaxVersion minSupportedSyntax(){return SyntaxVersion{1,0};}
-inline SyntaxVersion maxSupportedSyntax(){return SyntaxVersion{3,0};} inline SyntaxVersion defaultSyntaxVersion(){return maxSupportedSyntax();}
+inline SyntaxVersion maxSupportedSyntax(){return SyntaxVersion{3,2};} inline SyntaxVersion defaultSyntaxVersion(){return maxSupportedSyntax();}
 enum class VersionStatus{OkDeclared,OkAssumed,TooNew,TooOld,Malformed};
 struct VersionResolution{ VersionStatus status=VersionStatus::OkAssumed; SyntaxVersion declared; bool pragmaPresent=false; std::string raw; std::string message; bool accepted()const{return status==VersionStatus::OkDeclared||status==VersionStatus::OkAssumed;} bool isError()const{return !accepted();} bool isWarning()const{return status==VersionStatus::OkAssumed;} };
 bool parseSyntaxVersion(const std::string& text,SyntaxVersion& out); VersionResolution resolveSyntaxVersion(const std::string& source);

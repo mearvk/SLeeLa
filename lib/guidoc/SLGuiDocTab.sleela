@@ -1,0 +1,225 @@
+<< lib/guidoc/SLGuiDocTab.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiDocTab — one open document in the GUI: its standing
+     document, its own dynamic observer, the white GUI listener admitted to
+     that observer, the path it was loaded from or saved to, the saved
+     revision (dirty means the revision moved since), the selected line and the
+     editor scroll position. A tab opened unsplit is read-only. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import ui;
+< Family: guidoc. Edits go through the observer so every listener sees them. >
+class SLGuiDocTab {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39245;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String title;
+  String path;
+  SLObserverDocument doc;
+  SLDocumentObserver obs;
+  SLGuiDocListener.Responder listener;
+  int savedRevision;
+  int readOnly;
+  int selected;
+  int viewTop;
+  < system lock: 1 while the system is locked >
+  int locked;
+  < editor choice: 1 while an admin session may edit this tab despite the lock >
+  int choice;
+  String[] snapLines;
+  int snapCount;
+  int snapRevision;
+  int snapSaved;
+  int snapSelected;
+  int snapTop;
+  int snapTaken;
+
+  void configure(String name, SLGuiDocWhite white, String listenerPort, boolean flagExternal) {
+    title = name; path = "";
+    doc = new SLObserverDocument();
+    doc.configure(name);
+    obs = new SLDocumentObserver();
+    obs.configure(doc);
+    listener = new SLGuiDocListener.Responder();
+    listener.attach(listenerPort, white, flagExternal);
+    obs.admit(listener.portOf());
+    savedRevision = 0; readOnly = 0; selected = -1; viewTop = 0;
+    locked = 0; choice = 0; snapTaken = 0; snapCount = 0; snapRevision = 0; snapSaved = 0;
+    snapSelected = -1; snapTop = 0;
+    snapLines = new String[64];
+    int z = 0;
+    while (z < 64) { snapLines[z] = ""; z = z + 1; }
+    settle();
+  }
+  String getTitle() { return title; }
+  void setTitle(String t) { title = t; }
+  String getPath() { return path; }
+  void setPath(String p) { path = p; }
+  SLObserverDocument body() { return doc; }
+  SLDocumentObserver observer() { return obs; }
+  SLGuiDocListener.Responder guiListener() { return listener; }
+  boolean isReadOnly() { return readOnly == 1; }
+  void lock() { readOnly = 1; }
+  int selectedLine() { return selected; }
+  int topLine() { return viewTop; }
+  boolean hasSelection() { return selected >= 0 && selected < doc.lineCount(); }
+
+  < The host cycle for this tab: deliver, let the listener read, route. >
+  void settle() {
+    while (obs.beginCycle()) { listener.pump(); obs.endCycle(); }
+  }
+
+  boolean isLocked() { return locked == 1; }
+  boolean inChoice() { return choice == 1; }
+  < Locking the tab freezes its observer, so the lock holds against any other >
+  < writer too, not just the menu. >
+  void setLocked(boolean on) {
+    locked = on ? 1 : 0;
+    if (on) { obs.freeze(); } else { obs.thaw(); }
+  }
+
+  < Edit through the observer. Refused when the tab is read-only, and refused >
+  < while the system is locked unless an editor choice session is running on >
+  < this tab (checked here as well as in the menu, so no path around the lock). >
+  int edit(int op, int line, String text, String source) {
+    if (readOnly == 1) { return -1; }
+    if (locked == 1 && choice == 0) { return -1; }
+    int r = (locked == 1) ? obs.editAdmin(op, line, text, source) : obs.edit(op, line, text, source);
+    settle();
+    return r;
+  }
+  < Someone else changes the document (used for external changes). While the >
+  < system is locked this is refused even during an editor choice session: >
+  < the exemption is for the admin editing through the GUI only. >
+  int editAs(int op, int line, String text, String source) {
+    if (locked == 1) { return -1; }
+    int r = obs.edit(op, line, text, source);
+    settle();
+    return r;
+  }
+
+  < ---- editor choice session ------------------------------------------- >
+  < begin remembers the document exactly (lines, revision, saved state, >
+  < selection); end either keeps the edits or restores that state. Neither >
+  < leaves any mark on the tab: no flag, no exemption, no changed lock state. >
+
+  boolean beginChoice() {
+    if (readOnly == 1 || choice == 1) { return false; }
+    int i = 0;
+    while (i < doc.lineCount()) { snapLines[i] = doc.lineAt(i); i = i + 1; }
+    snapCount = doc.lineCount();
+    snapRevision = doc.revisionNow();
+    snapSaved = savedRevision;
+    snapSelected = selected;
+    snapTop = viewTop;
+    snapTaken = 1;
+    choice = 1;
+    return true;
+  }
+  < End the session. With revert=true the document is put back exactly as it >
+  < was when the session began. Returns true when something was reverted. >
+  boolean endChoice(boolean revert) {
+    if (choice == 0) { return false; }
+    choice = 0;
+    boolean reverted = false;
+    if (revert && snapTaken == 1) {
+      if (doc.restore(snapLines, snapCount, snapRevision)) {
+        savedRevision = snapSaved;
+        selected = snapSelected;
+        viewTop = snapTop;
+        listener.syncTo(snapRevision);
+        reverted = true;
+      }
+    }
+    snapTaken = 0;
+    return reverted;
+  }
+
+  boolean isDirty() { return doc.revisionNow() != savedRevision; }
+  void markSaved() { savedRevision = doc.revisionNow(); }
+
+  void select(int line) {
+    if (line >= 0 && line < doc.lineCount()) { selected = line; } else { selected = -1; }
+  }
+  < Keep the selection on a real line after the document changed. >
+  void clampSelection() {
+    if (doc.lineCount() == 0) { selected = -1; return; }
+    if (selected >= doc.lineCount()) { selected = doc.lineCount() - 1; }
+  }
+  < Scroll so the selected line is inside a window of `rows` rows. >
+  void ensureVisible(int rows) {
+    if (selected >= 0) {
+      if (selected < viewTop) { viewTop = selected; }
+      if (selected >= viewTop + rows) { viewTop = selected - rows + 1; }
+    }
+    int maxTop = doc.lineCount() - rows;
+    if (maxTop < 0) { maxTop = 0; }
+    if (viewTop > maxTop) { viewTop = maxTop; }
+    if (viewTop < 0) { viewTop = 0; }
+  }
+
+  < Load a file into this (still empty) tab. Returns the load code. >
+  int loadFrom(SLGuiDocFile file, String filePath, boolean lockUnsplit) {
+    int code = file.load(filePath, doc);
+    if (code == 0 || code == 10) {
+      path = filePath;
+      title = filePath;
+      if (code == 10 && lockUnsplit) { readOnly = 1; }
+      markSaved();
+      listener.syncTo(doc.revisionNow());
+      selected = -1; viewTop = 0;
+    }
+    return code;
+  }
+
+  < Save to a path. Refused for a read-only tab. Returns the save code. >
+  int saveTo(SLGuiDocFile file, String filePath) {
+    if (readOnly == 1) { return 9; }
+    int code = file.save(filePath, doc);
+    if (code == 0) { path = filePath; title = filePath; markSaved(); }
+    return code;
+  }
+}

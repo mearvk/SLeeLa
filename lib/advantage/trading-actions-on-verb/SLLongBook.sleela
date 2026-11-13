@@ -1,0 +1,300 @@
+<< lib/advantage/trading-actions-on-verb/SLLongBook.sleela
+   SLeeLa Standard Library Definition.
+   Definition: A long-only position book of FIFO lots with verbs buy, sell, hold and flatten, integer cents, time in whole days, and invariants checked after every action. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Trading actions on verb. Each verb is a method that returns a status code and >
+< leaves the book untouched when it refuses. The book is long only: a sell >
+< larger than the quantity held is refused (code 3), never turned into a short. >
+< Lots are kept oldest first and sold first in first out. Money is integer >
+< cents, quantity is whole shares, time is whole days that never go backwards. >
+< Status codes: 0 ok, 1 bad quantity, 2 bad price, 3 sell exceeds holding, >
+< 4 book full, 5 day goes backwards, 6 bad fee, 7 nothing held, >
+< 8 a size bound would be passed (quantity, price, fee, day or a running total). >
+< SLeeLa int is 64-bit and + - * / % are exact, but comparisons are exact only >
+< up to 2^53 - 1 (9,007,199,254,740,991). The bounds below keep every product >
+< and running total at or below 5e15, so every comparison here is exact. >
+< Fees are expensed: they are not added to a lot cost. realizedNet is a cash >
+< view: proceeds - cost of shares sold - EVERY fee paid so far, including the >
+< buy fees of shares still held. realizedGross excludes fees. >
+< Time queries need today >= the book day; earlier days answer -1 (false for >
+< isLongTerm), never a negative age. A flat book also answers -1 to oldestAge. >
+< Illustrative only: no order is placed and nothing here is trading advice. >
+class SLLongBook {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39202;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Largest accepted quantity, price and fee; largest running total. >
+  int maxQty = 100000000;
+  int maxPrice = 10000000;
+  int maxFee = 100000000;
+  int maxTotal = 4000000000000000;
+  < Largest day number accepted (about 27,000 years). >
+  int maxDay = 10000000;
+  int[] lotQty = new int[16];
+  int[] lotPrice = new int[16];
+  int[] lotDay = new int[16];
+  int count = 0;
+  int lastDay = 0;
+  int boughtQty = 0;
+  int soldQty = 0;
+  int boughtCost = 0;
+  int costSold = 0;
+  int proceedsTotal = 0;
+  int feesPaid = 0;
+  < Cost basis and pnl of the most recent sell, before fees. >
+  int lastSaleCost = 0;
+  int lastSalePnl = 0;
+
+  int maxLots() { return 16; }
+
+  String reason(int code) {
+    if (code == 0) { return "ok"; }
+    if (code == 1) { return "refused: quantity must be a whole number above zero"; }
+    if (code == 2) { return "refused: price must be above zero"; }
+    if (code == 3) { return "refused: sell exceeds the holding (long only, no short)"; }
+    if (code == 4) { return "refused: book is full"; }
+    if (code == 5) { return "refused: day goes backwards"; }
+    if (code == 6) { return "refused: fee must not be negative"; }
+    if (code == 7) { return "refused: nothing is held"; }
+    return "refused: a size bound would be passed";
+  }
+
+  int totalQty() {
+    int sum = 0;
+    int i = 0;
+    while (i < count) { sum = sum + lotQty[i]; i = i + 1; }
+    return sum;
+  }
+
+  < Cost of what is still held, in cents. >
+  int costBasis() {
+    int sum = 0;
+    int i = 0;
+    while (i < count) { sum = sum + lotQty[i] * lotPrice[i]; i = i + 1; }
+    return sum;
+  }
+
+  < Average cost per share, rounded down, and the leftover cents. >
+  int avgCostFloor() {
+    int q = totalQty();
+    if (q == 0) { return 0; }
+    return costBasis() / q;
+  }
+
+  int avgCostRemainder() {
+    int q = totalQty();
+    if (q == 0) { return 0; }
+    return costBasis() % q;
+  }
+
+  int lotCount() { return count; }
+  int lotQtyAt(int i) { return lotQty[i]; }
+  int lotPriceAt(int i) { return lotPrice[i]; }
+  int lotDayAt(int i) { return lotDay[i]; }
+  int currentDay() { return lastDay; }
+
+  < ---- Verbs ---- >
+
+  int buy(int day, int qty, int price, int fee) {
+    if (qty <= 0) { return 1; }
+    if (price <= 0) { return 2; }
+    if (fee < 0) { return 6; }
+    if (day < lastDay) { return 5; }
+    if (qty > maxQty || price > maxPrice || fee > maxFee || day > maxDay) { return 8; }
+    if (count >= maxLots()) { return 4; }
+    if (boughtCost + qty * price > maxTotal || feesPaid + fee > maxTotal) { return 8; }
+    if (boughtQty + qty > maxTotal) { return 8; }
+    lotQty[count] = qty;
+    lotPrice[count] = price;
+    lotDay[count] = day;
+    count = count + 1;
+    lastDay = day;
+    boughtQty = boughtQty + qty;
+    boughtCost = boughtCost + qty * price;
+    feesPaid = feesPaid + fee;
+    return 0;
+  }
+
+  < Sell oldest lots first. Refuses, changing nothing, when the sell is not >
+  < valid or exceeds the holding. >
+  int sell(int day, int qty, int price, int fee) {
+    if (qty <= 0) { return 1; }
+    if (price <= 0) { return 2; }
+    if (fee < 0) { return 6; }
+    if (day < lastDay) { return 5; }
+    if (qty > totalQty()) { return 3; }
+    if (price > maxPrice || fee > maxFee || day > maxDay) { return 8; }
+    if (proceedsTotal + qty * price > maxTotal || feesPaid + fee > maxTotal) { return 8; }
+    int need = qty;
+    int cost = 0;
+    int i = 0;
+    while (need > 0) {
+      int take = lotQty[i];
+      if (take > need) { take = need; }
+      cost = cost + take * lotPrice[i];
+      lotQty[i] = lotQty[i] - take;
+      need = need - take;
+      i = i + 1;
+    }
+    compact();
+    int proceeds = qty * price;
+    soldQty = soldQty + qty;
+    costSold = costSold + cost;
+    proceedsTotal = proceedsTotal + proceeds;
+    feesPaid = feesPaid + fee;
+    lastSaleCost = cost;
+    lastSalePnl = proceeds - cost;
+    lastDay = day;
+    return 0;
+  }
+
+  < Let time pass with no trade. >
+  int hold(int day) {
+    if (day < lastDay) { return 5; }
+    if (day > maxDay) { return 8; }
+    lastDay = day;
+    return 0;
+  }
+
+  < Sell everything that is held. >
+  int flatten(int day, int price, int fee) {
+    int q = totalQty();
+    if (q == 0) { return 7; }
+    return sell(day, q, price, fee);
+  }
+
+  < Remove emptied lots, keeping the rest in order. >
+  void compact() {
+    int w = 0;
+    int r = 0;
+    while (r < count) {
+      if (lotQty[r] > 0) {
+        lotQty[w] = lotQty[r];
+        lotPrice[w] = lotPrice[r];
+        lotDay[w] = lotDay[r];
+        w = w + 1;
+      }
+      r = r + 1;
+    }
+    count = w;
+  }
+
+  < ---- Money ---- >
+
+  < Realized profit before fees, over everything sold so far. >
+  int realizedGross() { return proceedsTotal - costSold; }
+  < Realized profit after every fee paid so far, buys and sells. >
+  int realizedNet() { return proceedsTotal - costSold - feesPaid; }
+  int fees() { return feesPaid; }
+
+  < ---- Time on long ---- >
+
+  < True when today is not before the book day, so ages cannot be negative. >
+  boolean validToday(int today) { return today >= lastDay; }
+
+  int ageOf(int i, int today) {
+    if (!validToday(today)) { return 0 - 1; }
+    return today - lotDay[i];
+  }
+
+  < Age of the oldest lot in days, or -1 when flat or when today is invalid. >
+  int oldestAge(int today) {
+    if (count == 0 || !validToday(today)) { return 0 - 1; }
+    return today - lotDay[0];
+  }
+
+  < Quantity-weighted average age in whole days, rounded down; 0 when flat, >
+  < -1 when today is invalid. >
+  int weightedAgeFloor(int today) {
+    if (!validToday(today)) { return 0 - 1; }
+    int q = totalQty();
+    if (q == 0) { return 0; }
+    int sum = 0;
+    int i = 0;
+    while (i < count) { sum = sum + lotQty[i] * (today - lotDay[i]); i = i + 1; }
+    return sum / q;
+  }
+
+  < Shares held for more than maxAge days. >
+  int qtyOlderThan(int today, int maxAge) {
+    if (!validToday(today)) { return 0 - 1; }
+    int sum = 0;
+    int i = 0;
+    while (i < count) {
+      if (today - lotDay[i] > maxAge) { sum = sum + lotQty[i]; }
+      i = i + 1;
+    }
+    return sum;
+  }
+
+  < A lot is long term when it is held for MORE than threshold days. >
+  boolean isLongTerm(int i, int today, int threshold) {
+    if (!validToday(today)) { return false; }
+    return today - lotDay[i] > threshold;
+  }
+
+  int qtyLongTerm(int today, int threshold) {
+    return qtyOlderThan(today, threshold);
+  }
+
+  < ---- Invariants ---- >
+  < 1 every lot has positive quantity and price; 2 lot days never decrease >
+  < and never pass the book day; 3 count is within the 16-lot capacity; 4 shares held = >
+  < shares bought - shares sold; 5 cost held = cost bought - cost sold. >
+  boolean invariantsHold() {
+    if (count < 0 || count > maxLots()) { return false; }
+    int i = 0;
+    int prev = 0;
+    while (i < count) {
+      if (lotQty[i] <= 0 || lotPrice[i] <= 0) { return false; }
+      if (lotDay[i] < prev || lotDay[i] > lastDay) { return false; }
+      prev = lotDay[i];
+      i = i + 1;
+    }
+    if (totalQty() != boughtQty - soldQty) { return false; }
+    if (costBasis() != boughtCost - costSold) { return false; }
+    return true;
+  }
+}

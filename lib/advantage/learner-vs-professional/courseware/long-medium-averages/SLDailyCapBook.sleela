@@ -1,0 +1,252 @@
+<< lib/advantage/learner-vs-professional/courseware/long-medium-averages/SLDailyCapBook.sleela
+   SLeeLa courseware lesson.
+   Definition: A long-only FIFO position book, the same shape as SLLongBook, with one added rule: a single day may record at most 2,000 actions (buy, sell, hold or flatten calls that reach the quantity/price/fee checks). >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< The medium-term courseware wants a day's trading pace bounded, so a learner >
+< can reason about "how many trades is a lot" with a real number. This class >
+< is SLLongBook with one more rule: once a day has recorded 2,000 actions, any >
+< further action on that same day is refused with code 10, unchanged, and the >
+< caller is told to wait for the next day. The count resets when the day >
+< changes. This is a teaching bound, not a market rule. >
+< Status codes 0-8 match SLLongBook (see SLLongBook.sleela). 10 = the daily >
+< action cap (2,000) has been reached for the current day. >
+< >
+< UNVERIFIED CLAIM, recorded as a claim and not as a tested fact: during >
+< planning, a requester stated they were sure, based on their own stated >
+< personal trading experience, that day traders make roughly 20 percent >
+< profit per 2,000 trades. This class does not compute, check, or support >
+< that figure. The 2,000 here is an unrelated, independently chosen teaching >
+< bound on actions PER DAY (see above), not a batch size over which any >
+< return is measured. No method below returns a profit figure tied to a >
+< count of 2,000 trades, and no test in this codebase verifies the 20 >
+< percent claim. If a real, checked model of return-per-batch-of-N-trades is >
+< wanted, it would be a new, separate addition -- see the discussion of this >
+< exact claim in ../ORGANIZED.md. >
+class SLDailyCapBook {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39330;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int dailyCap = 2000;
+  int maxQty = 100000000;
+  int maxPrice = 10000000;
+  int maxFee = 100000000;
+  int maxTotal = 4000000000000000;
+  int maxDay = 10000000;
+  int[] lotQty = new int[16];
+  int[] lotPrice = new int[16];
+  int[] lotDay = new int[16];
+  int count = 0;
+
+  int maxLots() { return 16; }
+  int lastDay = 0;
+  int boughtQty = 0;
+  int soldQty = 0;
+  int boughtCost = 0;
+  int costSold = 0;
+  int proceedsTotal = 0;
+  int feesPaid = 0;
+  int lastSaleCost = 0;
+  int lastSalePnl = 0;
+  < How many actions (of any verb) have been recorded on lastDay so far. >
+  int actionsToday = 0;
+
+  String reason(int code) {
+    if (code == 0) { return "ok"; }
+    if (code == 1) { return "refused: quantity must be a whole number above zero"; }
+    if (code == 2) { return "refused: price must be above zero"; }
+    if (code == 3) { return "refused: sell exceeds the holding (long only, no short)"; }
+    if (code == 4) { return "refused: book is full"; }
+    if (code == 5) { return "refused: day goes backwards"; }
+    if (code == 6) { return "refused: fee must not be negative"; }
+    if (code == 7) { return "refused: nothing is held"; }
+    if (code == 8) { return "refused: a size bound would be passed"; }
+    return "refused: 2,000 actions already recorded today, wait for the next day";
+  }
+
+  int totalQty() {
+    int sum = 0;
+    int i = 0;
+    while (i < count) { sum = sum + lotQty[i]; i = i + 1; }
+    return sum;
+  }
+
+  int costBasis() {
+    int sum = 0;
+    int i = 0;
+    while (i < count) { sum = sum + lotQty[i] * lotPrice[i]; i = i + 1; }
+    return sum;
+  }
+
+  int avgCostFloor() {
+    int q = totalQty();
+    if (q == 0) { return 0; }
+    return costBasis() / q;
+  }
+
+  int avgCostRemainder() {
+    int q = totalQty();
+    if (q == 0) { return 0; }
+    return costBasis() % q;
+  }
+
+  int lotCount() { return count; }
+  int lotQtyAt(int i) { return lotQty[i]; }
+  int lotPriceAt(int i) { return lotPrice[i]; }
+  int lotDayAt(int i) { return lotDay[i]; }
+  int currentDay() { return lastDay; }
+  int actionsOnCurrentDay() { return actionsToday; }
+  int remainingToday() { return dailyCap - actionsToday; }
+
+  < Call once per verb, after the day is known valid (not backwards) but >
+  < before anything else changes. On a new day the counter resets to 0. >
+  < Returns true when the action may proceed, false when the cap refuses it. >
+  boolean admitAction(int day) {
+    if (day != lastDay) { actionsToday = 0; }
+    if (actionsToday >= dailyCap) { return false; }
+    actionsToday = actionsToday + 1;
+    return true;
+  }
+
+  int buy(int day, int qty, int price, int fee) {
+    if (qty <= 0) { return 1; }
+    if (price <= 0) { return 2; }
+    if (fee < 0) { return 6; }
+    if (day < lastDay) { return 5; }
+    if (qty > maxQty || price > maxPrice || fee > maxFee || day > maxDay) { return 8; }
+    if (!admitAction(day)) { return 10; }
+    if (count >= maxLots()) { return 4; }
+    if (boughtCost + qty * price > maxTotal || feesPaid + fee > maxTotal) { return 8; }
+    lotQty[count] = qty;
+    lotPrice[count] = price;
+    lotDay[count] = day;
+    count = count + 1;
+    lastDay = day;
+    boughtQty = boughtQty + qty;
+    boughtCost = boughtCost + qty * price;
+    feesPaid = feesPaid + fee;
+    return 0;
+  }
+
+  int sell(int day, int qty, int price, int fee) {
+    if (qty <= 0) { return 1; }
+    if (price <= 0) { return 2; }
+    if (fee < 0) { return 6; }
+    if (day < lastDay) { return 5; }
+    if (qty > totalQty()) { return 3; }
+    if (price > maxPrice || fee > maxFee || day > maxDay) { return 8; }
+    if (proceedsTotal + qty * price > maxTotal || feesPaid + fee > maxTotal) { return 8; }
+    if (!admitAction(day)) { return 10; }
+    int need = qty;
+    int cost = 0;
+    int i = 0;
+    while (need > 0) {
+      int take = lotQty[i];
+      if (take > need) { take = need; }
+      cost = cost + take * lotPrice[i];
+      lotQty[i] = lotQty[i] - take;
+      need = need - take;
+      i = i + 1;
+    }
+    compact();
+    int proceeds = qty * price;
+    soldQty = soldQty + qty;
+    costSold = costSold + cost;
+    proceedsTotal = proceedsTotal + proceeds;
+    feesPaid = feesPaid + fee;
+    lastSaleCost = cost;
+    lastSalePnl = proceeds - cost;
+    lastDay = day;
+    return 0;
+  }
+
+  int hold(int day) {
+    if (day < lastDay) { return 5; }
+    if (day > maxDay) { return 8; }
+    if (!admitAction(day)) { return 10; }
+    lastDay = day;
+    return 0;
+  }
+
+  int flatten(int day, int price, int fee) {
+    int q = totalQty();
+    if (q == 0) { return 7; }
+    return sell(day, q, price, fee);
+  }
+
+  void compact() {
+    int w = 0;
+    int r = 0;
+    while (r < count) {
+      if (lotQty[r] > 0) {
+        lotQty[w] = lotQty[r];
+        lotPrice[w] = lotPrice[r];
+        lotDay[w] = lotDay[r];
+        w = w + 1;
+      }
+      r = r + 1;
+    }
+    count = w;
+  }
+
+  int realizedGross() { return proceedsTotal - costSold; }
+  int realizedNet() { return proceedsTotal - costSold - feesPaid; }
+  int fees() { return feesPaid; }
+
+  boolean invariantsHold() {
+    if (count < 0 || count > maxLots()) { return false; }
+    int i = 0;
+    int prev = 0;
+    while (i < count) {
+      if (lotQty[i] <= 0 || lotPrice[i] <= 0) { return false; }
+      if (lotDay[i] < prev || lotDay[i] > lastDay) { return false; }
+      prev = lotDay[i];
+      i = i + 1;
+    }
+    if (totalQty() != boughtQty - soldQty) { return false; }
+    if (costBasis() != boughtCost - costSold) { return false; }
+    if (actionsToday < 0 || actionsToday > dailyCap) { return false; }
+    return true;
+  }
+}

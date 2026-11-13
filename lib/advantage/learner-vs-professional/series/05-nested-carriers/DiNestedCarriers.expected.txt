@@ -1,0 +1,25 @@
+== Lesson 5: nested carriers ==
+-- build the record, its fields and its list --
+  register customer-17 -> customer file : accepted
+  register name -> customer-17 : accepted
+  register city -> customer-17 : accepted
+  register order list -> customer-17 : accepted
+  register order 1 -> order list : accepted
+  register order 2 -> order list : accepted
+  register order 3 -> order list : accepted
+-- the chain for each noun --
+  customer-17 -> customer file   depth=1
+  city -> customer-17 -> customer file   depth=2
+  order 2 -> order list -> customer-17 -> customer file   depth=3
+-- what each carrier holds directly --
+  customer-17 holds 3
+  order list holds 3
+  order 1 holds 0
+-- placement checks --
+  register order 2 -> customer-17 : refused: noun already has a carrier (one place only)
+  register order 4 -> order archive : refused: carrier is not the field and not a registered noun
+  register order 5 -> order 5 : refused: carrier is not the field and not a registered noun
+-- outside the field --
+  not observed (not in field customer file)
+-- instructor tally --
+  accepted=7 refused=3 registered=7

@@ -1,0 +1,98 @@
+<< lib/advantage/trading/SLTradingVirtual.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Virtual inventory: take payment first and source the item after, pricing
+   fulfilment failure and source price drift. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Model 9 of the trading subject. The sale funds the purchase. Assumes an >
+< honest, disclosed sale. A platform ban ends the model, not one sale. >
+class SLTradingVirtual {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39010;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  < ---- shared validation, created on first use ---- >
+  SLTradingCheck chk;
+  SLTradingCheck check() {
+    if (chk == null) { chk = new SLTradingCheck(); }
+    return chk;
+  }
+
+  << Take the customer payment first and source the item afterwards. The sale
+     funds the purchase, so return on cost here is measured on total outlay,
+     NOT on your own capital. Your capital at risk is mainly the fixed costs
+     plus the failure branch, which is why the failure probability is the most
+     important number in this model. It assumes an HONEST sale: the buyer is
+     told it is fulfilled to order with a stated lead time. >>
+  SLTradingResult evaluate(double salePrice, double sourcePrice,
+                           double quantity, double saleFeeRate,
+                           double sourceFeeRate, double shippingCost,
+                           double priceDriftRate,
+                           double fulfillmentFailureProbability,
+                           double failureLoss, double fixedCosts,
+                           double daysToFulfil) {
+    SLTradingCheck c = check();
+    if (c.isPositive(salePrice) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isPositive(sourcePrice) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isPositive(quantity) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isRate(saleFeeRate) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isRate(sourceFeeRate) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(shippingCost) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isRate(priceDriftRate) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isProb(fulfillmentFailureProbability) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(failureLoss) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(fixedCosts) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isDays(daysToFulfil) == false) { return c.fail(c.rangeMessage()); }
+
+    double f = fulfillmentFailureProbability;
+    double sourceCost = quantity * sourcePrice * (1.0 + priceDriftRate)
+                      * (1.0 + sourceFeeRate) + shippingCost;
+    double revenue = quantity * salePrice * (1.0 - saleFeeRate);
+    < fixed costs are paid regardless; source and shipping only if you >
+    < fulfil; the failure loss only if you cannot >
+    double cost = fixedCosts + (1.0 - f) * sourceCost + f * failureLoss;
+    return c.finish(cost, (1.0 - f) * revenue, daysToFulfil);
+  }
+}

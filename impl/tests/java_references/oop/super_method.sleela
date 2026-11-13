@@ -1,0 +1,6 @@
+#sleela 3.0
+spark;
+material;
+class Base { String hi() { return "base"; } }
+class Kid extends Base { String hi() { return "kid+" + super.hi(); } }
+class P { void main() { Kid k = new Kid(); print(k.hi()); } }

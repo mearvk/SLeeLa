@@ -1,10 +1,10 @@
 #nordshrift 1.0
-#sleela     3.1
+#sleela     3.3
 
 sheet compat_new:
   version 1.0.0
   author "SLeeLa Compatibility Test"
-  description "Cross-version fixture: syntax above supported ceiling (3.1)"
+  description "Cross-version fixture: syntax above supported ceiling (3.2; 3.3 is above it)"
 
 source:
   root "src"

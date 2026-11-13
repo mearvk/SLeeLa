@@ -1,0 +1,25 @@
+== Use case 20: borrow cost and time stop ==
+  ok   set the borrow rate = 0
+  short 40 @ 5000 on day 0 : ok
+  short 60 @ 5100 on day 50 : ok
+-- day 100 --
+  ok   oldest age = 100
+  ok   weighted age (40*100 + 60*50) / 100 = 70
+  ok   borrow accrued, not yet paid = 21000
+  ok   shares short for more than 60 days = 40
+  cover 40 @ 4900 on day 100 : ok
+  ok   profit of that cover = 4000
+  ok   borrow paid (40 * 100 * 3) = 12000
+  ok   borrow accrued on what remains = 9000
+-- day 150: time stop at 90 days --
+  hold to day 150 : ok
+  ok   shares short for more than 90 days = 60
+  time stop: cover 60 @ 4950 on day 150 : ok
+  ok   passes taken = 1
+  ok   shares short = 0
+  ok   total borrow paid = 30000
+  ok   realized net = -17000
+  ok   oldest age when flat = -1
+  ok   a day before the book day has no answer = -1
+  ok   invariants hold
+  checks passed=16 failed=0

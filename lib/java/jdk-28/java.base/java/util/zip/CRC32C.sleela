@@ -1,0 +1,167 @@
+<< lib/java/jdk-28/java.base/java/util/zip/CRC32C.sleela
+   SLeeLa file for the Java type java.util.zip.CRC32C (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/zip/CRC32C.html
+   Java kind: class; extends java.lang.Object; implements java.util.zip.Checksum
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+import java.jdk-28;
+
+class CRC32C {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.1.0";
+  int metaId = 2019;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.zip.CRC32C";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/zip/CRC32C.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.zip.CRC32C members (procedural implementation in SLeeLa) ---- >
+  << The CRC-32C (Castagnoli) of RFC 3720. Table driven (reflected polynomial 2197175160), exactly the checksum
+     java.util.zip.CRC32C computes. Bytes are ints (only the low 8 bits are
+     used). update(byte[], off, len) is updateBytes; update(byte[]) is
+     updateAll. >>
+  long crc;
+  long[] table;
+  CRC32C() {
+    initNibbles();
+    this.table = new long[256];
+    int n = 0;
+    while (n < 256) {
+      long c = n;
+      int k = 0;
+      while (k < 8) {
+        if (c % 2 == 1) { c = xor32(2197175160, c / 2); } else { c = c / 2; }
+        k = k + 1;
+      }
+      this.table[n] = c;
+      n = n + 1;
+    }
+    this.crc = 4294967295;
+  }
+  void update(int b) {
+    long byteVal = b % 256;
+    if (byteVal < 0) { byteVal = byteVal + 256; }
+    long idx = xor32(this.crc % 256, byteVal);
+    this.crc = xor32(this.table[(int) idx], this.crc / 256);
+  }
+  void updateBytes(int[] b, int off, int len) {
+    if (off < 0 || len < 0 || off > arrayLength(b) - len) { throw new ArrayIndexOutOfBoundsException(null); }
+    int i = off;
+    while (i < off + len) { update(b[i]); i = i + 1; }
+  }
+  void updateAll(int[] b) { updateBytes(b, 0, arrayLength(b)); }
+  long getValue() { return xor32(this.crc, 4294967295); }
+  void reset() { this.crc = 4294967295; }
+  << Bitwise operations on unsigned 32-bit values through a 4-bit table
+     (the VM has no bitwise operators). >>
+  int[] nib;
+  void initNibbles() {
+    this.nib = new int[256];
+    int a = 0;
+    while (a < 16) {
+      int b = 0;
+      while (b < 16) {
+        int r = 0;
+        int bit = 1;
+        int x = a;
+        int y = b;
+        int k = 0;
+        while (k < 4) {
+          if ((x % 2) != (y % 2)) { r = r + bit; }
+          x = x / 2; y = y / 2; bit = bit * 2; k = k + 1;
+        }
+        this.nib[a * 16 + b] = r;
+        b = b + 1;
+      }
+      a = a + 1;
+    }
+  }
+  long xor32(long a, long b) {
+    long r = 0;
+    long mul = 1;
+    long x = a;
+    long y = b;
+    int k = 0;
+    while (k < 8) {
+      r = r + this.nib[(int) ((x % 16) * 16 + (y % 16))] * mul;
+      x = x / 16; y = y / 16; mul = mul * 16; k = k + 1;
+    }
+    return r;
+  }
+  < ---- END java implementation ---- >
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public CRC32C bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void update(byte[] b, int off, int len) { }
+  < ---- END java signatures ---- >
+}

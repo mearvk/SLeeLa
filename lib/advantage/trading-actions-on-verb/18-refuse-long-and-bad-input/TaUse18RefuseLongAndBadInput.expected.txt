@@ -1,0 +1,24 @@
+== Use case 18: refuse long and bad input ==
+  ok   set the borrow rate = 0
+  short 100 @ 5000 on day 10, fee 100 : ok
+  cover 101 @ 4900 (more than short) : refused: cover exceeds the shares short (short only, no long)
+  ok   code for cover above the shares short = 3
+  ok   code for zero quantity = 1
+  ok   code for zero price = 2
+  ok   code for negative fee = 6
+  ok   code for day going backwards = 5
+  ok   code for a price above the size bound = 8
+  ok   code for a day above the day bound = 8
+  ok   code for changing the rate while short = 9
+  ok   code for a rate above the bound = 8
+  ok   book unchanged after every refusal
+  ok   borrow rate unchanged = 3
+  ok   invariants hold
+-- an exact cover is fine, then flat means no more covers --
+  cover 100 @ 4900 on day 12, fee 100 : ok
+  ok   shares short = 0
+  ok   code for covering from flat = 3
+  ok   code for coverAll from flat = 7
+  ok   the rate can change again when flat = 0
+  ok   invariants hold
+  checks passed=18 failed=0

@@ -1,0 +1,16 @@
+== Lesson 11: coffee decision ==
+-- master (onion) --
+  Importer A total = 27700 cents
+  Importer B total = 27400 cents
+  master picks Importer B
+-- student, first pass: the quote of Importer A was entered in dollars, not cents --
+  Importer A total = 970 cents
+  Importer B total = 27400 cents
+  student picks Importer A
+  Importer A quote: student 270, master 27000 -> re-observe
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Importer A total = 27700 cents
+  Importer B total = 27400 cents
+  student picks Importer B
+  verdict: AGREE, work accepted

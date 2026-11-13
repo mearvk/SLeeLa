@@ -1,0 +1,225 @@
+<< lib/java/jdk-28/java.base/java/nio/file/Files.sleela
+   SLeeLa file for the Java type java.nio.file.Files (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/nio/file/Files.html
+   Java kind: class; extends java.lang.Object
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Files {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 3960;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.nio.file.Files";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/nio/file/Files.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Files bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static long size(Any path) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static boolean isHidden(Any path) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static long copy(Any source, Any out) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any copy(Any source, Any target, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static long mismatch(Any path, Any path2) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any lines(Any path) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any lines(Any path, Any cs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any list(Any dir) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static byte[] readAllBytes(Any path) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any find(Any start, int maxDepth, Any matcher, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any write(Any path, Any lines, Any cs, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any write(Any path, Any lines, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any write(Any path, byte[] bytes, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any walk(Any start, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any walk(Any start, int maxDepth, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static void delete(Any path) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean exists(Any path, Any... options) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isDirectory(Any path, Any... options) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any getOwner(Any path, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isRegularFile(Any path, Any... options) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any createDirectories(Any dir, Any... attrs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean notExists(Any path, Any... options) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isWritable(Any path) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any getLastModifiedTime(Any path, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any createDirectory(Any dir, Any... attrs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any setLastModifiedTime(Any path, Any time) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any createTempFile(String prefix, String suffix, Any... attrs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any createTempFile(Any dir, String prefix, String suffix, Any... attrs) { return null; }
+  @generic("<A extends java.nio.file.attribute.BasicFileAttributes>")
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any readAttributes(Any path, Any type, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any readAttributes(Any path, String attributes, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any newOutputStream(Any path, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any newInputStream(Any path, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any newByteChannel(Any path, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any newByteChannel(Any path, Any options, Any... attrs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any newDirectoryStream(Any dir, String glob) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any newDirectoryStream(Any dir, Any filter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any newDirectoryStream(Any dir) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any createTempDirectory(Any dir, String prefix, Any... attrs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any createTempDirectory(String prefix, Any... attrs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any createSymbolicLink(Any link, Any target, Any... attrs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any createLink(Any link, Any existing) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static boolean deleteIfExists(Any path) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any move(Any source, Any target, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any readSymbolicLink(Any link) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any getFileStore(Any path) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static boolean isSameFile(Any path, Any path2) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static String probeContentType(Any path) { return null; }
+  @generic("<V extends java.nio.file.attribute.FileAttributeView>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getFileAttributeView(Any path, Any type, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any setAttribute(Any path, String attribute, Any value, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any setOwner(Any path, Any owner) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isSymbolicLink(Any path) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isReadable(Any path) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static boolean isExecutable(Any path) { return false; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any walkFileTree(Any start, Any options, int maxDepth, Any visitor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any walkFileTree(Any start, Any visitor) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any newBufferedReader(Any path, Any cs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any newBufferedReader(Any path) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any newBufferedWriter(Any path, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any newBufferedWriter(Any path, Any cs, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static String readString(Any path) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static String readString(Any path, Any cs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any readAllLines(Any path, Any cs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any readAllLines(Any path) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any writeString(Any path, Any csq, Any cs, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any writeString(Any path, Any csq, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any createFile(Any path, Any... attrs) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any getAttribute(Any path, String attribute, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any getPosixFilePermissions(Any path, Any... options) { return null; }
+  @throwable("java.lang.UnsupportedOperationException, java.io.IOException")
+  public static Any setPosixFilePermissions(Any path, Any perms) { return null; }
+  < ---- END java signatures ---- >
+}

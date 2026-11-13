@@ -28,7 +28,8 @@ subjects/
 ├── physics/      physics_native.cpp     → addPhysics     (__NativePhysics)
 ├── economics/    economics_native.cpp   → addEconomics   (__NativeEconomics)
 ├── chemistry/    chemistry.{h,cpp}, chemistry_api.{h,cpp}, *.model
-└── finance/      financial.{h,cpp}, financial_api.{h,cpp}, FINANCIAL.model, README.md
+├── finance/      financial.{h,cpp}, financial_api.{h,cpp}, FINANCIAL.model, README.md
+└── conversion/   conversion.model, README.md  (Java -> SLeeLa laws; consumed by sleelactl/convert)
 ```
 
 ## Two shapes of subject library

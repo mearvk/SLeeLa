@@ -1,0 +1,403 @@
+<< lib/guidoc/SLGuiDocSpec.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiDocSpec — the executable copy of gui-document.xml:
+     the window and theme, the commands, the menus and their items (with
+     accelerators and enabled-when conditions), the tab strip, the editor, the
+     file dialog and the listener. The GUI is built from this spec, and
+     tools/validate_gui_document.py fails if the XML and standard() drift.
+     Every addition is validated and refused (fail closed) when out of
+     vocabulary, duplicated or over a cap. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import ui;
+< Family: guidoc. 8 menus, 48 items, 32 commands. Accelerators are unique. >
+class SLGuiDocSpec {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39241;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String winTitle;
+  String winTheme;
+  int maxTabs;
+  String dirtyMarker;
+  String newTabTitle;
+  int editorRows;
+  int lineNumbers;
+  int readOnlyWhenUnsplit;
+  String sidecarSuffix;
+  int maxLines;
+  int maxBytes;
+  String listenerPort;
+  int flagExternal;
+  String readiness;
+  String release;
+  String[] mId;
+  String[] mLabel;
+  int mCount;
+  String[] iMenu;
+  String[] iId;
+  String[] iLabel;
+  String[] iCommand;
+  String[] iAccel;
+  String[] iWhen;
+  int iCount;
+  String[] cId;
+  String[] cHandler;
+  int[] cConfirm;
+  String[] cLock;
+  int cCount;
+  String[] tItem;
+  String[] tKind;
+  String[] tActive;
+  int tCount;
+  String choiceEdits;
+  String[] kAccel;
+  String[] kScope;
+  String[] kAction;
+  int kCount;
+  int refused;
+
+  void configure() {
+    mId = new String[8]; mLabel = new String[8];
+    iMenu = new String[48]; iId = new String[48]; iLabel = new String[48];
+    iCommand = new String[48]; iAccel = new String[48]; iWhen = new String[48];
+    cId = new String[32]; cHandler = new String[32]; cConfirm = new int[32]; cLock = new String[32];
+    tItem = new String[8]; tKind = new String[8]; tActive = new String[8];
+    int i = 0;
+    while (i < 48) {
+      iMenu[i] = ""; iId[i] = ""; iLabel[i] = ""; iCommand[i] = ""; iAccel[i] = ""; iWhen[i] = "";
+      i = i + 1;
+    }
+    int j = 0;
+    while (j < 8) { mId[j] = ""; mLabel[j] = ""; j = j + 1; }
+    int k = 0;
+    while (k < 32) { cId[k] = ""; cHandler[k] = ""; cConfirm[k] = 0; cLock[k] = "allowed"; k = k + 1; }
+    int q = 0;
+    while (q < 8) { tItem[q] = ""; tKind[q] = ""; tActive[q] = ""; q = q + 1; }
+    tCount = 0; choiceEdits = "keep";
+    kAccel = new String[8]; kScope = new String[8]; kAction = new String[8];
+    int kk = 0;
+    while (kk < 8) { kAccel[kk] = ""; kScope[kk] = ""; kAction[kk] = ""; kk = kk + 1; }
+    kCount = 0;
+    mCount = 0; iCount = 0; cCount = 0; refused = 0;
+    winTitle = ""; winTheme = ""; maxTabs = 0; dirtyMarker = ""; newTabTitle = "";
+    editorRows = 0; lineNumbers = 0; readOnlyWhenUnsplit = 0; sidecarSuffix = "";
+    maxLines = 0; maxBytes = 0; listenerPort = ""; flagExternal = 0;
+    readiness = "draft"; release = "0.0.0";
+  }
+
+  int refusedCount() { return refused; }
+  boolean no() { refused = refused + 1; return false; }
+
+  boolean knownTheme(String t) { return t == "white" || t == "blue" || t == "gray" || t == "black"; }
+  boolean knownWhen(String w) {
+    return w == "always" || w == "hasTab" || w == "dirty" || w == "editable"
+        || w == "selectionEditable" || w == "multipleTabs" || w == "admin" || w == "choiceReady"
+        || w == "hasLines";
+  }
+
+  boolean setWindow(String title, String theme) {
+    if (title == null || title == "" || !knownTheme(theme)) { return no(); }
+    winTitle = title; winTheme = theme;
+    return true;
+  }
+  boolean setTabs(int max, String marker, String newTitle) {
+    if (max < 1 || max > 14 || marker == "" || newTitle == "") { return no(); }
+    maxTabs = max; dirtyMarker = marker; newTabTitle = newTitle;
+    return true;
+  }
+  boolean setEditor(int rows, int numbers, int readOnlyUnsplit) {
+    if (rows < 4 || rows > 32 || (numbers != 0 && numbers != 1)) { return no(); }
+    if (readOnlyUnsplit != 0 && readOnlyUnsplit != 1) { return no(); }
+    editorRows = rows; lineNumbers = numbers; readOnlyWhenUnsplit = readOnlyUnsplit;
+    return true;
+  }
+  boolean setFileDialog(String suffix, int lines, int bytes) {
+    if (suffix == "" || lines < 1 || lines > 64 || bytes < 1) { return no(); }
+    sidecarSuffix = suffix; maxLines = lines; maxBytes = bytes;
+    return true;
+  }
+  boolean setListener(String port, int external) {
+    if (port == "" || (external != 0 && external != 1)) { return no(); }
+    listenerPort = port; flagExternal = external;
+    return true;
+  }
+
+  < The document is draft or ready. Ready is a claim that tools/ >
+  < validate_gui_document.py --gate checks against the demo. >
+  boolean setReadiness(String status, String version) {
+    if ((status != "draft" && status != "ready") || version == null || version == "") { return no(); }
+    readiness = status; release = version;
+    return true;
+  }
+  String getReadiness() { return readiness; }
+  String getRelease() { return release; }
+  boolean isCertified() { return readiness == "ready"; }
+
+  int commandIndex(String id) {
+    int i = 0;
+    while (i < cCount) { if (cId[i] == id) { return i; } i = i + 1; }
+    return -1;
+  }
+  int menuIndex(String id) {
+    int i = 0;
+    while (i < mCount) { if (mId[i] == id) { return i; } i = i + 1; }
+    return -1;
+  }
+  int itemIndex(String id) {
+    int i = 0;
+    while (i < iCount) { if (iId[i] == id) { return i; } i = i + 1; }
+    return -1;
+  }
+
+  < lockPolicy: allowed (runs while the system is locked), blocked (refused >
+  < while locked), choice (refused while locked unless the active tab is in an >
+  < editor choice session). >
+  boolean addCommand(String id, String handler, int confirms, String lockPolicy) {
+    if (id == "" || handler == "" || cCount >= 32 || commandIndex(id) >= 0) { return no(); }
+    if (confirms != 0 && confirms != 1) { return no(); }
+    if (lockPolicy != "allowed" && lockPolicy != "blocked" && lockPolicy != "choice") { return no(); }
+    cId[cCount] = id; cHandler[cCount] = handler; cConfirm[cCount] = confirms; cLock[cCount] = lockPolicy;
+    cCount = cCount + 1;
+    return true;
+  }
+  < A toggle item shows its label when the state is off and activeLabel when >
+  < on. kind is lock (the system lock) or choice (an editor choice session). >
+  boolean addToggle(String itemId, String kind, String activeLabel) {
+    if (itemIndex(itemId) < 0 || tCount >= 8 || activeLabel == "") { return no(); }
+    if (kind != "lock" && kind != "choice") { return no(); }
+    int k = 0;
+    while (k < tCount) { if (tItem[k] == itemId) { return no(); } k = k + 1; }
+    tItem[tCount] = itemId; tKind[tCount] = kind; tActive[tCount] = activeLabel;
+    tCount = tCount + 1;
+    return true;
+  }
+  < Change whether a command asks before it discards unsaved work. >
+  boolean setConfirms(String command, boolean on) {
+    int i = commandIndex(command);
+    if (i < 0) { return no(); }
+    cConfirm[i] = on ? 1 : 0;
+    return true;
+  }
+
+  < A modal key: Enter or Esc, meaningful only while a dialog (ok, cancel) or >
+  < a menu (close) is open. >
+  boolean addKey(String accel, String scope, String action) {
+    if (accel != "Enter" && accel != "Esc") { return no(); }
+    boolean okPair = (scope == "dialog" && (action == "dialog.ok" || action == "dialog.cancel"))
+        || (scope == "menu" && action == "menu.close");
+    if (!okPair || kCount >= 8 || actionForKey(accel, scope) != "") { return no(); }
+    kAccel[kCount] = accel; kScope[kCount] = scope; kAction[kCount] = action;
+    kCount = kCount + 1;
+    return true;
+  }
+  int keyTotal() { return kCount; }
+  String keyAccelAt(int i) { return (i >= 0 && i < kCount) ? kAccel[i] : ""; }
+  String keyScopeAt(int i) { return (i >= 0 && i < kCount) ? kScope[i] : ""; }
+  String keyActionAt(int i) { return (i >= 0 && i < kCount) ? kAction[i] : ""; }
+  String actionForKey(String accel, String scope) {
+    int i = 0;
+    while (i < kCount) { if (kAccel[i] == accel && kScope[i] == scope) { return kAction[i]; } i = i + 1; }
+    return "";
+  }
+
+  boolean setLock(String choiceEditsPolicy) {
+    if (choiceEditsPolicy != "keep" && choiceEditsPolicy != "revert") { return no(); }
+    choiceEdits = choiceEditsPolicy;
+    return true;
+  }
+  String lockPolicyOf(String command) {
+    int i = commandIndex(command);
+    return (i >= 0) ? cLock[i] : "blocked";
+  }
+  int toggleTotal() { return tCount; }
+  String toggleItemAt(int i) { return (i >= 0 && i < tCount) ? tItem[i] : ""; }
+  String toggleKindAt(int i) { return (i >= 0 && i < tCount) ? tKind[i] : ""; }
+  String toggleActiveLabelAt(int i) { return (i >= 0 && i < tCount) ? tActive[i] : ""; }
+  < The toggle kind of an item ("" if it is not a toggle). >
+  String toggleKindOf(String itemId) {
+    int k = 0;
+    while (k < tCount) { if (tItem[k] == itemId) { return tKind[k]; } k = k + 1; }
+    return "";
+  }
+  String toggleLabelOf(String itemId) {
+    int k = 0;
+    while (k < tCount) { if (tItem[k] == itemId) { return tActive[k]; } k = k + 1; }
+    return "";
+  }
+  String getChoiceEdits() { return choiceEdits; }
+  boolean choiceReverts() { return choiceEdits == "revert"; }
+  int commandsWithPolicy(String policy) {
+    int n = 0;
+    int i = 0;
+    while (i < cCount) { if (cLock[i] == policy) { n = n + 1; } i = i + 1; }
+    return n;
+  }
+  boolean addMenu(String id, String label) {
+    if (id == "" || label == "" || mCount >= 8 || menuIndex(id) >= 0) { return no(); }
+    mId[mCount] = id; mLabel[mCount] = label;
+    mCount = mCount + 1;
+    return true;
+  }
+  < An item needs an existing menu and command, a unique id, a known >
+  < enabled-when condition, and an accelerator no other item uses. >
+  boolean addItem(String menu, String id, String label, String command, String accel, String when) {
+    if (id == "" || label == "" || iCount >= 48 || itemIndex(id) >= 0) { return no(); }
+    if (menuIndex(menu) < 0 || commandIndex(command) < 0 || !knownWhen(when)) { return no(); }
+    if (accel != "" && commandForAccel(accel) != "") { return no(); }
+    iMenu[iCount] = menu; iId[iCount] = id; iLabel[iCount] = label;
+    iCommand[iCount] = command; iAccel[iCount] = accel; iWhen[iCount] = when;
+    iCount = iCount + 1;
+    return true;
+  }
+
+  int menuTotal() { return mCount; }
+  String menuIdAt(int i) { return (i >= 0 && i < mCount) ? mId[i] : ""; }
+  String menuLabelAt(int i) { return (i >= 0 && i < mCount) ? mLabel[i] : ""; }
+  int itemTotal() { return iCount; }
+  String itemMenuAt(int i) { return (i >= 0 && i < iCount) ? iMenu[i] : ""; }
+  String itemIdAt(int i) { return (i >= 0 && i < iCount) ? iId[i] : ""; }
+  String itemLabelAt(int i) { return (i >= 0 && i < iCount) ? iLabel[i] : ""; }
+  String itemCommandAt(int i) { return (i >= 0 && i < iCount) ? iCommand[i] : ""; }
+  String itemAccelAt(int i) { return (i >= 0 && i < iCount) ? iAccel[i] : ""; }
+  String itemWhenAt(int i) { return (i >= 0 && i < iCount) ? iWhen[i] : ""; }
+  int commandTotal() { return cCount; }
+  String commandIdAt(int i) { return (i >= 0 && i < cCount) ? cId[i] : ""; }
+  String handlerOf(String command) {
+    int i = commandIndex(command);
+    return (i >= 0) ? cHandler[i] : "";
+  }
+  boolean confirmsDiscard(String command) {
+    int i = commandIndex(command);
+    return i >= 0 && cConfirm[i] == 1;
+  }
+  < The command an accelerator runs, or "" if none. >
+  String commandForAccel(String accel) {
+    if (accel == "") { return ""; }
+    int i = 0;
+    while (i < iCount) { if (iAccel[i] == accel) { return iCommand[i]; } i = i + 1; }
+    return "";
+  }
+  < The enabled-when condition of the first item that runs a command. >
+  String whenForCommand(String command) {
+    int i = 0;
+    while (i < iCount) { if (iCommand[i] == command) { return iWhen[i]; } i = i + 1; }
+    return "always";
+  }
+  String getTitle() { return winTitle; }
+  String getTheme() { return winTheme; }
+  int getMaxTabs() { return maxTabs; }
+  String getDirtyMarker() { return dirtyMarker; }
+  String getNewTabTitle() { return newTabTitle; }
+  int getEditorRows() { return editorRows; }
+  boolean showsLineNumbers() { return lineNumbers == 1; }
+  boolean lockUnsplit() { return readOnlyWhenUnsplit == 1; }
+  String getSidecarSuffix() { return sidecarSuffix; }
+  int getMaxLines() { return maxLines; }
+  int getMaxBytes() { return maxBytes; }
+  String getListenerPort() { return listenerPort; }
+  boolean flagsExternal() { return flagExternal == 1; }
+
+  < Seed the spec declared in gui-document.xml. Returns the number of seeds >
+  < refused (0 when everything is consistent). >
+  int standard() {
+    setWindow("SLeeLa Document Editor", "white");
+    setTabs(14, "*", "Untitled");
+    setEditor(16, 1, 1);
+    setFileDialog(".lines", 64, 65536);
+    setListener("gui-listener", 1);
+    setReadiness("ready", "1.2.0");
+    addKey("Enter", "dialog", "dialog.ok");
+    addKey("Esc", "dialog", "dialog.cancel");
+    addKey("Esc", "menu", "menu.close");
+    setLock("keep");
+    addCommand("file.new", "cmdNew", 0, "blocked");
+    addCommand("file.open", "cmdOpen", 0, "blocked");
+    addCommand("file.save", "cmdSave", 0, "allowed");
+    addCommand("file.saveAs", "cmdSaveAs", 0, "blocked");
+    addCommand("file.closeTab", "cmdCloseTab", 1, "allowed");
+    addCommand("app.quit", "cmdQuit", 1, "allowed");
+    addCommand("edit.insertLine", "cmdInsertLine", 0, "choice");
+    addCommand("edit.replaceLine", "cmdReplaceLine", 0, "choice");
+    addCommand("edit.deleteLine", "cmdDeleteLine", 0, "choice");
+    addCommand("edit.loadLine", "cmdLoadLine", 0, "choice");
+    addCommand("view.nextTab", "cmdNextTab", 0, "allowed");
+    addCommand("view.prevTab", "cmdPrevTab", 0, "allowed");
+    addCommand("view.selectPrev", "cmdSelectPrev", 0, "allowed");
+    addCommand("view.selectNext", "cmdSelectNext", 0, "allowed");
+    addCommand("view.pageUp", "cmdPageUp", 0, "allowed");
+    addCommand("view.pageDown", "cmdPageDown", 0, "allowed");
+    addCommand("system.lock", "cmdLock", 0, "allowed");
+    addCommand("system.choice", "cmdChoice", 0, "allowed");
+    addCommand("help.about", "cmdAbout", 0, "allowed");
+    addMenu("file", "File");
+    addMenu("edit", "Edit");
+    addMenu("view", "View");
+    addMenu("system", "System");
+    addMenu("help", "Help");
+    addItem("file", "new", "New", "file.new", "Ctrl+N", "always");
+    addItem("file", "open", "Open...", "file.open", "Ctrl+O", "always");
+    addItem("file", "save", "Save", "file.save", "Ctrl+S", "dirty");
+    addItem("file", "saveAs", "Save As...", "file.saveAs", "Ctrl+Shift+S", "hasTab");
+    addItem("file", "closeTab", "Close Tab", "file.closeTab", "Ctrl+W", "hasTab");
+    addItem("file", "quit", "Quit", "app.quit", "Ctrl+Q", "always");
+    addItem("edit", "insertLine", "Insert Line", "edit.insertLine", "Ctrl+I", "editable");
+    addItem("edit", "replaceLine", "Replace Line", "edit.replaceLine", "Ctrl+R", "selectionEditable");
+    addItem("edit", "deleteLine", "Delete Line", "edit.deleteLine", "Ctrl+D", "selectionEditable");
+    addItem("edit", "loadLine", "Edit Line", "edit.loadLine", "F2", "selectionEditable");
+    addItem("view", "nextTab", "Next Tab", "view.nextTab", "Ctrl+Tab", "multipleTabs");
+    addItem("view", "prevTab", "Previous Tab", "view.prevTab", "Ctrl+Shift+Tab", "multipleTabs");
+    addItem("view", "prevLine", "Previous Line", "view.selectPrev", "Up", "hasLines");
+    addItem("view", "nextLine", "Next Line", "view.selectNext", "Down", "hasLines");
+    addItem("view", "pageUp", "Page Up", "view.pageUp", "PageUp", "hasLines");
+    addItem("view", "pageDown", "Page Down", "view.pageDown", "PageDown", "hasLines");
+    addItem("system", "lock", "Lock System", "system.lock", "Ctrl+L", "admin");
+    addItem("system", "choice", "Editor's Choice", "system.choice", "Ctrl+E", "choiceReady");
+    addItem("help", "about", "About", "help.about", "F1", "always");
+    addToggle("lock", "lock", "Unlock System");
+    addToggle("choice", "choice", "End Editor's Choice");
+    return refused;
+  }
+}

@@ -1,0 +1,204 @@
+<< lib/java/jdk-28/java.desktop/javax/imageio/metadata/IIOMetadataFormatImpl.sleela
+   SLeeLa file for the Java type javax.imageio.metadata.IIOMetadataFormatImpl (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/imageio/metadata/IIOMetadataFormatImpl.html
+   Java kind: class; extends java.lang.Object; implements javax.imageio.metadata.IIOMetadataFormat
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class IIOMetadataFormatImpl {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 4464;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.imageio.metadata.IIOMetadataFormatImpl";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/imageio/metadata/IIOMetadataFormatImpl.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public IIOMetadataFormatImpl bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static final String standardMetadataFormatName = "javax_imageio_1.0";
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @throwable("java.lang.UnsupportedOperationException")
+  public IIOMetadataFormatImpl(String rootName, int childPolicy) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public IIOMetadataFormatImpl(String rootName, int minChildren, int maxChildren) { }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void addAttribute(String elementName, String attrName, int dataType, boolean required, String defaultValue) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void addAttribute(String elementName, String attrName, int dataType, boolean required, String defaultValue, Any enumeratedValues) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void addAttribute(String elementName, String attrName, int dataType, boolean required, String defaultValue, String minValue, String maxValue, boolean minInclusive, boolean maxInclusive) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void addAttribute(String elementName, String attrName, int dataType, boolean required, int listMinLength, int listMaxLength) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getRootName() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String[] getAttributeNames(String elementName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any getStandardFormatInstance() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void removeAttribute(String elementName, String attrName) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void addElement(String elementName, String parentName, int childPolicy) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void addElement(String elementName, String parentName, int minChildren, int maxChildren) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void removeElement(String elementName) { }
+  @throwable("java.lang.AbstractMethodError")
+  public boolean canNodeAppear(String elementName, Any imageType) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getElementMinChildren(String elementName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getElementMaxChildren(String elementName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getElementDescription(String elementName, Any locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getChildPolicy(String elementName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String[] getChildNames(String elementName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAttributeValueType(String elementName, String attrName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAttributeDataType(String elementName, String attrName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAttributeRequired(String elementName, String attrName) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getAttributeDefaultValue(String elementName, String attrName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String[] getAttributeEnumerations(String elementName, String attrName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getAttributeMinValue(String elementName, String attrName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getAttributeMaxValue(String elementName, String attrName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAttributeListMinLength(String elementName, String attrName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getAttributeListMaxLength(String elementName, String attrName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String getAttributeDescription(String elementName, String attrName, Any locale) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getObjectValueType(String elementName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getObjectClass(String elementName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getObjectDefaultValue(String elementName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any[] getObjectEnumerations(String elementName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getObjectMinValue(String elementName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getObjectMaxValue(String elementName) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getObjectArrayMinLength(String elementName) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getObjectArrayMaxLength(String elementName) { return 0; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void setResourceBaseName(String resourceBaseName) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  String getResourceBaseName() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void addChildElement(String elementName, String parentName) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void addBooleanAttribute(String elementName, String attrName, boolean hasDefaultValue, boolean defaultValue) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void addObjectValue(String elementName, Any classType, int arrayMinLength, int arrayMaxLength) { }
+  @JavaProtected
+  @generic("<T extends java.lang.Object & java.lang.Comparable<? super T>>")
+  @throwable("java.lang.UnsupportedOperationException")
+  void addObjectValue(String elementName, Any classType, Any defaultValue, Any minValue, Any maxValue, boolean minInclusive, boolean maxInclusive) { }
+  @JavaProtected
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  void addObjectValue(String elementName, Any classType, boolean required, Any defaultValue, Any enumeratedValues) { }
+  @JavaProtected
+  @generic("<T>")
+  @throwable("java.lang.UnsupportedOperationException")
+  void addObjectValue(String elementName, Any classType, boolean required, Any defaultValue) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void removeObjectValue(String elementName) { }
+  < ---- END java signatures ---- >
+}

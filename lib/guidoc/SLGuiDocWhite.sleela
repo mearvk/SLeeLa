@@ -1,0 +1,136 @@
+<< lib/guidoc/SLGuiDocWhite.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiDocWhite — the white look of the document GUI. It
+     takes the White flavor of the standard UI themes (lib/ui SLThemeFlavor:
+     off-white background, white surfaces, dark ink, a single blue accent) and
+     answers a style string for each role the GUI draws (window, menubar, tab,
+     editor row, status, dialog ...). Every widget style in the document GUI
+     comes from here, so the whole GUI stays white and consistent. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import ui;
+< Family: guidoc. Style strings look like bg:#FFFFFF;fg:#16202C; >
+class SLGuiDocWhite {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39242;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  SLStandardTheme theme;
+
+  void configure() {
+    SLThemeFlavor flavors = new SLThemeFlavor();
+    flavors.create();
+    theme = flavors.white();
+  }
+  SLStandardTheme standardTheme() { return theme; }
+  boolean isWhite() { return theme != null && theme.getName() == "White" && !theme.isDark(); }
+  String name() { return theme.getName(); }
+  String accentColor() { return theme.accent; }
+
+  < Every role the GUI draws, in a fixed order. >
+  String roleAt(int i) {
+    if (i == 0) { return "window"; }
+    if (i == 1) { return "menubar"; }
+    if (i == 2) { return "menu"; }
+    if (i == 3) { return "menu-open"; }
+    if (i == 4) { return "menu-item"; }
+    if (i == 5) { return "menu-item-disabled"; }
+    if (i == 6) { return "tabbar"; }
+    if (i == 7) { return "tab"; }
+    if (i == 8) { return "tab-active"; }
+    if (i == 9) { return "tab-dirty"; }
+    if (i == 10) { return "tab-active-dirty"; }
+    if (i == 11) { return "editor"; }
+    if (i == 12) { return "gutter"; }
+    if (i == 13) { return "row"; }
+    if (i == 14) { return "row-selected"; }
+    if (i == 15) { return "row-empty"; }
+    if (i == 16) { return "entry"; }
+    if (i == 17) { return "status"; }
+    if (i == 18) { return "status-external"; }
+    if (i == 19) { return "status-error"; }
+    if (i == 20) { return "dialog"; }
+    if (i == 21) { return "button"; }
+    if (i == 22) { return "button-primary"; }
+    if (i == 23) { return "status-locked"; }
+    return "";
+  }
+  int roleTotal() { return 24; }
+
+  < The background colour token of a role. Unknown roles use the surface. >
+  String bgOf(String role) {
+    if (role == "window") { return theme.bg; }
+    if (role == "menubar" || role == "menu" || role == "gutter") { return theme.chrome; }
+    if (role == "status" || role == "status-external" || role == "status-error" || role == "status-locked") { return theme.chrome; }
+    if (role == "menu-open" || role == "tab" || role == "tab-dirty" || role == "dialog") { return theme.surfaceHi; }
+    if (role == "tabbar") { return theme.bg; }
+    if (role == "row-selected" || role == "button-primary") { return theme.accent; }
+    return theme.surface;
+  }
+  < The foreground (ink) colour token of a role. >
+  String fgOf(String role) {
+    if (role == "menu-item-disabled" || role == "tab" || role == "gutter" || role == "row-empty") { return theme.textDim; }
+    if (role == "status") { return theme.textDim; }
+    if (role == "tab-active") { return theme.accent; }
+    if (role == "tab-dirty" || role == "tab-active-dirty" || role == "status-external" || role == "status-locked") { return theme.warning; }
+    if (role == "status-error") { return theme.danger; }
+    if (role == "row-selected" || role == "button-primary") { return theme.accentText; }
+    return theme.text;
+  }
+
+  < The style for a role: bg:#RRGGBB;fg:#RRGGBB; >
+  String style(String role) { return "bg:" + bgOf(role) + ";fg:" + fgOf(role) + ";"; }
+
+  < The role a style string was made from, or "" if it is none of ours. A host >
+  < uses this with bgOf and fgOf to get colour tokens without parsing text. >
+  String roleOfStyle(String s) {
+    int i = 0;
+    while (i < roleTotal()) {
+      if (style(roleAt(i)) == s) { return roleAt(i); }
+      i = i + 1;
+    }
+    return "";
+  }
+}

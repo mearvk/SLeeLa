@@ -1,0 +1,107 @@
+<< lib/advantage/trading/SLTradingAsymmetry.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Informational asymmetry: a listing is mislabeled or misunderstood; one
+   evaluation is one candidate, pricing the race and the read. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Model 6 of the trading subject. You pay to look every time, buy only if you >
+< win the race, and profit only if your read was right. When others win most >
+< races the model correctly reports a loss. >
+class SLTradingAsymmetry {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39007;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  < ---- shared validation, created on first use ---- >
+  SLTradingCheck chk;
+  SLTradingCheck check() {
+    if (chk == null) { chk = new SLTradingCheck(); }
+    return chk;
+  }
+
+  < Apparent discount = 1 - listed / estimated (0.6 means listed 60 percent >
+  < below the estimate). Check pricesOk first; discount returns -1000000.0 for >
+  < invalid prices. >
+  boolean pricesOk(double listedPrice, double estimatedValue) {
+    SLTradingCheck c = check();
+    return c.isPositive(listedPrice) && c.isPositive(estimatedValue);
+  }
+  double discount(double listedPrice, double estimatedValue) {
+    if (pricesOk(listedPrice, estimatedValue) == false) { return -1000000.0; }
+    return 1.0 - listedPrice / estimatedValue;
+  }
+
+  << One evaluation is one CANDIDATE listing. You pay attemptCost every time
+     you look, buy only if you win the race against other buyers
+     (winProbability), and the purchase is only valuable if your read of it was
+     right (genuineProbability). Otherwise it sells for fallbackValue. >>
+  SLTradingResult evaluate(double listedPrice, double genuineValue,
+                           double fallbackValue, double genuineProbability,
+                           double winProbability, double buyFeeRate,
+                           double sellFeeRate, double verificationCost,
+                           double attemptCost, double holdingCostPerDay,
+                           double holdDays) {
+    SLTradingCheck c = check();
+    if (c.isPositive(listedPrice) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(genuineValue) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(fallbackValue) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isProb(genuineProbability) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isProb(winProbability) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isRate(buyFeeRate) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isRate(sellFeeRate) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(verificationCost) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(attemptCost) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isAmount(holdingCostPerDay) == false) { return c.fail(c.rangeMessage()); }
+    if (c.isDays(holdDays) == false) { return c.fail(c.rangeMessage()); }
+
+    double w = winProbability;
+    < you always pay to look; you pay to buy, verify and hold only if you win >
+    double cost = attemptCost + w * (listedPrice * (1.0 + buyFeeRate)
+                + verificationCost + holdingCostPerDay * holdDays);
+    double valueIfWon = genuineProbability * genuineValue
+                      + (1.0 - genuineProbability) * fallbackValue;
+    return c.finish(cost, w * valueIfWon * (1.0 - sellFeeRate), holdDays);
+  }
+}

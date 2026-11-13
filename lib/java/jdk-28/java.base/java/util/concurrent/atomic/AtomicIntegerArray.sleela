@@ -1,0 +1,195 @@
+<< lib/java/jdk-28/java.base/java/util/concurrent/atomic/AtomicIntegerArray.sleela
+   SLeeLa file for the Java type java.util.concurrent.atomic.AtomicIntegerArray (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicIntegerArray.html
+   Java kind: class; extends java.lang.Object; implements java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+import java.jdk-28;
+
+class AtomicIntegerArray {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.1.0";
+  int metaId = 1461;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.util.concurrent.atomic.AtomicIntegerArray";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/util/concurrent/atomic/AtomicIntegerArray.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java implementation (ported from the jdk-25 tier by lib/java/jdk-25/tools/jdk28_connect.py) ---- >
+  < ---- java.util.concurrent.atomic.AtomicIntegerArray members (procedural implementation in SLeeLa) ---- >
+  << A int array whose elements are updated atomically under VM lock 31
+     (reserved for java.util.concurrent.atomic). The constructor takes the
+     length (Java AtomicIntegerArray(int length)); every element starts at 0. >>
+  int[] array;
+  AtomicIntegerArray(int length) {
+    this.array = new int[length];
+    int i = 0;
+    while (i < length) { this.array[i] = 0; i = i + 1; }
+  }
+  void check(int i) {
+    if (i < 0 || i >= arrayLength(this.array)) {
+      throw new ArrayIndexOutOfBoundsException("Index " + i + " out of bounds for length " + arrayLength(this.array));
+    }
+  }
+  int length() { return arrayLength(this.array); }
+  int get(int i) { check(i); return this.array[i]; }
+  void set(int i, int newValue) { check(i); lock(31); this.array[i] = newValue; unlock(31); }
+  void lazySet(int i, int newValue) { set(i, newValue); }
+  int getPlain(int i) { return get(i); }
+  void setPlain(int i, int newValue) { set(i, newValue); }
+  int getOpaque(int i) { return get(i); }
+  void setOpaque(int i, int newValue) { set(i, newValue); }
+  int getAcquire(int i) { return get(i); }
+  void setRelease(int i, int newValue) { set(i, newValue); }
+  int getAndSet(int i, int newValue) {
+    check(i);
+    lock(31);
+    int old = this.array[i];
+    this.array[i] = newValue;
+    unlock(31);
+    return old;
+  }
+  boolean compareAndSet(int i, int expectedValue, int newValue) {
+    check(i);
+    lock(31);
+    boolean hit = this.array[i] == expectedValue;
+    if (hit) { this.array[i] = newValue; }
+    unlock(31);
+    return hit;
+  }
+  boolean weakCompareAndSet(int i, int expectedValue, int newValue) { return compareAndSet(i, expectedValue, newValue); }
+  boolean weakCompareAndSetPlain(int i, int expectedValue, int newValue) { return compareAndSet(i, expectedValue, newValue); }
+  boolean weakCompareAndSetVolatile(int i, int expectedValue, int newValue) { return compareAndSet(i, expectedValue, newValue); }
+  boolean weakCompareAndSetAcquire(int i, int expectedValue, int newValue) { return compareAndSet(i, expectedValue, newValue); }
+  boolean weakCompareAndSetRelease(int i, int expectedValue, int newValue) { return compareAndSet(i, expectedValue, newValue); }
+  int compareAndExchange(int i, int expectedValue, int newValue) {
+    check(i);
+    lock(31);
+    int witness = this.array[i];
+    if (witness == expectedValue) { this.array[i] = newValue; }
+    unlock(31);
+    return witness;
+  }
+  int compareAndExchangeAcquire(int i, int expectedValue, int newValue) { return compareAndExchange(i, expectedValue, newValue); }
+  int compareAndExchangeRelease(int i, int expectedValue, int newValue) { return compareAndExchange(i, expectedValue, newValue); }
+
+  int getAndIncrement(int i) { return getAndAdd(i, 1); }
+  int getAndDecrement(int i) { return getAndAdd(i, -1); }
+  int getAndAdd(int i, int delta) {
+    check(i);
+    lock(31);
+    int old = this.array[i];
+    this.array[i] = wrap32(old + delta);
+    unlock(31);
+    return old;
+  }
+  int incrementAndGet(int i) { return addAndGet(i, 1); }
+  int decrementAndGet(int i) { return addAndGet(i, -1); }
+  int addAndGet(int i, int delta) {
+    check(i);
+    lock(31);
+    int now = wrap32(this.array[i] + delta);
+    this.array[i] = now;
+    unlock(31);
+    return now;
+  }
+  String toString() {
+    int n = arrayLength(this.array);
+    if (n == 0) { return "[]"; }
+    String sb = "[";
+    int i = 0;
+    while (i < n) {
+      if (i > 0) { sb = sb + ", "; }
+      sb = sb + "" + this.array[i];
+      i = i + 1;
+    }
+    return sb + "]";
+  }
+  int wrap32(long v) {
+    long m = v % 4294967296;
+    if (m < 0) { m = m + 4294967296; }
+    if (m > 2147483647) { m = m - 4294967296; }
+    return (int) m;
+  }
+  < ---- END java implementation ---- >
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public AtomicIntegerArray bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getAndUpdate(int i, Any updateFunction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int updateAndGet(int i, Any updateFunction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int getAndAccumulate(int i, int x, Any accumulatorFunction) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public final int accumulateAndGet(int i, int x, Any accumulatorFunction) { return 0; }
+  < ---- END java signatures ---- >
+}

@@ -1,0 +1,247 @@
+<< lib/java/jdk-28/java.base/java/time/OffsetDateTime.sleela
+   SLeeLa file for the Java type java.time.OffsetDateTime (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/time/OffsetDateTime.html
+   Java kind: class; extends java.lang.Object; implements java.time.temporal.Temporal, java.time.temporal.TemporalAdjuster, java.lang.Comparable, java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class OffsetDateTime {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 6695;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.time.OffsetDateTime";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/time/OffsetDateTime.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public OffsetDateTime bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static Any MIN = null;
+  static Any MAX = null;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public int get(Any field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean equals(Any obj) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String toString() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int hashCode() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int compareTo(Any other) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long getLong(Any field) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any of(Any dateTime, Any offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any of(int year, int month, int dayOfMonth, int hour, int minute, int second, int nanoOfSecond, Any offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any of(Any date, Any time, Any offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public String format(Any formatter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any from(Any temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isSupported(Any unit) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any parse(Any text) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any parse(Any text, Any formatter) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any with(Any field, long newValue) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any with(Any adjuster) { return null; }
+  @generic("<R>")
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any query(Any query) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getOffset() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any range(Any field) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any now() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any now(Any clock) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isEqual(Any other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getNano() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any toInstant() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getYear() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMonthValue() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDayOfMonth() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getHour() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getMinute() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getSecond() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any minus(long amountToSubtract, Any unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any minus(Any amountToSubtract) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any plus(long amountToAdd, Any unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any plus(Any amountToAdd) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long until(Any endExclusive, Any unit) { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any plusNanos(long nanos) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any plusSeconds(long seconds) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any plusDays(long days) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any plusHours(long hours) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any plusMinutes(long minutes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any minusDays(long days) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any minusHours(long hours) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any minusMinutes(long minutes) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any minusSeconds(long seconds) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any minusNanos(long nanos) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any truncatedTo(Any unit) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any adjustInto(Any temporal) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any ofInstant(Any instant, Any zone) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isAfter(Any other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isBefore(Any other) { return false; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getMonth() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getDayOfWeek() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public int getDayOfYear() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any withDayOfMonth(int dayOfMonth) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any withDayOfYear(int dayOfYear) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any plusWeeks(long weeks) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any withMonth(int month) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any plusMonths(long months) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any withYear(int year) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any plusYears(long years) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any minusMonths(long months) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any toLocalTime() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any minusYears(long years) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any minusWeeks(long weeks) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public long toEpochSecond() { return 0; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public static Any timeLineOrder() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any toLocalDateTime() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any withHour(int hour) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any withMinute(int minute) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any withSecond(int second) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any withNano(int nanoOfSecond) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any toLocalDate() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any toZonedDateTime() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any withOffsetSameInstant(Any offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any withOffsetSameLocal(Any offset) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any atZoneSameInstant(Any zone) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any atZoneSimilarLocal(Any zone) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any toOffsetTime() { return null; }
+  < ---- END java signatures ---- >
+}

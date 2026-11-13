@@ -1,0 +1,125 @@
+<< lib/java/java/util/concurrent/atomic/AtomicReference.sleela
+   SLeeLa Java 28 source envelope.
+   Definition: SLeeLa source declaration for the Java type java.util.concurrent.atomic.AtomicReference.
+   Java behavior is supplied through the SLeeLa Java conformance boundary. >>
+#sleela 3.0
+material;
+
+class AtomicReference<V> {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.1.0";
+  int metaId = 1476;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-29";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "OpenJDK (JDK 28 API)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  String javaType = "java.util.concurrent.atomic.AtomicReference";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.util.concurrent.atomic.AtomicReference members (procedural implementation in SLeeLa) ---- >
+  << A Any value updated atomically: every read-modify-write runs under VM
+     lock 31 (reserved for java.util.concurrent.atomic), so updates from
+     spawned threads never interleave. The plain / opaque / acquire / release
+     access modes are all sequentially consistent here, which satisfies each
+     of their Java contracts. compareAndSet compares with == (value equality
+     for numbers, identity for objects). The functional update methods wait
+     for lambda dispatch. >>
+  Any value;
+  AtomicReference(Any initialValue) { this.value = initialValue; }
+
+  Any get() { return this.value; }
+  void set(Any newValue) { lock(31); this.value = newValue; unlock(31); }
+  void lazySet(Any newValue) { set(newValue); }
+  Any getPlain() { return this.value; }
+  void setPlain(Any newValue) { this.value = newValue; }
+  Any getOpaque() { return get(); }
+  void setOpaque(Any newValue) { set(newValue); }
+  Any getAcquire() { return get(); }
+  void setRelease(Any newValue) { set(newValue); }
+  Any getAndSet(Any newValue) {
+    lock(31);
+    Any old = this.value;
+    this.value = newValue;
+    unlock(31);
+    return old;
+  }
+  boolean compareAndSet(Any expectedValue, Any newValue) {
+    lock(31);
+    boolean hit = this.value == expectedValue;
+    if (hit) { this.value = newValue; }
+    unlock(31);
+    return hit;
+  }
+  boolean weakCompareAndSet(Any expectedValue, Any newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetPlain(Any expectedValue, Any newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetVolatile(Any expectedValue, Any newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetAcquire(Any expectedValue, Any newValue) { return compareAndSet(expectedValue, newValue); }
+  boolean weakCompareAndSetRelease(Any expectedValue, Any newValue) { return compareAndSet(expectedValue, newValue); }
+  Any compareAndExchange(Any expectedValue, Any newValue) {
+    lock(31);
+    Any witness = this.value;
+    if (witness == expectedValue) { this.value = newValue; }
+    unlock(31);
+    return witness;
+  }
+  Any compareAndExchangeAcquire(Any expectedValue, Any newValue) { return compareAndExchange(expectedValue, newValue); }
+  Any compareAndExchangeRelease(Any expectedValue, Any newValue) { return compareAndExchange(expectedValue, newValue); }
+  String toString() { Any v = get(); if (v == null) { return "null"; } return "" + v; }
+  < ---- END java implementation ---- >
+
+  < ---- BEGIN java signatures (generated by tools/jdk_api_signatures.py) ---- >
+  << Exact Java signatures (from the JDK). A method body that is not yet
+     SLeeLa logic throws: AbstractMethodError for an abstract method, else
+     UnsupportedOperationException naming the Java signature. >>
+  public final V getAndUpdate(java.util.function.UnaryOperator<V> updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReference.getAndUpdate(java.util.function.UnaryOperator<V>)"); }
+  public final V updateAndGet(java.util.function.UnaryOperator<V> updateFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReference.updateAndGet(java.util.function.UnaryOperator<V>)"); }
+  public final V getAndAccumulate(V x, java.util.function.BinaryOperator<V> accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReference.getAndAccumulate(V, java.util.function.BinaryOperator<V>)"); }
+  public final V accumulateAndGet(V x, java.util.function.BinaryOperator<V> accumulatorFunction) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReference.accumulateAndGet(V, java.util.function.BinaryOperator<V>)"); }
+  < ---- END java signatures ---- >
+
+  < ---- BEGIN java constructors (generated by tools/jdk_api_signatures.py) ---- >
+  << Exact Java constructor signatures (from the JDK). Overload resolution binds a
+     call by arity, then best type match. Each body throws
+     UnsupportedOperationException until its SLeeLa logic is written. >>
+  public AtomicReference() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.util.concurrent.atomic.AtomicReference.<init>()"); }
+  < ---- END java constructors ---- >
+}

@@ -1,0 +1,85 @@
+<< examples/java/differential/MathBigInteger.sleela
+   SLeeLa side of the MathBigInteger differential test.
+   Definition: Prints, line for line, the same results as MathBigInteger.java
+   for java.math.BigInteger (arithmetic, division, powers, modular arithmetic,
+   primality, bitwise and shift operations, conversions, hashCode, radix text,
+   byte arrays and seeded random construction). >>
+#sleela 3.0
+material;
+import java.jdk-25.java.math;
+import java.jdk-25.java.util;
+class MathBigInteger {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-10";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-10";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+
+  String s(BigInteger x) { return x.toString(); }
+  String d(double x) { Double D = new Double(0.0); return D.toStringOf(x); }
+  String ints(int[] a) {
+    String sb = "[";
+    int i = 0;
+    while (i < arrayLength(a)) { if (i > 0) { sb = sb + ", "; } sb = sb + a[i]; i = i + 1; }
+    return sb + "]";
+  }
+  int[] bytes(int x, int y, int z, int n) {
+    int[] r = new int[n];
+    r[0] = x;
+    r[1] = y;
+    if (n > 2) { r[2] = z; }
+    return r;
+  }
+  void main() {
+    BigInteger H = new BigInteger("0");
+    BigInteger a = new BigInteger("123456789012345678901234567890");
+    BigInteger b = new BigInteger("-987654321098765432109876543210987654321");
+    BigInteger c = H.valueOf(-7);
+    print(s(a.add(b)) + " " + s(a.subtract(b)) + " " + s(b.add(a.negate())) + " " + s(a.add(a.negate())));
+    print(s(a.multiply(b)) + " " + s(a.multiply(H.ZERO())) + " " + s(c.multiply(c)));
+    print(s(b.divide(a)) + " " + s(b.remainder(a)) + " " + s(b.mod(a)) + " " + s(a.divide(c)) + " " + s(a.remainder(c)) + " " + s(a.mod(H.valueOf(7))));
+    BigInteger[] qr = b.divideAndRemainder(H.valueOf(1000000007));
+    BigInteger q0 = qr[0];
+    BigInteger q1 = qr[1];
+    print(s(q0) + " " + s(q1));
+    print(s(H.TWO().pow(200)) + " " + s(c.pow(3)) + " " + s(a.gcd(b)) + " " + s(H.valueOf(462).gcd(H.valueOf(-1071))));
+    BigInteger[] sr = H.valueOf(17).sqrtAndRemainder();
+    BigInteger sr0 = sr[0];
+    BigInteger sr1 = sr[1];
+    print(s(a.sqrt()) + " " + s(H.TEN().pow(40).sqrt()) + " [" + s(sr0) + ", " + s(sr1) + "]");
+    BigInteger m = new BigInteger("1000000000000000000000007");
+    print(s(a.modPow(H.valueOf(65537), m)) + " " + s(a.modInverse(m)) + " " + s(H.valueOf(3).modPow(H.valueOf(-1), H.valueOf(11))));
+    print("" + m.isProbablePrime(50) + " " + a.isProbablePrime(50) + " " + H.valueOf(561).isProbablePrime(50) + " " + H.valueOf(97).isProbablePrime(50) + " " + s(H.valueOf(1000000).nextProbablePrime()) + " " + H.TWO().pow(89).subtract(H.ONE()).isProbablePrime(50));
+    print("" + a.compareTo(b) + " " + b.compareTo(a) + " " + a.equals(new BigInteger("123456789012345678901234567890")) + " " + s(a.min(b)) + " " + s(a.max(b)) + " " + a.signum() + b.signum() + H.ZERO().signum());
+    print(s(a.and(b)) + " " + s(a.or(b)) + " " + s(a.xor(b)) + " " + s(a.not()) + " " + s(b.andNot(a)) + " " + s(c.and(H.valueOf(255))) + " " + s(c.or(H.valueOf(8))));
+    print(s(a.shiftLeft(70)) + " " + s(b.shiftRight(37)) + " " + s(c.shiftRight(1)) + " " + s(c.shiftLeft(-2)) + " " + a.testBit(3) + " " + b.testBit(200) + " " + s(c.setBit(0)) + " " + s(c.clearBit(1)) + " " + s(c.flipBit(5)));
+    print("" + a.bitLength() + " " + b.bitLength() + " " + c.bitLength() + " " + H.valueOf(-8).bitLength() + " " + a.bitCount() + " " + b.bitCount() + " " + c.bitCount() + " " + a.getLowestSetBit() + " " + H.valueOf(-48).getLowestSetBit());
+    print("" + a.longValue() + " " + b.longValue() + " " + a.intValue() + " " + b.intValue() + " " + c.intValueExact() + " " + c.byteValue() + " " + a.shortValue());
+    print(d(a.doubleValue()) + " " + d(b.doubleValue()) + " " + d(H.TWO().pow(1024).doubleValue()) + " " + d(new BigInteger("9007199254740993").doubleValue()) + " " + d(new BigInteger("9007199254740995").doubleValue()) + " " + new Float(a.floatValue()).toString());
+    print("" + a.hashCode() + " " + b.hashCode() + " " + c.hashCode() + " " + H.ZERO().hashCode());
+    print(a.toStringRadix(16) + " " + b.toStringRadix(36) + " " + c.toStringRadix(2) + " " + s(H.newRadix("-zz", 36)) + " " + s(new BigInteger("+00042")));
+    print(ints(a.toByteArray()) + " " + ints(c.toByteArray()) + " " + ints(H.valueOf(128).toByteArray()));
+    print(s(H.newFromBytes(bytes(-1, 0, 1, 3))) + " " + s(H.newSignMagnitude(1, bytes(-1, 0, 1, 3))) + " " + s(H.newSignMagnitude(-1, bytes(1, 2, 0, 2))));
+    print(s(H.newRandomBits(100, new Random(42))) + " " + s(H.newRandomBits(7, new Random(1))));
+    long minL = -9223372036854775807 - 1;
+    print(s(H.valueOf(minL)) + " " + H.valueOf(minL).longValue() + " " + H.valueOf(9223372036854775807).add(H.ONE()).longValue());
+    try { a.divide(H.ZERO()); } catch (Any e1) { Throwable t1 = (Throwable) e1; print(t1.getMessage()); }
+    try { new BigInteger("12x4"); } catch (Any e2) { Throwable t2 = (Throwable) e2; print(t2.getMessage()); }
+    try { new BigInteger("-00012345678901234x"); } catch (Any e5) { Throwable t5 = (Throwable) e5; print(t5.getMessage()); }
+    try { H.newRadix("1g", 16); } catch (Any e6) { Throwable t6 = (Throwable) e6; print(t6.getMessage()); }
+    try { new BigInteger("1x-2"); } catch (Any e7) { Throwable t7 = (Throwable) e7; print(t7.getMessage()); }
+    try { b.longValueExact(); } catch (Any e3) { Throwable t3 = (Throwable) e3; print(t3.getMessage()); }
+    try { H.valueOf(4).modInverse(H.valueOf(8)); } catch (Any e4) { Throwable t4 = (Throwable) e4; print(t4.getMessage()); }
+  }
+}

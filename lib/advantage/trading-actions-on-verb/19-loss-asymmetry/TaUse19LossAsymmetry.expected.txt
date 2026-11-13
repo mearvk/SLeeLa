@@ -1,0 +1,24 @@
+== Use case 19: loss asymmetry ==
+  short 100 @ 5000 on day 0 : ok
+  buy 100 @ 5000 on day 0 : ok
+  ok   proceeds received by the short = 500000
+  ok   cost paid by the long = 500000
+-- open loss at three prices --
+  ok   short at 5000 (flat) = 0
+  ok   short at 10000 (price doubled) = -500000
+  ok   short at 15000 (price tripled) = -1000000
+  ok   the short loss at 15000 is larger than its proceeds
+-- the long worst case: the price falls to 1 cent --
+  sell 100 @ 1 on day 1 : ok
+  ok   long realized loss = -499900
+  ok   the long loss is smaller than its cost
+-- cover the short at 15000 --
+  cover 100 @ 15000 on day 1 : ok
+  ok   short realized loss = -1000000
+-- mirror law: same prices, opposite sign --
+  ok   long profit = -100000
+  ok   short profit = 100000
+  ok   short profit = minus long profit
+  ok   markToMarket rejects a zero price = -4000000000000001
+  ok   invariants hold
+  checks passed=14 failed=0

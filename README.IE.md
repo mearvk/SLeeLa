@@ -724,7 +724,7 @@ The generated binary is 16,777,244 bytes and is designed to remain below 20,000,
 
 ## XVIII. Recent Additions — Pi Constant, Modium/Registry Startup, sleelactl Math, and `@native`
 
-This section records features added in the 2026-11 work, newest groups first. All are committed to `master`.
+This section records features added during the 2026-11 work, newest groups first. The linked source files and their validation status are authoritative; changes under review are not described as merged until they reach `master`.
 
 ### The 100,000,000-digit Pi catalog constant
 
@@ -739,7 +739,7 @@ On the dedicated subsystem entry points — `sleela registry` and `sleela modium
 - The guided ("beautiful") installer now installs `sleelactl` (the SLeeLa control plane) and its module registry, matching the `make` installer. See [`bin/SLEELACTL.md`](bin/SLEELACTL.md).
 - `sleelactl` gained a new **`subject`** nature for the native C/C++ subject libraries compiled into the runtime, and registers the first one: **`math`**. `sleelactl run math` exercises the native `__NativeMath` backend (`impl/subjects/math/math_native.cpp`) end-to-end via the subject's reference demo; `sleelactl info math` explains how it is reached (`import math;`). The subject nature offers `run info` only — there is deliberately no `check` verb, because `sleela check` does not load the SHEET-registered native subjects.
 
-### `@native` and `sleela aot` — Part 1 of the SLeeLa → native C/C++ path
+### `@native`, Native Drive, and multi-language execution
 
 A new **`@native`** method annotation requests ahead-of-time native compilation of a hot method. The new `sleela aot` command finds `@native` methods, verifies each is within a supported *offloadable subset*, and emits C/C++ — **failing closed** (refusing, with a precise reason) on any construct it cannot yet translate, so a half-translated method is never produced.
 
@@ -748,7 +748,7 @@ sleela aot --list <file.sleela>    # per-method verdict: ok / REFUSED (reason)
 sleela aot --emit <file.sleela>    # emit C/C++ (stdout) for an in-subset program
 ```
 
-`@native` is behaviour-neutral today: programs still check and run unchanged; the annotation only *requests* native treatment. This is Part 1 — it establishes the annotation surface and the honest subset gate; compiling the emitted C/C++ to a shared object and dispatching the VM to it (with an interpreter fallback) are later stages. Details, the supported subset, and exit codes: [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md).
+`@native` remains a request for AOT treatment, with unsupported constructs rejected before emission. The [Native Drive](impl/native-drive/README.md) supports multi-unit C/C++ executable and shared-library builds through host compilers (including MSVC), supported SLeeLa AOT output, symbol inspection against the native-loader ABI, shell-free process execution, stdin/stdout/stderr handling, multi-stage piping, and XClass delegation to the production loader. `sleelactl` exposes its build/run commands and routes XClass inspection and explicit systemd unit rendering/installation through `inspect native-drive`. The VM owns a bounded native-module handle table with mandatory host authorization and generation-checked handles. Syntax 3.0 now adds `nativeOpen`, `nativeCall`, and `nativeClose`: append-only bytecode dispatch crosses a separately versioned null/bool/int64/double/UTF-8 ABI, while VM-owned arrays, structs, and other composite values stay inside the interpreter and may use same-name bytecode fallback. Plugins can optionally receive a versioned host callback table to invoke exact SLeeLa functions through nested VM execution, with suspended-stack GC rooting, an explicit host callback-name allowlist, and recursive native API calls rejected. Native code remains trusted in-process code, not a sandbox. Source process-policy annotations have a versioned schema but are not yet parsed/enforced. Details, security boundaries, and the seven-workstream ledger: [Native Drive](impl/native-drive/README.md) and [`pi-generator/AT-NATIVE.md`](pi-generator/AT-NATIVE.md).
 
 
 ## XIX. International README Editions

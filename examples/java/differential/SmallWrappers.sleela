@@ -1,0 +1,91 @@
+<< examples/java/differential/SmallWrappers.sleela
+   SLeeLa side of the SmallWrappers differential test.
+   Definition: Prints, line for line, the same results as SmallWrappers.java for
+   java.lang.Short, java.lang.Byte and java.lang.Boolean of the JDK 28 tier
+   (import java.jdk-28): constants, parsing with NumberFormatException messages,
+   decode, valueOf, unsigned views, comparison and the Boolean logical members. >>
+#sleela 3.0
+import java.jdk-28;
+material;
+
+< Java container: the names used here are housed in /lib/java (selected by the import above) and are not part of the SLeeLa specification, see SLEELA.syntax 38.4. >
+class SmallWrappers {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+
+  String ps(String s, int radix) {
+    try { return "" + Short.parseShort(s, radix); } catch (NumberFormatException e) { return "NFE:" + e.getMessage(); }
+  }
+  String pb(String s, int radix) {
+    try { return "" + Byte.parseByte(s, radix); } catch (NumberFormatException e) { return "NFE:" + e.getMessage(); }
+  }
+  String ds(String s) {
+    try { Short v = (Short) Short.decode(s); return v.toString(); } catch (NumberFormatException e) { return "NFE:" + e.getMessage(); }
+  }
+  String db(String s) {
+    try { Byte v = (Byte) Byte.decode(s); return v.toString(); } catch (NumberFormatException e) { return "NFE:" + e.getMessage(); }
+  }
+
+  void main() {
+    print(Short.MIN_VALUE + " " + Short.MAX_VALUE + " " + Short.SIZE + " " + Short.BYTES + " " + Byte.MIN_VALUE + " " + Byte.MAX_VALUE + " " + Byte.SIZE + " " + Byte.BYTES);
+    String[] sv = new String[10];
+    sv[0] = "0"; sv[1] = "123"; sv[2] = "-123"; sv[3] = "32767"; sv[4] = "-32768"; sv[5] = "32768"; sv[6] = "-32769"; sv[7] = "x"; sv[8] = ""; sv[9] = "+9";
+    int i = 0;
+    while (i < 10) { print("short [" + sv[i] + "] " + ps(sv[i], 10) + " | " + ps(sv[i], 16)); i = i + 1; }
+    String[] bv = new String[10];
+    bv[0] = "0"; bv[1] = "12"; bv[2] = "-128"; bv[3] = "127"; bv[4] = "128"; bv[5] = "-129"; bv[6] = "ff"; bv[7] = "7f"; bv[8] = "-80"; bv[9] = "q";
+    i = 0;
+    while (i < 10) { print("byte [" + bv[i] + "] " + pb(bv[i], 10) + " | " + pb(bv[i], 16)); i = i + 1; }
+    String[] dv = new String[7];
+    dv[0] = "0x7FFF"; dv[1] = "-0x8000"; dv[2] = "0x8000"; dv[3] = "010"; dv[4] = "#7F"; dv[5] = "99999"; dv[6] = "abc";
+    i = 0;
+    while (i < 7) { print("decode [" + dv[i] + "] " + ds(dv[i]) + " | " + db(dv[i])); i = i + 1; }
+    Short a = (Short) Short.valueOf(1000);
+    Short b = (Short) Short.valueOf("1000");
+    Short seven = (Short) Short.valueOf(7);
+    print(a.toString() + " " + b.toString() + " " + a.equals(b) + " " + a.hashCode() + " " + a.compareTo(seven) + " " + a.byteValue() + " " + a.shortValue() + " " + a.intValue() + " " + a.longValue() + " " + (a.doubleValue() == 1000.0) + " " + (a.floatValue() == 1000.0));
+    Short neg = (Short) Short.valueOf(-2);
+    print(neg.toString() + " " + neg.byteValue() + " " + Short.toUnsignedInt(-2) + " " + Short.toUnsignedLong(-1) + " " + Short.compareUnsigned(-1, 1) + " " + Short.compare(5, 9) + " " + Short.reverseBytes(258) + " " + Short.reverseBytes(-2) + " " + Short.toString(-77) + " " + Short.hashCode(12));
+    Byte c = (Byte) Byte.valueOf(-3);
+    Byte ten = (Byte) Byte.valueOf(10);
+    Byte c2 = (Byte) Byte.valueOf(-3);
+    Short sn3 = (Short) Short.valueOf(-3);
+    print(c.toString() + " " + c.shortValue() + " " + c.intValue() + " " + (c.doubleValue() == -3.0) + " " + c.hashCode() + " " + c.equals(c2) + " " + c.equals(sn3) + " " + c.compareTo(ten) + " " + Byte.toUnsignedInt(-3) + " " + Byte.toUnsignedLong(-1) + " " + Byte.compareUnsigned(-1, 1) + " " + Byte.compare(100, -100) + " " + Byte.toString(9) + " " + Byte.hashCode(-9));
+    Short n1 = new Short(5);
+    Short n2 = new Short("-6");
+    Byte n3 = new Byte(7);
+    Byte n4 = new Byte("-8");
+    print(n1.toString() + " " + n2.toString() + " " + n3.toString() + " " + n4.toString());
+    try { new Short("40000"); } catch (NumberFormatException e) { print(e.getMessage()); }
+    try { new Byte("200"); } catch (NumberFormatException e) { print(e.getMessage()); }
+
+    print(Boolean.parseBoolean("true") + " " + Boolean.parseBoolean("TRUE") + " " + Boolean.parseBoolean("TrUe") + " " + Boolean.parseBoolean("yes") + " " + Boolean.parseBoolean("") + " " + Boolean.parseBoolean(null) + " " + Boolean.parseBoolean("truee") + " " + Boolean.parseBoolean(" true"));
+    Boolean vt = (Boolean) Boolean.valueOf(true);
+    Boolean vs = (Boolean) Boolean.valueOf("tRuE");
+    Boolean vf = (Boolean) Boolean.valueOf(false);
+    Boolean vx = (Boolean) Boolean.valueOf("x");
+    print(vt.toString() + " " + vs.toString() + " " + vf.toString() + " " + (vt == Boolean.TRUE) + " " + (vx == Boolean.FALSE) + " " + Boolean.TRUE.toString() + " " + Boolean.FALSE.toString());
+    Boolean t = Boolean.TRUE;
+    Boolean f = (Boolean) Boolean.valueOf(false);
+    Boolean t2 = (Boolean) Boolean.valueOf("true");
+    print(t.booleanValue() + " " + t.hashCode() + " " + f.hashCode() + " " + t2.equals(t) + " " + t.equals(f) + " " + t.equals("true") + " " + t.compareTo(f) + " " + f.compareTo(t) + " " + t.compareTo(Boolean.TRUE) + " " + t.toString() + " " + f.toString());
+    print(Boolean.compare(true, false) + " " + Boolean.compare(false, true) + " " + Boolean.compare(true, true) + " " + Boolean.hashCode(true) + " " + Boolean.hashCode(false) + " " + Boolean.toString(true) + " " + Boolean.toString(false));
+    Boolean b1 = new Boolean("TRUE");
+    Boolean b2 = new Boolean(false);
+    print(Boolean.logicalAnd(true, false) + " " + Boolean.logicalOr(true, false) + " " + Boolean.logicalXor(true, true) + " " + Boolean.logicalXor(true, false) + " " + b1.toString() + " " + b2.toString() + " " + Boolean.getBoolean("no.such.property"));
+  }
+}

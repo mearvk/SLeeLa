@@ -1,0 +1,118 @@
+<< lib/java/java/util/StringJoiner.sleela
+   SLeeLa Java 28 source envelope.
+   Definition: SLeeLa source declaration for the Java type java.util.StringJoiner.
+   Java behavior is supplied through the SLeeLa Java conformance boundary. >>
+#sleela 3.0
+material;
+
+class StringJoiner {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8662;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-29";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "OpenJDK (JDK 28 API)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  String javaType = "java.util.StringJoiner";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.util.StringJoiner members (procedural implementation in SLeeLa) ---- >
+  << java.util.StringJoiner over plain SLeeLa Strings: the joined elements,
+     their count, the delimiter, prefix, suffix and the optional empty value.
+     A null element is added as the text null, as Java does. length() is the
+     UTF-16 length of toString(). merge(other) appends the elements of other
+     (without its prefix and suffix) as one element, which gives the same text
+     as Java. >>
+  String sjDelim = "";
+  String sjPrefix = "";
+  String sjSuffix = "";
+  String sjEmpty = null;
+  String sjJoined = "";
+  int sjCount = 0;
+
+  public StringJoiner(java.lang.CharSequence delimiter) {
+    if (delimiter == null) { throw new NullPointerException("The delimiter must not be null"); }
+    this.sjDelim = "" + delimiter;
+  }
+  public StringJoiner(java.lang.CharSequence delimiter, java.lang.CharSequence prefix, java.lang.CharSequence suffix) {
+    if (prefix == null) { throw new NullPointerException("The prefix must not be null"); }
+    if (delimiter == null) { throw new NullPointerException("The delimiter must not be null"); }
+    if (suffix == null) { throw new NullPointerException("The suffix must not be null"); }
+    this.sjPrefix = "" + prefix;
+    this.sjDelim = "" + delimiter;
+    this.sjSuffix = "" + suffix;
+  }
+
+  public StringJoiner setEmptyValue(java.lang.CharSequence emptyValue) {
+    if (emptyValue == null) { throw new NullPointerException("The empty value must not be null"); }
+    this.sjEmpty = "" + emptyValue;
+    return this;
+  }
+  public StringJoiner add(java.lang.CharSequence newElement) {
+    String text = "null";
+    if (newElement != null) { text = "" + newElement; }
+    if (this.sjCount == 0) { this.sjJoined = text; }
+    else { this.sjJoined = this.sjJoined + this.sjDelim + text; }
+    this.sjCount = this.sjCount + 1;
+    return this;
+  }
+  public StringJoiner merge(StringJoiner other) {
+    if (other == null) { throw new NullPointerException(); }
+    if (other.sjCount > 0) {
+      String content = other.sjJoined;
+      add(content);
+    }
+    return this;
+  }
+  public java.lang.String toString() {
+    if (this.sjCount == 0) {
+      if (this.sjEmpty != null) { return this.sjEmpty; }
+      return this.sjPrefix + this.sjSuffix;
+    }
+    return this.sjPrefix + this.sjJoined + this.sjSuffix;
+  }
+  public int length() { return javaStringLength(javaStringFromUtf8(toString())); }
+  < ---- END java implementation ---- >
+
+
+}

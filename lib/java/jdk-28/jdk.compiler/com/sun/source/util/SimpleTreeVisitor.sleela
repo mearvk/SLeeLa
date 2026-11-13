@@ -1,0 +1,239 @@
+<< lib/java/jdk-28/jdk.compiler/com/sun/source/util/SimpleTreeVisitor.sleela
+   SLeeLa file for the Java type com.sun.source.util.SimpleTreeVisitor (module jdk.compiler). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/jdk.compiler/com/sun/source/util/SimpleTreeVisitor.html
+   Java kind: class; extends java.lang.Object; implements com.sun.source.tree.TreeVisitor
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class SimpleTreeVisitor {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8344;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "com.sun.source.util.SimpleTreeVisitor";
+  String javaModule = "jdk.compiler";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/jdk.compiler/com/sun/source/util/SimpleTreeVisitor.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "<R, P>";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 2; }
+  public static String genericTypeParameterName(int index) { if (index == 0) { return "R"; } if (index == 1) { return "P"; } return null; }
+  public SimpleTreeVisitor bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < public and protected instance fields >
+  Any DEFAULT_VALUE;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleTreeVisitor() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  SimpleTreeVisitor(Any defaultValue) { }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public final Any visit(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitArrayType(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitWildcard(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitVariable(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitPackage(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitClass(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitModule(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitCompilationUnit(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitLambdaExpression(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitBlock(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitMethod(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitImport(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitEmptyStatement(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitDoWhileLoop(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitWhileLoop(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitForLoop(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitEnhancedForLoop(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitLabeledStatement(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitSwitch(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitSwitchExpression(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitCase(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitSynchronized(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitTry(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitCatch(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitConditionalExpression(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitIf(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitExpressionStatement(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitBreak(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitContinue(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitReturn(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitThrow(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitAssert(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitMethodInvocation(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitNewClass(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitNewArray(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitParenthesized(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitAssignment(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitCompoundAssignment(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitUnary(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitBinary(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitTypeCast(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitInstanceOf(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitAnyPattern(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitBindingPattern(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitDefaultCaseLabel(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitConstantCaseLabel(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitPatternCaseLabel(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitDeconstructionPattern(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitArrayAccess(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitMemberSelect(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitMemberReference(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitIdentifier(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitLiteral(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitPrimitiveType(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitParameterizedType(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitUnionType(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitIntersectionType(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitTypeParameter(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitModifiers(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitAnnotation(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitAnnotatedType(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitExports(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitOpens(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitProvides(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitRequires(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitUses(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitOther(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitErroneous(Any node, Any p) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any visitYield(Any node, Any p) { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any defaultAction(Any node, Any p) { return null; }
+  < ---- END java signatures ---- >
+}

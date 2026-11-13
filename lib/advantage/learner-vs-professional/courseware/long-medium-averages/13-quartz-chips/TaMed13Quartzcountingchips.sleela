@@ -1,0 +1,99 @@
+<< lib/advantage/learner-vs-professional/courseware/long-medium-averages/13-quartz-chips/TaMed13Quartzcountingchips.sleela
+   SLeeLa courseware lesson.
+   Definition: Medium-term entry 13: quartz counting chips, a short-horizon active trade (two buys, one sell), checked against the daily action cap of 2000. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Courseware entry 13 of 16, long-medium-averages. A quick, near-term trade in >
+< quartz counting chips: two buys days apart, then a sell. This sits in the gap between a >
+< single trade and a long-term hold: it is an actively worked position over a >
+< short window, several actions, FIFO cost, and the same 2,000-actions-per-day >
+< cap used throughout this folder. 'Flat 2' is not used or defined here (see >
+< ../ORGANIZED.md); this entry only demonstrates correct, checked arithmetic. >
+class TaMed13Quartzcountingchips {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39343;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+
+  void expect(String label, int got, int want) {
+    if (got == want) { print("  ok   " + label + " = " + got); passed = passed + 1; }
+    else { print("  FAIL " + label + " got " + got + " want " + want); failed = failed + 1; }
+  }
+
+  void expectTrue(String label, boolean got) {
+    if (got) { print("  ok   " + label); passed = passed + 1; }
+    else { print("  FAIL " + label); failed = failed + 1; }
+  }
+
+  void summary() { print("  checks passed=" + passed + " failed=" + failed); }
+
+  void act(SLDailyCapBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+
+  void main() {
+    SLDailyCapBook book = new SLDailyCapBook();
+    print("== Entry 13: quartz counting chips, a medium-term trade ==");
+    act(book, "buy 400 @ 1800 on day 0, fee 4", book.buy(0, 400, 1800, 4));
+    act(book, "buy 300 @ 1850 on day 3, fee 4", book.buy(3, 300, 1850, 4));
+    act(book, "sell 600 @ 1900 on day 5, fee 7", book.sell(5, 600, 1900, 7));
+    print("-- result --");
+    expect("lots remaining", book.lotCount(), 1);
+    expect("shares/units held", book.totalQty(), 100);
+    expect("cost basis of what remains, cents", book.costBasis(), 185000);
+    expect("cost of the units sold, cents", book.lastSaleCost, 1090000);
+    expect("profit of that sale, cents", book.lastSalePnl, 50000);
+    expect("realized gross so far, cents", book.realizedGross(), 50000);
+    expect("realized net of fees, cents", book.realizedNet(), 49985);
+    expect("fees paid so far", book.fees(), 15);
+    expect("actions recorded on the sell day", book.actionsOnCurrentDay(), 1);
+    expect("remaining capacity on that day (of 2000)", book.remainingToday(), 1999);
+    expectTrue("the medium-term cap (2000/day) was never approached here", book.actionsOnCurrentDay() < 2000);
+    expectTrue("invariants hold", book.invariantsHold());
+    summary();
+  }
+}

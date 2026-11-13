@@ -1,0 +1,69 @@
+<< lib/advantage/learner-vs-professional/series/32-trade-eight-way-capstone/DiTradeEightWayCapstone.sleela
+   SLeeLa courseware lesson.
+   Definition: Device Instructor trading decision 32: eight-way capstone, with the student and the Purchase Master compared entry by entry. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Lesson 32. A trading decision over 8 options for one lot, in integer >
+< cents. The Purchase Master totals each option through the onion. The >
+< student registers the entries with this slip: missed discount. >
+< Ties go to the earlier listed option (see the tie norm in lesson 6). >
+< Quotes are illustrative inputs, not market data. >
+class DiTradeEightWayCapstone {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39132;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void main() {
+    SLDecisionDesk desk = new SLDecisionDesk();
+    desk.setup("capstone purchase, eight options");
+    desk.addOption("Vendor A", 53800, 2200, -1900);
+    desk.addOption("Vendor B", 84100, 3600, 0);
+    desk.addOption("Vendor C", 53900, 1500, -1300);
+    desk.addOption("Vendor D", 65700, 3100, 0);
+    desk.addOption("Vendor E", 58100, 1200, -400);
+    desk.addOption("Vendor F", 62400, 2000, -1100);
+    desk.addOption("Vendor G", 58400, 2700, -1300);
+    desk.addOption("Vendor H", 64800, 900, -1000);
+    desk.decide("Lesson 32: eight-way capstone decision", 1, 0);
+  }
+}

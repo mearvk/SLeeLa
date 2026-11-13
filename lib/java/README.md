@@ -13,11 +13,48 @@ The `/lib/java` library family defines the SLeeLa boundary for Java interoperabi
 
 ## Native Library Inventory
 
-The current repository inventory contains **8,993 files under `/lib/java`**. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
+The repository inventory on 2026-11-12 contains **15,048 Git-indexed files under `/lib/java`**: 10,243 in `jdk-25/` (10,212 SLeeLa files plus the API dump and tools), 4,774 in `jdk-28/` (4,721 SLeeLa files plus its index, notes and a `module-summary.md` per module), and 31 top-level classes, documents and validators. The recorded baseline of 15,004 files is a floor, not the current count. This count is validated from the Git index by the repository CI rather than being treated as an unverified documentation number.
 
 The collection is a native SLeeLa source surface for Java-facing language and framework concepts. It is intended to give the SLeeLa Compiler, Loader, SST, and Nordshrift a stable source-level vocabulary for Java packages, classes, procedures, interfaces, runtime concepts, and interoperability boundaries.
 
 The inventory is deliberately distinguished from a copy of the Java implementation. A file in this directory represents a SLeeLa-side language object, binding, contract, facade, or interoperability definition unless its documentation explicitly identifies another role.
+
+## Java Specific Section
+
+The specification of everything that is specific to Java source (the Java tier, the conversion
+contract, the lowering of every converted construct, the open items and how to extend the tier) is
+[`JAVA.SPEC.md`](JAVA.SPEC.md). It is the Java Specific Section of the overall SLeeLa specification.
+Java improvements are made here and in the converter, never in the SLeeLa compiler, VM or runtime.
+
+The conversion ledger (principles, what is converted, what is left) is [`CONVERSION.PRINCIPLES.md`](CONVERSION.PRINCIPLES.md).
+
+## The Java container
+
+`/lib/java` is the **Java container**. Java definitions (`Math`, `Integer`,
+`ArrayList`, ...) are library content housed here, implicitly by the import that
+selects a tier (`import java.jdk-28;`) and explicitly in each unit's own
+`javaType` / `javaModule` / `javaSource` fields. They are **not part of the
+SLeeLa specification**; see `SLEELA.syntax` section 38.4.
+
+## JDK 28, one SLeeLa file per Java type
+
+[`jdk-28/`](jdk-28/README.md) holds one SLeeLa file for each of the 4,721 public
+Java SE / JDK 28 types. The files are at the online API path
+`jdk-28/<module>/<package>/<Type>.sleela`, with a folder for each of the 58 JDK 28
+modules. Each file names its JDK 28 API page as its Java Source.
+
+## Converting Java source to SLeeLa
+
+[`converter/`](converter/README.md) is a SLeeLa program that walks a Java
+source tree (for example a JDK `src.zip`, `<module>/<package>/<Type>.java`) and
+writes one SLeeLa file per type to an output tree outside `lib/java`. Every
+Java-to-SLeeLa decision is in `converter/JConvRules.sleela`, and the Java
+operator, string-conversion and result-type laws are read from the shared model
+`impl/subjects/conversion/conversion.model`. A member that uses a construct
+SLeeLa cannot express yet becomes a stub that throws
+`UnsupportedOperationException` naming the reason. Output declares syntax 3.1.
+Status and measurements: [`STATUS.md`](STATUS.md) section 11 and
+[`converter/README.md`](converter/README.md).
 
 ## Machine-Readable Inventory
 
@@ -32,13 +69,53 @@ python3 lib/java/validate.py
 The validator checks:
 
 - the `/lib/java` directory exists;
-- the Git-indexed file count matches the recorded **8,993-file** baseline;
+- the Git-indexed file count is at least the recorded **15,004-file** baseline;
 - manifest schema and root metadata are present;
 - the expected Java interoperability boundary is documented;
 - required source-role metadata is present; and
 - the inventory has not silently fallen below its established baseline.
 
 When files are intentionally added or removed, the baseline and manifest must be updated in the same change. CI therefore makes library growth an explicit engineering event rather than allowing the documented count to drift.
+
+## Procedural Implementation (JDK 28)
+
+`/lib/java` covers the Java procedural language in SLeeLa. Java types get
+their JDK 28 fields, constructors, methods, return values and imports
+written in SLeeLa, running on the SLeeLa VM.
+
+As of 2026-11-12, **920 types have hand-written behavior in the `jdk-25/` tree and
+849 in the `jdk-28/` tree** (section 1 of [STATUS.md](STATUS.md)). The first 322 types
+(about 1,560 constructors and methods) were:
+
+- the whole `java.*` Throwable hierarchy (290 types, with the real `extends` chain);
+- `java.lang`: `Math`, `StrictMath`, `Integer`, `Long`, `Short`, `Byte`, `Double`, `Float`, `Character`, `Boolean`;
+- `java.util` collections and utilities: `ArrayList`, `LinkedList`, `ArrayDeque`, `Vector`, `Stack`, `HashMap`, `LinkedHashMap`, `HashSet`, `LinkedHashSet`, `TreeMap`, `TreeSet`, `PriorityQueue`, `Iterator`, `Arrays`, `Collections`, `Objects`, `Optional*`, `Random`.
+
+The library has two trees (see [STATUS.md](STATUS.md) section 0). Measured on
+2026-11-12 against the reflected API of OpenJDK 25.0.2 (4,801 public types,
+51,554 public members):
+
+| | `jdk-25/` tree | `jdk-28/` tree (`import java.jdk-28;`) |
+|---|---:|---:|
+| Types with a file | 4,801 (100%) | 4,656 (97.0%) |
+| Members covered | 23,432 (45.5%) | 12,591 (24.4%) |
+| Members with working behavior | 5,165 (10.0%) | 4,123 (8.0%) |
+| Exact-signature methods awaiting logic | 24,101 | 33,021 |
+
+Reports: [COVERAGE.md](COVERAGE.md) (`jdk-25/`) and [COVERAGE-JDK28.md](COVERAGE-JDK28.md)
+(`jdk-28/`). The files that hold working members are listed in
+[IMPLEMENTED.md](IMPLEMENTED.md). In the `jdk-25/` tree, 9,675 abstract methods
+throw `AbstractMethodError`, as the JVM does, and the other signatures throw
+`UnsupportedOperationException` naming the signature until their logic is
+written. Static members are reached through the class name:
+`DayOfWeek.MONDAY`, `Integer.MAX_VALUE`.
+
+Overall progress is summarized in [STATUS.md](STATUS.md).
+
+Conventions, the deferred keyword/semantics list, and regeneration steps are
+in [JDK28-PROCEDURAL-IMPLEMENTATION.md](JDK28-PROCEDURAL-IMPLEMENTATION.md).
+The conformance programs are in [`examples/java`](../../examples/java/README.md).
+The remaining types are still envelopes.
 
 ## Java-to-SLeeLa Mapping
 
@@ -55,7 +132,7 @@ A Java-facing source unit should identify, where applicable:
 5. **Loader visibility** — how the Compiler and Loader discover the symbol.
 6. **Compatibility surface** — the Java/JDK version or API family represented.
 
-This makes the Java relationship traceable instead of leaving the 8,993-file collection as an opaque directory.
+This makes the Java relationship traceable instead of leaving the `/lib/java` collection as an opaque directory.
 
 ## JDK 28 Framework Bindings
 
@@ -277,6 +354,47 @@ version. The source smoke program now checks conversion of an ASCII character,
 a supplementary character, and a non-ASCII BMP character, then exercises
 UTF-16 length and code-point access on the result.
 
+
+### java.lang.String instance methods (SLEELA.syntax section 41)
+
+A method called on a String value, `s.length()` or `"x".equals(y)`, binds to
+the static method of the same name in
+`implementations/java/lang/JavaStringMethods.sleela`, the receiver passed as
+the first argument. The class is loaded only when a program calls a method on
+a String. It covers the core `java.lang.String` instance surface: `length`,
+`isEmpty`, `charAt`, `codePointAt`, `codePointBefore`, `codePointCount`,
+`toCharArray`, `substring`, `subSequence`, every `indexOf` / `lastIndexOf`
+form, `contains`, `startsWith`, `endsWith`, `regionMatches`, `equals`,
+`contentEquals`, `equalsIgnoreCase`, `compareTo`, `compareToIgnoreCase`,
+`hashCode`, `concat`, `repeat`, both `replace` forms, `toUpperCase`,
+`toLowerCase`, `trim`, `strip`, `stripLeading`, `stripTrailing`, `isBlank`,
+`intern` and `toString`. Exceptions carry the JDK 25 messages. Not yet
+provided: the regex members (`matches`, `split`, `replaceAll`,
+`replaceFirst`), the Locale forms, streams (`chars`, `codePoints`, `lines`),
+the final-sigma and Turkish dotted-i case rules, and the static members of
+`java.lang.String` (`valueOf`, `join`, `format`).
+
+### Runtime conversion back to UTF-8, and run-time code units
+
+Two append-only opcodes (VM ABI 1.8) close the bridge in the other direction:
+
+- `javaStringToUtf8(value)` (`OP_JSTR_TO_UTF8`, 183) converts a VM-owned
+  `SL_UTF16` value into an equivalent legacy `SL_STR`, for any Unicode text,
+  supplementary characters included. The conversion is lossless or refused:
+  an unpaired surrogate (no UTF-8 form), an embedded NUL (the legacy String is
+  NUL-terminated) and text longer than `SL_MAX_STRTEXT` bytes fail closed with
+  a VM runtime diagnostic.
+- `javaStringFromCodeUnit(codeUnit)` (`OP_JSTR_FROM_CODE_UNIT`, 184) builds a
+  one-unit `SL_UTF16` value from a run-time code unit 0..65535, the run-time
+  companion of the compile-time `javaStringFromCodeUnits(...)`.
+
+`implementations/java/lang/JavaText.sleela` is the library entry point. Its
+`plainOf` checks for NUL, unpaired surrogates and over-length text first and
+throws a catchable `UnsupportedOperationException` instead of reaching the VM
+diagnostic; `codePointU` and `unitU` build text one character at a time in
+UTF-16, so a surrogate pair is never split. `StringBuilder`, `StringBuffer`,
+the character writers and readers, `File` and `Properties` use them, so those
+classes carry any Unicode text. Both intrinsics require `#sleela 3.0`.
 
 The Java String facade source now delegates its operations to the VM-backed
 intrinsics. Its stored value is initialized as an empty `SL_UTF16` string;

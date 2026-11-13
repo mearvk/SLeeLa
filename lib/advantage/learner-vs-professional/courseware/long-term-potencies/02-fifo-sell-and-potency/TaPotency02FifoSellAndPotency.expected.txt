@@ -1,0 +1,15 @@
+== Entry 2: a FIFO sell changes both readings ==
+  buy 40 @ 5000 on day 0 : ok
+  buy 60 @ 5100 on day 400 : ok
+-- before the sell, on day 500 --
+  ok   term potency before = 4000
+  ok   age potency before = 5200
+-- sell exactly the oldest lot (40 units) on day 500 --
+  sell 40 @ 5500 on day 500 : ok
+-- after the sell, only the younger (400-day) lot remains --
+  ok   shares held = 60
+  ok   term potency after (the remaining lot is not yet long term) = 0
+  ok   age potency after (one lot left, so weighted age equals oldest age) = 10000
+  ok   the FIFO sell removed exactly the oldest lot's long-term risk
+  ok   invariants hold
+  checks passed=7 failed=0

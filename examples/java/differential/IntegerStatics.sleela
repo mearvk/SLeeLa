@@ -1,0 +1,51 @@
+<< examples/java/differential/IntegerStatics.sleela
+   SLeeLa side of the IntegerStatics differential test.
+   Definition: Prints, line for line, the same results as IntegerStatics.java for the
+   static members of java.lang.Integer called as Integer.method(...) (parse, radix
+   text, bit twiddling, unsigned arithmetic, constants, valueOf and decode). >>
+#sleela 3.0
+import java.jdk-28;
+material;
+
+< Java container: the names used here are housed in /lib/java (selected by the import above) and are not part of the SLeeLa specification, see SLEELA.syntax 38.4. >
+class IntegerStatics {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class differential test. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+  String getDate() { return metaDate; }
+  String getCopyright() { return metaCopyright; }
+  String getTrademark() { return metaTrademark; }
+  String getCorporation() { return metaCorporation; }
+  String getOrigin() { return metaOrigin; }
+  String getBirthDate() { return metaBirthDate; }
+  int getScienceRating() { return metaScienceRating; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+
+  String s(long x) { return "" + x; }
+  String s(String x) { return x; }
+  long iv(Any o) { Integer i = (Integer) o; return i.intValue(); }
+
+  void main() {
+    print(s(Integer.parseInt("42")) + " " + s(Integer.parseInt("-123")) + " " + s(Integer.parseInt("ff", 16)) + " " + s(Integer.parseInt("-1010", 2)) + " " + s(Integer.parseUnsignedInt("4294967295")));
+    print(s(Integer.toString(255)) + " " + s(Integer.toString(-255, 16)) + " " + s(Integer.toBinaryString(10)) + " " + s(Integer.toBinaryString(-1)) + " " + s(Integer.toHexString(-255)) + " " + s(Integer.toOctalString(64)));
+    print(s(Integer.bitCount(255)) + " " + s(Integer.bitCount(-1)) + " " + s(Integer.reverse(1)) + " " + s(Integer.reverseBytes(0x01020304)) + " " + s(Integer.highestOneBit(100)) + " " + s(Integer.lowestOneBit(96)));
+    print(s(Integer.numberOfLeadingZeros(1)) + " " + s(Integer.numberOfLeadingZeros(0)) + " " + s(Integer.numberOfTrailingZeros(8)) + " " + s(Integer.numberOfTrailingZeros(0)));
+    print(s(Integer.rotateLeft(1, 31)) + " " + s(Integer.rotateRight(1, 1)) + " " + s(Integer.signum(-9)) + " " + s(Integer.signum(0)) + " " + s(Integer.compare(3, 9)) + " " + s(Integer.compareUnsigned(-1, 1)));
+    print(s(Integer.divideUnsigned(-1, 2)) + " " + s(Integer.remainderUnsigned(-1, 10)) + " " + s(Integer.toUnsignedString(-1)) + " " + s(Integer.toUnsignedLong(-1)) + " " + s(Integer.toUnsignedString(-1, 16)));
+    print(s(Integer.MAX_VALUE) + " " + s(Integer.MIN_VALUE) + " " + s(Integer.SIZE) + " " + s(Integer.BYTES) + " " + s(Integer.sum(Integer.MAX_VALUE, 1)) + " " + s(Integer.max(3, 9)) + " " + s(Integer.min(3, 9)) + " " + s(Integer.hashCode(77)));
+    print(s(iv(Integer.valueOf(12))) + " " + s(iv(Integer.valueOf("34"))) + " " + s(iv(Integer.decode("0x1F"))) + " " + s(iv(Integer.decode("-010"))) + " " + s(iv(Integer.valueOf("7f", 16))));
+  }
+}

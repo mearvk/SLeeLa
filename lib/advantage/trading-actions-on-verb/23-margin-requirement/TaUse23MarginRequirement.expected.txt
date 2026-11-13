@@ -1,0 +1,20 @@
+== Use case 23: the margin requirement, rounded up and exact ==
+  ok   100000 at 150 percent = 150000
+  ok   333 at 150 percent rounds 499.5 up = 500
+  ok   1 cent at 1 basis point rounds up to 1 = 1
+  ok   zero value = 0
+  ok   zero percent = 0
+  ok   100 percent is the value itself = 123457
+-- the largest value --
+  ok   4e15 at 150 percent = 6000000000000000
+  ok   4e15 - 1 at 150 percent = 5999999999999999
+  ok   one above the value bound is refused = -1
+  ok   a negative value is refused = -1
+  ok   one above the percent bound is refused = -1
+-- exhaustive: the safe form equals the direct ceiling, values 0..2000, 7 percents --
+  ok   combinations tested = 14007
+  ok   combinations where they differ = 0
+-- steps: below 100 percent one more cent adds at most one cent --
+  ok   steps tested = 2000
+  ok   steps that are not monotone or jump by more than 1 = 0
+  checks passed=15 failed=0

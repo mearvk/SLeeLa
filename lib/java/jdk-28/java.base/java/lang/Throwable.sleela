@@ -1,0 +1,191 @@
+<< lib/java/jdk-28/java.base/java/lang/Throwable.sleela
+   SLeeLa file for the Java type java.lang.Throwable (module java.base). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/Throwable.html
+   Java kind: class; extends java.lang.Object; implements java.io.Serializable
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class Throwable {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9118;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "java.lang.Throwable";
+  String javaModule = "java.base";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.base/java/lang/Throwable.html";
+  String javaKind = "class";
+  String javaSuper = "java.lang.Object";
+
+  < ---- BEGIN java implementation (JDK 28, SLeeLa logic) ---- >
+  << java.lang.Throwable in SLeeLa, written from the JDK 28 API specification
+     (Java Source above). Java names and signatures are kept. A null detail
+     message means no message. The cause is unset until a constructor with a
+     cause or initCause supplies it. Suppressed exceptions are recorded in
+     order. The SLeeLa VM captures no stack frames, so getStackTrace returns
+     whatever setStackTrace stored (empty by default). printStackTrace writes
+     the Java-shaped report (the throwable, its suppressed list, then the
+     cause chain) to standard output. Subclasses chain with super(...). >>
+  String detailMessage = null;
+  Throwable cause = null;
+  boolean causeInitialized = false;
+  Any[] suppressedList = new Any[4];
+  int suppressedCount = 0;
+  Any[] stackTrace = new Any[0];
+
+  public Throwable() { }
+  public Throwable(java.lang.String message) { this.detailMessage = message; }
+  public Throwable(java.lang.String message, java.lang.Throwable cause) {
+    this.detailMessage = message;
+    this.cause = (Throwable) cause;
+    this.causeInitialized = true;
+  }
+  public Throwable(java.lang.Throwable cause) {
+    if (cause != null) { Throwable c0 = (Throwable) cause; this.detailMessage = c0.toString(); }
+    this.cause = (Throwable) cause;
+    this.causeInitialized = true;
+  }
+  @JavaProtected
+  Throwable(java.lang.String message, java.lang.Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    this.detailMessage = message;
+    this.cause = (Throwable) cause;
+    this.causeInitialized = true;
+  }
+
+  public java.lang.String getMessage() { return detailMessage; }
+  public java.lang.String getLocalizedMessage() { return getMessage(); }
+  public synchronized Throwable getCause() { return this.cause; }
+  public synchronized Throwable initCause(java.lang.Throwable cause) {
+    if (causeInitialized) {
+      String what = "a null";
+      if (cause != null) { Throwable c0 = (Throwable) cause; what = c0.toString(); }
+      throw new IllegalStateException("Can't overwrite cause with " + what, this);
+    }
+    if (cause == this) {
+      throw new IllegalArgumentException("Self-causation not permitted", this);
+    }
+    this.cause = (Throwable) cause;
+    this.causeInitialized = true;
+    return this;
+  }
+  public java.lang.String toString() {
+    String m = getLocalizedMessage();
+    if (m == null) { return javaType; }
+    return javaType + ": " + m;
+  }
+  public synchronized Throwable fillInStackTrace() { return this; }
+  public Any[] getStackTrace() { return this.stackTrace; }
+  public void setStackTrace(Any[] stackTrace) {
+    if (stackTrace == null) { throw new NullPointerException("stackTrace == null"); }
+    this.stackTrace = stackTrace;
+  }
+  public final synchronized void addSuppressed(java.lang.Throwable exception) {
+    if (exception == this) {
+      throw new IllegalArgumentException("Self-suppression not permitted", exception);
+    }
+    if (exception == null) {
+      throw new NullPointerException("Cannot suppress a null exception.");
+    }
+    if (suppressedCount == arrayLength(this.suppressedList)) {
+      Any[] grown = new Any[suppressedCount * 2];
+      int i = 0;
+      while (i < suppressedCount) { grown[i] = this.suppressedList[i]; i = i + 1; }
+      this.suppressedList = grown;
+    }
+    this.suppressedList[suppressedCount] = exception;
+    suppressedCount = suppressedCount + 1;
+  }
+  public final synchronized Throwable[] getSuppressed() {
+    Throwable[] out = new Throwable[suppressedCount];
+    int i = 0;
+    while (i < suppressedCount) { out[i] = (Throwable) this.suppressedList[i]; i = i + 1; }
+    return out;
+  }
+  public void printStackTrace() {
+    print(toString());
+    int i = 0;
+    while (i < suppressedCount) {
+      Throwable s = (Throwable) this.suppressedList[i];
+      print("\tSuppressed: " + s.toString());
+      i = i + 1;
+    }
+    Throwable c = this.cause;
+    int depth = 0;
+    while (c != null && depth < 1024) {
+      print("Caused by: " + c.toString());
+      c = c.getCause();
+      depth = depth + 1;
+    }
+  }
+  < ---- END java implementation ---- >
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public Throwable bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @throwable("java.lang.UnsupportedOperationException")
+  public void printStackTrace(Any s) { }
+  < ---- END java signatures ---- >
+}

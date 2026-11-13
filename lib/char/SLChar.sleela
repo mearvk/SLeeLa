@@ -1,0 +1,153 @@
+<< char/SLChar.sleela
+   SLeeLa char library.
+   Definition: Helpers over the char type of SLEELA.syntax section 45: a char is an unsigned
+   16-bit UTF-16 code unit held in an integer slot. The methods classify and map ASCII and
+   Latin-1 chars, convert between chars, codes and digits, and recognize surrogates. Chars
+   beyond Latin-1 need the Unicode tables and are the business of the Java text tier. >>
+#sleela 3.2
+material;
+class SLChar {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full descriptive record for a library-family class: identity, legality
+     (metaNationalSchedule), fiduciary (copyright, trademark, corporation) and
+     jurisdictional scope (metaOrigin). Values are faithful to the real origin
+     of the subject where publicly known; unknown values are stated as none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 8603;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "The Unicode Standard (UTF-16 code units); The Java Language Specification, Java SE 28 Edition (JLS 4.2.1, 5.1.3)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < Range of a char: an unsigned 16-bit UTF-16 code unit. >
+  static final int MIN_VALUE = 0;
+  static final int MAX_VALUE = 65535;
+
+  < The numeric code of a char (the char widened to int). >
+  static int toCode(char c) { int n = c; return n; }
+
+  < The char with the low 16 bits of n (the narrowing every char store applies). >
+  static char fromCode(int n) { char c = n; return c; }
+
+  << The one-character text of c. Under #sleela 3.2 the concatenation shows the
+     character; under an older syntax the same expression yields the decimal code.
+     An unpaired surrogate or NUL cannot be a plain String (runtime error). >>
+  static String toString(char c) { return "" + c; }
+
+  < 48..57 are 0..9. >
+  static boolean isDigit(char c) { int n = c; return n >= 48 && n <= 57; }
+
+  < ASCII A..Z (65..90) and the Latin-1 capitals 192..222 except 215. >
+  static boolean isUpperCase(char c) {
+    int n = c;
+    if (n >= 65 && n <= 90) { return true; }
+    return n >= 192 && n <= 222 && n != 215;
+  }
+
+  < ASCII a..z (97..122) and the Latin-1 smalls 223..255 except 247. >
+  static boolean isLowerCase(char c) {
+    int n = c;
+    if (n >= 97 && n <= 122) { return true; }
+    return n >= 223 && n <= 255 && n != 247;
+  }
+
+  << Letters of ASCII and Latin-1 (including 170, 181, 186). Letters outside Latin-1
+     need the Unicode tables and are not reported here. >>
+  static boolean isLetter(char c) {
+    int n = c;
+    if (isUpperCase(c) || isLowerCase(c)) { return true; }
+    return n == 170 || n == 181 || n == 186;
+  }
+
+  static boolean isLetterOrDigit(char c) { return isLetter(c) || isDigit(c); }
+
+  << Java isWhitespace: 9..13, 28..31, space, and the Unicode space separators that are
+     not no-break spaces. >>
+  static boolean isWhitespace(char c) {
+    int n = c;
+    if (n >= 9 && n <= 13) { return true; }
+    if (n >= 28 && n <= 32) { return true; }
+    if (n == 5760 || n == 8232 || n == 8233 || n == 8287 || n == 12288) { return true; }
+    return n >= 8192 && n <= 8202 && n != 8199;
+  }
+
+  < Simple case mapping for ASCII and Latin-1 (one char to one char). >
+  static char toUpperCase(char c) {
+    int n = c;
+    if (n >= 97 && n <= 122) { return fromCode(n - 32); }
+    if (n >= 224 && n <= 254 && n != 247) { return fromCode(n - 32); }
+    if (n == 255) { return fromCode(376); }
+    if (n == 181) { return fromCode(924); }
+    return c;
+  }
+
+  static char toLowerCase(char c) {
+    int n = c;
+    if (n >= 65 && n <= 90) { return fromCode(n + 32); }
+    if (n >= 192 && n <= 222 && n != 215) { return fromCode(n + 32); }
+    return c;
+  }
+
+  < Value of c as a digit in the radix (2..36), or -1 when it is not one. >
+  static int digitValue(char c, int radix) {
+    int n = c;
+    int v = -1;
+    if (n >= 48 && n <= 57) { v = n - 48; }
+    else if (n >= 97 && n <= 122) { v = n - 97 + 10; }
+    else if (n >= 65 && n <= 90) { v = n - 65 + 10; }
+    if (radix < 2 || radix > 36) { return -1; }
+    if (v >= radix) { return -1; }
+    return v;
+  }
+
+  < The lower-case digit char for a value in the radix, or NUL (0) when invalid. >
+  static char forDigit(int digit, int radix) {
+    if (radix < 2 || radix > 36 || digit < 0 || digit >= radix) { return fromCode(0); }
+    if (digit < 10) { return fromCode(48 + digit); }
+    return fromCode(97 + digit - 10);
+  }
+
+  static boolean isHighSurrogate(char c) { int n = c; return n >= 55296 && n <= 56319; }
+  static boolean isLowSurrogate(char c) { int n = c; return n >= 56320 && n <= 57343; }
+  static boolean isSurrogate(char c) { int n = c; return n >= 55296 && n <= 57343; }
+
+  < The code point of a surrogate pair. >
+  static int toCodePoint(char high, char low) {
+    int h = high;
+    int l = low;
+    return ((h - 55296) * 1024) + (l - 56320) + 65536;
+  }
+
+  < Order of two chars by code, as a negative, zero or positive int. >
+  static int compare(char a, char b) { int x = a; int y = b; return x - y; }
+
+  static int hashCode(char c) { int n = c; return n; }
+}

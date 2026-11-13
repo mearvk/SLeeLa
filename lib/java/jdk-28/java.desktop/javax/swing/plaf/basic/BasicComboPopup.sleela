@@ -1,0 +1,230 @@
+<< lib/java/jdk-28/java.desktop/javax/swing/plaf/basic/BasicComboPopup.sleela
+   SLeeLa file for the Java type javax.swing.plaf.basic.BasicComboPopup (module java.desktop). One Java type, one SLeeLa file.
+   Java Source (JDK 28 API): https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/basic/BasicComboPopup.html
+   Java kind: class; extends javax.swing.JPopupMenu; implements javax.swing.plaf.basic.ComboPopup
+   Status: members from the JDK 28 API (exact signatures).
+   The SLeeLa functions here are produced from that Java Source. No Java source text is copied. >>
+#sleela 3.0
+material;
+
+class BasicComboPopup extends JPopupMenu {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the real origin of the Java type: the Java SE / JDK 28 API by Oracle
+     and the OpenJDK community. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1656;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  String javaType = "javax.swing.plaf.basic.BasicComboPopup";
+  String javaModule = "java.desktop";
+  String javaSource = "https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/javax/swing/plaf/basic/BasicComboPopup.html";
+  String javaKind = "class";
+  String javaSuper = "javax.swing.JPopupMenu";
+
+  < ---- generics (SLeeLa erasure, SLEELA.syntax 16.3 and 38.1) ---- >
+  << The class is written without Java type parameters: every type variable and
+     every parameterized or package-qualified reference type erases to Any, and
+     java.lang.String erases to String. A value of a type parameter travels as
+     Any; test it with instanceof and cast it where it is used. The Java type
+     parameters are kept as data in JAVA_TYPE_PARAMETERS. An instance may record
+     the type arguments its caller means with bindGenericTypeArguments (for an
+     ArrayList of String, bind the single name java.lang.String). Nothing is
+     checked against them at run time. >>
+  static final String JAVA_TYPE_PARAMETERS = "";
+  String[] genericTypeArguments = new String[0];
+  public static String genericTypeParameters() { return JAVA_TYPE_PARAMETERS; }
+  public static int genericTypeParameterCount() { return 0; }
+  public static String genericTypeParameterName(int index) { return null; }
+  public BasicComboPopup bindGenericTypeArguments(String[] arguments) { if (arguments == null) { this.genericTypeArguments = new String[0]; } else { this.genericTypeArguments = arguments; } return this; }
+  public String genericTypeArgument(int index) { if (index < 0 || index >= arrayLength(genericTypeArguments)) { return null; } return genericTypeArguments[index]; }
+  public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
+
+  < ---- BEGIN java declarations (from the JDK 28 API) ---- >
+  < constants and static fields (values reflected from the JDK) >
+  static int SCROLL_UP = 0;
+  static int SCROLL_DOWN = 0;
+  < public and protected instance fields >
+  Any comboBox;
+  Any list;
+  Any scroller;
+  boolean valueIsAdjusting;
+  Any mouseMotionListener;
+  Any mouseListener;
+  Any keyListener;
+  Any listSelectionListener;
+  Any listMouseListener;
+  Any listMouseMotionListener;
+  Any propertyChangeListener;
+  Any listDataListener;
+  Any itemListener;
+  Any autoscrollTimer;
+  boolean hasEntered;
+  boolean isAutoScrolling;
+  int scrollDirection;
+  < ---- END java declarations ---- >
+
+  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >
+  @throwable("java.lang.UnsupportedOperationException")
+  public BasicComboPopup(Any combo) { super("constructor"); }
+  < ---- END java constructors ---- >
+
+  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
+  << Not yet SLeeLa logic: each method returns the default value of its
+     Java return type. @throwable names what Java throws for it (abstract:
+     AbstractMethodError, else UnsupportedOperationException, plus the
+     declared throws). Write the logic from the Java Source above into the
+     java implementation block; the generator then drops the stub. >>
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any convertMouseEvent(Any e) { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void show() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void hide() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public boolean isFocusTraversable() { return false; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createMouseListener() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createMouseMotionListener() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallComboBoxModelListeners(Any model) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void configureList() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createScroller() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void configureScroller() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void configurePopup() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void installComboBoxListeners() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void installListListeners() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createListMouseListener() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createListMouseMotionListener() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createListSelectionListener() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void installComboBoxModelListeners(Any model) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  int getPopupHeightForRowCount(int maxRowCount) { return 0; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any computePopupBounds(int px, int py, int pw, int ph) { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void startAutoScrolling(int direction) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void stopAutoScrolling() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void autoScrollUp() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void autoScrollDown() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void delegateFocus(Any e) { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void updateListBoxSelectionForEvent(Any anEvent, boolean shouldScroll) { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getList() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createList() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void firePopupMenuWillBecomeVisible() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void firePopupMenuWillBecomeInvisible() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void firePopupMenuCanceled() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createItemListener() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void installKeyboardActions() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void uninstallKeyboardActions() { }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createKeyListener() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createPropertyChangeListener() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  void togglePopup() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public void uninstallingUI() { }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getMouseListener() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getMouseMotionListener() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getKeyListener() { return null; }
+  @JavaProtected
+  @throwable("java.lang.UnsupportedOperationException")
+  Any createListDataListener() { return null; }
+  @throwable("java.lang.UnsupportedOperationException")
+  public Any getAccessibleContext() { return null; }
+  < ---- END java signatures ---- >
+}

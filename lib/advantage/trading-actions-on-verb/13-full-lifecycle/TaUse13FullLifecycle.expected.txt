@@ -1,0 +1,26 @@
+== Use case 13: full lifecycle ==
+  buy 100 @ 4000 on day 0, fee 50 : ok
+  ok   invariants after buy 1
+  buy 100 @ 4400 on day 100, fee 50 : ok
+  ok   invariants after buy 2
+  hold to day 200 : ok
+  ok   weighted age on day 200 = 150
+  sell 50 @ 4800 on day 250, fee 50 : ok
+  ok   profit of the trim (50 @ 4000 cost) = 40000
+  ok   invariants after the trim
+  buy 40 @ 4300 on day 300, fee 50 : ok
+-- day 400: sell what is long term (held more than 365 days) --
+  ok   long-term shares on day 400 = 50
+  sell the long-term shares @ 4900 on day 400, fee 50 : ok
+  ok   profit of that sale = 45000
+  ok   invariants after the long-term sale
+  ok   shares held on day 400 = 140
+  flatten @ 4700 on day 500, fee 50 : ok
+  ok   invariants after the flatten
+-- reconcile against the independent tally --
+  ok   shares held = 0
+  ok   fees paid = 300
+  ok   realized net = 130700
+  ok   realized net (reference value) = 130700
+  ok   realized gross (reference value) = 131000
+  checks passed=15 failed=0

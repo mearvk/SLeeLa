@@ -1,0 +1,366 @@
+<< lib/java/java/nio/ByteBuffer.sleela
+   SLeeLa Java SE/JDK 28 source envelope.
+   Definition: Native SLeeLa source declaration for the Java type java.nio.ByteBuffer.
+   
+   The Java class name is retained exactly. The SLeeLa declaration is the source
+   contract; Java behavior is supplied only through the conformance boundary. >>
+#sleela 3.0
+material;
+
+class ByteBuffer {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 1994;
+  String metaAuthor = "Oracle / OpenJDK";
+  String metaDate = "2026-10-16";
+  String metaCopyright = "GPLv2 with Classpath Exception (OpenJDK)";
+  String metaTrademark = "Java";
+  String metaCorporation = "Oracle Corporation";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-09-29";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "OpenJDK (JDK 28 API)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+  String javaType = "java.nio.ByteBuffer";
+  String typeName() { return javaType; }
+  boolean available() { return javaType != ""; }
+  String construct() { return "java.construct:" + javaType; }
+  String invoke(String operation) { return "java.invoke:" + javaType + ":" + operation; }
+  String invokeStatic(String operation) { return "java.static:" + javaType + ":" + operation; }
+
+
+  < ---- BEGIN java implementation ---- >
+  < ---- java.nio.ByteBuffer members (procedural implementation in SLeeLa) ---- >
+  << java.nio.ByteBuffer as a heap buffer over a byte[] with position, limit,
+     capacity, mark, an array offset (for slices) and a read-only flag. The
+     members that Java inherits from java.nio.Buffer (position(), limit(),
+     capacity(), remaining(), hasRemaining(), isReadOnly()) are written here
+     too, because the compiler has no base-typed dispatch yet. Messages match
+     the JDK. hashCode, order(), the view and byte-order forms and the
+     ByteBuffer-backed buffers keep their exact-signature stubs. >>
+  byte[] hb = null;
+  int bpos = 0;
+  int blim = 0;
+  int bcap = 0;
+  int bmark = 0 - 1;
+  int boff = 0;
+  boolean bro = false;
+
+  public static ByteBuffer allocate(int capacity) {
+    if (capacity < 0) { throw new IllegalArgumentException("capacity < 0: (" + capacity + " < 0)"); }
+    ByteBuffer b = new ByteBuffer();
+    b.hb = new byte[capacity];
+    b.bcap = capacity;
+    b.blim = capacity;
+    return b;
+  }
+  public static ByteBuffer wrap(byte[] array) {
+    ByteBuffer b = new ByteBuffer();
+    b.hb = array;
+    b.bcap = arrayLength(array);
+    b.blim = b.bcap;
+    return b;
+  }
+  public static ByteBuffer wrap(byte[] array, int offset, int length) {
+    int n = arrayLength(array);
+    if (offset < 0 || length < 0 || offset > n || length > n - offset) {
+      throw new IndexOutOfBoundsException("Range [" + offset + ", " + offset + " + " + length + ") out of bounds for length " + n);
+    }
+    ByteBuffer b = new ByteBuffer();
+    b.hb = array;
+    b.bcap = n;
+    b.bpos = offset;
+    b.blim = offset + length;
+    return b;
+  }
+
+  public final int position() { return this.bpos; }
+  public final int limit() { return this.blim; }
+  public final int capacity() { return this.bcap; }
+  public final int remaining() {
+    int r = this.blim - this.bpos;
+    if (r < 0) { return 0; }
+    return r;
+  }
+  public final boolean hasRemaining() { return this.bpos < this.blim; }
+  public boolean isReadOnly() { return this.bro; }
+  public boolean isDirect() { return false; }
+  public final boolean hasArray() { return !this.bro; }
+  public final int arrayOffset() {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    return this.boff;
+  }
+  public final byte[] array() {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    return this.hb;
+  }
+
+  public final ByteBuffer position(int newPosition) {
+    if (newPosition > this.blim || newPosition < 0) {
+      if (newPosition < 0) { throw new IllegalArgumentException("newPosition < 0: (" + newPosition + " < 0)"); }
+      throw new IllegalArgumentException("newPosition > limit: (" + newPosition + " > " + this.blim + ")");
+    }
+    if (this.bmark > newPosition) { this.bmark = 0 - 1; }
+    this.bpos = newPosition;
+    return this;
+  }
+  public final ByteBuffer limit(int newLimit) {
+    if (newLimit > this.bcap || newLimit < 0) {
+      if (newLimit < 0) { throw new IllegalArgumentException("newLimit < 0: (" + newLimit + " < 0)"); }
+      throw new IllegalArgumentException("newLimit > capacity: (" + newLimit + " > " + this.bcap + ")");
+    }
+    this.blim = newLimit;
+    if (this.bpos > newLimit) { this.bpos = newLimit; }
+    if (this.bmark > newLimit) { this.bmark = 0 - 1; }
+    return this;
+  }
+  public final ByteBuffer mark() {
+    this.bmark = this.bpos;
+    return this;
+  }
+  public final ByteBuffer reset() {
+    if (this.bmark < 0) { throw new InvalidMarkException(); }
+    this.bpos = this.bmark;
+    return this;
+  }
+  public final ByteBuffer clear() {
+    this.bpos = 0;
+    this.blim = this.bcap;
+    this.bmark = 0 - 1;
+    return this;
+  }
+  public final ByteBuffer flip() {
+    this.blim = this.bpos;
+    this.bpos = 0;
+    this.bmark = 0 - 1;
+    return this;
+  }
+  public final ByteBuffer rewind() {
+    this.bpos = 0;
+    this.bmark = 0 - 1;
+    return this;
+  }
+
+  public byte get() {
+    if (this.bpos >= this.blim) { throw new BufferUnderflowException(); }
+    byte v = this.hb[this.boff + this.bpos];
+    this.bpos = this.bpos + 1;
+    return v;
+  }
+  public byte get(int index) {
+    checkIdx(index);
+    return this.hb[this.boff + index];
+  }
+  public ByteBuffer put(byte x) {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    if (this.bpos >= this.blim) { throw new BufferOverflowException(); }
+    this.hb[this.boff + this.bpos] = x;
+    this.bpos = this.bpos + 1;
+    return this;
+  }
+  public ByteBuffer put(int index, byte x) {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    checkIdx(index);
+    this.hb[this.boff + index] = x;
+    return this;
+  }
+  public ByteBuffer get(byte[] dst, int offset, int length) {
+    int n = arrayLength(dst);
+    if (offset < 0 || length < 0 || offset > n || length > n - offset) {
+      throw new IndexOutOfBoundsException("Range [" + offset + ", " + offset + " + " + length + ") out of bounds for length " + n);
+    }
+    if (length > remaining()) { throw new BufferUnderflowException(); }
+    int i = 0;
+    while (i < length) { dst[offset + i] = this.hb[this.boff + this.bpos + i]; i = i + 1; }
+    this.bpos = this.bpos + length;
+    return this;
+  }
+  public ByteBuffer get(byte[] dst) { return get(dst, 0, arrayLength(dst)); }
+  public ByteBuffer put(byte[] src, int offset, int length) {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    int n = arrayLength(src);
+    if (offset < 0 || length < 0 || offset > n || length > n - offset) {
+      throw new IndexOutOfBoundsException("Range [" + offset + ", " + offset + " + " + length + ") out of bounds for length " + n);
+    }
+    if (length > remaining()) { throw new BufferOverflowException(); }
+    int i = 0;
+    while (i < length) { this.hb[this.boff + this.bpos + i] = src[offset + i]; i = i + 1; }
+    this.bpos = this.bpos + length;
+    return this;
+  }
+  public final ByteBuffer put(byte[] src) { return put(src, 0, arrayLength(src)); }
+  public ByteBuffer put(ByteBuffer src) {
+    if (src == this) { throw new IllegalArgumentException("The source buffer is this buffer"); }
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    int n = src.remaining();
+    if (n > remaining()) { throw new BufferOverflowException(); }
+    int i = 0;
+    while (i < n) { this.hb[this.boff + this.bpos + i] = src.hb[src.boff + src.bpos + i]; i = i + 1; }
+    this.bpos = this.bpos + n;
+    src.bpos = src.bpos + n;
+    return this;
+  }
+
+  public ByteBuffer compact() {
+    if (this.bro) { throw new ReadOnlyBufferException(); }
+    int n = remaining();
+    int i = 0;
+    while (i < n) { this.hb[this.boff + i] = this.hb[this.boff + this.bpos + i]; i = i + 1; }
+    this.bpos = n;
+    this.blim = this.bcap;
+    this.bmark = 0 - 1;
+    return this;
+  }
+  public ByteBuffer slice() {
+    ByteBuffer b = new ByteBuffer();
+    b.hb = this.hb;
+    b.boff = this.boff + this.bpos;
+    b.bcap = remaining();
+    b.blim = b.bcap;
+    b.bro = this.bro;
+    return b;
+  }
+  public ByteBuffer duplicate() {
+    ByteBuffer b = new ByteBuffer();
+    b.hb = this.hb;
+    b.boff = this.boff;
+    b.bcap = this.bcap;
+    b.blim = this.blim;
+    b.bpos = this.bpos;
+    b.bmark = this.bmark;
+    b.bro = this.bro;
+    return b;
+  }
+  public ByteBuffer asReadOnlyBuffer() {
+    ByteBuffer b = duplicate();
+    b.bro = true;
+    return b;
+  }
+
+  public boolean equals(java.lang.Object ob) {
+    if (ob == null) { return false; }
+    ByteBuffer that = (ByteBuffer) ob;
+    if (that == this) { return true; }
+    int n = remaining();
+    if (n != that.remaining()) { return false; }
+    int i = 0;
+    while (i < n) {
+      if (this.hb[this.boff + this.bpos + i] != that.hb[that.boff + that.bpos + i]) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+  public int compareTo(ByteBuffer that) {
+    int n = remaining();
+    int m = that.remaining();
+    int k = n;
+    if (m < k) { k = m; }
+    int i = 0;
+    while (i < k) {
+      byte a = this.hb[this.boff + this.bpos + i];
+      byte b = that.hb[that.boff + that.bpos + i];
+      if (a < b) { return 0 - 1; }
+      if (a > b) { return 1; }
+      i = i + 1;
+    }
+    return n - m;
+  }
+  public int mismatch(ByteBuffer that) {
+    int n = remaining();
+    int m = that.remaining();
+    int k = n;
+    if (m < k) { k = m; }
+    int i = 0;
+    while (i < k) {
+      if (this.hb[this.boff + this.bpos + i] != that.hb[that.boff + that.bpos + i]) { return i; }
+      i = i + 1;
+    }
+    if (n == m) { return 0 - 1; }
+    return k;
+  }
+  public java.lang.String toString() {
+    String cls = "java.nio.HeapByteBuffer";
+    if (this.bro) { cls = cls + "R"; }
+    return cls + "[pos=" + this.bpos + " lim=" + this.blim + " cap=" + this.bcap + "]";
+  }
+  void checkIdx(int index) {
+    if (index < 0 || index >= this.blim) { throw new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + this.blim); }
+  }
+  < ---- END java implementation ---- >
+
+  < ---- BEGIN java signatures (generated by tools/jdk_api_signatures.py) ---- >
+  << Exact Java signatures (from the JDK). A method body that is not yet
+     SLeeLa logic throws: AbstractMethodError for an abstract method, else
+     UnsupportedOperationException naming the Java signature. >>
+  public java.nio.ByteBuffer get(int index, byte[] dst) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.get(int, byte[])"); }
+  public java.nio.ByteBuffer get(int index, byte[] dst, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.get(int, byte[], int, int)"); }
+  public java.nio.ByteBuffer put(int index, java.nio.ByteBuffer src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.put(int, java.nio.ByteBuffer, int, int)"); }
+  public java.nio.ByteBuffer put(int index, byte[] src) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.put(int, byte[])"); }
+  public java.nio.ByteBuffer put(int index, byte[] src, int offset, int length) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.put(int, byte[], int, int)"); }
+  public int hashCode() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.hashCode()"); }
+  public abstract short getShort() { throw new AbstractMethodError("java.nio.ByteBuffer.getShort()"); }
+  public abstract short getShort(int index) { throw new AbstractMethodError("java.nio.ByteBuffer.getShort(int)"); }
+  public abstract java.nio.ByteBuffer putShort(int index, short value) { throw new AbstractMethodError("java.nio.ByteBuffer.putShort(int, short)"); }
+  public abstract java.nio.ByteBuffer putShort(short value) { throw new AbstractMethodError("java.nio.ByteBuffer.putShort(short)"); }
+  public abstract char getChar(int index) { throw new AbstractMethodError("java.nio.ByteBuffer.getChar(int)"); }
+  public abstract char getChar() { throw new AbstractMethodError("java.nio.ByteBuffer.getChar()"); }
+  public abstract java.nio.ByteBuffer putChar(int index, char value) { throw new AbstractMethodError("java.nio.ByteBuffer.putChar(int, char)"); }
+  public abstract java.nio.ByteBuffer putChar(char value) { throw new AbstractMethodError("java.nio.ByteBuffer.putChar(char)"); }
+  public abstract int getInt(int index) { throw new AbstractMethodError("java.nio.ByteBuffer.getInt(int)"); }
+  public abstract int getInt() { throw new AbstractMethodError("java.nio.ByteBuffer.getInt()"); }
+  public abstract java.nio.ByteBuffer putInt(int index, int value) { throw new AbstractMethodError("java.nio.ByteBuffer.putInt(int, int)"); }
+  public abstract java.nio.ByteBuffer putInt(int value) { throw new AbstractMethodError("java.nio.ByteBuffer.putInt(int)"); }
+  public abstract long getLong(int index) { throw new AbstractMethodError("java.nio.ByteBuffer.getLong(int)"); }
+  public abstract long getLong() { throw new AbstractMethodError("java.nio.ByteBuffer.getLong()"); }
+  public abstract java.nio.ByteBuffer putLong(long value) { throw new AbstractMethodError("java.nio.ByteBuffer.putLong(long)"); }
+  public abstract java.nio.ByteBuffer putLong(int index, long value) { throw new AbstractMethodError("java.nio.ByteBuffer.putLong(int, long)"); }
+  public abstract float getFloat() { throw new AbstractMethodError("java.nio.ByteBuffer.getFloat()"); }
+  public abstract float getFloat(int index) { throw new AbstractMethodError("java.nio.ByteBuffer.getFloat(int)"); }
+  public abstract java.nio.ByteBuffer putFloat(float value) { throw new AbstractMethodError("java.nio.ByteBuffer.putFloat(float)"); }
+  public abstract java.nio.ByteBuffer putFloat(int index, float value) { throw new AbstractMethodError("java.nio.ByteBuffer.putFloat(int, float)"); }
+  public abstract double getDouble(int index) { throw new AbstractMethodError("java.nio.ByteBuffer.getDouble(int)"); }
+  public abstract double getDouble() { throw new AbstractMethodError("java.nio.ByteBuffer.getDouble()"); }
+  public abstract java.nio.ByteBuffer putDouble(int index, double value) { throw new AbstractMethodError("java.nio.ByteBuffer.putDouble(int, double)"); }
+  public abstract java.nio.ByteBuffer putDouble(double value) { throw new AbstractMethodError("java.nio.ByteBuffer.putDouble(double)"); }
+  public abstract java.nio.ByteBuffer slice(int index, int length) { throw new AbstractMethodError("java.nio.ByteBuffer.slice(int, int)"); }
+  public final int alignmentOffset(int index, int unitSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.alignmentOffset(int, int)"); }
+  public static java.nio.ByteBuffer allocateDirect(int capacity) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.allocateDirect(int)"); }
+  public final java.nio.ByteBuffer order(java.nio.ByteOrder bo) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.order(java.nio.ByteOrder)"); }
+  public final java.nio.ByteOrder order() { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.order()"); }
+  public final java.nio.ByteBuffer alignedSlice(int unitSize) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.nio.ByteBuffer.alignedSlice(int)"); }
+  public abstract java.nio.CharBuffer asCharBuffer() { throw new AbstractMethodError("java.nio.ByteBuffer.asCharBuffer()"); }
+  public abstract java.nio.ShortBuffer asShortBuffer() { throw new AbstractMethodError("java.nio.ByteBuffer.asShortBuffer()"); }
+  public abstract java.nio.IntBuffer asIntBuffer() { throw new AbstractMethodError("java.nio.ByteBuffer.asIntBuffer()"); }
+  public abstract java.nio.LongBuffer asLongBuffer() { throw new AbstractMethodError("java.nio.ByteBuffer.asLongBuffer()"); }
+  public abstract java.nio.FloatBuffer asFloatBuffer() { throw new AbstractMethodError("java.nio.ByteBuffer.asFloatBuffer()"); }
+  public abstract java.nio.DoubleBuffer asDoubleBuffer() { throw new AbstractMethodError("java.nio.ByteBuffer.asDoubleBuffer()"); }
+  < ---- END java signatures ---- >
+}

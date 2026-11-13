@@ -1,0 +1,187 @@
+<< lib/advantage/trading-actions-on-verb/SLShortMargin.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Illustrative margin arithmetic for a short position in exact integers: the ceiling requirement, equity and excess, the deposit needed to meet a call, the fewest shares to cover to restore margin (binary search), and the day a borrow cost first causes a call. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Margin for a short position, as an illustration of careful integer code. >
+< Not a statement of any broker or regulator rule: the required percentage is >
+< a parameter in basis points (10000 = 100 percent of the short value). >
+< Model: collateral is the cash held (sale proceeds plus any deposit). The short >
+< value is shares * price. Equity = collateral - short value. Required = the >
+< ceiling of short value * bp / 10000. Excess = equity - required, and a call >
+< is due when excess < 0. Covering k shares at the current price leaves equity >
+< unchanged (fees ignored) and lowers the required amount, so "enough" is >
+< monotone in k and a binary search finds the fewest shares. >
+< Exactness: SLeeLa comparisons are exact only up to 2^53 - 1. Short value is >
+< at most maxValue = 4e15; the requirement is computed as q*bp + ceil(r*bp / >
+< 10000) with q = value / 10000 and r = value mod 10000, so no product passes >
+< 6e15 (maxBp = 15000) and the ceiling is exact. >
+class SLShortMargin {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39204;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int maxValue = 4000000000000000;
+  int maxBp = 15000;
+  int maxShares = 100000000;
+  int maxPrice = 10000000;
+  int maxRate = 1000;
+  int maxDays = 10000000;
+
+  < Short value in cents, or -1 when shares or price are outside their bounds. >
+  int shortValue(int shares, int price) {
+    if (shares < 0 || shares > maxShares) { return 0 - 1; }
+    if (price < 1 || price > maxPrice) { return 0 - 1; }
+    return shares * price;
+  }
+
+  < Required margin: ceiling of value * bp / 10000, or -1 for an input out of >
+  < range. The ceiling never rounds in the holder favour. >
+  int required(int value, int bp) {
+    if (value < 0 || value > maxValue) { return 0 - 1; }
+    if (bp < 0 || bp > maxBp) { return 0 - 1; }
+    int q = value / 10000;
+    int r = value % 10000;
+    return q * bp + (r * bp + 9999) / 10000;
+  }
+
+  < Equity = collateral - short value. May be negative. An input out of range >
+  < answers -2*maxValue, which no valid equity can reach. >
+  int equity(int collateral, int shares, int price) {
+    int v = shortValue(shares, price);
+    if (v < 0 || collateral < 0 || collateral > maxValue) { return 0 - maxValue - maxValue; }
+    return collateral - v;
+  }
+
+  boolean inRange(int collateral, int shares, int price, int bp) {
+    if (shortValue(shares, price) < 0) { return false; }
+    if (collateral < 0 || collateral > maxValue) { return false; }
+    if (bp < 0 || bp > maxBp) { return false; }
+    return true;
+  }
+
+  < Excess = equity - required. Answers -2*maxValue when an input is out of range. >
+  int excess(int collateral, int shares, int price, int bp) {
+    if (!inRange(collateral, shares, price, bp)) { return 0 - maxValue - maxValue; }
+    return equity(collateral, shares, price) - required(shortValue(shares, price), bp);
+  }
+
+  boolean callDue(int collateral, int shares, int price, int bp) {
+    return excess(collateral, shares, price, bp) < 0 && inRange(collateral, shares, price, bp);
+  }
+
+  < Deposit that restores excess to zero, or 0 when no call is due. >
+  int callAmount(int collateral, int shares, int price, int bp) {
+    if (!inRange(collateral, shares, price, bp)) { return 0 - 1; }
+    int x = excess(collateral, shares, price, bp);
+    if (x >= 0) { return 0; }
+    return 0 - x;
+  }
+
+  < True when covering k shares leaves enough equity for the shares still short. >
+  boolean enoughAfterCover(int collateral, int shares, int price, int bp, int k) {
+    int eq = equity(collateral, shares, price);
+    int req = required(shortValue(shares - k, price), bp);
+    return eq >= req;
+  }
+
+  < Fewest shares to cover so the rest are adequately margined. Returns 0 when >
+  < no cover is needed, -1 when no cover can help (equity is negative) or the >
+  < input is out of range. >
+  < Binary search. Invariant: the answer is in [lo, hi]. enoughAfterCover is >
+  < monotone in k, because required falls as k grows while equity is fixed. >
+  < hi - lo strictly shrinks, so the loop ends after about log2(shares) passes. >
+  int sharesToCover(int collateral, int shares, int price, int bp) {
+    if (!inRange(collateral, shares, price, bp)) { return 0 - 1; }
+    if (equity(collateral, shares, price) < 0) { return 0 - 1; }
+    int lo = 0;
+    int hi = shares;
+    while (lo < hi) {
+      int mid = (lo + hi) / 2;
+      if (enoughAfterCover(collateral, shares, price, bp, mid)) { hi = mid; }
+      else { lo = mid + 1; }
+    }
+    return lo;
+  }
+
+  < Reference: try k = 0, 1, 2, ... up to shares. Used to cross-check. >
+  int sharesToCoverScan(int collateral, int shares, int price, int bp) {
+    if (!inRange(collateral, shares, price, bp)) { return 0 - 1; }
+    if (equity(collateral, shares, price) < 0) { return 0 - 1; }
+    int k = 0;
+    while (k < shares && !enoughAfterCover(collateral, shares, price, bp, k)) { k = k + 1; }
+    return k;
+  }
+
+  < Borrow cost drains collateral by shares * rate each day at a fixed price. >
+  < The first day d >= 0 on which the excess is negative: 0 when already due, >
+  < floor(excess / burn) + 1 otherwise. Returns -2 when nothing drains (burn >
+  < is 0), -3 when the day is beyond maxDays, and -1 for an input out of range. >
+  int daysToCall(int collateral, int shares, int price, int bp, int rate) {
+    if (!inRange(collateral, shares, price, bp)) { return 0 - 1; }
+    if (rate < 0 || rate > maxRate) { return 0 - 1; }
+    int x = excess(collateral, shares, price, bp);
+    if (x < 0) { return 0; }
+    int burn = shares * rate;
+    if (burn == 0) { return 0 - 2; }
+    int d = x / burn + 1;
+    if (d > maxDays) { return 0 - 3; }
+    return d;
+  }
+
+  < Reference: step one day at a time until the excess is negative. >
+  int daysToCallScan(int collateral, int shares, int price, int bp, int rate) {
+    if (!inRange(collateral, shares, price, bp)) { return 0 - 1; }
+    if (rate < 0 || rate > maxRate) { return 0 - 1; }
+    int burn = shares * rate;
+    int x = excess(collateral, shares, price, bp);
+    if (x >= 0 && burn == 0) { return 0 - 2; }
+    int d = 0;
+    while (x >= 0 && d <= maxDays) {
+      d = d + 1;
+      x = x - burn;
+    }
+    if (d > maxDays) { return 0 - 3; }
+    return d;
+  }
+}

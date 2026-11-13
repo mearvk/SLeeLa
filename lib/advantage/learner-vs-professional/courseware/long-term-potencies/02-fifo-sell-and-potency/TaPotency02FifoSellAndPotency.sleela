@@ -1,0 +1,92 @@
+<< lib/advantage/learner-vs-professional/courseware/long-term-potencies/02-fifo-sell-and-potency/TaPotency02FifoSellAndPotency.sleela
+   SLeeLa courseware lesson.
+   Definition: Entry 2: a FIFO sell of an entire lot removes that lot's contribution to both term potency and age potency, shown as an exact before/after comparison. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Entry 2 of 4, long-term-potencies. The oldest of two lots is sold in full. >
+< Because SLLongBook sells oldest-first (FIFO), selling exactly the older >
+< lot's quantity removes that lot entirely, and both potency readings >
+< change to reflect only the remaining, younger lot. >
+class TaPotency02FifoSellAndPotency {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39352;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+  void expect(String label, int got, int want) {
+    if (got == want) { print("  ok   " + label + " = " + got); passed = passed + 1; }
+    else { print("  FAIL " + label + " got " + got + " want " + want); failed = failed + 1; }
+  }
+  void expectTrue(String label, boolean got) {
+    if (got) { print("  ok   " + label); passed = passed + 1; }
+    else { print("  FAIL " + label); failed = failed + 1; }
+  }
+  void summary() { print("  checks passed=" + passed + " failed=" + failed); }
+
+
+  void act(SLLongBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+  void main() {
+    SLLongBook book = new SLLongBook();
+    SLTermPotency p = new SLTermPotency();
+    print("== Entry 2: a FIFO sell changes both readings ==");
+    act(book, "buy 40 @ 5000 on day 0", book.buy(0, 40, 5000, 0));
+    act(book, "buy 60 @ 5100 on day 400", book.buy(400, 60, 5100, 0));
+    print("-- before the sell, on day 500 --");
+    expect("term potency before", p.termPotencyBp(book, 500, 365), 4000);
+    expect("age potency before", p.agePotencyBp(book, 500), 5200);
+    print("-- sell exactly the oldest lot (40 units) on day 500 --");
+    act(book, "sell 40 @ 5500 on day 500", book.sell(500, 40, 5500, 0));
+    print("-- after the sell, only the younger (400-day) lot remains --");
+    expect("shares held", book.totalQty(), 60);
+    expect("term potency after (the remaining lot is not yet long term)", p.termPotencyBp(book, 500, 365), 0);
+    expect("age potency after (one lot left, so weighted age equals oldest age)", p.agePotencyBp(book, 500), 10000);
+    expectTrue("the FIFO sell removed exactly the oldest lot's long-term risk", p.termPotencyBp(book, 500, 365) == 0);
+    expectTrue("invariants hold", book.invariantsHold());
+    summary();
+  }
+}

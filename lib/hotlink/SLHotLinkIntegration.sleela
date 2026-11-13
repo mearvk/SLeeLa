@@ -1,0 +1,128 @@
+<< lib/hotlink/SLHotLinkIntegration.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLHotLinkIntegration — the vertical-integration side of
+     the backing model. It owns an SLVerticalIntegration and grows it only
+     through the SLHotLinker: a tier is added by expand(), which first has the
+     linker approve the compartment type for that kind. Value moves only where
+     the linker says two instances are connected: deposit() puts units into a
+     compartment from a connected module, and feed() moves units downstream
+     between connected, adjacent tiers. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import advantage.integration;
+< Family: hotlink. Tier cap 32 (the vertical-integration model cap). >
+class SLHotLinkIntegration {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39224;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  SLVerticalIntegration model;
+  SLHotLinker linker;
+  String[] tierNames;
+  int tierTotal;
+
+  void configure(String modelName, SLHotLinker l) {
+    model = new SLVerticalIntegration();
+    model.configure(modelName);
+    linker = l;
+    tierNames = new String[32];
+    int i = 0;
+    while (i < 32) { tierNames[i] = ""; i = i + 1; }
+    tierTotal = 0;
+  }
+  SLVerticalIntegration stack() { return model; }
+  int tiers() { return tierTotal; }
+  int tierOf(String name) {
+    int i = 0;
+    while (i < tierTotal) { if (tierNames[i] == name) { return i; } i = i + 1; }
+    return -1;
+  }
+
+  < Grow the stack by one tier of the given kind, if the linker approves. >
+  < Returns the compartment, or null (the refusal is in the linker audit). >
+  SLCompartment expand(String name, String label, int kind, int trust) {
+    String typeId = linker.model().typeForKind(kind);
+    if (typeId == "") { linker.refuse("no class type for kind " + kind); return null; }
+    if (tierTotal >= 32) { linker.refuse("vertical stack is full"); return null; }
+    int slot = linker.attach(typeId, name, trust, "");
+    if (slot < 0) { return null; }
+    SLCompartment c = model.addKind(label, kind);
+    tierNames[tierTotal] = name;
+    tierTotal = tierTotal + 1;
+    return c;
+  }
+
+  < A connected module puts units into a compartment. Returns units stored. >
+  int deposit(String fromName, String toName, int amount) {
+    if (amount <= 0) { return 0; }
+    if (!linker.isConnected(fromName, toName)) {
+      linker.refuse("deposit " + fromName + " -> " + toName + " (not connected)");
+      return 0;
+    }
+    int t = tierOf(toName);
+    if (t < 0) { linker.refuse("deposit target " + toName + " is not a tier"); return 0; }
+    SLCompartment c = model.tierAt(t);
+    return c.store(amount);
+  }
+
+  < Move units downstream between two connected tiers that are adjacent. >
+  int feed(String fromTier, String toTier, int amount) {
+    if (!linker.isConnected(fromTier, toTier)) {
+      linker.refuse("feed " + fromTier + " -> " + toTier + " (not connected)");
+      return 0;
+    }
+    if (linker.modeBetween(fromTier, toTier) != "feed") {
+      linker.refuse("feed " + fromTier + " -> " + toTier + " (link is not a feed)");
+      return 0;
+    }
+    int a = tierOf(fromTier);
+    int b = tierOf(toTier);
+    if (a < 0 || b != a + 1) {
+      linker.refuse("feed " + fromTier + " -> " + toTier + " (tiers not adjacent)");
+      return 0;
+    }
+    return model.flowDownstream(a, amount);
+  }
+}

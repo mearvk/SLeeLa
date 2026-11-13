@@ -1,0 +1,19 @@
+#sleela 3.0
+spark;
+material;
+import java.jdk-25.java.lang;
+class P {
+  void main() {
+    try { print("body"); } finally { print("fin1"); }
+    try { throw new IllegalStateException("x"); } catch (IllegalStateException e) { print("caught"); } finally { print("fin2"); }
+    try {
+      try { throw new IllegalStateException("y"); } finally { print("fin3"); }
+    } catch (IllegalStateException e) { print("after fin3 " + e.getMessage()); }
+    try {
+      try { throw new IllegalArgumentException("a"); }
+      catch (IllegalArgumentException e) { throw new IllegalStateException("from catch"); }
+      finally { print("fin4"); }
+    } catch (IllegalStateException e) { print(e.getMessage()); }
+    for (int i = 0; i < 2; i++) { try { print("loop " + i); } finally { print("loop fin " + i); } }
+  }
+}

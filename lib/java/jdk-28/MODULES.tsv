@@ -1,0 +1,59 @@
+# module	types	folder	java_source	evidence
+java.base	1638	lib/java/jdk-28/java.base/	https://download.java.net/java/early_access/jdk28/docs/api/java.base/module-summary.html	JDK 28 API index (types)
+java.compiler	146	lib/java/jdk-28/java.compiler/	https://download.java.net/java/early_access/jdk28/docs/api/java.compiler/module-summary.html	JDK 28 API index (types)
+java.datatransfer	12	lib/java/jdk-28/java.datatransfer/	https://download.java.net/java/early_access/jdk28/docs/api/java.datatransfer/module-summary.html	JDK 28 API index (types)
+java.desktop	1413	lib/java/jdk-28/java.desktop/	https://download.java.net/java/early_access/jdk28/docs/api/java.desktop/module-summary.html	JDK 28 API index (types)
+java.instrument	6	lib/java/jdk-28/java.instrument/	https://download.java.net/java/early_access/jdk28/docs/api/java.instrument/module-summary.html	JDK 28 API index (types)
+java.logging	17	lib/java/jdk-28/java.logging/	https://download.java.net/java/early_access/jdk28/docs/api/java.logging/module-summary.html	JDK 28 API index (types)
+java.management	190	lib/java/jdk-28/java.management/	https://download.java.net/java/early_access/jdk28/docs/api/java.management/module-summary.html	JDK 28 API index (types)
+java.management.rmi	9	lib/java/jdk-28/java.management.rmi/	https://download.java.net/java/early_access/jdk28/docs/api/java.management.rmi/module-summary.html	JDK 28 API index (types)
+java.naming	102	lib/java/jdk-28/java.naming/	https://download.java.net/java/early_access/jdk28/docs/api/java.naming/module-summary.html	JDK 28 API index (types)
+java.net.http	28	lib/java/jdk-28/java.net.http/	https://download.java.net/java/early_access/jdk28/docs/api/java.net.http/module-summary.html	JDK 28 API index (types)
+java.prefs	9	lib/java/jdk-28/java.prefs/	https://download.java.net/java/early_access/jdk28/docs/api/java.prefs/module-summary.html	JDK 28 API index (types)
+java.rmi	55	lib/java/jdk-28/java.rmi/	https://download.java.net/java/early_access/jdk28/docs/api/java.rmi/module-summary.html	JDK 28 API index (types)
+java.scripting	12	lib/java/jdk-28/java.scripting/	https://download.java.net/java/early_access/jdk28/docs/api/java.scripting/module-summary.html	JDK 28 API index (types)
+java.security.jgss	16	lib/java/jdk-28/java.security.jgss/	https://download.java.net/java/early_access/jdk28/docs/api/java.security.jgss/module-summary.html	JDK 28 API index (types)
+java.security.sasl	10	lib/java/jdk-28/java.security.sasl/	https://download.java.net/java/early_access/jdk28/docs/api/java.security.sasl/module-summary.html	JDK 28 API index (types)
+java.smartcardio	13	lib/java/jdk-28/java.smartcardio/	https://download.java.net/java/early_access/jdk28/docs/api/java.smartcardio/module-summary.html	JDK 28 API index (types)
+java.sql	74	lib/java/jdk-28/java.sql/	https://download.java.net/java/early_access/jdk28/docs/api/java.sql/module-summary.html	JDK 28 API index (types)
+java.sql.rowset	30	lib/java/jdk-28/java.sql.rowset/	https://download.java.net/java/early_access/jdk28/docs/api/java.sql.rowset/module-summary.html	JDK 28 API index (types)
+java.transaction.xa	3	lib/java/jdk-28/java.transaction.xa/	https://download.java.net/java/early_access/jdk28/docs/api/java.transaction.xa/module-summary.html	JDK 28 API index (types)
+java.xml	194	lib/java/jdk-28/java.xml/	https://download.java.net/java/early_access/jdk28/docs/api/java.xml/module-summary.html	JDK 28 API index (types)
+java.xml.crypto	58	lib/java/jdk-28/java.xml.crypto/	https://download.java.net/java/early_access/jdk28/docs/api/java.xml.crypto/module-summary.html	JDK 28 API index (types)
+jdk.accessibility	9	lib/java/jdk-28/jdk.accessibility/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.accessibility/module-summary.html	JDK 28 API index (types)
+jdk.attach	8	lib/java/jdk-28/jdk.attach/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.attach/module-summary.html	JDK 28 API index (types)
+jdk.compiler	147	lib/java/jdk-28/jdk.compiler/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.compiler/module-summary.html	JDK 28 API index (types)
+jdk.dynalink	37	lib/java/jdk-28/jdk.dynalink/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.dynalink/module-summary.html	JDK 28 API index (types)
+jdk.httpserver	23	lib/java/jdk-28/jdk.httpserver/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.httpserver/module-summary.html	JDK 28 API index (types)
+jdk.incubator.json	10	lib/java/jdk-28/jdk.incubator.json/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.incubator.json/module-summary.html	JDK 28 API index (types)
+jdk.incubator.vector	23	lib/java/jdk-28/jdk.incubator.vector/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.incubator.vector/module-summary.html	JDK 28 API index (types)
+jdk.jartool	3	lib/java/jdk-28/jdk.jartool/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.jartool/module-summary.html	JDK 28 API index (types)
+jdk.javadoc	9	lib/java/jdk-28/jdk.javadoc/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.javadoc/module-summary.html	JDK 28 API index (types)
+jdk.jconsole	3	lib/java/jdk-28/jdk.jconsole/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.jconsole/module-summary.html	JDK 28 API index (types)
+jdk.jdi	131	lib/java/jdk-28/jdk.jdi/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.jdi/module-summary.html	JDK 28 API index (types)
+jdk.jfr	53	lib/java/jdk-28/jdk.jfr/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.jfr/module-summary.html	JDK 28 API index (types)
+jdk.jshell	64	lib/java/jdk-28/jdk.jshell/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.jshell/module-summary.html	JDK 28 API index (types)
+jdk.management	13	lib/java/jdk-28/jdk.management/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.management/module-summary.html	JDK 28 API index (types)
+jdk.management.jfr	6	lib/java/jdk-28/jdk.management.jfr/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.management.jfr/module-summary.html	JDK 28 API index (types)
+jdk.net	6	lib/java/jdk-28/jdk.net/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.net/module-summary.html	JDK 28 API index (types)
+jdk.nio.mapmode	1	lib/java/jdk-28/jdk.nio.mapmode/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.nio.mapmode/module-summary.html	JDK 28 API index (types)
+jdk.sctp	21	lib/java/jdk-28/jdk.sctp/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.sctp/module-summary.html	JDK 28 API index (types)
+jdk.security.auth	24	lib/java/jdk-28/jdk.security.auth/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.security.auth/module-summary.html	JDK 28 API index (types)
+jdk.security.jgss	6	lib/java/jdk-28/jdk.security.jgss/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.security.jgss/module-summary.html	JDK 28 API index (types)
+jdk.xml.dom	89	lib/java/jdk-28/jdk.xml.dom/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.xml.dom/module-summary.html	JDK 28 API index (types)
+java.se	0	lib/java/jdk-28/java.se/	https://download.java.net/java/early_access/jdk28/docs/api/java.se/module-summary.html	module page in the JDK 27 API docs
+jdk.charsets	0	lib/java/jdk-28/jdk.charsets/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.charsets/module-summary.html	module page in the JDK 22 API docs; in the JDK 25 runtime
+jdk.crypto.cryptoki	0	lib/java/jdk-28/jdk.crypto.cryptoki/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.crypto.cryptoki/module-summary.html	module page in the JDK 17 API docs; in the JDK 25 runtime
+jdk.editpad	0	lib/java/jdk-28/jdk.editpad/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.editpad/module-summary.html	module page in the JDK 24 API docs
+jdk.hotspot.agent	0	lib/java/jdk-28/jdk.hotspot.agent/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.hotspot.agent/module-summary.html	module page in the JDK 11 API docs; in the JDK 25 runtime
+jdk.jcmd	0	lib/java/jdk-28/jdk.jcmd/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.jcmd/module-summary.html	module page in the JDK 27 API docs
+jdk.jdeps	0	lib/java/jdk-28/jdk.jdeps/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.jdeps/module-summary.html	module page in the JDK 25 API docs
+jdk.jdwp.agent	0	lib/java/jdk-28/jdk.jdwp.agent/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.jdwp.agent/module-summary.html	module page in the JDK 27 API docs
+jdk.jlink	0	lib/java/jdk-28/jdk.jlink/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.jlink/module-summary.html	module page in the JDK 27 API docs
+jdk.jpackage	0	lib/java/jdk-28/jdk.jpackage/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.jpackage/module-summary.html	module page in the JDK 27 API docs
+jdk.jstatd	0	lib/java/jdk-28/jdk.jstatd/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.jstatd/module-summary.html	module page in the JDK 17 API docs; in the JDK 25 runtime
+jdk.localedata	0	lib/java/jdk-28/jdk.localedata/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.localedata/module-summary.html	module page in the JDK 11 API docs; in the JDK 25 runtime
+jdk.management.agent	0	lib/java/jdk-28/jdk.management.agent/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.management.agent/module-summary.html	in the JDK 25 runtime; module page not yet confirmed online
+jdk.naming.dns	0	lib/java/jdk-28/jdk.naming.dns/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.naming.dns/module-summary.html	module page in the JDK 11 API docs; in the JDK 25 runtime
+jdk.naming.rmi	0	lib/java/jdk-28/jdk.naming.rmi/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.naming.rmi/module-summary.html	module page in the JDK 21 API docs; in the JDK 25 runtime
+jdk.zipfs	0	lib/java/jdk-28/jdk.zipfs/	https://download.java.net/java/early_access/jdk28/docs/api/jdk.zipfs/module-summary.html	module page in the JDK 27 API docs

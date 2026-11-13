@@ -1,0 +1,153 @@
+<< lib/advantage/trading-actions-on-verb/06-round-lot-fill-and-bezout/TaUse06RoundLotFillAndBezout.sleela
+   SLeeLa trading-action use case.
+   Definition: Trading long, exact fills: the gcd test is necessary but not sufficient for filling an order with two round-lot sizes; Bezout coefficients prove the gcd. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Use case 6 (style, Euclidean). Can an order of c shares be filled exactly with >
+< whole lots of 20 and 30? Necessary: gcd(20,30) = 10 must divide c. Not >
+< sufficient: 10 shares passes the gcd test but is smaller than either lot. The >
+< search loop runs at most c / 20 + 1 passes. Extended Euclid gives x, y with >
+< a*x + b*y = gcd, a certificate that can be checked by one multiplication. >
+class TaUse06RoundLotFillAndBezout {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39306;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+
+  void expect(String label, int got, int want) {
+    if (got == want) {
+      print("  ok   " + label + " = " + got);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label + " got " + got + " want " + want);
+      failed = failed + 1;
+    }
+  }
+
+  void expectTrue(String label, boolean got) {
+    if (got) {
+      print("  ok   " + label);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label);
+      failed = failed + 1;
+    }
+  }
+
+  void summary() {
+    print("  checks passed=" + passed + " failed=" + failed);
+  }
+
+  void act(SLLongBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+  void main() {
+    SLEuclid e = new SLEuclid();
+    SLLongBook book = new SLLongBook();
+    print("== Use case 6: round-lot fill and Bezout ==");
+    expect("gcd of the two lot sizes", e.gcd(20, 30), 10);
+    expectTrue("70 can be filled", e.canFill(70, 20, 30));
+    expect("70 uses 20-lots", e.fillA, 2);
+    expect("70 uses 30-lots", e.fillB, 1);
+    expectTrue("75 cannot (10 does not divide 75)", !e.canFill(75, 20, 30));
+    expectTrue("10 cannot (gcd divides it but it is too small)", !e.canFill(10, 20, 30));
+    expectTrue("90 can be filled", e.canFill(90, 20, 30));
+    expect("90 uses 20-lots (fewest)", e.fillA, 0);
+    expect("90 uses 30-lots", e.fillB, 3);
+    expectTrue("110 can be filled", e.canFill(110, 20, 30));
+    expect("110 uses 20-lots", e.fillA, 1);
+    expect("110 uses 30-lots", e.fillB, 3);
+    int fa = e.fillA;
+    int fb = e.fillB;
+    expectTrue("the fill adds back to 110", fa * 20 + fb * 30 == 110);
+    act(book, "buy the 20-lots on day 5", book.buy(5, fa * 20, 5000, 0));
+    act(book, "buy the 30-lots on day 5", book.buy(5, fb * 30, 5000, 0));
+    expect("shares held", book.totalQty(), 110);
+    expectTrue("invariants hold", book.invariantsHold());
+    expect("status when a fill exists", e.fillStatus, 0);
+    expectTrue("75 has no fill", !e.canFill(75, 20, 30));
+    expect("status when none exists", e.fillStatus, 1);
+    expectTrue("a negative order is out of range", !e.canFill(0 - 5, 20, 30));
+    expect("status when out of range", e.fillStatus, 2);
+    print("-- closed form agrees with the plain scan on every order 0..300 --");
+    int agree = 0;
+    int differ = 0;
+    int c = 0;
+    while (c <= 300) {
+      boolean fast = e.canFill(c, 20, 30);
+      int fa2 = e.fillA;
+      int fb2 = e.fillB;
+      boolean slow = e.canFillScan(c, 20, 30);
+      boolean same = (fast == slow);
+      if (same && fast) { same = (fa2 == e.fillA && fb2 == e.fillB && fa2 * 20 + fb2 * 30 == c); }
+      if (same) { agree = agree + 1; } else { differ = differ + 1; }
+      c = c + 1;
+    }
+    expect("orders where the two methods agree", agree, 301);
+    expect("orders where they differ", differ, 0);
+    print("-- a large order is still instant --");
+    boolean big = e.canFill(1000000000000, 89999989, 89999971);
+    expectTrue("one trillion shares by two large lots is answered, not rejected", e.fillStatus != 2);
+    expectTrue("one trillion shares by lots of 89999989 and 89999971 has no fill", !big);
+    expect("status says none exists", e.fillStatus, 1);
+    expectTrue("lots above the lot bound are rejected, not computed", !e.canFill(10, 999999937, 3));
+    expect("rejection status", e.fillStatus, 2);
+    print("-- Bezout certificates --");
+    int g20 = e.egcd(20, 30);
+    expect("egcd(20,30) gcd", g20, 10);
+    expect("coefficient x", e.bx, -1);
+    expect("coefficient y", e.by, 1);
+    expectTrue("20*x + 30*y = gcd", e.bezoutHolds(20, 30, g20));
+    int g240 = e.egcd(240, 46);
+    expect("egcd(240,46) gcd", g240, 2);
+    expect("coefficient x", e.bx, -9);
+    expect("coefficient y", e.by, 47);
+    expectTrue("240*x + 46*y = gcd", e.bezoutHolds(240, 46, g240));
+    expect("egcd refuses a negative input", e.egcd(0 - 1, 5), 0 - 1);
+    summary();
+  }
+}

@@ -1,0 +1,10 @@
+#sleela 3.0
+class Target {
+    int v;
+}
+class RefAssign {
+    static void main() {
+        Target t = new Target();
+        t.ref = 5;
+    }
+}

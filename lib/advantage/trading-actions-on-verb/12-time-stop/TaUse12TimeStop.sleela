@@ -1,0 +1,122 @@
+<< lib/advantage/trading-actions-on-verb/12-time-stop/TaUse12TimeStop.sleela
+   SLeeLa trading-action use case.
+   Definition: Time on long, time stop: a loop sells every share held longer than a limit; it must end because the old quantity strictly falls. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Use case 12 (time). A time stop sells shares held more than 90 days. Loop: >
+< while old = qtyOlderThan(today, 90) is above zero, sell old. Invariant: after >
+< each sell, shares held fall by old, so the loop runs a bounded number of >
+< times. Lots are kept oldest first, so FIFO sells exactly the old shares. >
+class TaUse12TimeStop {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39312;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+
+  void expect(String label, int got, int want) {
+    if (got == want) {
+      print("  ok   " + label + " = " + got);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label + " got " + got + " want " + want);
+      failed = failed + 1;
+    }
+  }
+
+  void expectTrue(String label, boolean got) {
+    if (got) {
+      print("  ok   " + label);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label);
+      failed = failed + 1;
+    }
+  }
+
+  void summary() {
+    print("  checks passed=" + passed + " failed=" + failed);
+  }
+
+  void act(SLLongBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+  void main() {
+    SLLongBook book = new SLLongBook();
+    print("== Use case 12: time stop ==");
+    act(book, "buy 10 on day 0", book.buy(0, 10, 5000, 0));
+    act(book, "buy 20 on day 40", book.buy(40, 20, 5000, 0));
+    act(book, "buy 30 on day 80", book.buy(80, 30, 5000, 0));
+    act(book, "buy 40 on day 120", book.buy(120, 40, 5000, 0));
+    print("-- day 130: only the day-0 lot is older than 90 --");
+    expect("shares older than 90 on day 130", book.qtyOlderThan(130, 90), 10);
+    int passes = 0;
+    int old = book.qtyOlderThan(130, 90);
+    while (old > 0 && passes < 10) {
+      act(book, "time stop: sell " + old + " @ 5200 on day 130", book.sell(130, old, 5200, 0));
+      passes = passes + 1;
+      old = book.qtyOlderThan(130, 90);
+    }
+    expect("passes taken", passes, 1);
+    expect("shares older than 90 after the stop", book.qtyOlderThan(130, 90), 0);
+    expect("shares held", book.totalQty(), 90);
+    print("-- day 200: three lots have aged past 90 --");
+    act(book, "hold to day 200", book.hold(200));
+    int after = book.qtyOlderThan(200, 90);
+    passes = 0;
+    while (after > 0 && passes < 10) {
+      act(book, "time stop: sell " + after + " @ 5200 on day 200", book.sell(200, after, 5200, 0));
+      passes = passes + 1;
+      after = book.qtyOlderThan(200, 90);
+    }
+    expect("passes taken", passes, 1);
+    expect("shares held", book.totalQty(), 40);
+    expect("oldest age after the stop", book.oldestAge(200), 80);
+    expectTrue("oldest is within the limit", book.oldestAge(200) <= 90);
+    expectTrue("invariants hold", book.invariantsHold());
+    summary();
+  }
+}

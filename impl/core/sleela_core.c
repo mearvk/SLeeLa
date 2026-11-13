@@ -51,7 +51,17 @@
 #define FRAMES_MAX 1024
 
 typedef struct { uint8_t op; int32_t a; } SLInstr;
-typedef struct { char* name; int32_t entry; int32_t nargs; int32_t nlocals; } SLFunc;
+typedef struct {
+    char* name;
+    int32_t entry;
+    int32_t nargs;
+    int32_t nlocals;
+    uint32_t native_flags;
+    uint32_t native_abi_version;
+    uint64_t native_signature_id;
+    char* native_signature;
+    SLNativeHandle native_handle; /* runtime-only, explicitly host-bound */
+} SLFunc;
 #define EXCEPTION_HANDLERS_MAX 1024
 
 typedef struct {
@@ -135,6 +145,11 @@ typedef struct {
     char* name;
     int nfields;
     int parent_type;
+    /* Further supertypes beyond the extends parent: the interfaces a class
+     * implements (SLEELA.syntax 43.7). Direct edges only; struct_type_is_a
+     * follows them transitively. */
+    int nsupers;
+    int* supers;
     char* fields[SL_MAX_STRUCT_FIELDS];
 } SLStructType;
 typedef struct {
@@ -155,6 +170,10 @@ typedef struct {
     int type;
     SLValue fields[SL_MAX_STRUCT_FIELDS];
     SLGCObject *gc_object;
+    /* Incarnation counter of this slot (31 bits). Bumped each time the instance
+     * is reclaimed, so an OP_REF handle taken before the sweep no longer
+     * matches a new object that reuses the slot. Survives slot reuse. */
+    uint32_t generation;
 } SLStructInstance;
 
 /* A live array instance: a dynamic, growable sequence of SLValues. Like a
@@ -188,6 +207,9 @@ struct SLVM {
     SLFunc* funcs; int nfunc, funccap;
     int cur_func;
     int entry;
+    /* SLEELA.syntax 37.5: function the VM calls with (kind, message) to build
+     * the exception for a fault raised inside a try; -1: throw the message. */
+    int fault_func;
     SLValue last_result;
     SLValue last_exception;
     int has_last_exception;
@@ -243,6 +265,23 @@ struct SLVM {
     SLOSProcess os_proc[SL_MAX_OS_PROCESSES];
     int os_proc_init;
 
+    /* Native IPC workers are opaque VM-owned resources. The table never
+     * launches a process or grants capability; only an authorized host adapter
+     * may register an already-created worker. Handles include generations. */
+    pthread_mutex_t ipc_worker_mtx;
+    pthread_cond_t ipc_worker_cond;
+    struct {
+        void *worker;
+        void (*close_fn)(void *worker, void *context);
+        void *close_context;
+        uint32_t generation;
+        uint32_t leases;
+        int active;
+        int closing;
+    } ipc_workers[SL_MAX_IPC_WORKERS];
+    int ipc_workers_init;
+    int ipc_workers_shutdown;
+
     /* Trusted native modules are VM-owned bounded handles. The host must
      * install an authorization callback before any module can be opened. */
     pthread_mutex_t native_mtx;
@@ -267,6 +306,130 @@ static int slvm_native_host_invoke(void* context, const char* function,
 #endif
 static SL_NATIVE_THREAD_LOCAL SLVM* native_callback_vm = NULL;
 static SL_NATIVE_THREAD_LOCAL SLVM* native_plugin_call_vm = NULL;
+
+/* ---- Native IPC VM-owned worker handles -------------------------------
+ * Handle encoding: low 6 bits select one of 64 slots; high 25 bits are a
+ * nonzero generation. A close invalidates the generation before the slot can
+ * be reused, so stale bytecode values cannot alias a later worker. */
+#define SL_IPC_WORKER_SLOT_BITS 6u
+#define SL_IPC_WORKER_SLOT_MASK ((1u << SL_IPC_WORKER_SLOT_BITS) - 1u)
+#define SL_IPC_WORKER_GEN_MAX ((uint32_t)0x01ffffffu)
+
+static int ipc_worker_decode(int32_t handle, uint32_t *slot, uint32_t *generation) {
+    uint32_t raw;
+    if (handle < 0 || !slot || !generation) return -1;
+    raw = (uint32_t)handle;
+    *slot = raw & SL_IPC_WORKER_SLOT_MASK;
+    *generation = raw >> SL_IPC_WORKER_SLOT_BITS;
+    return (*generation != 0 && *slot < SL_MAX_IPC_WORKERS) ? 0 : -1;
+}
+
+static void ipc_worker_advance_generation(uint32_t *generation) {
+    *generation = (*generation >= SL_IPC_WORKER_GEN_MAX) ? 1u : *generation + 1u;
+}
+
+static void ipc_worker_close_all(SLVM *vm) {
+    uint32_t i;
+    if (!vm || !vm->ipc_workers_init) return;
+    pthread_mutex_lock(&vm->ipc_worker_mtx);
+    vm->ipc_workers_shutdown = 1; /* callbacks cannot repopulate a dying VM */
+    pthread_mutex_unlock(&vm->ipc_worker_mtx);
+    for (i = 0; i < SL_MAX_IPC_WORKERS; ++i) {
+        int32_t handle = -1;
+        pthread_mutex_lock(&vm->ipc_worker_mtx);
+        if (vm->ipc_workers[i].active) {
+            handle = (int32_t)((vm->ipc_workers[i].generation << SL_IPC_WORKER_SLOT_BITS) | i);
+        }
+        pthread_mutex_unlock(&vm->ipc_worker_mtx);
+        if (handle >= 0) (void)slvm_ipc_worker_close(vm, handle);
+    }
+}
+
+int32_t slvm_ipc_worker_register(SLVM *vm, void *worker,
+                                 void (*close_fn)(void *, void *), void *context) {
+    uint32_t i;
+    if (!vm || !worker || !close_fn || !vm->ipc_workers_init) return -1;
+    pthread_mutex_lock(&vm->ipc_worker_mtx);
+    if (vm->ipc_workers_shutdown) { pthread_mutex_unlock(&vm->ipc_worker_mtx); return -1; }
+    for (i = 0; i < SL_MAX_IPC_WORKERS; ++i) {
+        if (!vm->ipc_workers[i].active && !vm->ipc_workers[i].closing &&
+            vm->ipc_workers[i].leases == 0 && vm->ipc_workers[i].worker == NULL) {
+            if (vm->ipc_workers[i].generation == 0) vm->ipc_workers[i].generation = 1;
+            vm->ipc_workers[i].worker = worker;
+            vm->ipc_workers[i].close_fn = close_fn;
+            vm->ipc_workers[i].close_context = context;
+            vm->ipc_workers[i].active = 1;
+            {
+                int32_t handle = (int32_t)((vm->ipc_workers[i].generation << SL_IPC_WORKER_SLOT_BITS) | i);
+                pthread_mutex_unlock(&vm->ipc_worker_mtx);
+                return handle;
+            }
+        }
+    }
+    pthread_mutex_unlock(&vm->ipc_worker_mtx);
+    return -1; /* bounded table exhausted; caller retains ownership */
+}
+
+void *slvm_ipc_worker_acquire(SLVM *vm, int32_t handle) {
+    uint32_t slot, generation;
+    void *worker = NULL;
+    if (!vm || !vm->ipc_workers_init ||
+        ipc_worker_decode(handle, &slot, &generation) != 0) return NULL;
+    pthread_mutex_lock(&vm->ipc_worker_mtx);
+    if (!vm->ipc_workers_shutdown && vm->ipc_workers[slot].active && !vm->ipc_workers[slot].closing &&
+        vm->ipc_workers[slot].generation == generation && vm->ipc_workers[slot].worker) {
+        ++vm->ipc_workers[slot].leases;
+        worker = vm->ipc_workers[slot].worker;
+    }
+    pthread_mutex_unlock(&vm->ipc_worker_mtx);
+    return worker;
+}
+
+void slvm_ipc_worker_release(SLVM *vm, int32_t handle) {
+    uint32_t slot, generation;
+    if (!vm || !vm->ipc_workers_init ||
+        ipc_worker_decode(handle, &slot, &generation) != 0) return;
+    pthread_mutex_lock(&vm->ipc_worker_mtx);
+    if (vm->ipc_workers[slot].generation == generation &&
+        vm->ipc_workers[slot].leases != 0) {
+        --vm->ipc_workers[slot].leases;
+        if (vm->ipc_workers[slot].leases == 0) pthread_cond_broadcast(&vm->ipc_worker_cond);
+    }
+    pthread_mutex_unlock(&vm->ipc_worker_mtx);
+}
+
+int slvm_ipc_worker_close(SLVM *vm, int32_t handle) {
+    uint32_t slot, generation;
+    void *worker;
+    void (*close_fn)(void *, void *);
+    void *context;
+    if (!vm || !vm->ipc_workers_init ||
+        ipc_worker_decode(handle, &slot, &generation) != 0) return -1;
+    pthread_mutex_lock(&vm->ipc_worker_mtx);
+    if (!vm->ipc_workers[slot].active || vm->ipc_workers[slot].closing ||
+        vm->ipc_workers[slot].generation != generation || !vm->ipc_workers[slot].worker) {
+        pthread_mutex_unlock(&vm->ipc_worker_mtx);
+        return -1;
+    }
+    vm->ipc_workers[slot].active = 0;
+    vm->ipc_workers[slot].closing = 1;
+    /* Keep the old generation until all leases release: release() must still
+     * recognize the closing handle or close would wait forever. */
+    while (vm->ipc_workers[slot].leases != 0)
+        pthread_cond_wait(&vm->ipc_worker_cond, &vm->ipc_worker_mtx);
+    ipc_worker_advance_generation(&vm->ipc_workers[slot].generation);
+    worker = vm->ipc_workers[slot].worker;
+    close_fn = vm->ipc_workers[slot].close_fn;
+    context = vm->ipc_workers[slot].close_context;
+    vm->ipc_workers[slot].worker = NULL;
+    vm->ipc_workers[slot].close_fn = NULL;
+    vm->ipc_workers[slot].close_context = NULL;
+    vm->ipc_workers[slot].closing = 0;
+    pthread_cond_broadcast(&vm->ipc_worker_cond);
+    pthread_mutex_unlock(&vm->ipc_worker_mtx);
+    close_fn(worker, context);
+    return 0;
+}
 
 static void set_err(SLVM* vm, const char* msg) {
     if (!vm) return;
@@ -454,6 +617,8 @@ int slvm_declare_struct(SLVM* vm, const char* name, const char* const* field_nam
     st->name = strdup(name);
     st->nfields = nfields;
     st->parent_type = -1;
+    st->nsupers = 0;
+    st->supers = NULL;
     for (int i = 0; i < nfields; i++) st->fields[i] = strdup(field_names[i] ? field_names[i] : "");
     return idx;
 }
@@ -465,6 +630,19 @@ int slvm_set_struct_parent(SLVM* vm, int type_index, int parent_type_index) {
     return 0;
 }
 
+int slvm_add_struct_super(SLVM* vm, int type_index, int super_type_index) {
+    if (!vm || type_index < 0 || type_index >= vm->nstruct_types) return -1;
+    if (super_type_index < 0 || super_type_index >= vm->nstruct_types || super_type_index == type_index) return -1;
+    SLStructType* st = &vm->struct_types[type_index];
+    for (int i = 0; i < st->nsupers; i++) if (st->supers[i] == super_type_index) return 0;
+    if (st->nsupers >= SL_MAX_STRUCT_TYPES) return -1;
+    int* grown = (int*)realloc(st->supers, (size_t)(st->nsupers + 1) * sizeof(int));
+    if (!grown) return -1;
+    st->supers = grown;
+    st->supers[st->nsupers++] = super_type_index;
+    return 0;
+}
+
 int slvm_begin_func(SLVM* vm, const char* name, int nargs, int nlocals) {
     ENSURE(vm->funcs, vm->nfunc, vm->funccap, SLFunc);
     int idx = vm->nfunc++;
@@ -472,8 +650,89 @@ int slvm_begin_func(SLVM* vm, const char* name, int nargs, int nlocals) {
     vm->funcs[idx].entry = vm->codelen;
     vm->funcs[idx].nargs = nargs;
     vm->funcs[idx].nlocals = nlocals;
+    vm->funcs[idx].native_flags = 0;
+    vm->funcs[idx].native_abi_version = 0;
+    vm->funcs[idx].native_signature_id = 0;
+    vm->funcs[idx].native_signature = NULL;
+    vm->funcs[idx].native_handle = SL_NATIVE_HANDLE_INVALID;
     vm->cur_func = idx;
     return idx;
+}
+
+/* FNV-1a 64-bit over the canonical UTF-8 method signature. This digest is an
+ * identity/checksum, not a security boundary; module authorization remains a
+ * separate host responsibility. */
+static uint64_t native_method_signature_hash(const char* signature) {
+    const unsigned char* p = (const unsigned char*)signature;
+    uint64_t hash = UINT64_C(14695981039346656037);
+    while (*p) { hash ^= (uint64_t)*p++; hash *= UINT64_C(1099511628211); }
+    return hash;
+}
+
+int slvm_set_func_native_metadata(SLVM* vm, int function_index,
+                                  uint32_t flags, uint32_t abi_version,
+                                  const char* signature) {
+    SLFunc* fn;
+    char* copy;
+    uint64_t identity;
+    size_t length;
+    if (!vm || function_index < 0 || function_index >= vm->nfunc ||
+        !signature || !*signature) return -1;
+    length = strlen(signature);
+    if (length > 4096u || (flags & ~SL_NATIVE_METHOD_FLAGS_MASK) != 0 ||
+        !(flags & SL_NATIVE_METHOD_FLAG_ANNOTATED) ||
+        !!(flags & SL_NATIVE_METHOD_FLAG_STATIC) ==
+            !!(flags & SL_NATIVE_METHOD_FLAG_INSTANCE) ||
+        abi_version != SL_NATIVE_METHOD_ABI_VERSION) return -1;
+    fn = &vm->funcs[function_index];
+    if (fn->native_flags || fn->native_signature) return -1;
+    identity = native_method_signature_hash(signature);
+    for (int i = 0; i < vm->nfunc; ++i) {
+        const SLFunc* other = &vm->funcs[i];
+        if (i != function_index && other->native_signature &&
+            other->native_signature_id == identity) return -1;
+    }
+    copy = strdup(signature);
+    if (!copy) return -1;
+    fn->native_flags = flags;
+    fn->native_abi_version = abi_version;
+    fn->native_signature_id = identity;
+    fn->native_signature = copy;
+    return 0;
+}
+
+int slvm_get_func_native_metadata(const SLVM* vm, int function_index,
+                                  uint32_t* flags_out, uint32_t* abi_version_out,
+                                  uint64_t* signature_id_out,
+                                  const char** signature_out) {
+    const SLFunc* fn;
+    if (!vm || function_index < 0 || function_index >= vm->nfunc) return -1;
+    fn = &vm->funcs[function_index];
+    if (flags_out) *flags_out = fn->native_flags;
+    if (abi_version_out) *abi_version_out = fn->native_abi_version;
+    if (signature_id_out) *signature_id_out = fn->native_signature_id;
+    if (signature_out) *signature_out = fn->native_signature;
+    return fn->native_flags ? 1 : 0;
+}
+
+static int native_method_metadata_valid(const SLFunc* fn) {
+    uint32_t flags;
+    if (!fn) return 0;
+    flags = fn->native_flags;
+    if (flags == 0)
+        return fn->native_abi_version == 0 &&
+               fn->native_signature_id == 0 &&
+               fn->native_signature == NULL;
+    if ((flags & ~SL_NATIVE_METHOD_FLAGS_MASK) != 0 ||
+        !(flags & SL_NATIVE_METHOD_FLAG_ANNOTATED) ||
+        !!(flags & SL_NATIVE_METHOD_FLAG_STATIC) ==
+            !!(flags & SL_NATIVE_METHOD_FLAG_INSTANCE) ||
+        fn->native_abi_version != SL_NATIVE_METHOD_ABI_VERSION ||
+        !fn->native_signature || !fn->native_signature[0] ||
+        strlen(fn->native_signature) > 4096u)
+        return 0;
+    return fn->native_signature_id ==
+           native_method_signature_hash(fn->native_signature);
 }
 void slvm_end_func(SLVM* vm) { vm->cur_func = -1; }
 int slvm_emit(SLVM* vm, SLOp op, int32_t a) {
@@ -486,6 +745,28 @@ int slvm_emit0(SLVM* vm, SLOp op) { return slvm_emit(vm, op, 0); }
 void slvm_patch(SLVM* vm, int at, int32_t a) { if (at >= 0 && at < vm->codelen) vm->code[at].a = a; }
 int slvm_here(SLVM* vm) { return vm->codelen; }
 void slvm_set_entry(SLVM* vm, int fi) { vm->entry = fi; }
+int slvm_set_fault_function(SLVM* vm, int fi) {
+    if (!vm || fi < -1 || fi >= vm->nfunc) return -1;
+    if (fi >= 0 && vm->funcs[fi].nargs != 2) return -1;
+    vm->fault_func = fi;
+    return 0;
+}
+int slvm_fault_function(const SLVM* vm) { return vm ? vm->fault_func : -1; }
+int slvm_find_func(const SLVM* vm, const char* name) {
+    if (!vm || !name) return -1;
+    for (int i = 0; i < vm->nfunc; i++)
+        if (vm->funcs[i].name && strcmp(vm->funcs[i].name, name) == 0) return i;
+    return -1;
+}
+SLVM* slvm_load_file_with_entry(const char* path, const char* entry_name) {
+    SLVM* vm = slvm_load_file(path);
+    int fi;
+    if (!vm) return NULL;
+    fi = slvm_find_func(vm, entry_name);
+    if (fi < 0) { slvm_free(vm); return NULL; }
+    slvm_set_entry(vm, fi);
+    return vm;
+}
 SLValue slvm_result(SLVM* vm) { return vm->last_result; }
 int slvm_uncaught_exception(SLVM* vm, SLValue* out_exception) {
     if (!vm || !out_exception || !vm->has_last_exception) return 0;
@@ -622,9 +903,55 @@ SLNativeStatus slvm_native_module_close(SLVM* vm, SLNativeHandle handle) {
     if (!vm) return SL_NATIVE_INVALID_ARGUMENT;
     if (native_callback_vm == vm || native_plugin_call_vm == vm) return SL_NATIVE_REENTRANT_CALL;
     pthread_mutex_lock(&vm->native_mtx);
+    for (int i = 0; i < vm->nfunc; ++i) {
+        if (vm->funcs[i].native_handle == handle) {
+            pthread_mutex_unlock(&vm->native_mtx);
+            return SL_NATIVE_INVALID_ARGUMENT; /* unbind methods before unloading */
+        }
+    }
     status = sl_native_table_close(&vm->native_modules, handle);
     pthread_mutex_unlock(&vm->native_mtx);
     return status;
+}
+
+/* Bind only a compiler-annotated static method to a module that the host has
+ * already opened through its authorization callback. The plugin export name
+ * is the exact canonical signature stored in the artifact. */
+int slvm_bind_native_method(SLVM* vm, int function_index, SLNativeHandle handle) {
+    SLFunc* fn;
+    int valid;
+    if (!vm || function_index < 0 || function_index >= vm->nfunc ||
+        handle == SL_NATIVE_HANDLE_INVALID ||
+        native_callback_vm == vm || native_plugin_call_vm == vm) return -1;
+    pthread_mutex_lock(&vm->native_mtx);
+    fn = &vm->funcs[function_index];
+    valid = (fn->native_flags & (SL_NATIVE_METHOD_FLAG_ANNOTATED |
+                                SL_NATIVE_METHOD_FLAG_STATIC)) ==
+            (SL_NATIVE_METHOD_FLAG_ANNOTATED | SL_NATIVE_METHOD_FLAG_STATIC) &&
+            !(fn->native_flags & SL_NATIVE_METHOD_FLAG_INSTANCE) &&
+            fn->native_abi_version == SL_NATIVE_METHOD_ABI_VERSION &&
+            native_method_metadata_valid(fn) &&
+            fn->native_handle == SL_NATIVE_HANDLE_INVALID &&
+            sl_native_table_is_valid(&vm->native_modules, handle);
+    if (valid) fn->native_handle = handle;
+    pthread_mutex_unlock(&vm->native_mtx);
+    return valid ? 0 : -1;
+}
+
+/* Unbinding is explicit so a host can close/unload the module safely. */
+int slvm_unbind_native_method(SLVM* vm, int function_index) {
+    SLFunc* fn;
+    if (!vm || function_index < 0 || function_index >= vm->nfunc ||
+        native_callback_vm == vm || native_plugin_call_vm == vm) return -1;
+    pthread_mutex_lock(&vm->native_mtx);
+    fn = &vm->funcs[function_index];
+    if (fn->native_handle == SL_NATIVE_HANDLE_INVALID) {
+        pthread_mutex_unlock(&vm->native_mtx);
+        return -1;
+    }
+    fn->native_handle = SL_NATIVE_HANDLE_INVALID;
+    pthread_mutex_unlock(&vm->native_mtx);
+    return 0;
 }
 
 int slvm_memory_safe_mode(const SLVM* vm) {
@@ -641,6 +968,7 @@ SLVM* slvm_new(void) {
     if (!vm) return NULL;
     vm->cur_func = -1;
     vm->entry = -1;
+    vm->fault_func = -1;
     vm->last_result = slval_null();
     vm->osls_capabilities = OSLS_VM_CAP_HOST_READ;
     pthread_mutex_init(&vm->native_mtx, NULL);
@@ -669,6 +997,10 @@ SLVM* slvm_new(void) {
     pthread_mutex_init(&vm->idea_canvas_mtx, NULL);
     pthread_mutex_init(&vm->audio_mtx, NULL);
     pthread_mutex_init(&vm->os_mtx, NULL);
+    pthread_mutex_init(&vm->ipc_worker_mtx, NULL);
+    pthread_cond_init(&vm->ipc_worker_cond, NULL);
+    vm->ipc_workers_init = 1;
+    for (int i = 0; i < SL_MAX_IPC_WORKERS; ++i) vm->ipc_workers[i].generation = 1;
     for (int i = 0; i < SL_MAX_OS_PROCESSES; i++) vm->os_proc[i] = SLOS_INVALID_PROCESS;
     vm->os_proc_init = 1;
     gc_init(&vm->gc, 1024u * 1024u);
@@ -822,6 +1154,10 @@ void slvm_free(SLVM* vm) {
         if (vm->idea_canvas[i]) { sl_idea_canvas_destroy(vm->idea_canvas[i]); vm->idea_canvas[i] = NULL; }
     }
     pthread_mutex_destroy(&vm->idea_canvas_mtx);
+    /* Close all remaining IPC workers before destroying their table. */
+    ipc_worker_close_all(vm);
+    pthread_cond_destroy(&vm->ipc_worker_cond);
+    pthread_mutex_destroy(&vm->ipc_worker_mtx);
     /* Release any still-live spawned child processes (reap without blocking). */
     for (int i = 0; i < SL_MAX_OS_PROCESSES; i++) {
         if (vm->os_proc[i] != SLOS_INVALID_PROCESS) { slos_release(vm->os_proc[i]); vm->os_proc[i] = SLOS_INVALID_PROCESS; }
@@ -830,6 +1166,7 @@ void slvm_free(SLVM* vm) {
     for (int i = 0; i < vm->nstruct_types; i++) {
         free(vm->struct_types[i].name);
         for (int j = 0; j < vm->struct_types[i].nfields; j++) free(vm->struct_types[i].fields[j]);
+        free(vm->struct_types[i].supers);
     }
     free(vm->struct_types);   /* the growable layout table itself */
     free(vm->structs);
@@ -853,7 +1190,7 @@ void slvm_free(SLVM* vm) {
     free(vm->strs); free(vm->globals);
     for (int i = 0; i < vm->nglobal; i++) free(vm->gnames[i]);
     free(vm->gnames);
-    for (int i = 0; i < vm->nfunc; i++) free(vm->funcs[i].name);
+    for (int i = 0; i < vm->nfunc; i++) { free(vm->funcs[i].name); free(vm->funcs[i].native_signature); }
     free(vm->funcs); free(vm);
 }
 
@@ -1078,7 +1415,7 @@ static void gc_java_string_destroy(void *payload) {
 }
 static void gc_struct_destroy(void *payload) {
     SLStructInstance *si = (SLStructInstance *)payload;
-    if (si) { si->active = 0; si->gc_object = NULL; }
+    if (si) { si->active = 0; si->gc_object = NULL; si->generation = (si->generation + 1u) & 0x7fffffffu; }
 }
 static void gc_array_destroy(void *payload) {
     SLArrayInstance *ai = (SLArrayInstance *)payload;
@@ -1132,13 +1469,45 @@ static int struct_alloc(SLVM* vm, int type) {
 static int struct_valid_handle(SLVM* vm, int h) {
     return vm->structs && h >= 0 && h < SL_MAX_STRUCTS && vm->structs[h].active;
 }
-static int struct_type_is_a(SLVM* vm, int actual, int expected) {
-    if (!vm || expected < 0 || expected >= vm->nstruct_types) return 0;
+/* Is type `actual` the type `expected`, or below it through the extends
+ * chain or any registered supertype (implemented interface), transitively?
+ * Interface edges are followed depth-first with a recursion bound so a
+ * malformed (cyclic) registration cannot loop. SLEELA.syntax 43.7. */
+static int struct_type_is_a_depth(SLVM* vm, int actual, int expected, int budget) {
     for (int depth = 0; actual >= 0 && actual < vm->nstruct_types && depth < SL_MAX_STRUCT_TYPES; ++depth) {
         if (actual == expected) return 1;
-        actual = vm->struct_types[actual].parent_type;
+        const SLStructType* st = &vm->struct_types[actual];
+        if (budget > 0)
+            for (int i = 0; i < st->nsupers; i++)
+                if (struct_type_is_a_depth(vm, st->supers[i], expected, budget - 1)) return 1;
+        actual = st->parent_type;
     }
     return 0;
+}
+static int struct_type_is_a(SLVM* vm, int actual, int expected) {
+    if (!vm || expected < 0 || expected >= vm->nstruct_types) return 0;
+    return struct_type_is_a_depth(vm, actual, expected, 64);
+}
+
+/* ---- object references (OP_REF): weak, generation-checked handles --------- */
+/* A ref is an SL_INT: (generation << 32) | (slot + 1). 0 is the null ref. It is
+ * never a machine address; it indexes the bounded instance store and is
+ * validated on every use. */
+static int64_t ref_pack(int idx, uint32_t gen) {
+    return ((int64_t)(gen & 0x7fffffffu) << 32) | (int64_t)(uint32_t)(idx + 1);
+}
+/* Caller holds struct_mtx. Returns 1 and sets *idx only when `r` names a LIVE
+ * instance of the SAME incarnation (slot in range, active, generation equal). */
+static int ref_resolve_locked(SLVM* vm, int64_t r, int* idx) {
+    if (r <= 0 || !vm->structs) return 0;
+    uint32_t lo = (uint32_t)(r & 0xffffffffLL);
+    uint32_t gen = (uint32_t)((r >> 32) & 0x7fffffffLL);
+    if (lo == 0 || lo > (uint32_t)SL_MAX_STRUCTS) return 0;
+    int i = (int)lo - 1;
+    if (!vm->structs[i].active) return 0;
+    if ((vm->structs[i].generation & 0x7fffffffu) != gen) return 0;
+    *idx = i;
+    return 1;
 }
 
 /* ---- array instances: the same bounded-handle discipline as structs ------- */
@@ -1329,6 +1698,41 @@ static void print_java_string(SLVM *vm, SLValue value) {
         else { out[0]=(unsigned char)(0xf0u|(cp>>18)); out[1]=(unsigned char)(0x80u|((cp>>12)&0x3fu)); out[2]=(unsigned char)(0x80u|((cp>>6)&0x3fu)); out[3]=(unsigned char)(0x80u|(cp&0x3fu)); n=4; }
         (void)fwrite(out, 1, n, stdout);
     }
+}
+/* Encode a Java UTF-16 String as a legacy UTF-8 String for OP_JSTR_TO_UTF8.
+ * Returns a malloc'd NUL-terminated buffer, or NULL with *why set. The
+ * conversion is lossless or refused: an unpaired surrogate (no UTF-8 form), an
+ * embedded NUL (SL_STR storage is NUL-terminated) and text longer than
+ * SL_MAX_STRTEXT bytes all fail closed. The caller roots the value. */
+static char *java_string_to_utf8_alloc(SLVM *vm, SLValue value, const char **why) {
+    SLJavaStringInstance *instance = java_string_get(vm, value);
+    if (!instance) { *why = "javaStringToUtf8 requires a valid Java UTF-16 String"; return NULL; }
+    size_t n = instance->value.length;
+    if (n > SL_MAX_STRTEXT) { *why = "javaStringToUtf8: text exceeds the SL_MAX_STRTEXT String limit"; return NULL; }
+    /* A BMP code unit encodes to at most 3 bytes and a surrogate pair (two
+     * units) to 4, so 3 bytes per unit always suffices. */
+    char *out = (char *)malloc(n * 3u + 1u);
+    if (!out) { *why = "javaStringToUtf8: allocation failure"; return NULL; }
+    size_t k = 0;
+    for (size_t i = 0; i < n; ++i) {
+        uint32_t cp = instance->value.units[i];
+        if (cp == 0u) { free(out); *why = "javaStringToUtf8: the text contains NUL, which a legacy String cannot hold"; return NULL; }
+        if (cp >= 0xd800u && cp <= 0xdbffu) {
+            uint32_t low = (i + 1 < n) ? instance->value.units[i + 1] : 0u;
+            if (low < 0xdc00u || low > 0xdfffu) { free(out); *why = "javaStringToUtf8: unpaired surrogate code unit has no UTF-8 form"; return NULL; }
+            cp = 0x10000u + ((cp - 0xd800u) << 10) + (low - 0xdc00u);
+            ++i;
+        } else if (cp >= 0xdc00u && cp <= 0xdfffu) {
+            free(out); *why = "javaStringToUtf8: unpaired surrogate code unit has no UTF-8 form"; return NULL;
+        }
+        if (cp <= 0x7fu) { out[k++] = (char)cp; }
+        else if (cp <= 0x7ffu) { out[k++] = (char)(0xc0u | (cp >> 6)); out[k++] = (char)(0x80u | (cp & 0x3fu)); }
+        else if (cp <= 0xffffu) { out[k++] = (char)(0xe0u | (cp >> 12)); out[k++] = (char)(0x80u | ((cp >> 6) & 0x3fu)); out[k++] = (char)(0x80u | (cp & 0x3fu)); }
+        else { out[k++] = (char)(0xf0u | (cp >> 18)); out[k++] = (char)(0x80u | ((cp >> 12) & 0x3fu)); out[k++] = (char)(0x80u | ((cp >> 6) & 0x3fu)); out[k++] = (char)(0x80u | (cp & 0x3fu)); }
+    }
+    if (k > SL_MAX_STRTEXT) { free(out); *why = "javaStringToUtf8: text exceeds the SL_MAX_STRTEXT String limit"; return NULL; }
+    out[k] = '\0';
+    return out;
 }
 static void print_value(SLVM* vm, SLValue v) {
     /* A printed String may be a large generated document; size the buffer from
@@ -2147,8 +2551,62 @@ void slvm_joinall(SLVM* vm) {
     pthread_mutex_lock(&vm->thr_mtx); vm->nthreads = 0; pthread_mutex_unlock(&vm->thr_mtx);
 }
 
+/* A Java String lives in a bounded handle table that the collector frees. A loop
+ * that builds text one piece at a time can fill the table between safepoints,
+ * so a creator that fails runs one complete root-aware collection and retries
+ * once (the same discipline OP_NEWARRAY uses) before the failure is reported. */
+#define JSTR_RETRY(expr) __extension__ ({ SLValue jr_=(expr); if(jr_.type!=SL_UTF16){ SLGCRootContext jroots_={ vm, t, vm->native_callback_caller }; gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &jroots_, 0); jr_=(expr); } jr_; })
 #define TERR(msg) do { strncpy(t->err, (msg), sizeof(t->err)-1); t->err[sizeof(t->err)-1]=0; set_err(vm,(msg)); return SLR_ERROR; } while (0)
 #define PUSH(v) do { if (t->sp >= STACK_MAX) TERR("stack overflow"); t->stack[t->sp++] = (v); } while (0)
+/* SLEELA.syntax 37.5: a VM fault raised while a try handler is active is
+ * thrown, not fatal. With a registered fault function (the compiler sets it
+ * when lib/java/support/SLJavaFaults is loaded) the VM calls it with the
+ * fault kind and message; it builds the Java exception and throws it. With
+ * none, the message string itself is thrown. With no active handler the
+ * fault stays a runtime error, as before. */
+#define SL_FAULT_ARITHMETIC 1
+#define SL_FAULT_INDEX 2
+#define SL_FAULT_CAST 3
+#define TFAULT(kind,msg) do { if (t->exception_handler_count > 0 && raise_fault(vm,t,(kind),(msg),&ip)) goto sl_fault_next; TERR(msg); } while (0)
+/* An index fault: the thrown message is the Java one, the fatal one unchanged. */
+#define TFAULT_INDEX(idx,len) do { char fm_[96]; snprintf(fm_, sizeof fm_, "Index %lld out of bounds for length %lld", (long long)(idx), (long long)(len)); if (t->exception_handler_count > 0 && raise_fault(vm,t,SL_FAULT_INDEX,fm_,&ip)) goto sl_fault_next; TERR("array index out of range"); } while (0)
+static int raise_fault(SLVM* vm, SLThread* t, int kind, const char* msg, int* ip) {
+    SLValue text; text.type = SL_STR; text.as.s = intern(vm, msg);
+    int ff = vm->fault_func;
+    if (ff >= 0 && ff < vm->nfunc && vm->funcs[ff].nargs == 2 && t->fp < FRAMES_MAX &&
+        t->sp + 2 + vm->funcs[ff].nlocals < STACK_MAX) {
+        SLFunc* f = &vm->funcs[ff];
+        int base = t->sp;
+        t->stack[t->sp++] = slval_int(kind);
+        t->stack[t->sp++] = text;
+        SLFrame* nf = &t->frames[t->fp++];
+        nf->ret_ip = *ip; nf->base = base; nf->nargs = 2; nf->handler_base = t->exception_handler_count;
+        for (int i = 2; i < f->nlocals; i++) t->stack[t->sp++] = slval_null();
+        *ip = f->entry;
+        return 1;
+    }
+    int hi = t->exception_handler_count - 1;
+    SLExceptionHandler h = t->exception_handlers[hi];
+    if (h.frame_depth < 1 || h.frame_depth > t->fp || h.owner_frame != h.frame_depth - 1 ||
+        h.stack_height < 0 || h.stack_height >= STACK_MAX || h.target_ip < 0 || h.target_ip >= vm->codelen)
+        return 0;
+    t->exception_handler_count = hi;
+    t->fp = h.frame_depth;
+    t->sp = h.stack_height;
+    t->stack[t->sp++] = text;
+    *ip = h.target_ip;
+    return 1;
+}
+/* Java division by -1: MIN_VALUE / -1 is MIN_VALUE and MIN_VALUE % -1 is 0
+ * (JLS 15.17.2); the C operators trap (SIGFPE) on that one pair. */
+static int64_t sl_neg_wrap64(int64_t x) { return (int64_t)(0u - (uint64_t)x); }
+static sl_int128_t sl_neg_wrap128(sl_int128_t x) {
+#if SLEELA_HAVE_INT128
+    return (sl_int128_t)(0 - (unsigned __int128)x);
+#else
+    return (sl_int128_t)(0u - (uint64_t)x);
+#endif
+}
 /* POP() fails closed on underflow. The front-end bytecode compiler is supposed
  * to keep the operand stack balanced, but a codegen defect (e.g. an opcode path
  * that pops more than it pushes) must surface as a clean VM diagnostic, not an
@@ -2158,6 +2616,72 @@ void slvm_joinall(SLVM* vm) {
 #define POP() (t->sp > 0 ? t->stack[--t->sp] : (t->underflow = 1, slval_null()))
 
 static int native_utf8_valid(const uint8_t* s, uint32_t n);
+
+/* ---- Syntax 3.2: char as text (OP_CHARSTR / OP_ADDCHAR) --------------------
+ * A char is a UTF-16 code unit held in an integer slot. Shown as text it becomes a
+ * one-unit String. A plain String is UTF-8, so only a non-surrogate, non-NUL unit
+ * can become one; with a UTF-16 (Java) String on the other side every unit,
+ * including NUL and an isolated surrogate, converts losslessly. */
+static int char_unit_to_string(SLVM* vm, int64_t unit, int utf16, SLValue* out, const char** why) {
+    if (unit < 0 || unit > 65535) { *why = "a char value must be a UTF-16 code unit (0..65535)"; return 0; }
+    if (utf16) {
+        uint16_t u = (uint16_t)unit;
+        SLValue v = slvm_java_string_new(vm, &u, 1);
+        if (v.type != SL_UTF16) { *why = "could not create a Java String from a char"; return 0; }
+        *out = v; return 1;
+    }
+    if (unit == 0) { *why = "a NUL char cannot be shown in a plain String; use a UTF-16 String"; return 0; }
+    if (unit >= 0xD800 && unit <= 0xDFFF) { *why = "an unpaired surrogate char cannot be shown in a plain String; use a UTF-16 String"; return 0; }
+    char buf[4];
+    if (unit < 0x80) { buf[0] = (char)unit; buf[1] = 0; }
+    else if (unit < 0x800) { buf[0] = (char)(0xC0 | (unit >> 6)); buf[1] = (char)(0x80 | (unit & 0x3F)); buf[2] = 0; }
+    else { buf[0] = (char)(0xE0 | (unit >> 12)); buf[1] = (char)(0x80 | ((unit >> 6) & 0x3F)); buf[2] = (char)(0x80 | (unit & 0x3F)); buf[3] = 0; }
+    SLValue r; r.type = SL_STR; r.as.s = intern(vm, buf);
+    *out = r;
+    return 1;
+}
+
+/* ---- Syntax 3.2: rectangular multi-dimensional arrays (OP_NEWARRAYND) ------
+ * Builds an array of arrays, outermost first. Every array under construction is
+ * kept on the VM operand stack (a collector root) until it has been stored into its
+ * parent, so a collection triggered by a later allocation can never free it.
+ * Returns 0 on success (handle in *out) or -1 with a message in *why. */
+static int array_alloc_gc(SLVM* vm, SLThread* t, int64_t n) {
+    if (n < 0 || n > SL_MAX_ARRAY_LEN) return -1;
+    int h = array_alloc(vm, (int)n);
+    if (h < 0) {
+        SLGCRootContext roots = { vm, t, vm->native_callback_caller };
+        gc_collect_with_roots(&vm->gc, gc_mark_vm_roots, &roots, 0);
+        h = array_alloc(vm, (int)n);
+    }
+    return h;
+}
+static int md_new(SLVM* vm, SLThread* t, const int64_t* dims, int n, int fill, int* out, const char** why) {
+    if (dims[0] < 0) { *why = "negative array size"; return -1; }
+    int h = array_alloc_gc(vm, t, dims[0]);
+    if (h < 0) { *why = "array allocation failed (negative/too-large size, or the live-array table is full: at most 4096 arrays, and each row of a multi-dimensional array is one)"; return -1; }
+    if (n == 1) {
+        if (fill >= 1 && fill <= 3) {
+            SLValue fillv = (fill == 1) ? slval_int(0) : (fill == 2) ? slval_double(0.0) : slval_bool(0);
+            for (int j = 0; j < vm->arrays[h].len; j++) vm->arrays[h].elems[j] = fillv;
+        }
+        *out = h;
+        return 0;
+    }
+    if (t->sp >= STACK_MAX) { *why = "stack overflow"; return -1; }
+    t->stack[t->sp++] = slval_array(h);          /* root the outer array while rows are built */
+    for (int64_t i = 0; i < dims[0]; i++) {
+        int row = -1;
+        if (md_new(vm, t, dims + 1, n - 1, fill, &row, why) != 0) { t->sp--; return -1; }
+        SLArrayInstance* ai = &vm->arrays[h];
+        gc_write_barrier(&vm->gc, array_gc_object(vm, h), NULL, array_gc_object(vm, row));
+        ai->has_refs = 1;
+        ai->elems[i] = slval_array(row);
+    }
+    t->sp--;
+    *out = h;
+    return 0;
+}
 
 /* Convert only values represented by the versioned native ABI. VM-local
  * arrays/structs, 128-bit integers, and all opaque handles stay in the VM. */
@@ -2445,6 +2969,12 @@ static SLResult run_thread(SLThread* t) {
                 TERR("exception handler removal crossed a call-frame boundary");
             --t->exception_handler_count;
         } break;
+        case OP_IPC_OPEN:
+            TERR("native IPC worker OPEN is reserved but unavailable: process supervisor and VM worker handles are not configured");
+        case OP_IPC_CALL:
+            TERR("native IPC worker CALL is reserved but unavailable: process supervisor and VM worker handles are not configured");
+        case OP_IPC_CLOSE:
+            TERR("native IPC worker CLOSE is reserved but unavailable: process supervisor and VM worker handles are not configured");
         case OP_THROW: {
             SLValue thrown = POP();
             if (t->underflow) TERR("throw requires an exception value");
@@ -2539,11 +3069,35 @@ static SLResult run_thread(SLThread* t) {
         case OP_JSTR_CODE_POINT_AT: { SLValue index=POP(),value=POP(); int32_t cp=0; if(value.type!=SL_UTF16 || slvm_java_string_code_point_at(vm,value,(int32_t)as_num(index),&cp)!=SL_JAVA_STRING_OK) TERR("String.codePointAt index out of range or invalid String"); PUSH(slval_int(cp)); } break;
         case OP_JSTR_CODE_POINT_COUNT: { SLValue end=POP(),begin=POP(),value=POP(); int32_t n=0; if(value.type!=SL_UTF16 || slvm_java_string_code_point_count(vm,value,(int32_t)as_num(begin),(int32_t)as_num(end),&n)!=SL_JAVA_STRING_OK) TERR("String.codePointCount range invalid"); PUSH(slval_int(n)); } break;
         case OP_JSTR_OFFSET_BY_CODE_POINTS: { SLValue offset=POP(),index=POP(),value=POP(); int32_t result=0; if(value.type!=SL_UTF16 || slvm_java_string_offset_by_code_points(vm,value,(int32_t)as_num(index),(int32_t)as_num(offset),&result)!=SL_JAVA_STRING_OK) TERR("String.offsetByCodePoints range invalid"); PUSH(slval_int(result)); } break;
-        case OP_JSTR_SUBSTRING: { SLValue end=POP(),begin=POP(),value=POP(); if(value.type!=SL_UTF16 || slvm_java_string_root(vm,value)!=SL_JAVA_STRING_OK) TERR("String.substring requires a rooted Java UTF-16 String"); SLValue result=slvm_java_string_substring(vm,value,(int32_t)as_num(begin),(int32_t)as_num(end)); (void)slvm_java_string_unroot(vm,value); if(result.type!=SL_UTF16) TERR("String.substring range invalid"); PUSH(result); } break;
-        case OP_JSTR_CONCAT: { SLValue right=POP(),left=POP(); if(left.type!=SL_UTF16 || right.type!=SL_UTF16) TERR("String.concat requires two Java UTF-16 Strings"); if(slvm_java_string_root(vm,left)!=SL_JAVA_STRING_OK) TERR("String.concat could not root left operand"); if(slvm_java_string_root(vm,right)!=SL_JAVA_STRING_OK) { (void)slvm_java_string_unroot(vm,left); TERR("String.concat could not root right operand"); } SLValue result=slvm_java_string_concat(vm,left,right); (void)slvm_java_string_unroot(vm,right); (void)slvm_java_string_unroot(vm,left); if(result.type!=SL_UTF16) TERR("String.concat failed"); PUSH(result); } break;
+        case OP_JSTR_SUBSTRING: { SLValue end=POP(),begin=POP(),value=POP(); if(value.type!=SL_UTF16 || slvm_java_string_root(vm,value)!=SL_JAVA_STRING_OK) TERR("String.substring requires a rooted Java UTF-16 String"); SLValue result=JSTR_RETRY(slvm_java_string_substring(vm,value,(int32_t)as_num(begin),(int32_t)as_num(end))); (void)slvm_java_string_unroot(vm,value); if(result.type!=SL_UTF16) TERR("String.substring range invalid"); PUSH(result); } break;
+        case OP_JSTR_CONCAT: { SLValue right=POP(),left=POP(); if(left.type!=SL_UTF16 || right.type!=SL_UTF16) TERR("String.concat requires two Java UTF-16 Strings"); if(slvm_java_string_root(vm,left)!=SL_JAVA_STRING_OK) TERR("String.concat could not root left operand"); if(slvm_java_string_root(vm,right)!=SL_JAVA_STRING_OK) { (void)slvm_java_string_unroot(vm,left); TERR("String.concat could not root right operand"); } SLValue result=JSTR_RETRY(slvm_java_string_concat(vm,left,right)); (void)slvm_java_string_unroot(vm,right); (void)slvm_java_string_unroot(vm,left); if(result.type!=SL_UTF16) TERR("String.concat failed"); PUSH(result); } break;
         case OP_JSTR_HASH_CODE: { SLValue value=POP(); int32_t hash=0; if(value.type!=SL_UTF16 || slvm_java_string_hash_code(vm,value,&hash)!=SL_JAVA_STRING_OK) TERR("String.hashCode requires a valid Java UTF-16 String"); PUSH(slval_int(hash)); } break;
         case OP_JSTR_COMPARE_TO: { SLValue right=POP(),left=POP(); int32_t order=0; if(left.type!=SL_UTF16 || right.type!=SL_UTF16 || slvm_java_string_compare_to(vm,left,right,&order)!=SL_JAVA_STRING_OK) TERR("String.compareTo requires two Java UTF-16 Strings"); PUSH(slval_int(order)); } break;
-        case OP_JSTR_FROM_UTF8: { SLValue value=POP(); if(value.type!=SL_STR || value.as.s<0 || value.as.s>=vm->nstr) TERR("javaStringFromUtf8 requires a valid legacy UTF-8 String"); SLValue converted=slvm_java_string_from_utf8(vm,slvm_str(vm,value.as.s)); if(converted.type!=SL_UTF16) TERR("javaStringFromUtf8 rejected malformed UTF-8 or allocation failure"); PUSH(converted); } break;
+        case OP_JSTR_FROM_UTF8: { SLValue value=POP(); if(value.type!=SL_STR || value.as.s<0 || value.as.s>=vm->nstr) TERR("javaStringFromUtf8 requires a valid legacy UTF-8 String"); SLValue converted=JSTR_RETRY(slvm_java_string_from_utf8(vm,slvm_str(vm,value.as.s))); if(converted.type!=SL_UTF16) TERR("javaStringFromUtf8 rejected malformed UTF-8 or allocation failure"); PUSH(converted); } break;
+        case OP_JSTR_TO_UTF8: { SLValue value=POP(); if(value.type!=SL_UTF16) TERR("javaStringToUtf8 requires a Java UTF-16 String"); if(slvm_java_string_root(vm,value)!=SL_JAVA_STRING_OK) TERR("javaStringToUtf8 could not root its operand"); const char *why="javaStringToUtf8 failed"; char *utf8=java_string_to_utf8_alloc(vm,value,&why); (void)slvm_java_string_unroot(vm,value); if(!utf8) TERR(why); SLValue out; out.type=SL_STR; out.as.s=intern(vm,utf8); free(utf8); PUSH(out); } break;
+        case OP_BAND: case OP_BOR: case OP_BXOR: {
+            SLValue b=POP(),a=POP();
+            if(a.type==SL_BOOL && b.type==SL_BOOL){
+                int r=(in.op==OP_BAND)?(a.as.b&&b.as.b):(in.op==OP_BOR)?(a.as.b||b.as.b):((a.as.b!=0)!=(b.as.b!=0));
+                PUSH(slval_bool(r));
+            } else if(both_int(a,b)){
+                int64_t r=(in.op==OP_BAND)?(a.as.i&b.as.i):(in.op==OP_BOR)?(a.as.i|b.as.i):(a.as.i^b.as.i);
+                PUSH(slval_int(r));
+            } else TERR("bitwise & | ^ require two integers or two booleans");
+        } break;
+        case OP_BSHL: case OP_BSHR: case OP_BUSHR: {
+            SLValue b=POP(),a=POP();
+            if(!both_int(a,b)) TERR("shift operators require integer operands");
+            unsigned n=(unsigned)(b.as.i&63);
+            uint64_t u=(uint64_t)a.as.i;
+            int64_t r;
+            if(in.op==OP_BSHL) r=(int64_t)(u<<n);
+            else if(in.op==OP_BUSHR) r=(int64_t)(u>>n);
+            else r=(a.as.i<0)?(int64_t)~((~u)>>n):(int64_t)(u>>n);
+            PUSH(slval_int(r));
+        } break;
+        case OP_BNOT: { SLValue a=POP(); if(a.type!=SL_INT) TERR("bitwise ~ requires an integer"); PUSH(slval_int(~a.as.i)); } break;
+        case OP_JSTR_FROM_CODE_UNIT: { SLValue unit=POP(); if(unit.type!=SL_INT) TERR("javaStringFromCodeUnit requires an integer code unit"); if(unit.as.i<0 || unit.as.i>65535) TERR("javaStringFromCodeUnit code unit is outside the UTF-16 range 0..65535"); uint16_t u=(uint16_t)unit.as.i; SLValue made=JSTR_RETRY(slvm_java_string_new(vm,&u,1)); if(made.type!=SL_UTF16) TERR("javaStringFromCodeUnit allocation failure"); PUSH(made); } break;
         case OP_POP: (void)POP(); break;
         case OP_DUP: { if (t->sp < 1) TERR("stack underflow"); SLValue dupv = t->stack[t->sp-1]; PUSH(dupv); } break;
         case OP_DUP2: { if (t->sp < 2) TERR("stack underflow"); SLValue av = t->stack[t->sp-2], bv = t->stack[t->sp-1]; PUSH(av); PUSH(bv); } break;
@@ -2551,6 +3105,25 @@ static SLResult run_thread(SLThread* t) {
         case OP_STOREG: { SLValue v=POP(); pthread_mutex_lock(&vm->global_mtx); vm->globals[in.a]=v; pthread_mutex_unlock(&vm->global_mtx); } break;
         case OP_LOADL: { SLFrame* f=&t->frames[t->fp-1]; int s=f->base+in.a; if(s<0||s>=STACK_MAX) TERR("local slot out of range"); PUSH(t->stack[s]); } break;
         case OP_STOREL: { SLFrame* f=&t->frames[t->fp-1]; int s=f->base+in.a; if(s<0||s>=STACK_MAX) TERR("local slot out of range"); t->stack[s]=POP(); } break;
+        case OP_CHARSTR: {
+            SLValue c=POP(); SLValue s; const char* why="";
+            if (c.type!=SL_INT) TERR("char to String requires an integer char value");
+            if (!char_unit_to_string(vm,c.as.i,0,&s,&why)) TERR(why);
+            PUSH(s);
+        } break;
+        case OP_ADDCHAR: {
+            if (t->sp < 2) TERR("stack underflow");
+            SLValue* pb=&t->stack[t->sp-1]; SLValue* pa=&t->stack[t->sp-2];
+            const int astr=(pa->type==SL_STR||pa->type==SL_UTF16), bstr=(pb->type==SL_STR||pb->type==SL_UTF16);
+            if (astr||bstr) {
+                const int u16=(pa->type==SL_UTF16||pb->type==SL_UTF16);
+                const char* why="";
+                SLValue conv;
+                if ((in.a&1) && pa->type==SL_INT) { if(!char_unit_to_string(vm,pa->as.i,u16,&conv,&why)) TERR(why); *pa=conv; }
+                if ((in.a&2) && pb->type==SL_INT) { if(!char_unit_to_string(vm,pb->as.i,u16,&conv,&why)) TERR(why); *pb=conv; }
+            }
+        }
+        __attribute__((fallthrough));
         case OP_ADD: {
             SLValue b=POP(), a=POP();
             if (a.type==SL_UTF16 || b.type==SL_UTF16) {
@@ -2577,15 +3150,15 @@ static SLResult run_thread(SLThread* t) {
         } break;
         case OP_SUB: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_int128(as_i128(a)-as_i128(b))); else if(both_int(a,b)) PUSH(slval_int(a.as.i-b.as.i)); else PUSH(slval_double(as_num(a)-as_num(b))); } break;
         case OP_MUL: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_int128(as_i128(a)*as_i128(b))); else if(both_int(a,b)) PUSH(slval_int(a.as.i*b.as.i)); else PUSH(slval_double(as_num(a)*as_num(b))); } break;
-        case OP_DIV: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)){ if(as_i128(b)==0) TERR("integer divide by zero"); PUSH(slval_int128(as_i128(a)/as_i128(b))); } else if(both_int(a,b)){if(!b.as.i) TERR("integer divide by zero"); PUSH(slval_int(a.as.i/b.as.i));} else PUSH(slval_double(as_num(a)/as_num(b))); } break;
-        case OP_MOD: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)){ if(as_i128(b)==0) TERR("integer modulo by zero"); PUSH(slval_int128(as_i128(a)%as_i128(b))); } else if(both_int(a,b)){ if(!b.as.i) TERR("integer modulo by zero"); PUSH(slval_int(a.as.i%b.as.i)); } else { double db=as_num(b); if(db==0.0) TERR("modulo by zero"); PUSH(slval_double(fmod(as_num(a),db))); } } break;
+        case OP_DIV: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)){ if(as_i128(b)==0) TFAULT(SL_FAULT_ARITHMETIC,"integer divide by zero"); PUSH(slval_int128(as_i128(b)==-1 ? sl_neg_wrap128(as_i128(a)) : as_i128(a)/as_i128(b))); } else if(both_int(a,b)){if(!b.as.i) TFAULT(SL_FAULT_ARITHMETIC,"integer divide by zero"); PUSH(slval_int(b.as.i==-1 ? sl_neg_wrap64(a.as.i) : a.as.i/b.as.i));} else PUSH(slval_double(as_num(a)/as_num(b))); } break;
+        case OP_MOD: { SLValue b=POP(),a=POP(); if(any_i128(a,b)&&both_any_int(a,b)){ if(as_i128(b)==0) TFAULT(SL_FAULT_ARITHMETIC,"integer modulo by zero"); PUSH(slval_int128(as_i128(b)==-1 ? 0 : as_i128(a)%as_i128(b))); } else if(both_int(a,b)){ if(!b.as.i) TFAULT(SL_FAULT_ARITHMETIC,"integer modulo by zero"); PUSH(slval_int(b.as.i==-1 ? 0 : a.as.i%b.as.i)); } else { double db=as_num(b); if(db==0.0) TFAULT(SL_FAULT_ARITHMETIC,"modulo by zero"); PUSH(slval_double(fmod(as_num(a),db))); } } break;
         case OP_NEG: { SLValue a=POP(); if(a.type==SL_INT128) PUSH(slval_int128(-a.as.i128)); else if(a.type==SL_INT) PUSH(slval_int(-a.as.i)); else PUSH(slval_double(-as_num(a))); } break;
-        case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_UTF16||b.type==SL_UTF16) { if(a.type!=SL_UTF16||b.type!=SL_UTF16) e=0; else if(slvm_java_string_equals(vm,a,b,&e)!=SL_JAVA_STRING_OK) TERR("invalid Java String value"); } else if(a.type==SL_NULL||b.type==SL_NULL) e=(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)==as_i128(b)); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
-        case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_UTF16||b.type==SL_UTF16) { if(a.type!=SL_UTF16||b.type!=SL_UTF16) e=1; else if(slvm_java_string_equals(vm,a,b,&e)!=SL_JAVA_STRING_OK) TERR("invalid Java String value"); else e=!e; } else if(a.type==SL_NULL||b.type==SL_NULL) e=!(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=!(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)!=as_i128(b)); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
-        case OP_LT: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order<0)); } else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<as_i128(b))); else PUSH(slval_bool(as_num(a)<as_num(b))); } break;
-        case OP_LE: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order<=0)); } else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<=as_i128(b))); else PUSH(slval_bool(as_num(a)<=as_num(b))); } break;
-        case OP_GT: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order>0)); } else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)>as_i128(b))); else PUSH(slval_bool(as_num(a)>as_num(b))); } break;
-        case OP_GE: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order>=0)); } else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)>=as_i128(b))); else PUSH(slval_bool(as_num(a)>=as_num(b))); } break;
+        case OP_EQ: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_UTF16||b.type==SL_UTF16) { if(a.type!=SL_UTF16||b.type!=SL_UTF16) e=0; else if(slvm_java_string_equals(vm,a,b,&e)!=SL_JAVA_STRING_OK) TERR("invalid Java String value"); } else if(a.type==SL_NULL||b.type==SL_NULL) e=(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s==b.as.s); else if(both_int(a,b)) e=(a.as.i==b.as.i); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)==as_i128(b)); else e=(as_num(a)==as_num(b)); PUSH(slval_bool(e)); } break;
+        case OP_NE: { SLValue b=POP(),a=POP(); int e; if(a.type==SL_UTF16||b.type==SL_UTF16) { if(a.type!=SL_UTF16||b.type!=SL_UTF16) e=1; else if(slvm_java_string_equals(vm,a,b,&e)!=SL_JAVA_STRING_OK) TERR("invalid Java String value"); else e=!e; } else if(a.type==SL_NULL||b.type==SL_NULL) e=!(a.type==SL_NULL&&b.type==SL_NULL); else if(a.type==SL_STRUCT||b.type==SL_STRUCT) e=!(a.type==SL_STRUCT&&b.type==SL_STRUCT&&a.as.h==b.as.h); else if(a.type==SL_ARRAY||b.type==SL_ARRAY) e=!(a.type==SL_ARRAY&&b.type==SL_ARRAY&&a.as.h==b.as.h); else if(a.type==SL_STR&&b.type==SL_STR) e=(a.as.s!=b.as.s); else if(both_int(a,b)) e=(a.as.i!=b.as.i); else if(any_i128(a,b)&&both_any_int(a,b)) e=(as_i128(a)!=as_i128(b)); else e=(as_num(a)!=as_num(b)); PUSH(slval_bool(e)); } break;
+        case OP_LT: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order<0)); } else if(both_int(a,b)) PUSH(slval_bool(a.as.i<b.as.i)); else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<as_i128(b))); else PUSH(slval_bool(as_num(a)<as_num(b))); } break;
+        case OP_LE: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order<=0)); } else if(both_int(a,b)) PUSH(slval_bool(a.as.i<=b.as.i)); else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)<=as_i128(b))); else PUSH(slval_bool(as_num(a)<=as_num(b))); } break;
+        case OP_GT: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order>0)); } else if(both_int(a,b)) PUSH(slval_bool(a.as.i>b.as.i)); else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)>as_i128(b))); else PUSH(slval_bool(as_num(a)>as_num(b))); } break;
+        case OP_GE: { SLValue b=POP(),a=POP(); if(a.type==SL_UTF16||b.type==SL_UTF16) { int32_t order; if(a.type!=SL_UTF16||b.type!=SL_UTF16||slvm_java_string_compare_to(vm,a,b,&order)!=SL_JAVA_STRING_OK) TERR("invalid Java String comparison"); PUSH(slval_bool(order>=0)); } else if(both_int(a,b)) PUSH(slval_bool(a.as.i>=b.as.i)); else if(any_i128(a,b)&&both_any_int(a,b)) PUSH(slval_bool(as_i128(a)>=as_i128(b))); else PUSH(slval_bool(as_num(a)>=as_num(b))); } break;
         case OP_AND: { SLValue b=POP(),a=POP(); PUSH(slval_bool(is_truthy(a)&&is_truthy(b))); } break;
         case OP_OR: { SLValue b=POP(),a=POP(); PUSH(slval_bool(is_truthy(a)||is_truthy(b))); } break;
         case OP_NOT: { SLValue a=POP(); PUSH(slval_bool(!is_truthy(a))); } break;
@@ -2593,8 +3166,70 @@ static SLResult run_thread(SLThread* t) {
         case OP_JMPF: { SLValue c=POP(); if(!is_truthy(c)) ip=in.a; } break;
         case OP_CALL: {
             int cfi=in.a; if(cfi<0||cfi>=vm->nfunc) TERR("call to unknown function");
-            SLFunc* f=&vm->funcs[cfi]; if(t->fp>=FRAMES_MAX) TERR("call depth exceeded");
-            int base=t->sp-f->nargs; if(base<0) TERR("call: not enough arguments on stack");
+            SLFunc* f=&vm->funcs[cfi];
+            if(t->fp>=FRAMES_MAX) TERR("call depth exceeded");
+            int base=t->sp-f->nargs;
+            if(base<0) TERR("call: not enough arguments on stack");
+            /* Automatic @native dispatch is static-only in ABI v1. The normal
+             * bytecode frame remains the fallback for absent bindings,
+             * unsupported VM-owned values, and explicit NOT_HANDLED. */
+            if ((f->native_flags & (SL_NATIVE_METHOD_FLAG_ANNOTATED |
+                                    SL_NATIVE_METHOD_FLAG_STATIC)) ==
+                (SL_NATIVE_METHOD_FLAG_ANNOTATED | SL_NATIVE_METHOD_FLAG_STATIC) &&
+                f->native_handle != SL_NATIVE_HANDLE_INVALID) {
+                SLNativeValue* argv = NULL;
+                SLNativeValue native_result;
+                SLValue result_value = slval_null();
+                SLNativeStatus status = SL_NATIVE_OK;
+                int unsupported = 0;
+                if (f->nargs > 0) {
+                    argv = (SLNativeValue*)calloc((size_t)f->nargs, sizeof(*argv));
+                    if (!argv) TERR("native method: out of memory preparing arguments");
+                }
+                for (int i = 0; i < f->nargs; ++i) {
+                    if (!native_value_to_abi(vm, t->stack[base + i], &argv[i])) {
+                        unsupported = 1;
+                        break;
+                    }
+                }
+                if (!unsupported) {
+                    memset(&native_result, 0, sizeof(native_result));
+                    native_result.tag = SL_NATIVE_VALUE_NULL;
+                    pthread_mutex_lock(&vm->native_mtx);
+                    if (!sl_native_table_is_valid(&vm->native_modules, f->native_handle)) {
+                        status = SL_NATIVE_STALE_HANDLE;
+                    } else {
+                        status = slvm_native_bind_module_host_locked(vm, f->native_handle);
+                        if (status == SL_NATIVE_OK) {
+                            SLVM* previous_plugin_vm = native_plugin_call_vm;
+                            native_plugin_call_vm = vm;
+                            vm->native_callback_caller = t;
+                            status = sl_native_table_call(&vm->native_modules,
+                                f->native_handle, f->native_signature,
+                                (uint32_t)f->nargs, argv, &native_result);
+                            vm->native_callback_caller = NULL;
+                            native_plugin_call_vm = previous_plugin_vm;
+                        }
+                    }
+                    if (status == SL_NATIVE_OK &&
+                        !native_value_from_abi(vm, &native_result, &result_value))
+                        status = SL_NATIVE_PLUGIN_ERROR;
+                    pthread_mutex_unlock(&vm->native_mtx);
+                }
+                free(argv);
+                if (!unsupported && status == SL_NATIVE_OK) {
+                    t->sp = base;
+                    PUSH(result_value);
+                    break;
+                }
+                if (!unsupported && status != SL_NATIVE_TYPED_ENTRY_NOT_FOUND &&
+                    status != SL_NATIVE_METHOD_NOT_HANDLED) {
+                    char message[256];
+                    snprintf(message, sizeof(message), "native method '%s' failed: %s",
+                             f->native_signature, sl_native_status_string(status));
+                    TERR(message);
+                }
+            }
             SLFrame* nf=&t->frames[t->fp++]; nf->ret_ip=ip; nf->base=base; nf->nargs=f->nargs; nf->handler_base=t->exception_handler_count;
             for(int i=f->nargs;i<f->nlocals;i++){ PUSH(slval_null()); } ip=f->entry;
         } break;
@@ -3308,18 +3943,25 @@ static SLResult run_thread(SLThread* t) {
             SLValue value=POP();
             if(in.a>=0) {
                 if(value.type==SL_NULL) { PUSH(value); break; }
-                if(value.type!=SL_STRUCT || !struct_valid_handle(vm,value.as.h))
+                if(value.type!=SL_STRUCT)
+                    TFAULT(SL_FAULT_CAST,"checked cast failed: value is not a class/struct instance");
+                if(!struct_valid_handle(vm,value.as.h))
                     TERR("checked cast failed: value is not a valid class/struct instance");
                 pthread_mutex_lock(&vm->struct_mtx);
                 int actualType=vm->structs[value.as.h].type;
                 int matches=struct_type_is_a(vm,actualType,in.a);
                 pthread_mutex_unlock(&vm->struct_mtx);
-                if(!matches) TERR("checked cast failed: runtime class/struct type does not match target");
+                if(!matches) TFAULT(SL_FAULT_CAST,"checked cast failed: runtime class/struct type does not match target");
             } else {
                 int targetTag=-in.a-1;
-                if(targetTag<SL_NULL || targetTag>SL_INT128)
+                if(targetTag<SL_NULL || targetTag>SL_UTF16)
                     TERR("invalid checked-cast type descriptor");
-                if(value.type==SL_NULL && (targetTag==SL_STR || targetTag==SL_ARRAY)) {
+                if(value.type==SL_NULL && (targetTag==SL_STR || targetTag==SL_ARRAY || targetTag==SL_UTF16)) {
+                    PUSH(value); break;
+                }
+                /* A Java UTF-16 String is a String: a cast to the String type
+                 * accepts either runtime kind (legacy SL_STR or SL_UTF16). */
+                if(targetTag==SL_STR && value.type==SL_UTF16) {
                     PUSH(value); break;
                 }
                 /* int128 casts widen an integer to the 128-bit representation
@@ -3358,7 +4000,7 @@ static SLResult run_thread(SLThread* t) {
                     break;
                 }
                 if((int)value.type!=targetTag)
-                    TERR("checked cast failed: runtime value tag does not match target");
+                    TFAULT(SL_FAULT_CAST,"checked cast failed: runtime value tag does not match target");
             }
             PUSH(value);
         } break;
@@ -3373,11 +4015,73 @@ static SLResult run_thread(SLThread* t) {
                 }
             } else {
                 int targetTag=-in.a-1;
-                if(targetTag<SL_NULL || targetTag>SL_INT128)
+                if(targetTag<SL_NULL || targetTag>SL_UTF16)
                     TERR("invalid instanceof type descriptor");
                 matches=((int)value.type==targetTag);
             }
             PUSH(slval_bool(matches));
+        } break;
+        /* ---- object reference: the VM-level view of an object (see sleela_core.h) */
+        case OP_REF: {
+            int sel=SLREF_SEL(in.a);
+            if(sel>=SLREF_COUNT) TERR("invalid ref selector");
+            if(sel==SLREF_LIVE) {
+                pthread_mutex_lock(&vm->struct_mtx);
+                int nlive=vm->nstruct_live;
+                pthread_mutex_unlock(&vm->struct_mtx);
+                PUSH(slval_int(nlive)); break;
+            }
+            if(sel==SLREF_LIMIT) { PUSH(slval_int(SL_MAX_STRUCTS)); break; }
+            SLValue rvv=POP();
+            if(sel==SLREF_OF) {
+                if(rvv.type==SL_NULL) { PUSH(slval_int(0)); break; }
+                if(rvv.type!=SL_STRUCT) TERR("ref requires an object");
+                pthread_mutex_lock(&vm->struct_mtx);
+                int okobj=struct_valid_handle(vm,rvv.as.h);
+                int64_t made=okobj?ref_pack(rvv.as.h,vm->structs[rvv.as.h].generation):0;
+                pthread_mutex_unlock(&vm->struct_mtx);
+                if(!okobj) TERR("ref of an invalid object");
+                PUSH(slval_int(made)); break;
+            }
+            int64_t rraw=0;
+            if(rvv.type==SL_INT) rraw=rvv.as.i;
+            else if(rvv.type!=SL_NULL) TERR("a ref operation requires a ref (int) value");
+            int ridx=-1;
+            SLValue rout;
+            pthread_mutex_lock(&vm->struct_mtx);
+            if(ref_resolve_locked(vm,rraw,&ridx)) {
+                SLStructInstance* rsi=&vm->structs[ridx];
+                switch(sel) {
+                    case SLREF_DEREF:
+                        if(struct_type_is_a(vm,rsi->type,SLREF_TYPEIDX(in.a))) {
+                            /* A weak ref may name an object that is unreachable but
+                             * not yet swept. Turning it back into a strong value
+                             * while a collection is marking would let the sweep
+                             * free a value now on the stack, so shade it first. */
+                            if(rsi->gc_object && gc_phase(&vm->gc)==SLGC_MARKING) gc_mark(&vm->gc,rsi->gc_object);
+                            rout=slval_struct(ridx);
+                        } else rout=slval_null();
+                        break;
+                    case SLREF_VALID:  rout=slval_bool(1); break;
+                    case SLREF_ID:     rout=slval_int(ridx); break;
+                    case SLREF_GEN:    rout=slval_int((int64_t)(rsi->generation & 0x7fffffffu)); break;
+                    case SLREF_TYPE:   rout=slval_int(rsi->type); break;
+                    case SLREF_FIELDS: rout=slval_int(vm->struct_types[rsi->type].nfields); break;
+                    case SLREF_BYTES:  rout=slval_int(rsi->gc_object?(int64_t)rsi->gc_object->bytes:0); break;
+                    case SLREF_AGE:    rout=slval_int(rsi->gc_object?(int64_t)rsi->gc_object->age:0); break;
+                    case SLREF_OLD:    rout=slval_bool(rsi->gc_object && rsi->gc_object->generation==SLGC_GENERATION_OLD); break;
+                    default:           rout=slval_int(-1); break;
+                }
+            } else {
+                /* Stale, forged or null: fail closed with a neutral answer. */
+                switch(sel) {
+                    case SLREF_DEREF: rout=slval_null(); break;
+                    case SLREF_VALID: case SLREF_OLD: rout=slval_bool(0); break;
+                    default: rout=slval_int(-1); break;
+                }
+            }
+            pthread_mutex_unlock(&vm->struct_mtx);
+            PUSH(rout);
         } break;
         /* ---- arrays: dynamic, zero-indexed SLValue sequences ------------ */
         case OP_NEWARRAY: {
@@ -3402,6 +4106,25 @@ static SLResult run_thread(SLThread* t) {
                 h=array_alloc(vm,(int)nv.as.i);
             }
             if(h<0) TERR("array allocation failed (negative/too-large size or store exhausted)");
+            /* Typed zero-fill (ABI 1.9): operand a selects the element default,
+             * 0 null (unchanged), 1 integer 0, 2 double 0.0, 3 boolean false, so
+             * `new int[n]` reads as Java does. The handle is not yet visible to
+             * any other thread, so the fill needs no lock. */
+            if(in.a>=1 && in.a<=3){
+                SLValue fillv = (in.a==1) ? slval_int(0) : (in.a==2) ? slval_double(0.0) : slval_bool(0);
+                for(int j=0;j<vm->arrays[h].len;j++) vm->arrays[h].elems[j]=fillv;
+            }
+            PUSH(slval_array(h));
+        } break;
+        case OP_NEWARRAYND: {
+            const int n=in.a&0xFF, fill=(in.a>>8)&0xFF;
+            if (n<2||n>8) TERR("invalid multi-dimensional array rank");
+            int64_t dims[8];
+            for (int k=n-1;k>=0;k--) { SLValue d=POP(); if (d.type!=SL_INT) TERR("array size must be an integer"); dims[k]=d.as.i; }
+            t->safepoint_tick = 0;
+            slvm_gc_safepoint(vm, t, 4);
+            int h=-1; const char* why="array allocation failed";
+            if (md_new(vm,t,dims,n,fill,&h,&why)!=0) TERR(why);
             PUSH(slval_array(h));
         } break;
         case OP_ARRGET: {
@@ -3416,12 +4139,12 @@ static SLResult run_thread(SLThread* t) {
              * a worker exists. */
             if (t->workers_cached == 0) {
                 SLArrayInstance* ai=&vm->arrays[av.as.h];
-                if(idxv.as.i<0||idxv.as.i>=ai->len) TERR("array index out of range");
+                if(idxv.as.i<0||idxv.as.i>=ai->len) TFAULT_INDEX(idxv.as.i,ai->len);
                 PUSH(ai->elems[idxv.as.i]);
             } else {
                 pthread_mutex_lock(&vm->array_mtx);
                 SLArrayInstance* ai=&vm->arrays[av.as.h];
-                if(idxv.as.i<0||idxv.as.i>=ai->len){pthread_mutex_unlock(&vm->array_mtx);TERR("array index out of range");}
+                if(idxv.as.i<0||idxv.as.i>=ai->len){pthread_mutex_unlock(&vm->array_mtx);TFAULT_INDEX(idxv.as.i,ai->len);}
                 SLValue ev=ai->elems[idxv.as.i];
                 pthread_mutex_unlock(&vm->array_mtx);
                 PUSH(ev);
@@ -3435,7 +4158,7 @@ static SLResult run_thread(SLThread* t) {
                 /* Lock-free single-threaded fast path (see OP_ARRGET). The GC
                  * write barrier still runs -- it is correctness, not locking. */
                 SLArrayInstance* ai=&vm->arrays[av.as.h];
-                if(idxv.as.i<0||idxv.as.i>=ai->len) TERR("array index out of range");
+                if(idxv.as.i<0||idxv.as.i>=ai->len) TFAULT_INDEX(idxv.as.i,ai->len);
                 SLValue old=ai->elems[idxv.as.i];
                 if (old.type == SL_STRUCT || old.type == SL_ARRAY || val.type == SL_STRUCT || val.type == SL_ARRAY)
                     gc_write_barrier(&vm->gc, array_gc_object(vm, av.as.h),
@@ -3447,7 +4170,7 @@ static SLResult run_thread(SLThread* t) {
             } else {
                 pthread_mutex_lock(&vm->array_mtx);
                 SLArrayInstance* ai=&vm->arrays[av.as.h];
-                if(idxv.as.i<0||idxv.as.i>=ai->len){pthread_mutex_unlock(&vm->array_mtx);TERR("array index out of range");}
+                if(idxv.as.i<0||idxv.as.i>=ai->len){pthread_mutex_unlock(&vm->array_mtx);TFAULT_INDEX(idxv.as.i,ai->len);}
                 SLValue old=ai->elems[idxv.as.i];
                 if (old.type == SL_STRUCT || old.type == SL_ARRAY || val.type == SL_STRUCT || val.type == SL_ARRAY)
                     gc_write_barrier(&vm->gc, array_gc_object(vm, av.as.h),
@@ -3986,6 +4709,8 @@ static SLResult run_thread(SLThread* t) {
 
         default: log_unsupported_opcode(vm, in.op); TERR("unsupported opcode");
         }
+        continue;
+    sl_fault_next: ;
     }
 }
 
@@ -3998,7 +4723,7 @@ SLResult slvm_run(SLVM* vm) {
 SLResult slcore_exchange(SLVM* vm, SLExchangeOp op, SLExchangeArg* arg) {
     if(!vm||!arg) return SLR_ERROR;
     switch(op){
-    case SLX_RESET: vm->codelen=vm->nconst=vm->nglobal=vm->nfunc=0;vm->cur_func=-1;vm->entry=-1;vm->err[0]=0;return SLR_OK;
+    case SLX_RESET: for(int i=0;i<vm->nfunc;i++){free(vm->funcs[i].name);free(vm->funcs[i].native_signature);} vm->codelen=vm->nconst=vm->nglobal=vm->nfunc=0;vm->cur_func=-1;vm->entry=-1;vm->err[0]=0;return SLR_OK;
     case SLX_ADD_CONST: arg->out=add_const(vm,arg->value);return SLR_OK;
     case SLX_DECLARE_GLOBAL: arg->out=slvm_declare_global(vm,arg->name);return SLR_OK;
     case SLX_DECLARE_STRUCT: arg->out=slvm_declare_struct(vm,arg->name,arg->names,arg->i0);return SLR_OK;

@@ -1,0 +1,118 @@
+<< lib/advantage/learner-vs-professional/series/04-agreement/DiAgreement.sleela
+   SLeeLa courseware.
+   Definition: Device Instructor agreement test: the student and the Purchase Master each build a registry of the same field and the instructor points at exactly what differs. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Lesson 4. Two independent registries are compared entry by entry. Agreement >
+< is the acceptance test. A disagreement names the entry to look at again, >
+< and the cycle repeats until the two registries match. >
+class DiAgreement {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39104;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  SLNounRegistry student = new SLNounRegistry();
+  SLNounRegistry master = new SLNounRegistry();
+
+  < Prints each difference and returns the number of differences. >
+  int compare() {
+    int diffs = 0;
+    int i = 0;
+    while (i < student.size()) {
+      String noun = student.nounAt(i);
+      if (!master.has(noun)) {
+        print("  " + noun + ": student only, master did not observe it");
+        diffs = diffs + 1;
+      } else if (master.carrierOf(noun) != student.carrierAt(i)) {
+        print("  " + noun + ": student says " + student.carrierAt(i) + ", master says " + master.carrierOf(noun) + " -> re-observe");
+        diffs = diffs + 1;
+      }
+      i = i + 1;
+    }
+    int k = 0;
+    while (k < master.size()) {
+      if (!student.has(master.nounAt(k))) {
+        print("  " + master.nounAt(k) + ": master only, student did not observe it");
+        diffs = diffs + 1;
+      }
+      k = k + 1;
+    }
+    return diffs;
+  }
+
+  void verdict(int diffs) {
+    if (diffs == 0) { print("  verdict: AGREE, work accepted"); }
+    else { print("  verdict: " + diffs + " difference(s), not yet accepted"); }
+  }
+
+  void main() {
+    print("== Lesson 4: agreement ==");
+    master.declareField("toy shelf");
+    master.register("red box", "toy shelf");
+    master.register("blue box", "toy shelf");
+    master.register("ball", "red box");
+    master.register("book", "blue box");
+    master.register("block", "toy shelf");
+
+    student.declareField("toy shelf");
+    student.register("red box", "toy shelf");
+    student.register("blue box", "toy shelf");
+    student.register("ball", "blue box");
+    student.register("book", "blue box");
+
+    print("-- first comparison --");
+    verdict(compare());
+
+    print("-- student starts over: re-observes ball and adds block --");
+    SLNounRegistry again = new SLNounRegistry();
+    again.declareField("toy shelf");
+    again.register("red box", "toy shelf");
+    again.register("blue box", "toy shelf");
+    again.register("ball", "red box");
+    again.register("book", "blue box");
+    again.register("block", "toy shelf");
+    student = again;
+    print("-- second comparison --");
+    verdict(compare());
+  }
+}

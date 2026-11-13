@@ -1,0 +1,25 @@
+== Lesson 23: rice decision ==
+-- master (onion) --
+  Miller A total = 81900 cents
+  Miller B total = 52100 cents
+  Miller C total = 53800 cents
+  Miller D total = 70500 cents
+  Miller E total = 87100 cents
+  master picks Miller B
+-- student, first pass: the discount of Miller B was filed under Miller C --
+  Miller A total = 81900 cents
+  Miller B total = 54200 cents
+  Miller C total = 51700 cents
+  Miller D total = 70500 cents
+  Miller E total = 87100 cents
+  student picks Miller C
+  Miller B discount: student filed it under Miller C, master files it under Miller B -> re-observe
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Miller A total = 81900 cents
+  Miller B total = 52100 cents
+  Miller C total = 53800 cents
+  Miller D total = 70500 cents
+  Miller E total = 87100 cents
+  student picks Miller B
+  verdict: AGREE, work accepted

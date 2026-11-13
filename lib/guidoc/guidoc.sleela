@@ -1,0 +1,113 @@
+<< lib/guidoc/guidoc.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The launcher of the document GUI. It builds the GUI from its spec,
+     runs the readiness gate, optionally opens the file named by the environment
+     variable SLEELA_GUIDOC_OPEN, prints the screen as a text outline and says
+     whether the GUI is ready. SLEELA_GUIDOC_ADMIN=1 makes the session an admin
+     and SLEELA_GUIDOC_LOCK=1 (admin only) locks the system before the screen is
+     printed. With SLEELA_GUIDOC_PLAN=1 it also prints the
+     mount plan a windowing host consumes. On a host with no display it stops
+     there; a windowing host drives the same SLGuiDocApp through click(),
+     type() and accelerate(). Output ends with GUIDOC READY or GUIDOC NOT READY
+     (SLeeLa 3.0 main cannot set an exit status, so scripts match that line). >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import ui;
+< Family: guidoc. Run: sleela run lib/guidoc/guidoc.sleela >
+class GuiDoc {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39251;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 8;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  void main() {
+    SLGuiDocApp app = new SLGuiDocApp();
+    if (!app.configure()) {
+      print("GUIDOC NOT READY: the spec or the white theme is inconsistent");
+      return;
+    }
+    app.whenReady("launcher");
+    boolean ok = app.start();
+    SLGuiDocReady life = app.lifecycle();
+    int i = 0;
+    while (i < life.checkTotal()) {
+      print((life.checkPassed(i) ? "  ok    " : "  FAIL  ") + life.checkName(i) + ": " + life.checkDetail(i));
+      i = i + 1;
+    }
+    if (!ok) {
+      print("GUIDOC NOT READY: " + life.firstFailureText());
+      return;
+    }
+    if (osGetEnv("SLEELA_GUIDOC_ADMIN") == "1") { app.setAdmin(true); }
+    String path = osGetEnv("SLEELA_GUIDOC_OPEN");
+    if (path != "") {
+      if (!app.openPath(path)) { print("could not open " + path + ": " + app.statusText()); }
+      app.refresh();
+      app.paint();
+    }
+    if (osGetEnv("SLEELA_GUIDOC_LOCK") == "1") {
+      if (!app.accelerate("Ctrl+L")) { print("could not lock the system: " + app.statusText()); }
+    }
+    SLGuiDocHost host = new SLGuiDocHost();
+    String[] lines = new String[96];
+    int n = host.outline(app, lines, 96);
+    print("");
+    int k = 0;
+    while (k < n) { print(lines[k]); k = k + 1; }
+    if (osGetEnv("SLEELA_GUIDOC_PLAN") == "1") {
+      String[] plan = new String[160];
+      int p = host.mountPlan(app, plan, 160);
+      print("");
+      int q = 0;
+      while (q < p) { print(plan[q]); q = q + 1; }
+    }
+    print("");
+    print("launcher notified ready: " + app.takeReady("launcher"));
+    print("GUIDOC READY " + app.specification().getRelease()
+        + (app.isCertified() ? " certified" : " draft")
+        + (app.isLocked() ? " LOCKED" : "")
+        + " (" + life.checkTotal() + " checks, " + app.widgets().nodeCount() + " nodes, "
+        + app.look().name() + ")");
+  }
+}

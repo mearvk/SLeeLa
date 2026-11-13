@@ -33,6 +33,16 @@ a self-contained, validated module with its own literature.
 - [`PHYSICS.md`](./PHYSICS.md) — the trust-field "physics" subject (metric
   tensor, transactional geodesic, announcement contact structure, trust-decay
   SDE), a faithful mathematics presented as an explicit modelling analogy.
+- [`EXAMPLES.md`](./EXAMPLES.md) — runnable guide to all six subject demonstrations, expected outputs, and suggested learning sequence.
+- [`TRADING.md`](./TRADING.md) — the trading-models subject: eleven models
+  (arbitrage, market making, refurbishment, regional, aggregation, asymmetry,
+  consignment, distressed, virtual, synthetic, momentum), a rate budget, and
+  the counsel that ranks them; mirrors the C/C++ module in `/advantage`.
+- [`trading-actions-on-verb/`](./trading-actions-on-verb) — trading as verbs on a
+  long-only FIFO book and its short-only mirror: twenty-six use cases on the
+  style of trading long and short, short margin, and time held, built on careful Euclid
+  loops and Euclidean distance, with differential stress tests, an exhaustive
+  Euclid check and a long/short mirror law.
 - [`PREONEM.md`](./PREONEM.md) — the preonem standard under which every
   document here is an enacted `artifact; pure; gasoline;` of the Advantage™
   legislature, graded unto time and space.
@@ -61,7 +71,7 @@ order. The layers form an **onion**, outer skin to inner core:
 
 ## The Advantage™ subjects at a glance
 
-Advantage™ is organized as a spine (the onion) plus seven subject families. Each
+Advantage™ is organized as a spine (the onion) plus eight subject families. Each
 subject is a directory of SLeeLa classes with a runnable demo and, for the two
 quantitative ones, a full prose treatment.
 
@@ -75,6 +85,7 @@ quantitative ones, a full prose treatment.
 | **Output seam** | [`output/`](./output) | where a module's own voice goes | [`DEFINITIONS.md` §10](./DEFINITIONS.md#10-output-seam-output) |
 | **Network trades** | [`network/`](./network) | buy/sell opportunities found and negotiated across a venue network | [`examples/README.md`](./examples/README.md) |
 | **Connectivity medium** | [`connect/`](./connect) | a uniform, fault-handled bridge to MySQL, national clocks, networks, and money sources | [`connect/README.md`](./connect/README.md) |
+| **Trading models** | [`trading/`](./trading) | an asset position, across eleven models, ranked by evidence and trust | [`TRADING.md`](./TRADING.md) |
 
 Read [`DEFINITIONS.md`](./DEFINITIONS.md) first for the vocabulary; then the
 subject documents for depth; then run the demos and primers to see each one
@@ -176,6 +187,32 @@ The three top-level models (`SLAdvantageDeveloperModel`, `SLVerticalIntegration`
 `SLGradeBook`) carry an `emitThrough(emitter)` method so they can report
 themselves to any target. Defined in
 [`DEFINITIONS.md`](./DEFINITIONS.md#10-output-seam-output).
+
+### `trading/` subfolder — trading-models subject
+
+Eleven cross-asset trading models, a rate budget, and counsel, ported from the
+C/C++ module in `/advantage`. Pure computation; every figure is validated by
+`trading-demo` against hand-computed anchors. See [`TRADING.md`](./TRADING.md).
+
+| File | Class | Purpose |
+|------|-------|---------|
+| `trading/SLTradingResult.sleela` | `SLTradingResult` | Common result plus the advantage bridge (`baseline`, `advantage`) |
+| `trading/SLTradingCheck.sleela` | `SLTradingCheck` | Shared fail-closed validation and finite bounds |
+| `trading/SLTradingArbitrage.sleela` | `SLTradingArbitrage` | Same asset, two venues; break-even |
+| `trading/SLTradingMarketMaking.sleela` | `SLTradingMarketMaking` | Quote both sides; the unfilled case |
+| `trading/SLTradingRefurbishment.sleela` | `SLTradingRefurbishment` | Improve and sell up-tier; outcome distribution |
+| `trading/SLTradingRegional.sleela` | `SLTradingRegional` | Move it and sell elsewhere; loss and salvage |
+| `trading/SLTradingAggregation.sleela` | `SLTradingAggregation` | Assemble a set; completion probability |
+| `trading/SLTradingAsymmetry.sleela` | `SLTradingAsymmetry` | One candidate: pay to look, win the race, be right |
+| `trading/SLTradingConsignment.sleela` | `SLTradingConsignment` | Commission with no inventory |
+| `trading/SLTradingDistressed.sleela` | `SLTradingDistressed` | Buy from urgency; pursuit cost and remainder |
+| `trading/SLTradingVirtual.sleela` | `SLTradingVirtual` | Sell before sourcing; fulfilment failure |
+| `trading/SLTradingSynthetic.sleela` | `SLTradingSynthetic` | One into many or many into one |
+| `trading/SLTradingMomentum.sleela` | `SLTradingMomentum` | Event-driven entry; exit failure; hype decay |
+| `trading/SLTradingRateBudget.sleela` | `SLTradingRateBudget` | Wait before the next request from rate-limit numbers |
+| `trading/SLTradingApproach.sleela` | `SLTradingApproach` | Evidence, assumptions, honest score |
+| `trading/SLTradingCounsel.sleela` | `SLTradingCounsel` | Ranks approaches best-first |
+| `trading/trading-demo.sleela` | `TradingDemo` | Runnable demo + validation (`main`) |
 
 ## The two models
 

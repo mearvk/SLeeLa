@@ -1,0 +1,226 @@
+<< lib/java/converter/JConvEmitter.sleela
+   Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
+   Definition: writes one SLeeLa source file. Tokens keep the line structure of
+   the Java source; indentation follows the brace depth (two spaces); spacing
+   follows the usual Java layout. Output is buffered and flushed in pieces
+   well below the 65,536-byte limit of a built plain String. Comments are
+   always placed on their own line, because an angle-bracket comment must
+   start its line. >>
+#sleela 3.0
+material;
+
+class JConvEmitter {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full record: a library-family class of the Java container. >>
+  String metaVersion = "0.1.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int handle;
+  String buffer;
+  int bufferLen;
+  int bytesOut;
+  int depth;
+  boolean lineStart;
+  int lastLine;
+  String prevText;
+  int prevKind;
+  boolean failed;
+
+  JConvEmitter() {
+    this.handle = -1;
+    this.buffer = "";
+    this.bufferLen = 0;
+    this.bytesOut = 0;
+    this.depth = 0;
+    this.lineStart = true;
+    this.lastLine = 0;
+    this.prevText = "";
+    this.prevKind = 0;
+    this.failed = false;
+  }
+
+  boolean openOut(String path) {
+    this.handle = openFile(path, "w");
+    this.buffer = "";
+    this.bufferLen = 0;
+    this.bytesOut = 0;
+    this.depth = 0;
+    this.lineStart = true;
+    this.lastLine = 0;
+    this.prevText = "";
+    this.prevKind = 0;
+    this.failed = (this.handle < 0);
+    return !this.failed;
+  }
+
+  void flushOut() {
+    if (this.handle >= 0 && this.bufferLen > 0) {
+      write(this.handle, this.buffer);
+      this.bytesOut = this.bytesOut + this.bufferLen;
+    }
+    this.buffer = "";
+    this.bufferLen = 0;
+  }
+
+  void finishOut() {
+    if (!this.lineStart) { this.newline(); }
+    flushOut();
+    if (this.handle >= 0) { close(this.handle); }
+    this.handle = -1;
+  }
+
+  void raw(String s) {
+    int len = s.length();
+    if (this.bufferLen + len > 16000) { flushOut(); }
+    if (len > 16000) {
+      if (this.handle >= 0) { write(this.handle, s); }
+      this.bytesOut = this.bytesOut + len;
+      return;
+    }
+    this.buffer = this.buffer + s;
+    this.bufferLen = this.bufferLen + len;
+  }
+
+  void newline() {
+    raw("\n");
+    this.lineStart = true;
+  }
+
+  String indentText(int extra) {
+    String s = "";
+    int k = 0;
+    while (k < this.depth) { s = s + "  "; k = k + 1; }
+    k = 0;
+    while (k < extra) { s = s + " "; k = k + 1; }
+    return s;
+  }
+
+  < a complete generated line at the current depth >
+  void lineOut(String text) {
+    if (!this.lineStart) { newline(); }
+    raw(indentText(0) + text);
+    newline();
+    this.prevText = ";";
+    this.prevKind = 5;
+  }
+
+  < end the current line, as if a statement had ended >
+  void endLine() {
+    if (!this.lineStart) { newline(); }
+    this.prevText = ";";
+    this.prevKind = 5;
+  }
+
+  void blankLine() {
+    if (!this.lineStart) { newline(); }
+    newline();
+  }
+
+  void enter() { this.depth = this.depth + 1; }
+  void leave() { if (this.depth > 0) { this.depth = this.depth - 1; } }
+
+  < a comment on its own line(s); text may hold newlines >
+  void comment(String text) {
+    if (!this.lineStart) { newline(); }
+    String ind = indentText(0);
+    String t = text;
+    if (t.indexOf("\n") >= 0) { t = t.replace("\n", "\n" + ind); }
+    raw(ind + t);
+    newline();
+  }
+
+  boolean isWordKind(int k) { return k == 1 || k == 2 || k == 3 || k == 4; }
+
+  boolean noSpaceBefore(String t) {
+    return t == ")" || t == "]" || t == "," || t == ";" || t == "." || t == "...";
+  }
+
+  boolean needSpace(int kind, String text) {
+    String p = this.prevText;
+    if (p == "") { return false; }
+    if (noSpaceBefore(text)) { return false; }
+    if (p == "(" || p == "[" || p == "." || p == "@" || p == "!" || p == "~") { return false; }
+    if (text == "(" && (this.prevKind == 1 || p == "]" || p == ")" || p == ">")) {
+      if (p == "if" || p == "for" || p == "while" || p == "switch" || p == "catch" || p == "synchronized" || p == "return" || p == "throw") { return true; }
+      return false;
+    }
+    if (text == "[" && (this.prevKind == 1 || p == "]" || p == ")")) { return false; }
+    if ((text == "++" || text == "--") && (this.prevKind == 1 || p == "]" || p == ")")) { return false; }
+    if ((p == "++" || p == "--") && kind == 1) { return false; }
+    return true;
+  }
+
+  < one token; srcLine 0 means a generated token that stays on the current line >
+  void token(int kind, String text, int srcLine) {
+    if (srcLine > 0 && this.lastLine > 0 && srcLine > this.lastLine && !this.lineStart) {
+      newline();
+      if (srcLine - this.lastLine >= 2) { newline(); }
+    } else if (srcLine > 0 && this.lastLine > 0 && srcLine - this.lastLine >= 2 && this.lineStart && this.prevText != "") {
+      newline();
+    }
+    if (srcLine > 0) { this.lastLine = srcLine; }
+    if (text == "}") { leave(); }
+    if (this.lineStart) {
+      int extra = 0;
+      String p = this.prevText;
+      if (p != "" && p != ";" && p != "{" && p != "}" && text != "}" && text != "{") { extra = 4; }
+      raw(indentText(extra));
+      this.lineStart = false;
+    } else if (needSpace(kind, text)) {
+      raw(" ");
+    }
+    raw(text);
+    if (text == "{") { enter(); }
+    this.prevText = text;
+    this.prevKind = kind;
+  }
+
+  < a source comment token: own line, then the code resumes on a new line >
+  void commentToken(String text, int srcLine, int endLine) {
+    if (srcLine > 0 && this.lastLine > 0 && srcLine - this.lastLine >= 2 && this.prevText != "") { blankLine(); }
+    comment(text);
+    if (endLine > 0) { this.lastLine = endLine; }
+    else if (srcLine > 0) { this.lastLine = srcLine; }
+  }
+
+  < an annotation line written before a member: the member follows directly >
+  void annotationLine(String text) {
+    lineOut(text);
+    this.lastLine = 0;
+  }
+}

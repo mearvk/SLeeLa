@@ -1,0 +1,122 @@
+<< lib/java/support/SLJavaLambda.sleela
+   One Java lambda, method reference or functional-interface object, lowered to
+   data: an integer id that names the body, and an array env that holds the
+   captured values (lib/java/jdk-28/LOWERING.md section 2). >>
+#sleela 3.0
+material;
+
+<< A translated program has one generated class SLJavaLambdaTable with a
+   static method call(id, env, a, b): one if (id == N) arm per lambda site,
+   the parameters bound to a and b. That program class shadows the library
+   default in lib/java/support/SLJavaLambdaTable.sleela.
+
+   This class answers the single abstract method of the common functional
+   interfaces under their Java names, so JDK 28 library code that calls
+   cmp.compare(x, y) or listener.propertyChange(evt) reaches the lambda
+   without virtual dispatch (PURPOSE.md row 8). Each method forwards to
+   SLJavaLambdaTable.call with its arguments, missing ones as null, and casts
+   the result to the Java return type. A body that throws propagates through
+   the call unchanged.
+
+   Not here yet: the default methods that build a new function from an old one
+   (andThen, compose, negate, reversed, thenComparing). The translator lowers
+   those to a new lambda site whose body calls both. >>
+class SLJavaLambda {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Shared support
+     class of the /lib/java Java container; written for SLeeLa, not copied
+     from the JDK. It models the Java lambda expression and method reference
+     of the Java Language Specification, chapter 15 sections 15.13 and 15.27. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39404;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "The Java Language Specification, sections 15.13 (Method Reference Expressions) and 15.27 (Lambda Expressions)";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < the lowered value: which body, and what it captured (by value; Java captures only effectively final locals) >
+  int id;
+  Any[] env;
+  < the Java functional interface this value was created for, for diagnostics; may be empty >
+  String javaInterface;
+
+  SLJavaLambda(int id_, Any[] env_) {
+    this.id = id_;
+    this.env = env_;
+    this.javaInterface = "";
+  }
+  SLJavaLambda(int id_, Any[] env_, String javaInterface_) {
+    this.id = id_;
+    this.env = env_;
+    this.javaInterface = javaInterface_;
+  }
+  int lambdaId() { return this.id; }
+  Any[] captured() { return this.env; }
+  String functionalInterface() { return this.javaInterface; }
+
+  Any invoke0() { return SLJavaLambdaTable.call(this.id, this.env, null, null); }
+  Any invoke1(Any a) { return SLJavaLambdaTable.call(this.id, this.env, a, null); }
+  Any invoke2(Any a, Any b) { return SLJavaLambdaTable.call(this.id, this.env, a, b); }
+
+  < java.util.function.Function, UnaryOperator, BiFunction, BinaryOperator, IntFunction, ... >
+  Any apply(Any a) { return invoke1(a); }
+  Any apply(Any a, Any b) { return invoke2(a, b); }
+  < java.util.function.Consumer, BiConsumer, IntConsumer, ... >
+  void accept(Any a) { invoke1(a); }
+  void accept(Any a, Any b) { invoke2(a, b); }
+  < java.util.function.Predicate, BiPredicate, IntPredicate, ... >
+  boolean test(Any a) { return (boolean) invoke1(a); }
+  boolean test(Any a, Any b) { return (boolean) invoke2(a, b); }
+  < java.util.function.Supplier, java.util.concurrent.Callable, java.lang.Runnable >
+  Any get() { return invoke0(); }
+  Any call() { return invoke0(); }
+  void run() { invoke0(); }
+  < primitive specializations (ToIntFunction, IntBinaryOperator, IntSupplier, ...) >
+  int applyAsInt(Any a) { return (int) invoke1(a); }
+  int applyAsInt(Any a, Any b) { return (int) invoke2(a, b); }
+  long applyAsLong(Any a) { return (long) invoke1(a); }
+  long applyAsLong(Any a, Any b) { return (long) invoke2(a, b); }
+  double applyAsDouble(Any a) { return (double) invoke1(a); }
+  double applyAsDouble(Any a, Any b) { return (double) invoke2(a, b); }
+  int getAsInt() { return (int) invoke0(); }
+  long getAsLong() { return (long) invoke0(); }
+  double getAsDouble() { return (double) invoke0(); }
+  boolean getAsBoolean() { return (boolean) invoke0(); }
+  < java.util.Comparator >
+  int compare(Any a, Any b) { return (int) invoke2(a, b); }
+  < java.beans.PropertyChangeListener and VetoableChangeListener >
+  void propertyChange(Any evt) { invoke1(evt); }
+  void vetoableChange(Any evt) { invoke1(evt); }
+
+}

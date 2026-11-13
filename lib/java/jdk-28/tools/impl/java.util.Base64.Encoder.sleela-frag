@@ -1,0 +1,97 @@
+  << java.util.Base64.Encoder in SLeeLa, written from the JDK 28 API
+     specification. The encoder holds the alphabet choice, the MIME line
+     separator, the line length (0 or less means no line breaks) and whether
+     padding with = is written. A line break is written after exactly
+     linemax output characters, and only when more output follows. The
+     ByteBuffer and OutputStream forms stay as stubs. >>
+  boolean isURL;
+  byte[] newline;
+  int linemax;
+  boolean doPadding;
+
+  Encoder(boolean isURL, byte[] newline, int linemax, boolean doPadding) {
+    this.isURL = isURL;
+    this.newline = newline;
+    this.linemax = linemax;
+    this.doPadding = doPadding;
+  }
+
+  int slOutLength(int srclen) {
+    int len = 0;
+    if (doPadding) {
+      len = 4 * ((srclen + 2) / 3);
+    } else {
+      int r = srclen % 3;
+      len = 4 * (srclen / 3);
+      if (r != 0) { len = len + r + 1; }
+    }
+    if (linemax > 0) { len = len + (len - 1) / linemax * arrayLength(newline); }
+    return len;
+  }
+  int slNewline(byte[] dst, int dp) {
+    int at = dp;
+    int i = 0;
+    while (i < arrayLength(newline)) { dst[at] = newline[i]; at = at + 1; i = i + 1; }
+    return at;
+  }
+  int slEncode0(byte[] src, byte[] dst) {
+    boolean url = isURL;
+    int sl = arrayLength(src);
+    int sp = 0;
+    int dp = 0;
+    int col = 0;
+    while (sp + 3 <= sl) {
+      if (linemax > 0 && col == linemax) { dp = slNewline(dst, dp); col = 0; }
+      int bits = ((src[sp] & 255) << 16) | ((src[sp + 1] & 255) << 8) | (src[sp + 2] & 255);
+      sp = sp + 3;
+      dst[dp] = Base64.slToBase64((bits >> 18) & 63, url);
+      dst[dp + 1] = Base64.slToBase64((bits >> 12) & 63, url);
+      dst[dp + 2] = Base64.slToBase64((bits >> 6) & 63, url);
+      dst[dp + 3] = Base64.slToBase64(bits & 63, url);
+      dp = dp + 4;
+      col = col + 4;
+    }
+    if (sp < sl) {
+      if (linemax > 0 && col == linemax) { dp = slNewline(dst, dp); col = 0; }
+      int b0 = src[sp] & 255;
+      dst[dp] = Base64.slToBase64(b0 >> 2, url);
+      if (sp + 1 == sl) {
+        dst[dp + 1] = Base64.slToBase64((b0 << 4) & 63, url);
+        dp = dp + 2;
+        if (doPadding) { dst[dp] = 61; dst[dp + 1] = 61; dp = dp + 2; }
+      } else {
+        int b1 = src[sp + 1] & 255;
+        dst[dp + 1] = Base64.slToBase64(((b0 << 4) & 63) | (b1 >> 4), url);
+        dst[dp + 2] = Base64.slToBase64((b1 << 2) & 63, url);
+        dp = dp + 3;
+        if (doPadding) { dst[dp] = 61; dp = dp + 1; }
+      }
+    }
+    return dp;
+  }
+
+  public byte[] encode(byte[] src) {
+    if (src == null) { throw new NullPointerException(); }
+    byte[] dst = new byte[slOutLength(arrayLength(src))];
+    slEncode0(src, dst);
+    return dst;
+  }
+  public int encode(byte[] src, byte[] dst) {
+    if (src == null || dst == null) { throw new NullPointerException(); }
+    int len = slOutLength(arrayLength(src));
+    if (arrayLength(dst) < len) {
+      throw new IllegalArgumentException("Output byte array is too small for encoding all input bytes");
+    }
+    return slEncode0(src, dst);
+  }
+  public java.lang.String encodeToString(byte[] src) {
+    byte[] out = encode(src);
+    String s = "";
+    int i = 0;
+    while (i < arrayLength(out)) { s = s + Base64.slChar(out[i]); i = i + 1; }
+    return s;
+  }
+  public Base64.Encoder withoutPadding() {
+    if (!doPadding) { return this; }
+    return new Base64.Encoder(isURL, newline, linemax, false);
+  }

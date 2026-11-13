@@ -1,0 +1,10 @@
+  < ---- java.beans.VetoableChangeListenerProxy: name, listener and forwarding ---- >
+  << Written from the JDK 28 API specification: a proxy holds a property name
+     and a listener, and forwards each event to that listener; a veto
+     (PropertyVetoException) propagates to the caller. >>
+  public VetoableChangeListenerProxy(java.lang.String propertyName, java.beans.VetoableChangeListener listener) {
+    this.heldPropertyName = propertyName;
+    this.heldListener = listener;
+  }
+  public java.util.EventListener getListener() { return this.heldListener; }
+  public void vetoableChange(java.beans.PropertyChangeEvent event) { SLJavaBeanEvents.notifyVetoableChange(this.heldListener, event); }

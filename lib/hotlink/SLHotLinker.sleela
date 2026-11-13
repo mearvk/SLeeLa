@@ -1,0 +1,425 @@
+<< lib/hotlink/SLHotLinker.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLHotLinker — the gate every hot-loaded instance and
+     every connection passes through. It checks an instance against its matrix
+     row (known type, hot, trust floor, per-type cap, unique name, and for
+     native code the host authorizer plus the host-pinned digest), records it,
+     and for observer modules admits the port to the SLDocumentObserver. A
+     connection is allowed only if the matrix declares the type pair, fan-out
+     stays under the limit, and no instance-level cycle results. The linker
+     approves; it never loads code itself. Everything is audited. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Family: hotlink. 64 instances ever (names are never reused), 64 live links, >
+< 64-entry audit trail. Trust: 0 anonymous, 1 worker, 2 executive. >
+class SLHotLinker {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39223;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  SLHotLinkMatrix matrix;
+  SLDocumentObserver observer;
+  String[] names;
+  String[] types;
+  < 0 free, 1 linked, 2 detached >
+  int[] states;
+  int instCount;
+  int[] linkFrom;
+  int[] linkTo;
+  int[] linkLive;
+  int linkCount;
+  String[] pinTypes;
+  String[] pinDigests;
+  int pinCount;
+  int authorizerGranted;
+  int allowUnverified;
+  String[] trail;
+  int trailCount;
+  int trailLost;
+  int refused;
+
+  < The matrix must be sealed; an unsealed matrix is refused. >
+  boolean configure(SLHotLinkMatrix m, SLDocumentObserver o) {
+    if (m == null || !m.isSealed()) { return false; }
+    matrix = m; observer = o;
+    names = new String[64]; types = new String[64]; states = new int[64];
+    linkFrom = new int[64]; linkTo = new int[64]; linkLive = new int[64];
+    pinTypes = new String[32]; pinDigests = new String[32];
+    trail = new String[64];
+    int i = 0;
+    while (i < 64) {
+      names[i] = ""; types[i] = ""; states[i] = 0;
+      linkFrom[i] = -1; linkTo[i] = -1; linkLive[i] = 0;
+      trail[i] = "";
+      i = i + 1;
+    }
+    int j = 0;
+    while (j < 32) { pinTypes[j] = ""; pinDigests[j] = ""; j = j + 1; }
+    instCount = 0; linkCount = 0; pinCount = 0;
+    authorizerGranted = 0; allowUnverified = 0;
+    trailCount = 0; trailLost = 0; refused = 0;
+    return true;
+  }
+
+  SLHotLinkMatrix model() { return matrix; }
+  int instanceTotal() { return instCount; }
+  int refusedCount() { return refused; }
+  int trailSize() { return trailCount; }
+  int trailOverflow() { return trailLost; }
+  String trailAt(int i) { return (i >= 0 && i < trailCount) ? trail[i] : ""; }
+
+  void audit(String entry) {
+    if (trailCount < 64) { trail[trailCount] = entry; trailCount = trailCount + 1; }
+    else { trailLost = trailLost + 1; }
+  }
+  int refuse(String why) {
+    refused = refused + 1;
+    audit("refused: " + why);
+    return -1;
+  }
+
+  < ---- host policy ----------------------------------------------------- >
+
+  void grantAuthorizer() { authorizerGranted = 1; audit("authorizer granted by host"); }
+  void permitUnverified(boolean on) {
+    allowUnverified = on ? 1 : 0;
+    audit("unverified types " + (on ? "permitted" : "forbidden") + " by host");
+  }
+  < Revoking the authorizer detaches every linked native-code instance. >
+  void revokeAuthorizer() {
+    authorizerGranted = 0;
+    audit("authorizer revoked by host");
+    int i = 0;
+    while (i < instCount) {
+      if (states[i] == 1) {
+        SLHotLinkRow r = matrix.find(types[i]);
+        if (r != null && r.needsAuthorizer()) { detach(names[i]); }
+      }
+      i = i + 1;
+    }
+  }
+  int pinIndex(String typeId) {
+    int i = 0;
+    while (i < pinCount) { if (pinTypes[i] == typeId) { return i; } i = i + 1; }
+    return -1;
+  }
+  < Pin the expected digest of a host-pinned type. Allowed once; never changed. >
+  boolean pinDigest(String typeId, String digest) {
+    SLHotLinkRow r = matrix.find(typeId);
+    if (r == null || r.getDigestPolicy() != "host-pinned") { refuse("pin for " + typeId); return false; }
+    if (digest == null || digest == "" || pinIndex(typeId) >= 0 || pinCount >= 32) {
+      refuse("pin for " + typeId); return false;
+    }
+    pinTypes[pinCount] = typeId; pinDigests[pinCount] = digest;
+    pinCount = pinCount + 1;
+    audit("digest pinned for " + typeId);
+    return true;
+  }
+
+  < ---- instances ------------------------------------------------------- >
+
+  int indexOfName(String name) {
+    int i = 0;
+    while (i < instCount) { if (names[i] == name) { return i; } i = i + 1; }
+    return -1;
+  }
+  boolean isLinked(String name) {
+    int i = indexOfName(name);
+    return i >= 0 && states[i] == 1;
+  }
+  String typeOfName(String name) {
+    int i = indexOfName(name);
+    return (i >= 0) ? types[i] : "";
+  }
+  int countOfType(String typeId) {
+    int n = 0;
+    int i = 0;
+    while (i < instCount) {
+      if (states[i] == 1 && types[i] == typeId) { n = n + 1; }
+      i = i + 1;
+    }
+    return n;
+  }
+  int liveCount() {
+    int n = 0;
+    int i = 0;
+    while (i < instCount) { if (states[i] == 1) { n = n + 1; } i = i + 1; }
+    return n;
+  }
+
+  String preflightWhy;
+
+  < Dry run of every attach check, changing and auditing nothing. Returns 0 >
+  < when attach would succeed, 1 when it is refused for a reason that may pass >
+  < later (cap reached, authorizer or digest not yet provided, unverified type >
+  < not yet permitted), 2 when it is refused for good. preflightWhy holds the >
+  < reason. attach() uses this same method, so the two can never disagree. >
+  int preflight(String typeId, String name, int trust, String digest) {
+    preflightWhy = "";
+    SLHotLinkRow r = matrix.find(typeId);
+    if (r == null) { preflightWhy = "unknown type " + typeId; return 2; }
+    if (name == null || name == "" || name == "*" || name == "observer") {
+      preflightWhy = "bad instance name for " + typeId; return 2;
+    }
+    if (indexOfName(name) >= 0) { preflightWhy = "duplicate name " + name; return 2; }
+    if (!r.isHot()) { preflightWhy = typeId + " is cold: instances exist only from start"; return 2; }
+    if (r.getContract() == "port" && observer != null && observer.indexOfPort(name) >= 0) {
+      preflightWhy = "name already on the observer roster: " + name; return 2;
+    }
+    if (r.getStatus() == "unverified" && allowUnverified == 0) {
+      preflightWhy = typeId + " is unverified and not permitted by the host"; return 1;
+    }
+    if (trust < r.getMinTrust()) { preflightWhy = "trust " + trust + " below floor for " + typeId; return 2; }
+    if (instCount >= 64) { preflightWhy = "instance table full"; return 2; }
+    if (countOfType(typeId) >= r.getMaxInstances()) { preflightWhy = "instance cap for " + typeId; return 1; }
+    if (r.needsAuthorizer() && authorizerGranted == 0) {
+      preflightWhy = "no host authorizer for " + typeId; return 1;
+    }
+    if (r.getDigestPolicy() == "host-pinned") {
+      int p = pinIndex(typeId);
+      if (p < 0) { preflightWhy = "no pinned digest for " + typeId; return 1; }
+      if (digest != pinDigests[p]) { preflightWhy = "digest mismatch for " + name; return 2; }
+    }
+    return 0;
+  }
+
+  < Approve one instance of a class type. Returns its slot, or -1 (audited). >
+  < `digest` is only consulted for host-pinned types; pass "" otherwise. >
+  int attach(String typeId, String name, int trust, String digest) {
+    int verdict = preflight(typeId, name, trust, digest);
+    if (verdict != 0) { return refuse(preflightWhy); }
+    names[instCount] = name; types[instCount] = typeId; states[instCount] = 1;
+    int slot = instCount;
+    instCount = instCount + 1;
+    audit("attached " + name + " as " + typeId);
+    return slot;
+  }
+
+  < Approve an observer module and admit its port. The port name must equal >
+  < the instance name. If the observer refuses, the attach is rolled back. >
+  int attachModule(String typeId, String name, int trust, SLObserverPort port) {
+    SLHotLinkRow r = matrix.find(typeId);
+    if (r == null || r.getContract() != "port") { return refuse("not a port type: " + typeId); }
+    if (observer == null || port == null) { return refuse("no observer or port for " + name); }
+    if (port.getName() != name) { return refuse("port name differs from " + name); }
+    int slot = attach(typeId, name, trust, "");
+    if (slot < 0) { return -1; }
+    if (!observer.admit(port)) {
+      states[slot] = 2;
+      audit("rolled back " + name + " (observer refused the port)");
+      refused = refused + 1;
+      return -1;
+    }
+    return slot;
+  }
+
+  < Detach an instance: its links go, and an observer module is retired. >
+  boolean detach(String name) {
+    int i = indexOfName(name);
+    if (i < 0 || states[i] != 1) { refuse("detach of " + name); return false; }
+    states[i] = 2;
+    int e = 0;
+    while (e < linkCount) {
+      if (linkLive[e] == 1 && (linkFrom[e] == i || linkTo[e] == i)) { linkLive[e] = 0; }
+      e = e + 1;
+    }
+    SLHotLinkRow r = matrix.find(types[i]);
+    if (r != null && r.getContract() == "port" && observer != null) { observer.retire(name); }
+    audit("detached " + name);
+    return true;
+  }
+
+  < ---- listener lifecycle through the linker ---------------------------- >
+  < Each verb needs a linked observer-module instance and the trust floor of >
+  < its type, then delegates to the observer. Refusals are audited. >
+
+  boolean mayControl(String name, int trust, String verb) {
+    int i = indexOfName(name);
+    if (i < 0 || states[i] != 1) { refuse(verb + " " + name + " (not linked)"); return false; }
+    SLHotLinkRow r = matrix.find(types[i]);
+    if (r == null || r.getContract() != "port" || observer == null) {
+      refuse(verb + " " + name + " (not an observer module)");
+      return false;
+    }
+    if (trust < r.getMinTrust()) { refuse(verb + " " + name + " (trust " + trust + " below floor)"); return false; }
+    return true;
+  }
+  boolean pauseModule(String name, int trust) {
+    if (!mayControl(name, trust, "pause")) { return false; }
+    if (!observer.pause(name)) { refuse("pause " + name + " (observer refused)"); return false; }
+    audit("paused " + name);
+    return true;
+  }
+  boolean resumeModule(String name, int trust) {
+    if (!mayControl(name, trust, "resume")) { return false; }
+    if (!observer.resume(name)) { refuse("resume " + name + " (observer refused)"); return false; }
+    audit("resumed " + name);
+    return true;
+  }
+  boolean alterModule(String name, int trust, int ins, int rep, int del, int first, int last) {
+    if (!mayControl(name, trust, "alter")) { return false; }
+    if (!observer.alter(name, ins, rep, del, first, last)) { refuse("alter " + name + " (observer refused)"); return false; }
+    audit("altered " + name);
+    return true;
+  }
+  < Hot-swap: the instance keeps its name, type, links and slot; only the port >
+  < behind it changes. >
+  boolean replaceModule(String name, int trust, SLObserverPort fresh) {
+    if (!mayControl(name, trust, "replace")) { return false; }
+    if (!observer.replace(name, fresh)) { refuse("replace " + name + " (observer refused)"); return false; }
+    audit("replaced " + name);
+    return true;
+  }
+  boolean reinstateModule(String name, int trust) {
+    if (!mayControl(name, trust, "reinstate")) { return false; }
+    if (!observer.reinstate(name)) { refuse("reinstate " + name + " (observer refused)"); return false; }
+    audit("reinstated " + name);
+    return true;
+  }
+
+  < ---- connections ------------------------------------------------------ >
+
+  int linkIndex(int a, int b) {
+    int e = 0;
+    while (e < linkCount) {
+      if (linkLive[e] == 1 && linkFrom[e] == a && linkTo[e] == b) { return e; }
+      e = e + 1;
+    }
+    return -1;
+  }
+  boolean isConnected(String from, String to) {
+    int a = indexOfName(from);
+    int b = indexOfName(to);
+    if (a < 0 || b < 0) { return false; }
+    return states[a] == 1 && states[b] == 1 && linkIndex(a, b) >= 0;
+  }
+  int liveLinks() {
+    int n = 0;
+    int e = 0;
+    while (e < linkCount) { if (linkLive[e] == 1) { n = n + 1; } e = e + 1; }
+    return n;
+  }
+  < Live links from instance a to any instance of type `toType`. >
+  int fanoutOf(int a, String toType) {
+    int n = 0;
+    int e = 0;
+    while (e < linkCount) {
+      if (linkLive[e] == 1 && linkFrom[e] == a && types[linkTo[e]] == toType) { n = n + 1; }
+      e = e + 1;
+    }
+    return n;
+  }
+  < Does a live path lead from instance `from` to instance `to`? >
+  boolean reaches(int from, int to) {
+    int[] seen = new int[64];
+    int[] stack = new int[64];
+    int i = 0;
+    while (i < 64) { seen[i] = 0; stack[i] = 0; i = i + 1; }
+    int sp = 0;
+    stack[sp] = from; sp = sp + 1; seen[from] = 1;
+    while (sp > 0) {
+      sp = sp - 1;
+      int cur = stack[sp];
+      if (cur == to) { return true; }
+      int e = 0;
+      while (e < linkCount) {
+        if (linkLive[e] == 1 && linkFrom[e] == cur) {
+          int nx = linkTo[e];
+          if (seen[nx] == 0 && sp < 64) { seen[nx] = 1; stack[sp] = nx; sp = sp + 1; }
+        }
+        e = e + 1;
+      }
+    }
+    return false;
+  }
+
+  < Connect two linked instances. Allowed only if the matrix declares the >
+  < type pair, fan-out is under the limit, the pair is new, and no instance >
+  < cycle results. A contain self-type link between DIFFERENT instances is >
+  < the only same-type link the matrix ever permits. >
+  boolean linkPair(String from, String to) {
+    int a = indexOfName(from);
+    int b = indexOfName(to);
+    if (a < 0 || b < 0 || states[a] != 1 || states[b] != 1) { refuse("connect " + from + " -> " + to + " (not linked)"); return false; }
+    if (a == b) { refuse("connect " + from + " to itself"); return false; }
+    if (!matrix.edgeAllowed(types[a], types[b])) {
+      refuse("connect " + from + " -> " + to + " (" + types[a] + " -> " + types[b] + " not declared)");
+      return false;
+    }
+    if (linkIndex(a, b) >= 0) { refuse("connect " + from + " -> " + to + " (already connected)"); return false; }
+    if (fanoutOf(a, types[b]) >= matrix.fanoutLimit(types[a], types[b])) {
+      refuse("connect " + from + " -> " + to + " (fan-out limit)");
+      return false;
+    }
+    if (reaches(b, a)) { refuse("connect " + from + " -> " + to + " (would form a cycle)"); return false; }
+    int slot = -1;
+    int e = 0;
+    while (e < linkCount && slot < 0) { if (linkLive[e] == 0) { slot = e; } e = e + 1; }
+    if (slot < 0) {
+      if (linkCount >= 64) { refuse("connect " + from + " -> " + to + " (link table full)"); return false; }
+      slot = linkCount;
+      linkCount = linkCount + 1;
+    }
+    linkFrom[slot] = a; linkTo[slot] = b; linkLive[slot] = 1;
+    audit("connected " + from + " -> " + to + " (" + matrix.edgeModeOf(types[a], types[b]) + ")");
+    return true;
+  }
+
+  < The matrix mode of a live connection (feed, subscribe, contain), or "". >
+  String modeBetween(String from, String to) {
+    if (!isConnected(from, to)) { return ""; }
+    return matrix.edgeModeOf(typeOfName(from), typeOfName(to));
+  }
+
+  boolean unlinkPair(String from, String to) {
+    int a = indexOfName(from);
+    int b = indexOfName(to);
+    if (a < 0 || b < 0) { return false; }
+    int e = linkIndex(a, b);
+    if (e < 0) { return false; }
+    linkLive[e] = 0;
+    audit("disconnected " + from + " -> " + to);
+    return true;
+  }
+}

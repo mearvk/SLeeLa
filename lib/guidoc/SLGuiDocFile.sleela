@@ -1,0 +1,189 @@
+<< lib/guidoc/SLGuiDocFile.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiDocFile — load and save for the document GUI over
+     the openFile / read / write / close, osRename, osMakeDir and osRemove
+     bridge. Save writes the document as plain text (lines joined by newline,
+     with a trailing newline) through a temporary file and a rename, then writes
+     a sidecar directory holding one file per line. Load never trusts a split:
+     SLeeLa cannot cut a String into lines, so it reads the whole file and
+     accepts the sidecar lines only if joining them reproduces the file EXACTLY.
+     Otherwise the file is opened unsplit (one block) and the GUI keeps it
+     read-only. Nothing is ever loaded that the file does not literally contain. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import ui;
+< Family: guidoc. Save codes: 0 ok, 1 bad path, 2 cannot write, 3 cannot >
+< replace, 4 cannot write sidecar, 6 too many lines. Load codes: 0 exact, >
+< 10 unsplit, 1 bad path, 4 cannot open, 5 too many lines, 7 too large, 8 >
+< target not empty. A path is passed through as given; the host decides which >
+< paths a user may reach. >
+class SLGuiDocFile {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39243;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int maxBytes;
+  int maxLines;
+  String suffix;
+  int lastCode;
+
+  < The line limit can be lowered below the document capacity (64) but never >
+  < raised above it. >
+  void configure(String sidecarSuffix, int byteLimit, int lineLimit) {
+    suffix = sidecarSuffix; maxBytes = byteLimit; lastCode = 0;
+    maxLines = (lineLimit < 1) ? 1 : ((lineLimit > 64) ? 64 : lineLimit);
+  }
+  int getMaxLines() { return maxLines; }
+  int getLastCode() { return lastCode; }
+  String getSidecarSuffixValue() { return suffix; }
+  String sidecarDir(String path) { return path + suffix; }
+
+  String pad4(int i) {
+    if (i < 10) { return "000" + i; }
+    if (i < 100) { return "00" + i; }
+    if (i < 1000) { return "0" + i; }
+    return "" + i;
+  }
+  String lineFile(String path, int i) { return sidecarDir(path) + "/l" + pad4(i); }
+
+  < The document as text: lines joined by newline, optionally ending in one. >
+  String joinDocument(SLObserverDocument doc, boolean trailing) {
+    String out = "";
+    int i = 0;
+    while (i < doc.lineCount()) {
+      out = out + doc.lineAt(i);
+      if (i + 1 < doc.lineCount() || trailing) { out = out + "\n"; }
+      i = i + 1;
+    }
+    return out;
+  }
+
+  boolean exists(String p) { return osExists(p) == 1; }
+
+  boolean writeWhole(String path, String data) {
+    int h = openFile(path, "w");
+    if (h < 0) { return false; }
+    write(h, data);
+    close(h);
+    return true;
+  }
+  String readWhole(String path) {
+    int h = openFile(path, "r");
+    if (h < 0) { return null; }
+    String data = read(h);
+    close(h);
+    return data;
+  }
+
+  < Save the document. The plain-text file is replaced atomically (temporary >
+  < file then rename). A stale or missing sidecar is harmless: load will >
+  < simply open the file unsplit. >
+  int save(String path, SLObserverDocument doc) {
+    if (path == null || path == "") { lastCode = 1; return 1; }
+    if (doc.lineCount() > maxLines) { lastCode = 6; return 6; }
+    String tmp = path + ".tmp";
+    if (!writeWhole(tmp, joinDocument(doc, true))) { lastCode = 2; return 2; }
+    if (osRename(tmp, path) != 0) { osRemove(tmp); lastCode = 3; return 3; }
+    String dir = sidecarDir(path);
+    if (osMakeDir(dir) != 0) { lastCode = 4; return 4; }
+    int i = 0;
+    while (i < doc.lineCount()) {
+      if (!writeWhole(lineFile(path, i), doc.lineAt(i))) { lastCode = 4; return 4; }
+      i = i + 1;
+    }
+    int stale = doc.lineCount();
+    while (exists(lineFile(path, stale))) {
+      osRemove(lineFile(path, stale));
+      stale = stale + 1;
+    }
+    lastCode = 0;
+    return 0;
+  }
+
+  < Load into an EMPTY document. 0 = exact lines, 10 = opened unsplit. >
+  int load(String path, SLObserverDocument into) {
+    if (path == null || path == "") { lastCode = 1; return 1; }
+    if (into.lineCount() != 0) { lastCode = 8; return 8; }
+    if (!exists(path)) { lastCode = 4; return 4; }
+    if (osFileSize(path) > maxBytes) { lastCode = 7; return 7; }
+    String blob = readWhole(path);
+    if (blob == null) { lastCode = 4; return 4; }
+    if (blob == "") { lastCode = 0; return 0; }
+    if (exists(lineFile(path, maxLines))) { lastCode = 5; return 5; }
+    String[] cand = new String[64];
+    int n = 0;
+    while (n < maxLines && exists(lineFile(path, n))) {
+      String one = readWhole(lineFile(path, n));
+      cand[n] = (one == null) ? "" : one;
+      n = n + 1;
+    }
+    if (n > 0) {
+      String joined = "";
+      int i = 0;
+      while (i < n) {
+        joined = joined + cand[i];
+        if (i + 1 < n) { joined = joined + "\n"; }
+        i = i + 1;
+      }
+      if (blob == joined || blob == joined + "\n") {
+        int k = 0;
+        while (k < n) { into.apply(0, k, cand[k]); k = k + 1; }
+        lastCode = 0;
+        return 0;
+      }
+    }
+    into.apply(0, 0, blob);
+    lastCode = 10;
+    return 10;
+  }
+
+  < Remove a saved file and its sidecar (used by tests and by a host cleanup). >
+  void forget(String path) {
+    int i = 0;
+    while (exists(lineFile(path, i))) { osRemove(lineFile(path, i)); i = i + 1; }
+    osRemove(sidecarDir(path));
+    osRemove(path);
+  }
+}

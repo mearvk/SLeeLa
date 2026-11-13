@@ -1,0 +1,31 @@
+== Lesson 28: rubber decision ==
+-- master (onion) --
+  Planter A total = 52400 cents
+  Planter B total = 90900 cents
+  Planter C total = 77100 cents
+  Planter D total = 89300 cents
+  Planter E total = 56700 cents
+  Planter F total = 58900 cents
+  Planter G total = 89500 cents
+  master picks Planter A
+-- student, first pass: Planter F was not observed --
+  Planter A total = 52400 cents
+  Planter B total = 90900 cents
+  Planter C total = 77100 cents
+  Planter D total = 89300 cents
+  Planter E total = 56700 cents
+  Planter F not observed
+  Planter G total = 89500 cents
+  student picks Planter A
+  Planter F: master only, student did not observe it
+  verdict: same pick, but 1 entry difference(s) -> not accepted
+-- student re-observes and registers every entry --
+  Planter A total = 52400 cents
+  Planter B total = 90900 cents
+  Planter C total = 77100 cents
+  Planter D total = 89300 cents
+  Planter E total = 56700 cents
+  Planter F total = 58900 cents
+  Planter G total = 89500 cents
+  student picks Planter A
+  verdict: AGREE, work accepted

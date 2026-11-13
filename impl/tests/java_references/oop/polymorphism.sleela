@@ -1,0 +1,8 @@
+#sleela 3.0
+spark;
+material;
+class Animal { String sound() { return "?"; } String speak() { return "says " + sound(); } }
+class Dog extends Animal { String sound() { return "woof"; } }
+class Puppy extends Dog { String sound() { return "yip"; } }
+class Cat extends Animal { String sound() { return "meow"; } }
+class P { void main() { Animal a = new Dog(); print(a.sound()); Animal b = new Puppy(); print(b.sound()); Animal c = new Cat(); print(c.speak()); Animal d = new Animal(); print(d.sound()); } }

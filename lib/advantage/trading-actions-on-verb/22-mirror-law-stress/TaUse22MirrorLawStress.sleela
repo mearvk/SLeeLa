@@ -1,0 +1,225 @@
+<< lib/advantage/trading-actions-on-verb/22-mirror-law-stress/TaUse22MirrorLawStress.sleela
+   SLeeLa trading-action use case.
+   Definition: Long versus short: the same random verbs drive both books; every status code matches and the short profit is exactly minus the long profit at every step. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Use case 22 (style and time, both sides). One random stream drives a long book >
+< (buy, sell) and a short book (shortSell, cover) with identical days, quantities, >
+< prices and fees. Mirror law: every status code is equal, shares held are equal, >
+< cost basis equals sale proceeds, lot counts and ages are equal, and the short >
+< realized profit is exactly minus the long realized profit after every step. The >
+< outcome tallies equal those of use case 14, which uses the same stream. >
+class TaUse22MirrorLawStress {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. A worker-class
+     lesson carries the baseline identity record. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39322;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+
+  int passed = 0;
+  int failed = 0;
+
+  void expect(String label, int got, int want) {
+    if (got == want) {
+      print("  ok   " + label + " = " + got);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label + " got " + got + " want " + want);
+      failed = failed + 1;
+    }
+  }
+
+  void expectTrue(String label, boolean got) {
+    if (got) {
+      print("  ok   " + label);
+      passed = passed + 1;
+    } else {
+      print("  FAIL " + label);
+      failed = failed + 1;
+    }
+  }
+
+  void summary() {
+    print("  checks passed=" + passed + " failed=" + failed);
+  }
+
+  void act(SLLongBook b, String text, int code) {
+    print("  " + text + " : " + b.reason(code));
+  }
+
+
+  int state = 1;
+  int[] tally = new int[9];
+  int mismatches = 0;
+  SLLongBook lb = new SLLongBook();
+  SLShortBook sb = new SLShortBook();
+
+  int nextRaw() {
+    state = (state * 1103515245 + 12345) % 2147483648;
+    return state;
+  }
+
+  int rnd(int n) { return (nextRaw() / 65536) % n; }
+
+  < The mirror law: with the same prices, days and quantities, a buy matches a >
+  < short sale and a sell matches a cover. Every status code, the shares >
+  < held, the cost basis and sale proceeds, the ages and the lot count must be >
+  < equal, and the profit of the short must be exactly minus the long. >
+  boolean mirrored() {
+    if (lb.totalQty() != sb.totalShort()) { return false; }
+    if (lb.costBasis() != sb.proceedsHeld()) { return false; }
+    if (lb.lotCount() != sb.lotCount()) { return false; }
+    if (lb.currentDay() != sb.currentDay()) { return false; }
+    if (lb.realizedGross() != 0 - sb.realizedGross()) { return false; }
+    if (lb.fees() != sb.fees()) { return false; }
+    if (lb.oldestAge(lb.currentDay()) != sb.oldestAge(sb.currentDay())) { return false; }
+    if (lb.weightedAgeFloor(lb.currentDay()) != sb.weightedAgeFloor(sb.currentDay())) { return false; }
+    return lb.invariantsHold() && sb.invariantsHold();
+  }
+
+  void runMirror(int seed, int steps, int bu, int su, int hu) {
+    lb = new SLLongBook();
+    sb = new SLShortBook();
+    state = seed;
+    mismatches = 0;
+    int c = 0;
+    while (c < 9) { tally[c] = 0; c = c + 1; }
+    int step = 0;
+    while (step < steps) {
+      int r = rnd(40);
+      int a = 0;
+      int b = 0;
+      if (r < bu) {
+        int day = lb.currentDay() + rnd(6) - 1;
+        int q = rnd(35) - 2;
+        int p = rnd(100);
+        int f = rnd(8) - 1;
+        a = lb.buy(day, q, p, f);
+        b = sb.shortSell(day, q, p, f);
+      } else if (r < su) {
+        int day2 = lb.currentDay() + rnd(6) - 1;
+        int q2 = rnd(70) - 3;
+        int p2 = rnd(100);
+        int f2 = rnd(8) - 1;
+        a = lb.sell(day2, q2, p2, f2);
+        b = sb.cover(day2, q2, p2, f2);
+      } else if (r < hu) {
+        int day3 = lb.currentDay() + rnd(8) - 1;
+        a = lb.hold(day3);
+        b = sb.hold(day3);
+      } else {
+        int day4 = lb.currentDay() + rnd(5);
+        int p4 = rnd(100);
+        int f4 = rnd(8) - 1;
+        a = lb.flatten(day4, p4, f4);
+        b = sb.coverAll(day4, p4, f4);
+      }
+      if (a != b) { mismatches = mismatches + 1; }
+      if (!mirrored()) { mismatches = mismatches + 1; }
+      tally[a] = tally[a] + 1;
+      step = step + 1;
+    }
+  }
+
+  void main() {
+    print("== Use case 22: the mirror law, long against short ==");
+    print("-- the same 1,200 random verbs drive SLLongBook and SLShortBook; the short is the exact negative --");
+    runMirror(1, 300, 20, 32, 36);
+    expect("seed 1: steps ending in code 0", tally[0], 183);
+    expect("seed 1: steps ending in code 1", tally[1], 17);
+    expect("seed 1: steps ending in code 2", tally[2], 1);
+    expect("seed 1: steps ending in code 3", tally[3], 44);
+    expect("seed 1: steps ending in code 4", tally[4], 0);
+    expect("seed 1: steps ending in code 5", tally[5], 26);
+    expect("seed 1: steps ending in code 6", tally[6], 23);
+    expect("seed 1: steps ending in code 7", tally[7], 6);
+    expect("seed 1: steps ending in code 8", tally[8], 0);
+    expect("seed 1: shares at the end", lb.totalQty(), 16);
+    expect("seed 1: long profit at the end", lb.realizedGross(), 1058);
+    expect("seed 1: short profit at the end", sb.realizedGross(), -1058);
+    expect("seed 1: steps where the books break the mirror law", mismatches, 0);
+    runMirror(7, 300, 20, 32, 36);
+    expect("seed 7: steps ending in code 0", tally[0], 166);
+    expect("seed 7: steps ending in code 1", tally[1], 29);
+    expect("seed 7: steps ending in code 2", tally[2], 3);
+    expect("seed 7: steps ending in code 3", tally[3], 28);
+    expect("seed 7: steps ending in code 4", tally[4], 0);
+    expect("seed 7: steps ending in code 5", tally[5], 38);
+    expect("seed 7: steps ending in code 6", tally[6], 28);
+    expect("seed 7: steps ending in code 7", tally[7], 8);
+    expect("seed 7: steps ending in code 8", tally[8], 0);
+    expect("seed 7: shares at the end", lb.totalQty(), 82);
+    expect("seed 7: long profit at the end", lb.realizedGross(), 124);
+    expect("seed 7: short profit at the end", sb.realizedGross(), -124);
+    expect("seed 7: steps where the books break the mirror law", mismatches, 0);
+    runMirror(12345, 300, 20, 32, 36);
+    expect("seed 12345: steps ending in code 0", tally[0], 163);
+    expect("seed 12345: steps ending in code 1", tally[1], 13);
+    expect("seed 12345: steps ending in code 2", tally[2], 3);
+    expect("seed 12345: steps ending in code 3", tally[3], 34);
+    expect("seed 12345: steps ending in code 4", tally[4], 0);
+    expect("seed 12345: steps ending in code 5", tally[5], 38);
+    expect("seed 12345: steps ending in code 6", tally[6], 41);
+    expect("seed 12345: steps ending in code 7", tally[7], 8);
+    expect("seed 12345: steps ending in code 8", tally[8], 0);
+    expect("seed 12345: shares at the end", lb.totalQty(), 43);
+    expect("seed 12345: long profit at the end", lb.realizedGross(), -201);
+    expect("seed 12345: short profit at the end", sb.realizedGross(), 201);
+    expect("seed 12345: steps where the books break the mirror law", mismatches, 0);
+    runMirror(31, 300, 32, 32, 38);
+    expect("seed 31: steps ending in code 0", tally[0], 145);
+    expect("seed 31: steps ending in code 1", tally[1], 23);
+    expect("seed 31: steps ending in code 2", tally[2], 3);
+    expect("seed 31: steps ending in code 3", tally[3], 0);
+    expect("seed 31: steps ending in code 4", tally[4], 73);
+    expect("seed 31: steps ending in code 5", tally[5], 38);
+    expect("seed 31: steps ending in code 6", tally[6], 18);
+    expect("seed 31: steps ending in code 7", tally[7], 0);
+    expect("seed 31: steps ending in code 8", tally[8], 0);
+    expect("seed 31: shares at the end", lb.totalQty(), 42);
+    expect("seed 31: long profit at the end", lb.realizedGross(), 6955);
+    expect("seed 31: short profit at the end", sb.realizedGross(), -6955);
+    expect("seed 31: steps where the books break the mirror law", mismatches, 0);
+
+    summary();
+  }
+}

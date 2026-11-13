@@ -1,0 +1,9 @@
+  < ---- java.beans.PropertyChangeListenerProxy: name, listener and forwarding ---- >
+  << Written from the JDK 28 API specification: a proxy holds a property name
+     and a listener, and forwards each event to that listener. >>
+  public PropertyChangeListenerProxy(java.lang.String propertyName, java.beans.PropertyChangeListener listener) {
+    this.heldPropertyName = propertyName;
+    this.heldListener = listener;
+  }
+  public java.util.EventListener getListener() { return this.heldListener; }
+  public void propertyChange(java.beans.PropertyChangeEvent event) { SLJavaBeanEvents.notifyPropertyChange(this.heldListener, event); }

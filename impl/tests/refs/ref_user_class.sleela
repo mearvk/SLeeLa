@@ -1,0 +1,12 @@
+#sleela 3.0
+< A user class named Ptr takes over the name: the builtin namespace steps aside. >
+class Ptr {
+    static int valid(int x) {
+        return 42;
+    }
+}
+class RefUserClass {
+    static void main() {
+        print(Ptr.valid(1));
+    }
+}

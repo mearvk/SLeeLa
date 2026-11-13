@@ -1,0 +1,22 @@
+#sleela 3.0
+import java.jdk-28;
+material;
+
+< Java container: the names used here are housed in /lib/java (selected by the import above) and are not part of the SLeeLa specification, see SLEELA.syntax 38.4. >
+
+< Exact power and unsigned arithmetic of java.lang.Math (and StrictMath, which maps to it). >
+class MathExactRun {
+  void main() {
+    print(Math.powExact(3, 4));
+    print(StrictMath.powExact(2, 62));
+    print(Math.unsignedMultiplyHigh(-1, -1));
+    print(Math.unsignedMultiplyHigh(-1, 2));
+    print(Math.unsignedMultiplyHigh(4294967296, 4294967296));
+    print(Math.unsignedMultiplyHigh(3, 5));
+    print(Math.unsignedMultiplyExact(-1, 1));
+    print(Math.unsignedMultiplyExact(4294967296, 2147483648));
+    print(Math.unsignedPowExact(2, 63));
+    try { Math.unsignedMultiplyExact(-1, 2); print("no throw"); } catch (Any e1) { print("caught uov"); }
+    try { Math.unsignedPowExact(2, 64); print("no throw"); } catch (Any e2) { print("caught pow"); }
+  }
+}

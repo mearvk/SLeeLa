@@ -1,0 +1,99 @@
+<< examples/java/JavaLangThrowableConformance.sleela
+   SLeeLa Java SE/JDK 28 conformance program.
+   Definition: Exercises the SLeeLa implementation of java.lang.Throwable hierarchy (290 exception and error classes)
+   under lib/java and prints one FAIL line per mismatch, then a summary line.
+   Expected values are the outputs of the Java SE 28 API for the same calls. >>
+#sleela 3.0
+material;
+class JavaLangThrowableConformance {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class conformance program. >>
+  String metaVersion = "1.0.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-10";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-10";
+  int metaScienceRating = 7;
+  String metaNationalSchedule = "Java SE 28 API Specification (JDK 28 early access)";
+
+  String getMetaVersion() { return metaVersion; }
+  int getMetaId() { return metaId; }
+  String getAuthor() { return metaAuthor; }
+  String getDate() { return metaDate; }
+  String getCopyright() { return metaCopyright; }
+  String getTrademark() { return metaTrademark; }
+  String getCorporation() { return metaCorporation; }
+  String getOrigin() { return metaOrigin; }
+  String getBirthDate() { return metaBirthDate; }
+  int getScienceRating() { return metaScienceRating; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+
+
+  int bad = 0;
+  void eq(String name, String got, String want) {
+    if (got != want) { bad = bad + 1; print("FAIL " + name + " got=[" + got + "] want=[" + want + "]"); }
+  }
+  void yes(String name, boolean b) { if (!b) { bad = bad + 1; print("FAIL " + name); } }
+  void main() {
+    ArithmeticException a = new ArithmeticException("/ by zero");
+    eq("toString", a.toString(), "java.lang.ArithmeticException: / by zero");
+    eq("getMessage", a.getMessage(), "/ by zero");
+    yes("noCause", a.getCause() == null);
+    NullPointerException npe = new NullPointerException(null);
+    eq("nullMsg", npe.toString(), "java.lang.NullPointerException");
+    FileNotFoundException f = new FileNotFoundException("x.txt");
+    IOException io = new IOException("disk");
+    f.initCause((Throwable) io);
+    Throwable c = f.getCause();
+    eq("cause", c.toString(), "java.io.IOException: disk");
+    yes("instanceof IOException", f instanceof IOException);
+    yes("instanceof Exception", f instanceof Exception);
+    yes("instanceof Throwable", f instanceof Throwable);
+    yes("not RuntimeException", !(f instanceof RuntimeException));
+    yes("AIOOBE is RuntimeException", new ArrayIndexOutOfBoundsException("5") instanceof RuntimeException);
+    yes("SocketTimeout is InterruptedIO", new SocketTimeoutException("t") instanceof InterruptedIOException);
+    NoSuchFileException nsf = new NoSuchFileException("/tmp/none");
+    eq("nsf", nsf.toString(), "java.nio.file.NoSuchFileException: /tmp/none");
+    eq("nsf.file", nsf.getFile(), "/tmp/none");
+    ParseException pe = new ParseException("Unparseable date", 4);
+    eq("pe", pe.toString() + "@" + pe.getErrorOffset(), "java.text.ParseException: Unparseable date@4");
+    URISyntaxException ue = new URISyntaxException("a b", "Illegal character in path", 1);
+    eq("uri", ue.getMessage(), "Illegal character in path at index 1: a b");
+    PatternSyntaxException ps = new PatternSyntaxException("Unclosed group", "(ab", 3);
+    eq("pattern", ps.getMessage(), "Unclosed group near index 3\n(ab\n   ^");
+    IllegalFormatCodePointException cp = new IllegalFormatCodePointException(1114112);
+    eq("codepoint", cp.getMessage(), "Code point = 0x110000");
+    ClosedChannelException cce = new ClosedChannelException();
+    eq("noarg", cce.toString(), "java.nio.channels.ClosedChannelException");
+    yes("ClosedByInterrupt chain", new ClosedByInterruptException() instanceof ClosedChannelException);
+    SQLException s1 = new SQLException("first");
+    s1.setNextException(new SQLException("second"));
+    s1.setNextException(new SQLException("third"));
+    SQLException n2 = s1.getNextException();
+    SQLException n3 = n2.getNextException();
+    eq("sqlchain", n3.getMessage(), "third");
+    AssertionError ae = new AssertionError(42);
+    eq("assert", ae.toString(), "java.lang.AssertionError: 42");
+    boolean caught = false;
+    try {
+      throw new IllegalStateException("bad state");
+    } catch (Any x) {
+      Throwable t = (Throwable) x;
+      caught = x instanceof IllegalStateException;
+      eq("caught", t.getMessage(), "bad state");
+    }
+    yes("caught", caught);
+    boolean twice = false;
+    try { f.initCause((Throwable) io); } catch (Any y) { twice = y instanceof IllegalStateException; }
+    yes("initCause twice throws", twice);
+    a.addSuppressed((Throwable) new IOException("s1"));
+    Throwable[] sup = a.getSuppressed();
+    yes("suppressed", arrayLength(sup) == 1);
+    f.printStackTrace();
+    print("failures=" + bad);
+  }
+}

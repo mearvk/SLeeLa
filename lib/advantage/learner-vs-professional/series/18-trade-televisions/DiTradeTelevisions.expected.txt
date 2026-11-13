@@ -1,0 +1,22 @@
+== Lesson 18: televisions decision ==
+-- master (onion) --
+  Wholesaler A total = 34200 cents
+  Wholesaler B total = 34000 cents
+  Wholesaler C total = 32400 cents
+  Wholesaler D total = 34500 cents
+  master picks Wholesaler C
+-- student, first pass: the discount of Wholesaler C was missed --
+  Wholesaler A total = 34200 cents
+  Wholesaler B total = 34000 cents
+  Wholesaler C total = 34400 cents
+  Wholesaler D total = 34500 cents
+  student picks Wholesaler B
+  Wholesaler C discount: student did not register it, master has -2000
+  verdict: 1 entry difference(s) and the picks differ -> not accepted
+-- student re-observes and registers every entry --
+  Wholesaler A total = 34200 cents
+  Wholesaler B total = 34000 cents
+  Wholesaler C total = 32400 cents
+  Wholesaler D total = 34500 cents
+  student picks Wholesaler C
+  verdict: AGREE, work accepted

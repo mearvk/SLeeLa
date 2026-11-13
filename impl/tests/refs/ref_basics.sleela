@@ -1,0 +1,87 @@
+#sleela 3.0
+< Object references: target.ref is the VM-level (tier 2) handle of an object. >
+< A ref is a weak, generation-checked int; it is never a machine address. >
+class Target {
+    String label;
+    Target(String s) {
+        this.label = s;
+    }
+    String getLabel() {
+        return this.label;
+    }
+}
+
+class Other {
+    int x;
+}
+
+< A declared field named ref wins over the implicit reference. >
+class HasRefField {
+    int ref;
+}
+
+class RefBasics {
+    static int makeGarbage() {
+        Target gone = new Target("gone");
+        return gone.ref;
+    }
+
+    static void main() {
+        Target target = new Target("suppose");
+        int p = target.ref;
+
+        print("-- identity and the way back");
+        print(Ptr.valid(p));
+        Target again = Target.deref(p);
+        print(again.getLabel());
+        print(again == target);
+        print(target.ref == again.ref);
+        Target other = new Target("other");
+        print(other.ref == target.ref);
+
+        print("-- tier 2 views of one object");
+        print(Ptr.fields(p));
+        print(Ptr.id(p) >= 0);
+        print(Ptr.gen(p) >= 0);
+        print(Ptr.type(p) >= 0);
+        print(Ptr.bytes(p) > 0);
+        print(Ptr.age(p) >= 0);
+        print(Ptr.old(p));
+        print(Ptr.limit());
+        print(Ptr.live() >= 2);
+
+        print("-- null and forged refs fail closed");
+        Target none = null;
+        print(none.ref);
+        print(Ptr.valid(0));
+        print(Ptr.id(0));
+        print(Target.deref(0) == null);
+        print(Ptr.valid(p + 1000000));
+        print(Ptr.valid(0 - 5));
+
+        print("-- wrong class");
+        Other o = Other.deref(p);
+        print(o == null);
+
+        print("-- a declared field named ref wins");
+        HasRefField h = new HasRefField();
+        h.ref = 7;
+        print(h.ref);
+
+        print("-- weak: the ref outlives nothing");
+        int q = makeGarbage();
+        int d = 0;
+        d = gc 100;
+        print(Ptr.valid(q));
+        print(Target.deref(q) == null);
+        print(Ptr.id(q));
+        print(Ptr.valid(p));
+        print(Ptr.old(p));
+
+        print("-- slot reuse never aliases");
+        Target fresh = new Target("fresh");
+        print(fresh.ref == q);
+        print(Target.deref(q) == null);
+        print(Target.deref(fresh.ref).getLabel());
+    }
+}

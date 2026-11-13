@@ -1,0 +1,88 @@
+<< SLIdeMenuBar — native SLeeLa IDE menu row.
+   Uses SleelaUI controls only; no IntelliJ or foreign UI dependency. >>
+#sleela 2.5
+material;
+class SLIdeMenuBar {
+  static final int MENU_FILE = 0;
+  static final int MENU_EDIT = 1;
+  static final int MENU_VIEW = 2;
+  static final int MENU_NAVIGATE = 3;
+  static final int MENU_CODE = 4;
+  static final int MENU_RUN = 5;
+  static final int MENU_TOOLS = 6;
+  static final int MENU_HELP = 7;
+  SLBox root;
+  SLBox menuRow;
+  SLBox commandRow;
+  SLButton[] menus;
+  SLButton[] commands;
+  int activeMenu;
+  int pendingCommand;
+  String[] menuNames;
+  String[] commandNames;
+  int[] commandOwners;
+
+  void createIn(SLWidget parent) {
+    root = new SLBox(); root.vertical(parent, 0); root.setExpand(true, false);
+    menuRow = new SLBox(); menuRow.horizontal(root, 2);
+    commandRow = new SLBox(); commandRow.horizontal(root, 2);
+    menus = new SLButton[8]; commands = new SLButton[20];
+    menuNames = new String[8];
+    menuNames[0]="File"; menuNames[1]="Edit"; menuNames[2]="View";
+    menuNames[3]="Navigate"; menuNames[4]="Code"; menuNames[5]="Run";
+    menuNames[6]="Tools"; menuNames[7]="Help";
+    for (int i=0;i<8;i=i+1) {
+      menus[i]=new SLButton(); menus[i].createIn(menuRow,menuNames[i]);
+      menus[i].setSizeRequest(76,30); menus[i].setMargin(1,3,1,3);
+    }
+    commandNames = new String[20]; commandOwners = new int[20];
+    commandNames[0]="New"; commandOwners[0]=0;
+    commandNames[1]="Open"; commandOwners[1]=0;
+    commandNames[2]="Save"; commandOwners[2]=0;
+    commandNames[3]="Save All"; commandOwners[3]=0;
+    commandNames[4]="Undo"; commandOwners[4]=1;
+    commandNames[5]="Redo"; commandOwners[5]=1;
+    commandNames[6]="Cut"; commandOwners[6]=1;
+    commandNames[7]="Copy"; commandOwners[7]=1;
+    commandNames[8]="Paste"; commandOwners[8]=1;
+    commandNames[9]="Build"; commandOwners[9]=4;
+    commandNames[10]="Run"; commandOwners[10]=5;
+    commandNames[11]="Debug"; commandOwners[11]=5;
+    commandNames[12]="Project"; commandOwners[12]=2;
+    commandNames[13]="Problems"; commandOwners[13]=2;
+    commandNames[14]="Go to File"; commandOwners[14]=3;
+    commandNames[15]="Go to Symbol"; commandOwners[15]=3;
+    commandNames[16]="Format"; commandOwners[16]=4;
+    commandNames[17]="Settings"; commandOwners[17]=6;
+    commandNames[18]="Extensions"; commandOwners[18]=6;
+    commandNames[19]="About SLeeLa IDE"; commandOwners[19]=7;
+    for (int j=0;j<20;j=j+1) {
+      commands[j]=new SLButton(); commands[j].createIn(commandRow,commandNames[j]);
+      commands[j].setSizeRequest(82,28); commands[j].setMargin(1,2,1,2);
+    }
+    activeMenu=0; pendingCommand=-1; refreshCommands();
+  }
+
+  void refreshCommands() {
+    for (int i=0;i<20;i=i+1) {
+      commands[i].setVisible(commandOwners[i]==activeMenu);
+    }
+  }
+  int poll() {
+    for (int i=0;i<8;i=i+1) {
+      if (menus[i].clicked()) { activeMenu=i; refreshCommands(); return -1; }
+    }
+    for (int j=0;j<20;j=j+1) {
+      if (commandOwners[j]==activeMenu && commands[j].clicked()) {
+        pendingCommand=j; return j;
+      }
+    }
+    return -1;
+  }
+  int takeCommand() { int v=pendingCommand; pendingCommand=-1; return v; }
+  int selectedMenu() { return activeMenu; }
+  String commandName(int index) {
+    if(index<0 || index>=20) return "";
+    return commandNames[index];
+  }
+}

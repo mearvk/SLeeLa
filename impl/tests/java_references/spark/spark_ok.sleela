@@ -1,0 +1,21 @@
+#sleela 3.0
+spark;
+material;
+< SLEELA.syntax section 43: SLeeLa constructs in Java source style. >
+< The qualified extends resolves to the /lib unit IllegalStateException. >
+class AppError extends java.lang.IllegalStateException {
+  public AppError(String message) { super(message); }
+}
+class SparkOk {
+  < spark stays an ordinary identifier outside the marker position >
+  int spark = 5;
+  void main() {
+    AppError e = new AppError("boom");
+    print(e instanceof IllegalStateException);
+    print(e instanceof RuntimeException);
+    print(e instanceof Throwable);
+    IllegalStateException d = new IllegalStateException("direct");
+    print(d.getMessage());
+    print(spark);
+  }
+}

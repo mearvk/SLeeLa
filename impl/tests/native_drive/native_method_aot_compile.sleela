@@ -1,0 +1,36 @@
+#sleela 3.0
+class NativeAotFixture {
+    @native
+    static int sum(int left, int right) {
+        return left + right;
+    }
+
+    @native
+    static double scale(double value) {
+        return value * 2.0;
+    }
+
+    @native
+    static boolean positive(int value) {
+        return value > 0;
+    }
+
+    @native
+    static String echo(String value) {
+        return value;
+    }
+
+    static int check() {
+        echo("native");
+        if (positive(sum(20, 22)) && scale(1.0) > 0.0) {
+            return sum(20, 22);
+        }
+        return 0;
+    }
+
+    // Syntax 3.0 requires void main; the smoke harness selects check() as
+    // its entry with slvm_find_func() so it can assert the returned value.
+    static void main() {
+        int result = check();
+    }
+}

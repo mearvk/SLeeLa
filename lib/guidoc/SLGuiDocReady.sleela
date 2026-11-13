@@ -1,0 +1,155 @@
+<< lib/guidoc/SLGuiDocReady.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLGuiDocReady — the readiness gate and ready lifecycle of
+     the document GUI. Like a document-ready event, the GUI is CREATED, then
+     CHECKING while named self-checks run, then READY (every check passed) or
+     FAILED (the first failure is kept). Nothing may act on the GUI before it is
+     ready. Subscribers register by name with whenReady() and take a one-shot
+     latch once the GUI is ready; a subscriber that registers late still gets
+     its latch. A failed gate never fires a subscriber, and begin() can retry. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+import observer;
+import ui;
+< Family: guidoc. State: 0 created, 1 checking, 2 ready, 3 failed. 24 checks, >
+< 14 subscribers. >
+class SLGuiDocReady {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39249;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int state;
+  String[] names;
+  int[] passedFlag;
+  String[] details;
+  int count;
+  int failures;
+  String firstFailure;
+  String[] subscribers;
+  int[] latched;
+  int subscriberCount;
+
+  void configure() {
+    names = new String[24]; passedFlag = new int[24]; details = new String[24];
+    subscribers = new String[14]; latched = new int[14];
+    int i = 0;
+    while (i < 24) { names[i] = ""; passedFlag[i] = 0; details[i] = ""; i = i + 1; }
+    int j = 0;
+    while (j < 14) { subscribers[j] = ""; latched[j] = 0; j = j + 1; }
+    state = 0; count = 0; failures = 0; firstFailure = ""; subscriberCount = 0;
+  }
+  int getState() { return state; }
+  boolean isReady() { return state == 2; }
+  boolean hasFailed() { return state == 3; }
+  int checkTotal() { return count; }
+  int failureTotal() { return failures; }
+  String firstFailureText() { return firstFailure; }
+  String checkName(int i) { return (i >= 0 && i < count) ? names[i] : ""; }
+  boolean checkPassed(int i) { return i >= 0 && i < count && passedFlag[i] == 1; }
+  String checkDetail(int i) { return (i >= 0 && i < count) ? details[i] : ""; }
+  String stateName() {
+    if (state == 0) { return "created"; }
+    if (state == 1) { return "checking"; }
+    if (state == 2) { return "ready"; }
+    return "failed";
+  }
+
+  < Start (or restart) the checks. Subscribers that already fired stay fired. >
+  boolean begin() {
+    if (state == 2 || state == 1) { return false; }
+    state = 1; count = 0; failures = 0; firstFailure = "";
+    return true;
+  }
+  < Note one named check. Only valid while checking. A 25th check is a >
+  < failure: an overflowing gate is not trusted. >
+  boolean noteCheck(String name, boolean ok, String detail) {
+    if (state != 1) { return false; }
+    if (count >= 24) {
+      failures = failures + 1;
+      if (firstFailure == "") { firstFailure = "too many checks"; }
+      return false;
+    }
+    names[count] = name; passedFlag[count] = ok ? 1 : 0; details[count] = detail;
+    count = count + 1;
+    if (!ok) {
+      failures = failures + 1;
+      if (firstFailure == "") { firstFailure = name + ": " + detail; }
+    }
+    return ok;
+  }
+  < Close the gate: READY only if at least one check ran and none failed. >
+  boolean finish() {
+    if (state != 1) { return false; }
+    if (failures == 0 && count > 0) {
+      state = 2;
+      int i = 0;
+      while (i < subscriberCount) { latched[i] = 1; i = i + 1; }
+      return true;
+    }
+    state = 3;
+    return false;
+  }
+
+  int subscriberIndex(String name) {
+    int i = 0;
+    while (i < subscriberCount) { if (subscribers[i] == name) { return i; } i = i + 1; }
+    return -1;
+  }
+  < Register for the ready event. Late subscribers are latched at once. >
+  boolean whenReady(String name) {
+    if (name == null || name == "" || subscriberCount >= 14 || subscriberIndex(name) >= 0) { return false; }
+    subscribers[subscriberCount] = name;
+    latched[subscriberCount] = (state == 2) ? 1 : 0;
+    subscriberCount = subscriberCount + 1;
+    return true;
+  }
+  < Take-the-latch: true once per subscriber, and only once the GUI is ready. >
+  boolean takeReady(String name) {
+    int i = subscriberIndex(name);
+    if (i < 0 || state != 2 || latched[i] == 0) { return false; }
+    latched[i] = 0;
+    return true;
+  }
+  int subscriberTotal() { return subscriberCount; }
+}

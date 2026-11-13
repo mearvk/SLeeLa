@@ -103,9 +103,11 @@ private:
         if (auto ps = dynamic_cast<const PrintStmt*>(s)) { walkExpr(ps->expr.get()); return; }
         if (auto rs = dynamic_cast<const ReturnStmt*>(s)) { walkExpr(rs->value.get()); return; }
         if (auto i = dynamic_cast<const IfStmt*>(s)) { walkExpr(i->cond.get()); walkStmt(i->thenS.get()); walkStmt(i->elseS.get()); return; }
+        if (auto lb = dynamic_cast<const LabeledStmt*>(s)) { walkStmt(lb->body.get()); return; }
         if (auto w = dynamic_cast<const WhileStmt*>(s)) { walkExpr(w->cond.get()); walkStmt(w->body.get()); return; }
         if (auto f = dynamic_cast<const ForStmt*>(s)) { walkStmt(f->init.get()); walkExpr(f->cond.get()); walkStmt(f->update.get()); walkStmt(f->body.get()); return; }
         if (auto d = dynamic_cast<const DoStmt*>(s)) { walkStmt(d->body.get()); walkExpr(d->cond.get()); return; }
+        if (auto fe = dynamic_cast<const ForEachStmt*>(s)) { walkExpr(fe->iterable.get()); walkStmt(fe->body.get()); return; }
         if (auto as = dynamic_cast<const AssertStmt*>(s)) { walkExpr(as->cond.get()); walkExpr(as->message.get()); return; }
         if (auto y = dynamic_cast<const YieldStmt*>(s)) { walkExpr(y->value.get()); return; }
         if (auto sw = dynamic_cast<const SwitchStmt*>(s)) {
@@ -126,7 +128,7 @@ private:
         if (auto b = dynamic_cast<const Binary*>(e)) { walkExpr(b->lhs.get()); walkExpr(b->rhs.get()); return; }
         if (auto c = dynamic_cast<const Call*>(e)) { for (const auto& a : c->args) walkExpr(a.get()); return; }
         if (auto mc = dynamic_cast<const MethodCall*>(e)) { walkExpr(mc->receiver.get()); for (const auto& a : mc->args) walkExpr(a.get()); return; }
-        if (auto ne = dynamic_cast<const NewExpr*>(e)) { for (const auto& a : ne->args) walkExpr(a.get()); return; }
+        if (auto ne = dynamic_cast<const NewExpr*>(e)) { for (const auto& a : ne->args) walkExpr(a.get()); for (const auto& a : ne->init) walkExpr(a.get()); return; }
         if (auto ma = dynamic_cast<const MemberAccess*>(e)) { walkExpr(ma->base.get()); return; }
         if (auto ae = dynamic_cast<const AssignmentExpr*>(e)) { walkExpr(ae->target.get()); walkExpr(ae->value.get()); return; }
         if (auto ce = dynamic_cast<const ConditionalExpr*>(e)) { walkExpr(ce->cond.get()); walkExpr(ce->thenE.get()); walkExpr(ce->elseE.get()); return; }

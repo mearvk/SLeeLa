@@ -1,0 +1,250 @@
+<< lib/hotlink/SLHotLinkMatrix.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Defines SLHotLinkMatrix — the backing model of the hot-link
+     matrix: which types of class may be hot-loaded, and which types may be
+     connected to which. Everything is validated as it is added and a bad row or
+     link is refused (fail closed). seal() freezes the matrix; SLHotLinker only
+     accepts a sealed one. standard() seeds the matrix declared in
+     hotlink-matrix.xml, and tools/validate_hotlink_matrix.py checks the two
+     agree. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Family: hotlink. 32 rows, 64 links. The type graph is acyclic apart from >
+< a contain self-link (a nested model may contain nested models). >
+class SLHotLinkMatrix {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs, so a GUI, loader,
+     or catalog can read and (where appropriate) override this record.
+     Values are faithful to the subject's real origin where publicly known. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39222;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-11";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-11";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 9;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  SLHotLinkRow[] rows;
+  int rowCount;
+  String[] edgeFrom;
+  String[] edgeTo;
+  String[] edgeMode;
+  int[] edgeFanout;
+  int edgeCount;
+  int frozen;
+  int refused;
+
+  void configure() {
+    rows = new SLHotLinkRow[32];
+    edgeFrom = new String[64]; edgeTo = new String[64]; edgeMode = new String[64];
+    edgeFanout = new int[64];
+    int i = 0;
+    while (i < 64) { edgeFrom[i] = ""; edgeTo[i] = ""; edgeMode[i] = ""; edgeFanout[i] = 0; i = i + 1; }
+    rowCount = 0; edgeCount = 0; frozen = 0; refused = 0;
+  }
+  int rowTotal() { return rowCount; }
+  int linkTotal() { return edgeCount; }
+  int refusedCount() { return refused; }
+  boolean isSealed() { return frozen == 1; }
+  void seal() { frozen = 1; }
+
+  int indexOf(String typeId) {
+    int i = 0;
+    while (i < rowCount) {
+      SLHotLinkRow r = rows[i];
+      if (r.getId() == typeId) { return i; }
+      i = i + 1;
+    }
+    return -1;
+  }
+  SLHotLinkRow find(String typeId) {
+    int i = indexOf(typeId);
+    if (i < 0) { return null; }
+    return rows[i];
+  }
+  SLHotLinkRow rowAt(int i) {
+    if (i < 0 || i >= rowCount) { return null; }
+    return rows[i];
+  }
+  < The type that realises an SLIntegrationKind ordinal, or "" if none. >
+  String typeForKind(int kind) {
+    int i = 0;
+    while (i < rowCount) {
+      SLHotLinkRow r = rows[i];
+      if (r.coversKind(kind)) { return r.getId(); }
+      i = i + 1;
+    }
+    return "";
+  }
+
+  boolean oneOf2(String v, String a, String b) { return v == a || v == b; }
+  boolean oneOf3(String v, String a, String b, String c) { return v == a || v == b || v == c; }
+
+  < Add a row. Refused (returns false, nothing changes) when sealed, when a >
+  < field is out of vocabulary or range, or when the combination is unsafe: >
+  < native code must require the authorizer and a host-pinned digest, and a >
+  < compartment row must name a kind range that no other row already covers. >
+  boolean addRow(String typeId, String code, String instance, String link,
+                 int trust, int cap, int first, int last, int authorizer,
+                 String digest, String state) {
+    if (frozen == 1 || rowCount >= 32) { refused = refused + 1; return false; }
+    if (typeId == null || typeId == "" || indexOf(typeId) >= 0) { refused = refused + 1; return false; }
+    if (!oneOf2(code, "linked", "native")) { refused = refused + 1; return false; }
+    if (!oneOf2(instance, "hot", "cold")) { refused = refused + 1; return false; }
+    if (!oneOf3(link, "port", "compartment", "native-abi")) { refused = refused + 1; return false; }
+    if (!oneOf2(digest, "none", "host-pinned")) { refused = refused + 1; return false; }
+    if (!oneOf3(state, "verified", "declared", "unverified")) { refused = refused + 1; return false; }
+    if (trust < 0 || trust > 2 || cap < 1 || cap > 64) { refused = refused + 1; return false; }
+    if (authorizer != 0 && authorizer != 1) { refused = refused + 1; return false; }
+    if (code == "native") {
+      if (authorizer != 1 || digest != "host-pinned" || link != "native-abi") {
+        refused = refused + 1; return false;
+      }
+    }
+    if (link == "native-abi" && code != "native") { refused = refused + 1; return false; }
+    if (link == "compartment") {
+      if (first < 0 || last > 16 || first > last) { refused = refused + 1; return false; }
+      int k = first;
+      while (k <= last) {
+        if (typeForKind(k) != "") { refused = refused + 1; return false; }
+        k = k + 1;
+      }
+    } else {
+      if (first != -1 || last != -1) { refused = refused + 1; return false; }
+    }
+    SLHotLinkRow r = new SLHotLinkRow();
+    r.configure(typeId, code, instance, link, trust, cap, first, last, authorizer, digest, state);
+    rows[rowCount] = r;
+    rowCount = rowCount + 1;
+    return true;
+  }
+
+  int edgeIndex(String from, String to) {
+    int i = 0;
+    while (i < edgeCount) {
+      if (edgeFrom[i] == from && edgeTo[i] == to) { return i; }
+      i = i + 1;
+    }
+    return -1;
+  }
+
+  < Does the type graph already reach `to` from `from`? (self-links ignored) >
+  boolean typeReaches(String from, String to) {
+    int n = rowCount;
+    int[] seen = new int[32];
+    int[] stack = new int[32];
+    int i = 0;
+    while (i < 32) { seen[i] = 0; stack[i] = 0; i = i + 1; }
+    int sp = 0;
+    int start = indexOf(from);
+    if (start < 0) { return false; }
+    stack[sp] = start; sp = sp + 1; seen[start] = 1;
+    while (sp > 0) {
+      sp = sp - 1;
+      int cur = stack[sp];
+      SLHotLinkRow cr = rows[cur];
+      if (cr.getId() == to) { return true; }
+      int e = 0;
+      while (e < edgeCount) {
+        if (edgeFrom[e] == cr.getId() && edgeTo[e] != cr.getId()) {
+          int nx = indexOf(edgeTo[e]);
+          if (nx >= 0 && seen[nx] == 0 && sp < 32) { seen[nx] = 1; stack[sp] = nx; sp = sp + 1; }
+        }
+        e = e + 1;
+      }
+    }
+    return false;
+  }
+
+  < Add a permitted connection. Both ends must be hot types. Refused when >
+  < sealed, unknown, duplicate, out of range, cycle-making, or a self-link >
+  < in any mode other than contain. >
+  boolean addEdge(String from, String to, String mode, int fanout) {
+    if (frozen == 1 || edgeCount >= 64) { refused = refused + 1; return false; }
+    SLHotLinkRow a = find(from);
+    SLHotLinkRow b = find(to);
+    if (a == null || b == null) { refused = refused + 1; return false; }
+    if (!a.isHot() || !b.isHot()) { refused = refused + 1; return false; }
+    if (!oneOf3(mode, "feed", "subscribe", "contain")) { refused = refused + 1; return false; }
+    if (fanout < 1 || fanout > 14) { refused = refused + 1; return false; }
+    if (edgeIndex(from, to) >= 0) { refused = refused + 1; return false; }
+    if (from == to) {
+      if (mode != "contain") { refused = refused + 1; return false; }
+    } else {
+      if (typeReaches(to, from)) { refused = refused + 1; return false; }
+    }
+    edgeFrom[edgeCount] = from; edgeTo[edgeCount] = to;
+    edgeMode[edgeCount] = mode; edgeFanout[edgeCount] = fanout;
+    edgeCount = edgeCount + 1;
+    return true;
+  }
+  boolean edgeAllowed(String from, String to) { return edgeIndex(from, to) >= 0; }
+  int fanoutLimit(String from, String to) {
+    int e = edgeIndex(from, to);
+    return (e >= 0) ? edgeFanout[e] : 0;
+  }
+  String edgeModeOf(String from, String to) {
+    int e = edgeIndex(from, to);
+    return (e >= 0) ? edgeMode[e] : "";
+  }
+
+  < Seed the matrix declared in hotlink-matrix.xml and seal it. Returns the >
+  < number of seeds that were refused (0 when everything is consistent). >
+  int standard() {
+    addRow("observer.responder", "linked", "hot", "port", 1, 14, -1, -1, 0, "none", "verified");
+    addRow("vi.nested-model", "linked", "hot", "compartment", 2, 4, 0, 0, 0, "none", "verified");
+    addRow("vi.onion", "linked", "hot", "compartment", 1, 8, 1, 1, 0, "none", "verified");
+    addRow("vi.engineering-bay", "linked", "hot", "compartment", 1, 8, 2, 2, 0, "none", "verified");
+    addRow("vi.trial", "linked", "hot", "compartment", 1, 8, 3, 3, 0, "none", "verified");
+    addRow("vi.newton-tray", "linked", "hot", "compartment", 1, 8, 4, 4, 0, "none", "verified");
+    addRow("vi.plain", "linked", "hot", "compartment", 1, 16, 5, 16, 0, "none", "verified");
+    addRow("native.extension", "native", "hot", "native-abi", 2, 2, -1, -1, 1, "host-pinned", "unverified");
+    addRow("extends.module", "linked", "cold", "port", 1, 14, -1, -1, 0, "none", "declared");
+    addEdge("observer.responder", "vi.plain", "feed", 4);
+    addEdge("observer.responder", "vi.onion", "feed", 4);
+    addEdge("observer.responder", "vi.engineering-bay", "feed", 4);
+    addEdge("observer.responder", "vi.trial", "feed", 4);
+    addEdge("observer.responder", "vi.newton-tray", "feed", 4);
+    addEdge("vi.engineering-bay", "vi.trial", "feed", 2);
+    addEdge("vi.trial", "vi.newton-tray", "feed", 2);
+    addEdge("vi.nested-model", "vi.nested-model", "contain", 2);
+    addEdge("vi.nested-model", "vi.plain", "contain", 4);
+    addEdge("vi.nested-model", "vi.engineering-bay", "contain", 4);
+    addEdge("native.extension", "observer.responder", "feed", 2);
+    seal();
+    return refused;
+  }
+}

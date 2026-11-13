@@ -1,0 +1,133 @@
+<< lib/java/converter/JConvMain.sleela
+   Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
+   Definition: the converter program. It walks a Java source tree (JCONV_IN),
+   converts every selected .java file into SLeeLa source files under JCONV_OUT
+   with the same folders, and writes CONVERSION-REPORT.tsv and
+   CONVERSION-SUMMARY.md there. Run it with lib/java/converter/run-converter.sh,
+   which passes the converter units to sleela run and the settings through the
+   environment (see JConvConfig and README.md). >>
+#sleela 3.0
+material;
+
+class JConvMain {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full record: a library-family class of the Java container. >>
+  String metaVersion = "0.5.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 4;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  static void main() {
+    JConvMain app = new JConvMain();
+    app.runConverter();
+  }
+
+  String two(long v) {
+    if (v < 10) { return "0" + v; }
+    return "" + v;
+  }
+
+  < today (UTC) as YYYY-MM-DD, from the days since 1970-01-01 (civil-from-days) >
+  String today() {
+    long days = timeUtcMillis() / 86400000;
+    long z = days + 719468;
+    long era = z / 146097;
+    long doe = z - era * 146097;
+    long yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
+    long y = yoe + era * 400;
+    long doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
+    long mp = (5 * doy + 2) / 153;
+    long d = doy - (153 * mp + 2) / 5 + 1;
+    long m = mp + 3;
+    if (mp >= 10) { m = mp - 9; }
+    if (m <= 2) { y = y + 1; }
+    return "" + y + "-" + two(m) + "-" + two(d);
+  }
+
+  void usage() {
+    print("usage: JCONV_IN=<java source root> [JCONV_OUT=<dir>] [JCONV_SCOPE=api|all] [JCONV_FILTER=<prefix>]");
+    print("       [JCONV_LIMIT=<n>] [JCONV_INT=int32|int] [JCONV_COMMENTS=keep|drop] lib/java/converter/run-converter.sh");
+  }
+
+  void runConverter() {
+    JConvRules rules = new JConvRules();
+    JConvConfig cfg = new JConvConfig();
+    if (!cfg.readSettings()) {
+      print("jconv: " + cfg.problem);
+      usage();
+      return;
+    }
+    rules.useIntType(cfg.intType);
+    JConvModel model = new JConvModel();
+    model.load(cfg.modelPath);
+    rules.useModel(model);
+    print("jconv: model " + model.describe());
+    JConvReport rep = new JConvReport();
+    JConvTranslator tr = new JConvTranslator(rules, cfg, rep, today());
+    if (!tr.makeDirs(cfg.outRoot)) {
+      print("jconv: cannot create " + cfg.outRoot);
+      return;
+    }
+    if (!rep.begin(cfg.outRoot)) {
+      print("jconv: cannot write " + cfg.outRoot + "/CONVERSION-REPORT.tsv");
+      return;
+    }
+    JConvWalker w = new JConvWalker();
+    w.walk(cfg.inRoot);
+    print("jconv: " + w.nFiles + " .java files in " + w.dirsVisited + " folders under " + cfg.inRoot + " (" + w.skippedDescriptors + " module-info / package-info skipped)");
+    if (cfg.scope == "api") { print("jconv: scope api: " + cfg.apiCount + " JDK 28 types from lib/java/jdk-28/INDEX.tsv"); }
+    long t0 = timeMonotonicNanos();
+    int done = 0;
+    int i = 0;
+    int hint = 0;
+    while (i < w.nFiles) {
+      String rel = w.files[i];
+      if (cfg.selects(rel)) {
+        if (cfg.limit > 0 && done >= cfg.limit) { break; }
+        tr.translateFile(rel);
+        done = done + 1;
+        if (done % 25 == 0) {
+          long ms = (timeMonotonicNanos() - t0) / 1000000;
+          print("jconv: " + done + " files, " + ms + " ms, last " + rel);
+          hint = gc;
+        }
+      }
+      i = i + 1;
+    }
+    print("jconv: lowered " + tr.rw.lam.lambdasTotal + " lambdas and " + tr.rw.lam.refsTotal + " method references to (id, env) (JConvLambda)");
+    rep.finish(rules);
+  }
+}
