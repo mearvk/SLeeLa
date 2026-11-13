@@ -3,6 +3,9 @@
 Status: normative for the Java tier. Revision 1.0, 2026-11-13.
 Owner: `lib/java` (this directory) and the converter `sleelactl/convert`.
 
+The summary ledger (principles, everything converted, everything left) is
+[`CONVERSION.PRINCIPLES.md`](CONVERSION.PRINCIPLES.md).
+
 ## 1. Scope and the standing rule
 
 The SLeeLa language is specified in `SLEELA.syntax`. Everything that exists **only because a

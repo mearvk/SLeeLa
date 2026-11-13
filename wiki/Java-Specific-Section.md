@@ -14,4 +14,6 @@ Section of the overall specification: [`lib/java/JAVA.SPEC.md`](../lib/java/JAVA
 - **Open:** operands of unknown type (no generics inference), lambdas whose target interface is unknown,
   nested capture chains, local classes, switch type patterns, `native`.
 
+The principles and the full ledger of what is converted and what is left: [`CONVERSION.PRINCIPLES.md`](../lib/java/CONVERSION.PRINCIPLES.md).
+
 See the section for the lowering of each construct, the proof tests and how to extend the tier.

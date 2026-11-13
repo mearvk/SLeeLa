@@ -26,6 +26,8 @@ contract, the lowering of every converted construct, the open items and how to e
 [`JAVA.SPEC.md`](JAVA.SPEC.md). It is the Java Specific Section of the overall SLeeLa specification.
 Java improvements are made here and in the converter, never in the SLeeLa compiler, VM or runtime.
 
+The conversion ledger (principles, what is converted, what is left) is [`CONVERSION.PRINCIPLES.md`](CONVERSION.PRINCIPLES.md).
+
 ## The Java container
 
 `/lib/java` is the **Java container**. Java definitions (`Math`, `Integer`,
