@@ -1,0 +1,220 @@
+<< lib/java/converter/JConvOuter.sleela
+   Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
+   Definition: inner classes and the enclosing instance (JLS 8.1.3, 15.9.2,
+   15.8.4). SLeeLa has no enclosing instance, so the converter passes it
+   explicitly (lib/java/jdk-28/LOWERING.md section 2.4):
+   - an inner class (a non-static class declared in a class) gets the field
+     Outer slOuter (only a base inner class: a subclass that is itself an
+     inner class of the same outer inherits it), and every constructor gets
+     the first parameter slOuterArg;
+   - new Inner(a) becomes new Inner(this, a) in the outer class, and
+     new Inner(this.slOuter, a) in an inner class of the same outer;
+   - Outer.this becomes this.slOuter;
+   - an unqualified name of the outer class inside a nested class becomes
+     this.slOuter.name (instance member of an inner class) or Outer.name
+     (static member), when it is not a local, not a member of the nested class
+     and not inherited by it (Java looks in the class and its supertypes
+     before the enclosing class, JLS 6.4.1 and 15.12.1). Inherited names are
+     read from the model ret and field rows; when the superclass is not known
+     to the model nor declared earlier in the file, no instance method name is
+     rewritten (a check error, never a call to the wrong method).
+   This class holds the inner class registry of the file and the outer
+   context of the type being written. >>
+#sleela 3.0
+material;
+
+class JConvOuter {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full record: a library-family class of the Java container. It lowers the
+     inner classes of the Java Language Specification section 8.1.3. >>
+  String metaVersion = "0.7.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 3;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "The Java Language Specification, Java SE 28 Edition, sections 8.1.3, 15.8.4 and 15.9.2";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < the inner classes of the file and their enclosing class >
+  String[] innerName;
+  String[] innerOuter;
+  int innerN;
+  < the member names of the types written so far in the file, comma framed: ,a,b, >
+  String[] typeName;
+  String[] typeMembers;
+  int typeN;
+  < the outer context of the type being written ("" for a top-level type) >
+  String outerName;
+  boolean outerInstance;
+  String[] oName;
+  int[] oStatic;
+  int[] oMethod;
+  int oN;
+  < supertypes of the type being written: its superclass and interfaces (erased simple names) >
+  String superName;
+  String[] ifaces;
+  int ifN;
+  < inner class constructor rewrites done, Outer.this rewrites, prefixed outer names (report) >
+  int ctorTotal;
+  int qualifiedThisTotal;
+  int prefixTotal;
+
+  JConvOuter() {
+    this.innerName = new String[64];
+    this.innerOuter = new String[64];
+    this.innerN = 0;
+    this.typeName = new String[128];
+    this.typeMembers = new String[128];
+    this.typeN = 0;
+    this.outerName = "";
+    this.outerInstance = false;
+    this.oName = new String[512];
+    this.oStatic = new int[512];
+    this.oMethod = new int[512];
+    this.oN = 0;
+    this.superName = "";
+    this.ifaces = new String[16];
+    this.ifN = 0;
+    this.ctorTotal = 0;
+    this.qualifiedThisTotal = 0;
+    this.prefixTotal = 0;
+  }
+
+  void beginFile() {
+    this.innerN = 0;
+    this.typeN = 0;
+    clearContext();
+  }
+
+  void clearContext() {
+    this.outerName = "";
+    this.outerInstance = false;
+    this.oN = 0;
+  }
+
+  < ---- the inner class registry ---- >
+  void addInner(String name, String outer) {
+    if (outerOf(name) != "") { return; }
+    if (this.innerN >= arrayLength(this.innerName)) {
+      String[] a = new String[this.innerN * 2];
+      String[] b = new String[this.innerN * 2];
+      int i = 0;
+      while (i < this.innerN) { a[i] = this.innerName[i]; b[i] = this.innerOuter[i]; i = i + 1; }
+      this.innerName = a;
+      this.innerOuter = b;
+    }
+    this.innerName[this.innerN] = name;
+    this.innerOuter[this.innerN] = outer;
+    this.innerN = this.innerN + 1;
+  }
+
+  < the enclosing class of an inner class, or "" when the name is not one >
+  String outerOf(String name) {
+    int i = 0;
+    while (i < this.innerN) { if (this.innerName[i] == name) { return this.innerOuter[i]; } i = i + 1; }
+    return "";
+  }
+
+  < ---- member names of the types of the file ---- >
+  void addTypeMembers(String type, String framed) {
+    if (this.typeN >= arrayLength(this.typeName)) { return; }
+    this.typeName[this.typeN] = type;
+    this.typeMembers[this.typeN] = framed;
+    this.typeN = this.typeN + 1;
+  }
+
+  < the comma framed member list of a type of the file, or "?" when not written yet >
+  String membersOf(String type) {
+    int i = 0;
+    while (i < this.typeN) { if (this.typeName[i] == type) { return this.typeMembers[i]; } i = i + 1; }
+    return "?";
+  }
+
+  < ---- the outer context ---- >
+  void addOuterMember(String n, boolean isStatic, boolean isMethod) {
+    if (this.oN >= arrayLength(this.oName)) { return; }
+    this.oName[this.oN] = n;
+    if (isStatic) { this.oStatic[this.oN] = 1; } else { this.oStatic[this.oN] = 0; }
+    if (isMethod) { this.oMethod[this.oN] = 1; } else { this.oMethod[this.oN] = 0; }
+    this.oN = this.oN + 1;
+  }
+
+  < the index of an outer member (method when isCall, else field), or -1 >
+  int outerMember(String n, boolean isCall) {
+    int i = 0;
+    while (i < this.oN) {
+      if (this.oName[i] == n && ((this.oMethod[i] == 1) == isCall)) { return i; }
+      i = i + 1;
+    }
+    return -1;
+  }
+
+  void setSupers(String sup, String[] ifs, int n) {
+    this.superName = sup;
+    this.ifN = 0;
+    int i = 0;
+    while (i < n && i < arrayLength(this.ifaces)) { this.ifaces[i] = ifs[i]; this.ifN = this.ifN + 1; i = i + 1; }
+  }
+
+  << True when the type being written may inherit a member named n (a method
+     when isCall): from its superclass or interfaces through the model, or
+     from a type of the file written earlier. An unknown superclass counts as
+     a possible owner of every method name (no rewrite). >>
+  boolean mayInherit(String n, boolean isCall, JConvModel model) {
+    if (this.superName != "") {
+      String fm = membersOf(this.superName);
+      if (fm != "?") {
+        if (fm.indexOf("," + n + ",") >= 0) { return true; }
+      } else if (isCall) {
+        if (model.retOf(this.superName, n) != "") { return true; }
+        if (model.retOf(this.superName, "getClass") == "") { return true; }
+      } else {
+        if (model.fieldOf(this.superName, n) != "") { return true; }
+      }
+    }
+    int k = 0;
+    while (k < this.ifN) {
+      String f = this.ifaces[k];
+      String fm2 = membersOf(f);
+      if (fm2 != "?") {
+        if (fm2.indexOf("," + n + ",") >= 0) { return true; }
+      } else if (isCall && model.retOf(f, n) != "") {
+        return true;
+      } else if (!isCall && model.fieldOf(f, n) != "") {
+        return true;
+      }
+      k = k + 1;
+    }
+    return false;
+  }
+}

@@ -73,6 +73,9 @@ class JConvTranslator {
   < the type in progress >
   String unitName;
   String unitKind;
+  < the enclosing class when the type being written is an inner class (JConvOuter), else empty; and whether it declares slOuter >
+  String innerOf;
+  boolean innerBase;
   String javaType;
   int unitMembers;
   int unitStubs;
@@ -101,6 +104,8 @@ class JConvTranslator {
     this.oracle = false;
     this.unitName = "";
     this.unitKind = "";
+    this.innerOf = "";
+    this.innerBase = false;
     this.javaType = "";
   }
 
@@ -287,6 +292,7 @@ class JConvTranslator {
     this.initCounter = 0;
     this.fileTypes = this.fileTypes + 1;
     this.rw.beginUnit(name);
+    if (outerStem == "") { this.rw.outer.clearContext(); }
     < type variables visible from an enclosing type >
     if (outerTv != "") {
       String rest = outerTv;
@@ -326,7 +332,14 @@ class JConvTranslator {
     boolean isStaticNested = false;
     m = ms;
     while (m < kw) { if (isId(m, "static")) { isStaticNested = true; } m = m + 1; }
-    if (outerStem != "" && !isStaticNested && kind == "class") {
+    < an inner class gets its enclosing instance (JConvOuter) >
+    this.innerOf = "";
+    this.innerBase = false;
+    setSupersOf(h, open);
+    if (outerStem != "" && !isStaticNested && kind == "class" && this.rw.outer.outerOf(name) != "") {
+      this.innerOf = this.rw.outer.outerOf(name);
+      this.innerBase = this.rw.outer.outerOf(this.rw.outer.superName) != this.innerOf;
+    } else if (outerStem != "" && !isStaticNested && kind == "class") {
       this.rep.note("inner class " + stem + ": the enclosing instance is not captured");
     }
     < pre-scan of the members >
@@ -467,6 +480,12 @@ class JConvTranslator {
     this.em.lineOut(mods + typeWord + " " + name + heritage + " {");
     this.em.enter();
     if (typeWord == "class") { writeMetadata(); }
+    if (this.innerOf != "" && this.innerBase) {
+      this.em.lineOut("< the enclosing instance (JLS 8.1.3), set by every constructor from its first parameter (JConvOuter) >");
+      this.em.lineOut(this.innerOf + " slOuter;");
+      this.em.blankLine();
+      this.unitFields = this.unitFields + 1;
+    }
     if (tpText != "") { this.em.lineOut("static final String JAVA_TYPE_PARAMETERS = \"" + quoteSafe(tpText) + "\";"); }
     convertBody(kind, name, stem, open, close, constEnd, count, mk, mStart, mHdr, mBody, mEnd, mFlags, compOpen, compClose, hasCtor, hasCanonical, typeWord, inBundle);
   }
@@ -497,6 +516,8 @@ class JConvTranslator {
       this.em.comment("<< Java annotation interface: annotations carry no SLeeLa behavior. Its elements, as declared in Java:\n" + commentSafe(this.src.slice(this.lx.begins[open], this.lx.ends[close])) + " >>");
     }
     if (kind == "enum") { writeEnumConstants(open, constEnd, name); }
+    registerInners(name, kind, count, mk, mStart, mHdr);
+    this.rw.outer.addTypeMembers(name, framedMembers());
     < nested types are written after this unit >
     int[] nestStart = new int[count + 1];
     int[] nestKw = new int[count + 1];
@@ -527,6 +548,12 @@ class JConvTranslator {
       }
       idx = idx + 1;
     }
+    if (this.innerOf != "" && !hasCtor) {
+      this.em.blankLine();
+      this.em.comment("< default constructor of an inner class: it takes the enclosing instance (JConvOuter) >");
+      if (this.innerBase) { this.em.lineOut(name + "(" + this.innerOf + " slOuterArg) { this.slOuter = slOuterArg; }"); }
+      else { this.em.lineOut(name + "(" + this.innerOf + " slOuterArg) { super(slOuterArg); }"); }
+    }
     if (kind == "enum") { writeEnumMachinery(open, constEnd, name, hasCtor); }
     if (kind == "record") { writeRecordMembers(compOpen, compClose, name, hasCanonical); }
     this.em.leave();
@@ -545,11 +572,35 @@ class JConvTranslator {
     if (this.rw.hasField("length")) { this.rep.note(stem + " declares a field named length: check the .length to arrayLength rewrites"); }
     < now the nested types: each in its own file, or later in this document (bundle) >
     String tv = this.rw.typeVarList();
+    < the members of this type, for the nested types (JConvOuter) >
+    int sn = this.rw.mN;
+    String[] snName = new String[sn + this.rw.fN + 1];
+    int[] snStatic = new int[sn + this.rw.fN + 1];
+    int[] snMethod = new int[sn + this.rw.fN + 1];
+    int si = 0;
+    while (si < sn) { snName[si] = this.rw.mNames[si]; snStatic[si] = this.rw.mStatic[si]; snMethod[si] = 1; si = si + 1; }
+    int fq = 0;
+    while (fq < count) {
+      if (mk[fq] == 1) {
+        snName[si] = this.rules.renameIdent(fieldName(mHdr[fq], mEnd[fq]));
+        snStatic[si] = mFlags[fq] % 2;
+        snMethod[si] = 0;
+        si = si + 1;
+      }
+      fq = fq + 1;
+    }
     int ni = 0;
     while (ni < nNest) {
+      this.rw.outer.clearContext();
+      this.rw.outer.outerName = name;
+      String nestName = this.rules.renameIdent(tx(nx(nestKw[ni] + 1)));
+      this.rw.outer.outerInstance = this.rw.outer.outerOf(nestName) == name;
+      int sq = 0;
+      while (sq < si) { this.rw.outer.addOuterMember(snName[sq], snStatic[sq] == 1, snMethod[sq] == 1); sq = sq + 1; }
       convertType(nestStart[ni], nestStart[ni], nestKw[ni], nestOpen[ni], nestClose[ni], stem, tv);
       ni = ni + 1;
     }
+    this.rw.outer.clearContext();
     if (this.cfg.bundle && !inBundle) {
       this.rw.lam.writeTable(this.em);
       this.em.finishOut();
@@ -765,6 +816,116 @@ class JConvTranslator {
     this.em.blankLine();
   }
 
+  < ---- inner classes (JConvOuter) ---- >
+  << The non-static classes declared in a class, enum or record are inner
+     classes: register them with their enclosing class. >>
+  void registerInners(String name, String kind, int count, int[] mk, int[] mStart, int[] mHdr) {
+    if (kind == "interface" || kind == "annotation") { return; }
+    int idx = 0;
+    while (idx < count) {
+      if (mk[idx] == 5 && isId(mHdr[idx], "class")) {
+        boolean st = false;
+        int m = mStart[idx];
+        while (m < mHdr[idx]) { if (isId(m, "static")) { st = true; } m = m + 1; }
+        if (!st) { this.rw.outer.addInner(this.rules.renameIdent(tx(nx(mHdr[idx] + 1))), name); }
+      }
+      idx = idx + 1;
+    }
+  }
+
+  < the method and field names of the current type, comma framed: ,a,b, >
+  String framedMembers() {
+    String s = ",";
+    int i = 0;
+    while (i < this.rw.mN) { s = s + this.rw.mNames[i] + ","; i = i + 1; }
+    i = 0;
+    while (i < this.rw.fN) { s = s + this.rw.fNames[i] + ","; i = i + 1; }
+    return s;
+  }
+
+  < the superclass and interfaces of the type header h .. open-1 (erased simple names) >
+  void setSupersOf(int h, int open) {
+    String sup = "";
+    String[] ifs = new String[16];
+    int n = 0;
+    int mode = 0;
+    int i = h;
+    while (i < open) {
+      if (isId(i, "extends")) { mode = 1; }
+      else if (isId(i, "implements")) { mode = 2; }
+      else if (isId(i, "permits")) { mode = 3; }
+      else if (isOp(i, "<")) {
+        int e = this.rw.genEnd(i);
+        if (e > i) { i = e; }
+      }
+      else if (kd(i) == 1 && (mode == 1 || mode == 2) && !isOp(nx(i + 1), ".")) {
+        String nm = this.rules.renameIdent(tx(i));
+        if (mode == 1 && this.unitKind != "interface") { sup = nm; }
+        else if (n < 16) { ifs[n] = nm; n = n + 1; }
+      }
+      i = i + 1;
+    }
+    this.rw.outer.setSupers(sup, ifs, n);
+  }
+
+  << A constructor of an inner class: the first parameter slOuterArg, and
+     this.slOuter = slOuterArg; after an explicit super(...) of a library or
+     top-level superclass, or at the start of the body. this(...) and super(...)
+     of an inner superclass of the same outer pass slOuterArg on. withBody is
+     false for a stub (only the parameter is added). >>
+  void innerCtorFixup(boolean withBody) {
+    int p = 0;
+    while (p < this.rw.on && this.rw.ot[p] != "(") { p = p + 1; }
+    if (p >= this.rw.on) { return; }
+    boolean empty = (p + 1 < this.rw.on && this.rw.ot[p + 1] == ")");
+    if (!empty) { this.rw.insertAt(p + 1, 5, ","); }
+    this.rw.insertAt(p + 1, 1, "slOuterArg");
+    this.rw.insertAt(p + 1, 1, this.innerOf);
+    this.rw.outer.ctorTotal = this.rw.outer.ctorTotal + 1;
+    if (!withBody) { return; }
+    < the body brace: after the parameter list closes >
+    int d = 0;
+    int b = p;
+    while (b < this.rw.on) {
+      if (this.rw.ot[b] == "(") { d = d + 1; }
+      if (this.rw.ot[b] == ")") {
+        d = d - 1;
+        if (d == 0) { break; }
+      }
+      b = b + 1;
+    }
+    while (b < this.rw.on && this.rw.ot[b] != "{") { b = b + 1; }
+    if (b >= this.rw.on) { return; }
+    int f = b + 1;
+    while (f < this.rw.on && this.rw.ok[f] == 6) { f = f + 1; }
+    boolean callsThis = f + 1 < this.rw.on && this.rw.ot[f] == "this" && this.rw.ot[f + 1] == "(";
+    boolean callsSuper = f + 1 < this.rw.on && this.rw.ot[f] == "super" && this.rw.ot[f + 1] == "(";
+    if (callsThis || (callsSuper && !this.innerBase)) {
+      boolean noArgs = (f + 2 < this.rw.on && this.rw.ot[f + 2] == ")");
+      if (!noArgs) { this.rw.insertAt(f + 2, 5, ","); }
+      this.rw.insertAt(f + 2, 1, "slOuterArg");
+      return;
+    }
+    int at = b + 1;
+    if (callsSuper) {
+      int dd = 0;
+      int q = f;
+      while (q < this.rw.on) {
+        if (this.rw.ot[q] == "(" || this.rw.ot[q] == "{") { dd = dd + 1; }
+        if (this.rw.ot[q] == ")" || this.rw.ot[q] == "}") { dd = dd - 1; }
+        if (dd == 0 && this.rw.ot[q] == ";") { break; }
+        q = q + 1;
+      }
+      at = q + 1;
+    }
+    this.rw.insertAt(at, 5, ";");
+    this.rw.insertAt(at, 1, "slOuterArg");
+    this.rw.insertAt(at, 5, "=");
+    this.rw.insertAt(at, 1, "slOuter");
+    this.rw.insertAt(at, 5, ".");
+    this.rw.insertAt(at, 1, "this");
+  }
+
   < ---- members ---- >
   void convertMember(int st, int hh, int bodyOpen, int endTok, int flags, int kk) {
     this.unitMembers = this.unitMembers + 1;
@@ -839,6 +1000,7 @@ class JConvTranslator {
         this.em.annotationLine("@throwable(\"java.lang.UnsupportedOperationException\")");
         this.rw.rewrite(h2, headerEnd);
         if (kk == 3 && this.unitKind == "enum") { this.rw.enumCtorFixup(); }
+        if (kk == 3 && this.innerOf != "") { innerCtorFixup(false); }
         this.rw.syn(5, "{");
         this.rw.syn(1, "throw");
         this.rw.syn(1, "new");
@@ -857,6 +1019,7 @@ class JConvTranslator {
       } else {
         this.rw.rewrite(h2, endTok + 1);
         if (kk == 3 && this.unitKind == "enum") { this.rw.enumCtorFixup(); }
+        if (kk == 3 && this.innerOf != "") { innerCtorFixup(true); }
         this.rw.postPass();
         this.rw.typedPass();
         this.rw.emitOut(this.em);

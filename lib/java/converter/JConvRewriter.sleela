@@ -110,6 +110,8 @@ class JConvRewriter {
   JConvExpr expr;
   < lambda and method reference lowering (JConvLambda) >
   JConvLambda lam;
+  < inner classes and the enclosing instance (JConvOuter) >
+  JConvOuter outer;
 
   JConvRewriter(JConvRules r, JConvConfig c) {
     this.rules = r;
@@ -149,6 +151,7 @@ class JConvRewriter {
     this.unitName = "";
     this.expr = new JConvExpr(this);
     this.lam = new JConvLambda(this);
+    this.outer = new JConvOuter();
   }
 
   < ---- per file and per type state ---- >
@@ -158,6 +161,7 @@ class JConvRewriter {
     this.T = l.texts;
     this.siN = 0;
     this.declN = 0;
+    this.outer.beginFile();
   }
 
   void beginUnit(String name) {
@@ -487,7 +491,12 @@ class JConvRewriter {
         }
         if (t == "try" && isOp(nx(i + 1), "(")) { return 7; }
         if (t == "var" && body && this.K[nx(i + 1)] == 1 && !isOp(pv(i), ".")) { return 8; }
-        if (isOp(nx(i + 1), ".") && (isId(nx(nx(i + 1) + 1), "this") || (isId(nx(nx(i + 1) + 1), "super") && t != "this"))) { return 10; }
+        if (isOp(nx(i + 1), ".") && (isId(nx(nx(i + 1) + 1), "this") || (isId(nx(nx(i + 1) + 1), "super") && t != "this"))) {
+          < Outer.this of the enclosing class, and Own.this, are lowered (JConvOuter) >
+          boolean qthis = isId(nx(nx(i + 1) + 1), "this") && !isOp(pv(i), ".");
+          boolean lowered = qthis && (t == this.unitName || (t == this.outer.outerName && this.outer.outerInstance));
+          if (!lowered) { return 10; }
+        }
         if (t == "String" && isOp(nx(i + 1), ".") && !isOp(pv(i), ".") && this.K[nx(nx(i + 1) + 1)] == 1) {
           << String is a SLeeLa keyword, so it cannot be a static receiver. valueOf is
              not lowered to a concatenation: a double or char would print in SLeeLa
@@ -1124,6 +1133,30 @@ class JConvRewriter {
       push(1, "Any", line);
       return i + 1;
     }
+    if (!afterDot && isOp(nx(i + 1), ".") && isId(nx(nx(i + 1) + 1), "this")) {
+      < Own.this is this; Outer.this is the enclosing instance this.slOuter (JConvOuter) >
+      int after = nx(nx(i + 1) + 1) + 1;
+      if (t == this.unitName) {
+        push(1, "this", line);
+        this.outer.qualifiedThisTotal = this.outer.qualifiedThisTotal + 1;
+        return after;
+      }
+      if (t == this.outer.outerName && this.outer.outerInstance && !this.curStatic) {
+        push(1, "this", line);
+        syn(5, ".");
+        syn(1, "slOuter");
+        this.outer.qualifiedThisTotal = this.outer.qualifiedThisTotal + 1;
+        return after;
+      }
+    }
+    if (t == "new" && !afterDot && this.outer.innerN > 0) {
+      int r = lowerNewInner(i);
+      if (r >= 0) { return r; }
+    }
+    if (!afterDot && this.outer.oN > 0) {
+      int r2 = prefixOuterName(i);
+      if (r2 >= 0) { return r2; }
+    }
     if (!afterDot && this.siN > 0) {
       int s = 0;
       while (s < this.siN) {
@@ -1166,6 +1199,72 @@ class JConvRewriter {
     String out = this.rules.mapTypeName(t);
     out = this.rules.renameIdent(out);
     push(1, out, line);
+    return i + 1;
+  }
+
+  << new Inner(args) of an inner class: the enclosing instance is passed
+     first, this in its outer class, this.slOuter in a sibling inner class.
+     -1 when the expression is not that shape or has no enclosing instance. >>
+  int lowerNewInner(int i) {
+    int j = nx(i + 1);
+    if (j >= this.lx.n || this.K[j] != 1) { return -1; }
+    String ow = this.outer.outerOf(this.T[j]);
+    if (ow == "" || this.curStatic) { return -1; }
+    int k = nx(j + 1);
+    if (isGenericAt(k)) { k = nx(genEnd(k) + 1); }
+    if (!isOp(k, "(")) { return -1; }
+    < an anonymous class body after the arguments is a stub (reason 3) >
+    if (isOp(nx(matchClose(k) + 1), "{")) { return -1; }
+    String via = "";
+    if (this.unitName == ow) { via = "this"; }
+    else if (this.outer.outerName == ow && this.outer.outerInstance) { via = "this.slOuter"; }
+    if (via == "") { return -1; }
+    push(1, "new", this.lx.lines[i]);
+    push(1, this.rules.renameIdent(this.T[j]), this.lx.lines[j]);
+    syn(5, "(");
+    if (via == "this") { syn(1, "this"); }
+    else { syn(1, "this"); syn(5, "."); syn(1, "slOuter"); }
+    if (!isOp(nx(k + 1), ")")) { syn(5, ","); }
+    return k + 1;
+  }
+
+  << An unqualified name of the enclosing class inside a nested class:
+     this.slOuter.name or Outer.name (JConvOuter). -1 when the name is a local,
+     a member of the nested class, possibly inherited, or being declared. >>
+  int prefixOuterName(int i) {
+    String t = this.T[i];
+    if (isOp(pv(i), ".") || isId(pv(i), "new")) { return -1; }
+    int nn = nx(i + 1);
+    if (nn < this.lx.n && this.K[nn] == 1) { return -1; }
+    boolean isCall = isOp(nn, "(");
+    String rt = this.rules.renameIdent(t);
+    int om = this.outer.outerMember(rt, isCall);
+    if (om < 0) { return -1; }
+    if (isCall && methodIndex(rt) >= 0) { return -1; }
+    if (!isCall && hasField(rt)) { return -1; }
+    if (this.lam.typeStartBefore(i) >= 0) { return -1; }
+    if (this.outer.mayInherit(t, isCall, this.rules.model)) { return -1; }
+    String[] names = new String[256];
+    String[] types = new String[256];
+    int[] depthOf = new int[256];
+    int n = this.lam.localsAt(i, names, types, depthOf);
+    int q = 0;
+    while (q < n) { if (names[q] == t) { return -1; } q = q + 1; }
+    int line = this.lx.lines[i];
+    if (this.outer.oStatic[om] == 1) {
+      push(1, this.outer.outerName, line);
+      syn(5, ".");
+      syn(1, rt);
+    } else if (this.outer.outerInstance && !this.curStatic) {
+      push(1, "this", line);
+      syn(5, ".");
+      syn(1, "slOuter");
+      syn(5, ".");
+      syn(1, rt);
+    } else {
+      return -1;
+    }
+    this.outer.prefixTotal = this.outer.prefixTotal + 1;
     return i + 1;
   }
 

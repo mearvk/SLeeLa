@@ -3,7 +3,7 @@
 > **Container.** Java container content (`SLEELA.syntax` section 38.4). Nothing
 > here is part of the SLeeLa specification or adds syntax to SLeeLa.
 
-Status: **0.6.0, best effort (2026-11-13).** Output stays at syntax **3.1** (also
+Status: **0.7.0, best effort (2026-11-13).** Output stays at syntax **3.1** (also
 written 3.01) by the owner's decision; syntax 3.2 forms are not used
 (`.kiro/steering/java-converter-lib.md`). The operand laws come from the shared
 conversion model, `impl/subjects/conversion/conversion.model` (read by
@@ -316,6 +316,7 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | `JConvRules` | the decision table (renames, types, modifiers, built-ins, stub reasons) |
 | `JConvModel` | reads the shared conversion model (`ret`, `field`, `binop int` shifts / division / remainder, `cast long int`, `tostr`) |
 | `JConvExpr` | the expression half of the typed pass: statements, precedence tree, wraps and calls (rules 7a to 7f) |
+| `JConvOuter` | inner classes: registry, outer context, `slOuter` rewrites |
 | `JConvLambda` | lambda and method reference lowering (rules 8a, 8b): sites, target typing, captures, body methods, the `SLJavaLambdaTable` of the document |
 | `JConvRewriter` | token-level rewriting, the fail-loud scan, declaration and cast post-pass, helpers |
 | `JConvTranslator` | files, types, members, enum / record lowering, nested types, stubs, metadata |
@@ -329,6 +330,7 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | Version | Change |
 |---|---|
 | 0.1.0 | First cut: walk, lex, rewrite, translate, stubs, report |
+| 0.7.0 | `JConvOuter`: inner (non-static) classes get `Outer slOuter` and a first constructor parameter `slOuterArg`; `new Inner(..)` passes `this` (or `this.slOuter` from a sibling inner class); `Outer.this` becomes `this.slOuter`; an unqualified outer member becomes `this.slOuter.x` or `Outer.x` unless it is a local, an own member or possibly inherited (model `ret` / `field` rows). Stub reason 10 kept only for other qualified `this` / `super`. JDK sample, bundled: **26 stubs (was 35), 475 check errors (was 522), 0 syntax errors**; both samples still identical |
 | 0.6.0 | `JConvLambda`: lambdas and method references lowered to `(id, env)` (rules 8a, 8b); functional interface types written as `Any` (8c), relying on SLEELA.syntax 43.7 (calls on `Any`). New sample `samples/lambda/LambdaDemo.java`, 17 of 17 lines identical. On eight lambda-dense `java.util` files the stubbed members fall from 31 to 15 |
 | 0.5.0 | `JConvExpr`: an expression parser (JLS precedence) on the output tokens of each member; rules 7a to 7c moved onto the tree and rules 7e, 7f added (int wrap where the value leaves int arithmetic; `divInt` / `remInt`). In the JDK sample it writes 88 wraps and 7 division calls, with 0 syntax errors and the check numbers unchanged. The sample program gains overflow checks, `long` from an `int` product, division by zero caught, `MIN / -1`, the binary-search midpoint, and runs all 31 lines identical. Library fixes found by it: jdk-28 `Math.abs(int)` at `MIN_VALUE`, `Math.absExact(int)` now throws |
 | 0.4.0 | Model-driven: `JConvModel` reads `conversion.model` (shift functions, `tostr` templates, 8,964 `ret` rows of model 1.1.0, `field` rows); the typed pass types call chains through them (rule 7d). Built-in defaults only when the file cannot be read (the summary says which). The sample program gains library and own-method calls and runs all 29 lines identical, which needed the jdk-28 `Math.sqrt` to be correctly rounded (fixed the same day) |

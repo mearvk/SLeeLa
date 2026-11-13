@@ -2,6 +2,8 @@
 
 > Revision 1.04 moves the `lib/java/jdk-28/` module folders up from `docs/api/` to `lib/java/jdk-28/<module>/<package>/<Type>.sleela` and adds the 16 JDK 28 modules that export no packages (`java.se`, `jdk.jlink`, `jdk.zipfs`, ...) as folders holding a `module-summary.md`: 58 module folders and 386 folders in all. The /lib loader (`impl/frontend/driver.cpp`) now treats `java/jdk-28/` as a reference tier like `docs/api/`, so a real `lib/java/java/...` unit always wins; `working-binaries/sleela` was rebuilt with that rule. No source or symbol count change (moves only).
 >
+> Revision 1.14 adds `lib/java/converter/JConvOuter.sleela` (inner classes reach the enclosing instance through an `slOuter` field and an `slOuterArg` constructor parameter; `Outer.this` and unqualified outer members are rewritten). One new source unit (counts: 18126 to **18127** sources; 18212 to **18213** symbols).
+>
 > Revision 1.13 adds `lib/java/converter/JConvLambda.sleela` (lambda and method reference lowering to `(id, env)`, LOWERING.md section 2) and `lib/java/support/SLJavaFaults.sleela` (the Java exceptions for VM faults raised inside a try, SLEELA.syntax 37.5). Two new source units; with `JavaFloat` and `JavaFormat`, added the same day, the counts go from 18122 to **18126** sources and 18208 to **18212** symbols.
 >
 > Revision 1.12 adds `lib/java/converter/JConvExpr.sleela`, the expression half of the converter typed pass (precedence tree; the int wrap, division, shift and string-conversion laws of the conversion model). One new source unit (counts: 18121 to **18122** sources; 18207 to **18208** symbols).
@@ -102,9 +104,9 @@
 
 **Revision:** 0.82  
 **Packages:** 123  
-**SLeeLa source units:** 18126  
+**SLeeLa source units:** 18127  
 **Module-facade symbols:** 86  
-**Total symbol records:** 18212  
+**Total symbol records:** 18213  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit
