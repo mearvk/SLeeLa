@@ -46,7 +46,8 @@ const std::set<std::string> kModifiers = {"public", "private", "protected", "sta
 // SLeeLa words that are legal Java identifiers but would collide in SLeeLa.
 const std::set<std::string> kSleelaReserved = {"struct", "material", "spark", "int32", "record", "close", "native",
                                                "Any", "print", "enum", "interface", "super", "yield", "throw",
-                                               "instanceof", "switch", "synchronized", "assert"};
+                                               "instanceof", "switch", "synchronized", "assert",
+                                               "join", "spawn", "sleep", "arrayLength", "arrayNew", "arraySet", "structPack", "structUnpack"};
 
 struct Tok {
     jt_kind kind = JT_EOF;
@@ -170,7 +171,7 @@ private:
         std::string n = t.n;
         std::string prim;
         if (modelBoxed(n, &prim)) n = prim;
-        if (n == "float") unsup("float");
+        if (n == "float") return "float";
         if (n == "boolean") return "boolean";
         if (n == "byte" || n == "short" || n == "char" || n == "int") return "int";
         if (n == "long") return "long";
@@ -178,7 +179,7 @@ private:
         if (n == "String") return "text";
         return "reference";
     }
-    static int rankOf(const std::string& c) { return c == "int" ? 1 : c == "long" ? 2 : c == "double" ? 3 : 0; }
+    static int rankOf(const std::string& c) { return c == "int" ? 1 : c == "long" ? 2 : c == "float" ? 3 : c == "double" ? 4 : 0; }
     bool isPrimTy(const Ty& t) const { return t.dims == 0 && kPrim.count(t.n) > 0; }
     bool isNumericCls(const std::string& c) const { return rankOf(c) > 0; }
 
@@ -275,7 +276,7 @@ private:
     std::string emitType(const Ty& t) const {
         std::string n = t.n;
         if (n == "?") n = "Any";
-        if (n == "float") unsup("float");
+        if (n == "float") n = "double";   // a binary32 value is held in a double that is rounded to 24 bits after each operation (JavaFloat)
         for (int i = 0; i < t.dims; i++) n += "[]";
         return n;
     }
@@ -304,6 +305,16 @@ private:
     E coerce(const E& v, const Ty& target) {
         // Implicit widening on assignment/return: int/long -> double must become a
         // real double (otherwise a later '/' would divide as integers).
+        if (target.dims == 0 && target.n == "float" && v.ty.dims == 0) {
+            std::string c = classOf(v.ty);
+            if (c == "int" || c == "long") {   // int/long -> float rounds to 24 bits (JLS 5.1.2)
+                E r = v;
+                r.code = "JavaFloat.f32((double) " + paren(v.code) + ")";
+                r.ty = mk("float");
+                r.isLitInt = false;
+                return r;
+            }
+        }
         if (target.dims == 0 && target.n == "double" && v.ty.dims == 0) {
             std::string c = classOf(v.ty);
             if (c == "int" || c == "long") {
@@ -331,13 +342,31 @@ private:
         // bring an operand to the operation class (int/long -> double only)
         std::string c = classOf(v.ty);
         if (cls == "double" && (c == "int" || c == "long")) return coerce(v, mk("double"));
+        if (cls == "float" && (c == "int" || c == "long")) return coerce(v, mk("float"));
         return v;
     }
 
     // Java string conversion of an operand (JLS 5.1.11) when SLeeLa renders it differently.
+    // Does the class (or a superclass / interface of it) declare a no-argument toString()?
+    bool hasToString(const std::string& cls, int depth = 0) const {
+        auto it = classes.find(cls);
+        if (it == classes.end() || depth > 32) return false;
+        if (it->second.isEnum) return true;   // generated
+        for (const auto& m : it->second.methods) if (m.name == "toString" && m.params.empty()) return true;
+        if (!it->second.super.empty() && hasToString(it->second.super, depth + 1)) return true;
+        for (const auto& i : it->second.ifaces) if (hasToString(i, depth + 1)) return true;
+        return false;
+    }
+
     std::string strOf(const E& x) const {
+        // JLS 5.1.11: an object becomes text by its toString(); null becomes "null". SLeeLa would show
+        // the handle (Name#3), so the call is made explicitly for classes whose toString is known.
+        if (x.ty.dims == 0 && !kPrim.count(x.ty.n) && x.ty.n != "String" && x.ty.n != "?" && x.ty.n != "null" && !x.isType && hasToString(x.ty.n)) {
+            if (!x.pure) throw ConvErr{cur().line, cur().col, "tostring-impure", "an object with side effects shown as text would be evaluated twice"};
+            return "(" + x.code + " == null ? \"null\" : " + x.code + ".toString())";
+        }
         if (x.ty.dims == 0 && kPrim.count(x.ty.n)) {
-            if (x.ty.n == "float") unsup("float");
+            if (x.ty.n == "float") return "JavaFloat.text(" + x.code + ")";
             const cm_rec* r = cm_find(&M, "tostr", x.ty.n.c_str(), nullptr, nullptr);
             if (r) return subst(r->f[1], x.code, "");
         }
@@ -392,6 +421,19 @@ private:
         } else {
             fail("model", "no operand class for " + ca + " " + op + " " + cb);
         }
+        if (cls == "float") {
+            // binary32 arithmetic (JLS 15.17-15.20): do the operation in double, then round to 24 bits.
+            // For + - * / and %, rounding the double result equals the correctly rounded binary32
+            // result because a double has more than 2*24+2 significant bits.
+            E fx = toClass(a, "float"), fy = toClass(b, "float");
+            if (op == "+" || op == "-" || op == "*" || op == "/" || op == "%") {
+                r.code = "JavaFloat.f32((" + fx.code + " " + op + " " + fy.code + "))";
+                r.ty = mk("float");
+                return r;
+            }
+            if (isCmp) { r.code = "(" + fx.code + " " + op + " " + fy.code + ")"; r.ty = mk("boolean"); return r; }
+            fail("model", "no binary32 rule for operator '" + op + "'");
+        }
         const char* tpl = tplBinop(cls, op);
         if (!tpl) fail("model", "the conversion model has no rule for '" + op + "' on operand class '" + cls + "'");
         E x = isShift ? a : toClass(a, cls);
@@ -408,11 +450,13 @@ private:
         E r;
         r.pure = a.pure;
         std::string c = classOf(a.ty);
+        const bool isF = (c == "float");
+        if (isF) c = "double";
         if (c == "unknown") unsup("untyped");
         const char* tpl = tplUnop(c, op);
         if (!tpl) fail("model", "the conversion model has no rule for unary '" + op + "' on operand class '" + c + "'");
         r.code = subst(tpl, a.code, "");
-        r.ty = (c == "boolean") ? mk("boolean") : mk(c);
+        r.ty = isF ? mk("float") : (c == "boolean") ? mk("boolean") : mk(c);
         return r;
     }
 
@@ -421,10 +465,15 @@ private:
         r.pure = a.pure;
         r.ty = to;
         if (to.dims == 0 && kPrim.count(to.n)) {
-            if (to.n == "float") unsup("float");
             if (to.n == "boolean") { r.code = a.code; return r; }
             std::string from = classOf(a.ty);
             if (from == "unknown") unsup("untyped");
+            if (to.n == "float") {   // (float): round to binary32
+                if (from == "float") { r.code = a.code; return r; }
+                r.code = (from == "double") ? "JavaFloat.f32(" + a.code + ")" : "JavaFloat.f32((double) " + paren(a.code) + ")";
+                return r;
+            }
+            if (from == "float") from = "double";   // a float is held as a double: the double conversion rows apply
             const cm_rec* c = cm_find(&M, "cast", from.c_str(), to.n.c_str(), nullptr);
             if (!c) fail("model", "the conversion model has no cast from '" + from + "' to '" + to.n + "'");
             if (std::string(c->f[2]) == "=") {
@@ -504,10 +553,37 @@ private:
         return code + "}";
     }
 
+    // The outermost expression of a statement may start with a switch expression, which is hoisted
+    // into statements before the statement that uses it (see parseSwitchExpr).
+    size_t hoistPos_ = (size_t)-1;
+    int exprDepth_ = 0;
+    bool allowHoist_ = false;
+    Ty hoistTy_;
+
     E parseExpr() {
+        if (exprDepth_ == 0) hoistPos_ = p;
+        struct Depth { int& d; Depth(int& x) : d(x) { ++d; } ~Depth() { --d; } } depth(exprDepth_);
         E e = parseTernary();
-        if (isAssignOp(cur())) unsup("assign-expr");
+        if (isAssignOp(cur())) {
+            // assignment used as a value (JLS 15.26): the value is the assigned value
+            std::string op = cur().text;
+            p++;
+            if (isLambdaAhead()) unsup("lambda");
+            if (!isLvalueCode(e)) fail("syntax", "the left side of an assignment must be a variable, field or array element");
+            E rhs = parseExpr();
+            std::string text = assignText(e, op, rhs);
+            E r;
+            r.code = "(" + text + ")";
+            r.ty = e.ty;
+            r.pure = false;
+            return r;
+        }
         return e;
+    }
+    bool isLvalueCode(const E& e) const {
+        if (e.isType || e.isNull || e.code.empty()) return false;
+        char c = e.code.back();
+        return !(c == ')' && e.code.find('(') != std::string::npos && e.code.rfind(").") == std::string::npos && false) && (isalnum((unsigned char)c) || c == '_' || c == ']' );
     }
 
     E parseTernary() {
@@ -581,7 +657,17 @@ private:
     E parseUnary() {
         if (cur().kind == JT_OP) {
             const std::string& o = cur().text;
-            if (o == "++" || o == "--") unsup("incr-expr");
+            if (o == "++" || o == "--") {   // prefix ++/-- used as a value: the new value
+                bool inc = (o == "++");
+                p++;
+                E lv = parseUnary();
+                std::string text = incrText(lv, inc);
+                E r;
+                r.code = "(" + text + ")";
+                r.ty = lv.ty;
+                r.pure = false;
+                return r;
+            }
             if (o == "-" || o == "+") {
                 std::string op = o;
                 // negative literals: keep -2147483648 / -9223372036854775808 exact
@@ -629,7 +715,28 @@ private:
 
     E parsePostfix() {
         E e = parseChain();
-        if (isOp("++") || isOp("--")) unsup("incr-expr");
+        if (isOp("++") || isOp("--")) {   // postfix ++/-- used as a value: the OLD value
+            bool inc = isOp("++");
+            p++;
+            std::string c = classOf(e.ty);
+            if (c == "double" || c == "float") fail("model", "postfix ++/-- of a floating point value as a value cannot recover the old value exactly");
+            std::string newText = incrText(e, inc);
+            // old value = inverse step applied to the stored new value, narrowed back to the variable type
+            const cm_rec* r = cm_find(&M, "incr", c.c_str(), nullptr, nullptr);
+            std::string both = r->f[1];
+            size_t sep = both.find(" ;; ");
+            std::string up = both.substr(0, sep), down = sep == std::string::npos ? both : both.substr(sep + 4);
+            std::string oldCode = subst(inc ? down : up, "(" + newText + ")", "");
+            if (e.ty.dims == 0 && (e.ty.n == "byte" || e.ty.n == "short" || e.ty.n == "char")) {
+                E tmp; tmp.code = oldCode; tmp.ty = mk("int");
+                oldCode = emitCast(e.ty, tmp).code;
+            }
+            E res;
+            res.code = oldCode;
+            res.ty = e.ty;
+            res.pure = false;
+            return res;
+        }
         return e;
     }
 
@@ -661,16 +768,58 @@ private:
         const MethodSig* best = nullptr;
         int bestScore = -1;
         for (const auto& m : it->second.methods) {
-            if (m.name != name || m.params.size() != args.size()) continue;
-            int score = 0;
-            for (size_t i = 0; i < args.size(); i++) if (m.params[i] == args[i].ty) score++;
+            if (m.name != name) continue;
+            const bool exact = m.params.size() == args.size();
+            if (!exact && !(m.varargs && args.size() + 1 >= m.params.size())) continue;
+            int score = exact && !m.varargs ? 100 : 0;
+            for (size_t i = 0; i < args.size() && i < m.params.size(); i++) if (m.params[i] == args[i].ty) score++;
             if (score > bestScore) { bestScore = score; best = &m; }
         }
         if (best) return best;
+        if (name == "<init>") return nullptr;   // constructors are not inherited
         if (!it->second.super.empty()) if (const MethodSig* s = pickMethod(it->second.super, name, args, depth + 1)) return s;
         for (const auto& i : it->second.ifaces) if (const MethodSig* s = pickMethod(i, name, args, depth + 1)) return s;
         return nullptr;
     }
+
+    // Java method invocation conversion (JLS 5.3, 15.12.4.2) for a resolved target: pack the trailing
+    // arguments of a variable-arity call into an array, and widen int/long arguments to double
+    // parameters (an int left in a double parameter would later divide as integers).
+    std::vector<E> adaptArgs(const MethodSig* m, std::vector<E> args) {
+        if (!m) return args;
+        const size_t n = m->params.size();
+        size_t fixed = n;
+        if (m->varargs) {
+            fixed = n - 1;
+            const Ty& vt = m->params.back();
+            const bool direct = args.size() == n && (args.back().isNull || (args.back().ty.dims == vt.dims && args.back().ty.n == vt.n));
+            if (!direct) {
+                Ty et = mk(vt.n, vt.dims - 1);
+                std::string body;
+                bool imp = false;
+                for (size_t i = fixed; i < args.size(); i++) {
+                    E a = vt.dims - 1 == 0 ? coerce(args[i], et) : args[i];
+                    body += (i > fixed ? ", " : "") + a.code;
+                    imp = imp || !a.pure;
+                }
+                std::string dimsText;
+                for (int i = 0; i < vt.dims; i++) dimsText += "[]";
+                E packed;
+                std::string tail;
+                for (int i = 1; i < vt.dims; i++) tail += "[]";
+                if (args.size() == fixed) packed.code = "new " + vt.n + "[0]" + tail;
+                else packed.code = "new " + vt.n + dimsText + "{" + body + "}";
+                packed.ty = vt;
+                packed.pure = false;
+                (void)imp;
+                args.resize(fixed);
+                args.push_back(packed);
+            }
+        }
+        for (size_t i = 0; i < fixed && i < args.size(); i++) args[i] = coerce(args[i], m->params[i]);
+        return args;
+    }
+
     const FieldInfo* findField(const std::string& cls, const std::string& name, int depth = 0) const {
         auto it = classes.find(cls);
         if (it == classes.end() || depth > 32) return nullptr;
@@ -699,7 +848,7 @@ private:
             if (t == "@arg0") {
                 if (args.empty()) { r.ty = mk("?"); return r; }
                 std::string c = classOf(args[0].ty);
-                r.ty = (c == "int" || c == "long" || c == "double") ? mk(c) : mk("?");
+                r.ty = (c == "int" || c == "long" || c == "double" || c == "float") ? mk(c) : mk("?");
             } else r.ty = mk(t);
         } else r.ty = mk("?");
         return r;
@@ -741,12 +890,14 @@ private:
                         std::string owner = e.code;
                         size_t dot = owner.rfind('.');
                         if (dot != std::string::npos) owner = owner.substr(dot + 1);
-                        E r = callResult(owner, name, args, e.code + "." + name + "(" + joinArgs(args) + ")", true);
+                        args = adaptArgs(pickMethod(owner, name, args), args);
+                        E r = callResult(owner, name, args, e.code + "." + mapMember(name) + "(" + joinArgs(args) + ")", true);
                         e = r;
                         continue;
                     }
                     std::string recvType = e.ty.dims == 0 ? e.ty.n : std::string("array");
-                    E r = callResult(recvType, name, args, paren(e.code) + "." + name + "(" + joinArgs(args) + ")", false);
+                    args = adaptArgs(pickMethod(recvType, name, args), args);
+                    E r = callResult(recvType, name, args, paren(e.code) + "." + mapMember(name) + "(" + joinArgs(args) + ")", false);
                     e = r;
                     continue;
                 }
@@ -818,7 +969,15 @@ private:
                 return r;
             }
             case JT_DOUBLE: { E r = lit(t.text, mk("double")); p++; return r; }
-            case JT_FLOAT: unsup("float");
+            case JT_FLOAT: {
+                // the float nearest the decimal literal, printed with enough digits to read back exactly
+                char buf[64];
+                float fv = std::strtof(t.text.c_str(), nullptr);
+                std::snprintf(buf, sizeof buf, "%.17g", (double)fv);
+                std::string txt = buf;
+                if (txt.find('.') == std::string::npos && txt.find('e') == std::string::npos && txt.find("inf") == std::string::npos) txt += ".0";
+                E r = lit(txt, mk("float")); p++; return r;
+            }
             case JT_CHAR: { E r = lit(std::to_string(t.ival), mk("char")); r.isLitInt = false; p++; return r; }
             case JT_STRING:
             case JT_TEXTBLOCK: {
@@ -869,7 +1028,7 @@ private:
             }
             unsup("untyped");
         }
-        if (w == "switch") unsup("switch-expr");
+        if (w == "switch") return parseSwitchExpr();
         if (w == "new") return parseNew();
         if (kPrim.count(w)) {
             // int.class, int[].class -- not supported
@@ -880,8 +1039,10 @@ private:
         std::string name = ident();
         if (isOp("(")) {
             std::vector<E> a = parseArgs();
+            const MethodSig* pm = pickMethod(curClass, name, a);
+            a = adaptArgs(pm, a);
             E r;
-            r.code = safeNameForCall(name) + "(" + joinArgs(a) + ")";
+            r.code = mapMember(safeNameForCall(name)) + "(" + joinArgs(a) + ")";
             r.pure = false;
             if (const MethodSig* m = pickMethod(curClass, name, a)) r.ty = m->ret;
             else r.ty = mk("?");
@@ -957,11 +1118,12 @@ private:
             std::string dimsText;
             for (const auto& z : sized) dimsText += "[" + z + "]";
             for (int i = (int)sized.size(); i < rank; i++) dimsText += "[]";
-            r.code = "new " + name + dimsText;
+            r.code = "new " + (name == "float" ? std::string("double") : name) + dimsText;
             return r;
         }
         std::vector<E> args = parseArgs();
         if (isOp("{")) unsup("nested");  // anonymous class
+        args = adaptArgs(pickMethod(name, "<init>", args), args);
         E r;
         r.code = "new " + name + "(" + joinArgs(args) + ")";
         r.pure = false;
@@ -1020,6 +1182,7 @@ private:
             std::string op = cur().text;
             p++;
             if (isLambdaAhead()) unsup("lambda");
+            hoistTy_ = lhs.ty;
             E rhs = parseRhs(lhs.ty);
             return assignText(lhs, op, rhs);
         }
@@ -1030,21 +1193,22 @@ private:
     E parseTernaryNoAssign() { return parseTernary(); }
 
     E parseRhs(const Ty& /*target*/) {
-        E r = parseExpr();
-        if (isAssignOp(cur())) unsup("assign-expr");
-        return r;
+        return parseExpr();
     }
 
     std::string incrText(const E& lv, bool inc) {
         if (!lv.pure) fail("side-effecting-lvalue", "++/-- on an operand with side effects would evaluate it twice");
         std::string c = classOf(lv.ty);
         if (c == "unknown") unsup("untyped");
+        const bool isF = (c == "float");
+        if (isF) c = "double";
         const cm_rec* r = cm_find(&M, "incr", c.c_str(), nullptr, nullptr);
         if (!r) fail("model", "the conversion model has no ++/-- rule for operand class '" + c + "'");
         std::string both = r->f[1];
         size_t sep = both.find(" ;; ");
         std::string up = both.substr(0, sep), down = sep == std::string::npos ? both : both.substr(sep + 4);
         std::string val = subst(inc ? up : down, lv.code, "");
+        if (isF) val = "JavaFloat.f32(" + val + ")";
         // narrow back to byte/short/char as Java does
         if (lv.ty.dims == 0 && (lv.ty.n == "byte" || lv.ty.n == "short" || lv.ty.n == "char")) {
             E tmp; tmp.code = val; tmp.ty = mk("int");
@@ -1062,14 +1226,14 @@ private:
         std::string bop = op.substr(0, op.size() - 1);
         std::string cls = classOf(lhs.ty);
         if (cls == "unknown") unsup("untyped");
-        if (!cm_find(&M, "compound", cls.c_str(), bop.c_str(), nullptr))
+        if (!cm_find(&M, "compound", (cls == "float" ? "double" : cls).c_str(), bop.c_str(), nullptr))
             fail("model", "the conversion model has no compound-assignment rule for '" + op + "' on '" + cls + "'");
         E combined = emitBinary(bop, lhs, rhs);
         E store = combined;
         if (lhs.ty.dims == 0 && kPrim.count(lhs.ty.n) && lhs.ty.n != "boolean") {
             std::string rc = classOf(combined.ty);
             // narrowing back to the variable type (JLS 15.26.2 implicit cast)
-            if (!(rc == "int" && (lhs.ty.n == "int")) && !(rc == "long" && lhs.ty.n == "long") && !(rc == "double" && lhs.ty.n == "double"))
+            if (!(rc == "int" && (lhs.ty.n == "int")) && !(rc == "long" && lhs.ty.n == "long") && !(rc == "double" && lhs.ty.n == "double") && !(rc == "float" && lhs.ty.n == "float"))
                 store = emitCast(lhs.ty, combined);
         }
         return lhs.code + " = " + store.code;
@@ -1144,6 +1308,7 @@ private:
                     initCode = parseArrayInit(ty);
                 } else {
                     if (isLambdaAhead()) unsup("lambda");
+                    if (!isVar) hoistTy_ = ty;
                     E v = parseExpr();
                     if (isVar) {
                         if (!v.ty.known() || v.ty.n == "null" || v.ty.n.rfind("type:", 0) == 0) unsup("untyped");
@@ -1170,6 +1335,7 @@ private:
     }
 
     void parseStatement() {
+        allowHoist_ = true; hoistTy_ = mk("?");
         const Tok& t = cur();
         if (t.kind == JT_OP) {
             if (t.text == "{") {
@@ -1199,6 +1365,7 @@ private:
             if (w == "if") { parseIf(); return; }
             if (w == "while") {
                 p++; expectOp("(");
+                allowHoist_ = false;
                 E c = parseExpr(); expectOp(")");
                 line("while (" + c.code + ") {");
                 breakCtx.push_back('L');
@@ -1214,6 +1381,7 @@ private:
                 parseBody();
                 breakCtx.pop_back();
                 expectKw("while"); expectOp("(");
+                allowHoist_ = false;
                 E c = parseExpr(); expectOp(")"); expectOp(";");
                 line("} while (" + c.code + ");");
                 return;
@@ -1224,11 +1392,22 @@ private:
                 p++;
                 if (acceptOp(";")) { line("return;"); return; }
                 if (isLambdaAhead()) unsup("lambda");
+                hoistTy_ = curRet;
                 E v = parseExpr();
-                if (isAssignOp(cur())) unsup("assign-expr");
                 expectOp(";");
                 v = coerce(v, curRet);
                 line("return " + v.code + ";");
+                return;
+            }
+            if (w == "yield" && !yieldVar_.empty() && !isOpAt(p + 1, "=") && !isOpAt(p + 1, ".") && !isOpAt(p + 1, "(")) {
+                if (breakCtx.size() != yieldBase_) fail("switch-expr", "yield inside a nested loop or switch cannot be expressed with a single break");
+                p++;
+                E v = parseExpr();
+                expectOp(";");
+                noteYieldType(v.ty);
+                v = coerce(v, yieldTyKnown_ ? yieldTy_ : v.ty);
+                line(yieldVar_ + " = " + v.code + ";");
+                line("break;");
                 return;
             }
             if (w == "break") {
@@ -1255,7 +1434,19 @@ private:
                 return;
             }
             if (w == "try") { parseTry(); return; }
-            if (w == "synchronized") unsup("synchronized");
+            if (w == "synchronized") {
+                if (!opt.singleThread) unsup("synchronized");
+                p++; expectOp("(");
+                allowHoist_ = false;
+                E mon = parseExpr();
+                expectOp(")");
+                line("< synchronized block, converted for single-thread execution >");
+                line("{");
+                (void)mon;
+                parseBody();
+                line("}");
+                return;
+            }
             if (w == "assert") {
                 // assertions are disabled unless the JVM runs with -ea; as a default run they have no effect
                 p++;
@@ -1281,6 +1472,7 @@ private:
 
     void parseIf() {
         expectKw("if"); expectOp("(");
+        allowHoist_ = false;
         E c = parseExpr(); expectOp(")");
         line("if (" + c.code + ") {");
         parseBody();
@@ -1288,6 +1480,7 @@ private:
             p++;
             if (isKw("if")) {
                 p++; expectOp("(");
+                allowHoist_ = false;
                 E c2 = parseExpr(); expectOp(")");
                 line("} else if (" + c2.code + ") {");
                 parseBody();
@@ -1302,6 +1495,7 @@ private:
 
     void parseFor() {
         expectKw("for"); expectOp("(");
+        allowHoist_ = false;
         pushScope();
         // enhanced for?
         {
@@ -1353,11 +1547,93 @@ private:
         popScope();
     }
 
+    size_t skipBraces(size_t i) const {
+        int d = 0;
+        do { if (isOpAt(i, "{")) d++; else if (isOpAt(i, "}")) d--; i++; } while (d > 0 && at(i).kind != JT_EOF);
+        return i;
+    }
+
+    // try (R r = init; ...) body [catch...] [finally...]  (JLS 14.20.3). Each resource is closed in reverse
+    // order after the body; an exception from the body is kept as primary and one from close() is added
+    // to it as suppressed; the catch and finally clauses of the statement wrap all of this.
+    void emitResources(bool* outerOpened) {
+        expectOp("(");
+        size_t afterHeader = p;
+        { int d = 1; size_t i = p; while (d > 0 && at(i).kind != JT_EOF) { if (isOpAt(i, "(")) d++; else if (isOpAt(i, ")")) d--; i++; } afterHeader = i; }
+        size_t afterBody = skipBraces(afterHeader);
+        bool outer = isKwAt(afterBody, "catch") || isKwAt(afterBody, "finally");
+        *outerOpened = outer;
+        if (outer) { line("try {"); ind++; } else { line("{"); ind++; }
+        pushScope();
+        struct Res { std::string var; int id; };
+        std::vector<Res> res;
+        while (!isOp(")")) {
+            if (atEof()) fail("syntax", "unterminated resource specification");
+            Res r; r.id = ++tmpCounter;
+            if (looksLikeDecl()) {
+                while (isKw("final")) p++;
+                bool isVar = isKw("var") && isIdentTok(at(p + 1));
+                Ty ty = isVar ? mk("?") : parseType();
+                if (isVar) p++;
+                std::string nm = ident();
+                expectOp("=");
+                E init = parseExpr();
+                if (isVar) { if (!init.ty.known()) unsup("untyped"); ty = init.ty; }
+                if (!ty.known()) unsup("untyped");
+                r.var = declare(nm, ty);
+                line(emitType(ty) + " " + r.var + " = " + init.code + ";");
+            } else {
+                E v = parseExpr();
+                if (!v.ty.known()) unsup("untyped");
+                r.var = "res_" + std::to_string(r.id);
+                usedNames.insert(r.var);
+                line(emitType(v.ty) + " " + r.var + " = " + v.code + ";");
+            }
+            line("Any primary_" + std::to_string(r.id) + " = null;");
+            line("try {");
+            ind++;
+            res.push_back(r);
+            if (!acceptOp(";")) break;
+        }
+        expectOp(")");
+        // the body, indented inside the innermost try
+        {
+            expectOp("{");
+            pushScope();
+            while (!isOp("}")) { if (atEof()) fail("syntax", "unexpected end of file in block"); parseStatement(); }
+            p++;
+            popScope();
+        }
+        for (size_t k = res.size(); k-- > 0;) {
+            std::string id = std::to_string(res[k].id);
+            ind--;
+            line("} catch (Any thrown_" + id + ") {");
+            line("  primary_" + id + " = thrown_" + id + ";");
+            line("  throw thrown_" + id + ";");
+            line("} finally {");
+            line("  if (" + res[k].var + " != null) {");
+            line("    if (primary_" + id + " != null) {");
+            line("      try { " + res[k].var + ".closeResource(); } catch (Any suppressed_" + id + ") { ((Throwable) primary_" + id + ").addSuppressed((Throwable) suppressed_" + id + "); }");
+            line("    } else { " + res[k].var + ".closeResource(); }");
+            line("  }");
+            line("}");
+        }
+        popScope();
+        if (!outer) { ind--; line("}"); }
+        else { ind--; }
+    }
+
     void parseTry() {
         expectKw("try");
-        if (isOp("(")) fail("try-with-resources", "try-with-resources calls close() on exit; the cleanup is not lowered yet");
-        line("try {");
-        parseBody();
+        if (isOp("(")) {
+            bool outer = false;
+            emitResources(&outer);
+            if (!outer) return;
+            // the statement's own catch / finally clauses follow the resource block
+        } else {
+            line("try {");
+            parseBody();
+        }
         while (isKw("catch")) {
             p++; expectOp("(");
             while (isKw("final")) p++;
@@ -1388,114 +1664,286 @@ private:
         line("}");
     }
 
-    struct SwGroup { std::vector<std::string> labels; bool isDefault = false; std::vector<std::string> body; bool breaks = false; bool terminal = false; };
+    // ---- enum --------------------------------------------------------------------------------
+    // An enum is lowered, as javac does, to a class: two hidden fields (name, ordinal), one static
+    // instance per constant (a constant with a body is an instance of a generated subclass), a
+    // static values array, and values()/valueOf()/name()/ordinal()/toString()/compareTo().
+    // A bare constant name in a case label is resolved by parseCaseLabel.
+    void parseEnum() {
+        expectKw("enum");
+        typeVars.clear();
+        curIsInterface = false;
+        std::string name = ident();
+        curClass = name;
+        std::vector<std::string> ifaceNames;
+        std::string header = "class " + name;
+        if (acceptKw("implements")) {
+            std::vector<std::string> ifs;
+            auto one = [&]() { Ty t = parseType(); ifs.push_back(t.n == "?" ? std::string("Any") : t.n); };
+            one();
+            while (acceptOp(",")) one();
+            ifaceNames = ifs;
+            header += " implements " + ifs[0];
+            for (size_t i = 1; i < ifs.size(); i++) header += ", " + ifs[i];
+        }
+        expectOp("{");
+        ClassInfo& ci = classes[name];
+        if (pass == 1) { ci.fields.clear(); ci.methods.clear(); ci.isEnum = true; ci.super = ""; ci.ifaces = ifaceNames; }
+        size_t beforeDiags = diags.size();
+
+        struct Const { std::string name; std::vector<E> args; std::string sub; std::vector<std::string> subLines; int subFields = 0; };
+        std::vector<Const> consts;
+        scopes.clear(); usedNames.clear(); pushScope(); curRet = mk("void"); tmpCounter = 0;
+        while (isIdentTok(cur()) || isOp("@")) {
+            while (isOp("@")) { p++; ident(); while (acceptOp(".")) ident(); if (isOp("(")) { int d = 0; do { if (isOp("(")) d++; else if (isOp(")")) d--; p++; } while (d > 0 && !atEof()); } }
+            Const c;
+            c.name = ident();
+            if (isOp("(")) c.args = parseArgs();
+            if (isOp("{")) {                    // constant-specific class body
+                c.sub = name + "__" + c.name;
+                ClassInfo& sci = classes[c.sub];
+                if (pass == 1) { sci.fields.clear(); sci.methods.clear(); sci.super = name; sci.ifaces.clear(); }
+                const std::string savedClass = curClass;
+                curClass = c.sub;
+                p++;
+                while (!isOp("}")) {
+                    if (atEof()) fail("syntax", "unexpected end of file in enum constant body");
+                    size_t start = p;
+                    out.clear(); ind = 1;
+                    try { parseMember(c.sub, false, sci, &c.subFields); for (auto& l : out) c.subLines.push_back(l); }
+                    catch (const ConvErr& e) { diag(e); skipMember(start); }
+                }
+                p++;
+                curClass = savedClass;
+            }
+            consts.push_back(std::move(c));
+            if (!acceptOp(",")) break;
+        }
+        bool hadMembers = acceptOp(";");
+        std::vector<std::string> memberLines;
+        int instanceFields = 0;
+        if (pass == 1) {
+            for (auto& c : consts) { FieldInfo fi; fi.ty = mk(name); fi.isStatic = true; ci.fields[c.name] = fi; }
+            FieldInfo vf; vf.ty = mk(name, 1); vf.isStatic = true; ci.fields["enumValues"] = vf;
+            auto addM = [&](const char* n, Ty r, std::vector<Ty> ps, bool st) { MethodSig m; m.name = n; m.ret = r; m.params = ps; m.isStatic = st; ci.methods.push_back(m); };
+            addM("values", mk(name, 1), {}, true);
+            addM("valueOf", mk(name), {mk("String")}, true);
+            addM("name", mk("String"), {}, false);
+            addM("ordinal", mk("int"), {}, false);
+            addM("compareTo", mk("int"), {mk(name)}, false);
+        }
+        bool userToString = false, ctorSeen = false;
+        enumMode_ = true;
+        while (hadMembers || isOp("}") == false) {
+            if (isOp("}")) break;
+            if (atEof()) { enumMode_ = false; fail("syntax", "unexpected end of file in enum body"); }
+            if (acceptOp(";")) continue;
+            size_t start = p;
+            out.clear(); ind = 1;
+            if (isIdentTok(cur()) && cur().text == name && isOpAt(p + 1, "(")) ctorSeen = true;
+            try { parseMember(name, false, ci, &instanceFields); for (auto& l : out) memberLines.push_back(l); }
+            catch (const ConvErr& e) { diag(e); skipMember(start); }
+        }
+        enumMode_ = false;
+        expectOp("}");
+        out.clear();
+        for (auto& m : ci.methods) if (m.name == "toString" && m.params.empty()) userToString = true;
+        if (diags.size() != beforeDiags || pass != 2) return;
+        if (instanceFields + 13 + 2 > 64)
+            fail("model", "the enum has " + std::to_string(instanceFields) + " instance fields; with the metadata and name/ordinal fields it exceeds the 64-field SLeeLa class limit");
+
+        auto ctorFor = [&](const std::vector<E>& args) -> const MethodSig* {
+            const MethodSig* best = nullptr; int bestScore = -1;
+            for (const auto& m : ci.methods) {
+                if (m.name != "<init>" || m.params.size() != args.size()) continue;
+                int sc = 0; for (size_t i = 0; i < args.size(); i++) if (m.params[i] == args[i].ty) sc++;
+                if (sc > bestScore) { bestScore = sc; best = &m; }
+            }
+            return best;
+        };
+        std::ostringstream o;
+        o << header << " {\n" << metaBlock(name) << "\n";
+        o << "  String enumName;\n  int enumOrdinal;\n";
+        for (auto& l : memberLines) o << l << "\n";
+        if (!ctorSeen) o << "  " << name << "(String enumName_, int enumOrd_) {\n    this.enumName = enumName_;\n    this.enumOrdinal = enumOrd_;\n  }\n";
+        int ord = 0;
+        for (auto& c : consts) {
+            const MethodSig* m = ctorFor(c.args);
+            if (!c.args.empty() && !m) fail("model", "no constructor of enum " + name + " takes " + std::to_string(c.args.size()) + " argument(s)");
+            std::string argText;
+            for (size_t i = 0; i < c.args.size(); i++) {
+                E a = m ? coerce(c.args[i], m->params[i]) : c.args[i];
+                argText += ", " + a.code;
+            }
+            o << "  static " << name << " " << c.name << " = new " << (c.sub.empty() ? name : c.sub) << "(\"" << c.name << "\", " << ord << argText << ");\n";
+            ord++;
+        }
+        o << "  static " << name << "[] enumValues = {";
+        for (size_t i = 0; i < consts.size(); i++) o << (i ? ", " : "") << consts[i].name;
+        o << "};\n";
+        o << "  static " << name << "[] values() {\n    " << name << "[] r = new " << name << "[arrayLength(enumValues)];\n"
+          << "    for (int i = 0; i < arrayLength(enumValues); i++) { r[i] = enumValues[i]; }\n    return r;\n  }\n";
+        o << "  static " << name << " valueOf(String n) {\n    for (int i = 0; i < arrayLength(enumValues); i++) { " << name << " e = enumValues[i]; if (e.name() == n) { return e; } }\n"
+          << "    throw new IllegalArgumentException(\"No enum constant " << name << ".\" + n);\n  }\n";
+        o << "  String name() { return enumName; }\n  int ordinal() { return enumOrdinal; }\n";
+        if (!userToString) o << "  String toString() { return enumName; }\n";
+        o << "  int compareTo(" << name << " other) { return enumOrdinal - other.ordinal(); }\n";
+        o << "}\n";
+        OutFile f; f.typeName = name; f.text = o.str();
+        files.push_back(f);
+        for (auto& c : consts) {
+            if (c.sub.empty()) continue;
+            const MethodSig* m = ctorFor(c.args);
+            std::string params, supers;
+            if (m) for (size_t i = 0; i < m->params.size(); i++) { params += ", " + emitType(m->params[i]) + " a" + std::to_string(i); supers += ", a" + std::to_string(i); }
+            std::ostringstream so;
+            so << "class " << c.sub << " extends " << name << " {\n" << metaBlock(c.sub) << "\n";
+            so << "  " << c.sub << "(String enumName_, int enumOrd_" << params << ") {\n    super(enumName_, enumOrd_" << supers << ");\n  }\n";
+            for (auto& l : c.subLines) so << l << "\n";
+            so << "}\n";
+            OutFile sf; sf.typeName = c.sub; sf.text = so.str();
+            files.push_back(sf);
+        }
+    }
+
+    // ---- switch (statement and expression) -------------------------------------------------
+    // A switch statement is emitted as a native SLeeLa switch: the compiler lowers it in source order
+    // with Java fallthrough, a default anywhere, and break/continue (SLEELA.syntax 44.4). Arrow cases
+    // become a case followed by an implicit break. A switch expression is hoisted: a temporary is
+    // declared, a native switch assigns it in each arm, and the temporary is the value.
+    bool enumMode_ = false;
+    // Java member names that collide with SLeeLa built-ins are renamed consistently in declarations and calls.
+    // close() is the Munction reach-handle built-in, so the Java tier calls it closeResource().
+    static std::string mapMember(const std::string& n) { return n == "close" ? "closeResource" : n; }
+    bool lastVarargs_ = false;
+    std::string yieldVar_;
+    Ty yieldTy_;
+    bool yieldTyKnown_ = false;
+    size_t yieldBase_ = 0;
+    size_t yieldDeclIdx_ = 0;
+
+    bool isEnumType(const std::string& n) const {
+        auto it = classes.find(n);
+        return it != classes.end() && it->second.isEnum;
+    }
+
+    std::string parseCaseLabel(const Ty& selTy) {
+        if (isKw("null")) unsup("switch-expr");
+        // enum constant: a bare name resolved in the selector's enum type
+        if (isIdentTok(cur()) && (isOpAt(p + 1, ",") || isOpAt(p + 1, ":") || isOpAt(p + 1, "->")) && selTy.dims == 0 && isEnumType(selTy.n)) {
+            std::string c = ident();
+            return selTy.n + "." + c;
+        }
+        // type patterns (case Circle c ->) are not converted
+        if (isIdentTok(cur()) && isIdentTok(at(p + 1))) unsup("switch-expr");
+        E lab = parseTernary();
+        std::string cls = classOf(selTy);
+        if (cls == "text" && !(lab.ty.dims == 0 && lab.ty.n == "String")) unsup("untyped");
+        return lab.code;
+    }
+
+    // Parses '{' cases '}' emitting native switch lines. resultVar non-empty => switch expression.
+    void parseSwitchBody(const Ty& selTy, const std::string& resultVar) {
+        expectOp("{");
+        pushScope();
+        breakCtx.push_back('W');
+        while (!isOp("}")) {
+            if (atEof()) fail("syntax", "unexpected end of file in switch");
+            std::vector<std::string> labels;
+            bool arrow = false;
+            if (acceptKw("default")) {
+                labels.push_back("default:");
+            } else {
+                expectKw("case");
+                do { labels.push_back("case " + parseCaseLabel(selTy) + ":"); } while (acceptOp(","));
+            }
+            if (acceptOp("->")) arrow = true; else expectOp(":");
+            // old-style stacked labels: case 1: case 2: body
+            while (!arrow && (isKw("case") || isKw("default"))) {
+                if (acceptKw("default")) labels.push_back("default:");
+                else { p++; do { labels.push_back("case " + parseCaseLabel(selTy) + ":"); } while (acceptOp(",")); }
+                if (isOp("->")) fail("syntax", "cannot mix ':' and '->' case labels");
+                expectOp(":");
+            }
+            for (auto& l : labels) line(l);
+            ind++;
+            if (arrow) {
+                if (isOp("{")) {
+                    parseBlockInto();
+                } else if (isKw("throw")) {
+                    parseStatement();
+                } else {
+                    if (!resultVar.empty()) {
+                        E v = parseExpr();
+                        noteYieldType(v.ty);
+                        v = coerce(v, yieldTyKnown_ ? yieldTy_ : v.ty);
+                        line(resultVar + " = " + v.code + ";");
+                    } else {
+                        std::string st = parseStatementExpr();
+                        line(st + ";");
+                    }
+                    expectOp(";");
+                }
+                if (!(isKwAt(p - 1, "throw"))) line("break;");
+            } else {
+                while (!isKw("case") && !isKw("default") && !isOp("}")) {
+                    if (atEof()) fail("syntax", "unexpected end of file in switch");
+                    parseStatement();
+                }
+            }
+            ind--;
+        }
+        expectOp("}");
+        breakCtx.pop_back();
+        popScope();
+    }
+
+    void noteYieldType(const Ty& t) {
+        if (!yieldTyKnown_ && t.known() && t.n != "null") { yieldTy_ = t; yieldTyKnown_ = true; }
+    }
 
     void parseSwitch() {
         expectKw("switch"); expectOp("(");
+        allowHoist_ = false;
         E sel = parseExpr();
-        expectOp(")"); expectOp("{");
+        expectOp(")");
         std::string cls = classOf(sel.ty);
         if (cls == "unknown" || cls == "double" || cls == "long" || cls == "boolean") unsup("untyped");
-        bool isText = cls == "text";
-        std::string tmp = freshTmp("sw");
-        line(emitType(sel.ty) + " " + tmp + " = " + sel.code + ";");
-        std::vector<SwGroup> groups;
-        pushScope();
-        while (!isOp("}")) {
-            SwGroup g;
-            // labels
-            bool any = false;
-            while (isKw("case") || isKw("default")) {
-                any = true;
-                if (acceptKw("default")) { g.isDefault = true; if (isOp("->")) unsup("switch-expr"); expectOp(":"); }
-                else {
-                    p++;
-                    do {
-                        if (isKw("null")) unsup("switch-expr");
-                        E lab = parseTernary();
-                        if (isOp("->")) unsup("switch-expr");
-                        g.labels.push_back(lab.code);
-                        if (isText && !(lab.ty.dims == 0 && lab.ty.n == "String")) unsup("untyped");
-                        // enum-style bare names cannot be resolved here
-                        if (!isText && classOf(lab.ty) == "unknown") unsup("untyped");
-                    } while (acceptOp(","));
-                    if (isOp("->")) unsup("switch-expr");
-                    expectOp(":");
-                }
-            }
-            if (!any) fail("syntax", "expected 'case' or 'default' but found '" + descr() + "'");
-            // body until next label / end
-            std::vector<std::string> saved;
-            saved.swap(out);
-            int savedInd = ind;
-            ind = savedInd + 1;
-            breakCtx.push_back('S');
-            bool sawBreak = false, sawTerminal = false;
-            while (!isKw("case") && !isKw("default") && !isOp("}")) {
-                if (atEof()) fail("syntax", "unexpected end of file in switch");
-                if (isKw("break") && isOpAt(p + 1, ";") && (isKwAt(p + 2, "case") || isKwAt(p + 2, "default") || isOpAt(p + 2, "}"))) {
-                    p += 2; sawBreak = true; break;
-                }
-                bool term = isKw("return") || isKw("throw") || isKw("continue");
-                parseStatement();
-                sawTerminal = term && (isKw("case") || isKw("default") || isOp("}"));
-            }
-            breakCtx.pop_back();
-            g.body.swap(out);
-            out.swap(saved);
-            ind = savedInd;
-            g.breaks = sawBreak;
-            g.terminal = sawTerminal;
-            groups.push_back(std::move(g));
-        }
-        expectOp("}");
-        popScope();
-        // merge label-only groups into the following group (case 1: case 2: stmts)
-        std::vector<SwGroup> merged;
-        std::vector<std::string> pend; bool pendDefault = false;
-        for (size_t i = 0; i < groups.size(); i++) {
-            SwGroup& g = groups[i];
-            for (auto& l : g.labels) pend.push_back(l);
-            pendDefault = pendDefault || g.isDefault;
-            if (g.body.empty() && !g.breaks && i + 1 < groups.size()) continue;
-            g.labels = pend; g.isDefault = pendDefault;
-            pend.clear(); pendDefault = false;
-            merged.push_back(std::move(g));
-        }
-        for (size_t i = 0; i < merged.size(); i++) {
-            const SwGroup& g = merged[i];
-            bool last = (i + 1 == merged.size());
-            if (!g.breaks && !g.terminal && !last)
-                fail("switch-fallthrough", "case group falls through into the next group; fallthrough has no equivalent in an if-chain");
-            if (g.isDefault && !last && !g.breaks && !g.terminal)
-                fail("switch-fallthrough", "default group that is not last must end in break/return/throw");
-        }
-        // emit: non-default groups as an if / else-if chain, default as the final else
-        const SwGroup* def = nullptr;
-        bool first = true;
-        for (const SwGroup& g : merged) {
-            if (g.isDefault) {
-                if (!g.labels.empty()) {
-                    fail("switch-default-mix", "a group that combines 'default' with case labels is not converted");
-                }
-                def = &g;
-                continue;
-            }
-            std::string cond;
-            for (size_t k = 0; k < g.labels.size(); k++) {
-                if (k) cond += " || ";
-                cond += "(" + tmp + " == " + g.labels[k] + ")";
-            }
-            line(std::string(first ? "if (" : "} else if (") + cond + ") {");
-            for (const auto& s : g.body) out.push_back(s);
-            first = false;
-        }
-        if (def) {
-            if (first) { line("{"); }
-            else line("} else {");
-            for (const auto& s : def->body) out.push_back(s);
-            line("}");
-        } else if (!first) line("}");
+        line("switch (" + sel.code + ") {");
+        std::string savedYield = yieldVar_; yieldVar_.clear();
+        parseSwitchBody(sel.ty, "");
+        yieldVar_ = savedYield;
+        line("}");
+    }
+
+    E parseSwitchExpr() {
+        if (!allowHoist_ || p != hoistPos_) unsup("switch-expr");
+        expectKw("switch"); expectOp("(");
+        allowHoist_ = false;
+        E sel = parseExpr();
+        expectOp(")");
+        std::string cls = classOf(sel.ty);
+        if (cls == "unknown" || cls == "double" || cls == "long" || cls == "boolean") unsup("untyped");
+        std::string tmp = freshTmp("swv");
+        // result type: the declared target when the statement gives one, else the first arm
+        const std::string savedVar = yieldVar_; const Ty savedTy = yieldTy_; const bool savedKnown = yieldTyKnown_; const size_t savedBase = yieldBase_; const size_t savedIdx = yieldDeclIdx_;
+        yieldVar_ = tmp;
+        yieldTy_ = hoistTy_; yieldTyKnown_ = hoistTy_.known() && hoistTy_.n != "void";
+        yieldDeclIdx_ = out.size();
+        line("<TYPE> " + tmp + ";");
+        line("switch (" + sel.code + ") {");
+        yieldBase_ = breakCtx.size() + 1;   // parseSwitchBody pushes one 'W'
+        parseSwitchBody(sel.ty, tmp);
+        line("}");
+        Ty resTy = yieldTyKnown_ ? yieldTy_ : mk("?");
+        std::string decl = emitType(resTy) + " " + tmp + ";";
+        out[yieldDeclIdx_] = std::string((size_t)ind * 2, ' ') + decl;
+        yieldVar_ = savedVar; yieldTy_ = savedTy; yieldTyKnown_ = savedKnown; yieldBase_ = savedBase; yieldDeclIdx_ = savedIdx;
+        E r;
+        r.code = tmp;
+        r.ty = resTy;
+        r.pure = true;
+        return r;
     }
 
     // ---------------------------------------------------------- members ----
@@ -1643,7 +2091,7 @@ private:
         bool isIface = false;
         if (isKw("class")) p++;
         else if (isKw("interface")) { p++; isIface = true; }
-        else if (isKw("enum")) unsup("enum");
+        else if (isKw("enum")) { parseEnum(); return; }
         else if (isKw("record")) unsup("nested");
         else if (isOp("@")) unsup("nested");
         else fail("syntax", "expected a class or interface declaration but found '" + descr() + "'");
@@ -1753,8 +2201,8 @@ private:
         if (isOp("{")) unsup("nested");                       // initializer block
         if (isKw("class") || isKw("interface") || isKw("enum") || (isKw("record") && isIdentTok(at(p + 1)) && !isOpAt(p + 2, "(") && !isOpAt(p + 2, ";") && !isOpAt(p + 2, "="))) unsup("nested");
         if (isOp("@")) unsup("nested");
-        if (mods.has("synchronized")) unsup("synchronized");
-        if (mods.has("volatile")) fail("model", "volatile requires the Java memory model; not converted");
+        if (mods.has("synchronized") && !opt.singleThread) unsup("synchronized");
+        if (mods.has("volatile") && !opt.singleThread) fail("volatile", "volatile requires the Java memory model; convert with --single-thread to treat it as a plain field");
         if (mods.has("native")) fail("native", "native methods have no Java body to convert");
 
         std::vector<std::string> mtp;
@@ -1769,11 +2217,23 @@ private:
             p++;
             scopes.clear(); usedNames.clear(); pushScope(); tmpCounter = 0;
             std::vector<std::pair<std::string, Ty>> params = parseParams();
+            const bool ctorVarargs = lastVarargs_;
             if (isKw("throws")) skipThrows();
             curRet = mk("void");
-            std::string sig = cls + "(" + paramList(params) + ")";
+            if (pass == 1) {
+                MethodSig ms; ms.name = "<init>"; ms.ret = mk("void"); ms.varargs = ctorVarargs;
+                for (auto& pr : params) ms.params.push_back(pr.second);
+                ci.methods.push_back(ms);
+            }
+            std::string plist = paramList(params);
+            std::string sig = enumMode_ ? cls + "(String enumName_, int enumOrd_" + (plist.empty() ? "" : ", " + plist) + ")" : cls + "(" + plist + ")";
             line(sig + " {");
             ind = 2;
+            if (enumMode_) {
+                if (isOp("{") && isKwAt(p + 1, "this") && isOpAt(p + 2, "(")) fail("enum-this-ctor", "an enum constructor that delegates with this(...) is not converted");
+                line("this.enumName = enumName_;");
+                line("this.enumOrdinal = enumOrd_;");
+            }
             expectOp("{");
             pushScope();
             while (!isOp("}")) { if (atEof()) fail("syntax", "unexpected end of file in constructor"); parseStatement(); }
@@ -1789,16 +2249,16 @@ private:
         std::string name = ident();
 
         if (isOp("(")) {
-            if (kSleelaReserved.count(name))
+            if (kSleelaReserved.count(name) && name != "close")
                 fail("reserved-member", "a method named '" + name + "' collides with a SLeeLa reserved word or built-in");
             scopes.clear(); usedNames.clear(); pushScope(); tmpCounter = 0;
             std::vector<std::pair<std::string, Ty>> params = parseParams();
+            const bool methodVarargs = lastVarargs_;
             while (isOp("[") && isOpAt(p + 1, "]")) { p += 2; ty.dims++; }
             if (isKw("throws")) skipThrows();
-            if (ty.n == "float") unsup("float");
             curRet = ty;
             if (pass == 1) {
-                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic;
+                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs;
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }
@@ -1809,7 +2269,7 @@ private:
             std::string rt = emitType(ty);
             if (isMain) {
                 head = "";
-                line("void main() {");
+                line("static void main() {");
                 ind = 2;
                 expectOp("{");
                 pushScope();
@@ -1823,7 +2283,7 @@ private:
                 typeVars = savedVars;
                 return;
             }
-            std::string sig = head + rt + " " + name + "(" + paramList(params) + ")";
+            std::string sig = head + rt + " " + mapMember(name) + "(" + paramList(params) + ")";
             if (isOp(";")) {
                 p++;
                 if (!isIface && !isAbstract) fail("native", "method without a body that is not abstract or an interface member");
@@ -1850,7 +2310,6 @@ private:
             while (isOp("[") && isOpAt(p + 1, "]")) { p += 2; ft.dims++; }
             if (kSleelaReserved.count(name))
                 fail("reserved-member", "a field named '" + name + "' collides with a SLeeLa reserved word");
-            if (ft.n == "float") unsup("float");
             FieldInfo fi; fi.ty = ft; fi.isStatic = isStatic || isIface;
             if (pass == 1) ci.fields[name] = fi;
             std::string decl = std::string((isStatic || isIface) ? "static " : "") + emitType(ft) + " " + name;
@@ -1876,6 +2335,7 @@ private:
 
     std::vector<std::pair<std::string, Ty>> parseParams() {
         std::vector<std::pair<std::string, Ty>> ps;
+        lastVarargs_ = false;
         expectOp("(");
         if (!isOp(")")) {
             do {
@@ -1884,10 +2344,13 @@ private:
                     else p++;
                 }
                 Ty t = parseType();
-                if (isOp("...")) fail("varargs", "variable-arity parameters have no SLeeLa form");
+                if (isOp("...")) {   // variable arity: the parameter is an array, call sites pack the extra arguments
+                    p++;
+                    t.dims++;
+                    lastVarargs_ = true;
+                }
                 std::string n = ident();
                 while (isOp("[") && isOpAt(p + 1, "]")) { p += 2; t.dims++; }
-                if (t.n == "float") unsup("float");
                 ps.push_back({n, t});
             } while (acceptOp(","));
         }

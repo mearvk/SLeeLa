@@ -9211,9 +9211,9 @@ unsupported lambda lambdas need the linear lowering of lib/java/jdk-28/LOWERING.
 unsupported methodref method references need the linear lowering of lib/java/jdk-28/LOWERING.md
 unsupported synchronized synchronized blocks have no SLeeLa form
 unsupported enum enum declarations are listed in SLEELA.syntax 43.5 as not supported
-unsupported incr-expr ++/-- used as a value (not a statement) would reorder evaluation
-unsupported assign-expr assignment used as a value would reorder evaluation
-unsupported switch-expr switch expressions and arrow cases are not converted
+unsupported incr-expr ++/-- of a floating point value used as a value cannot recover the old value exactly
+unsupported assign-expr an assignment inside a construct the converter cannot hoist or sequence
+unsupported switch-expr a switch expression must start the expression of a declaration, assignment, return or expression statement; type patterns and case null are not converted
 unsupported string-static String is a keyword type in SLeeLa, so String.valueOf / String.format / String.join cannot be called as static members yet
 unsupported nested nested/inner/anonymous types are not converted yet
 unsupported untyped operand type cannot be determined, so the Java operator semantics cannot be selected

@@ -36,11 +36,13 @@ struct MethodSig {
     Ty ret;
     std::vector<Ty> params;
     bool isStatic = false;
+    bool varargs = false;   // the last parameter is T... (its type is stored as T[])
 };
 struct FieldInfo { Ty ty; bool isStatic = false; };
 struct ClassInfo {
     std::map<std::string, FieldInfo> fields;
     std::vector<MethodSig> methods;
+    bool isEnum = false;               // an enum type (constants are static fields of the class)
     std::string super;                 // simple name of the superclass, "" if none
     std::vector<std::string> ifaces;   // simple names of implemented / extended interfaces
 };
@@ -72,6 +74,9 @@ struct Options {
     // sibling files). false: one document per type (library mode, as under lib/java).
     bool bundle = false;
     std::string bundleName;
+    // The converted program runs on one thread: Java synchronized and volatile are then plain
+    // (they only order accesses between threads). Off by default: without it they are refused.
+    bool singleThread = false;
 };
 
 struct Result {

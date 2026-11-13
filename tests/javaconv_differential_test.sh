@@ -32,8 +32,10 @@ for j in "$tests"/java/*.java; do
   mkdir -p "$tmp/$name/cls" "$tmp/$name/sl"
   if ! javac -d "$tmp/$name/cls" "$j" 2> "$tmp/$name/javac.err"; then echo "FAIL  $name (javac)"; cat "$tmp/$name/javac.err"; fail=$((fail+1)); continue; fi
   java -cp "$tmp/$name/cls" "$name" > "$tmp/$name/expected.out" 2>&1
-  if ! "$conv" --file "$j" --out "$tmp/$name/sl" --quiet; then
-    echo "FAIL  $name (converter failed closed)"; "$conv" --file "$j" --out "$tmp/$name/sl" | sed 's/^/      /'; fail=$((fail+1)); continue
+  flags="$(sed -n 's|^// flags: ||p' "$j" | head -1)"
+  # shellcheck disable=SC2086
+  if ! "$conv" --file "$j" --out "$tmp/$name/sl" --quiet $flags; then
+    echo "FAIL  $name (converter failed closed)"; "$conv" --file "$j" --out "$tmp/$name/sl" $flags | sed 's/^/      /'; fail=$((fail+1)); continue
   fi
   (cd "$tmp/$name/sl" && timeout 300 "$sleela" run "$name.sleela" 2>&1 | filter) > "$tmp/$name/actual.out"
   if diff -u "$tmp/$name/expected.out" "$tmp/$name/actual.out" > "$tmp/$name/diff"; then
