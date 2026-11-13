@@ -1,4 +1,4 @@
-<< advantage/artificial-intelligence/models/high-speed-trader/high-speed-trader.sleela
+<< advantage/artificial-intelligence/high-speed-trader/high-speed-trader.sleela
    SLeeLa courseware model: high speed trader (4 classes in one file so it runs outside lib).
    Run: sleela run high-speed-trader.sleela >>
 #sleela 3.0

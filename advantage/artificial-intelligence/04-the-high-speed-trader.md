@@ -2,7 +2,7 @@
 
 > Series: [index](README.md) · prev: [03](03-counsel-choosing-an-approach.md) · next: [05 — Pragmatics and evolution](05-pragmatics-and-evolution.md)
 
-Model: [models/high-speed-trader](models/high-speed-trader/README.md). Goal: at
+Model: [high-speed-trader](high-speed-trader/README.md). Goal: at
 least **5,000 evaluations per second** and about **2,000 trades per minute**
 (roughly 0.7% of candidates), on synthetic data.
 

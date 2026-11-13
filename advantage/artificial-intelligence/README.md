@@ -18,8 +18,10 @@ here claims a measured result; numbers in exercises are illustrative.
 | 04 | [The high speed trader](04-the-high-speed-trader.md) | A runnable model: 5,000+ evals/s, about 2,000 trades/min (advanced-medium) |
 | 05 | [Pragmatics and evolution](05-pragmatics-and-evolution.md) | The 24 pragmatics in three phases; online weight learning (advanced) |
 | 06 | [Fail closed, and the brilliant](06-fail-closed-and-the-brilliant.md) | Safe halting, refusal over clamping, and the insight channel (advanced) |
+| 07 | [The Moral Evaluator](07-the-moral-evaluator.md) | 41 yes/no points, cardinal vetoes, merit and risk (advanced) |
+| 08 | [Tall Science](08-tall-science.md) | The United States as a cataloged Item; nouns and names read respectively (advanced) |
 
-Models live in [models/](models/README.md).
+AI modules live beside the lessons: [high-speed-trader](high-speed-trader/README.md), [moral-evaluator](moral-evaluator/README.md).
 
 ## Prerequisites
 
@@ -33,4 +35,4 @@ Models live in [models/](models/README.md).
 
 - Illustrative data only; replace with your own evaluation outcomes.
 - Fetched/remote knowledge is untrusted and never scored (see `enrich`).
-- Lessons 01-03 add no code; lessons 04-06 teach the courseware model in `models/`.
+- Lessons 01-03 add no code; lessons 04-06 teach the courseware model in the sibling module folders.
