@@ -298,8 +298,8 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 
 ## 7. Verification
 
-`bash tests/javaconv_differential_test.sh` runs 21 programs on a JDK and on the converted SLeeLa:
-Anon, Basics, Control, Enums, Flow, Floats, Formats, Functional, Grid, Init, Nested, ObjectText, Operands, Records,
+`bash tests/javaconv_differential_test.sh` runs 22 programs on a JDK and on the converted SLeeLa:
+Anon, Basics, Bounds, Control, Enums, Flow, Floats, Formats, Functional, Grid, Init, Nested, ObjectText, Operands, Records,
 Refs, Resources, Shapes, Strings, Switches, Sync, Varargs, and 9 refusal programs under `tests/reject` that must be refused (a lambda
 argument to an unknown method, String identity comparison, a `synchronized` block without `--single-thread`, an operand of
 unknown type, an `Object` method a user type does not declare, called with and without a receiver, a qualified nested

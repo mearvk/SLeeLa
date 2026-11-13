@@ -16,7 +16,7 @@ specification in `lib/java/JAVA.SPEC.md`, the principles and the done/open ledge
 
 | Question | Answer (2026-11-13) |
 |---|---|
-| Do converted programs behave like Java? | For every construct with a test, yes: **31 of 31** differential checks pass. 21 programs give output byte-identical to OpenJDK 25.0.2, 9 refusal programs are refused with the right construct, and a stale-output check passes. |
+| Do converted programs behave like Java? | For every construct with a test, yes: **32 of 32** differential checks pass. 22 programs give output byte-identical to OpenJDK 25.0.2, 9 refusal programs are refused with the right construct, and a stale-output check passes. |
 | How much of a real JDK converts? | **420 of 884** files of the JDK 25.0.2 `java.base` subset (496 SLeeLa files); **426** with `--single-thread`. The 2026-11-12 baseline was 344. |
 | Does "converted" mean "compiles"? | **No.** A converted file passed the converter, which refuses what it cannot convert exactly. A tree-wide `sleela check` of the output has **not** been measured (section 4). |
 | Is the JDK converted? | No. 464 files fail closed and write nothing. |
@@ -29,10 +29,10 @@ SLeeLa VM built from the same commit (`impl/build/sleela`). The two outputs must
 
 | Kind | Count | Members |
 |---|---|---|
-| Programs identical to the JDK | 21 | Anon, Basics, Control, Enums, Floats, Flow, Formats, Functional, Grid, Init, Nested, ObjectText, Operands (191 lines), Records, Refs, Resources, Shapes, Strings, Switches, Sync, Varargs |
+| Programs identical to the JDK | 22 | Anon, Basics, Bounds, Control, Enums, Floats, Flow, Formats, Functional, Grid, Init, Nested, ObjectText, Operands (191 lines), Records, Refs, Resources, Shapes, Strings, Switches, Sync, Varargs |
 | Refusals (must fail closed with the stated construct, write nothing) | 9 | BareObjectMethod, BoxedDecl, IdentityText, LambdaUse, ObjectMethod, QualifiedNested, StringIdentity, SyncBlock, Untyped |
 | Stale-output check | 1 | a file converted on one run and refused on the next leaves no `.sleela` behind |
-| **Result** | **31 / 31** | run 2026-11-13 against OpenJDK 25.0.2 |
+| **Result** | **32 / 32** | re-run 2026-11-13 at `e048707f` (after `bd4fc607` added `Bounds`) against OpenJDK 25.0.2 |
 
 ## 3. Whole-tree measurement
 
@@ -47,7 +47,8 @@ their subpackages, 884 files (the same set as the 2026-11-12 baseline). Commands
 | 2026-11-13, `323cc04f` (before the review) | 424 | the 2026-11-13 lowerings (enums, lambdas, nested types, ...) |
 | 2026-11-13, `8f617ba2` (review commit) | did not finish | hung on `java/text/{DateFormat,MessageFormat,NumberFormat}`; fixed in `55f52f49` |
 | 2026-11-13, `55f52f49` | 423 | qualified nested names fixed (+13); 10 files now refused `[object-method]` whose earlier output the checker rejects |
-| 2026-11-13, model 1.3.0 (current) | **420** (426 with `--single-thread`) | 3 more files refused `[boxed]`; their earlier output did not compile |
+| 2026-11-13, model 1.3.0 (`e3993045`) | **420** (426 with `--single-thread`) | 3 more files refused `[boxed]`; their earlier output did not compile |
+| 2026-11-13, `e048707f` (after `bd4fc607` JavaChecks and the language-handler refactor) | **420** (426 with `--single-thread`) | unchanged; re-measured |
 
 The count went down twice on purpose: each time the converter stopped writing output that SLeeLa rejects.
 A lower honest number is the goal of the fail-closed rule, not a regression.

@@ -12,7 +12,7 @@ Section of the overall specification: [`lib/java/JAVA.SPEC.md`](../lib/java/JAVA
   references; nested and inner classes; `instanceof` patterns; and `synchronized`/`volatile` under
   `--single-thread`; records; Java field defaults and initialization order (field initializers and
   instance initializer blocks after `super(...)`).
-- **Measured 2026-11-13:** 31 of 31 differential checks pass (21 programs identical to OpenJDK 25.0.2,
+- **Measured 2026-11-13:** 32 of 32 differential checks pass (22 programs identical to OpenJDK 25.0.2,
   9 refusals, a stale-output check; in CI); the JDK 25 `java.base` subset converts 420 of 884 files.
   Full status: [`JAVA.CONVERSION.STATUS.md`](../JAVA.CONVERSION.STATUS.md).
 - **Open:** operands of unknown type (no generics inference), lambdas whose target interface is unknown,

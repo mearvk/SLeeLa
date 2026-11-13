@@ -107,7 +107,7 @@ Where this file and one of those disagree, the normative text wins.
 | Refusals | proven by programs that must be refused | `tests/reject` (4) |
 | Qualified nested names | `Outer.Inner` in a type is `Outer__Inner`; a nested class no longer extends itself | `reject/QualifiedNested` |
 | Object text and char text | library objects through `toString()` (`tostr reference`); `append('x')` appends `x` (`chartext` rows) | `ObjectText` |
-| Whole suite | `tests/javaconv_differential_test.sh`, CI `java-convert.yml` | 21 programs + 9 refusals + stale-output check (31 of 31, 2026-11-13) |
+| Whole suite | `tests/javaconv_differential_test.sh`, CI `java-convert.yml` | 22 programs + 9 refusals + stale-output check (32 of 32, 2026-11-13) |
 | Whole-tree run | JDK 25.0.2 `java.base` (`java/lang`, `java/util`, `java/math`, `java/text`), 884 files | 420 converted (426 with `--single-thread`), 2026-11-13; 344 on 2026-11-12; see `JAVA.CONVERSION.STATUS.md` |
 
 ### 2.5 `lib/java/converter` (written in SLeeLa, per-member stubs, output `#sleela 3.1`)

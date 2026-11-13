@@ -20,6 +20,7 @@ that standing is kept (recorded faithfully, e.g. in each class's Metadata
 
 ## I. Start Here
 - [Build the native implementation](impl/README.md)
+- [Modules: tutorials and explanations](docs/modules/README.md) — one verified writeup for each of the 44 `sleelactl` modules and the 3 Advantage modules: 30 hands-on tutorials (each step run, real output shown) and 17 explanations (models, contracts, and modules that cannot run end to end here), with the measured state of each and the problems found
 - [Virtual machines & Modium — hands-on user guide](virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU stack in SLeeLa source](lib/cpu/CPU.md) — a full gates→ALU→cores→OS→programs machine, a roster of 130+ CPU profiles, and adjustable [voltages, variable clocks, and expert timings](lib/cpu/TIMING.md) you can [run at spec and overclock](lib/cpu/components/README.md)
 - [Documentation index](docs/README.md)
@@ -37,6 +38,8 @@ that standing is kept (recorded faithfully, e.g. in each class's Metadata
 ## II. News
 
 Recent additions to the language, drivers, and standard library:
+
+- **Module writeups (2026-11-13).** Every `sleelactl` module and every Advantage module now has a verified [tutorial or explanation](docs/modules/README.md). Each page states what was run, what works and what does not; the index lists the cross-module problems found (for example, `http-1.0` does not compile and `math.pow` is wrong for bases of zero or below).
 
 - **The Java tier and the Java → SLeeLa converter.** `sleelactl java-convert`
   converts Java source to SLeeLa source and refuses (writes nothing) on any

@@ -94,7 +94,7 @@ Run: `sleelactl build java-convert`, then
 - Qualified type names: `Outer.Inner` in a type resolves to `Outer__Inner`; only a bare name goes through
   the nested-name map. Any walk up a superclass chain must be bounded (a mis-resolved name once made
   `NumberFormat.Field` its own superclass and hung the whole-tree run).
-- Status (2026-11-13): differential suite 31 of 31 (CI: `.github/workflows/java-convert.yml`); JDK 25.0.2
+- Status (2026-11-13): differential suite 32 of 32 (CI: `.github/workflows/java-convert.yml`); JDK 25.0.2
   `java.base` subset 420 of 884 files converted (426 with `--single-thread`). The full status document is the
   root `JAVA.CONVERSION.STATUS.md`; the run's report is the status, re-run before quoting newer numbers.
 - Text of values: a reference of a known type goes through the model row `tostr reference`

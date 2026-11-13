@@ -38,6 +38,11 @@ normative specifications from implementation notes and live validation results.
   the `lib/ui` standard layout model's per-component quality axes and how
   `SLLayoutDriver` realizes each onto native widgets.
 
+## Modules
+
+- [Modules: tutorials and explanations](modules/README.md) — a verified tutorial or explanation for each of
+  the 44 `sleelactl` modules and the 3 Advantage modules, with each module's measured state.
+
 ## API documentation
 
 - [Generated API site](api/index.html) — HTML reference generated from `/lib`.

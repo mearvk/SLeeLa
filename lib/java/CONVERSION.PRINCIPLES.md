@@ -128,7 +128,7 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | sleelactl registration | `sleelactl build java-convert`, `sleelactl run java-convert ...` | `bin/sleelactl.d/registry.conf` |
 | Presumed-JDK directories | `sleelactl/jdk/<N>/java` in, `sleelactl/jdk/<N>/sleela` out | `sleelactl/jdk/README.md` |
 | Support library | `JavaOperands`, `JavaFloat`, `JavaFormat`, `JavaText`, `jdk-25`/`jdk-28` units | `lib/java` |
-| Differential test | 20 programs on a JDK and on the VM, plus 9 refusals and a stale-output check (31 of 31, 2026-11-13; CI `java-convert.yml`) | `tests/javaconv_differential_test.sh` |
+| Differential test | 22 programs on a JDK and on the VM, plus 9 refusals and a stale-output check (32 of 32, 2026-11-13; CI `java-convert.yml`) | `tests/javaconv_differential_test.sh` |
 | Language features the tier uses | char literal, array initializer, labels, `finally` on abrupt exit, `a.length`, multi-dimensional arrays, char as text (all syntax 3.1) | `SLEELA.syntax` sections 44 to 46 |
 
 ## 3. What is left
