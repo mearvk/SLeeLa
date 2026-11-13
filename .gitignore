@@ -35,3 +35,6 @@ Thumbs.db
 # content, not compiler output -- keep them tracked.
 !wiki/**/*.wiki
 !wiki/*.wiki
+# Presumed JDK source trees are inputs (GPLv2+Classpath), never committed.
+/sleelactl/jdk/*/java/*
+!/sleelactl/jdk/*/java/README.md

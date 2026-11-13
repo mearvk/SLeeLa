@@ -87,6 +87,9 @@ sleelactl build native-drive hot.sleela --require-sleela-abi -o build/hot.so   #
 sleelactl run native-drive --capture -- build/app
 sleelactl inspect native-drive xclass --mode info Example.xclass
 sleelactl inspect native-drive service --name worker --executable /opt/worker --working-directory /var/lib/worker
+
+sleelactl build java-convert        # C lexer + C++ translator (sleelactl/convert)
+sleelactl run java-convert --jdk-version 28   # sleelactl/jdk/28/java -> sleelactl/jdk/28/sleela, functionally equivalent, fails closed
 ```
 
 The **subject** nature is for the native C/C++ subject libraries compiled into
