@@ -25,7 +25,7 @@ namespace {
 
 struct Cli {
     std::string jdk, out, file, version = "28", model, author = "unknown", root;
-    bool selfCheck = false, quiet = false, json = false, bundle = false, split = false, singleThread = false;
+    bool selfCheck = false, quiet = false, json = false, bundle = false, split = false, singleThread = false, uncheckedSizes = false;
 };
 
 void usage(std::ostream& o) {
@@ -33,7 +33,7 @@ void usage(std::ostream& o) {
          "       javaconv --jdk DIR --out DIR [--jdk-version N]\n"
          "       javaconv --file File.java --out DIR\n"
          "       javaconv --self-check\n"
-         "options: --model FILE  --author NAME  --quiet  --json  --bundle|--split  --single-thread\n"
+         "options: --model FILE  --author NAME  --quiet  --json  --bundle|--split  --single-thread  --unchecked-sizes\n"
          "         --single-thread: the program runs on one thread; synchronized and volatile become plain\n"
          "         --bundle: all types of one .java file in one runnable document (default for --file)\n"
          "         --split : one document per type, library layout (default for --jdk)\n"
@@ -106,6 +106,7 @@ int main(int argc, char** argv) {
         else if (a == "--json") c.json = true;
         else if (a == "--bundle") c.bundle = true;
         else if (a == "--single-thread") c.singleThread = true;
+        else if (a == "--unchecked-sizes") c.uncheckedSizes = true;
         else if (a == "--split") c.split = true;
         else if (a == "-h" || a == "--help") { usage(std::cout); return 0; }
         else { std::cerr << "javaconv: unknown argument '" << a << "'\n"; usage(std::cerr); return 2; }
@@ -180,6 +181,7 @@ int main(int argc, char** argv) {
         o.sourceName = in.second.generic_string();
         o.jdkVersion = c.version;
         o.singleThread = c.singleThread;
+        o.checkedArrays = !c.uncheckedSizes;
         javaconv::collect(text, model, o, table);
     }
 
@@ -213,6 +215,7 @@ int main(int argc, char** argv) {
         opt.jdkVersion = c.version;
         opt.author = c.author;
         opt.singleThread = c.singleThread;
+        opt.checkedArrays = !c.uncheckedSizes;
         opt.bundle = c.bundle || !c.file.empty();
         if (c.split) opt.bundle = false;
         opt.bundleName = in.first.stem().string();

@@ -103,3 +103,6 @@ Run: `sleelactl build java-convert`, then
   `chartext` model rows. A boxed declared/cast type is refused (`[boxed]`): boxed values are primitives.
 - Output directories: a re-run deletes only the files listed in `<out>/.javaconv-emitted` (what the
   previous run wrote), so a file that fails closed never leaves an old conversion behind.
+- Array index faults are thrown by the VM inside a `try` (SLEELA.syntax 37.5, `SLJavaFaults`); the converter adds only
+  `JavaChecks.size` for negative array sizes and qualifies calls to methods named like a SLeeLa built-in.
+  Null dereference and stack overflow stay fatal (see `impl/RUNTIME-AUDIT.md`).

@@ -9286,6 +9286,10 @@
       "sha256": "b49bb4804c1e64433fc55b06b42e027577a983d1bc5750513baa99a1d5e21a68"
     },
     {
+      "path": "lib/java/JavaChecks.sleela",
+      "sha256": "09e03713b1cc80e4223da96618795a1c355e128bf12b26ffccdaef6e72769368"
+    },
+    {
       "path": "lib/java/JavaClass.sleela",
       "sha256": "aca71d40c11ea3c1353d6d42d6dc05c5045134e83f3475816e5442ec23875c65"
     },

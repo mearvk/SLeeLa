@@ -154,6 +154,8 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
   signature is known (same file, or a collected tree) packs the extra arguments into
   `new T[]{...}`. A call to a varargs method of a type whose source was not collected is not packed.
   Test: `Varargs`.
+- A call to a method whose name is a SLeeLa built-in (`read`, `write`, `accept`, `lock`, `send`, `join`, ...) is qualified with
+  its owner class or `this.` (list: `sleelactl/convert/builtin_names.h`). Test: `Bounds` (a method named `read`).
 - Name mapping. `close()` is a SLeeLa built-in; the tier names the Java method `closeResource()`
   in declarations and calls. Java members named like a SLeeLa reserved word or built-in
   (`record`, `native`, `struct`, `join`, `spawn`, `sleep`, ...) are refused; local variables with
@@ -221,6 +223,12 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
 One-dimensional arrays, multi-dimensional creation `new T[a][b]`, jagged `new T[a][]`, nested
 initializers, `a.length` (as `arrayLength(a)`), `char[]` and `float[]` (as `double[]`). Language
 limit: 4096 live arrays, and each row of a grid is one. Test: `Grid`.
+
+Run-time checks. An out-of-range index (read, write, compound store) is thrown by the VM inside a `try` as
+`ArrayIndexOutOfBoundsException("Index i out of bounds for length n")` (SLEELA.syntax 37.5, `lib/java/support/SLJavaFaults`);
+the converter adds nothing. A negative array size is wrapped as `JavaChecks.size(n)` (non-constant sizes only) and throws
+`NegativeArraySizeException` with the size as its message; `--unchecked-sizes` omits the wrapper. Test: `Bounds`.
+Open: null dereference and stack overflow remain fatal.
 
 ### 4.9 Concurrency
 `synchronized` (method and block) and `volatile` order accesses between threads. The tier converts

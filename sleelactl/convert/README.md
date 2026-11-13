@@ -60,7 +60,7 @@ The refusal rows are the `unsupported` records of the model.
 - `tests/java/*.java` (21 programs) run on a real JDK and, converted, on the SLeeLa VM; outputs must be
   identical: Anon, Basics, Control, Enums, Floats, Flow, Formats, Functional, Grid, Init, Nested,
   ObjectText, Operands (191 lines of int/long/double/narrowing results), Records, Refs, Resources, Shapes, Strings,
-  Switches, Sync, Varargs. A `// flags:` line passes converter options (`Sync` uses `--single-thread`).
+  Switches, Sync, Varargs. A `// flags:` line passes converter options (`Sync` uses `--single-thread`). Options: `--single-thread`, `--unchecked-sizes` (omit the `NegativeArraySizeException` wrapper), `--bundle`/`--split`.
 - `tests/reject/*.java` (9 programs) must be refused with the construct named on their `// expect:` line
   and write nothing.
 - stale output: a file converted on one run and failing closed on the next leaves no `.sleela` behind.

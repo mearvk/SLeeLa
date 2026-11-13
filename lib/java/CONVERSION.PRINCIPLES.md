@@ -84,6 +84,8 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | `{a, b, c}` and `new T[]{...}` | language feature, syntax 3.1 | SLEELA.syntax 44.3 | `Basics`, `Grid` |
 | `new T[a][b]`, jagged `new T[a][]`, nested initializers | language feature, syntax 3.1 | SLEELA.syntax 46.3 | `Grid` |
 | `a.length` | `arrayLength(a)` | model `call` row | `Grid` |
+| Array index out of range | `ArrayIndexOutOfBoundsException` thrown by the VM inside a `try` (37.5); no converter wrapper | SLEELA.syntax 37.5, `SLJavaFaults` | `Bounds` |
+| Negative array size | `NegativeArraySizeException` through `JavaChecks.size(n)` | `lib/java/JavaChecks.sleela` | `Bounds` |
 | `char[]`, `float[]`, `long[]`, `boolean[]` | element defaults and narrowing as above | converter | `Grid`, `Floats` |
 
 ### 2.6 Classes and types
@@ -105,6 +107,7 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | Records | field per component, canonical (or compact) constructor, accessors, `toString`, `equals`/`hashCode` for simple components | converter | `Records` |
 | Field defaults and initialization order | default value on every field; field initializers and instance `{ }` blocks after `super(...)` | converter | `Init` |
 | `close()` | mapped to `closeResource()` in declarations and calls | converter `mapMember` | `Resources` |
+| A method named like a SLeeLa built-in (`read`, `write`, `accept`, `lock`, ...) | calls qualified with the owner class or `this.` | converter, `builtin_names.h` | `Bounds` |
 | Reserved or built-in member names | refused; locals renamed | converter | `Varargs` (a method named `join` was caught); no refusal test |
 | Packages, imports | dropped; library members resolve through `import java.jdk-N;` | converter | all |
 
@@ -149,6 +152,8 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | 15 | **Two converters** | `sleelactl/convert` (C/C++) and `lib/java/converter` (SLeeLa) share the model but not the lowerings. | Align them or retire one. | medium |
 | 16 | **CI and binaries** | The differential test is not in CI; `working-binaries/` still reports syntax 3.0. | Add a CI job (needs a JDK and a source build); refresh the binaries. | small |
 | 17 | **Name-mapping interplay with unconverted `lib/java` units** | A converted class that implements a library interface declaring `close()` does not match `closeResource()`. | Rename in the library units too, or map both. | small |
+| 18 | **Null dereference and stack overflow** | Still fatal VM errors, not `NullPointerException` / `StackOverflowError`; faults with no `try` handler are fatal (as an uncaught exception ends a Java program) | Extend the fault kinds; null needs a typed check at each dereference | medium |
+| 19 | **Methods named like a Munction verb** (`connect`, `send`, `enable`, ...) called on a receiver | The compiler gives those names the verb meaning on every receiver | Rename like `close`, in the library units too | small |
 
 ## 4. How to keep this page true
 

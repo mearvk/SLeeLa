@@ -38,6 +38,17 @@ never silent). It now also says that nothing was rebuilt and that any existing `
 previous build. Earlier sessions ran tests against that stale binary without noticing; the message
 removes the trap. (A past claim that the failure was silent was wrong: output had been filtered.)
 
+### 2.5 Negative array size
+Java throws `NegativeArraySizeException`; the VM ended the program. The converter wraps each non-constant size in
+`JavaChecks.size(n)` (`lib/java/JavaChecks.sleela`); `--unchecked-sizes` omits it. Test: `Bounds`.
+
+### 2.6 Methods named like a built-in
+A Java method called `read`, `write`, `accept`, `lock`, `send`, `listen`, `join`, ... was taken for the SLeeLa built-in
+by an unqualified call ("read(handle) takes one argument"). The converter now qualifies such a call with its owner class
+(static) or `this.` (instance). The list is `sleelactl/convert/builtin_names.h`, taken from the compiler's call table.
+Not covered: a Java method named like a Munction verb (`connect`, `send`, `enable`, ...) called ON a receiver, which the
+compiler also treats as the verb on every receiver.
+
 ### 2.4 Stale documents
 `impl/RUNTIME-SERVICES.md` said no collector existed and that the ISA has 98 opcodes. Both are corrected.
 
@@ -48,7 +59,7 @@ removes the trap. (A past claim that the failure was silent was wrong: output ha
 | 1 | **Every array element is 32 bytes** (`sizeof(SLValue)` is 32 because the value union carries a 128-bit integer) | measured with a C probe; 20,000,000 `int` elements need 640 MB, so a second one exceeds the 1 GiB heap | Java `byte[]`, `int[]`, `char[]` cost 8 to 32 times more than on a JVM; large arrays fail early | typed array storage (a VM change); until then document the cost |
 | 2 | **Marking is quadratic in the object count**: `mark_internal` calls `live()`, a linear scan of every object, per mark; `push_unique` is linear too | read in `garbage_collector.c` (not profiled) | a full collection with N live objects does O(N squared) work; bounded today by the 4096 tables but grows with strings and externals | index objects by a flag or a hash; profile first |
 | 3 | **The memory manager appears not to see VM arrays**: after a program that allocated a 640 MB array, its exit banner still reports `allocs=0  frees=0  peak=0 bytes` | observed in the exit counters only; not confirmed with a mid-run reading | the 2 GiB "hard limit" is not what stops an array; the 1 GiB GC limit is | account for array storage, or document that the GC limit is the operative one |
-| 4 | **VM faults are not catchable**: array index out of range, division by zero in the VM, `length()` of null end the program (SLEELA.syntax 43.5) | known; confirmed in tests | Java expects `ArrayIndexOutOfBoundsException` and `NullPointerException`; converted code that relies on them is not equivalent | VM change to raise catchable exceptions; **needs a decision**, because it is a core change (see section 4) |
+| 4 | **Catchable VM faults: partly in place.** Since 2026-11-13 (SLEELA.syntax 37.5, `lib/java/support/SLJavaFaults`) integer divide/modulo by zero, array index out of range and a failed checked cast are thrown inside a `try`. **Not covered:** null dereference, stack overflow, a negative array size (handled by the Java tier, 2.5 below), and every fault with no active handler (fatal, as an uncaught exception ends a Java program) | verified: `sleelactl/convert/tests/java/Bounds.java` (index reads, writes, compound stores, nested arrays) matches a JDK without any converter check | an earlier revision of this page listed this as wholly open; that was stale because the fix had landed the same day in another change and I had not re-read the spec | extend the fault kinds to null dereference (needs a typed null check at each dereference) |
 | 5 | **The unlocked array fast path depends on `workers_cached`**, refreshed at a safepoint and forced at `SPAWN` | read; the threaded test passes 5 of 5 | a stale zero while a worker exists would let reads and writes race | argue it formally or take the lock when any thread was ever spawned; add a randomized thread test |
 | 6 | **Unsynchronized shared updates lose writes** (two workers incrementing the same array: 399,956 of 400,000) | observed | the same as Java without `synchronized`; but the language has no atomic or monitor to fix it | document the guarantees: what `SPAWN`, `JOINALL`, locks and mailboxes order |
 | 7 | **Lock ordering is not audited**: the core has `global_mtx`, `array_mtx`, `struct_mtx`, `thr_mtx` and others | not read end to end | a path that takes two locks in opposite orders deadlocks | build the lock-order graph; add a test |
@@ -57,17 +68,13 @@ removes the trap. (A past claim that the failure was silent was wrong: output ha
 | 10 | **Platform backends are only CI-covered where a workflow exists** (`native-portability`, `wifi-native`, `utf4088`, ...) | workflow list | Windows and macOS paths for sockets, terminal, threads | one table: backend by platform by workflow |
 | 11 | `working-binaries/` report syntax 1.0 to 3.0 | read | users get "future edition" on 3.1 code | refresh and update the listed documents |
 
-## 4. Decision needed (item 4)
+## 4. Decision recorded (2026-11-13)
 
-Making VM faults catchable changes the core for a Java reason. The standing rule is that Java
-improvements live in the Java tier, not in the compiler, VM or runtime. Two honest options:
-
-- **Keep the rule.** The Java tier checks indexes and null itself (the converter emits explicit checks that throw
-  `ArrayIndexOutOfBoundsException` / `NullPointerException`). Cost: extra code on every array access and call.
-- **Make it a language feature.** Define catchable runtime faults for every program, specified in `SLEELA.syntax`, not as
-  "Java support". Cost: a VM change and a new edition.
-
-Until one is chosen, converted programs that depend on those exceptions are not claimed equivalent.
+Catchable runtime faults for Java: the owner chose to **keep the rule** (Java improvements live in the Java
+tier, not in the compiler, VM or runtime) "for now". The VM mechanism of 37.5 is a generic fault hook, and
+the Java-specific exceptions are made by `SLJavaFaults` in `lib/java`, so the rule holds. The converter adds only
+what the hook does not cover: `JavaChecks.size` for a negative array size. Null dereference and stack overflow
+stay fatal and are listed as open in `lib/java/CONVERSION.PRINCIPLES.md`.
 
 ## 5. How to extend this audit
 

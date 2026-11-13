@@ -11,6 +11,7 @@ extern "C" {
 }
 
 #include <cctype>
+#include "builtin_names.h"
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
@@ -1157,7 +1158,8 @@ private:
                 if (ic == "long" || ic == "double") fail("model", "array index must be int");
                 E r;
                 r.pure = e.pure && idx.pure;
-                r.code = paren(e.code) + "[" + idx.code + "]";
+                std::string indexCode = idx.code;   // an out-of-range index is thrown by the VM inside a try (37.5)
+                r.code = paren(e.code) + "[" + indexCode + "]";
                 r.ty = e.ty.dims > 0 ? mk(e.ty.n, e.ty.dims - 1) : mk("?");
                 e = r;
                 continue;
@@ -1272,6 +1274,12 @@ private:
             }
             if (!pm) refuseObjectMethod(curClass, name);
             a = adaptArgs(pm, a);
+            // A Java method named like a SLeeLa built-in (read, write, accept, lock, send, ...) would be taken
+            // for the built-in by an unqualified call, so the call is qualified with its owner or with this.
+            if (qualifier.empty() && pm && isBuiltinCallName(name)) {
+                if (pm->isStatic) qualifier = (pm->owner.empty() ? curClass : pm->owner) + ".";
+                else if (anonStack_.empty() || anonStack_.back().sub.rfind("#nest", 0) == 0) qualifier = "this.";
+            }
             E r;
             r.code = qualifier + mapMember(safeNameForCall(name)) + "(" + joinArgs(a) + ")";
             r.pure = false;
@@ -1335,7 +1343,7 @@ private:
                 expectOp("]");
                 std::string c = classOf(n.ty);
                 if (c == "long" || c == "double") fail("model", "array size must be int");
-                sized.push_back(n.code);
+                sized.push_back(opt.checkedArrays && !(n.isLitInt && n.iv >= 0) ? "JavaChecks.size(" + n.code + ")" : n.code);
                 rank++;
             }
             E r;
@@ -2688,6 +2696,7 @@ private:
     // declared, a native switch assigns it in each arm, and the temporary is the value.
     // Java member names that collide with SLeeLa built-ins are renamed consistently in declarations and calls.
     // close() is the Munction reach-handle built-in, so the Java tier calls it closeResource().
+    static bool isBuiltinCallName(const std::string& n) { for (const char* const* b = kBuiltinCallNames; *b; ++b) if (n == *b) return true; return false; }
     static std::string mapMember(const std::string& n) { return n == "close" ? "closeResource" : n; }
     bool lastVarargs_ = false;
     std::string yieldVar_;
@@ -3220,7 +3229,7 @@ private:
             if (isKw("throws")) skipThrows();
             curRet = ty;
             if (pass == 1) {
-                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";");
+                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls;
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }
