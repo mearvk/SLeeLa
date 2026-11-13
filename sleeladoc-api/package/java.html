@@ -147,7 +147,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; java</div>
 <h1>Package <code>java</code></h1>
-<div class="lead">This package contains <strong>14962</strong> source unit(s) defining <strong>14962</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>14963</strong> source unit(s) defining <strong>14963</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="aboutevent">AboutEvent <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/jdk-28/java.desktop/java/awt/desktop/AboutEvent.sleela)</span></h2>
 <div data-u="aboutevent aboutevent">
@@ -139145,6 +139145,7 @@
 <tr><td><code>intType</code></td><td><span class="sig">String intType</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>keepComments</code></td><td><span class="sig">boolean keepComments</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>bundle</code></td><td><span class="sig">boolean bundle</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>modelPath</code></td><td><span class="sig">String modelPath</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>sleelaHome</code></td><td><span class="sig">String sleelaHome</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>problem</code></td><td><span class="sig">String problem</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>apiKeys</code></td><td><span class="sig">String[] apiKeys</span></td><td class="desc">api scope: open-addressing set of &lt;module&gt;/&lt;package path&gt;/&lt;Type&gt; keys</td></tr>
@@ -139275,6 +139276,41 @@
 <tr><td><code>runConverter</code></td><td><span class="sig">void runConverter()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="jconvmodel">JConvModel <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvModel.sleela)</span></h2>
+<div data-u="jconvmodel jconvmodel">
+<h3 id="JConvModel">JConvModel <span class="pill">class</span></h3>
+<p class="desc">the Java-to-SLeeLa conversion model, read as data. It loads impl/subjects/conversion/conversion.model (or the file named by JCONV_MODEL), the same model that sleelactl java-convert reads, and answers the questions the typed pass of JConvRewriter asks: the result type of a library member (ret rows), the type of a library field (field rows), the SLeeLa function of an int shift (binop int rows) and the string conversion template of a double or char (tostr rows). Only rows of those kinds are read. When the file is missing the built-in defaults below are used and the report says so.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>path</code></td><td><span class="sig">String path</span></td><td class="desc">where the model came from, its name and revision, and the rows read</td></tr>
+<tr><td><code>modelName</code></td><td><span class="sig">String modelName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>revision</code></td><td><span class="sig">String revision</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>loaded</code></td><td><span class="sig">boolean loaded</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>retRows</code></td><td><span class="sig">int retRows</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>retKeys</code></td><td><span class="sig">String[] retKeys</span></td><td class="desc">ret rows: &quot;Owner.member&quot; to the result type (open addressing)</td></tr>
+<tr><td><code>retVals</code></td><td><span class="sig">String[] retVals</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fieldKeys</code></td><td><span class="sig">String[] fieldKeys</span></td><td class="desc">field rows: &quot;Owner.name&quot; to the type</td></tr>
+<tr><td><code>fieldVals</code></td><td><span class="sig">String[] fieldVals</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>shlInt</code></td><td><span class="sig">String shlInt</span></td><td class="desc">binop int templates of the three shifts; tostr templates of double and char</td></tr>
+<tr><td><code>shrInt</code></td><td><span class="sig">String shrInt</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ushrInt</code></td><td><span class="sig">String ushrInt</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tostrDouble</code></td><td><span class="sig">String tostrDouble</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tostrChar</code></td><td><span class="sig">String tostrChar</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>slotIn</code></td><td><span class="sig">int slotIn(String key, int size)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>put</code></td><td><span class="sig">void put(String[] keys, String[] vals, String key, String val)</span></td><td class="desc">the first row for a key wins, as in the sleelactl loader (cm_find)</td></tr>
+<tr><td><code>find</code></td><td><span class="sig">String find(String[] keys, String[] vals, String key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>retOf</code></td><td><span class="sig">String retOf(String owner, String member)</span></td><td class="desc">the result type of Owner.member, &quot;@arg0&quot;, or &quot;&quot; when the model does not say</td></tr>
+<tr><td><code>fieldOf</code></td><td><span class="sig">String fieldOf(String owner, String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fieldsAt</code></td><td><span class="sig">String[] fieldsAt(JConvSource src, int a, int b, int n)</span></td><td class="desc">the whitespace-separated fields of source units a .. b-1: up to n, the last one keeps the rest</td></tr>
+<tr><td><code>startsAt</code></td><td><span class="sig">boolean startsAt(JConvSource src, int a, String word)</span></td><td class="desc">true when source units a .. start with the given ASCII word followed by a space</td></tr>
+<tr><td><code>load</code></td><td><span class="sig">boolean load(String file)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="jconvreport">JConvReport <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvReport.sleela)</span></h2>
 <div data-u="jconvreport jconvreport">
 <h3 id="JConvReport">JConvReport <span class="pill">class</span></h3>
@@ -139334,6 +139370,7 @@
 <tr><td><code>patOkN</code></td><td><span class="sig">int patOkN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>mNames</code></td><td><span class="sig">String[] mNames</span></td><td class="desc">methods (name, 1 when static) and fields declared by the current type</td></tr>
 <tr><td><code>mStatic</code></td><td><span class="sig">int[] mStatic</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mRet</code></td><td><span class="sig">String[] mRet</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>mN</code></td><td><span class="sig">int mN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>fNames</code></td><td><span class="sig">String[] fNames</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>fTypes</code></td><td><span class="sig">String[] fTypes</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -139360,7 +139397,7 @@
 <tr><td><code>addTypeVar</code></td><td><span class="sig">void addTypeVar(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>isTypeVar</code></td><td><span class="sig">boolean isTypeVar(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>typeVarList</code></td><td><span class="sig">String typeVarList()</span></td><td class="desc">the type variables in scope as a comma list, for nested types</td></tr>
-<tr><td><code>addMethod</code></td><td><span class="sig">void addMethod(String n, boolean isStatic)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addMethod</code></td><td><span class="sig">void addMethod(String n, boolean isStatic, String ret)</span></td><td class="desc">a method of the current type; overloads with different results make the result unknown</td></tr>
 <tr><td><code>methodIndex</code></td><td><span class="sig">int methodIndex(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>addField</code></td><td><span class="sig">void addField(String n, String type)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>hasField</code></td><td><span class="sig">boolean hasField(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -139397,10 +139434,12 @@
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
 <tr><td><code>intType</code></td><td><span class="sig">String intType</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>ascii</code></td><td><span class="sig">String[] ascii</span></td><td class="desc">one-character plain strings for codes 32..126, built once</td></tr>
+<tr><td><code>model</code></td><td><span class="sig">JConvModel model</span></td><td class="desc">the conversion model (impl/subjects/conversion/conversion.model), read as data</td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
 <tr><td><code>useIntType</code></td><td><span class="sig">void useIntType(String t)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>useModel</code></td><td><span class="sig">void useModel(JConvModel m)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>charText</code></td><td><span class="sig">String charText(int c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>isRenamedIdent</code></td><td><span class="sig">boolean isRenamedIdent(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>renameIdent</code></td><td><span class="sig">String renameIdent(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -166440,6 +166479,7 @@
 <tr><td><code>slPowInt</code></td><td><span class="sig">static double slPowInt(double a, long n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>slTwoTo</code></td><td><span class="sig">static double slTwoTo(int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>slMinValue</code></td><td><span class="sig">static double slMinValue()</span></td><td class="desc">Double.MIN_VALUE, 2^-1074: computed, since the lexer rejects subnormal literals</td></tr>
+<tr><td><code>slProductLess</code></td><td><span class="sig">static boolean slProductLess(double x, double y, double a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>slLongMin</code></td><td><span class="sig">static int128 slLongMin()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>slLongMax</code></td><td><span class="sig">static int128 slLongMax()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>slLongChecked</code></td><td><span class="sig">static long slLongChecked(int128 r)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -301449,7 +301489,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-13 02:00 UTC.
+<code>/lib</code> tree on 2026-11-13 02:17 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
