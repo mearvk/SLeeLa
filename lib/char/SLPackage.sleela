@@ -1,6 +1,6 @@
 << char/SLPackage.sleela
    SLeeLa Standard Library Definition.
-   Definition: Defines the SLeeLa standard-library package for the char type (syntax 3.2, section 45). >>
+   Definition: Defines the SLeeLa standard-library package for the char type (syntax 3.1, section 45). >>
 #sleela 3.0
 material;
 class SLPackage {

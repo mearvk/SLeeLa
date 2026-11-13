@@ -585,7 +585,7 @@ private:
             if (!c) fail("model", "the conversion model has no cast from '" + from + "' to '" + to.n + "'");
             if (std::string(c->f[2]) == "=") {
                 r.code = a.code;
-                // Syntax 3.2 shows a value of static type char as text in a String context; a Java
+                // Syntax 3.1 shows a value of static type char as text in a String context; a Java
                 // (int)/(long) cast of a char is a number, so it must drop the char type explicitly.
                 if (a.ty.dims == 0 && a.ty.n == "char" && (to.n == "int" || to.n == "long")) {
                     r.code = "(" + to.n + ") " + paren(a.code);
@@ -1323,7 +1323,7 @@ private:
         }
         if (!isOp("[") && !typeVars.count(name)) name = resolveTypeName(name);
         if (isOp("[")) {
-            // new T[a][b]..[] (syntax 3.2 multi-dimensional creation) or new T[]..{...} (initializer)
+            // new T[a][b]..[] (syntax 3.1 multi-dimensional creation) or new T[]..{...} (initializer)
             std::vector<std::string> sized;
             int rank = 0;
             bool sawUnsized = false;
@@ -3096,7 +3096,7 @@ private:
           << "   Presumed JDK version: " << opt.jdkVersion << "\n"
           << "   Functional equivalence is the goal: operators follow lib/java/JavaOperands and the\n"
           << "   conversion subject model; library members resolve through the lib/java tier. >>\n"
-          << "#sleela 3.2\n"
+          << "#sleela 3.1\n"
           << "import java.jdk-" << opt.jdkVersion << ";\n"
           << "material;\n\n";
         return o.str();

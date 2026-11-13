@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "ff917b58582e0ee3124bc386040a29ec2fc826d3c3a28e658d7f4dcc2b49a524"
+      "sha256": "c5b252eef2c377af5a77ee831d8a521b1d22cc45b4f99009907cd35f4bcd2142"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "e786b4b35a4d7b3c04a687a190134ef5c20493ac81225a2257f96359352bb8ec"
+      "sha256": "56bd12907718f54c8d36bd5696cbde93f5f0928a30071d0710cdbaf81d91e892"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -543,7 +543,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "f872a6023882225d3b892363c6665df40cfe3a26cd9db60382c18873c130e6b2"
+      "sha256": "50f26036f4407e70f43ecc026c960e7d4246de9a1a6883067a780d2970e8a711"
     },
     {
       "path": "impl/frontend/common_rails_banner.hpp",
@@ -551,7 +551,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "3a819b5ecaed189478a0d75b448ab61867196281033c934d2b36992303c71478"
+      "sha256": "2e34fa5387be65c31d4030c4bd71d6dac98ec0220dca480b182fcca08c27ee8a"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -655,11 +655,11 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "88fc4e7a565746187bdf441fdbdaff117e60e057921db0b20d1e439044ba855e"
+      "sha256": "a7426cec5a055b080d5753bba71457cf5f04b7297436511788f01f180e968fb1"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "37907e1b8d0a9b523cdfcd8100fe10aff78c84824311dbcef38c023e7e3486a4"
+      "sha256": "f2806e0351b461657b77e03baeb63cbe3b33a9eb03eba261306b689108db03e9"
     },
     {
       "path": "impl/frontend/permissible.cpp",
@@ -671,7 +671,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "f721b31a96f9c2407f498441efd047f98d0b1452579d6fd64e5c2956513a005c"
+      "sha256": "19728100628e952631c0898a52665f1a5eaf2ae237778b59bb467c21f9dc2c09"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -687,7 +687,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "d10e061f40d5d17edc7eceed019a54c81e0c3263374b3b10ecbc1b6a866b2ade"
+      "sha256": "a01f6da4f3f96b319c461f4809b1d310693221cdd130ce6bbf23ea9617da4f6a"
     },
     {
       "path": "impl/frontend/wide_integer.h",
@@ -755,7 +755,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "7f1073a7e777597ddb2a929ce199fd63019a5ffc2ba1fee89c9684028cc003c1"
+      "sha256": "992a77bbf25c83e465488e8edf6babbe3056def4dd27ea8c939e3ef6388d85f0"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -1847,7 +1847,7 @@
     },
     {
       "path": "lib/array/SLArray2D.sleela",
-      "sha256": "f01d8f3f184978d1566ca8a957ad169fe4d79efb8066bbf5c637f2f1ffe8efee"
+      "sha256": "c6aa2c08a99ea5199d107fda6977f63219ab6b92b6a241fb8fbff2552f76ceea"
     },
     {
       "path": "lib/array/SLDoubleArray.sleela",
@@ -1859,7 +1859,7 @@
     },
     {
       "path": "lib/array/SLPackage.sleela",
-      "sha256": "30cf497ac5b80ac5f17cb5ecff8c4b543b700cfd4aab8b9a9cd669383de955e1"
+      "sha256": "010951e94924d5e601c7bf97c4e42dbed70e733dc2551b6fa7f2376daaba69e8"
     },
     {
       "path": "lib/array/SLRefArray.sleela",
@@ -3167,11 +3167,11 @@
     },
     {
       "path": "lib/char/SLChar.sleela",
-      "sha256": "ce18728dd57217fde86eae8aecc32ff156ab3e1e7a8cb89b0a12a9d2ded21c79"
+      "sha256": "0bc7d14f94d54acee538eeb367f65c4a6bdc0a6c75eb4caea221c0c33617e6b2"
     },
     {
       "path": "lib/char/SLPackage.sleela",
-      "sha256": "fb7a6a7bc4bdf9f0a7d7c07e267f46168bfe0562623b7759c7538a4a3d282d17"
+      "sha256": "c096c13d3cfb81edc0a21a659403c7c8e1b5f6fea8604cbc95ae46c55d568bfb"
     },
     {
       "path": "lib/character-recognition/SLCharacterRecognition.sleela",
@@ -73327,7 +73327,7 @@
     },
     {
       "path": "lib/vm/InstructionSet.sleela",
-      "sha256": "b6b12c7128ba3e7afca4f1255a3a77a94c1d2d64dcef42a856574fd9e8d8efc0"
+      "sha256": "9d9d251d81fd5931e37e95c51b680730d9ce3fc36b19708be68632dbd5bbd368"
     },
     {
       "path": "lib/vm/SLNativeMemory.sleela",

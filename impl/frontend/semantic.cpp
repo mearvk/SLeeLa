@@ -55,7 +55,7 @@ static Type typeOf(const std::string& n){
  if(n=="double"){return{Kind::Double,{},{}};}
  // Java primitives without a distinct VM slot (syntax 3.0 Java signature
  // surface): char, byte and short ride the integer slot, float the double slot.
- if(n=="char"){return{Kind::Int,"char",{}};}   // syntax 3.2: the name marks the static type char (an integer for every check)
+ if(n=="char"){return{Kind::Int,"char",{}};}   // syntax 3.1: the name marks the static type char (an integer for every check)
  if(n=="byte"||n=="short"){return{Kind::Int,{},{}};}
  if(n=="float"){return{Kind::Double,{},{}};}
  if(n=="bool"||n=="boolean"){return{Kind::Bool,{},{}};}
@@ -197,10 +197,6 @@ class Analyzer{
   // Syntax 3.1 surface (section 44): every use the parser met must be declared.
   if(syntax<SyntaxVersion{3,1}){
    for(const auto&u:p.syntax31Uses)err(u+" requires #sleela 3.1");
-  }
-  // Syntax 3.2 surface (sections 45 and 46).
-  if(syntax<SyntaxVersion{3,2}){
-   for(const auto&u:p.syntax32Uses)err(u+" requires #sleela 3.2");
   }
   // Spark marker (syntax 3.0, section 43): indicates Java style declarative.
   if(javaref::sparkDocument(p)&&syntax<SyntaxVersion{3,0})
@@ -393,7 +389,7 @@ class Analyzer{
    if(gh->aggressiveness<0||gh->aggressiveness>100){err("GC hint aggressiveness must be 0..100");return;}
    return;
   }
-  if(auto e=dynamic_cast<const ExprStmt*>(&s)){expr(*e->expr);return;} if(auto p=dynamic_cast<const PrintStmt*>(&s)){Type t=expr(*p->expr);if(syntax>=SyntaxVersion{3,2}&&isCharType(t))p->charArg=true;if(t.kind==Kind::Void)err("print() cannot print void");return;}
+  if(auto e=dynamic_cast<const ExprStmt*>(&s)){expr(*e->expr);return;} if(auto p=dynamic_cast<const PrintStmt*>(&s)){Type t=expr(*p->expr);if(syntax>=SyntaxVersion{3,1}&&isCharType(t))p->charArg=true;if(t.kind==Kind::Void)err("print() cannot print void");return;}
   if(auto x=dynamic_cast<const ReturnStmt*>(&s)){Type want=tn(cur->retType);
    if(want.kind==Kind::Void){if(x->value){expr(*x->value);err("void method '"+cur->name+"' cannot return a value");}return;}
    if(!x->value){err("non-void method '"+cur->name+"' must return a value");return;}
@@ -496,8 +492,8 @@ class Analyzer{
    }
   }
   Type b=expr(e);if(b.kind==Kind::Unknown)return b;
-  if(f=="length"&&b.kind==Kind::Array){   // syntax 3.2: a.length
-   if(syntax<SyntaxVersion{3,2})err("the array length member requires #sleela 3.2 (use arrayLength(a) below 3.2)");
+  if(f=="length"&&b.kind==Kind::Array){   // syntax 3.1: a.length
+   if(syntax<SyntaxVersion{3,1})err("the array length member requires #sleela 3.1 (use arrayLength(a) below 3.1)");
    if(curMA_)curMA_->arrayLength=true;
    return{Kind::Int,{},{}};
   }
@@ -544,11 +540,11 @@ class Analyzer{
   if(auto m=dynamic_cast<const MethodCall*>(&e)){return fluent(*m);}
   if(auto a=dynamic_cast<const AssignmentExpr*>(&e)){
    Type g=expr(*a->value);
-   const bool strAppendChar=(a->op=="+="&&syntax>=SyntaxVersion{3,2}&&isCharType(g));
+   const bool strAppendChar=(a->op=="+="&&syntax>=SyntaxVersion{3,1}&&isCharType(g));
    if(strAppendChar)a->charMask=2u;
    if(auto v=dynamic_cast<const VarExpr*>(a->target.get())){Type t=lookup(v->name);if(t.kind==Kind::Error){err("assignment to undeclared variable '"+v->name+"'");return{Kind::Error,{}};}if(!assignable(t,g)&&!(strAppendChar&&t.kind==Kind::String))err("cannot assign "+nameOf(g)+" to '"+v->name+"' of type "+nameOf(t));return t;}
    if(auto mm=dynamic_cast<const MemberAccess*>(a->target.get())){if(isImplicitRef(*mm->base,mm->field)){err("'ref' is the implicit reference of an object and is read-only");return{Kind::Error,{}};}const MemberAccess* savedMA2=curMA_;curMA_=mm;Type t=member(*mm->base,mm->field);curMA_=savedMA2;if(mm->arrayLength){err("the array length is read-only");return{Kind::Int,{},{}};}if(t.kind!=Kind::Error&&!assignable(t,g)&&!(strAppendChar&&t.kind==Kind::String))err("cannot assign "+nameOf(g)+" to field '"+mm->field+"'");return t;}
-   if(auto aa=dynamic_cast<const ArrayAccess*>(a->target.get())){Type base=expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));if(base.kind==Kind::Array){Type el=typeOf(base.elem);if(syntax>=SyntaxVersion{3,2}&&isCharType(el))a->narrowChar=true;if(!assignable(el,g)&&!(strAppendChar&&el.kind==Kind::String))err("cannot assign "+nameOf(g)+" to element of "+nameOf(base));return el;}if(base.kind!=Kind::Unknown)err("index assignment requires an array value, got "+nameOf(base));return g;}
+   if(auto aa=dynamic_cast<const ArrayAccess*>(a->target.get())){Type base=expr(*aa->base);Type idx=expr(*aa->index);if(idx.kind!=Kind::Int&&idx.kind!=Kind::Unknown)err("array index must be int, got "+nameOf(idx));if(base.kind==Kind::Array){Type el=typeOf(base.elem);if(syntax>=SyntaxVersion{3,1}&&isCharType(el))a->narrowChar=true;if(!assignable(el,g)&&!(strAppendChar&&el.kind==Kind::String))err("cannot assign "+nameOf(g)+" to element of "+nameOf(base));return el;}if(base.kind!=Kind::Unknown)err("index assignment requires an array value, got "+nameOf(base));return g;}
    err("assignment target must be a variable, struct field, or array element");return{Kind::Error,{}};
   }
   if(auto c=dynamic_cast<const ConditionalExpr*>(&e)){requireBool(expr(*c->cond),"conditional '?:' condition");Type a=expr(*c->thenE),b=expr(*c->elseE);if(assignable(a,b))return a;if(assignable(b,a))return b;return{Kind::Unknown,{}};}
@@ -584,7 +580,7 @@ class Analyzer{
   }
   return{Kind::Struct,owner,{}};
  }
- Type binary(const Binary&b){Type l=expr(*b.lhs),r=expr(*b.rhs);if(b.op=="+"&&syntax>=SyntaxVersion{3,2})b.charMask=(isCharType(l)?1u:0u)|(isCharType(r)?2u:0u);if(b.op=="&&"||b.op=="||"){if(l.kind!=Kind::Bool&&l.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");if(r.kind!=Kind::Bool&&r.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");return{Kind::Bool,{}};}
+ Type binary(const Binary&b){Type l=expr(*b.lhs),r=expr(*b.rhs);if(b.op=="+"&&syntax>=SyntaxVersion{3,1})b.charMask=(isCharType(l)?1u:0u)|(isCharType(r)?2u:0u);if(b.op=="&&"||b.op=="||"){if(l.kind!=Kind::Bool&&l.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");if(r.kind!=Kind::Bool&&r.kind!=Kind::Unknown)err("operator '"+b.op+"' requires bool operands");return{Kind::Bool,{}};}
   if(b.op=="+"||b.op=="-"||b.op=="*"||b.op=="/"||b.op=="%"){
    // Java-style: `+` with a String operand is string concatenation; the VM's
    // OP_ADD already renders either operand to text. Only `+` concatenates.

@@ -337,7 +337,7 @@ typedef enum {
     OP_BSHR,
     OP_BUSHR,
     OP_BNOT,
-    /* Syntax 3.2 (SLEELA.syntax sections 45 and 46). Append-only opcodes 192..194. */
+    /* Syntax 3.1 (SLEELA.syntax sections 45 and 46). Append-only opcodes 192..194. */
     OP_CHARSTR,     /* pops a char (UTF-16 code unit); pushes it as a one-character plain String
                      * (an unpaired surrogate or NUL cannot be a plain String: runtime error)  */
     OP_ADDCHAR,     /* a = bit0: left operand is a char, bit1: right operand is a char. Exactly

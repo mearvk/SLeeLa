@@ -8,7 +8,7 @@ inclusion: always
 VM (`impl/core`) or runtime. They go into the Java tier: SLeeLa library code under `lib/java` and
 lowerings in the converter (`sleelactl/convert`, `conversion.model`). They are specified in the Java
 Specific Section, `lib/java/JAVA.SPEC.md`, not in `SLEELA.syntax`, and from there into the
-documentation. Syntax 3.1/3.2 (sections 44 to 46) stays as the language features the tier uses.
+documentation. Syntax 3.1, also written 3.01 (sections 44 to 46), stays as the language features the tier uses.
 
 Standing, always-on. Registered 2026-11-12. Changes to this area must keep these rules.
 
@@ -66,10 +66,10 @@ Run: `sleelactl build java-convert`, then
 
 ## Known SLeeLa limits the converter must respect (do not paper over)
 
-- Converted output declares `#sleela 3.2` (SLEELA.syntax sections 44 to 46). It uses the
+- Converted output declares `#sleela 3.1` (SLEELA.syntax sections 44 to 46). It uses the
   array initializer, multi-dimensional creation `new T[a][b]` (jagged and nested initializers
   included), labeled `break`/`continue`, and `return`/`break`/`continue` that run `finally`.
-  The converter emits a char literal as its integer code. Because 3.2 shows a value of static
+  The converter emits a char literal as its integer code. Because 3.1 shows a value of static
   type `char` as text, a Java `(int)`/`(long)` cast of a char is emitted as a real cast, and a
   `char`/`double` shown as text still goes through the `tostr` rows (`Double.toString`, JavaText).
 - The open syntax blockers are the register in SLEELA.syntax 44.6. When SLeeLa gains a

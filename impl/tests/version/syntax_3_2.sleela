@@ -1,2 +1,0 @@
-#sleela 3.2
-class Syntax32 { void main() { print("3.2 is the current edition"); } }

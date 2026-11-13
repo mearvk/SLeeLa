@@ -14,7 +14,7 @@ converter (README: `lib/java/converter/README.md`). It is separate from
    converter to whole-file refusal.
 2. **Output syntax stays 3.1 (also written 3.01, SLEELA.syntax 44.1).** Converted
    files declare `#sleela 3.1` and use only forms up to section 44. Do not adopt
-   syntax 3.2 forms (sections 45, 46: typed char text, read-only `a.length`,
+   syntax 3.1 forms (sections 45, 46: typed char text, read-only `a.length`,
    `new T[a][b]`) unless the owner asks for it.
 3. **Laws come from the shared model.** Operator, cast, string-conversion and
    result-type laws are read from `impl/subjects/conversion/conversion.model`

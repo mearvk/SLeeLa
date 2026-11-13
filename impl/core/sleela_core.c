@@ -2617,7 +2617,7 @@ static sl_int128_t sl_neg_wrap128(sl_int128_t x) {
 
 static int native_utf8_valid(const uint8_t* s, uint32_t n);
 
-/* ---- Syntax 3.2: char as text (OP_CHARSTR / OP_ADDCHAR) --------------------
+/* ---- Syntax 3.1: char as text (OP_CHARSTR / OP_ADDCHAR) --------------------
  * A char is a UTF-16 code unit held in an integer slot. Shown as text it becomes a
  * one-unit String. A plain String is UTF-8, so only a non-surrogate, non-NUL unit
  * can become one; with a UTF-16 (Java) String on the other side every unit,
@@ -2641,7 +2641,7 @@ static int char_unit_to_string(SLVM* vm, int64_t unit, int utf16, SLValue* out, 
     return 1;
 }
 
-/* ---- Syntax 3.2: rectangular multi-dimensional arrays (OP_NEWARRAYND) ------
+/* ---- Syntax 3.1: rectangular multi-dimensional arrays (OP_NEWARRAYND) ------
  * Builds an array of arrays, outermost first. Every array under construction is
  * kept on the VM operand stack (a collector root) until it has been stored into its
  * parent, so a collection triggered by a later allocation can never free it.

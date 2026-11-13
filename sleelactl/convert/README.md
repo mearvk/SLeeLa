@@ -4,7 +4,7 @@ Converts the Java source of a presumed JDK version into **functionally
 equivalent** SLeeLa source. Standing rules: `.kiro/steering/java-to-sleela-conversion.md`.
 
 ```
-Java source --java_lex.c--> tokens --java_to_sleela.cpp--> SLeeLa 3.2 document(s)
+Java source --java_lex.c--> tokens --java_to_sleela.cpp--> SLeeLa 3.1 document(s)
                                           ^
                           conv_model.c <--+-- impl/subjects/conversion/conversion.model
 ```

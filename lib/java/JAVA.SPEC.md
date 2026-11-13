@@ -26,7 +26,7 @@ to constructs the language already has (the principle of `lib/java/jdk-28/LOWERI
 not add syntax or opcodes.
 
 Relation to the language specification. Sections 44, 45 and 46 of `SLEELA.syntax` (syntax 3.1 and
-3.2: character literal, array initializer, labeled statements, `finally` on abrupt exit, `a.length`,
+3.1 (also written 3.01): character literal, array initializer, labeled statements, `finally` on abrupt exit, `a.length`,
 multi-dimensional arrays, char as text) are language features that the Java tier **uses**. They were
 added to the language before this rule and stay there. Nothing new is added to the language by the
 Java tier. `SLEELA.syntax` section 43 (Java support, `spark`) and 38.4 (the Java container) are
@@ -52,7 +52,7 @@ division by zero, an array index out of range and a failed cast are thrown, as
 | Second converter | `lib/java/converter` | a converter written in SLeeLa; same laws, same model |
 
 Loading. A program that imports `java.jdk-N` has the tier's classes resolved by name from `/lib`.
-Converted output carries `import java.jdk-N;` and `material;` and declares `#sleela 3.2`.
+Converted output carries `import java.jdk-N;` and `material;` and declares `#sleela 3.1`.
 The tier is not built into `sleela`: removing `lib/java` removes Java support and leaves the
 language intact.
 

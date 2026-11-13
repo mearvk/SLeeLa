@@ -32,7 +32,7 @@ Where this file and one of those disagree, the normative text wins.
    `conversion.model`. Both converters read the same rows, and a law is changed in the model, not
    in a converter.
 6. **Output syntax stays fixed.** `lib/java/converter` writes `#sleela 3.1` (owner decision);
-   `sleelactl java-convert` writes `#sleela 3.2`.
+   `sleelactl java-convert` writes `#sleela 3.1`.
 7. **Faithful library.** `lib/java/jdk-28` holds one SLeeLa unit per public JDK 28 type (4,721,
    1:1). A unit that computes something must compute what the JDK computes (for example a
    correctly rounded `Math.sqrt`).
@@ -53,7 +53,7 @@ Where this file and one of those disagree, the normative text wins.
 | Exact `long` comparison | int64 compares, not through `double` | 43.4 | differential |
 | JDK 28 tier rule | `import java.jdk-28;` is authoritative for every name with a JDK 28 file | 43.4 | conformance |
 | Character literals, array initializers, labels, `return`/`break`/`continue` through `finally`, `continue` in a switch fixed | the 3.1 conversion blockers | 44 | `impl/tests/syntax31` |
-| `char` type and char as text; `a.length`, `new T[a][b]` | the 3.2 char and array specifications | 45, 46 | `impl/tests/syntax32` |
+| `char` type and char as text; `a.length`, `new T[a][b]` | the 3.1 char and array specifications | 45, 46 | `impl/tests/syntax31` |
 | Narrowing on store and cast | `byte`, `short`, `char`, `int32` wrap at Java width | compiler `emitJavaNarrow` | `OperandSemantics` pair |
 | Bodiless method of a series integer returns 0 | abstract / interface `int32 m();` default value | 43.6 rule 8 | oop tests |
 | `new int32[n]` starts at 0 | Java `int[]` default | 44.3, `arrayFillKind` | converter sample |

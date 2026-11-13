@@ -4,7 +4,7 @@
    16-bit UTF-16 code unit held in an integer slot. The methods classify and map ASCII and
    Latin-1 chars, convert between chars, codes and digits, and recognize surrogates. Chars
    beyond Latin-1 need the Unicode tables and are the business of the Java text tier. >>
-#sleela 3.2
+#sleela 3.1
 material;
 class SLChar {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
@@ -57,7 +57,7 @@ class SLChar {
   < The char with the low 16 bits of n (the narrowing every char store applies). >
   static char fromCode(int n) { char c = n; return c; }
 
-  << The one-character text of c. Under #sleela 3.2 the concatenation shows the
+  << The one-character text of c. Under #sleela 3.1 the concatenation shows the
      character; under an older syntax the same expression yields the decimal code.
      An unpaired surrogate or NUL cannot be a plain String (runtime error). >>
   static String toString(char c) { return "" + c; }
