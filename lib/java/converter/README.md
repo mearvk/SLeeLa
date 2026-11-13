@@ -313,6 +313,22 @@ library, in this order of weight:
    do not wrap in the VM, so `a[i] = x + y` keeps a 64-bit value until it is read
    through a wrap. `switch` over enum constants is not lowered.
 
+**Speed (2026-11-13).** The 17-file sample above converts in **6.6 s** (it took
+66 s). Nothing in the converter changed and the output is byte-for-byte the
+same. The time was in the VM: every runtime plain String (each concatenation,
+each number written as text) was looked up in the VM intern table by comparing it
+with every String made so far, and nothing is ever removed from that table. A
+converter run makes hundreds of thousands of Strings (loading
+`conversion.model` alone makes about 18,000), so each one cost more than the last,
+and writing one output token took about 320 microseconds in a large file. The
+table now has a hash index (`intern()` in `impl/core/sleela_core.c`), and
+`impl/examples/string_intern_scaling.sleela` checks that the cost stays flat.
+Measured on `HashMap.java` (13,373 tokens): writing the output 3,799 ms to 54 ms,
+the typed pass 1,441 ms to 164 ms. What remains per run is mostly VM start-up
+and reading the model (3.7 s measured with no file to convert), so a larger tree gains
+more than the sample shows. Use `impl/build/sleela` or the refreshed
+`working-binaries/sleela`.
+
 Close a gap in the language, VM or library first. Then remove or relax the rule
 in `JConvRules` that works around it, re-run the converter, and update this table.
 

@@ -263,7 +263,7 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "1ab6b58b5b4a72e930e2ae291cd8aa4aca1a89841d5ba2730dd983fc21435425"
+      "sha256": "2ccf1009a3dcfc08a7b51693794face43eee3b10892be1edfda64f067d61ed90"
     },
     {
       "path": "impl/core/sleela_core.h",

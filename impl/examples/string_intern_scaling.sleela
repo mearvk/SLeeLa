@@ -1,0 +1,87 @@
+#sleela 3.0
+material;
+< string_intern_scaling.sleela -- regression check for the VM String intern table. >
+< Every runtime plain String (concatenation, number to text, read, ...) is interned >
+< by impl/core/sleela_core.c intern(). It used to compare the new text with every >
+< String the VM had ever made, so each String cost time in proportion to all the >
+< Strings before it, and a program that built many Strings slowed down without >
+< bound (the lib/java/converter run on the JDK sample spent 90 percent of its time >
+< there). intern() now has a hash index. This example checks two things: the >
+< answers are still right (equal text gives equal Strings, different text stays >
+< different, including texts that share long prefixes), and the cost of a String >
+< does not grow with how many Strings already exist. A wrong answer throws, which >
+< ends the run with a nonzero status, so make test-sleela fails. >
+class StringInternScaling {
+  int checks = 0;
+
+  void expect(boolean ok, String what) {
+    checks = checks + 1;
+    if (!ok) {
+      print("FAIL: " + what);
+      throw "string_intern_scaling failed: " + what;
+    }
+  }
+
+  < microseconds to build n fresh Strings of the form tag + i >
+  long timeFresh(String tag, int n) {
+    long t0 = timeMonotonicNanos();
+    int i = 0;
+    String s = "";
+    while (i < n) {
+      s = tag + i;
+      i = i + 1;
+    }
+    return (timeMonotonicNanos() - t0) / 1000;
+  }
+
+  void main() {
+    < 1. equal text built two ways is the same String >
+    String a = "intern" + "-" + 42;
+    String b = "intern-" + "42";
+    expect(a == b, "equal text built two ways compares equal");
+    String c = "intern-43";
+    expect(a != c, "different text compares different");
+
+    < 2. many distinct Strings that share a long prefix stay distinct and findable >
+    String prefix = "java.base/java/util/concurrent/ConcurrentHashMap.member";
+    String[] made = new String[3000];
+    int i = 0;
+    while (i < 3000) {
+      made[i] = prefix + i;
+      i = i + 1;
+    }
+    i = 0;
+    int same = 0;
+    while (i < 3000) {
+      String again = prefix + i;
+      if (again == made[i]) { same = same + 1; }
+      i = i + 1;
+    }
+    expect(same == 3000, "3000 rebuilt Strings equal their originals");
+    expect(made[0] != made[1], "neighbouring Strings stay distinct");
+    expect(made[1] != made[10], "a String is not confused with a longer one");
+    expect(made[2999] == prefix + "2999", "the last String is found by its text");
+    expect(prefix + "" == prefix, "appending nothing gives the same String");
+    expect("" + "" == "", "the empty String is one String");
+
+    < 3. cost per String does not grow with the number of live Strings >
+    long early = timeFresh("early-", 2000);
+    String[] keep = new String[20000];
+    i = 0;
+    while (i < 20000) {
+      keep[i] = "keep-" + i;
+      i = i + 1;
+    }
+    long late = timeFresh("late-", 2000);
+    expect(keep[19999] == "keep-19999", "the 20000th kept String is intact");
+    print("2000 Strings: " + early + " us with few live Strings, " + late + " us after 20000 more");
+    < Measured 2026-11-13: the hash index takes about 0.6 ms for these 2000 Strings >
+    < whatever the count of live Strings; the old linear table took about 110 ms. >
+    < The budget sits between the two with room for a slow or busy machine: >
+    < 25 microseconds a String, 50 ms in all. A growth check alone is not enough, >
+    < because the old table was already slow at the start and so grew only 6x. >
+    expect(late <= 50000, "2000 Strings after 20000 live ones take at most 50 ms");
+    expect(late <= early * 8 || late <= 5000, "String cost stays flat as live Strings grow");
+    print("string_intern_scaling: " + checks + " checks passed");
+  }
+}

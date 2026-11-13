@@ -59,6 +59,13 @@ specifications (sections 45, 46), and the Java-tier runtime changes through
 SLEELA.syntax 43.7 and 37.5. Checked: `version` reports source syntax 1.0 – 3.1,
 and a `#sleela 3.1` program using a char literal, an array initializer and
 `a.length` checks and runs (the previous copy could not).
+Rebuilt again 2026-11-13 for a VM performance fix, same versions: the plain String
+intern table (`intern()` in `impl/core/sleela_core.c`) now has a hash index instead
+of a linear scan over every String ever made. Behaviour and output are unchanged;
+String-heavy programs no longer slow down as they run (the `lib/java/converter` run
+on its 17-file JDK sample went from 66 s to 6.6 s). Regression check:
+`impl/examples/string_intern_scaling.sleela`.
+
 Reported versions:
 
 - `sleela` — `SLeeLa™ Language/Runtime 1.3.2-pro` (supported source syntax 1.0 – 3.1)
@@ -67,8 +74,8 @@ Reported versions:
 SHA-256 of the committed copies:
 
 ```
-e172d7d4c16234e58a687784309d6e5d10b9d29a7111a179cc405bb3416166b4  sleela
-83bccae201078bd63ae154844ab7cad5699d5eb1f8cd06beb245e5f17f901fae  nordshrift
+5906064e03b056749d4656fc54bdb9171d4d24e74f33c9531f97dbd6976ecf7d  sleela
+fc63f25f73d802bd57074c3ba36769802006ca668cf34b77b2cd663adf39309c  nordshrift
 ```
 
 ---

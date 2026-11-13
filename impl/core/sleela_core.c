@@ -203,6 +203,12 @@ struct SLVM {
     SLInstr* code; int codelen, codecap;
     SLValue* consts; int nconst, constcap;
     char** strs; int nstr, strcap;
+    /* Hash index over strs (open addressing; slot holds id+1, 0 = empty).
+     * intern() used to strcmp every string ever interned, so each runtime
+     * String value cost time in proportion to all Strings made before it.
+     * istr_indexed counts the strs entries already in the index: the artifact
+     * loader fills strs directly, and intern() catches the index up. */
+    int32_t* istr_slots; int istr_cap; int istr_indexed;
     SLValue* globals; char** gnames; int nglobal, globalcap;
     SLFunc* funcs; int nfunc, funccap;
     int cur_func;
@@ -503,8 +509,70 @@ const char* slvm_str(SLVM* vm, int32_t id) {
     } \
 } while (0)
 
+/* FNV-1a over the NUL-terminated bytes. */
+static uint32_t intern_hash(const char* s) {
+    uint32_t h = 2166136261u;
+    for (const unsigned char* p = (const unsigned char*)s; *p; ++p) { h ^= *p; h *= 16777619u; }
+    return h;
+}
+
+/* Insert id into the index (caller holds intern_mtx; the table has room).
+ * The first id for a given text wins, matching the old first-match scan. */
+static void intern_index_put(SLVM* vm, int id) {
+    uint32_t mask = (uint32_t)vm->istr_cap - 1u;
+    uint32_t at = intern_hash(vm->strs[id]) & mask;
+    for (;;) {
+        int32_t slot = vm->istr_slots[at];
+        if (slot == 0) { vm->istr_slots[at] = id + 1; return; }
+        if (strcmp(vm->strs[slot - 1], vm->strs[id]) == 0) return;
+        at = (at + 1u) & mask;
+    }
+}
+
+/* Make the index cover strs[0 .. nstr) with load factor at most 1/2, growing
+ * it (power of two) and re-inserting when needed. Returns 0 on failure, in
+ * which case the caller falls back to the linear scan: never a wrong answer. */
+static int intern_index_ready(SLVM* vm, int want_total) {
+    if (want_total < 1) want_total = 1;
+    if (vm->istr_slots && (int64_t)want_total * 2 <= vm->istr_cap) {
+        while (vm->istr_indexed < vm->nstr) intern_index_put(vm, vm->istr_indexed++);
+        return 1;
+    }
+    int cap = vm->istr_cap ? vm->istr_cap : 1024;
+    while ((int64_t)want_total * 2 > cap) { if (cap > (1 << 29)) return 0; cap *= 2; }
+    int32_t* slots = (int32_t*)calloc((size_t)cap, sizeof(int32_t));
+    if (!slots) return 0;
+    free(vm->istr_slots);
+    vm->istr_slots = slots;
+    vm->istr_cap = cap;
+    vm->istr_indexed = 0;
+    while (vm->istr_indexed < vm->nstr) intern_index_put(vm, vm->istr_indexed++);
+    return 1;
+}
+
 static int intern(SLVM* vm, const char* s) {
     pthread_mutex_lock(&vm->intern_mtx);
+    if (intern_index_ready(vm, vm->nstr + 1)) {
+        uint32_t mask = (uint32_t)vm->istr_cap - 1u;
+        uint32_t at = intern_hash(s) & mask;
+        for (;;) {
+            int32_t slot = vm->istr_slots[at];
+            if (slot == 0) break;
+            if (strcmp(vm->strs[slot - 1], s) == 0) {
+                pthread_mutex_unlock(&vm->intern_mtx);
+                return slot - 1;
+            }
+            at = (at + 1u) & mask;
+        }
+        ENSURE(vm->strs, vm->nstr, vm->strcap, char*);
+        vm->strs[vm->nstr] = strdup(s);
+        int id = vm->nstr++;
+        intern_index_put(vm, id);
+        vm->istr_indexed = vm->nstr;
+        pthread_mutex_unlock(&vm->intern_mtx);
+        return id;
+    }
+    /* index unavailable (allocation failed): the original linear scan */
     for (int i = 0; i < vm->nstr; i++) {
         if (strcmp(vm->strs[i], s) == 0) {
             pthread_mutex_unlock(&vm->intern_mtx);
@@ -1187,7 +1255,7 @@ void slvm_free(SLVM* vm) {
     pthread_mutex_destroy(&vm->thr_mtx);
     free(vm->code); free(vm->consts);
     for (int i = 0; i < vm->nstr; i++) free(vm->strs[i]);
-    free(vm->strs); free(vm->globals);
+    free(vm->strs); free(vm->istr_slots); free(vm->globals);
     for (int i = 0; i < vm->nglobal; i++) free(vm->gnames[i]);
     free(vm->gnames);
     for (int i = 0; i < vm->nfunc; i++) { free(vm->funcs[i].name); free(vm->funcs[i].native_signature); }
