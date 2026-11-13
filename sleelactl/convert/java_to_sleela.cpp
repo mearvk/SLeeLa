@@ -37,6 +37,8 @@ struct E {
     bool isNull = false;
     bool isLitInt = false;  // int literal (value in iv)
     long long iv = 0;
+    size_t lambdaPos = (size_t)-1;   // a lambda argument whose target type is not known until the call is resolved
+    int line = 0, col = 0;
 };
 
 const std::set<std::string> kPrim = {"boolean", "byte", "short", "char", "int", "long", "float", "double"};
@@ -61,10 +63,33 @@ bool isIdentTok(const Tok& t) { return t.kind == JT_IDENT; }
 class Translator {
 public:
     Translator(const cm_model& m, const Options& o, const std::vector<Tok>& t, SymbolTable& tab, bool skipCollect)
-        : M(m), opt(o), T(t), classes(tab.classes), skipPass1(skipCollect) {}
+        : M(m), opt(o), T(t), classes(tab.classes), nestedMap_(tab.nested), skipPass1(skipCollect) {}
+
+    // JDK functional interfaces: their abstract method, with generic parameters unknown. They are
+    // only used when the interface itself was not collected from source.
+    void seedFunctionalInterfaces() {
+        struct Fi { const char* name; const char* method; const char* ret; int nparams; };
+        static const Fi table[] = {
+            {"Runnable", "run", "void", 0}, {"Callable", "call", "?", 0}, {"Supplier", "get", "?", 0},
+            {"Consumer", "accept", "void", 1}, {"BiConsumer", "accept", "void", 2},
+            {"Function", "apply", "?", 1}, {"BiFunction", "apply", "?", 2},
+            {"UnaryOperator", "apply", "?", 1}, {"BinaryOperator", "apply", "?", 2},
+            {"Predicate", "test", "boolean", 1}, {"BiPredicate", "test", "boolean", 2},
+            {"Comparator", "compare", "int", 2},
+        };
+        for (const Fi& f : table) {
+            if (classes.count(f.name)) continue;
+            ClassInfo& ci = classes[f.name];
+            ci.isInterface = true;
+            MethodSig m; m.name = f.method; m.ret = f.ret[0] == '?' ? Ty() : mk(f.ret); m.isAbstract = true;
+            for (int i = 0; i < f.nparams; i++) m.params.push_back(Ty());
+            ci.methods.push_back(m);
+        }
+    }
 
     Result run(bool collectOnly = false) {
         Result r;
+        seedFunctionalInterfaces();
         for (pass = skipPass1 ? 2 : 1; pass <= (collectOnly ? 1 : 2); pass++) {
             p = 0;
             diags.clear();
@@ -85,6 +110,7 @@ private:
     std::vector<Diagnostic> diags;
     std::vector<OutFile> files;
     std::map<std::string, ClassInfo>& classes;
+    std::map<std::string, std::string>& nestedMap_;
     bool skipPass1;
 
     // per-type / per-method state
@@ -99,6 +125,33 @@ private:
     int tmpCounter = 0;
     std::vector<char> breakCtx;      // 'L' loop, 'S' lowered switch
 
+    // ---- anonymous classes and lambdas ---------------------------------------------------------
+    // Both are lowered to a generated top-level class (javac does the same): the captured local
+    // variables become constructor-initialised fields (Java requires them effectively final, so
+    // copying is exact), the enclosing instance becomes the field outer_, and a lambda's class
+    // implements the one abstract method of its target interface.
+    struct AnonCtx {
+        std::string sub, outerClass;
+        bool outerStatic = false;
+        bool isLambda = false;   // in a lambda `this` is the enclosing object
+        std::vector<std::map<std::string, std::pair<std::string, Ty>>> outerScopes;
+        std::vector<std::pair<std::string, Ty>> captures;   // emit name -> type, in first-use order
+    };
+    std::vector<AnonCtx> anonStack_;
+    std::vector<OutFile> pendingTypes_;
+    int anonCounter_ = 0;
+    Ty lambdaTarget_;
+    bool curIsStatic_ = false;
+    bool enumMode_ = false;
+    bool innerMode_ = false;        // parsing members of an inner (non-static) class: constructors take the enclosing instance
+    bool innerCtorSeen_ = false;
+    std::string curSimple_;         // the source name of the class being parsed (constructors are written with it)
+    std::string resolveTypeName(const std::string& n) const {
+        auto it = nestedMap_.find(n);
+        if (it == nestedMap_.end()) return n;
+        if (it->second == "\x01") throw ConvErr{cur().line, cur().col, "nested-ambiguous", "the simple name '" + n + "' is used by several nested types"};
+        return it->second;
+    }
     // ---------------------------------------------------------- tokens ----
     const Tok& cur() const { return T[p]; }
     const Tok& at(size_t i) const { return T[std::min(i, T.size() - 1)]; }
@@ -270,6 +323,7 @@ private:
         while (isOp("[") && isOpAt(p + 1, "]")) { p += 2; depth++; }
         Ty t = mk(name, depth);
         if (typeVars.count(name)) t.n = "?";
+        else t.n = resolveTypeName(name);
         return t;
     }
 
@@ -348,22 +402,24 @@ private:
 
     // Java string conversion of an operand (JLS 5.1.11) when SLeeLa renders it differently.
     // Does the class (or a superclass / interface of it) declare a no-argument toString()?
-    bool hasToString(const std::string& cls, int depth = 0) const {
+    // The class that declares toString() for cls (itself or a superclass), or "".
+    std::string toStringOwner(const std::string& cls, int depth = 0) const {
         auto it = classes.find(cls);
-        if (it == classes.end() || depth > 32) return false;
-        if (it->second.isEnum) return true;   // generated
-        for (const auto& m : it->second.methods) if (m.name == "toString" && m.params.empty()) return true;
-        if (!it->second.super.empty() && hasToString(it->second.super, depth + 1)) return true;
-        for (const auto& i : it->second.ifaces) if (hasToString(i, depth + 1)) return true;
-        return false;
+        if (it == classes.end() || depth > 32) return "";
+        if (it->second.isInterface) return "";
+        if (it->second.isEnum) return cls;   // generated
+        for (const auto& m : it->second.methods) if (m.name == "toString" && m.params.empty()) return cls;
+        if (!it->second.super.empty()) return toStringOwner(it->second.super, depth + 1);
+        return "";
     }
+    bool hasToString(const std::string& cls) const { return !toStringOwner(cls).empty(); }
 
     std::string strOf(const E& x) const {
         // JLS 5.1.11: an object becomes text by its toString(); null becomes "null". SLeeLa would show
         // the handle (Name#3), so the call is made explicitly for classes whose toString is known.
         if (x.ty.dims == 0 && !kPrim.count(x.ty.n) && x.ty.n != "String" && x.ty.n != "?" && x.ty.n != "null" && !x.isType && hasToString(x.ty.n)) {
-            if (!x.pure) throw ConvErr{cur().line, cur().col, "tostring-impure", "an object with side effects shown as text would be evaluated twice"};
-            return "(" + x.code + " == null ? \"null\" : " + x.code + ".toString())";
+            // the owner class carries a static helper javaText(x): null is "null", else x.toString()
+            return toStringOwner(x.ty.n) + ".javaText(" + x.code + ")";
         }
         if (x.ty.dims == 0 && kPrim.count(x.ty.n)) {
             if (x.ty.n == "float") return "JavaFloat.text(" + x.code + ")";
@@ -519,6 +575,18 @@ private:
         return false;
     }
 
+    // an argument that is a method reference: Name::name  expr.Name::name  Type::new
+    bool isMethodRefAhead() const {
+        int depth = 0;
+        for (size_t i = p; at(i).kind != JT_EOF; i++) {
+            if (isOpAt(i, "(") || isOpAt(i, "[") || isOpAt(i, "{")) depth++;
+            else if (isOpAt(i, ")") || isOpAt(i, "]") || isOpAt(i, "}")) { if (depth == 0) return false; depth--; }
+            else if (depth == 0 && (isOpAt(i, ",") || isOpAt(i, ";") || isOpAt(i, "?") || isOpAt(i, "->"))) return false;
+            else if (depth == 0 && isOpAt(i, "::")) return true;
+            else if (depth == 0 && at(i).kind == JT_OP && at(i).text != "." && at(i).text != "<" && at(i).text != ">") return false;
+        }
+        return false;
+    }
     bool isLambdaAhead() const {
         if (isOp("(")) {
             int d = 0; size_t i = p;
@@ -542,7 +610,7 @@ private:
                 el = parseArrayInit(mk(arrayTy.n, arrayTy.dims - 1));
             } else {
                 if (arrayTy.dims > 1) fail("syntax", "array of arrays needs a nested initializer for each element");
-                if (isLambdaAhead()) unsup("lambda");
+                
                 el = coerce(parseExpr(), mk(arrayTy.n)).code;
             }
             code += (first ? "" : ", ") + el;
@@ -568,7 +636,7 @@ private:
             // assignment used as a value (JLS 15.26): the value is the assigned value
             std::string op = cur().text;
             p++;
-            if (isLambdaAhead()) unsup("lambda");
+            
             if (!isLvalueCode(e)) fail("syntax", "the left side of an assignment must be a variable, field or array element");
             E rhs = parseExpr();
             std::string text = assignText(e, op, rhs);
@@ -590,7 +658,7 @@ private:
         E c = parseBinary(1);
         if (!isOp("?")) return c;
         p++;
-        if (isLambdaAhead()) unsup("lambda");
+        
         E a = parseTernary();
         expectOp(":");
         E b = parseTernary();
@@ -631,9 +699,29 @@ private:
                 p++;
                 acceptKw("final");
                 Ty t = parseType();
-                if (isIdentTok(cur()) && !(cur().text == "instanceof")) {
-                    // pattern binding: instanceof T name
-                    if (!isKw("instanceof")) unsup("untyped");
+                if (isIdentTok(cur()) && cur().text != "instanceof" && !isKw("when")) {
+                    // pattern binding `x instanceof T v` (JLS 14.30.1): v is declared before the statement and
+                    // assigned when the test succeeds; a non-null match makes the assignment test true
+                    std::string vname = ident();
+                    std::string en = declare(vname, t);
+                    line(emitType(t) + " " + en + ";");
+                    std::string subject = left.code;
+                    std::string test;
+                    if (left.pure) {
+                        test = "(" + left.code + " instanceof " + emitType(t) + ")";
+                    } else {
+                        std::string tmp = freshTmp("pat");
+                        usedNames.insert(tmp);
+                        line("Any " + tmp + ";");
+                        test = "((" + tmp + " = " + left.code + ") instanceof " + emitType(t) + ")";
+                        subject = tmp;
+                    }
+                    E r;
+                    r.pure = false;
+                    r.code = "(" + test + " && ((" + en + " = (" + emitType(t) + ") " + subject + ") != null))";
+                    r.ty = mk("boolean");
+                    left = r;
+                    continue;
                 }
                 E r;
                 r.pure = left.pure;
@@ -647,7 +735,7 @@ private:
             if (pr < 0 || pr < minPrec) break;
             std::string op = cur().text;
             p++;
-            if (isLambdaAhead()) unsup("lambda");
+            
             E right = parseBinary(pr + 1);
             left = emitBinary(op, left, right);
         }
@@ -700,7 +788,8 @@ private:
                 return emitUnary(op, a);
             }
             if (o == "(" ) {
-                if (isLambdaAhead()) unsup("lambda");
+                if (isLambdaAhead()) return parseLambda();
+                
                 if (looksLikeCast()) {
                     p++;
                     Ty t = parseType();
@@ -745,7 +834,19 @@ private:
         expectOp("(");
         if (!isOp(")")) {
             do {
-                if (isLambdaAhead()) unsup("lambda");
+                if (isLambdaAhead() || isMethodRefAhead()) {
+                    // the target type comes from the callee's parameter: remember where the lambda is
+                    E d; d.lambdaPos = p; d.line = cur().line; d.col = cur().col; d.pure = false;
+                    int depth = 0;
+                    while (!atEof()) {
+                        if (isOp("(") || isOp("[") || isOp("{")) depth++;
+                        else if (isOp(")") || isOp("]") || isOp("}")) { if (depth == 0) break; depth--; }
+                        else if (isOp(",") && depth == 0) break;
+                        p++;
+                    }
+                    a.push_back(d);
+                    continue;
+                }
                 a.push_back(parseExpr());
             } while (acceptOp(","));
         }
@@ -754,7 +855,11 @@ private:
     }
     static std::string joinArgs(const std::vector<E>& a) {
         std::string s;
-        for (size_t i = 0; i < a.size(); i++) { if (i) s += ", "; s += a[i].code; }
+        for (size_t i = 0; i < a.size(); i++) {
+            if (a[i].lambdaPos != (size_t)-1) throw ConvErr{a[i].line, a[i].col, "lambda-target", "the parameter type a lambda argument converts to is not known (the called method's signature was not collected)"};
+            if (i) s += ", ";
+            s += a[i].code;
+        }
         return s;
     }
     static bool anyImpure(const std::vector<E>& a) {
@@ -787,6 +892,15 @@ private:
     // parameters (an int left in a double parameter would later divide as integers).
     std::vector<E> adaptArgs(const MethodSig* m, std::vector<E> args) {
         if (!m) return args;
+        for (size_t i = 0; i < args.size() && i < m->params.size(); i++) {
+            if (args[i].lambdaPos == (size_t)-1) continue;
+            size_t save = p;
+            p = args[i].lambdaPos;
+            lambdaTarget_ = m->params[i];
+            E lam = isLambdaAhead() ? parseLambda() : parseExpr();
+            p = save;
+            args[i] = lam;
+        }
         const size_t n = m->params.size();
         size_t fixed = n;
         if (m->varargs) {
@@ -864,6 +978,12 @@ private:
                     do { if (isOp("<")) d++; else if (isOp(">")) d--; else if (isOp(">>")) d -= 2; p++; } while (d > 0 && !atEof());
                 }
                 if (isKw("new")) unsup("nested");
+                if (isKw("this") && e.isType && !anonStack_.empty() && e.code == anonStack_.back().outerClass) {
+                    p++;
+                    if (anonStack_.back().outerStatic) fail("outer-instance", "Outer.this from a static context");
+                    E r; r.code = "outer_"; r.ty = mk(e.code); e = r;
+                    continue;
+                }
                 if (isKw("this") || isKw("class")) unsup("nested");
                 std::string name = ident();
                 if (isOp("(")) {
@@ -903,6 +1023,12 @@ private:
                 }
                 // field access
                 E r;
+                if (e.isType && nestedMap_.count(name)) {   // Outer.Inner used as a qualifier
+                    std::string tn = resolveTypeName(name);
+                    r.code = tn; r.isType = true; r.ty = mk("type:" + tn);
+                    e = r;
+                    continue;
+                }
                 if (e.isType) {
                     const cm_rec* f = cm_find(&M, "field", e.code.c_str(), name.c_str(), nullptr);
                     r.pure = true;
@@ -947,13 +1073,14 @@ private:
                 e = r;
                 continue;
             }
-            if (isOp("::")) unsup("methodref");
+            if (isOp("::")) { e = buildMethodRef(e); continue; }
             break;
         }
         return e;
     }
 
     E parsePrimary() {
+        if (isLambdaAhead()) return parseLambda();
         const Tok& t = cur();
         switch (t.kind) {
             case JT_INT: {
@@ -1009,6 +1136,11 @@ private:
                 E r; r.code = "this(" + joinArgs(a) + ")"; r.pure = false; r.ty = mk("void");
                 return r;
             }
+            if (!anonStack_.empty() && anonStack_.back().isLambda) {
+                if (anonStack_.back().outerStatic) fail("lambda-this", "this in a lambda of a static context");
+                E r; r.code = "outer_"; r.ty = mk(anonStack_.back().outerClass);
+                return r;
+            }
             E r; r.code = "this"; r.ty = mk(curClass);
             return r;
         }
@@ -1040,11 +1172,20 @@ private:
         if (isOp("(")) {
             std::vector<E> a = parseArgs();
             const MethodSig* pm = pickMethod(curClass, name, a);
+            std::string qualifier;
+            if (!pm && !anonStack_.empty()) {
+                const AnonCtx& ac = anonStack_.back();
+                if (const MethodSig* om = pickMethod(ac.outerClass, name, a)) {
+                    pm = om;
+                    if (om->isStatic) qualifier = ac.outerClass + ".";
+                    else { if (ac.outerStatic) fail("outer-instance", "call of an instance method of the enclosing class from a static context"); qualifier = "outer_."; }
+                }
+            }
             a = adaptArgs(pm, a);
             E r;
-            r.code = mapMember(safeNameForCall(name)) + "(" + joinArgs(a) + ")";
+            r.code = qualifier + mapMember(safeNameForCall(name)) + "(" + joinArgs(a) + ")";
             r.pure = false;
-            if (const MethodSig* m = pickMethod(curClass, name, a)) r.ty = m->ret;
+            if (pm) r.ty = pm->ret;
             else r.ty = mk("?");
             return r;
         }
@@ -1054,8 +1195,10 @@ private:
         if (const FieldInfo* fi = findField(curClass, name)) {
             E r; r.code = safeName(name); r.ty = fi->ty; return r;
         }
-        if (isupper((unsigned char)name[0]) || classes.count(name)) {
-            E r; r.code = name; r.isType = true; r.ty = mk("type:" + name); return r;
+        { E o; if (resolveOuter(name, &o)) return o; }
+        if (isupper((unsigned char)name[0]) || classes.count(name) || nestedMap_.count(name)) {
+            std::string tn = resolveTypeName(name);
+            E r; r.code = tn; r.isType = true; r.ty = mk("type:" + tn); return r;
         }
         // lower-case unknown name: inherited field or a package qualifier (java.util.X)
         if (isOp(".") && at(p + 1).kind == JT_IDENT && name.find('_') == std::string::npos) {
@@ -1075,6 +1218,7 @@ private:
         if (e0 == (size_t)-1) fail("syntax", "expected a type after 'new'");
         // element type without dims
         std::string name;
+        struct Resolve { };
         {
             if (!isIdentTok(cur())) fail("syntax", "expected a type after 'new'");
             name = ident();
@@ -1087,6 +1231,7 @@ private:
                 break;
             }
         }
+        if (!isOp("[") && !typeVars.count(name)) name = resolveTypeName(name);
         if (isOp("[")) {
             // new T[a][b]..[] (syntax 3.2 multi-dimensional creation) or new T[]..{...} (initializer)
             std::vector<std::string> sized;
@@ -1122,10 +1267,15 @@ private:
             return r;
         }
         std::vector<E> args = parseArgs();
-        if (isOp("{")) unsup("nested");  // anonymous class
+        if (isOp("{")) return parseAnonymous(name, args);   // anonymous class
         args = adaptArgs(pickMethod(name, "<init>", args), args);
+        std::string outerArg;
+        {
+            auto ci = classes.find(name);
+            if (ci != classes.end() && !ci->second.innerOf.empty()) outerArg = outerInstanceCode(ci->second.innerOf) + (args.empty() ? "" : ", ");
+        }
         E r;
-        r.code = "new " + name + "(" + joinArgs(args) + ")";
+        r.code = "new " + name + "(" + outerArg + joinArgs(args) + ")";
         r.pure = false;
         r.ty = mk(typeVars.count(name) ? "?" : name);
         return r;
@@ -1181,8 +1331,8 @@ private:
         if (isAssignOp(cur())) {
             std::string op = cur().text;
             p++;
-            if (isLambdaAhead()) unsup("lambda");
-            hoistTy_ = lhs.ty;
+            
+            hoistTy_ = lhs.ty; lambdaTarget_ = lhs.ty;
             E rhs = parseRhs(lhs.ty);
             return assignText(lhs, op, rhs);
         }
@@ -1307,8 +1457,8 @@ private:
                 if (isOp("{")) {
                     initCode = parseArrayInit(ty);
                 } else {
-                    if (isLambdaAhead()) unsup("lambda");
-                    if (!isVar) hoistTy_ = ty;
+                    
+                    if (!isVar) { hoistTy_ = ty; lambdaTarget_ = ty; }
                     E v = parseExpr();
                     if (isVar) {
                         if (!v.ty.known() || v.ty.n == "null" || v.ty.n.rfind("type:", 0) == 0) unsup("untyped");
@@ -1391,8 +1541,8 @@ private:
             if (w == "return") {
                 p++;
                 if (acceptOp(";")) { line("return;"); return; }
-                if (isLambdaAhead()) unsup("lambda");
-                hoistTy_ = curRet;
+                
+                hoistTy_ = curRet; lambdaTarget_ = curRet;
                 E v = parseExpr();
                 expectOp(";");
                 v = coerce(v, curRet);
@@ -1788,17 +1938,513 @@ private:
         return r;
     }
 
+    struct Saved {
+        std::string curClass; std::set<std::string> typeVars; bool curIsInterface;
+        std::vector<std::map<std::string, std::pair<std::string, Ty>>> scopes; std::set<std::string> usedNames;
+        Ty curRet; std::vector<std::string> out; int ind; int tmpCounter; std::vector<char> breakCtx;
+        std::string yieldVar; Ty yieldTy; bool yieldTyKnown; size_t yieldBase, yieldDeclIdx;
+        bool allowHoist; Ty hoistTy; size_t hoistPos; int exprDepth; bool enumMode, lastVarargs; Ty lambdaTarget; bool curIsStatic;
+    };
+    Saved saveState() const {
+        return Saved{curClass, typeVars, curIsInterface, scopes, usedNames, curRet, out, ind, tmpCounter, breakCtx,
+                     yieldVar_, yieldTy_, yieldTyKnown_, yieldBase_, yieldDeclIdx_, allowHoist_, hoistTy_, hoistPos_, exprDepth_,
+                     enumMode_, lastVarargs_, lambdaTarget_, curIsStatic_};
+    }
+    void restoreState(const Saved& v) {
+        curClass = v.curClass; typeVars = v.typeVars; curIsInterface = v.curIsInterface; scopes = v.scopes; usedNames = v.usedNames;
+        curRet = v.curRet; out = v.out; ind = v.ind; tmpCounter = v.tmpCounter; breakCtx = v.breakCtx;
+        yieldVar_ = v.yieldVar; yieldTy_ = v.yieldTy; yieldTyKnown_ = v.yieldTyKnown; yieldBase_ = v.yieldBase; yieldDeclIdx_ = v.yieldDeclIdx;
+        allowHoist_ = v.allowHoist; hoistTy_ = v.hoistTy; hoistPos_ = v.hoistPos; exprDepth_ = v.exprDepth;
+        enumMode_ = v.enumMode; lastVarargs_ = v.lastVarargs; lambdaTarget_ = v.lambdaTarget; curIsStatic_ = v.curIsStatic;
+    }
+
+    // the expression that is the enclosing instance of kind `want` at this point (for new Inner())
+    std::string outerInstanceCode(const std::string& want) {
+        if (curClass == want && !curIsStatic_ && anonStack_.empty()) return "this";
+        if (!anonStack_.empty() && anonStack_.back().outerClass == want && !anonStack_.back().outerStatic) return "outer_";
+        auto it = classes.find(curClass);
+        if (it != classes.end() && it->second.innerOf == want) return "outer_";
+        if (curClass == want && !curIsStatic_) return "this";
+        fail("outer-instance", "creating an inner class of " + want + " needs an enclosing instance that is not available here");
+    }
+
+    // the generated class text: header, metadata, outer_/capture fields, constructor, member lines
+    void finishGenerated(const AnonCtx& a, const std::string& base, bool baseIsInterface, const std::vector<std::string>& memberLines,
+                         const std::vector<std::pair<std::string, Ty>>& superParams) {
+        std::ostringstream o;
+        o << "class " << a.sub;
+        if (!base.empty()) o << (baseIsInterface ? " implements " : " extends ") << base;
+        o << " {\n" << metaBlock(a.sub) << "\n";
+        std::string params, assigns;
+        bool needOuter = !a.outerStatic;
+        if (needOuter) { o << "  " << a.outerClass << " outer_;\n"; params += a.outerClass + " outerArg_"; assigns += "    this.outer_ = outerArg_;\n"; }
+        for (size_t i = 0; i < a.captures.size(); i++) {
+            const auto& c = a.captures[i];
+            o << "  " << emitType(c.second) << " cap_" << c.first << ";\n";
+            params += (params.empty() ? "" : ", ") + emitType(c.second) + " capArg" + std::to_string(i);
+            assigns += "    this.cap_" + c.first + " = capArg" + std::to_string(i) + ";\n";
+        }
+        std::string supers;
+        for (size_t i = 0; i < superParams.size(); i++) {
+            params += (params.empty() ? "" : ", ") + emitType(superParams[i].second) + " superArg" + std::to_string(i);
+            supers += (i ? ", " : "") + std::string("superArg") + std::to_string(i);
+        }
+        o << "  " << a.sub << "(" << params << ") {\n";
+        if (!baseIsInterface && !superParams.empty()) o << "    super(" << supers << ");\n";
+        o << assigns << "  }\n";
+        for (auto& l : memberLines) o << l << "\n";
+        o << "}\n";
+        OutFile f; f.typeName = a.sub; f.text = o.str();
+        pendingTypes_.push_back(f);
+    }
+
+    // the call that creates the generated object, evaluated in the enclosing method
+    std::string creationCode(const AnonCtx& a, const std::vector<E>& superArgs) {
+        std::string args;
+        if (!a.outerStatic) args += "this";
+        for (const auto& c : a.captures) args += (args.empty() ? "" : ", ") + c.first;
+        for (const auto& e : superArgs) args += (args.empty() ? "" : ", ") + e.code;
+        return "new " + a.sub + "(" + args + ")";
+    }
+
+    bool inGenerated() const { for (const auto& c : anonStack_) if (c.sub.rfind("#nest", 0) != 0) return true; return false; }
+    std::string nextAnonName() { return topLevelName_ + "__" + std::to_string(++anonCounter_); }
+    std::string topLevelName_;
+
+    // new T(args) { members }
+    E parseAnonymous(const std::string& base, std::vector<E> superArgs) {
+        if (inGenerated()) fail("anonymous-nested", "an anonymous class inside another anonymous class or lambda is not converted");
+        AnonCtx a;
+        a.sub = nextAnonName();
+        a.outerClass = curClass;
+        a.outerStatic = curIsStatic_ || curIsInterface;
+        a.outerScopes = scopes;
+        ClassInfo& sci = classes[a.sub];
+        auto bi = classes.find(base);
+        const bool baseKnown = bi != classes.end();
+        const bool baseIsInterface = baseKnown ? bi->second.isInterface : true;   // an unlisted JDK type is taken to be an interface
+        if (pass == 1) { sci.fields.clear(); sci.methods.clear(); sci.super = baseIsInterface ? "" : base; sci.ifaces.clear(); if (baseIsInterface) sci.ifaces.push_back(base); }
+        std::vector<std::pair<std::string, Ty>> superParams;
+        if (!baseIsInterface && !superArgs.empty()) {
+            const MethodSig* sc = baseKnown ? pickMethod(base, "<init>", superArgs) : nullptr;
+            if (!sc) fail("anonymous-super", "the constructor of " + base + " called by the anonymous class is not known");
+            superArgs = adaptArgs(sc, superArgs);
+            for (size_t i = 0; i < sc->params.size(); i++) superParams.push_back({"", sc->params[i]});
+        }
+        Saved saved = saveState();
+        anonStack_.push_back(a);
+        curClass = a.sub;
+        curIsStatic_ = false;
+        curIsInterface = false;
+        std::vector<std::string> memberLines;
+        int instanceFields = 0;
+        expectOp("{");
+        try {
+            while (!isOp("}")) {
+                if (atEof()) fail("syntax", "unexpected end of file in anonymous class body");
+                if (acceptOp(";")) continue;
+                out.clear(); ind = 1;
+                parseMember(a.sub, false, sci, &instanceFields);
+                for (auto& l : out) memberLines.push_back(l);
+            }
+            p++;
+        } catch (...) { anonStack_.pop_back(); restoreState(saved); throw; }
+        AnonCtx done = anonStack_.back();
+        anonStack_.pop_back();
+        restoreState(saved);
+        if (instanceFields + 13 + 1 + (int)done.captures.size() > 64) fail("model", "the anonymous class needs more than 64 fields");
+        finishGenerated(done, base, baseIsInterface, memberLines, superParams);
+        E r;
+        r.code = creationCode(done, superArgs);
+        r.pure = false;
+        r.ty = mk(a.sub);
+        return r;
+    }
+
+    // the one abstract method of an interface (looked up through its super-interfaces)
+    const MethodSig* functionalMethod(const std::string& iface, int depth = 0) const {
+        auto it = classes.find(iface);
+        if (it == classes.end() || depth > 16) return nullptr;
+        const MethodSig* found = nullptr;
+        for (const auto& m : it->second.methods) if (m.isAbstract && !m.isStatic) { if (found) return nullptr; found = &m; }
+        if (found) return found;
+        for (const auto& i : it->second.ifaces) if (const MethodSig* f = functionalMethod(i, depth + 1)) return f;
+        return nullptr;
+    }
+
+    bool looksLikeLambdaTypedParam() const {
+        size_t i = p;
+        while (isKwAt(i, "final")) i++;
+        size_t e = scanType(i);
+        return e != (size_t)-1 && isIdentTok(at(e)) && (isOpAt(e + 1, ",") || isOpAt(e + 1, ")"));
+    }
+
+    // (a, b) -> expr   (int a, int b) -> { ... }   x -> expr   where the target is a functional interface
+    E parseLambda() {
+        Ty target = lambdaTarget_;
+        lambdaTarget_ = Ty();
+        if (!target.known() || target.dims != 0 || target.n.rfind("type:", 0) == 0) fail("lambda-target", "the type a lambda is converted to is not known here");
+        const MethodSig* fm = functionalMethod(target.n);
+        if (!fm) fail("lambda-target", "'" + target.n + "' is not a known functional interface (one abstract method)");
+        std::vector<std::string> names;
+        std::vector<Ty> types;
+        if (isOp("(")) {
+            p++;
+            while (!isOp(")")) {
+                if (looksLikeLambdaTypedParam()) { while (isKw("final")) p++; Ty t = parseType(); names.push_back(ident()); types.push_back(t); }
+                else { names.push_back(ident()); types.push_back(Ty()); }
+                if (!acceptOp(",")) break;
+            }
+            expectOp(")");
+        } else { names.push_back(ident()); types.push_back(Ty()); }
+        expectOp("->");
+        if (names.size() != fm->params.size()) fail("lambda-target", "the lambda has " + std::to_string(names.size()) + " parameter(s) but " + target.n + " declares " + std::to_string(fm->params.size()));
+        for (size_t i = 0; i < types.size(); i++) if (!types[i].known()) types[i] = fm->params[i];
+        if (inGenerated()) fail("anonymous-nested", "a lambda inside an anonymous class or another lambda is not converted");
+
+        AnonCtx a;
+        a.sub = nextAnonName();
+        a.outerClass = curClass;
+        a.outerStatic = curIsStatic_ || curIsInterface;
+        a.outerScopes = scopes;
+        a.isLambda = true;
+        ClassInfo& sci = classes[a.sub];
+        if (pass == 1) { sci.fields.clear(); sci.methods.clear(); sci.super = ""; sci.ifaces.clear(); sci.ifaces.push_back(target.n); }
+        const MethodSig fmCopy = *fm;
+        Saved saved = saveState();
+        anonStack_.push_back(a);
+        curClass = a.sub;
+        curIsStatic_ = false;
+        curIsInterface = false;
+        std::vector<std::string> memberLines;
+        try {
+            scopes.clear(); usedNames.clear(); pushScope(); tmpCounter = 0; breakCtx.clear();
+            curRet = fmCopy.ret;
+            std::string plist;
+            for (size_t i = 0; i < names.size(); i++) {
+                std::string en = declare(names[i], types[i]);
+                plist += (i ? ", " : "") + emitType(types[i]) + " " + en;
+            }
+            out.clear(); ind = 2;
+            const bool voidRet = fmCopy.ret.dims == 0 && fmCopy.ret.n == "void";
+            if (isOp("{")) {
+                expectOp("{");
+                pushScope();
+                while (!isOp("}")) { if (atEof()) fail("syntax", "unexpected end of file in lambda body"); parseStatement(); }
+                p++;
+                popScope();
+            } else if (voidRet) {
+                allowHoist_ = false;
+                std::string st = parseStatementExpr();
+                line(st + ";");
+            } else {
+                allowHoist_ = true; hoistTy_ = fmCopy.ret;
+                E v = parseExpr();
+                v = coerce(v, fmCopy.ret);
+                line("return " + v.code + ";");
+            }
+            std::vector<std::string> body = out;
+            out.clear(); ind = 1;
+            memberLines.push_back("  " + emitType(fmCopy.ret) + " " + mapMember(fmCopy.name) + "(" + plist + ") {");
+            for (auto& l : body) memberLines.push_back(l);
+            memberLines.push_back("  }");
+        } catch (...) { anonStack_.pop_back(); restoreState(saved); throw; }
+        AnonCtx done = anonStack_.back();
+        anonStack_.pop_back();
+        restoreState(saved);
+        if (pass == 1) { MethodSig ms; ms.name = fmCopy.name; ms.ret = fmCopy.ret; ms.params = fmCopy.params; classes[a.sub].methods.push_back(ms); }
+        finishGenerated(done, target.n, true, memberLines, {});
+        E r;
+        r.code = creationCode(done, {});
+        r.pure = false;
+        r.ty = target;
+        return r;
+    }
+
+    // Type::staticMethod  Type::instanceMethod  Type::new  this::method  local::method  (JLS 15.13) become
+    // the lambda they stand for, in a generated class that implements the target interface.
+    E buildMethodRef(const E& recv) {
+        expectOp("::");
+        Ty target = lambdaTarget_;
+        lambdaTarget_ = Ty();
+        std::string mname = isKw("new") ? (p++, std::string("new")) : ident();
+        if (!target.known() || target.dims != 0) fail("lambda-target", "the type a method reference is converted to is not known here");
+        const MethodSig* fm = functionalMethod(target.n);
+        if (!fm) fail("lambda-target", "'" + target.n + "' is not a known functional interface (one abstract method)");
+        if (inGenerated()) fail("anonymous-nested", "a method reference inside an anonymous class or lambda is not converted");
+        const size_t n = fm->params.size();
+        std::vector<std::string> pn;
+        for (size_t i = 0; i < n; i++) pn.push_back("a" + std::to_string(i));
+        auto args = [&](size_t from) { std::string r; for (size_t i = from; i < n; i++) r += (r.empty() ? "" : ", ") + pn[i]; return r; };
+        std::string call;
+        std::string capture;   // a captured receiver, by its local name
+        if (mname == "new") {
+            if (!recv.isType) fail("methodref", "Type::new needs a type");
+            call = "new " + recv.code + "(" + args(0) + ")";
+        } else if (recv.isType) {
+            const std::string tn = recv.code;
+            bool isStatic = false, found = false;
+            std::vector<E> probe;
+            auto it = classes.find(tn);
+            if (it != classes.end()) for (const auto& m : it->second.methods) if (m.name == mname && !m.isAbstract) { found = true; isStatic = m.isStatic; }
+            if (it != classes.end()) for (const auto& m : it->second.methods) if (m.name == mname) { found = true; isStatic = m.isStatic; }
+            if (!found) fail("methodref", "cannot tell whether " + tn + "::" + mname + " is static or an instance method (its source was not collected)");
+            if (isStatic) call = tn + "." + mapMember(mname) + "(" + args(0) + ")";
+            else { if (n < 1) fail("methodref", "an unbound instance method reference needs a receiver parameter"); call = pn[0] + "." + mapMember(mname) + "(" + args(1) + ")"; }
+        } else if (recv.code == "this") {
+            call = "outer_." + mapMember(mname) + "(" + args(0) + ")";
+        } else {
+            bool isLocal = false;
+            for (size_t i = scopes.size(); i-- > 0;) for (auto& kv : scopes[i]) if (kv.second.first == recv.code) isLocal = true;
+            if (!isLocal) fail("methodref", "a method reference on a receiver that is not a local variable is not converted");
+            capture = recv.code;
+            call = "cap_" + recv.code + "." + mapMember(mname) + "(" + args(0) + ")";
+        }
+        AnonCtx a;
+        a.sub = nextAnonName();
+        a.outerClass = curClass;
+        a.outerStatic = curIsStatic_ || curIsInterface;
+        if (recv.code == "this" && a.outerStatic) fail("methodref", "this:: in a static context");
+        a.isLambda = true;
+        ClassInfo& sci = classes[a.sub];
+        if (pass == 1) { sci.fields.clear(); sci.methods.clear(); sci.super = ""; sci.ifaces.clear(); sci.ifaces.push_back(target.n); }
+        if (!capture.empty()) {
+            Ty ct;
+            for (size_t i = scopes.size(); i-- > 0;) for (auto& kv : scopes[i]) if (kv.second.first == capture) ct = kv.second.second;
+            a.captures.push_back({capture, ct});
+        }
+        std::string plist;
+        for (size_t i = 0; i < n; i++) plist += (i ? ", " : "") + emitType(fm->params[i]) + " " + pn[i];
+        const bool voidRet = fm->ret.dims == 0 && fm->ret.n == "void";
+        std::vector<std::string> lines;
+        lines.push_back("  " + emitType(fm->ret) + " " + mapMember(fm->name) + "(" + plist + ") {");
+        lines.push_back(voidRet ? "    " + call + ";" : "    return " + call + ";");
+        lines.push_back("  }");
+        if (pass == 1) { MethodSig ms; ms.name = fm->name; ms.ret = fm->ret; ms.params = fm->params; classes[a.sub].methods.push_back(ms); }
+        finishGenerated(a, target.n, true, lines, {});
+        E r;
+        r.code = creationCode(a, {});
+        r.pure = false;
+        r.ty = target;
+        return r;
+    }
+
+    // a name that is not a local, a field of the current class or a type: inside a generated class it
+    // may be a captured local variable of the enclosing method or a member of the enclosing class
+    bool resolveOuter(const std::string& name, E* res) {
+        if (anonStack_.empty()) return false;
+        AnonCtx& a = anonStack_.back();
+        for (size_t i = a.outerScopes.size(); i-- > 0;) {
+            auto it = a.outerScopes[i].find(name);
+            if (it == a.outerScopes[i].end()) continue;
+            bool have = false;
+            for (auto& c : a.captures) if (c.first == it->second.first) have = true;
+            if (!have) a.captures.push_back({it->second.first, it->second.second});
+            res->code = "cap_" + it->second.first;
+            res->ty = it->second.second;
+            return true;
+        }
+        if (const FieldInfo* fi = findField(a.outerClass, name)) {
+            if (fi->isStatic) res->code = a.outerClass + "." + safeName(name);
+            else { if (a.outerStatic) return false; res->code = "outer_." + safeName(name); }
+            res->ty = fi->ty;
+            return true;
+        }
+        return false;
+    }
+
+    // `(` at i opens a record component list `(T a, U b) [implements ...] {` (and not a method called record)?
+    bool scanRecordHeader(size_t i) const {
+        int d = 0; size_t j = i;
+        do { if (isOpAt(j, "(")) d++; else if (isOpAt(j, ")")) d--; j++; } while (d > 0 && at(j).kind != JT_EOF);
+        return isOpAt(j, "{") || isKwAt(j, "implements");
+    }
+
+    // ---- record (JLS 8.10) -------------------------------------------------------------------
+    // A record is lowered to a class with one field per component, the canonical constructor (a
+    // compact constructor runs its body first), one accessor per component, and the generated
+    // toString() "Name[a=1, b=2]" and, when every component is a primitive or a String,
+    // equals(Object) and, for int-like, long, boolean and String components, hashCode().
+    void parseRecord(const std::string& nestPrefix, const std::string& outerName, bool nestedStatic) {
+        expectKw("record");
+        const bool nested = !nestPrefix.empty();
+        Saved sv = saveState();
+        const std::string simpleName = ident();
+        std::string name = nestPrefix + simpleName;
+        typeVars.clear();
+        std::vector<std::string> tparams;
+        skipTypeParams(&tparams);
+        curClass = name;
+        curIsInterface = false;
+        curSimple_ = nested ? simpleName : "";
+        if (nested) {
+            auto it = nestedMap_.find(simpleName);
+            if (pass == 1) { if (it == nestedMap_.end()) nestedMap_[simpleName] = name; else if (it->second != name) it->second = "\x01"; }
+        } else { topLevelName_ = name; anonCounter_ = 0; pendingTypes_.clear(); }
+        (void)nestedStatic; (void)outerName;
+        std::vector<std::pair<std::string, Ty>> comps = parseParams();
+        const bool compVarargs = lastVarargs_;
+        std::string header = "class " + name;
+        if (!tparams.empty()) { header += "<"; for (size_t i = 0; i < tparams.size(); i++) header += (i ? ", " : "") + tparams[i]; header += ">"; }
+        std::vector<std::string> ifaceNames;
+        if (acceptKw("implements")) {
+            std::vector<std::string> ifs;
+            auto one = [&]() { Ty t = parseType(); ifs.push_back(t.n == "?" ? std::string("Any") : t.n); };
+            one();
+            while (acceptOp(",")) one();
+            ifaceNames = ifs;
+            header += " implements " + ifs[0];
+            for (size_t i = 1; i < ifs.size(); i++) header += ", " + ifs[i];
+        }
+        expectOp("{");
+        ClassInfo& ci = classes[name];
+        if (pass == 1) {
+            ci.fields.clear(); ci.methods.clear(); ci.super = ""; ci.ifaces = ifaceNames; ci.isInterface = false;
+            for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ci.methods.push_back(ms); }
+            MethodSig canon; canon.name = "<init>"; canon.ret = mk("void"); canon.varargs = compVarargs; for (auto& c : comps) canon.params.push_back(c.second); ci.methods.push_back(canon);
+            MethodSig ts; ts.name = "toString"; ts.ret = mk("String"); ci.methods.push_back(ts);
+        }
+        size_t beforeDiags = diags.size();
+        std::vector<std::string> memberLines;
+        int instanceFields = (int)comps.size();
+        bool compact = false, canonicalSeen = false;
+        std::string compactBody;
+        std::set<std::string> declared;
+        while (!isOp("}")) {
+            if (atEof()) { restoreState(sv); fail("syntax", "unexpected end of file in record body"); }
+            if (acceptOp(";")) continue;
+            size_t start = p;
+            out.clear(); ind = 1;
+            try {
+                // compact canonical constructor: Name { body }
+                Mods mods = parseModifiers();
+                if (isIdentTok(cur()) && (cur().text == simpleName || cur().text == name) && isOpAt(p + 1, "{")) {
+                    p++;
+                    scopes.clear(); usedNames.clear(); pushScope(); tmpCounter = 0; curRet = mk("void"); curIsStatic_ = false;
+                    std::string plist = paramList(comps);
+                    std::vector<std::string> saved; saved.swap(out);
+                    ind = 2;
+                    expectOp("{");
+                    pushScope();
+                    while (!isOp("}")) { if (atEof()) fail("syntax", "unexpected end of file in constructor"); parseStatement(); }
+                    p++;
+                    popScope();
+                    std::vector<std::string> body; body.swap(out); out.swap(saved);
+                    line(name + "(" + plist + ") {");
+                    for (auto& l : body) out.push_back(l);
+                    for (auto& c : comps) { std::string en = scopes[0].count(c.first) ? scopes[0][c.first].first : safeName(c.first); line("  this." + c.first + " = " + en + ";"); }
+                    line("}");
+                    compact = true; canonicalSeen = true;
+                } else {
+                    p = start;
+                    if (isIdentTok(cur()) && false) {}
+                    // an explicit constructor with the component types is the canonical one
+                    size_t before = p;
+                    (void)before;
+                    parseMember(name, false, ci, &instanceFields);
+                }
+                for (auto& l : out) memberLines.push_back(l);
+                (void)mods;
+            } catch (const ConvErr& e) { diag(e); skipMember(start); }
+        }
+        expectOp("}");
+        out.clear();
+        for (auto& m : ci.methods) if (pass == 2 || true) declared.insert(m.name + "/" + std::to_string(m.params.size()));
+        // an explicit canonical constructor is one declared with the same number of parameters as components
+        int ctorCount = 0;
+        for (auto& m : ci.methods) if (m.name == "<init>" && m.params.size() == comps.size()) ctorCount++;
+        if (ctorCount > 1) canonicalSeen = true;   // the generated signature plus a declared one
+        const bool userCanon = canonicalSeen;
+        restoreState(sv);
+        if (diags.size() != beforeDiags || pass != 2) { if (!nested) pendingTypes_.clear(); return; }
+        if (instanceFields + 13 > 64) fail("model", "the record exceeds the 64-field class limit");
+        // members that the user did not write
+        auto declares = [&](const std::string& n, size_t nparams) {
+            for (auto& l : memberLines) {
+                std::string probe = " " + n + "(";
+                size_t k = l.find(probe);
+                if (k != std::string::npos && k < 14 && l.find('{') != std::string::npos) {
+                    // count parameters in the signature line
+                    size_t a = l.find('(', k), b = l.find(')', a);
+                    std::string inside = l.substr(a + 1, b - a - 1);
+                    size_t cnt = inside.empty() ? 0 : 1; for (char ch : inside) if (ch == ',') cnt++;
+                    if (cnt == nparams) return true;
+                }
+            }
+            return false;
+        };
+        std::ostringstream o;
+        o << header << " {\n" << metaBlock(name) << "\n";
+        for (auto& c : comps) o << "  " << emitType(c.second) << " " << c.first << ";\n";
+        if (!userCanon) {
+            std::string pl, as;
+            for (size_t i = 0; i < comps.size(); i++) { pl += (i ? ", " : "") + emitType(comps[i].second) + " " + safeName(comps[i].first); as += "    this." + comps[i].first + " = " + safeName(comps[i].first) + ";\n"; }
+            o << "  " << name << "(" << pl << ") {\n" << as << "  }\n";
+        }
+        for (auto& c : comps) if (!declares(c.first, 0)) o << "  " << emitType(c.second) << " " << c.first << "() { return " << c.first << "; }\n";
+        if (!declares("toString", 0)) {
+            std::string expr = "\"" + simpleName + "[\"";
+            for (size_t i = 0; i < comps.size(); i++) {
+                E fe; fe.code = comps[i].first; fe.ty = comps[i].second; fe.pure = true;
+                expr += std::string(" + \"") + (i ? ", " : "") + comps[i].first + "=\" + " + strOf(fe);
+            }
+            expr += " + \"]\"";
+            o << "  String toString() { return " << expr << "; }\n";
+        }
+        o << "  static String javaText(" << name << " x) {\n    if (x == null) { return \"null\"; }\n    return x.toString();\n  }\n";
+        bool simpleComps = true, hashable = true;
+        for (auto& c : comps) {
+            const Ty& t = c.second;
+            const bool prim = t.dims == 0 && (kPrim.count(t.n) > 0) && t.n != "float" && t.n != "double";
+            const bool str = t.dims == 0 && t.n == "String";
+            if (!prim && !str) simpleComps = false;
+            if (!(t.dims == 0 && (t.n == "int" || t.n == "short" || t.n == "byte" || t.n == "char" || t.n == "boolean" || t.n == "long" || str))) hashable = false;
+        }
+        if (simpleComps && !declares("equals", 1)) {
+            o << "  boolean equals(Any o) {\n    if (!(o instanceof " << name << ")) { return false; }\n    " << name << " q = (" << name << ") o;\n    return ";
+            if (comps.empty()) o << "true"; 
+            for (size_t i = 0; i < comps.size(); i++) o << (i ? " && " : "") << "(" << comps[i].first << " == q." << comps[i].first << ")";
+            o << ";\n  }\n";
+        }
+        if (hashable && !declares("hashCode", 0)) {
+            o << "  int hashCode() {\n    int h = 0;\n";
+            for (auto& c : comps) {
+                std::string hv;
+                const Ty& t = c.second;
+                if (t.n == "String") hv = "(" + c.first + " == null ? 0 : " + c.first + ".hashCode())";
+                else if (t.n == "boolean") hv = "(" + c.first + " ? 1231 : 1237)";
+                else if (t.n == "long") hv = "JavaOperands.toInt(" + c.first + " ^ (" + c.first + " >>> 32))";
+                else hv = c.first;
+                o << "    h = JavaOperands.addInt(JavaOperands.mulInt(31, h), " << hv << ");\n";
+            }
+            o << "    return h;\n  }\n";
+        }
+        for (auto& l : memberLines) o << l << "\n";
+        o << "}\n";
+        (void)compact;
+        OutFile f; f.typeName = name; f.text = o.str();
+        if (nested) { pendingTypes_.push_back(f); return; }
+        files.push_back(f);
+        for (auto& g : pendingTypes_) files.push_back(g);
+        pendingTypes_.clear();
+    }
+
     // ---- enum --------------------------------------------------------------------------------
     // An enum is lowered, as javac does, to a class: two hidden fields (name, ordinal), one static
     // instance per constant (a constant with a body is an instance of a generated subclass), a
     // static values array, and values()/valueOf()/name()/ordinal()/toString()/compareTo().
     // A bare constant name in a case label is resolved by parseCaseLabel.
-    void parseEnum() {
+    void parseEnum(const std::string& nestPrefix = "") {
         expectKw("enum");
         typeVars.clear();
         curIsInterface = false;
-        std::string name = ident();
+        const std::string simpleName = ident();
+        std::string name = nestPrefix + simpleName;
         curClass = name;
+        if (!nestPrefix.empty()) {
+            auto it = nestedMap_.find(simpleName);
+            if (pass == 1) { if (it == nestedMap_.end()) nestedMap_[simpleName] = name; else if (it->second != name) it->second = "\x01"; }
+        } else { topLevelName_ = name; anonCounter_ = 0; pendingTypes_.clear(); }
         std::vector<std::string> ifaceNames;
         std::string header = "class " + name;
         if (acceptKw("implements")) {
@@ -1909,12 +2555,13 @@ private:
           << "    for (int i = 0; i < arrayLength(enumValues); i++) { r[i] = enumValues[i]; }\n    return r;\n  }\n";
         o << "  static " << name << " valueOf(String n) {\n    for (int i = 0; i < arrayLength(enumValues); i++) { " << name << " e = enumValues[i]; if (e.name() == n) { return e; } }\n"
           << "    throw new IllegalArgumentException(\"No enum constant " << name << ".\" + n);\n  }\n";
+        o << "  static String javaText(" << name << " x) {\n    if (x == null) { return \"null\"; }\n    return x.toString();\n  }\n";
         o << "  String name() { return enumName; }\n  int ordinal() { return enumOrdinal; }\n";
         if (!userToString) o << "  String toString() { return enumName; }\n";
         o << "  int compareTo(" << name << " other) { return enumOrdinal - other.ordinal(); }\n";
         o << "}\n";
         OutFile f; f.typeName = name; f.text = o.str();
-        files.push_back(f);
+        if (nestPrefix.empty()) files.push_back(f); else pendingTypes_.push_back(f);
         for (auto& c : consts) {
             if (c.sub.empty()) continue;
             const MethodSig* m = ctorFor(c.args);
@@ -1935,7 +2582,6 @@ private:
     // with Java fallthrough, a default anywhere, and break/continue (SLEELA.syntax 44.4). Arrow cases
     // become a case followed by an implicit break. A switch expression is hoisted: a temporary is
     // declared, a native switch assigns it in each arm, and the temporary is the value.
-    bool enumMode_ = false;
     // Java member names that collide with SLeeLa built-ins are renamed consistently in declarations and calls.
     // close() is the Munction reach-handle built-in, so the Java tier calls it closeResource().
     static std::string mapMember(const std::string& n) { return n == "close" ? "closeResource" : n; }
@@ -2208,20 +2854,41 @@ private:
         return o.str();
     }
 
-    void parseTypeDecl() {
+    void parseTypeDecl(const std::string& nestPrefix = "", bool nestedStatic = true, bool modsConsumed = false) {
+        const bool nested = !nestPrefix.empty();
+        Saved nestedSaved = saveState();
+        const std::string outerName = curClass;
+        const bool savedInner = innerMode_, savedCtorSeen = innerCtorSeen_;
+        const std::string savedSimple = curSimple_;
+        struct Restorer { Translator* t; const Saved& sv; bool nested; bool inner, ctor; std::string simple;
+            ~Restorer() { if (nested) { t->restoreState(sv); t->innerMode_ = inner; t->innerCtorSeen_ = ctor; t->curSimple_ = simple; if (!t->anonStack_.empty() && t->anonStack_.back().sub.rfind("#nest", 0) == 0) t->anonStack_.pop_back(); } } }
+            restorer{this, nestedSaved, nested, savedInner, savedCtorSeen, savedSimple};
         typeVars.clear();
         curIsInterface = false;
-        Mods mods = parseModifiers();
+        Mods mods = modsConsumed ? Mods() : parseModifiers();
         bool isIface = false;
         if (isKw("class")) p++;
         else if (isKw("interface")) { p++; isIface = true; }
-        else if (isKw("enum")) { parseEnum(); return; }
+        else if (isKw("enum")) { parseEnum(nestPrefix); return; }
+        else if (isKw("record") && isIdentTok(at(p + 1))) { parseRecord(nestPrefix, outerName, nestedStatic); return; }
         else if (isKw("record")) unsup("nested");
         else if (isOp("@")) unsup("nested");
         else fail("syntax", "expected a class or interface declaration but found '" + descr() + "'");
         curIsInterface = isIface;
-        std::string name = ident();
+        const std::string simpleName = ident();
+        std::string name = nestPrefix + simpleName;
         curClass = name;
+        curSimple_ = nested ? simpleName : "";
+        if (nested) {
+            auto it = nestedMap_.find(simpleName);
+            if (pass == 1) { if (it == nestedMap_.end()) nestedMap_[simpleName] = name; else if (it->second != name) it->second = "\x01"; }
+            AnonCtx ac; ac.sub = "#nest" + name; ac.outerClass = outerName; ac.outerStatic = nestedStatic; 
+            anonStack_.push_back(ac);
+            innerMode_ = !nestedStatic && !isIface;
+            innerCtorSeen_ = false;
+        } else {
+            topLevelName_ = name; anonCounter_ = 0; pendingTypes_.clear(); innerMode_ = false;
+        }
         std::vector<std::string> tparams;
         skipTypeParams(&tparams);
         std::string header = std::string(isIface ? "interface " : "class ") + name;
@@ -2257,7 +2924,7 @@ private:
         }
         expectOp("{");
         ClassInfo& ci = classes[name];
-        if (pass == 1) { ci.fields.clear(); ci.methods.clear(); ci.super = superName; ci.ifaces = ifaceNames; }
+        if (pass == 1) { ci.fields.clear(); ci.methods.clear(); ci.super = superName; ci.ifaces = ifaceNames; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : ""; }
         std::vector<std::string> memberLines;
         int instanceFields = 0;
         size_t beforeDiags = diags.size();
@@ -2277,19 +2944,31 @@ private:
         }
         p++;
         out.clear();
-        if (diags.size() != beforeDiags || pass != 2) return;
+        if (diags.size() != beforeDiags || pass != 2) { if (!nested) pendingTypes_.clear(); return; }
         if (instanceFields + 13 > 64)
             fail("model", "the type has " + std::to_string(instanceFields) + " instance fields; with the 13 metadata fields it exceeds the 64-field SLeeLa class limit");
         std::ostringstream o;
         o << header << " {\n";
         if (!isIface) o << metaBlock(name) << "\n";
         else o << "  < interface: no metadata fields (an interface holds no instance state) >\n\n";
+        if (!isIface) {
+            bool declares = false;
+            for (const auto& m : ci.methods) if (m.name == "toString" && m.params.empty()) declares = true;
+            if (declares) o << "  static String javaText(" << name << " x) {\n    if (x == null) { return \"null\"; }\n    return x.toString();\n  }\n";
+        }
+        if (innerMode_) {
+            o << "  " << outerName << " outer_;\n";
+            if (!innerCtorSeen_) o << "  " << name << "(" << outerName << " outerArg_) {\n    this.outer_ = outerArg_;\n  }\n";
+        }
         for (auto& l : memberLines) o << l << "\n";
         o << "}\n";
         OutFile f;
         f.typeName = name;
         f.text = o.str();   // body only; the prologue is added by assemble()
+        if (nested) { pendingTypes_.push_back(f); return; }
         files.push_back(f);
+        for (auto& g : pendingTypes_) files.push_back(g);
+        pendingTypes_.clear();
     }
 
     std::string prologue() const {
@@ -2323,7 +3002,16 @@ private:
     void parseMember(const std::string& cls, bool isIface, ClassInfo& ci, int* instanceFields) {
         Mods mods = parseModifiers();
         if (isOp("{")) unsup("nested");                       // initializer block
-        if (isKw("class") || isKw("interface") || isKw("enum") || (isKw("record") && isIdentTok(at(p + 1)) && !isOpAt(p + 2, "(") && !isOpAt(p + 2, ";") && !isOpAt(p + 2, "="))) unsup("nested");
+        if (isKw("class") || isKw("interface") || isKw("enum")) {   // a nested type is hoisted to Outer__Name
+            if (!anonStack_.empty() && anonStack_.back().sub == cls && !innerMode_ && false) unsup("nested");
+            bool st = mods.has("static") || isKw("interface") || isKw("enum") || curIsInterface;
+            parseTypeDecl(cls + "__", st, true);
+            return;
+        }
+        if (isKw("record") && isIdentTok(at(p + 1)) && (isOpAt(p + 2, "(") || isOpAt(p + 2, "<")) && (isOpAt(p + 2, "<") || scanRecordHeader(p + 2))) {
+            parseTypeDecl(cls + "__", true, true);
+            return;
+        }
         if (isOp("@")) unsup("nested");
         if (mods.has("synchronized") && !opt.singleThread) unsup("synchronized");
         if (mods.has("volatile") && !opt.singleThread) fail("volatile", "volatile requires the Java memory model; convert with --single-thread to treat it as a plain field");
@@ -2335,10 +3023,12 @@ private:
 
         bool isStatic = mods.has("static");
         bool isAbstract = mods.has("abstract");
+        curIsStatic_ = isStatic;
 
         // constructor
-        if (isIdentTok(cur()) && cur().text == cls && isOpAt(p + 1, "(")) {
+        if (isIdentTok(cur()) && (cur().text == cls || (!curSimple_.empty() && cur().text == curSimple_)) && isOpAt(p + 1, "(")) {
             p++;
+            innerCtorSeen_ = true;
             scopes.clear(); usedNames.clear(); pushScope(); tmpCounter = 0;
             std::vector<std::pair<std::string, Ty>> params = parseParams();
             const bool ctorVarargs = lastVarargs_;
@@ -2351,8 +3041,10 @@ private:
             }
             std::string plist = paramList(params);
             std::string sig = enumMode_ ? cls + "(String enumName_, int enumOrd_" + (plist.empty() ? "" : ", " + plist) + ")" : cls + "(" + plist + ")";
+            if (innerMode_) sig = cls + "(" + anonStack_.back().outerClass + " outerArg_" + (plist.empty() ? "" : ", " + plist) + ")";
             line(sig + " {");
             ind = 2;
+            if (innerMode_) line("this.outer_ = outerArg_;");
             if (enumMode_) {
                 if (isOp("{") && isKwAt(p + 1, "this") && isOpAt(p + 2, "(")) fail("enum-this-ctor", "an enum constructor that delegates with this(...) is not converted");
                 line("this.enumName = enumName_;");
@@ -2382,7 +3074,7 @@ private:
             if (isKw("throws")) skipThrows();
             curRet = ty;
             if (pass == 1) {
-                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs;
+                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";");
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }
@@ -2442,7 +3134,7 @@ private:
                 if (isOp("{")) {
                     decl += " = " + parseArrayInit(ft);
                 } else {
-                    if (isLambdaAhead()) unsup("lambda");
+                    lambdaTarget_ = ft;
                     E v = parseExpr();
                     v = coerce(v, ft);
                     decl += " = " + v.code;

@@ -1,2 +1,2 @@
-// expect: lambda
-public class LambdaUse { public static void main(String[] a) { Runnable r = () -> System.out.println("x"); r.run(); } }
+// expect: lambda-target
+public class LambdaUse { public static void main(String[] a) { java.util.List<String> l = null; l.forEach(s -> System.out.println(s)); } }

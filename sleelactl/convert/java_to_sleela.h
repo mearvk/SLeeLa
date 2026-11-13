@@ -37,11 +37,14 @@ struct MethodSig {
     std::vector<Ty> params;
     bool isStatic = false;
     bool varargs = false;   // the last parameter is T... (its type is stored as T[])
+    bool isAbstract = false; // declared without a body (an interface method, or abstract)
 };
 struct FieldInfo { Ty ty; bool isStatic = false; };
 struct ClassInfo {
     std::map<std::string, FieldInfo> fields;
     std::vector<MethodSig> methods;
+    std::string innerOf;               // for an inner (non-static) class: the hoisted name of its enclosing class
+    bool isInterface = false;          // an interface (its bodiless methods are the functional-interface candidates)
     bool isEnum = false;               // an enum type (constants are static fields of the class)
     std::string super;                 // simple name of the superclass, "" if none
     std::vector<std::string> ifaces;   // simple names of implemented / extended interfaces
@@ -52,6 +55,8 @@ struct ClassInfo {
 // be found through the super chain).
 struct SymbolTable {
     std::map<std::string, ClassInfo> classes;
+    // nested type simple name -> hoisted top-level name (Outer__Inner); "\x01" marks a name used by several nested types
+    std::map<std::string, std::string> nested;
 };
 
 struct Diagnostic {
