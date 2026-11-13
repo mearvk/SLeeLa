@@ -147,7 +147,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; java</div>
 <h1>Package <code>java</code></h1>
-<div class="lead">This package contains <strong>14966</strong> source unit(s) defining <strong>14966</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>14969</strong> source unit(s) defining <strong>14969</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="aboutevent">AboutEvent <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/jdk-28/java.desktop/java/awt/desktop/AboutEvent.sleela)</span></h2>
 <div data-u="aboutevent aboutevent">
@@ -139304,6 +139304,79 @@
 <tr><td><code>headerEnd</code></td><td><span class="sig">int headerEnd(int p, int b)</span></td><td class="desc">a method or constructor header at p: returns the position of its body or ; , or -1</td></tr>
 </table>
 </div>
+<h2 class="section" data-u="jconvlambda">JConvLambda <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvLambda.sleela)</span></h2>
+<div data-u="jconvlambda jconvlambda">
+<h3 id="JConvLambda">JConvLambda <span class="pill">class</span></h3>
+<p class="desc">lambda and method reference lowering (lib/java/jdk-28/LOWERING.md</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>rw</code></td><td><span class="sig">JConvRewriter rw</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sStart</code></td><td><span class="sig">int[] sStart</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sMark</code></td><td><span class="sig">int[] sMark</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sEnd</code></td><td><span class="sig">int[] sEnd</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sKind</code></td><td><span class="sig">int[] sKind</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sName</code></td><td><span class="sig">int[] sName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sRecv</code></td><td><span class="sig">int[] sRecv</span></td><td class="desc">the receiver token of a method reference</td></tr>
+<tr><td><code>sPFrom</code></td><td><span class="sig">int[] sPFrom</span></td><td class="desc">parameters of each site: a range of pName / pType</td></tr>
+<tr><td><code>sPN</code></td><td><span class="sig">int[] sPN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sCFrom</code></td><td><span class="sig">int[] sCFrom</span></td><td class="desc">captured locals of each site: a range of cName / cType</td></tr>
+<tr><td><code>sCN</code></td><td><span class="sig">int[] sCN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sId</code></td><td><span class="sig">int[] sId</span></td><td class="desc">the id given when the call site was written (0 before)</td></tr>
+<tr><td><code>sT0</code></td><td><span class="sig">int[] sT0</span></td><td class="desc">the target type range of each site (input tokens; -1 when none)</td></tr>
+<tr><td><code>sT1</code></td><td><span class="sig">int[] sT1</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>siteN</code></td><td><span class="sig">int siteN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pName</code></td><td><span class="sig">String[] pName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pType</code></td><td><span class="sig">String[] pType</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pN</code></td><td><span class="sig">int pN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cName</code></td><td><span class="sig">String[] cName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cType</code></td><td><span class="sig">String[] cType</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cN</code></td><td><span class="sig">int cN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>localsFrom</code></td><td><span class="sig">int localsFrom</span></td><td class="desc">where the locals of the member start (-1: a field, no locals)</td></tr>
+<tr><td><code>retStart</code></td><td><span class="sig">int retStart</span></td><td class="desc">the return type of the current method as input tokens (target type of return x -&gt; ...)</td></tr>
+<tr><td><code>retEnd</code></td><td><span class="sig">int retEnd</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>queue</code></td><td><span class="sig">int[] queue</span></td><td class="desc">bodies to write after the current member: site indexes, and whether static</td></tr>
+<tr><td><code>qN</code></td><td><span class="sig">int qN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>arms</code></td><td><span class="sig">String[] arms</span></td><td class="desc">the table of the current document</td></tr>
+<tr><td><code>armN</code></td><td><span class="sig">int armN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nextId</code></td><td><span class="sig">int nextId</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>usesFunctional</code></td><td><span class="sig">boolean usesFunctional</span></td><td class="desc">the document writes a functional interface type as Any (the table must load SLJavaLambda)</td></tr>
+<tr><td><code>lambdasTotal</code></td><td><span class="sig">int lambdasTotal</span></td><td class="desc">lambdas lowered, method references lowered (for the report)</td></tr>
+<tr><td><code>refsTotal</code></td><td><span class="sig">int refsTotal</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>beginDocument</code></td><td><span class="sig">void beginDocument()</span></td><td class="desc">---- per document and per member state ----</td></tr>
+<tr><td><code>beginScan</code></td><td><span class="sig">void beginScan(int a, boolean body)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isOp</code></td><td><span class="sig">boolean isOp(int i, String s)</span></td><td class="desc">---- token helpers ----</td></tr>
+<tr><td><code>isId</code></td><td><span class="sig">boolean isId(int i, String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nx</code></td><td><span class="sig">int nx(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pv</code></td><td><span class="sig">int pv(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kd</code></td><td><span class="sig">int kd(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tx</code></td><td><span class="sig">String tx(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isCloseAngle</code></td><td><span class="sig">boolean isCloseAngle(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>angleWidth</code></td><td><span class="sig">int angleWidth(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>siteAt</code></td><td><span class="sig">int siteAt(int i)</span></td><td class="desc">the site whose call is written at token i, or -1</td></tr>
+<tr><td><code>growSites</code></td><td><span class="sig">boolean growSites()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addParam</code></td><td><span class="sig">void addParam(String n, String t)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addCapture</code></td><td><span class="sig">void addCapture(String n, String t)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>targetOf</code></td><td><span class="sig">boolean targetOf(int s, int[] tgt)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>enclosingSite</code></td><td><span class="sig">int enclosingSite(int s)</span></td><td class="desc">the innermost lambda site whose body holds token s, or -1</td></tr>
+<tr><td><code>resultOf</code></td><td><span class="sig">int resultOf(String f)</span></td><td class="desc">the type argument index of the result of a functional interface, or -1</td></tr>
+<tr><td><code>resultRange</code></td><td><span class="sig">boolean resultRange(int a, int b, int[] tgt)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>callArgTarget</code></td><td><span class="sig">boolean callArgTarget(int s, int[] tgt)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>countArgs</code></td><td><span class="sig">int countArgs(int open, int close)</span></td><td class="desc">the number of comma separated items between the brackets open and close</td></tr>
+<tr><td><code>paramTypeRange</code></td><td><span class="sig">boolean paramTypeRange(int open, int close, int k, int[] tgt)</span></td><td class="desc">the type range of parameter k of the parameter list open .. close</td></tr>
+<tr><td><code>slotsOf</code></td><td><span class="sig">String slotsOf(String f)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>argType</code></td><td><span class="sig">String argType(String n)</span></td><td class="desc">the SLeeLa type of a Java type argument name (boxes to primitives)</td></tr>
+<tr><td><code>targetParams</code></td><td><span class="sig">int targetParams(int a, int b, String[] out)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>localsAt</code></td><td><span class="sig">int localsAt(int s, String[] names, String[] types, int[] depthOf)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>typeStartBefore</code></td><td><span class="sig">int typeStartBefore(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>exprEnd</code></td><td><span class="sig">int exprEnd(int a)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isSwitchArrow</code></td><td><span class="sig">boolean isSwitchArrow(int ar)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>registerArrow</code></td><td><span class="sig">boolean registerArrow(int ar)</span></td><td class="desc">a lambda whose arrow is at ar: true when it is lowered (the site is kept)</td></tr>
+</table>
+</div>
 <h2 class="section" data-u="jconvlexer">JConvLexer <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvLexer.sleela)</span></h2>
 <div data-u="jconvlexer jconvlexer">
 <h3 id="JConvLexer">JConvLexer <span class="pill">class</span></h3>
@@ -139408,6 +139481,46 @@
 <tr><td><code>describe</code></td><td><span class="sig">String describe()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="jconvouter">JConvOuter <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvOuter.sleela)</span></h2>
+<div data-u="jconvouter jconvouter">
+<h3 id="JConvOuter">JConvOuter <span class="pill">class</span></h3>
+<p class="desc">inner classes and the enclosing instance (JLS 8.1.3, 15.9.2,</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>innerName</code></td><td><span class="sig">String[] innerName</span></td><td class="desc">the inner classes of the file and their enclosing class</td></tr>
+<tr><td><code>innerOuter</code></td><td><span class="sig">String[] innerOuter</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>innerN</code></td><td><span class="sig">int innerN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>typeName</code></td><td><span class="sig">String[] typeName</span></td><td class="desc">the member names of the types written so far in the file, comma framed: ,a,b,</td></tr>
+<tr><td><code>typeMembers</code></td><td><span class="sig">String[] typeMembers</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>typeN</code></td><td><span class="sig">int typeN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>outerName</code></td><td><span class="sig">String outerName</span></td><td class="desc">the outer context of the type being written (&quot;&quot; for a top-level type)</td></tr>
+<tr><td><code>outerInstance</code></td><td><span class="sig">boolean outerInstance</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>oName</code></td><td><span class="sig">String[] oName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>oStatic</code></td><td><span class="sig">int[] oStatic</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>oMethod</code></td><td><span class="sig">int[] oMethod</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>oN</code></td><td><span class="sig">int oN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>superName</code></td><td><span class="sig">String superName</span></td><td class="desc">supertypes of the type being written: its superclass and interfaces (erased simple names)</td></tr>
+<tr><td><code>ifaces</code></td><td><span class="sig">String[] ifaces</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ifN</code></td><td><span class="sig">int ifN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ctorTotal</code></td><td><span class="sig">int ctorTotal</span></td><td class="desc">inner class constructor rewrites done, Outer.this rewrites, prefixed outer names (report)</td></tr>
+<tr><td><code>qualifiedThisTotal</code></td><td><span class="sig">int qualifiedThisTotal</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>prefixTotal</code></td><td><span class="sig">int prefixTotal</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>beginFile</code></td><td><span class="sig">void beginFile()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>clearContext</code></td><td><span class="sig">void clearContext()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addInner</code></td><td><span class="sig">void addInner(String name, String outer)</span></td><td class="desc">---- the inner class registry ----</td></tr>
+<tr><td><code>outerOf</code></td><td><span class="sig">String outerOf(String name)</span></td><td class="desc">the enclosing class of an inner class, or &quot;&quot; when the name is not one</td></tr>
+<tr><td><code>addTypeMembers</code></td><td><span class="sig">void addTypeMembers(String type, String framed)</span></td><td class="desc">---- member names of the types of the file ----</td></tr>
+<tr><td><code>membersOf</code></td><td><span class="sig">String membersOf(String type)</span></td><td class="desc">the comma framed member list of a type of the file, or &quot;?&quot; when not written yet</td></tr>
+<tr><td><code>addOuterMember</code></td><td><span class="sig">void addOuterMember(String n, boolean isStatic, boolean isMethod)</span></td><td class="desc">---- the outer context ----</td></tr>
+<tr><td><code>outerMember</code></td><td><span class="sig">int outerMember(String n, boolean isCall)</span></td><td class="desc">the index of an outer member (method when isCall, else field), or -1</td></tr>
+<tr><td><code>setSupers</code></td><td><span class="sig">void setSupers(String sup, String[] ifs, int n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mayInherit</code></td><td><span class="sig">boolean mayInherit(String n, boolean isCall, JConvModel model)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="jconvreport">JConvReport <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvReport.sleela)</span></h2>
 <div data-u="jconvreport jconvreport">
 <h3 id="JConvReport">JConvReport <span class="pill">class</span></h3>
@@ -139485,6 +139598,8 @@
 <tr><td><code>curReturnType</code></td><td><span class="sig">String curReturnType</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>unitName</code></td><td><span class="sig">String unitName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>expr</code></td><td><span class="sig">JConvExpr expr</span></td><td class="desc">the expression half of the typed pass</td></tr>
+<tr><td><code>lam</code></td><td><span class="sig">JConvLambda lam</span></td><td class="desc">lambda and method reference lowering (JConvLambda)</td></tr>
+<tr><td><code>outer</code></td><td><span class="sig">JConvOuter outer</span></td><td class="desc">inner classes and the enclosing instance (JConvOuter)</td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -139543,6 +139658,7 @@
 <tr><td><code>renameIdent</code></td><td><span class="sig">String renameIdent(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>isBuiltinCallName</code></td><td><span class="sig">boolean isBuiltinCallName(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>mapTypeName</code></td><td><span class="sig">String mapTypeName(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isFunctionalInterface</code></td><td><span class="sig">boolean isFunctionalInterface(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>isPrimitive</code></td><td><span class="sig">boolean isPrimitive(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>zeroOf</code></td><td><span class="sig">String zeroOf(String t)</span></td><td class="desc">the Java zero value of an element type, as SLeeLa source text</td></tr>
 <tr><td><code>defaultReturn</code></td><td><span class="sig">String defaultReturn(String t)</span></td><td class="desc">the default return statement text for a stub of return type t</td></tr>
@@ -139600,6 +139716,8 @@
 <tr><td><code>oracle</code></td><td><span class="sig">boolean oracle</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>unitName</code></td><td><span class="sig">String unitName</span></td><td class="desc">the type in progress</td></tr>
 <tr><td><code>unitKind</code></td><td><span class="sig">String unitKind</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>innerOf</code></td><td><span class="sig">String innerOf</span></td><td class="desc">the enclosing class when the type being written is an inner class (JConvOuter), else empty; and whether it declares slOuter</td></tr>
+<tr><td><code>innerBase</code></td><td><span class="sig">boolean innerBase</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>javaType</code></td><td><span class="sig">String javaType</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>unitMembers</code></td><td><span class="sig">int unitMembers</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>unitStubs</code></td><td><span class="sig">int unitStubs</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -244804,6 +244922,15 @@
 <tr><td><code>wrap</code></td><td><span class="sig">static long wrap(long x, int bits)</span></td><td class="desc">wrap x to a signed two-complement value of the given width (8, 16, 32)</td></tr>
 </table>
 </div>
+<h2 class="section" data-u="sljavafaults">SLJavaFaults <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/support/SLJavaFaults.sleela)</span></h2>
+<div data-u="sljavafaults sljavafaults">
+<h3 id="SLJavaFaults">SLJavaFaults <span class="pill">class</span></h3>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>make</code></td><td><span class="sig">static Any make(int kind, String message)</span></td><td class="desc">kind: 1 arithmetic, 2 array index, 3 checked cast (the VM fault kinds)</td></tr>
+</table>
+</div>
 <h2 class="section" data-u="sljavahex">SLJavaHex <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/support/SLJavaHex.sleela)</span></h2>
 <div data-u="sljavahex sljavahex">
 <h3 id="SLJavaHex">SLJavaHex <span class="pill">class</span></h3>
@@ -301587,7 +301714,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-13 03:38 UTC.
+<code>/lib</code> tree on 2026-11-13 04:30 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
