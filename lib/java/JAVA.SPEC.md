@@ -96,6 +96,17 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
 ### 4.4 Strings
 - `+` with a String converts the other operand as JLS 5.1.11: objects through `toString()`
   (`null` is `"null"`), doubles through `Double.toString`, floats through `JavaFloat.text`.
+  An object of a library type, `Object` or an interface goes through the model row
+  `tostr reference`, `JavaFormat.objectText(x)`, which calls `toString()` at run time (until
+  2026-11-13 such objects printed the VM handle, `StringBuilder#0`). A value of unknown type (an
+  erased generic, an untyped call result) may be a primitive at run time and keeps the plain SLeeLa
+  text, so an *object* held in an erased generic still shows its handle (open, section 5). An object
+  of a class of this tree with no `toString()` in its chain is refused (`[object-text]`): Java prints
+  an identity hash. Tests: `ObjectText`, `reject/IdentityText`.
+- A `char` passed to a library member that takes it as text (model rows `chartext`:
+  `StringBuilder`/`StringBuffer` `append` and `insert`) is converted through the `tostr char` row;
+  a char is an integer at run time, so `append('x')` would append `120`. Members that take a char as
+  a code (`indexOf`, `Character.isDigit`) are not listed. Test: `ObjectText`.
 - `String.valueOf(x)` is `"" + x` with the same conversions.
 - `String.join(sep, a, b, ...)` and `String.join(sep, String[])` are
   `JavaFormat.joinArray(sep, String[])`.
@@ -196,8 +207,13 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
   with a receiver (`a.equals(b)`) or without one (`getClass()` inside the class): SLeeLa has no such
   method, and the call would otherwise only fail later in the checker. Records declare the
   `equals`/`hashCode` they generate. Tests: `reject/ObjectMethod`, `reject/BareObjectMethod`.
-- Object text. An object shown as text calls `toString()` through a generated static helper
-  `Owner.javaText(x)` (`null` is `"null"`), because SLeeLa would show the handle.
+- Object text. An object of a class of this tree shown as text calls `toString()` through a
+  generated static helper `Owner.javaText(x)` (`null` is `"null"`); other objects through
+  `JavaFormat.objectText` (4.4).
+- Boxed types. Boxed values are held as primitives; a boxed type written as a declared, parameter,
+  return or cast type (`Integer i = 42`, `(Long) o`) is refused (`[boxed]`) because the declaration
+  would name the `lib/java` class, to which a primitive is not assignable. Boxed type arguments
+  (`List<Integer>`) are erased and converted. Test: `reject/BoxedDecl`.
 - Interfaces carry no metadata fields; every class carries the Metadata Class record.
 - Limits: at most 64 instance fields per class (13 are metadata).
 
@@ -229,6 +245,9 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 | `outer.new Inner()`, local classes | rare forms | hoist local classes like nested ones |
 | `case Type t ->` patterns, record patterns, sealed exhaustiveness | binding scope in a switch | per-arm cast declaration |
 | Records: `equals`/`hashCode` for double/float/reference components | Java's rules for those | `Double.compare` and `Objects.equals` lowering |
+| Boxed declared types (`Integer i`) | boxed values are primitives in SLeeLa; the declaration names a class | declare as `Any`, unbox at each use, keep `null` |
+| An object held in an erased generic shown as text | its run-time kind (object or primitive) is unknown at conversion | a run-time text helper that recognises primitives |
+| A nested user exception in `Throwable.toString()` | prints `Outer__Inner`, Java `Outer$Inner` | a binary-name table for hoisted types |
 | `static { }` initializer blocks | class initialization runs on first use (JLS 12.4) | a guarded static init method called on first access |
 | `Object.equals`/`hashCode`/`getClass` on a type that does not declare them (enums included) | SLeeLa has no root object methods | identity `equals`, an identity hash, a runtime class name |
 | `String.format` with a non-literal format, `%e`, argument indexes | runtime format parsing | a runtime formatter in `JavaFormat` |
@@ -248,15 +267,17 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 
 ## 7. Verification
 
-`bash tests/javaconv_differential_test.sh` runs 20 programs on a JDK and on the converted SLeeLa:
-Anon, Basics, Control, Enums, Flow, Floats, Formats, Functional, Grid, Init, Nested, Operands, Records, Refs,
-Resources, Shapes, Strings, Switches, Sync, Varargs, and 7 refusal programs under `tests/reject` that must be refused (a lambda
+`bash tests/javaconv_differential_test.sh` runs 21 programs on a JDK and on the converted SLeeLa:
+Anon, Basics, Control, Enums, Flow, Floats, Formats, Functional, Grid, Init, Nested, ObjectText, Operands, Records,
+Refs, Resources, Shapes, Strings, Switches, Sync, Varargs, and 9 refusal programs under `tests/reject` that must be refused (a lambda
 argument to an unknown method, String identity comparison, a `synchronized` block without `--single-thread`, an operand of
-unknown type, an `Object` method a user type does not declare, called with and without a receiver, and a qualified nested
-superclass that shares its simple name with the class). A last check converts a file, makes it fail closed, converts
+unknown type, an `Object` method a user type does not declare, called with and without a receiver, a qualified nested
+superclass that shares its simple name with the class, a boxed declared type, and a user object without `toString()` shown
+as text). The workflow `.github/workflows/java-convert.yml` runs the suite in CI on every change to the converter, the
+model, the Java tier or the compiler/VM. A last check converts a file, makes it fail closed, converts
 again and requires that the earlier output is gone (the converter keeps the list of what it wrote in `.javaconv-emitted`).
 `bash examples/java/differential/run-differential.sh` is the older hand-converted suite.
 
 Whole-tree status (2026-11-13, JDK 25.0.2 `java.base`: `java/lang`, `java/util`, `java/math`, `java/text`,
-884 files): 423 of 884 files (499 SLeeLa files); 429 with `--single-thread`; first refusals led by `nested-ambiguous` (133 files),
-`nested` (68) and `untyped` (57). The report of the run is the status; see `sleelactl/convert/README.md`.
+884 files): 420 of 884 files (496 SLeeLa files); 426 with `--single-thread`; first refusals led by `nested-ambiguous` (131 files),
+`nested` (67) and `untyped` (57). Full status: `JAVA.CONVERSION.STATUS.md`. The report of the run is the status; see `sleelactl/convert/README.md`.

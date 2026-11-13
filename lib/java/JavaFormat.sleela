@@ -209,6 +209,14 @@ class JavaFormat {
   }
 
   < String.join(sep, parts). >
+  << Java string conversion of a reference (JLS 5.1.11): null is the text null, any other object
+     its toString(), found at run time (SLEELA.syntax 43.7). Used by the conversion model row
+     tostr reference. >>
+  static String objectText(Any x) {
+    if (x == null) { return "null"; }
+    return x.toString();
+  }
+
   static String joinArray(String sep, String[] parts) {
     String r = "";
     for (int i = 0; i < arrayLength(parts); i++) {

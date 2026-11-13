@@ -141,3 +141,20 @@ Tests added: `tests/reject/QualifiedNested.java` (fails with `[nested-ambiguous]
 Documents updated with these numbers: `sleelactl/convert/README.md`, `sleelactl/jdk/README.md`, `lib/java/JAVA.SPEC.md`,
 both `CONVERSION.PRINCIPLES.md`, `lib/java/STATUS.md`, `impl/subjects/conversion/README.md`,
 `wiki/Java-Specific-Section.md`, `.kiro/steering/java-to-sleela-conversion.md`.
+
+## Addendum: model 1.3.0, CI, overall status page (2026-11-13, later)
+
+- Library objects shown as text printed the VM handle (`StringBuilder#0`, `RuntimeException#1`,
+  `ArrayList#2`) although `JAVA.SPEC.md` 4.4 already claimed `toString()`. Now the model row
+  `tostr reference` routes a reference of a known type through `JavaFormat.objectText` (new method in
+  `lib/java/JavaFormat.sleela`; manifest regenerated). The first version also routed values of unknown
+  type and broke `Resources` (`e.getSuppressed().length` is an int at run time): unknown-typed values keep
+  the plain text. A user object without `toString()` is refused `[object-text]` (Java prints an identity hash).
+- `sb.append('x')` appended `120`: model section 9c `chartext` rows pass a char as text to
+  `StringBuilder`/`StringBuffer` `append`/`insert`. The model loader gained the kind.
+- `Integer i = 42` converted and then did not compile (pre-existing): refused `[boxed]` until a boxing lowering exists.
+- CI: `.github/workflows/java-convert.yml`. CI also showed that `verify-security` had failed on `master` since
+  `8e39e535` (stale `sleela_terminal.c` entry; fixed in `c91a4ecf`) and that a Native Drive failure on `main`
+  was a runner `nm` timeout (passed on re-run).
+- Suite 31 of 31 (21 programs, 9 refusals, stale-output check). Whole tree 420 of 884 (426 with `--single-thread`).
+- The overall status page is the root `JAVA.CONVERSION.STATUS.md`.

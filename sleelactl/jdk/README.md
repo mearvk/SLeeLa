@@ -33,5 +33,5 @@ unzip -q "$JAVA_HOME/lib/src.zip" 'java.base/java/lang/*' 'java.base/java/util/*
 sleelactl/convert/build/javaconv --jdk /tmp/jdk25 --out /tmp/jdk25-sleela --jdk-version 25
 ```
 
-Result: 423 converted (499 SLeeLa files), 461 failed closed; 429 with `--single-thread`. Details and the
+Result (model 1.3.0): 420 converted (496 SLeeLa files), 464 failed closed; 426 with `--single-thread`. Details and the
 refusal table: `sleelactl/convert/README.md`.

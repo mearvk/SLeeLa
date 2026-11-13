@@ -18,6 +18,7 @@ into the `sleela` runtime: it governs a tool, and its executable half is
 | Revision | Change |
 |---|---|
 | 1.0.0 | Types, boxing, promotion, operators, casts, compound assignment, string conversion, 45 hand `ret` / `field` rows, refusals |
+| 1.3.0 (2026-11-13) | Law rows: `tostr reference` (string conversion of an object through `JavaFormat.objectText`), section 9c `chartext` (library parameters that take a char as text: `StringBuilder`/`StringBuffer` `append`, `insert`). Refusal rows `boxed`, `object-text`. |
 | 1.2.0 (2026-11-13) | Refusal rows `init-block` (static initializer blocks), `member-annotation`, `object-method` (`equals`/`hashCode`/`getClass` on a user type that does not declare them). No law changed. |
 | 1.1.0 (2026-11-13) | Section **10b**: 8,922 `ret` rows reflected from the public API of OpenJDK 25.0.2 (`lib/java/jdk-25/api/jdk-signatures.jsonl`, `jdk-api.jsonl`) by `generate_ret_rows.py`, for the procedural core of `java.base` (`java.lang`, `java.util`, `java.io`, `java.math`, `java.time`, `java.text`, `java.net`, `java.nio`, ...; the list is `SCOPE` in the script). Hand rows win. |
 
@@ -38,8 +39,8 @@ python3 impl/subjects/conversion/generate_ret_rows.py           # rewrite sectio
 python3 impl/subjects/conversion/generate_ret_rows.py --check   # exit 1 when out of date
 ```
 
-Measured with 1.2.0 (2026-11-13): `tests/javaconv_differential_test.sh` 28 of 28 (20 programs, 7 refusals,
-stale-output check); the JDK 25.0.2 `java.base` subset of 884 files converts 423 (see `sleelactl/convert/README.md`).
+Measured with 1.3.0 (2026-11-13): `tests/javaconv_differential_test.sh` 31 of 31 (21 programs, 9 refusals,
+stale-output check); the JDK 25.0.2 `java.base` subset of 884 files converts 420 (see `JAVA.CONVERSION.STATUS.md`).
 
 Measured with 1.1.0 (2026-11-13): `tests/javaconv_differential_test.sh` 14 of 14
 pass, unchanged from 1.0.0. On a 17-file JDK sample `java-convert` gets further
