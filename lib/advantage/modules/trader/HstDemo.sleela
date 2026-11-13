@@ -1,0 +1,225 @@
+<< lib/advantage/modules/trader/HstDemo.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Runnable check of the high speed trader engine. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< SLeeLa courseware demo: runs the high speed trader at P=8, 16 and 24 and checks it. >
+< run auto-links the sibling classes in this directory. Data is synthetic and illustrative. >
+class HstDemo {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject real origin where publicly known; unknown values use none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39503;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "none";
+  String metaCorporation = "none";
+  < metaOrigin: National | nation | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity on a 1..10 scale; courseware model on synthetic data >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real citable instrument or none >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int passed = 0;
+  int failed = 0;
+  int evalsPerSimSecond = 5000;
+
+  void check(String what, boolean ok) {
+    if (ok) { passed = passed + 1; print("  PASS  " + what); }
+    else { failed = failed + 1; print("  FAIL  " + what); }
+  }
+
+  << Run one configuration for simSeconds of simulated time. Returns the
+     achieved evaluations per wall-clock second. perMinuteMax receives the
+     largest accepted count in any full simulated minute through the field. >>
+  double maxMinute = 0.0;
+  double lastMinute = 0.0;
+  double lastPnl = 0.0;
+  int lastAccepted = 0;
+  double lastWallSeconds = 0.0;
+
+  double run(SLHighSpeedTrader tr, SLHstMarket mk, int simSeconds) {
+    double[] o = new double[10];
+    int i = 0;
+    int total = simSeconds * evalsPerSimSecond;
+    int minuteStartAccepted = 0;
+    int nextMinuteAt = 60 * evalsPerSimSecond;
+    maxMinute = 0.0;
+    lastMinute = 0.0;
+    int t0 = timeMonotonicNanos();
+    while (i < total) {
+      mk.next(o);
+      double nowMs = i * 0.2;
+      int d = tr.evaluate(o, nowMs);
+      if (d == 1) { tr.learn(mk.realized()); }
+      i = i + 1;
+      if (i == nextMinuteAt) {
+        double m = tr.getAccepted() - minuteStartAccepted;
+        if (m > maxMinute) { maxMinute = m; }
+        lastMinute = m;
+        minuteStartAccepted = tr.getAccepted();
+        nextMinuteAt = nextMinuteAt + 60 * evalsPerSimSecond;
+      }
+    }
+    int t1 = timeMonotonicNanos();
+    double secs = ((t1 - t0) * 1.0) / 1.0e9;
+    lastWallSeconds = secs;
+    lastPnl = tr.getPnl();
+    lastAccepted = tr.getAccepted();
+    return (total * 1.0) / secs;
+  }
+
+  void vetoReport(SLHighSpeedTrader tr, SLHstPragmatics reg) {
+    int logicV = 0;
+    int useV = 0;
+    int groundV = 0;
+    int k = 0;
+    while (k < 24) {
+      int c = tr.getVeto(k);
+      String ph = reg.phase(k);
+      if (ph == "logic") { logicV = logicV + c; }
+      if (ph == "use") { useV = useV + c; }
+      if (ph == "ground") { groundV = groundV + c; }
+      k = k + 1;
+    }
+    print("    vetoes by phase: logic=" + logicV + " use=" + useV + " ground=" + groundV
+          + "  score-rejects=" + tr.getRejScore() + "  rate-rejects=" + tr.getRejRate());
+  }
+
+  void main() {
+    print("=== High speed trader courseware model (synthetic data, no orders, no network) ===");
+    SLHstPragmatics reg = new SLHstPragmatics();
+    reg.build();
+
+    print("-- 1. fail closed configuration --");
+    SLHighSpeedTrader bad = new SLHighSpeedTrader();
+    check("7 pragmatics refused", bad.configure(7, 2000.0) == false);
+    check("25 pragmatics refused", bad.configure(25, 2000.0) == false);
+    check("zero trades per minute refused", bad.configure(8, 0.0) == false);
+    double[] probe = new double[10];
+    SLHstMarket pm = new SLHstMarket();
+    pm.next(probe);
+    check("unconfigured trader rejects everything", bad.evaluate(probe, 0.0) == 0);
+    check("unconfigured trader reports code 1", bad.getLastCode() == 1);
+
+    print("-- 2. the minimal safe core and the full set --");
+    int[] sizes = new int[3];
+    sizes[0] = 8;
+    sizes[1] = 16;
+    sizes[2] = 24;
+    int si = 0;
+    while (si < 3) {
+      int pc = sizes[si];
+      SLHighSpeedTrader tr = new SLHighSpeedTrader();
+      SLHstMarket mk = new SLHstMarket();
+      tr.configure(pc, 2000.0);
+      double eps = run(tr, mk, 120);
+      print("  P=" + pc + "  evals/s=" + eps + "  accepted(120 sim s)=" + tr.getAccepted()
+            + "  last full minute=" + lastMinute + "  max minute=" + maxMinute
+            + "  threshold=" + tr.getThreshold() + "  pnl(bps)=" + lastPnl);
+      vetoReport(tr, reg);
+      check("P=" + pc + " sustains at least 5000 evaluations per second", eps >= 5000.0);
+      check("P=" + pc + " never exceeds 2000 trades in a simulated minute (+ burst)", maxMinute <= 2008.0);
+      check("P=" + pc + " reaches at least 1500 trades in a simulated minute", maxMinute >= 1500.0);
+      si = si + 1;
+    }
+
+    print("-- 3. evolution: learning on versus off (same stream, P=24) --");
+    SLHighSpeedTrader on = new SLHighSpeedTrader();
+    SLHighSpeedTrader off = new SLHighSpeedTrader();
+    SLHighSpeedTrader offFree = new SLHighSpeedTrader();
+    SLHstMarket m1 = new SLHstMarket();
+    SLHstMarket m2 = new SLHstMarket();
+    SLHstMarket m4 = new SLHstMarket();
+    on.configure(24, 2000.0);
+    off.configure(24, 2000.0);
+    offFree.configure(24, 2000.0);
+    off.setLearning(false);
+    offFree.setLearning(false);
+    offFree.setDrawdownLimit(1.0e12);
+    run(on, m1, 120);
+    double pnlOn = lastPnl;
+    int accOn = lastAccepted;
+    run(off, m2, 120);
+    double pnlOff = lastPnl;
+    int accOff = lastAccepted;
+    run(offFree, m4, 120);
+    double pnlFree = lastPnl;
+    int accFree = lastAccepted;
+    print("  learning ON                    : trades=" + accOn + "  pnl(bps)=" + pnlOn + "  mean=" + (pnlOn / accOn) + "  halted=" + on.isHalted());
+    print("  learning OFF (guard armed)     : trades=" + accOff + "  pnl(bps)=" + pnlOff + "  mean=" + (pnlOff / accOff) + "  halted=" + off.isHalted());
+    print("  learning OFF (guard disabled)  : trades=" + accFree + "  pnl(bps)=" + pnlFree + "  mean=" + (pnlFree / accFree) + "  halted=" + offFree.isHalted());
+    print("  weight of L5 plausibility: " + on.getWeight(4) + "  of L4 evidence: " + on.getWeight(3));
+    check("learning ON earns a higher mean per trade than learning OFF with the guard disabled", (pnlOn / accOn) > (pnlFree / accFree));
+    check("the drawdown guard halts a trader that is losing", off.isHalted());
+
+    print("-- 4. the brilliant person channel --");
+    SLHighSpeedTrader br = new SLHighSpeedTrader();
+    br.configure(24, 2000.0);
+    check("insight 1.5 on L5 accepted", br.insight(4, 1.5));
+    check("insight 5.0 refused (out of range)", br.insight(4, 5.0) == false);
+    check("insight on unknown id refused", br.insight(99, 1.2) == false);
+    check("weight moved only by the accepted insight", br.getWeight(4) == 1.5);
+    SLHstMarket m3 = new SLHstMarket();
+    double[] o = new double[10];
+    o[0] = 40.0; o[1] = 4.0; o[2] = 20.0; o[3] = 4.0; o[4] = 15.0;
+    o[5] = 10.0; o[6] = 0.3; o[7] = 0.2; o[8] = 0.9; o[9] = 4.0;
+    check("a clean strong candidate is accepted", br.evaluate(o, 1000.0) == 1);
+    br.haltNow();
+    check("halted trader refuses the same candidate", br.evaluate(o, 2000.0) == 0);
+    check("halt is reported as the kill switch veto", br.getLastCode() == 27);
+    br.insight(17, 2.0);
+    check("insight cannot unlock the kill switch", br.evaluate(o, 3000.0) == 0);
+    br.rearm();
+    check("a person can re-arm", br.evaluate(o, 4000.0) == 1);
+
+    print("-- 5. guards a candidate must clear --");
+    SLHighSpeedTrader g = new SLHighSpeedTrader();
+    g.configure(8, 2000.0);
+    o[0] = 40.0; o[1] = 4.0; o[2] = 20.0; o[3] = 4.0; o[4] = 15.0;
+    o[5] = 10.0; o[6] = 0.3; o[7] = 0.2; o[8] = 0.9; o[9] = 4.0;
+    check("baseline candidate accepted", g.evaluate(o, 1000.0) == 1);
+    o[0] = 1.0e30;
+    check("malformed input vetoed by L1", g.evaluate(o, 2000.0) == 0 && g.getLastCode() == 10);
+    o[0] = 40.0; o[7] = 0.99;
+    check("position at limit vetoed by G4", g.evaluate(o, 3000.0) == 0 && g.getLastCode() == 29);
+    o[7] = 0.2; o[8] = 0.3;
+    check("untrusted venue vetoed by G1", g.evaluate(o, 4000.0) == 0 && g.getLastCode() == 26);
+    o[8] = 0.9; o[6] = 1.5;
+    check("oversize vetoed by U1", g.evaluate(o, 5000.0) == 0 && g.getLastCode() == 18);
+    o[6] = 0.3; o[0] = 3.0;
+    check("negative net edge vetoed by L2", g.evaluate(o, 6000.0) == 0 && g.getLastCode() == 11);
+
+    print("=== checks passed=" + passed + " failed=" + failed + " ===");
+  }
+}

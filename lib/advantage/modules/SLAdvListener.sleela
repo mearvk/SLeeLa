@@ -1,0 +1,12 @@
+<< lib/advantage/modules/SLAdvListener.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Advantage listener contract: a user program implements this to be called when a >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< module sends it a message. Return 0 when handled. >
+interface SLAdvListener {
+  int onMessage(SLAdvMessage m);
+}

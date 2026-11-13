@@ -20,8 +20,9 @@ here claims a measured result; numbers in exercises are illustrative.
 | 06 | [Fail closed, and the brilliant](06-fail-closed-and-the-brilliant.md) | Safe halting, refusal over clamping, and the insight channel (advanced) |
 | 07 | [The Moral Evaluator](07-the-moral-evaluator.md) | 41 yes/no points, cardinal vetoes, merit and risk (advanced) |
 | 08 | [Tall Science](08-tall-science.md) | The United States as a cataloged Item; nouns and names read respectively (advanced) |
+| 09 | [The medium and the bridge](09-the-medium-and-the-bridge.md) | A user program loads the medium, then AI modules; messages flow both ways (advanced) |
 
-AI modules live beside the lessons: [high-speed-trader](high-speed-trader/README.md), [moral-evaluator](moral-evaluator/README.md).
+AI modules are Advantage™ components under [`lib/advantage/modules`](../../lib/advantage/modules/README.md); a user program is in [user-program](user-program/UserProgram.sleela).
 
 ## Prerequisites
 
@@ -35,4 +36,4 @@ AI modules live beside the lessons: [high-speed-trader](high-speed-trader/README
 
 - Illustrative data only; replace with your own evaluation outcomes.
 - Fetched/remote knowledge is untrusted and never scored (see `enrich`).
-- Lessons 01-03 add no code; lessons 04-06 teach the courseware model in the sibling module folders.
+- Lessons 01-03 add no code; lessons 04-09 teach the Advantage™ modules in `lib/advantage/modules`.

@@ -1466,6 +1466,90 @@
       "sha256": "3d2c798ea3aa14612c6c29f76bfcff655e728183070983db122f1b4c447ffb30"
     },
     {
+      "path": "lib/advantage/modules/SLAdvBridge.sleela",
+      "sha256": "f03bf8c3c276449e327877e624c96d5cdebcc1de2b5c80b87ff4b14fb50be2be"
+    },
+    {
+      "path": "lib/advantage/modules/SLAdvCatalog.sleela",
+      "sha256": "9e3da1c76904adb5d7ac975a2b983894bd0d41782046dbd0dfe1448f57f409d5"
+    },
+    {
+      "path": "lib/advantage/modules/SLAdvListener.sleela",
+      "sha256": "30b4157b04f260081f47a025678aaa5337589c4ef6741940c7d3a7ebe2adcfe7"
+    },
+    {
+      "path": "lib/advantage/modules/SLAdvMedium.sleela",
+      "sha256": "e658db7cc26cd99623646ea82eebd00b3596fad9023b33ee9db3e0692191b778"
+    },
+    {
+      "path": "lib/advantage/modules/SLAdvMessage.sleela",
+      "sha256": "daf1fc0b62cd59d7863a483c24de0fdc88e68e40ea3643e1930fddb1f06c8483"
+    },
+    {
+      "path": "lib/advantage/modules/SLAdvModule.sleela",
+      "sha256": "415646ef03e26276b0a49feb817e3f2bd7de8ee9826b585a1a2ec4abe5f240ed"
+    },
+    {
+      "path": "lib/advantage/modules/demo/AdvProgramListener.sleela",
+      "sha256": "115b5860a620a328871517d1ec30c3224b81473903b554865e05a1741aceeac3"
+    },
+    {
+      "path": "lib/advantage/modules/demo/AdvUserEchoModule.sleela",
+      "sha256": "4eaf89d4f63b1189b943597bf181a6f1639374ee2c35e0de6780965073f3ac6b"
+    },
+    {
+      "path": "lib/advantage/modules/demo/AdvUserPingModule.sleela",
+      "sha256": "e85f3a3aa72bca73cdb6c898856a777a98b7a502e152f3a1eb27ed2735ce749a"
+    },
+    {
+      "path": "lib/advantage/modules/demo/AdvantageModulesDemo.sleela",
+      "sha256": "af57635d9f2577f34fbf88a6690202a8c9bad223a302acb7268eed01b482dbd2"
+    },
+    {
+      "path": "lib/advantage/modules/moral/MoralDemo.sleela",
+      "sha256": "2b62c5e91e6c29a876dde29c9e16168a9e84f8a2b2755fa03fec3455b513232e"
+    },
+    {
+      "path": "lib/advantage/modules/moral/SLAdvMoralModule.sleela",
+      "sha256": "a97313de5828ac0a9380511a9918f4ae3261965af8f4c2025095444907e112e9"
+    },
+    {
+      "path": "lib/advantage/modules/moral/SLMoralEvaluator.sleela",
+      "sha256": "f3452606b77367744b2fad99775e9553d8317b4f29ee2692c0a7b87f16b19fad"
+    },
+    {
+      "path": "lib/advantage/modules/moral/SLMoralMeritLedger.sleela",
+      "sha256": "f0c3db8bbbe8fdbfa4e1720433d9423b4db716bb19470a13214b7dc656e1b234"
+    },
+    {
+      "path": "lib/advantage/modules/moral/SLMoralTrade.sleela",
+      "sha256": "a4566d0e18c021f76d54175369cc11e164960587496f7fb1f6aaca630a4ec416"
+    },
+    {
+      "path": "lib/advantage/modules/moral/SLTallScience.sleela",
+      "sha256": "5af901c6a39f95e1b355d41e7e355b511a178d99bca61b99bc03d4cf11bd6a52"
+    },
+    {
+      "path": "lib/advantage/modules/trader/HstDemo.sleela",
+      "sha256": "1c39c0e1f7c2faa26ab360f59703a1bb32cb24455d2e6c8f22fd3e8a3053acf0"
+    },
+    {
+      "path": "lib/advantage/modules/trader/SLAdvTraderModule.sleela",
+      "sha256": "0c5823f73faafbbc375d87b748d79833e15f331096cadbc4cfe05ecf0e8a6842"
+    },
+    {
+      "path": "lib/advantage/modules/trader/SLHighSpeedTrader.sleela",
+      "sha256": "2adbc490ae99f4e24ceb5b95e461a59697348227616a1f9044b139ffc704e3fa"
+    },
+    {
+      "path": "lib/advantage/modules/trader/SLHstMarket.sleela",
+      "sha256": "b12872613d14184b9e28df8d8d11a9041a8b545d6281d8dbe03a22f4e96a297b"
+    },
+    {
+      "path": "lib/advantage/modules/trader/SLHstPragmatics.sleela",
+      "sha256": "cb0bed4b18ad4f085259bffc96b2ac351216335b423ff33febac2ccb3c8a8665"
+    },
+    {
       "path": "lib/advantage/network/SLCashflow.sleela",
       "sha256": "218ab9274b552520c2fa144fa4c28593dca6fc5719380e4dc074bb22687c49a3"
     },

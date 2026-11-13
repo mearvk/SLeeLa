@@ -2,13 +2,13 @@
 
 > Series: [index](README.md) · prev: [03](03-counsel-choosing-an-approach.md) · next: [05 — Pragmatics and evolution](05-pragmatics-and-evolution.md)
 
-Model: [high-speed-trader](high-speed-trader/README.md). Goal: at
+Module: `lib/advantage/modules/trader` (see the [modules README](../../lib/advantage/modules/README.md)). Goal: at
 least **5,000 evaluations per second** and about **2,000 trades per minute**
 (roughly 0.7% of candidates), on synthetic data.
 
 ## What you do
 
-1. Run it: `sleela run high-speed-trader.sleela` from the model folder.
+1. Run it: `sleela run HstDemo.sleela` from `lib/advantage/modules/trader`, or load it as a module (lesson 09).
 2. Read section 2 of the output: evals/s, trades per simulated minute, vetoes by phase.
 3. Find where 99% of candidates die. Most are score rejects and logic vetoes.
    Why is that the right place for them to die?

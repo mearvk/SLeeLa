@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 18128
+library-source-files: 18149
 library-packages: 123
 module-facade-symbols: 86
-total-symbol-records: 18214
+total-symbol-records: 18235
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -130,6 +130,27 @@ advantage	business-exchange.sleela	lib/advantage/medium-results/business-exchang
 advantage	economics-exchange.sleela	lib/advantage/medium-results/economics-exchange.sleela	source
 advantage	trade-exchange.sleela	lib/advantage/medium-results/trade-exchange.sleela	source
 advantage	youthfulness-exchange.sleela	lib/advantage/medium-results/youthfulness-exchange.sleela	source
+advantage	SLAdvBridge.sleela	lib/advantage/modules/SLAdvBridge.sleela	source
+advantage	SLAdvCatalog.sleela	lib/advantage/modules/SLAdvCatalog.sleela	source
+advantage	SLAdvListener.sleela	lib/advantage/modules/SLAdvListener.sleela	source
+advantage	SLAdvMedium.sleela	lib/advantage/modules/SLAdvMedium.sleela	source
+advantage	SLAdvMessage.sleela	lib/advantage/modules/SLAdvMessage.sleela	source
+advantage	SLAdvModule.sleela	lib/advantage/modules/SLAdvModule.sleela	source
+advantage	AdvProgramListener.sleela	lib/advantage/modules/demo/AdvProgramListener.sleela	source
+advantage	AdvUserEchoModule.sleela	lib/advantage/modules/demo/AdvUserEchoModule.sleela	source
+advantage	AdvUserPingModule.sleela	lib/advantage/modules/demo/AdvUserPingModule.sleela	source
+advantage	AdvantageModulesDemo.sleela	lib/advantage/modules/demo/AdvantageModulesDemo.sleela	source
+advantage	MoralDemo.sleela	lib/advantage/modules/moral/MoralDemo.sleela	source
+advantage	SLAdvMoralModule.sleela	lib/advantage/modules/moral/SLAdvMoralModule.sleela	source
+advantage	SLMoralEvaluator.sleela	lib/advantage/modules/moral/SLMoralEvaluator.sleela	source
+advantage	SLMoralMeritLedger.sleela	lib/advantage/modules/moral/SLMoralMeritLedger.sleela	source
+advantage	SLMoralTrade.sleela	lib/advantage/modules/moral/SLMoralTrade.sleela	source
+advantage	SLTallScience.sleela	lib/advantage/modules/moral/SLTallScience.sleela	source
+advantage	HstDemo.sleela	lib/advantage/modules/trader/HstDemo.sleela	source
+advantage	SLAdvTraderModule.sleela	lib/advantage/modules/trader/SLAdvTraderModule.sleela	source
+advantage	SLHighSpeedTrader.sleela	lib/advantage/modules/trader/SLHighSpeedTrader.sleela	source
+advantage	SLHstMarket.sleela	lib/advantage/modules/trader/SLHstMarket.sleela	source
+advantage	SLHstPragmatics.sleela	lib/advantage/modules/trader/SLHstPragmatics.sleela	source
 advantage	SLCashflow.sleela	lib/advantage/network/SLCashflow.sleela	source
 advantage	SLMarketScout.sleela	lib/advantage/network/SLMarketScout.sleela	source
 advantage	SLNegotiationRound.sleela	lib/advantage/network/SLNegotiationRound.sleela	source

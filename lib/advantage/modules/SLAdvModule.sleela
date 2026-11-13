@@ -1,0 +1,18 @@
+<< lib/advantage/modules/SLAdvModule.sleela
+   SLeeLa Standard Library Definition.
+   Definition: Advantage module contract: what any module must offer to sit in the medium. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< Written by the host and by user defined modules alike. Interfaces carry no metadata block. >
+interface SLAdvModule {
+  String moduleName();
+  String moduleKind();
+  String moduleVersion();
+  boolean begin(SLAdvBridge bridge);
+  int handle(SLAdvMessage m);
+  void end();
+  boolean running();
+}

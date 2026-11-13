@@ -1,6 +1,6 @@
 # Lesson 08 — Tall Science: the United States as an Item (advanced)
 
-> Series: [index](README.md) · prev: [07](07-the-moral-evaluator.md)
+> Series: [index](README.md) · prev: [07](07-the-moral-evaluator.md) · next: [09 — The medium and the bridge](09-the-medium-and-the-bridge.md)
 
 `SLTallScience` holds the United States as a cataloged **Item**: a name, lists of
 subject nouns, names, scientific individuals and moral individuals, and boundary

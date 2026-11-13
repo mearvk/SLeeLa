@@ -1,0 +1,124 @@
+<< lib/advantage/modules/SLAdvMessage.sleela
+   SLeeLa Standard Library Definition.
+   Definition: The envelope that travels over the Advantage bridge, in either direction. >>
+#sleela 3.0
+material;
+artifact;
+pure;
+gasoline;
+< A topic, a text, and up to 48 numbers; kind says request, reply, event or error. >
+class SLAdvMessage {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Eleven catalogued attributes with getter/setter pairs. Values are faithful
+     to the subject real origin where publicly known; unknown values use none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 39520;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-13";
+  String metaCopyright = "SLeeLa project";
+  String metaTrademark = "Advantage™";
+  String metaCorporation = "none";
+  < metaOrigin: National | nation | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-13";
+  < metaScienceRating: maturity on a 1..10 scale; courseware grade module host >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real citable instrument or none >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < kind: 0 request, 1 reply, 2 event, 3 error. status: 0 ok, nonzero refused. >
+  < Reserved addresses: program is the user defined program, medium is the host. >
+  int id = 0;
+  int inReplyTo = 0;
+  int kind = 0;
+  int status = 0;
+  String from = "";
+  String to = "";
+  String topic = "";
+  String text = "";
+  double[] nums;
+  int count = 0;
+  boolean built = false;
+
+  void build() {
+    if (built) { return; }
+    nums = new double[48];
+    int i = 0;
+    while (i < 48) { nums[i] = 0.0; i = i + 1; }
+    built = true;
+  }
+
+  int capacity() { return 48; }
+  int size() { return count; }
+
+  << Address the message. Returns itself so a call can be chained. >>
+  SLAdvMessage addressed(String fromName, String toName, String topicName, int kindCode) {
+    build();
+    from = fromName;
+    to = toName;
+    topic = topicName;
+    kind = kindCode;
+    return this;
+  }
+
+  SLAdvMessage withText(String t) { text = t; return this; }
+
+  << Set number i (0..47). An out of range index is refused (false). >>
+  boolean setNum(int i, double v) {
+    build();
+    if (i < 0 || i >= 48) { return false; }
+    nums[i] = v;
+    if (i + 1 > count) { count = i + 1; }
+    return true;
+  }
+
+  << Read number i; out of range reads as 0.0. >>
+  double num(int i) {
+    build();
+    if (i < 0 || i >= 48) { return 0.0; }
+    return nums[i];
+  }
+
+  double[] numbers() { build(); return nums; }
+
+  << Make the reply to this message: addressed back to the sender, kind 1
+     (reply), carrying this id as inReplyTo. >>
+  SLAdvMessage makeReply(String fromName, String topicName) {
+    SLAdvMessage r = new SLAdvMessage();
+    r.addressed(fromName, from, topicName, 1);
+    r.inReplyTo = id;
+    return r;
+  }
+
+  SLAdvMessage makeError(String fromName, int code, String why) {
+    SLAdvMessage r = new SLAdvMessage();
+    r.addressed(fromName, from, topic, 3);
+    r.inReplyTo = id;
+    r.status = code;
+    r.text = why;
+    return r;
+  }
+}

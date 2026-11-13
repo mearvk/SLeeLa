@@ -2,7 +2,7 @@
 
 > Series: [index](README.md) · prev: [06](06-fail-closed-and-the-brilliant.md) · next: [08 — Tall Science](08-tall-science.md)
 
-Module: [moral-evaluator](moral-evaluator/README.md). It asks of a trade: is it
+Module: `lib/advantage/modules/moral` (see the [modules README](../../lib/advantage/modules/README.md)). It asks of a trade: is it
 centered on the human and on life, and how much merit is at risk?
 
 ## Veto before score
