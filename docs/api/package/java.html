@@ -145,7 +145,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; java</div>
 <h1>Package <code>java</code></h1>
-<div class="lead">This package contains <strong>14952</strong> source unit(s) defining <strong>14952</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>14962</strong> source unit(s) defining <strong>14962</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="aboutevent">AboutEvent <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/jdk-28/java.desktop/java/awt/desktop/AboutEvent.sleela)</span></h2>
 <div data-u="aboutevent aboutevent">
@@ -139126,6 +139126,380 @@
 <tr><td><code>construct</code></td><td><span class="sig">String construct()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invoke</code></td><td><span class="sig">String invoke(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="jconvconfig">JConvConfig <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvConfig.sleela)</span></h2>
+<div data-u="jconvconfig jconvconfig">
+<h3 id="JConvConfig">JConvConfig <span class="pill">class</span></h3>
+<p class="desc">the converter settings. A SLeeLa program receives no command-line arguments (sleela run reads every argument as a source file), so the settings come from environment variables: JCONV_IN root of the Java source tree (required) JCONV_OUT root of the SLeeLa output tree (default: ./jdk28-converted) JCONV_SCOPE api (default): only the types listed in lib/java/jdk-28/INDEX.tsv; all: every .java file JCONV_FILTER convert only paths that start with this prefix (for example java.base/java/util) JCONV_LIMIT stop after this many files (0 or unset: no limit) JCONV_INT int32 (default, Java 32-bit int) or int (64-bit SLeeLa int) JCONV_COMMENTS keep (default) or drop; the leading licence comment is always kept</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>inRoot</code></td><td><span class="sig">String inRoot</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>outRoot</code></td><td><span class="sig">String outRoot</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>scope</code></td><td><span class="sig">String scope</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>filter</code></td><td><span class="sig">String filter</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>limit</code></td><td><span class="sig">int limit</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>intType</code></td><td><span class="sig">String intType</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>keepComments</code></td><td><span class="sig">boolean keepComments</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>sleelaHome</code></td><td><span class="sig">String sleelaHome</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>problem</code></td><td><span class="sig">String problem</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>apiKeys</code></td><td><span class="sig">String[] apiKeys</span></td><td class="desc">api scope: open-addressing set of &lt;module&gt;/&lt;package path&gt;/&lt;Type&gt; keys</td></tr>
+<tr><td><code>apiCount</code></td><td><span class="sig">int apiCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kindKeys</code></td><td><span class="sig">String[] kindKeys</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kindValues</code></td><td><span class="sig">int[] kindValues</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>indexLoaded</code></td><td><span class="sig">boolean indexLoaded</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>env</code></td><td><span class="sig">String env(String name, String fallback)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>parseCount</code></td><td><span class="sig">int parseCount(String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>trimSlash</code></td><td><span class="sig">String trimSlash(String p)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>readSettings</code></td><td><span class="sig">boolean readSettings()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slot</code></td><td><span class="sig">int slot(String key)</span></td><td class="desc">---- api scope ----</td></tr>
+<tr><td><code>addApiKey</code></td><td><span class="sig">void addApiKey(String key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addKind</code></td><td><span class="sig">void addKind(String name, int k)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kindOf</code></td><td><span class="sig">int kindOf(String name)</span></td><td class="desc">0 unknown, 1 class-like, 2 interface, 3 both</td></tr>
+<tr><td><code>slotIn</code></td><td><span class="sig">int slotIn(String key, int size)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasApiKey</code></td><td><span class="sig">boolean hasApiKey(String key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>loadApiIndex</code></td><td><span class="sig">boolean loadApiIndex()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>selects</code></td><td><span class="sig">boolean selects(String rel)</span></td><td class="desc">whether a relative .java path is selected by scope, filter</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="jconvemitter">JConvEmitter <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvEmitter.sleela)</span></h2>
+<div data-u="jconvemitter jconvemitter">
+<h3 id="JConvEmitter">JConvEmitter <span class="pill">class</span></h3>
+<p class="desc">writes one SLeeLa source file. Tokens keep the line structure of the Java source; indentation follows the brace depth (two spaces); spacing follows the usual Java layout. Output is buffered and flushed in pieces well below the 65,536-byte limit of a built plain String. Comments are always placed on their own line, because an angle-bracket comment must start its line.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>handle</code></td><td><span class="sig">int handle</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>buffer</code></td><td><span class="sig">String buffer</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bufferLen</code></td><td><span class="sig">int bufferLen</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bytesOut</code></td><td><span class="sig">int bytesOut</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>depth</code></td><td><span class="sig">int depth</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lineStart</code></td><td><span class="sig">boolean lineStart</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lastLine</code></td><td><span class="sig">int lastLine</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>prevText</code></td><td><span class="sig">String prevText</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>prevKind</code></td><td><span class="sig">int prevKind</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">boolean failed</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>openOut</code></td><td><span class="sig">boolean openOut(String path)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>flushOut</code></td><td><span class="sig">void flushOut()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>finishOut</code></td><td><span class="sig">void finishOut()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>raw</code></td><td><span class="sig">void raw(String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>newline</code></td><td><span class="sig">void newline()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>indentText</code></td><td><span class="sig">String indentText(int extra)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lineOut</code></td><td><span class="sig">void lineOut(String text)</span></td><td class="desc">a complete generated line at the current depth</td></tr>
+<tr><td><code>endLine</code></td><td><span class="sig">void endLine()</span></td><td class="desc">end the current line, as if a statement had ended</td></tr>
+<tr><td><code>blankLine</code></td><td><span class="sig">void blankLine()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>enter</code></td><td><span class="sig">void enter()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>leave</code></td><td><span class="sig">void leave()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>comment</code></td><td><span class="sig">void comment(String text)</span></td><td class="desc">a comment on its own line(s); text may hold newlines</td></tr>
+<tr><td><code>isWordKind</code></td><td><span class="sig">boolean isWordKind(int k)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>noSpaceBefore</code></td><td><span class="sig">boolean noSpaceBefore(String t)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>needSpace</code></td><td><span class="sig">boolean needSpace(int kind, String text)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>token</code></td><td><span class="sig">void token(int kind, String text, int srcLine)</span></td><td class="desc">one token; srcLine 0 means a generated token that stays on the current line</td></tr>
+<tr><td><code>commentToken</code></td><td><span class="sig">void commentToken(String text, int srcLine, int endLine)</span></td><td class="desc">a source comment token: own line, then the code resumes on a new line</td></tr>
+<tr><td><code>annotationLine</code></td><td><span class="sig">void annotationLine(String text)</span></td><td class="desc">an annotation line written before a member: the member follows directly</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="jconvlexer">JConvLexer <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvLexer.sleela)</span></h2>
+<div data-u="jconvlexer jconvlexer">
+<h3 id="JConvLexer">JConvLexer <span class="pill">class</span></h3>
+<p class="desc">splits one Java compilation unit into tokens held in parallel arrays. Literal tokens are rewritten to their SLeeLa spelling as they are read, so later passes never see a Java-only literal form: - string literals and text blocks become SLeeLa string literals with the Java escapes decoded and re-encoded (text blocks lose incidental indentation as JLS 3.10.6 states); - a char literal becomes its integer code, with a one-character string literal kept beside it for string concatenation; - octal, hexadecimal and binary int literals become decimal, wrapped to the Java int range (0xFFFFFFFF is -1, as in Java); - comments become angle-bracket block comments with any inner closing pair separated, so the comment cannot end early. Token kinds: 1 identifier or keyword, 2 number, 3 string, 4 char, 5 operator, 6 comment.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>src</code></td><td><span class="sig">JConvSource src</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rules</code></td><td><span class="sig">JConvRules rules</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kinds</code></td><td><span class="sig">int[] kinds</span></td><td class="desc">token arrays: kind, SLeeLa text, source line, flag (a rule 5 reason code or 0)</td></tr>
+<tr><td><code>texts</code></td><td><span class="sig">String[] texts</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lines</code></td><td><span class="sig">int[] lines</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>flags</code></td><td><span class="sig">int[] flags</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>begins</code></td><td><span class="sig">int[] begins</span></td><td class="desc">source offsets of each token, for keeping original Java text</td></tr>
+<tr><td><code>ends</code></td><td><span class="sig">int[] ends</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>alts</code></td><td><span class="sig">String[] alts</span></td><td class="desc">char tokens: the one-character string literal form</td></tr>
+<tr><td><code>n</code></td><td><span class="sig">int n</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>line</code></td><td><span class="sig">int line</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>buf</code></td><td><span class="sig">int[] buf</span></td><td class="desc">scratch code units for literal decoding</td></tr>
+<tr><td><code>bufN</code></td><td><span class="sig">int bufN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>encodeError</code></td><td><span class="sig">int encodeError</span></td><td class="desc">the scratch buffer as a SLeeLa string literal; 0 on success, 16 on an unpaired surrogate</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>allocate</code></td><td><span class="sig">void allocate(int cap)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>grow</code></td><td><span class="sig">void grow()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>push</code></td><td><span class="sig">void push(int kind, String text, int line, int flag, int b, int e)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isIdStart</code></td><td><span class="sig">boolean isIdStart(int c)</span></td><td class="desc">---- character classes ----</td></tr>
+<tr><td><code>isIdPart</code></td><td><span class="sig">boolean isIdPart(int c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isDigit</code></td><td><span class="sig">boolean isDigit(int c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isHexDigit</code></td><td><span class="sig">boolean isHexDigit(int c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hexValue</code></td><td><span class="sig">int hexValue(int c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>bufReset</code></td><td><span class="sig">void bufReset()</span></td><td class="desc">---- scratch buffer of decoded code units ----</td></tr>
+<tr><td><code>bufAdd</code></td><td><span class="sig">void bufAdd(int c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>encodeBuf</code></td><td><span class="sig">String encodeBuf()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hex4</code></td><td><span class="sig">String hex4(int v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>decodeEscape</code></td><td><span class="sig">int decodeEscape(int i)</span></td><td class="desc">---- escapes (JLS 3.10.7); returns the index after the escape and adds the unit to buf ----</td></tr>
+<tr><td><code>lex</code></td><td><span class="sig">void lex(JConvSource s)</span></td><td class="desc">---- the lexer ----</td></tr>
+<tr><td><code>lexIdent</code></td><td><span class="sig">int lexIdent(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>commentLine</code></td><td><span class="sig">String commentLine(int a, int b)</span></td><td class="desc">a comment line with the Javadoc gutter removed and closing pairs separated</td></tr>
+<tr><td><code>lexLineComment</code></td><td><span class="sig">int lexLineComment(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lexBlockComment</code></td><td><span class="sig">int lexBlockComment(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lexString</code></td><td><span class="sig">int lexString(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lexChar</code></td><td><span class="sig">int lexChar(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lexTextBlock</code></td><td><span class="sig">int lexTextBlock(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lexNumber</code></td><td><span class="sig">int lexNumber(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lexRadix</code></td><td><span class="sig">int lexRadix(int i, int digitsStart, int radix)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>finishRadix</code></td><td><span class="sig">int finishRadix(int i, int end, int a, int b, int radix, boolean isLong)</span></td><td class="desc">value of the digits a .. b-1 in the given radix, wrapped to int or long; end is the token end</td></tr>
+<tr><td><code>lexOperator</code></td><td><span class="sig">int lexOperator(int i)</span></td><td class="desc">operators and separators, longest match first</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="jconvmain">JConvMain <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvMain.sleela)</span></h2>
+<div data-u="jconvmain jconvmain">
+<h3 id="JConvMain">JConvMain <span class="pill">class</span></h3>
+<p class="desc">the converter program. It walks a Java source tree (JCONV_IN), converts every selected .java file into SLeeLa source files under JCONV_OUT with the same folders, and writes CONVERSION-REPORT.tsv and CONVERSION-SUMMARY.md there. Run it with lib/java/converter/run-converter.sh, which passes the converter units to sleela run and the settings through the environment (see JConvConfig and README.md).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>main</code></td><td><span class="sig">static void main()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>two</code></td><td><span class="sig">String two(long v)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>today</code></td><td><span class="sig">String today()</span></td><td class="desc">today (UTC) as YYYY-MM-DD, from the days since 1970-01-01 (civil-from-days)</td></tr>
+<tr><td><code>usage</code></td><td><span class="sig">void usage()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>runConverter</code></td><td><span class="sig">void runConverter()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="jconvreport">JConvReport <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvReport.sleela)</span></h2>
+<div data-u="jconvreport jconvreport">
+<h3 id="JConvReport">JConvReport <span class="pill">class</span></h3>
+<p class="desc">records what the converter did. One tab-separated line per input file goes to &lt;out&gt;/CONVERSION-REPORT.tsv as the run proceeds (so a long run that stops early still leaves its record); the totals go to &lt;out&gt;/CONVERSION-SUMMARY.md at the end and are printed. Columns: status, java file, sleela files written, types, members, stubbed members, notes.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>handle</code></td><td><span class="sig">int handle</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>outRoot</code></td><td><span class="sig">String outRoot</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>filesSeen</code></td><td><span class="sig">int filesSeen</span></td><td class="desc">totals</td></tr>
+<tr><td><code>filesConverted</code></td><td><span class="sig">int filesConverted</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>filesSkipped</code></td><td><span class="sig">int filesSkipped</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>filesFailed</code></td><td><span class="sig">int filesFailed</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unitsWritten</code></td><td><span class="sig">int unitsWritten</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>typesTotal</code></td><td><span class="sig">int typesTotal</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>membersTotal</code></td><td><span class="sig">int membersTotal</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>stubsTotal</code></td><td><span class="sig">int stubsTotal</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reasonCounts</code></td><td><span class="sig">int[] reasonCounts</span></td><td class="desc">counts per rule 5 reason code (index = code)</td></tr>
+<tr><td><code>notes</code></td><td><span class="sig">String notes</span></td><td class="desc">notes of the file in progress</td></tr>
+<tr><td><code>noteCount</code></td><td><span class="sig">int noteCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>begin</code></td><td><span class="sig">boolean begin(String outRoot)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>startFile</code></td><td><span class="sig">void startFile()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>note</code></td><td><span class="sig">void note(String text)</span></td><td class="desc">a note for the current file; at most 40 are kept per file</td></tr>
+<tr><td><code>countReason</code></td><td><span class="sig">void countReason(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fileLine</code></td><td><span class="sig">void fileLine(String status, String rel, int units, int types, int members, int stubs)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>finish</code></td><td><span class="sig">void finish(JConvRules rules)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="jconvrewriter">JConvRewriter <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvRewriter.sleela)</span></h2>
+<div data-u="jconvrewriter jconvrewriter">
+<h3 id="JConvRewriter">JConvRewriter <span class="pill">class</span></h3>
+<p class="desc">the token-level half of the converter. rewrite(a, b) copies the Java tokens a .. b-1 into an output token list, applying the rules of JConvRules as it goes (erasure, renames, literal forms, array forms, built-in collisions, System.out.println). scanReason finds the first construct SLeeLa cannot express yet (rule 5). postPass splits Java multi-variable declarations and inserts the checked casts that javac would insert (an erased Any value stored into a typed variable or returned from a typed method). The helper methods that array forms need are collected per type and written by emitHelpers.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>rules</code></td><td><span class="sig">JConvRules rules</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cfg</code></td><td><span class="sig">JConvConfig cfg</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lx</code></td><td><span class="sig">JConvLexer lx</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>K</code></td><td><span class="sig">int[] K</span></td><td class="desc">the input token kinds and texts (shared with the lexer)</td></tr>
+<tr><td><code>T</code></td><td><span class="sig">String[] T</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ok</code></td><td><span class="sig">int[] ok</span></td><td class="desc">the output token list</td></tr>
+<tr><td><code>ot</code></td><td><span class="sig">String[] ot</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ol</code></td><td><span class="sig">int[] ol</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>oe</code></td><td><span class="sig">int[] oe</span></td><td class="desc">the last source line of each output token (comments span lines)</td></tr>
+<tr><td><code>on</code></td><td><span class="sig">int on</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pendAt</code></td><td><span class="sig">int[] pendAt</span></td><td class="desc">input positions whose token is replaced (text &quot;&quot; drops it)</td></tr>
+<tr><td><code>pendText</code></td><td><span class="sig">String[] pendText</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pendN</code></td><td><span class="sig">int pendN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tvars</code></td><td><span class="sig">String[] tvars</span></td><td class="desc">type variables in scope; they erase to Any</td></tr>
+<tr><td><code>tvN</code></td><td><span class="sig">int tvN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hElem</code></td><td><span class="sig">String[] hElem</span></td><td class="desc">array helpers of the current type: element type and element count</td></tr>
+<tr><td><code>hCount</code></td><td><span class="sig">int[] hCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hN</code></td><td><span class="sig">int hN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>zElem</code></td><td><span class="sig">String[] zElem</span></td><td class="desc">zero-filling array helpers of the current type: element type</td></tr>
+<tr><td><code>zN</code></td><td><span class="sig">int zN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mNames</code></td><td><span class="sig">String[] mNames</span></td><td class="desc">methods (name, 1 when static) and fields declared by the current type</td></tr>
+<tr><td><code>mStatic</code></td><td><span class="sig">int[] mStatic</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mN</code></td><td><span class="sig">int mN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fNames</code></td><td><span class="sig">String[] fNames</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fN</code></td><td><span class="sig">int fN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>declNames</code></td><td><span class="sig">String[] declNames</span></td><td class="desc">class-like types declared in the current file (castable targets)</td></tr>
+<tr><td><code>declN</code></td><td><span class="sig">int declN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>siName</code></td><td><span class="sig">String[] siName</span></td><td class="desc">single static imports of the file: member name and its class</td></tr>
+<tr><td><code>siClass</code></td><td><span class="sig">String[] siClass</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>siN</code></td><td><span class="sig">int siN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>curStatic</code></td><td><span class="sig">boolean curStatic</span></td><td class="desc">member context</td></tr>
+<tr><td><code>inBody</code></td><td><span class="sig">boolean inBody</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>curReturnType</code></td><td><span class="sig">String curReturnType</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unitName</code></td><td><span class="sig">String unitName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>beginFile</code></td><td><span class="sig">void beginFile(JConvLexer l)</span></td><td class="desc">---- per file and per type state ----</td></tr>
+<tr><td><code>beginUnit</code></td><td><span class="sig">void beginUnit(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addStaticImport</code></td><td><span class="sig">void addStaticImport(String member, String cls)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addDeclName</code></td><td><span class="sig">void addDeclName(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addTypeVar</code></td><td><span class="sig">void addTypeVar(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isTypeVar</code></td><td><span class="sig">boolean isTypeVar(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>typeVarList</code></td><td><span class="sig">String typeVarList()</span></td><td class="desc">the type variables in scope as a comma list, for nested types</td></tr>
+<tr><td><code>addMethod</code></td><td><span class="sig">void addMethod(String n, boolean isStatic)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>methodIndex</code></td><td><span class="sig">int methodIndex(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addField</code></td><td><span class="sig">void addField(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>hasField</code></td><td><span class="sig">boolean hasField(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nx</code></td><td><span class="sig">int nx(int i)</span></td><td class="desc">---- input helpers ----</td></tr>
+<tr><td><code>pv</code></td><td><span class="sig">int pv(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isOp</code></td><td><span class="sig">boolean isOp(int i, String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isId</code></td><td><span class="sig">boolean isId(int i, String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>upperStart</code></td><td><span class="sig">boolean upperStart(String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lowerStart</code></td><td><span class="sig">boolean lowerStart(String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>matchClose</code></td><td><span class="sig">int matchClose(int i)</span></td><td class="desc">the index of the bracket that closes the one at i ( ( [ { )</td></tr>
+<tr><td><code>genEnd</code></td><td><span class="sig">int genEnd(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isGenericAt</code></td><td><span class="sig">boolean isGenericAt(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>reset</code></td><td><span class="sig">void reset()</span></td><td class="desc">---- output list ----</td></tr>
+<tr><td><code>growOut</code></td><td><span class="sig">void growOut()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>push</code></td><td><span class="sig">void push(int kind, String text, int line)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pushComment</code></td><td><span class="sig">void pushComment(String text, int line, int endLine)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>syn</code></td><td><span class="sig">void syn(int kind, String text)</span></td><td class="desc">a generated token on the current line</td></tr>
+<tr><td><code>insertAt</code></td><td><span class="sig">void insertAt(int at, int kind, String text)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addPending</code></td><td><span class="sig">void addPending(int at, String text)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pendingIndex</code></td><td><span class="sig">int pendingIndex(int i)</span></td><td class="desc">-1 when position i has no pending replacement</td></tr>
+<tr><td><code>outText</code></td><td><span class="sig">String outText(int a, int b)</span></td><td class="desc">the output tokens a .. b-1 joined with spaces (for type texts)</td></tr>
+<tr><td><code>scanReason</code></td><td><span class="sig">int scanReason(int a, int b, boolean body)</span></td><td class="desc">---- rule 5 scan ----</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="jconvrules">JConvRules <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvRules.sleela)</span></h2>
+<div data-u="jconvrules jconvrules">
+<h3 id="JConvRules">JConvRules <span class="pill">class</span></h3>
+<p class="desc">the single table of functional and declarative decisions the converter makes when it turns Java source into SLeeLa source. Every rename, type mapping, modifier rule, built-in collision and unsupported construct is decided here, so a revision of the conversion is a revision of this class. The reasons for each rule are in lib/java/converter/README.md (section 3).</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>intType</code></td><td><span class="sig">String intType</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>ascii</code></td><td><span class="sig">String[] ascii</span></td><td class="desc">one-character plain strings for codes 32..126, built once</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>useIntType</code></td><td><span class="sig">void useIntType(String t)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>charText</code></td><td><span class="sig">String charText(int c)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isRenamedIdent</code></td><td><span class="sig">boolean isRenamedIdent(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>renameIdent</code></td><td><span class="sig">String renameIdent(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isBuiltinCallName</code></td><td><span class="sig">boolean isBuiltinCallName(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>mapTypeName</code></td><td><span class="sig">String mapTypeName(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isPrimitive</code></td><td><span class="sig">boolean isPrimitive(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>zeroOf</code></td><td><span class="sig">String zeroOf(String t)</span></td><td class="desc">the Java zero value of an element type, as SLeeLa source text</td></tr>
+<tr><td><code>defaultReturn</code></td><td><span class="sig">String defaultReturn(String t)</span></td><td class="desc">the default return statement text for a stub of return type t</td></tr>
+<tr><td><code>isQualifiedRoot</code></td><td><span class="sig">boolean isQualifiedRoot(String n)</span></td><td class="desc">roots of fully qualified Java names; a.b.C with such a root becomes C</td></tr>
+<tr><td><code>isModifier</code></td><td><span class="sig">boolean isModifier(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isDroppedModifier</code></td><td><span class="sig">boolean isDroppedModifier(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isTypeKeyword</code></td><td><span class="sig">boolean isTypeKeyword(String n)</span></td><td class="desc">---- rule 4: Java keywords that start a type declaration ----</td></tr>
+<tr><td><code>isControlWord</code></td><td><span class="sig">boolean isControlWord(String n)</span></td><td class="desc">keywords that are followed by a parenthesis but are not calls</td></tr>
+<tr><td><code>reasonText</code></td><td><span class="sig">String reasonText(int code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="jconvsource">JConvSource <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvSource.sleela)</span></h2>
+<div data-u="jconvsource jconvsource">
+<h3 id="JConvSource">JConvSource <span class="pill">class</span></h3>
+<p class="desc">loads one text file for the converter. The VM read built-in returns at most 4,095 bytes per call and a plain String stops growing at 65,536 bytes, so the file is kept as an array of chunks (each converted to a Java UTF-16 String) plus one int array of all UTF-16 code units for fast scanning. slice(a, b) returns the plain text of code units a .. b-1 across chunk boundaries. A file with bytes outside ASCII is reported and not loaded: a multi-byte UTF-8 character can be split between two reads, and the VM has no byte-level view of a plain String to repair the split.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>chunks</code></td><td><span class="sig">String[] chunks</span></td><td class="desc">UTF-16 chunks, the code unit index where each starts, and their count</td></tr>
+<tr><td><code>starts</code></td><td><span class="sig">int[] starts</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nChunks</code></td><td><span class="sig">int nChunks</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>codes</code></td><td><span class="sig">int[] codes</span></td><td class="desc">every code unit of the file, and how many</td></tr>
+<tr><td><code>length</code></td><td><span class="sig">int length</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failure</code></td><td><span class="sig">String failure</span></td><td class="desc">why the last load failed, or &quot;&quot;</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>isAscii</code></td><td><span class="sig">boolean isAscii(String path)</span></td><td class="desc">0 when the file holds only ASCII bytes (tab, newline, carriage return, 32..126)</td></tr>
+<tr><td><code>load</code></td><td><span class="sig">boolean load(String path)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>at</code></td><td><span class="sig">int at(int i)</span></td><td class="desc">the code unit at i, or 0 past the end</td></tr>
+<tr><td><code>chunkOf</code></td><td><span class="sig">int chunkOf(int i)</span></td><td class="desc">the chunk holding code unit i</td></tr>
+<tr><td><code>slice</code></td><td><span class="sig">String slice(int a, int b)</span></td><td class="desc">plain text of code units a .. b-1</td></tr>
+</table>
+</div>
+<h2 class="section" data-u="jconvtranslator">JConvTranslator <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvTranslator.sleela)</span></h2>
+<div data-u="jconvtranslator jconvtranslator">
+<h3 id="JConvTranslator">JConvTranslator <span class="pill">class</span></h3>
+<p class="desc">the structural half of the converter. For one Java file it reads the package, imports and type declarations, and writes one SLeeLa file per type, nested types included (Outer.Inner.sleela, as lib/java/jdk-28 names them). For each type it writes the SLeeLa document header, the Java licence comment, the Metadata Class block (classes), the explicit housing fields javaType, javaModule and javaSource (SLEELA.syntax 38.4), then every member through JConvRewriter. Enums and records are lowered to classes. A member that uses a construct SLeeLa cannot express yet becomes a fail-loud stub that throws UnsupportedOperationException naming the reason, with the Java body kept beside it as a comment.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>rules</code></td><td><span class="sig">JConvRules rules</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>cfg</code></td><td><span class="sig">JConvConfig cfg</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rep</code></td><td><span class="sig">JConvReport rep</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>em</code></td><td><span class="sig">JConvEmitter em</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>lx</code></td><td><span class="sig">JConvLexer lx</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rw</code></td><td><span class="sig">JConvRewriter rw</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>src</code></td><td><span class="sig">JConvSource src</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>rel</code></td><td><span class="sig">String rel</span></td><td class="desc">the file in progress</td></tr>
+<tr><td><code>moduleName</code></td><td><span class="sig">String moduleName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pkgName</code></td><td><span class="sig">String pkgName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>outDir</code></td><td><span class="sig">String outDir</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>dateText</code></td><td><span class="sig">String dateText</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>licenceEnd</code></td><td><span class="sig">int licenceEnd</span></td><td class="desc">tokens 0 .. licenceEnd-1 are the leading comments of the file</td></tr>
+<tr><td><code>oracle</code></td><td><span class="sig">boolean oracle</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unitName</code></td><td><span class="sig">String unitName</span></td><td class="desc">the type in progress</td></tr>
+<tr><td><code>unitKind</code></td><td><span class="sig">String unitKind</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>javaType</code></td><td><span class="sig">String javaType</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unitMembers</code></td><td><span class="sig">int unitMembers</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unitStubs</code></td><td><span class="sig">int unitStubs</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>unitFields</code></td><td><span class="sig">int unitFields</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>initCounter</code></td><td><span class="sig">int initCounter</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fileUnits</code></td><td><span class="sig">int fileUnits</span></td><td class="desc">totals of the file</td></tr>
+<tr><td><code>fileTypes</code></td><td><span class="sig">int fileTypes</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fileMembers</code></td><td><span class="sig">int fileMembers</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>fileStubs</code></td><td><span class="sig">int fileStubs</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>nx</code></td><td><span class="sig">int nx(int i)</span></td><td class="desc">---- small helpers ----</td></tr>
+<tr><td><code>isOp</code></td><td><span class="sig">boolean isOp(int i, String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isId</code></td><td><span class="sig">boolean isId(int i, String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tx</code></td><td><span class="sig">String tx(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>kd</code></td><td><span class="sig">int kd(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>dirOf</code></td><td><span class="sig">String dirOf(String path)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>makeDirs</code></td><td><span class="sig">boolean makeDirs(String path)</span></td><td class="desc">create a directory and its parents</td></tr>
+<tr><td><code>commentSafe</code></td><td><span class="sig">String commentSafe(String s)</span></td><td class="desc">a source text safe inside an angle-bracket block comment</td></tr>
+<tr><td><code>quoteSafe</code></td><td><span class="sig">String quoteSafe(String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>translateFile</code></td><td><span class="sig">void translateFile(String relPath)</span></td><td class="desc">---- one file ----</td></tr>
+<tr><td><code>skipModifiers</code></td><td><span class="sig">int skipModifiers(int i0)</span></td><td class="desc">the index after annotations and modifiers starting at i</td></tr>
+<tr><td><code>typeKeywordAt</code></td><td><span class="sig">int typeKeywordAt(int h)</span></td><td class="desc">the index of the type keyword at h (for @interface, of interface), or -1</td></tr>
+<tr><td><code>bodyOpenAfter</code></td><td><span class="sig">int bodyOpenAfter(int kw)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
+<h2 class="section" data-u="jconvwalker">JConvWalker <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvWalker.sleela)</span></h2>
+<div data-u="jconvwalker jconvwalker">
+<h3 id="JConvWalker">JConvWalker <span class="pill">class</span></h3>
+<p class="desc">walks a directory tree recursively and collects the relative paths of the .java files below it, in directory-listing order sorted per folder. The tree is the JDK source layout &lt;module&gt;/&lt;package path&gt;/&lt;Type&gt;.java (as in the src.zip of a JDK, or an OpenJDK checkout under src/), but any tree of .java files works. module-info.java and package-info.java are collected separately: they declare no type to convert.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>files</code></td><td><span class="sig">String[] files</span></td><td class="desc">collected relative paths of .java files</td></tr>
+<tr><td><code>nFiles</code></td><td><span class="sig">int nFiles</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>skippedDescriptors</code></td><td><span class="sig">int skippedDescriptors</span></td><td class="desc">descriptor files (module-info, package-info) that were skipped</td></tr>
+<tr><td><code>dirsVisited</code></td><td><span class="sig">int dirsVisited</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>root</code></td><td><span class="sig">String root</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>addFile</code></td><td><span class="sig">void addFile(String rel)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>listEntries</code></td><td><span class="sig">String[] listEntries(String dir)</span></td><td class="desc">the entries of a directory listing, without . and ..</td></tr>
+<tr><td><code>sortNames</code></td><td><span class="sig">void sortNames(String[] a)</span></td><td class="desc">insertion sort, so the walk order does not depend on the file system</td></tr>
+<tr><td><code>walk</code></td><td><span class="sig">void walk(String root)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>visit</code></td><td><span class="sig">void visit(String rel)</span></td><td class="desc">rel is the directory relative to the root (&quot;&quot; for the root itself)</td></tr>
 </table>
 </div>
 <h2 class="section" data-u="jdbcrowset">JdbcRowSet <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/jdk-28/java.sql.rowset/javax/sql/rowset/JdbcRowSet.sleela)</span></h2>
@@ -301065,7 +301439,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-12 22:18 UTC.
+<code>/lib</code> tree on 2026-11-13 00:52 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
