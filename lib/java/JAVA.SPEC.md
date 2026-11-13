@@ -27,7 +27,12 @@ Relation to the language specification. Sections 44, 45 and 46 of `SLEELA.syntax
 multi-dimensional arrays, char as text) are language features that the Java tier **uses**. They were
 added to the language before this rule and stay there. Nothing new is added to the language by the
 Java tier. `SLEELA.syntax` section 43 (Java support, `spark`) and 38.4 (the Java container) are
-unchanged.
+unchanged, except two language and VM changes made the same day at the owner's request, before
+or alongside this rule: 43.7 (implemented interfaces are runtime supertypes; a method call on an
+`Any` value dispatches at run time) and 37.5 (`MIN / -1` without SIGFPE; inside a `try`, integer
+division by zero, an array index out of range and a failed cast are thrown, as
+`ArithmeticException`, `ArrayIndexOutOfBoundsException`, `ClassCastException` through
+`lib/java/support/SLJavaFaults`). The tier uses them; they are general language behavior.
 
 ## 2. The Java tier
 
@@ -188,6 +193,10 @@ that really uses several threads is not claimed. Test: `Sync`.
 `native` methods (no Java body). Everything else refused is listed in section 5.
 
 ## 5. Open items (refused today)
+
+This table is the status of `sleelactl java-convert`. The second converter, `lib/java/converter`
+(per-member stubs, not whole-file refusal), lowers lambdas and method references to `(id, env)`
+(0.6.0) and inner classes with an `slOuter` field (0.7.0); see its README.
 
 | Construct | Why | Plan |
 |---|---|---|

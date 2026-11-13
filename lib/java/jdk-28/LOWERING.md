@@ -122,6 +122,11 @@ target type, so lowering runs after overload resolution.
 
 ### 2.4 Inner, local and anonymous classes (row 33)
 
+*Inner classes implemented* by `lib/java/converter` 0.7.0 (`JConvOuter`,
+2026-11-13): the enclosing instance is the field `slOuter`, set from the first
+constructor parameter `slOuterArg`; `Outer.this` is `this.slOuter`. Local and
+anonymous classes are still stubs there (`sleelactl java-convert` lowers them).
+
 Same idea, no `id`: the class becomes a **named top-level class** with the
 captured locals and the outer `this` as explicit fields, set by its constructor.
 `new Outer().new Inner()` passes the outer reference as the first constructor

@@ -138,6 +138,7 @@ several hours. Use `JCONV_FILTER` to convert one package or module at a time.
 | 6h | `System.out.println(x)` | `print(x)` | `System.out.print` (no newline) is a stub (reason 23): `print` always adds one |
 | 8a | a lambda `x -> e`, `(a, b) -> e`, `(int a, int b) -> { ... }` (0 to 2 parameters) | `new SLJavaLambda(N, new Any[]{this, k, ...})` at the site; the body becomes `Any slLambdaN(Any[] slEnv, Any slA, Any slB)` in the same class, which declares each captured local from `slEnv` and each parameter from `slA` / `slB`; the document gets one generated `SLJavaLambdaTable` whose `call` forwards `N` to it (`JConvLambda`) | defunctionalization, `lib/java/jdk-28/LOWERING.md` section 2. Java captures only effectively final locals, so copying their values at the site is exact. An instance context stores `this` in `slEnv[0]` and the body is an instance method, so fields, methods and `this` read as written. An untyped parameter takes its type from the target: a declaration `Function<Integer, Integer> f = ...`, the method return type for `return x -> ...`, the declared parameter of a method of this file the lambda is passed to, or the result type argument of an enclosing lambda (`a -> b -> ...`); boxes become primitives (`Integer` is `int32`); else `Any`. Not lowered (stub reason 1): a switch arrow, more than two parameters, a captured local or parameter of array type (a cast to an array type does not compile) |
 | 8b | a method reference | lowered like 8a: `System.out::println` (a `Consumer`); with a known target interface `this::m`, `name::m` (the receiver is evaluated once, at the reference), `Type::m` (static, or unbound for `String` and own instance methods) and `Type::new` | the arity and the parameter types come from the target interface. Without a target, or `Type::m` of another class (static or unbound cannot be told apart), stub reason 2 |
+| 8d | an inner (non-static) class `class Inner` declared in a class | the field `Outer slOuter` (only in a base inner class) and a first constructor parameter `slOuterArg` (a default constructor is written when there is none); `this.slOuter = slOuterArg;` after an explicit `super(...)` of a non-inner superclass, else first; `this(...)` and `super(...)` of an inner superclass pass `slOuterArg` on. `new Inner(a)` becomes `new Inner(this, a)` in the outer class and `new Inner(this.slOuter, a)` in a sibling inner class; `Outer.this` becomes `this.slOuter`, `Inner.this` becomes `this`; an unqualified member of the outer class becomes `this.slOuter.x` (instance) or `Outer.x` (static) (`JConvOuter`) | JLS 8.1.3, 15.9.2, 15.8.4; `lib/java/jdk-28/LOWERING.md` section 2.4. A name is left alone when it is a local, a member of the inner class, or possibly inherited (JLS 6.4.1: the class and its supertypes come before the enclosing class): inherited names come from the model `ret` / `field` rows or a type of the file written earlier, and when the superclass is unknown no method name is rewritten, so a doubt gives a check error, never a call to the wrong method. Not lowered: `outer.new Inner()`, an anonymous or local class (reasons 3, 14), a static method of an inner class reaching an outer instance member |
 | 8c | a variable, field, parameter, return type or cast of a functional interface type (`Function`, `Comparator`, `Runnable`, the 43 of `java.util.function`, ...) | `Any` | so `f.apply(x)` dispatches at run time (SLEELA.syntax 43.7) to `SLJavaLambda.apply` or to a program class that implements the interface. A class of the file with the same name is kept |
 
 ## 4. Fail-loud stubs (rule 5 of `JConvRules`)
@@ -162,7 +163,7 @@ run, and is listed in the report.
 | 7 | try-with-resources |
 | 8 | `var` |
 | 9 | class literal `X.class` |
-| 10 | qualified `this` or `super` (`Outer.this`, `Iface.super.m()`) |
+| 10 | qualified `this` or `super` (`Iface.super.m()`, `Outer.this` of a class that is not the enclosing class; `Outer.this` of the enclosing class is lowered since 0.7, rule 8d) |
 | 11 | comma in a `for` header whose body is an unbraced compound statement |
 | 12 | multi-dimensional array creation |
 | 13 | `return`, `break` or `continue` inside a `try` that has `finally` (retired in 0.2: 44.5) |
@@ -206,6 +207,7 @@ Sample: 17 files from the OpenJDK 25.0.2 `src.zip` (`Math`, `Record`, `Override`
 | Typed-pass rewrites in the output (0.4.0 with model 1.1.0 / without the model file) | | | | 40 / 40 |
 | 0.5.0 int wraps (`toInt`) / `divInt`, `remInt` calls in the output | | | | 88 / 7 (check numbers unchanged, 0 syntax errors) |
 | Same, compiler with SLEELA.syntax 43.7 (calls on `Any`, interfaces at run time) | | | | **522** (11 files with an error) |
+| 0.7.0, inner classes (`JConvOuter`, rule 8d): stubbed members / check errors | | | | **26** / **475** (11 files with an error, 0 syntax errors) |
 | Files with no `sleela check` error | 8 of 36 | 8 of 36 | 8 of 36 | 5 of 16 |
 
 **0.6.0, lambdas (2026-11-13).** The 17-file sample has no lambda outside a
@@ -220,6 +222,15 @@ to a method, `System.out::println`, `Type::m`, `this::m`, `String::length`)
 runs **all 17 lines identical** to OpenJDK 25.0.2
 (`samples/LambdaDemo.java.expected.txt`, `samples/LambdaDemo.sleela.expected.txt`).
 
+**0.7.0, inner classes (2026-11-13).** On the 17-file sample, bundled: stubs
+35 to **26** (nine `Outer.this` members of `HashMap`, `AbstractList` and others
+no longer need reason 10) and check errors 522 to **475**, 0 syntax errors.
+`HashMap` alone writes 45 `slOuter` references. By message, the remaining
+errors are mostly "instance method ... must be called on an instance" (94:
+statics written as instance methods in the jdk-28 units), "use of undeclared
+variable" (71: names of JDK-internal or not yet resolved types), and errors
+that follow from those. Both samples still run identical.
+
 0.2.0 removed 12 stubs (the ten `for` headers with commas and two pattern
 `instanceof` members). 0.4.0 changes what the converted code computes, not
 whether it compiles, so the check numbers are those of 0.3.0. On these 17 JDK
@@ -228,8 +239,8 @@ casts (40 either way): the JDK code here seldom shifts or prints a library call
 result directly. In ordinary programs they do (the sample program, below). Bundling removes 39% of the check errors, because a nested
 type declared in the same document resolves by its simple name; the remaining
 errors come from the library and the language, not from conversion slips: by
-message, mostly "use of undeclared variable" (inner classes reaching the fields
-of the enclosing instance), "struct ... has no field" (inherited types that do
+message (0.3.0), mostly "use of undeclared variable" (inner classes reaching the fields
+of the enclosing instance, lowered since 0.7.0), "struct ... has no field" (inherited types that do
 not resolve), and "instance method ... must be called on an instance" (statics
 written as instance methods in the jdk-28 units).
 
@@ -268,9 +279,10 @@ The remaining check errors in the JDK sample are not conversion slips. They are 
 library, in this order of weight:
 
 1. **Nested and inner types do not resolve.** The loader does not load
-   `Outer.Inner.sleela` (PURPOSE.md row 4), and an inner class cannot reach the
-   fields of its enclosing instance (`size`, `modCount` in `HashMap.KeySet`).
-   This is most of the `HashMap` and `AbstractList` errors. Writing nested types
+   `Outer.Inner.sleela` (PURPOSE.md row 4). Since 0.7.0 an inner class reaches
+   its enclosing instance (`this.slOuter.size`, `this.slOuter.modCount` in
+   `HashMap.KeySet`, rule 8d); a nested type still resolves only inside its
+   bundled document. Writing nested types
    inline (SLEELA.syntax 14, hoisted as `Outer__Inner`) was measured on
    2026-11-13 and is not a way out yet: only a plain nested class with fields
    and methods works; a nested class must be named `Outer.Inner` even inside

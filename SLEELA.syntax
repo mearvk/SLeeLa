@@ -3566,7 +3566,8 @@ not in 3.1.
 | `String.valueOf` / `format` / `join` (static members of `String`) | **Syntax open**: `String` is a keyword type, so `String.m(...)` does not parse; needs a binding to `JavaStringMethods` statics and library bodies |
 | varargs `T... xs` | **Syntax open**: no variable-arity parameter or call-site packing |
 | lambdas, method references | Converter: **lowered** by `lib/java/converter` 0.6.0 (`JConvLambda`, `(id, env)` of `lib/java/jdk-28/LOWERING.md`), no new syntax; method references only where the target interface is known |
-| anonymous classes, inner (non-static) classes | **Syntax open**: needs the captured enclosing instance |
+| inner (non-static) classes | Converter: **lowered** by `lib/java/converter` 0.7.0 (`JConvOuter`: an explicit `slOuter` field and `slOuterArg` constructor parameter), no new syntax |
+| anonymous classes, local classes | Converter: `sleelactl java-convert` lowers them to generated classes; `lib/java/converter` still stubs them |
 | `enum` | **Syntax open** (43.5) |
 | switch expressions, arrow cases `case X ->`, `instanceof T x` patterns | **Syntax open** |
 | try-with-resources | **Syntax open**: needs `close()` on exit, and `close` is a reserved built-in name (the converter refuses `close` members) |
