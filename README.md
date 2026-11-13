@@ -20,7 +20,7 @@ that standing is kept (recorded faithfully, e.g. in each class's Metadata
 
 ## I. Start Here
 - [Build the native implementation](impl/README.md)
-- [Modules: tutorials and explanations](docs/modules/README.md) — one verified writeup for each of the 44 `sleelactl` modules and the 3 Advantage modules: 30 hands-on tutorials (each step run, real output shown) and 17 explanations (models, contracts, and modules that cannot run end to end here), with the measured state of each and the problems found
+- [Modules: tutorials and explanations](#xx-modules--tutorials-and-explanations) ([index](docs/modules/README.md)) — one verified writeup for each of the 44 `sleelactl` modules and the 3 Advantage modules: 30 hands-on tutorials (each step run, real output shown) and 17 explanations (models, contracts, and modules that cannot run end to end here), with the measured state of each and the problems found
 - [Virtual machines & Modium — hands-on user guide](virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU stack in SLeeLa source](lib/cpu/CPU.md) — a full gates→ALU→cores→OS→programs machine, a roster of 130+ CPU profiles, and adjustable [voltages, variable clocks, and expert timings](lib/cpu/TIMING.md) you can [run at spec and overclock](lib/cpu/components/README.md)
 - [Documentation index](docs/README.md)
@@ -778,3 +778,117 @@ SLeeLa provides country-specific README entry points for the 50 markets in its i
 - [README.ZA](README.ZA.md)
 
 **Translation policy:** These files are initial localized country entry points. Their introductions and language headings are localized, while the complete technical reference remains in the canonical English [README.md](README.md). A country file must not be described as a complete translation until every section has been translated, technical identifiers and links have been checked, and the edition has received language review. Language coverage in this first pass is representative and is not a claim that every constitutionally recognized, regional, indigenous, or sign language has been fully translated.
+
+## XX. Modules — Tutorials and Explanations
+
+Every module has a verified writeup: the 44 products controlled by [`sleelactl`](bin/SLEELACTL.md) (listed in [`bin/sleelactl.d/registry.conf`](bin/sleelactl.d/registry.conf)) and the 3 Advantage modules. A **tutorial** is hands-on: every step was run in this checkout and the output shown is the real output. An **explanation** covers a model, contract or specification, or a module that cannot run end to end here (it needs systemd, `nmcli` or radio hardware, or it does not build), and shows the evidence. **State** is what the check found on 2026-11-13: *works*, *partial* (the core runs, part of it fails or cannot run here), *broken*, or *contract only*. The [module index](docs/modules/README.md) adds the evidence for each state and the problems found across modules.
+
+### Daemons
+
+Long-running services under the host service manager (`sleelactl start|stop|status`). **Server Edition** is the bounded transport and packet-admission server: `server-edition/` builds the `sleelas` transport server, and `server-edition/moral/2` and `moral/3` hold the `serverd` launchers and the systemd/launchd definitions for Service 2 and the "remedial" Service 3 (preflight check, recovery log). **Sleelavirin** (`antivirus/`) is the native scanning engine (SHA-256 whole-file lookup and Aho-Corasick content signatures) with Python coordination tools. None of the three runs end to end in a container without systemd, and each page lists the script and test defects found.
+
+| Module | What it is | Writeup | State |
+|---|---|---|---|
+| `server-edition` | Transport + packet-admission server (`sleelas`) and the Service 2 launcher | [Explanation](docs/modules/explanations/server-edition.md) | partial |
+| `server-edition3` | Service 3, the remedial launcher generation (preflight, recovery log) | [Explanation](docs/modules/explanations/server-edition3.md) | partial |
+| `antivirus` | Sleelavirin native scan engine and its coordinator | [Explanation](docs/modules/explanations/antivirus.md) | partial |
+
+### Registries
+
+Closed handler sets owned by a process-local Controller (`sleelactl list|probe|status`). The **codecs**, **compression** and **video** registries are the SLeeLa-side management layers (Controller, Verifier, Processor, Loader) for 20 audio codecs, 15 compression algorithms and 12 video codecs. Their demos register every handler; they do bookkeeping and backend selection, not encoding.
+
+| Module | What it is | Writeup | State |
+|---|---|---|---|
+| `codecs` | Audio codec registry, 20 handlers | [Tutorial](docs/modules/tutorials/codecs.md) | works |
+| `compression` | Compression registry, 15 algorithms (native ids 0-3) | [Tutorial](docs/modules/tutorials/compression.md) | works |
+| `video` | Video codec registry, 12 handlers | [Tutorial](docs/modules/tutorials/video.md) | works |
+
+### Data sources
+
+Open/close/active data surfaces (`sleelactl open|close|status|available`). The working stack is **sleela-sql**, a local CSV-backed SQL engine in C11 that speaks classic SQL and the fluent SLeeLaSQL dialect, and **db-connector**, a JDBC-style C API (`sldbc_*`) whose `sleelasql:` driver runs on it. The **registry store** is a Windows-style tree of typed settings with an originality seal. `lib/database` is still a placeholder facade, and the working ledger tool lives in `ledger/`, not in `lib/ledger`.
+
+| Module | What it is | Writeup | State |
+|---|---|---|---|
+| `database` | SLeeLa SQL facade (`SLDataSource`, pool, query classes) | [Explanation](docs/modules/explanations/database.md) | broken |
+| `db-connector` | JDBC-style C driver API over sleela-sql | [Tutorial](docs/modules/tutorials/db-connector.md) | works |
+| `sleela-sql` | CSV-backed SQL engine, SQL and SLeeLaSQL dialects, CLI | [Tutorial](docs/modules/tutorials/sleela-sql.md) | partial |
+| `ledger` | Append-only ledger (tool in `ledger/`) | [Explanation](docs/modules/explanations/ledger.md) | partial |
+| `registry-store` | Native key tree for settings and feature flags, with provenance seal | [Tutorial](docs/modules/tutorials/registry-store.md) | partial |
+
+### Protocols: the HTTP family
+
+Nine generations of the project's HTTP family, each with its own server or frame library and self-tests. Only `http-1.0` serves a published standard on the wire (HTTP/1.0); `http-2.0` and `http-3.0` are the project's own application protocols carried over HTTP/1.x, and `http-4.0` to `http-9.0` are explicitly experimental designs that are not IETF standards. Each page separates the two.
+
+| Module | What it is | Writeup | State |
+|---|---|---|---|
+| `http-1.0` | Real-wire HTTP/1.0 server with SLeeLa logical-port headers | [Explanation](docs/modules/explanations/http-1.0.md) | broken |
+| `http-2.0` | SLeeLa HTTP 2.0/2.1 application protocol (envelope, naming, pipeline) | [Tutorial](docs/modules/tutorials/http-2.0.md) | works |
+| `http-3.0` | SLeeLa HTTP 3.0 application protocol and pipeline demo | [Tutorial](docs/modules/tutorials/http-3.0.md) | works |
+| `http-4.0` | Experimental frame protocol (32-byte header) | [Explanation](docs/modules/explanations/http-4.0.md) | works (self-tests) |
+| `http-5.0` | Experimental frames, widened vocabulary | [Explanation](docs/modules/explanations/http-5.0.md) | works (self-test) |
+| `http-6.0` | Experimental generation, consolidated records | [Explanation](docs/modules/explanations/http-6.0.md) | partial |
+| `http-7.0` | Experimental generation, Reality Assertion frames | [Tutorial](docs/modules/tutorials/http-7.0.md) | works |
+| `http-8.0` | Experimental generation, session and crypto-policy frames | [Tutorial](docs/modules/tutorials/http-8.0.md) | works |
+| `http-9.0` | Experimental metadata API, not an IETF standard | [Explanation](docs/modules/explanations/http-9.0.md) | partial |
+
+### Protocols: radio and telephony
+
+Reference models, not radios. **cdma** holds compact, deterministic C11/C++17 models of direct-sequence CDMA with the `cdma-sim` simulator; **ofdma** is a generic resource-grid calculator with a round-robin scheduler; **wifi-common** is the shared client-side Wi-Fi control layer (scan, fail-closed security policy, connect) used by the **Wi-Fi 4/5/6** profile libraries for 802.11n/ac/ax. **Skya** (`telephony-skya/`) is the SLeeLa telephony layer: a C++ engine, the `sleela-skya` CLI and 54 drivers. The real Wi-Fi backend needs `nmcli`.
+
+| Module | What it is | Writeup | State |
+|---|---|---|---|
+| `cdma` | Direct-sequence CDMA reference models and `cdma-sim` | [Tutorial](docs/modules/tutorials/cdma.md) | partial |
+| `ofdma` | OFDMA resource-grid calculator and scheduler | [Tutorial](docs/modules/tutorials/ofdma.md) | works |
+| `wifi-common` | Shared Wi-Fi control layer and security policy | [Explanation](docs/modules/explanations/wifi-common.md) | partial |
+| `wi-fi-4` | 802.11n profile library (C, C++, Java) | [Explanation](docs/modules/explanations/wi-fi-4.md) | partial |
+| `wi-fi-5` | 802.11ac profile library | [Explanation](docs/modules/explanations/wi-fi-5.md) | partial |
+| `wi-fi-6` | 802.11ax profile library | [Explanation](docs/modules/explanations/wi-fi-6.md) | partial |
+| `telephony-skya` | Skya telephony engine, CLI and drivers | [Tutorial](docs/modules/tutorials/telephony-skya.md) | partial |
+
+### Protocols: routing and transport
+
+Shared contracts that the servers consult. The **resolver** turns a target into a forward or reverse DNS result or a path and enforces the event policy; **preferred-routers** chooses a router role and preference tier from a small config; **route** is the `sleela.route.data` JSON contract; **connector** is the Java 22+ package that links Java code, the SLeeLa runtime and native code.
+
+| Module | What it is | Writeup | State |
+|---|---|---|---|
+| `resolver` | Target resolution and validation (C library and CLI) | [Tutorial](docs/modules/tutorials/resolver.md) | works |
+| `route` | Shared route-data contract (`ROUTE.DATA.json`) | [Explanation](docs/modules/explanations/route.md) | contract only |
+| `connector` | Java/SLeeLa/native connector and class loaders | [Explanation](docs/modules/explanations/connector.md) | broken |
+| `preferred-routers` | Router-preference policy and selector | [Tutorial](docs/modules/tutorials/preferred-routers.md) | partial |
+
+### Tools
+
+One-shot toolchain components (`sleelactl run|build|inspect`). **sleelac** is a separately buildable C++20 prototype compiler for a small SLeeLa subset that emits C and C++; **Slecompiler** (`decompiler/`) analyses and decompiles native binaries; the **debugger** is a library of debugging concepts with a self-test CLI; **Native Drive** builds C/C++ and SLeeLa AOT code and starts processes without a shell; **java-convert** converts Java source to functionally equivalent SLeeLa (status: [`JAVA.CONVERSION.STATUS.md`](JAVA.CONVERSION.STATUS.md)).
+
+| Module | What it is | Writeup | State |
+|---|---|---|---|
+| `compiler` | `sleelac` prototype compiler (SLeeLa subset to C/C++) | [Tutorial](docs/modules/tutorials/compiler.md) | works |
+| `decompiler` | Slecompiler native-binary analysis CLI | [Tutorial](docs/modules/tutorials/decompiler.md) | partial |
+| `debugger` | Debugger concepts library, self-test and report CLI | [Explanation](docs/modules/explanations/debugger.md) | partial |
+| `native-drive` | Shell-free native builds and process launch | [Tutorial](docs/modules/tutorials/native-drive.md) | works |
+| `java-convert` | Java to SLeeLa converter, fails closed | [Tutorial](docs/modules/tutorials/java-convert.md) | works |
+
+### Native subjects
+
+Native libraries compiled into the runtime and used with `import <name>;`. **math** is the base numeric subject the others require; **physics** covers mechanics and physical models and **economics** economic and time-value functions; the runtime also ships **chemistry** (evidence-weighted scoring, not a table of facts), **astrophysics** (astronomical formula models), **sociology** (descriptive population measures; association is not causation), **inference** (descriptive statistics and least-squares trend from running sums) and **financial** (time value of money, valuation and small algebra). The pages list where a function returns a silent wrong value, such as `math.pow` for bases of zero or below.
+
+| Module | What it is | Writeup | State |
+|---|---|---|---|
+| `math` | Base numeric subject (`math.sqrt`, `pow`, `sin`, ...) | [Tutorial](docs/modules/tutorials/math.md) | works |
+| `physics` | Mechanics and physical models | [Tutorial](docs/modules/tutorials/physics.md) | works |
+| `chemistry` | Evidence-weighted chemistry scoring | [Tutorial](docs/modules/tutorials/chemistry.md) | works |
+| `astrophysics` | Astronomical formula models | [Tutorial](docs/modules/tutorials/astrophysics.md) | works |
+| `sociology` | Population and social-statistical measures | [Tutorial](docs/modules/tutorials/sociology.md) | works |
+| `economics` | Economic and time-value functions | [Tutorial](docs/modules/tutorials/economics.md) | works |
+| `inference` | Descriptive statistics and trend analysis | [Tutorial](docs/modules/tutorials/inference.md) | works |
+| `financial` | Valuation and algebra helpers | [Tutorial](docs/modules/tutorials/financial.md) | works |
+
+### Advantage modules
+
+A way to load AI components into a user program (`lib/advantage/modules`). The program creates one **medium**, which owns a **bridge** of two bounded queues and seats up to 16 modules that talk to the program in both directions. Two modules ship with it: the **high speed trader**, a courseware model on a synthetic data stream that places no orders and is not financial advice, and the **Moral Evaluator**, a fixed-rule teaching model whose verdicts are not moral, legal or financial judgements. These are not `sleelactl` modules.
+
+| Module | What it is | Writeup | State |
+|---|---|---|---|
+| `advantage-modules` | Medium, bridge and catalog for user-defined AI modules | [Tutorial](docs/modules/tutorials/advantage-modules.md) | works |
+| `high-speed-trader` | High speed trader courseware model (synthetic data) | [Tutorial](docs/modules/tutorials/high-speed-trader.md) | works |
+| `moral-evaluator` | Moral Evaluator rule-based teaching model | [Tutorial](docs/modules/tutorials/moral-evaluator.md) | works |
