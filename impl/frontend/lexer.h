@@ -7,7 +7,7 @@
 #include <vector>
 namespace sleela {
 enum class Tok {
-    Int, Double, Str, Ident, At,
+    Int, Double, Str, Char, Ident, At,
     KwClass, KwInterface, KwEnum, KwRecord,
     KwStatic, KwProtected, KwPublic, KwPrivate, KwFinal, KwAbstract, KwNative,
     KwSynchronized, KwVolatile, KwTransient, KwStrictfp, KwSealed, KwNonSealed,
@@ -33,7 +33,7 @@ private:
     std::string src_; size_t pos_=0; int line_=1; int col_=1;
     char peek(int off=0) const; char advance(); bool match(char c);
     bool atEnd() const { return pos_ >= src_.size(); }
-    void skipTrivia(); Token makeNumber(); Token makeString();
+    void skipTrivia(); Token makeNumber(); Token makeString(); Token makeChar();
     Token makeIdentOrKeyword(); [[noreturn]] void error(const std::string& msg) const;
 };
 const char* tokName(Tok t);

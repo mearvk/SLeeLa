@@ -379,7 +379,8 @@ private:
         else if(auto d=dynamic_cast<const DoStmt*>(s)) countInStmt(d->body.get(),n);
         else if(auto fe=dynamic_cast<const ForEachStmt*>(s)){ n+=3; /* loop variable, source, index/iterator */ countInStmt(fe->body.get(),n); }
         else if(auto sy=dynamic_cast<const SynchronizedStmt*>(s)) countInBlock(*sy->body,n);
-        else if(auto tr=dynamic_cast<const TryStmt*>(s)){n++;/* thrown-value temp */countInBlock(*tr->body,n);for(const auto& c:tr->catches){n++;countInBlock(*c.body,n);}if(tr->finallyBlock){/* finally is emitted up to 4 times (normal, after a catch, before a rethrow, from a catch body) */for(int k=0;k<4;++k)countInBlock(*tr->finallyBlock,n);}}
+        else if(auto lb=dynamic_cast<const LabeledStmt*>(s)) countInStmt(lb->body.get(),n);
+        else if(auto tr=dynamic_cast<const TryStmt*>(s)){n+=2;/* thrown-value temp + __retval */countInBlock(*tr->body,n);for(const auto& c:tr->catches){n++;countInBlock(*c.body,n);}if(tr->finallyBlock){/* finally is emitted up to 4 times (normal, after a catch, before a rethrow, from a catch body) */for(int k=0;k<4;++k)countInBlock(*tr->finallyBlock,n);}}
         else if(auto sw=dynamic_cast<const SwitchStmt*>(s)){n++;/* selector temp */for(const auto& c:sw->cases)for(const auto& st:c.statements)countInStmt(st.get(),n);}
     }
     int here(){return slvm_here(vm_);} int emit(SLOp op,int a=0){return slvm_emit(vm_,op,a);} void patch(int at,int target){slvm_patch(vm_,at,target);}
@@ -459,8 +460,9 @@ private:
         if(auto t=dynamic_cast<const ThrowStmt*>(s)){emitExpr(t->value.get());emit(OP_THROW);return;}
         if(auto a=dynamic_cast<const AssertStmt*>(s)){emitExpr(a->cond.get());emit(OP_POP);return;}
         if(auto y=dynamic_cast<const YieldStmt*>(s)){emitExpr(y->value.get());emit(OP_POP);return;}
-        if(dynamic_cast<const BreakStmt*>(s)){emitBreak();return;}
-        if(dynamic_cast<const ContinueStmt*>(s)){emitContinue();return;}
+        if(auto bs=dynamic_cast<const BreakStmt*>(s)){emitBreak(bs->label);return;}
+        if(auto cs=dynamic_cast<const ContinueStmt*>(s)){emitContinue(cs->label);return;}
+        if(auto ls=dynamic_cast<const LabeledStmt*>(s)){emitLabeled(*ls);return;}
         throw std::runtime_error("Semantic error: unknown statement kind");
     }
     void emitBlock(const Block& b){for(const auto& s:b.stmts)emitStmt(s.get());}
@@ -513,17 +515,81 @@ private:
         if(r.word=="mem"){emit(OP_RAN_MEM);return;}
         throw std::runtime_error("Semantic error: unknown system reference 'ran::"+r.word+"'");
     }
-    void emitReturn(const ReturnStmt& r){if(finallyGuard_>0)throw std::runtime_error("Semantic error: return inside a try or catch block that has finally is not supported yet (the finally would be skipped)");if(r.value){emitExpr(r.value.get());coerceToDeclared(currentRetType_);}else emit(OP_CONST,addNullConst());emit(OP_RET);}
+    void emitReturn(const ReturnStmt& r){
+        if(r.value){emitExpr(r.value.get());coerceToDeclared(currentRetType_);}else emit(OP_CONST,addNullConst());
+        if(!regions_.empty()){
+            // Syntax 3.1: leave every enclosing try region (running its finally) before returning.
+            const int slot=ctx_->declare("__retval"); emit(OP_STOREL,slot);
+            unwindTo(0);
+            emit(OP_LOADL,slot);
+        }
+        emit(OP_RET);
+    }
     void emitFieldAssign(const FieldAssign& fa){int off=-1;const StructLayout& ml=memberLayout(fa.base.get(),fa.field,off);std::string ft=(off>=0&&off<(int)ml.fieldType.size())?ml.fieldType[(size_t)off]:"";emitExpr(fa.base.get());emitExpr(fa.value.get());coerceToDeclared(ft);emit(OP_SETFIELD,off);emit(OP_POP);}
     void emitIf(const IfStmt& s){emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitStmt(s.thenS.get());if(s.elseS){int jend=emit(OP_JMP,0);patch(jf,here());emitStmt(s.elseS.get());patch(jend,here());}else patch(jf,here());}
     // Loop context for break/continue: each enclosing loop records the jump
     // sites that must be patched to the loop exit (break) and to the loop's
     // continue target (continue). We patch them when the loop finishes.
-    struct LoopCtx{std::vector<int> breaks;std::vector<int> continues;int tryDepth=0;};
+    struct LoopCtx{std::vector<int> breaks;std::vector<int> continues;int tryDepth=0;std::string label;bool isSwitch=false;bool isBlock=false;};
+    // Syntax 3.1: a label applies to the next loop/switch context pushed.
+    std::string pendingLabel_;
+    LoopCtx newCtx(bool sw=false,bool blk=false){LoopCtx c;c.tryDepth=tryDepth_;c.isSwitch=sw;c.isBlock=blk;c.label=pendingLabel_;pendingLabel_.clear();return c;}
+    // One entry per live OP_TRY_PUSH frame, innermost last. `fin` is the finally
+    // block that must run when control leaves the region by break, continue or
+    // return (syntax 3.1; SLEELA.syntax 44.4). tryDepth_ == regions_.size().
+    struct Region{const Block* fin;};
+    std::vector<Region> regions_;
+    void pushRegion(const Block* fin){regions_.push_back({fin});++tryDepth_;}
+    void popRegion(){regions_.pop_back();--tryDepth_;}
+    // Leave every region above index `downTo`: pop its handler frame and run its
+    // finally inline, innermost first. While one finally is emitted only the
+    // regions outside it are live, so a jump inside that finally unwinds
+    // correctly and an exception from it propagates outward.
+    void unwindTo(size_t downTo){
+        const std::vector<Region> saved=regions_; const int savedDepth=tryDepth_; const int savedGuard=finallyGuard_;
+        for(size_t i=saved.size();i>downTo;--i){
+            regions_.assign(saved.begin(),saved.begin()+(long)(i-1)); tryDepth_=(int)(i-1);
+            emit(OP_TRY_POP);
+            if(saved[i-1].fin) emitBlock(*saved[i-1].fin);
+        }
+        regions_=saved; tryDepth_=savedDepth; finallyGuard_=savedGuard;
+    }
+    int findTarget(const std::string& label,bool forContinue){
+        for(size_t i=loops_.size();i-->0;){
+            const LoopCtx& c=loops_[i];
+            if(!label.empty()){ if(c.label==label){ if(forContinue&&(c.isSwitch||c.isBlock)) return -2; return (int)i; } continue; }
+            if(c.isBlock) continue;
+            if(forContinue&&c.isSwitch) continue;
+            return (int)i;
+        }
+        return -1;
+    }
     std::vector<LoopCtx> loops_;
     int tryDepth_=0;
-    void emitBreak(){if(finallyGuard_>0&&!loops_.empty()&&tryDepth_>loops_.back().tryDepth)throw std::runtime_error("Semantic error: break out of a try or catch block that has finally is not supported yet");if(loops_.empty())throw std::runtime_error("Semantic error: 'break' used outside a loop or switch");if(tryDepth_>loops_.back().tryDepth)throw std::runtime_error("Semantic error: break may not leave a protected try region until abrupt-completion cleanup is implemented");loops_.back().breaks.push_back(emit(OP_JMP,0));}
-    void emitContinue(){if(finallyGuard_>0&&!loops_.empty()&&tryDepth_>loops_.back().tryDepth)throw std::runtime_error("Semantic error: continue out of a try or catch block that has finally is not supported yet");if(loops_.empty())throw std::runtime_error("Semantic error: 'continue' used outside a loop");if(tryDepth_>loops_.back().tryDepth)throw std::runtime_error("Semantic error: continue may not leave a protected try region until abrupt-completion cleanup is implemented");loops_.back().continues.push_back(emit(OP_JMP,0));}
+    void emitBreak(const std::string& label=""){
+        if(!label.empty()&&syntax_<SyntaxVersion{3,1}) throw std::runtime_error("Semantic error: labeled break requires #sleela 3.1");
+        int t=findTarget(label,false);
+        if(t<0) throw std::runtime_error(label.empty()?"Semantic error: 'break' used outside a loop or switch":"Semantic error: break to undefined label '"+label+"'");
+        unwindTo((size_t)loops_[(size_t)t].tryDepth);
+        loops_[(size_t)t].breaks.push_back(emit(OP_JMP,0));
+    }
+    void emitContinue(const std::string& label=""){
+        if(!label.empty()&&syntax_<SyntaxVersion{3,1}) throw std::runtime_error("Semantic error: labeled continue requires #sleela 3.1");
+        int t=findTarget(label,true);
+        if(t==-2) throw std::runtime_error("Semantic error: continue to label '"+label+"' which does not label a loop");
+        if(t<0) throw std::runtime_error(label.empty()?"Semantic error: 'continue' used outside a loop":"Semantic error: continue to undefined label '"+label+"'");
+        unwindTo((size_t)loops_[(size_t)t].tryDepth);
+        loops_[(size_t)t].continues.push_back(emit(OP_JMP,0));
+    }
+    void emitLabeled(const LabeledStmt& l){
+        const Stmt* b=l.body.get();
+        const bool loopLike=dynamic_cast<const WhileStmt*>(b)||dynamic_cast<const DoStmt*>(b)||dynamic_cast<const ForStmt*>(b)||dynamic_cast<const ForEachStmt*>(b)||dynamic_cast<const SwitchStmt*>(b);
+        if(loopLike){ pendingLabel_=l.label; emitStmt(b); pendingLabel_.clear(); return; }
+        pendingLabel_=l.label; loops_.push_back(newCtx(false,true));
+        emitStmt(b);
+        for(int br:loops_.back().breaks)patch(br,here());
+        loops_.pop_back();
+    }
     // Per-iteration delay requested by a loop-timing annotation (@loopDelay /
     // @loopBudget). Emits `push <ms>; OP_SLEEP`, which the VM executes each
     // iteration. Emitted at the top of the loop body so the delay happens once
@@ -537,9 +603,9 @@ private:
     // sleep. The judges/witnesses subjects are retained as AST metadata only and
     // have no runtime effect. ms<=0 emits nothing.
     void emitSpillStart(const LoopSpill& spill){if(spill.hasSpill && spill.spillPauseMs>0){emit(OP_CONST,slvm_add_const_int(vm_,(int64_t)spill.spillPauseMs));emit(OP_SLEEP);}}
-    void emitWhile(const WhileStmt& s){emitSpillStart(s.spill);loops_.push_back({{}, {}, tryDepth_});int top=here();emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());for(int c:loops_.back().continues)patch(c,top);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
-    void emitDo(const DoStmt& s){emitSpillStart(s.spill);loops_.push_back({{}, {}, tryDepth_});int top=here();emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
-    void emitFor(const ForStmt& s){emitSpillStart(s.spill);loops_.push_back({{}, {}, tryDepth_});if(s.init)emitStmt(s.init.get());int top=here();std::vector<int> exits;if(s.cond){emitExpr(s.cond.get());exits.push_back(emit(OP_JMPF,0));}if(s.threadStable){emitExpr(s.threadStable.get());exits.push_back(emit(OP_JMPF,0));}if(s.heapHealthy){emitExpr(s.heapHealthy.get());exits.push_back(emit(OP_JMPF,0));}emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);if(s.update)emitStmt(s.update.get());emit(OP_JMP,top);int end=here();for(int j:exits)patch(j,end);for(int b:loops_.back().breaks)patch(b,end);loops_.pop_back();}
+    void emitWhile(const WhileStmt& s){emitSpillStart(s.spill);loops_.push_back(newCtx());int top=here();emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());for(int c:loops_.back().continues)patch(c,top);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
+    void emitDo(const DoStmt& s){emitSpillStart(s.spill);loops_.push_back(newCtx());int top=here();emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);emitExpr(s.cond.get());int jf=emit(OP_JMPF,0);emit(OP_JMP,top);patch(jf,here());for(int b:loops_.back().breaks)patch(b,here());loops_.pop_back();}
+    void emitFor(const ForStmt& s){emitSpillStart(s.spill);loops_.push_back(newCtx());if(s.init)emitStmt(s.init.get());int top=here();std::vector<int> exits;if(s.cond){emitExpr(s.cond.get());exits.push_back(emit(OP_JMPF,0));}if(s.threadStable){emitExpr(s.threadStable.get());exits.push_back(emit(OP_JMPF,0));}if(s.heapHealthy){emitExpr(s.heapHealthy.get());exits.push_back(emit(OP_JMPF,0));}emitLoopDelay(s.loopSleepMs);emitStmt(s.body.get());int contTarget=here();for(int c:loops_.back().continues)patch(c,contTarget);if(s.update)emitStmt(s.update.get());emit(OP_JMP,top);int end=here();for(int j:exits)patch(j,end);for(int b:loops_.back().breaks)patch(b,end);loops_.pop_back();}
     // Enhanced for (SLEELA.syntax 43.6). Array: index loop with OP_ARRLEN /
     // OP_ARRGET. Object: xs.iterator(), then hasNext()/next() (virtual calls).
     int forEachCounter_=0;
@@ -551,7 +617,7 @@ private:
         const int curSlot=ctx_->declare("__fe_cur#"+tag);
         const auto savedType=varType_.find(s.name)!=varType_.end()?std::optional<std::string>(varType_[s.name]):std::nullopt;
         varType_[s.name]=s.type;
-        loops_.push_back({{}, {}, tryDepth_});
+        loops_.push_back(newCtx());
         std::vector<int> exits; int top=0;
         emitExpr(s.iterable.get());
         const std::vector<ExprP> noArgs;
@@ -607,9 +673,9 @@ private:
         const std::string savedType=hadPriorType?priorType->second:std::string();
         varType_[clause.variable]="Any";
         const int push=emit(OP_TRY_PUSH,0);
-        ++tryDepth_;
+        pushRegion(nullptr);
         emitBlock(*s.body);
-        --tryDepth_;
+        popRegion();
         emit(OP_TRY_POP);
         const int skipHandler=emit(OP_JMP,0);
         patch(push,here());
@@ -650,22 +716,27 @@ private:
             clauses.push_back(std::move(cl));
         }
         auto emitFinally=[&]{ if(hasFinally) emitBlock(*s.finallyBlock); };
+        int rethrowHandlerPush=-1;
+        // After OP_TRY_POP of the catch-phase frame its region is no longer live.
+        auto emitFinallyPopped=[&]{
+            if(rethrowHandlerPush>=0){ const std::vector<Region> saved=regions_; const int d=tryDepth_; regions_.pop_back(); --tryDepth_; emitFinally(); regions_=saved; tryDepth_=d; }
+            else emitFinally();
+        };
         std::vector<int> toEnd;
         // try body
         const int push=emit(OP_TRY_PUSH,0);
-        ++tryDepth_; if(hasFinally) ++finallyGuard_;
+        pushRegion(hasFinally?s.finallyBlock.get():nullptr); if(hasFinally) ++finallyGuard_;
         emitBlock(*s.body);
-        --tryDepth_; if(hasFinally) --finallyGuard_;
+        popRegion(); if(hasFinally) --finallyGuard_;
         emit(OP_TRY_POP);
         emitFinally();
         toEnd.push_back(emit(OP_JMP,0));
         // handler
         patch(push,here());
         emit(OP_STOREL,exSlot);
-        int rethrowHandlerPush=-1;
         if(hasFinally && !clauses.empty()){
             // An exception from a catch body must still run finally.
-            rethrowHandlerPush=emit(OP_TRY_PUSH,0); ++tryDepth_;
+            rethrowHandlerPush=emit(OP_TRY_PUSH,0); pushRegion(s.finallyBlock.get());
         }
         for(const auto& cl:clauses){
             std::vector<int> nextClause;
@@ -687,16 +758,16 @@ private:
             if(hasFinally) --finallyGuard_;
             if(had) varType_[cl.c->variable]=saved; else varType_.erase(cl.c->variable);
             if(rethrowHandlerPush>=0) emit(OP_TRY_POP);
-            emitFinally();
+            emitFinallyPopped();
             toEnd.push_back(emit(OP_JMP,0));
             for(int n:nextClause) patch(n,here());
         }
         // no clause matched: finally, then rethrow
         if(rethrowHandlerPush>=0) emit(OP_TRY_POP);
-        emitFinally();
+        emitFinallyPopped();
         emit(OP_LOADL,exSlot); emit(OP_THROW);
         if(rethrowHandlerPush>=0){
-            --tryDepth_;
+            popRegion();
             // exception raised inside a catch body: finally, then propagate it
             patch(rethrowHandlerPush,here());
             emit(OP_STOREL,exSlot);
@@ -709,7 +780,7 @@ private:
         // Lower a switch to a dispatch chain: evaluate the selector once into a
         // temp local, test each label with ==, and jump to the matching case
         // body. Fall-through follows source order; `break` jumps to the end.
-        loops_.push_back({{}, {}, tryDepth_});
+        loops_.push_back(newCtx(true));
         int sel=ctx_->nextSlot++; emitExpr(s.selector.get()); emit(OP_STOREL,sel);
         // Dispatch section: for each label, (selector==label) ? enter body.
         // Record one enter-jump per label, tagged with its owning case index.
@@ -1033,6 +1104,18 @@ private:
         return 0;
     }
     void emitNew(const NewExpr& n){
+        if(n.hasInit){
+            // Syntax 3.1 array initializer: allocate, then store each element.
+            const std::string et=n.typeName.substr(0,n.typeName.size()-2);
+            emit(OP_CONST,slvm_add_const_int(vm_,(int64_t)n.init.size()));
+            emit(OP_NEWARRAY,arrayFillKind(et));
+            for(size_t i=0;i<n.init.size();++i){
+                emit(OP_DUP); emit(OP_CONST,slvm_add_const_int(vm_,(int64_t)i));
+                emitExpr(n.init[i].get()); coerceToDeclared(et);
+                emit(OP_ARRSET); emit(OP_POP);
+            }
+            return;
+        }
         if(n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){if(!n.args.empty())emitExpr(n.args[0].get());else emit(OP_CONST,slvm_add_const_int(vm_,0));emit(OP_NEWARRAY,arrayFillKind(n.typeName.substr(0,n.typeName.size()-2)));return;}
         auto it=structLayout_.find(n.typeName);if(it==structLayout_.end())throw std::runtime_error("Semantic error: 'new' of unknown class or struct '"+n.typeName+"'");
         // Resolve a matching constructor before allocating so an arity/overload

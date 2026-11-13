@@ -103,7 +103,7 @@ struct Method;
 // resolution); the compiler binds the call to exactly that declaration.
 struct Call:Expr{std::string callee;std::vector<ExprP> args;mutable const Method* resolved=nullptr;explicit Call(std::string c):callee(std::move(c)){}};
 struct MethodCall:Expr{ExprP receiver;std::string method;std::vector<ExprP> args;mutable const Method* resolved=nullptr;/* set by semantic analysis when the receiver is a String: the call is the static JavaStringMethods.<method>(receiver, args...) recorded in resolved */mutable bool stringReceiver=false;/* Java constructor invocation statement (SLEELA.syntax 43.6): super(args) / this(args) inside a constructor; receiver is SuperExpr/ThisExpr and resolved is the target constructor */bool superConstructor=false;bool thisConstructor=false;MethodCall(ExprP r,std::string m):receiver(std::move(r)),method(std::move(m)){}};
-struct NewExpr:Expr{std::string typeName;std::vector<ExprP> args;mutable const Method* resolved=nullptr;explicit NewExpr(std::string t):typeName(std::move(t)){}};
+struct NewExpr:Expr{std::string typeName;std::vector<ExprP> args;bool hasInit=false;std::vector<ExprP> init;/* syntax 3.1 array initializer {a,b,c} */mutable const Method* resolved=nullptr;explicit NewExpr(std::string t):typeName(std::move(t)){}};
 // `ran::<word>` -- the System / already-Ran-in-RAM reference. The `ran::`
 // qualifier names a system meaning explicitly, so ordinary words (mem, gc, ...)
 // stay free as identifiers. `word` is the system name after `ran::` (e.g.
@@ -180,6 +180,8 @@ struct ForEachStmt:Stmt{std::string type,name;ExprP iterable;StmtP body;mutable 
 struct DoStmt:Stmt{StmtP body;ExprP cond;long loopSleepMs=0;LoopSpill spill;};
 struct BreakStmt:Stmt{std::string label;};
 struct ContinueStmt:Stmt{std::string label;};
+// Syntax 3.1: `label: statement` -- the target of a labeled break / continue.
+struct LabeledStmt:Stmt{std::string label;StmtP body;};
 struct ThrowStmt:Stmt{ExprP value;};
 struct AssertStmt:Stmt{ExprP cond;ExprP message;};
 struct YieldStmt:Stmt{ExprP value;};
@@ -355,6 +357,9 @@ struct Program {
     // standing only; no change to parsing, typing, or codegen. Contextual, not a
     // reserved keyword.
     bool sparkMarked=false;
+    // Syntax 3.1 surface the parser met (e.g. "character literal"); semantic
+    // analysis rejects each one in a document declaring a syntax below 3.1.
+    std::vector<std::string> syntax31Uses;
 };
 
 } // namespace sleela

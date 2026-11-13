@@ -2,7 +2,7 @@
 
 The Sleela language is a Java-like language compiled by **Sleelvac™** and executed on the C/C++ core. This page is the practical reference; the normative documents are `COMPILER.md`, `SOURCE.md`, `SLEELA.md`, `STRUCTS.md`, and `VERSION.md`.
 
-> **Current normative edition: SLeeLa Syntax 3.0.** The shared Sleela/Sleelvac frontend accepts source syntax **1.0–3.0** and defaults an unversioned source unit to **3.0 with a warning**. A file may declare its edition with `#sleela MAJOR.MINOR`. Syntax 3.0 consolidates the established 1.x/2.x language surface; it preserves each feature's original minimum-version gate. The compiler/tool release number is independent of the source syntax edition. See [`SLEELA.syntax`](../SLEELA.syntax) and the [syntax version matrix](../api/sleela/2.1/language/SYNTAX-VERSION-MATRIX.md).
+> **Current normative edition: SLeeLa Syntax 3.1** (also written `3.01`). The shared Sleela/Sleelvac frontend accepts source syntax **1.0–3.1** and defaults an unversioned source unit to **3.1 with a warning**. Syntax 3.1 adds the character literal, the array initializer, labeled `break`/`continue`, and `return`/`break`/`continue` through `finally` (section 44 of the grammar). A file may declare its edition with `#sleela MAJOR.MINOR`. Syntax 3.0 consolidates the established 1.x/2.x language surface; it preserves each feature's original minimum-version gate. The compiler/tool release number is independent of the source syntax edition. See [`SLEELA.syntax`](../SLEELA.syntax) and the [syntax version matrix](../api/sleela/2.1/language/SYNTAX-VERSION-MATRIX.md).
 
 ---
 

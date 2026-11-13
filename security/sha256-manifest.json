@@ -543,7 +543,7 @@
     },
     {
       "path": "impl/frontend/ast.h",
-      "sha256": "52257d74d233f56ae55028acc904b0af905f1f9d62d36cc8642801f3cc1324b7"
+      "sha256": "fa4bdbb00357cf1c6f639bb72e1bf68a87567a7a65f7341255c430a27ba10df1"
     },
     {
       "path": "impl/frontend/common_rails_banner.hpp",
@@ -551,7 +551,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "b45962412258a954d8221095ac6df40a04949e1ab8a80c3118ab8cfb5a9ec9a4"
+      "sha256": "b833b1aa22b5cdaa079ff1f2d39e4bec7bd744b827554f935104d699c9c1d23f"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -567,7 +567,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "ea83e501fc0a5aaaa3f75c119f4f70f3d7bf728f71bb5f16240f8024414b4137"
+      "sha256": "3bd5a4913b5cb5399d022043d4f1b4cff938782f281fa65d8a3576bcd8d01a6f"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -623,7 +623,7 @@
     },
     {
       "path": "impl/frontend/keyword_supporter.cpp",
-      "sha256": "d5b57894e5887c20ce82ea11567751c338cd73d642f9e66d7eee168465083467"
+      "sha256": "b19ba0a970ed27d6120f124fd6e992f85d276317a89a44c812bd07025b367261"
     },
     {
       "path": "impl/frontend/keyword_supporter.h",
@@ -631,11 +631,11 @@
     },
     {
       "path": "impl/frontend/lexer.cpp",
-      "sha256": "1b95059be8dd8f5bce9ef0a2b25fc8793edf029fafdfd8baae975ce017187ae2"
+      "sha256": "f8fac65497734cfd3fefd281f6ece45fc84c25651beff79e229b314bf83f4e89"
     },
     {
       "path": "impl/frontend/lexer.h",
-      "sha256": "73316f36bcc2fd0d9aa9da1cba780aac09a3915ea9bb6952c41167febf6da1fd"
+      "sha256": "0112e33ccbd4682833a012d33e414cc8ea54542a00e47e334289afc440877f0b"
     },
     {
       "path": "impl/frontend/library_index.cpp",
@@ -655,11 +655,11 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "8620912bcd5a262be55bf99f312bf4a6ded9d2ffe6e691ae6f94138038aa6287"
+      "sha256": "44d977af2025ee7e50eeb00c2ad84bbdcd34ea6d447c5a1a112ec6724adf8e38"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "d41a68ce1478a6fea404b927af1ddafd98c28cb8ee0fab846beae0585cd9d11e"
+      "sha256": "f2806e0351b461657b77e03baeb63cbe3b33a9eb03eba261306b689108db03e9"
     },
     {
       "path": "impl/frontend/permissible.cpp",
@@ -671,7 +671,7 @@
     },
     {
       "path": "impl/frontend/semantic.cpp",
-      "sha256": "26c24847053018b846620943190fba983d142870467f935767681977b770f040"
+      "sha256": "4e207a50a59ceea0f4650a4485fecdd71923ad0a7c7e3dbb6113e0968db86dc7"
     },
     {
       "path": "impl/frontend/semantic.h",
@@ -687,7 +687,7 @@
     },
     {
       "path": "impl/frontend/version.h",
-      "sha256": "1407a3ccf1b6714ca13ac29f8c609d23e95010b9c93d0d25db4ee3af35649b14"
+      "sha256": "74266c4d07a0b3e7a922b9109d4ba8898791a3ed015edcbb746d778023f08953"
     },
     {
       "path": "impl/frontend/wide_integer.h",
@@ -755,7 +755,7 @@
     },
     {
       "path": "impl/nordshrift/nordshrift.cpp",
-      "sha256": "11de43f74657be865f0d59999ce5b7219b0855b1edbc99edbc5d59fb79e9b82f"
+      "sha256": "f4392e436a43be5fededfa80375625564e22a356d4e76aa68ae45129dc8c632c"
     },
     {
       "path": "impl/nordshrift/object_compat.cpp",
@@ -863,7 +863,7 @@
     },
     {
       "path": "impl/subjects/chemistry/chemistry_api.cpp",
-      "sha256": "c6dbd036c5ed97ae41db6381c62b5ea2488b2e32486db6424160fb1343449c67"
+      "sha256": "151c745f5d3f373e57968a2a7116426f54aefefd768342e12c445415210f797a"
     },
     {
       "path": "impl/subjects/chemistry/chemistry_api.h",
@@ -883,7 +883,7 @@
     },
     {
       "path": "impl/subjects/finance/financial_api.cpp",
-      "sha256": "fe24383132f601e949c1ada22417f2ee9948958a062df8dc8ac3b7e753f0299e"
+      "sha256": "cba4ce045acbee27822e4f7899150a0f0e259b8c91d68d3e34b647941600b140"
     },
     {
       "path": "impl/subjects/finance/financial_api.h",
@@ -903,7 +903,7 @@
     },
     {
       "path": "impl/subjects/native/native_api.cpp",
-      "sha256": "78fac627fd2c5f67781db3a4a07b345129428e1b12ad29237c4daae7b5a2e29b"
+      "sha256": "9cbd3c1d72a5dd886e7b8d0a9484b9043139265e6453b7dd202b41a77f3f544b"
     },
     {
       "path": "impl/subjects/native/native_api.h",

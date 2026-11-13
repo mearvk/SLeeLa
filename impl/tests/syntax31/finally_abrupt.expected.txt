@@ -1,0 +1,30 @@
+try1
+fin1
+1
+fin2
+10
+catch2
+fin2
+20
+fin3
+3
+inner4
+outer4
+4
+body5 1
+fin5 1
+fin5 2
+body5 3
+fin5 3
+fin5 4
+4
+a6 0
+b6 0
+a6 1
+b6 1
+60
+t7
+fin7
+fin8 00
+fin8 01
+8

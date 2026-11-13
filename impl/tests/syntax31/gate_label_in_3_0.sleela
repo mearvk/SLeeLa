@@ -1,0 +1,2 @@
+#sleela 3.0
+class Gate { void main() { here: for (int i = 0; i < 2; i++) { break here; } } }

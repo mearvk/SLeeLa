@@ -3,7 +3,7 @@
 # run_version_tests.sh -- assert the compiler's SL-META-0001 Section 4.4
 # version awareness against the repository's current syntax contract.
 #
-# Current supported syntax range: 1.0 .. 3.0.
+# Current supported syntax range: 1.0 .. 3.1.
 #
 # Usage: run_version_tests.sh <path-to-sleela-binary>
 # =============================================================================
@@ -34,11 +34,13 @@ echo "supported range:"
 "$SLEELA" version | sed -n '2p'
 
 echo "accepted:"
-expect_ok "$HERE/syntax_1_0.sleela"     "#sleela 1.0 (the floor, in range 1.0 .. 3.0)"
-expect_ok "$HERE/syntax_1_2.sleela"     "#sleela 1.2 (declared, in range 1.0 .. 3.0)"
-expect_ok "$HERE/syntax_1_3.sleela"     "#sleela 1.3 (declared, in range 1.0 .. 3.0)"
-expect_ok "$HERE/syntax_1_4.sleela"     "#sleela 1.4 (declared, in range 1.0 .. 3.0)"
-expect_ok "$HERE/syntax_3_0.sleela"    "#sleela 3.0 (current specification edition)"
+expect_ok "$HERE/syntax_1_0.sleela"     "#sleela 1.0 (the floor, in range 1.0 .. 3.1)"
+expect_ok "$HERE/syntax_1_2.sleela"     "#sleela 1.2 (declared, in range 1.0 .. 3.1)"
+expect_ok "$HERE/syntax_1_3.sleela"     "#sleela 1.3 (declared, in range 1.0 .. 3.1)"
+expect_ok "$HERE/syntax_1_4.sleela"     "#sleela 1.4 (declared, in range 1.0 .. 3.1)"
+expect_ok "$HERE/syntax_3_0.sleela"    "#sleela 3.0 (previous specification edition)"
+expect_ok "$HERE/syntax_3_1.sleela"    "#sleela 3.1 (current specification edition)"
+expect_ok "$HERE/syntax_3_01.sleela"   "#sleela 3.01 (leading-zero spelling of 3.1)"
 expect_ok "$HERE/syntax_missing.sleela" "#sleela absent (defaults to the current version with a warning)"
 expect_ok "$HERE/material_2_5.sleela"   "#sleela 2.5 with the 'material' document marker (declarative)"
 expect_ok "$HERE/memory_2_5.sleela"     "#sleela 2.5 with the 'memory' document marker (declarative)"
@@ -50,8 +52,8 @@ expect_ok "$HERE/gasoline_3_0.sleela"   "#sleela 3.0 with the 'gasoline' documen
 
 echo "rejected:"
 expect_reject "$HERE/syntax_0_9.sleela" "#sleela 0.9 (too old; floor is 1.0)"
-expect_reject "$HERE/too_new.sleela"     " #sleela 3.1 (future syntax edition)"
-expect_reject "$HERE/minor_ahead.sleela" " #sleela 3.1 (future syntax edition; ceiling is 3.0)"
+expect_reject "$HERE/too_new.sleela"     " too-new syntax edition"
+expect_reject "$HERE/minor_ahead.sleela" " #sleela 3.2 (future syntax edition; ceiling is 3.1)"
 expect_reject "$HERE/material_too_early.sleela" "'material' marker under #sleela 2.4 (feature too new for the declared version)"
 expect_reject "$HERE/memory_too_early.sleela" "'memory' marker under #sleela 2.4 (feature too new for the declared version)"
 expect_reject "$HERE/determine_too_early.sleela" "'determine' marker under #sleela 2.5 (feature too new for the declared version)"

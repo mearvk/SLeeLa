@@ -547,6 +547,7 @@ Program Parser::parseProgram(){
     if(hoistedNested_.size()>42) error("a single Sleela document may contain at most 42 nested classes (found "+std::to_string(hoistedNested_.size())+")");
     p.nestedClassCount=(int)hoistedNested_.size();
     for(auto& h:hoistedNested_) p.classes.push_back(std::move(h));
+    for(const auto& u:uses31_) p.syntax31Uses.push_back(u);
     return p;
 }
 StructDecl Parser::parseStruct(){expect(Tok::KwStruct,"'struct'");StructDecl s;s.name=expect(Tok::Ident,"struct name").text;expect(Tok::LBrace,"'{'");while(!check(Tok::RBrace)&&!check(Tok::Eof)){Field f;f.type=parseType();f.name=expect(Tok::Ident,"field name").text;expect(Tok::Semicolon,"';'");s.fields.push_back(std::move(f));}expect(Tok::RBrace,"'}'");return s;}
@@ -640,7 +641,7 @@ ClassDecl Parser::parseClass(unsigned classModifiers,std::vector<annotation::Ann
     }
     usesLineage_=savedLineage; return c;
 }
-Field Parser::parseField(bool isStatic,bool isProtected,unsigned modifiers,std::vector<annotation::Annotation> annotations){Field f;f.isStatic=isStatic;f.isProtected=isProtected;f.java.modifiers=modifiers;f.annotations=std::move(annotations);f.type=parseType(&f.typeAnnotations);f.name=expect(Tok::Ident,"field name").text;if(accept(Tok::Assign))f.init=parseExpr();expect(Tok::Semicolon,"';'");return f;}
+Field Parser::parseField(bool isStatic,bool isProtected,unsigned modifiers,std::vector<annotation::Annotation> annotations){Field f;f.isStatic=isStatic;f.isProtected=isProtected;f.java.modifiers=modifiers;f.annotations=std::move(annotations);f.type=parseType(&f.typeAnnotations);f.name=expect(Tok::Ident,"field name").text;if(accept(Tok::Assign))f.init=parseInitializer(f.type);expect(Tok::Semicolon,"';'");return f;}
 // A type is one of the scalar keywords, or an identifier naming a declared struct.
 bool Parser::isTypeStart()const{Tok k=cur().kind;if(k==Tok::KwVoid||k==Tok::KwIntT||k==Tok::KwLongT||k==Tok::KwInt64T||k==Tok::KwInt128T||k==Tok::KwDoubleT||k==Tok::KwBoolT||k==Tok::KwStringT)return true;return k==Tok::Ident;}
 std::string Parser::parseType(std::vector<annotation::Annotation>* typeAnnotations){
@@ -768,7 +769,7 @@ StmtP Parser::parseSimpleStatement(){
             if(k>1 && peek((int)k).kind==Tok::Ident) localDecl=true;  // one+ empty `[]` then the var name
         }
     }
-    if(localDecl){auto d=std::make_unique<VarDecl>();d->type=parseType();d->name=expect(Tok::Ident,"variable name").text;if(accept(Tok::Assign))d->init=parseExpr();return d;}
+    if(localDecl){auto d=std::make_unique<VarDecl>();d->type=parseType();d->name=expect(Tok::Ident,"variable name").text;if(accept(Tok::Assign))d->init=parseInitializer(d->type);return d;}
     // Otherwise parse an expression; if `=` follows, it is an assignment whose
     // target must be an lvalue (a plain name or a struct member access).
     if(check(Tok::KwSuper)&&peek(1).kind==Tok::LParen){
@@ -882,6 +883,29 @@ ExprP Parser::parseUnary(){
     if(accept(Tok::Decrement))return std::make_unique<Unary>("--",parseUnary());
     return parsePrimary();
 }
+// Syntax 3.1 array initializer: `{a, b, c}` for an array type "T[]". Nested
+// braces build the elements of an array-of-arrays. Trailing comma allowed.
+ExprP Parser::parseArrayLiteral(const std::string& arrayType){
+    if(arrayType.size()<2||arrayType.compare(arrayType.size()-2,2,"[]")!=0)
+        error("an array initializer '{...}' needs an array type, but the declared type is '"+arrayType+"'");
+    uses31_.insert("array initializer");
+    const std::string elemType=arrayType.substr(0,arrayType.size()-2);
+    expect(Tok::LBrace,"'{'");
+    auto n=std::make_unique<NewExpr>(arrayType);
+    n->hasInit=true;
+    while(!check(Tok::RBrace)){
+        if(check(Tok::Eof))error("unterminated array initializer");
+        if(check(Tok::LBrace))n->init.push_back(parseArrayLiteral(elemType));
+        else n->init.push_back(parseExpr());
+        if(!accept(Tok::Comma))break;
+    }
+    expect(Tok::RBrace,"'}'");
+    return n;
+}
+ExprP Parser::parseInitializer(const std::string& declType){
+    if(check(Tok::LBrace))return parseArrayLiteral(declType);
+    return parseExpr();
+}
 ExprP Parser::parsePrimary(){
     const Token&t=cur();
     switch(t.kind){
@@ -896,6 +920,12 @@ ExprP Parser::parsePrimary(){
         }catch(const std::out_of_range&){throw std::runtime_error("Syntax error (line "+std::to_string(ln)+", col "+std::to_string(cl)+"): integer literal '"+nt+"' is out of range for a 64-bit integer");}
         catch(const std::invalid_argument&){throw std::runtime_error("Syntax error (line "+std::to_string(ln)+", col "+std::to_string(cl)+"): malformed integer literal '"+nt+"'");}
         return parsePostfix(std::make_unique<IntLit>(iv));
+    }
+    case Tok::Char:{
+        // Syntax 3.1: 'x' is the integer code of the character.
+        uses31_.insert("character literal");
+        long long cv=std::stoll(t.text);i_++;
+        return parsePostfix(std::make_unique<IntLit>(cv));
     }
     case Tok::Double:{
         int ln=t.line,cl=t.col;const std::string nt=t.text;i_++;double dv;
@@ -932,6 +962,13 @@ ExprP Parser::parsePrimary(){
         else { error("expected a type after 'new'"); }
         auto n=std::make_unique<NewExpr>(type);
         if(accept(Tok::LBracket)){
+            if(check(Tok::RBracket)){
+                // Syntax 3.1: new T[]{a, b, c}
+                i_++;
+                std::string arrType=n->typeName+"[]";
+                if(!check(Tok::LBrace))error("expected '{' after 'new "+n->typeName+"[]' (an array creation needs a size or an initializer)");
+                return parsePostfix(parseArrayLiteral(arrType));
+            }
             n->typeName += "[]"; n->args.push_back(parseExpr()); expect(Tok::RBracket,"']'");
             return parsePostfix(std::move(n));
         }
@@ -1064,8 +1101,13 @@ StmtP Parser::parseStatement(){
  if(check(Tok::KwSwitch))return parseSwitch();
  if(check(Tok::KwSynchronized))return parseSynchronized();
  if(check(Tok::KwTry))return parseTry();
- if(check(Tok::KwBreak)){i_++;auto s=std::make_unique<BreakStmt>();if(check(Tok::Ident)){s->label=cur().text;i_++;}expect(Tok::Semicolon,"';'");return s;}
- if(check(Tok::KwContinue)){i_++;auto s=std::make_unique<ContinueStmt>();if(check(Tok::Ident)){s->label=cur().text;i_++;}expect(Tok::Semicolon,"';'");return s;}
+ if(check(Tok::KwBreak)){i_++;auto s=std::make_unique<BreakStmt>();if(check(Tok::Ident)){s->label=cur().text;i_++;uses31_.insert("labeled break");}expect(Tok::Semicolon,"';'");return s;}
+ if(check(Tok::KwContinue)){i_++;auto s=std::make_unique<ContinueStmt>();if(check(Tok::Ident)){s->label=cur().text;i_++;uses31_.insert("labeled continue");}expect(Tok::Semicolon,"';'");return s;}
+ // Syntax 3.1: `label: statement`.
+ if(check(Tok::Ident)&&peek(1).kind==Tok::Colon){
+   auto s=std::make_unique<LabeledStmt>();s->label=cur().text;i_+=2;uses31_.insert("labeled statement");
+   s->body=parseStatement();return s;
+ }
  if(check(Tok::KwReturn)){i_++;auto s=std::make_unique<ReturnStmt>();if(!check(Tok::Semicolon))s->value=parseExpr();expect(Tok::Semicolon,"';'");return s;}
  if(check(Tok::KwThrow)){i_++;auto s=std::make_unique<ThrowStmt>();s->value=parseExpr();expect(Tok::Semicolon,"';'");return s;}
  if(check(Tok::KwAssert)){i_++;auto s=std::make_unique<AssertStmt>();s->cond=parseExpr();if(accept(Tok::Colon))s->message=parseExpr();expect(Tok::Semicolon,"';'");return s;}

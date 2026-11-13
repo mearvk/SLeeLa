@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "semantic.h"
 #include "unsigned_integer.h"
 #include "wide_integer.h"
@@ -192,6 +193,10 @@ class Analyzer{
   // enacted, legislature-grade artifact graded unto time and space.
   if(p.artifactMarked&&syntax<SyntaxVersion{3,0})
    err("the artifact document marker requires #sleela 3.0");
+  // Syntax 3.1 surface (section 44): every use the parser met must be declared.
+  if(syntax<SyntaxVersion{3,1}){
+   for(const auto&u:p.syntax31Uses)err(u+" requires #sleela 3.1");
+  }
   // Spark marker (syntax 3.0, section 43): indicates Java style declarative.
   if(javaref::sparkDocument(p)&&syntax<SyntaxVersion{3,0})
    err("the spark document marker requires #sleela 3.0");
@@ -336,6 +341,7 @@ class Analyzer{
   }
  }
  void push(){scopes.push_back({});} void pop(){scopes.pop_back();}
+ std::vector<std::string> labels_;   // syntax 3.1: labels enclosing the statement being checked
  bool declare(const std::string&n,const Type&t){auto&v=scopes.back().vars;if(v.count(n)){err("duplicate local variable '"+n+"'");return false;}v[n]=t;return true;}
  Type lookup(const std::string&n)const{for(auto i=scopes.rbegin();i!=scopes.rend();++i){auto x=i->vars.find(n);if(x!=i->vars.end())return x->second;}auto cf=fields.find(cls);if(cf!=fields.end()){auto x=cf->second.find(n);if(x!=cf->second.end())return x->second;}auto g=globals.find(cls+"::"+n);if(g!=globals.end())return g->second;g=globals.find(n);if(g!=globals.end())return g->second;if(n=="next")return{Kind::Int,{}};return{Kind::Error,n};}
  void declarations(){
@@ -392,8 +398,11 @@ class Analyzer{
   if(auto f=dynamic_cast<const ForStmt*>(&s)){checkLoopSpill(f->spill);push();if(f->init)stmt(*f->init);if(f->cond)requireBool(expr(*f->cond),"for condition");if(f->threadStable)requireBool(expr(*f->threadStable),"for thread-stability guard");if(f->heapHealthy)requireBool(expr(*f->heapHealthy),"for VM heap-health guard");if(f->update)stmt(*f->update);stmt(*f->body);pop();return;}
   if(auto fe=dynamic_cast<const ForEachStmt*>(&s)){forEach(*fe);return;}
   if(auto d=dynamic_cast<const DoStmt*>(&s)){checkLoopSpill(d->spill);stmt(*d->body);requireBool(expr(*d->cond),"do-while condition");return;}
-  if(dynamic_cast<const BreakStmt*>(&s))return;
-  if(dynamic_cast<const ContinueStmt*>(&s))return;
+  if(auto b=dynamic_cast<const BreakStmt*>(&s)){if(!b->label.empty()&&std::find(labels_.begin(),labels_.end(),b->label)==labels_.end())err("break to undefined label '"+b->label+"'");return;}
+  if(auto c=dynamic_cast<const ContinueStmt*>(&s)){if(!c->label.empty()&&std::find(labels_.begin(),labels_.end(),c->label)==labels_.end())err("continue to undefined label '"+c->label+"'");return;}
+  if(auto ls=dynamic_cast<const LabeledStmt*>(&s)){
+   if(std::find(labels_.begin(),labels_.end(),ls->label)!=labels_.end())err("label '"+ls->label+"' is already in use");
+   labels_.push_back(ls->label);stmt(*ls->body);labels_.pop_back();return;}
   if(auto t=dynamic_cast<const ThrowStmt*>(&s)){expr(*t->value);return;}
   if(auto a=dynamic_cast<const AssertStmt*>(&s)){requireBool(expr(*a->cond),"assert condition");if(a->message)expr(*a->message);return;}
   if(auto y=dynamic_cast<const YieldStmt*>(&s)){expr(*y->value);return;}
@@ -502,6 +511,13 @@ class Analyzer{
    // first arg is the length. `new T()` is a struct instantiation.
    if(n->typeName.size()>=2 && n->typeName.compare(n->typeName.size()-2,2,"[]")==0){
     if(!known(n->typeName)){err("new of unknown array type '"+n->typeName+"'");return{Kind::Error,{}};}
+    if(n->hasInit){
+     const std::string et=n->typeName.substr(0,n->typeName.size()-2);
+     Type want=typeOf(et);
+     if(known(et))for(const auto&a:n->init){Type g=expr(*a);if(!assignable(want,g))err("array initializer element has type "+nameOf(g)+", expected "+nameOf(want));}
+     else err("array initializer element type '"+et+"' is not a known type");
+     return typeOf(n->typeName);
+    }
     for(const auto&a:n->args){Type s=expr(*a);if(s.kind!=Kind::Int&&s.kind!=Kind::Unknown)err("array size must be int, got "+nameOf(s));}
     return typeOf(n->typeName);
    }

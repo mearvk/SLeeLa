@@ -17,6 +17,10 @@ public:
 private:
     std::vector<Token> toks_; size_t i_=0;
     std::set<std::string> structNames_;
+    // Syntax 3.1 surface seen while parsing; copied to Program::syntax31Uses.
+    std::set<std::string> uses31_;
+    ExprP parseArrayLiteral(const std::string& arrayType);
+    ExprP parseInitializer(const std::string& declType);
     // Nested classes (syntax 1.11) hoisted out of their enclosing class during
     // parseClass, in declaration order, each already named "Outer.Inner" and
     // flagged isNested. parseProgram appends these to Program.classes and

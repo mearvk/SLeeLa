@@ -58,18 +58,21 @@ Run: `sleelactl build java-convert`, then
 
 ## Known SLeeLa limits the converter must respect (do not paper over)
 
-- No array literal, one-dimensional `new T[n]` only (initializers are lowered to
-  element stores; multi-dimensional creation is refused).
-- No `char` literal (`'a'` becomes its code, typed `char`); a `char`/`double`
-  shown as text goes through the `tostr` rows (`Double.toString`, JavaText).
-- `String` is a keyword type: `String.valueOf/format/join` are refused (`string-static`).
-- `return`/`break`/`continue` out of a try that has a `finally` is refused
-  (SLEELA.syntax 43.5: the VM would skip the finally).
+- Syntax 3.1 (SLEELA.syntax section 44, also spelled `3.01`) is what converted output
+  declares. It gave: the array initializer (one dimension; multi-dimensional creation
+  `new T[a][b]` is still refused), labeled `break`/`continue`, and `return`/`break`/
+  `continue` that run `finally`. The character literal exists, but the converter emits
+  the integer code typed `char`; a `char`/`double` shown as text goes through the
+  `tostr` rows (`Double.toString`, JavaText).
+- The open syntax blockers are the register in SLEELA.syntax 44.6. When SLeeLa gains a
+  form, update 44.6, the model `unsupported` rows, the translator and a differential
+  test together. `String` is still a keyword type: `String.valueOf/format/join` are
+  refused (`string-static`).
 - A class holds at most 64 instance fields; the 13 metadata fields count.
 - A user program does not auto-link sibling files: a runnable conversion is a
   single bundled document (`--bundle`, default for `--file`); the library layout
   is one type per file (`--split`, default for `--jdk`).
 - `==` on Strings/boxed values, `float` arithmetic, `synchronized`, `volatile`,
-  lambdas, method references, labeled jumps, `++`/`--` or assignment used as a
-  value, nested/inner/anonymous types, enums, varargs, try-with-resources,
-  switch expressions are refused today. See the `unsupported` rows of the model.
+  lambdas, method references, `++`/`--` or assignment used as a value, nested/inner/
+  anonymous types, enums, varargs, try-with-resources, switch expressions are refused
+  today (the language already has some of these forms; see 44.6 "Converter"). See the `unsupported` rows of the model.

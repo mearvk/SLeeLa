@@ -41,3 +41,19 @@
 Nested/inner/anonymous types, generics inference, lambdas, `synchronized`, `float`, varargs, enums, assignment/`++` as values. The full JDK is therefore NOT yet converted.
 
 *MEARVK LLC — 2026.*
+
+## Addendum: syntax 3.1 (same day)
+
+The converter's blockers were taken into the language. SLEELA.syntax is now **3.1** (section 44; `#sleela 3.01` is accepted and means 3.1):
+
+| Added | Where |
+|---|---|
+| character literal `'a'` (integer UTF-16 code unit) | lexer `Tok::Char`, parser, gated |
+| array initializer `{..}`, `new T[]{..}` | parser `parseArrayLiteral`, `NewExpr::init`, semantic type check, `emitNew` (`OP_NEWARRAY` + `OP_DUP`/`OP_ARRSET`/`OP_POP`) |
+| labeled statements, `break label`, `continue label` | `LabeledStmt`; the label was previously parsed and silently ignored |
+| `return`/`break`/`continue` run enclosing `finally` | compiler `regions_` + `unwindTo` (pops each handler frame, emits its finally inline) |
+| fix: `continue` inside a `switch` inside a loop | the switch context no longer receives the continue |
+
+Verified: `impl/tests/syntax31/run_syntax31_tests.sh` (8), `impl/tests/version/run_version_tests.sh`, spark/oop/lineage/exceptions suites, `make test-sleela`, nordshrift tests and the cross-version fixture (now 3.2 is the above-ceiling case), 17 `examples/java/differential` programs, and the converter differential (`Flow.java` now converts labels, finally-on-return and array initializers and matches the JDK).
+
+Decisions to review: "3.01" is read as minor 1 (= 3.1) because minors are integers (`1.10` vs `1.1`); `working-binaries/` was NOT refreshed and still reports 1.0-3.0 (`impl/build/sleela` is the 3.1 binary); the char literal is an integer, not a distinct value kind. Still open (SLEELA.syntax 44.6): `String.m(..)` statics, `new T[a][b]`, varargs, lambdas, inner/anonymous classes, enums, switch expressions, try-with-resources, `float`.

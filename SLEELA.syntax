@@ -1,21 +1,24 @@
 # Sleela — Language Syntax Specification
 
     Language:        Sleela
-    Syntax version:  3.0  (1.0..2.9 language surface consolidated)
-    Compiler:        SLeeLa Language/Runtime 1.3.2-pro  (version gate accepts syntax 1.0 .. 3.0)
+    Syntax version:  3.1  (3.0 plus section 44; may be written 3.01)
+    Compiler:        SLeeLa Language/Runtime 1.3.2-pro  (version gate accepts syntax 1.0 .. 3.1)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
                      lib/LIBRARY.SYMBOLS.md (authoritative /lib class vocabulary),
                      markdown/EXTENDS.md (the two `extends` meanings, syntax 1.10)
-    Status:          Normative for the syntax 1.0..3.0 compatibility surface
+    Status:          Normative for the syntax 1.0..3.1 compatibility surface
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
     `#sleela 3.0`) is the grammar edition defined here and enforced by
-    `impl/frontend/version.{h,cpp}` (supported range 1.0 .. 3.0).
-    Syntax 3.0 is the current normative edition. It consolidates the 1.x and
-    2.x language surface into one specification and keeps historical feature
+    `impl/frontend/version.{h,cpp}` (supported range 1.0 .. 3.1).
+    Syntax 3.1 is the current normative edition (section 44: the character
+    literal, the array initializer, labeled statements, and return / break /
+    continue through `finally`); `#sleela 3.01` is the same edition, spelled
+    with a leading zero (44.1). Syntax 3.0 consolidated the 1.x and 2.x
+    language surface into one specification and keeps historical feature
     gates intact; it does not silently enable a feature below that feature's
     original minimum version. Syntax 3.0 also adds the `pure` and `gasoline`
     document markers (section 30) — a pair of bare, contextual,
@@ -3246,8 +3249,8 @@ A name with no JDK 28 file still resolves as before.
   `enum` declarations and non-static `protected` methods (a SLeeLa rule:
   protected methods are static).
 - A `return`, or a `break` / `continue` that leaves the try, inside a `try`
-  or `catch` block that has a `finally` is rejected at compile time (it would
-  skip the finally). A `return` inside a try without finally is fine.
+  or `catch` block that has a `finally` was rejected at compile time in syntax
+  3.0 (it would skip the finally). From syntax 3.1 the finally runs (44.5).
 - Ordinary VM faults (array index out of range, division by zero) are still
   VM errors, not catchable exceptions (section 37).
 - The enhanced for is not supported by the Nordshrift C target or by `@native`
@@ -3331,3 +3334,151 @@ on (it stays declarative, 43.2). Below 3.0 nothing in this subsection applies.
    old one. Lowered as `x += 1` / `x -= 1`. A `-` continues an identifier
    (`jdk-25`, `version-mual`) only when an identifier character follows it, so
    `j--`, `j-=1` and a trailing `-` end the name.
+
+
+## 44. Syntax 3.1 — Java conversion blockers (character literal, array initializer, labels, abrupt completion through finally)
+
+This section is **normative** and **implemented in the source compiler
+(impl/frontend)**. It is the syntax the Java-to-SLeeLa converter
+(`sleelactl run java-convert`, `sleelactl/convert`, rules in
+`.kiro/steering/java-to-sleela-conversion.md`) needs in order to produce
+functionally equivalent SLeeLa for a presumed JDK. Where the converter refused a
+Java construct because SLeeLa had no form for it, this section either gives the
+form (44.2 - 44.5) or records the blocker as open (44.6). Nothing here changes a
+document that declares a syntax below 3.1.
+
+### 44.1 Version
+
+The syntax version after 3.0 is **3.1**. The minor is an integer, so
+`#sleela 3.01` and `#sleela 3.1` name the same edition (a leading zero is
+accepted and normalized; `version.cpp` reads the minor as a number). The
+supported range is 1.0 .. 3.1; `#sleela 3.2` is rejected as a future edition. A
+source with no `#sleela` line defaults to the ceiling, 3.1.
+
+Every 3.1 form below is gated: in a document declaring a syntax below 3.1 the
+parser records the use and semantic analysis reports
+`<form> requires #sleela 3.1` (for example `character literal requires #sleela 3.1`).
+
+### 44.2 Character literal
+
+    int a = 'a';         < 97 >
+    int nl = '\n';       < 10 >
+    int cap = '\u0041';  < 65 >
+    int e = 'é';         < 233 >
+
+A character literal is one character between apostrophes. The escapes are
+`\n \t \r \b \f \s \0` (and octal up to `\377`), `\\ \' \"`, and `\uXXXX`. A
+literal outside the basic multilingual plane is a lexical error (it would be two
+UTF-16 units). Its value is the **integer UTF-16 code unit**, typed as an
+integer: SLeeLa has no separate character value kind, so `'b' - 'a'` is `1`, and
+`print('a')` prints `97`. Showing a character as text goes through the library
+(`JavaText.codePointU`, `Character`), as in the converter's string conversion
+rule. An apostrophe inside a comment is still a lexical error; the literal
+exists only in code.
+
+### 44.3 Array initializer
+
+    int[] a = {3, 1, 2};
+    String[] s = {"x", "y"};
+    double[] d = {1, 2.5};                 < the 1 is widened to a double >
+    static int[] primes = {2, 3, 5, 7};    < a field >
+    int[] n = new int[]{4, 5, 6};          < an expression >
+    int[] e = {};                          < empty; a trailing comma is allowed >
+
+`{e1, e2, ...}` after `=` in a local or field declaration whose declared type
+is an array `T[]`, and `new T[]{e1, ...}` anywhere an expression is allowed,
+create an array of exactly that length and store each element, left to right,
+widening it to `T` as an assignment does. Each element must be assignable to
+`T` (`array initializer element has type X, expected T` otherwise). Nested
+braces initialize an array of arrays when the element type is itself an array
+type the compiler knows. `{...}` on a non-array declaration is an error;
+`new T[n]{...}` (size and initializer together) is not accepted.
+Lowering: `OP_NEWARRAY` with the element fill kind, then per element `OP_DUP`,
+the index, the value, `OP_ARRSET`, `OP_POP`; the array is left on the stack.
+
+Not covered: multi-dimensional creation `new T[a][b]` (still one dimension; see 44.6).
+
+### 44.4 Labeled statements, `break label`, `continue label`
+
+    outer: for (int i = 0; i < n; i++) {
+      for (int j = 0; j < n; j++) {
+        if (hit(i, j)) { break outer; }
+        if (skip(j))   { continue outer; }
+      }
+    }
+    block: { work(); if (done) { break block; } more(); }
+
+`label: statement` labels the statement. `break label;` leaves the labeled
+statement (a loop, a switch, or any statement, including a block);
+`continue label;` starts the next iteration of the labeled **loop** (continue to
+a label that does not label a loop is an error). An unlabeled `break` leaves the
+innermost loop or switch and never a labeled plain block; an unlabeled
+`continue` continues the innermost loop, **skipping an enclosing switch**. (In
+syntax 3.0 a `continue` inside a `switch` inside a loop jumped to an unpatched
+target; that defect is fixed for every syntax version.) A label is visible only
+inside the statement it labels and may not repeat while in scope. An undefined
+label is `break to undefined label 'x'` / `continue to undefined label 'x'`.
+Before 3.1 the parser accepted `break label` and silently treated it as an
+unlabeled break; from 3.1 that spelling is a gated feature, and below 3.1 it is
+an error rather than a silent miscompile.
+
+### 44.5 `return`, `break`, `continue` through `finally`
+
+In syntax 3.0 a `return`, or a `break` / `continue` that leaves the try, inside
+a `try` or `catch` block with a `finally` was a compile-time error (43.5)
+because the VM would have skipped the finally. From 3.1 the finally **runs**:
+the compiler keeps one entry per live exception-handler frame and, at such a
+jump, pops each frame (`OP_TRY_POP`) and emits that region's `finally` inline,
+innermost first, before the jump. Specifically:
+
+- `return expr;` evaluates `expr`, stores it in a method-local temporary,
+  runs every enclosing `finally`, then returns the stored value. A `return`
+  inside a `finally` replaces it (Java semantics).
+- `break`, `break label`, `continue`, `continue label` run only the `finally`
+  blocks of the try statements they actually leave (those between the jump and
+  its target), not those outside the target.
+- While one `finally` is emitted, only the regions outside it are live, so a
+  jump or an exception inside that `finally` unwinds correctly outward.
+- A jump out of a `catch` body of a try that has a `finally` pops the
+  catch-phase handler and runs the `finally`; a try without a `finally` needs
+  no cleanup (its handler frame was consumed by the catch).
+- The compiler reserves the `__retval` slot for any method containing a try.
+
+The 3.0 errors `return inside a try or catch block that has finally is not
+supported yet` and `break may not leave a protected try region` no longer occur.
+This applies to documents declaring syntax 3.0 as well, because it removes a
+rejection rather than adding a form.
+
+### 44.6 Blocker register (what the JDK conversion still needs)
+
+Status after 3.1. "Converter" means the language already has the form and the
+converter does not use it yet; "Syntax" means SLeeLa needs a new form and it is
+not in 3.1.
+
+| Java construct | Status |
+|---|---|
+| character literal | **done**, 44.2 |
+| array initializer `{..}`, `new T[]{..}` | **done**, 44.3 |
+| labeled `break` / `continue` / blocks | **done**, 44.4 |
+| `return` / `break` / `continue` through `finally` | **done**, 44.5 |
+| `continue` inside `switch` inside a loop | **fixed**, 44.4 |
+| `++` / `--` used as a value | Converter: the language has it (43.6 rule 12); the converter must first lower the Java 32-bit wrap (`JavaOperands`) |
+| assignment used as a value `(a = b)` | Converter: the language evaluates it to the assigned value |
+| `switch` fallthrough, `default` not last | Converter: the compiler lowers a switch with fallthrough in source order |
+| nested static classes `Outer.Inner` | Converter: hoisted by the parser since syntax 1.11 (cap 42 per document) |
+| `String.valueOf` / `format` / `join` (static members of `String`) | **Syntax open**: `String` is a keyword type, so `String.m(...)` does not parse; needs a binding to `JavaStringMethods` statics and library bodies |
+| multi-dimensional array creation `new T[a][b]` | **Syntax open**: `new T[n]` takes one dimension |
+| varargs `T... xs` | **Syntax open**: no variable-arity parameter or call-site packing |
+| lambdas, method references | **Syntax open**: design in `lib/java/jdk-28/LOWERING.md` (representation `(id, env)`), no grammar yet |
+| anonymous classes, inner (non-static) classes | **Syntax open**: needs the captured enclosing instance |
+| `enum` | **Syntax open** (43.5) |
+| switch expressions, arrow cases `case X ->`, `instanceof T x` patterns | **Syntax open** |
+| try-with-resources | **Syntax open**: needs `close()` on exit, and `close` is a reserved built-in name (the converter refuses `close` members) |
+| `float` (binary32) arithmetic | **Open**: no binary32 operator set |
+| `synchronized` method, `volatile`, Java memory model | **Open**: `synchronized (x) {}` parses but takes no lock |
+| `native` methods | Not convertible: no Java body |
+| `print` of a double shows `9`, Java shows `9.0` | Converter routes through `Double.toString` (conversion model `tostr` rows) |
+
+Regression tests: `bash impl/tests/syntax31/run_syntax31_tests.sh` (outputs in
+`impl/tests/syntax31/*.expected.txt`; the `gate_*` and `bad_*` cases must be
+rejected with the stated message) and `bash impl/tests/version/run_version_tests.sh`.

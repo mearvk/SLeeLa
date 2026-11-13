@@ -1,0 +1,12 @@
+9
+odd 1
+odd 3
+k=5
+in block
+after block
+q=0
+q=2
+inner break stays inner
+0,0
+1,0
+2,0

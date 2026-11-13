@@ -1,6 +1,6 @@
-#sleela 3.1
+#sleela 4.0
 // A future MAJOR syntax version. A version-aware compiler that supports the current
-// 1.0 .. 3.0 syntax range MUST reject this file (SL-META-0001 Section 4.4): the
+// 1.0 .. 3.1 syntax range MUST reject this file (SL-META-0001 Section 4.4): the
 // declared version exceeds the compiler's supported range.
 class TooNew {
     void main() {

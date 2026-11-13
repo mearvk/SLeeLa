@@ -95,6 +95,7 @@ void lowerStmt(StmtP& s) {
     else if (auto* e=dynamic_cast<ExprStmt*>(s.get())) e->expr=lowerExpr(std::move(e->expr));
     else if (auto* p=dynamic_cast<PrintStmt*>(s.get())) p->expr=lowerExpr(std::move(p->expr));
     else if (auto* r=dynamic_cast<ReturnStmt*>(s.get())) r->value=lowerExpr(std::move(r->value));
+    else if (auto* lb=dynamic_cast<LabeledStmt*>(s.get())) lowerStmt(lb->body);
     else if (auto* b=dynamic_cast<Block*>(s.get())) for (auto& x:b->stmts) lowerStmt(x);
     else if (auto* i=dynamic_cast<IfStmt*>(s.get())) { i->cond=lowerExpr(std::move(i->cond)); lowerStmt(i->thenS); lowerStmt(i->elseS); }
     else if (auto* w=dynamic_cast<WhileStmt*>(s.get())) { w->cond=lowerExpr(std::move(w->cond)); lowerStmt(w->body); }

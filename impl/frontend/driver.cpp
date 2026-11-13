@@ -2433,6 +2433,7 @@ static std::string nativeUnsupportedReason(const sleela::Stmt* s){
         if(!nativeAbiType(v->type,false)) return "unsupported local type '"+v->type+"'";
         return nativeUnsupportedReason(v->init.get());
     }
+    if(dynamic_cast<const LabeledStmt*>(s)) return "labeled statements (syntax 3.1) are not in the @native subset yet";
     if(auto a=dynamic_cast<const Assign*>(s)){std::string r=nativeUnsupportedReason(a->value.get()); if(!r.empty())return r; return "";}
     if(auto e=dynamic_cast<const ExprStmt*>(s)) return nativeUnsupportedReason(e->expr.get());
     if(dynamic_cast<const PrintStmt*>(s)) return "print side effects are not supported in independently emitted native methods";

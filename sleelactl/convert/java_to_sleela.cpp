@@ -97,7 +97,6 @@ private:
     int ind = 0;
     int tmpCounter = 0;
     std::vector<char> breakCtx;      // 'L' loop, 'S' lowered switch
-    std::vector<size_t> finallyLoopDepth;  // loop depth where each finally-protected region began
 
     // ---------------------------------------------------------- tokens ----
     const Tok& cur() const { return T[p]; }
@@ -471,6 +470,25 @@ private:
             return isOpAt(i, "->");
         }
         return isIdentTok(cur()) && isOpAt(p + 1, "->");
+    }
+
+    // Syntax 3.1 array initializer {a, b, c} for a one-dimensional array type.
+    std::string parseArrayInit(const Ty& arrayTy) {
+        if (arrayTy.dims != 1) fail("model", "array initializer is converted for one-dimensional arrays only (nested {{..}} needs multi-dimensional creation)");
+        expectOp("{");
+        std::string code = "{";
+        bool first = true;
+        while (!isOp("}")) {
+            if (atEof()) fail("syntax", "unterminated array initializer");
+            if (isOp("{")) fail("model", "nested array initializer needs multi-dimensional arrays");
+            if (isLambdaAhead()) unsup("lambda");
+            E el = coerce(parseExpr(), mk(arrayTy.n));
+            code += (first ? "" : ", ") + el.code;
+            first = false;
+            if (!acceptOp(",")) break;
+        }
+        expectOp("}");
+        return code + "}";
     }
 
     E parseExpr() {
@@ -897,7 +915,16 @@ private:
         }
         if (isOp("[")) {
             p++;
-            if (isOp("]")) unsup("untyped");  // new T[]{...} handled only in declarations
+            if (isOp("]")) {   // new T[]{a, b, c} (syntax 3.1)
+                p++;
+                if (!isOp("{")) fail("syntax", "expected '{' after 'new " + name + "[]'");
+                std::string body = parseArrayInit(mk(name, 1));
+                E r;
+                r.code = "new " + name + "[]" + body;
+                r.pure = false;
+                r.ty = mk(name, 1);
+                return r;
+            }
             E n = parseExpr();
             expectOp("]");
             if (isOp("[")) fail("model", "multi-dimensional array creation has no SLeeLa form (new T[n] takes one dimension)");
@@ -1087,21 +1114,10 @@ private:
             while (isOp("[") && isOpAt(p + 1, "]")) { p += 2; ty.dims++; }
             std::string initCode;
             bool haveInit = false;
-            std::vector<std::string> arrayInit;
-            bool isArrayInit = false;
             if (acceptOp("=")) {
                 haveInit = true;
                 if (isOp("{")) {
-                    if (ty.dims != 1) fail("model", "brace array initializer is converted for one-dimensional arrays only");
-                    isArrayInit = true;
-                    p++;
-                    while (!isOp("}")) {
-                        E el = parseExpr();
-                        el = coerce(el, mk(ty.n));
-                        arrayInit.push_back(el.code);
-                        if (!acceptOp(",")) break;
-                    }
-                    expectOp("}");
+                    initCode = parseArrayInit(ty);
                 } else {
                     if (isLambdaAhead()) unsup("lambda");
                     E v = parseExpr();
@@ -1114,17 +1130,13 @@ private:
                 }
             } else if (isVar) unsup("untyped");
             if (inFor) {
-                if (isArrayInit) unsup("untyped");
                 std::string en = declare(name, ty);
                 pieces.push_back(emitType(ty) + " " + en + (haveInit ? " = " + initCode : ""));
                 if (forInit) { /* single declaration expected */ }
                 continue;
             }
             std::string en = declare(name, ty);
-            if (isArrayInit) {
-                line(emitType(ty) + " " + en + " = new " + emitType(mk(ty.n)) + "[" + std::to_string(arrayInit.size()) + "];");
-                for (size_t i = 0; i < arrayInit.size(); i++) line(en + "[" + std::to_string(i) + "] = " + arrayInit[i] + ";");
-            } else if (haveInit) line(emitType(ty) + " " + en + " = " + initCode + ";");
+            if (haveInit) line(emitType(ty) + " " + en + " = " + initCode + ";");
             else line(emitType(ty) + " " + en + ";");
         } while (acceptOp(","));
         if (inFor) {
@@ -1153,7 +1165,13 @@ private:
         if (t.kind == JT_IDENT) {
             const std::string& w = t.text;
             // labeled statement
-            if (isOpAt(p + 1, ":") && !(w == "default" || w == "case")) unsup("labeled");
+            if (isOpAt(p + 1, ":") && !(w == "default" || w == "case")) {   // syntax 3.1 labeled statement
+                std::string lab = safeName(ident());
+                expectOp(":");
+                line(lab + ":");
+                parseStatement();
+                return;
+            }
             if (w == "if") { parseIf(); return; }
             if (w == "while") {
                 p++; expectOp("(");
@@ -1180,7 +1198,6 @@ private:
             if (w == "switch") { parseSwitch(); return; }
             if (w == "return") {
                 p++;
-                if (!finallyLoopDepth.empty()) unsup("return-in-finally");
                 if (acceptOp(";")) { line("return;"); return; }
                 if (isLambdaAhead()) unsup("lambda");
                 E v = parseExpr();
@@ -1192,9 +1209,8 @@ private:
             }
             if (w == "break") {
                 p++;
-                if (isIdentTok(cur())) unsup("labeled");
+                if (isIdentTok(cur())) { std::string lab = safeName(ident()); expectOp(";"); line("break " + lab + ";"); return; }
                 expectOp(";");
-                if (crossesFinally()) unsup("return-in-finally");
                 if (!breakCtx.empty() && breakCtx.back() == 'S')
                     fail("switch-break", "a break inside a lowered switch that is not its final statement of a case group cannot be expressed without a jump");
                 line("break;");
@@ -1202,9 +1218,8 @@ private:
             }
             if (w == "continue") {
                 p++;
-                if (isIdentTok(cur())) unsup("labeled");
+                if (isIdentTok(cur())) { std::string lab = safeName(ident()); expectOp(";"); line("continue " + lab + ";"); return; }
                 expectOp(";");
-                if (crossesFinally()) unsup("return-in-finally");
                 line("continue;");
                 return;
             }
@@ -1314,32 +1329,8 @@ private:
         popScope();
     }
 
-    size_t loopDepth() const { size_t n = 0; for (char c : breakCtx) if (c == 'L') n++; return n; }
-    bool crossesFinally() const { return !finallyLoopDepth.empty() && loopDepth() == finallyLoopDepth.back(); }
-
-    // does the try statement starting at index i (the 'try' token) end with a finally clause?
-    bool tryHasFinally(size_t i) const {
-        i++;
-        auto skipBlock = [&](size_t j) {
-            int d = 0;
-            do { if (isOpAt(j, "{")) d++; else if (isOpAt(j, "}")) d--; j++; } while (d > 0 && at(j).kind != JT_EOF);
-            return j;
-        };
-        if (isOpAt(i, "(")) return false;
-        i = skipBlock(i);
-        while (isKwAt(i, "catch")) {
-            i++;
-            int d = 0;
-            do { if (isOpAt(i, "(")) d++; else if (isOpAt(i, ")")) d--; i++; } while (d > 0 && at(i).kind != JT_EOF);
-            i = skipBlock(i);
-        }
-        return isKwAt(i, "finally");
-    }
-
     void parseTry() {
-        bool protectedRegion = tryHasFinally(p);
         expectKw("try");
-        struct Guard { std::vector<size_t>& v; bool on; Guard(std::vector<size_t>& vv, bool o, size_t d) : v(vv), on(o) { if (on) v.push_back(d); } ~Guard() { if (on) v.pop_back(); } } guard(finallyLoopDepth, protectedRegion, loopDepth());
         if (isOp("(")) fail("try-with-resources", "try-with-resources calls close() on exit; the cleanup is not lowered yet");
         line("try {");
         parseBody();
@@ -1712,7 +1703,7 @@ private:
           << "   Presumed JDK version: " << opt.jdkVersion << "\n"
           << "   Functional equivalence is the goal: operators follow lib/java/JavaOperands and the\n"
           << "   conversion subject model; library members resolve through the lib/java tier. >>\n"
-          << "#sleela 3.0\n"
+          << "#sleela 3.1\n"
           << "import java.jdk-" << opt.jdkVersion << ";\n"
           << "material;\n\n";
         return o.str();
@@ -1841,11 +1832,14 @@ private:
             std::string decl = std::string((isStatic || isIface) ? "static " : "") + emitType(ft) + " " + name;
             if (acceptOp("=")) {
                 scopes.clear(); usedNames.clear(); pushScope(); tmpCounter = 0; curRet = mk("void");
-                if (isOp("{")) fail("model", "array-initializer fields are not converted (SLeeLa has no array literal)");
-                if (isLambdaAhead()) unsup("lambda");
-                E v = parseExpr();
-                v = coerce(v, ft);
-                decl += " = " + v.code;
+                if (isOp("{")) {
+                    decl += " = " + parseArrayInit(ft);
+                } else {
+                    if (isLambdaAhead()) unsup("lambda");
+                    E v = parseExpr();
+                    v = coerce(v, ft);
+                    decl += " = " + v.code;
+                }
             }
             line(decl + ";");
             if (!(isStatic || isIface)) (*instanceFields)++;

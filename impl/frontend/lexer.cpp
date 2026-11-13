@@ -35,7 +35,7 @@ std::string utf8FromCodePoint(uint32_t cp) {
 }
 const char* tokName(Tok t) {
     switch(t) {
-        case Tok::Int:return "int-literal"; case Tok::Double:return "double-literal"; case Tok::Str:return "string-literal";
+        case Tok::Int:return "int-literal"; case Tok::Double:return "double-literal"; case Tok::Str:return "string-literal"; case Tok::Char:return "char-literal";
         case Tok::Ident:return "identifier"; case Tok::At:return "@";
         case Tok::KwClass:return "class"; case Tok::KwInterface:return "interface"; case Tok::KwEnum:return "enum"; case Tok::KwRecord:return "record"; case Tok::KwStruct:return "struct";
         case Tok::KwStatic:return "static"; case Tok::KwProtected:return "protected"; case Tok::KwPublic:return "public"; case Tok::KwPrivate:return "private";
@@ -114,6 +114,35 @@ Token Lexer::makeNumber(){
     if(!d&&(peek()=='L'||peek()=='l')&&!identChar(peek(1))){advance();return Token{Tok::Int,s,L,C};}
     if((peek()=='d'||peek()=='D'||peek()=='f'||peek()=='F')&&!identChar(peek(1))){advance();if(!d)s+=".0";return Token{Tok::Double,s,L,C};}
     return Token{d?Tok::Double:Tok::Int,s,L,C};}
+// Syntax 3.1: character literal 'x'. It denotes the UTF-16 code unit of the
+// character as an integer constant (SLeeLa has no separate char value kind).
+Token Lexer::makeChar(){
+    int L=line_,C=col_;advance();
+    if(atEnd()||peek()=='\n')error("unterminated character literal");
+    if(peek()=='\'')error("empty character literal");
+    uint32_t cp=0;char c=advance();
+    if(c=='\\'){
+        if(atEnd())error("unterminated escape sequence");
+        char e=advance();
+        switch(e){
+            case'n':cp='\n';break;case't':cp='\t';break;case'r':cp='\r';break;case'b':cp='\b';break;case'f':cp='\f';break;
+            case's':cp=' ';break;case'\\':cp='\\';break;case'\'':cp='\'';break;case'"':cp='"';break;
+            case'0':case'1':case'2':case'3':case'4':case'5':case'6':case'7':{cp=(uint32_t)(e-'0');int n=1;while(n<3&&peek()>='0'&&peek()<='7'&&cp*8+(uint32_t)(peek()-'0')<=255){cp=cp*8+(uint32_t)(advance()-'0');n++;}break;}
+            case'u':{while(peek()=='u')advance();for(int i=0;i<4;i++){if(atEnd())error("unterminated unicode escape");char hex=advance();int v=0;if(hex>='0'&&hex<='9')v=hex-'0';else if(hex>='a'&&hex<='f')v=10+(hex-'a');else if(hex>='A'&&hex<='F')v=10+(hex-'A');else error("invalid unicode escape");cp=(cp<<4)|(uint32_t)v;}break;}
+            default:error(std::string("invalid escape sequence '\\")+e+"' in character literal");
+        }
+    }else if((unsigned char)c<0x80){cp=(unsigned char)c;}
+    else{
+        int extra=((unsigned char)c>=0xF0)?3:((unsigned char)c>=0xE0)?2:((unsigned char)c>=0xC0)?1:-1;
+        if(extra<0)error("invalid UTF-8 in character literal");
+        cp=(uint32_t)((unsigned char)c&(0x3F>>extra));
+        for(int i=0;i<extra;i++){if(atEnd())error("invalid UTF-8 in character literal");cp=(cp<<6)|((uint32_t)(unsigned char)advance()&0x3F);}
+    }
+    if(cp>0xFFFF)error("character literal outside the basic multilingual plane");
+    if(atEnd()||peek()!='\'')error("a character literal holds exactly one character");
+    advance();
+    return Token{Tok::Char,std::to_string(cp),L,C};
+}
 Token Lexer::makeString(){int L=line_,C=col_;advance();std::string out;while(!atEnd()&&peek()!='"'){char c=advance();if(c=='\\'){if(atEnd())error("unterminated escape sequence");char e=advance();switch(e){case'n':out+='\n';break;case't':out+='\t';break;case'r':out+='\r';break;case'b':out+='\b';break;case'f':out+='\f';break;case'0':out+='\0';break;case'\\':out+='\\';break;case'"':out+='"';break;case'u':{uint32_t cp=0;for(int i=0;i<4;i++){if(atEnd())error("unterminated unicode escape");char hex=advance();int v=0;if(hex>='0'&&hex<='9')v=hex-'0';else if(hex>='a'&&hex<='f')v=10+(hex-'a');else if(hex>='A'&&hex<='F')v=10+(hex-'A');else error("invalid unicode escape");cp=(cp<<4)|v;}out+=utf8FromCodePoint(cp);break;}default:out+=e;break;}}else out+=c;}if(atEnd())error("unterminated string literal");advance();return Token{Tok::Str,out,L,C};}
 static const std::unordered_map<std::string,int> kContextualBuiltins13={
     {"Munction",1},{"start",1},{"connect",1},{"enable",1},{"send",1},{"thatch",1},{"consume",1},{"latch",1},{"closeWithReceipt",1},{"reception",1},
@@ -162,7 +191,7 @@ Token Lexer::makeIdentOrKeyword(){
 std::vector<Token> Lexer::tokenize(){
     std::vector<Token> toks;
     for(;;){skipTrivia();if(atEnd()){toks.push_back(Token{Tok::Eof,"",line_,col_});break;}int L=line_,C=col_;char c=peek();
-        if(std::isdigit((unsigned char)c)){toks.push_back(makeNumber());continue;} if(c=='"'){toks.push_back(makeString());continue;}
+        if(std::isdigit((unsigned char)c)){toks.push_back(makeNumber());continue;} if(c=='"'){toks.push_back(makeString());continue;} if(c=='\''){toks.push_back(makeChar());continue;}
         if(std::isalpha((unsigned char)c)||c=='_'){toks.push_back(makeIdentOrKeyword());continue;}
         advance();auto emit=[&](Tok k,const char*txt){toks.push_back(Token{k,txt,L,C});};
         switch(c){

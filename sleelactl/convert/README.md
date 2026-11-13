@@ -51,13 +51,17 @@ The refusal rows are the `unsupported` records of the model.
 
 - `tests/java/*.java` run on a real JDK and, converted, on the SLeeLa VM; outputs must be
   identical (Basics, Control, Operands (191 lines of int/long/double/narrowing results),
-  Shapes (interfaces, inheritance, ctors, statics, casts), Strings).
+  Shapes (interfaces, inheritance, ctors, statics, casts), Strings, Flow (labels, `finally` on
+  return/break/continue, array initializers)).
 - `tests/reject/*.java` must be refused with the stated construct and write nothing.
 
 ## Status (honest)
 
 Run over JDK 25 `java.base` `java/lang`, `java/util`, `java/math`, `java/text` (884 files,
-2026-11-12): **344 converted, 540 failed closed**. The main blockers, in order, are nested/inner
+2026-11-12): **345 converted, 539 failed closed** (with syntax 3.1 in place). The main blockers, in order, are nested/inner
 types, operands whose type cannot be determined without generics inference, `synchronized`,
-assignment/`++` used as a value, `float`, lambdas, `native`, varargs. Nothing is claimed beyond
+assignment/`++` used as a value, `float`, lambdas, `native`, varargs. The syntax blockers are tracked in SLEELA.syntax section 44.6: 3.1 delivered the array
+initializer, labeled `break`/`continue` and `return`/`break`/`continue` through `finally`; the
+remaining ones (static `String` members, multi-dimensional arrays, varargs, lambdas, enums, inner classes)
+are listed there as open. Output declares `#sleela 3.1`. Nothing is claimed beyond
 what the report and the differential test show; the JDK is not yet fully converted.

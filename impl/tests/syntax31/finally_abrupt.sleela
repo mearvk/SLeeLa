@@ -1,0 +1,71 @@
+#sleela 3.1
+class FinallyAbrupt {
+  int f1() {
+    try { print("try1"); return 1; } finally { print("fin1"); }
+  }
+  int f2(int x) {
+    try {
+      if (x > 0) { return 10; }
+      throw new RuntimeException("boom");
+    } catch (RuntimeException e) {
+      print("catch2");
+      return 20;
+    } finally {
+      print("fin2");
+    }
+  }
+  int f3() {
+    try { return 1; } finally { print("fin3"); return 3; }
+  }
+  int f4() {
+    try {
+      try { return 4; } finally { print("inner4"); }
+    } finally { print("outer4"); }
+  }
+  int f5() {
+    int i = 0;
+    while (i < 5) {
+      i = i + 1;
+      try {
+        if (i == 2) { continue; }
+        if (i == 4) { break; }
+        print("body5 " + i);
+      } finally {
+        print("fin5 " + i);
+      }
+    }
+    return i;
+  }
+  int f6() {
+    for (int i = 0; i < 2; i++) {
+      try {
+        try { if (i == 1) { return 60; } } finally { print("a6 " + i); }
+      } finally { print("b6 " + i); }
+    }
+    return -1;
+  }
+  void f7() {
+    try { print("t7"); return; } finally { print("fin7"); }
+  }
+  int f8() {
+    outer: for (int i = 0; i < 3; i++) {
+      for (int j = 0; j < 3; j++) {
+        try {
+          if (j == 1) { break outer; }
+        } finally { print("fin8 " + i + j); }
+      }
+    }
+    return 8;
+  }
+  void main() {
+    print(f1());
+    print(f2(1));
+    print(f2(0));
+    print(f3());
+    print(f4());
+    print(f5());
+    print(f6());
+    f7();
+    print(f8());
+  }
+}

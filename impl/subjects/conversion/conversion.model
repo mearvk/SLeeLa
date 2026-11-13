@@ -275,7 +275,6 @@ call array.length arrayLength($recv)
 unsupported float float arithmetic rounds to IEEE binary32 at every step; SLeeLa has no binary32 operator set, so equivalence cannot be guaranteed
 unsupported lambda lambdas need the linear lowering of lib/java/jdk-28/LOWERING.md (design draft, not implemented in the converter)
 unsupported methodref method references need the linear lowering of lib/java/jdk-28/LOWERING.md
-unsupported labeled labeled break/continue have no SLeeLa form
 unsupported synchronized synchronized blocks have no SLeeLa form
 unsupported enum enum declarations are listed in SLEELA.syntax 43.5 as not supported
 unsupported incr-expr ++/-- used as a value (not a statement) would reorder evaluation
@@ -283,5 +282,4 @@ unsupported assign-expr assignment used as a value would reorder evaluation
 unsupported switch-expr switch expressions and arrow cases are not converted
 unsupported string-static String is a keyword type in SLeeLa, so String.valueOf / String.format / String.join cannot be called as static members yet
 unsupported nested nested/inner/anonymous types are not converted yet
-unsupported return-in-finally return/break/continue out of a try block that has a finally cannot be expressed: the SLeeLa VM skips the finally (SLEELA.syntax 43.5)
 unsupported untyped operand type cannot be determined, so the Java operator semantics cannot be selected
