@@ -6,6 +6,7 @@
 
 #define ARTIFACT_HEADER_BYTES 47u
 #define FUNCTION_METADATA_BYTES 20u
+#define ARTIFACT_FAULT_FUNCTION_TRAILER_BYTES 4u
 
 static int make_v3_legacy_copy(const char *source, const char *target) {
     FILE *in = fopen(source, "rb"), *out = NULL;
@@ -23,9 +24,11 @@ static int make_v3_legacy_copy(const char *source, const char *target) {
     if ((size_t)file_size < ARTIFACT_HEADER_BYTES ||
         memcmp(bytes, "SLEELA-ART\x01", 11) != 0) goto done;
     memcpy(counts, bytes + 11, sizeof(counts));
-    /* This fixture intentionally has no constants, strings, globals, or
-     * struct layouts, so its only v4 additions are the per-function records. */
-    if (counts[3] || counts[4] || counts[5] || counts[7] || counts[6] != 1u)
+    /* This fixture has no constants, strings, globals, or struct layouts.
+     * Convert the current v6 image to v3 by removing the v4 function metadata
+     * and the v6 fault-function trailer; v5 hierarchy data is absent. */
+    if (counts[0] != SLEELA_ARTIFACT_FORMAT_VERSION ||
+        counts[3] || counts[4] || counts[5] || counts[7] || counts[6] != 1u)
         goto done;
     offset = ARTIFACT_HEADER_BYTES + (size_t)counts[2] * 5u;
     if (offset + 4u > (size_t)file_size) goto done;
@@ -34,17 +37,19 @@ static int make_v3_legacy_copy(const char *source, const char *target) {
         memcpy(&name_length, bytes + offset, sizeof(name_length));
         offset += 4u + (size_t)name_length + 12u;
     }
-    if (offset + FUNCTION_METADATA_BYTES != (size_t)file_size) goto done;
-    memmove(bytes + offset, bytes + offset + FUNCTION_METADATA_BYTES,
-            (size_t)file_size - offset - FUNCTION_METADATA_BYTES);
+    if (offset + FUNCTION_METADATA_BYTES +
+            ARTIFACT_FAULT_FUNCTION_TRAILER_BYTES != (size_t)file_size) goto done;
     {
         const uint32_t version = 3u;
         memcpy(bytes + 11, &version, sizeof(version));
     }
     out = fopen(target, "wb");
     if (!out) goto done;
-    ok = fwrite(bytes, 1, (size_t)file_size - FUNCTION_METADATA_BYTES, out) ==
-         (size_t)file_size - FUNCTION_METADATA_BYTES;
+    {
+        size_t legacy_size = (size_t)file_size - FUNCTION_METADATA_BYTES -
+                             ARTIFACT_FAULT_FUNCTION_TRAILER_BYTES;
+        ok = fwrite(bytes, 1, legacy_size, out) == legacy_size;
+    }
 done:
     if (out && fclose(out) != 0) ok = 0;
     if (in) fclose(in);
