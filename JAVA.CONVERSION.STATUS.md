@@ -1,3 +1,5 @@
+<img align="right" src="images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
+
 # Java to SLeeLa Conversion: Overall Status
 
 **As of:** 2026-11-13. **Branches:** `master` and `main` (same content; see section 7).
