@@ -29,11 +29,11 @@ normative specifications from implementation notes and live validation results.
   SleelaDoc HTML site for the whole `/lib` tree (Home → Package → Class →
   Members), regenerated from source by `tools/generate-sleeladoc-api.py`.
   Per-edition snapshots live under [`api/sleela/`](../api/sleela/); the
-  current **3.0** edition is captured as immutable snapshots in numbered
-  subfolders, with [`version-003`](../api/sleela/3.0/version-003/index.html)
-  as the latest snapshot. Earlier 3.0 snapshots remain available alongside
-  the preserved 2.9 and older editions. Each later regeneration adds the next
-  unused `version-NNN/` folder.
+  current **3.1** edition (also written 3.01) is captured as immutable
+  snapshots in numbered subfolders, starting at
+  [`version-001`](../api/sleela/3.1/version-001/index.html). The 3.0 edition
+  and the older 2.x editions are preserved alongside it. Each later
+  regeneration adds the next unused `version-NNN/` folder.
 - [UI component quality — visibility, margin, and icon](UI-COMPONENT-QUALITY.md) —
   the `lib/ui` standard layout model's per-component quality axes and how
   `SLLayoutDriver` realizes each onto native widgets.

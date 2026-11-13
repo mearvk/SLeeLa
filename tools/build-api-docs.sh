@@ -1,17 +1,20 @@
 #!/usr/bin/env bash
 # Build the live SleelaDoc site, contributor-facing docs/API site, and a
-# versioned SLeeLa 3.0 API snapshot from the same /lib source inventory.
+# versioned SLeeLa API snapshot (edition 3.1 unless API_EDITION says otherwise) from the same /lib source inventory.
 set -euo pipefail
 
 ROOT="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
 PYTHON="${PYTHON:-python3}"
+# The language API edition the snapshot belongs to. 3.1 is the current edition (also written 3.01);
+# the 3.0 edition under api/sleela/3.0 is preserved and no longer written to.
+EDITION="${API_EDITION:-3.1}"
 if [ -n "${API_SNAPSHOT:-}" ]; then
   SNAPSHOT="$API_SNAPSHOT"
 else
   NEXT=1
-  for existing in api/sleela/3.0/version-[0-9][0-9][0-9]; do
+  for existing in "api/sleela/$EDITION"/version-[0-9][0-9][0-9]; do
     [ -d "$existing" ] || continue
     number="${existing##*version-}"
     # Force base-10: zero-padded values like 008/009 are otherwise parsed as
@@ -26,7 +29,7 @@ case "$SNAPSHOT" in
   *) echo "API_SNAPSHOT must use version-NNN (for example version-002)." >&2; exit 2 ;;
 esac
 
-SNAPSHOT_DIR="api/sleela/3.0/$SNAPSHOT"
+SNAPSHOT_DIR="api/sleela/$EDITION/$SNAPSHOT"
 if [ -e "$SNAPSHOT_DIR/index.html" ]; then
   echo "Refusing to overwrite immutable API snapshot: $SNAPSHOT_DIR" >&2
   echo "Choose the next snapshot, for example: API_SNAPSHOT=version-002 make api-docs" >&2

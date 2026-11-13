@@ -92,6 +92,10 @@ Recent additions to the language, drivers, and standard library:
   [`api/sleela/3.0/version-014/`](api/sleela/3.0/version-014/index.html)
   snapshot) were rebuilt with `make api-docs` and now carry the new `SLISASleep`
   / `SLISABigMul` instruction entries on their `vm` package page.
+  Since syntax **3.1** (also written 3.01) the API is published as the
+  [`api/sleela/3.1/`](api/sleela/3.1/README.md) edition (language API reference,
+  Java tier API, and immutable snapshots from
+  [`version-001`](api/sleela/3.1/version-001/index.html)); the 3.0 edition is preserved.
 - **SleelaDoc from the command line — `sleela docs`.** SleelaDoc is now reachable
   straight from the terminal. `sleela docs` lists every documentable topic;
   `sleela docs crypto` shows a package; `sleela docs stringbuilder` resolves a
