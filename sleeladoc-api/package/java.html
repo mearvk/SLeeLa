@@ -147,7 +147,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; java</div>
 <h1>Package <code>java</code></h1>
-<div class="lead">This package contains <strong>14963</strong> source unit(s) defining <strong>14963</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>14964</strong> source unit(s) defining <strong>14964</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="aboutevent">AboutEvent <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/jdk-28/java.desktop/java/awt/desktop/AboutEvent.sleela)</span></h2>
 <div data-u="aboutevent aboutevent">
@@ -139210,6 +139210,54 @@
 <tr><td><code>annotationLine</code></td><td><span class="sig">void annotationLine(String text)</span></td><td class="desc">an annotation line written before a member: the member follows directly</td></tr>
 </table>
 </div>
+<h2 class="section" data-u="jconvexpr">JConvExpr <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvExpr.sleela)</span></h2>
+<div data-u="jconvexpr jconvexpr">
+<h3 id="JConvExpr">JConvExpr <span class="pill">class</span></h3>
+<p class="desc">the expression half of the typed pass. It reads the statements of</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>rw</code></td><td><span class="sig">JConvRewriter rw</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nT</code></td><td><span class="sig">int[] nT</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nOp</code></td><td><span class="sig">String[] nOp</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nL</code></td><td><span class="sig">int[] nL</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nR</code></td><td><span class="sig">int[] nR</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nC</code></td><td><span class="sig">int[] nC</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nA</code></td><td><span class="sig">int[] nA</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nB</code></td><td><span class="sig">int[] nB</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nP</code></td><td><span class="sig">int[] nP</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nK</code></td><td><span class="sig">String[] nK</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>nN</code></td><td><span class="sig">int nN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>eAt</code></td><td><span class="sig">int[] eAt</span></td><td class="desc">edits: position, token, token kind, type (1 open, 2 close, 3 replace), order, sequence</td></tr>
+<tr><td><code>eTok</code></td><td><span class="sig">String[] eTok</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>eKind</code></td><td><span class="sig">int[] eKind</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>eTyp</code></td><td><span class="sig">int[] eTyp</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>eOrd</code></td><td><span class="sig">int[] eOrd</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>eSeq</code></td><td><span class="sig">int[] eSeq</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>eN</code></td><td><span class="sig">int eN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>pos</code></td><td><span class="sig">int pos</span></td><td class="desc">the parse cursor and its limit; failed when the range is not one expression</td></tr>
+<tr><td><code>lim</code></td><td><span class="sig">int lim</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>failed</code></td><td><span class="sig">boolean failed</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>qA</code></td><td><span class="sig">int[] qA</span></td><td class="desc">expressions still to analyse: range and consumer (0 value, 1 int store or unused, 2 print argument)</td></tr>
+<tr><td><code>qB</code></td><td><span class="sig">int[] qB</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>qH</code></td><td><span class="sig">int[] qH</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>qN</code></td><td><span class="sig">int qN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wraps</code></td><td><span class="sig">int wraps</span></td><td class="desc">counts for the report</td></tr>
+<tr><td><code>calls</code></td><td><span class="sig">int calls</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>tk</code></td><td><span class="sig">String tk(int i)</span></td><td class="desc">---- token helpers ----</td></tr>
+<tr><td><code>isOpTok</code></td><td><span class="sig">boolean isOpTok(int i, String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>closeOf</code></td><td><span class="sig">int closeOf(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>stmtEnd</code></td><td><span class="sig">int stmtEnd(int p, int b)</span></td><td class="desc">the first top-level ; from p (brackets and braces counted), or b</td></tr>
+<tr><td><code>enqueue</code></td><td><span class="sig">void enqueue(int a, int b, int h)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>enqueueList</code></td><td><span class="sig">void enqueueList(int a, int b, int h)</span></td><td class="desc">the top-level commas of a .. b-1 split it into ranges, each enqueued with consumer h</td></tr>
+<tr><td><code>intLike</code></td><td><span class="sig">boolean intLike(String k)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isModifierWord</code></td><td><span class="sig">boolean isModifierWord(String t)</span></td><td class="desc">---- the statements of the member ----</td></tr>
+<tr><td><code>headerEnd</code></td><td><span class="sig">int headerEnd(int p, int b)</span></td><td class="desc">a method or constructor header at p: returns the position of its body or ; , or -1</td></tr>
+</table>
+</div>
 <h2 class="section" data-u="jconvlexer">JConvLexer <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvLexer.sleela)</span></h2>
 <div data-u="jconvlexer jconvlexer">
 <h3 id="JConvLexer">JConvLexer <span class="pill">class</span></h3>
@@ -139279,7 +139327,7 @@
 <h2 class="section" data-u="jconvmodel">JConvModel <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvModel.sleela)</span></h2>
 <div data-u="jconvmodel jconvmodel">
 <h3 id="JConvModel">JConvModel <span class="pill">class</span></h3>
-<p class="desc">the Java-to-SLeeLa conversion model, read as data. It loads impl/subjects/conversion/conversion.model (or the file named by JCONV_MODEL), the same model that sleelactl java-convert reads, and answers the questions the typed pass of JConvRewriter asks: the result type of a library member (ret rows), the type of a library field (field rows), the SLeeLa function of an int shift (binop int rows) and the string conversion template of a double or char (tostr rows). Only rows of those kinds are read. When the file is missing the built-in defaults below are used and the report says so.</p>
+<p class="desc">the Java-to-SLeeLa conversion model, read as data. It loads impl/subjects/conversion/conversion.model (or the file named by JCONV_MODEL), the same model that sleelactl java-convert reads, and answers the questions the typed pass of JConvRewriter asks: the result type of a library member (ret rows), the type of a library field (field rows), the SLeeLa function of an int shift, division and remainder (binop int rows), the 32-bit wrap (the cast long int row) and the string conversion template of a double or char (tostr rows). Only rows of those kinds are read. When the file is missing the built-in defaults below are used and the report says so.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
@@ -139297,6 +139345,9 @@
 <tr><td><code>ushrInt</code></td><td><span class="sig">String ushrInt</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>tostrDouble</code></td><td><span class="sig">String tostrDouble</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>tostrChar</code></td><td><span class="sig">String tostrChar</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>divInt</code></td><td><span class="sig">String divInt</span></td><td class="desc">binop int / and %, and cast long int (the 32-bit wrap)</td></tr>
+<tr><td><code>remInt</code></td><td><span class="sig">String remInt</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>toInt</code></td><td><span class="sig">String toInt</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -139387,6 +139438,7 @@
 <tr><td><code>inBody</code></td><td><span class="sig">boolean inBody</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>curReturnType</code></td><td><span class="sig">String curReturnType</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>unitName</code></td><td><span class="sig">String unitName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>expr</code></td><td><span class="sig">JConvExpr expr</span></td><td class="desc">the expression half of the typed pass</td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
 <table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
@@ -301489,7 +301541,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-13 02:42 UTC.
+<code>/lib</code> tree on 2026-11-13 02:45 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
