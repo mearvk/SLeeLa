@@ -136,3 +136,36 @@ refuse (do not clamp or wrap) inputs that could push it past. See
   the end; appending one plain character at a time splits surrogate pairs.
   A string literal cannot contain a `\uD83D`-style surrogate escape (lexer
   error); write the character itself in UTF-8.
+
+## Found while writing the Java converter (lib/java/converter, 2026-11-13)
+
+- **A local named like a native module is read as that module.** `String json =
+  ...; json.indexOf(x)` fails with "native module 'json' is not imported". Do not
+  name variables after native modules (`json`, `math`, ...).
+- **`sleela run A.sleela B.sleela ...` duplicates library units** when the files
+  call String methods or use `/lib` classes (each file resolves them again;
+  errors such as "duplicate method 'Error::Error'"). For a multi-class program
+  under `/lib`, run only the main file and let the loader find the rest by name.
+  Outside `/lib`, the loader does not find sibling files: name them, or put
+  everything in one file.
+- **`read(handle)` returns at most 4,095 bytes per call** (empty string at end of
+  file). Loop until it returns `""`.
+- **A plain String stops growing at 65,536 bytes** (`SL_MAX_STRTEXT`): `s = s + t`
+  silently truncates beyond it. Keep large text as an array of pieces and write
+  it out in pieces.
+- **`javaStringFromUtf8` on a piece that ends inside a multi-byte UTF-8
+  character is a fatal VM error**, not a catchable exception. A plain String has
+  no byte-level view, so the split cannot be repaired from SLeeLa.
+- **An inner `>>` ends a `<< ... >>` block comment early.** Separate it (`> >`)
+  when copying text into a block comment, repeating until no `>>` is left
+  (`>>>` leaves one after a single replace).
+- **Calls on an `Any` receiver are rejected** ("method 'x' requires a class or
+  struct receiver"), and **an `Any` value cannot be stored into a typed variable
+  or returned from a typed method** without a cast. A cast to a class works; **a
+  cast to an interface fails at run time** ("checked cast failed").
+- **`String.valueOf(x)` does not parse:** `String` is a keyword and cannot be a
+  static receiver. Write `"" + x`.
+- **SLeeLa has no empty statement:** `for (...) ;` is a syntax error; write `{ }`.
+- **`osMakeDir` does not create parents** (returns -1); create each level.
+- **`osRun(cmd)` returns the exit status** of the shell command (0 on success).
+

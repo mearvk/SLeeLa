@@ -3296,7 +3296,9 @@ on (it stays declarative, 43.2). Below 3.0 nothing in this subsection applies.
 8. **Bodiless methods.** `abstract T m(...);` and an interface method
    `T m(...);` (not `static` or `default`) parse; the method gets a body that
    returns the default value of `T` (`0`, `0.0`, `false` or `null`) and is
-   reached only when no override exists.
+   reached only when no override exists. `0` is the default for every integer
+   type, including the signed and unsigned series (`int32`, `uint64`, `int128`,
+   `U256`, ...); before 2026-11-13 a series type got `null`.
 9. **Enhanced for.** `for ([final] T v : xs) body`. Over an array it visits the
    elements in index order (`OP_ARRLEN`, `OP_ARRGET`). Over an object it calls
    `xs.iterator()`, then `hasNext()` / `next()` on the result, each by virtual

@@ -1,0 +1,171 @@
+<< lib/java/converter/JConvSource.sleela
+   Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
+   Definition: loads one text file for the converter. The VM read built-in
+   returns at most 4,095 bytes per call and a plain String stops growing at
+   65,536 bytes, so the file is kept as an array of chunks (each converted to a
+   Java UTF-16 String) plus one int array of all UTF-16 code units for fast
+   scanning. slice(a, b) returns the plain text of code units a .. b-1 across
+   chunk boundaries. A file with bytes outside ASCII is reported and not loaded:
+   a multi-byte UTF-8 character can be split between two reads, and the VM has
+   no byte-level view of a plain String to repair the split. >>
+#sleela 3.0
+material;
+
+class JConvSource {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full record: a library-family class of the Java container. >>
+  String metaVersion = "0.1.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < UTF-16 chunks, the code unit index where each starts, and their count >
+  String[] chunks;
+  int[] starts;
+  int nChunks;
+  < every code unit of the file, and how many >
+  int[] codes;
+  int length;
+  < why the last load failed, or "" >
+  String failure;
+
+  JConvSource() {
+    this.chunks = new String[0];
+    this.starts = new int[0];
+    this.nChunks = 0;
+    this.codes = new int[0];
+    this.length = 0;
+    this.failure = "";
+  }
+
+  < 0 when the file holds only ASCII bytes (tab, newline, carriage return, 32..126) >
+  boolean isAscii(String path) {
+    int rc = osRun("LC_ALL=C grep -q '[^[:print:][:space:]]' '" + path + "'");
+    return rc != 0;
+  }
+
+  boolean load(String path) {
+    this.failure = "";
+    this.nChunks = 0;
+    this.length = 0;
+    if (!isAscii(path)) {
+      this.failure = "non-ASCII bytes (UTF-8 may split across 4,095-byte reads)";
+      return false;
+    }
+    int h = openFile(path, "r");
+    if (h < 0) {
+      this.failure = "cannot open";
+      return false;
+    }
+    String[] cs = new String[64];
+    int[] st = new int[64];
+    int n = 0;
+    int total = 0;
+    String piece = read(h);
+    while (piece != null && piece != "") {
+      if (n >= arrayLength(cs)) {
+        String[] ncs = new String[arrayLength(cs) * 2];
+        int[] nst = new int[arrayLength(cs) * 2];
+        int k = 0;
+        while (k < n) { ncs[k] = cs[k]; nst[k] = st[k]; k = k + 1; }
+        cs = ncs;
+        st = nst;
+      }
+      String u = javaStringFromUtf8(piece);
+      cs[n] = u;
+      st[n] = total;
+      total = total + javaStringLength(u);
+      n = n + 1;
+      piece = read(h);
+    }
+    close(h);
+    this.chunks = cs;
+    this.starts = st;
+    this.nChunks = n;
+    this.length = total;
+    int[] all = new int[total + 1];
+    int c = 0;
+    int pos = 0;
+    while (c < n) {
+      String u2 = cs[c];
+      int m = javaStringLength(u2);
+      int i = 0;
+      while (i < m) {
+        all[pos] = javaStringCharAt(u2, i);
+        pos = pos + 1;
+        i = i + 1;
+      }
+      c = c + 1;
+    }
+    all[total] = 0;
+    this.codes = all;
+    return true;
+  }
+
+  < the code unit at i, or 0 past the end >
+  int at(int i) {
+    if (i < 0 || i >= this.length) { return 0; }
+    return this.codes[i];
+  }
+
+  < the chunk holding code unit i >
+  int chunkOf(int i) {
+    int lo = 0;
+    int hi = this.nChunks - 1;
+    while (lo < hi) {
+      int mid = (lo + hi + 1) / 2;
+      if (this.starts[mid] <= i) { lo = mid; } else { hi = mid - 1; }
+    }
+    return lo;
+  }
+
+  < plain text of code units a .. b-1 >
+  String slice(int a, int b) {
+    if (b <= a) { return ""; }
+    String out = "";
+    int i = a;
+    while (i < b) {
+      int c = chunkOf(i);
+      int base = this.starts[c];
+      String u = this.chunks[c];
+      int end = base + javaStringLength(u);
+      if (end > b) { end = b; }
+      out = out + javaStringToUtf8(javaStringSubstring(u, i - base, end - base));
+      i = end;
+    }
+    return out;
+  }
+}

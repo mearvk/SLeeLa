@@ -655,7 +655,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "bf5461d7a15a4f7830e6841ef65c0b963d861712a464c22b599a1ab62bedae50"
+      "sha256": "8620912bcd5a262be55bf99f312bf4a6ded9d2ffe6e691ae6f94138038aa6287"
     },
     {
       "path": "impl/frontend/parser.h",
@@ -9292,6 +9292,46 @@
     {
       "path": "lib/java/SleelaHome.sleela",
       "sha256": "e30b1c80b74b8030fd4f1640efd6f8dc37550723567b9e7705eaeb97b1edf5a1"
+    },
+    {
+      "path": "lib/java/converter/JConvConfig.sleela",
+      "sha256": "e70dffadc54f3eade257cff6ae30dcb23cb82e3d4f464f8050d16523d7f5ac71"
+    },
+    {
+      "path": "lib/java/converter/JConvEmitter.sleela",
+      "sha256": "8934341fb402a6888ffa5ca87f75ce671ad1f2d6e5cd7f1d8438489a09a5aade"
+    },
+    {
+      "path": "lib/java/converter/JConvLexer.sleela",
+      "sha256": "51e72b33db3479ba4166515720b2e19ff2353fffce1a360b129853366c9bb437"
+    },
+    {
+      "path": "lib/java/converter/JConvMain.sleela",
+      "sha256": "6c44d8a2cb7b5c4c803839ef00331c0db50bbaf4c6aefc1da4b3a75505824a38"
+    },
+    {
+      "path": "lib/java/converter/JConvReport.sleela",
+      "sha256": "cdd3c546ed0d1266c7ff2b5e1c1b930414f5c5bb9073c18f87780a70a6ca5b8d"
+    },
+    {
+      "path": "lib/java/converter/JConvRewriter.sleela",
+      "sha256": "89583a32b3f87969cd988ade87ed8e627b5df442bc5d137e1d0d8cd9445cb54a"
+    },
+    {
+      "path": "lib/java/converter/JConvRules.sleela",
+      "sha256": "c861b6541d441fa17a81a821989e33edc446b6fb8676a761a5a195b66c21f878"
+    },
+    {
+      "path": "lib/java/converter/JConvSource.sleela",
+      "sha256": "cad295641c42af7a20af63f744af2ea4cddcc553010c6510c0ddcf365b3ac379"
+    },
+    {
+      "path": "lib/java/converter/JConvTranslator.sleela",
+      "sha256": "88617cd4f5edee1cefc64143f6fed3b1cf8c7507273c1b5bb1b4e2ef1cc6d290"
+    },
+    {
+      "path": "lib/java/converter/JConvWalker.sleela",
+      "sha256": "1a623828b9e1b09eee6e43ad23837bc6a2c79973626b8032242f411ab6e829fe"
     },
     {
       "path": "lib/java/jdk-25/2004/REC-DOM-Level-3-Core-20040407/core.sleela",

@@ -1,0 +1,171 @@
+<< lib/java/converter/JConvWalker.sleela
+   Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
+   Definition: walks a directory tree recursively and collects the relative
+   paths of the .java files below it, in directory-listing order sorted per
+   folder. The tree is the JDK source layout <module>/<package path>/<Type>.java
+   (as in the src.zip of a JDK, or an OpenJDK checkout under src/), but any tree
+   of .java files works. module-info.java and package-info.java are collected
+   separately: they declare no type to convert. >>
+#sleela 3.0
+material;
+
+class JConvWalker {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full record: a library-family class of the Java container. >>
+  String metaVersion = "0.1.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < collected relative paths of .java files >
+  String[] files;
+  int nFiles;
+  < descriptor files (module-info, package-info) that were skipped >
+  int skippedDescriptors;
+  int dirsVisited;
+  String root;
+
+  JConvWalker() {
+    this.files = new String[256];
+    this.nFiles = 0;
+    this.skippedDescriptors = 0;
+    this.dirsVisited = 0;
+    this.root = "";
+  }
+
+  void addFile(String rel) {
+    if (this.nFiles >= arrayLength(this.files)) {
+      String[] f2 = new String[arrayLength(this.files) * 2];
+      int i = 0;
+      while (i < this.nFiles) { f2[i] = this.files[i]; i = i + 1; }
+      this.files = f2;
+    }
+    this.files[this.nFiles] = rel;
+    this.nFiles = this.nFiles + 1;
+  }
+
+  < the entries of a directory listing, without . and .. >
+  String[] listEntries(String dir) {
+    String listing = oslsListDirectory(dir);
+    String u = javaStringFromUtf8(listing);
+    int n = javaStringLength(u);
+    String[] out = new String[16];
+    int count = 0;
+    String key = "\"entries\":[";
+    int start = listing.indexOf(key);
+    if (start < 0 || listing.indexOf("\"status\":0") < 0) { return new String[0]; }
+    int i = start + key.length();
+    while (i < n && javaStringCharAt(u, i) != 93) {
+      if (javaStringCharAt(u, i) == 34) {
+        int a = i + 1;
+        int j = a;
+        boolean escaped = false;
+        while (j < n && javaStringCharAt(u, j) != 34) {
+          if (javaStringCharAt(u, j) == 92) { escaped = true; j = j + 1; }
+          j = j + 1;
+        }
+        String name = javaStringToUtf8(javaStringSubstring(u, a, j));
+        if (escaped) { name = name.replace("\\\"", "\"").replace("\\\\", "\\"); }
+        if (name != "." && name != "..") {
+          if (count >= arrayLength(out)) {
+            String[] o2 = new String[arrayLength(out) * 2];
+            int k = 0;
+            while (k < count) { o2[k] = out[k]; k = k + 1; }
+            out = o2;
+          }
+          out[count] = name;
+          count = count + 1;
+        }
+        i = j + 1;
+      } else {
+        i = i + 1;
+      }
+    }
+    String[] res = new String[count];
+    int k2 = 0;
+    while (k2 < count) { res[k2] = out[k2]; k2 = k2 + 1; }
+    sortNames(res);
+    return res;
+  }
+
+  < insertion sort, so the walk order does not depend on the file system >
+  void sortNames(String[] a) {
+    int i = 1;
+    while (i < arrayLength(a)) {
+      String x = a[i];
+      int j = i - 1;
+      while (j >= 0 && a[j].compareTo(x) > 0) {
+        a[j + 1] = a[j];
+        j = j - 1;
+      }
+      a[j + 1] = x;
+      i = i + 1;
+    }
+  }
+
+  void walk(String root) {
+    this.root = root;
+    this.nFiles = 0;
+    this.skippedDescriptors = 0;
+    this.dirsVisited = 0;
+    visit("");
+  }
+
+  < rel is the directory relative to the root ("" for the root itself) >
+  void visit(String rel) {
+    String dir = this.root;
+    if (rel != "") { dir = this.root + "/" + rel; }
+    this.dirsVisited = this.dirsVisited + 1;
+    String[] names = listEntries(dir);
+    int i = 0;
+    while (i < arrayLength(names)) {
+      String name = names[i];
+      String childRel = name;
+      if (rel != "") { childRel = rel + "/" + name; }
+      String full = dir + "/" + name;
+      if (osIsDir(full) == 1) {
+        visit(childRel);
+      } else if (name.endsWith(".java")) {
+        if (name == "module-info.java" || name == "package-info.java") {
+          this.skippedDescriptors = this.skippedDescriptors + 1;
+        } else {
+          addFile(childRel);
+        }
+      }
+      i = i + 1;
+    }
+  }
+}

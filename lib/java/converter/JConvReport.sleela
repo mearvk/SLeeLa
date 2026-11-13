@@ -1,0 +1,162 @@
+<< lib/java/converter/JConvReport.sleela
+   Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
+   Definition: records what the converter did. One tab-separated line per input
+   file goes to <out>/CONVERSION-REPORT.tsv as the run proceeds (so a long run
+   that stops early still leaves its record); the totals go to
+   <out>/CONVERSION-SUMMARY.md at the end and are printed. Columns: status,
+   java file, sleela files written, types, members, stubbed members, notes. >>
+#sleela 3.0
+material;
+
+class JConvReport {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full record: a library-family class of the Java container. >>
+  String metaVersion = "0.1.0";
+  int metaId = 0;
+  String metaAuthor = "Max Rupplin";
+  String metaDate = "2026-11-12";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-12";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 6;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  int handle;
+  String outRoot;
+  < totals >
+  int filesSeen;
+  int filesConverted;
+  int filesSkipped;
+  int filesFailed;
+  int unitsWritten;
+  int typesTotal;
+  int membersTotal;
+  int stubsTotal;
+  < counts per rule 5 reason code (index = code) >
+  int[] reasonCounts;
+  < notes of the file in progress >
+  String notes;
+  int noteCount;
+
+  JConvReport() {
+    this.handle = -1;
+    this.outRoot = "";
+    this.filesSeen = 0;
+    this.filesConverted = 0;
+    this.filesSkipped = 0;
+    this.filesFailed = 0;
+    this.unitsWritten = 0;
+    this.typesTotal = 0;
+    this.membersTotal = 0;
+    this.stubsTotal = 0;
+    this.reasonCounts = new int[32];
+    int i = 0;
+    while (i < 32) { this.reasonCounts[i] = 0; i = i + 1; }
+    this.notes = "";
+    this.noteCount = 0;
+  }
+
+  boolean begin(String outRoot) {
+    this.outRoot = outRoot;
+    this.handle = openFile(outRoot + "/CONVERSION-REPORT.tsv", "w");
+    if (this.handle < 0) { return false; }
+    write(this.handle, "# status\tjava_file\tsleela_files\ttypes\tmembers\tstubbed\tnotes\n");
+    return true;
+  }
+
+  void startFile() {
+    this.notes = "";
+    this.noteCount = 0;
+    this.filesSeen = this.filesSeen + 1;
+  }
+
+  < a note for the current file; at most 40 are kept per file >
+  void note(String text) {
+    if (this.noteCount < 40) {
+      if (this.notes != "") { this.notes = this.notes + "; "; }
+      this.notes = this.notes + text;
+    }
+    this.noteCount = this.noteCount + 1;
+  }
+
+  void countReason(int code) {
+    if (code > 0 && code < 32) { this.reasonCounts[code] = this.reasonCounts[code] + 1; }
+  }
+
+  void fileLine(String status, String rel, int units, int types, int members, int stubs) {
+    if (status == "converted") { this.filesConverted = this.filesConverted + 1; }
+    if (status == "skipped") { this.filesSkipped = this.filesSkipped + 1; }
+    if (status == "failed") { this.filesFailed = this.filesFailed + 1; }
+    this.unitsWritten = this.unitsWritten + units;
+    this.typesTotal = this.typesTotal + types;
+    this.membersTotal = this.membersTotal + members;
+    this.stubsTotal = this.stubsTotal + stubs;
+    String extra = "";
+    if (this.noteCount > 40) { extra = "; (" + (this.noteCount - 40) + " more)"; }
+    String n = this.notes.replace("\t", " ").replace("\n", " ");
+    if (this.handle >= 0) {
+      write(this.handle, status + "\t" + rel + "\t" + units + "\t" + types + "\t" + members + "\t" + stubs + "\t" + n + extra + "\n");
+    }
+  }
+
+  void finish(JConvRules rules) {
+    if (this.handle >= 0) { close(this.handle); }
+    this.handle = -1;
+    String s = "# Java to SLeeLa conversion summary\n\n";
+    s = s + "Produced by lib/java/converter (best effort; rules in lib/java/converter/README.md).\n\n";
+    s = s + "| Measure | Count |\n|---|---:|\n";
+    s = s + "| Java files seen | " + this.filesSeen + " |\n";
+    s = s + "| Java files converted | " + this.filesConverted + " |\n";
+    s = s + "| Java files skipped | " + this.filesSkipped + " |\n";
+    s = s + "| Java files failed | " + this.filesFailed + " |\n";
+    s = s + "| SLeeLa files written | " + this.unitsWritten + " |\n";
+    s = s + "| Types | " + this.typesTotal + " |\n";
+    s = s + "| Members | " + this.membersTotal + " |\n";
+    s = s + "| Members stubbed (fail loud) | " + this.stubsTotal + " |\n\n";
+    s = s + "## Stubbed members by reason\n\n| Code | Reason | Members |\n|---:|---|---:|\n";
+    int c = 1;
+    while (c < 32) {
+      if (this.reasonCounts[c] > 0) {
+        s = s + "| " + c + " | " + rules.reasonText(c) + " | " + this.reasonCounts[c] + " |\n";
+      }
+      c = c + 1;
+    }
+    s = s + "\nPer-file detail: CONVERSION-REPORT.tsv.\n";
+    int h = openFile(this.outRoot + "/CONVERSION-SUMMARY.md", "w");
+    if (h >= 0) {
+      write(h, s);
+      close(h);
+    }
+    print("converted " + this.filesConverted + " of " + this.filesSeen + " Java files (" + this.filesSkipped + " skipped, " + this.filesFailed + " failed)");
+    print("wrote " + this.unitsWritten + " SLeeLa files: " + this.typesTotal + " types, " + this.membersTotal + " members, " + this.stubsTotal + " stubbed");
+    print("summary: " + this.outRoot + "/CONVERSION-SUMMARY.md");
+  }
+}

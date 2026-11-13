@@ -2,6 +2,8 @@
 // parser.cpp  --  Recursive-descent parser for the Java-like Sleela subset.
 // ===========================================================================
 #include "parser.h"
+#include "wide_integer.h"
+#include "unsigned_integer.h"
 #include <stdexcept>
 #include <cctype>
 namespace sleela {
@@ -665,7 +667,8 @@ Method Parser::parseMethod(bool isStatic,bool isProtected,unsigned modifiers,std
         const std::string& r=m.retType;
         if(r!="void"){
             auto ret=std::make_unique<ReturnStmt>();
-            if(r=="int"||r=="long"||r=="short"||r=="byte"||r=="char"||r=="int64") ret->value=std::make_unique<IntLit>(0);
+            if(r=="int"||r=="long"||r=="short"||r=="byte"||r=="char"||r=="int64"
+               ||SignedWideInteger::isValidTypeName(r)||UnsignedWideInteger::isValidTypeName(r)||UnsignedInteger::isValidTypeName(r)) ret->value=std::make_unique<IntLit>(0);
             else if(r=="double"||r=="float") ret->value=std::make_unique<DoubleLit>(0.0);
             else if(r=="boolean"||r=="bool") ret->value=std::make_unique<BoolLit>(false);
             else ret->value=std::make_unique<NullLit>();

@@ -1,10 +1,10 @@
 # SLeeLa /lib Symbol Manifest
 schema: SLeeLa-Library-Symbols-1
 collection-revision: 2.1
-library-source-files: 18105
+library-source-files: 18115
 library-packages: 121
 module-facade-symbols: 84
-total-symbol-records: 18189
+total-symbol-records: 18199
 
 package	symbol	path	kind
 advantage	SLAdvantageDeveloperModel.sleela	lib/advantage/SLAdvantageDeveloperModel.sleela	source
@@ -2025,6 +2025,16 @@ java	JavaOperands.sleela	lib/java/JavaOperands.sleela	source
 java	JavaType.sleela	lib/java/JavaType.sleela	source
 java	SLPackage.sleela	lib/java/SLPackage.sleela	facade
 java	SleelaHome.sleela	lib/java/SleelaHome.sleela	source
+java	JConvConfig.sleela	lib/java/converter/JConvConfig.sleela	source
+java	JConvEmitter.sleela	lib/java/converter/JConvEmitter.sleela	source
+java	JConvLexer.sleela	lib/java/converter/JConvLexer.sleela	source
+java	JConvMain.sleela	lib/java/converter/JConvMain.sleela	source
+java	JConvReport.sleela	lib/java/converter/JConvReport.sleela	source
+java	JConvRewriter.sleela	lib/java/converter/JConvRewriter.sleela	source
+java	JConvRules.sleela	lib/java/converter/JConvRules.sleela	source
+java	JConvSource.sleela	lib/java/converter/JConvSource.sleela	source
+java	JConvTranslator.sleela	lib/java/converter/JConvTranslator.sleela	source
+java	JConvWalker.sleela	lib/java/converter/JConvWalker.sleela	source
 java	core.sleela	lib/java/jdk-25/2004/REC-DOM-Level-3-Core-20040407/core.sleela	source
 java	AWTEventMonitor.sleela	lib/java/jdk-25/com/sun/java/accessibility/util/AWTEventMonitor.sleela	source
 java	AccessibilityEventMonitor.sleela	lib/java/jdk-25/com/sun/java/accessibility/util/AccessibilityEventMonitor.sleela	source
