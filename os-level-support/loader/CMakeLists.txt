@@ -21,13 +21,8 @@ if(BUILD_TESTING)
   target_link_libraries(loader_test_c PRIVATE sleela_native_loader)
   add_test(NAME loader_test_c COMMAND loader_test_c $<TARGET_FILE:loader_fixture>)
 
-  add_library(loader_fixture_typed SHARED tests/fixture_typed.c)
-  target_include_directories(loader_fixture_typed PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-  target_compile_definitions(loader_fixture_typed PRIVATE SL_NATIVE_PLUGIN_BUILD)
-
   add_executable(loader_test_cpp tests/test_cpp.cpp)
   target_link_libraries(loader_test_cpp PRIVATE sleela_native_loader_cpp)
-  add_test(NAME loader_test_cpp COMMAND loader_test_cpp $<TARGET_FILE:loader_fixture_typed>)
 
   add_library(loader_fixture_bad_abi SHARED tests/fixture_bad_abi.c)
   target_include_directories(loader_fixture_bad_abi PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
@@ -47,6 +42,10 @@ if(BUILD_TESTING)
     $<TARGET_FILE:loader_fixture>
     $<TARGET_FILE:loader_fixture_bad_abi>)
 
+  add_library(loader_fixture_typed SHARED tests/fixture_typed.c)
+  target_include_directories(loader_fixture_typed PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+  target_compile_definitions(loader_fixture_typed PRIVATE SL_NATIVE_PLUGIN_BUILD)
+  add_test(NAME loader_test_cpp COMMAND loader_test_cpp $<TARGET_FILE:loader_fixture_typed>)
   add_executable(loader_test_typed tests/test_typed.c)
   target_link_libraries(loader_test_typed PRIVATE sleela_native_loader)
   add_test(NAME loader_test_typed COMMAND loader_test_typed
