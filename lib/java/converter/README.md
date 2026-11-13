@@ -3,8 +3,11 @@
 > **Container.** Java container content (`SLEELA.syntax` section 38.4). Nothing
 > here is part of the SLeeLa specification or adds syntax to SLeeLa.
 
-Status: **0.1.0, best effort, first cut (2026-11-13).** Revise the rules here as
-the language and the library close the gaps listed in section 6.
+Status: **0.2.0, best effort (2026-11-13).** Output declares `#sleela 3.1` and
+uses its forms (SLEELA.syntax section 44): array initializers, character
+literals, labels, and jumps that run `finally`. Revise the rules here as the
+language and the library close the gaps listed in section 6. Changes since
+0.1.0 are in section 8.
 
 **Relation to `sleelactl java-convert`.** A separate converter, written in C/C++
 under `sleelactl/convert/` with its Java semantics in
@@ -82,7 +85,7 @@ several hours. Use `JCONV_FILTER` to convert one package or module at a time.
 | 2c | Generic type arguments (`List<String>`, `new HashMap<>()`, `Foo.<T>bar()`) | erased | SLEELA.syntax 38.1. Class type parameters are kept as data in `JAVA_TYPE_PARAMETERS`, method type parameters in `@generic("<T>")` (the jdk-28 convention), and type variables erase to `Any` |
 | 2d | Fully qualified names `java.util.List` | `List` | the `import java.jdk-28;` tier resolves the simple name |
 | 2e | `x instanceof String` | `(x instanceof string \|\| x instanceof utf16)` | a Java String is either SLeeLa string kind (only for a receiver without calls, so it is not evaluated twice) |
-| 2g | `T x = expr;` and `return expr;` with `T` a primitive, `String`, an array or a known class | `T x = (T) (expr);` | javac inserts the same checkcast. SLeeLa rejects an erased `Any` stored into a typed variable. **Not** for interfaces: a runtime cast to an interface fails in the VM today |
+| 2g | `T x = expr;` and `return expr;` with `T` a primitive, `String` or a known class (not an array: the compiler rejects array casts) | `T x = (T) (expr);` | javac inserts the same checkcast. SLeeLa rejects an erased `Any` stored into a typed variable. **Not** for interfaces: a runtime cast to an interface fails in the VM today |
 | 3 | `strictfp`, `sealed`, `non-sealed`, `permits` | dropped | no SLeeLa meaning (Java 17 made floating point strict; sealing is a compile-time check) |
 | 3b | `protected` on an instance member | `@JavaProtected` | SLeeLa reserves `protected` for static members |
 | 3c | `final` on locals and parameters | dropped | SLeeLa rejects it there; `final` fields are kept |
@@ -100,14 +103,19 @@ several hours. Use `JCONV_FILTER` to convert one package or module at a time.
 | 5b | `.5`, `5.`, `1e5`, `1.5f` | `0.5`, `5.0`, `1.0e5`, `1.5` | SLeeLa number forms |
 | 5c | Escapes `\s`, octal `\12`, `\uXXXX`, surrogate pairs | decoded and written in SLeeLa form | SLeeLa knows fewer escapes |
 | 5d | Text blocks `"""` | string literal, incidental indentation removed (JLS 3.10.6) | |
-| 5e | `'a'` | `97`, or `"a"` next to a string in `+` | SLeeLa has no char literal |
+| 5e | `'a'` | `'a'` (SLeeLa 3.1 character literal, 44.2), or `"a"` next to a string in `+` | a SLeeLa character literal is its integer code, so `"x" + 'a'` would print `x97`; a surrogate stays its integer code |
 | 5f | `//`, `/* */`, `/** */` | `<< ... >>` on their own line, inner `>>` / `<<` separated | the only multi-line comment form; `/* */` is not SLeeLa |
 | 6 | `a.length` on an array | `arrayLength(a)` | SLeeLa arrays have no `length` member (not for `this.length`) |
 | 6b | `int a[]` | `int32[] a` | |
-| 6c | `{1, 2, 3}` and `new int[]{...}` | `slArray_int32_3(1, 2, 3)`, a helper generated in the class | SLeeLa has no array initializer |
-| 6d | `new int[n]` (primitive element) | `slZeroArray_int32(n)` | new SLeeLa numeric arrays hold `null`; Java zero-fills |
+| 6c | `{1, 2, 3}`, `{{1, 2}, {3}}` and `new int[]{...}` | kept (SLeeLa 3.1 array initializer, 44.3) | |
+| 6d | `new int[n]` | kept: numeric and boolean arrays start at zero / `false` (44.3 fill kind; `int32` since the 2026-11-13 compiler fix) | |
 | 6e | `int a = 1, b = 2;` | one declaration per variable | |
 | 6f | `for (...) ;`, `while (...) ;` | `{ }` body | SLeeLa has no empty statement |
+| 6i | `for (int i = 0, j = n; c; i++, j--) body` | `{ int i = 0; int j = n; for (; c; ) { slForN: { body } i++; j--; } }`, each `continue` of the loop becomes `break slForN;` | SLeeLa `for` takes one initializer and one update; the labeled block (44.4) keeps Java order on `continue`. A body that is itself `if` / `for` / `while` / `switch` / `try` without braces stays a stub (reason 11) |
+| 6j | `if (o instanceof T v [&& rest]) S [else S2]` | `if (o instanceof T) { T v = (T) (o); [if (rest)] S } [else S2]` (`else` only without `&& rest`) | SLeeLa has no pattern variable. Only when `o` is a name chain without calls (it is evaluated twice) and `T` a class (a cast to an interface fails at run time) |
+| 6k | `return o instanceof T v && rest;` | `if (!(o instanceof T)) { return false; } T v = (T) (o); return rest;` | the `equals` shape; same conditions |
+| 6l | Labels, `break label`, `continue label`, `return` / `break` / `continue` through `finally` | kept | SLeeLa 3.1 (44.4, 44.5) |
+| 6m | `x++` and `(a = b)` used as a value | kept | the language evaluates both (43.6 rule 12); the value wraps at 32 bits only when stored |
 | 6g | `assert` | dropped | Java runs with assertions disabled by default, so the statement is not evaluated |
 | 6h | `System.out.println(x)` | `print(x)` | `System.out.print` (no newline) is a stub (reason 23): `print` always adds one |
 
@@ -127,21 +135,21 @@ run, and is listed in the report.
 | 1 | lambda or switch arrow |
 | 2 | method reference |
 | 3 | anonymous class |
-| 4 | labeled statement |
+| 4 | labeled statement (retired in 0.2) |
 | 5 | switch expression or multi-label case |
-| 6 | pattern matching `instanceof` |
+| 6 | pattern matching `instanceof` outside the two lowered shapes (rules 6j, 6k) |
 | 7 | try-with-resources |
 | 8 | `var` |
 | 9 | class literal `X.class` |
 | 10 | qualified `this` or `super` (`Outer.this`, `Iface.super.m()`) |
-| 11 | comma in a `for` header |
+| 11 | comma in a `for` header whose body is an unbraced compound statement |
 | 12 | multi-dimensional array creation |
-| 13 | `return`, `break` or `continue` inside a `try` that has `finally` (SLEELA.syntax 43.5) |
+| 13 | `return`, `break` or `continue` inside a `try` that has `finally` (retired in 0.2: 44.5) |
 | 14 | local class inside a method |
 | 15 | hexadecimal floating point literal |
 | 16 | unpaired surrogate in a string or char literal |
 | 17 | `native` method |
-| 18 | nested array initializer |
+| 18 | nested array initializer (retired in 0.2: 44.3) |
 | 20 | enum constant with a class body (the body is dropped and reported) |
 | 22 | static member of `java.lang.String` (`valueOf`, `format`, `join`, ...): `String` is a SLeeLa keyword and cannot be a static receiver, and lowering `valueOf` to `"" + x` would print a `double` or `char` in SLeeLa form |
 | 23 | `System.out.print` without a newline |
@@ -149,7 +157,7 @@ run, and is listed in the report.
 ## 5. Every converted file
 
 Each output file carries, in order: a header naming the Java type, module and
-source; the licence comment of the Java source; `#sleela 3.0`; `spark;` (Java
+source; the licence comment of the Java source; `#sleela 3.1`; `spark;` (Java
 style declarative, SLEELA.syntax 43.2); `import java.jdk-28;`; the type's Javadoc;
 the class with the Metadata Class block (author, copyright, trademark and
 corporation are taken from the licence comment: Oracle / OpenJDK, GPLv2 with the
@@ -159,32 +167,42 @@ unverified converted code); the housing fields `javaType`, `javaModule`,
 closing comment with the member and stub counts. Interfaces get no Metadata block
 (their fields would be constants).
 
-## 6. Measured result and known gaps (2026-11-13)
+## 6. Measured result and known gaps (2026-11-13, converter 0.2.0)
 
 Sample: 17 files from the OpenJDK 25.0.2 `src.zip` (`Math`, `Record`, `Override`,
 `Runnable`, `DayOfWeek`, `AbstractList`, `BitSet`, `HashMap`, `HexFormat`,
 `Objects`, `Optional`, `OptionalInt`, `StringJoiner`, `StringTokenizer`, `UUID`,
 `Adler32`, `CRC32`), `JCONV_SCOPE=all`.
 
-| Measure | Result |
-|---|---:|
-| Java files converted | 16 of 17 (`UUID.java` skipped: non-ASCII bytes) |
-| SLeeLa files written (types, nested included) | 36 |
-| Members | 627 |
-| Members stubbed (fail loud) | 47 (7.5%) |
-| Output files with no `sleela check` error | 8 of 36 (`Adler32`, `CRC32`, `Record`, `Override`, `Runnable`, and three nested helpers) |
-| Output files with only semantic errors (no syntax errors) | 28 of 36 |
+| Measure | 0.1.0 | 0.2.0 |
+|---|---:|---:|
+| Java files converted | 16 of 17 | 16 of 17 (`UUID.java` skipped: non-ASCII bytes) |
+| SLeeLa files written (types, nested included) | 36 | 36 |
+| Members | 627 | 627 |
+| Members stubbed (fail loud) | 47 (7.5%) | **35 (5.6%)** |
+| Output files with a syntax error | 0 | 0 |
+| Output files with no `sleela check` error | 8 of 36 | 8 of 36 |
+
+The 12 fewer stubs are the ten `for` headers with commas and two pattern
+`instanceof` members. The check errors that remain come from the library and
+the language, not from conversion slips: by message, mostly "use of undeclared
+variable" (inner classes reaching the fields of the enclosing instance),
+"struct ... has no field" (nested and inherited types that do not resolve), and
+"instance method ... must be called on an instance" (statics written as
+instance methods in the jdk-28 units).
 
 **Behaviour, side by side with a real JDK.** `samples/demo/ConvDemo.java` (plain
 procedural Java: int overflow, hex / octal / binary literals, a string hash loop,
-array initializer, `.length`, zero-filled `new int[n]`, multi-declaration, char
-literals, narrowing casts, `switch`, an enum, a static initializer, a text block,
-the ternary) converts with no stub. Bundled into one document (see below) it
-prints **17 of 18 lines identical** to OpenJDK 25.0.2 (`samples/ConvDemo.java.out`
-against `samples/ConvDemo.sleela.out`). The one difference is the documented
-near-miss of item 6: `(-16 >>> 28)` and `(1 << 33)` are computed inside an
-expression and never stored, so they are 64-bit (`68719476735`, `8589934592`;
-Java: `15`, `2`).
+an array initializer and a nested one, `.length`, `new int[n]`, multi-declaration,
+char literals and a `switch` over them, narrowing casts, an enum, a static
+initializer, a text block, the ternary, a `for` with commas and `continue`, a
+labeled `continue` / `break`, `return` through `finally`, pattern `instanceof`
+in `if` and `return`) converts with no stub. Bundled into one document (see
+below) it prints **23 of 24 lines identical** to OpenJDK 25.0.2
+(`samples/ConvDemo.java.expected.txt` against `samples/ConvDemo.sleela.expected.txt`). The one
+difference is the documented near-miss of item 6: `(-16 >>> 28)` and `(1 << 33)`
+are computed inside an expression and never stored, so they are 64-bit
+(`68719476735`, `8589934592`; Java: `15`, `2`).
 
 Reproduce:
 
@@ -195,7 +213,7 @@ JCONV_IN=lib/java/converter/samples JCONV_OUT=/tmp/conv-demo JCONV_SCOPE=all bas
 # bundle: the nested enum is its own file, and a user program does not link sibling files
 python3 -c "m=open('/tmp/conv-demo/demo/ConvDemo.sleela').read(); c=open('/tmp/conv-demo/demo/ConvDemo.Color.sleela').read(); open('/tmp/conv-demo/demo/Bundle.sleela','w').write(m+'\n'+c[c.index('class Color'):])"
 (cd /tmp/conv-demo/demo && SLEELA_HOME=$R SLEELA_LIB=$R/lib "$R/impl/build/sleela" run Bundle.sleela) | grep -v -E '^\[memory-manager\]|^verification|\[security\]|\[defender\]' > /tmp/conv-demo/sleela.out
-diff lib/java/converter/samples/ConvDemo.java.out /tmp/conv-demo/sleela.out
+diff lib/java/converter/samples/ConvDemo.java.expected.txt /tmp/conv-demo/sleela.out
 ```
 
 A runnable conversion must be one document: several files given to `sleela run`
@@ -209,7 +227,13 @@ library, in this order of weight:
 1. **Nested and inner types do not resolve.** The loader does not load
    `Outer.Inner.sleela` (PURPOSE.md row 4), and an inner class cannot reach the
    fields of its enclosing instance (`size`, `modCount` in `HashMap.KeySet`).
-   This is most of the `HashMap` and `AbstractList` errors.
+   This is most of the `HashMap` and `AbstractList` errors. Writing nested types
+   inline (SLEELA.syntax 14, hoisted as `Outer__Inner`) was measured on
+   2026-11-13 and is not a way out yet: only a plain nested class with fields
+   and methods works; a nested class must be named `Outer.Inner` even inside
+   `Outer`; a nested constructor that calls `super(...)`, a nested class that
+   extends another, static members of a nested class (`Outer.S.K`),
+   `new Outer.C[1]`, and a nested interface all fail.
 2. **JDK-internal types are not in the tier.** `jdk.internal.access.JavaLangAccess`,
    `jdk.internal.util.Preconditions`, `ZipUtils` and the like are not public API
    and have no `lib/java/jdk-28` file. Converting with `JCONV_SCOPE=all` produces
@@ -251,4 +275,12 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | `JConvEmitter` | layout and buffered output below the 65,536-byte String limit |
 | `JConvReport` | `CONVERSION-REPORT.tsv` and `CONVERSION-SUMMARY.md` |
 | `run-converter.sh` | runs `JConvMain` with the settings |
-| `samples/` | `demo/ConvDemo.java` and its JDK and SLeeLa outputs (section 6) |
+| `samples/` | `demo/ConvDemo.java`, its JDK output `ConvDemo.java.expected.txt` and its converted output `ConvDemo.sleela.expected.txt` (section 6) |
+
+## 8. Changes
+
+| Version | Change |
+|---|---|
+| 0.1.0 | First cut: walk, lex, rewrite, translate, stubs, report |
+| 0.2.0 | Output declares `#sleela 3.1` and uses its forms: array initializers and `new T[n]` kept (the `slArray_*` / `slZeroArray_*` helpers are gone), character literals kept, labels and jumps through `finally` kept (stub reasons 4, 13, 18 retired). New lowerings: `for` headers with commas (6i), pattern `instanceof` in two exact shapes (6j, 6k). No cast to array types (the compiler rejects them). Compiler fix alongside: `new int32[n]` starts at 0 (`impl/frontend/compiler.cpp` `arrayFillKind`) |
+

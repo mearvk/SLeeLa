@@ -169,3 +169,15 @@ refuse (do not clamp or wrap) inputs that could push it past. See
 - **`osMakeDir` does not create parents** (returns -1); create each level.
 - **`osRun(cmd)` returns the exit status** of the shell command (0 on success).
 
+## Syntax 3.1 notes from the converter (2026-11-13)
+
+- **A cast to an array type is a compile error** ("casts to array types require
+  runtime array element contracts"): never write `(int32[]) x`.
+- **Inline nested classes (SLEELA.syntax 14) are limited.** A nested class must be
+  named `Outer.Inner` even inside `Outer`. A plain nested class with fields and
+  methods works; a nested constructor calling `super(...)`, a nested class that
+  extends another, static members of a nested class (`Outer.S.K`),
+  `new Outer.C[1]`, and a nested interface fail. Prefer top-level classes.
+- **`new int32[n]` held `null` before the 2026-11-13 compiler fix** (now 0, like
+  `new int[n]`); `new long[n]` / `new boolean[n]` were already zero / `false`.
+

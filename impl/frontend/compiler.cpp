@@ -1099,6 +1099,11 @@ private:
     // zero/false, not null (see OP_NEWARRAY operand a).
     static int arrayFillKind(const std::string& elem){
         if(elem=="int"||elem=="long"||elem=="short"||elem=="byte"||elem=="char"||elem=="int64") return 1;
+        // The 64-bit-backed series members (int32, uint32, uint64, U<width>) start
+        // at 0 too; the 128-bit-backed members keep the null default.
+        if((SignedWideInteger::isValidTypeName(elem)&&SignedWideInteger::fitsNativeNarrow(elem))
+           ||(UnsignedWideInteger::isValidTypeName(elem)&&UnsignedWideInteger::fitsNativeNarrow(elem))
+           ||UnsignedInteger::isValidTypeName(elem)) return 1;
         if(elem=="double"||elem=="float") return 2;
         if(elem=="bool"||elem=="boolean") return 3;
         return 0;

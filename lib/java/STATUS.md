@@ -427,10 +427,14 @@ section 1.
 | Measured (OpenJDK 25.0.2 sources) | Result |
 |---|---:|
 | Sample of 17 JDK files: converted | 16 (`UUID.java` skipped: non-ASCII bytes) |
-| SLeeLa files written / members / fail-loud stubs | 36 / 627 / 47 (7.5%) |
+| SLeeLa files written / members / fail-loud stubs | 36 / 627 / 35 (5.6%; 47 in 0.1.0) |
 | Output files with a syntax error | 0 |
 | Output files passing `sleela check` | 8 of 36 |
-| `converter/samples/demo/ConvDemo.java` against a real JDK | 17 of 18 lines identical |
+| `converter/samples/demo/ConvDemo.java` against a real JDK | 23 of 24 lines identical |
+
+Converter 0.2.0 (2026-11-13) declares `#sleela 3.1` and uses its array
+initializers, character literals, labels and jumps through `finally`, and lowers
+`for` headers with commas and pattern `instanceof` (two exact shapes).
 
 The `check` errors come from the gaps in section 6 (nested-type files, inner
 classes reaching the enclosing instance, statics written as instance methods,

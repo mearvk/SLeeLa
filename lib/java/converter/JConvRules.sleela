@@ -12,7 +12,7 @@ class JConvRules {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. The rules it
      encodes follow the Java Language Specification and SLEELA.syntax. >>
-  String metaVersion = "0.1.0";
+  String metaVersion = "0.2.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-12";
@@ -191,21 +191,21 @@ class JConvRules {
     if (code == 1) { return "lambda or switch arrow"; }
     if (code == 2) { return "method reference"; }
     if (code == 3) { return "anonymous class"; }
-    if (code == 4) { return "labeled statement"; }
+    if (code == 4) { return "labeled statement (retired in 0.2: SLeeLa 3.1 has labels)"; }
     if (code == 5) { return "switch expression or multi-label case"; }
-    if (code == 6) { return "pattern matching instanceof"; }
+    if (code == 6) { return "pattern matching instanceof (outside the two lowered shapes)"; }
     if (code == 7) { return "try-with-resources"; }
     if (code == 8) { return "local variable type inference (var)"; }
     if (code == 9) { return "class literal"; }
     if (code == 10) { return "qualified this or super"; }
-    if (code == 11) { return "comma in for header"; }
+    if (code == 11) { return "comma in a for header whose body is a compound statement"; }
     if (code == 12) { return "multi-dimensional array"; }
-    if (code == 13) { return "return, break or continue inside try with finally"; }
+    if (code == 13) { return "return, break or continue inside try with finally (retired in 0.2: SLeeLa 3.1 runs the finally)"; }
     if (code == 14) { return "local or nested class inside a method"; }
     if (code == 15) { return "hexadecimal floating point literal"; }
     if (code == 16) { return "unpaired surrogate in a string or char literal"; }
     if (code == 17) { return "native method"; }
-    if (code == 18) { return "nested array initializer"; }
+    if (code == 18) { return "nested array initializer (retired in 0.2: SLeeLa 3.1 has array initializers)"; }
     if (code == 19) { return "explicit generic method type arguments"; }
     if (code == 20) { return "enum constant with a body"; }
     if (code == 21) { return "compact record constructor"; }

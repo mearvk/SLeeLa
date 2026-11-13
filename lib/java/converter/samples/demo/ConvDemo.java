@@ -60,5 +60,58 @@ public class ConvDemo {
             """;
         System.out.println("text [" + t.trim() + "] " + t.length());
         System.out.println(k > 500 ? "big" : "small");
+        // syntax 3.1 forms: comma for headers, labels, finally on return, nested initializers
+        int acc = 0;
+        for (int i = 0, j = 10; i < j; i++, j--) {
+            if (i == 2) continue;
+            if (i == 4) break;
+            acc += i * j;
+        }
+        System.out.println("comma-for " + acc);
+        int found = -1;
+        outer:
+        for (int r = 0; r < 5; r++) {
+            for (int c = 0; c < 5; c++) {
+                if (c > r) continue outer;
+                if (r * c == 6) { found = r * 10 + c; break outer; }
+            }
+        }
+        System.out.println("label " + found);
+        System.out.println("finally " + guarded(3) + " " + trace);
+        int[][] grid = {{1, 2, 3}, {4, 5}};
+        int[] row = grid[1];
+        System.out.println("grid " + grid.length + " " + row[1]);
+        char c = 'q';
+        switch (c) {
+            case 'p': System.out.println("p"); break;
+            case 'q': System.out.println("is q"); break;
+            default: System.out.println("other");
+        }
+        System.out.println("pattern " + describe("abc") + ", " + describe(Integer.valueOf(9)) + ", " + describe(Integer.valueOf(2)) + ", " + emptyText("") + " " + emptyText(Integer.valueOf(1)));
+    }
+
+    static String describe(Object o) {
+        if (o instanceof String s) {
+            return "str " + s.length();
+        }
+        if (o instanceof Integer n && n.intValue() > 5) {
+            return "big " + n.intValue();
+        }
+        return "other";
+    }
+
+    static boolean emptyText(Object o) {
+        return o instanceof String s && s.isEmpty();
+    }
+
+    static String trace = "";
+
+    static int guarded(int n) {
+        try {
+            if (n > 2) return n * 2;
+            return n;
+        } finally {
+            trace = trace + "ran";
+        }
     }
 }

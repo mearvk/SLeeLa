@@ -16,7 +16,7 @@ material;
 class JConvTranslator {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. >>
-  String metaVersion = "0.1.0";
+  String metaVersion = "0.2.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-12";
@@ -446,7 +446,7 @@ class JConvTranslator {
     this.em.comment(head);
     int lc = 0;
     while (lc < this.licenceEnd) { this.em.comment(tx(lc)); lc = lc + 1; }
-    this.em.lineOut("#sleela 3.0");
+    this.em.lineOut("#sleela 3.1");
     this.em.lineOut("spark;");
     this.em.lineOut("import java.jdk-28;");
     this.em.blankLine();
@@ -496,7 +496,6 @@ class JConvTranslator {
     }
     if (kind == "enum") { writeEnumMachinery(open, constEnd, name, hasCtor); }
     if (kind == "record") { writeRecordMembers(compOpen, compClose, name, hasCanonical); }
-    this.rw.emitHelpers(this.em);
     this.em.leave();
     this.em.lineOut("}");
     this.em.lineOut("< conversion: " + this.unitMembers + " members, " + this.unitStubs + " stubbed (fail loud, see the Java body kept beside each) >");

@@ -21,7 +21,7 @@ class JConvLexer {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. The lexical
      rules follow JLS chapter 3 (Java SE 28). >>
-  String metaVersion = "0.1.0";
+  String metaVersion = "0.2.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-12";
@@ -359,9 +359,24 @@ class JConvLexer {
     if (this.bufN > 0) { v = this.buf[0]; }
     String alt = encodeBuf();
     if (this.encodeError != 0) { alt = "\"?\""; }
-    push(4, "" + v, this.line, 0, i, j + 1);
+    push(4, charLiteral(v), this.line, 0, i, j + 1);
     this.alts[this.n - 1] = alt;
     return j + 1;
+  }
+
+  < the SLeeLa 3.1 character literal for code unit v (SLEELA.syntax 44.2); a surrogate stays its integer code >
+  String charLiteral(int v) {
+    if (v == 39) { return "'\\''"; }
+    if (v == 92) { return "'\\\\'"; }
+    if (v == 10) { return "'\\n'"; }
+    if (v == 9) { return "'\\t'"; }
+    if (v == 13) { return "'\\r'"; }
+    if (v == 8) { return "'\\b'"; }
+    if (v == 12) { return "'\\f'"; }
+    if (v == 0) { return "'\\0'"; }
+    if (v >= 32 && v < 127) { return "'" + this.rules.charText(v) + "'"; }
+    if (v >= 55296 && v <= 57343) { return "" + v; }
+    return "'\\u" + hex4(v) + "'";
   }
 
   << Text block (JLS 3.10.6): content after the line terminator of the opening

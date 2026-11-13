@@ -300,17 +300,17 @@ counts only behavior that a real JDK agrees with.
 `src.zip` (OpenJDK 25.0.2 is installed in the sandbox); the separate
 `sleelactl java-convert` and its steering
 `.kiro/steering/java-to-sleela-conversion.md`.
-**Method:** state on 2026-11-13 (`15bb3c93`): a SLeeLa program that converts a
-Java source tree to one SLeeLa file per type. On a 17-file JDK sample: 16
-converted, 36 SLeeLa files, 627 members, 47 fail-loud stubs (7.5%), **0 syntax
-errors**, 8 of 36 files pass `sleela check`; its own sample program runs 17 of
-18 lines identical to a real JDK. Next, in order:
+**Method:** state on 2026-11-13, converter 0.2.0 (syntax 3.1 forms; `for`
+headers with commas and pattern `instanceof` lowered): on a 17-file JDK sample,
+16 converted, 36 SLeeLa files, 627 members, 35 fail-loud stubs (5.6%; 47 in
+0.1.0), **0 syntax errors**, 8 of 36 files pass `sleela check`; its own sample
+program runs 23 of 24 lines identical to a real JDK. Next, in order:
 
 | # | Step | Why |
 |---|---|---|
 | 0 | **Decide the policy**: per-member fail-loud stubs (now), or fail closed per file like `java-convert` | the two converters should not disagree on what "converted" means |
 | 1 | A bundle mode (one document per program, nested types inlined) | a runnable conversion must be one document today; several files duplicate library units, and a separate `Color.sleela` loses to the JDK 28 `java.awt.Color` |
-| 2 | Loader: resolve `Outer.Inner.sleela`; compiler: inner classes reach the enclosing instance | most `check` errors in `HashMap` / `AbstractList` (course 15, A4) |
+| 2 | Loader: resolve `Outer.Inner.sleela`; compiler: inner classes reach the enclosing instance; inline nested classes (SLEELA.syntax 14) with constructors, `extends`, statics and arrays | most `check` errors in `HashMap` / `AbstractList` (course 15, A4). Inline nesting was measured and is too limited today (converter README section 6) |
 | 3 | Library: real statics for `Float`, `Objects`, `Arrays`, `Character` | "instance method must be called on an instance" errors |
 | 4 | Expression types in the converter (a symbol table per member) | removes the near-misses: `double` / `char` text in concatenation, `int` wrap inside expressions (use `JavaOperands`), interface-typed values |
 | 5 | Lower lambdas and method references (`lib/java/jdk-28/LOWERING.md` section 2) | the largest group of stubs in real JDK code |

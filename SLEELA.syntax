@@ -3395,6 +3395,11 @@ type the compiler knows. `{...}` on a non-array declaration is an error;
 `new T[n]{...}` (size and initializer together) is not accepted.
 Lowering: `OP_NEWARRAY` with the element fill kind, then per element `OP_DUP`,
 the index, the value, `OP_ARRSET`, `OP_POP`; the array is left on the stack.
+The fill kind also sets the start value of `new T[n]`: zero for the integer
+types, `0.0` for `double` / `float`, `false` for `boolean`, `null` otherwise. From
+2026-11-13 the 64-bit-backed series members (`int32`, `uint32`, `uint64`,
+`U<width>`) start at zero too (`arrayFillKind` in `impl/frontend/compiler.cpp`);
+before, `new int32[n]` held `null`. The 128-bit-backed members keep `null`.
 
 Not covered: multi-dimensional creation `new T[a][b]` (still one dimension; see 44.6).
 
