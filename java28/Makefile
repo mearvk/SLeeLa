@@ -14,6 +14,14 @@ JAVA ?= java
 # An explicit environment/command-line JAVA_HOME always takes precedence.
 JAVA_HOME ?= $(shell command -v "$(JAVA)" >/dev/null 2>&1 && $(JAVA) -XshowSettings:properties -version 2>&1 | sed -n 's/^[[:space:]]*java\.home = //p' | head -n 1)
 
+# Normalize Windows JDK paths to the POSIX form understood by MSYS2/GNU Make.
+# This also handles JAVA_HOME values containing spaces.
+ifeq ($(OS),Windows_NT)
+  ifneq ($(strip $(JAVA_HOME)),)
+    JAVA_HOME := $(shell cygpath -u "$(JAVA_HOME)" 2>/dev/null || printf '%s' "$(JAVA_HOME)")
+  endif
+endif
+
 BUILD := build
 CLASSES := $(BUILD)/classes
 JNIH := $(BUILD)/jni
