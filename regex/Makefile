@@ -4,6 +4,12 @@ CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wformat=2 -We
 CXXFLAGS ?= -std=c++17 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wformat=2 -Werror
 CPPFLAGS ?= -Iinclude
 BUILD ?= build
+ifeq ($(OS),Windows_NT)
+  EXE := .exe
+else
+  EXE :=
+endif
+export EXE
 .PHONY: all c cpp natural java test test-suites clean
 all: c cpp natural java test-suites
 c:
