@@ -20,7 +20,7 @@ all: check-deps memory$(EXE) reflection$(EXE) nordshrift$(EXE) runtime$(EXE) net
 # The network/security smoke target uses OpenSSL EVP. Fail early with an
 # actionable message rather than a later opaque -lcrypto link error.
 check-deps:
-	@printf '%s\\n' '#include <openssl/evp.h>' 'int main(void) { return EVP_MAX_MD_SIZE <= 0; }' | $(CXX) $(CXXFLAGS) -x c++ - -lcrypto -o .openssl-probe$(EXE) >/dev/null 2>&1 || { echo "tests: OpenSSL development headers/library are required for network-security (install OpenSSL development package and ensure -lcrypto is available)." >&2; rm -f .openssl-probe .openssl-probe.exe; exit 1; }
+	@echo '#include <openssl/evp.h>' | $(CXX) $(CXXFLAGS) -x c++ - -fsyntax-only >/dev/null 2>&1 || { echo "tests: OpenSSL headers are required for network-security." >&2; exit 1; }; echo 'int main(void) { return 0; }' | $(CXX) $(CXXFLAGS) -x c++ - -lcrypto -o .openssl-probe$(EXE) >/dev/null 2>&1 || { echo "tests: OpenSSL library (-lcrypto) is required for network-security." >&2; exit 1; }
 	@rm -f .openssl-probe .openssl-probe.exe
 
 memory$(EXE): native_memory_smoke.cpp ../api/native/memory/sleela_memory_manager.cpp
