@@ -18,7 +18,7 @@
 #      file on disk has a corresponding .xml example (no orphans).
 #
 # Dependencies: bash, grep, sed, sort. XML well-formedness uses xmllint when
-# present and falls back to python3; if neither is available that single check
+# present and falls back to the configured Python 3 launcher; if neither is available that check
 # is skipped with a notice rather than failing the build.
 # =============================================================================
 
