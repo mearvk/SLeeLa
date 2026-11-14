@@ -475,3 +475,60 @@ The new log disproves the earlier assumption that the malformed `#sleela` diagno
 **Immediate priority:** repair and isolate the Windows ConPTY teardown hang first. Then add a dedicated root-pipeline workflow that executes the root dispatcher and staged installer qualification per supported OS, while keeping optional dependency-dependent modules separately reported rather than silently counted as successful.
 
 **Evidence integrity:** the run above is the first completed portability result on the current FILAMENT commit. It is a two-platform pass and a Windows regression failure; it is not a root `make all` or installer pass. No local shell build or installation was executed as part of this GitHub inspection.
+
+
+## Root build and installation qualification — 2026-11-14 (current work)
+
+This section records the root dispatcher changes and the dedicated end-to-end qualification path. Build status is **pending until the current Actions run completes**; no current root build or install is marked PASS solely because a workflow was added.
+
+### Root dispatcher improvements
+
+The root `Makefile` now makes these test stages part of `make all`:
+
+| Root stage | Command actually invoked | What it qualifies |
+|---|---|---|
+| Codecs tests | `make -C codecs test` via `codecs-test` | Registry, manager, and FLAC-native executable tests |
+| Churn tests | `make -C churn test` via `churn-test` | Compiles and runs all five Java constraint-report sets, plus data validation |
+| Antivirus tests | `make -C antivirus test` via `antivirus-test` | Native scanner/test binaries and Python tool/test checks |
+| Runtime tests | `make -C runtime clean test` via `runtime-test` | GC/security and Java bridge-injection executable tests |
+| Premium VM tests | For each `001–011`, run `make all` then `make test` | Builds each Premium SLVM and runs its `--selfcheck` |
+| Existing root test stage | `make -C tests check` | Builds and executes memory, reflection, Nordshrift, runtime, network-security, XOR neural-net, and character-recognition smoke binaries |
+
+Additional dependency/order corrections:
+
+- `common-rails` now explicitly depends on `core`.
+- `registry` now explicitly depends on `core`, so the registry export step cannot race the native runtime in parallel builds.
+- Root `clean` now also removes standalone `runtime` test artifacts.
+- The JetBrains Makefile's `all` target now validates its source-acquisition helper files. This stage is explicitly **not** an IntelliJ/SLeeLa IDE build; no IDE artifact is claimed.
+- Installer user-home resolution now handles both Linux `getent` and macOS `dscl` rather than assuming `getent` exists.
+
+### Root build entry points
+
+- `make all`: full root module dispatcher plus wired tests.
+- `make build SLEELA_ADVANCED_BUILD=no`: exercises the user-facing build target and explicitly retains the plain build.
+- `make advanced-build SLEELA_ADVANCED_BUILD=yes`: runs the OS-specific guided installer after the build products exist.
+
+### Dedicated root qualification workflow
+
+Workflow: [Root Build and Install Qualification](https://github.com/mearvk/SLeeLa/actions/workflows/root-build-install.yml)
+
+It is configured to execute:
+
+1. `make clean build SLEELA_ADVANCED_BUILD=no` on Ubuntu, macOS, and Windows 10+ / MinGW-w64.
+2. Product and registry artifact presence checks on each platform.
+3. Staged user-local install, executable smoke tests, and uninstall on Linux and macOS.
+4. Staged system-prefix install using `DESTDIR`, executable smoke tests, and uninstall on Linux and macOS; no writes to the hosted machine's real system prefix.
+5. The guided POSIX installer through the root `advanced-build` target on Linux and macOS, using a disposable user prefix.
+6. The native PowerShell guided installer on Windows, using a disposable destination.
+7. Full `install-all` / `uninstall-all` coverage on disposable hosted Ubuntu and macOS runners, including both user-local layouts and `/usr/local`.
+
+The install-all test is intentionally isolated to ephemeral GitHub-hosted VMs because that target updates multiple real system/user locations. It is not run against a developer workstation.
+
+### Current CI state
+
+- Latest root qualification run: [43638763796](https://github.com/mearvk/SLeeLa/actions/runs/43638763796), queued when this section was written.
+- Latest native portability run: [43638763611](https://github.com/mearvk/SLeeLa/actions/runs/43638763611), queued when this section was written.
+- The Windows ConPTY terminal smoke test has been added ahead of the full VM regression suite to isolate the earlier timeout. It is not yet recorded as passing.
+- The first draft of the root workflow failed before scheduling jobs due to a workflow-definition issue; it was replaced with separate POSIX and Windows jobs. The corrected workflow is the one linked above.
+
+**Qualification rule:** the root build is not green until all three root build jobs pass. The installation pipeline is not green until the staged user-local and system installs, installed-product smoke tests, guided installer checks, and sandboxed install-all/uninstall-all checks pass. Pending and queued runs remain pending.
