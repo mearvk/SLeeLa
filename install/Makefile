@@ -1,6 +1,7 @@
 # SLeeLa conventional installation targets (Linux/macOS POSIX make).
 # Max Rupplin - MEARVK LLC - 2026
 PREFIX ?= /usr/local
+PYTHON ?= python3
 DESTDIR ?=
 BINDIR ?= $(PREFIX)/bin
 LIBDIR ?= $(PREFIX)/lib
@@ -159,7 +160,7 @@ install-check:
 	@grep -q 'sleela-native-service.py' quick-safe-install.ps1
 	@grep -q 'sleela-native-drive.py' Makefile
 	@grep -q 'sleela-native-service.py' Makefile
-	@python3 -c 'import json; p="../security/sha256-manifest.json"; paths={x["path"] for x in json.load(open(p, encoding="utf-8"))["files"]}; required={"tools/sleela-native-drive.py","tools/sleela-native-service.py"}; missing=required-paths; assert not missing, "Native Drive manifest entries missing: "+", ".join(sorted(missing))'
+	@$(PYTHON) -c 'import json; p="../security/sha256-manifest.json"; paths={x["path"] for x in json.load(open(p, encoding="utf-8"))["files"]}; required={"tools/sleela-native-drive.py","tools/sleela-native-service.py"}; missing=required-paths; assert not missing, "Native Drive manifest entries missing: "+", ".join(sorted(missing))'
 	@grep -q 'System-wide' README.md
 	@sh ../bin/sleelactl check-registry --strict >/dev/null || { sh ../bin/sleelactl check-registry --strict; exit 1; }
 	@echo "Installer entry points, Native Drive staging, trusted-manifest entries, and compiled-product checks present for Linux, macOS, and Windows 10+."
