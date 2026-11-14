@@ -160,9 +160,9 @@ jobs:
           {
             echo "# Advantage Library Verification"
             echo
-            printf -- '- Commit: `%s`\\n' "$GITHUB_SHA"
-            printf -- '- Ref: `%s`\\n' "$GITHUB_REF"
-            printf -- '- Runner: `%s` / `%s`\\n' "$RUNNER_OS" "$RUNNER_ARCH"
+            printf -- '- Commit: `%s`\n' "$GITHUB_SHA"
+            printf -- '- Ref: `%s`\n' "$GITHUB_REF"
+            printf -- '- Runner: `%s` / `%s`\n' "$RUNNER_OS" "$RUNNER_ARCH"
             echo '- Runtime build: source-built from `impl/`'
             echo
             echo "The job is successful only when documentation checks, generated API checks, and all six runnable demonstrations pass."
