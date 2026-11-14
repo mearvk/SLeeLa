@@ -14,10 +14,10 @@ CXXFLAGS=${CXXFLAGS:-"-std=c++17 -Wall -Wextra -Wpedantic -Wconversion -Wshadow 
 mkdir -p "$BUILD/java"
 
 $CC_BIN $CFLAGS -I"$ROOT/include" "$ROOT/src/sleela_regex_natural.c" "$ROOT/tests/test_regex_natural.c" -o "$BUILD/natural-c$EXE"
-"$BUILD/natural-c"
+"$BUILD/natural-c$EXE"
 
 $CXX_BIN $CXXFLAGS -I"$ROOT/include" "$ROOT/src/sleela_regex_natural.cpp" "$ROOT/tests/test_regex_natural.cpp" -o "$BUILD/natural-cpp$EXE"
-"$BUILD/natural-cpp"
+"$BUILD/natural-cpp$EXE"
 
 $JAVAC_BIN -d "$BUILD/java" "$ROOT/java/SleelaRegexNatural.java" "$ROOT/java/SleelaRegexNaturalParser.java" "$ROOT/java/SleelaRegexNaturalTest.java"
 $JAVA_BIN -cp "$BUILD/java" sleela.regex.SleelaRegexNaturalTest
@@ -25,4 +25,4 @@ $JAVA_BIN -cp "$BUILD/java" sleela.regex.SleelaRegexNaturalTest
 "$ROOT/test-suites/test_sleela_sources.sh"
 "$SCRIPT_DIR/test_symbol_exhaustiveness.sh"
 
-printf '%s\n' 'Natural Form C/C++/Java tests and SLeeLa source inventory: PASS'
+printf '%s\\n' 'Natural Form C/C++/Java tests and SLeeLa source inventory: PASS'
