@@ -252,15 +252,23 @@ public:
             std::function<void(const std::string&)> inheritMethods=[&](const std::string& name){
                 if(aliased.count(name)||!classByName.count(name)) return;
                 if(!aliasInProgress.insert(name).second) return; // cycle guard
-                const std::string sup=classrel::superclassOf(classByName,*classByName[name]);
-                if(sup.empty()||!classByName.count(sup)||aliasInProgress.count(sup)){ aliasInProgress.erase(name); aliased.insert(name); return; }
-                inheritMethods(sup);
-                // Alias the base's RESOLVED function set (its own + inherited),
-                // so multi-level chains carry grandparent methods down.
-                const std::string pfx=sup+"::";
-                std::vector<std::pair<std::string,int>> toAlias;
-                for(const auto& kv:funcIndex_){ const std::string& bk=kv.first; if(bk.rfind(pfx,0)!=0) continue; std::string mname=bk.substr(pfx.size()); if(mname=="main") continue; const std::string dk=name+"::"+mname; if(funcIndex_.count(dk)) continue; toAlias.push_back({dk,kv.second}); auto ow=methodOwner_.find(bk); if(ow!=methodOwner_.end()) methodOwner_[dk]=ow->second; }
-                for(auto& e:toAlias) funcIndex_[e.first]=e.second;
+                const ClassDecl& self=*classByName[name];
+                // Alias a parent's RESOLVED function set (its own + inherited),
+                // so multi-level chains carry grandparent methods down; a
+                // method this type already has is kept.
+                auto aliasFrom=[&](const std::string& sup){
+                    if(sup.empty()||sup==name||!classByName.count(sup)||aliasInProgress.count(sup)) return;
+                    inheritMethods(sup);
+                    const std::string pfx=sup+"::";
+                    std::vector<std::pair<std::string,int>> toAlias;
+                    for(const auto& kv:funcIndex_){ const std::string& bk=kv.first; if(bk.rfind(pfx,0)!=0) continue; std::string mname=bk.substr(pfx.size()); if(mname=="main") continue; const std::string dk=name+"::"+mname; if(funcIndex_.count(dk)) continue; toAlias.push_back({dk,kv.second}); auto ow=methodOwner_.find(bk); if(ow!=methodOwner_.end()) methodOwner_[dk]=ow->second; }
+                    for(auto& e:toAlias) funcIndex_[e.first]=e.second;
+                };
+                aliasFrom(classrel::superclassOf(classByName,self));
+                // SLEELA.syntax 43.8: the further parents of an interface that
+                // extends several interfaces (the same rule as semantic.cpp).
+                if(self.java.kind==JavaTypeKind::Interface)
+                    for(const auto& raw:self.java.interfaces) aliasFrom(classrel::resolveBaseName(classByName,classrel::stripTypeArguments(raw)));
                 aliasInProgress.erase(name);
                 aliased.insert(name);
             };

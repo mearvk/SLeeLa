@@ -579,8 +579,18 @@ ClassDecl Parser::parseClass(unsigned classModifiers,std::vector<annotation::Ann
     if(kind!=Tok::KwClass&&kind!=Tok::KwInterface&&kind!=Tok::KwEnum&&kind!=Tok::KwRecord) error("expected Java type declaration");
     i_++; if(check(Tok::KwStringT)){ c.name=cur().text; ++i_; } else c.name=expect(Tok::Ident,"type name").text; c.java.qualifiedName=c.name; c.java.typeParameters=parseTypeParameters();
     { std::vector<std::string> vars; for(const auto& tp:c.java.typeParameters) vars.push_back(tp.substr(0,tp.find(' '))); typeVars_.push_back(vars); }
-    if(accept(Tok::KwExtends)) c.java.superclass=parseQualifiedName();
-    if(accept(Tok::KwImplements)) c.java.interfaces=parseTypeList(Tok::LBrace);
+    if(accept(Tok::KwExtends)){
+        c.java.superclass=parseQualifiedName();
+        // SLEELA.syntax 43.8: an interface may extend several interfaces
+        // (JLS 9.1.3). The first stays the parent edge it always was; the
+        // others join the interface's supertype list, which the subtype rule,
+        // method lookup and the runtime type table follow.
+        if(kind==Tok::KwInterface && check(Tok::Comma)){
+            ++i_;
+            for(const auto& t:parseTypeList(Tok::LBrace)) c.java.interfaces.push_back(t);
+        }
+    }
+    if(accept(Tok::KwImplements)){ for(const auto& t:parseTypeList(Tok::LBrace)) c.java.interfaces.push_back(t); }
     expect(Tok::LBrace,"'{'");
     const bool savedInterface=inInterface_; inInterface_=(kind==Tok::KwInterface);
     while(!check(Tok::RBrace)&&!check(Tok::Eof)){

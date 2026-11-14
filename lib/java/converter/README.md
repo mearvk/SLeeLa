@@ -373,10 +373,12 @@ What remains for a whole-tree conversion, measured on this run:
   24 have no error; 1 has a syntax error; 360 semantic errors in all, mostly
   library gaps (methods the jdk-28 units do not declare, statics written as
   instance methods, `Any` results not assignable to a typed variable).
-- **The one syntax error left is the language.** An interface may extend only
-  one interface in SLeeLa (`interface C extends A, B` is rejected by the
-  parser); 137 converted JDK interfaces in 136 files extend two or more.
-  Closing it needs SLEELA.syntax and the parser, not the converter.
+- **The one syntax error left was the language** (fixed 2026-11-14, SLEELA.syntax
+  43.8): an interface may now extend several interfaces. Of the 136 converted JDK
+  files with such an interface, 133 now have no syntax error; the other 3
+  (`ChronoLocalDate`, `ChronoLocalDateTime`, `ChronoZonedDateTime`) stop on an
+  intersection cast in front of a lowered lambda,
+  `(Comparator & Serializable) new SLJavaLambda(...)`, a converter slip.
 - **Stub reasons across the JDK:** class literal `X.class` 1,884 (48% of all
   stubs), anonymous class 309, native method 285, pattern `instanceof` 250,
   `String` statics 228, method reference 186, `var` 184, switch expression or

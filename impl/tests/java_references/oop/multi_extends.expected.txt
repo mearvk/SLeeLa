@@ -1,0 +1,6 @@
+box 3 7 6
+box 3 3
+true true true false
+6
+crate 5 9 T 10
+true true true true

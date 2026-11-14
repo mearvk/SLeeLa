@@ -66,6 +66,9 @@ String-heavy programs no longer slow down as they run (the `lib/java/converter` 
 on its 17-file JDK sample went from 66 s to 6.6 s). Regression check:
 `impl/examples/string_intern_scaling.sleela`.
 
+Rebuilt again 2026-11-14, same versions: an interface may extend several
+interfaces (SLEELA.syntax 43.8; `impl/tests/java_references/oop/multi_extends`).
+
 Rebuilt 2026-11-14, same versions: `read(handle)` no longer ends a piece inside a
 UTF-8 character (`read_utf8_piece` in `impl/core/sleela_core.c`); an incomplete
 tail waits for the next read. Before, a non-ASCII file could not be read safely
@@ -80,8 +83,8 @@ Reported versions:
 SHA-256 of the committed copies:
 
 ```
-8e2a38c422079b9d7e5693e109b2f53edc33a6bb8a5babb4c1d7a398c682a386  sleela
-4acf57f2eb1815b906bdb32fb34bfba03e2163b073c7dd692f0dd07e9f48249a  nordshrift
+3cb04f50e040e85877399f701e3ae3dfc1eeab4184212aa15a85c902151861e0  sleela
+c56fab925145b2d6c92d2819ea5a760e401e1732a6b3f5ef0b788a66f0487a28  nordshrift
 ```
 
 ---

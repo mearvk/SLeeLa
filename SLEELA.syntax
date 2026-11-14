@@ -3422,6 +3422,39 @@ too (as in 44.5).
    long chain.
 
 
+### 43.8 An interface that extends several interfaces (2026-11-14)
+
+Like 43.7 this removes a rejection and adds no new form beyond what Java
+writes, so it holds in every document that has interfaces.
+
+1. **Grammar.** `interface I extends A, B, C { ... }` is accepted (JLS 9.1.3).
+   Before, only one name was read after `extends`, and the comma was a syntax
+   error ("expected '{' but found ','"). A class still extends at most one
+   class (`class K extends A, B` stays a syntax error); a class names further
+   types with `implements`, as before.
+2. **Representation.** The first name stays the interface's parent edge, as for
+   a single `extends`, so every existing program reads the same. The further
+   names join the interface's supertype list, the list a class's `implements`
+   fills.
+3. **Members.** Through a variable of type `I`, every method of `A`, `B` and `C`
+   (with what they inherit) can be called; a default method body is inherited
+   as from the first parent. A method `I` declares, or an earlier parent
+   already supplies, is kept. Check (`semantic.cpp`) and compile
+   (`compiler.cpp`) apply the same rule.
+4. **Subtypes.** A value of a class implementing `I` is assignable to `A`, `B`
+   and `C`, and `instanceof`, casts and `catch` see all three at run time
+   (the 43.7 supertype edges; the VM follows them transitively).
+5. **Errors.** A cycle through any parent edge (`interface B extends A, C` with
+   `interface C extends A, B`, or `interface B extends A, B`) is an error,
+   "cyclic inheritance involving interface 'B'". An unknown further parent is
+   accepted, as an unknown implemented interface is: in converted code it is
+   often a JDK interface that is not loaded.
+6. **Checked.** A program with two-parent and three-level interfaces, a default
+   method from the second parent, assignments to each parent type, casts and
+   `instanceof` prints the same as OpenJDK 25.0.2 (`impl/tests/java_references`,
+   `multi_extends`). In the converted JDK 137 interfaces in 136 files extend two
+   or more interfaces; each was a syntax error before.
+
 ## 44. Syntax 3.1 — Java conversion blockers (character literal, array initializer, labels, abrupt completion through finally)
 
 This section is **normative** and **implemented in the source compiler

@@ -304,6 +304,29 @@ class Analyzer{
       while(byName.count(cur2)){ seen.insert(cur2); const std::string s2=resolveBaseName(byName[cur2]->java.superclass);
         if(s2.empty()) break; if(seen.count(s2)){ err("cyclic inheritance involving class '"+c.name+"'"); break; } cur2=s2; } }
    }
+   // SLEELA.syntax 43.8: an interface may extend several interfaces. A cycle
+   // through any of its parent edges (the first, as above, or a further one) is
+   // an error, as in Java (JLS 9.1.3). An unknown further parent is accepted,
+   // as an unknown implemented interface is (it may be a JDK type not loaded).
+   { std::map<std::string,int> state; // 0 new, 1 on the path, 2 done
+     std::set<std::string> reported;
+     std::function<void(const std::string&)> visit=[&](const std::string& n){
+      state[n]=1;
+      const ClassDecl* d=byName[n];
+      std::vector<std::string> parents;
+      if(d->java.kind==JavaTypeKind::Interface){
+       const std::string f=resolveBaseName(d->java.superclass); if(!f.empty()) parents.push_back(f);
+       for(const auto& raw:d->java.interfaces){ const std::string r=resolveBaseName(classrel::stripTypeArguments(raw)); if(!r.empty()) parents.push_back(r); }
+      }
+      for(const auto& q:parents){
+       if(!byName.count(q)) continue;
+       if(state[q]==1){ if(d->java.interfaces.size()>0 && reported.insert(n).second) err("cyclic inheritance involving interface '"+n+"'"); continue; }
+       if(state[q]==0) visit(q);
+      }
+      state[n]=2;
+     };
+     for(const auto&c:p.classes) if(c.java.kind==JavaTypeKind::Interface && state[c.name]==0) visit(c.name);
+   }
    // merge base members into each derived class, resolving the chain base-first
    std::set<std::string> done; std::set<std::string> inProgress;
    std::function<void(const std::string&)> resolve=[&](const std::string& name){
@@ -324,6 +347,20 @@ class Analyzer{
      for(const auto&kv:methods){ const std::string&bk=kv.first; if(bk.rfind(pfx,0)!=0) continue; std::string mname=bk.substr(pfx.size()); if(mname=="main") continue; const std::string dk=name+"::"+mname; if(!methods.count(dk)) toAdd.push_back({dk,kv.second}); }
      for(auto&e:toAdd){ methods[e.first]=e.second; auto ob=overloads.find(sup+e.first.substr(e.first.find("::"))); if(ob!=overloads.end()&&!overloads.count(e.first)) overloads[e.first]=ob->second; }
      superOf[name]=sup;
+    }
+    // SLEELA.syntax 43.8: an interface that extends several interfaces gets the
+    // methods of each further parent too (the first is the parent edge above).
+    // A method the interface or an earlier parent already has is kept.
+    if(c->java.kind==JavaTypeKind::Interface){
+     for(const auto& raw:c->java.interfaces){
+      const std::string si=resolveBaseName(classrel::stripTypeArguments(raw));
+      if(si.empty()||si==name||!byName.count(si)||inProgress.count(si)) continue;
+      resolve(si);
+      const std::string pfx=si+"::";
+      std::vector<std::pair<std::string,MethodSig>> toAdd;
+      for(const auto&kv:methods){ const std::string&bk=kv.first; if(bk.rfind(pfx,0)!=0) continue; std::string mname=bk.substr(pfx.size()); if(mname=="main") continue; const std::string dk=name+"::"+mname; if(!methods.count(dk)) toAdd.push_back({dk,kv.second}); }
+      for(auto&e:toAdd){ methods[e.first]=e.second; auto ob=overloads.find(si+e.first.substr(e.first.find("::"))); if(ob!=overloads.end()&&!overloads.count(e.first)) overloads[e.first]=ob->second; }
+     }
     }
     inProgress.erase(name);
     done.insert(name);

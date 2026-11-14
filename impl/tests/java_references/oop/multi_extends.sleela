@@ -1,0 +1,37 @@
+#sleela 3.1
+material;
+< SLEELA.syntax 43.8: an interface that extends several interfaces. Same output as OpenJDK 25.0.2 (MultiExtends.java). >
+interface Named { String name(); }
+interface Sized { int size(); default int doubled() { return size() * 2; } }
+interface Item extends Named, Sized { int code(); }
+interface Tagged { String tag(); }
+interface Product extends Item, Tagged { }
+class Box implements Item {
+  String name() { return "box"; }
+  int size() { return 3; }
+  int code() { return 7; }
+}
+class Crate implements Product {
+  String name() { return "crate"; }
+  int size() { return 5; }
+  int code() { return 9; }
+  String tag() { return "T"; }
+}
+class MultiExtendsTest {
+  int sum(Sized s) { return s.size(); }
+  void main() {
+    Item i = new Box();
+    print(i.name() + " " + i.size() + " " + i.code() + " " + i.doubled());
+    Named n = i;
+    Sized s = i;
+    print(n.name() + " " + s.size() + " " + sum(i));
+    Any a = new Box();
+    print((a instanceof Sized) + " " + (a instanceof Named) + " " + (a instanceof Item) + " " + (a instanceof Tagged));
+    Sized s2 = (Sized) a;
+    print(s2.doubled());
+    Product p = new Crate();
+    print(p.name() + " " + p.size() + " " + p.code() + " " + p.tag() + " " + p.doubled());
+    Any b = new Crate();
+    print((b instanceof Named) + " " + (b instanceof Sized) + " " + (b instanceof Tagged) + " " + (b instanceof Product));
+  }
+}
