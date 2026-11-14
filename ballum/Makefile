@@ -156,8 +156,8 @@ else
 LINKER := $(CC)
 endif
 demo: check-deps $(BUILD)/libsleela_ballum.a
-	$(LINKER) $(CFLAGS) src/ballum_demo.c $(BUILD)/libsleela_ballum.a $(BACKEND_LIBS) -o $(BUILD)/ballum-demo
-	@echo "ballum: linked $(BUILD)/ballum-demo against libsleela_ballum.a $(BACKEND_LIBS)"
+	$(LINKER) $(CFLAGS) src/ballum_demo.c $(BUILD)/libsleela_ballum.a $(BACKEND_LIBS) -o $(BUILD)/ballum-demo$(EXE)
+	@echo "ballum: linked $(BUILD)/ballum-demo$(EXE) against libsleela_ballum.a $(BACKEND_LIBS)"
 
 # ---- per-OS dependency provisioning --------------------------------------
 # `check-deps` verifies the OS-centric libraries this PLATFORM needs. On Linux
@@ -233,12 +233,12 @@ endif
 test: | $(BUILD)
 	$(CC) $(CFLAGS) \
 	  src/ballum_manager.c src/ballum_backend_select.c src/ballum_backend_unavailable.c \
-	  tests/test_ballum_manager.c -o $(BUILD)/ballum-manager-test
-	./$(BUILD)/ballum-manager-test
+	  tests/test_ballum_manager.c -o $(BUILD)/ballum-manager-test$(EXE)
+	./$(BUILD)/ballum-manager-test$(EXE)
 	$(CC) $(CFLAGS) -I$(NANOJPEG_DIR) \
 	  src/ballum_effects.c src/ballum_image.c $(NANOJPEG_DIR)/nanojpeg.c \
-	  tests/test_ballum_effects.c -o $(BUILD)/ballum-effects-test$(EXE) -lm
-	./$(BUILD)/ballum-effects-test
+	  tests/test_ballum_effects.c -o $(BUILD)/ballum-effects-test$(EXE)$(EXE) -lm
+	./$(BUILD)/ballum-effects-test$(EXE)
 	@echo "ballum: all tests passed"
 
 # ---- install / uninstall --------------------------------------------------
@@ -272,7 +272,7 @@ help:
 	@echo "  make all         Verify OS deps, then build build/libsleela_ballum.a for this OS"
 	@echo "  make check-deps  Report whether this OS's display libraries are available"
 	@echo "  make deps        Show how to install the OS libraries (BALLUM_DEPS_INSTALL=1 to install)"
-	@echo "  make demo        Link a real build/ballum-demo executable against the lib + this OS's libs"
+	@echo "  make demo        Link a real build/ballum-demo$(EXE) executable against the lib + this OS's libs"
 	@echo "  make pc          Generate the pkg-config manifest (build/sleela_ballum.pc)"
 	@echo "  make test        Build and run the portable tests (no display libraries required)"
 	@echo "  make install     Install the library + headers + sleela_ballum.pc to \$$(PREFIX) [default $(PREFIX)]"
