@@ -382,7 +382,7 @@ api-docs:
 	bash tools/build-api-docs.sh
 
 config:
-	@make -C config test
+	@$(MAKE) -C config test
 
 common-rails:
 	$(MAKE) -C common-rails check
