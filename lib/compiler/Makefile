@@ -27,7 +27,7 @@ native: $(C_OBJECTS) $(CPP_OBJECTS)
 # core ABI + bridge objects with the test driver and runs the assertions.
 selftest: $(BUILD_DIR)/sleela_langc.c.o $(BUILD_DIR)/sleela_lang_bridge.c.o | $(BUILD_DIR)
 	$(CC) $(CPPFLAGS) $(CFLAGS) tests/langc_selftest.c $^ -o $(BUILD_DIR)/langc_selftest$(EXE)
-	$(BUILD_DIR)/langc_selftest
+	$(BUILD_DIR)/langc_selftest$(EXE)
 
 # Resolve to an absolute path so it stays correct when passed into `make -C
 # ../../impl` (a relative path would otherwise be re-interpreted against impl/).
