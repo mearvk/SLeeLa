@@ -48,6 +48,85 @@ The authoritative aggregate entry point is `make all`. The root Makefile current
 | Premium SLVM runners | `make premium-vms` | **WIRED — NOT QUALIFIED** | Included in `make all`; the documented target covers all eleven premium runners. A fresh full aggregate result is still required. |
 | Ballum native display library | `make ballum` | **PARTIAL / HOST-DEPENDENT** | Root target attempts the native build when host display dependencies are present and otherwise falls back to portable tests. The openSUSE package list now includes `libXext-devel`; the latest Native C/C++ Portability run is still in progress. No openSUSE package-install/build run is claimed. |
 
+## Complete VM inventory and assurance scope
+
+The VM inventory is larger than the single `make vm` package target. The repository contains three distinct selectable/implementation tracks. They must be tracked separately; the Standard registry is not the Premium registry, and neither registry should be mistaken for the native `/impl` execution core.
+
+### VM families
+
+| VM family | Inventory | Repository / source location | Build and test entry points | Current assurance status |
+|---|---|---|---|---|
+| **Native implementation VM (Core)** | One authoritative operational VM | `/impl`, principally `impl/core/sleela_core.c` and its runtime/platform modules | `make core`; `make -C impl all`; `make -C impl test`; `make -C impl test-platform` | **IN PROGRESS / RETEST PENDING.** Native C/C++ Portability run 43629021139 was running at the last recorded check. Prior Linux/macOS jobs passed; Windows VM regression previously timed out. The 40-minute retest must finish before cross-platform PASS is claimed. |
+| **Standard selectable VM versions** | **10 registered versions: 001–010** (`SLVmVersion001` … `SLVmVersion010`) | `virtual-machine/vm-version/`, catalogued by `SLVmRegistry.sleela` | Registry/manifest validation; native VM selection and boot path; include in the root VM and integration test matrix | **REGISTERED — BOOT/BUILD QUALIFICATION REQUIRED.** The registry declares load, list, select, and boot for all ten. Registration alone is not evidence that each selected version builds and boots successfully. |
+| **Premium SLVM generations** | **11 generations: SLVM/1–SLVM/11** (`SLVmPremiumVersion001` … `SLVmPremiumVersion011`) | `sleela-virtual-machine/`, catalogued by `SLVmPremiumRegistry.sleela`; generation source under `sleela-virtual-machine/001` … `011` | `make premium-vms`; premium manifest/admission checks; per-generation build, boot, and execution tests | **WIRED — CURRENT FULL BUILD RETEST REQUIRED.** The target is included in root `make all`. Earlier admission checks passed for all eleven, but that historical result does not establish a fresh build-and-boot pass on the current commit or all three OSes. |
+
+### Standard VM version register (10)
+
+| Version | Manifest / registry identity | Required assurance |
+|---|---|---|
+| Standard 001 | `SLVmVersion001` | Manifest load, configure, select, build, boot, and guest execution |
+| Standard 002 | `SLVmVersion002` | Manifest load, configure, select, build, boot, and guest execution |
+| Standard 003 | `SLVmVersion003` | Manifest load, configure, select, build, boot, and guest execution |
+| Standard 004 | `SLVmVersion004` | Manifest load, configure, select, build, boot, and guest execution |
+| Standard 005 | `SLVmVersion005` | Manifest load, configure, select, build, boot, and guest execution |
+| Standard 006 | `SLVmVersion006` | Manifest load, configure, select, build, boot, and guest execution |
+| Standard 007 | `SLVmVersion007` | Manifest load, configure, select, build, boot, and guest execution |
+| Standard 008 | `SLVmVersion008` | Manifest load, configure, select, build, boot, and guest execution |
+| Standard 009 | `SLVmVersion009` | Manifest load, configure, select, build, boot, and guest execution |
+| Standard 010 | `SLVmVersion010` | Manifest load, configure, select, build, boot, and guest execution |
+
+The Standard registry source explicitly loads and configures ten manifests, exposes them through its list/select methods, and returns a configured `SLVmRuntime` from `boot(number)`. The assurance gate must exercise those actual paths rather than only compile or inspect the registry.
+
+### Premium VM generation register (11)
+
+| Generation | Formal generation name | Repository directory | Required assurance |
+|---|---|---|---|
+| Premium SLVM/1 | Foundation | `sleela-virtual-machine/001` | Manifest, generation build, boot, guest execution |
+| Premium SLVM/2 | Operator | `sleela-virtual-machine/002` | Manifest, generation build, boot, guest execution |
+| Premium SLVM/3 | Specialist | `sleela-virtual-machine/003` | Manifest, generation build, boot, guest execution |
+| Premium SLVM/4 | Supervisor | `sleela-virtual-machine/004` | Manifest, generation build, boot, guest execution |
+| Premium SLVM/5 | Manager | `sleela-virtual-machine/005` | Manifest, generation build, boot, guest execution |
+| Premium SLVM/6 | Director | `sleela-virtual-machine/006` | Manifest, generation build, boot, guest execution |
+| Premium SLVM/7 | Administrator | `sleela-virtual-machine/007` | Manifest, generation build, boot, guest execution |
+| Premium SLVM/8 | Executive | `sleela-virtual-machine/008` | Manifest, generation build, boot, guest execution |
+| Premium SLVM/9 | Authority | `sleela-virtual-machine/009` | Manifest, generation build, boot, guest execution |
+| Premium SLVM/10 | Principal | `sleela-virtual-machine/010` | Manifest, generation build, boot, guest execution |
+| Premium SLVM/11 | Sovereign | `sleela-virtual-machine/011` | Manifest, generation build, boot, guest execution |
+
+### VM-supporting modules and build concerns
+
+These components are part of VM assurance even when they are not separate VM generations. They must be included in dependency, compile, integration, and regression checks as applicable.
+
+| Supporting module / subsystem | Repository location / known entry | What must be verified |
+|---|---|---|
+| Native Core runtime and C ABI | `impl/core/`, `impl/runtime/`, `impl/Makefile` | Core dispatch, artifact loading, runtime services, C ABI, clean build, and platform abstraction |
+| VM package / management layer | `lib/vm/`; root `make vm` → `make -C lib/vm all` | C and C++ manager/linking/challenge/report/dynamic-memory-guard objects; package checks and tutorial validation |
+| VM Creator and generation catalog | `lib/vm/creator/` | Core and generation source resolution, build-plan construction, compiler invocation, artifact verification, packaging, boot and guest execution |
+| Standard VM registry and manifests | `virtual-machine/vm-version/SLVmRegistry.sleela`; `SLVmVersion001..010` | All ten manifests load/configure/list/select/boot; reject out-of-range selections; verify returned runtime |
+| Premium VM registry and manifests | `sleela-virtual-machine/SLVmPremiumRegistry.sleela`; `SLVmPremiumVersion001..011` | All eleven manifests load/configure/list/select/boot; reject out-of-range selections; verify returned runtime and native binary |
+| VM runtime services | `lib/vm/runtime/`, `lib/vm/RUNTIME-SERVICES.md` | Garbage collection, memory management, security supervisor, resource ownership, lifecycle, and failure behavior |
+| Dynamic Memory Guard | `lib/vm/src/sleela_vm_dynamic_memory_guard.*` and related runtime sources | HARD / SLOW_CAREFUL / AGGRESSIVE policies, hard limits, allocation failure behavior, and platform consistency |
+| VM garbage collector | `lib/vm/runtime/garbage_collector.c`, `lib/vm/src/sleela_vm_gc.cpp` | Generational/incremental tracing, barriers, remembered sets, safepoints, and behavioral reclamation tests |
+| Instruction set and opcode map | `lib/vm/InstructionSet.sleela`, `lib/vm/OPCODE-MAP.md` | Stable opcode identity, unsupported-opcode rejection, and generation-wide ISA compatibility |
+| System-call bridge and OS adapters | `lib/vm/SleelaVMSystemCallBridge.sleela`, `impl/core/sleela_os.c`, platform adapters | Shared system-call behavior across generations; bounded process/resource handles; Linux, macOS, and Windows behavior |
+| VM broker, capabilities, and security | `sleela-virtual-machine/001/` and related VM security sources | Capability enforcement, broker boundary, memory security, OS boundary, and fail-closed behavior |
+| VM arithmetic and performance suites | VM arithmetic table/conformance workflows and `impl/tests/` | Arithmetic correctness, regression coverage, bounded resource behavior, and performance regressions |
+| VM conformance and source-to-VM path | `sleela-virtual-machine/*/docs/SOURCE-TO-VM.md`; `markdown/VM.SUMMARY.md` | Compiler → Core artifact → selected VM → verified execution; generation compatibility and artifact integrity |
+| VM tutorials and examples | `lib/vm/tutorials/`, `lib/vm/creator/examples/`, generation examples | Examples compile and run against the intended VM family; documentation claims match executable behavior |
+
+### VM assurance rules
+
+1. Treat the native `/impl` VM, the ten Standard selectable versions, and the eleven Premium SLVM generations as separate inventory lines.
+2. For every registered Standard or Premium manifest, test **load → configure → list → select → build → boot → execute**. A manifest compiling or a registry reporting its count is not a complete VM pass.
+3. Run VM tests from a clean build directory and verify that no VM silently consumes stale objects or artifacts from another generation.
+4. Test shared ISA/opcode, system-call, runtime-service, memory, security, and platform contracts across the families. Preserve fail-closed behavior for unsupported opcodes and unauthorized capabilities.
+5. Record per-generation and per-platform results. A pass for the native Core, one representative generation, a registry count, or an admission check must not be generalized into a pass for all 21 entries.
+6. Keep the trusted SHA-256 verification gate active throughout compilation, packaging, and execution.
+
+**Inventory count:** 1 native operational Core + 10 Standard registered versions + 11 Premium generations = **22 tracked VM entries**. The 11 Premium generations are the numbered architecture family described in `markdown/VM.SUMMARY.md`; the Standard registry is a distinct selectable catalogue. The count is an inventory count, not a claim that all 22 are independently implemented runnable interpreters or currently passing builds.
+
+---
+
 ## Explicit and optional module builds
 
 These targets are available but are not part of the default root `make all` chain unless stated otherwise.
