@@ -12,7 +12,7 @@ JAVA ?= java
 
 # Java 9+ reports the active runtime home. A full JDK is required for jni.h.
 # An explicit environment/command-line JAVA_HOME always takes precedence.
-JAVA_HOME ?= $(shell $(JAVA) -XshowSettings:properties -version 2>&1 | sed -n 's/^[[:space:]]*java\.home = //p' | head -n 1)
+JAVA_HOME ?= $(shell command -v "$(JAVA)" >/dev/null 2>&1 && $(JAVA) -XshowSettings:properties -version 2>&1 | sed -n 's/^[[:space:]]*java\.home = //p' | head -n 1)
 
 BUILD := build
 CLASSES := $(BUILD)/classes
@@ -32,6 +32,7 @@ ifeq ($(OS),Windows_NT)
   JNI_SHARED_FLAGS := -shared
   JNI_LIB := $(BIN)/sleela_java28.dll
   PORT_LIBS := -lws2_32
+  CFLAGS += -D_WIN32_WINNT=0x0600
 else
   UNAME_S := $(shell uname -s)
   ifeq ($(UNAME_S),Darwin)
