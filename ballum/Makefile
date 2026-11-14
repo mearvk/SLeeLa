@@ -237,7 +237,7 @@ test: | $(BUILD)
 	./$(BUILD)/ballum-manager-test$(EXE)
 	$(CC) $(CFLAGS) -I$(NANOJPEG_DIR) \
 	  src/ballum_effects.c src/ballum_image.c $(NANOJPEG_DIR)/nanojpeg.c \
-	  tests/test_ballum_effects.c -o $(BUILD)/ballum-effects-test$(EXE)$(EXE) -lm
+	  tests/test_ballum_effects.c -o $(BUILD)/ballum-effects-test$(EXE) -lm
 	./$(BUILD)/ballum-effects-test$(EXE)
 	@echo "ballum: all tests passed"
 
