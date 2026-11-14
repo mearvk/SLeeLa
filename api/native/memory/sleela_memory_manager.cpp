@@ -44,7 +44,18 @@ static Header* header(void*p){return p?reinterpret_cast<Header*>(reinterpret_cas
 static bool valid_block(void*p){auto*h=header(p);return h&&h->canary==CANARY&&*reinterpret_cast<uint64_t*>(reinterpret_cast<uintptr_t>(p)+h->size)==CANARY;}
 
 extern "C" sleela_mm* sleela_mm_create(){return new sleela_mm;}
-extern "C" void sleela_mm_destroy(sleela_mm*x){if(!x)return;std::lock_guard<std::mutex>g(x->m);for(auto&kv:x->blocks)std::free(kv.second.raw);x->blocks.clear();x->objects.clear();delete x;}
+extern "C" void sleela_mm_destroy(sleela_mm*x){
+  if(!x)return;
+  {
+    /* The lock guard must release the mutex before the manager is destroyed.
+     * Destroying x while g still owns x->m leaves g to unlock a dead mutex. */
+    std::lock_guard<std::mutex>g(x->m);
+    for(auto&kv:x->blocks)std::free(kv.second.raw);
+    x->blocks.clear();
+    x->objects.clear();
+  }
+  delete x;
+}
 
 extern "C" void* sleela_mm_alloc(sleela_mm*x,size_t n){
   if(!x||!n){return nullptr;}
