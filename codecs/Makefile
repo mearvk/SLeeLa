@@ -10,6 +10,11 @@ CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -Wpedantic -Iinclude
 LDFLAGS  ?=
 
 BUILD := build
+ifeq ($(OS),Windows_NT)
+  EXE := .exe
+else
+  EXE :=
+endif
 
 # Core registry + manager + backend registry (C).
 CORE_C := src/sleela_codecs.c src/sleela_codec_manager.c src/sleela_codec_backend.c
@@ -89,23 +94,23 @@ $(BUILD)/libsleela_codecs.a: $(OBJS)
 	ar rcs $@ $(OBJS)
 
 # Tests (linked with the C++ runtime because the library contains C++ objects).
-test: $(BUILD)/test_registry $(BUILD)/test_manager $(BUILD)/test_flac_native
-	./$(BUILD)/test_registry
-	./$(BUILD)/test_manager
-	./$(BUILD)/test_flac_native
+test: $(BUILD)/test_registry$(EXE) $(BUILD)/test_manager$(EXE) $(BUILD)/test_flac_native$(EXE)
+	./$(BUILD)/test_registry$(EXE)
+	./$(BUILD)/test_manager$(EXE)
+	./$(BUILD)/test_flac_native$(EXE)
 	@echo "codecs: all tests passed"
 
 # The test sources are C, but the library embeds C++ objects, so link via the
 # C++ driver. Compile the test TU as C first, then link with g++.
-$(BUILD)/test_registry: tests/test_registry.c $(BUILD)/libsleela_codecs.a | $(BUILD)
+$(BUILD)/test_registry$(EXE): tests/test_registry.c $(BUILD)/libsleela_codecs.a | $(BUILD)
 	$(CC) $(CFLAGS) $(CODEC_INC) -c tests/test_registry.c -o $(BUILD)/test_registry.o
 	$(CXX) $(BUILD)/test_registry.o $(BUILD)/libsleela_codecs.a -o $@
 
-$(BUILD)/test_manager: tests/test_manager.c $(BUILD)/libsleela_codecs.a | $(BUILD)
+$(BUILD)/test_manager$(EXE): tests/test_manager.c $(BUILD)/libsleela_codecs.a | $(BUILD)
 	$(CC) $(CFLAGS) $(CODEC_INC) -c tests/test_manager.c -o $(BUILD)/test_manager.o
 	$(CXX) $(BUILD)/test_manager.o $(BUILD)/libsleela_codecs.a -o $@
 
-$(BUILD)/test_flac_native: tests/test_flac_native.c $(BUILD)/libsleela_codecs.a | $(BUILD)
+$(BUILD)/test_flac_native$(EXE): tests/test_flac_native.c $(BUILD)/libsleela_codecs.a | $(BUILD)
 	$(CC) $(CFLAGS) $(CODEC_INC) -c tests/test_flac_native.c -o $(BUILD)/test_flac_native.o
 	$(CXX) $(BUILD)/test_flac_native.o $(BUILD)/libsleela_codecs.a -o $@
 
