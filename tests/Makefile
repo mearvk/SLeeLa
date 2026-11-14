@@ -87,7 +87,7 @@ java-source-equivalence:
 	$(PYTHON) java_source_equivalence.py --java java_equivalence/ExpressionSurface.java --sleela java_equivalence/ExpressionSurface.sleela --json java_equivalence/expression-report.json
 
 clean:
-	rm -f java-conversions java-conversions.exe java-overload java-overload.exe memory memory.exe reflection reflection.exe nordshrift nordshrift.exe runtime runtime.exe network-security network-security.exe neural-nets-xor neural-nets-xor.exe character-recognition-smoke character-recognition-smoke.exe character-recognition-cli character-recognition-cli.exe character-recognition-smoke.txt character-recognition-smoke.jsonl
+	rm -f .openssl-probe .openssl-probe.exe java-conversions java-conversions.exe java-overload java-overload.exe memory memory.exe reflection reflection.exe nordshrift nordshrift.exe runtime runtime.exe network-security network-security.exe neural-nets-xor neural-nets-xor.exe character-recognition-smoke character-recognition-smoke.exe character-recognition-cli character-recognition-cli.exe character-recognition-smoke.txt character-recognition-smoke.jsonl
 
 java-conversions$(EXE):
 	$(CXX) $(CXXFLAGS) -I../impl/frontend -I../impl/frontend/java java_conversion_semantics.cpp ../impl/frontend/java/java_equivalence.cpp -o java-conversions$(EXE)
