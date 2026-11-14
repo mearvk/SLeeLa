@@ -16,7 +16,7 @@ test: compile data-check
 	@set -eu; for n in $(SETS); do echo "[churn] running set $$n"; (cd "$$n" && "$(JAVA)" -cp "../build/$$n" $(JAVA_PACKAGE)); done
 
 data-check:
-	@"$(PYTHON)" validate_data.py
+	@$(PYTHON) validate_data.py
 
 clean:
 	rm -rf build 1/out 2/out 3/out 4/out 5/out
