@@ -3,7 +3,7 @@
 > **Container.** Java container content (`SLEELA.syntax` section 38.4). Nothing
 > here is part of the SLeeLa specification or adds syntax to SLeeLa.
 
-Status: **0.7.1, best effort (2026-11-14).** Output stays at syntax **3.1** (also
+Status: **0.7.2, best effort (2026-11-14).** Output stays at syntax **3.1** (also
 written 3.01) by the owner's decision; syntax 3.1 sections 45 and 46 forms are not used
 (`.kiro/steering/java-converter-lib.md`). The operand laws come from the shared
 conversion model, `impl/subjects/conversion/conversion.model` (read by
@@ -71,11 +71,21 @@ JCONV_IN=/tmp/jdk-src JCONV_OUT=/tmp/jdk28-sleela JCONV_FILTER=java.base/java/ut
 | `JCONV_COMMENTS` | `keep` or `drop` (the licence comment is always kept) | `keep` |
 | `JCONV_MODEL` | the conversion model to read | `$SLEELA_HOME/impl/subjects/conversion/conversion.model` |
 | `JCONV_BUNDLE` | `1`: nested types go into the document of their top-level type, so a converted program runs as one document; `0`: one file per type (`Outer.Inner.sleela`, the library layout) | `0` |
+| `JCONV_TEST_STOP_IN` | test only: stop the VM in this Java file (relative path) after its output is written, to exercise the restart below | none |
 
 `sleela run` treats every argument as a source file, so the settings travel in
 the environment. The script names only `JConvMain.sleela`; the loader finds the
 other units in `/lib` by name. Naming every file makes each one resolve library
 units again and duplicates classes (`lib/java/STATUS.md` section 6).
+
+**One file cannot end the run.** A VM runtime error (a converter fault on some
+input) stops the VM, and a SLeeLa program cannot catch it. `JConvMain` therefore
+writes the file it is on to `$JCONV_OUT/.jconv-progress` and saves its totals to
+`$JCONV_OUT/.jconv-state` after every file. When the VM stops inside a file,
+`run-converter.sh` restarts the converter after that file: the file's partial
+output is removed, the report lists it as `failed` with the VM message, and the
+totals and the report carry on from the saved state. A finished run removes
+both files; a run that gives up keeps `.jconv-progress`, naming the file.
 
 Output: one `.sleela` per type (nested types as `Outer.Inner.sleela`, as
 `lib/java/jdk-28` names them), plus `CONVERSION-REPORT.tsv` (one line per Java
@@ -369,9 +379,8 @@ What remains for a whole-tree conversion, measured on this run:
 - **7 files are skipped for non-ASCII bytes** (`Collator`, `RuleBasedCollator`,
   `Locale`, `PropertyResourceBundle`, `UUID`, `ICC_Profile`, `javax.swing.Action`;
   section 6 item 5).
-- **A runtime error in one file still ends the run.** A VM runtime error cannot
-  be caught, so a converter fault in one file loses the files after it. None
-  occurs on the JDK any more, but a different source tree may find one.
+- **A runtime error in one file ended the run** (fixed in 0.7.2, section 2: the
+  file is reported as failed and the run goes on).
 - **Memory still grows by about 0.4 MB a file** (the Strings each file makes are
   never freed). That fits the JDK; a tree several times larger may not.
 
@@ -420,6 +429,7 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | Version | Change |
 |---|---|
 | 0.1.0 | First cut: walk, lex, rewrite, translate, stubs, report |
+| 0.7.2 | Per-file isolation: a VM runtime error inside one Java file no longer ends the run. `JConvMain` records progress and totals after every file; `run-converter.sh` restarts after the file that stopped the VM, which is reported as `failed` with the VM message and its partial output removed. Default `JCONV_OUT` is now the caller's `./jdk28-converted` (it was resolved after the script's `cd`, inside `lib/java/converter`). Test hook `JCONV_TEST_STOP_IN` |
 | 0.7.1 | Whole-tree runs: the emitter writes pieces directly instead of growing a String buffer (memory flat: the JDK `java.base` run had been killed at 16 GB); kept Java bodies over 64 KB are written as comments line by line (`keptComment`, was a VM stop on `BasicLookAndFeel`); a method declared with a VM built-in name (`read`, `write`, ...) is no longer written as `this.read` / `Owner.read` (514 declarations in the JDK; the typed pass now reaches them). All 4,120 convertible public JDK types in one run, 173 s. 17-file sample output unchanged |
 | 0.7.0 | `JConvOuter`: inner (non-static) classes get `Outer slOuter` and a first constructor parameter `slOuterArg`; `new Inner(..)` passes `this` (or `this.slOuter` from a sibling inner class); `Outer.this` becomes `this.slOuter`; an unqualified outer member becomes `this.slOuter.x` or `Outer.x` unless it is a local, an own member or possibly inherited (model `ret` / `field` rows). Stub reason 10 kept only for other qualified `this` / `super`. JDK sample, bundled: **26 stubs (was 35), 475 check errors (was 522), 0 syntax errors**; both samples still identical |
 | 0.6.0 | `JConvLambda`: lambdas and method references lowered to `(id, env)` (rules 8a, 8b); functional interface types written as `Any` (8c), relying on SLEELA.syntax 43.7 (calls on `Any`). New sample `samples/lambda/LambdaDemo.java`, 17 of 17 lines identical. On eight lambda-dense `java.util` files the stubbed members fall from 31 to 15 |

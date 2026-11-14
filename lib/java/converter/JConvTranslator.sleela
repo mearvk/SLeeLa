@@ -271,6 +271,8 @@ class JConvTranslator {
       i = close + 1;
       typeStart = i;
     }
+    < test hook (JCONV_TEST_STOP_IN): stop the VM here, output written, totals not yet recorded, as a fault would >
+    if (relPath == this.cfg.testStopIn) { int zero = 0; int stop = 1 / zero; }
     this.rep.fileLine("converted", relPath, this.fileUnits, this.fileTypes, this.fileMembers, this.fileStubs);
   }
 

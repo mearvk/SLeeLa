@@ -84,11 +84,60 @@ class JConvReport {
     this.noteCount = 0;
   }
 
-  boolean begin(String outRoot) {
+  << A fresh run writes a new report. A resumed run (after a VM stop, see
+     JConvMain.markProgress) appends to it and starts from the totals the stopped
+     run saved after its last finished file, so the summary covers every file. >>
+  boolean begin(String outRoot, boolean resume) {
     this.outRoot = outRoot;
+    if (resume && loadState()) {
+      this.handle = openFile(outRoot + "/CONVERSION-REPORT.tsv", "a");
+      return this.handle >= 0;
+    }
     this.handle = openFile(outRoot + "/CONVERSION-REPORT.tsv", "w");
     if (this.handle < 0) { return false; }
     write(this.handle, "# status\tjava_file\tsleela_files\ttypes\tmembers\tstubbed\tnotes\n");
+    return true;
+  }
+
+  < the totals and reason counts, one per line, in OUT/.jconv-state >
+  void saveState() {
+    int h = openFile(this.outRoot + "/.jconv-state", "w");
+    if (h < 0) { return; }
+    write(h, this.filesSeen + "\n" + this.filesConverted + "\n" + this.filesSkipped + "\n" + this.filesFailed + "\n"
+      + this.unitsWritten + "\n" + this.typesTotal + "\n" + this.membersTotal + "\n" + this.stubsTotal + "\n");
+    int c = 0;
+    String r = "";
+    while (c < 32) { r = r + this.reasonCounts[c] + "\n"; c = c + 1; }
+    write(h, r);
+    close(h);
+  }
+
+  boolean loadState() {
+    String path = this.outRoot + "/.jconv-state";
+    if (osExists(path) != 1) { return false; }
+    JConvSource s = new JConvSource();
+    if (!s.load(path)) { return false; }
+    int[] v = new int[40];
+    int n = 0;
+    int cur = 0;
+    int i = 0;
+    while (i < s.length && n < 40) {
+      int ch = s.at(i);
+      if (ch == 10) { v[n] = cur; n = n + 1; cur = 0; }
+      else if (ch >= 48 && ch <= 57) { cur = cur * 10 + (ch - 48); }
+      i = i + 1;
+    }
+    if (n != 40) { return false; }
+    this.filesSeen = v[0];
+    this.filesConverted = v[1];
+    this.filesSkipped = v[2];
+    this.filesFailed = v[3];
+    this.unitsWritten = v[4];
+    this.typesTotal = v[5];
+    this.membersTotal = v[6];
+    this.stubsTotal = v[7];
+    int c = 0;
+    while (c < 32) { this.reasonCounts[c] = v[8 + c]; c = c + 1; }
     return true;
   }
 
@@ -125,6 +174,7 @@ class JConvReport {
     if (this.handle >= 0) {
       write(this.handle, status + "\t" + rel + "\t" + units + "\t" + types + "\t" + members + "\t" + stubs + "\t" + n + extra + "\n");
     }
+    saveState();
   }
 
   void finish(JConvRules rules) {

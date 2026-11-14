@@ -101,22 +101,39 @@ class JConvMain {
       print("jconv: cannot create " + cfg.outRoot);
       return;
     }
-    if (!rep.begin(cfg.outRoot)) {
+    boolean resuming = cfg.resumeAfter != "";
+    if (!rep.begin(cfg.outRoot, resuming)) {
       print("jconv: cannot write " + cfg.outRoot + "/CONVERSION-REPORT.tsv");
       return;
+    }
+    if (resuming) {
+      < the run before this one stopped inside resumeAfter: drop its partial output, record it as failed >
+      removePartial(cfg.outRoot, cfg.resumeAfter);
+      rep.startFile();
+      rep.note(cfg.failedWhy);
+      rep.fileLine("failed", cfg.resumeAfter, 0, 0, 0, 0);
+      print("jconv: resumed after " + cfg.resumeAfter + " (" + cfg.failedWhy + ")");
     }
     JConvWalker w = new JConvWalker();
     w.walk(cfg.inRoot);
     print("jconv: " + w.nFiles + " .java files in " + w.dirsVisited + " folders under " + cfg.inRoot + " (" + w.skippedDescriptors + " module-info / package-info skipped)");
     if (cfg.scope == "api") { print("jconv: scope api: " + cfg.apiCount + " JDK 28 types from lib/java/jdk-28/INDEX.tsv"); }
     long t0 = timeMonotonicNanos();
-    int done = 0;
+    < files done so far, including those of earlier runs when resuming >
+    int done = rep.filesSeen;
     int i = 0;
     int hint = 0;
+    boolean skipping = resuming;
     while (i < w.nFiles) {
       String rel = w.files[i];
+      if (skipping) {
+        if (rel == cfg.resumeAfter) { skipping = false; }
+        i = i + 1;
+        continue;
+      }
       if (cfg.selects(rel)) {
         if (cfg.limit > 0 && done >= cfg.limit) { break; }
+        markProgress(cfg.outRoot, rel);
         tr.translateFile(rel);
         done = done + 1;
         if (done % 25 == 0) {
@@ -129,5 +146,26 @@ class JConvMain {
     }
     print("jconv: lowered " + tr.rw.lam.lambdasTotal + " lambdas and " + tr.rw.lam.refsTotal + " method references to (id, env) (JConvLambda)");
     rep.finish(rules);
+    markProgress(cfg.outRoot, "DONE");
+  }
+
+  << The file being converted, written before each file to OUT/.jconv-progress.
+     A VM runtime error cannot be caught inside the program, so when one stops
+     the VM, run-converter.sh reads this file, and restarts the converter with
+     JCONV_RESUME_AFTER set to it: that file is reported as failed and the run
+     goes on with the next. DONE marks a run that finished. >>
+  void markProgress(String outRoot, String rel) {
+    int h = openFile(outRoot + "/.jconv-progress", "w");
+    if (h >= 0) {
+      write(h, rel + "\n");
+      close(h);
+    }
+  }
+
+  < remove what the stopped run wrote for rel: OUT/dir/Name.sleela and the nested OUT/dir/Name.*.sleela >
+  void removePartial(String outRoot, String rel) {
+    if (rel.indexOf("'") >= 0 || outRoot.indexOf("'") >= 0 || !rel.endsWith(".java")) { return; }
+    String base = outRoot + "/" + rel.substring(0, rel.length() - 5);
+    int rc = osRun("rm -f -- '" + base + ".sleela' '" + base + "'.*.sleela");
   }
 }

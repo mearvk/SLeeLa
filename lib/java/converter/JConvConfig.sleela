@@ -74,6 +74,11 @@ class JConvConfig {
   String modelPath;
   String sleelaHome;
   String problem;
+  < resume after a VM stop (set by run-converter.sh): the file the stopped run was on, and why >
+  String resumeAfter;
+  String failedWhy;
+  < test hook: stop the VM in this file after its output is written (tests the restart) >
+  String testStopIn;
   < api scope: open-addressing set of <module>/<package path>/<Type> keys >
   String[] apiKeys;
   int apiCount;
@@ -96,6 +101,9 @@ class JConvConfig {
     this.modelPath = "";
     this.sleelaHome = "";
     this.problem = "";
+    this.resumeAfter = "";
+    this.failedWhy = "";
+    this.testStopIn = "";
     this.apiKeys = new String[16384];
     this.apiCount = 0;
     this.kindKeys = new String[16384];
@@ -138,6 +146,9 @@ class JConvConfig {
     this.bundle = (env("JCONV_BUNDLE", "0") == "1");
     this.modelPath = env("JCONV_MODEL", trimSlash(env("SLEELA_HOME", ".")) + "/impl/subjects/conversion/conversion.model");
     this.sleelaHome = trimSlash(env("SLEELA_HOME", ""));
+    this.resumeAfter = env("JCONV_RESUME_AFTER", "");
+    this.failedWhy = env("JCONV_FAILED_WHY", "the VM stopped with a runtime error");
+    this.testStopIn = env("JCONV_TEST_STOP_IN", "");
     if (this.inRoot == "") { this.problem = "JCONV_IN is not set (the root of the Java source tree)"; return false; }
     if (osIsDir(this.inRoot) != 1) { this.problem = "JCONV_IN is not a directory: " + this.inRoot; return false; }
     if (this.intType != "int32" && this.intType != "int") { this.problem = "JCONV_INT must be int32 or int"; return false; }
