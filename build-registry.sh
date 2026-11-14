@@ -23,6 +23,7 @@
 #   REGISTRY_OUT   output dir for the materialized table (default registry/build)
 # =============================================================================
 set -e
+MAKE_CMD="${MAKE:-make}"
 
 REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
 REG_DIR="$REPO_ROOT/registry"
@@ -43,7 +44,7 @@ echo "[1/4] building registry core..."
 
 # Registry 3.0 record, compatibility migration, and C++ facade regression tests.
 echo "[2/4] testing Registry 3.0..."
-make -C "$REG_DIR" test
+"$MAKE_CMD" -C "$REG_DIR" test
 
 TOOL="$REG_DIR/build/sleela-registry$EXE"
 if [ ! -x "$TOOL" ]; then
