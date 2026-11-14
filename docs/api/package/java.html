@@ -147,7 +147,7 @@
 <main>
 <div class="crumbs"><a href="../index.html">Home</a> &rsaquo; <a href="../packages.html">Packages</a> &rsaquo; java</div>
 <h1>Package <code>java</code></h1>
-<div class="lead">This package contains <strong>14970</strong> source unit(s) defining <strong>14970</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
+<div class="lead">This package contains <strong>14971</strong> source unit(s) defining <strong>14971</strong> class(es) / struct(s). Each unit below lists its fields (the values it stores) and methods (the actions it performs), with a plain explanation of each.</div>
 <input class="search" placeholder="Filter on this page (Ctrl+F also works)…" oninput="flt(this.value)">
 <h2 class="section" data-u="aboutevent">AboutEvent <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/jdk-28/java.desktop/java/awt/desktop/AboutEvent.sleela)</span></h2>
 <div data-u="aboutevent aboutevent">
@@ -47515,6 +47515,23 @@
 <tr><td><code>javaSuper</code></td><td><span class="sig">String javaSuper = &quot;java.lang.Object&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>JAVA_TYPE_PARAMETERS</code></td><td><span class="sig">static final String JAVA_TYPE_PARAMETERS = &quot;&lt;T&gt;&quot;</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>genericTypeArguments</code></td><td><span class="sig">String[] genericTypeArguments = new String[0]</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slName</code></td><td><span class="sig">String slName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slKind</code></td><td><span class="sig">int slKind</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slLiteralNames</code></td><td><span class="sig">static String[] slLiteralNames</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slLiterals</code></td><td><span class="sig">static Class[] slLiterals</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slLiteralCount</code></td><td><span class="sig">static int slLiteralCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>slNamed</code></td><td><span class="sig">String slNamed()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slKnownKind</code></td><td><span class="sig">int slKnownKind()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slDims</code></td><td><span class="sig">int slDims()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slPrimitiveOf</code></td><td><span class="sig">String slPrimitiveOf(String code)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slPrimitiveCode</code></td><td><span class="sig">String slPrimitiveCode(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slElementName</code></td><td><span class="sig">String slElementName()</span></td><td class="desc">the element of an array name ([[I or [Ljava.lang.String;) as a type name: int, java.lang.String</td></tr>
+<tr><td><code>slBrackets</code></td><td><span class="sig">String slBrackets(int d)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slSimpleOf</code></td><td><span class="sig">String slSimpleOf(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>slPackageOf</code></td><td><span class="sig">String slPackageOf(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
 <h2 class="section" data-u="class">Class <span class="pill syntax">#sleela 2.5</span> <span class="muted" style="font-size:13px">(lib/java/jdk-25/early_access/jdk28/docs/api/java.base/java/lang/Class.sleela)</span></h2>
@@ -139187,6 +139204,39 @@
 <tr><td><code>invokeStatic</code></td><td><span class="sig">String invokeStatic(String operation)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 </div>
+<h2 class="section" data-u="jconvclasslit">JConvClassLit <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvClassLit.sleela)</span></h2>
+<div data-u="jconvclasslit jconvclasslit">
+<h3 id="JConvClassLit">JConvClassLit <span class="pill">class</span></h3>
+<p class="desc">the class literals of rule 8e. JConvRewriter writes T.class as Class.ofLiteral(binary name, kind) (lib/java/jdk-28 java.lang.Class); this unit knows the types the file declares (with their nesting, so a nested type is pkg.Outer$Inner), its imports and its package, and resolves a written name to its binary name in Java order. Kinds: 1 class, 2 interface, 3 enum, 4 record, 5 annotation, 6 primitive or void, 7 array, 0 not known.</p>
+<div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
+<p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
+<table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
+<tr><td><code>litNames</code></td><td><span class="sig">String[] litNames</span></td><td class="desc">the file: its declared types, imports and package</td></tr>
+<tr><td><code>litBins</code></td><td><span class="sig">String[] litBins</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>litKinds</code></td><td><span class="sig">int[] litKinds</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>litN</code></td><td><span class="sig">int litN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>impSimple</code></td><td><span class="sig">String[] impSimple</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>impQual</code></td><td><span class="sig">String[] impQual</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>impN</code></td><td><span class="sig">int impN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wildPkgs</code></td><td><span class="sig">String[] wildPkgs</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>wildN</code></td><td><span class="sig">int wildN</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>curPkg</code></td><td><span class="sig">String curPkg</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>litKindOut</code></td><td><span class="sig">int litKindOut</span></td><td class="desc">the kind found by the last literalBinary call</td></tr>
+</table>
+<p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
+<table class="members"><tr><th>Method</th><th>Signature</th><th>What it does</th></tr>
+<tr><td><code>beginFile</code></td><td><span class="sig">void beginFile()</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addLiteralType</code></td><td><span class="sig">void addLiteralType(String name, String bin, int kind)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>literalTypeIndex</code></td><td><span class="sig">int literalTypeIndex(String name)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addTypeImport</code></td><td><span class="sig">void addTypeImport(String simple, String qualified)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addWildImport</code></td><td><span class="sig">void addWildImport(String pkg)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>isPrimitiveName</code></td><td><span class="sig">boolean isPrimitiveName(String t)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>primitiveCode</code></td><td><span class="sig">String primitiveCode(String t)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>upperName</code></td><td><span class="sig">boolean upperName(String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>canonicalToBinary</code></td><td><span class="sig">String canonicalToBinary(String c)</span></td><td class="desc">a canonical name (java.util.Map.Entry) as a binary name (java.util.Map$Entry): types after the first capitalised part join with $</td></tr>
+<tr><td><code>literalBinary</code></td><td><span class="sig">String literalBinary(String[] parts, int n, JConvConfig cfg)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+</table>
+</div>
 <h2 class="section" data-u="jconvconfig">JConvConfig <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvConfig.sleela)</span></h2>
 <div data-u="jconvconfig jconvconfig">
 <h3 id="JConvConfig">JConvConfig <span class="pill">class</span></h3>
@@ -139212,6 +139262,8 @@
 <tr><td><code>apiCount</code></td><td><span class="sig">int apiCount</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>kindKeys</code></td><td><span class="sig">String[] kindKeys</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>kindValues</code></td><td><span class="sig">int[] kindValues</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>typeKeys</code></td><td><span class="sig">String[] typeKeys</span></td><td class="desc">canonical Java name (java.util.Map.Entry) to its kind: 1 class, 2 interface, 3 enum, 4 record, 5 annotation; read for class literals (rule 8e)</td></tr>
+<tr><td><code>typeValues</code></td><td><span class="sig">int[] typeValues</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>indexLoaded</code></td><td><span class="sig">boolean indexLoaded</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 </table>
 <p class="muted"><strong>Methods</strong> — the actions this unit can perform.</p>
@@ -139223,6 +139275,8 @@
 <tr><td><code>slot</code></td><td><span class="sig">int slot(String key)</span></td><td class="desc">---- api scope ----</td></tr>
 <tr><td><code>addApiKey</code></td><td><span class="sig">void addApiKey(String key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>addKind</code></td><td><span class="sig">void addKind(String name, int k)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addTypeKind</code></td><td><span class="sig">void addTypeKind(String name, int k)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>typeKindOf</code></td><td><span class="sig">int typeKindOf(String name)</span></td><td class="desc">the kind of a JDK 28 type by its canonical name (1 class .. 5 annotation), 0 when the index does not list it</td></tr>
 <tr><td><code>kindOf</code></td><td><span class="sig">int kindOf(String name)</span></td><td class="desc">0 unknown, 1 class-like, 2 interface, 3 both</td></tr>
 <tr><td><code>slotIn</code></td><td><span class="sig">int slotIn(String key, int size)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>hasApiKey</code></td><td><span class="sig">boolean hasApiKey(String key)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -139459,7 +139513,7 @@
 <h2 class="section" data-u="jconvmodel">JConvModel <span class="pill syntax">#sleela 3.0</span> <span class="muted" style="font-size:13px">(lib/java/converter/JConvModel.sleela)</span></h2>
 <div data-u="jconvmodel jconvmodel">
 <h3 id="JConvModel">JConvModel <span class="pill">class</span></h3>
-<p class="desc">the Java-to-SLeeLa conversion model, read as data. It loads impl/subjects/conversion/conversion.model (or the file named by JCONV_MODEL), the same model that sleelactl java-convert reads, and answers the questions the typed pass of JConvRewriter asks: the result type of a library member (ret rows), the type of a library field (field rows), the SLeeLa function of an int shift, division and remainder (binop int rows), the 32-bit wrap (the cast long int row) and the string conversion template of a double or char (tostr rows). Only rows of those kinds are read. When the file is missing the built-in defaults below are used and the report says so.</p>
+<p class="desc">the Java-to-SLeeLa conversion model, read as data. It loads impl/subjects/conversion/conversion.model (or the file named by JCONV_MODEL), the same model that sleelactl java-convert reads, and answers the questions the typed pass of JConvRewriter asks: the result type of a library member (ret rows), the type of a library field (field rows), the SLeeLa function of an int shift, division and remainder (binop int rows), the 32-bit wrap (the cast long int row) and the string conversion template of a double, char or reference (tostr rows). Only rows of those kinds are read. When the file is missing the built-in defaults below are used and the report says so.</p>
 <div class="meta-note">Carries the standard <strong>Metadata Class record</strong> — eleven catalogued provenance attributes (version, id, author, date, copyright, trademark, corporation, origin, birth date, science rating, national schedule) with matching get/set accessors. These are omitted from the tables below for brevity.</div>
 <p class="muted"><strong>Fields</strong> — the named values this unit stores.</p>
 <table class="members"><tr><th>Field</th><th>Declaration</th><th>What it holds</th></tr>
@@ -139477,6 +139531,7 @@
 <tr><td><code>ushrInt</code></td><td><span class="sig">String ushrInt</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>tostrDouble</code></td><td><span class="sig">String tostrDouble</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>tostrChar</code></td><td><span class="sig">String tostrChar</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>tostrRef</code></td><td><span class="sig">String tostrRef</span></td><td class="desc">tostr reference: a reference shown through its toString() (null is &quot;null&quot;)</td></tr>
 <tr><td><code>divInt</code></td><td><span class="sig">String divInt</span></td><td class="desc">binop int / and %, and cast long int (the 32-bit wrap)</td></tr>
 <tr><td><code>remInt</code></td><td><span class="sig">String remInt</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>toInt</code></td><td><span class="sig">String toInt</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -139611,6 +139666,7 @@
 <tr><td><code>curStatic</code></td><td><span class="sig">boolean curStatic</span></td><td class="desc">member context</td></tr>
 <tr><td><code>inBody</code></td><td><span class="sig">boolean inBody</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>declNameAt</code></td><td><span class="sig">int declNameAt</span></td><td class="desc">the input token that names the method being declared, or -1 (set by the translator)</td></tr>
+<tr><td><code>lits</code></td><td><span class="sig">JConvClassLit lits</span></td><td class="desc">class literals (rule 8e): the file&#x27;s types, imports and package, and name resolution</td></tr>
 <tr><td><code>curReturnType</code></td><td><span class="sig">String curReturnType</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>unitName</code></td><td><span class="sig">String unitName</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>expr</code></td><td><span class="sig">JConvExpr expr</span></td><td class="desc">the expression half of the typed pass</td></tr>
@@ -139630,6 +139686,12 @@
 <tr><td><code>methodIndex</code></td><td><span class="sig">int methodIndex(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>addField</code></td><td><span class="sig">void addField(String n, String type)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>hasField</code></td><td><span class="sig">boolean hasField(String n)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>setPackage</code></td><td><span class="sig">void setPackage(String p)</span></td><td class="desc">---- rule 8e: class literals (resolution in JConvClassLit) ----</td></tr>
+<tr><td><code>addLiteralType</code></td><td><span class="sig">void addLiteralType(String name, String bin, int kind)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addTypeImport</code></td><td><span class="sig">void addTypeImport(String simple, String qualified)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>addWildImport</code></td><td><span class="sig">void addWildImport(String pkg)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>classLiteralEnd</code></td><td><span class="sig">int classLiteralEnd(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
+<tr><td><code>emitClassLiteral</code></td><td><span class="sig">void emitClassLiteral(int i, int ce, int line)</span></td><td class="desc">write Class.ofLiteral(&quot;&lt;binary name&gt;&quot;, kind) for the literal from token i to its class keyword ce</td></tr>
 <tr><td><code>nx</code></td><td><span class="sig">int nx(int i)</span></td><td class="desc">---- input helpers ----</td></tr>
 <tr><td><code>pv</code></td><td><span class="sig">int pv(int i)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>isOp</code></td><td><span class="sig">boolean isOp(int i, String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -139757,6 +139819,7 @@
 <tr><td><code>keptComment</code></td><td><span class="sig">void keptComment(String head, int a, int b)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>quoteSafe</code></td><td><span class="sig">String quoteSafe(String s)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>translateFile</code></td><td><span class="sig">void translateFile(String relPath)</span></td><td class="desc">---- one file ----</td></tr>
+<tr><td><code>collectLiteralTypes</code></td><td><span class="sig">void collectLiteralTypes(int from)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
 <tr><td><code>skipModifiers</code></td><td><span class="sig">int skipModifiers(int i0)</span></td><td class="desc">the index after annotations and modifiers starting at i</td></tr>
 <tr><td><code>typeKeywordAt</code></td><td><span class="sig">int typeKeywordAt(int h)</span></td><td class="desc">the index of the type keyword at h (for @interface, of interface), or -1</td></tr>
 <tr><td><code>bodyOpenAfter</code></td><td><span class="sig">int bodyOpenAfter(int kw)</span></td><td class="desc"><span class="muted">No description in source.</span></td></tr>
@@ -301731,7 +301794,7 @@
 <script>function flt(q){q=q.toLowerCase();document.querySelectorAll('[data-u]').forEach(function(el){el.style.display = el.getAttribute('data-u').indexOf(q)>=0||q==''?'':'none';});}</script>
 <footer>
 Generated by <code>tools/generate-sleeladoc-api.py</code> from the live
-<code>/lib</code> tree on 2026-11-14 08:23 UTC.
+<code>/lib</code> tree on 2026-11-14 08:50 UTC.
 SleelaDoc — the SLeeLa documentation brand. SLeeLa — MEARVK LLC · Max Rupplin · UNCW, NCSU, Harvard · 2026 · George Soros 2507-2608.
 </footer>
 </main>
