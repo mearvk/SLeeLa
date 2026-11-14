@@ -268,6 +268,66 @@ class JConvRewriter {
     return false;
   }
 
+  << rule 8f. The close of an intersection cast that opens at i, (A & B) or
+     (Comparator<T> & Serializable), or -1: inside are only type tokens with an &
+     between bounds (outside angle brackets), the first is a capitalised name,
+     and the next token starts an operand, so (MASK & FLAG) != 0 is not taken. >>
+  int intersectionCastEnd(int i) {
+    int c = matchClose(i);
+    if (c <= i + 1 || c >= this.lx.n) { return -1; }
+    int f = nx(i + 1);
+    if (this.K[f] != 1 || !upperStart(this.T[f])) { return -1; }
+    int depth = 0;
+    boolean amp = false;
+    int j = f;
+    while (j < c) {
+      int k = this.K[j];
+      String t = this.T[j];
+      if (k == 6) { j = j + 1; continue; }
+      if (k == 1) {
+        if (t == "new" || t == "this" || t == "null" || t == "true" || t == "false" || t == "instanceof") { return -1; }
+      } else if (k == 5) {
+        if (t == "<") { depth = depth + 1; }
+        else if (t == ">") { depth = depth - 1; }
+        else if (t == ">>") { depth = depth - 2; }
+        else if (t == ">>>") { depth = depth - 3; }
+        else if (t == "&") { if (depth == 0) { amp = true; } }
+        else if (t == "." || t == "," || t == "?" || t == "[" || t == "]") { }
+        else { return -1; }
+      } else {
+        return -1;
+      }
+      j = j + 1;
+    }
+    if (!amp || depth != 0) { return -1; }
+    int n2 = nx(c + 1);
+    if (n2 >= this.lx.n) { return -1; }
+    int kn = this.K[n2];
+    if (kn == 1 || kn == 2 || kn == 3 || kn == 4) { return c; }
+    if (kn == 5 && this.T[n2] == "(") { return c; }
+    return -1;
+  }
+
+  << rule 8f. Before a lambda or method reference the cast only names the target
+     type, which SLeeLa writes as Any (rule 8c): it is dropped. Before any other
+     operand it becomes a cast to the first bound (a type variable bound is
+     erased, so then it is dropped); the other bounds are not checked. Returns the
+     index after the cast. >>
+  int lowerIntersectionCast(int i, int c, int line) {
+    < (a local named next reads as 1 here; next is a VM name) >
+    int after = nx(c + 1);
+    if (this.lam.siteN > 0 && this.lam.siteAt(after) >= 0) { return c + 1; }
+    int f = nx(i + 1);
+    String first = this.T[f];
+    int j = nx(f + 1);
+    while (j < c && isOp(j, ".") && this.K[nx(j + 1)] == 1) { first = this.T[nx(j + 1)]; j = nx(nx(j + 1) + 1); }
+    if (isTypeVar(first)) { return c + 1; }
+    push(5, "(", line);
+    syn(1, this.rules.renameIdent(first));
+    syn(5, ")");
+    return c + 1;
+  }
+
   < ---- rule 8e: class literals (resolution in JConvClassLit) ---- >
   void setPackage(String p) { this.lits.curPkg = p; }
   void addLiteralType(String name, String bin, int kind) { this.lits.addLiteralType(name, bin, kind); }
@@ -1008,6 +1068,14 @@ class JConvRewriter {
         if (this.cfg.keepComments) { pushComment(t, line, this.lx.flags[i]); }
         i = i + 1;
         continue;
+      }
+      < an intersection cast (A & B) x: SLeeLa has no intersection types (rule 8f) >
+      if (k == 5 && t == "(") {
+        int ic = intersectionCastEnd(i);
+        if (ic >= 0) {
+          i = lowerIntersectionCast(i, ic, line);
+          continue;
+        }
       }
       < rule 8e: a class literal T.class, int[].class, a.b.C.D.class becomes Class.ofLiteral(binary name, kind) >
       if (k == 1 && !isOp(pv(i), ".")) {
