@@ -347,3 +347,74 @@ The workflow snapshot is available at: https://github.com/mearvk/SLeeLa/actions/
 6. Update this register with exact commit SHA, command, platform, exit status, artifact, and test count. Do not mark a module PASS from a target name, a dry run, a help message, or a source-presence assertion.
 
 **Execution status for this continuation:** recipe inspection completed; no module build command was executed by this GitHub repository inspection. All commands above are the next verification gates, not reported passes.
+
+
+## Live build and CI result refresh — 2026-11-14 19:24 UTC
+
+This section supersedes the earlier in-progress snapshot above. Results below were refreshed from GitHub Actions after commit `a7bc766c0bc260d3c824ee05aa8d8848e113ae68` updated this document.
+
+### Latest portability run — current FILAMENT commit
+
+Workflow: [Native C and C++ Portability, run 43631417081](https://github.com/mearvk/SLeeLa/actions/runs/43631417081)
+
+- Tested commit: `a7bc766c0bc260d3c824ee05aa8d8848e113ae68`
+- Run status at refresh: **in progress**
+- macOS job: runtime build, frozen 155-opcode ISA check, OSLS native registry build, and OSLS VM compiler/runtime dispatch steps completed successfully; full VM regression suite was still running.
+- Ubuntu job: same initial build/ISA/registry/dispatch steps completed successfully; full VM regression suite was still running.
+- Windows 10+ / MinGW-w64 job: philosophy event-tree tests and trusted-source manifest regeneration completed successfully; native runtime/static Core build was still running.
+- No final three-platform conclusion is available yet. Do not mark portability PASS until all three jobs finish successfully.
+
+The preceding run, [43630812944](https://github.com/mearvk/SLeeLa/actions/runs/43630812944), tested commit `68b1bb295b6b45ec9eef27b2d061f558b6c82e14`. At refresh, macOS and Ubuntu jobs had completed successfully, while Windows was still in progress. This is partial two-platform evidence only.
+
+### Investigated Windows failure — run 43622491714
+
+Workflow: [Native C and C++ Portability, run 43622491714](https://github.com/mearvk/SLeeLa/actions/runs/43622491714)
+
+- Tested commit: `d05501ff7459c0a9aec9c1eb46f6dcfb91575cca`
+- Ubuntu: **PASS**
+- macOS: **PASS**
+- Windows 10+ / MinGW-w64: **FAIL — timeout**, not a compiler/linker error in the captured terminal section.
+- The Windows defender verification passed for 18,668 items. Multiple source examples and regression checks passed, including class dispatch, lineage, object references, regex native foundation, and the version-awareness accepted/rejected cases.
+- The job timed out after 20 minutes in **Run full VM regression suite**. The final captured diagnostic test reached malformed `#sleela` input, then emitted the interactive prompt `Terminate batch job (Y/N)?`; the runner sent Ctrl-C and terminated the step.
+
+**Required repair:** make malformed-input/diagnostic regression invocations non-interactive on Windows. Ensure child processes have stdin redirected from a non-interactive source, invoke compiler/test processes without shell batch wrappers that prompt on Ctrl-C, and enforce a bounded subprocess timeout with captured stdout/stderr. A malformed source test must assert a nonzero compiler exit and expected diagnostic, not wait for a user response. Re-run the Windows job after repair. Do not classify the timeout as a source compiler failure without a reproducing compiler diagnostic.
+
+### Additional completed workflow evidence
+
+| Workflow | Run / tested revision | Result | Qualification |
+|---|---|---|---|
+| Registry 3.0 Cross-Platform Verification | [43622485269](https://github.com/mearvk/SLeeLa/actions/runs/43622485269), commit `6a969549ee2c` | **PASS** | Ubuntu, macOS, and Windows jobs all completed successfully. This is an earlier revision than the current FILAMENT commit. |
+| Advantage Library Verification | [43622491621](https://github.com/mearvk/SLeeLa/actions/runs/43622491621), commit `d05501ff7459` | **PASS** | Runtime build, six demos, and documentation verification completed successfully. |
+| Complete SLeeLa VM and Language Conformance | [43619118411](https://github.com/mearvk/SLeeLa/actions/runs/43619118411), commit `d5034d8f1b1d` | **PASS** | Windows, Ubuntu, macOS, arithmetic, and Basic Native VM + Premium SLVM 1–11 jobs passed on that revision. |
+| VM Arithmetic Table Completion | [43619118403](https://github.com/mearvk/SLeeLa/actions/runs/43619118403), commit `d5034d8f1b1d` | **PASS** | Basic Native + Premium SLVM 1–11 arithmetic workflow passed on that revision. |
+| Comparison Standards Conformance | [43619118402](https://github.com/mearvk/SLeeLa/actions/runs/43619118402), commit `d5034d8f1b1d` | **PASS** | Ubuntu, macOS, and Windows shared-vector jobs passed on that revision. |
+
+These historical workflow passes are retained as evidence, but must not be promoted to current-commit status without rerunning them against the current tree.
+
+### Current module qualification ledger
+
+| Module / suite | Most recent evidence located | FILAMENT disposition |
+|---|---|---|
+| Native Core build | Current run 43631417081: macOS/Ubuntu native build step passed; Windows build still running | **PARTIAL — await all platforms** |
+| Frozen 155-opcode ISA | Current run 43631417081: macOS/Ubuntu checks passed | **PARTIAL — Windows pending** |
+| OSLS native registry | Current run 43631417081: macOS/Ubuntu build/test step passed; Windows pending | **PARTIAL — Windows pending** |
+| OSLS VM compiler/runtime dispatch | Current run 43631417081: macOS/Ubuntu step passed; Windows pending | **PARTIAL — Windows pending** |
+| Full VM regression suite | Current run 43631417081: macOS/Ubuntu running; previous Windows attempt timed out | **IN PROGRESS / WINDOWS HARNESS REPAIR REQUIRED** |
+| Native VM + Premium SLVM 1–11 | Run 43619118411 passed on commit `d5034d8f1b1d` | **HISTORICAL PASS — rerun current revision** |
+| VM arithmetic | Run 43619118403 passed on commit `d5034d8f1b1d` | **HISTORICAL PASS — rerun current revision** |
+| Comparison vectors | Run 43619118402 passed on commit `d5034d8f1b1d` | **HISTORICAL PASS — rerun current revision** |
+| Registry 3.0 | Run 43622485269 passed on commit `6a969549ee2c` | **HISTORICAL THREE-PLATFORM PASS — rerun current revision** |
+| Advantage Library | Run 43622491621 passed on commit `d05501ff7459` | **HISTORICAL PASS — rerun current revision** |
+| Independent runtime GC/security tests | No current-run result established by the workflow evidence inspected in this refresh | **SEPARATE TEST GATE — NOT YET QUALIFIED** |
+| Remaining Makefile modules in the recipe matrix above | No fresh execution evidence inspected in this refresh | **PENDING — execute the listed clean build/test commands** |
+
+### Next actions, ordered by dependency
+
+1. Allow run 43631417081 to finish and refresh its final job conclusions.
+2. Repair the Windows malformed-input regression harness so it cannot prompt for interactive batch termination; preserve diagnostic assertions and timeouts.
+3. Re-run portability and verify Windows alongside macOS and Ubuntu.
+4. Run the independent `make -C runtime clean test` suite; record GC/security and Java bridge-injection results independently of Core compilation.
+5. Re-run Native VM + Premium SLVM 1–11, arithmetic, comparison, and Registry 3.0 workflows against the current commit.
+6. Continue the module-by-module Make execution matrix. Update each module only with exact commit, platform, command, exit status, and artifact/test evidence.
+
+**Refresh integrity note:** this update reports only the GitHub Actions states and logs inspected. It does not claim that local shell builds were run during this refresh, and it does not label pending or historical evidence as a current PASS.
