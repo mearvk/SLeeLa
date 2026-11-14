@@ -3,7 +3,7 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all build uninstall uninstall-all autocheck core java28 regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install advanced-build tutorial-check tests server config route common-rails registry registry-test premium-vms sleeladoc sleeladoc-jar api-docs clean verify-security help guess install-guide install-editors uninstall-editors
+.PHONY: all build uninstall uninstall-all autocheck core java28 xlt regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install advanced-build tutorial-check tests server config route common-rails registry registry-test premium-vms sleeladoc sleeladoc-jar api-docs clean verify-security help guess install-guide install-editors uninstall-editors
 
 SLEELA_MANIFEST_CONSENT ?=
 # Answer the "install the advanced (beautified/guided) build?" prompt
@@ -128,6 +128,9 @@ core: autocheck verify-security
 
 java28:
 	$(MAKE) -C java28 all
+
+xlt:
+	$(MAKE) -C impl/xlt all
 
 regex:
 	$(MAKE) -C regex all
@@ -424,6 +427,7 @@ clean:
 	@for n in 001 002 003 004 005 006 007 008 009 010 011; do $(MAKE) -C sleela-virtual-machine/$$n clean; done
 	$(MAKE) -C registry clean
 	$(MAKE) -C impl clean
+	$(MAKE) -C impl/xlt clean
 	$(MAKE) -C java28 clean
 	$(MAKE) -C regex clean
 	$(MAKE) -C lib/compiler clean
@@ -436,7 +440,7 @@ clean:
 	$(MAKE) -C ballum clean
 	$(MAKE) -C lib/ballum clean
 	$(MAKE) -C sleeladoc clean
-	@make -C config clean
+	@$(MAKE) -C config clean
 
 # guess: show the build order. A plain-language walk-through for first timers
 # ("what runs, in what order, and why") followed by the raw target graph for
@@ -622,6 +626,7 @@ help:
 	@echo "  make install-system [PREFIX=/usr/local] System install; uses sudo for system paths only"
 	@echo "      (every install variant first offers the base-code SHA-256 manifest step; SLEELA_MANIFEST_CONSENT=yes|no|skip answers it)"
 	@echo "  make java28    Build java28/"
+	@echo "  make xlt       Build the XLT compiler in impl/xlt/"
 	@echo "  make jetbrains Show JetBrains source acquisition helpers"
 	@echo "  make lib-ballum Validate the SLeeLa lib/ballum sources and build the native backend below it"
 	@echo "  make lib-ballum-check Validate the lib/ballum .sleela sources with the compiler"
