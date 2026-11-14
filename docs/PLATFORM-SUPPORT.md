@@ -33,7 +33,7 @@ The default build requires:
 
 | Host | Recommended toolchain | Additional development packages |
 |---|---|---|
-| Linux | GCC/G++ or Clang, GNU Make | OpenSSL development package, X11, FreeType, Fontconfig, pkg-config |
+| Linux | GCC/G++ or Clang, GNU Make | OpenSSL development package, X11/XRandR/Xext, FreeType, Fontconfig, pkg-config |
 | macOS | Xcode Command Line Tools, Apple Clang, GNU Make | Homebrew OpenSSL 3 and pkg-config; Apple frameworks come from the SDK |
 | Windows 10+ | MSYS2 UCRT64 MinGW-w64 GCC/G++, GNU Make, Bash | OpenSSL and pkgconf from the matching UCRT64 repository; JDK 28 with JNI headers |
 
