@@ -3,7 +3,7 @@ CFLAGS ?= -std=c11 -O2 -Wall -Wextra -pedantic
 CXX ?= c++
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pedantic
 LDLIBS ?= -lm
-PYTHON ?= python3
+PYTHON ?= $(PYTHON)
 
 ifeq ($(OS),Windows_NT)
   EXE := .exe
@@ -36,13 +36,13 @@ neural-nets-xor$(EXE): ../artificial-intelligence/neural-nets/xor_example.c ../a
 	$(CC) $(CFLAGS) -I../artificial-intelligence/neural-nets ../artificial-intelligence/neural-nets/xor_example.c ../artificial-intelligence/neural-nets/neural_nets.c $(LDLIBS) -o $@
 
 ai-neural-nets-xor: neural-nets-xor$(EXE)
-	./neural-nets-xor
+	./neural-nets-xor$(EXE)
 
 character-recognition-smoke$(EXE): character_recognition_smoke.c ../artificial-intelligence/character-recognition/character_recognition.c ../artificial-intelligence/character-recognition/character_recognition.h
 	$(CC) $(CFLAGS) -I../artificial-intelligence/character-recognition $< ../artificial-intelligence/character-recognition/character_recognition.c $(LDLIBS) -o $@
 
 ai-character-recognition: character-recognition-smoke$(EXE)
-	./character-recognition-smoke
+	./character-recognition-smoke$(EXE)
 
 character-recognition-cli$(EXE): ../artificial-intelligence/character-recognition/character_recognition_main.c ../artificial-intelligence/character-recognition/character_recognition.c ../artificial-intelligence/character-recognition/character_recognition.h
 	$(CC) $(CFLAGS) -I../artificial-intelligence/character-recognition ../artificial-intelligence/character-recognition/character_recognition_main.c ../artificial-intelligence/character-recognition/character_recognition.c $(LDLIBS) -o $@
@@ -61,62 +61,62 @@ jdk28-conformance:
 	$(PYTHON) jdk28_functional_equivalence.py
 
 jdk28-functional:
-	python3 jdk28_functional_equivalence.py --functional
+	$(PYTHON) jdk28_functional_equivalence.py --functional
 
 jdk28-signatures:
-	python3 ../lib/java/tools/jdk28_signature_sync.py --check
+	$(PYTHON) ../lib/java/tools/jdk28_signature_sync.py --check
 
 java-source-equivalence:
-	python3 java_source_equivalence.py --java java_equivalence/EquivalenceBasic.java --sleela java_equivalence/EquivalenceBasic.sleela --json java_equivalence/report.json
-	python3 java_source_equivalence.py --java java_equivalence/ExpressionSurface.java --sleela java_equivalence/ExpressionSurface.sleela --json java_equivalence/expression-report.json
+	$(PYTHON) java_source_equivalence.py --java java_equivalence/EquivalenceBasic.java --sleela java_equivalence/EquivalenceBasic.sleela --json java_equivalence/report.json
+	$(PYTHON) java_source_equivalence.py --java java_equivalence/ExpressionSurface.java --sleela java_equivalence/ExpressionSurface.sleela --json java_equivalence/expression-report.json
 
 clean:
 	rm -f memory memory.exe reflection reflection.exe nordshrift nordshrift.exe runtime runtime.exe network-security network-security.exe neural-nets-xor neural-nets-xor.exe character-recognition-smoke character-recognition-smoke.exe character-recognition-cli character-recognition-cli.exe character-recognition-smoke.txt character-recognition-smoke.jsonl
 
-java-conversions:
+java-conversions$(EXE):
 	$(CXX) $(CXXFLAGS) -I../impl/frontend -I../impl/frontend/java java_conversion_semantics.cpp ../impl/frontend/java/java_equivalence.cpp -o java-conversions
-	./java-conversions
+	./java-conversions$(EXE)
 
-java-overload:
+java-overload$(EXE):
 	$(CXX) $(CXXFLAGS) -I../impl/frontend -I../impl/frontend/java java_overload_override.cpp ../impl/frontend/java/java_equivalence.cpp -o java-overload
-	./java-overload
+	./java-overload$(EXE)
 
 java-flow:
-	python3 java_flow_suite.py
+	$(PYTHON) java_flow_suite.py
 
 java-exceptions:
-	python3 java_exceptions_suite.py
+	$(PYTHON) java_exceptions_suite.py
 
 java-api-dependencies:
-	python3 java_api_dependency_suite.py
+	$(PYTHON) java_api_dependency_suite.py
 
 java-constraints:
-	python3 java_constraints_suite.py
+	$(PYTHON) java_constraints_suite.py
 
 java-signature-comparison:
-	python3 java_signature_comparison_suite.py
+	$(PYTHON) java_signature_comparison_suite.py
 
 java-platform-qualification:
-	python3 java_platform_qualification_suite.py
+	$(PYTHON) java_platform_qualification_suite.py
 
 java-qualification:
-	python3 java_qualification_manifest.py
+	$(PYTHON) java_qualification_manifest.py
 
 .PHONY: java-api-dependency-graph java-api-member-dependencies java-api-visibility-constructor java-source-implementation-audit java-lang-native
 
 java-api-dependency-graph:
-	python3 java_api_dependency_graph_suite.py
+	$(PYTHON) java_api_dependency_graph_suite.py
 
 java-api-member-dependencies:
-	python3 java_api_member_dependencies_suite.py
+	$(PYTHON) java_api_member_dependencies_suite.py
 
 java-api-visibility-constructor:
-	python3 java_api_visibility_constructor_suite.py
+	$(PYTHON) java_api_visibility_constructor_suite.py
 
 java-source-implementation-audit:
-	python3 java_source_implementation_audit_suite.py
-	python3 java_source_implementation_audit.py --top 40
+	$(PYTHON) java_source_implementation_audit_suite.py
+	$(PYTHON) java_source_implementation_audit.py --top 40
 
 java-lang-native:
-	python3 java_object_identity_native_suite.py
-	python3 java_string_native_suite.py
+	$(PYTHON) java_object_identity_native_suite.py
+	$(PYTHON) java_string_native_suite.py
