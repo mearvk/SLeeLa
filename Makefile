@@ -583,7 +583,7 @@ help:
 	@echo "SLeeLa repository build dispatcher"
 	@echo "  Targets (alphabetical):"
 	@echo "  make advanced-build  Yes/no gate run by 'make build'; on yes runs the guided installer (SLEELA_ADVANCED_BUILD=yes|no|skip)"
-	@echo "  make all       Build core, Java 28, regex, compiler, decompiler, VM, scripting, codecs, churn, antivirus, registry, premium VMs, Ballum, and run install/tutorial/test checks"
+	@echo "  make all       Build core, XLT, Java 28, regex, compiler, decompiler, VM, scripting, codecs, churn, antivirus, registry, premium VMs, Ballum, and run install/tutorial/test checks"
 	@echo "  make antivirus Build Sleelavirin C core and self-test executable"
 	@echo "  make antivirus-clamav Check optional ClamAV scanner integration"
 	@echo "  make antivirus-integrity Generate SHA-256 inventory for antivirus source and indexes"
