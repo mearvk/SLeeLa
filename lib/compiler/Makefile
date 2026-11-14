@@ -34,7 +34,7 @@ selftest: $(BUILD_DIR)/sleela_langc.c.o $(BUILD_DIR)/sleela_lang_bridge.c.o | $(
 SLEELA_SHA256_MANIFEST ?= $(abspath $(CURDIR)/../../security/sha256-manifest.json)
 
 runtime:
-	$(MAKE) -C ../../impl build/sleela SLEELA_SHA256_MANIFEST="$(SLEELA_SHA256_MANIFEST)"
+	$(MAKE) -C ../../impl build/sleela$(EXE) SLEELA_SHA256_MANIFEST="$(SLEELA_SHA256_MANIFEST)"
 
 inventory:
 	$(PYTHON) ../../tools/sleela-build.py inventory-lib
