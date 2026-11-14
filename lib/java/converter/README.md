@@ -3,7 +3,7 @@
 > **Container.** Java container content (`SLEELA.syntax` section 38.4). Nothing
 > here is part of the SLeeLa specification or adds syntax to SLeeLa.
 
-Status: **0.7.0, best effort (2026-11-13).** Output stays at syntax **3.1** (also
+Status: **0.7.1, best effort (2026-11-14).** Output stays at syntax **3.1** (also
 written 3.01) by the owner's decision; syntax 3.1 sections 45 and 46 forms are not used
 (`.kiro/steering/java-converter-lib.md`). The operand laws come from the shared
 conversion model, `impl/subjects/conversion/conversion.model` (read by
@@ -313,6 +313,68 @@ library, in this order of weight:
    do not wrap in the VM, so `a[i] = x + y` keeps a 64-bit value until it is read
    through a wrap. `switch` over enum constants is not lowered.
 
+**The whole JDK in one run (0.7.1, 2026-11-14).** Input: the OpenJDK 25.0.2
+`src.zip`, unpacked (15,020 `.java` files in 69 modules), `JCONV_SCOPE=api`,
+`JCONV_BUNDLE=1`, compiler `impl/build/sleela`:
+
+| Measure | Result |
+|---|---:|
+| Java files selected (public JDK 28 types) | 4,127 |
+| Converted / skipped / failed | 4,120 / 7 / 0 |
+| SLeeLa files written | 4,174 |
+| Types / members | 6,651 / 84,382 |
+| Members stubbed (fail loud) | 3,890 (4.6%) |
+| Time | 173 s |
+| Peak memory of the VM | about 1.7 GB |
+
+Before 0.7.1 this run could not finish. `java.base` alone was killed by the
+kernel at 16 GB after 1,200 of its 1,388 files, and with that fixed the run then
+stopped at `javax.swing.plaf.basic.BasicLookAndFeel`. Three fixes:
+
+1. **Memory.** The VM never frees a plain String, so `JConvEmitter` growing a
+   16,000-byte buffer by appending kept every intermediate copy (122 MB for
+   `HashMap.java` alone). It now writes each piece straight to the file;
+   `HashMap.java` peaks at the 57 MB of an empty run. Output unchanged.
+2. **Members over 64 KB.** A stubbed member keeps its Java body as a comment.
+   `BasicLookAndFeel.initComponentDefaults` is 69,967 bytes, more than a plain
+   String holds, so the comment became a UTF-16 String and the next `+` stopped
+   the VM (`Java String concatenation requires two UTF-16 String values`).
+   `keptComment` now writes such comments a line at a time. Output unchanged
+   for every smaller member.
+3. **Method declarations named like a VM built-in** (`read`, `write`, `lock`,
+   `accept`, ...). The call-site rule that writes `this.read()` or
+   `Owner.read()` was also applied to the declaration, giving
+   `public int32 this.read() {`, a syntax error. 514 declarations in the JDK
+   (481 instance, 33 static) were written that way. The typed pass then also
+   misread those methods, so their `int` arithmetic missed 107 wraps
+   (`JavaOperands.toInt` and the shift and division calls), now present.
+
+The 17-file sample and both demo programs give the same output as before
+(ConvDemo 31 of 31 and LambdaDemo 17 of 17 lines identical to OpenJDK).
+
+What remains for a whole-tree conversion, measured on this run:
+
+- **`sleela check` on a sample of 41 of the 4,174 files** (every 104th file):
+  24 have no error; 1 has a syntax error; 360 semantic errors in all, mostly
+  library gaps (methods the jdk-28 units do not declare, statics written as
+  instance methods, `Any` results not assignable to a typed variable).
+- **The one syntax error left is the language.** An interface may extend only
+  one interface in SLeeLa (`interface C extends A, B` is rejected by the
+  parser); 137 converted JDK interfaces in 136 files extend two or more.
+  Closing it needs SLEELA.syntax and the parser, not the converter.
+- **Stub reasons across the JDK:** class literal `X.class` 1,884 (48% of all
+  stubs), anonymous class 309, native method 285, pattern `instanceof` 250,
+  `String` statics 228, method reference 186, `var` 184, switch expression or
+  multi-label case 158, lambda or switch arrow 142, others under 100 each.
+- **7 files are skipped for non-ASCII bytes** (`Collator`, `RuleBasedCollator`,
+  `Locale`, `PropertyResourceBundle`, `UUID`, `ICC_Profile`, `javax.swing.Action`;
+  section 6 item 5).
+- **A runtime error in one file still ends the run.** A VM runtime error cannot
+  be caught, so a converter fault in one file loses the files after it. None
+  occurs on the JDK any more, but a different source tree may find one.
+- **Memory still grows by about 0.4 MB a file** (the Strings each file makes are
+  never freed). That fits the JDK; a tree several times larger may not.
+
 **Speed (2026-11-13).** The 17-file sample above converts in **6.6 s** (it took
 66 s). Nothing in the converter changed and the output is byte-for-byte the
 same. The time was in the VM: every runtime plain String (each concatenation,
@@ -358,6 +420,7 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | Version | Change |
 |---|---|
 | 0.1.0 | First cut: walk, lex, rewrite, translate, stubs, report |
+| 0.7.1 | Whole-tree runs: the emitter writes pieces directly instead of growing a String buffer (memory flat: the JDK `java.base` run had been killed at 16 GB); kept Java bodies over 64 KB are written as comments line by line (`keptComment`, was a VM stop on `BasicLookAndFeel`); a method declared with a VM built-in name (`read`, `write`, ...) is no longer written as `this.read` / `Owner.read` (514 declarations in the JDK; the typed pass now reaches them). All 4,120 convertible public JDK types in one run, 173 s. 17-file sample output unchanged |
 | 0.7.0 | `JConvOuter`: inner (non-static) classes get `Outer slOuter` and a first constructor parameter `slOuterArg`; `new Inner(..)` passes `this` (or `this.slOuter` from a sibling inner class); `Outer.this` becomes `this.slOuter`; an unqualified outer member becomes `this.slOuter.x` or `Outer.x` unless it is a local, an own member or possibly inherited (model `ret` / `field` rows). Stub reason 10 kept only for other qualified `this` / `super`. JDK sample, bundled: **26 stubs (was 35), 475 check errors (was 522), 0 syntax errors**; both samples still identical |
 | 0.6.0 | `JConvLambda`: lambdas and method references lowered to `(id, env)` (rules 8a, 8b); functional interface types written as `Any` (8c), relying on SLEELA.syntax 43.7 (calls on `Any`). New sample `samples/lambda/LambdaDemo.java`, 17 of 17 lines identical. On eight lambda-dense `java.util` files the stubbed members fall from 31 to 15 |
 | 0.5.0 | `JConvExpr`: an expression parser (JLS precedence) on the output tokens of each member; rules 7a to 7c moved onto the tree and rules 7e, 7f added (int wrap where the value leaves int arithmetic; `divInt` / `remInt`). In the JDK sample it writes 88 wraps and 7 division calls, with 0 syntax errors and the check numbers unchanged. The sample program gains overflow checks, `long` from an `int` product, division by zero caught, `MIN / -1`, the binary-search midpoint, and runs all 31 lines identical. Library fixes found by it: jdk-28 `Math.abs(int)` at `MIN_VALUE`, `Math.absExact(int)` now throws |

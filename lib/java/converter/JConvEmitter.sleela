@@ -2,8 +2,11 @@
    Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
    Definition: writes one SLeeLa source file. Tokens keep the line structure of
    the Java source; indentation follows the brace depth (two spaces); spacing
-   follows the usual Java layout. Output is buffered and flushed in pieces
-   well below the 65,536-byte limit of a built plain String. Comments are
+   follows the usual Java layout. Each piece is written to the file as it is
+   produced, with no buffer: a plain String the VM makes is never freed, so a
+   buffer grown by appending kept every intermediate copy of itself (about
+   120 MB for HashMap.java), and converting a whole JDK module ran out of
+   memory. Writing the pieces directly keeps memory flat. Comments are
    always placed on their own line, because an angle-bracket comment must
    start its line. >>
 #sleela 3.0
@@ -12,10 +15,10 @@ material;
 class JConvEmitter {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. >>
-  String metaVersion = "0.1.0";
+  String metaVersion = "0.2.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
-  String metaDate = "2026-11-12";
+  String metaDate = "2026-11-14";
   String metaCopyright = "MEARVK LLC";
   String metaTrademark = "none";
   String metaCorporation = "MEARVK LLC";
@@ -51,8 +54,6 @@ class JConvEmitter {
   void setNationalSchedule(String v) { metaNationalSchedule = v; }
 
   int handle;
-  String buffer;
-  int bufferLen;
   int bytesOut;
   int depth;
   boolean lineStart;
@@ -63,8 +64,6 @@ class JConvEmitter {
 
   JConvEmitter() {
     this.handle = -1;
-    this.buffer = "";
-    this.bufferLen = 0;
     this.bytesOut = 0;
     this.depth = 0;
     this.lineStart = true;
@@ -76,8 +75,6 @@ class JConvEmitter {
 
   boolean openOut(String path) {
     this.handle = openFile(path, "w");
-    this.buffer = "";
-    this.bufferLen = 0;
     this.bytesOut = 0;
     this.depth = 0;
     this.lineStart = true;
@@ -88,32 +85,16 @@ class JConvEmitter {
     return !this.failed;
   }
 
-  void flushOut() {
-    if (this.handle >= 0 && this.bufferLen > 0) {
-      write(this.handle, this.buffer);
-      this.bytesOut = this.bytesOut + this.bufferLen;
-    }
-    this.buffer = "";
-    this.bufferLen = 0;
-  }
-
   void finishOut() {
     if (!this.lineStart) { this.newline(); }
-    flushOut();
     if (this.handle >= 0) { close(this.handle); }
     this.handle = -1;
   }
 
+  < write a piece straight to the file: no buffer, so no String is built here >
   void raw(String s) {
-    int len = s.length();
-    if (this.bufferLen + len > 16000) { flushOut(); }
-    if (len > 16000) {
-      if (this.handle >= 0) { write(this.handle, s); }
-      this.bytesOut = this.bytesOut + len;
-      return;
-    }
-    this.buffer = this.buffer + s;
-    this.bufferLen = this.bufferLen + len;
+    if (this.handle >= 0) { write(this.handle, s); }
+    this.bytesOut = this.bytesOut + s.length();
   }
 
   void newline() {

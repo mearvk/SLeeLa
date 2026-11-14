@@ -144,6 +144,42 @@ class JConvTranslator {
     return t;
   }
 
+  << Write the comment head, the Java text of code units a .. b-1 (made safe for
+     a block comment) and the closing marker, exactly as em.comment of the three
+     joined would, but one source line at a time. A member body can be larger than the
+     65,536 bytes a plain String holds (javax.swing.plaf.basic.BasicLookAndFeel has
+     a 70 KB method); built as one String it became a UTF-16 String and the next +
+     stopped the VM. Line by line, no piece comes near the limit. A line longer
+     than 30,000 units is cut, never between two equal angle brackets, so the
+     doubled-bracket rewrites of commentSafe see the same pairs as on the whole
+     text. >>
+  void keptComment(String head, int a, int b) {
+    if (!this.em.lineStart) { this.em.newline(); }
+    String ind = this.em.indentText(0);
+    String h = head;
+    if (h.indexOf("\n") >= 0) { h = h.replace("\n", "\n" + ind); }
+    this.em.raw(ind + h);
+    int i = a;
+    boolean first = true;
+    while (i < b) {
+      int e = i;
+      while (e < b && this.src.at(e) != 10 && e - i < 30000) { e = e + 1; }
+      if (e < b && this.src.at(e) != 10) {
+        while (e > i + 1 && (this.src.at(e) == 62 || this.src.at(e) == 60) && this.src.at(e - 1) == this.src.at(e)) { e = e - 1; }
+      }
+      if (!first && this.src.at(i - 1) == 10) { this.em.raw("\n" + ind); }
+      first = false;
+      this.em.raw(commentSafe(this.src.slice(i, e)));
+      i = e;
+      if (i < b && this.src.at(i) == 10) {
+        i = i + 1;
+        if (i == b) { this.em.raw("\n" + ind); }
+      }
+    }
+    this.em.raw(" >>");
+    this.em.newline();
+  }
+
   String quoteSafe(String s) { return s.replace("\\", "\\\\").replace("\"", "\\\""); }
 
   < ---- one file ---- >
@@ -513,7 +549,7 @@ class JConvTranslator {
                    int[] mk, int[] mStart, int[] mHdr, int[] mBody, int[] mEnd, int[] mFlags,
                    int compOpen, int compClose, boolean hasCtor, boolean hasCanonical, String typeWord, boolean inBundle) {
     if (kind == "annotation") {
-      this.em.comment("<< Java annotation interface: annotations carry no SLeeLa behavior. Its elements, as declared in Java:\n" + commentSafe(this.src.slice(this.lx.begins[open], this.lx.ends[close])) + " >>");
+      keptComment("<< Java annotation interface: annotations carry no SLeeLa behavior. Its elements, as declared in Java:\n", this.lx.begins[open], this.lx.ends[close]);
     }
     if (kind == "enum") { writeEnumConstants(open, constEnd, name); }
     registerInners(name, kind, count, mk, mStart, mHdr);
@@ -988,6 +1024,7 @@ class JConvTranslator {
       while (paren < endTok && !isOp(paren, "(")) { paren = paren + 1; }
       int nameAt = this.rw.pv(paren);
       String mname = this.rules.renameIdent(tx(nameAt));
+      this.rw.declNameAt = nameAt;
       < return type text, for javac casts on return >
       int save = this.rw.on;
       this.rw.rewrite(h2, nameAt);
@@ -1013,7 +1050,7 @@ class JConvTranslator {
         this.rw.emitOut(this.em);
         this.em.endLine();
         if (this.cfg.keepComments && bodyOpen >= 0) {
-          this.em.comment("<< Java body of " + mname + ", kept for manual conversion (" + this.rules.reasonText(reason) + "):\n" + commentSafe(this.src.slice(this.lx.begins[bodyOpen], this.lx.ends[endTok])) + " >>");
+          keptComment("<< Java body of " + mname + ", kept for manual conversion (" + this.rules.reasonText(reason) + "):\n", this.lx.begins[bodyOpen], this.lx.ends[endTok]);
         }
         stubbed(reason);
       } else {
@@ -1047,7 +1084,7 @@ class JConvTranslator {
         this.rw.emitOut(this.em);
         this.em.endLine();
         if (this.cfg.keepComments) {
-          this.em.comment("<< Java initializer not converted (" + this.rules.reasonText(reason) + "); the field holds the Java zero value:\n" + commentSafe(this.src.slice(this.lx.begins[eq], this.lx.ends[endTok])) + " >>");
+          keptComment("<< Java initializer not converted (" + this.rules.reasonText(reason) + "); the field holds the Java zero value:\n", this.lx.begins[eq], this.lx.ends[endTok]);
         }
         this.rep.note("field " + this.unitName + "." + fieldName(hh, endTok) + ": initializer not converted (" + this.rules.reasonText(reason) + ")");
         stubbed(reason);
@@ -1090,7 +1127,7 @@ class JConvTranslator {
       this.em.annotationLine("@throwable(\"java.lang.UnsupportedOperationException\")");
       this.em.lineOut(pre + "int " + nm + "() { throw new UnsupportedOperationException(\"not converted to SLeeLa (" + this.rules.reasonText(reason) + "): " + this.javaType + " initializer\"); }");
       if (this.cfg.keepComments) {
-        this.em.comment("<< Java initializer block, not run (" + this.rules.reasonText(reason) + "):\n" + commentSafe(this.src.slice(this.lx.begins[open], this.lx.ends[close])) + " >>");
+        keptComment("<< Java initializer block, not run (" + this.rules.reasonText(reason) + "):\n", this.lx.begins[open], this.lx.ends[close]);
       }
       this.rep.note(this.unitName + ": initializer block not run (" + this.rules.reasonText(reason) + ")");
       stubbed(reason);
@@ -1173,7 +1210,7 @@ class JConvTranslator {
         this.rep.note("enum constant " + name + "." + cname + ": its class body is dropped (reason 20)");
         this.rep.countReason(20);
         if (this.cfg.keepComments) {
-          this.em.comment("<< Java body of enum constant " + cname + ", not converted (" + this.rules.reasonText(20) + "):\n" + commentSafe(this.src.slice(this.lx.begins[after], this.lx.ends[bc])) + " >>");
+          keptComment("<< Java body of enum constant " + cname + ", not converted (" + this.rules.reasonText(20) + "):\n", this.lx.begins[after], this.lx.ends[bc]);
         }
         after = nx(bc + 1);
       }

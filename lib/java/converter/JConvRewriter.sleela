@@ -104,6 +104,8 @@ class JConvRewriter {
   < member context >
   boolean curStatic;
   boolean inBody;
+  < the input token that names the method being declared, or -1 (set by the translator) >
+  int declNameAt;
   String curReturnType;
   String unitName;
   < the expression half of the typed pass >
@@ -147,6 +149,7 @@ class JConvRewriter {
     this.siN = 0;
     this.curStatic = false;
     this.inBody = false;
+    this.declNameAt = -1;
     this.curReturnType = "";
     this.unitName = "";
     this.expr = new JConvExpr(this);
@@ -358,6 +361,7 @@ class JConvRewriter {
   void reset() {
     this.on = 0;
     this.pendN = 0;
+    this.declNameAt = -1;
   }
 
   void growOut() {
@@ -1169,7 +1173,8 @@ class JConvRewriter {
         s = s + 1;
       }
     }
-    if (!afterDot && this.rules.isBuiltinCallName(t) && isOp(nx(i + 1), "(")) {
+    < a call to an own method named like a VM built-in is qualified; its declaration is not >
+    if (!afterDot && i != this.declNameAt && this.rules.isBuiltinCallName(t) && isOp(nx(i + 1), "(")) {
       int mi = methodIndex(t);
       if (mi >= 0 && this.mStatic[mi] == 1) {
         push(1, this.unitName, line);
