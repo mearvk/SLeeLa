@@ -19,6 +19,11 @@ CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic -Iinclude
 # levels commit a hand-written `build/<platform>/` set of platform entry points,
 # and `make clean` must never delete those. Our artifacts live under vm-build/.
 BUILD = vm-build
+ifeq ($(OS),Windows_NT)
+  EXE := .exe
+else
+  EXE :=
+endif
 
 IMPL ?= ../../impl
 SLCORE_LIB ?= $(IMPL)/build/libslcore.a
@@ -44,7 +49,7 @@ include $(VM_PLATFORM_LIBS_MK)
 CORE_LDLIBS ?= $(THREADFLAG) -fopenmp $(CORE_LIBS) $(CORE_UI_LIBS)
 
 FEATURE_OBJS = $(BUILD)/slvm10.o $(BUILD)/slvm10_intxxx_module.o
-VM = $(BUILD)/slvm-10
+VM = $(BUILD)/slvm-10$(EXE)
 
 all: $(VM)
 
