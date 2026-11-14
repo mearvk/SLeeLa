@@ -7,6 +7,11 @@ CXXFLAGS ?= -std=c++17 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wformat=2
 CPPFLAGS ?= -Iinclude
 BUILD ?= build
 
+# MSYS2 UCRT64 supplies POSIX regex through libsystre (libregex).
+ifeq ($(OS),Windows_NT)
+  LDLIBS += -lregex
+endif
+
 ifeq ($(OS),Windows_NT)
   EXE := .exe
 else
@@ -21,7 +26,7 @@ c: $(BUILD)/regex-c$(EXE)
 	$<
 
 $(BUILD)/regex-c$(EXE): src/sleela_regex.c tests/test_regex.c | $(BUILD)
-	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) $^ -o $@ $(LDLIBS)
 
 cpp: $(BUILD)/regex-cpp$(EXE)
 	$<
