@@ -194,9 +194,9 @@ else ifeq ($(PLATFORM),macos)
 else
 	@echo "  Checking Windows system import libraries (gdi32/user32)..."
 	@mkdir -p "$(BUILD)"
-	@printf 'int main(void){return 0;}\\n' > "$(BUILD)/.depcheck.c"
-	@$(CC) "$(BUILD)/.depcheck.c" -o "$(BUILD)/.depcheck$(EXE)" $(BACKEND_LIBS) >/dev/null 2>&1 \\
-	  && echo "  AVAILABLE: gdi32/user32" \\
+	@printf 'int main(void){return 0;}\n' > "$(BUILD)/.depcheck.c"
+	@$(CC) "$(BUILD)/.depcheck.c" -o "$(BUILD)/.depcheck$(EXE)" $(BACKEND_LIBS) >/dev/null 2>&1 \
+	  && echo "  AVAILABLE: gdi32/user32" \
 	  || { rm -f "$(BUILD)/.depcheck.c" "$(BUILD)/.depcheck$(EXE)"; echo "  MISSING: MinGW Windows SDK import libraries (gdi32/user32); use the MSYS2 UCRT64 toolchain." >&2; exit 1; }
 	@rm -f "$(BUILD)/.depcheck.c" "$(BUILD)/.depcheck$(EXE)"
 endif
