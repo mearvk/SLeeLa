@@ -107,7 +107,7 @@ verify-security:
 	$(PYTHON) "$(SLEELA_VERIFY_TOOL)" --manifest "$(SLEELA_SHA256_MANIFEST)" --root "$(SLEELA_REPO_ROOT)"
 
 autocheck:
-	@sh ./scripts/autocheck-toolchain.sh
+	@PYTHON="$(PYTHON)" sh ./scripts/autocheck-toolchain.sh
 
 core: autocheck verify-security
 	$(MAKE) -C impl all
