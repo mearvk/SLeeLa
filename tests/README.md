@@ -11,6 +11,24 @@
 
 Tests are organized around completion gates: memory safety, reflection metadata, Nordshrift binding resolution, lowering/artifact compatibility, networking, HTTP, server lifecycle, VoIP, drivers, package verification and cross-platform behavior.
 
+## Native test build dependencies
+
+The default native smoke-test build compiles the networking/security check
+against OpenSSL's SHA-256 implementation and links the platform socket layer.
+
+Install the OpenSSL development package before running `make -C tests all`:
+
+- Debian / Ubuntu: `sudo apt-get install build-essential libssl-dev`
+- Fedora: `sudo dnf install gcc-c++ openssl-devel`
+- Arch Linux: `sudo pacman -S base-devel openssl`
+- macOS (Homebrew): `brew install openssl@3 pkg-config`
+- Windows (MSYS2 UCRT64): `pacman -S mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-openssl mingw-w64-ucrt-x86_64-pkgconf`
+
+The Makefile obtains non-default OpenSSL include and library paths from
+`pkg-config`. If OpenSSL is installed in a custom prefix, set
+`OPENSSL_CFLAGS` and `OPENSSL_LIBS` explicitly. The Windows build uses
+Winsock through `-lws2_32`; build from the matching MSYS2 MinGW/UCRT64 shell.
+
 ## JDK 28 Java Conformance
 
 `jdk28_functional_equivalence.py` audits every `lib/java/**/*.sleela` declaration against the official JDK 28 API index.
