@@ -17,11 +17,13 @@ DESTDIR ?=
 # One overridable Python command for verification and data checks. Prefer
 # python3, then python, then the Windows Python launcher (py -3).
 PYTHON ?= python3
-PYTHON_AVAILABLE := $(shell command -v $(firstword $(PYTHON)) >/dev/null 2>&1 && echo yes)
+PYTHON_AVAILABLE := $(shell command -v "$(firstword $(PYTHON))" >/dev/null 2>&1 && $(PYTHON) -c 'import sys; sys.exit(0 if sys.version_info[0] >= 3 else 1)' >/dev/null 2>&1 && echo yes)
 ifeq ($(PYTHON_AVAILABLE),)
-  ifneq ($(shell command -v python >/dev/null 2>&1 && echo yes),)
+  ifneq ($(shell command -v python3 >/dev/null 2>&1 && python3 -c 'import sys; sys.exit(0 if sys.version_info[0] >= 3 else 1)' >/dev/null 2>&1 && echo yes),)
+    PYTHON := python3
+  else ifneq ($(shell command -v python >/dev/null 2>&1 && python -c 'import sys; sys.exit(0 if sys.version_info[0] >= 3 else 1)' >/dev/null 2>&1 && echo yes),)
     PYTHON := python
-  else ifneq ($(shell command -v py >/dev/null 2>&1 && echo yes),)
+  else ifneq ($(shell command -v py >/dev/null 2>&1 && py -3 -c 'import sys; sys.exit(0 if sys.version_info[0] >= 3 else 1)' >/dev/null 2>&1 && echo yes),)
     PYTHON := py -3
   endif
 endif
