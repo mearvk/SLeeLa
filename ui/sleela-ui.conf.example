@@ -1,0 +1,16 @@
+# SleelaUI(TM) presentation configuration.
+# This file is loaded ONLY when an application explicitly calls
+# SLTheme.loadConfig(path) / slui_theme_load_config(theme, path).
+# It is not silently auto-loaded from the user's home directory.
+#
+# Choose one of: default, white, blue, black, gray.
+# "default" is graphite/charcoal with a steel-blue accent.
+theme=default
+
+# Optional role overrides. Leave commented to preserve the selected preset.
+# base_color=#1D2025
+# accent=#4F8CFF
+
+font_family=system
+font_size=11
+radius=8
