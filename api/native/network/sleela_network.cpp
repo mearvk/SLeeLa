@@ -92,6 +92,13 @@ Status Socket::open(Transport transport, AddressFamily family) {
         return Status::Error;
     }
     fd_ = static_cast<std::intptr_t>(fd);
+#if !defined(_WIN32) && defined(SO_NOSIGPIPE)
+    {
+        int no_sigpipe = 1;
+        (void)::setsockopt(fd, SOL_SOCKET, SO_NOSIGPIPE,
+                           &no_sigpipe, static_cast<socket_length_t>(sizeof(no_sigpipe)));
+    }
+#endif
     return Status::Ok;
 }
 
@@ -146,7 +153,11 @@ Status Socket::send(const std::vector<std::uint8_t>& data) {
     return sent >= 0 && static_cast<std::size_t>(sent) == data.size()
         ? Status::Ok : Status::Error;
 #else
+#ifdef MSG_NOSIGNAL
+    const ssize_t sent = ::send(fd, data.data(), data.size(), MSG_NOSIGNAL);
+#else
     const ssize_t sent = ::send(fd, data.data(), data.size(), 0);
+#endif
     return sent >= 0 && static_cast<std::size_t>(sent) == data.size()
         ? Status::Ok : Status::Error;
 #endif
@@ -210,7 +221,10 @@ TcpConnection::TcpConnection() : socket_(std::make_unique<Socket>()) {}
 TcpConnection::~TcpConnection() { (void)close(); }
 Status TcpConnection::connect(const Endpoint& endpoint) {
     const Status opened = socket_->open(Transport::TCP, endpoint.family);
-    return opened == Status::Ok ? socket_->connect(endpoint) : opened;
+    if (opened != Status::Ok) return opened;
+    const Status connected = socket_->connect(endpoint);
+    if (connected != Status::Ok) (void)socket_->close();
+    return connected;
 }
 Status TcpConnection::send(const std::vector<std::uint8_t>& data) {
     return socket_->send(data);
