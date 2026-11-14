@@ -1,27 +1,18 @@
 # =============================================================================
-# Makefile for the Sleela <-> Java 28 SecureJDK memory integration (J28-MEM-0001).
+# SLeeLa <-> Java 28 SecureJDK memory integration (J28-MEM-0001).
 #
-# Builds both channels:
-#   - port : Java memory server (Java28PortServer) + native C driver (over TCP)
-#   - jni  : JNI shared library (libsleela_java28) + Java28JniRuntime (in-process)
-#
-# Requires a JDK (javac/java) and a C compiler. JAVA_HOME must point at a JDK
-# with include/ headers for the JNI target. On this toolchain the default JDK
-# works; override JAVA_HOME to build against the Java 28 SecureJDK.
+# Builds the Java model, TCP port driver, and JNI bridge on Linux, macOS, and
+# Windows (MinGW/MSYS2). Set JAVA_HOME to a full JDK when auto-detection is not
+# sufficient. The default target compiles; demo targets execute the channels.
 # =============================================================================
 CC ?= cc
 CFLAGS ?= -std=c11 -O2 -Wall -Wextra
 JAVAC ?= javac
 JAVA ?= java
-# Resolve the JDK home robustly. Prefer the JVM's own authoritative `java.home`
-# (via `java -XshowSettings:properties`), which points at the real JDK even when
-# `javac` on PATH is a version-manager SHIM (mise/asdf/sdkman) -- in that case
-# `readlink -f $(which javac)` resolves to the shim itself, not the JDK, and
-# yields a bogus home with no include/jni.h. Fall back to the readlink method
-# when XshowSettings is unavailable. An explicit JAVA_HOME override wins (?=).
-JAVA_HOME ?= $(shell h=$$($(JAVA) -XshowSettings:properties -version 2>&1 | sed -n 's/^[[:space:]]*java\.home = //p'); \
-	if [ -n "$$h" ] && [ -f "$$h/include/jni.h" ]; then echo "$$h"; \
-	else dirname $$(dirname $$(readlink -f $$(which $(JAVAC)))); fi)
+
+# Java 9+ reports the active runtime home. A full JDK is required for jni.h.
+# An explicit environment/command-line JAVA_HOME always takes precedence.
+JAVA_HOME ?= $(shell $(JAVA) -XshowSettings:properties -version 2>&1 | sed -n 's/^[[:space:]]*java\.home = //p' | head -n 1)
 
 BUILD := build
 CLASSES := $(BUILD)/classes
@@ -29,57 +20,83 @@ JNIH := $(BUILD)/jni
 BIN := $(BUILD)/bin
 
 PKG := com.mearvk.sleela.java28
-JAVA_SRC := $(shell find src/java -name '*.java')
+JAVA_SRC := $(shell find src/java -type f -name '*.java' -print)
 NATIVE_INC := -Isrc/native
-
-# JVM flags: silence the JDK native-access advisory for the JNI demo.
 JVM_FLAGS ?= --enable-native-access=ALL-UNNAMED
 
-.PHONY: all java port jni demo demo-port demo-jni clean
+# JNI headers, linker mode, and library filename are host-specific.
+ifeq ($(OS),Windows_NT)
+  PLATFORM := windows
+  JNI_PLATFORM := win32
+  JNI_SHARED_FLAGS := -shared
+  JNI_LIB := $(BIN)/sleela_java28.dll
+  PORT_LIBS := -lws2_32
+else
+  UNAME_S := $(shell uname -s)
+  ifeq ($(UNAME_S),Darwin)
+    PLATFORM := macos
+    JNI_PLATFORM := darwin
+    JNI_SHARED_FLAGS := -dynamiclib -fPIC
+    JNI_LIB := $(BIN)/libsleela_java28.dylib
+    PORT_LIBS :=
+  else
+    PLATFORM := linux
+    JNI_PLATFORM := linux
+    JNI_SHARED_FLAGS := -shared -fPIC
+    JNI_LIB := $(BIN)/libsleela_java28.so
+    PORT_LIBS :=
+  endif
+endif
+
+.PHONY: all java port jni demo demo-port demo-jni check-deps clean
 all: java port jni
 
-# --- Java side (memory server, value model, both runtimes, demo objects) -----
-java: | $(CLASSES) $(JNIH)
+check-deps:
+	@command -v "$(JAVAC)" >/dev/null 2>&1 || { echo "java28: javac not found; install a full JDK or set JAVAC." >&2; exit 1; }
+	@command -v "$(JAVA)" >/dev/null 2>&1 || { echo "java28: java not found; install a JDK/JRE or set JAVA." >&2; exit 1; }
+	@command -v "$(CC)" >/dev/null 2>&1 || { echo "java28: C compiler '$(CC)' not found." >&2; exit 1; }
+	@test -f "$(JAVA_HOME)/include/jni.h" || { \
+	  echo "java28: JNI headers not found at JAVA_HOME=$(JAVA_HOME)." >&2; \
+	  echo "  Set JAVA_HOME to a full JDK containing include/jni.h." >&2; exit 1; }
+
+# Java model, server, and JNI headers.
+java: check-deps | $(CLASSES) $(JNIH)
 	$(JAVAC) -h $(JNIH) -d $(CLASSES) $(JAVA_SRC)
 
-# --- Port channel: native C driver linking the socket client ------------------
-port: $(BIN)/sleela_java28_demo
-$(BIN)/sleela_java28_demo: src/native/sleela_java28_port.c src/native/sleela_java28_demo.c src/native/sleela_java28.h | $(BIN)
-	$(CC) $(CFLAGS) $(NATIVE_INC) src/native/sleela_java28_port.c src/native/sleela_java28_demo.c -o $@
+# TCP port channel. Winsock is linked only on Windows.
+port: $(BIN)/sleela_java28_demo$(EXE)
+ifeq ($(PLATFORM),windows)
+EXE := .exe
+else
+EXE :=
+endif
+$(BIN)/sleela_java28_demo$(EXE): src/native/sleela_java28_port.c src/native/sleela_java28_demo.c src/native/sleela_java28.h | $(BIN)
+	$(CC) $(CFLAGS) $(NATIVE_INC) src/native/sleela_java28_port.c src/native/sleela_java28_demo.c -o $@ $(PORT_LIBS)
 
-# --- JNI channel: shared library (depends on generated JNI header) ------------
-jni: $(BIN)/libsleela_java28.so
-$(BIN)/libsleela_java28.so: src/native/sleela_java28_bridge.c java | $(BIN)
-	@test -f "$(JAVA_HOME)/include/jni.h" || { \
-	  echo "java28: cannot find jni.h under JAVA_HOME=$(JAVA_HOME)" >&2; \
-	  echo "  Set JAVA_HOME to a JDK that has include/jni.h, e.g.:" >&2; \
-	  echo "    make -C java28 JAVA_HOME=\$$($(JAVA) -XshowSettings:properties -version 2>&1 | sed -n 's/^.*java.home = //p')" >&2; \
-	  exit 1; }
-	$(CC) $(CFLAGS) -fPIC -shared \
-	  -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/linux" -I$(JNIH) $(NATIVE_INC) \
-	  src/native/sleela_java28_bridge.c -o $@
+# JNI bridge: the include subdirectory is win32, darwin, or linux as appropriate.
+jni: $(JNI_LIB)
+$(JNI_LIB): src/native/sleela_java28_bridge.c java | $(BIN)
+	@test -f "$(JAVA_HOME)/include/jni.h" || { echo "java28: missing $(JAVA_HOME)/include/jni.h" >&2; exit 1; }
+	@test -f "$(JAVA_HOME)/include/$(JNI_PLATFORM)/jni_md.h" || { echo "java28: missing platform JNI header $(JAVA_HOME)/include/$(JNI_PLATFORM)/jni_md.h" >&2; exit 1; }
+	$(CC) $(CFLAGS) $(JNI_SHARED_FLAGS) -I"$(JAVA_HOME)/include" -I"$(JAVA_HOME)/include/$(JNI_PLATFORM)" -I$(JNIH) $(NATIVE_INC) src/native/sleela_java28_bridge.c -o $@
 
-# --- Demos --------------------------------------------------------------------
+# Demo orchestration uses a POSIX shell; on Windows run from MSYS2/Git Bash.
 demo: demo-port demo-jni
 
-# Start the Java 28 memory server on an ephemeral port, then drive it from the
-# native C client over the loopback port channel.
 demo-port: java port
-	@echo "=== Port channel demo (Sleela C driver -> Java 28 memory over TCP) ==="; \
+	@echo "=== Port channel demo (SLeeLa C driver -> Java 28 memory over TCP) ==="; \
 	$(JAVA) $(JVM_FLAGS) -cp $(CLASSES) $(PKG).Java28PortServer 0 > $(BUILD)/server.log 2>&1 & \
 	SRV=$$!; \
 	PORT=""; for i in $$(seq 1 50); do PORT=$$(grep -oE '^PORT [0-9]+' $(BUILD)/server.log | awk '{print $$2}'); [ -n "$$PORT" ] && break; sleep 0.1; done; \
 	if [ -z "$$PORT" ]; then echo "server failed:"; cat $(BUILD)/server.log; kill $$SRV 2>/dev/null; exit 1; fi; \
-	$(BIN)/sleela_java28_demo $$PORT; RC=$$?; wait $$SRV 2>/dev/null; exit $$RC
+	$(BIN)/sleela_java28_demo$(EXE) $$PORT; RC=$$?; wait $$SRV 2>/dev/null; exit $$RC
 
-# In-process local feedback: Java hosts the JVM, loads the JNI lib, native
-# driver calls back into the Java 28 memory model.
 demo-jni: jni
-	@echo "=== JNI channel demo (in-process local feedback) ==="; \
+	@echo "=== JNI channel demo (in-process local feedback) ==="
 	$(JAVA) $(JVM_FLAGS) -Djava.library.path=$(BIN) -cp $(CLASSES) $(PKG).Java28JniRuntime
 
 $(CLASSES) $(JNIH) $(BIN):
-	mkdir -p $@
+	mkdir -p "$@"
 
 clean:
 	rm -rf $(BUILD)
