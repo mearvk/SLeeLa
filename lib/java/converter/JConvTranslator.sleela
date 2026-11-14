@@ -227,16 +227,22 @@ class JConvTranslator {
       this.pkgName = p;
       i = nx(j + 1);
     }
+    this.rw.setPackage(this.pkgName);
     while (isId(i, "import")) {
       int j = nx(i + 1);
       boolean isStatic = false;
       if (isId(j, "static")) { isStatic = true; j = nx(j + 1); }
       int last = -1;
       int prev = -1;
+      String impText = "";
       while (j < n && !isOp(j, ";")) {
         if (kd(j) == 1) { prev = last; last = j; }
+        if (kd(j) != 6) { impText = impText + tx(j); }
         j = j + 1;
       }
+      < type imports, for the binary names of class literals (rule 8e) >
+      if (!isStatic && impText.endsWith(".*")) { this.rw.addWildImport(impText.substring(0, impText.length() - 2)); }
+      else if (!isStatic && last >= 0) { this.rw.addTypeImport(tx(last), impText); }
       if (isStatic && last >= 0 && prev >= 0 && !isOp(nx(last + 1), "*") && !isOp(this.rw.pv(j), "*")) {
         this.rw.addStaticImport(tx(last), tx(prev));
       }
@@ -251,6 +257,8 @@ class JConvTranslator {
       }
       q = q + 1;
     }
+    < every type declared in the file with its binary name (pkg.Outer$Inner) and kind, for class literals (rule 8e) >
+    collectLiteralTypes(i);
     < top-level type declarations >
     int typeStart = i;
     while (i < n) {
@@ -274,6 +282,52 @@ class JConvTranslator {
     < test hook (JCONV_TEST_STOP_IN): stop the VM here, output written, totals not yet recorded, as a fault would >
     if (relPath == this.cfg.testStopIn) { int zero = 0; int stop = 1 / zero; }
     this.rep.fileLine("converted", relPath, this.fileUnits, this.fileTypes, this.fileMembers, this.fileStubs);
+  }
+
+  << Record each type the file declares, with its binary name and kind, for the
+     class literals of rule 8e: kind 1 class, 2 interface, 3 enum, 4 record,
+     5 annotation. Nesting follows the braces, so a type declared inside Outer
+     is pkg.Outer$Inner, as Class.getName() reports it in Java. >>
+  void collectLiteralTypes(int from) {
+    int n = this.lx.n;
+    int[] stEnd = new int[16];
+    String[] stName = new String[16];
+    int sp = 0;
+    int q = from;
+    while (q < n) {
+      while (sp > 0 && q > stEnd[sp - 1]) { sp = sp - 1; }
+      int kw = -1;
+      int kind = 0;
+      if (isOp(q, "@") && isId(nx(q + 1), "interface")) { kw = nx(q + 1); kind = 5; }
+      else if (kd(q) == 1 && !isOp(this.rw.pv(q), ".") && !isOp(this.rw.pv(q), "@")) {
+        String t = tx(q);
+        if (t == "class") { kind = 1; }
+        if (t == "interface") { kind = 2; }
+        if (t == "enum") { kind = 3; }
+        if (t == "record" && typeKeywordAt(q) == q) { kind = 4; }
+        if (kind > 0) { kw = q; }
+      }
+      if (kw >= 0 && kd(nx(kw + 1)) == 1) {
+        String name = tx(nx(kw + 1));
+        String bin = "";
+        if (this.pkgName != "") { bin = this.pkgName + "."; }
+        int k = 0;
+        while (k < sp) { bin = bin + stName[k] + "$"; k = k + 1; }
+        bin = bin + name;
+        this.rw.addLiteralType(name, bin, kind);
+        int open = bodyOpenAfter(kw);
+        if (open >= 0 && sp < 16) {
+          stEnd[sp] = this.rw.matchClose(open);
+          stName[sp] = name;
+          sp = sp + 1;
+          q = open + 1;
+          continue;
+        }
+        q = kw + 1;
+        continue;
+      }
+      q = q + 1;
+    }
   }
 
   < the index after annotations and modifiers starting at i >

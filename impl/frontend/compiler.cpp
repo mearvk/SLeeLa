@@ -462,11 +462,23 @@ private:
         // declaration order, when the entry `main` begins. (Previously only the
         // entry class's statics were initialised, leaving every other class's
         // static constants null.)
+        //
+        // Two passes, as in Java (JLS 12.4.2): every static field without an
+        // initialiser takes its default value first, then the initialisers run
+        // in declaration order. In one pass, a field without an initialiser
+        // was set back to null when its own class's turn came, wiping a value
+        // an earlier class's initialiser had already stored there (a registry
+        // filled by `static final Class C = Class.ofLiteral(...)` in a program
+        // class, with the registry in a library class linked after it).
         if(m.name=="main"){
             const std::string savedClass=currentClass_;
-            for(const auto& cls:prog_.classes) for(const auto& f:cls.fields) if(f.isStatic){
+            for(const auto& cls:prog_.classes) for(const auto& f:cls.fields) if(f.isStatic && !f.init){
+                emit(OP_CONST,addNullConst());
+                emit(OP_STOREG,fieldGlobal_[cls.name+"::"+f.name]);
+            }
+            for(const auto& cls:prog_.classes) for(const auto& f:cls.fields) if(f.isStatic && f.init){
                 currentClass_=cls.name;   // a static initialiser referencing a sibling static resolves against its own class
-                if(f.init)emitExpr(f.init.get());else emit(OP_CONST,addNullConst());
+                emitExpr(f.init.get());
                 emit(OP_STOREG,fieldGlobal_[cls.name+"::"+f.name]);
             }
             currentClass_=savedClass;

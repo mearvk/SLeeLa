@@ -87,6 +87,10 @@ class JConvConfig {
      (the name is used by types of both kinds in different packages) >>
   String[] kindKeys;
   int[] kindValues;
+  < canonical Java name (java.util.Map.Entry) to its kind: 1 class, 2 interface, 3 enum, >
+  < 4 record, 5 annotation; read for class literals (rule 8e) >
+  String[] typeKeys;
+  int[] typeValues;
   boolean indexLoaded;
 
   JConvConfig() {
@@ -108,6 +112,8 @@ class JConvConfig {
     this.apiCount = 0;
     this.kindKeys = new String[16384];
     this.kindValues = new int[16384];
+    this.typeKeys = new String[16384];
+    this.typeValues = new int[16384];
     this.indexLoaded = false;
   }
 
@@ -194,6 +200,27 @@ class JConvConfig {
     this.kindValues[s] = k;
   }
 
+  void addTypeKind(String name, int k) {
+    int s = slotIn(name, arrayLength(this.typeKeys));
+    while (this.typeKeys[s] != null) {
+      if (this.typeKeys[s] == name) { return; }
+      s = (s + 1) % arrayLength(this.typeKeys);
+    }
+    this.typeKeys[s] = name;
+    this.typeValues[s] = k;
+  }
+
+  < the kind of a JDK 28 type by its canonical name (1 class .. 5 annotation), 0 when the index does not list it >
+  int typeKindOf(String name) {
+    if (!this.indexLoaded) { return 0; }
+    int s = slotIn(name, arrayLength(this.typeKeys));
+    while (this.typeKeys[s] != null) {
+      if (this.typeKeys[s] == name) { return this.typeValues[s]; }
+      s = (s + 1) % arrayLength(this.typeKeys);
+    }
+    return 0;
+  }
+
   < 0 unknown, 1 class-like, 2 interface, 3 both >
   int kindOf(String name) {
     if (!this.indexLoaded) { return 0; }
@@ -247,8 +274,11 @@ class JConvConfig {
           int fileEnd = -1;
           int kindStart = -1;
           int kindEnd = -1;
+          int nameStart = -1;
+          int nameEnd = -1;
           while (k <= i) {
             if (k == i || s.at(k) == 9) {
+              if (col == 0) { nameStart = a; nameEnd = k; }
               if (col == 2) { kindStart = a; kindEnd = k; }
               if (col == 3) { fileStart = a; fileEnd = k; }
               col = col + 1;
@@ -267,6 +297,13 @@ class JConvConfig {
                 int kv = 1;
                 if (kind == "interface" || kind == "annotation") { kv = 2; }
                 if (kind != "type") { addKind(simple, kv); }
+                int tk = 0;
+                if (kind == "class") { tk = 1; }
+                if (kind == "interface") { tk = 2; }
+                if (kind == "enum") { tk = 3; }
+                if (kind == "record") { tk = 4; }
+                if (kind == "annotation") { tk = 5; }
+                if (nameStart >= 0 && tk > 0) { addTypeKind(s.slice(nameStart, nameEnd), tk); }
               }
               int dot = key.indexOf(".", slash + 1);
               if (dot > slash) { key = key.substring(0, dot); }

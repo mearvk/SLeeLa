@@ -106,6 +106,8 @@ class JConvRewriter {
   boolean inBody;
   < the input token that names the method being declared, or -1 (set by the translator) >
   int declNameAt;
+  < class literals (rule 8e): the file's types, imports and package, and name resolution >
+  JConvClassLit lits;
   String curReturnType;
   String unitName;
   < the expression half of the typed pass >
@@ -150,6 +152,7 @@ class JConvRewriter {
     this.curStatic = false;
     this.inBody = false;
     this.declNameAt = -1;
+    this.lits = new JConvClassLit();
     this.curReturnType = "";
     this.unitName = "";
     this.expr = new JConvExpr(this);
@@ -164,6 +167,7 @@ class JConvRewriter {
     this.T = l.texts;
     this.siN = 0;
     this.declN = 0;
+    this.lits.beginFile();
     this.outer.beginFile();
   }
 
@@ -262,6 +266,70 @@ class JConvRewriter {
     int i = 0;
     while (i < this.fN) { if (this.fNames[i] == n) { return true; } i = i + 1; }
     return false;
+  }
+
+  < ---- rule 8e: class literals (resolution in JConvClassLit) ---- >
+  void setPackage(String p) { this.lits.curPkg = p; }
+  void addLiteralType(String name, String bin, int kind) { this.lits.addLiteralType(name, bin, kind); }
+  void addTypeImport(String simple, String qualified) { this.lits.addTypeImport(simple, qualified); }
+  void addWildImport(String pkg) { this.lits.addWildImport(pkg); }
+
+  << The index of the class keyword when a class literal starts at i: a name or
+     primitive, then .name parts, then [] pairs, then .class. -1 otherwise. >>
+  int classLiteralEnd(int i) {
+    if (i < 0 || i >= this.lx.n || this.K[i] != 1) { return -1; }
+    String t0 = this.T[i];
+    if (t0 == "class" || t0 == "new" || t0 == "this" || t0 == "super" || t0 == "return") { return -1; }
+    int j = i;
+    while (true) {
+      int d = nx(j + 1);
+      int m = nx(d + 1);
+      if (isOp(d, ".") && m < this.lx.n && this.K[m] == 1 && this.T[m] != "class") { j = m; continue; }
+      break;
+    }
+    while (isOp(nx(j + 1), "[") && isOp(nx(nx(j + 1) + 1), "]")) { j = nx(nx(j + 1) + 1); }
+    int d2 = nx(j + 1);
+    if (isOp(d2, ".") && isId(nx(d2 + 1), "class")) { return nx(d2 + 1); }
+    return -1;
+  }
+
+  < write Class.ofLiteral("<binary name>", kind) for the literal from token i to its class keyword ce >
+  void emitClassLiteral(int i, int ce, int line) {
+    String[] parts = new String[32];
+    int n = 0;
+    int dims = 0;
+    int j = i;
+    while (j < ce) {
+      if (this.K[j] == 1 && n < 32) { parts[n] = this.T[j]; n = n + 1; }
+      if (isOp(j, "[")) { dims = dims + 1; }
+      j = j + 1;
+    }
+    String bin = "";
+    int kind = 0;
+    if (n == 1 && this.lits.isPrimitiveName(parts[0])) {
+      bin = parts[0];
+      kind = 6;
+    } else {
+      bin = this.lits.literalBinary(parts, n, this.cfg);
+      kind = this.lits.litKindOut;
+    }
+    if (dims > 0) {
+      String desc = "";
+      if (kind == 6) { desc = this.lits.primitiveCode(bin); } else { desc = "L" + bin + ";"; }
+      String br = "";
+      int d = 0;
+      while (d < dims) { br = br + "["; d = d + 1; }
+      bin = br + desc;
+      kind = 7;
+    }
+    push(1, "Class", line);
+    syn(5, ".");
+    syn(1, "ofLiteral");
+    syn(5, "(");
+    syn(3, "\"" + bin + "\"");
+    syn(5, ",");
+    syn(2, "" + kind);
+    syn(5, ")");
   }
 
   < ---- input helpers ---- >
@@ -458,7 +526,7 @@ class JConvRewriter {
         < a lambda or method reference that JConvLambda lowers is not a stub reason >
         if (t == "->" && !this.lam.registerArrow(i)) { return 1; }
         if (t == "::" && !this.lam.registerRef(i)) { return 2; }
-        if (t == "." && isId(nx(i + 1), "class")) { return 9; }
+        < a class literal is lowered by rule 8e (classLiteralEnd); it is no longer a stub reason >
       }
       if (k == 1) {
         if (t == "new") {
@@ -501,7 +569,7 @@ class JConvRewriter {
           boolean lowered = qthis && (t == this.unitName || (t == this.outer.outerName && this.outer.outerInstance));
           if (!lowered) { return 10; }
         }
-        if (t == "String" && isOp(nx(i + 1), ".") && !isOp(pv(i), ".") && this.K[nx(nx(i + 1) + 1)] == 1) {
+        if (t == "String" && isOp(nx(i + 1), ".") && !isOp(pv(i), ".") && this.K[nx(nx(i + 1) + 1)] == 1 && !isId(nx(nx(i + 1) + 1), "class")) {
           << String is a SLeeLa keyword, so it cannot be a static receiver. valueOf is
              not lowered to a concatenation: a double or char would print in SLeeLa
              form, a near miss (steering java-to-sleela-conversion.md rule 2). >>
@@ -940,6 +1008,15 @@ class JConvRewriter {
         if (this.cfg.keepComments) { pushComment(t, line, this.lx.flags[i]); }
         i = i + 1;
         continue;
+      }
+      < rule 8e: a class literal T.class, int[].class, a.b.C.D.class becomes Class.ofLiteral(binary name, kind) >
+      if (k == 1 && !isOp(pv(i), ".")) {
+        int ce = classLiteralEnd(i);
+        if (ce >= 0) {
+          emitClassLiteral(i, ce, line);
+          i = ce + 1;
+          continue;
+        }
       }
       if (k == 4) {
         boolean concat = false;
@@ -1858,7 +1935,22 @@ class JConvRewriter {
     String c = this.rules.model.tostrChar;
     if (d.indexOf("(") > 0 && d.substring(0, d.indexOf("(")).trim() == t) { return true; }
     if (c.indexOf("(") > 0 && c.substring(0, c.indexOf("(")).trim() == t) { return true; }
+    String r = this.rules.model.tostrRef;
+    if (r.indexOf("(") > 0 && r.substring(0, r.indexOf("(")).trim() == t) { return true; }
     return false;
+  }
+
+  << The declared type of the name chain at output tokens a .. b-1 when it is a
+     class type whose value Java shows through toString() in a concatenation:
+     not String, a boxed number, Boolean, Character, Any or Object (they may hold a
+     plain value), not an array and not a type variable. "" otherwise. >>
+  String textReferenceType(int a, int b) {
+    String ty = chainType(a, b);
+    if (this.chainEnd != b) { return ""; }
+    if (ty == "" || ty == "?" || !upperStart(ty) || ty.endsWith("]")) { return ""; }
+    if (ty == "String" || ty == "Any" || ty == "Object" || ty == "Integer" || ty == "Long" || ty == "Short" || ty == "Byte") { return ""; }
+    if (ty == "Double" || ty == "Float" || ty == "Character" || ty == "Boolean" || isTypeVar(ty)) { return ""; }
+    return ty;
   }
 
   < the typed pass: the declared names, then the expression laws (JConvExpr) >

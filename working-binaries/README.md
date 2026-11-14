@@ -66,6 +66,10 @@ String-heavy programs no longer slow down as they run (the `lib/java/converter` 
 on its 17-file JDK sample went from 66 s to 6.6 s). Regression check:
 `impl/examples/string_intern_scaling.sleela`.
 
+Rebuilt 2026-11-14 (third time), same versions: static fields without an
+initialiser take their defaults before any initialiser runs (SLEELA.syntax 43.9;
+`impl/tests/java_references/oop/static_default_order`).
+
 Rebuilt again 2026-11-14, same versions: an interface may extend several
 interfaces (SLEELA.syntax 43.8; `impl/tests/java_references/oop/multi_extends`).
 
@@ -83,8 +87,8 @@ Reported versions:
 SHA-256 of the committed copies:
 
 ```
-3cb04f50e040e85877399f701e3ae3dfc1eeab4184212aa15a85c902151861e0  sleela
-c56fab925145b2d6c92d2819ea5a760e401e1732a6b3f5ef0b788a66f0487a28  nordshrift
+d16950f968af8c5366ad430bff141c3a4ab1fa77588f7814e9fe83128ddf2b69  sleela
+3a625e63ded097a85817d998a7aa54465b7c5ede8b3d5109ce33af94f4cde47c  nordshrift
 ```
 
 ---

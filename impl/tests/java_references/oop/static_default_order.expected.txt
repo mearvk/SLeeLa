@@ -1,0 +1,3 @@
+Reg: fresh table
+main: n=1 names null=false
+main: n=2

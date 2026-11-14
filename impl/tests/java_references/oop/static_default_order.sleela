@@ -1,0 +1,23 @@
+#sleela 3.1
+material;
+< JLS 12.4.2: a static field without an initialiser is set once, before any initialiser runs; a later class must not wipe what an earlier initialiser stored. >
+class StaticDefaultOrder {
+  static int FIRST = Reg.add("from S static init");
+  void main() {
+    print("main: n=" + Reg.n + " names null=" + (Reg.names == null));
+    Reg.add("from main");
+    print("main: n=" + Reg.n);
+  }
+}
+
+class Reg {
+  static String[] names;
+  static int n;
+  static final String K = "k";
+  static int add(String s) {
+    if (names == null) { names = new String[8]; n = 0; print("Reg: fresh table"); }
+    names[n] = s;
+    n = n + 1;
+    return n;
+  }
+}

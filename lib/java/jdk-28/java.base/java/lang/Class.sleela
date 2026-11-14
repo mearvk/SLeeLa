@@ -75,6 +75,218 @@ class Class {
   public int genericTypeArgumentCount() { return arrayLength(genericTypeArguments); }
 
 
+  < ---- BEGIN java implementation (class literals, lib/java/converter rule 8e) ---- >
+  << A Class object made for a class literal. lib/java/converter writes T.class
+     as Class.ofLiteral(binary name, kind); the same name always gives the same
+     object, so == and != between literals behave as in Java. The members below
+     depend only on the name and the kind and are exact: getName, getTypeName,
+     getSimpleName, getCanonicalName, getPackageName, toString,
+     descriptorString, isPrimitive, isArray, isInterface, isEnum, isRecord,
+     isAnnotation, componentType, getComponentType and desiredAssertionStatus
+     (false: Java runs without -ea by default). kind: 1 class, 2 interface,
+     3 enum, 4 record, 5 annotation, 6 primitive or void, 7 array, 0 not known.
+     An answer that needs a kind not known throws instead of guessing, and a
+     Class that was not made for a literal throws for every member here (it
+     carries no name). Every other member keeps its stub below. >>
+  String slName;
+  int slKind;
+  static String[] slLiteralNames;
+  static Class[] slLiterals;
+  static int slLiteralCount;
+
+  public static Class ofLiteral(String name, int kind) {
+    if (slLiteralNames == null) {
+      slLiteralNames = new String[64];
+      slLiterals = new Class[64];
+      slLiteralCount = 0;
+    }
+    int i = 0;
+    while (i < slLiteralCount) {
+      if (slLiteralNames[i] == name) {
+        Class found = slLiterals[i];
+        return found;
+      }
+      i = i + 1;
+    }
+    if (slLiteralCount >= arrayLength(slLiteralNames)) {
+      int cap = arrayLength(slLiteralNames) * 2;
+      String[] nn = new String[cap];
+      Class[] nc = new Class[cap];
+      int k = 0;
+      while (k < slLiteralCount) {
+        nn[k] = slLiteralNames[k];
+        Class ck = slLiterals[k];
+        nc[k] = ck;
+        k = k + 1;
+      }
+      slLiteralNames = nn;
+      slLiterals = nc;
+    }
+    Class c = new Class();
+    c.slName = name;
+    c.slKind = kind;
+    slLiteralNames[slLiteralCount] = name;
+    slLiterals[slLiteralCount] = c;
+    slLiteralCount = slLiteralCount + 1;
+    return c;
+  }
+
+  String slNamed() {
+    if (this.slName == null) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Class (only a class literal carries its name)"); }
+    return this.slName;
+  }
+
+  int slKnownKind() {
+    slNamed();
+    if (this.slKind == 0) { throw new UnsupportedOperationException("not yet implemented in SLeeLa: java.lang.Class: the kind of " + this.slName + " is not known"); }
+    return this.slKind;
+  }
+
+  int slDims() {
+    String n = slNamed();
+    int d = 0;
+    while (d < n.length() && n.charAt(d) == 91) { d = d + 1; }
+    return d;
+  }
+
+  String slPrimitiveOf(String code) {
+    if (code == "I") { return "int"; }
+    if (code == "J") { return "long"; }
+    if (code == "S") { return "short"; }
+    if (code == "B") { return "byte"; }
+    if (code == "C") { return "char"; }
+    if (code == "Z") { return "boolean"; }
+    if (code == "F") { return "float"; }
+    if (code == "D") { return "double"; }
+    return "void";
+  }
+
+  String slPrimitiveCode(String name) {
+    if (name == "int") { return "I"; }
+    if (name == "long") { return "J"; }
+    if (name == "short") { return "S"; }
+    if (name == "byte") { return "B"; }
+    if (name == "char") { return "C"; }
+    if (name == "boolean") { return "Z"; }
+    if (name == "float") { return "F"; }
+    if (name == "double") { return "D"; }
+    return "V";
+  }
+
+  < the element of an array name ([[I or [Ljava.lang.String;) as a type name: int, java.lang.String >
+  String slElementName() {
+    String n = slNamed();
+    String e = n.substring(slDims());
+    if (e.length() == 1) { return slPrimitiveOf(e); }
+    return e.substring(1, e.length() - 1);
+  }
+
+  String slBrackets(int d) {
+    String b = "";
+    int i = 0;
+    while (i < d) { b = b + "[]"; i = i + 1; }
+    return b;
+  }
+
+  String slSimpleOf(String n) {
+    String s = n.substring(n.lastIndexOf(".") + 1);
+    return s.substring(s.lastIndexOf("$") + 1);
+  }
+
+  String slPackageOf(String n) {
+    int dot = n.lastIndexOf(".");
+    if (dot < 0) { return ""; }
+    return n.substring(0, dot);
+  }
+
+  public String getName() { return slNamed(); }
+
+  public String getTypeName() {
+    int d = slDims();
+    if (d == 0) { return slName; }
+    return slElementName() + slBrackets(d);
+  }
+
+  public String getSimpleName() {
+    int d = slDims();
+    if (d > 0) { return slSimpleOf(slElementName()) + slBrackets(d); }
+    if (this.slKind == 6) { return slName; }
+    return slSimpleOf(slName);
+  }
+
+  public String getCanonicalName() {
+    int d = slDims();
+    if (d > 0) { return slElementName().replace("$", ".") + slBrackets(d); }
+    return slName.replace("$", ".");
+  }
+
+  public String getPackageName() {
+    int d = slDims();
+    String n = slName;
+    if (d > 0) {
+      String e = n.substring(d);
+      if (e.length() == 1) { return "java.lang"; }
+      n = e.substring(1, e.length() - 1);
+    } else if (this.slKind == 6) {
+      return "java.lang";
+    }
+    return slPackageOf(n);
+  }
+
+  public String toString() {
+    if (slDims() > 0) { return "class " + slName; }
+    int k = slKnownKind();
+    if (k == 6) { return slName; }
+    if (k == 2 || k == 5) { return "interface " + slName; }
+    return "class " + slName;
+  }
+
+  public String descriptorString() {
+    int d = slDims();
+    if (d > 0) { return slName.replace(".", "/"); }
+    if (this.slKind == 6) { return slPrimitiveCode(slName); }
+    return "L" + slName.replace(".", "/") + ";";
+  }
+
+  public boolean isPrimitive() { slNamed(); return this.slKind == 6; }
+
+  public boolean isArray() { return slDims() > 0; }
+
+  public boolean isInterface() {
+    if (slDims() > 0) { return false; }
+    int k = slKnownKind();
+    return k == 2 || k == 5;
+  }
+
+  public boolean isAnnotation() {
+    if (slDims() > 0) { return false; }
+    return slKnownKind() == 5;
+  }
+
+  public boolean isEnum() {
+    if (slDims() > 0) { return false; }
+    return slKnownKind() == 3;
+  }
+
+  public boolean isRecord() {
+    if (slDims() > 0) { return false; }
+    return slKnownKind() == 4;
+  }
+
+  public Any componentType() {
+    int d = slDims();
+    if (d == 0) { return null; }
+    if (d > 1) { return ofLiteral(slName.substring(1), 7); }
+    String e = slName.substring(1);
+    if (e.length() == 1) { return ofLiteral(slPrimitiveOf(e), 6); }
+    return ofLiteral(e.substring(1, e.length() - 1), 0);
+  }
+
+  public Any getComponentType() { return componentType(); }
+
+  public boolean desiredAssertionStatus() { slNamed(); return false; }
+  < ---- END java implementation ---- >
+
   < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >
   << Not yet SLeeLa logic: each method returns the default value of its
      Java return type. @throwable names what Java throws for it (abstract:
@@ -82,15 +294,11 @@ class Class {
      declared throws). Write the logic from the Java Source above into the
      java implementation block; the generator then drops the stub. >>
   @throwable("java.lang.UnsupportedOperationException")
-  public String getName() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public static Any forName(Any module, String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException")
   public static Any forName(String className) { return null; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.ClassNotFoundException")
   public static Any forName(String name, boolean initialize, Any loader) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String toString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any getModule() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -106,25 +314,9 @@ class Class {
   @throwable("java.lang.UnsupportedOperationException")
   public Any cast(Any obj) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public Any componentType() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any describeConstable() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public boolean isInterface() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isPrimitive() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isArray() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public Any getComponentType() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public int getModifiers() { return 0; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isAnnotation() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isEnum() { return false; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean isRecord() { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any[] getTypeParameters() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -146,27 +338,17 @@ class Class {
   @throwable("java.lang.UnsupportedOperationException")
   public Any arrayType() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
-  public String getSimpleName() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getCanonicalName() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
   public Any[] getDeclaredClasses() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any getResourceAsStream(String name) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any getResource(String name) { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getPackageName() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public boolean desiredAssertionStatus() { return false; }
   @throwable("java.lang.UnsupportedOperationException, java.lang.NoSuchMethodException")
   public Any getMethod(String name, Any... parameterTypes) { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public boolean isAnnotationPresent(Any annotationClass) { return false; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any getNestHost() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String descriptorString() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any[] getPermittedSubclasses() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
@@ -191,8 +373,6 @@ class Class {
   public Any getEnclosingConstructor() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any getDeclaringClass() { return null; }
-  @throwable("java.lang.UnsupportedOperationException")
-  public String getTypeName() { return null; }
   @throwable("java.lang.UnsupportedOperationException")
   public Any[] getClasses() { return null; }
   @throwable("java.lang.UnsupportedOperationException")

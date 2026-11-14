@@ -1,0 +1,23 @@
+classlit.ClassLitDemo | ClassLitDemo | classlit.ClassLitDemo | classlit | classlit.ClassLitDemo
+classlit.ClassLitDemo$Inner | Inner | classlit.ClassLitDemo.Inner | classlit | classlit.ClassLitDemo$Inner
+classlit.ClassLitDemo$Inner$Deeper | Deeper | classlit.ClassLitDemo.Inner.Deeper | classlit | classlit.ClassLitDemo$Inner$Deeper
+java.util.Map$Entry | Entry | java.util.Map.Entry | java.util | java.util.Map$Entry
+java.lang.Thread$State | State | java.lang.Thread.State | java.lang | java.lang.Thread$State
+java.lang.String | String | java.lang.String | java.lang | java.lang.String
+java.util.ArrayList | ArrayList | java.util.ArrayList | java.util | java.util.ArrayList
+int | int | int | java.lang | int
+void | void | void | java.lang | void
+[I | int[] | int[] | java.lang | int[]
+[[Ljava.lang.String; | String[][] | java.lang.String[][] | java.lang | java.lang.String[][]
+[Lclasslit.ClassLitDemo$Inner; | Inner[] | classlit.ClassLitDemo.Inner[] | classlit | classlit.ClassLitDemo$Inner[]
+interface classlit.ClassLitDemo$Shape interface=true array=false primitive=false enum=false record=false annotation=false Lclasslit/ClassLitDemo$Shape;
+class classlit.ClassLitDemo$Color interface=false array=false primitive=false enum=true record=false annotation=false Lclasslit/ClassLitDemo$Color;
+class classlit.ClassLitDemo$Point interface=false array=false primitive=false enum=false record=true annotation=false Lclasslit/ClassLitDemo$Point;
+interface classlit.ClassLitDemo$Marker interface=true array=false primitive=false enum=false record=false annotation=true Lclasslit/ClassLitDemo$Marker;
+class classlit.ClassLitDemo interface=false array=false primitive=false enum=false record=false annotation=false Lclasslit/ClassLitDemo;
+interface java.util.List interface=true array=false primitive=false enum=false record=false annotation=false Ljava/util/List;
+double interface=false array=false primitive=true enum=false record=false annotation=false D
+class [J interface=false array=true primitive=false enum=false record=false annotation=false [J
+true true false
+[I java.lang.String true
+false

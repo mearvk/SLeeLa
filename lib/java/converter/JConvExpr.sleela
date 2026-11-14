@@ -749,6 +749,11 @@ class JConvExpr {
     String k = this.nK[c];
     if (k == "d") { wrapOne(this.nA[c], this.nB[c], this.rw.rules.model.tostrDouble, 2 * depth); this.calls = this.calls + 1; }
     else if (k == "c") { wrapOne(this.nA[c], this.nB[c], this.rw.rules.model.tostrChar, 2 * depth); this.calls = this.calls + 1; }
+    else if (k == "?" && this.nT[c] == 1 && this.rw.textReferenceType(this.nA[c], this.nB[c]) != "") {
+      < a reference of a known class type: Java shows it through toString(), the model tostr reference row >
+      wrapOne(this.nA[c], this.nB[c], this.rw.rules.model.tostrRef, 2 * depth);
+      this.calls = this.calls + 1;
+    }
   }
 
   < ---- edits ---- >

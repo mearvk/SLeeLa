@@ -6,8 +6,8 @@
    the typed pass of JConvRewriter asks: the result type of a library member
    (ret rows), the type of a library field (field rows), the SLeeLa function
    of an int shift, division and remainder (binop int rows), the 32-bit wrap
-   (the cast long int row) and the string conversion template of a double or
-   char (tostr rows). Only rows of those kinds are read. When the
+   (the cast long int row) and the string conversion template of a double,
+   char or reference (tostr rows). Only rows of those kinds are read. When the
    file is missing the built-in defaults below are used and the report says so. >>
 #sleela 3.0
 material;
@@ -72,6 +72,8 @@ class JConvModel {
   String ushrInt;
   String tostrDouble;
   String tostrChar;
+  < tostr reference: a reference shown through its toString() (null is "null") >
+  String tostrRef;
   < binop int / and %, and cast long int (the 32-bit wrap) >
   String divInt;
   String remInt;
@@ -93,6 +95,7 @@ class JConvModel {
     this.ushrInt = "JavaOperands.ushrInt($a, $b)";
     this.tostrDouble = "Double.toString($a)";
     this.tostrChar = "JavaText.plainIfRepresentable(JavaText.codePointU($a))";
+    this.tostrRef = "JavaFormat.objectText($a)";
     this.divInt = "JavaOperands.divInt($a, $b)";
     this.remInt = "JavaOperands.remInt($a, $b)";
     this.toInt = "JavaOperands.toInt($a)";
@@ -201,6 +204,7 @@ class JConvModel {
             String[] f4 = fieldsAt(src, a, i, 3);
             if (f4[1] == "double") { this.tostrDouble = f4[2]; }
             if (f4[1] == "char") { this.tostrChar = f4[2]; }
+            if (f4[1] == "reference") { this.tostrRef = f4[2]; }
           } else if (startsAt(src, a, "model")) {
             String[] f5 = fieldsAt(src, a, i, 3);
             this.modelName = f5[1];

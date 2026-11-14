@@ -1,0 +1,206 @@
+<< lib/java/converter/JConvClassLit.sleela
+   Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
+   Definition: the class literals of rule 8e. JConvRewriter writes T.class as
+   Class.ofLiteral(binary name, kind) (lib/java/jdk-28 java.lang.Class); this
+   unit knows the types the file declares (with their nesting, so a nested type
+   is pkg.Outer$Inner), its imports and its package, and resolves a written name
+   to its binary name in Java order. Kinds: 1 class, 2 interface, 3 enum,
+   4 record, 5 annotation, 6 primitive or void, 7 array, 0 not known. >>
+#sleela 3.0
+material;
+
+class JConvClassLit {
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Full record: a library-family class of the Java container. The binary
+     names follow the Java Language Specification (13.1) and Class.getName. >>
+  String metaVersion = "0.1.0";
+  int metaId = 0;
+  String metaAuthor = "Kiro Agent";
+  String metaDate = "2026-11-14";
+  String metaCopyright = "MEARVK LLC";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  < metaOrigin: National | <nation> | International | Galactic >
+  String metaOrigin = "International";
+  String metaBirthDate = "2026-11-14";
+  < metaScienceRating: maturity/robustness on a 1..10 scale >
+  int metaScienceRating = 5;
+  < metaNationalSchedule: a real, citable instrument or "none" >
+  String metaNationalSchedule = "The Java Language Specification, Java SE 28 Edition";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getAuthor() { return metaAuthor; }
+  void setAuthor(String v) { metaAuthor = v; }
+  String getDate() { return metaDate; }
+  void setDate(String v) { metaDate = v; }
+  String getCopyright() { return metaCopyright; }
+  void setCopyright(String v) { metaCopyright = v; }
+  String getTrademark() { return metaTrademark; }
+  void setTrademark(String v) { metaTrademark = v; }
+  String getCorporation() { return metaCorporation; }
+  void setCorporation(String v) { metaCorporation = v; }
+  String getOrigin() { return metaOrigin; }
+  void setOrigin(String v) { metaOrigin = v; }
+  String getBirthDate() { return metaBirthDate; }
+  void setBirthDate(String v) { metaBirthDate = v; }
+  int getScienceRating() { return metaScienceRating; }
+  void setScienceRating(int v) { metaScienceRating = v; }
+  String getNationalSchedule() { return metaNationalSchedule; }
+  void setNationalSchedule(String v) { metaNationalSchedule = v; }
+
+  < the file: its declared types, imports and package >
+  String[] litNames;
+  String[] litBins;
+  int[] litKinds;
+  int litN;
+  String[] impSimple;
+  String[] impQual;
+  int impN;
+  String[] wildPkgs;
+  int wildN;
+  String curPkg;
+  < the kind found by the last literalBinary call >
+  int litKindOut;
+
+  JConvClassLit() {
+    this.litNames = new String[256];
+    this.litBins = new String[256];
+    this.litKinds = new int[256];
+    this.litN = 0;
+    this.impSimple = new String[512];
+    this.impQual = new String[512];
+    this.impN = 0;
+    this.wildPkgs = new String[64];
+    this.wildN = 0;
+    this.curPkg = "";
+    this.litKindOut = 0;
+  }
+
+  void beginFile() {
+    this.litN = 0;
+    this.impN = 0;
+    this.wildN = 0;
+    this.curPkg = "";
+  }
+
+  void addLiteralType(String name, String bin, int kind) {
+    if (literalTypeIndex(name) >= 0 || this.litN >= arrayLength(this.litNames)) { return; }
+    this.litNames[this.litN] = name;
+    this.litBins[this.litN] = bin;
+    this.litKinds[this.litN] = kind;
+    this.litN = this.litN + 1;
+  }
+
+  int literalTypeIndex(String name) {
+    int k = 0;
+    while (k < this.litN) { if (this.litNames[k] == name) { return k; } k = k + 1; }
+    return -1;
+  }
+
+  void addTypeImport(String simple, String qualified) {
+    if (this.impN < arrayLength(this.impSimple)) {
+      this.impSimple[this.impN] = simple;
+      this.impQual[this.impN] = qualified;
+      this.impN = this.impN + 1;
+    }
+  }
+
+  void addWildImport(String pkg) {
+    if (this.wildN < arrayLength(this.wildPkgs)) {
+      this.wildPkgs[this.wildN] = pkg;
+      this.wildN = this.wildN + 1;
+    }
+  }
+
+  boolean isPrimitiveName(String t) {
+    return t == "int" || t == "long" || t == "short" || t == "byte" || t == "char"
+        || t == "boolean" || t == "float" || t == "double" || t == "void";
+  }
+
+  String primitiveCode(String t) {
+    if (t == "int") { return "I"; }
+    if (t == "long") { return "J"; }
+    if (t == "short") { return "S"; }
+    if (t == "byte") { return "B"; }
+    if (t == "char") { return "C"; }
+    if (t == "boolean") { return "Z"; }
+    if (t == "float") { return "F"; }
+    if (t == "double") { return "D"; }
+    return "V";
+  }
+
+  boolean upperName(String s) {
+    if (s == "") { return false; }
+    int c = s.charAt(0);
+    return c >= 65 && c <= 90;
+  }
+
+  < a canonical name (java.util.Map.Entry) as a binary name (java.util.Map$Entry): types after the first capitalised part join with $ >
+  String canonicalToBinary(String c) {
+    String out = "";
+    String rest = c;
+    boolean inTypes = false;
+    while (rest != "") {
+      int dot = rest.indexOf(".");
+      String part = rest;
+      if (dot >= 0) { part = rest.substring(0, dot); rest = rest.substring(dot + 1); } else { rest = ""; }
+      if (out == "") { out = part; }
+      else if (inTypes) { out = out + "$" + part; }
+      else { out = out + "." + part; }
+      if (upperName(part)) { inTypes = true; }
+    }
+    return out;
+  }
+
+  << The binary name of the type written as parts[0 .. n-1], in Java order: a
+     qualified name as written; else the first part declared in this file, a
+     single-type import, the package, java.lang or a wildcard import (when the
+     JDK 28 index lists it), else this package. Sets litKindOut (0 when the
+     kind is not known). >>
+  String literalBinary(String[] parts, int n, JConvConfig cfg) {
+    this.litKindOut = 0;
+    String canon = parts[0];
+    int k = 1;
+    while (k < n) { canon = canon + "." + parts[k]; k = k + 1; }
+    if (n > 1 && !upperName(parts[0])) {
+      this.litKindOut = cfg.typeKindOf(canon);
+      return canonicalToBinary(canon);
+    }
+    String first = parts[0];
+    String rest = "";
+    k = 1;
+    while (k < n) { rest = rest + "." + parts[k]; k = k + 1; }
+    int li = literalTypeIndex(first);
+    if (li >= 0) {
+      String b = this.litBins[li];
+      if (n == 1) { this.litKindOut = this.litKinds[li]; return b; }
+      String bin = b + rest.replace(".", "$");
+      int lj = literalTypeIndex(parts[n - 1]);
+      if (lj >= 0 && this.litBins[lj] == bin) { this.litKindOut = this.litKinds[lj]; }
+      return bin;
+    }
+    String base = "";
+    int q = 0;
+    while (q < this.impN && base == "") { if (this.impSimple[q] == first) { base = this.impQual[q]; } q = q + 1; }
+    if (base == "") {
+      String inPkg = first;
+      if (this.curPkg != "") { inPkg = this.curPkg + "." + first; }
+      if (cfg.typeKindOf(inPkg) > 0) { base = inPkg; }
+      else if (cfg.typeKindOf("java.lang." + first) > 0) { base = "java.lang." + first; }
+      else {
+        int w = 0;
+        while (w < this.wildN && base == "") {
+          if (cfg.typeKindOf(this.wildPkgs[w] + "." + first) > 0) { base = this.wildPkgs[w] + "." + first; }
+          w = w + 1;
+        }
+      }
+      if (base == "") { base = inPkg; }
+    }
+    String full = base + rest;
+    this.litKindOut = cfg.typeKindOf(full);
+    return canonicalToBinary(full);
+  }
+}

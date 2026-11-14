@@ -1,5 +1,7 @@
 # SLeeLa /lib Library Index
 
+> Revision 1.16 adds `lib/java/converter/JConvClassLit.sleela`, the class literals of the Java converter (rule 8e: binary names and kinds of `T.class`), and gives `lib/java/jdk-28/java.base/java/lang/Class.sleela` an implementation block for class literals (18149 → **18150** sources; 18235 → **18236** total records). Package and facade counts are unchanged.
+>
 > Revision 1.15 adds `lib/advantage/modules/`, the Advantage™ module host and two AI modules: the contract (`SLAdvModule`, `SLAdvListener`), the envelope and bridge (`SLAdvMessage`, `SLAdvBridge`), the medium and catalog (`SLAdvMedium`, `SLAdvCatalog`), the high speed trader (`SLAdvTraderModule`, `SLHighSpeedTrader`, `SLHstMarket`, `SLHstPragmatics`), the Moral Evaluator (`SLAdvMoralModule`, `SLMoralEvaluator`, `SLMoralTrade`, `SLMoralMeritLedger`, `SLTallScience`) and demos (18128 → **18149** sources; 18214 → **18235** total records). Package and facade counts are unchanged.
 >
 > Revision 1.04 moves the `lib/java/jdk-28/` module folders up from `docs/api/` to `lib/java/jdk-28/<module>/<package>/<Type>.sleela` and adds the 16 JDK 28 modules that export no packages (`java.se`, `jdk.jlink`, `jdk.zipfs`, ...) as folders holding a `module-summary.md`: 58 module folders and 386 folders in all. The /lib loader (`impl/frontend/driver.cpp`) now treats `java/jdk-28/` as a reference tier like `docs/api/`, so a real `lib/java/java/...` unit always wins; `working-binaries/sleela` was rebuilt with that rule. No source or symbol count change (moves only).
@@ -108,9 +110,9 @@
 
 **Revision:** 0.82  
 **Packages:** 123  
-**SLeeLa source units:** 18149  
+**SLeeLa source units:** 18150  
 **Module-facade symbols:** 86  
-**Total symbol records:** 18235  
+**Total symbol records:** 18236  
 **Symbol manifest:** `LIBRARY.SYMBOLS.md`
 
 > Revision 0.66 brings three big-number improvements that make a 10,000,000-digit

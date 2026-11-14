@@ -3455,6 +3455,21 @@ writes, so it holds in every document that has interfaces.
    `multi_extends`). In the converted JDK 137 interfaces in 136 files extend two
    or more interfaces; each was a syntax error before.
 
+### 43.9 Static fields take their defaults before any initialiser runs (2026-11-14)
+
+Java gives every static field its default value before any code runs and then
+runs the initialisers (JLS 12.4.2). SLeeLa initialises the statics of every
+loaded class when the entry `main` begins, in declaration order across the
+program and its library units. Until 2026-11-14 this was one pass: a static
+field without an initialiser was set to `null` at its own turn, so it wiped a
+value that an earlier class's initialiser had already stored there (the class
+literal registry in `lib/java/jdk-28` `java.lang.Class`, filled by a program's
+`static final Class C = Class.ofLiteral(...)`, lost its first entry and `==`
+between two literals of the same type failed). It is now two passes: every
+static field without an initialiser first, then the initialisers in
+declaration order. The default stays `null`; the order of the initialisers is
+unchanged. Regression test: `impl/tests/java_references/oop/static_default_order`.
+
 ## 44. Syntax 3.1 — Java conversion blockers (character literal, array initializer, labels, abrupt completion through finally)
 
 This section is **normative** and **implemented in the source compiler

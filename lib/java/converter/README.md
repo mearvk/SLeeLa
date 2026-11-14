@@ -3,7 +3,7 @@
 > **Container.** Java container content (`SLEELA.syntax` section 38.4). Nothing
 > here is part of the SLeeLa specification or adds syntax to SLeeLa.
 
-Status: **0.7.3, best effort (2026-11-14).** Output stays at syntax **3.1** (also
+Status: **0.7.4, best effort (2026-11-14).** Output stays at syntax **3.1** (also
 written 3.01) by the owner's decision; syntax 3.1 sections 45 and 46 forms are not used
 (`.kiro/steering/java-converter-lib.md`). The operand laws come from the shared
 conversion model, `impl/subjects/conversion/conversion.model` (read by
@@ -172,7 +172,7 @@ run, and is listed in the report.
 | 6 | pattern matching `instanceof` outside the two lowered shapes (rules 6j, 6k) |
 | 7 | try-with-resources |
 | 8 | `var` |
-| 9 | class literal `X.class` |
+| 9 | class literal `X.class` (retired in 0.7.4: rule 8e lowers it to `Class.ofLiteral`) |
 | 10 | qualified `this` or `super` (`Iface.super.m()`, `Outer.this` of a class that is not the enclosing class; `Outer.this` of the enclosing class is lowered since 0.7, rule 8d) |
 | 11 | comma in a `for` header whose body is an unbraced compound statement |
 | 12 | multi-dimensional array creation |
@@ -379,10 +379,10 @@ What remains for a whole-tree conversion, measured on this run:
   (`ChronoLocalDate`, `ChronoLocalDateTime`, `ChronoZonedDateTime`) stop on an
   intersection cast in front of a lowered lambda,
   `(Comparator & Serializable) new SLJavaLambda(...)`, a converter slip.
-- **Stub reasons across the JDK:** class literal `X.class` 1,884 (48% of all
-  stubs), anonymous class 309, native method 285, pattern `instanceof` 250,
-  `String` statics 228, method reference 186, `var` 184, switch expression or
-  multi-label case 158, lambda or switch arrow 142, others under 100 each.
+- **Stub reasons across the JDK** (before 0.7.4): class literal `X.class` 1,884 (48% of all
+  stubs; lowered since 0.7.4, rule 8e), anonymous class 309, native method 285, pattern
+  `instanceof` 250, `String` statics 228, method reference 186, `var` 184, switch
+  expression or multi-label case 158, lambda or switch arrow 142, others under 100 each.
 - **7 files were skipped for non-ASCII bytes** (`Collator`, `RuleBasedCollator`,
   `Locale`, `PropertyResourceBundle`, `UUID`, `ICC_Profile`, `javax.swing.Action`);
   fixed in 0.7.3 (section 6 item 5): all 12 such JDK files convert, with no
@@ -391,6 +391,34 @@ What remains for a whole-tree conversion, measured on this run:
   file is reported as failed and the run goes on).
 - **Memory still grows by about 0.4 MB a file** (the Strings each file makes are
   never freed). That fits the JDK; a tree several times larger may not.
+
+**Class literals (rule 8e, 0.7.4, 2026-11-14).** `T.class` is written as
+`Class.ofLiteral("<binary name>", <kind>)`. The binary name is the one
+`Class.getName()` reports in Java: a type the file declares with its nesting
+(`classlit.ClassLitDemo$Inner$Deeper`), else a single-type import, the package,
+`java.lang` or a wildcard import when `lib/java/jdk-28/INDEX.tsv` lists the
+type, else the package; `int`, `void`; arrays as `[I`, `[[Ljava.lang.String;`.
+The kind (1 class, 2 interface, 3 enum, 4 record, 5 annotation, 6 primitive,
+7 array, 0 not known) comes from the declaration or the index
+(`JConvClassLit`). `lib/java/jdk-28` `java.lang.Class` now carries an
+implementation block: the same name gives the same object (so `==` works), and
+`getName`, `getSimpleName`, `getCanonicalName`, `getPackageName`, `getTypeName`,
+`toString`, `descriptorString`, `isPrimitive`, `isArray`, `isInterface`, `isEnum`,
+`isRecord`, `isAnnotation`, `componentType`, `getComponentType` and
+`desiredAssertionStatus` are exact. A `Class` not made for a literal, or an
+answer that needs a kind not known, throws instead of returning a default.
+`samples/classlit/ClassLitDemo.java` (own nested types, enum, record, interface,
+annotation, imported and nested JDK types, primitives, `void`, arrays, `==`, a
+literal in a static field) prints all 23 lines the same as OpenJDK 25.0.2.
+Whole JDK: stubs 3,912 to **2,141** (reason 9 from 1,890 to 0).
+
+Two fixes it needed. A reference operand of a string `+` whose declared type is
+a class is now shown through `toString()` with the model row `tostr reference`
+(`JavaFormat.objectText`, `null` is `"null"`), as `sleelactl java-convert`
+already did; before, SLeeLa printed the VM handle (`Class#15`). It is not
+applied to `Any`, `Object`, `String`, boxed values, arrays or type variables.
+And the VM initialised statics in one pass, so a library class linked after the
+program wiped its registry (SLEELA.syntax 43.9).
 
 **Speed (2026-11-13).** The 17-file sample above converts in **6.6 s** (it took
 66 s). Nothing in the converter changed and the output is byte-for-byte the
@@ -424,6 +452,7 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | `JConvModel` | reads the shared conversion model (`ret`, `field`, `binop int` shifts / division / remainder, `cast long int`, `tostr`) |
 | `JConvExpr` | the expression half of the typed pass: statements, precedence tree, wraps and calls (rules 7a to 7f) |
 | `JConvOuter` | inner classes: registry, outer context, `slOuter` rewrites |
+| `JConvClassLit` | class literals (rule 8e): the file's types, imports and package; binary names and kinds |
 | `JConvLambda` | lambda and method reference lowering (rules 8a, 8b): sites, target typing, captures, body methods, the `SLJavaLambdaTable` of the document |
 | `JConvRewriter` | token-level rewriting, the fail-loud scan, declaration and cast post-pass, helpers |
 | `JConvTranslator` | files, types, members, enum / record lowering, nested types, stubs, metadata |
@@ -437,6 +466,7 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | Version | Change |
 |---|---|
 | 0.1.0 | First cut: walk, lex, rewrite, translate, stubs, report |
+| 0.7.4 | Class literals (rule 8e): `T.class` lowered to `Class.ofLiteral(binary name, kind)` (`JConvClassLit`; `jdk-28` `java.lang.Class` implementation block). `String.class` no longer taken for a `String` static (reason 22). A class-typed operand of a string `+` goes through `toString()` (model row `tostr reference`). New sample `samples/classlit`, 23 of 23 lines identical to OpenJDK. Whole JDK: 2,141 stubs (was 3,912) |
 | 0.7.3 | Non-ASCII Java files convert: the VM `read` built-in no longer splits a UTF-8 character between pieces, so `JConvSource` accepts any valid UTF-8 file (it refused every non-ASCII byte) and refuses only invalid UTF-8 and NUL bytes, naming which. The 12 non-ASCII JDK files (7 of them public API) convert with no syntax error; the 17-file sample now converts 17 of 17 (`UUID.java`), the other 16 outputs unchanged |
 | 0.7.2 | Per-file isolation: a VM runtime error inside one Java file no longer ends the run. `JConvMain` records progress and totals after every file; `run-converter.sh` restarts after the file that stopped the VM, which is reported as `failed` with the VM message and its partial output removed. Default `JCONV_OUT` is now the caller's `./jdk28-converted` (it was resolved after the script's `cd`, inside `lib/java/converter`). Test hook `JCONV_TEST_STOP_IN` |
 | 0.7.1 | Whole-tree runs: the emitter writes pieces directly instead of growing a String buffer (memory flat: the JDK `java.base` run had been killed at 16 GB); kept Java bodies over 64 KB are written as comments line by line (`keptComment`, was a VM stop on `BasicLookAndFeel`); a method declared with a VM built-in name (`read`, `write`, ...) is no longer written as `this.read` / `Owner.read` (514 declarations in the JDK; the typed pass now reaches them). All 4,120 convertible public JDK types in one run, 173 s. 17-file sample output unchanged |
