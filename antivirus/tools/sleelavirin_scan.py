@@ -261,7 +261,7 @@ def safe_quarantine(path, destination, scanned_roots, expected_stamp):
     finally:
         if source_fd >= 0:
             os.close(source_fd)
-        if target_fd is not None:
+        if target_fd is not None and target_fd >= 0:
             os.close(target_fd)
 
 
