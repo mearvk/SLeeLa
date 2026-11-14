@@ -538,11 +538,9 @@ endif
 # Shared native UI, Wi-Fi, and Ballum platform link dependencies.
 VM_PLATFORM_LIBS_MK := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))../platform-libs.mk)
 include $(VM_PLATFORM_LIBS_MK)
-# The Core archive bundles the OS-abstraction backends + GC and contains C++
-# objects (the idea-canvas layer), so the final link is driven by the C++
-# compiler. The Core build itself does not enable OpenMP; do not pass GCC's
-# -fopenmp flag to Apple Clang. A downstream Core built with OpenMP may opt in
-# explicitly through OPENMP_LDLIBS.
+# The shared platform-libs.mk fragment detects OpenMP references in the Core
+# archive and sets OPENMP_LDLIBS on Linux only. Apple Clang and Windows remain
+# free of the GCC-specific -fopenmp flag.
 OPENMP_LDLIBS ?=
 CORE_LDLIBS ?= $(THREADFLAG) $(OPENMP_LDLIBS) $(CORE_LIBS) $(CORE_UI_LIBS)
 

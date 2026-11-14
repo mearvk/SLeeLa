@@ -194,10 +194,14 @@ int slterminal_close(SLTerminalHandle terminal) {
     int rc = 0;
     if (!t) return EINVAL;
 
-    /* Closing the input writer lets finite commands finish. Reap the child
-     * before beginning pseudoconsole teardown. */
+    /* Close both host pipe ends before waiting. A child blocked on a full
+     * ConPTY output buffer cannot exit while the host waits for it; closing the
+     * reader first prevents that shutdown deadlock on Windows 10 as well. */
     if (t->input_write && !CloseHandle(t->input_write)) rc = (int)GetLastError();
     t->input_write = NULL;
+    if (t->output_read && !CloseHandle(t->output_read) && rc == 0)
+        rc = (int)GetLastError();
+    t->output_read = NULL;
 
     wait_result = WaitForSingleObject(t->process, 3000);
     if (wait_result == WAIT_TIMEOUT) {
@@ -217,11 +221,6 @@ int slterminal_close(SLTerminalHandle terminal) {
          * safe alternative is to close the host output pipe before closing
          * the pseudoconsole. This session has already returned all requested
          * output to the caller; shutdown-frame output is not part of that data. */
-        if (t->output_read) {
-            if (!CloseHandle(t->output_read) && rc == 0)
-                rc = (int)GetLastError();
-            t->output_read = NULL;
-        }
         ClosePseudoConsole(t->console);
     }
     t->console = NULL;

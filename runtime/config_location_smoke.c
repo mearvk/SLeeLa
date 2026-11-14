@@ -13,7 +13,7 @@
 #define INSTALL_EXPECTED "C:\\opt\\sleela\\Config"
 #define EXPLICIT_ROOT "C:\\var\\lib\\sleela\\config"
 #define ENV_ROOT "C:\\temp\\sleela-env-config"
-static int set_env(const char *k, const char *v) { return SetEnvironmentVariableA(k, v) ? 0 : 1; }
+static int set_env(const char *k, const char *v) { return _putenv_s(k, v ? v : ""); }
 #else
 #define PROJECT_ROOT "/tmp/SLeeLa"
 #define PROJECT_EXPECTED "/tmp/SLeeLa/.sleela/config"

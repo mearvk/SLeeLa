@@ -6,10 +6,26 @@ ifeq ($(OS),Windows_NT)
   CORE_UI_LIBS ?= -lopengl32 -lgdi32 -luser32 -lshell32 -lwlanapi -lole32
 else
   UNAME_S ?= $(shell uname -s)
+  ifeq ($(UNAME_S),Linux)
+    # libslcore.a contains OpenMP-generated idea-canvas code on Linux. Detect
+    # its unresolved runtime symbols so every final consumer links libgomp.
+    CORE_ARCHIVE_NEEDS_OPENMP := $(shell nm -u "$(SLCORE_LIB)" 2>/dev/null | grep -Eq 'GOMP_|omp_get_' && echo yes)
+    ifeq ($(CORE_ARCHIVE_NEEDS_OPENMP),yes)
+      OPENMP_LDLIBS ?= -fopenmp
+    endif
+  endif
   ifeq ($(UNAME_S),Darwin)
+    # Mirror the Core's optional PNG codec dependency when the archive uses it.
+    CORE_UI_PNG_LIBS := $(shell pkg-config --libs libpng 2>/dev/null)
+    ifeq ($(strip $(CORE_UI_PNG_LIBS)),)
+      CORE_UI_ARCHIVE_NEEDS_PNG := $(shell nm -u "$(SLCORE_LIB)" 2>/dev/null | grep -q png_image && echo yes)
+      ifeq ($(CORE_UI_ARCHIVE_NEEDS_PNG),yes)
+        CORE_UI_PNG_LIBS := -lpng
+      endif
+    endif
     CORE_UI_LIBS ?= -framework Cocoa -framework CoreText -framework CoreGraphics \
                     -framework CoreWLAN -framework Foundation -framework Security \
-                    -framework ApplicationServices
+                    -framework ApplicationServices $(CORE_UI_PNG_LIBS)
   else
     CORE_UI_PKG_LIBS := $(shell pkg-config --libs freetype2 fontconfig 2>/dev/null)
     ifeq ($(strip $(CORE_UI_PKG_LIBS)),)

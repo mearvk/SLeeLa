@@ -69,8 +69,8 @@ int main(void) {
         return 1;
     }
     /* Close immediately after the first visible marker. This deliberately leaves
-     * any trailing VT/final-frame bytes unread so slterminal_close must drain
-     * them concurrently with ClosePseudoConsole rather than waiting on EOF. */
+     * trailing VT/final-frame bytes unread and verifies shutdown does not block
+     * while discarding them. */
     if (slterminal_close(terminal) != 0) {
         fprintf(stderr, "terminal close failed\n");
         return 1;
