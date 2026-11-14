@@ -12,7 +12,7 @@ This matrix separates intended targets from evidence. A target is not fully supp
 ## Full repository build contract
 
 The root `make all` target is the authoritative default build. It dispatches the
-native runtime, Java 28 bridge, regex/compiler/VM packages, installer checks,
+native runtime, XLT compiler, Java 28 bridge, regex/compiler/VM packages, installer checks,
 tutorial validation, native smoke tests, configuration checks, CommonRails,
 codecs, churn data checks, antivirus, registry, all eleven premium SLVM runners,
 and Ballum. The optional database/data-source connector and API server targets
