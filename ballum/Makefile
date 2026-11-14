@@ -206,11 +206,11 @@ deps:
 ifeq ($(PLATFORM),linux)
 	@echo "ballum deps (linux): X11 + Xrandr development files are required."
 	@if command -v apt-get >/dev/null 2>&1; then \
-	   pkgs="libx11-dev libxrandr-dev"; mgr="apt-get install -y $$pkgs"; \
+	   pkgs="libx11-dev libxrandr-dev libxext-dev"; mgr="apt-get install -y $$pkgs"; \
 	 elif command -v dnf >/dev/null 2>&1; then \
-	   pkgs="libX11-devel libXrandr-devel"; mgr="dnf install -y $$pkgs"; \
+	   pkgs="libX11-devel libXrandr-devel libXext-devel"; mgr="dnf install -y $$pkgs"; \
 	 elif command -v pacman >/dev/null 2>&1; then \
-	   pkgs="libx11 libxrandr"; mgr="pacman -S --noconfirm $$pkgs"; \
+	   pkgs="libx11 libxrandr libxext"; mgr="pacman -S --noconfirm $$pkgs"; \
 	 elif command -v zypper >/dev/null 2>&1; then \
 	   pkgs="libX11-devel libXrandr-devel"; mgr="zypper install -y $$pkgs"; \
 	 else \
