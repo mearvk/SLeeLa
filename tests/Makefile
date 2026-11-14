@@ -17,7 +17,7 @@ endif
 
 ifeq ($(OS),Windows_NT)
   EXE := .exe
-  THREADFLAGS :=
+  THREADFLAGS := -pthread
 else
   EXE :=
   THREADFLAGS := -pthread
