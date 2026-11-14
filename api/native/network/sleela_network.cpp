@@ -82,7 +82,8 @@ Status Socket::open(Transport transport, AddressFamily family) {
     family_ = family;
     const int af = family == AddressFamily::IPv6 ? AF_INET6 : AF_INET;
     const int type = transport == Transport::TCP ? SOCK_STREAM : SOCK_DGRAM;
-    const native_socket_t fd = ::socket(af, type, IPPROTO_IP);
+    const int protocol = transport == Transport::TCP ? IPPROTO_TCP : IPPROTO_UDP;
+    const native_socket_t fd = ::socket(af, type, protocol);
     if (fd == invalid_socket_value) {
 #ifdef _WIN32
         (void)::WSACleanup();
@@ -178,7 +179,7 @@ ReceiveResult Socket::receive(std::size_t max_bytes) {
         return result;
     }
 #endif
-    if (received == 0) {
+    if (received == 0 && transport_ == Transport::TCP) {
         result.status = Status::Closed;
         return result;
     }
