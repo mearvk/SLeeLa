@@ -1,6 +1,10 @@
 CXX ?= c++
 CXXFLAGS ?= -std=c++17 -Wall -Wextra -Werror -I.
-EXE ?=
+ifeq ($(OS),Windows_NT)
+  EXE ?= .exe
+else
+  EXE ?=
+endif
 .PHONY: all check clean
 all: check
 check: heritage-print-test$(EXE)
