@@ -17,7 +17,7 @@ all: test
 test: check smoke
 
 check:
-	cd .. && "$(PYTHON)" scripts/validate-config.py
+	cd .. && $(PYTHON) scripts/validate-config.py
 
 $(SMOKE): ../runtime/config_location.c ../runtime/config_location.h ../runtime/config_location_smoke.c
 	@mkdir -p "$(BUILD_DIR)"
