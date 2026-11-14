@@ -104,7 +104,7 @@ export SLEELA_HOME
 verify-security:
 	@test -f "$(SLEELA_SHA256_MANIFEST)" || { echo "SLeeLa verification manifest not found: $(SLEELA_SHA256_MANIFEST)" >&2; exit 1; }
 	@test -r "$(SLEELA_VERIFY_TOOL)" || { echo "SLeeLa verification tool not readable: $(SLEELA_VERIFY_TOOL)" >&2; exit 1; }
-	python3 "$(SLEELA_VERIFY_TOOL)" --manifest "$(SLEELA_SHA256_MANIFEST)" --root "$(SLEELA_REPO_ROOT)"
+	$(PYTHON) "$(SLEELA_VERIFY_TOOL)" --manifest "$(SLEELA_SHA256_MANIFEST)" --root "$(SLEELA_REPO_ROOT)"
 
 autocheck:
 	@sh ./scripts/autocheck-toolchain.sh
@@ -363,7 +363,7 @@ server:
 	$(MAKE) -C api/server
 
 route:
-	@python3 -m json.tool route/ROUTE.DATA.json >/dev/null
+	@$(PYTHON) -m json.tool route/ROUTE.DATA.json >/dev/null
 	@echo "SLeeLa unified route data: route/ROUTE.DATA.json"
 
 # SleelaDoc distribution: generate the plain-text doc corpus and bundle it with
