@@ -26,7 +26,7 @@ položaj ohrani (zvesto zabeležen, npr. v poljih `metaOrigin` /
 - [Navidezni stroji in Modium — praktični uporabniški priročnik](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [Sklad CPU v izvorni kodi SLeeLa](../../lib/cpu/CPU.md) — popoln stroj od logičnih vrat prek ALU, jeder in OS do programov, seznam več kot 130 profilov CPU ter nastavljive [napetosti, spremenljive takte in strokovne časovne parametre](../../lib/cpu/TIMING.md), ki jih lahko [zaženete po specifikaciji ali s prekomernim taktiranjem](../../lib/cpu/components/README.md)
 - [Kazalo dokumentacije](../../docs/README.md)
-- [Vir podatkov CSPML in raziskovalni referenčni dokument Salt & Salary](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — izvor podatkov in navodila za integracijo zunanjih ameriških podatkov o krajih, družbenoekonomskih razmerah, delovni sili, izobraževanju in javnih šolah.
+- [Vir podatkov CSPML in raziskovalni referenčni dokument Salt & Salary](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — izvor podatkov in navodila za integracijo zunanjih ameriških podatkov o krajih, družbenoekonomskih razmerah, delovni sili, izobraževanju in javnih šolah.
 - [Ustvarjena dokumentacija API](../../docs/api/README.md) — trenutna referenca HTML, verzionirana izdaja API in navodila za ponovno ustvarjanje
 - [Katalog API](../../api/README.md)
 - [Standardi računalniških primerjav](../../comparison/README.md) — standardi tipov, pomnilnika, ABI in skladnosti za SLeeLa VM, Java/JVM ter izvorni C/C++.

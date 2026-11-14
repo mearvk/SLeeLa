@@ -1,12 +1,12 @@
-<img align="right" src="images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
+<img align="right" src="../../images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
 
 # SLeeLa International — Language and Feature Reference
 
 **Edition:** International Version 3.0  
 **Language syntax:** SLeeLa 3.0  
 **Source extension:** `.sleela` (Wrapper™)  
-**Normative grammar:** [`SLEELA.syntax`](SLEELA.syntax)  
-**Compiler/runtime implementation:** see [`VERSION.md`](VERSION.md) and [`markdown/COMPILER.md`](markdown/COMPILER.md)
+**Normative grammar:** [`SLEELA.syntax`](../../SLEELA.syntax)  
+**Compiler/runtime implementation:** see [`VERSION.md`](../../VERSION.md) and [`markdown/COMPILER.md`](../../markdown/COMPILER.md)
 
 > This document is an organized, reader-facing overview of the SLeeLa language and its feature surface. The normative grammar and implementation-specific references linked below remain authoritative where a detail differs. A feature's presence in the 3.0 reference does not mean every possible width, platform bridge, library adapter, or optional subsystem has identical end-to-end validation.
 
@@ -50,7 +50,7 @@ The current compiler gate accepts declared syntax versions **1.0 through 3.0**. 
 
 Syntax 3.0 consolidates the established 1.x and 2.x language surface. It does **not** erase historical feature gates: a construct introduced in 2.9 remains gated at 2.9 even when compiled by a 3.0-capable compiler.
 
-See [the syntax-version matrix](api/sleela/2.1/language/SYNTAX-VERSION-MATRIX.md).
+See [the syntax-version matrix](../../api/sleela/2.1/language/SYNTAX-VERSION-MATRIX.md).
 
 ## 3. Source files and program structure
 
@@ -64,7 +64,7 @@ void main() {
 }
 ```
 
-The entry signature is `void main()`. The source format, version pragma, and lifecycle are described in [`markdown/SOURCE.md`](markdown/SOURCE.md).
+The entry signature is `void main()`. The source format, version pragma, and lifecycle are described in [`markdown/SOURCE.md`](../../markdown/SOURCE.md).
 
 ### 3.1 Lexical conventions
 
@@ -85,7 +85,7 @@ Both conventional comments (`//`, `/* ... */`) and the preferred angle-bracket c
 >>
 ```
 
-The angle-bracket opener must begin as the first non-whitespace text on its line. See [`SLEELA.syntax` §1](SLEELA.syntax).
+The angle-bracket opener must begin as the first non-whitespace text on its line. See [`SLEELA.syntax` §1](../../SLEELA.syntax).
 
 ## 4. Types and data model
 
@@ -151,7 +151,7 @@ class Dog extends Animal {
 
 Derived classes inherit base fields and methods; a same-name derived method overrides the inherited method. Unknown bases and inheritance cycles are semantic errors.
 
-The same keyword also has a distinct top-level document relationship form, `extends to ...`, which organizes document targets as `linear`, `group`, or `services`. This is not class inheritance; see [`markdown/EXTENDS.md`](markdown/EXTENDS.md).
+The same keyword also has a distinct top-level document relationship form, `extends to ...`, which organizes document targets as `linear`, `group`, or `services`. This is not class inheritance; see [`markdown/EXTENDS.md`](../../markdown/EXTENDS.md).
 
 Syntax 1.11 adds one level of nested class declarations. The enclosing class plus its nested class form the maximum lexical nesting depth; deeper types should be declared at top level and referenced by field.
 
@@ -170,7 +170,7 @@ In addition to the 64-bit `int`:
 - the earlier `U<n>` family describes unsigned values with a declared width from 1 to 1,048,576 bits;
 - `C<n>` describes character-catalogue capacity from 1 to 1,048,576 entries. It is a capacity signature, not an integer type or a guarantee that all entries are populated.
 
-The arbitrary-width unsigned value foundation and type recognition are documented separately from complete VM operator coverage. Likewise, character-catalogue declarations must not be mistaken for a claim that every catalogue is Unicode or that every declared entry is populated. See [`markdown/SOURCE.md`](markdown/SOURCE.md) and [`SLEELA.syntax`](SLEELA.syntax).
+The arbitrary-width unsigned value foundation and type recognition are documented separately from complete VM operator coverage. Likewise, character-catalogue declarations must not be mistaken for a claim that every catalogue is Unicode or that every declared entry is populated. See [`markdown/SOURCE.md`](../../markdown/SOURCE.md) and [`SLEELA.syntax`](../../SLEELA.syntax).
 
 ## 5. Expressions, operators, and statements
 
@@ -260,9 +260,9 @@ The VM performs the element-by-element stream framing and transport. The left op
 
 The language includes contextual built-in families beyond the core control-flow vocabulary:
 
-- **Munction** — `Munction.start(name)` and its fluent reach verbs, including connection, enablement, send, consume, observe, propagation, latch, and receipt-oriented closure operations. The chain is a structured reach sentence; consult [`MUNCTION.md`](MUNCTION.md) for the full contract.
-- **Synchro** — `synchroOpen`, `synchroDispatch`, `synchroReport`, `synchroClose`, and measurement operations for sent/received counts, mean, minimum, maximum, P95, and loss. These are measurement surfaces; see [`SYNCHRO.md`](SYNCHRO.md).
-- **Best-of** — the `bestOf...` family models candidate, architecture, cost-budget, version, score, choice, report, mean, loss, jitter, and certainty data. See [`TIMINGS.md`](TIMINGS.md) and [`NETWORK.md`](NETWORK.md).
+- **Munction** — `Munction.start(name)` and its fluent reach verbs, including connection, enablement, send, consume, observe, propagation, latch, and receipt-oriented closure operations. The chain is a structured reach sentence; consult [`MUNCTION.md`](../../MUNCTION.md) for the full contract.
+- **Synchro** — `synchroOpen`, `synchroDispatch`, `synchroReport`, `synchroClose`, and measurement operations for sent/received counts, mean, minimum, maximum, P95, and loss. These are measurement surfaces; see [`SYNCHRO.md`](../../SYNCHRO.md).
+- **Best-of** — the `bestOf...` family models candidate, architecture, cost-budget, version, score, choice, report, mean, loss, jitter, and certainty data. See [`TIMINGS.md`](../../TIMINGS.md) and [`NETWORK.md`](../../NETWORK.md).
 - **System namespace** — `ran::` qualifies system references such as `ran::mem` and `ran::gc`.
 
 These names are contextual built-ins, not all reserved words. They are recognized in their documented call or namespace positions and should be used according to their subsystem references.
@@ -278,7 +278,7 @@ Syntax 3.0 includes several additions that go beyond declarative source annotati
 - `@spill` marks a loop timer-start behavior as defined by the normative syntax specification.
 - `sleep(ms)` blocks the current thread for a millisecond count.
 
-The loop annotations lower to the VM sleep operation (`OP_SLEEP`, ISA index 157). See [the loop-timing API reference](api/sleela/3.0/LOOP_TIMING_API.md) and [the runnable example](examples/loop-timing-annotation-demo.sleela).
+The loop annotations lower to the VM sleep operation (`OP_SLEEP`, ISA index 157). See [the loop-timing API reference](../../api/sleela/3.0/LOOP_TIMING_API.md) and [the runnable example](../../examples/loop-timing-annotation-demo.sleela).
 
 ### 9.2 Big-integer operations
 
@@ -336,13 +336,13 @@ The library spans foundational and application-facing areas, including:
 - AI-facing packages for large language models, neural networks, and related interfaces;
 - documentation, source-sheet, registry, and structured-document facilities.
 
-The package catalogue is extensive and changes as the library develops. The canonical class vocabulary is [`lib/LIBRARY.SYMBOLS.md`](lib/LIBRARY.SYMBOLS.md); the package overview is [`lib/README.md`](lib/README.md); generated class/member documentation is available at [`sleeladoc-api/index.html`](sleeladoc-api/index.html).
+The package catalogue is extensive and changes as the library develops. The canonical class vocabulary is [`lib/LIBRARY.SYMBOLS.md`](../../lib/LIBRARY.SYMBOLS.md); the package overview is [`lib/README.md`](../../lib/README.md); generated class/member documentation is available at [`sleeladoc-api/index.html`](../../sleeladoc-api/index.html).
 
 ### 12.1 Cross-platform model
 
 The project targets **Linux, macOS, and Windows 10+**. Pure SLeeLa library code is portable by construction. Facilities requiring host services cross an explicit VM/OS bridge, whose native backend resolves to the host platform. Platform-specific differences are exposed through OS-specific classes rather than silently treated as identical.
 
-A platform-support statement is not a claim that every optional device, driver, or external dependency is present on every machine. Consult [`docs/PLATFORM-SUPPORT.md`](docs/PLATFORM-SUPPORT.md) and the relevant package README for requirements.
+A platform-support statement is not a claim that every optional device, driver, or external dependency is present on every machine. Consult [`docs/PLATFORM-SUPPORT.md`](../PLATFORM-SUPPORT.md) and the relevant package README for requirements.
 
 ### 12.2 Explicit native boundary
 
@@ -375,7 +375,7 @@ The compiler's principal stages are version resolution, lexing, parsing, semanti
 
 SLeeLa also documents a family of VM and runtime services, including memory management, garbage collection, instruction dispatch, system bridges, and VM selection/inspection tooling. The Native VM is the recommended starting point in the user guide. VM generations and premium profiles must be evaluated against their own implementation and validation records; a specification or profile name alone is not proof of complete runtime support.
 
-See [`markdown/COMPILER.md`](markdown/COMPILER.md), [`virtual-machine/USER-GUIDE.md`](virtual-machine/USER-GUIDE.md), and [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+See [`markdown/COMPILER.md`](../../markdown/COMPILER.md), [`virtual-machine/USER-GUIDE.md`](../../virtual-machine/USER-GUIDE.md), and [`docs/ARCHITECTURE.md`](../ARCHITECTURE.md).
 
 ## 14. Documentation and developer tools
 
@@ -395,7 +395,7 @@ Other developer-facing facilities include:
 - generated API sites and immutable versioned API snapshots;
 - local project generation and standalone utility programs.
 
-See [`lib/sleeladoc/README.md`](lib/sleeladoc/README.md), [`manifesto/SLEELADOC.md`](manifesto/SLEELADOC.md), and [`api/sleela/3.0/SESSION-ADDITIONS-API.md`](api/sleela/3.0/SESSION-ADDITIONS-API.md).
+See [`lib/sleeladoc/README.md`](../../lib/sleeladoc/README.md), [`manifesto/SLEELADOC.md`](../../manifesto/SLEELADOC.md), and [`api/sleela/3.0/SESSION-ADDITIONS-API.md`](../../api/sleela/3.0/SESSION-ADDITIONS-API.md).
 
 ## 15. Build and try SLeeLa
 
@@ -423,7 +423,7 @@ make
 ./build/sleela run path/to/Hello.sleela
 ```
 
-For the native core alone, see the instructions in [`impl/README.md`](impl/README.md). The repository root build may build additional products beyond the compiler/runtime. Use [`markdown/TESTING.md`](markdown/TESTING.md), the test-suite guide, and the live GitHub Actions results to assess the exact checkout.
+For the native core alone, see the instructions in [`impl/README.md`](../../impl/README.md). The repository root build may build additional products beyond the compiler/runtime. Use [`markdown/TESTING.md`](../../markdown/TESTING.md), the test-suite guide, and the live GitHub Actions results to assess the exact checkout.
 
 ## 16. Implementation and conformance boundaries
 
@@ -448,17 +448,17 @@ This separation is intentional: SLeeLa aims to be ambitious in its language and 
 
 ## 17. Primary references
 
-- [Normative language syntax — `SLEELA.syntax`](SLEELA.syntax)
-- [Compiler pipeline and versioning](markdown/COMPILER.md)
-- [Wrapper™ source-file contract](markdown/SOURCE.md)
-- [Syntax version matrix](api/sleela/2.1/language/SYNTAX-VERSION-MATRIX.md)
-- [Class inheritance and document grouping](markdown/EXTENDS.md)
-- [Standard library overview](lib/README.md)
-- [Canonical library symbols](lib/LIBRARY.SYMBOLS.md)
-- [Generated SleelaDoc API](sleeladoc-api/index.html)
-- [Platform support](docs/PLATFORM-SUPPORT.md)
-- [Virtual-machine user guide](virtual-machine/USER-GUIDE.md)
-- [Testing policy](markdown/TESTING.md)
+- [Normative language syntax — `SLEELA.syntax`](../../SLEELA.syntax)
+- [Compiler pipeline and versioning](../../markdown/COMPILER.md)
+- [Wrapper™ source-file contract](../../markdown/SOURCE.md)
+- [Syntax version matrix](../../api/sleela/2.1/language/SYNTAX-VERSION-MATRIX.md)
+- [Class inheritance and document grouping](../../markdown/EXTENDS.md)
+- [Standard library overview](../../lib/README.md)
+- [Canonical library symbols](../../lib/LIBRARY.SYMBOLS.md)
+- [Generated SleelaDoc API](../../sleeladoc-api/index.html)
+- [Platform support](../PLATFORM-SUPPORT.md)
+- [Virtual-machine user guide](../../virtual-machine/USER-GUIDE.md)
+- [Testing policy](../../markdown/TESTING.md)
 - [GitHub Actions](https://github.com/mearvk/SLeeLa/actions)
 
 ---

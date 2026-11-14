@@ -155,7 +155,7 @@ HTTP 3.0 packet now carries two integrity values ahead of its payload:
   full basket is serialized into a 172-byte canonical big-endian block that
   **travels in every HTTP 3.0 packet** and is **covered by the MAC**, so it is
   authenticated end to end and cannot be altered in transit without detection.
-  The same basket appears in the human-readable `BASKET.docx` (repo root, a
+  The same basket appears in the human-readable `BASKET.docx` (`docs/reference/`, a
   standard Office Open XML document) and in the Python reference; the C and
   Python blocks are byte-identical.
 

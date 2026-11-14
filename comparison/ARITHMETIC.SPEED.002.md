@@ -33,7 +33,7 @@ This is a **common-coverage consolidation**, not yet a fully equivalent timing c
 
 - Native comparator: [workflow 42340090666](https://github.com/mearvk/SLeeLa/actions/runs/42340090666), artifact `comparison-arithmetic-speed-results.json` (ID `13561852004`); 128/128 measurement/checksum cases passed.
 - SLeeLa VM: [workflow 42342660507](https://github.com/mearvk/SLeeLa/actions/runs/42342660507), artifact [`sleela-complete-vm-matrix`](https://github.com/mearvk/SLeeLa/actions/runs/42342660507/artifacts/13562815822); 12/12 targets, 96/96 cases, 480/480 sample checksums passed.
-- Main report: [`SLEELA.PERFORMANCE.md`](../SLEELA.PERFORMANCE.md).
+- Main report: [`SLEELA.PERFORMANCE.md`](../docs/reference/SLEELA.PERFORMANCE.md).
 
 ## 4. Next genuinely equivalent iteration
 

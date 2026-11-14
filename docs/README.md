@@ -7,7 +7,7 @@ normative specifications from implementation notes and live validation results.
 
 ## Language and compiler
 
-- [SLeeLa International 3.0 — Language and Feature Reference](../LANGUAGE.INTERNATIONAL.3.0.md) — reader-facing overview of the language, compiler, runtime, standard library, syntax features, and implementation boundaries.
+- [SLeeLa International 3.0 — Language and Feature Reference](reference/LANGUAGE.INTERNATIONAL.3.0.md) — reader-facing overview of the language, compiler, runtime, standard library, syntax features, and implementation boundaries.
 - [Language syntax specification](../SLEELA.syntax) — normative SLeeLa
   **Syntax 3.0** grammar. The shared compiler gate in
   `impl/frontend/version.{h,cpp}` accepts source syntax **1.0–3.0** and

@@ -19,7 +19,7 @@
 - [Virtual machines और Modium — व्यावहारिक उपयोगकर्ता मार्गदर्शिका](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [SLeeLa source में CPU stack](../../lib/cpu/CPU.md) — gates→ALU→cores→OS→programs तक की पूरी machine, 130+ CPU profiles की सूची, और समायोज्य [voltages, variable clocks तथा expert timings](../../lib/cpu/TIMING.md), जिन्हें आप [spec पर चला सकते हैं और overclock कर सकते हैं](../../lib/cpu/components/README.md)
 - [दस्तावेज़ सूची](../../docs/README.md)
-- [CSPML डेटा स्रोत और Salt & Salary शोध संदर्भ](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — बाहरी अमेरिकी स्थान, सामाजिक-आर्थिक, कार्यबल, शिक्षा और सरकारी विद्यालय डेटा की उत्पत्ति तथा integration संबंधी मार्गदर्शन।
+- [CSPML डेटा स्रोत और Salt & Salary शोध संदर्भ](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — बाहरी अमेरिकी स्थान, सामाजिक-आर्थिक, कार्यबल, शिक्षा और सरकारी विद्यालय डेटा की उत्पत्ति तथा integration संबंधी मार्गदर्शन।
 - [निर्मित API दस्तावेज़](../../docs/api/README.md) — वर्तमान HTML संदर्भ, versioned API संस्करण और पुनः-निर्माण (regeneration) के निर्देश
 - [API catalogue](../../api/README.md)
 - [Computational comparison standards](../../comparison/README.md) — SLeeLa VM, Java/JVM और native C/C++ के type, memory, ABI और conformance मानक।
@@ -520,7 +520,7 @@ SLeeLa की source vocabulary में `int`, `double`, `boolean`, `String`, 
 
 एक `struct` named fields वाला aggregate है। VM-managed struct handles raw pointers नहीं हैं। Assignment और parameter passing उसी instance को साझा करते हैं; equality identity-based है। Portable interchange के लिए `structPack(instance)` और `structUnpack(TypeName, json)` जैसे documented serialization helpers उपयोग करें; VM-local handle को सीधे network पर भेजने योग्य मानना गलत होगा।
 
-Classes में fields और methods होते हैं। वर्तमान execution model में fields shared class state हैं और method-local variables thread-local होते हैं। Inheritance, nested classes और generics syntax-version gates के अधीन हैं। विवरण [International Language Reference](../../LANGUAGE.INTERNATIONAL.3.0.md) में है।
+Classes में fields और methods होते हैं। वर्तमान execution model में fields shared class state हैं और method-local variables thread-local होते हैं। Inheritance, nested classes और generics syntax-version gates के अधीन हैं। विवरण [International Language Reference](../reference/LANGUAGE.INTERNATIONAL.3.0.md) में है।
 
 ### Loop timing का नमूना
 

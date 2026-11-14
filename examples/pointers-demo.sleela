@@ -1,6 +1,6 @@
 #sleela 3.0
 << pointers-demo.sleela -- the runnable reference for object references
-   (POINTERS.md at the repository root).
+   (docs/reference/POINTERS.md).
 
    Every object has two tiers:
 

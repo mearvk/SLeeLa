@@ -1,4 +1,4 @@
-<img align="right" src="images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
+<img align="right" src="../../images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
 
 # POINTERS — object references in SLeeLa
 
@@ -18,8 +18,8 @@ Target again = Target.deref(p);
 ```
 
 **Status: implemented (first slice).** Runnable reference:
-[`examples/pointers-demo.sleela`](./examples/pointers-demo.sleela). Regression
-tests: [`impl/tests/refs/`](./impl/tests/refs) (`make test-ref`). This document
+[`examples/pointers-demo.sleela`](../../examples/pointers-demo.sleela). Regression
+tests: [`impl/tests/refs/`](../../impl/tests/refs) (`make test-ref`). This document
 describes what the current build actually does; the *Not yet* section lists what
 it does not.
 
@@ -242,7 +242,7 @@ Rules:
 
 ### Worked example
 
-[`examples/pointers-demo.sleela`](./examples/pointers-demo.sleela) prints, for
+[`examples/pointers-demo.sleela`](../../examples/pointers-demo.sleela) prints, for
 `Target target = new Target("suppose")` (output from this build):
 
 ```

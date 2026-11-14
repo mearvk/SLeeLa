@@ -26,7 +26,7 @@ Metadata väljades `metaOrigin` / `metaNationalSchedule`) ega lahustu kunagi.
 - [Virtuaalmasinad ja Modium — praktiline kasutusjuhend](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU virn SLeeLa lähtekoodis](../../lib/cpu/CPU.md) — täielik masin loogikaväravatest ALU-ni, tuumadeni, operatsioonisüsteemini ja programmideni, üle 130 CPU-profiili ning reguleeritavad [pinged, muutuvad taktsagedused ja eksperttasemel ajastused](../../lib/cpu/TIMING.md), mida saab [käitada spetsifikatsiooni järgi ja ülekiirendada](../../lib/cpu/components/README.md)
 - [Dokumentatsiooni register](../../docs/README.md)
-- [CSPML-i andmeallikas ja Salt & Salary uurimisviide](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — välised USA kohtade, sotsiaalmajanduslike, tööjõu-, haridus- ja avalike koolide andmete päritolu ning integreerimisjuhised.
+- [CSPML-i andmeallikas ja Salt & Salary uurimisviide](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — välised USA kohtade, sotsiaalmajanduslike, tööjõu-, haridus- ja avalike koolide andmete päritolu ning integreerimisjuhised.
 - [Genereeritud API-dokumentatsioon](../../docs/api/README.md) — praegune HTML-viide, versioonitud API väljaanne ja regenereerimisjuhised
 - [API-kataloog](../../api/README.md)
 - [Arvutusliku võrdluse standardid](../../comparison/README.md) — SLeeLa VM-i, Java/JVM-i ja natiivse C/C++ tüüpide, mälu, ABI ja vastavuse standardid.

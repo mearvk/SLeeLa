@@ -162,4 +162,4 @@ Found while writing the module pages; each page has the details and the evidence
   **Verified** row; if a tutorial step stops working, fix the module or turn the page into an explanation.
 - Never add a tutorial step that was not run. Never describe a project design as a published standard: each
   protocol page separates what the module's files say about IEEE/IETF standards from the project's own designs.
-- The Java converter has its own measured status page: [`JAVA.CONVERSION.STATUS.md`](../../JAVA.CONVERSION.STATUS.md).
+- The Java converter has its own measured status page: [`JAVA.CONVERSION.STATUS.md`](../reference/JAVA.CONVERSION.STATUS.md).

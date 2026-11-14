@@ -14,7 +14,7 @@ Section of the overall specification: [`lib/java/JAVA.SPEC.md`](../lib/java/JAVA
   instance initializer blocks after `super(...)`).
 - **Measured 2026-11-13:** 32 of 32 differential checks pass (22 programs identical to OpenJDK 25.0.2,
   9 refusals, a stale-output check; in CI); the JDK 25 `java.base` subset converts 420 of 884 files.
-  Full status: [`JAVA.CONVERSION.STATUS.md`](../JAVA.CONVERSION.STATUS.md).
+  Full status: [`JAVA.CONVERSION.STATUS.md`](../docs/reference/JAVA.CONVERSION.STATUS.md).
 - **Open:** operands of unknown type (no generics inference), lambdas whose target interface is unknown,
   nested capture chains, local classes, switch type patterns, `static { }` blocks, `Object` methods on a
   type that does not declare them, several nested types sharing one simple name in a file, `native`.

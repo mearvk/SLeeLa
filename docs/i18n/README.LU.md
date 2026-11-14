@@ -27,7 +27,7 @@ ni opgeléist.
 - [Virtuell Maschinnen & Modium — praktescht Benotzerhandbuch](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU-Stack am SLeeLa-Quellcode](../../lib/cpu/CPU.md) — eng komplett Maschinn vun de Gatteren → ALU → Kären → Betribssystem → Programmer, e Katalog vu 130+ CPU-Profiler an astellbar [Spannungen, variabel Taktfrequenzen an Expertentimings](../../lib/cpu/TIMING.md), déi Dir [no Spezifikatioun lafe loosse kënnt an iwwertakten](../../lib/cpu/components/README.md)
 - [Dokumentatiounsindex](../../docs/README.md)
-- [CSPML-Datenquell a Fuerschungsreferenz Salt & Salary](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — extern Hierkonft vun Daten an Integratiounshinweiser zu amerikanesche Plazen, Sozioökonomie, Aarbechtskräften, Bildung an ëffentleche Schoulen.
+- [CSPML-Datenquell a Fuerschungsreferenz Salt & Salary](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — extern Hierkonft vun Daten an Integratiounshinweiser zu amerikanesche Plazen, Sozioökonomie, Aarbechtskräften, Bildung an ëffentleche Schoulen.
 - [Generéiert API-Dokumentatioun](../../docs/api/README.md) — aktuell HTML-Referenz, versionéiert API-Editioun an Instruktioune fir d'Nei-Generéieren
 - [API-Katalog](../../api/README.md)
 - [Standarde fir computational Vergläicher](../../comparison/README.md) — Typ-, Erënnerungs-, ABI- a Konformitéitsstandarde fir SLeeLa VM, Java/JVM an natives C/C++.

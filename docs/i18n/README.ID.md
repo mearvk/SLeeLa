@@ -27,7 +27,7 @@ dipertahankan (dicatat secara setia, misalnya pada `metaOrigin` /
 - [Mesin virtual & Modium — panduan pengguna praktis](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [Tumpukan CPU dalam sumber SLeeLa](../../lib/cpu/CPU.md) — mesin lengkap dari gerbang→ALU→inti→OS→program, daftar 130+ profil CPU, serta [tegangan, clock variabel, dan timing tingkat lanjut](../../lib/cpu/TIMING.md) yang dapat disetel, sehingga Anda dapat [menjalankannya sesuai spesifikasi dan melakukan overclock](../../lib/cpu/components/README.md)
 - [Indeks dokumentasi](../../docs/README.md)
-- [Sumber data CSPML dan acuan riset Salt & Salary](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — asal-usul data eksternal AS (tempat, sosial-ekonomi, tenaga kerja, pendidikan, dan sekolah negeri) beserta panduan integrasinya.
+- [Sumber data CSPML dan acuan riset Salt & Salary](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — asal-usul data eksternal AS (tempat, sosial-ekonomi, tenaga kerja, pendidikan, dan sekolah negeri) beserta panduan integrasinya.
 - [Dokumentasi API yang dihasilkan](../../docs/api/README.md) — referensi HTML terkini, edisi API berversi, dan petunjuk pembuatan ulang
 - [Katalog API](../../api/README.md)
 - [Standar perbandingan komputasi](../../comparison/README.md) — standar tipe, memori, ABI, dan konformansi untuk VM SLeeLa, Java/JVM, dan C/C++ native.

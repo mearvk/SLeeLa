@@ -22,7 +22,7 @@
 - [Virtuelle Maschinen und Modium – praktische Benutzeranleitung](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU-Stack im SLeeLa-Quellcode](../../lib/cpu/CPU.md) – eine vollständige Maschinenkette von Logikgattern über ALU, Kerne und Betriebssystem bis zu Programmen; mit mehr als 130 CPU-Profilen sowie einstellbaren [Spannungen, variablen Taktraten und erweiterten Zeitparametern](../../lib/cpu/TIMING.md), die sich [spezifikationsgemäß oder übertaktet ausführen](../../lib/cpu/components/README.md) lassen.
 - [Dokumentationsindex](../../docs/README.md)
-- [CSPML-Datenquelle und Forschungsreferenz Salt & Salary](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) – Herkunft und Integrationshinweise zu externen US-Daten über Orte, sozioökonomische Verhältnisse, Arbeitskräfte, Bildung und öffentliche Schulen.
+- [CSPML-Datenquelle und Forschungsreferenz Salt & Salary](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) – Herkunft und Integrationshinweise zu externen US-Daten über Orte, sozioökonomische Verhältnisse, Arbeitskräfte, Bildung und öffentliche Schulen.
 - [Generierte API-Dokumentation](../../docs/api/README.md) – aktuelle HTML-Referenz, versionierte API-Ausgabe und Hinweise zur Neuerstellung.
 - [API-Katalog](../../api/README.md)
 - [Standards für Rechenvergleiche](../../comparison/README.md) – Typ-, Speicher-, ABI- und Konformitätsstandards für SLeeLa-VM, Java/JVM und natives C/C++.
@@ -470,7 +470,7 @@ SLeeLa stellt länderspezifische README-Einstiegspunkte für die 50 Märkte sein
 - [Machines virtuelles et Modium — guide pratique](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [Pile CPU dans les sources SLeeLa](../../lib/cpu/CPU.md) — une machine complète allant des portes logiques à l’ALU, aux cœurs, au système d’exploitation et aux programmes ; plus de 130 profils CPU et des [tensions, fréquences variables et temporisations avancées](../../lib/cpu/TIMING.md) réglables, permettant une exécution [aux spécifications ou en surfréquence](../../lib/cpu/components/README.md).
 - [Index de la documentation](../../docs/README.md)
-- [Source de données CSPML et référence de recherche Salt & Salary](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — provenance et conseils d’intégration de données externes américaines sur les lieux, les conditions socioéconomiques, la main-d’œuvre, l’éducation et les écoles publiques.
+- [Source de données CSPML et référence de recherche Salt & Salary](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — provenance et conseils d’intégration de données externes américaines sur les lieux, les conditions socioéconomiques, la main-d’œuvre, l’éducation et les écoles publiques.
 - [Documentation API générée](../../docs/api/README.md) — référence HTML actuelle, édition versionnée de l’API et instructions de régénération.
 - [Catalogue des API](../../api/README.md)
 - [Normes de comparaison computationnelle](../../comparison/README.md) — normes de types, mémoire, ABI et conformité pour la VM SLeeLa, Java/JVM et le C/C++ natif.
@@ -918,7 +918,7 @@ SLeeLa fournit des points d’entrée README propres à chaque pays pour les 50 
 - [Macchine virtuali e Modium — guida pratica per l’utente](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [Stack CPU nel codice sorgente SLeeLa](../../lib/cpu/CPU.md): una catena completa, dalle porte logiche all’ALU, ai core, al sistema operativo e ai programmi; comprende oltre 130 profili CPU e [tensioni, frequenze variabili e parametri avanzati di temporizzazione](../../lib/cpu/TIMING.md), con esecuzione [secondo specifica oppure in overclock](../../lib/cpu/components/README.md).
 - [Indice della documentazione](../../docs/README.md)
-- [Fonte dati CSPML e riferimento di ricerca Salt & Salary](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md): provenienza e indicazioni d’integrazione per dati esterni statunitensi su località, condizioni socioeconomiche, forza lavoro, istruzione e scuole pubbliche.
+- [Fonte dati CSPML e riferimento di ricerca Salt & Salary](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md): provenienza e indicazioni d’integrazione per dati esterni statunitensi su località, condizioni socioeconomiche, forza lavoro, istruzione e scuole pubbliche.
 - [Documentazione API generata](../../docs/api/README.md): riferimento HTML corrente, versione dell’API e istruzioni per rigenerarla.
 - [Catalogo API](../../api/README.md)
 - [Standard di confronto computazionale](../../comparison/README.md): standard per tipi, memoria, ABI e conformità di SLeeLa VM, Java/JVM e C/C++ nativo.

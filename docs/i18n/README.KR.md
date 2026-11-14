@@ -19,7 +19,7 @@
 - [가상 머신 및 Modium — 실습 사용자 안내서](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [SLeeLa 소스의 CPU 스택](../../lib/cpu/CPU.md): 논리 게이트에서 ALU, 코어, OS, 프로그램까지 이어지는 전체 기계 구조, 130개 이상의 CPU 프로필, 조정 가능한 [전압·가변 클록·전문가용 타이밍](../../lib/cpu/TIMING.md), 그리고 [사양에 따른 실행 및 오버클로킹](../../lib/cpu/components/README.md).
 - [문서 색인](../../docs/README.md)
-- [CSPML 데이터 소스 및 Salt & Salary 연구 참조](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md): 미국 지역, 사회경제, 노동력, 교육 및 공립학교 관련 외부 데이터의 출처와 통합 지침.
+- [CSPML 데이터 소스 및 Salt & Salary 연구 참조](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md): 미국 지역, 사회경제, 노동력, 교육 및 공립학교 관련 외부 데이터의 출처와 통합 지침.
 - [생성된 API 문서](../../docs/api/README.md): 최신 HTML 참조, 버전별 API 에디션 및 재생성 안내.
 - [API 카탈로그](../../api/README.md)
 - [계산 비교 표준](../../comparison/README.md): SLeeLa VM, Java/JVM 및 네이티브 C/C++의 타입, 메모리, ABI 및 적합성 표준.

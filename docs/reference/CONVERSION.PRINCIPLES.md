@@ -1,4 +1,4 @@
-<img align="right" src="images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
+<img align="right" src="../../images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
 
 # Java to SLeeLa Conversion: Principles, What Is Done, What Is Left
 

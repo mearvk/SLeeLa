@@ -26,7 +26,7 @@ asema säilytetään (kirjataan tarkasti, esim. kunkin luokan Metadata-kentissä
 - [Virtuaalikoneet ja Modium — käytännön käyttöopas](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU-pino SLeeLa-lähdekoodina](../../lib/cpu/CPU.md) — täydellinen portit→ALU→ytimet→käyttöjärjestelmä→ohjelmat-kone, yli 130 CPU-profiilin luettelo sekä säädettävät [jännitteet, muuttuvat kellotaajuudet ja asiantuntija-ajoitukset](../../lib/cpu/TIMING.md), joita voit [ajaa määrittelyn mukaisesti ja ylikellottaa](../../lib/cpu/components/README.md)
 - [Dokumentaatiohakemisto](../../docs/README.md)
-- [CSPML-tietolähde ja Salt & Salary -tutkimusviite](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — ulkoisen yhdysvaltalaisen paikka-, sosioekonomisen, työvoima-, koulutus- ja peruskoulutietojen alkuperä sekä integrointiohjeet.
+- [CSPML-tietolähde ja Salt & Salary -tutkimusviite](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — ulkoisen yhdysvaltalaisen paikka-, sosioekonomisen, työvoima-, koulutus- ja peruskoulutietojen alkuperä sekä integrointiohjeet.
 - [Generoitu API-dokumentaatio](../../docs/api/README.md) — nykyinen HTML-viite, versioitu API-editio ja uudelleengenerointiohjeet
 - [API-luettelo](../../api/README.md)
 - [Laskennalliset vertailustandardit](../../comparison/README.md) — SLeeLa VM:n, Java/JVM:n ja natiivin C/C++:n tyyppi-, muisti-, ABI- ja yhteensopivuusstandardit.

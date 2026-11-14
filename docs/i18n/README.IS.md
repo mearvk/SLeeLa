@@ -26,7 +26,7 @@ er sú staða varðveitt (skráð af trúmennsku, t.d. í `metaOrigin` /
 - [Sýndarvélar og Modium — hagnýt notendahandbók](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU-stafli í SLeeLa-frumkóða](../../lib/cpu/CPU.md) — heil vél frá rökhliðum → ALU → kjarna → stýrikerfi → forrit, skrá yfir 130+ CPU-snið og stillanleg [spenna, breytileg klukka og sérfræðitímasetningar](../../lib/cpu/TIMING.md) sem þú getur [keyrt samkvæmt forskrift og yfirklukkað](../../lib/cpu/components/README.md)
 - [Skjalayfirlit](../../docs/README.md)
-- [CSPML-gagnalind og tilvísun í Salt & Salary-rannsókn](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — upprunaskráning og leiðbeiningar um samþættingu ytri bandarískra gagna um staði, félags- og efnahagsmál, vinnuafl, menntun og opinbera skóla.
+- [CSPML-gagnalind og tilvísun í Salt & Salary-rannsókn](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — upprunaskráning og leiðbeiningar um samþættingu ytri bandarískra gagna um staði, félags- og efnahagsmál, vinnuafl, menntun og opinbera skóla.
 - [Mynduð API-skjöl](../../docs/api/README.md) — núverandi HTML-viðmiðun, útgáfubundin API-útgáfa og leiðbeiningar um endurmyndun
 - [API-skrá](../../api/README.md)
 - [Samanburðarstaðlar fyrir útreikninga](../../comparison/README.md) — staðlar fyrir gerðir, minni, ABI og samræmi hjá SLeeLa VM, Java/JVM og innbyggðu C/C++.

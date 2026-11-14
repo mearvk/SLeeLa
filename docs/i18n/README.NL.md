@@ -20,7 +20,7 @@
 - [Virtuele machines en Modium — praktische gebruikershandleiding](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU-stack in SLeeLa-broncode](../../lib/cpu/CPU.md) — een volledige machine van poorten → ALU → cores → besturingssysteem → programma's, een lijst van meer dan 130 CPU-profielen en instelbare [spanningen, variabele klokken en expert-timings](../../lib/cpu/TIMING.md) die u [op specificatie of overgeklokt kunt uitvoeren](../../lib/cpu/components/README.md)
 - [Documentatie-index](../../docs/README.md)
-- [CSPML-gegevensbron en onderzoeksreferentie Salt & Salary](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — herkomst en integratierichtlijnen voor externe Amerikaanse gegevens over plaatsen, sociaaleconomische omstandigheden, beroepsbevolking, onderwijs en openbare scholen.
+- [CSPML-gegevensbron en onderzoeksreferentie Salt & Salary](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — herkomst en integratierichtlijnen voor externe Amerikaanse gegevens over plaatsen, sociaaleconomische omstandigheden, beroepsbevolking, onderwijs en openbare scholen.
 - [Gegenereerde API-documentatie](../../docs/api/README.md) — actuele HTML-referentie, versiegebonden API-editie en instructies voor het opnieuw genereren
 - [API-catalogus](../../api/README.md)
 - [Normen voor computationele vergelijking](../../comparison/README.md) — normen voor typen, geheugen, ABI en conformiteit van de SLeeLa VM, Java/JVM en native C/C++.

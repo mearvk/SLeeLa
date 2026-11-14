@@ -26,7 +26,7 @@ bu konum korunur (örneğin her sınıfın Metadata alanları `metaOrigin` /
 - [Sanal makineler ve Modium — uygulamalı kullanıcı kılavuzu](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [SLeeLa kaynak kodunda CPU yığını](../../lib/cpu/CPU.md) — mantık kapılarından → ALU → çekirdekler → işletim sistemi → programlara uzanan eksiksiz bir makine, 130'dan fazla CPU profilinin listesi ve [spesifikasyonda çalıştırıp hız aşırtabileceğiniz](../../lib/cpu/components/README.md) ayarlanabilir [voltajlar, değişken saatler ve uzman zamanlamaları](../../lib/cpu/TIMING.md)
 - [Dokümantasyon dizini](../../docs/README.md)
-- [CSPML veri kaynağı ve Salt & Salary araştırma referansı](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — ABD'deki yerler, sosyoekonomik koşullar, iş gücü, eğitim ve devlet okulları hakkındaki harici verilerin kökeni ve entegrasyon rehberi.
+- [CSPML veri kaynağı ve Salt & Salary araştırma referansı](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — ABD'deki yerler, sosyoekonomik koşullar, iş gücü, eğitim ve devlet okulları hakkındaki harici verilerin kökeni ve entegrasyon rehberi.
 - [Oluşturulmuş API belgeleri](../../docs/api/README.md) — güncel HTML başvurusu, sürümlü API sürümü ve yeniden oluşturma yönergeleri
 - [API kataloğu](../../api/README.md)
 - [Hesaplamalı karşılaştırma standartları](../../comparison/README.md) — SLeeLa VM, Java/JVM ve yerel C/C++ için tür, bellek, ABI ve uyumluluk standartları.

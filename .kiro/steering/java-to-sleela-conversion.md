@@ -96,7 +96,7 @@ Run: `sleelactl build java-convert`, then
   `NumberFormat.Field` its own superclass and hung the whole-tree run).
 - Status (2026-11-13): differential suite 32 of 32 (CI: `.github/workflows/java-convert.yml`); JDK 25.0.2
   `java.base` subset 420 of 884 files converted (426 with `--single-thread`). The full status document is the
-  root `JAVA.CONVERSION.STATUS.md`; the run's report is the status, re-run before quoting newer numbers.
+  `docs/reference/JAVA.CONVERSION.STATUS.md`; the run's report is the status, re-run before quoting newer numbers.
 - Text of values: a reference of a known type goes through the model row `tostr reference`
   (`JavaFormat.objectText`); a value of unknown type (`?`) must NOT, because it may be a primitive at run
   time (that broke `e.getSuppressed().length` once). Library parameters that take a char as text are

@@ -19,7 +19,7 @@
 - [仮想マシンとModium — 実践ユーザーガイド](../../virtual-machine/USER-GUIDE.md)（`sleela vm`、`sleela modium`）
 - [SLeeLaソース内のCPUスタック](../../lib/cpu/CPU.md)：論理ゲートからALU、コア、OS、プログラムまでを扱う機械構成、130以上のCPUプロファイル、調整可能な[電圧・可変クロック・高度なタイミング設定](../../lib/cpu/TIMING.md)、および[仕様準拠実行とオーバークロック](../../lib/cpu/components/README.md)。
 - [ドキュメント索引](../../docs/README.md)
-- [CSPMLデータソースおよびSalt & Salary調査リファレンス](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md)：米国の地域、社会経済、労働力、教育、公立学校に関する外部データの出典と統合指針。
+- [CSPMLデータソースおよびSalt & Salary調査リファレンス](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md)：米国の地域、社会経済、労働力、教育、公立学校に関する外部データの出典と統合指針。
 - [生成済みAPIドキュメント](../../docs/api/README.md)：現行HTMLリファレンス、バージョン別API版、再生成手順。
 - [APIカタログ](../../api/README.md)
 - [計算比較標準](../../comparison/README.md)：SLeeLa VM、Java/JVM、ネイティブC/C++の型、メモリ、ABI、適合性に関する標準。

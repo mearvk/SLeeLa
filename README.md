@@ -24,7 +24,7 @@ that standing is kept (recorded faithfully, e.g. in each class's Metadata
 - [Virtual machines & Modium — hands-on user guide](virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU stack in SLeeLa source](lib/cpu/CPU.md) — a full gates→ALU→cores→OS→programs machine, a roster of 130+ CPU profiles, and adjustable [voltages, variable clocks, and expert timings](lib/cpu/TIMING.md) you can [run at spec and overclock](lib/cpu/components/README.md)
 - [Documentation index](docs/README.md)
-- [CSPML data source and Salt & Salary research reference](CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — external U.S. place, socioeconomic, workforce, education, and public-school data provenance and integration guidance.
+- [CSPML data source and Salt & Salary research reference](docs/reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — external U.S. place, socioeconomic, workforce, education, and public-school data provenance and integration guidance.
 - [Generated API documentation](docs/api/README.md) — current HTML reference, versioned API edition, and regeneration instructions
 - [API catalogue](api/README.md)
 - [Computational comparison standards](comparison/README.md) — SLeeLa VM, Java/JVM, and native C/C++ type, memory, ABI, and conformance standards.
@@ -53,8 +53,8 @@ Recent additions to the language, drivers, and standard library:
   converter itself is a SLeeLa program under `lib/java/converter/`; the Java
   runtime tier it targets lives in [`lib/java`](lib/java/README.md) (JDK 25 and
   JDK 28 source surfaces). Specification: [`lib/java/JAVA.SPEC.md`](lib/java/JAVA.SPEC.md);
-  ledger: [`CONVERSION.PRINCIPLES.md`](CONVERSION.PRINCIPLES.md); measured
-  status: [`JAVA.CONVERSION.STATUS.md`](JAVA.CONVERSION.STATUS.md).
+  ledger: [`CONVERSION.PRINCIPLES.md`](docs/reference/CONVERSION.PRINCIPLES.md); measured
+  status: [`JAVA.CONVERSION.STATUS.md`](docs/reference/JAVA.CONVERSION.STATUS.md).
 - **Syntax 3.1 (also written 3.01).** The current language edition adds
   [`SLEELA.syntax`](SLEELA.syntax) §44 (character literals, array initializers,
   labeled `break` / `continue`, and `return` / `break` / `continue` that run
@@ -603,7 +603,7 @@ status should be checked in each package's own documentation and tests.
 - **Java tier and converter** — `lib/java/` (including `jdk-25/`, `jdk-28/`,
   and `converter/`) and `sleelactl/convert/`: the Java-facing SLeeLa source
   surface and the Java → SLeeLa converter. See [`lib/java/README.md`](lib/java/README.md)
-  and [`JAVA.CONVERSION.STATUS.md`](JAVA.CONVERSION.STATUS.md).
+  and [`JAVA.CONVERSION.STATUS.md`](docs/reference/JAVA.CONVERSION.STATUS.md).
 - **Munction** — `lib/munction/` and `munction/`: the Munction reach-handle
   facility; see [`munction/MANUAL.md`](munction/MANUAL.md).
 
@@ -858,7 +858,7 @@ Shared contracts that the servers consult. The **resolver** turns a target into 
 
 ### Tools
 
-One-shot toolchain components (`sleelactl run|build|inspect`). **sleelac** is a separately buildable C++20 prototype compiler for a small SLeeLa subset that emits C and C++; **Slecompiler** (`decompiler/`) analyses and decompiles native binaries; the **debugger** is a library of debugging concepts with a self-test CLI; **Native Drive** builds C/C++ and SLeeLa AOT code and starts processes without a shell; **java-convert** converts Java source to functionally equivalent SLeeLa (status: [`JAVA.CONVERSION.STATUS.md`](JAVA.CONVERSION.STATUS.md)).
+One-shot toolchain components (`sleelactl run|build|inspect`). **sleelac** is a separately buildable C++20 prototype compiler for a small SLeeLa subset that emits C and C++; **Slecompiler** (`decompiler/`) analyses and decompiles native binaries; the **debugger** is a library of debugging concepts with a self-test CLI; **Native Drive** builds C/C++ and SLeeLa AOT code and starts processes without a shell; **java-convert** converts Java source to functionally equivalent SLeeLa (status: [`JAVA.CONVERSION.STATUS.md`](docs/reference/JAVA.CONVERSION.STATUS.md)).
 
 | Module | What it is | Writeup | State |
 |---|---|---|---|

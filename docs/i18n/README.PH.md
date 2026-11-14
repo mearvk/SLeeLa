@@ -26,7 +26,7 @@ ng Metadata ng bawat class), at hindi kailanman binubuwag.
 - [Mga virtual machine at Modium — praktikal na gabay ng user](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU stack sa SLeeLa source](../../lib/cpu/CPU.md) — isang buong makinang gates→ALU→cores→OS→programs, isang listahan ng mahigit 130 CPU profile, at maiaakma na [mga voltage, variable na clock, at expert na timing](../../lib/cpu/TIMING.md) na maaari mong [patakbuhin ayon sa spec at i-overclock](../../lib/cpu/components/README.md)
 - [Indeks ng dokumentasyon](../../docs/README.md)
-- [CSPML data source at sanggunian sa pananaliksik na Salt & Salary](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — pinagmulan ng datos at gabay sa integrasyon para sa panlabas na datos ng U.S. tungkol sa lugar, sosyo-ekonomiya, lakas-paggawa, edukasyon, at pampublikong paaralan.
+- [CSPML data source at sanggunian sa pananaliksik na Salt & Salary](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — pinagmulan ng datos at gabay sa integrasyon para sa panlabas na datos ng U.S. tungkol sa lugar, sosyo-ekonomiya, lakas-paggawa, edukasyon, at pampublikong paaralan.
 - [Nabuong dokumentasyon ng API](../../docs/api/README.md) — kasalukuyang HTML reference, may bersiyong edisyon ng API, at mga tagubilin sa muling pagbuo
 - [Katalogo ng API](../../api/README.md)
 - [Mga pamantayan sa paghahambing ng computation](../../comparison/README.md) — mga pamantayan ng SLeeLa VM, Java/JVM, at native C/C++ sa type, memory, ABI, at conformance.

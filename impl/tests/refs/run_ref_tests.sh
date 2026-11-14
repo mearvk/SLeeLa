@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# run_ref_tests.sh -- assert the object-reference surface (POINTERS.md).
+# run_ref_tests.sh -- assert the object-reference surface (docs/reference/POINTERS.md).
 #
 #   target.ref            the implicit VM-level reference of an object
 #   Ptr.valid/id/gen/...  tier-2 views of a reference
@@ -86,7 +86,7 @@ false
 true
 fresh'
 
-echo "object references (POINTERS.md)"
+echo "object references (docs/reference/POINTERS.md)"
 expect_output ref_basics.sleela "ref_basics: identity, tier-2 views, null/forged, stale, reuse" "$basics"
 expect_output ref_user_class.sleela "a user class named Ptr takes over the name" "42"
 expect_reject ref_assign_rejected.sleela "x.ref is read-only" "read-only"

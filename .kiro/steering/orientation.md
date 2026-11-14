@@ -5,7 +5,7 @@ inclusion: always
 # Repository orientation
 
 Before exploring this large repository (~90 top-level directories), read the
-one-page map at [`ORGANIZATION.md`](../../ORGANIZATION.md) in the repo root. It
+one-page map at [`ORGANIZATION.md`](../../docs/reference/ORGANIZATION.md) in `docs/reference/`. It
 is the fastest way to orient and contains the authoritative **source-of-truth**
 index.
 

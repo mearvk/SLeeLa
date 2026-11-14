@@ -18,7 +18,7 @@
 - [虚拟机与 Modium——实践用户指南](../../virtual-machine/USER-GUIDE.md)（`sleela vm`、`sleela modium`）
 - [SLeeLa 源码中的 CPU 体系](../../lib/cpu/CPU.md)——从逻辑门到 ALU、核心、操作系统再到程序的完整机器，收录 130 多种 CPU 配置，并提供可调的[电压、可变时钟和专家级时序](../../lib/cpu/TIMING.md)，可以[按规格运行并超频](../../lib/cpu/components/README.md)
 - [文档索引](../../docs/README.md)
-- [CSPML 数据源与 Salt & Salary 研究参考](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md)——外部美国地点、社会经济、劳动力、教育和公立学校数据的来源出处及集成指南。
+- [CSPML 数据源与 Salt & Salary 研究参考](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md)——外部美国地点、社会经济、劳动力、教育和公立学校数据的来源出处及集成指南。
 - [生成的 API 文档](../../docs/api/README.md)——当前 HTML 参考、带版本的 API 版本以及重新生成说明
 - [API 目录](../../api/README.md)
 - [计算比较标准](../../comparison/README.md)——SLeeLa 虚拟机、Java/JVM 与原生 C/C++ 的类型、内存、ABI 和一致性标准。

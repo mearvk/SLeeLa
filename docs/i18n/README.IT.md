@@ -20,7 +20,7 @@
 - [Macchine virtuali e Modium — guida pratica per l’utente](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [Stack CPU nel codice sorgente SLeeLa](../../lib/cpu/CPU.md): una catena completa, dalle porte logiche all’ALU, ai core, al sistema operativo e ai programmi; comprende oltre 130 profili CPU e [tensioni, frequenze variabili e parametri avanzati di temporizzazione](../../lib/cpu/TIMING.md), con esecuzione [secondo specifica oppure in overclock](../../lib/cpu/components/README.md).
 - [Indice della documentazione](../../docs/README.md)
-- [Fonte dati CSPML e riferimento di ricerca Salt & Salary](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md): provenienza e indicazioni d’integrazione per dati esterni statunitensi su località, condizioni socioeconomiche, forza lavoro, istruzione e scuole pubbliche.
+- [Fonte dati CSPML e riferimento di ricerca Salt & Salary](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md): provenienza e indicazioni d’integrazione per dati esterni statunitensi su località, condizioni socioeconomiche, forza lavoro, istruzione e scuole pubbliche.
 - [Documentazione API generata](../../docs/api/README.md): riferimento HTML corrente, versione dell’API e istruzioni per rigenerarla.
 - [Catalogo API](../../api/README.md)
 - [Standard di confronto computazionale](../../comparison/README.md): standard per tipi, memoria, ABI e conformità di SLeeLa VM, Java/JVM e C/C++ nativo.

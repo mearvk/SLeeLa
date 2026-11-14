@@ -20,7 +20,7 @@
 - [Machines virtuelles et Modium — guide pratique](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [Pile CPU dans les sources SLeeLa](../../lib/cpu/CPU.md) — une machine complète allant des portes logiques à l’ALU, aux cœurs, au système d’exploitation et aux programmes ; plus de 130 profils CPU et des [tensions, fréquences variables et temporisations avancées](../../lib/cpu/TIMING.md) réglables, permettant une exécution [aux spécifications ou en surfréquence](../../lib/cpu/components/README.md).
 - [Index de la documentation](../../docs/README.md)
-- [Source de données CSPML et référence de recherche Salt & Salary](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — provenance et conseils d’intégration de données externes américaines sur les lieux, les conditions socioéconomiques, la main-d’œuvre, l’éducation et les écoles publiques.
+- [Source de données CSPML et référence de recherche Salt & Salary](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — provenance et conseils d’intégration de données externes américaines sur les lieux, les conditions socioéconomiques, la main-d’œuvre, l’éducation et les écoles publiques.
 - [Documentation API générée](../../docs/api/README.md) — référence HTML actuelle, édition versionnée de l’API et instructions de régénération.
 - [Catalogue des API](../../api/README.md)
 - [Normes de comparaison computationnelle](../../comparison/README.md) — normes de types, mémoire, ABI et conformité pour la VM SLeeLa, Java/JVM et le C/C++ natif.

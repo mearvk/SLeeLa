@@ -25,7 +25,7 @@
 - [虛擬機與 Modium——實作使用指南](../../virtual-machine/USER-GUIDE.md)（`sleela vm`、`sleela modium`）
 - [SLeeLa 原始碼中的 CPU 堆疊](../../lib/cpu/CPU.md)——完整的邏輯閘→ALU→處理器核心→作業系統→程式機器、130 種以上的 CPU 設定檔，以及可調整的[電壓、可變時鐘與進階時序](../../lib/cpu/TIMING.md)，你可以[依規格執行並超頻](../../lib/cpu/components/README.md)
 - [文件索引](../../docs/README.md)
-- [CSPML 資料來源與 Salt & Salary 研究參考](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md)——美國外部地點、社會經濟、勞動力、教育與公立學校資料的來源出處與整合指引。
+- [CSPML 資料來源與 Salt & Salary 研究參考](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md)——美國外部地點、社會經濟、勞動力、教育與公立學校資料的來源出處與整合指引。
 - [產生的 API 文件](../../docs/api/README.md)——最新的 HTML 參考、版本化 API 版次與重新產生說明
 - [API 目錄](../../api/README.md)
 - [計算比較標準](../../comparison/README.md)——SLeeLa VM、Java/JVM 與原生 C/C++ 的類型、記憶體、ABI 與一致性標準。

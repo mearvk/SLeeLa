@@ -27,7 +27,7 @@ mellőzésre; ahol egy téma egy nemzet érdekét érinti, ez az álláspont meg
 - [Virtuális gépek és Modium — gyakorlati felhasználói útmutató](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU-verem SLeeLa-forráskódban](../../lib/cpu/CPU.md) — teljes gép a logikai kapuktól → ALU → magok → operációs rendszer → programok vonalon, 130+ CPU-profil jegyzéke, valamint állítható [feszültségek, változtatható órajelek és szakértői időzítések](../../lib/cpu/TIMING.md), amelyeket [specifikáció szerint futtathat, vagy túlhajthat](../../lib/cpu/components/README.md)
 - [Dokumentációs index](../../docs/README.md)
-- [CSPML-adatforrás és Salt & Salary kutatási hivatkozás](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — külső, amerikai helyekre, társadalmi-gazdasági helyzetre, munkaerőre, oktatásra és állami iskolákra vonatkozó adatok eredete és integrációs útmutatója.
+- [CSPML-adatforrás és Salt & Salary kutatási hivatkozás](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — külső, amerikai helyekre, társadalmi-gazdasági helyzetre, munkaerőre, oktatásra és állami iskolákra vonatkozó adatok eredete és integrációs útmutatója.
 - [Generált API-dokumentáció](../../docs/api/README.md) — aktuális HTML-referencia, verziózott API-kiadás és újragenerálási utasítások
 - [API-katalógus](../../api/README.md)
 - [Számítási összehasonlítási szabványok](../../comparison/README.md) — a SLeeLa VM, a Java/JVM és a natív C/C++ típus-, memória-, ABI- és megfelelőségi szabványai.

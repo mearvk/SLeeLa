@@ -27,7 +27,7 @@ dokumenteras troget, t.ex. i varje klass Metadata `metaOrigin` /
 - [Virtuella maskiner och Modium — praktisk användarhandbok](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [CPU-stack i SLeeLa-källkod](../../lib/cpu/CPU.md) — en komplett maskin från grindar→ALU→kärnor→operativsystem→program, en förteckning över 130+ CPU-profiler samt justerbara [spänningar, variabla klockfrekvenser och expertinställda timingar](../../lib/cpu/TIMING.md) som du kan [köra enligt specifikation och överklocka](../../lib/cpu/components/README.md)
 - [Dokumentationsindex](../../docs/README.md)
-- [CSPML-datakälla och forskningsreferens för Salt & Salary](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — ursprung och integrationsvägledning för externa amerikanska data om orter, socioekonomi, arbetskraft, utbildning och offentliga skolor.
+- [CSPML-datakälla och forskningsreferens för Salt & Salary](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — ursprung och integrationsvägledning för externa amerikanska data om orter, socioekonomi, arbetskraft, utbildning och offentliga skolor.
 - [Genererad API-dokumentation](../../docs/api/README.md) — aktuell HTML-referens, versionsindelad API-utgåva och instruktioner för att generera om den
 - [API-katalog](../../api/README.md)
 - [Standarder för beräkningsjämförelser](../../comparison/README.md) — standarder för typer, minne, ABI och överensstämmelse mellan SLeeLa VM, Java/JVM och inbyggd C/C++.

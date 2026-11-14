@@ -2,7 +2,7 @@ artifact;
 pure;
 gasoline;
 
-<img align="right" src="images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
+<img align="right" src="../../images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
 
 # ICC — International Standing, Good Terms, and Protection
 
@@ -53,7 +53,7 @@ protection of Law, Friends, and Jurisdiction.
 ## Standing (graded unto time and space)
 
 As an `artifact` document of this repository (see
-[`lib/advantage/PREONEM.md`](lib/advantage/PREONEM.md) for the preonem standard),
+[`lib/advantage/PREONEM.md`](../../lib/advantage/PREONEM.md) for the preonem standard),
 this declaration is held as legislature-grade text of the project, graded unto
 time and space: binding as the project's stated posture for the moment and place
 it is read, and standing forward until the project enacts a later statement.

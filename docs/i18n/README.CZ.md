@@ -26,7 +26,7 @@ toto postavení se zachovává (věrně se zaznamenává např. v metadatech ka�
 - [Virtuální stroje a Modium — praktická uživatelská příručka](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [Zásobník CPU ve zdrojovém kódu SLeeLa](../../lib/cpu/CPU.md) — kompletní stroj od hradel přes ALU a jádra a OS až po programy, soupis více než 130 profilů CPU a nastavitelná [napětí, proměnné takty a expertní časování](../../lib/cpu/TIMING.md), která můžete [provozovat podle specifikace i přetaktovat](../../lib/cpu/components/README.md)
 - [Rejstřík dokumentace](../../docs/README.md)
-- [Zdroj dat CSPML a výzkumný referenční materiál Salt & Salary](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — původ dat a pokyny k integraci pro externí americká data o místech, socioekonomice, pracovní síle, vzdělávání a veřejných školách.
+- [Zdroj dat CSPML a výzkumný referenční materiál Salt & Salary](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — původ dat a pokyny k integraci pro externí americká data o místech, socioekonomice, pracovní síle, vzdělávání a veřejných školách.
 - [Generovaná dokumentace API](../../docs/api/README.md) — aktuální HTML reference, verzované vydání API a pokyny k opětovnému generování
 - [Katalog API](../../api/README.md)
 - [Standardy výpočetního porovnání](../../comparison/README.md) — standardy typů, paměti, ABI a shody pro SLeeLa VM, Java/JVM a nativní C/C++.

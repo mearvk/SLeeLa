@@ -1,4 +1,4 @@
-<img align="right" src="images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
+<img align="right" src="../../images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
 
 # SLeeLa Performance Report
 
@@ -203,9 +203,9 @@ The hosted runner and local reference benchmark are distinct executions with dif
 
 The SLeeLa-specific workload is defined in:
 
-- [SLeeLa arithmetic source](comparison/tests/sleela/arithmetic_speed.sleela)
-- [SLeeLa VM benchmark runner](comparison/tests/run_sleela_vm_arithmetic_speed.py)
-- [SLeeLa VM arithmetic protocol](comparison/ARITHMETIC.SPEED.SLEELA.001.md)
+- [SLeeLa arithmetic source](../../comparison/tests/sleela/arithmetic_speed.sleela)
+- [SLeeLa VM benchmark runner](../../comparison/tests/run_sleela_vm_arithmetic_speed.py)
+- [SLeeLa VM arithmetic protocol](../../comparison/ARITHMETIC.SPEED.SLEELA.001.md)
 
 The workload measures SLeeLa `int` and `double` for addition, subtraction, multiplication, and division on twelve targets: Basic Native and Premium SLVM 1 through 11.
 
@@ -275,9 +275,9 @@ Boolean values are excluded from arithmetic. A separate suite should measure log
 
 ## 8. Source reports and reproduction
 
-- [Arithmetic Speed Series — Iteration 001 (C11/C++17/Java 21+)](comparison/ARITHMETIC.SPEED.001.md)
-- [SLeeLa VM Arithmetic Speed — Iteration 001](comparison/ARITHMETIC.SPEED.SLEELA.001.md)
-- [Performance Analysis — Iteration 001](comparison/PERFORMANCE.ANALYSIS.001.md)
+- [Arithmetic Speed Series — Iteration 001 (C11/C++17/Java 21+)](../../comparison/ARITHMETIC.SPEED.001.md)
+- [SLeeLa VM Arithmetic Speed — Iteration 001](../../comparison/ARITHMETIC.SPEED.SLEELA.001.md)
+- [Performance Analysis — Iteration 001](../../comparison/PERFORMANCE.ANALYSIS.001.md)
 
 Native-language reference reproduction:
 
@@ -299,4 +299,4 @@ The SLeeLa runner writes `comparison-sleela-vm-arithmetic-results.json`; the int
 
 ## 9. Common eight-case comparison — Iteration 002
 
-A consolidated table now places the eight shared hosted-Linux cases (i64 and f64 × +, -, *, /) side by side for C11, C++17, Java 21+, Basic Native, and Premium SLVM 1–11: [Arithmetic Comparison — Common Eight Cases](comparison/ARITHMETIC.SPEED.002.md). This is a common-coverage view only. The source datasets still use different iteration counts, operand patterns, and timing boundaries, so cross-language and native-versus-VM timing ratios remain invalid. A genuinely equivalent comparison requires a new matched-protocol CI run.
+A consolidated table now places the eight shared hosted-Linux cases (i64 and f64 × +, -, *, /) side by side for C11, C++17, Java 21+, Basic Native, and Premium SLVM 1–11: [Arithmetic Comparison — Common Eight Cases](../../comparison/ARITHMETIC.SPEED.002.md). This is a common-coverage view only. The source datasets still use different iteration counts, operand patterns, and timing boundaries, so cross-language and native-versus-VM timing ratios remain invalid. A genuinely equivalent comparison requires a new matched-protocol CI run.

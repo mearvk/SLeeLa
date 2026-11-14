@@ -20,7 +20,7 @@
 - [Máquinas virtuais e Modium — guia prático do utilizador](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [Pilha de CPU no código-fonte da SLeeLa](../../lib/cpu/CPU.md): uma cadeia de máquina completa, desde as portas lógicas até à ALU, aos núcleos, ao sistema operativo e aos programas; inclui mais de 130 perfis de CPU e [tensões, frequências variáveis e parâmetros avançados de temporização](../../lib/cpu/TIMING.md), com execução [dentro das especificações ou em overclock](../../lib/cpu/components/README.md).
 - [Índice da documentação](../../docs/README.md)
-- [Fonte de dados CSPML e referência de investigação Salt & Salary](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md): proveniência e orientação de integração para dados externos dos EUA sobre locais, condições socioeconómicas, força de trabalho, educação e escolas públicas.
+- [Fonte de dados CSPML e referência de investigação Salt & Salary](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md): proveniência e orientação de integração para dados externos dos EUA sobre locais, condições socioeconómicas, força de trabalho, educação e escolas públicas.
 - [Documentação de API gerada](../../docs/api/README.md): referência HTML atual, edição versionada da API e instruções para a regenerar.
 - [Catálogo de API](../../api/README.md)
 - [Normas de comparação computacional](../../comparison/README.md): normas de tipos, memória, ABI e conformidade para a SLeeLa VM, Java/JVM e C/C++ nativo.

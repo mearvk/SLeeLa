@@ -164,7 +164,7 @@ has 22 programs (`tests/java/Bounds.java` is not named in either document) and t
 
 ## Next steps
 
-- [`sleelactl/convert/README.md`](../../../sleelactl/convert/README.md), [`JAVA.CONVERSION.STATUS.md`](../../../JAVA.CONVERSION.STATUS.md), [`CONVERSION.PRINCIPLES.md`](../../../CONVERSION.PRINCIPLES.md)
+- [`sleelactl/convert/README.md`](../../../sleelactl/convert/README.md), [`JAVA.CONVERSION.STATUS.md`](../../reference/JAVA.CONVERSION.STATUS.md), [`CONVERSION.PRINCIPLES.md`](../../reference/CONVERSION.PRINCIPLES.md)
 - [`lib/java/JAVA.SPEC.md`](../../../lib/java/JAVA.SPEC.md) (what is converted and what is refused)
 - `bin/sleelactl run java-convert --jdk-version 28` converts `sleelactl/jdk/28/java` (see `sleelactl/jdk/README.md`); not run here.
 

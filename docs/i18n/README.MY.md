@@ -28,7 +28,7 @@ sekali-kali dileburkan.
 - [Mesin maya & Modium — panduan pengguna secara praktikal](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [Tindanan CPU dalam kod sumber SLeeLa](../../lib/cpu/CPU.md) — mesin lengkap daripada get→ALU→teras→OS→program, senarai 130+ profil CPU, serta [voltan, jam boleh ubah dan pemasaan pakar](../../lib/cpu/TIMING.md) yang boleh dilaraskan, supaya anda boleh [menjalankannya mengikut spesifikasi dan melakukan overclock](../../lib/cpu/components/README.md)
 - [Indeks dokumentasi](../../docs/README.md)
-- [Sumber data CSPML dan rujukan penyelidikan Salt & Salary](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — asal usul data luaran A.S. (tempat, sosioekonomi, tenaga kerja, pendidikan dan sekolah awam) serta panduan integrasinya.
+- [Sumber data CSPML dan rujukan penyelidikan Salt & Salary](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — asal usul data luaran A.S. (tempat, sosioekonomi, tenaga kerja, pendidikan dan sekolah awam) serta panduan integrasinya.
 - [Dokumentasi API terjana](../../docs/api/README.md) — rujukan HTML terkini, edisi API berversi dan arahan penjanaan semula
 - [Katalog API](../../api/README.md)
 - [Piawaian perbandingan pengkomputeran](../../comparison/README.md) — piawaian jenis, memori, ABI dan pematuhan bagi VM SLeeLa, Java/JVM dan C/C++ natif.
@@ -793,7 +793,7 @@ Kosa kata jenis sumber merangkumi `int`, `double`, `boolean`, `String`, `void`, 
 
 `struct` ialah agregat bernama yang mengandungi medan. Handle struct yang diurus VM bukan penuding mentah. Tugasan dan penghantaran parameter berkongsi instans yang sama; kesamaan adalah berdasarkan identiti. Untuk pertukaran mudah alih, gunakan fungsi bersiri yang didokumenkan seperti `structPack(instance)` dan `structUnpack(TypeName, json)`; handle yang terikat kepada VM bukan nilai rangkaian mudah alih.
 
-Kelas mengandungi medan dan kaedah. Dalam model pelaksanaan semasa, medan ialah keadaan kelas yang dikongsi manakala pemboleh ubah setempat kaedah adalah khusus kepada thread. Pewarisan, kelas bersarang dan generik tertakluk pada get versi sintaks. Rujuk [International Language Reference](../../LANGUAGE.INTERNATIONAL.3.0.md).
+Kelas mengandungi medan dan kaedah. Dalam model pelaksanaan semasa, medan ialah keadaan kelas yang dikongsi manakala pemboleh ubah setempat kaedah adalah khusus kepada thread. Pewarisan, kelas bersarang dan generik tertakluk pada get versi sintaks. Rujuk [International Language Reference](../reference/LANGUAGE.INTERNATIONAL.3.0.md).
 
 ### Aliran kawalan dan pemasaan gelung
 

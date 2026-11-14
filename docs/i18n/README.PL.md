@@ -20,7 +20,7 @@
 - [Maszyny wirtualne i Modium — praktyczny przewodnik](../../virtual-machine/USER-GUIDE.md) (`sleela vm`, `sleela modium`)
 - [Stos CPU w kodzie źródłowym SLeeLa](../../lib/cpu/CPU.md) — pełny łańcuch od bramek logicznych przez ALU i rdzenie po system operacyjny oraz programy; ponad 130 profili CPU i regulowane [napięcia, zmienne częstotliwości oraz zaawansowane parametry taktowania](../../lib/cpu/TIMING.md), z możliwością pracy [zgodnie ze specyfikacją lub po podkręceniu](../../lib/cpu/components/README.md).
 - [Indeks dokumentacji](../../docs/README.md)
-- [Źródło danych CSPML i opracowanie Salt & Salary](../../CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — pochodzenie i wskazówki integracyjne dotyczące zewnętrznych danych USA o lokalizacji, warunkach społeczno-ekonomicznych, rynku pracy, edukacji i szkołach publicznych.
+- [Źródło danych CSPML i opracowanie Salt & Salary](../reference/CSPML.DATA.SOURCE.AND.SALT-AND-SALARY.REFERENCE.md) — pochodzenie i wskazówki integracyjne dotyczące zewnętrznych danych USA o lokalizacji, warunkach społeczno-ekonomicznych, rynku pracy, edukacji i szkołach publicznych.
 - [Wygenerowana dokumentacja API](../../docs/api/README.md) — aktualna dokumentacja HTML, wersjonowane wydanie API i instrukcje ponownego generowania.
 - [Katalog API](../../api/README.md)
 - [Standardy porównań obliczeniowych](../../comparison/README.md) — standardy typów, pamięci, ABI i zgodności dla SLeeLa VM, Java/JVM oraz natywnego C/C++.

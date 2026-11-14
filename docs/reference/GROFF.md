@@ -1,4 +1,4 @@
-<img align="right" src="images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
+<img align="right" src="../../images/sleela/sleela-medium-profile-permanent-icon-002.jpg" width="45" height="45" alt="SLeeLa">
 
 # GROFF — our buddy for the SLeeLa man pages
 
@@ -7,7 +7,7 @@
 <p align="center"><img src="https://github.com/mearvk/SLeeLa/blob/master/images/sleela-programming-language-002.jpg" alt="SLeeLa Marketing Logo" width="560"></p>
 
 **groff** (GNU *roff*) is the typesetting system we use to render and check the
-SLeeLa manual pages — right now [`man/man1/sleela.1`](man/man1/sleela.1). This
+SLeeLa manual pages — right now [`man/man1/sleela.1`](../../man/man1/sleela.1). This
 document is the working reference for *how we use groff in this repo*: what it
 is, the macros and escapes our pages rely on, how to render and lint them, and
 the conventions we keep so a page stays portable and warning-free.
@@ -252,5 +252,5 @@ groff -man -Tascii -ww -z man/man1/sleela.1
 groff -man -Tpdf man/man1/sleela.1 > sleela.1.pdf
 ```
 
-See also: [`man/README.md`](man/README.md) and the page itself,
-[`man/man1/sleela.1`](man/man1/sleela.1).
+See also: [`man/README.md`](../../man/README.md) and the page itself,
+[`man/man1/sleela.1`](../../man/man1/sleela.1).
