@@ -5,7 +5,7 @@
 # auto-detected but can be overridden with PLATFORM=linux|macos|windows.
 #
 # The OS-centric libraries Ballum links against are provided by the build:
-#   - Linux   : X11 + Xrandr development packages (installed/reported by `deps`)
+#   - Linux   : X11 + Xrandr, plus Xext when BALLUM_X11_SHM=1 (reported by `deps`)
 #   - macOS   : CoreGraphics/ApplicationServices/Foundation frameworks (ship
 #               with the Xcode command-line tools; `deps` verifies them)
 #   - Windows : gdi32/user32 import libraries (ship with the Windows SDK /
@@ -161,7 +161,7 @@ demo: check-deps $(BUILD)/libsleela_ballum.a
 
 # ---- per-OS dependency provisioning --------------------------------------
 # `check-deps` verifies the OS-centric libraries this PLATFORM needs. On Linux
-# it checks X11 + Xrandr via pkg-config; if missing and BALLUM_DEPS_INSTALL=1,
+# it checks X11 + Xrandr, plus Xext when BALLUM_X11_SHM=1, via pkg-config;
 # `deps` installs them with the detected package manager. macOS/Windows system
 # frameworks/import libs ship with the platform SDK, so there is nothing to
 # download -- `check-deps` only confirms the toolchain can see them.
@@ -204,7 +204,7 @@ endif
 
 deps:
 ifeq ($(PLATFORM),linux)
-	@echo "ballum deps (linux): X11 + Xrandr development files are required."
+	@echo "ballum deps (linux): X11 + Xrandr development files are required; Xext is required when BALLUM_X11_SHM=1."
 	@if command -v apt-get >/dev/null 2>&1; then \
 	   pkgs="libx11-dev libxrandr-dev libxext-dev"; mgr="apt-get install -y $$pkgs"; \
 	 elif command -v dnf >/dev/null 2>&1; then \
@@ -212,10 +212,10 @@ ifeq ($(PLATFORM),linux)
 	 elif command -v pacman >/dev/null 2>&1; then \
 	   pkgs="libx11 libxrandr libxext"; mgr="pacman -S --noconfirm $$pkgs"; \
 	 elif command -v zypper >/dev/null 2>&1; then \
-	   pkgs="libX11-devel libXrandr-devel"; mgr="zypper install -y $$pkgs"; \
+	   pkgs="libX11-devel libXrandr-devel libXext-devel"; mgr="zypper install -y $pkgs"; \
 	 else \
 	   echo "  No supported package manager found (apt/dnf/pacman/zypper)."; \
-	   echo "  Install the X11 and Xrandr development packages for your distro, then re-run 'make all'."; \
+	   echo "  Install the X11 and Xrandr development packages (and Xext when BALLUM_X11_SHM=1) for your distro, then re-run 'make all'."; \
 	   exit 1; \
 	 fi; \
 	 if [ "$(BALLUM_DEPS_INSTALL)" = "1" ]; then \
