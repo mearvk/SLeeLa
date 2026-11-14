@@ -428,10 +428,12 @@ registry-test:
 # boots the chosen generation. Depends on `core` for the Core archive.
 premium-vms: core
 	@for n in 001 002 003 004 005 006 007 008 009 010 011; do \
-	  echo "=== premium SLVM $$n ==="; \
+	  echo "=== premium SLVM $$n: build ==="; \
 	  $(MAKE) -C sleela-virtual-machine/$$n all || exit 1; \
+	  echo "=== premium SLVM $$n: selfcheck ==="; \
+	  $(MAKE) -C sleela-virtual-machine/$$n test || exit 1; \
 	done
-	@echo "SLeeLa premium VMs built: sleela-virtual-machine/0NN/vm-build/slvm-NN"
+	@echo "SLeeLa premium VMs built and selfchecked: sleela-virtual-machine/0NN/vm-build/slvm-NN"
 
 clean:
 	@for n in 001 002 003 004 005 006 007 008 009 010 011; do $(MAKE) -C sleela-virtual-machine/$$n clean; done
