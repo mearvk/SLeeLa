@@ -15,7 +15,7 @@ public:
  Status open(Transport, AddressFamily=AddressFamily::Any); Status bind(const Endpoint&); Status connect(const Endpoint&);
  Status send(const std::vector<std::uint8_t>&); ReceiveResult receive(std::size_t maxBytes=65536); Status close();
  bool openState() const noexcept;
-private: int fd_{-1}; Transport transport_{Transport::UDP}; AddressFamily family_{AddressFamily::Any}; bool connected_{false};
+private: std::intptr_t fd_{-1}; Transport transport_{Transport::UDP}; AddressFamily family_{AddressFamily::Any}; bool connected_{false}; bool winsock_started_{false};
 };
 class TcpConnection {
 public:
