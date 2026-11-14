@@ -263,7 +263,7 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "2ccf1009a3dcfc08a7b51693794face43eee3b10892be1edfda64f067d61ed90"
+      "sha256": "061cf6e52843e1eb1dca84c1fb24b7ba702915d077ac6cee388e5ce38a556ae2"
     },
     {
       "path": "impl/core/sleela_core.h",
@@ -9483,7 +9483,7 @@
     },
     {
       "path": "lib/java/converter/JConvSource.sleela",
-      "sha256": "cad295641c42af7a20af63f744af2ea4cddcc553010c6510c0ddcf365b3ac379"
+      "sha256": "450b6abb8b72970eeeecc02d1cc87d9ae7ca8dc0e5077f95dc1fcb4c118255a8"
     },
     {
       "path": "lib/java/converter/JConvTranslator.sleela",

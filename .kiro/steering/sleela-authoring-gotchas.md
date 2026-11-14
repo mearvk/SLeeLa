@@ -149,13 +149,16 @@ refuse (do not clamp or wrap) inputs that could push it past. See
   Outside `/lib`, the loader does not find sibling files: name them, or put
   everything in one file.
 - **`read(handle)` returns at most 4,095 bytes per call** (empty string at end of
-  file). Loop until it returns `""`.
+  file). Loop until it returns `""`. Since 2026-11-14 a piece never ends inside a
+  UTF-8 character (the incomplete tail comes at the start of the next piece), so
+  every piece of a valid UTF-8 file can go through `javaStringFromUtf8`.
 - **A plain String stops growing at 65,536 bytes** (`SL_MAX_STRTEXT`): `s = s + t`
   silently truncates beyond it. Keep large text as an array of pieces and write
   it out in pieces.
-- **`javaStringFromUtf8` on a piece that ends inside a multi-byte UTF-8
-  character is a fatal VM error**, not a catchable exception. A plain String has
-  no byte-level view, so the split cannot be repaired from SLeeLa.
+- **`javaStringFromUtf8` on malformed UTF-8 is a fatal VM error**, not a
+  catchable exception. `read` no longer produces split characters (above), but a
+  file that is not UTF-8 at all (Latin-1, say) still stops the VM; check the file
+  first (`lib/java/converter/JConvSource.sleela` runs `iconv` through `osRun`).
 - **An inner `>>` ends a `<< ... >>` block comment early.** Separate it (`> >`)
   when copying text into a block comment, repeating until no `>>` is left
   (`>>>` leaves one after a single replace).

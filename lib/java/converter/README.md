@@ -3,7 +3,7 @@
 > **Container.** Java container content (`SLEELA.syntax` section 38.4). Nothing
 > here is part of the SLeeLa specification or adds syntax to SLeeLa.
 
-Status: **0.7.2, best effort (2026-11-14).** Output stays at syntax **3.1** (also
+Status: **0.7.3, best effort (2026-11-14).** Output stays at syntax **3.1** (also
 written 3.01) by the owner's decision; syntax 3.1 sections 45 and 46 forms are not used
 (`.kiro/steering/java-converter-lib.md`). The operand laws come from the shared
 conversion model, `impl/subjects/conversion/conversion.model` (read by
@@ -310,10 +310,15 @@ library, in this order of weight:
    2026-11-13 calls on an `Any` receiver dispatch at run time, and casts,
    `instanceof` and `catch` see implemented interfaces (SLEELA.syntax 43.7);
    a call whose method no loaded class declares is still an error.
-5. **Files with non-ASCII bytes are skipped** (12 of the 15,020 files in the JDK
-   `src.zip`): the VM `read` built-in returns 4,095-byte pieces of a plain String,
-   a UTF-8 character can be split between two pieces, and the VM has no
-   byte-level view of a plain String to repair it.
+5. **Files with non-ASCII bytes were skipped** until 0.7.3 (12 of the 15,020
+   files in the JDK `src.zip`): the VM `read` built-in cut its 4,095-byte pieces
+   anywhere, so a UTF-8 character could be split between two of them. Since
+   2026-11-14 `read` holds an incomplete character back for the next piece
+   (`impl/core/sleela_core.c`, `read_utf8_piece`), and all 12 convert with their
+   characters intact in comments (string and char literals are written as
+   `\uXXXX`, as before). Still refused, with the reason in the report: a file
+   that is not valid UTF-8 (checked with `iconv`; without `iconv`, any non-ASCII
+   byte, the old rule) and a file with a NUL byte, which a plain String cannot hold.
 6. **Near-misses the token-level conversion cannot see (it has no expression
    types where the typed pass cannot see them):** an operand whose kind is
    unknown (a call the model does not type, an interface-typed receiver, a
@@ -376,9 +381,10 @@ What remains for a whole-tree conversion, measured on this run:
   stubs), anonymous class 309, native method 285, pattern `instanceof` 250,
   `String` statics 228, method reference 186, `var` 184, switch expression or
   multi-label case 158, lambda or switch arrow 142, others under 100 each.
-- **7 files are skipped for non-ASCII bytes** (`Collator`, `RuleBasedCollator`,
-  `Locale`, `PropertyResourceBundle`, `UUID`, `ICC_Profile`, `javax.swing.Action`;
-  section 6 item 5).
+- **7 files were skipped for non-ASCII bytes** (`Collator`, `RuleBasedCollator`,
+  `Locale`, `PropertyResourceBundle`, `UUID`, `ICC_Profile`, `javax.swing.Action`);
+  fixed in 0.7.3 (section 6 item 5): all 12 such JDK files convert, with no
+  lexical or syntax error.
 - **A runtime error in one file ended the run** (fixed in 0.7.2, section 2: the
   file is reported as failed and the run goes on).
 - **Memory still grows by about 0.4 MB a file** (the Strings each file makes are
@@ -429,6 +435,7 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | Version | Change |
 |---|---|
 | 0.1.0 | First cut: walk, lex, rewrite, translate, stubs, report |
+| 0.7.3 | Non-ASCII Java files convert: the VM `read` built-in no longer splits a UTF-8 character between pieces, so `JConvSource` accepts any valid UTF-8 file (it refused every non-ASCII byte) and refuses only invalid UTF-8 and NUL bytes, naming which. The 12 non-ASCII JDK files (7 of them public API) convert with no syntax error; the 17-file sample now converts 17 of 17 (`UUID.java`), the other 16 outputs unchanged |
 | 0.7.2 | Per-file isolation: a VM runtime error inside one Java file no longer ends the run. `JConvMain` records progress and totals after every file; `run-converter.sh` restarts after the file that stopped the VM, which is reported as `failed` with the VM message and its partial output removed. Default `JCONV_OUT` is now the caller's `./jdk28-converted` (it was resolved after the script's `cd`, inside `lib/java/converter`). Test hook `JCONV_TEST_STOP_IN` |
 | 0.7.1 | Whole-tree runs: the emitter writes pieces directly instead of growing a String buffer (memory flat: the JDK `java.base` run had been killed at 16 GB); kept Java bodies over 64 KB are written as comments line by line (`keptComment`, was a VM stop on `BasicLookAndFeel`); a method declared with a VM built-in name (`read`, `write`, ...) is no longer written as `this.read` / `Owner.read` (514 declarations in the JDK; the typed pass now reaches them). All 4,120 convertible public JDK types in one run, 173 s. 17-file sample output unchanged |
 | 0.7.0 | `JConvOuter`: inner (non-static) classes get `Outer slOuter` and a first constructor parameter `slOuterArg`; `new Inner(..)` passes `this` (or `this.slOuter` from a sibling inner class); `Outer.this` becomes `this.slOuter`; an unqualified outer member becomes `this.slOuter.x` or `Outer.x` unless it is a local, an own member or possibly inherited (model `ret` / `field` rows). Stub reason 10 kept only for other qualified `this` / `super`. JDK sample, bundled: **26 stubs (was 35), 475 check errors (was 522), 0 syntax errors**; both samples still identical |

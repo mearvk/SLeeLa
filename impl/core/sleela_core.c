@@ -137,6 +137,10 @@ typedef struct {
     int active;
     SLIOHandle fd;
     int peer;
+    /* read(handle) never returns a piece that ends inside a UTF-8 character:
+     * the incomplete tail (at most 3 bytes) waits here for the next read. */
+    unsigned char carry[4];
+    int ncarry;
 } SLFile;
 
 /* A registered struct type: a name and an ordered list of field names. Field
@@ -1174,6 +1178,7 @@ int slvm_java_string_compare_to(SLVM *vm, SLValue left, SLValue right, int32_t *
 
 static void close_file_slot(SLFile* f) {
     if (f->active) { slio_close(f->fd); f->fd = SLIO_INVALID_HANDLE; f->active = 0; f->peer = -1; }
+    f->ncarry = 0;
 }
 
 void slvm_free(SLVM* vm) {
@@ -1369,7 +1374,7 @@ static void ic_release(SLVM* vm, int h) {
 static int file_alloc(SLVM* vm, SLIOHandle fd) {
     pthread_mutex_lock(&vm->file_mtx);
     for (int i = 0; i < SL_MAX_FILES; i++) if (!vm->files[i].active) {
-        pthread_mutex_lock(&vm->files[i].mtx); vm->files[i].fd = fd; vm->files[i].active = 1; vm->files[i].peer = -1;
+        pthread_mutex_lock(&vm->files[i].mtx); vm->files[i].fd = fd; vm->files[i].active = 1; vm->files[i].peer = -1; vm->files[i].ncarry = 0;
         pthread_mutex_unlock(&vm->files[i].mtx); pthread_mutex_unlock(&vm->file_mtx); return i;
     }
     pthread_mutex_unlock(&vm->file_mtx); return -1;
@@ -1674,6 +1679,41 @@ static int make_fifo(const char* path, unsigned mode) {
     /* slio maps this to a Linux FIFO or a Windows named pipe; it treats an
      * already-existing endpoint as success. */
     return slio_named_pipe_create(path, mode) == 0 ? 0 : -1;
+}
+
+/* One read(handle) piece of at most cap bytes that never ends inside a UTF-8
+ * character. A piece used to be whatever slio_read returned, so a multi-byte
+ * character could straddle two pieces; each half is malformed UTF-8 and
+ * javaStringFromUtf8 rejects it (lib/java/converter had to skip every non-ASCII
+ * Java file for that). The bytes of an incomplete trailing sequence are kept in
+ * f->carry and returned at the start of the next piece. At end of input a
+ * leftover carry is returned as it is. Caller holds f->mtx. */
+static int read_utf8_piece(SLFile* f, SLIOHandle fd, char* buf, int cap) {
+    int have = 0;
+    for (int i = 0; i < f->ncarry && have < cap; i++) buf[have++] = (char)f->carry[i];
+    f->ncarry = 0;
+    for (;;) {
+        int n = slio_read(fd, buf + have, cap - have);
+        if (n <= 0) return have; /* end of input (or error): whatever is held */
+        int total = have + n;
+        /* the start of the last character: back over at most 3 continuation
+         * bytes (10xxxxxx) */
+        int lead = total - 1, back = 0;
+        while (lead > 0 && back < 3 && (((unsigned char)buf[lead]) & 0xC0) == 0x80) { lead--; back++; }
+        unsigned char c = (unsigned char)buf[lead];
+        int need = (c >= 0xF0 && c <= 0xF7) ? 4 : (c >= 0xE0 && c <= 0xEF) ? 3 : (c >= 0xC0 && c <= 0xDF) ? 2 : 1;
+        int got = total - lead;
+        if (need <= 1 || got >= need) return total;   /* ends on a whole character */
+        if (lead > 0) {
+            /* hold the incomplete final character back for the next piece */
+            f->ncarry = got;
+            for (int i = 0; i < got; i++) f->carry[i] = (unsigned char)buf[lead + i];
+            return lead;
+        }
+        /* the piece is one incomplete character (a short read): read on */
+        have = total;
+        if (have >= cap) return have;
+    }
 }
 
 static int open_file_handle(SLVM* vm, const char* path, const char* mode) {
@@ -3919,7 +3959,7 @@ static SLResult run_thread(SLThread* t) {
             SLValue mv=POP(),pv=POP(); if(pv.type!=SL_STR||mv.type!=SL_STR) TERR("openFile(path, mode) requires String arguments"); PUSH(slval_int(open_file_handle(vm,slvm_str(vm,pv.as.s),slvm_str(vm,mv.as.s))));
         } break;
         case OP_FILEREAD: {
-            SLValue hv=POP(); if(hv.type!=SL_INT||!file_valid_handle((int)hv.as.i)) TERR("read(handle) requires a valid file handle"); int h=(int)hv.as.i; SLFile* f=&vm->files[h]; pthread_mutex_lock(&f->mtx); SLIOHandle fd=file_fd_locked(f); if(fd==SLIO_INVALID_HANDLE){pthread_mutex_unlock(&f->mtx);SLValue e;e.type=SL_STR;e.as.s=intern(vm,"");PUSH(e);break;} char buf[4097]; int n=slio_read(fd,buf,sizeof(buf)-1); pthread_mutex_unlock(&f->mtx); if(n<=0){SLValue e;e.type=SL_STR;e.as.s=intern(vm,"");PUSH(e);break;} buf[n]=0; SLValue out;out.type=SL_STR;out.as.s=intern(vm,buf);PUSH(out);
+            SLValue hv=POP(); if(hv.type!=SL_INT||!file_valid_handle((int)hv.as.i)) TERR("read(handle) requires a valid file handle"); int h=(int)hv.as.i; SLFile* f=&vm->files[h]; pthread_mutex_lock(&f->mtx); SLIOHandle fd=file_fd_locked(f); if(fd==SLIO_INVALID_HANDLE){pthread_mutex_unlock(&f->mtx);SLValue e;e.type=SL_STR;e.as.s=intern(vm,"");PUSH(e);break;} char buf[4097]; int n=read_utf8_piece(f,fd,buf,sizeof(buf)-1); pthread_mutex_unlock(&f->mtx); if(n<=0){SLValue e;e.type=SL_STR;e.as.s=intern(vm,"");PUSH(e);break;} buf[n]=0; SLValue out;out.type=SL_STR;out.as.s=intern(vm,buf);PUSH(out);
         } break;
         case OP_FILEWRITE: {
             SLValue sv=POP(),hv=POP(); if(hv.type!=SL_INT||sv.type!=SL_STR||!file_valid_handle((int)hv.as.i)) TERR("write(handle, data) requires a file handle and String"); int h=(int)hv.as.i; SLFile* f=&vm->files[h]; pthread_mutex_lock(&f->mtx); SLIOHandle fd=file_fd_locked(f); if(fd==SLIO_INVALID_HANDLE){pthread_mutex_unlock(&f->mtx);PUSH(slval_int(-1));break;} const char* data=slvm_str(vm,sv.as.s); int n=slio_write(fd,data,strlen(data)); pthread_mutex_unlock(&f->mtx); PUSH(slval_int(n<0?-1:(int64_t)n));

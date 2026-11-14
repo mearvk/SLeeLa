@@ -5,16 +5,17 @@
    65,536 bytes, so the file is kept as an array of chunks (each converted to a
    Java UTF-16 String) plus one int array of all UTF-16 code units for fast
    scanning. slice(a, b) returns the plain text of code units a .. b-1 across
-   chunk boundaries. A file with bytes outside ASCII is reported and not loaded:
-   a multi-byte UTF-8 character can be split between two reads, and the VM has
-   no byte-level view of a plain String to repair the split. >>
+   chunk boundaries. Any UTF-8 text loads: since 2026-11-14 the VM read built-in
+   never ends a piece inside a UTF-8 character (before, every Java file with a
+   non-ASCII byte had to be skipped). A file that is not valid UTF-8, or that
+   holds a NUL byte (a plain String ends at NUL), is reported and not loaded. >>
 #sleela 3.0
 material;
 
 class JConvSource {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
   << Full record: a library-family class of the Java container. >>
-  String metaVersion = "0.1.0";
+  String metaVersion = "0.2.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
   String metaDate = "2026-11-12";
@@ -71,18 +72,29 @@ class JConvSource {
     this.failure = "";
   }
 
-  < 0 when the file holds only ASCII bytes (tab, newline, carriage return, 32..126) >
-  boolean isAscii(String path) {
-    int rc = osRun("LC_ALL=C grep -q '[^[:print:][:space:]]' '" + path + "'");
-    return rc != 0;
+  << Why the file cannot be loaded, or "" when it can. One shell command:
+     exit 1 for bytes that are not UTF-8 (iconv; without iconv, any byte outside
+     ASCII, the rule before the read built-in kept characters whole), exit 2 for
+     a NUL byte. >>
+  String unreadable(String path) {
+    if (path.indexOf("'") >= 0) { return "a quote in the path"; }
+    String q = "'" + path + "'";
+    int rc = osRun("if command -v iconv >/dev/null 2>&1; then iconv -f UTF-8 -t UTF-8 " + q
+      + " >/dev/null 2>&1 || exit 1; else LC_ALL=C grep -q '[^[:print:][:space:]]' " + q
+      + " && exit 1; fi; LC_ALL=C tr -d '\\000' < " + q + " | cmp -s - " + q + " || exit 2; exit 0");
+    if (rc == 1) { return "not valid UTF-8"; }
+    if (rc == 2) { return "a NUL byte (a plain String ends at NUL)"; }
+    if (rc != 0) { return "cannot be checked (exit " + rc + ")"; }
+    return "";
   }
 
   boolean load(String path) {
     this.failure = "";
     this.nChunks = 0;
     this.length = 0;
-    if (!isAscii(path)) {
-      this.failure = "non-ASCII bytes (UTF-8 may split across 4,095-byte reads)";
+    String why = unreadable(path);
+    if (why != "") {
+      this.failure = why;
       return false;
     }
     int h = openFile(path, "r");

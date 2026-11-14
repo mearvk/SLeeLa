@@ -66,6 +66,12 @@ String-heavy programs no longer slow down as they run (the `lib/java/converter` 
 on its 17-file JDK sample went from 66 s to 6.6 s). Regression check:
 `impl/examples/string_intern_scaling.sleela`.
 
+Rebuilt 2026-11-14, same versions: `read(handle)` no longer ends a piece inside a
+UTF-8 character (`read_utf8_piece` in `impl/core/sleela_core.c`); an incomplete
+tail waits for the next read. Before, a non-ASCII file could not be read safely
+in pieces (`javaStringFromUtf8` stopped the VM on a split character). Regression
+check: `impl/examples/read_utf8_pieces.sleela`.
+
 Reported versions:
 
 - `sleela` — `SLeeLa™ Language/Runtime 1.3.2-pro` (supported source syntax 1.0 – 3.1)
@@ -74,8 +80,8 @@ Reported versions:
 SHA-256 of the committed copies:
 
 ```
-5906064e03b056749d4656fc54bdb9171d4d24e74f33c9531f97dbd6976ecf7d  sleela
-fc63f25f73d802bd57074c3ba36769802006ca668cf34b77b2cd663adf39309c  nordshrift
+8e2a38c422079b9d7e5693e109b2f53edc33a6bb8a5babb4c1d7a398c682a386  sleela
+4acf57f2eb1815b906bdb32fb34bfba03e2163b073c7dd692f0dd07e9f48249a  nordshrift
 ```
 
 ---

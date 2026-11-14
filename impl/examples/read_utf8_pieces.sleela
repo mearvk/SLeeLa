@@ -1,0 +1,63 @@
+#sleela 3.0
+material;
+< read_utf8_pieces.sleela -- regression check: read(handle) never splits a UTF-8 character. >
+< read returns a file in pieces of at most 4,095 bytes. It used to cut wherever the >
+< 4,095 bytes ended, so a two, three or four byte character could be split between >
+< two pieces; each half is malformed UTF-8 and javaStringFromUtf8 stopped the VM on it >
+< (lib/java/converter skipped every Java file with a non-ASCII byte for that reason). >
+< This example writes a file whose multi-byte characters straddle the first three >
+< piece boundaries, reads it back piece by piece, converts every piece, and checks the >
+< text is complete. A wrong answer throws, so make test-sleela fails. >
+class ReadUtf8Pieces {
+  int checks = 0;
+
+  void expect(boolean ok, String what) {
+    checks = checks + 1;
+    if (!ok) {
+      print("FAIL: " + what);
+      throw "read_utf8_pieces failed: " + what;
+    }
+  }
+
+  < n copies of the letter a >
+  String pad(int n) {
+    String s = "";
+    int i = 0;
+    while (i < n) { s = s + "a"; i = i + 1; }
+    return s;
+  }
+
+  void main() {
+    < byte 4094 starts a 2-byte character, so the first piece would end inside it; >
+    < the next two boundaries fall inside a 3-byte and a 4-byte character >
+    String text = pad(4094) + "é" + pad(4092) + "€" + pad(4091) + "😀" + "end";
+    String path = osTempDir() + "/sleela-read-utf8-" + osProcessId() + ".txt";
+    int w = openFile(path, "w");
+    expect(w >= 0, "the test file opens for writing");
+    write(w, text);
+    close(w);
+
+    int h = openFile(path, "r");
+    expect(h >= 0, "the test file opens for reading");
+    int pieces = 0;
+    int units = 0;
+    String back = "";
+    String piece = read(h);
+    while (piece != "") {
+      < this conversion is what stopped the VM when a piece ended inside a character >
+      String u = javaStringFromUtf8(piece);
+      units = units + javaStringLength(u);
+      back = back + piece;
+      pieces = pieces + 1;
+      piece = read(h);
+    }
+    close(h);
+    int rc = osRun("rm -f '" + path + "'");
+
+    expect(pieces >= 4, "the file comes back in several pieces (" + pieces + ")");
+    < 4094 + 1 + 4092 + 1 + 4091 + 2 (a surrogate pair) + 3 = 12284 UTF-16 code units >
+    expect(units == 12284, "every character arrives whole: 12284 code units (" + units + ")");
+    expect(back == text, "the pieces join to the text that was written");
+    print("read_utf8_pieces: " + pieces + " pieces, " + units + " code units, " + checks + " checks passed");
+  }
+}
