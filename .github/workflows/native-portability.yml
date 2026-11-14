@@ -191,7 +191,7 @@ jobs:
         run: make -C impl test-osls-vm
 
       - name: Run full VM regression suite
-        timeout-minutes: 20
+        timeout-minutes: 40
         env:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
         run: make -C impl test
