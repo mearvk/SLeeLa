@@ -322,7 +322,7 @@ uninstall-all:
 		if [ -f "$$rt/.sleela-install-manifest.json" ]; then \
 			echo "==> removing install under $$p"; \
 			if [ "$$(id -u)" -eq 0 ] && [ -n "$$SUDO_USER" ]; then RUNAS="sudo -u $$SUDO_USER"; else RUNAS=""; fi; \
-			$$RUNAS $(PYTHON)"$(REPO_ROOT)/install/install-runtime.py" uninstall "$$rt" "$$dt" "$$bd" || exit 1; \
+			$$RUNAS $(PYTHON) "$(REPO_ROOT)/install/install-runtime.py" uninstall "$$rt" "$$dt" "$$bd" || exit 1; \
 		else \
 			echo "==> no tracked install under $$p; skipping"; \
 		fi; \
@@ -333,7 +333,7 @@ uninstall-all:
 	if [ -f "$$rt/.sleela-install-manifest.json" ]; then \
 		if [ "$$(id -u)" -eq 0 ]; then SUDO=""; else SUDO="sudo"; fi; \
 		echo "==> removing install under /usr/local"; \
-		$$SUDO $(PYTHON)"$(REPO_ROOT)/install/install-runtime.py" uninstall "$$rt" "$$dt" "$$bd" || exit 1; \
+		$$SUDO $(PYTHON) "$(REPO_ROOT)/install/install-runtime.py" uninstall "$$rt" "$$dt" "$$bd" || exit 1; \
 	else \
 		echo "==> no tracked install under /usr/local; skipping"; \
 	fi; \
@@ -399,7 +399,7 @@ do-install:
 	fi
 	@echo "Installing SLeeLa to prefix $(PREFIX) (DESTDIR=$(DESTDIR))"
 	@if [ -z "$(DESTDIR)" ]; then \
-		$(PYTHON)"$(REPO_ROOT)/install/install-runtime.py" backup "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)" "$(BACKUP_ROOT)"; \
+		$(PYTHON) "$(REPO_ROOT)/install/install-runtime.py" backup "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)" "$(BACKUP_ROOT)"; \
 	else \
 		echo "Staged (DESTDIR) install into a fresh package root; skipping backup of the live system."; \
 	fi
@@ -416,7 +416,7 @@ do-install:
 	SLEELACTL_REGISTRY="$(REPO_ROOT)/bin/sleelactl.d/registry.conf" sh "$(REPO_ROOT)/bin/sleelactl" completion bash > "$(DATA_DIR)/completions/sleelactl.bash"
 	SLEELACTL_REGISTRY="$(REPO_ROOT)/bin/sleelactl.d/registry.conf" sh "$(REPO_ROOT)/bin/sleelactl" completion zsh > "$(DATA_DIR)/completions/sleelactl.zsh"
 	@echo "Staging standard library (MODULES=$(MODULES); SERVERS=$(SERVERS); EXCLUDE=$(EFFECTIVE_EXCLUDE))"
-	$(PYTHON)"$(REPO_ROOT)/install/install-runtime.py" stage-lib "$(REPO_ROOT)" "$(RUNTIME_DIR)/lib" "$(MODULES)" "$(EFFECTIVE_EXCLUDE)"
+	$(PYTHON) "$(REPO_ROOT)/install/install-runtime.py" stage-lib "$(REPO_ROOT)" "$(RUNTIME_DIR)/lib" "$(MODULES)" "$(EFFECTIVE_EXCLUDE)"
 	install -m 644 "$(REPO_ROOT)/tools/verify-before-execution.py" "$(RUNTIME_DIR)/tools/"
 	install -m 644 "$(REPO_ROOT)/tools/sleela-native-drive.py" "$(RUNTIME_DIR)/tools/"
 	install -m 644 "$(REPO_ROOT)/tools/sleela-native-service.py" "$(RUNTIME_DIR)/tools/"
@@ -424,7 +424,7 @@ do-install:
 	install -m 644 "$(REPO_ROOT)/os-level-support/loader/native_loader.h" "$(RUNTIME_DIR)/include/"
 	install -m 644 "$(REPO_ROOT)/security/sha256-manifest.json" "$(RUNTIME_DIR)/security/"
 	if [ -f "$(REPO_ROOT)/SHEET.sheet" ]; then install -m 644 "$(REPO_ROOT)/SHEET.sheet" "$(RUNTIME_DIR)/SHEET.sheet"; fi
-	$(PYTHON)"$(REPO_ROOT)/install/install-runtime.py" copy-manifest "$(REPO_ROOT)" "$(RUNTIME_DIR)" "$(MODULES)" "$(EFFECTIVE_EXCLUDE)"
+	$(PYTHON) "$(REPO_ROOT)/install/install-runtime.py" copy-manifest "$(REPO_ROOT)" "$(RUNTIME_DIR)" "$(MODULES)" "$(EFFECTIVE_EXCLUDE)"
 	cp -a "$(REPO_ROOT)/docs/." "$(DATA_DIR)/docs/"
 	if [ -d "$(REPO_ROOT)/examples" ]; then cp -a "$(REPO_ROOT)/examples/." "$(DATA_DIR)/examples/"; fi
 	install -m 644 "$(REPO_ROOT)/README.md" "$(DATA_DIR)/README.md"
@@ -439,7 +439,7 @@ do-install:
 	if [ ! -e "$(CONFIG_DIR)/startup.conf" ]; then install -m 644 "$(REPO_ROOT)/install/startup.conf.example" "$(CONFIG_DIR)/startup.conf"; fi
 	printf '%s\\n' "$(PREFIX)" > "$(RUNTIME_DIR)/install-prefix"
 	printf '%s\\n' "$(BINDIR)/sleela" "$(BINDIR)/sleelvac" "$(BINDIR)/nordshrift" > "$(RUNTIME_DIR)/installed-binaries"
-	$(PYTHON)"$(REPO_ROOT)/install/install-runtime.py" record "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)"
+	$(PYTHON) "$(REPO_ROOT)/install/install-runtime.py" record "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)"
 	@echo "SLeeLa installed. Commands: $(BINDIR)/sleela, $(BINDIR)/sleelvac, and $(BINDIR)/nordshrift"
 	@echo "Runtime: $(RUNTIME_DIR)"
 	@echo "Configuration: $(CONFIG_DIR)/startup.conf (existing configuration preserved)"
@@ -475,12 +475,12 @@ uninstall:
 			rt="$$prefix/lib/$(RUNTIME_NAME)"; dt="$$prefix/share/$(RUNTIME_NAME)"; bd="$$prefix/bin"; \
 			if [ -f "$$rt/.sleela-install-manifest.json" ]; then \
 				echo "==> removing install under $$prefix"; \
-				$(PYTHON)"$(REPO_ROOT)/install/install-runtime.py" uninstall "$$rt" "$$dt" "$$bd" || exit 1; \
+				$(PYTHON) "$(REPO_ROOT)/install/install-runtime.py" uninstall "$$rt" "$$dt" "$$bd" || exit 1; \
 			else \
 				echo "==> no tracked install under $$prefix; skipping"; \
 			fi; \
 		done; \
 	else \
-		$(PYTHON)"$(REPO_ROOT)/install/install-runtime.py" uninstall "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)"; \
+		$(PYTHON) "$(REPO_ROOT)/install/install-runtime.py" uninstall "$(RUNTIME_DIR)" "$(DATA_DIR)" "$(DESTDIR)$(BINDIR)"; \
 	fi
 	@echo "Configuration under $(CONFIG_DIR) is intentionally preserved; remove it manually if no longer needed."
