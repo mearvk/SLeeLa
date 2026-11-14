@@ -541,3 +541,53 @@ The Premium VM root loop now runs both `all` and `test` for every generation `00
 Latest root Makefile qualification revision: `9a51ccf4018c02792ac29f6c108251c48f6f6528`.
 
 Latest root build/install workflow run: [43638851371](https://github.com/mearvk/SLeeLa/actions/runs/43638851371) — queued at the last refresh. It includes the current dispatcher, Premium VM selfchecks, install-all home-directory resolver, and guided installer gate tests. No pass is claimed until its platform jobs and dependent installation jobs complete.
+
+## Root build failure isolation and repair — 2026-11-14 (live refresh)
+
+### Failed root qualification evidence
+
+The prior Root Build and Install Qualification run **43638508681** failed on all three root build jobs. Log inspection isolated two concrete root blockers:
+
+| Platform | Failed stage | Observed failure | Diagnosis |
+|---|---|---|---|
+| Windows 10+ / MSYS2 UCRT64 | java28 | java28: javac not found | The JDK installed by actions/setup-java was not on the MSYS2 POSIX shell PATH. Native Core and Nordshrift had already compiled before this stage failed. |
+| Ubuntu | antivirus-test | OSError: [Errno 9] Bad file descriptor in safe_quarantine(), line 265 | The cleanup sentinel is set to -1 after ownership is transferred to os.fdopen(), but the finally block checked only for None and attempted os.close(-1). |
+| macOS | antivirus-test | Same bad-file-descriptor error in safe_quarantine() | Same platform-independent descriptor ownership bug; the same test failed on both POSIX platforms. |
+
+The failing antivirus regression was test_quarantine_collision_and_changed_file_refusal; the suite reported 36 tests, one error and one skipped optional ClamAV integration test on both Ubuntu and macOS.
+
+### Repairs committed to master
+
+| Repair | File | Commit | Change |
+|---|---|---|---|
+| Quarantine descriptor cleanup | antivirus/tools/sleelavirin_scan.py | f77602feaa2c8835e94d226d0954324d3a1fa394 | The finalizer now closes the destination descriptor only when it is non-null and non-negative, respecting the -1 ownership-transfer sentinel. |
+| Windows JDK visibility | .github/workflows/root-build-install.yml | 9bc8e772577c6cc62633eaac9ac93785ec6bca63 | The Windows MSYS2 root-build step converts JAVA_HOME with cygpath, prepends the JDK bin directory to PATH, and verifies javac is resolvable before invoking the root build. |
+
+These are targeted source/workflow repairs. They are **not yet PASS claims**; the new workflow attempts must complete.
+
+### Current retest queue
+
+| Workflow | Run | Commit | Status at refresh |
+|---|---:|---|---|
+| Root Build and Install Qualification | [43639947785](https://github.com/mearvk/SLeeLa/actions/runs/43639947785) | 9bc8e772577c6cc62633eaac9ac93785ec6bca63 | **QUEUED** — includes both repairs |
+| Native C and C++ Portability | [43639947779](https://github.com/mearvk/SLeeLa/actions/runs/43639947779) | 9bc8e772577c6cc62633eaac9ac93785ec6bca63 | **QUEUED** |
+| Root Build and Install Qualification | [43639945147](https://github.com/mearvk/SLeeLa/actions/runs/43639945147) | f77602feaa2c8835e94d226d0954324d3a1fa394 | **QUEUED** — source repair before the workflow PATH correction |
+
+The older root run 43638851371 and portability run 43638881348 were also still queued at this refresh. Do not use those older queued attempts as evidence for the new fixes.
+
+### Premium arithmetic workflow: test result versus publication result
+
+The arithmetic workflow **43638851340** built Basic Native and Premium SLVM/1–SLVM/11, ran each generation's self-check successfully, and passed the five-sample timing/checksum matrix (eight cases per VM). Its overall GitHub Actions conclusion was **FAILURE** only because the final bot push was rejected as non-fast-forward after another workflow updated master. The arithmetic test step itself passed for all twelve targets. Preserve the artifact and test evidence; repair the workflow's concurrent publication behavior separately before treating the workflow as fully green.
+
+### Next root-build checklist
+
+- [ ] Wait for run 43639947785 and inspect all three OS jobs and dependent installer jobs.
+- [ ] Confirm the Windows JDK preflight prints a valid javac path and that java28 compiles JNI headers/library.
+- [ ] Confirm Ubuntu and macOS antivirus tests pass the quarantine collision/refusal regression.
+- [ ] If either repair still fails, inspect the new job logs and fix the actual remaining failure rather than weakening/skipping the test.
+- [ ] Confirm root make clean build SLEELA_ADVANCED_BUILD=no completes on Linux, macOS, and Windows.
+- [ ] Confirm staged install, product launch, uninstall, guided installer, and sandboxed install-all/uninstall-all jobs complete.
+- [ ] Refresh the trusted manifest only for intentional source changes; keep verification fail-closed.
+- [ ] Update the root matrix only from completed run evidence, not from queued runs or target presence.
+
+**Current root status:** **REPAIR COMMITTED — RETEST QUEUED — NOT QUALIFIED.** The complete root build and installation pipeline remains uncertified until the new three-platform root and dependent installation jobs pass.
