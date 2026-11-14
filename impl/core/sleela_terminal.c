@@ -182,39 +182,15 @@ int slterminal_resize(SLTerminalHandle terminal, unsigned cols, unsigned rows) {
     return SUCCEEDED(hr) ? 0 : (int)hr;
 }
 
-static DWORD WINAPI close_pseudoconsole_thread(LPVOID context) {
-    ClosePseudoConsole((HPCON)context);
-    return 0;
-}
-
-/* Drain ConPTY output on a dedicated blocking reader while ClosePseudoConsole
- * runs. PeekNamedPipe on a synchronous anonymous pipe can itself block; using
- * a separate ReadFile loop keeps final-frame consumption independent of the
- * thread that closes the pseudoconsole. */
-static DWORD WINAPI drain_terminal_output_thread(LPVOID context) {
-    HANDLE output_read = (HANDLE)context;
-    char buffer[4096];
-    DWORD received = 0;
-
-    for (;;) {
-        if (!ReadFile(output_read, buffer, (DWORD)sizeof(buffer), &received, NULL)) {
-            DWORD error_code = GetLastError();
-            if (error_code == ERROR_BROKEN_PIPE ||
-                error_code == ERROR_PIPE_NOT_CONNECTED ||
-                error_code == ERROR_OPERATION_ABORTED) {
-                return 0;
-            }
-            return error_code;
-        }
-        if (received == 0) return 0;
-    }
-}
+/* ConPTY shutdown is intentionally synchronous after closing the host's
+ * output-read handle. Microsoft documents this as the deadlock-safe
+ * alternative to draining output concurrently with ClosePseudoConsole on
+ * Windows versions before 11 24H2. The caller has already consumed whatever
+ * output it needs; final shutdown-frame bytes are deliberately discarded. */
 
 int slterminal_close(SLTerminalHandle terminal) {
     SLWinTerminal* t = as_terminal(terminal);
     DWORD wait_result;
-    HANDLE drain_thread = NULL;
-    HANDLE close_thread = NULL;
     int rc = 0;
     if (!t) return EINVAL;
 
@@ -235,68 +211,17 @@ int slterminal_close(SLTerminalHandle terminal) {
         rc = wait_result == WAIT_FAILED ? (int)GetLastError() : ERROR_TIMEOUT;
     }
 
-    if (t->console && t->output_read) {
-        /* Start the reader before ClosePseudoConsole: closing the HPCON can
-         * wait for its final output frame to be consumed. */
-        drain_thread = CreateThread(NULL, 0, drain_terminal_output_thread,
-                                    (LPVOID)t->output_read, 0, NULL);
-        if (drain_thread) {
-            close_thread = CreateThread(NULL, 0, close_pseudoconsole_thread,
-                                        (LPVOID)t->console, 0, NULL);
-            if (close_thread) {
-                wait_result = WaitForSingleObject(close_thread, 10000);
-                if (wait_result != WAIT_OBJECT_0) {
-                    if (rc == 0) {
-                        rc = wait_result == WAIT_FAILED
-                            ? (int)GetLastError() : ERROR_TIMEOUT;
-                    }
-                    /* Cancel the blocking reader and close its pipe end to
-                     * break the writer side if the close worker stalls. */
-                    (void)CancelSynchronousIo(drain_thread);
-                    if (t->output_read) {
-                        CloseHandle(t->output_read);
-                        t->output_read = NULL;
-                    }
-                    wait_result = WaitForSingleObject(close_thread, 5000);
-                }
-                if (wait_result != WAIT_OBJECT_0 && rc == 0) {
-                    rc = wait_result == WAIT_FAILED
-                        ? (int)GetLastError() : ERROR_TIMEOUT;
-                }
-                CloseHandle(close_thread);
-                close_thread = NULL;
-            } else {
-                /* Thread-allocation fallback: the output reader is already
-                 * draining, so a synchronous close can safely finish. */
-                ClosePseudoConsole(t->console);
-            }
-
-            wait_result = WaitForSingleObject(drain_thread, 5000);
-            if (wait_result != WAIT_OBJECT_0) {
-                if (rc == 0) {
-                    rc = wait_result == WAIT_FAILED
-                        ? (int)GetLastError() : ERROR_TIMEOUT;
-                }
-                (void)CancelSynchronousIo(drain_thread);
-                if (t->output_read) {
-                    CloseHandle(t->output_read);
-                    t->output_read = NULL;
-                }
-                wait_result = WaitForSingleObject(drain_thread, 2000);
-            }
-            if (wait_result != WAIT_OBJECT_0 && rc == 0) rc = ERROR_TIMEOUT;
-            CloseHandle(drain_thread);
-            drain_thread = NULL;
-        } else {
-            /* If a reader thread cannot be allocated, close the read end
-             * first so the pseudoconsole cannot wait on an absent consumer. */
-            DWORD error_code = GetLastError();
-            if (rc == 0) rc = (int)error_code;
-            CloseHandle(t->output_read);
+    if (t->console) {
+        /* ClosePseudoConsole can wait indefinitely on pre-Windows-11-24H2
+         * systems if its output pipe remains open and unread. The documented
+         * safe alternative is to close the host output pipe before closing
+         * the pseudoconsole. This session has already returned all requested
+         * output to the caller; shutdown-frame output is not part of that data. */
+        if (t->output_read) {
+            if (!CloseHandle(t->output_read) && rc == 0)
+                rc = (int)GetLastError();
             t->output_read = NULL;
-            ClosePseudoConsole(t->console);
         }
-    } else if (t->console) {
         ClosePseudoConsole(t->console);
     }
     t->console = NULL;
