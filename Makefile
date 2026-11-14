@@ -3,7 +3,7 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all build uninstall uninstall-all autocheck core java28 xlt regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install advanced-build tutorial-check tests server config route common-rails registry registry-test premium-vms sleeladoc sleeladoc-jar api-docs clean verify-security help guess install-guide install-editors uninstall-editors
+.PHONY: all build uninstall uninstall-all autocheck core java28 xlt regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test runtime-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install advanced-build tutorial-check tests server config route common-rails registry registry-test premium-vms sleeladoc sleeladoc-jar api-docs clean verify-security help guess install-guide install-editors uninstall-editors
 
 SLEELA_MANIFEST_CONSENT ?=
 # Answer the "install the advanced (beautified/guided) build?" prompt
@@ -45,7 +45,7 @@ export PYTHON
 EDITORS ?=
 EDITOR_ARGS ?=
 
-all: core java28 xlt regex compiler decompiler vm scripting jetbrains install-check tutorial-check tests config route common-rails codecs churn antivirus registry premium-vms ballum
+all: core java28 xlt regex compiler decompiler vm scripting jetbrains install-check tutorial-check tests config route common-rails codecs codecs-test churn churn-test antivirus antivirus-test runtime-test registry premium-vms ballum
 
 # `build` is the human-facing entry point: it performs the full `make all`
 # build and THEN offers, with a yes/no prompt, to simply install the advanced
@@ -165,14 +165,14 @@ connector-check-deps:
 codecs:
 	$(MAKE) -C codecs all
 
-codecs-test:
+codecs-test: codecs
 	$(MAKE) -C codecs test
 
 # Churn data/model sets and their Java constraint-report tools.
 churn:
 	$(MAKE) -C churn all
 
-churn-test:
+churn-test: churn
 	$(MAKE) -C churn test
 
 churn-data-check:
@@ -182,8 +182,12 @@ churn-data-check:
 antivirus:
 	$(MAKE) -C antivirus all
 
-antivirus-test:
+antivirus-test: antivirus
 	$(MAKE) -C antivirus test
+
+# Standalone runtime service/GC/security/Java bridge behavioral tests.
+runtime-test:
+	$(MAKE) -C runtime clean test
 
 antivirus-clamav:
 	$(MAKE) -C antivirus clamav
@@ -401,12 +405,12 @@ api-docs:
 config:
 	@$(MAKE) -C config test
 
-common-rails:
+common-rails: core
 	$(MAKE) -C common-rails check
 
 # Build the registry core and materialize the baseline registry table (text
 # store + MySQL export) a fresh install reviews. Part of `all`.
-registry:
+registry: core
 	bash ./build-registry.sh
 
 registry-test:
