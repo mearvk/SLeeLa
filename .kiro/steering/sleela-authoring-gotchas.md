@@ -152,6 +152,12 @@ refuse (do not clamp or wrap) inputs that could push it past. See
   file). Loop until it returns `""`. Since 2026-11-14 a piece never ends inside a
   UTF-8 character (the incomplete tail comes at the start of the next piece), so
   every piece of a valid UTF-8 file can go through `javaStringFromUtf8`.
+- **A plain String is never freed.** Every plain String the VM makes (each
+  concatenation, number-to-text, `read` piece) is interned in the VM until it
+  exits; the garbage collector does not reclaim them. A long-running program that
+  makes many Strings grows without bound. Do not grow a String by appending in a
+  loop (each step keeps a copy); write pieces out as they are made. For a long
+  batch job, run it in several VM runs (`lib/java/converter` `JCONV_BATCH`).
 - **A plain String stops growing at 65,536 bytes** (`SL_MAX_STRTEXT`): `s = s + t`
   silently truncates beyond it. Keep large text as an array of pieces and write
   it out in pieces.

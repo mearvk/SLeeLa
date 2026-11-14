@@ -3,7 +3,7 @@
 > **Container.** Java container content (`SLEELA.syntax` section 38.4). Nothing
 > here is part of the SLeeLa specification or adds syntax to SLeeLa.
 
-Status: **0.7.4, best effort (2026-11-14).** Output stays at syntax **3.1** (also
+Status: **0.7.5, best effort (2026-11-14).** Output stays at syntax **3.1** (also
 written 3.01) by the owner's decision; syntax 3.1 sections 45 and 46 forms are not used
 (`.kiro/steering/java-converter-lib.md`). The operand laws come from the shared
 conversion model, `impl/subjects/conversion/conversion.model` (read by
@@ -71,12 +71,22 @@ JCONV_IN=/tmp/jdk-src JCONV_OUT=/tmp/jdk28-sleela JCONV_FILTER=java.base/java/ut
 | `JCONV_COMMENTS` | `keep` or `drop` (the licence comment is always kept) | `keep` |
 | `JCONV_MODEL` | the conversion model to read | `$SLEELA_HOME/impl/subjects/conversion/conversion.model` |
 | `JCONV_BUNDLE` | `1`: nested types go into the document of their top-level type, so a converted program runs as one document; `0`: one file per type (`Outer.Inner.sleela`, the library layout) | `0` |
+| `JCONV_BATCH` | Java files per VM run; `run-converter.sh` starts the next run after the last file, so memory stays at one batch (`0`: one run) | `500` |
 | `JCONV_TEST_STOP_IN` | test only: stop the VM in this Java file (relative path) after its output is written, to exercise the restart below | none |
 
 `sleela run` treats every argument as a source file, so the settings travel in
 the environment. The script names only `JConvMain.sleela`; the loader finds the
 other units in `/lib` by name. Naming every file makes each one resolve library
 units again and duplicates classes (`lib/java/STATUS.md` section 6).
+
+**Memory stays at one batch.** The VM never frees a plain String it has made
+(they live in its intern table until it exits), so one VM run over a large tree
+grows: about 1.7 GB for the whole JDK, more for a larger tree. `JConvMain` ends
+its run after `JCONV_BATCH` files (default 500) and writes `BATCH <last file>`
+to `.jconv-progress`; `run-converter.sh` starts the next run after that file,
+with the report and totals carried on. Measured on the whole JDK (4,127 files,
+9 runs): peak 335 MB instead of about 1.7 GB, 235 s instead of 203 s (about 4 s
+to start each run), output byte-for-byte the same.
 
 **One file cannot end the run.** A VM runtime error (a converter fault on some
 input) stops the VM, and a SLeeLa program cannot catch it. `JConvMain` therefore
@@ -389,8 +399,10 @@ What remains for a whole-tree conversion, measured on this run:
   lexical or syntax error.
 - **A runtime error in one file ended the run** (fixed in 0.7.2, section 2: the
   file is reported as failed and the run goes on).
-- **Memory still grows by about 0.4 MB a file** (the Strings each file makes are
-  never freed). That fits the JDK; a tree several times larger may not.
+- **Memory grew by about 0.4 MB a file** in one VM run (the Strings each file makes
+  are never freed; a VM limit). Since 0.7.5 the converter restarts the VM every
+  `JCONV_BATCH` files (section 2): peak 335 MB for the whole JDK, independent of the
+  tree size.
 
 **Class literals (rule 8e, 0.7.4, 2026-11-14).** `T.class` is written as
 `Class.ofLiteral("<binary name>", <kind>)`. The binary name is the one
@@ -466,6 +478,7 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | Version | Change |
 |---|---|
 | 0.1.0 | First cut: walk, lex, rewrite, translate, stubs, report |
+| 0.7.5 | Bounded memory: `JCONV_BATCH` (default 500) ends a VM run after that many files and `run-converter.sh` starts the next after the last one, reusing the per-file state of 0.7.2 (a planned stop is not a failure). Whole JDK: peak 335 MB (was about 1.7 GB), output identical |
 | 0.7.4 | Class literals (rule 8e): `T.class` lowered to `Class.ofLiteral(binary name, kind)` (`JConvClassLit`; `jdk-28` `java.lang.Class` implementation block). `String.class` no longer taken for a `String` static (reason 22). A class-typed operand of a string `+` goes through `toString()` (model row `tostr reference`). New sample `samples/classlit`, 23 of 23 lines identical to OpenJDK. Whole JDK: 2,141 stubs (was 3,912) |
 | 0.7.3 | Non-ASCII Java files convert: the VM `read` built-in no longer splits a UTF-8 character between pieces, so `JConvSource` accepts any valid UTF-8 file (it refused every non-ASCII byte) and refuses only invalid UTF-8 and NUL bytes, naming which. The 12 non-ASCII JDK files (7 of them public API) convert with no syntax error; the 17-file sample now converts 17 of 17 (`UUID.java`), the other 16 outputs unchanged |
 | 0.7.2 | Per-file isolation: a VM runtime error inside one Java file no longer ends the run. `JConvMain` records progress and totals after every file; `run-converter.sh` restarts after the file that stopped the VM, which is reported as `failed` with the VM message and its partial output removed. Default `JCONV_OUT` is now the caller's `./jdk28-converted` (it was resolved after the script's `cd`, inside `lib/java/converter`). Test hook `JCONV_TEST_STOP_IN` |

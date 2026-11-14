@@ -3,7 +3,8 @@
 #
 # usage: JCONV_IN=<java source root> [JCONV_OUT=<dir>] [JCONV_SCOPE=api|all]
 #        [JCONV_FILTER=<prefix>] [JCONV_LIMIT=<n>] [JCONV_INT=int32|int]
-#        [JCONV_COMMENTS=keep|drop] [JCONV_BUNDLE=0|1] lib/java/converter/run-converter.sh [path/to/sleela]
+#        [JCONV_COMMENTS=keep|drop] [JCONV_BUNDLE=0|1] [JCONV_BATCH=<files per VM run, 0 = one run>]
+#        lib/java/converter/run-converter.sh [path/to/sleela]
 #
 # The converter is a SLeeLa program; sleela run reads every argument as a source
 # file, so settings travel in the environment. Uses the source-built compiler
@@ -35,7 +36,12 @@ cd "$here"
 # totals after every file. When the VM stops inside a file, this loop restarts the
 # converter with JCONV_RESUME_AFTER=<that file>: it is reported as failed, with the
 # VM message, and the run continues with the next file.
-unset JCONV_RESUME_AFTER JCONV_FAILED_WHY
+#
+# Batches. The VM never frees a String it has made, so one VM run over a large
+# tree grows without bound. JConvMain ends its run after JCONV_BATCH files
+# (default 500; 0 = one run) and writes BATCH <last file> to .jconv-progress;
+# this loop then starts the next run after that file. Memory stays at one batch.
+unset JCONV_RESUME_AFTER JCONV_FAILED_WHY JCONV_RESUME_BATCH
 rm -f "$JCONV_OUT/.jconv-progress" "$JCONV_OUT/.jconv-state"
 log="$(mktemp)"
 restarts=0
@@ -44,6 +50,18 @@ while :; do
     grep -v -E '^\[memory-manager\]|^verification|\[security\]|\[defender\]' | tee "$log" || true
   prog="$(head -n 1 "$JCONV_OUT/.jconv-progress" 2>/dev/null || true)"
   if [ -z "$prog" ] || [ "$prog" = "DONE" ]; then break; fi
+  case "$prog" in
+    "BATCH "*)
+      if [ "${JCONV_RESUME_BATCH:-}" = "1" ] && [ "${prog#BATCH }" = "${JCONV_RESUME_AFTER:-}" ]; then
+        echo "jconv: a batch run stopped before converting a file; giving up" >&2
+        break
+      fi
+      export JCONV_RESUME_AFTER="${prog#BATCH }" JCONV_RESUME_BATCH=1
+      unset JCONV_FAILED_WHY
+      continue
+      ;;
+  esac
+  unset JCONV_RESUME_BATCH
   if [ "$prog" = "${JCONV_RESUME_AFTER:-}" ]; then
     echo "jconv: the resumed run stopped before reaching a new file; giving up" >&2
     break

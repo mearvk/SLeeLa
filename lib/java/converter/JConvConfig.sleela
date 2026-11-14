@@ -77,6 +77,9 @@ class JConvConfig {
   < resume after a VM stop (set by run-converter.sh): the file the stopped run was on, and why >
   String resumeAfter;
   String failedWhy;
+  < JCONV_BATCH: files per VM run (0 = one run); a resumed batch is not a failure >
+  int batch;
+  boolean resumeIsBatch;
   < test hook: stop the VM in this file after its output is written (tests the restart) >
   String testStopIn;
   < api scope: open-addressing set of <module>/<package path>/<Type> keys >
@@ -107,6 +110,8 @@ class JConvConfig {
     this.problem = "";
     this.resumeAfter = "";
     this.failedWhy = "";
+    this.batch = 0;
+    this.resumeIsBatch = false;
     this.testStopIn = "";
     this.apiKeys = new String[16384];
     this.apiCount = 0;
@@ -155,6 +160,8 @@ class JConvConfig {
     this.resumeAfter = env("JCONV_RESUME_AFTER", "");
     this.failedWhy = env("JCONV_FAILED_WHY", "the VM stopped with a runtime error");
     this.testStopIn = env("JCONV_TEST_STOP_IN", "");
+    this.batch = parseCount(env("JCONV_BATCH", "500"));
+    this.resumeIsBatch = (env("JCONV_RESUME_BATCH", "0") == "1");
     if (this.inRoot == "") { this.problem = "JCONV_IN is not set (the root of the Java source tree)"; return false; }
     if (osIsDir(this.inRoot) != 1) { this.problem = "JCONV_IN is not a directory: " + this.inRoot; return false; }
     if (this.intType != "int32" && this.intType != "int") { this.problem = "JCONV_INT must be int32 or int"; return false; }

@@ -106,7 +106,9 @@ class JConvMain {
       print("jconv: cannot write " + cfg.outRoot + "/CONVERSION-REPORT.tsv");
       return;
     }
-    if (resuming) {
+    if (resuming && cfg.resumeIsBatch) {
+      print("jconv: next batch after " + cfg.resumeAfter);
+    } else if (resuming) {
       < the run before this one stopped inside resumeAfter: drop its partial output, record it as failed >
       removePartial(cfg.outRoot, cfg.resumeAfter);
       rep.startFile();
@@ -124,6 +126,9 @@ class JConvMain {
     int i = 0;
     int hint = 0;
     boolean skipping = resuming;
+    < files converted by this VM run, and the last of them (JCONV_BATCH) >
+    int thisRun = 0;
+    String lastRel = cfg.resumeAfter;
     while (i < w.nFiles) {
       String rel = w.files[i];
       if (skipping) {
@@ -133,9 +138,21 @@ class JConvMain {
       }
       if (cfg.selects(rel)) {
         if (cfg.limit > 0 && done >= cfg.limit) { break; }
+        if (cfg.batch > 0 && thisRun >= cfg.batch) {
+          << End this VM run here and let run-converter.sh start the next one after
+             lastRel. Every String the VM makes stays allocated until the VM exits,
+             so one run over a large tree grows without bound; a run per batch keeps
+             memory at one batch. The totals and the report carry on (saved after
+             every file), so the next run continues them. >>
+          rep.closeForBatch();
+          markProgress(cfg.outRoot, "BATCH " + lastRel);
+          return;
+        }
         markProgress(cfg.outRoot, rel);
         tr.translateFile(rel);
         done = done + 1;
+        thisRun = thisRun + 1;
+        lastRel = rel;
         if (done % 25 == 0) {
           long ms = (timeMonotonicNanos() - t0) / 1000000;
           print("jconv: " + done + " files, " + ms + " ms, last " + rel);

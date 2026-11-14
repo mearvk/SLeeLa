@@ -177,6 +177,12 @@ class JConvReport {
     saveState();
   }
 
+  < end of one VM run of a batched conversion: the report stays open for the next run (append) >
+  void closeForBatch() {
+    if (this.handle >= 0) { close(this.handle); }
+    this.handle = -1;
+  }
+
   void finish(JConvRules rules) {
     if (this.handle >= 0) { close(this.handle); }
     this.handle = -1;
