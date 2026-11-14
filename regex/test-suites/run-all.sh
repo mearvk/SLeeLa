@@ -8,6 +8,7 @@ CXX_BIN=${CXX:-c++}
 JAVA_BIN=${JAVA:-java}
 JAVAC_BIN=${JAVAC:-javac}
 EXE=${EXE:-}
+if [ -z "$EXE" ] && [ "${OS:-}" = "Windows_NT" ]; then EXE=.exe; fi
 CFLAGS=${CFLAGS:-"-std=c11 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wformat=2 -Werror"}
 CXXFLAGS=${CXXFLAGS:-"-std=c++17 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wformat=2 -Werror"}
 
