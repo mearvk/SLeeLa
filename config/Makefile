@@ -4,8 +4,13 @@ SHELL := /bin/sh
 CC ?= cc
 PYTHON ?= python3
 BUILD_DIR ?= build
-SMOKE := $(BUILD_DIR)/config-location-smoke
-VM_SMOKE := $(BUILD_DIR)/vm-config-smoke
+ifeq ($(OS),Windows_NT)
+  EXE := .exe
+else
+  EXE :=
+endif
+SMOKE := $(BUILD_DIR)/config-location-smoke$(EXE)
+VM_SMOKE := $(BUILD_DIR)/vm-config-smoke$(EXE)
 
 .PHONY: all test check smoke clean help
 all: test
