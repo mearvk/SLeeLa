@@ -27,10 +27,10 @@ endif
 
 all: check-deps memory$(EXE) reflection$(EXE) nordshrift$(EXE) runtime$(EXE) network-security$(EXE) neural-nets-xor$(EXE) character-recognition-smoke$(EXE) character-recognition-cli$(EXE)
 
-# The network/security smoke target uses OpenSSL EVP. Fail early with an
-# actionable message rather than a later opaque -lcrypto link error.
+# The network/security smoke target uses OpenSSL SHA-256. Fail early with an
+# actionable message rather than a later opaque linker error.
 check-deps:
-	@printf '%s\n' '#include <openssl/sha.h>' 'int main(void) { unsigned char d[SHA256_DIGEST_LENGTH]; return SHA256((const unsigned char*)"x", 1, d) ? 0 : 1; }' | $(CXX) $(CXXFLAGS) $(OPENSSL_CFLAGS) -x c++ - $(OPENSSL_LIBS) $(NETWORK_PLATFORM_LIBS) -o .openssl-probe$(EXE) >/dev/null 2>&1 || { echo "tests: OpenSSL SHA-256 headers and library are required for network-security (set OPENSSL_CFLAGS/OPENSSL_LIBS if installed outside the default path)." >&2; exit 1; }
+	@printf '%s\n' '#include <openssl/sha.h>' 'int main(void) { unsigned char d[SHA256_DIGEST_LENGTH]; return SHA256((const unsigned char*)"x", 1, d) ? 0 : 1; }' | $(CXX) $(CXXFLAGS) $(OPENSSL_CFLAGS) -x c++ - $(OPENSSL_LIBS) $(NETWORK_PLATFORM_LIBS) -o .openssl-probe$(EXE) >/dev/null 2>&1 || { rm -f .openssl-probe .openssl-probe.exe; echo "tests: OpenSSL SHA-256 headers and library are required for network-security (set OPENSSL_CFLAGS/OPENSSL_LIBS if installed outside the default path)." >&2; exit 1; }
 
 memory$(EXE): native_memory_smoke.cpp ../api/native/memory/sleela_memory_manager.cpp
 	$(CXX) $(CXXFLAGS) -I../api/native/memory $^ -o $@
