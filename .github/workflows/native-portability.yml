@@ -60,13 +60,6 @@ jobs:
         timeout-minutes: 3
         run: make -C impl test-osls-vm
 
-      - name: Isolate Windows ConPTY teardown smoke test
-        if: runner.os == 'Windows'
-        timeout-minutes: 3
-        env:
-          SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
-        run: make -C impl test-terminal-platform
-
       - name: Run full VM regression suite
         timeout-minutes: 40
         env:
@@ -196,6 +189,12 @@ jobs:
       - name: Test OSLS VM compiler and runtime dispatch
         timeout-minutes: 3
         run: make -C impl test-osls-vm
+
+      - name: Isolate Windows ConPTY teardown smoke test
+        timeout-minutes: 3
+        env:
+          SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+        run: make -C impl test-terminal-platform
 
       - name: Run full VM regression suite
         timeout-minutes: 40
