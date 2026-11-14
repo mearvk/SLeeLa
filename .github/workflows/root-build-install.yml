@@ -88,7 +88,7 @@ jobs:
         timeout-minutes: 120
         env:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
-        run: make clean all
+        run: make clean build SLEELA_ADVANCED_BUILD=no
 
       - name: Verify root build products
         run: |
@@ -137,7 +137,7 @@ jobs:
         timeout-minutes: 120
         env:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
-        run: make clean all
+        run: make clean build SLEELA_ADVANCED_BUILD=no
 
       - name: Verify root build products
         run: |
@@ -202,7 +202,7 @@ jobs:
         timeout-minutes: 120
         run: |
           python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json
-          make clean all
+          make clean build SLEELA_ADVANCED_BUILD=no
 
       - name: Stage user-local install, smoke products, and uninstall
         timeout-minutes: 20
@@ -249,11 +249,7 @@ jobs:
           SLEELA_INSTALL_ROOT: ${{ runner.temp }}/sleela-guided-install
         run: |
           set -eu
-          if [ "$RUNNER_OS" = "macOS" ]; then
-            bash ./install/sleela-clean-install-macos.sh --plain </dev/null
-          else
-            bash ./install/sleela-clean-install.sh --plain </dev/null
-          fi
+          make advanced-build SLEELA_ADVANCED_BUILD=yes
           "$SLEELA_INSTALL_ROOT/bin/sleela" version
           "$SLEELA_INSTALL_ROOT/bin/sleelvac" --help >/dev/null
           rm -rf "$SLEELA_INSTALL_ROOT"
