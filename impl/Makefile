@@ -1058,7 +1058,7 @@ test-java-runtime: $(SLEELA_BIN)
 	@cd $(CURDIR)/.. && bash test-suites/java-runtime-bridge.sh
 
 test-sleela: $(SLEELA_BIN)
-	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && found=0; for f in impl/examples/*.sleela; do [ -f "$f" ] || continue; found=1; echo "=== $f ==="; $(CURDIR)/$(SLEELA_BIN) run "$f" || exit 1; done; if [ "$found" -eq 0 ]; then echo "No legacy impl/examples/*.sleela files; skipping this optional loop."; fi
+	@export SLEELA_SHEET=$(CURDIR)/../SHEET.sheet; export SLEELA_SHA256_MANIFEST=${SLEELA_SHA256_MANIFEST:-$(CURDIR)/../security/sha256-manifest.json}; cd $(CURDIR)/.. && found=0; for f in impl/examples/*.sleela; do [ -f "$f" ] || continue; if [ "$(PLATFORM)" = windows ] && [ "$f" = impl/examples/fileio-fifo.sleela ]; then echo "SKIP: POSIX FIFO example on Windows (use named pipes or anonymous pipes)"; continue; fi; found=1; echo "=== $f ==="; $(CURDIR)/$(SLEELA_BIN) run "$f" || exit 1; done; if [ "$found" -eq 0 ]; then echo "No legacy impl/examples/*.sleela files; skipping this optional loop."; fi
 
 test-lineage: $(SLEELA_BIN)
 	@cd $(CURDIR)/.. && bash impl/tests/lineage/run_lineage_tests.sh $(CURDIR)/$(SLEELA_BIN)

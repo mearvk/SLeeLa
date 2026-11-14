@@ -13,10 +13,35 @@ export SLEELA_HOME="$ROOT" SLEELA_LIB="$ROOT/lib" SLEELA_SHEET="$ROOT/SHEET.shee
 export SLEELA_SHA256_MANIFEST="${SLEELA_SHA256_MANIFEST:-$ROOT/security/sha256-manifest.json}"
 cd "$ROOT"
 filter() { grep -v 'memory-manager\|^verification\|\[security\]\|\[defender\]'; }
+run_with_timeout() {
+  python3 - "$SLEELA" "$1" <<'PY'
+import subprocess
+import sys
+
+try:
+    result = subprocess.run(
+        [sys.argv[1], "run", sys.argv[2]],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        timeout=300,
+        check=False,
+    )
+except subprocess.TimeoutExpired as exc:
+    output = exc.stdout or b""
+    if isinstance(output, str):
+        output = output.encode()
+    sys.stdout.buffer.write(output)
+    sys.stderr.write("runtime pressure command timed out after 300 seconds\n")
+    raise SystemExit(124)
+
+sys.stdout.buffer.write(result.stdout or b"")
+raise SystemExit(result.returncode)
+PY
+}
 pass=0; fail=0
 for f in "$HERE"/*.sleela; do
   n="$(basename "$f" .sleela)"
-  out="$(timeout 300 "$SLEELA" run "$f" 2>&1 | filter)"
+  out="$(run_with_timeout "$f" 2>&1 | filter)"
   case "$n" in
     limit_arrays)  want="the live-array table is full: at most 4096 arrays" ;;
     limit_structs) want="the live-struct table is full: at most 4096 struct instances" ;;
@@ -30,7 +55,7 @@ for f in "$HERE"/*.sleela; do
 done
 # the threaded case is repeated: a race that depends on timing shows up as an occasional difference
 for i in 1 2 3 4 5; do
-  out="$("$SLEELA" run "$HERE/threads_disjoint.sleela" 2>&1 | filter)"
+  out="$(run_with_timeout "$HERE/threads_disjoint.sleela" 2>&1 | filter)"
   [ "$out" = "$(cat "$HERE/threads_disjoint.expected.txt")" ] || { echo "FAIL  threads_disjoint repeat $i: $out"; fail=$((fail+1)); }
 done
 echo "runtime pressure: pass=$pass fail=$fail"

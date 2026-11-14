@@ -187,46 +187,33 @@ static DWORD WINAPI close_pseudoconsole_thread(LPVOID context) {
     return 0;
 }
 
-static int drain_terminal_output(HANDLE output_read, HANDLE close_thread) {
+/* Drain ConPTY output on a dedicated blocking reader while ClosePseudoConsole
+ * runs. PeekNamedPipe on a synchronous anonymous pipe can itself block; using
+ * a separate ReadFile loop keeps final-frame consumption independent of the
+ * thread that closes the pseudoconsole. */
+static DWORD WINAPI drain_terminal_output_thread(LPVOID context) {
+    HANDLE output_read = (HANDLE)context;
     char buffer[4096];
-    ULONGLONG deadline = GetTickCount64() + 10000u;
+    DWORD received = 0;
 
-    if (!output_read || !close_thread) return 0;
-    /* Drain only bytes already available, and observe ClosePseudoConsole's
-     * completion independently. Waiting for pipe EOF can deadlock when the
-     * pseudoconsole keeps its writer alive until ClosePseudoConsole returns. */
     for (;;) {
-        DWORD wait_result = WaitForSingleObject(close_thread, 0);
-        DWORD available = 0;
-        DWORD received = 0;
-
-        if (wait_result == WAIT_OBJECT_0) return 1;
-        if (wait_result == WAIT_FAILED) return 0;
-        if (!PeekNamedPipe(output_read, NULL, 0, NULL, &available, NULL)) {
+        if (!ReadFile(output_read, buffer, (DWORD)sizeof(buffer), &received, NULL)) {
             DWORD error_code = GetLastError();
-            return error_code == ERROR_BROKEN_PIPE ||
-                   error_code == ERROR_PIPE_NOT_CONNECTED;
-        }
-        if (available != 0) {
-            DWORD requested = available > (DWORD)sizeof(buffer)
-                ? (DWORD)sizeof(buffer) : available;
-            if (!ReadFile(output_read, buffer, requested, &received, NULL)) {
-                DWORD error_code = GetLastError();
-                return error_code == ERROR_BROKEN_PIPE ||
-                       error_code == ERROR_PIPE_NOT_CONNECTED;
+            if (error_code == ERROR_BROKEN_PIPE ||
+                error_code == ERROR_PIPE_NOT_CONNECTED ||
+                error_code == ERROR_OPERATION_ABORTED) {
+                return 0;
             }
-            continue;
+            return error_code;
         }
-        if (GetTickCount64() >= deadline) return 0;
-        wait_result = WaitForSingleObject(close_thread, 10);
-        if (wait_result == WAIT_OBJECT_0) return 1;
-        if (wait_result == WAIT_FAILED) return 0;
+        if (received == 0) return 0;
     }
 }
 
 int slterminal_close(SLTerminalHandle terminal) {
     SLWinTerminal* t = as_terminal(terminal);
     DWORD wait_result;
+    HANDLE drain_thread = NULL;
     HANDLE close_thread = NULL;
     int rc = 0;
     if (!t) return EINVAL;
@@ -248,39 +235,64 @@ int slterminal_close(SLTerminalHandle terminal) {
         rc = wait_result == WAIT_FAILED ? (int)GetLastError() : ERROR_TIMEOUT;
     }
 
-    /* ClosePseudoConsole can emit a final output frame and wait for the host
-     * to drain it on Windows 10 and Windows 11 before 24H2. Run the close on
-     * its own thread while this thread reads until the pseudoconsole closes
-     * its output writer. This avoids both a blocked close and a lost final
-     * frame. */
     if (t->console && t->output_read) {
-        close_thread = CreateThread(NULL, 0, close_pseudoconsole_thread,
-                                    (LPVOID)t->console, 0, NULL);
-        if (close_thread) {
-            if (!drain_terminal_output(t->output_read, close_thread)) {
-                /* Closing the read end is the bounded fallback: this is a
-                 * terminal teardown path, so any remaining final-frame bytes
-                 * are intentionally discarded rather than hanging the VM. */
-                if (rc == 0) rc = ERROR_TIMEOUT;
+        /* Start the reader before ClosePseudoConsole: closing the HPCON can
+         * wait for its final output frame to be consumed. */
+        drain_thread = CreateThread(NULL, 0, drain_terminal_output_thread,
+                                    (LPVOID)t->output_read, 0, NULL);
+        if (drain_thread) {
+            close_thread = CreateThread(NULL, 0, close_pseudoconsole_thread,
+                                        (LPVOID)t->console, 0, NULL);
+            if (close_thread) {
+                wait_result = WaitForSingleObject(close_thread, 10000);
+                if (wait_result != WAIT_OBJECT_0) {
+                    if (rc == 0) {
+                        rc = wait_result == WAIT_FAILED
+                            ? (int)GetLastError() : ERROR_TIMEOUT;
+                    }
+                    /* Cancel the blocking reader and close its pipe end to
+                     * break the writer side if the close worker stalls. */
+                    (void)CancelSynchronousIo(drain_thread);
+                    if (t->output_read) {
+                        CloseHandle(t->output_read);
+                        t->output_read = NULL;
+                    }
+                    wait_result = WaitForSingleObject(close_thread, 5000);
+                }
+                if (wait_result != WAIT_OBJECT_0 && rc == 0) {
+                    rc = wait_result == WAIT_FAILED
+                        ? (int)GetLastError() : ERROR_TIMEOUT;
+                }
+                CloseHandle(close_thread);
+                close_thread = NULL;
+            } else {
+                /* Thread-allocation fallback: the output reader is already
+                 * draining, so a synchronous close can safely finish. */
+                ClosePseudoConsole(t->console);
+            }
+
+            wait_result = WaitForSingleObject(drain_thread, 5000);
+            if (wait_result != WAIT_OBJECT_0) {
+                if (rc == 0) {
+                    rc = wait_result == WAIT_FAILED
+                        ? (int)GetLastError() : ERROR_TIMEOUT;
+                }
+                (void)CancelSynchronousIo(drain_thread);
                 if (t->output_read) {
                     CloseHandle(t->output_read);
                     t->output_read = NULL;
                 }
-                wait_result = WaitForSingleObject(close_thread, 5000);
-            } else {
-                wait_result = WAIT_OBJECT_0;
+                wait_result = WaitForSingleObject(drain_thread, 2000);
             }
-            if (wait_result != WAIT_OBJECT_0 && rc == 0)
-                rc = wait_result == WAIT_FAILED ? (int)GetLastError() : ERROR_TIMEOUT;
-            CloseHandle(close_thread);
-            close_thread = NULL;
+            if (wait_result != WAIT_OBJECT_0 && rc == 0) rc = ERROR_TIMEOUT;
+            CloseHandle(drain_thread);
+            drain_thread = NULL;
         } else {
-            /* Allocation failure fallback: closing the output pipe before
-             * ClosePseudoConsole is the documented non-threaded alternative. */
+            /* If a reader thread cannot be allocated, close the read end
+             * first so the pseudoconsole cannot wait on an absent consumer. */
             DWORD error_code = GetLastError();
             if (rc == 0) rc = (int)error_code;
-            if (!CloseHandle(t->output_read) && rc == 0)
-                rc = (int)GetLastError();
+            CloseHandle(t->output_read);
             t->output_read = NULL;
             ClosePseudoConsole(t->console);
         }
