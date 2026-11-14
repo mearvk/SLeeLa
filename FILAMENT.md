@@ -716,3 +716,37 @@ The CI workflow logs are authoritative for hosted qualification. A green result 
 - The root workflow's push path filter now includes `FILAMENT.md`; the native portability workflow is configured for every push to `master` / `main`.
 - Source-level fixes and trigger wiring are verified. Hosted run IDs and final job results remain **unverified** because the connected GitHub Actions interface available in this session exposes commit-associated PR runs and known-run job/log retrieval, but not a listing of push-triggered runs. Do not mark any of the six acceptance gates complete until their run records are inspected.
 - ConPTY remains the one identified Windows runtime blocker. The current close routine has bounded waits around child reaping, ConPTY close, output-drain cancellation, and thread joins, but the existing smoke still did not reach its post-close PASS marker in the prior Windows log. No speculative teardown rewrite was made without a Windows reproducer.
+
+
+## Root qualification repair cycle 4 — lifecycle, macOS VM link, and ConPTY — 2026-11-14
+
+### New failures confirmed from the latest hosted runs
+
+The latest root run (43651030639) and native portability run (43651030652) exposed three remaining blockers:
+
+| Platform | Failure | Diagnosis |
+|---|---|---|
+| Windows root build | `tests/memory.exe` segfaulted at execution | `sleela_mm_destroy()` deleted the manager while a `std::lock_guard` still owned its mutex. The guard destructor could therefore unlock a destroyed mutex. |
+| macOS root build | Premium SLVM/1 link rejected `-fopenmp` under Apple Clang | The Core build does not enable OpenMP; the premium runner Makefiles had added an unnecessary GCC-specific link flag. |
+| Windows native portability | ConPTY smoke timed out at teardown | The close path relied on a drain-thread/ClosePseudoConsole sequence that could remain blocked on Windows versions before 11 24H2. |
+
+### Repairs committed to master
+
+| Repair | Files | Commit |
+|---|---|---|
+| Release the memory-manager mutex before deleting the manager; extend lifecycle smoke coverage for empty, normally freed, and still-live allocation cases | `api/native/memory/sleela_memory_manager.cpp`, `tests/native_memory_smoke.cpp` | `fef9699fb2066dfc219e0ecaf6e90290303c36cd`, `0513759d6c2c577490ef5e436118d184773d1b71` |
+| Make OpenMP linkage optional (empty by default) and align the generator with all eleven generated Premium VM Makefiles | `sleela-virtual-machine/tools/gen-premium-vm-runners.py`, `sleela-virtual-machine/001/Makefile` through `011/Makefile` | Generator and levels 001–009: `0fff4d8a58e0100a65a201a53ca89dd0a5f48a29` through `c71f5ecfce8312de17d6a24c98eb188d1c415ad0`; levels 010–011: `245bd78c3cc0bed6739ea882addfa4a6208631ac`, `6ace08aa3528f68ea2b1990f4f4dbe8cb1728b52` |
+| Close the ConPTY output-read pipe before `ClosePseudoConsole`, as permitted by Microsoft's documented deadlock-safe shutdown contract; remove the competing drain/close thread sequence | `impl/core/sleela_terminal.c` | `efd96067be443bcb3627f78206a9097da3eb4f13` |
+
+The Premium VM generator and all eleven generated Makefiles were re-read from `master`: each now uses `OPENMP_LDLIBS` as an explicit opt-in, and none passes `-fopenmp` by default. The root workflow regenerates the checkout-local integrity manifest before building; the native portability workflow does the same.
+
+### Retest gates — do not mark complete until hosted jobs pass
+
+- [ ] Windows root: native memory smoke executes to completion; full root build passes.
+- [ ] macOS root: all eleven Premium VM link and self-check targets pass with Apple Clang; full root build passes.
+- [ ] Windows native portability: isolated ConPTY teardown smoke reaches its PASS marker within the three-minute timeout; full VM regression then passes.
+- [ ] Ubuntu root and native portability remain green in the same qualification cycle.
+- [ ] Dependent staged install/uninstall and install-all/uninstall-all jobs execute and pass after their prerequisites.
+- [ ] Record the new workflow run IDs, commit SHA, and every platform/job conclusion.
+
+**Current classification: REPAIRS PUSHED — HOSTED RETEST PENDING — NOT QUALIFIED.** The fixes are source-verified, but no local Windows/macOS runtime result or new hosted green result is claimed yet. The aggregate root build/install qualification remains open until the complete matrix and dependent installer jobs pass.
