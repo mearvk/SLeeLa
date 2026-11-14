@@ -63,7 +63,7 @@ check:
 	@test -s deploy/web.xml || { echo "ERROR: deploy/web.xml missing or empty." >&2; exit 1; }
 	@test -s deploy/tomcat-server.xml.sample || { echo "ERROR: Tomcat sample configuration missing or empty." >&2; exit 1; }
 	@test -s deploy/apache-h3.conf || { echo "ERROR: Apache H3 configuration missing or empty." >&2; exit 1; }
-	@if command -v "$(PYTHON)" >/dev/null 2>&1; then "$(PYTHON)" -c 'import xml.etree.ElementTree as ET; ET.parse("deploy/web.xml"); print("deploy/web.xml: valid XML")'; else echo "NOTE: Python not found; skipped XML well-formedness check."; fi
+	@if command -v $(firstword $(PYTHON)) >/dev/null 2>&1; then $(PYTHON) -c 'import xml.etree.ElementTree as ET; ET.parse("deploy/web.xml"); print("deploy/web.xml: valid XML")'; else echo "NOTE: Python not found; skipped XML well-formedness check."; fi
 
 jar: compile
 	@mkdir -p "$(DIST_DIR)"
