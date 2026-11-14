@@ -603,3 +603,42 @@ Cancelled runs observed:
 - Earlier root and portability attempts [43639945147](https://github.com/mearvk/SLeeLa/actions/runs/43639945147), [43639947779](https://github.com/mearvk/SLeeLa/actions/runs/43639947779), and [43639945068](https://github.com/mearvk/SLeeLa/actions/runs/43639945068) — cancelled.
 
 The source repairs remain in master. A new push-triggered run is being initiated by this checklist update so the root build and portability matrices can execute again. Qualification remains **PENDING** until all required OS and dependent installation jobs complete successfully.
+
+
+## CI result review and second repair cycle — 2026-11-14
+
+### Results from the restarted qualification runs
+
+The fresh runs on commit `b4b9d4230105fbbb6bdd9ee8993659d7a2052ab6` completed and exposed additional workflow defects:
+
+| Workflow / platform | Result | Evidence |
+|---|---|---|
+| Root build — Ubuntu | **FAIL** | The shared POSIX build step called `cygpath`, which is not installed on Ubuntu. The job stopped before the root build. |
+| Root build — macOS | **FAIL** | Same misplaced `cygpath` call; the job stopped before compilation. |
+| Root build — Windows 10+ / MSYS2 | **FAIL** | The root build reached `java28`, where `javac` was not found in the MSYS2 environment. |
+| Native portability — Ubuntu | **PASS** | Native runtime build, ISA/OSLS checks, VM regression suite, AI tests, and platform smoke targets completed successfully. |
+| Native portability — macOS | **PASS** | Same native portability sequence completed successfully. |
+| Native portability — Windows 10+ / MSYS2 | **FAIL / TIMEOUT** | Native compilation, ISA/OSLS checks, and earlier VM tests passed. The full regression-suite step timed out after 40 minutes, ending at the Windows ConPTY terminal smoke output and a `Terminate batch job (Y/N)?` prompt. |
+
+Run records:
+- Root qualification: [43640962056](https://github.com/mearvk/SLeeLa/actions/runs/43640962056) — failed on all three root jobs; dependent installer jobs were skipped.
+- Native portability: [43640962082](https://github.com/mearvk/SLeeLa/actions/runs/43640962082) — Ubuntu/macOS passed; Windows timed out in the full VM regression suite.
+
+### Repairs now committed to master
+
+| Repair | File | Commit | Change |
+|---|---|---|---|
+| Restore POSIX root build | `.github/workflows/root-build-install.yml` | `4e6ab1156f3538fd72aabbdf19c007266ca7313f` | Removed the MSYS2-only `cygpath` / JDK PATH preflight from the shared Ubuntu/macOS build step. |
+| Make Windows JDK discovery explicit | `.github/workflows/root-build-install.yml` | `4e6ab1156f3538fd72aabbdf19c007266ca7313f` | Added the JDK path conversion and `javac.exe` / `java.exe` preflight only to the Windows MSYS2 job; exports explicit `JAVAC` and `JAVA` paths before `make`. |
+| Make ConPTY smoke child terminate deterministically | `impl/core/terminal_platform_smoke.c` | `f81c5165b2b95ad1d32eb070b7a3c6d757a3b1cb` | Uses `cmd.exe /D /C "echo terminal-ok & exit /b 0"` to disable command AutoRun and explicitly exit the child command. |
+| Run ConPTY check on Windows | `.github/workflows/native-portability.yml` | `8802e84eb61a1a345044f62558c0805a452dbe75` | Moved the isolated ConPTY teardown smoke step out of the POSIX matrix (where its Windows condition could never be true) and into the Windows job before the full regression suite. |
+
+### Retest requirements
+
+- [ ] Re-run root qualification and verify Ubuntu/macOS get past setup and complete `make clean build SLEELA_ADVANCED_BUILD=no`.
+- [ ] Verify Windows preflight resolves `javac.exe` and `java.exe`, then completes `java28` and the root build.
+- [ ] Verify the isolated Windows ConPTY step completes within its 3-minute limit.
+- [ ] Verify the complete Windows VM regression suite completes after the ConPTY repair.
+- [ ] Confirm dependent staged installer and install-all/uninstall-all jobs execute and pass after the POSIX root matrix passes.
+
+**Qualification status:** **REPAIRS COMMITTED — RETEST REQUIRED — NOT QUALIFIED.** The previous root failure is explained by a workflow-script placement error, not a source compilation defect on Ubuntu/macOS. The Windows root JDK and ConPTY fixes remain unverified until the new CI attempts finish.
