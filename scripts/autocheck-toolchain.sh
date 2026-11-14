@@ -28,10 +28,22 @@ for g in lib/gui/version-mual lib/gui/version-gual lib/gui/version-thual lib/gui
     echo "WARN: GUI version line not present: $g"
   fi
 done
-if command -v python3 >/dev/null 2>&1; then
-  python3 -m json.tool security/sha256-manifest.json >/dev/null 2>&1 && echo "PASS: manifest JSON parses" || { echo "FAIL: manifest JSON invalid"; fail=1; }
+PYTHON=${PYTHON:-}
+if [ -z "$PYTHON" ]; then
+  if command -v python3 >/dev/null 2>&1; then
+    PYTHON=python3
+  elif command -v python >/dev/null 2>&1; then
+    PYTHON=python
+  elif command -v py >/dev/null 2>&1; then
+    PYTHON="py -3"
+  fi
+fi
+if [ -n "$PYTHON" ] && command -v "${PYTHON%% *}" >/dev/null 2>&1; then
+  # PYTHON may intentionally contain launcher arguments (for example "py -3").
+  $PYTHON -m json.tool security/sha256-manifest.json >/dev/null 2>&1 && echo "PASS: manifest JSON parses" || { echo "FAIL: manifest JSON invalid"; fail=1; }
 else
-  echo "WARN: python3 not found; skipped manifest JSON parse"
+  echo "FAIL: Python is required for manifest JSON validation (set PYTHON=python3, python, or py -3)"
+  fail=1
 fi
 echo "== Search: stale verifier-discovery diagnostics and hard-coded paths =="
 # Search the repository once (not overlapping impl/tools/. roots), and only flag
