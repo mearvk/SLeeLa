@@ -32,3 +32,42 @@ converter (README: `lib/java/converter/README.md`). It is separate from
    go through `syn` (not `rewriteIdent`, which renames `Any`). Ids are per
    document, so a runnable program with lambdas must be one `JCONV_BUNDLE=1`
    document.
+
+## Working notes (2026-11-14, converter 0.7.8): how to verify fast
+
+- **Owner priority:** get the translation and `impl/subjects/conversion/conversion.model`
+  right before implementing exact JDK library behaviour. Put Java-to-SLeeLa law in the
+  model as rows; the `/lib` converter should read them, not hardcode them. The C++
+  loader (`sleelactl/convert/conv_model.c`) fails closed on an unknown row kind: add
+  each new kind to its `fields_for` table, then run `make test` in `sleelactl/convert`
+  (differential suite, 32/32).
+- **Regression after any converter change (about 3 min):** convert the 17-file JDK
+  sample and the samples, then diff against the previous output. Each
+  `samples/<dir>/<Name>.java` has a `<Name>.java.expected.txt` from OpenJDK. Convert
+  with `JCONV_IN=lib/java/converter/samples JCONV_FILTER=<dir>/ JCONV_SCOPE=all
+  JCONV_BUNDLE=1`, run the `.sleela` with `impl/build/sleela`, and diff. Current set:
+  `demo` (ConvDemo), `lambda`, `classlit`, `model`, `nextname`, `qualify`, all identical.
+- **JDK source:** OpenJDK 25.0.2 `src.zip` is under the mise Java installs; extract
+  with Python `zipfile` (a shell `unzip` with globs stalled). The whole public JDK
+  (`JCONV_SCOPE=api`) converts in about 4 min with the default `JCONV_BATCH=500`.
+- **Sandbox:** a detached background job is killed when the tool call ends. Run long
+  conversions in the foreground with a long timeout.
+- **Every edit under `lib/**` or `impl/` needs** `python3 tools/generate-sha256-manifest.py
+  --root . --output security/sha256-manifest.json`, or `run` refuses to start. A new
+  `lib` file also needs the inventory updated (`tools/generate-library-symbols.py`, the
+  four `EXPECTED_*` in `test-suites/test-library-inventory.sh`, the `LIBRARY.INDEX.md`
+  counts and a revision note). After a VM or compiler change, rebuild `sleela` and
+  `nordshrift`, copy them to `working-binaries/`, and update the hashes in its README.
+- **VM limits that shape the converter:** plain Strings are never freed (hence
+  `JCONV_BATCH`); at most 64 instance fields per class (`JConvRewriter` is near it, so
+  put new state in a helper class such as `JConvClassLit`); a bare `next` is the
+  integer 1; `require`, `close`, `print`, `record`, `String` are not usable names.
+  The measured list is `impl/subjects/conversion/IDENTIFIER-COLLISIONS.md`.
+- **Rename rules apply to every use.** `JConvRules.isRenamedIdent` renames library
+  method calls too (`it.next()` would become `it.next_()`), so a word that is only bad
+  as a variable needs a context rule like `JConvRewriter.renameNextVariables`.
+- **Open items:**
+  - The 13 renames are not model rows yet.
+  - `connect` and `send` must be renamed only as methods declared in the converted code.
+  - A type's own Javadoc is dropped from the output.
+  - Many `jdk-28` stubs return defaults instead of throwing.
