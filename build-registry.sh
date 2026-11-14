@@ -39,7 +39,7 @@ echo ""
 
 # 1. build the registry core + reviewer tool
 echo "[1/4] building registry core..."
-make -C "$REG_DIR" all
+"$MAKE_CMD" -C "$REG_DIR" all
 
 # Registry 3.0 record, compatibility migration, and C++ facade regression tests.
 echo "[2/4] testing Registry 3.0..."
