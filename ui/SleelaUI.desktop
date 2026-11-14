@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=SleelaUI™ Gallery
+GenericName=UI Toolkit Demo
+Comment=SLeeLa's own original cross-platform User Interface toolkit — Slick Black gallery
+Exec=slui-gallery
+Icon=preferences-desktop-theme
+Terminal=false
+Categories=Development;GTK;Utility;
+StartupWMClass=com.mearvk.SleelaUI.Gallery
