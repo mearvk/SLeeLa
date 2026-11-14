@@ -591,3 +591,15 @@ The arithmetic workflow **43638851340** built Basic Native and Premium SLVM/1–
 - [ ] Update the root matrix only from completed run evidence, not from queued runs or target presence.
 
 **Current root status:** **REPAIR COMMITTED — RETEST QUEUED — NOT QUALIFIED.** The complete root build and installation pipeline remains uncertified until the new three-platform root and dependent installation jobs pass.
+
+
+## CI restart after cancelled qualification runs — 2026-11-14
+
+A fresh CI cycle was requested after GitHub Actions marked the queued qualification attempts as **cancelled**. The cancellations are not build failures and provide no pass evidence.
+
+Cancelled runs observed:
+- Root Build and Install Qualification: [43639947785](https://github.com/mearvk/SLeeLa/actions/runs/43639947785) — cancelled at commit `9bc8e772577c6cc62633eaac9ac93785ec6bca63`.
+- Native C and C++ Portability: [43639984320](https://github.com/mearvk/SLeeLa/actions/runs/43639984320) — cancelled at commit `daf8fac443e530ab595f88bbc37eff8f06cf114b`.
+- Earlier root and portability attempts [43639945147](https://github.com/mearvk/SLeeLa/actions/runs/43639945147), [43639947779](https://github.com/mearvk/SLeeLa/actions/runs/43639947779), and [43639945068](https://github.com/mearvk/SLeeLa/actions/runs/43639945068) — cancelled.
+
+The source repairs remain in master. A new push-triggered run is being initiated by this checklist update so the root build and portability matrices can execute again. Qualification remains **PENDING** until all required OS and dependent installation jobs complete successfully.
