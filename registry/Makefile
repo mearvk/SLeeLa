@@ -53,8 +53,8 @@ $(CPP_TEST): tests/test_registry_v3_cpp.cpp v3/sleela_registry_v3.hpp $(LIB) | $
 	$(CXX) $(CXXFLAGS) -Iv3 tests/test_registry_v3_cpp.cpp $(LIB) -o $@
 
 test: $(V3_TEST) $(CPP_TEST)
-	cd $(BUILD) && ./test_registry_v3
-	cd $(BUILD) && ./test_registry_v3_cpp
+	cd $(BUILD) && ./test_registry_v3$(EXE)
+	cd $(BUILD) && ./test_registry_v3_cpp$(EXE)
 
 run: $(BIN)
 	./$(BIN) seed $(BUILD)/demo.sleelareg
