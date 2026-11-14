@@ -679,7 +679,7 @@ The CI logs show the runtime memory manager reporting a 2 GiB hard limit. The GC
 
 ## Root build qualification — repair retest cycle 3 — 2026-11-14
 
-**Source head at audit:** `4714984299f8326dda2f922dd76350005e6629fb` (latest recorded master commit; subsequent FILAMENT update will trigger a fresh root workflow because the workflow path filter now includes this register).
+**Source head at audit:** `d8c38351277c14deeb1d2701ec5ad7d84e035f81` (workflow-trigger commit on `master`). The root workflow path filter now includes `FILAMENT.md`; the trigger configuration is present, but this connector does not expose the push-run listing needed to confirm the resulting hosted run ID/status.
 
 ### Verified repairs in source
 
@@ -707,3 +707,12 @@ The root qualification workflow is configured to run on pushes to `master` and `
 **SOURCE REPAIRS PRESENT; FRESH CI RESULTS NOT YET VERIFIED.** The prior failures are attributable to a stale GC assertion and a missing Windows POSIX-regex dependency/link flag. These are test/build integration defects, not evidence of a 512 MiB allocation failure. The ConPTY issue remains a Windows runtime teardown qualification item; do not mark it compiled locally or passed solely because native compilation succeeded.
 
 The CI workflow logs are authoritative for hosted qualification. A green result on one OS or one module does not qualify the aggregate root build/install pipeline.
+
+
+### Execution handoff note
+
+- Assurance-register update: `9034133af3ba04eb488098965c9960c1bcfaf5f1`.
+- Root workflow trigger update: `d8c38351277c14deeb1d2701ec5ad7d84e035f81`.
+- The root workflow's push path filter now includes `FILAMENT.md`; the native portability workflow is configured for every push to `master` / `main`.
+- Source-level fixes and trigger wiring are verified. Hosted run IDs and final job results remain **unverified** because the connected GitHub Actions interface available in this session exposes commit-associated PR runs and known-run job/log retrieval, but not a listing of push-triggered runs. Do not mark any of the six acceptance gates complete until their run records are inspected.
+- ConPTY remains the one identified Windows runtime blocker. The current close routine has bounded waits around child reaping, ConPTY close, output-drain cancellation, and thread joins, but the existing smoke still did not reach its post-close PASS marker in the prior Windows log. No speculative teardown rewrite was made without a Windows reproducer.
