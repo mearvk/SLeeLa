@@ -22,6 +22,11 @@ CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -Wpedantic -Iinclude
 OBJCXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -Iinclude
 
 BUILD  := build
+ifeq ($(OS),Windows_NT)
+  EXE := .exe
+else
+  EXE :=
+endif
 PREFIX ?= /usr/local
 DESTDIR ?=
 LIBDIR     ?= $(PREFIX)/lib
@@ -232,7 +237,7 @@ test: | $(BUILD)
 	./$(BUILD)/ballum-manager-test
 	$(CC) $(CFLAGS) -I$(NANOJPEG_DIR) \
 	  src/ballum_effects.c src/ballum_image.c $(NANOJPEG_DIR)/nanojpeg.c \
-	  tests/test_ballum_effects.c -o $(BUILD)/ballum-effects-test -lm
+	  tests/test_ballum_effects.c -o $(BUILD)/ballum-effects-test$(EXE) -lm
 	./$(BUILD)/ballum-effects-test
 	@echo "ballum: all tests passed"
 
