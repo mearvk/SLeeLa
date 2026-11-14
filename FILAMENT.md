@@ -32,19 +32,19 @@ The authoritative aggregate entry point is `make all`. The root Makefile current
 | XLT compiler | `make xlt` | **WIRED — NOT QUALIFIED** | Included in `make all`; root dispatcher invokes `impl/xlt`. Platform-wide completion remains to be demonstrated by a fresh full build. |
 | Regex | `make regex` | **WIRED — NOT QUALIFIED** | Included in `make all`; no dedicated current passing result identified. |
 | Compiler | `make compiler` | **WIRED — NOT QUALIFIED** | Included in `make all`; no dedicated current passing result identified. |
-| Decompiler | `make decompiler` | **WIRED — NOT QUALIFIED** | Included in `make all`; no dedicated current passing result identified. |
+| Decompiler | `make decompiler` | **OBJECT BUILD — TEST GAP** | C/C++ objects compile; sanity/tutorial recipes only print descriptions. No executable decompiler self-test is wired into this target. |
 | VM | `make vm` | **PASS — CONFORMANCE WORKFLOW** | Complete SLeeLa VM and Language Conformance **43619118411** and VM Arithmetic Table Completion **43619118403** passed on commit `d5034d8f`. This is dedicated conformance evidence, not a fresh aggregate build. |
-| Scripting | `make scripting` | **WIRED — NOT QUALIFIED** | Included in `make all`; no dedicated current passing result identified. |
-| JetBrains integration | `make jetbrains` | **WIRED — NOT QUALIFIED** | Included in `make all`; no dedicated current passing result identified. |
-| Installer checks | `make install-check` | **WIRED — NOT QUALIFIED** | Included in `make all`; the complete install qualification still needs fresh Linux, macOS, and Windows evidence. |
+| Scripting | `make scripting` | **PRESENCE CHECK ONLY — NOT COMPILED** | Checks documentation/specification/config/example/test files exist; does not compile or execute the scripting language. |
+| JetBrains integration | `make jetbrains` | **HELP/DOWNLOAD TARGET — NO IDE BUILD** | `all` invokes `help`; download targets acquire upstream IntelliJ source. No SLeeLa IDE artifact is compiled by this target. |
+| Installer checks | `make install-check` | **PREFLIGHT ONLY — INSTALL TEST PENDING** | Validates installer inputs; staged install, launch, upgrade, and uninstall remain separate qualification steps. |
 | Tutorial validation | `make tutorial-check` | **WIRED — NOT QUALIFIED** | Included in `make all`; no fresh aggregate result identified. |
 | Repository tests | `make tests` | **WIRED — NOT QUALIFIED** | Included in `make all`; the full root test target is not yet certified green across all supported hosts. |
 | Configuration | `make config` | **WIRED — NOT QUALIFIED** | Included in `make all`; no dedicated current passing result identified. |
-| Route | `make route` | **WIRED — NOT QUALIFIED** | Included in `make all`; no dedicated current passing result identified. |
+| Route | `make route` | **JSON VALIDATION ONLY** | Parses `route/ROUTE.DATA.json`; it is not a native module compile. |
 | CommonRails | `make common-rails` | **WIRED — NOT QUALIFIED** | Included in `make all`; no dedicated current passing result identified. |
-| Codecs | `make codecs` | **WIRED — NOT QUALIFIED** | Included in `make all`; Windows executable suffix handling was repaired, but a fresh all-platform module pass is not established here. |
-| Churn | `make churn` | **WIRED — NOT QUALIFIED** | Included in `make all`; Python launcher handling was repaired, but a fresh all-platform module pass is not established here. |
-| Antivirus / Sleelavirin | `make antivirus` | **WIRED — NOT QUALIFIED** | Included in `make all`; portable build and test entry points exist, but no current dedicated passing run was identified. |
+| Codecs | `make codecs` | **LIBRARY BUILD — TEST TARGET SEPARATE** | Compiles and archives `libsleela_codecs.a`; executable tests require `make codecs-test`. No current all-platform module pass is established. |
+| Churn | `make churn` | **JAVA COMPILE + DATA CHECK — EXECUTION TEST SEPARATE** | Compiles five Java sets and validates data; report execution requires `make churn-test`. No current all-platform module pass is established. |
+| Antivirus / Sleelavirin | `make antivirus` | **LIBRARY / TEST-BINARY BUILD — TEST EXECUTION SEPARATE** | Builds C/C++ libraries and test executables; behavioral test execution requires `make antivirus-test`. |
 | Registry 3.0 | `make registry` | **PASS — DEDICATED CI** | Cross-Platform Verification **43622485269** completed successfully on Linux, macOS, and Windows. |
 | Premium SLVM runners | `make premium-vms` | **WIRED — NOT QUALIFIED** | Included in `make all`; the documented target covers all eleven premium runners. A fresh full aggregate result is still required. |
 | Ballum native display library | `make ballum` | **PARTIAL / HOST-DEPENDENT** | Root target attempts the native build when host display dependencies are present and otherwise falls back to portable tests. The openSUSE package list now includes `libXext-devel`; the latest Native C/C++ Portability run is still in progress. No openSUSE package-install/build run is claimed. |
