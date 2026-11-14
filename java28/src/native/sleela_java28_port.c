@@ -23,19 +23,16 @@ static int sl_socket_startup(void) {
 }
 static void sl_socket_cleanup(void) { WSACleanup(); }
 static void sl_socket_close(sl_socket_t fd) { closesocket(fd); }
-static int sl_socket_error(void) { return WSAGetLastError(); }
 #else
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
-#include <errno.h>
 typedef int sl_socket_t;
 #define SL_INVALID_SOCKET (-1)
 static int sl_socket_startup(void) { return 0; }
 static void sl_socket_cleanup(void) { }
 static void sl_socket_close(sl_socket_t fd) { (void)close(fd); }
-static int sl_socket_error(void) { return errno; }
 #endif
 
 #define SL_J28_BUF 8192
