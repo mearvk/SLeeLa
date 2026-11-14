@@ -8,7 +8,7 @@
 **Repository:** `mearvk/SLeeLa`  
 **Branch recorded:** `master`  
 **Status date:** 2026-11-14  
-**Source/build status baseline:** `07f9a41027b6195db88a4ab7f8a046d19dcf38b1`  
+**Source/build status baseline:** `c05c4f020fa880badb2f0b36c441307b729f7ad0` (Makefile recipe audit)  
 **VM inventory update commit:** `b615cc7098300121f62deba69bfa7ff960c11e76`
 
 ## Purpose and status rules
@@ -38,15 +38,15 @@ The authoritative aggregate entry point is `make all`. The root Makefile current
 | JetBrains integration | `make jetbrains` | **HELP/DOWNLOAD TARGET — NO IDE BUILD** | `all` invokes `help`; download targets acquire upstream IntelliJ source. No SLeeLa IDE artifact is compiled by this target. |
 | Installer checks | `make install-check` | **PREFLIGHT ONLY — INSTALL TEST PENDING** | Validates installer inputs; staged install, launch, upgrade, and uninstall remain separate qualification steps. |
 | Tutorial validation | `make tutorial-check` | **WIRED — NOT QUALIFIED** | Included in `make all`; no fresh aggregate result identified. |
-| Repository tests | `make tests` | **WIRED — NOT QUALIFIED** | Included in `make all`; the full root test target is not yet certified green across all supported hosts. |
+| Repository tests | `make tests` | **COMPILE-ONLY AGGREGATE — EXECUTION NOT IMPLIED** | The tests Makefile default all/check path performs an OpenSSL probe and compiles native smoke/AI/recognition executables; it does not execute the complete set. Some individual AI/recognition targets have explicit run recipes, but root make tests does not call them. |
 | Configuration | `make config` | **WIRED — NOT QUALIFIED** | Included in `make all`; no dedicated current passing result identified. |
 | Route | `make route` | **JSON VALIDATION ONLY** | Parses `route/ROUTE.DATA.json`; it is not a native module compile. |
 | CommonRails | `make common-rails` | **WIRED — NOT QUALIFIED** | Included in `make all`; no dedicated current passing result identified. |
-| Codecs | `make codecs` | **LIBRARY BUILD — TEST TARGET SEPARATE** | Compiles and archives `libsleela_codecs.a`; executable tests require `make codecs-test`. No current all-platform module pass is established. |
-| Churn | `make churn` | **JAVA COMPILE + DATA CHECK — EXECUTION TEST SEPARATE** | Compiles five Java sets and validates data; report execution requires `make churn-test`. No current all-platform module pass is established. |
-| Antivirus / Sleelavirin | `make antivirus` | **LIBRARY / TEST-BINARY BUILD — TEST EXECUTION SEPARATE** | Builds C/C++ libraries and test executables; behavioral test execution requires `make antivirus-test`. |
+| Codecs | `make codecs` | **STATIC LIBRARY BUILD — TESTS SEPARATE** | Compiles and archives `libsleela_codecs.a`. `make codecs-test` builds and executes the registry, manager, and FLAC-native test binaries. Root `make all` invokes only `codecs`. |
+| Churn | `make churn` | **JAVA COMPILE + DATA CHECK — EXECUTION TEST SEPARATE** | Compiles five Java constraint sets and validates JSON/XML/CSV/TXT data. `make churn-test` additionally runs all five Java reports. Root `make all` invokes only `churn`. |
+| Antivirus / Sleelavirin | `make antivirus` | **LIBRARY / TEST-BINARY BUILD — TEST EXECUTION SEPARATE** | Builds C/C++ libraries, native scanner, and test executables. `make antivirus-test` executes C/C++ scanner tests, native CLI tests, Python unit tests, and signature-definition checks. Root `make all` invokes only `antivirus`. |
 | Registry 3.0 | `make registry` | **PASS — DEDICATED CI** | Cross-Platform Verification **43622485269** completed successfully on Linux, macOS, and Windows. |
-| Premium SLVM runners | `make premium-vms` | **WIRED — NOT QUALIFIED** | Included in `make all`; the documented target covers all eleven premium runners. A fresh full aggregate result is still required. |
+| Premium SLVM runners | `make premium-vms` | **11 RUNNER BUILDS — SELF-CHECK SEPARATE** | Builds all eleven runnable SLVM generation executables against the Core archive. Each generation's `make test` runs its `--selfcheck`; the root `premium-vms` recipe invokes `make all`, not each generation's `test`. Dedicated conformance CI has executed the runners on its recorded commit. |
 | Ballum native display library | `make ballum` | **PARTIAL / HOST-DEPENDENT** | Root target attempts the native build when host display dependencies are present and otherwise falls back to portable tests. The openSUSE package list now includes `libXext-devel`; the latest Native C/C++ Portability run is still in progress. No openSUSE package-install/build run is claimed. |
 
 ## Complete VM inventory and assurance scope
@@ -231,3 +231,68 @@ Do not label the repository's complete build matrix as green until a fresh run o
 6. Integrity verification against the trusted SHA-256 manifest without weakening or bypassing the verification gate.
 
 **Current conclusion:** SLeeLa has a broad, wired Makefile build graph and several dedicated module workflows are passing. The full repository build is **not yet certified green** across Linux, macOS, and Windows. Pending and unqualified targets are deliberately shown as such rather than being inferred successful from the existence of Makefile rules.
+
+
+## Recipe-level Makefile audit — 2026-11-14
+
+This section records what the recipes do, rather than relying on target names or help text. The audit started from the exact master tree at c05c4f020fa880badb2f0b36c441307b729f7ad0. The repository tree contains **175 Makefiles / make fragments**, including nested platform, protocol, library, example, and per-generation build files. The table below covers every target dispatched by the root make all and the nested Makefiles those targets enter. A Makefile elsewhere in the tree is not thereby part of the root aggregate.
+
+### Root make all: recipe truth table
+
+| Root target | Delegated recipe / artifact | What a successful target proves | What it does not prove |
+|---|---|---|---|
+| core | autocheck, trusted SHA-256 verification, then impl all; builds sleela, sleelvac, nordshrift, libslcore.a, and stages the package | Toolchain preflight, manifest verification, native compile/link and package staging succeeded | It does not run the complete impl test suite or install the package |
+| java28 | Java class compilation, C TCP-port executable, JNI shared library | Java/C/JNI compile and link succeeded for the detected host JDK | Demo channels are not executed; those are demo-port and demo-jni |
+| xlt | impl/xlt all compiles and links xltc | XLT compiler executable was produced | The bundled example is not run by root xlt; that is make -C impl/xlt check |
+| regex | C, C++, natural-language C/C++, Java and nested test suites | Builds and executes the regex C/C++/Java tests and nested C/C++/Java/SLeeLa suites | Does not prove other language/runtime consumers outside this Makefile |
+| compiler | lib/compiler all: C/C++ objects, ABI self-test, runtime build, inventory and structural example check | Native front-end objects compile; the multi-language ABI self-test executes; inventory and example-structure scripts run | Tutorial and sanity targets only print descriptions; structural example checks are not the same as compiling every .sleela example |
+| decompiler | lib/decompiler all: C and C++ objects | Decompiler source objects compile | Sanity/tutorial targets print descriptions; no executable decompiler self-test or decompilation fixture is run |
+| vm | lib/vm all: C/C++ manager, linking, challenge, reports, memory-guard and GC objects | VM package native objects compile | cm-check, memory-guard-check, gc-check, and tutorial-check print contract descriptions; they are not behavioral tests |
+| scripting | sleela-scripting all → file-presence assertions | Required spec, docs, config, example and test files exist | No scripting compiler, interpreter, or script test is built or run |
+| jetbrains | jetbrains all → help | The helper target can print its source-acquisition instructions | No IntelliJ/SLeeLa IDE source is downloaded, compiled, packaged, or launched |
+| install-check | Installer file/content checks, manifest-entry check and strict sleelactl registry check | Installer entry points and selected Native Drive/manifest/registry integration assumptions are present | No files are staged or installed; no installed executable is launched; no upgrade/uninstall lifecycle is exercised |
+| tutorial-check | Runs scripts/tutorial-check.sh | The tutorial structure/evidence checker completed | Does not compile or execute every tutorial program |
+| tests | tests check → OpenSSL probe and compilation of native smoke/AI/recognition executables | Dependencies are available and those test programs compile/link | The all/check path does not execute the compiled suite. Some individual AI/character-recognition targets execute their named programs, but root make tests does not invoke them |
+| config | Python config-policy validation; builds and runs location and VM-config C smoke tests | Config data validation and both native smoke programs pass | Does not qualify every runtime configuration path or platform-specific installer setting |
+| route | Python JSON parse of route/ROUTE.DATA.json | Route data is syntactically valid JSON | No native route engine is compiled or executed |
+| common-rails | C heritage test compile/run; nested C++ and Java checks; SLeeLa and Nordshrift checks when executables exist | Available C/C++/Java checks execute; SLeeLa/SST sources are checked when their CLIs exist | Missing SLeeLa/Nordshrift executables are reported as SKIP, not failure; standalone invocation may therefore be partial |
+| codecs | Compiles all declared C/C++ codec objects and archives libsleela_codecs.a | Codec static archive was produced | Does not run codec tests; codecs-test explicitly builds and executes registry, manager and FLAC-native tests |
+| churn | Compiles five Java constraint sets and runs validate_data.py | Five sets compile and data files pass JSON/XML/CSV/TXT validation | Does not execute the five Java reports; churn-test does |
+| antivirus | Builds C/C++ libraries, scanner, and four test executables | Native libraries, scanner and test binaries compile/link | Does not execute tests; antivirus-test runs C/C++/native/Python tests and definition checks |
+| registry | Builds legacy and Registry 3.0 command-line executables | Both registry tools compile/link | Does not execute registry tests; registry-test builds and runs both C and C++ Registry 3.0 tests |
+| premium-vms | Iterates generation directories 001–011 and invokes each make all | All eleven generation executables build against the Core archive | Root target does not invoke each generation's make test / --selfcheck; dedicated VM conformance workflow provides separate execution evidence |
+| ballum | If host dependency check succeeds, builds the OS-specific static library and pkg-config file; otherwise runs portable tests | Either the native library build passed, or the portable fallback tests passed | A green root aggregate alone does not tell which branch ran; record the native dependency check and backend artifact separately |
+
+### Corrected interpretation of test targets
+
+The following root targets have actual execution recipes and should be kept distinct from compile-only or informational targets:
+
+| Explicit target | Recipe-level behavior |
+|---|---|
+| make codecs-test | Executes three codec test binaries after building them |
+| make churn-test | Executes all five Java constraint-report programs after compiling and validating data |
+| make antivirus-test | Executes four native test binaries, native scanner signature/content checks, Python unit tests, and signature-definition validation |
+| make registry-test | Executes the C and C++ Registry 3.0 test programs |
+| make config | Validates configuration data and executes two native smoke tests |
+| make tutorial-check | Executes the tutorial checker script |
+| make common-rails | Executes the C, C++ and Java heritage checks; source-language checks run only when their executables are available |
+| make -C impl test | Runs the broad Core/VM/runtime regression target declared by impl/Makefile; it is not a dependency of root make all |
+
+### Root dispatcher and documentation drift
+
+Two discrepancies were found in the root Makefile's human-facing descriptions:
+
+1. The guess target's printed make all sequence omits xlt, although the actual all prerequisite list includes xlt immediately after java28.
+2. The root help description says make tests builds and runs tests/; the actual tests/Makefile default all/check path compiles the programs but does not execute the full suite.
+
+These are documentation mismatches, not evidence of a failing compiler. They should be corrected in the root Makefile in a separate source change and then reflected here after verification.
+
+### Targets outside root make all
+
+The following root targets are separately invocable and are not part of the default aggregate: connector, connector-test, connector-check-deps, lib-ballum, lib-ballum-check, lib-ballum-install, api-docs, server, sleeladoc, sleeladoc-jar, install/uninstall variants, editor integration targets, and dedicated module test targets (codecs-test, churn-test, antivirus-test, registry-test). Their existence or inclusion in the installer's module catalogue is not evidence that root make all compiled them.
+
+Other independent Makefiles exist under Advantage, Audio, AutoCAD, CDMA, Compression, Crypto, Debugger, Drivers, HTTP 1.0–9.0, HTTP servers, Idea, Ledger, Native, OFDMA, Operating System, Philosophy, Resolver, Runtime, Server Edition, Signal Processing, SleelaTerminal, Sommeliers, Telephony/Skya, User Interface, Video, Web Server Technology, Wi-Fi, and the per-platform/per-example subtrees. These require their own clean build and test qualification. The presence of 175 Makefiles in the tree must not be read as 175 modules being built by the root aggregate.
+
+### Aggregate status after recipe audit
+
+**The root make all is a mixed build-and-validation aggregate, not a complete test or installation gate.** It compiles and links many real artifacts, executes some module tests, and performs several source/data/documentation checks; it also contains targets that only print descriptions or verify file presence. The explicit test targets and independent module Makefiles must be qualified separately. A repository-wide green status requires a clean build plus the relevant explicit tests and install lifecycle on Linux, macOS, and Windows at the same source commit.
