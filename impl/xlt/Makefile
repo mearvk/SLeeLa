@@ -8,7 +8,12 @@ CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra
 # -included below so editing any xlt_*.h recompiles exactly the dependents.
 DEPFLAGS := -MMD -MP
 BUILD    := build
-BIN      := $(BUILD)/xltc
+ifeq ($(OS),Windows_NT)
+  EXE := .exe
+else
+  EXE :=
+endif
+BIN      := $(BUILD)/xltc$(EXE)
 
 SRC := xlt_lexer.cpp xlt_parser.cpp xlt_resolve.cpp xltc.cpp
 OBJ := $(SRC:%.cpp=$(BUILD)/%.o)
