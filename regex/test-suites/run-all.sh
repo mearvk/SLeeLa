@@ -7,15 +7,16 @@ CC_BIN=${CC:-cc}
 CXX_BIN=${CXX:-c++}
 JAVA_BIN=${JAVA:-java}
 JAVAC_BIN=${JAVAC:-javac}
+EXE=${EXE:-}
 CFLAGS=${CFLAGS:-"-std=c11 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wformat=2 -Werror"}
 CXXFLAGS=${CXXFLAGS:-"-std=c++17 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wformat=2 -Werror"}
 
 mkdir -p "$BUILD/java"
 
-$CC_BIN $CFLAGS -I"$ROOT/include" "$ROOT/src/sleela_regex_natural.c" "$ROOT/tests/test_regex_natural.c" -o "$BUILD/natural-c"
+$CC_BIN $CFLAGS -I"$ROOT/include" "$ROOT/src/sleela_regex_natural.c" "$ROOT/tests/test_regex_natural.c" -o "$BUILD/natural-c$EXE"
 "$BUILD/natural-c"
 
-$CXX_BIN $CXXFLAGS -I"$ROOT/include" "$ROOT/src/sleela_regex_natural.cpp" "$ROOT/tests/test_regex_natural.cpp" -o "$BUILD/natural-cpp"
+$CXX_BIN $CXXFLAGS -I"$ROOT/include" "$ROOT/src/sleela_regex_natural.cpp" "$ROOT/tests/test_regex_natural.cpp" -o "$BUILD/natural-cpp$EXE"
 "$BUILD/natural-cpp"
 
 $JAVAC_BIN -d "$BUILD/java" "$ROOT/java/SleelaRegexNatural.java" "$ROOT/java/SleelaRegexNaturalParser.java" "$ROOT/java/SleelaRegexNaturalTest.java"
