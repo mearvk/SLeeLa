@@ -27,6 +27,7 @@ JVM_FLAGS ?= --enable-native-access=ALL-UNNAMED
 # JNI headers, linker mode, and library filename are host-specific.
 ifeq ($(OS),Windows_NT)
   PLATFORM := windows
+  EXE := .exe
   JNI_PLATFORM := win32
   JNI_SHARED_FLAGS := -shared
   JNI_LIB := $(BIN)/sleela_java28.dll
@@ -35,12 +36,14 @@ else
   UNAME_S := $(shell uname -s)
   ifeq ($(UNAME_S),Darwin)
     PLATFORM := macos
+    EXE :=
     JNI_PLATFORM := darwin
     JNI_SHARED_FLAGS := -dynamiclib -fPIC
     JNI_LIB := $(BIN)/libsleela_java28.dylib
     PORT_LIBS :=
   else
     PLATFORM := linux
+    EXE :=
     JNI_PLATFORM := linux
     JNI_SHARED_FLAGS := -shared -fPIC
     JNI_LIB := $(BIN)/libsleela_java28.so
@@ -65,11 +68,6 @@ java: check-deps | $(CLASSES) $(JNIH)
 
 # TCP port channel. Winsock is linked only on Windows.
 port: $(BIN)/sleela_java28_demo$(EXE)
-ifeq ($(PLATFORM),windows)
-EXE := .exe
-else
-EXE :=
-endif
 $(BIN)/sleela_java28_demo$(EXE): src/native/sleela_java28_port.c src/native/sleela_java28_demo.c src/native/sleela_java28.h | $(BIN)
 	$(CC) $(CFLAGS) $(NATIVE_INC) src/native/sleela_java28_port.c src/native/sleela_java28_demo.c -o $@ $(PORT_LIBS)
 
