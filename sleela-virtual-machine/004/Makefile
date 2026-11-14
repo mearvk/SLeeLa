@@ -45,8 +45,11 @@ VM_PLATFORM_LIBS_MK := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))../platform-
 include $(VM_PLATFORM_LIBS_MK)
 # The Core archive bundles the OS-abstraction backends + GC and contains C++
 # objects (the idea-canvas layer), so the final link is driven by the C++
-# compiler and needs the platform runtime libs + OpenMP.
-CORE_LDLIBS ?= $(THREADFLAG) -fopenmp $(CORE_LIBS) $(CORE_UI_LIBS)
+# compiler. The Core build itself does not enable OpenMP; do not pass GCC's
+# -fopenmp flag to Apple Clang. A downstream Core built with OpenMP may opt in
+# explicitly through OPENMP_LDLIBS.
+OPENMP_LDLIBS ?=
+CORE_LDLIBS ?= $(THREADFLAG) $(OPENMP_LDLIBS) $(CORE_LIBS) $(CORE_UI_LIBS)
 
 FEATURE_OBJS = $(BUILD)/slvm4_distributed.o $(BUILD)/slvm04_intxxx_module.o
 VM = $(BUILD)/slvm-04$(EXE)
