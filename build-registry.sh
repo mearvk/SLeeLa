@@ -27,6 +27,8 @@ set -e
 REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
 REG_DIR="$REPO_ROOT/registry"
 OUT_DIR="${REGISTRY_OUT:-$REG_DIR/build}"
+EXE=""
+if [ "${OS:-}" = "Windows_NT" ]; then EXE=".exe"; fi
 
 echo "=========================================="
 echo "Sleela Registry build + table materialize"
@@ -43,7 +45,7 @@ make -C "$REG_DIR" all
 echo "[2/4] testing Registry 3.0..."
 make -C "$REG_DIR" test
 
-TOOL="$REG_DIR/build/sleela-registry"
+TOOL="$REG_DIR/build/sleela-registry$EXE"
 if [ ! -x "$TOOL" ]; then
     echo "ERROR: registry tool not built at $TOOL" >&2
     exit 1
@@ -59,7 +61,7 @@ echo "[3/4] seeding baseline registry table -> $STORE"
 
 # 3. export the MySQL table script (if the tool supports export; else via sleela)
 echo "[4/4] exporting MySQL table script -> $SQL"
-SLEELA="$REPO_ROOT/impl/build/sleela"
+SLEELA="$REPO_ROOT/impl/build/sleela$EXE"
 if [ -x "$SLEELA" ]; then
     SLEELA_REGISTRY="$STORE" "$SLEELA" registry export "$SQL" >/dev/null 2>&1 \
         && echo "    exported via sleela registry export" \
