@@ -81,14 +81,25 @@ fi
 
 # --- 4. XML well-formedness ----------------------------------------------
 xml_checker=""
+xml_python="${PYTHON:-}"
 if command -v xmllint >/dev/null 2>&1; then
   xml_checker="xmllint"
+elif [ -n "$xml_python" ] && command -v "${xml_python%% *}" >/dev/null 2>&1; then
+  xml_checker="python"
 elif command -v python3 >/dev/null 2>&1; then
-  xml_checker="python3"
+  xml_python="python3"
+  xml_checker="python"
+elif command -v python >/dev/null 2>&1; then
+  xml_python="python"
+  xml_checker="python"
+elif command -v py >/dev/null 2>&1; then
+  xml_python="py -3"
+  xml_checker="python"
 fi
 
 if [ -z "$xml_checker" ]; then
-  echo "tutorial-check: NOTE - neither xmllint nor python3 found; skipping XML well-formedness check" >&2
+  echo "tutorial-check: FAIL - XML validation requires xmllint or Python 3" >&2
+  fail=1
 else
   for xml in "$EX_DIR"/*.xml; do
     [ -e "$xml" ] || continue
@@ -97,7 +108,7 @@ else
         fail_msg "malformed XML: $xml"
       fi
     else
-      if ! python3 -c 'import sys,xml.dom.minidom as m; m.parse(sys.argv[1])' "$xml" 2>/dev/null; then
+      if ! $xml_python -c 'import sys,xml.dom.minidom as m; m.parse(sys.argv[1])' "$xml" 2>/dev/null; then
         fail_msg "malformed XML: $xml"
       fi
     fi
