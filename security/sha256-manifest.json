@@ -9479,7 +9479,7 @@
     },
     {
       "path": "lib/java/converter/JConvRewriter.sleela",
-      "sha256": "a2ef540dca87501fe1c67d281297b332d311f98531ffb8fc5dfd59fe44a0bdba"
+      "sha256": "7f5d6024a6c3341164c9e6c8b0bd873c4cef3c89edb3190ede6b0d2d458e735b"
     },
     {
       "path": "lib/java/converter/JConvRules.sleela",

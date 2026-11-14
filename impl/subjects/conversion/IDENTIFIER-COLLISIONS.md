@@ -30,8 +30,9 @@ adding `rename` / `qualify` rows needs a one-line entry in its table first.
 
 `next` is the silent one: as a variable it reads as the integer 1 (the
 next-degree idiom, `impl/frontend/compiler.cpp` `emitVar`). `main` must not be
-renamed on an entry class. Neither converter handles `next`, `connect` or `send`
-yet, and the sleelactl list (`kSleelaReserved`) also misses `require`,
+renamed on an entry class. lib/java/converter renames a `next` that is not called
+(0.7.7, `JConvRewriter.renameNextVariables`); neither converter handles `connect` or
+`send` yet, and the sleelactl list (`kSleelaReserved`) also misses `require`,
 `usualgc`, `usualmem`, `int64`, `int128`.
 
 Do not add `next`, `connect` or `send` to `JConvRules.isRenamedIdent`: that list

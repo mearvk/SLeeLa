@@ -2048,7 +2048,26 @@ class JConvRewriter {
   }
 
   < ---- emission ---- >
+  << Rule 1b (impl/subjects/conversion/IDENTIFIER-COLLISIONS.md). A variable,
+     parameter or field named next reads as the integer 1 in SLeeLa (the
+     next-degree idiom), with no error. Every output name next that is not
+     called (not followed by an open parenthesis) becomes next_, so the
+     declaration and every use agree; a method next() keeps its name, so a call
+     such as it.next() on a library Iterator still reaches it. >>
+  void renameNextVariables() {
+    int i = 0;
+    while (i < this.on) {
+      if (this.ok[i] == 1 && this.ot[i] == "next") {
+        int j = i + 1;
+        while (j < this.on && this.ok[j] == 6) { j = j + 1; }
+        if (j >= this.on || this.ot[j] != "(") { this.ot[i] = "next_"; }
+      }
+      i = i + 1;
+    }
+  }
+
   void emitOut(JConvEmitter em) {
+    renameNextVariables();
     int i = 0;
     while (i < this.on) {
       if (this.ok[i] == 6) { em.commentToken(this.ot[i], this.ol[i], this.oe[i]); }
