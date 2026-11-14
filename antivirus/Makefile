@@ -13,6 +13,11 @@ CXXFLAGS ?= -O2 -Wall -Wextra -Wpedantic
 LDFLAGS ?=
 
 BUILD_DIR ?= build
+ifeq ($(OS),Windows_NT)
+  EXE := .exe
+else
+  EXE :=
+endif
 SRC_DIR := src
 TEST_DIR := tests
 
@@ -31,12 +36,12 @@ LIB_OBJS := $(SCAN_OBJ) $(HEURISTIC_OBJ) $(NATIVE_OBJ) $(AC_OBJ) $(SIG_OBJ) $(BR
 LIBRARY := $(BUILD_DIR)/libsleelavirin.a
 CPP_LIBRARY := $(BUILD_DIR)/libsleelavirin_cpp.a
 
-TEST_BIN := $(BUILD_DIR)/test_scan
-TEST_AC_BIN := $(BUILD_DIR)/test_ac
-TEST_BRIDGE_BIN := $(BUILD_DIR)/test_bridge
-TEST_CPP_BIN := $(BUILD_DIR)/test_cpp_scan
+TEST_BIN := $(BUILD_DIR)/test_scan$(EXE)
+TEST_AC_BIN := $(BUILD_DIR)/test_ac$(EXE)
+TEST_BRIDGE_BIN := $(BUILD_DIR)/test_bridge$(EXE)
+TEST_CPP_BIN := $(BUILD_DIR)/test_cpp_scan$(EXE)
 NATIVE_MAIN_OBJ := $(BUILD_DIR)/sleelavirin_native_main.o
-NATIVE_BIN := $(BUILD_DIR)/sleelavirin-scan
+NATIVE_BIN := $(BUILD_DIR)/sleelavirin-scan$(EXE)
 
 .PHONY: all library cpp-library native native-test content-test cpp-test clamav clamav-check clamav-update clamav-snapshot-check definitions-import definitions-check integrity-manifest integrity-check test check clean help
 
