@@ -212,7 +212,7 @@ ifeq ($(PLATFORM),linux)
 	 elif command -v pacman >/dev/null 2>&1; then \
 	   pkgs="libx11 libxrandr libxext"; mgr="pacman -S --noconfirm $$pkgs"; \
 	 elif command -v zypper >/dev/null 2>&1; then \
-	   pkgs="libX11-devel libXrandr-devel libXext-devel"; mgr="zypper install -y $pkgs"; \
+	   pkgs="libX11-devel libXrandr-devel libXext-devel"; mgr="zypper install -y $$pkgs"; \
 	 else \
 	   echo "  No supported package manager found (apt/dnf/pacman/zypper)."; \
 	   echo "  Install the X11 and Xrandr development packages (and Xext when BALLUM_X11_SHM=1) for your distro, then re-run 'make all'."; \
