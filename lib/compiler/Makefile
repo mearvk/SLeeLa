@@ -7,6 +7,11 @@ CPPFLAGS ?= -Iinclude
 CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic
 CXXFLAGS ?= -std=c++17 -Wall -Wextra -Wpedantic
 BUILD_DIR ?= build
+ifeq ($(OS),Windows_NT)
+  EXE := .exe
+else
+  EXE :=
+endif
 
 C_SOURCES := src/sleela_compiler.c src/sleela_langc.c src/sleela_lang_bridge.c
 CPP_SOURCES := src/sleela_compiler.cpp src/sleela_langc.cpp
@@ -21,7 +26,7 @@ native: $(C_OBJECTS) $(CPP_OBJECTS)
 # Behavioral self-test for the multi-language front-end framework ABI. Links the
 # core ABI + bridge objects with the test driver and runs the assertions.
 selftest: $(BUILD_DIR)/sleela_langc.c.o $(BUILD_DIR)/sleela_lang_bridge.c.o | $(BUILD_DIR)
-	$(CC) $(CPPFLAGS) $(CFLAGS) tests/langc_selftest.c $^ -o $(BUILD_DIR)/langc_selftest
+	$(CC) $(CPPFLAGS) $(CFLAGS) tests/langc_selftest.c $^ -o $(BUILD_DIR)/langc_selftest$(EXE)
 	$(BUILD_DIR)/langc_selftest
 
 # Resolve to an absolute path so it stays correct when passed into `make -C
