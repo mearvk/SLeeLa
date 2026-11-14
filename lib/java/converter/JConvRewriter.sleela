@@ -523,6 +523,26 @@ class JConvRewriter {
   < a generated token on the current line >
   void syn(int kind, String text) { push(kind, text, 0); }
 
+  < remove the output token at (an edit of the typed pass) >
+  void removeAt(int at) {
+    if (at < 0 || at >= this.on) { return; }
+    int i = at;
+    while (i < this.on - 1) {
+      this.ok[i] = this.ok[i + 1];
+      this.ot[i] = this.ot[i + 1];
+      this.ol[i] = this.ol[i + 1];
+      this.oe[i] = this.oe[i + 1];
+      i = i + 1;
+    }
+    this.on = this.on - 1;
+  }
+
+  < the function of a one-operand template F($a), or "" >
+  String unaryFn(String tpl) {
+    if (!tpl.endsWith("($a)")) { return ""; }
+    return tpl.substring(0, tpl.length() - 4).trim();
+  }
+
   void insertAt(int at, int kind, String text) {
     if (this.on >= arrayLength(this.ok)) { growOut(); }
     int i = this.on;

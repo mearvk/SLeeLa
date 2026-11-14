@@ -7,7 +7,8 @@
    (ret rows), the type of a library field (field rows), the SLeeLa function
    of an int shift, division and remainder (binop int rows), the 32-bit wrap
    (the cast long int row) and the string conversion template of a double,
-   char or reference (tostr rows). Only rows of those kinds are read. When the
+   char or reference (tostr rows), every cast row, and the chartext rows (a
+   library parameter that takes a char as text). Only rows of those kinds are read. When the
    file is missing the built-in defaults below are used and the report says so. >>
 #sleela 3.0
 material;
@@ -78,6 +79,16 @@ class JConvModel {
   String divInt;
   String remInt;
   String toInt;
+  < every cast row: from, to, template (the double to integral narrowings saturate) >
+  String[] castFrom;
+  String[] castTo;
+  String[] castTpl;
+  int castN;
+  < chartext rows: owner, method, index of the argument that takes a char as text >
+  String[] ctOwner;
+  String[] ctMethod;
+  int[] ctIndex;
+  int ctN;
 
   JConvModel() {
     this.path = "";
@@ -99,6 +110,14 @@ class JConvModel {
     this.divInt = "JavaOperands.divInt($a, $b)";
     this.remInt = "JavaOperands.remInt($a, $b)";
     this.toInt = "JavaOperands.toInt($a)";
+    this.castFrom = new String[64];
+    this.castTo = new String[64];
+    this.castTpl = new String[64];
+    this.castN = 0;
+    this.ctOwner = new String[64];
+    this.ctMethod = new String[64];
+    this.ctIndex = new int[64];
+    this.ctN = 0;
   }
 
   int slotIn(String key, int size) {
@@ -200,6 +219,20 @@ class JConvModel {
           } else if (startsAt(src, a, "cast")) {
             String[] f6 = fieldsAt(src, a, i, 4);
             if (f6[1] == "long" && f6[2] == "int") { this.toInt = f6[3]; }
+            if (f6[3] != null && this.castN < arrayLength(this.castFrom)) {
+              this.castFrom[this.castN] = f6[1];
+              this.castTo[this.castN] = f6[2];
+              this.castTpl[this.castN] = f6[3];
+              this.castN = this.castN + 1;
+            }
+          } else if (startsAt(src, a, "chartext")) {
+            String[] f7 = fieldsAt(src, a, i, 4);
+            if (f7[3] != null && this.ctN < arrayLength(this.ctOwner)) {
+              this.ctOwner[this.ctN] = f7[1];
+              this.ctMethod[this.ctN] = f7[2];
+              this.ctIndex[this.ctN] = parseIndex(f7[3]);
+              this.ctN = this.ctN + 1;
+            }
           } else if (startsAt(src, a, "tostr")) {
             String[] f4 = fieldsAt(src, a, i, 3);
             if (f4[1] == "double") { this.tostrDouble = f4[2]; }
@@ -219,6 +252,41 @@ class JConvModel {
     }
     this.loaded = true;
     return true;
+  }
+
+  int parseIndex(String t) {
+    int v = 0;
+    int i = 0;
+    while (i < t.length()) {
+      int c = t.charAt(i);
+      if (c < 48 || c > 57) { return -1; }
+      v = v * 10 + (c - 48);
+      i = i + 1;
+    }
+    return v;
+  }
+
+  < the template of the cast row from -> to, or "" (no row, or a plain assignment "=") >
+  String castTemplate(String from, String to) {
+    int i = 0;
+    while (i < this.castN) {
+      if (this.castFrom[i] == from && this.castTo[i] == to) {
+        if (this.castTpl[i] == "=") { return ""; }
+        return this.castTpl[i];
+      }
+      i = i + 1;
+    }
+    return "";
+  }
+
+  < the index of the argument of owner.method that takes a char as text (a chartext row), or -1 >
+  int charTextIndex(String owner, String method) {
+    int i = 0;
+    while (i < this.ctN) {
+      if (this.ctOwner[i] == owner && this.ctMethod[i] == method) { return this.ctIndex[i]; }
+      i = i + 1;
+    }
+    return -1;
   }
 
   String describe() {

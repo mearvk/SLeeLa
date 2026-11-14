@@ -3,7 +3,7 @@
 > **Container.** Java container content (`SLEELA.syntax` section 38.4). Nothing
 > here is part of the SLeeLa specification or adds syntax to SLeeLa.
 
-Status: **0.7.5, best effort (2026-11-14).** Output stays at syntax **3.1** (also
+Status: **0.7.6, best effort (2026-11-14).** Output stays at syntax **3.1** (also
 written 3.01) by the owner's decision; syntax 3.1 sections 45 and 46 forms are not used
 (`.kiro/steering/java-converter-lib.md`). The operand laws come from the shared
 conversion model, `impl/subjects/conversion/conversion.model` (read by
@@ -404,6 +404,19 @@ What remains for a whole-tree conversion, measured on this run:
   `JCONV_BATCH` files (section 2): peak 335 MB for the whole JDK, independent of the
   tree size.
 
+**More of the model applied (0.7.6, 2026-11-14).** `JConvModel` now reads every
+`cast` row and the `chartext` rows of `conversion.model`, and the typed pass
+applies them: a cast from `double` to `int`, `long`, `short`, `byte` or `char`
+is written with its row (`JavaOperands.d2i`, `d2l`, ...: Java saturates, and NaN
+is 0, JLS 5.1.3; the VM cast did neither, so `(int) 1e20` gave 0), and a `char`
+argument of a `chartext` member (`StringBuilder.append`, `insert`, and the
+`StringBuffer` ones) goes through `tostr char`, so `sb.append('{')` appends the
+brace and not 123. New sample `samples/model/ModelDemo.java` (narrowing casts,
+double to integral, long division, remainder and shifts, `-Integer.MIN_VALUE`,
+compound assignment and `++` on narrow types, `char` as text): 12 of 12 lines
+the same as OpenJDK 25.0.2. In the 17-file sample this fixed 10 lines, among
+them `BitSet.toString` (`b.append('{')`) and the `HashMap` capacity casts.
+
 **Class literals (rule 8e, 0.7.4, 2026-11-14).** `T.class` is written as
 `Class.ofLiteral("<binary name>", <kind>)`. The binary name is the one
 `Class.getName()` reports in Java: a type the file declares with its nesting
@@ -478,6 +491,7 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | Version | Change |
 |---|---|
 | 0.1.0 | First cut: walk, lex, rewrite, translate, stubs, report |
+| 0.7.6 | Model rows applied: every `cast` row (double to integral saturates, NaN is 0) and the `chartext` rows (a char argument of `StringBuilder.append` / `insert` is text). Intersection casts lowered (rule 8f). New sample `samples/model`, 12 of 12 lines identical to OpenJDK |
 | 0.7.5 | Bounded memory: `JCONV_BATCH` (default 500) ends a VM run after that many files and `run-converter.sh` starts the next after the last one, reusing the per-file state of 0.7.2 (a planned stop is not a failure). Whole JDK: peak 335 MB (was about 1.7 GB), output identical |
 | 0.7.4 | Class literals (rule 8e): `T.class` lowered to `Class.ofLiteral(binary name, kind)` (`JConvClassLit`; `jdk-28` `java.lang.Class` implementation block). `String.class` no longer taken for a `String` static (reason 22). A class-typed operand of a string `+` goes through `toString()` (model row `tostr reference`). New sample `samples/classlit`, 23 of 23 lines identical to OpenJDK. Whole JDK: 2,141 stubs (was 3,912) |
 | 0.7.3 | Non-ASCII Java files convert: the VM `read` built-in no longer splits a UTF-8 character between pieces, so `JConvSource` accepts any valid UTF-8 file (it refused every non-ASCII byte) and refuses only invalid UTF-8 and NUL bytes, naming which. The 12 non-ASCII JDK files (7 of them public API) convert with no syntax error; the 17-file sample now converts 17 of 17 (`UUID.java`), the other 16 outputs unchanged |
