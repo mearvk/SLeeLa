@@ -121,6 +121,7 @@ jobs:
             mingw-w64-ucrt-x86_64-python
             mingw-w64-ucrt-x86_64-openssl
             mingw-w64-ucrt-x86_64-pkgconf
+            mingw-w64-ucrt-x86_64-libsystre
             diffutils
 
       - name: Check out source
