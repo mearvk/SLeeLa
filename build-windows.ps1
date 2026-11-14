@@ -39,6 +39,8 @@ $ErrorActionPreference = "Stop"
 $RepoRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ImplDir = Join-Path $RepoRoot "impl"
 $BuildDir = Join-Path $ImplDir "build"
+$XltDir = Join-Path $ImplDir "xlt"
+$XltBuildDir = Join-Path $XltDir "build"
 
 Write-Host "=========================================="
 Write-Host "SLeeLa Windows Build (MinGW)"
@@ -101,10 +103,23 @@ finally {
     Pop-Location
 }
 
+Write-Host ""
+Write-Host "Building XLT compiler..."
+Push-Location $XltDir
+try {
+    & $MakeProg clean
+    & $MakeProg all
+    if ($LASTEXITCODE -ne 0) { throw "XLT make failed with exit code $LASTEXITCODE" }
+}
+finally {
+    Pop-Location
+}
+
 $SleelaExe = Join-Path $BuildDir "sleela.exe"
 $SleelavcExe = Join-Path $BuildDir "sleelvac.exe"
 $NordshriftExe = Join-Path $BuildDir "nordshrift.exe"
-$MissingProducts = @(@($SleelaExe, $SleelavcExe, $NordshriftExe) | Where-Object { -not (Test-Path $_ -PathType Leaf) })
+$XltcExe = Join-Path $XltBuildDir "xltc.exe"
+$MissingProducts = @(@($SleelaExe, $SleelavcExe, $NordshriftExe, $XltcExe) | Where-Object { -not (Test-Path $_ -PathType Leaf) })
 if ($MissingProducts.Count -gt 0) {
     throw "Build did not produce every required Windows product in $BuildDir. Missing: $($MissingProducts -join ', ')"
 }
@@ -118,19 +133,22 @@ if (-not (Test-Path $StageConfigFile) -or -not (Test-Path $StageOptions)) {
 
 Write-Host ""
 Write-Host "Build completed successfully!"
-Get-Item $SleelaExe, $SleelavcExe, $NordshriftExe | Format-Table Length, FullName -AutoSize
+Get-Item $SleelaExe, $SleelavcExe, $NordshriftExe, $XltcExe | Format-Table Length, FullName -AutoSize
 
 if ($BinDir -ne "") {
     if (-not (Test-Path $BinDir)) { New-Item -ItemType Directory -Path $BinDir | Out-Null }
     Copy-Item $SleelaExe (Join-Path $BinDir "sleela.exe") -Force
     Copy-Item $SleelavcExe (Join-Path $BinDir "sleelvac.exe") -Force
     Copy-Item $NordshriftExe (Join-Path $BinDir "nordshrift.exe") -Force
+    Copy-Item $XltcExe (Join-Path $BinDir "xltc.exe") -Force
     Write-Host "Installed to $BinDir"
     Write-Host "Verify: $(Join-Path $BinDir 'sleela.exe') version"
+    Write-Host "XLT compiler: $(Join-Path $BinDir 'xltc.exe')"
 } else {
     Write-Host "Binaries remain in: $BuildDir"
     Write-Host "Staged runtime: $StageDir"
     Write-Host "Consolidated config: $StageConfigFile"
+    Write-Host "XLT compiler: $XltcExe"
     Write-Host "Verify: $SleelaExe version"
 }
 Write-Host ""
