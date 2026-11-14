@@ -14,6 +14,19 @@ SLEELA_ADVANCED_BUILD ?=
 PREFIX ?= /usr/local
 DESTDIR ?=
 
+# One overridable Python command for verification and data checks. Prefer
+# python3, then python, then the Windows Python launcher (py -3).
+PYTHON ?= python3
+PYTHON_AVAILABLE := $(shell command -v $(firstword $(PYTHON)) >/dev/null 2>&1 && echo yes)
+ifeq ($(PYTHON_AVAILABLE),)
+  ifneq ($(shell command -v python >/dev/null 2>&1 && echo yes),)
+    PYTHON := python
+  else ifneq ($(shell command -v py >/dev/null 2>&1 && echo yes),)
+    PYTHON := py -3
+  endif
+endif
+export PYTHON
+
 # Optional editor integration deployment; EDITORS is a comma-separated filter.
 EDITORS ?=
 EDITOR_ARGS ?=
@@ -426,7 +439,7 @@ guess:
 	@echo "  verify-security is an order-only prerequisite of every object"
 	@echo "  file. A stale security/sha256-manifest.json stops the build here"
 	@echo "  BEFORE any compile. Regenerate it with:"
-	@echo "      python3 tools/generate-sha256-manifest.py --root . \\"
+	@echo "      $(PYTHON) tools/generate-sha256-manifest.py --root . \\"
 	@echo "              --output security/sha256-manifest.json"
 	@echo "      (cd impl && make check-manifest)   # should print OK"
 	@echo
