@@ -642,3 +642,36 @@ Run records:
 - [ ] Confirm dependent staged installer and install-all/uninstall-all jobs execute and pass after the POSIX root matrix passes.
 
 **Qualification status:** **REPAIRS COMMITTED — RETEST REQUIRED — NOT QUALIFIED.** The previous root failure is explained by a workflow-script placement error, not a source compilation defect on Ubuntu/macOS. The Windows root JDK and ConPTY fixes remain unverified until the new CI attempts finish.
+
+
+## CI triage — GC limit, Windows POSIX regex, and ConPTY — 2026-11-14
+
+### Findings from run 43647374630 (root) and run 43647408723 (native portability)
+
+| Platform / target | Observed result | Classification | Action |
+|---|---|---|---|
+| Root Ubuntu runtime-test | GC security test aborted because it expected 512 MiB while the collector default is 1 GiB | **Test expectation stale; not an allocation failure** | Updated the assertion to the implemented 1 GiB default. The test checks `gc_limit()`; it does not allocate 512 MiB or 1 GiB. |
+| Root macOS runtime-test | Same stale 512 MiB assertion | **Test expectation stale; not an allocation failure** | Same correction; no runtime heap policy reduction. |
+| Root Windows regex C backend | Linker could not resolve POSIX regex symbols (`regcomp`, `regexec`, `regerror`, `regfree`) | **Missing Windows build dependency/link flag** | Added MSYS2 UCRT64 `mingw-w64-ucrt-x86_64-libsystre` and linked the C POSIX-regex test with `-lregex`. |
+| Native Windows ConPTY smoke | Child printed `terminal-ok`, but teardown did not finish before the 3-minute timeout | **Runtime smoke/teardown hang; compilation had already succeeded** | Keep isolated as a Windows runtime qualification issue. Do not report this as a C/C++ compilation failure. |
+| Native Ubuntu/macOS | All native portability jobs passed | **PASS** | Preserve the successful platform evidence. |
+
+### Repairs pushed to master
+
+- `2efaee0c22b1576d93f5f37074408cdf24ee3072` — update `runtime/tests/test_gc_security.c` to assert the collector's documented 1 GiB default and explicitly note that this is a configuration check, not a large allocation.
+- `d26d98b048441316b8d753d0f87858333cb69f47` — add the Windows `-lregex` link dependency to the POSIX regex C target.
+- `f0d5ea33ac33566066ee7be874dd77ee8e69a07a` — install the MSYS2 UCRT64 `libsystre` package in the Windows root-build environment.
+
+### Memory policy clarification
+
+The CI logs show the runtime memory manager reporting a 2 GiB hard limit. The GC test failure was solely an outdated expected-value assertion against a 1 GiB default in `runtime/garbage_collector.c`. It did not request a 512 MiB allocation. The test was corrected to match the current runtime contract; the runtime limit itself was not lowered or bypassed.
+
+### Qualification status and retest
+
+- [ ] Root Linux/macOS runtime tests pass with the corrected 1 GiB expectation.
+- [ ] Windows root regex C executable links and its tests execute with the MSYS2 POSIX regex package.
+- [ ] Full root builds complete on all three platforms.
+- [ ] Dependent staged-install and install-all/uninstall-all jobs complete.
+- [ ] Windows ConPTY teardown hang is resolved or separately documented as a non-compilation runtime limitation with an explicit local verification record.
+
+**Current status:** two targeted CI build/test fixes committed; retest required. Ubuntu/macOS native portability remain PASS from run 43647408723. Windows native compilation completed through the terminal smoke's visible output, but ConPTY teardown remains unqualified. Do not label the overall root build/install pipeline qualified until its new matrix and dependent installation jobs pass.
