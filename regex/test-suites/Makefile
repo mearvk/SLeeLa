@@ -3,6 +3,7 @@ CXX ?= c++
 JAVA ?= java
 JAVAC ?= javac
 BUILD ?= ../build/natural-tests
+EXE ?=
 CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wformat=2 -Werror
 CXXFLAGS ?= -std=c++17 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wformat=2 -Werror
 .PHONY: all test c cpp java sleela clean
