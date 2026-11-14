@@ -18,7 +18,13 @@ endif
 # The invoking user's home, resolved correctly even under sudo (where $HOME is
 # root's). install-all / uninstall-all use this so the user-local layouts under
 # ~/.local are always found, whether the target is run as the user or elevated.
-USER_HOME := $(shell if [ "$$(id -u)" -eq 0 ] && [ -n "$$SUDO_USER" ]; then getent passwd "$$SUDO_USER" | cut -d: -f6; else printf '%s' "$$HOME"; fi)
+USER_HOME := $(shell if [ "$(id -u)" -eq 0 ] && [ -n "$SUDO_USER" ]; then \
+  if command -v getent >/dev/null 2>&1; then getent passwd "$SUDO_USER" | cut -d: -f6; \
+  elif command -v dscl >/dev/null 2>&1; then dscl . -read "/Users/$SUDO_USER" NFSHomeDirectory 2>/dev/null | awk '{print $2}'; \
+  elif [ -d "/Users/$SUDO_USER" ]; then printf '%s' "/Users/$SUDO_USER"; \
+  elif [ -d "/home/$SUDO_USER" ]; then printf '%s' "/home/$SUDO_USER"; \
+  else printf '%s' "$HOME"; fi; \
+else printf '%s' "$HOME"; fi)
 
 RUNTIME_NAME := sleela
 RUNTIME_DIR := $(DESTDIR)$(LIBDIR)/$(RUNTIME_NAME)
