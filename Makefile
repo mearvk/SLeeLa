@@ -438,6 +438,7 @@ clean:
 	$(MAKE) -C lib/decompiler clean
 	$(MAKE) -C lib/vm clean
 	$(MAKE) -C tests clean
+	$(MAKE) -C runtime clean
 	$(MAKE) -C codecs clean
 	$(MAKE) -C churn clean
 	$(MAKE) -C antivirus clean
@@ -480,10 +481,10 @@ guess:
 	@echo
 	@echo "EXPERT -- the full 'make all' order (left to right)"
 	@echo "------------------------------------------------------------------"
-	@echo "  core -> java28 -> regex -> compiler -> decompiler -> vm ->"
+	@echo "  core -> java28 -> xlt -> regex -> compiler -> decompiler -> vm ->"
 	@echo "  scripting -> jetbrains -> install-check -> tutorial-check ->"
 	@echo "  tests -> config -> route -> common-rails -> codecs -> churn ->"
-	@echo "  antivirus -> registry -> premium-vms -> ballum"
+	@echo "  churn -> churn-test -> antivirus -> antivirus-test -> runtime-test ->\n  registry -> premium-vms -> ballum"
 	@echo
 	@echo "  Key dependency edges (prerequisite -> dependent):"
 	@echo "    autocheck, verify-security  ->  core"
@@ -587,7 +588,7 @@ help:
 	@echo "SLeeLa repository build dispatcher"
 	@echo "  Targets (alphabetical):"
 	@echo "  make advanced-build  Yes/no gate run by 'make build'; on yes runs the guided installer (SLEELA_ADVANCED_BUILD=yes|no|skip)"
-	@echo "  make all       Build core, XLT, Java 28, regex, compiler, decompiler, VM, scripting, codecs, churn, antivirus, registry, premium VMs, Ballum, and run install/tutorial/test checks"
+	@echo "  make all       Build all root modules and run the wired test suites, including Codecs, Churn, Antivirus, Runtime, Registry, Config, CommonRails, and the native tests"
 	@echo "  make antivirus Build Sleelavirin C core and self-test executable"
 	@echo "  make antivirus-clamav Check optional ClamAV scanner integration"
 	@echo "  make antivirus-integrity Generate SHA-256 inventory for antivirus source and indexes"
