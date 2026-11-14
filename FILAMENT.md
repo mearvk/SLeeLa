@@ -150,6 +150,56 @@ These targets are available but are not part of the default root `make all` chai
 | Character Recognition C11 | Workflow: `character-recognition.yml` | **PASS — DEDICATED CI** | Run **43619118440** completed successfully. |
 | Java conversion | Workflow: `java-convert.yml` | **PRIOR FAILURE — REPAIR / RETEST REQUIRED** | Latest inspected run **43613197880** failed on commit `e2e96b5c`. This workflow is distinct from proving the Java 28 root target. |
 
+## Build-target semantics audit
+
+This section distinguishes a target that compiles source from a target that only validates metadata, prints a checklist, or delegates work. These distinctions matter: a successful `make all` is meaningful only for the work its recipes actually perform.
+
+| FILAMENT entry | What the current recipe actually does | Build-match assessment |
+|---|---|---|
+| `core` / `impl` | Runs toolchain preflight and trusted-manifest verification, then delegates to `impl all`. The portability workflow compiles the native runtime/static core and runs the VM regression suite. | **REAL NATIVE BUILD.** Linux and macOS passed in run `43629021139`; Windows native compilation passed, but its full VM regression remains in progress. |
+| `java28` | Compiles Java sources, builds the native C port executable, and compiles the JNI shared bridge. | **REAL MULTI-LANGUAGE BUILD.** The `all` target compiles these artifacts; demo execution is a separate target and must be reported separately. |
+| `xlt` | Builds the XLT executable through the C++ compiler. | **REAL BUILD.** The standalone `check` target also runs the supplied XLT example. |
+| `regex` | Builds C, C++, natural-language C/C++, and Java components, then runs its test-suites target. | **BUILD + TEST.** |
+| `compiler` | Compiles C and C++ compiler objects, builds/runs the compiler self-test, builds the runtime, inventories the library, and checks examples. Its `sanity` and tutorial targets print descriptive information. | **REAL BUILD + SELFTEST + EXAMPLE CHECK.** Do not count the printed sanity/tutorial descriptions as executable tests. |
+| `decompiler` | Compiles C and C++ objects. Its `sanity` and tutorial targets print descriptive information only. | **REAL OBJECT BUILD; LIMITED VALIDATION.** No executable decompiler self-test is wired into this target at present. |
+| `vm` package | Compiles C and C++ VM manager/runtime objects. The compiler-manager, memory-guard, GC, and tutorial check targets print contract descriptions. | **REAL OBJECT BUILD; CHECK TARGETS ARE DESCRIPTIVE.** The separate VM conformance workflow supplies behavioral VM evidence. |
+| `scripting` | Checks that the specification, documentation, configuration, example, and test files exist. | **SOURCE-PACKAGE PRESENCE CHECK, NOT COMPILATION.** The current scripting Makefile does not compile or execute the scripting language. |
+| `jetbrains` | The default `all` target invokes `help`; separate download targets acquire upstream IntelliJ source. | **NOT AN IDE BUILD.** The current target does not compile a SLeeLa IDE or produce an IDE artifact. |
+| `install-check` | Delegates to installer preflight/manifest checks. | **INSTALLER VALIDATION, NOT AN INSTALLATION TEST.** A staged install, executable launch, uninstall, and upgrade cycle require separate evidence. |
+| `tutorial-check` | Runs `scripts/tutorial-check.sh`. | **TUTORIAL VALIDATION.** It is not itself a module compiler. |
+| `tests` | Delegates to `tests check`. | **TEST AGGREGATE.** Its result depends on the test suite's own declared scope. |
+| `config` | Validates configuration data and builds/runs native configuration smoke programs. | **VALIDATION + COMPILE + SMOKE TEST.** |
+| `route` | Parses `route/ROUTE.DATA.json` with Python's JSON parser. | **DATA-SYNTAX VALIDATION, NOT A NATIVE MODULE BUILD.** |
+| `common-rails` | Builds/runs C and C++/Java heritage checks and checks SLeeLa/Nordshrift sources when their executables are present. Missing executables are reported as skips. | **MIXED BUILD + CHECK.** The root order builds Core first, but a standalone invocation can skip source-language checks. |
+| `codecs` | Compiles C/C++ objects and archives `libsleela_codecs.a`. The executable tests are under the separate `codecs-test` target. | **REAL LIBRARY BUILD; TESTS ARE SEPARATE.** Root `make all` does not itself invoke `codecs-test`. |
+| `churn` | Compiles each of five Java constraint sets and validates the JSON/XML/CSV/TXT data. The Java reports execute under the separate `churn-test` target. | **REAL JAVA COMPILE + DATA CHECK; EXECUTION TESTS ARE SEPARATE.** |
+| `antivirus` | Builds C and C++ libraries, native/test executables, and the native core. | **REAL BUILD.** The test binaries are built by `all`; running the full behavioral suite is the separate `antivirus-test` target. |
+| `registry` | The root target runs `build-registry.sh`; the Registry 3.0 workflow separately compiles and tests on Linux, macOS, and Windows. | **DEDICATED CROSS-PLATFORM PASS** for the Registry 3.0 workflow; do not infer that every registry export/integration target was exercised by that workflow. |
+| `premium-vms` | Depends on Core and runs `make all` independently in each of the eleven generation directories, failing on the first error. | **REAL PER-GENERATION BUILD.** Dedicated VM conformance run `43619118411` built and executed all eleven on its tested commit. |
+| `ballum` | Builds the native OS display library only when host display dependencies pass the check; otherwise it falls back to the portable test. | **HOST-CONDITIONAL.** A green root `make all` can mean the fallback test passed, not that the native display library was built. |
+| `api-docs` | Runs the API documentation generation/build script. | **DOCUMENTATION BUILD**, not a runtime module build; latest recorded dedicated run is older than the current source baseline. |
+
+### VM-specific CI evidence
+
+The dedicated VM conformance run `43619118411` completed successfully with these steps:
+
+- Built the Basic Native VM and compiler.
+- Built all eleven Premium VM generations.
+- Executed the Basic Native VM and all eleven Premium VMs.
+- Ran each Premium VM admission self-check.
+- Verified all Standard VM Modium manifests.
+- Ran steady-state VM arithmetic benchmarks.
+
+The VM arithmetic workflow `43619118403` also built the Basic Native VM and Premium generations 1–11, then ran a five-sample arithmetic matrix across all twelve targets. These are substantive build-and-execution results, but both runs predate the latest native portability source baseline. The current portability workflow `43629021139` independently confirms the Core build and the VM regression suite on Linux/macOS; Windows is still executing its full VM regression.
+
+### Aggregate-build conclusion
+
+**The repository has not yet demonstrated that every row in the root `make all` target compiles and completes perfectly on all three supported operating systems.** The root aggregate currently mixes real native builds, data/documentation checks, package-presence checks, and host-conditional fallbacks. Several separate test targets are not dependencies of `make all`. The current GitHub Actions evidence does not include a fresh, successful full root `make all` run on Linux, macOS, and Windows at the same source commit.
+
+Do not mark the full repository build green until a clean-checkout aggregate build and the relevant separate test/install targets complete on each supported OS. In particular, the IDE and scripting entries need actual build/compile artifacts before they can be described as compiled modules.
+
+---
+
 ## Platform qualification matrix
 
 | Platform | Evidence at this status date | Overall assessment |
