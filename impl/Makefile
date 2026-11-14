@@ -38,6 +38,17 @@ else
   endif
 endif
 
+# GNU Make's built-in CC=cc may not exist in a MinGW UCRT64 installation.
+# Preserve caller overrides, but select the packaged GCC driver by default.
+ifeq ($(PLATFORM),windows)
+  ifeq ($(origin CC),default)
+    CC := gcc
+  endif
+  ifeq ($(origin CXX),default)
+    CXX := g++
+  endif
+endif
+
 CFLAGS ?= -std=c11 -O2 -Wall -Wextra $(THREADFLAG)
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra $(THREADFLAG)
 # Automatic header-dependency tracking. -MMD writes a .d file per object listing
