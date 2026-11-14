@@ -3,7 +3,11 @@ CXX ?= c++
 JAVA ?= java
 JAVAC ?= javac
 BUILD ?= ../build/natural-tests
-EXE ?=
+ifeq ($(OS),Windows_NT)
+  EXE ?= .exe
+else
+  EXE ?=
+endif
 CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wformat=2 -Werror
 CXXFLAGS ?= -std=c++17 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wformat=2 -Werror
 
