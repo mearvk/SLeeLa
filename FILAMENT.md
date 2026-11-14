@@ -532,3 +532,12 @@ The install-all test is intentionally isolated to ephemeral GitHub-hosted VMs be
 - The first draft of the root workflow failed before scheduling jobs due to a workflow-definition issue; it was replaced with separate POSIX and Windows jobs. The corrected workflow is the one linked above.
 
 **Qualification rule:** the root build is not green until all three root build jobs pass. The installation pipeline is not green until the staged user-local and system installs, installed-product smoke tests, guided installer checks, and sandboxed install-all/uninstall-all checks pass. Pending and queued runs remain pending.
+
+
+### Final dispatcher ordering refresh — 2026-11-14
+
+The Premium VM root loop now runs both `all` and `test` for every generation `001–011`; each `test` invokes that VM's `--selfcheck`. The root `guess` and `help` output were synchronized with the expanded target order, including the new test stages.
+
+Latest root Makefile qualification revision: `9a51ccf4018c02792ac29f6c108251c48f6f6528`.
+
+Latest root build/install workflow run: [43638851371](https://github.com/mearvk/SLeeLa/actions/runs/43638851371) — queued at the last refresh. It includes the current dispatcher, Premium VM selfchecks, install-all home-directory resolver, and guided installer gate tests. No pass is claimed until its platform jobs and dependent installation jobs complete.
