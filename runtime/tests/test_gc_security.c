@@ -90,7 +90,9 @@ static void test_external_payload_ownership(void) {
 static void test_managed_heap_limit(void) {
     GarbageCollector gc;
     gc_init(&gc, 1024u * 1024u);
-    assert(gc_limit(&gc) == 512u * 1024u * 1024u);
+    /* The runtime default was raised to 1 GiB for large managed arrays.
+       This checks the configured limit only; it does not allocate that memory. */
+    assert(gc_limit(&gc) == 1024u * 1024u * 1024u);
     assert(gc_set_limit(&gc, sizeof(Node)) == 1);
     SLGCObject *first = gc_allocate(&gc, sizeof(Node), NULL, NULL, NULL);
     assert(first);
