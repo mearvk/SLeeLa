@@ -26,4 +26,4 @@ $JAVA_BIN -cp "$BUILD/java" sleela.regex.SleelaRegexNaturalTest
 "$ROOT/test-suites/test_sleela_sources.sh"
 "$SCRIPT_DIR/test_symbol_exhaustiveness.sh"
 
-printf '%s\\n' 'Natural Form C/C++/Java tests and SLeeLa source inventory: PASS'
+printf '%s\n' 'Natural Form C/C++/Java tests and SLeeLa source inventory: PASS'
