@@ -107,6 +107,8 @@ class JConvRules {
      built-in, so the translator qualifies such calls with this. or the class
      name when the class declares the method. >>
   boolean isBuiltinCallName(String n) {
+    < the qualify rows of conversion.model (170 measured names); the list below is the fallback when the model was not read >
+    if (this.model != null && this.model.qualifyN > 0) { return this.model.isQualifyName(n); }
     if (n == "read" || n == "write" || n == "sleep" || n == "join") { return true; }
     if (n == "lock" || n == "unlock" || n == "send" || n == "recv") { return true; }
     if (n == "spawn" || n == "listen" || n == "accept" || n == "connect") { return true; }

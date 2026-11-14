@@ -6,9 +6,10 @@ used as a Java identifier in a `#sleela 3.1` / `spark;` program and run with
 `impl/build/sleela`: as a local, a parameter and a field (`var`), and as a
 method declared and called only through `this.m()` / `obj.m()` (`methodq`).
 
-This is data for `conversion.model`. It is not yet a model row kind: the
-sleelactl loader (`sleelactl/convert/conv_model.c`) rejects unknown kinds, so
-adding `rename` / `qualify` rows needs a one-line entry in its table first.
+The qualify list below is in `conversion.model` as `qualify` rows (section 9d,
+2026-11-14); `sleelactl/convert/conv_model.c` accepts the kind, and
+lib/java/converter reads it (`JConvRules.isBuiltinCallName`). The renames are
+not model rows yet: each converter keeps its own rename list.
 
 ## Must be renamed (13)
 
@@ -43,8 +44,9 @@ declared methods of the converted tree only, not of library calls.
 
 ## Fine as a variable; as a method only when every call is qualified (170)
 
-An unqualified call `m(...)` reaches the VM built-in instead. lib/java/converter
-qualifies only about 40 of these (`JConvRules.isBuiltinCallName`).
+An unqualified call `m(...)` reaches the VM built-in instead. Both converters now
+qualify all of these (lib/java/converter from the model since 0.7.8; sleelactl from
+`builtin_names.h`).
 
 `accept` `arrayGet` `arrayLength` `arrayNew` `arrayPush` `arraySet` `audioAdd` `audioClose` `audioControls` `audioNew` `audioPlatform` `audioRender` `audioValidate` `bestOfArch` `bestOfArchParam` `bestOfArchRealized` `bestOfArchState` `bestOfBest` `bestOfCandidate` `bestOfCandidateArch` `bestOfCertainty` `bestOfChoice` `bestOfClose` `bestOfCostBudget` `bestOfJitter` `bestOfLoss` `bestOfMean` `bestOfMinVersion` `bestOfNew` `bestOfRecord` `bestOfReport` `bestOfScore` `bestOfWeight` `bigadd` `bigdiv` `bigdivmod` `bigisqrt` `bigmul` `bigsub` `conduct` `congruent` `degreemax` `fifoCreate` `ideaCanvasActiveBackend` `ideaCanvasAdvance` `ideaCanvasCols` `ideaCanvasCount` `ideaCanvasCreate` `ideaCanvasDestroy` `ideaCanvasExcite` `ideaCanvasGpuAvailable` `ideaCanvasHasRenderer` `ideaCanvasIntensityAt` `ideaCanvasMeasuredHz` `ideaCanvasMigrate` `ideaCanvasOpenWindow` `ideaCanvasPolicy` `ideaCanvasPresent` `ideaCanvasRows` `ideaCanvasRun` `ideaCanvasSetBackendPolicy` `ideaCanvasSetParams` `ideaCanvasShouldClose` `ideaCanvasStep` `ideaCanvasTimestep` `insight` `javaStringCharAt` `javaStringCodePointAt` `javaStringCodePointCount` `javaStringCompareTo` `javaStringConcat` `javaStringFromCodeUnit` `javaStringFromCodeUnits` `javaStringFromUtf8` `javaStringHashCode` `javaStringLength` `javaStringOffsetByCodePoints` `javaStringSubstring` `javaStringToUtf8` `join` `listen` `lock` `nativeCall` `nativeClose` `nativeOpen` `npfsCreate` `openFile` `osCapability` `osChangeDir` `osCurrentDir` `osExists` `osFileSize` `osGetEnv` `osHostName` `osIsDir` `osKill` `osMakeDir` `osPlatform` `osProcessClose` `osProcessId` `osRemove` `osRename` `osRun` `osSetEnv` `osSpawn` `osTempDir` `osUserName` `osWait` `oslsCronNextAfter` `oslsCronValidate` `oslsEnumerateEnvironment` `oslsEnumerateProcesses` `oslsGetAvailableMemory` `oslsGetCPUInfo` `oslsGetCapabilities` `oslsGetDiskSpace` `oslsGetEnvironmentValue` `oslsGetFileInfo` `oslsGetMemoryInfo` `oslsGetNativeError` `oslsGetNetworkInterfaces` `oslsGetPathInfo` `oslsGetRuntimeInfo` `oslsGetSystemLoad` `oslsGetTimezoneInfo` `oslsGetVolumeInfo` `oslsListDirectory` `oslsNetworkResolve` `oslsPathJoin` `oslsPathNormalize` `oslsPathResolve` `oslsProcessInfo` `oslsSystemInfo` `pipe` `pipePeer` `read` `recv` `role` `route` `sleep` `sockclose` `sockread` `sockwrite` `spawn` `structPack` `structUnpack` `synchroClose` `synchroDispatch` `synchroLoss` `synchroMax` `synchroMean` `synchroMin` `synchroOpen` `synchroP95` `synchroReceived` `synchroReport` `synchroSent` `sysdepth` `timeHttpDate` `timeJson` `timeLocation` `timeMonotonicNanos` `timeNtp` `timePrecisionMillis` `timeSetLocation` `timeUtcMillis` `timeUtcNanos` `unlinkFile` `unlock` `write`
 

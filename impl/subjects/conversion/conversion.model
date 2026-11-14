@@ -34,6 +34,8 @@
 #   ret <owner> <method> <return type or @arg0>
 #   field <owner> <name> <type>
 #   call <java owner.method> <sleela call template>   ($args)
+#   qualify <name>                               (a VM built-in call name: an own method of that
+#                                                 name is called qualified, this.m() / Owner.m())
 #   unsupported <construct> <reason>             (diagnostic text, fail closed)
 #
 # Template variables: $a $b operands, $t target type, $recv receiver, $args
@@ -232,6 +234,182 @@ chartext StringBuilder append 0
 chartext StringBuilder insert 1
 chartext StringBuffer append 0
 chartext StringBuffer insert 1
+
+
+# ---- 9d. Built-in call names (measured 2026-11-14, IDENTIFIER-COLLISIONS.md). An unqualified
+#          call m(...) reaches the VM built-in, so a Java method of one of these names is
+#          called as this.m(...) or Owner.m(...). The names are fine as variables and as
+#          method declarations. sleelactl keeps the same list in builtin_names.h.
+qualify accept
+qualify arrayGet
+qualify arrayLength
+qualify arrayNew
+qualify arrayPush
+qualify arraySet
+qualify audioAdd
+qualify audioClose
+qualify audioControls
+qualify audioNew
+qualify audioPlatform
+qualify audioRender
+qualify audioValidate
+qualify bestOfArch
+qualify bestOfArchParam
+qualify bestOfArchRealized
+qualify bestOfArchState
+qualify bestOfBest
+qualify bestOfCandidate
+qualify bestOfCandidateArch
+qualify bestOfCertainty
+qualify bestOfChoice
+qualify bestOfClose
+qualify bestOfCostBudget
+qualify bestOfJitter
+qualify bestOfLoss
+qualify bestOfMean
+qualify bestOfMinVersion
+qualify bestOfNew
+qualify bestOfRecord
+qualify bestOfReport
+qualify bestOfScore
+qualify bestOfWeight
+qualify bigadd
+qualify bigdiv
+qualify bigdivmod
+qualify bigisqrt
+qualify bigmul
+qualify bigsub
+qualify conduct
+qualify congruent
+qualify degreemax
+qualify fifoCreate
+qualify ideaCanvasActiveBackend
+qualify ideaCanvasAdvance
+qualify ideaCanvasCols
+qualify ideaCanvasCount
+qualify ideaCanvasCreate
+qualify ideaCanvasDestroy
+qualify ideaCanvasExcite
+qualify ideaCanvasGpuAvailable
+qualify ideaCanvasHasRenderer
+qualify ideaCanvasIntensityAt
+qualify ideaCanvasMeasuredHz
+qualify ideaCanvasMigrate
+qualify ideaCanvasOpenWindow
+qualify ideaCanvasPolicy
+qualify ideaCanvasPresent
+qualify ideaCanvasRows
+qualify ideaCanvasRun
+qualify ideaCanvasSetBackendPolicy
+qualify ideaCanvasSetParams
+qualify ideaCanvasShouldClose
+qualify ideaCanvasStep
+qualify ideaCanvasTimestep
+qualify insight
+qualify javaStringCharAt
+qualify javaStringCodePointAt
+qualify javaStringCodePointCount
+qualify javaStringCompareTo
+qualify javaStringConcat
+qualify javaStringFromCodeUnit
+qualify javaStringFromCodeUnits
+qualify javaStringFromUtf8
+qualify javaStringHashCode
+qualify javaStringLength
+qualify javaStringOffsetByCodePoints
+qualify javaStringSubstring
+qualify javaStringToUtf8
+qualify join
+qualify listen
+qualify lock
+qualify nativeCall
+qualify nativeClose
+qualify nativeOpen
+qualify npfsCreate
+qualify openFile
+qualify osCapability
+qualify osChangeDir
+qualify osCurrentDir
+qualify osExists
+qualify osFileSize
+qualify osGetEnv
+qualify osHostName
+qualify osIsDir
+qualify osKill
+qualify osMakeDir
+qualify osPlatform
+qualify osProcessClose
+qualify osProcessId
+qualify osRemove
+qualify osRename
+qualify osRun
+qualify osSetEnv
+qualify osSpawn
+qualify osTempDir
+qualify osUserName
+qualify osWait
+qualify oslsCronNextAfter
+qualify oslsCronValidate
+qualify oslsEnumerateEnvironment
+qualify oslsEnumerateProcesses
+qualify oslsGetAvailableMemory
+qualify oslsGetCPUInfo
+qualify oslsGetCapabilities
+qualify oslsGetDiskSpace
+qualify oslsGetEnvironmentValue
+qualify oslsGetFileInfo
+qualify oslsGetMemoryInfo
+qualify oslsGetNativeError
+qualify oslsGetNetworkInterfaces
+qualify oslsGetPathInfo
+qualify oslsGetRuntimeInfo
+qualify oslsGetSystemLoad
+qualify oslsGetTimezoneInfo
+qualify oslsGetVolumeInfo
+qualify oslsListDirectory
+qualify oslsNetworkResolve
+qualify oslsPathJoin
+qualify oslsPathNormalize
+qualify oslsPathResolve
+qualify oslsProcessInfo
+qualify oslsSystemInfo
+qualify pipe
+qualify pipePeer
+qualify read
+qualify recv
+qualify role
+qualify route
+qualify sleep
+qualify sockclose
+qualify sockread
+qualify sockwrite
+qualify spawn
+qualify structPack
+qualify structUnpack
+qualify synchroClose
+qualify synchroDispatch
+qualify synchroLoss
+qualify synchroMax
+qualify synchroMean
+qualify synchroMin
+qualify synchroOpen
+qualify synchroP95
+qualify synchroReceived
+qualify synchroReport
+qualify synchroSent
+qualify sysdepth
+qualify timeHttpDate
+qualify timeJson
+qualify timeLocation
+qualify timeMonotonicNanos
+qualify timeNtp
+qualify timePrecisionMillis
+qualify timeSetLocation
+qualify timeUtcMillis
+qualify timeUtcNanos
+qualify unlinkFile
+qualify unlock
+qualify write
 
 # ---- 10. Result types of well-known library members. This is TYPING only; the
 #          behaviour of the member comes from the lib/java tier at run time.

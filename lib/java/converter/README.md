@@ -3,7 +3,7 @@
 > **Container.** Java container content (`SLEELA.syntax` section 38.4). Nothing
 > here is part of the SLeeLa specification or adds syntax to SLeeLa.
 
-Status: **0.7.7, best effort (2026-11-14).** Output stays at syntax **3.1** (also
+Status: **0.7.8, best effort (2026-11-14).** Output stays at syntax **3.1** (also
 written 3.01) by the owner's decision; syntax 3.1 sections 45 and 46 forms are not used
 (`.kiro/steering/java-converter-lib.md`). The operand laws come from the shared
 conversion model, `impl/subjects/conversion/conversion.model` (read by
@@ -491,6 +491,7 @@ in `JConvRules` that works around it, re-run the converter, and update this tabl
 | Version | Change |
 |---|---|
 | 0.1.0 | First cut: walk, lex, rewrite, translate, stubs, report |
+| 0.7.8 | The built-in call names come from the model: new `qualify` rows in `conversion.model` (170 measured names, section 9d; `sleelactl/convert/conv_model.c` accepts the kind, its differential suite 32/32). `JConvRules.isBuiltinCallName` reads them (it knew about 40), so an own method named like any VM built-in is called `this.m()` / `Owner.m()`. New sample `samples/qualify`, identical to OpenJDK |
 | 0.7.7 | Rule 1b: a name `next` that is not called (variable, parameter, field) becomes `next_`; SLeeLa read it as the integer 1 with no error. `next()` calls keep their name. Measured collisions: `impl/subjects/conversion/IDENTIFIER-COLLISIONS.md`. New sample `samples/nextname`, 2 of 2 lines identical to OpenJDK |
 | 0.7.6 | Model rows applied: every `cast` row (double to integral saturates, NaN is 0) and the `chartext` rows (a char argument of `StringBuilder.append` / `insert` is text). Intersection casts lowered (rule 8f). New sample `samples/model`, 12 of 12 lines identical to OpenJDK |
 | 0.7.5 | Bounded memory: `JCONV_BATCH` (default 500) ends a VM run after that many files and `run-converter.sh` starts the next after the last one, reusing the per-file state of 0.7.2 (a planned stop is not a failure). Whole JDK: peak 335 MB (was about 1.7 GB), output identical |
