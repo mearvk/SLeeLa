@@ -675,3 +675,35 @@ The CI logs show the runtime memory manager reporting a 2 GiB hard limit. The GC
 - [ ] Windows ConPTY teardown hang is resolved or separately documented as a non-compilation runtime limitation with an explicit local verification record.
 
 **Current status:** two targeted CI build/test fixes committed; retest required. Ubuntu/macOS native portability remain PASS from run 43647408723. Windows native compilation completed through the terminal smoke's visible output, but ConPTY teardown remains unqualified. Do not label the overall root build/install pipeline qualified until its new matrix and dependent installation jobs pass.
+
+
+## Root build qualification — repair retest cycle 3 — 2026-11-14
+
+**Source head at audit:** `4714984299f8326dda2f922dd76350005e6629fb` (latest recorded master commit; subsequent FILAMENT update will trigger a fresh root workflow because the workflow path filter now includes this register).
+
+### Verified repairs in source
+
+| Issue from run 43647374630 | Source correction | Current source inspection |
+|---|---|---|
+| Ubuntu/macOS runtime test expected 512 MiB while collector default is 1 GiB | `runtime/tests/test_gc_security.c` now asserts 1 GiB and explicitly says this is a configuration-only test, not a large allocation | **PATCH PRESENT — RETEST REQUIRED** |
+| Windows POSIX regex unresolved symbols | `regex/Makefile` links `-lregex` on Windows | **PATCH PRESENT — RETEST REQUIRED** |
+| Windows missing regex library package | Root MSYS2 setup installs `mingw-w64-ucrt-x86_64-libsystre` | **PATCH PRESENT — RETEST REQUIRED** |
+| Windows ConPTY teardown timeout | Child command now uses `cmd.exe /D /C "echo terminal-ok & exit /b 0"`; portability workflow isolates the terminal smoke before the full VM suite | **MITIGATION PRESENT — RUNTIME RETEST REQUIRED** |
+
+### Current CI execution plan and acceptance criteria
+
+The root qualification workflow is configured to run on pushes to `master` and `main`; its path filter now also includes `FILAMENT.md`, allowing this assurance-register update to trigger a fresh run. Native C/C++ portability is configured on every push to those branches.
+
+1. [ ] Fresh root Ubuntu build: complete `make clean build SLEELA_ADVANCED_BUILD=no`, then verify all declared root products.
+2. [ ] Fresh root macOS build: same complete build and product verification.
+3. [ ] Fresh root Windows build: verify JDK preflight, POSIX regex link and execution, complete `make clean build SLEELA_ADVANCED_BUILD=no`, and staged guided-installer smoke.
+4. [ ] Fresh native portability Ubuntu/macOS: complete native build, ISA/OSLS, VM regression, and platform smoke tests.
+5. [ ] Fresh native portability Windows: ConPTY teardown smoke must finish within its 3-minute step timeout, followed by the full VM regression and remaining native smoke tests.
+6. [ ] After root POSIX matrix passes, staged-install jobs must execute and pass user-local and system staged install/smoke/uninstall; install-all/uninstall-all sandbox jobs must execute and pass on Ubuntu and macOS.
+7. [ ] Record exact run IDs, commit SHAs, job outcomes, and any residual failures here. No skipped dependent job is a PASS.
+
+### Current classification
+
+**SOURCE REPAIRS PRESENT; FRESH CI RESULTS NOT YET VERIFIED.** The prior failures are attributable to a stale GC assertion and a missing Windows POSIX-regex dependency/link flag. These are test/build integration defects, not evidence of a 512 MiB allocation failure. The ConPTY issue remains a Windows runtime teardown qualification item; do not mark it compiled locally or passed solely because native compilation succeeded.
+
+The CI workflow logs are authoritative for hosted qualification. A green result on one OS or one module does not qualify the aggregate root build/install pipeline.
