@@ -1,5 +1,7 @@
 name: Root Build and Install Qualification
 
+# Re-run qualification on master after the November 14 repair-cycle cancellations.
+
 on:
   push:
     branches: [master, main]
