@@ -5,12 +5,17 @@ AR       ?= ar
 CFLAGS   ?= -std=c11 -O2 -Wall -Wextra -Wpedantic -Wno-misleading-indentation
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -Wpedantic
 BUILD    := build
-BIN      := $(BUILD)/sleela-registry
-V3_BIN   := $(BUILD)/sleela-registry3
+ifeq ($(OS),Windows_NT)
+  EXE := .exe
+else
+  EXE :=
+endif
+BIN      := $(BUILD)/sleela-registry$(EXE)
+V3_BIN   := $(BUILD)/sleela-registry3$(EXE)
 LIB      := $(BUILD)/libslregistry.a
 V3_OBJ   := $(BUILD)/sleela_registry_v3.o
-V3_TEST  := $(BUILD)/test_registry_v3
-CPP_TEST := $(BUILD)/test_registry_v3_cpp
+V3_TEST  := $(BUILD)/test_registry_v3$(EXE)
+CPP_TEST := $(BUILD)/test_registry_v3_cpp$(EXE)
 
 .PHONY: all lib run test clean
 all: $(BIN) $(V3_BIN)
