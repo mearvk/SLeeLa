@@ -10,13 +10,15 @@ for p in tools/verify-before-execution.py security/sha256-manifest.json impl/Mak
          impl/xlt/Makefile lib/xlt/README.md lib/xlt/examples/epyc-ddr2.xlt; do
   if [ -f "$p" ]; then echo "PASS: $p"; else echo "FAIL: missing $p"; fail=1; fi
 done
-if [ -x impl/build/sleela ]; then
-  echo "INFO: local executable: $ROOT/impl/build/sleela"
+if [ -x impl/build/sleela ] || [ -x impl/build/sleela.exe ]; then
+  if [ -x impl/build/sleela.exe ]; then local_sleela="$ROOT/impl/build/sleela.exe"; else local_sleela="$ROOT/impl/build/sleela"; fi
+  echo "INFO: local executable: $local_sleela"
 else
   echo "WARN: impl/build/sleela is not built yet"
 fi
-if [ -x impl/xlt/build/xltc ]; then
-  echo "INFO: local executable: $ROOT/impl/xlt/build/xltc"
+if [ -x impl/xlt/build/xltc ] || [ -x impl/xlt/build/xltc.exe ]; then
+  if [ -x impl/xlt/build/xltc.exe ]; then local_xltc="$ROOT/impl/xlt/build/xltc.exe"; else local_xltc="$ROOT/impl/xlt/build/xltc"; fi
+  echo "INFO: local executable: $local_xltc"
 else
   echo "WARN: impl/xlt/build/xltc is not built yet (run scripts/clean-build.sh)"
 fi
