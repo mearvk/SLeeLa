@@ -7,6 +7,7 @@
 CC ?= cc
 CXX ?= c++
 AR ?= ar
+PYTHON ?= python3
 CPPFLAGS ?=
 CFLAGS ?= -O2 -Wall -Wextra -Wpedantic
 CXXFLAGS ?= -O2 -Wall -Wextra -Wpedantic
@@ -112,8 +113,8 @@ test check: all
 	"$(TEST_CPP_BIN)"
 	$(MAKE) native-test
 	$(MAKE) content-test
-	python3 -m py_compile tools/sleelavirin_scan.py tools/sleelavirin_clamav.py tools/sleelavirin_import_clamav.py tools/sleelavirin_update_clamav.py tools/sleelavirin_verify_signature.py tools/sleelavirin_manifest.py tests/test_tools.py tests/test_update_clamav.py tests/test_verify_signature.py tests/test_scan_report.py tests/test_eicar_integration.py tests/test_manifest.py
-	python3 -m unittest discover -s tests -p 'test_*.py' -v
+	$(PYTHON) -m py_compile tools/sleelavirin_scan.py tools/sleelavirin_clamav.py tools/sleelavirin_import_clamav.py tools/sleelavirin_update_clamav.py tools/sleelavirin_verify_signature.py tools/sleelavirin_manifest.py tests/test_tools.py tests/test_update_clamav.py tests/test_verify_signature.py tests/test_scan_report.py tests/test_eicar_integration.py tests/test_manifest.py
+	$(PYTHON) -m unittest discover -s tests -p 'test_*.py' -v
 	$(MAKE) definitions-check
 
 native-test: $(NATIVE_BIN)
@@ -134,28 +135,28 @@ cpp-test: $(TEST_CPP_BIN)
 	"$(TEST_CPP_BIN)"
 
 clamav: clamav-check
-	python3 tools/sleelavirin_clamav.py --help >/dev/null
+	$(PYTHON) tools/sleelavirin_clamav.py --help >/dev/null
 
 clamav-update:
-	python3 tools/sleelavirin_update_clamav.py --root signatures/clamav-cache
+	$(PYTHON) tools/sleelavirin_update_clamav.py --root signatures/clamav-cache
 
 clamav-snapshot-check:
 	@test -n "$(SNAPSHOT)" || { echo "Usage: make clamav-snapshot-check SNAPSHOT=signatures/clamav-cache/snapshots/<id>" >&2; exit 2; }
-	python3 tools/sleelavirin_update_clamav.py --check "$(SNAPSHOT)"
+	$(PYTHON) tools/sleelavirin_update_clamav.py --check "$(SNAPSHOT)"
 
 definitions-import:
-	@echo "Usage: python3 tools/sleelavirin_import_clamav.py --source DIR --output signatures/native-sha256.txt"
+	@echo "Usage: $(PYTHON) tools/sleelavirin_import_clamav.py --source DIR --output signatures/native-sha256.txt"
 	@echo "Only compatible extracted text .hsb SHA-256 records are imported."
 
 definitions-check:
-	python3 tools/sleelavirin_import_clamav.py --check signatures/native-sha256.txt
+	$(PYTHON) tools/sleelavirin_import_clamav.py --check signatures/native-sha256.txt
 
 integrity-manifest:
-	python3 tools/sleelavirin_manifest.py --root . --write build/INTEGRITY-MANIFEST.json
+	$(PYTHON) tools/sleelavirin_manifest.py --root . --write build/INTEGRITY-MANIFEST.json
 
 integrity-check:
 	@test -n "$(MANIFEST)" || { echo "Usage: make integrity-check MANIFEST=PATH" >&2; exit 2; }
-	python3 tools/sleelavirin_manifest.py --root . --verify "$(MANIFEST)"
+	$(PYTHON) tools/sleelavirin_manifest.py --root . --verify "$(MANIFEST)"
 
 clamav-check:
 	@command -v clamscan >/dev/null 2>&1 || { echo "ClamAV not found; install ClamAV and ensure clamscan is on PATH." >&2; exit 2; }
@@ -180,6 +181,6 @@ help:
 	@echo "  make integrity-check MANIFEST=PATH Verify hashes and detect missing/extra files"
 	@echo "  make clamav-update Retrieve and validate official ClamAV databases"
 	@echo "  make clamav-snapshot-check SNAPSHOT=DIR Verify snapshot SHA-256 manifest"
-	@echo "  python3 tools/sleelavirin_verify_signature.py --help Verify signed release artifacts"
+	@echo "  $(PYTHON) tools/sleelavirin_verify_signature.py --help Verify signed release artifacts"
 	@echo "  make clean    Remove antivirus/build/"
 	@echo "  CC=clang make Use Clang instead of the default C compiler"
