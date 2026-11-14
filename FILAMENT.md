@@ -296,3 +296,54 @@ Other independent Makefiles exist under Advantage, Audio, AutoCAD, CDMA, Compres
 ### Aggregate status after recipe audit
 
 **The root make all is a mixed build-and-validation aggregate, not a complete test or installation gate.** It compiles and links many real artifacts, executes some module tests, and performs several source/data/documentation checks; it also contains targets that only print descriptions or verify file presence. The explicit test targets and independent module Makefiles must be qualified separately. A repository-wide green status requires a clean build plus the relevant explicit tests and install lifecycle on Linux, macOS, and Windows at the same source commit.
+
+
+## Per-module Make qualification — continuation 2026-11-14
+
+This phase advances from recipe inspection to an explicit execution matrix. The Makefiles below were inspected on the current `master` tree after commit `68b1bb295b6b45ec9eef27b2d061f558b6c82e14`. This is a **static recipe audit**, not a claim that the commands were executed in this session. Results remain unqualified until clean builds/tests produce recorded exit codes and artifacts.
+
+### Module-level commands and evidence gates
+
+| Module | Clean build / test commands | What the commands actually qualify | Current FILAMENT status |
+|---|---|---|---|
+| Native Core / implementation VM | `make -C impl clean all`; then `make -C impl test`; also `make -C runtime clean test` | Core build produces the native executables and `libslcore.a`; Core test runs the declared VM/runtime regression list. The separate runtime test builds and executes GC/security and Java-bridge-injection tests. | **BUILD/TEST RETEST PENDING.** Current three-platform portability workflow is still running; do not infer the independent runtime suite from Core compilation. |
+| Standard VM registry (001–010) | Build Core first; run the registry/manifest validation and actual CLI load/configure/list/select/boot/guest-execution checks for each manifest | Ten registry records and manifest files must be exercised individually; a registry count or parse is not a boot test. | **REGISTERED; INDIVIDUAL EXECUTION MATRIX REQUIRED.** Prior VM conformance evidence is on an earlier commit. |
+| Premium VM generations (001–011) | `make premium-vms`; then for each `n`: `make -C sleela-virtual-machine/NN test` | Root target builds each generation; each generation's `test` target runs its executable with `--selfcheck`. Root `premium-vms` calls `all`, not `test`. | **BUILD TARGET WIRED; PER-GENERATION SELF-CHECK NOT IN ROOT TARGET.** Execute and record all eleven self-checks on the current baseline. |
+| Java 28 bridge | `make -C java28 clean all`; then `make -C java28 demo` | `all` compiles Java classes, the native TCP-port driver, and JNI shared library; `demo` executes both port and JNI channels. Requires a full JDK/JNI headers. | **COMPILE AND DEMO QUALIFICATION REQUIRED.** Root aggregate currently builds only; record JDK version and JNI platform. |
+| XLT compiler | `make -C impl/xlt clean all check` | Builds the C++ compiler and runs the bundled EPYC DDR2 example. | **BUILD + SMOKE COMMAND DEFINED; FRESH RESULT REQUIRED.** |
+| Regex | `make -C regex clean all` | Compiles C/C++ and natural-language C/C++ binaries, executes those smoke binaries, runs the Java test, and delegates to nested test suites. | **BUILD + TEST COMMAND DEFINED; FRESH RESULT REQUIRED.** |
+| Compiler package | `make -C lib/compiler clean all` | Compiles C/C++ front-end objects, runs the multi-language framework ABI self-test, builds the runtime compiler executable, inventories the library, and runs structural example checks. Sanity/tutorial recipes are descriptive output. | **BUILD + ABI SELFTEST; SOURCE-EXAMPLE EXECUTION STILL DISTINCT.** |
+| Decompiler package | `make -C lib/decompiler clean all` | Compiles the C and C++ decompiler objects. Sanity/tutorial recipes print contract descriptions. | **OBJECT BUILD ONLY.** No executable decompiler self-test or fixture is wired; add one before calling the decompiler behavior qualified. |
+| VM package | `make -C lib/vm clean all` | Compiles six C and seven C++ VM-management/runtime objects. `cm-check`, `memory-guard-check`, `gc-check`, and `tutorial-check` print descriptions; they do not execute behavioral tests. | **OBJECT BUILD ONLY.** Use Core/runtime behavioral suites for execution evidence; do not count the descriptive checks as tests. |
+| Runtime GC/security services | `make -C runtime clean test` | Compiles and executes `test_gc_security` and `test_java_bridge_injection`; this is an independent Makefile and is not called by root `make all`. | **EXPLICIT TEST REQUIRED.** Include in the release matrix on Linux, macOS, and Windows where supported. |
+| Repository tests aggregate | `make -C tests clean check` | Runs the OpenSSL probe and compiles the aggregate native smoke/AI/recognition executables; the default `check` path does not execute the complete suite. | **COMPILE/CHECK ONLY.** Run the intended individual behavioral targets separately and report their names. |
+| Configuration | `make -C config clean test` | Validates configuration policy and compiles/runs location and VM-configuration smoke programs. | **BUILD + SMOKE COMMAND DEFINED; FRESH RESULT REQUIRED.** |
+| CommonRails | `make -C common-rails clean check` | Executes C, C++, and Java checks; SLeeLa/Nordshrift checks are conditional on the relevant executables being present. | **MIXED CHECK.** Record conditional skips separately from passes. |
+| Codecs | `make -C codecs clean all test` | Builds the static C/C++ codec archive and executes registry, manager, and FLAC-native tests. | **BUILD + TEST COMMAND DEFINED; ROOT ALL RUNS BUILD ONLY.** |
+| Churn | `make -C churn clean test` | Compiles all five Java constraint sets, validates JSON/XML/CSV/TXT data, and executes all five reports. | **BUILD + TEST COMMAND DEFINED; ROOT ALL RUNS COMPILE/DATA CHECK ONLY.** |
+| Antivirus / Sleelavirin | `make -C antivirus clean test` | Builds C/C++ libraries, scanner and test binaries, then executes native scanner, content-signature, C/C++, Python, and definition checks. | **BUILD + TEST COMMAND DEFINED; ROOT ALL DOES NOT RUN FULL TEST.** |
+| Registry | `make -C registry clean all test` | Builds the registry library/CLI and executes the C and C++ Registry 3.0 test programs. | **BUILD + TEST COMMAND DEFINED; FRESH RESULT REQUIRED.** |
+| Ballum | `make -C ballum clean test`; separately `make -C ballum check-deps all` and install/uninstall in a staged prefix | Portable tests execute without display dependencies. Native `all` depends on platform display libraries; dependency check and produced backend artifact must be recorded separately. | **PORTABLE TEST AND NATIVE BACKEND ARE DISTINCT GATES.** Root fallback is not evidence of a native backend build. |
+| Scripting | `make -C sleela-scripting clean all test` | Current rules assert source/specification/documentation/configuration/example/test file presence; no scripting compiler or interpreter is built or run. | **PRESENCE CHECK ONLY.** Not a compiled module. |
+| JetBrains / SLeeLa IDE | `make -C jetbrains all` | Current default target prints help; download targets acquire upstream IntelliJ sources. | **NO IDE BUILD.** No SLeeLa IDE artifact is produced or launched by this Makefile. |
+
+### Newly confirmed GC build/test boundary
+
+The native Core Makefile explicitly compiles `../runtime/garbage_collector.c` into the shared Core archive `impl/build/libslcore.a`. This confirms the collector is part of the Core build and the Premium runners' shared engine. Separately, `runtime/Makefile` has an executable `test` target that runs both GC/security and Java bridge-injection tests. The root `make all` does not invoke `make -C runtime test`, and the `lib/vm` package's `gc-check` is informational output only. Keep those three facts distinct in any GC pass claim.
+
+### Current portability workflow snapshot
+
+The latest inspected Native C and C++ Portability run is **43630812944**, on `master` commit `68b1bb295b6b45ec9eef27b2d061f558b6c82e14`. At the time of this record, its Windows 10+/MinGW-w64, macOS, and Ubuntu jobs were all **in progress**. Earlier run **43630413755** had Linux and macOS jobs completed successfully while Windows remained in progress. Neither run is a completed three-platform pass yet.
+
+The workflow snapshot is available at: https://github.com/mearvk/SLeeLa/actions/runs/43630812944
+
+### Next execution order
+
+1. Wait for run 43630812944 to finish; inspect all three jobs and retain Windows regression logs if it fails or times out.
+2. Execute clean Core build and Core regression tests on each supported OS; run the independent `runtime` test suite as a separate gate.
+3. Execute the Standard 001–010 selection/boot matrix and Premium 001–011 build plus `--selfcheck` matrix on the same commit.
+4. Execute Java 28 demos, XLT example, compiler ABI self-test, regex suites, configuration smoke tests, CommonRails, codecs, churn, antivirus, registry, and Ballum portable/native checks.
+5. Keep decompiler, scripting, and JetBrains explicitly unqualified until their Makefiles produce and test the missing executable artifacts.
+6. Update this register with exact commit SHA, command, platform, exit status, artifact, and test count. Do not mark a module PASS from a target name, a dry run, a help message, or a source-presence assertion.
+
+**Execution status for this continuation:** recipe inspection completed; no module build command was executed by this GitHub repository inspection. All commands above are the next verification gates, not reported passes.
