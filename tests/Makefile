@@ -44,7 +44,7 @@ nordshrift$(EXE): nordshrift_complete_smoke.cpp ../impl/nordshrift/complete/clas
 runtime$(EXE): runtime_smoke.cpp ../api/native/runtime/sleela_runtime.cpp
 	$(CXX) $(CXXFLAGS) $(THREADFLAGS) -I../api/native/runtime $^ -o $@
 
-network-security$(EXE): network_security_smoke.cpp ../api/native/network/sleela_network.cpp ../api/native/security/sleela_security.cpp
+network-security$(EXE): network_security_smoke.cpp ../api/native/network/sleela_network.cpp ../api/native/security/sleela_security.cpp | check-deps
 	$(CXX) $(CXXFLAGS) $(OPENSSL_CFLAGS) $^ $(OPENSSL_LIBS) $(NETWORK_PLATFORM_LIBS) -o $@
 
 neural-nets-xor$(EXE): ../artificial-intelligence/neural-nets/xor_example.c ../artificial-intelligence/neural-nets/neural_nets.c ../artificial-intelligence/neural-nets/neural_nets.h
