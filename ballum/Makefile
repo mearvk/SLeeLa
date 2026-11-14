@@ -171,12 +171,14 @@ check-deps:
 	@command -v "$(CC)"  >/dev/null 2>&1 && echo "  CC  $$($(CC) --version 2>/dev/null | head -n1)"  || { echo "  MISSING: $(CC)"; exit 1; }
 ifeq ($(PLATFORM),linux)
 	@missing=0; \
-	for p in x11 xrandr; do \
-	  if command -v "$(PKG_CONFIG)" >/dev/null 2>&1 && $(PKG_CONFIG) --exists $$p; then \
-	    echo "  AVAILABLE: $$p ($$($(PKG_CONFIG) --modversion $$p))"; \
-	  else echo "  MISSING: $$p development files"; missing=1; fi; \
+	pkgs="x11 xrandr"; \
+	if [ "$(BALLUM_X11_SHM)" = "1" ]; then pkgs="$pkgs xext"; fi; \
+	for p in $pkgs; do \
+	  if command -v "$(PKG_CONFIG)" >/dev/null 2>&1 && $(PKG_CONFIG) --exists $p; then \
+	    echo "  AVAILABLE: $p ($($(PKG_CONFIG) --modversion $p))"; \
+	  else echo "  MISSING: $p development files"; missing=1; fi; \
 	done; \
-	if [ $$missing -ne 0 ]; then \
+	if [ $missing -ne 0 ]; then \
 	  echo "  -> run 'make deps' (reports how to install) or 'make deps BALLUM_DEPS_INSTALL=1' to install."; \
 	  echo "     Ballum still builds its portable 'test' target without these."; \
 	  exit 1; \
@@ -190,8 +192,13 @@ else ifeq ($(PLATFORM),macos)
 	  || { echo "  MISSING: Apple frameworks -- install the Xcode command-line tools: xcode-select --install"; exit 1; }
 	@rm -f $(BUILD)/.depcheck $(BUILD)/.depcheck.m
 else
-	@echo "  Windows system import libs (gdi32/user32) ship with the Windows SDK / MinGW."
-	@echo "  Build with the MSVC or MinGW toolchain; no download is required."
+	@echo "  Checking Windows system import libraries (gdi32/user32)..."
+	@mkdir -p "$(BUILD)"
+	@printf 'int main(void){return 0;}\\n' > "$(BUILD)/.depcheck.c"
+	@$(CC) "$(BUILD)/.depcheck.c" -o "$(BUILD)/.depcheck$(EXE)" $(BACKEND_LIBS) >/dev/null 2>&1 \\
+	  && echo "  AVAILABLE: gdi32/user32" \\
+	  || { rm -f "$(BUILD)/.depcheck.c" "$(BUILD)/.depcheck$(EXE)"; echo "  MISSING: MinGW Windows SDK import libraries (gdi32/user32); use the MSYS2 UCRT64 toolchain." >&2; exit 1; }
+	@rm -f "$(BUILD)/.depcheck.c" "$(BUILD)/.depcheck$(EXE)"
 endif
 	@echo "ballum deps: OK for PLATFORM=$(PLATFORM)"
 
