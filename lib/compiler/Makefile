@@ -2,6 +2,7 @@
 # Max Rupplin - MEARVK LLC - 2026
 CC ?= cc
 CXX ?= c++
+PYTHON ?= python3
 CPPFLAGS ?= -Iinclude
 CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic
 CXXFLAGS ?= -std=c++17 -Wall -Wextra -Wpedantic
@@ -31,7 +32,7 @@ runtime:
 	$(MAKE) -C ../../impl build/sleela SLEELA_SHA256_MANIFEST="$(SLEELA_SHA256_MANIFEST)"
 
 inventory:
-	python3 ../../tools/sleela-build.py inventory-lib
+	$(PYTHON) ../../tools/sleela-build.py inventory-lib
 
 tutorial-check:
 	@printf '%s\n' 'SLeeLa compiler tutorial check'
@@ -40,7 +41,7 @@ tutorial-check:
 # Structural CI checks for the four compiler-construction example levels.
 # Complementary to, not a substitute for, compiling the .sleela sources.
 examples-check:
-	python3 examples/check_examples.py
+	$(PYTHON) examples/check_examples.py
 
 sanity:
 	@printf '%s\n' 'SLeeLa compiler package sanity check'
