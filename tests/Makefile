@@ -4,6 +4,16 @@ CXX ?= c++
 CXXFLAGS ?= -std=c++17 -O2 -Wall -Wextra -pedantic
 LDLIBS ?= -lm
 PYTHON ?= python3
+OPENSSL_CFLAGS ?= $(shell pkg-config --cflags openssl 2>/dev/null)
+OPENSSL_LIBS ?= $(shell pkg-config --libs openssl 2>/dev/null)
+ifeq ($(strip $(OPENSSL_LIBS)),)
+  OPENSSL_LIBS := -lcrypto
+endif
+ifeq ($(OS),Windows_NT)
+  NETWORK_PLATFORM_LIBS := -lws2_32
+else
+  NETWORK_PLATFORM_LIBS :=
+endif
 
 ifeq ($(OS),Windows_NT)
   EXE := .exe
@@ -20,7 +30,7 @@ all: check-deps memory$(EXE) reflection$(EXE) nordshrift$(EXE) runtime$(EXE) net
 # The network/security smoke target uses OpenSSL EVP. Fail early with an
 # actionable message rather than a later opaque -lcrypto link error.
 check-deps:
-	@echo '#include <openssl/evp.h>' | $(CXX) $(CXXFLAGS) -x c++ - -fsyntax-only >/dev/null 2>&1 || { echo "tests: OpenSSL headers are required for network-security." >&2; exit 1; }; echo 'int main(void) { return 0; }' | $(CXX) $(CXXFLAGS) -x c++ - -lcrypto -o .openssl-probe$(EXE) >/dev/null 2>&1 || { echo "tests: OpenSSL library (-lcrypto) is required for network-security." >&2; exit 1; }
+	@echo '#include <openssl/evp.h>' | $(CXX) $(CXXFLAGS) $(OPENSSL_CFLAGS) -x c++ - -fsyntax-only >/dev/null 2>&1 || { echo "tests: OpenSSL headers are required for network-security." >&2; exit 1; }; echo 'int main(void) { return 0; }' | $(CXX) $(CXXFLAGS) $(OPENSSL_CFLAGS) -x c++ - $(OPENSSL_LIBS) $(NETWORK_PLATFORM_LIBS) -o .openssl-probe$(EXE) >/dev/null 2>&1 || { echo "tests: OpenSSL library (-lcrypto) is required for network-security." >&2; exit 1; }
 	@rm -f .openssl-probe .openssl-probe.exe
 
 memory$(EXE): native_memory_smoke.cpp ../api/native/memory/sleela_memory_manager.cpp
@@ -36,7 +46,7 @@ runtime$(EXE): runtime_smoke.cpp ../api/native/runtime/sleela_runtime.cpp
 	$(CXX) $(CXXFLAGS) $(THREADFLAGS) -I../api/native/runtime $^ -o $@
 
 network-security$(EXE): network_security_smoke.cpp ../api/native/network/sleela_network.cpp ../api/native/security/sleela_security.cpp
-	$(CXX) $(CXXFLAGS) $^ -lcrypto -o $@
+	$(CXX) $(CXXFLAGS) $(OPENSSL_CFLAGS) $^ $(OPENSSL_LIBS) $(NETWORK_PLATFORM_LIBS) -o $@
 
 neural-nets-xor$(EXE): ../artificial-intelligence/neural-nets/xor_example.c ../artificial-intelligence/neural-nets/neural_nets.c ../artificial-intelligence/neural-nets/neural_nets.h
 	$(CC) $(CFLAGS) -I../artificial-intelligence/neural-nets ../artificial-intelligence/neural-nets/xor_example.c ../artificial-intelligence/neural-nets/neural_nets.c $(LDLIBS) -o $@
