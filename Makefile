@@ -14,6 +14,18 @@ SLEELA_ADVANCED_BUILD ?=
 PREFIX ?= /usr/local
 DESTDIR ?=
 
+# GNU Make's built-in CC default is "cc". MSYS2 UCRT64 guarantees gcc/g++;
+# select them only when the caller has not explicitly supplied a compiler.
+ifeq ($(OS),Windows_NT)
+  ifeq ($(origin CC),default)
+    CC := gcc
+  endif
+  ifeq ($(origin CXX),default)
+    CXX := g++
+  endif
+endif
+export CC CXX
+
 # One overridable Python command for verification and data checks. Prefer
 # python3, then python, then the Windows Python launcher (py -3).
 PYTHON ?= python3
