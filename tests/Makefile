@@ -13,9 +13,15 @@ else
   THREADFLAGS := -pthread
 endif
 
-.PHONY: all clean check ai-neural-nets-xor neural-nets-xor ai-character-recognition character-recognition-smoke character-recognition-cli jdk28-conformance jdk28-functional jdk28-signatures java-source-equivalence java-conversions java-flow java-exceptions java-api-dependencies java-constraints java-signature-comparison java-platform-qualification
+.PHONY: all check-deps clean check ai-neural-nets-xor neural-nets-xor ai-character-recognition character-recognition-smoke character-recognition-cli jdk28-conformance jdk28-functional jdk28-signatures java-source-equivalence java-conversions java-flow java-exceptions java-api-dependencies java-constraints java-signature-comparison java-platform-qualification
 
-all: memory$(EXE) reflection$(EXE) nordshrift$(EXE) runtime$(EXE) network-security$(EXE) neural-nets-xor$(EXE) character-recognition-smoke$(EXE) character-recognition-cli$(EXE)
+all: check-deps memory$(EXE) reflection$(EXE) nordshrift$(EXE) runtime$(EXE) network-security$(EXE) neural-nets-xor$(EXE) character-recognition-smoke$(EXE) character-recognition-cli$(EXE)
+
+# The network/security smoke target uses OpenSSL EVP. Fail early with an
+# actionable message rather than a later opaque -lcrypto link error.
+check-deps:
+	@printf '%s\\n' '#include <openssl/evp.h>' 'int main(void) { return EVP_MAX_MD_SIZE <= 0; }' | $(CXX) $(CXXFLAGS) -x c++ - -lcrypto -o .openssl-probe$(EXE) >/dev/null 2>&1 || { echo "tests: OpenSSL development headers/library are required for network-security (install OpenSSL development package and ensure -lcrypto is available)." >&2; rm -f .openssl-probe .openssl-probe.exe; exit 1; }
+	@rm -f .openssl-probe .openssl-probe.exe
 
 memory$(EXE): native_memory_smoke.cpp ../api/native/memory/sleela_memory_manager.cpp
 	$(CXX) $(CXXFLAGS) -I../api/native/memory $^ -o $@
