@@ -89,6 +89,13 @@ SLJava28Session *sl_java28_port_open(int port) {
         free(s);
         return NULL;
     }
+#if !defined(_WIN32) && defined(SO_NOSIGPIPE)
+    {
+        int no_sigpipe = 1;
+        (void)setsockopt(s->fd, SOL_SOCKET, SO_NOSIGPIPE,
+                         &no_sigpipe, (socklen_t)sizeof no_sigpipe);
+    }
+#endif
 
     struct sockaddr_in addr;
     memset(&addr, 0, sizeof addr);
