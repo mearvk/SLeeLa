@@ -418,3 +418,60 @@ These historical workflow passes are retained as evidence, but must not be promo
 6. Continue the module-by-module Make execution matrix. Update each module only with exact commit, platform, command, exit status, and artifact/test evidence.
 
 **Refresh integrity note:** this update reports only the GitHub Actions states and logs inspected. It does not claim that local shell builds were run during this refresh, and it does not label pending or historical evidence as a current PASS.
+
+
+## Root build and installation pipeline audit — 2026-11-14 15:28 EST
+
+This section supersedes the earlier portability status snapshot where it conflicts with the completed runs below.
+
+### Root dispatcher coverage
+
+The root `Makefile` defines `all` as the following dependency chain:
+
+`core → java28 → xlt → regex → compiler → decompiler → vm → scripting → jetbrains → install-check → tutorial-check → tests → config → route → common-rails → codecs → churn → antivirus → registry → premium-vms → ballum`.
+
+Important distinctions:
+
+- The current `Native C and C++ Portability` workflow does **not** invoke root `make all` or `make build`. It runs the native `impl` build and its regression suite, plus selected independent checks.
+- Root `make all` includes `install-check`; this is an installer-wiring/presence check, not an installation.
+- Root `make all` does not depend on `install`, `install-local`, `install-system`, or `install-all`. The guided `advanced-build` prompt is only part of `make build` after `all`, and is intentionally skipped without a TTY unless explicitly opted in.
+- The installer Makefile has actual install/uninstall recipes, but the current portability workflow does not perform a staged install, inspect the staged tree, execute installed binaries, or test uninstall/rollback.
+- Some root modules' default `all` recipes are build-only or presence/data checks. For example, the scripting default checks source/documentation/configuration/example/test presence; the JetBrains default target displays helper/help output and does not build a SLeeLa IDE. The root `tests` target calls `make -C tests check`, which is not equivalent to executing every independent test suite.
+- Consequently, there is currently no fresh end-to-end CI qualification of the complete root build-and-install path on Linux, Windows, and macOS. Do not infer it from a successful native Core build.
+
+### Latest portability run results
+
+Workflow: [Native C and C++ Portability, run 43631952431](https://github.com/mearvk/SLeeLa/actions/runs/43631952431)
+
+- Tested commit: `dd4cfb6c7354fd6ab198e4f67e86b8a3fa5eaaed`.
+- Ubuntu: **PASS** — native Core build, ISA, OSLS registry, OSLS VM dispatch, full VM regression, AI/XOR, character recognition, Wi-Fi, and native platform smoke checks completed.
+- macOS: **PASS** — same workflow stages completed successfully.
+- Windows 10+ / MinGW-w64: **FAIL — full VM regression step timed out at 40 minutes**. Native Core build, ISA verification, OSLS registry, and OSLS VM dispatch all passed. Windows steps after the full VM regression were skipped.
+
+### Corrected Windows timeout diagnosis
+
+The new log disproves the earlier assumption that the malformed `#sleela` diagnostic test is the current hang:
+
+- The version-awareness suite explicitly completed with `VERSION TESTS: PASS`, including malformed pragma rejection and the no-run check.
+- Nordshrift compilation, semantic checks, end-to-end artifact execution, compatibility checks, CommonRails, and artifact ABI checks progressed.
+- The final visible test output is `terminal-ok` from the Windows ConPTY child command. The C smoke program's subsequent `terminal platform: windows-conpty` and `terminal platform smoke: PASS` lines never appear.
+- In `impl/core/terminal_platform_smoke.c`, those final lines are printed only after `slterminal_close()` returns. The evidence therefore localizes the current hang to the Windows terminal smoke's close/ConPTY teardown path, most likely inside `slterminal_close()`; it is not yet a proven single API call.
+- The next isolated reproducer is `make -C impl test-terminal-platform` on Windows, with bounded diagnostics around process reap, drain-thread startup, `ClosePseudoConsole`, output-handle close, and thread joins. Keep the teardown bounded and ensure no worker thread or synchronous pipe read can outlive the handle it uses. Only after this isolated target passes should the full Windows regression suite be rerun.
+
+### Root build/install qualification gates still required
+
+| Gate | Required command / evidence | Current status |
+|---|---|---|
+| Root full build | `make clean all` on Linux, Windows (supported MinGW/MSYS environment), and macOS; capture every child target and artifact | **NOT RUN AS A ROOT PIPELINE** |
+| Root tests | Execute each real test suite, not only root `tests: check`; record commands, counts, and exit codes | **PARTIAL / NOT ROOT-WIRED** |
+| Installer entry-point checks | `make install-check` | Target is wired into `all`; fresh cross-platform result not established by the portability workflow |
+| Staged user-local install | Run `make -C install install-local` with a temporary `PREFIX`/staging root and no sudo; inspect manifest and expected binaries/libraries | **NOT QUALIFIED** |
+| Staged system install | Exercise `install-system` through `DESTDIR`/temporary staging; confirm no host system writes | **NOT QUALIFIED** |
+| Install-all | Test all standard locations in an isolated container/VM, not on the host machine | **NOT QUALIFIED** |
+| Installed-product smoke | Run installed `sleela`, `sleelvac`, and `nordshrift` from the staged prefix; validate library/data/config resolution | **NOT QUALIFIED** |
+| Uninstall / rollback | Uninstall the staged install and verify only tracked files are removed and preserved config/backup behavior is correct | **NOT QUALIFIED** |
+| Advanced guided installer | Test Linux, macOS, and Windows guided entry points with explicit non-interactive choices and isolated staging | **NOT QUALIFIED** |
+
+**Immediate priority:** repair and isolate the Windows ConPTY teardown hang first. Then add a dedicated root-pipeline workflow that executes the root dispatcher and staged installer qualification per supported OS, while keeping optional dependency-dependent modules separately reported rather than silently counted as successful.
+
+**Evidence integrity:** the run above is the first completed portability result on the current FILAMENT commit. It is a two-platform pass and a Windows regression failure; it is not a root `make all` or installer pass. No local shell build or installation was executed as part of this GitHub inspection.
