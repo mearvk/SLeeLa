@@ -13,9 +13,9 @@
 
 .NOTES
     Requirements:
-      * MinGW-w64 GCC/G++ (C11 + C++17), e.g. via MSYS2 (pacman -S
-        mingw-w64-ucrt-x86_64-gcc) or choco install mingw.
-      * GNU make (mingw32-make or make).
+      * MinGW-w64 GCC/G++ (C11 + C++20), preferably the MSYS2 UCRT64 environment.
+      * GNU make plus the MSYS2 POSIX shell and core utilities (sh, bash, sed, grep, awk).
+      * For the full repository `make all`: OpenSSL development files, pkgconf, and JDK 28.
       * Python 3 on PATH (the SHA-256 verify gate runs it as 'py -3' or
         'python').
     MSVC is not supported by this script: the pthread compatibility shim
@@ -49,6 +49,7 @@ Write-Host "C Compiler:   $Cc"
 Write-Host "C++ Compiler: $Cxx"
 Write-Host "Repo root:    $RepoRoot"
 Write-Host "Build dir:    $BuildDir"
+Write-Host "Make program: $MakeProg"
 Write-Host ""
 
 function Require-Command($name) {
@@ -67,6 +68,7 @@ if (-not $MakeProg) { throw "Neither 'mingw32-make' nor 'make' was found on PATH
 
 Require-Command $Cc
 Require-Command $Cxx
+Require-Command "sh"
 
 # The verify-security gate needs Python. Prefer the 'py' launcher, else 'python'.
 $Py = $null
