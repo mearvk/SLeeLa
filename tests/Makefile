@@ -30,8 +30,7 @@ all: check-deps memory$(EXE) reflection$(EXE) nordshrift$(EXE) runtime$(EXE) net
 # The network/security smoke target uses OpenSSL EVP. Fail early with an
 # actionable message rather than a later opaque -lcrypto link error.
 check-deps:
-	@echo '#include <openssl/sha.h>' | $(CXX) $(CXXFLAGS) $(OPENSSL_CFLAGS) -x c++ - -fsyntax-only >/dev/null 2>&1 || { echo "tests: OpenSSL headers are required for network-security." >&2; exit 1; }; echo 'int main(void) { return 0; }' | $(CXX) $(CXXFLAGS) $(OPENSSL_CFLAGS) -x c++ - $(OPENSSL_LIBS) $(NETWORK_PLATFORM_LIBS) -o .openssl-probe$(EXE) >/dev/null 2>&1 || { echo "tests: OpenSSL library (-lcrypto) is required for network-security." >&2; exit 1; }
-	@rm -f .openssl-probe .openssl-probe.exe
+	@printf '%s\\n' '#include <openssl/sha.h>' 'int main(void) { unsigned char d[SHA256_DIGEST_LENGTH]; return SHA256((const unsigned char*)"x", 1, d) ? 0 : 1; }' | $(CXX) $(CXXFLAGS) $(OPENSSL_CFLAGS) -x c++ - $(OPENSSL_LIBS) $(NETWORK_PLATFORM_LIBS) -o .openssl-probe$(EXE) >/dev/null 2>&1 || { echo "tests: OpenSSL SHA-256 headers and library are required for network-security (set OPENSSL_CFLAGS/OPENSSL_LIBS if installed outside the default path)." >&2; exit 1; }
 
 memory$(EXE): native_memory_smoke.cpp ../api/native/memory/sleela_memory_manager.cpp
 	$(CXX) $(CXXFLAGS) -I../api/native/memory $^ -o $@
