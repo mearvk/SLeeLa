@@ -90,14 +90,7 @@ jobs:
         timeout-minutes: 120
         env:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
-        run: |
-          # actions/setup-java exposes a Windows JDK path; MSYS2 needs its POSIX
-          # form prepended explicitly so java28 can resolve javac and JNI headers.
-          JDK_BIN="$(cygpath -u "$JAVA_HOME")/bin"
-          test -x "$JDK_BIN/javac.exe" || test -x "$JDK_BIN/javac"
-          export PATH="$JDK_BIN:$PATH"
-          command -v javac
-          make clean build SLEELA_ADVANCED_BUILD=no
+        run: make clean build SLEELA_ADVANCED_BUILD=no
 
       - name: Verify root build products
         run: |
@@ -146,7 +139,16 @@ jobs:
         timeout-minutes: 120
         env:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
-        run: make clean build SLEELA_ADVANCED_BUILD=no
+        run: |
+          # actions/setup-java exposes a Windows path; MSYS2 requires POSIX paths.
+          JDK_BIN="$(cygpath -u "$JAVA_HOME")/bin"
+          test -x "$JDK_BIN/javac.exe"
+          test -x "$JDK_BIN/java.exe"
+          export PATH="$JDK_BIN:$PATH"
+          export JAVAC="$JDK_BIN/javac.exe"
+          export JAVA="$JDK_BIN/java.exe"
+          command -v javac
+          make clean build SLEELA_ADVANCED_BUILD=no
 
       - name: Verify root build products
         run: |
