@@ -10,6 +10,7 @@ class Box {
 public class Refs {
     int bias = 7;
     static int add(int a, int b) { return a + b; }
+    static long add(long a, long b) { return a + b; }
     int withBias(int a, int b) { return a + b + bias; }
     static int run(IntOp op, int x, int y) { return op.apply(x, y); }
     static Object describe(Object o) {
