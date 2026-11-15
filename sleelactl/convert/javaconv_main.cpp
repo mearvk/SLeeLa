@@ -418,7 +418,10 @@ int main(int argc, char** argv) {
             }
         }
         j << "\n  ]\n}\n";
-        std::ofstream("" + (outRoot / "CONVERSION-REPORT.json").string()) << j.str();
+        std::string reportError;
+        if (!writeIfChanged(outRoot / "CONVERSION-REPORT.json", j.str(), &reportError)) {
+            std::cerr << "javaconv: " << reportError << "\\n"; cm_free(&model); return 2;
+        }
         if (c.json) std::cout << j.str();
     }
     {
@@ -442,7 +445,10 @@ int main(int argc, char** argv) {
                 m << "\n";
             }
         }
-        std::ofstream("" + (outRoot / "CONVERSION-REPORT.md").string()) << m.str();
+        std::string reportError;
+        if (!writeIfChanged(outRoot / "CONVERSION-REPORT.md", m.str(), &reportError)) {
+            std::cerr << "javaconv: " << reportError << "\\n"; cm_free(&model); return 2;
+        }
     }
 
     if (!c.quiet) {
