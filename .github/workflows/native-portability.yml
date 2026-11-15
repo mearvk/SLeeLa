@@ -196,6 +196,7 @@ jobs:
           SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
         run: make -C impl test-terminal-platform
 
+# Keep the full Windows VM suite at 40 minutes; the isolated ConPTY smoke above diagnoses teardown separately.
       - name: Run full VM regression suite
         timeout-minutes: 40
         env:
