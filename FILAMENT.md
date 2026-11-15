@@ -808,3 +808,70 @@ A follow-up source inspection caught a Make-specific escaping issue in the new s
 
 
 The root clean loop also requires doubled dollar escaping for its loop variable (`$$n`) so GNU Make passes it to the shell rather than expanding it as a Make variable. The current `master` recipe was re-fetched and confirms that correction. The corrected root recipe revision is `433e15427b0091ee9757d3d52986852939b399a0`.
+
+
+## Root build and installation qualification — hosted matrix review and smoke-test repairs — 2026-11-15
+
+### Original requested runs
+
+- [Root qualification 43639947785](https://github.com/mearvk/SLeeLa/actions/runs/43639947785), commit `9bc8e772577c6cc62633eaac9ac93785ec6bca63`: all three root platform jobs and both dependent installation matrix jobs concluded **CANCELLED**. This run provides no pass or failure evidence.
+- [Native portability 43639947779](https://github.com/mearvk/SLeeLa/actions/runs/43639947779): all three platform jobs concluded **CANCELLED**. This run provides no portability evidence.
+
+### Subsequent completed root qualification runs
+
+The following later master runs were inspected at the workflow-run and individual-job level. Every listed run had the same completed job pattern: Ubuntu root build **SUCCESS**, macOS root build **SUCCESS**, Windows root job **FAILURE** in its post-build guided-installer compiler smoke, Ubuntu and macOS staged-installer jobs **FAILURE** in the first user-local product smoke, and Ubuntu/macOS install-all/uninstall-all jobs **SUCCESS**.
+
+| Run | Tested commit |
+|---|---|
+| [43665747584](https://github.com/mearvk/SLeeLa/actions/runs/43665747584) | `4f3a426928269d9d1b1089c3a3b35befcc58629f` |
+| [43665839899](https://github.com/mearvk/SLeeLa/actions/runs/43665839899) | `db9c9d38e67463853d44b3a4f717f282fffe56ee` |
+| [43665851708](https://github.com/mearvk/SLeeLa/actions/runs/43665851708) | `2d5d2c9dc40b0953fb78d4005f24e5d222dc9a37` |
+| [43665866007](https://github.com/mearvk/SLeeLa/actions/runs/43665866007) | `4bbaa650eb2c73c6b2cfb2ec38c72605528d8b3c` |
+| [43665993203](https://github.com/mearvk/SLeeLa/actions/runs/43665993203) | `63d7f72687024ec163884d89cc83fcc7b370ef96` |
+| [43666154666](https://github.com/mearvk/SLeeLa/actions/runs/43666154666) | `4033587dc68383f64b8074212919f029e80d4ac5` |
+| [43666174174](https://github.com/mearvk/SLeeLa/actions/runs/43666174174) | `9c9f2652ae199f594bc132a203f096fc9861a32d` |
+| [43666190136](https://github.com/mearvk/SLeeLa/actions/runs/43666190136) | `6f961d714c32214071b5eb06e8f6c9acb9829896` |
+| [43666193298](https://github.com/mearvk/SLeeLa/actions/runs/43666193298) | `5cf8fe343d08cf40a0117099bdb99811f12cb03c` |
+| [43666225657](https://github.com/mearvk/SLeeLa/actions/runs/43666225657) | `51fbda306bf88a9f6e84bb5bfb40ab71bd6e99e1` |
+| [43666304072](https://github.com/mearvk/SLeeLa/actions/runs/43666304072) | `6ad6d355481504a962d0437ce265438717e0fbc5` |
+| [43666471470](https://github.com/mearvk/SLeeLa/actions/runs/43666471470) | `48bf4d2726c5f0446fa42307982b89d99bc0a5cc` |
+
+### Detailed evidence from latest completed root run 43666471470
+
+| Job | Conclusion | Exact evidence |
+|---|---|---|
+| Root Ubuntu, job 132666855451 | **SUCCESS** | Complete root build/test step and root product verification both succeeded. |
+| Root macOS, job 132666855248 | **SUCCESS** | Complete root build/test step and root product verification both succeeded. |
+| Root Windows, job 132666855397 | **FAILURE** | Root build and product verification succeeded. The guided installer completed, installed runtime `sleela.exe version` succeeded, then `sleelvac.exe --help` printed the usage text and returned exit code 2; the PowerShell step raised `Installed Windows compiler smoke failed.` |
+| Staged Ubuntu, job 132699578241 | **FAILURE** | `make install-local` completed, installed binaries were present, and `sleela version` succeeded. The next command, `"$bindir/sleelvac" --help >/dev/null`, returned exit code 2 under `set -e`; later Nordshrift, uninstall, system-install and guided-install commands were not reached. |
+| Staged macOS, job 132699578221 | **FAILURE** | Same compiler-smoke invocation and exit code 2 after the user-local install and runtime version smoke succeeded. Later staged system/guided install and uninstall commands were not reached. |
+| Install-all/uninstall-all Ubuntu, job 132699578226 | **SUCCESS** | Disposable-host installation checks for the standard locations and uninstall checks completed successfully. |
+| Install-all/uninstall-all macOS, job 132699578219 | **SUCCESS** | Disposable-host installation checks for the standard locations and uninstall checks completed successfully. |
+
+The failure is a smoke-test command mismatch, not a demonstrated compiler build or installation failure: the compiler prints its usage page for the unsupported top-level `--help` form but returns a nonzero status. The documented `version` subcommand is the appropriate zero-side-effect executable smoke check. The workflow is being corrected to use `sleelvac version` on POSIX and Windows. The compiler executable was built and installed; however, the staged installation jobs remain **FAILURE** until the corrected smoke and subsequent uninstall steps pass.
+
+The macOS log also printed `/bin/sh: build/.depcheck.m: No such file or directory` during Ballum framework probing. The recipe then created the directory in its fallback and continued with `AVAILABLE` and `ballum deps: OK`; this was non-fatal but noisy. The Makefile is being corrected to create the build directory before writing the probe source.
+
+### 512 MiB / memory-limit clarification
+
+The earlier runtime test failure was an assertion against an obsolete expected default, not a 512 MiB allocation attempt. The test calls `gc_limit(&gc)` and compares the configured limit; it does not allocate a 512 MiB or 1 GiB block. The expected value was corrected to the runtime's documented 1 GiB default in commit `2efaee0c22b1576d93f5f37074408cdf24ee3072`. The runtime's separate 2 GiB memory-manager hard limit was not reduced or bypassed. The latest root Ubuntu, macOS and Windows build/test steps all completed successfully after that correction.
+
+### Native portability follow-up
+
+- The requested [original portability run 43639947779](https://github.com/mearvk/SLeeLa/actions/runs/43639947779) was cancelled and has no result.
+- Latest observed portability run: [43729690366](https://github.com/mearvk/SLeeLa/actions/runs/43729690366), commit `bfc32cf50554982ead761fedf75c106442132634`.
+- Ubuntu job 132859179826: **SUCCESS**.
+- macOS job 132859179684: **SUCCESS**.
+- Windows job 132859179520: **FAILURE** in the isolated `make -C impl test-terminal-platform` step after 3 minutes. OSLS build and all nine OSLS registry tests passed. The terminal output reached `terminal-ok`, but the smoke did not reach its teardown completion/PASS marker before timeout. This is a Windows ConPTY runtime-smoke failure, not a C/C++ compilation failure.
+
+The smoke command used `exit /b 0`, which may return from a batch context without forcing the command processor to terminate. It is changed to explicit `exit 0` so the child `cmd.exe` must terminate. This is a targeted, test-only correction and remains **RETEST REQUIRED**; no Windows portability PASS is claimed. The ConPTY implementation's `ClosePseudoConsole` call remains the only unbounded operation in the close path after bounded child-process waits, so a repeated timeout must be localized with fresh Windows evidence before any deeper teardown redesign.
+
+### Repairs in this qualification update
+
+- Root workflow: replace compiler `--help` invocations with the documented `version` subcommand in Windows guided-installer smoke and all staged POSIX product smoke steps.
+- Ballum macOS dependency probe: create `build/` before writing `.depcheck.m`, removing the recovered-but-misleading shell error.
+- Windows ConPTY smoke: use `cmd.exe /D /C "echo terminal-ok & exit 0"` to request explicit command-processor termination.
+
+### Qualification status
+
+**ROOT COMPILATION/BUILD: PASS ON UBUNTU, macOS AND WINDOWS IN RUN 43666471470. INSTALLATION QUALIFICATION: NOT YET COMPLETE.** The POSIX staged user-local smoke and Windows guided-installer smoke failures are being corrected at the workflow-test level. The install-all/uninstall-all jobs already pass on Ubuntu and macOS, but the staged system/guided install and uninstall checks still need to execute successfully. Native Windows ConPTY remains a separate portability runtime item. Do not mark the aggregate root build/install pipeline qualified until a fresh run passes every required root and dependent installation job.

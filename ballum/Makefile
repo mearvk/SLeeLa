@@ -186,8 +186,9 @@ ifeq ($(PLATFORM),linux)
 else ifeq ($(PLATFORM),macos)
 	@echo "  macOS frameworks (CoreGraphics/ApplicationServices/Foundation) ship with the"
 	@echo "  Xcode command-line tools. Verifying the toolchain can link them..."
-	@printf 'int main(void){return 0;}\n' > $(BUILD)/.depcheck.m 2>/dev/null || { mkdir -p $(BUILD); printf 'int main(void){return 0;}\n' > $(BUILD)/.depcheck.m; }
-	@$(CC) $(BUILD)/.depcheck.m $(BACKEND_LIBS) -o $(BUILD)/.depcheck 2>/dev/null \
+	@mkdir -p "$(BUILD)"
+	@printf 'int main(void){return 0;}\n' > "$(BUILD)/.depcheck.m"
+	@$(CC) "$(BUILD)/.depcheck.m" $(BACKEND_LIBS) -o "$(BUILD)/.depcheck" 2>/dev/null \
 	  && echo "  AVAILABLE: CoreGraphics/ApplicationServices/Foundation" \
 	  || { echo "  MISSING: Apple frameworks -- install the Xcode command-line tools: xcode-select --install"; exit 1; }
 	@rm -f $(BUILD)/.depcheck $(BUILD)/.depcheck.m

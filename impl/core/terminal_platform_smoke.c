@@ -19,7 +19,7 @@ int main(void) {
 #ifdef _WIN32
     /* ConPTY accepts a Windows command line. The larger buffer below allows
      * initial VT-mode sequences to arrive before the command's visible output. */
-    const char* command = "cmd.exe /D /C \"echo terminal-ok & exit /b 0\"";
+    const char* command = "cmd.exe /D /C \"echo terminal-ok & exit 0\"";
 #else
     /* Keep the slave open briefly after writing. On Darwin, an immediately
      * exiting PTY child can race the master read and expose EOF before output

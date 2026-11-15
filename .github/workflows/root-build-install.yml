@@ -174,7 +174,7 @@ jobs:
           }
           & $sleela version
           if ($LASTEXITCODE -ne 0) { throw "Installed Windows runtime smoke failed." }
-          & $compiler --help | Out-Null
+          & $compiler version | Out-Null
           if ($LASTEXITCODE -ne 0) { throw "Installed Windows compiler smoke failed." }
           Remove-Item -Recurse -Force $destination
 
@@ -229,7 +229,7 @@ jobs:
           test -x "$bindir/sleelvac"
           test -x "$bindir/nordshrift"
           "$bindir/sleela" version
-          "$bindir/sleelvac" --help >/dev/null
+          "$bindir/sleelvac" version >/dev/null
           "$bindir/nordshrift" objects >/dev/null
           make -C install uninstall PREFIX="$prefix" DESTDIR="$stage"
           test ! -e "$bindir/sleela"
@@ -247,7 +247,7 @@ jobs:
           test -x "$bindir/sleelvac"
           test -x "$bindir/nordshrift"
           "$bindir/sleela" version
-          "$bindir/sleelvac" --help >/dev/null
+          "$bindir/sleelvac" version >/dev/null
           "$bindir/nordshrift" objects >/dev/null
           sudo make -C install uninstall PREFIX=/usr/local DESTDIR="$stage"
           test ! -e "$bindir/sleela"
@@ -264,7 +264,7 @@ jobs:
           set -eu
           make advanced-build SLEELA_ADVANCED_BUILD=yes
           "$SLEELA_INSTALL_ROOT/bin/sleela" version
-          "$SLEELA_INSTALL_ROOT/bin/sleelvac" --help >/dev/null
+          "$SLEELA_INSTALL_ROOT/bin/sleelvac" version >/dev/null
           rm -rf "$SLEELA_INSTALL_ROOT"
 
   install-all-sandbox:
