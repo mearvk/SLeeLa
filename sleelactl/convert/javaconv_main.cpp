@@ -40,6 +40,41 @@ void usage(std::ostream& o) {
          "exit: 0 all converted, 1 some files failed closed, 2 usage/IO error\n";
 }
 
+bool safeManifestPath(const std::string& raw) {
+    if (raw.empty()) return false;
+    const fs::path p(raw);
+    if (p.is_absolute() || p.has_root_name() || p.has_root_directory()) return false;
+    for (const auto& part : p) {
+        const std::string name = part.string();
+        if (name.empty() || name == "." || name == "..") return false;
+    }
+    return true;
+}
+
+bool removeOwnedOutput(const fs::path& root, const std::string& rel, std::string* why) {
+    if (!safeManifestPath(rel)) {
+        *why = "unsafe path in .javaconv-emitted: " + rel;
+        return false;
+    }
+    std::error_code ec;
+    const fs::path target = root / fs::path(rel);
+    const fs::file_status st = fs::symlink_status(target, ec);
+    if (ec == std::errc::no_such_file_or_directory || st.type() == fs::file_type::not_found) return true;
+    if (ec) {
+        *why = "cannot inspect previous output '" + target.string() + "': " + ec.message();
+        return false;
+    }
+    if (fs::is_symlink(st) || !fs::is_regular_file(st)) {
+        *why = "refusing to remove non-regular previous output: " + target.string();
+        return false;
+    }
+    if (!fs::remove(target, ec) || ec) {
+        *why = "cannot remove previous output '" + target.string() + "': " + ec.message();
+        return false;
+    }
+    return true;
+}
+
 bool readFile(const fs::path& p, std::string* out) {
     std::ifstream f(p, std::ios::binary);
     if (!f) return false;
@@ -159,14 +194,25 @@ int main(int argc, char** argv) {
                       << "  Place the presumed JDK " << c.version << " Java source tree there (see sleelactl/jdk/README.md).\n";
             return 2;
         }
-        for (auto it = fs::recursive_directory_iterator(src, ec); it != fs::recursive_directory_iterator(); it.increment(ec)) {
-            if (ec) break;
-            if (!it->is_regular_file()) continue;
-            fs::path p = it->path();
-            if (p.extension() != ".java") continue;
-            std::string fn = p.filename().string();
-            if (fn == "module-info.java" || fn == "package-info.java") continue;
-            inputs.push_back({p, fs::relative(p, src)});
+        fs::recursive_directory_iterator it(src, fs::directory_options::skip_permission_denied, ec);
+        const fs::recursive_directory_iterator end;
+        if (ec) {
+            std::cerr << "javaconv: cannot walk source directory '" << src.string() << "': " << ec.message() << "\\n";
+            return 2;
+        }
+        while (it != end) {
+            const fs::directory_entry entry = *it;
+            std::error_code typeEc;
+            if (entry.is_regular_file(typeEc) && !typeEc && entry.path().extension() == ".java") {
+                const std::string fn = entry.path().filename().string();
+                if (fn != "module-info.java" && fn != "package-info.java")
+                    inputs.push_back({entry.path(), fs::relative(entry.path(), src)});
+            }
+            it.increment(ec);
+            if (ec) {
+                std::cerr << "javaconv: source walk failed under '" << src.string() << "': " << ec.message() << "\\n";
+                return 2;
+            }
         }
         std::sort(inputs.begin(), inputs.end());
     }
@@ -190,9 +236,19 @@ int main(int argc, char** argv) {
     const fs::path emittedList = outRoot / ".javaconv-emitted";
     {
         std::ifstream prev(emittedList);
-        std::string rel;
-        std::error_code rmec;
-        while (std::getline(prev, rel)) if (!rel.empty() && rel.find("..") == std::string::npos) fs::remove(outRoot / rel, rmec);
+        if (prev) {
+            std::string rel, why;
+            while (std::getline(prev, rel)) {
+                if (!rel.empty() && !removeOwnedOutput(outRoot, rel, &why)) {
+                    std::cerr << "javaconv: " << why << "\\n";
+                    return 2;
+                }
+            }
+            if (!prev.eof()) {
+                std::cerr << "javaconv: failed while reading " << emittedList.string() << "\\n";
+                return 2;
+            }
+        }
     }
     std::vector<std::string> emittedRel;
 
@@ -224,8 +280,22 @@ int main(int argc, char** argv) {
             fs::path dir = outRoot / in.second.parent_path();
             std::error_code ec;
             fs::create_directories(dir, ec);
+            if (ec) {
+                std::cerr << "javaconv: cannot create output directory '" << dir.string() << "': " << ec.message() << "\\n";
+                return 2;
+            }
             for (auto& f : r.files) {
-                std::ofstream o(dir / (f.typeName + ".sleela"), std::ios::binary);
+                const fs::path outputPath = dir / (f.typeName + ".sleela");
+                const std::string relOutput = (in.second.parent_path() / (f.typeName + ".sleela")).generic_string();
+                if (!safeManifestPath(relOutput)) {
+                    std::cerr << "javaconv: translator produced an unsafe output path: " << relOutput << "\\n";
+                    return 2;
+                }
+                if (std::find(emittedRel.begin(), emittedRel.end(), relOutput) != emittedRel.end()) {
+                    std::cerr << "javaconv: two Java declarations map to the same output path: " << relOutput << "\\n";
+                    return 2;
+                }
+                std::ofstream o(outputPath, std::ios::binary);
                 o << f.text;
                 o.close();
                 if (!o) { std::cerr << "javaconv: cannot write " << (dir / (f.typeName + ".sleela")).string() << "\n"; return 2; }
