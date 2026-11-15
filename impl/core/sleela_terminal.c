@@ -226,7 +226,15 @@ int slterminal_close(SLTerminalHandle terminal) {
     if (t->output_read && t->console) {
         drain_thread = CreateThread(NULL, 0, drain_conpty_output,
                                     t->output_read, 0, NULL);
-        if (!drain_thread && rc == 0) rc = (int)GetLastError();
+        if (!drain_thread) {
+            DWORD error_code = GetLastError();
+            if (rc == 0) rc = (int)error_code;
+            /* Documented fallback for resource exhaustion: close the output
+             * reader before ClosePseudoConsole so legacy Windows can finish. */
+            if (!CloseHandle(t->output_read) && rc == 0)
+                rc = (int)GetLastError();
+            t->output_read = NULL;
+        }
     }
 
     if (t->console) {
