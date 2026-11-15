@@ -478,7 +478,8 @@ int main(int argc, char** argv) {
       << "  \"outputSnapshotSha256\": \"" << sha256Hex(outputFingerprint) << "\",\n"
       << "  \"options\": {\"bundle\": " << ((c.bundle || !c.file.empty()) && !c.split ? "true" : "false")
       << ", \"singleThread\": " << (c.singleThread ? "true" : "false")
-      << ", \"checkedArrays\": " << (c.uncheckedSizes ? "false" : "true") << "},\n"
+      << ", \"checkedArrays\": " << (c.uncheckedSizes ? "false" : "true")
+      << ", \"author\": \"" << jsonEscape(c.author) << "\"},\n"
       << "  \"converterSources\": [";
     for (size_t i=0;i<converterDigests.size();++i) {
         if (i) provenance << ",";
