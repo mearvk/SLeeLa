@@ -923,39 +923,114 @@ private:
         return false;
     }
 
+    // JLS 5.3 invocation conversions used during overload selection. This deliberately
+    // handles identity, primitive widening and known reference subtyping; boxing,
+    // unchecked conversions and capture conversion remain fail-closed.
+    int invocationCost(const Ty& from, const Ty& to, int depth = 0) const {
+        if (!from.known() || !to.known() || depth > 32) return -1;
+        if (from == to) return 0;
+        if (from.n == "null" && to.dims >= 0 && to.n != "?" && to.n != "void" &&
+            !(to.dims == 0 && kPrim.count(to.n))) return 1;
+        if (from.dims != to.dims) return -1;
+        if (from.dims > 0) {
+            if (from.n == to.n) return 0;
+            if (to.n == "Object") return 8;
+            return -1;
+        }
+        if (kPrim.count(from.n) && kPrim.count(to.n)) {
+            static const char* widening[][7] = {
+                {"byte","short","int","long","float","double",nullptr},
+                {"short","int","long","float","double",nullptr,nullptr},
+                {"char","int","long","float","double",nullptr,nullptr},
+                {"int","long","float","double",nullptr,nullptr,nullptr},
+                {"long","float","double",nullptr,nullptr,nullptr,nullptr},
+                {"float","double",nullptr,nullptr,nullptr,nullptr,nullptr},
+                {"double",nullptr,nullptr,nullptr,nullptr,nullptr,nullptr}
+            };
+            int row = -1;
+            if (from.n == "byte") row=0; else if(from.n=="short") row=1;
+            else if(from.n=="char") row=2; else if(from.n=="int") row=3;
+            else if(from.n=="long") row=4; else if(from.n=="float") row=5;
+            else if(from.n=="double") row=6;
+            if (row >= 0) for (int j=0; j<6 && widening[row][j]; ++j)
+                if (to.n == widening[row][j]) return j+1;
+            return -1;
+        }
+        if (from.n == to.n) return 0;
+        auto it = classes.find(from.n);
+        if (it != classes.end()) {
+            if (!it->second.super.empty()) {
+                int c = invocationCost(mk(it->second.super), to, depth+1);
+                if (c >= 0) return c+1;
+            }
+            for (const auto& iface : it->second.ifaces) {
+                int c = invocationCost(mk(iface), to, depth+1);
+                if (c >= 0) return c+1;
+            }
+        }
+        if (to.n == "Object") return 8;
+        return -1;
+    }
+
+    bool moreSpecific(const MethodSig& a, const MethodSig& b) const {
+        if (a.params.size() != b.params.size()) return false;
+        bool strict = false;
+        for (size_t i=0; i<a.params.size(); ++i) {
+            int c = invocationCost(a.params[i], b.params[i]);
+            if (c < 0) return false;
+            if (c > 0) strict = true;
+        }
+        return strict;
+    }
+
     const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0) const {
         auto it = classes.find(cls);
         if (it == classes.end() || depth > 32) return nullptr;
         const MethodSig* best = nullptr;
-        int bestScore = -1;
+        int bestCost = 0x3fffffff;
         bool ambiguous = false;
-        for (const auto& m : it->second.methods) {
-            if (m.name != name) continue;
-            const bool exact = m.params.size() == args.size();
-            if (!exact && !(m.varargs && args.size() + 1 >= m.params.size())) continue;
-            int score = exact && !m.varargs ? 100 : 0;
-            for (size_t i = 0; i < args.size() && i < m.params.size(); i++) if (m.params[i] == args[i].ty) score++;
-            if (score > bestScore) {
-                bestScore = score;
-                best = &m;
-                ambiguous = false;
-            } else if (score == bestScore && best) {
-                // Until JLS applicability and most-specific selection are implemented,
-                // never choose an overload by declaration order. Identical signatures
-                // are duplicates in the index; distinct signatures at the same score
-                // are unresolved and must fail closed.
-                if (m.params != best->params || m.varargs != best->varargs) ambiguous = true;
+        bool fixedPhase = false;
+        // JLS 15.12.2: fixed-arity applicability is considered before variable arity.
+        for (int phase=0; phase<2 && !best; ++phase) {
+            for (const auto& m : it->second.methods) {
+                if (m.name != name) continue;
+                const size_t n=m.params.size();
+                const bool fixed = n == args.size() && (!m.varargs || phase == 0);
+                const bool variable = phase == 1 && m.varargs && args.size()+1 >= n;
+                if (!fixed && !variable) continue;
+                int cost=0; bool applicable=true;
+                for (size_t i=0; i<args.size(); ++i) {
+                    Ty target;
+                    if (i<n) target=m.params[i];
+                    else if (variable && n) target=mk(m.params.back().n,m.params.back().dims-1);
+                    else { applicable=false; break; }
+                    if (args[i].lambdaPos != (size_t)-1) {
+                        // A lambda is compatible only after its target interface is known.
+                        // Keep the candidate provisional; ties will fail closed below.
+                        cost += 64; continue;
+                    }
+                    int c=invocationCost(args[i].ty,target);
+                    if(c<0){applicable=false;break;}
+                    cost += c;
+                }
+                if (!applicable) continue;
+                if (!variable && m.varargs && n==args.size()) {
+                    // An array passed directly to a varargs declaration is fixed arity.
+                }
+                if (!best || cost<bestCost) { best=&m;bestCost=cost;ambiguous=false;fixedPhase=(phase==0); }
+                else if(cost==bestCost && best) {
+                    if (moreSpecific(m,*best)) { best=&m;ambiguous=false; }
+                    else if (!moreSpecific(*best,m) && (m.params!=best->params || m.varargs!=best->varargs)) ambiguous=true;
+                }
             }
+            if (best) break;
         }
-        if (ambiguous) {
-            throw ConvErr{cur().line, cur().col, "overload-ambiguous",
-                          "multiple overloads of '" + cls + "." + name +
-                          "' have the same provisional match score; Java most-specific overload resolution is not implemented for this call"};
-        }
+        if (ambiguous) throw ConvErr{cur().line,cur().col,"overload-ambiguous",
+            "multiple applicable overloads of '"+cls+"."+name+"' remain incomparable under supported Java invocation conversions"};
         if (best) return best;
-        if (name == "<init>") return nullptr;   // constructors are not inherited
-        if (!it->second.super.empty()) if (const MethodSig* s = pickMethod(it->second.super, name, args, depth + 1)) return s;
-        for (const auto& i : it->second.ifaces) if (const MethodSig* s = pickMethod(i, name, args, depth + 1)) return s;
+        if (name == "<init>") return nullptr;
+        if (!it->second.super.empty()) if (const MethodSig* m=pickMethod(it->second.super,name,args,depth+1)) return m;
+        for (const auto& iface:it->second.ifaces) if (const MethodSig* m=pickMethod(iface,name,args,depth+1)) return m;
         return nullptr;
     }
 
