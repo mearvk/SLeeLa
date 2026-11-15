@@ -97,6 +97,15 @@ class JConvModel {
   String[] qualifyNames;
   int qualifyN;
 
+  void addWiden(String from, String to) {
+    if (this.canWiden(from, to)) { return; }
+    if (this.widenN < arrayLength(this.widenFrom)) {
+      this.widenFrom[this.widenN] = from;
+      this.widenTo[this.widenN] = to;
+      this.widenN = this.widenN + 1;
+    }
+  }
+
   JConvModel() {
     this.path = "";
     this.modelName = "built-in defaults";
@@ -106,6 +115,25 @@ class JConvModel {
     this.widenFrom = new String[64];
     this.widenTo = new String[64];
     this.widenN = 0;
+    this.addWiden("byte", "short");
+    this.addWiden("byte", "int");
+    this.addWiden("byte", "long");
+    this.addWiden("byte", "float");
+    this.addWiden("byte", "double");
+    this.addWiden("short", "int");
+    this.addWiden("short", "long");
+    this.addWiden("short", "float");
+    this.addWiden("short", "double");
+    this.addWiden("char", "int");
+    this.addWiden("char", "long");
+    this.addWiden("char", "float");
+    this.addWiden("char", "double");
+    this.addWiden("int", "long");
+    this.addWiden("int", "float");
+    this.addWiden("int", "double");
+    this.addWiden("long", "float");
+    this.addWiden("long", "double");
+    this.addWiden("float", "double");
     this.retKeys = new String[32768];
     this.retVals = new String[32768];
     this.fieldKeys = new String[1024];
@@ -214,11 +242,7 @@ class JConvModel {
         if (i > a) {
           if (startsAt(src, a, "widen")) {
             String[] fw = fieldsAt(src, a, i, 3);
-            if (fw[1] != null && fw[2] != null && this.widenN < arrayLength(this.widenFrom)) {
-              this.widenFrom[this.widenN] = fw[1];
-              this.widenTo[this.widenN] = fw[2];
-              this.widenN = this.widenN + 1;
-            }
+            if (fw[1] != null && fw[2] != null) { this.addWiden(fw[1], fw[2]); }
           } else if (startsAt(src, a, "ret")) {
             String[] f = fieldsAt(src, a, i, 4);
             if (f[3] != null) {
