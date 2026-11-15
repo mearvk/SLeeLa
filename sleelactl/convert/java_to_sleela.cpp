@@ -49,7 +49,7 @@ const std::set<std::string> kModifiers = {"public", "private", "protected", "sta
                                           "default", "sealed"};
 // SLeeLa words that are legal Java identifiers but would collide in SLeeLa.
 const std::set<std::string> kSleelaReserved = {"struct", "material", "spark", "int32", "record", "close", "native",
-                                               "Any", "String", "print", "enum", "interface", "super", "yield", "throw",
+                                               "Any", "print", "enum", "interface", "super", "yield", "throw",
                                                "instanceof", "switch", "synchronized", "assert",
                                                "join", "spawn", "sleep", "arrayLength", "arrayNew", "arraySet", "structPack", "structUnpack",
                                                "require", "usualgc", "usualmem", "int64", "int128"};
