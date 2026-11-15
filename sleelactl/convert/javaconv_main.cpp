@@ -348,8 +348,13 @@ int main(int argc, char** argv) {
                 }
                 std::error_code existsEc;
                 const fs::file_status existing = fs::symlink_status(outputPath, existsEc);
+                const bool exists = !existsEc && existing.type() != fs::file_type::not_found;
                 const bool wasOwned = std::find(previousOwned.begin(), previousOwned.end(), relOutput) != previousOwned.end();
-                if (!existsEc && existing.type() != fs::file_type::not_found && !wasOwned) {
+                if (exists && (fs::is_symlink(existing) || !fs::is_regular_file(existing))) {
+                    std::cerr << "javaconv: refusing non-regular or symlink output: " << outputPath.string() << "\n";
+                    return 2;
+                }
+                if (exists && !wasOwned) {
                     std::cerr << "javaconv: refusing to overwrite output not owned by the previous manifest: " << outputPath.string() << "\n";
                     return 2;
                 }
