@@ -74,20 +74,31 @@ must distinguish complete conversion, partial/stubbed output, and refusal.
   interfaces, parameter types, return types, static status and varargs.
 - Type variables are currently reduced to unknown (`?`) during type parsing;
   generic arguments are largely erased.
-- `pickMethod` scores exact arity and exact parameter-type matches, then
-  takes the first highest-scoring candidate. It does not implement Java's
-  phased overload resolution, most-specific selection, boxing/unboxing,
-  primitive widening, reference widening, generic inference, or ambiguity
-  diagnostics in full.
-- Lambda arguments are deferred until a selected method supplies a target
-  parameter type. That is a useful foundation, but it depends on reliable
-  overload resolution.
+- `pickMethod` now evaluates fixed-arity applicability before variable arity,
+  uses identity, model-driven primitive widening and known reference-subtype
+  conversions, walks inherited class/interface methods, collapses overridden
+  signatures, and selects among supported most-specific candidates. It fails
+  closed when supported candidates remain incomparable. This is a meaningful
+  partial JLS implementation, not full Java overload resolution.
+- Boxing/unboxing, generic method inference and substitution, unchecked
+  conversions, wildcard capture, intersection-type constraints, and the full
+  JLS specificity rules remain incomplete. Generic type variables are still
+  reduced to unknown in the expression type system.
+- Lambda arguments are deferred until a selected method supplies a known
+  functional-interface target. The target must resolve to a collected or
+  seeded single-abstract-method interface; method-reference overload
+  resolution and generic SAM substitution remain incomplete.
 
 ### SLeeLa-native converter
 
 - It tracks type variables for erasure and recognizes many generic syntax
   shapes, but its per-type method table is keyed by method name. Overloads
   with differing return types collapse to an unknown return type.
+- It now loads the shared primitive `widen` rows into `JConvModel`, exposes
+  `canWiden` through `JConvRules`, and keeps matching defaults when the model
+  file is unavailable. This shares the conversion facts, but the native
+  expression rewriter has not yet wired every applicability decision to that
+  query.
 - It does not currently provide a project-wide generic type substitution and
   overload-resolution phase comparable to the C++ symbol table.
 - The expression pass can use model return rows, but those rows do not by
@@ -140,8 +151,10 @@ creation time. Do not count an unknown-target stub as successful conversion.
    the shared model.
 2. Consolidate identifier rename and built-in qualification data, retaining
    context-sensitive rename categories.
-3. Replace C++ first-match overload scoring with Java-compatible applicability
-   and ambiguity handling; add generic substitutions to its project index.
-4. Bring the native converter's signature index and target-typing behavior to
-   the same semantic contract, without treating its current per-member stubs as
-   full conversion.
+3. Complete C++ invocation applicability and specificity beyond the current
+   supported subset: boxing/unboxing, generic inference/substitution, array
+   covariance, and the remaining JLS ambiguity rules. Add focused differential
+   fixtures before claiming broader coverage.
+4. Wire the SLeeLa-native expression rewriter to the shared widening query,
+   then bring its signature index and target-typing behavior toward the same
+   semantic contract without treating per-member stubs as full conversion.
