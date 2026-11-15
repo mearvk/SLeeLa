@@ -1015,6 +1015,20 @@ private:
         return it == resolvedMethods_.end() ? *method : it->second;
     }
 
+    bool sameErasedType(const Ty& a, const Ty& b) const {
+        if (a.dims != b.dims) return false;
+        const bool av = a.n.rfind("$T$", 0) == 0;
+        const bool bv = b.n.rfind("$T$", 0) == 0;
+        if (av && bv) return true;
+        return a.n == b.n;
+    }
+
+    bool sameErasedParams(const std::vector<Ty>& a, const std::vector<Ty>& b) const {
+        if (a.size() != b.size()) return false;
+        for (size_t i=0;i<a.size();++i) if (!sameErasedType(a[i],b[i])) return false;
+        return true;
+    }
+
     const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0, int invocationKind = -1) const {
         if (depth > 32) return nullptr;
         std::vector<const MethodSig*> all;
@@ -1027,7 +1041,7 @@ private:
             bool merged=false;
             for (size_t i=0;i<candidates.size();++i) {
                 const MethodSig* prior=candidates[i];
-                if (m->params==prior->params && m->varargs==prior->varargs && m->isStatic==prior->isStatic) {
+                if (sameErasedParams(m->params,prior->params) && m->varargs==prior->varargs && m->isStatic==prior->isStatic) {
                     if (isSubtypeName(m->owner,prior->owner)) candidates[i]=m;
                     merged=true; break;
                 }
@@ -2402,7 +2416,7 @@ private:
                 (m.name == "toString" && m.params.empty())) continue;
             bool duplicate = false;
             for (size_t i = 0; i < found.size(); ++i) {
-                if (m.name == found[i]->name && m.params == found[i]->params) {
+                if (m.name == found[i]->name && sameErasedParams(m.params, found[i]->params)) {
                     const Ty& nextRet = m.ret;
                     const Ty& priorRet = found[i]->ret;
                     const bool sameRet = nextRet == priorRet;
@@ -2552,8 +2566,13 @@ private:
         Ty resultType;
         if (mname == "new") {
             if (!recv.isType) fail("methodref", "Type::new needs a type");
+            auto classInfo = classes.find(recv.code);
+            if (classInfo != classes.end() && classInfo->second.isInterface)
+                fail("methodref", "a constructor reference cannot target interface '" + recv.code + "'");
+            std::vector<const MethodSig*> constructors;
+            collectNamedMethods(recv.code, "<init>", constructors);
             const MethodSig* ctor = pickMethod(recv.code, "<init>", samArgs);
-            if (!ctor && !samArgs.empty())
+            if (!ctor && (!samArgs.empty() || !constructors.empty()))
                 fail("methodref", "no collected constructor of '" + recv.code + "' accepts the functional-interface parameters");
             if (ctor) {
                 samArgs = adaptArgs(ctor, samArgs);
