@@ -24,6 +24,15 @@ on:
       - 'config/**'
       - 'sleela-scripting/**'
       - 'jetbrains/**'
+      - 'api/**'
+      - 'artificial-intelligence/**'
+      - 'sleela-virtual-machine/**'
+      - 'tools/**'
+      - 'scripts/**'
+      - 'security/**'
+      - 'route/**'
+      - 'sleeladoc/**'
+      - 'build-registry.sh'
       - '.github/workflows/root-build-install.yml'
   pull_request:
     branches: [master, main]
