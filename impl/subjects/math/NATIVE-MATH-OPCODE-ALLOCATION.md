@@ -46,16 +46,26 @@ contracts are maintained in
 
 ## Append-only rule for future VM dispatch
 
-A direct VM array-to-kernel instruction will need a new opcode once the VM
-bridge is implemented and reviewed. The next available numeric ID after the
-current source ISA is 195. The intended first instruction is
-`OP_MATH_CALL = 195`, with the operation selector carried as its operand and
-the validated/pinned buffer descriptors prepared by the VM dispatch layer.
+The next available numeric ID after the current source ISA is 195.
+To preserve the original scalar integration, the intended order is:
 
-If the implementation later requires additional math-specific opcodes, assign
-them consecutively after 195 as one math block, in the canonical operation
-family order: vector, matrix, complex, decomposition, transform. Do not insert
-math IDs between 179–181, and do not renumber 182–194.
+- 195 — `OP_MATH_CALL`: scalar IEEE-754 dispatch using the stable
+  `SLMATHFunction` ID table and the original fallback stack contract
+  `[fallback marker, helper-name String, numeric arguments...]`.
+- 196 — `OP_MATH_ARRAY_CALL`: typed VM-array dispatch through
+  `slmath_vm_dispatch`, after the VM ownership, validation, and marshalling
+  adapter is implemented.
+
+This deliberately separates the established scalar ABI from typed array
+operations while keeping both in one contiguous native-math opcode block. The
+old branch's scalar implementation is the compatibility reference for 195;
+its obsolete assignment of 179 is not. Do not insert math IDs between 179–181,
+and do not renumber 182–194.
+
+If additional math-specific opcodes are later proven necessary, append them
+after 196 in the canonical operation family order: vector, matrix, complex,
+decomposition, transform. Prefer operation selectors within the typed array
+dispatch over one opcode per mathematical function.
 
 No opcode ID is reserved by this planning document. Allocation becomes
 authoritative only when the same change includes, in maintenance order:
