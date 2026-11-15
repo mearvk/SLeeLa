@@ -51,6 +51,8 @@ class JConvReport {
 
   int handle;
   String outRoot;
+  String reportPath;
+  String reportTemp;
   < totals >
   int filesSeen;
   int filesConverted;
@@ -69,6 +71,8 @@ class JConvReport {
   JConvReport() {
     this.handle = -1;
     this.outRoot = "";
+    this.reportPath = "";
+    this.reportTemp = "";
     this.filesSeen = 0;
     this.filesConverted = 0;
     this.filesSkipped = 0;
@@ -89,11 +93,17 @@ class JConvReport {
      run saved after its last finished file, so the summary covers every file. >>
   boolean begin(String outRoot, boolean resume) {
     this.outRoot = outRoot;
+    this.reportPath = outRoot + "/CONVERSION-REPORT.tsv";
+    this.reportTemp = this.reportPath + ".jconv-tmp";
     if (resume && loadState()) {
-      this.handle = openFile(outRoot + "/CONVERSION-REPORT.tsv", "a");
+      < A batch resume must continue the staged report; do not silently start a
+         second report if the staged file is missing. >
+      if (osExists(this.reportTemp) != 1) { return false; }
+      this.handle = openFile(this.reportTemp, "a");
       return this.handle >= 0;
     }
-    this.handle = openFile(outRoot + "/CONVERSION-REPORT.tsv", "w");
+    if (osExists(this.reportTemp) == 1) { osRemove(this.reportTemp); }
+    this.handle = openFile(this.reportTemp, "w");
     if (this.handle < 0) { return false; }
     write(this.handle, "# status\tjava_file\tsleela_files\ttypes\tmembers\tstubbed\tnotes\n");
     return true;
@@ -183,9 +193,31 @@ class JConvReport {
     this.handle = -1;
   }
 
+  boolean sameTextFile(String a, String b) {
+    JConvSource left = new JConvSource();
+    JConvSource right = new JConvSource();
+    if (!left.load(a) || !right.load(b) || left.length != right.length) { return false; }
+    int i = 0;
+    while (i < left.length) {
+      if (left.at(i) != right.at(i)) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+
+  boolean publishIfChanged(String temp, String target) {
+    if (osExists(target) == 1 && sameTextFile(target, temp)) {
+      osRemove(temp);
+      return true;
+    }
+    return osRename(temp, target) == 0;
+  }
+
   void finish(JConvRules rules) {
     if (this.handle >= 0) { close(this.handle); }
     this.handle = -1;
+    if (osExists(this.reportTemp) == 1 && !publishIfChanged(this.reportTemp, this.reportPath))
+      { print("jconv: could not publish report " + this.reportPath); }
     String s = "# Java to SLeeLa conversion summary\n\n";
     s = s + "Produced by lib/java/converter (best effort; rules in lib/java/converter/README.md).\n";
     s = s + "Conversion model: " + rules.model.describe() + ".\n\n";
@@ -207,10 +239,16 @@ class JConvReport {
       c = c + 1;
     }
     s = s + "\nPer-file detail: CONVERSION-REPORT.tsv.\n";
-    int h = openFile(this.outRoot + "/CONVERSION-SUMMARY.md", "w");
+    String summaryPath = this.outRoot + "/CONVERSION-SUMMARY.md";
+    String summaryTemp = summaryPath + ".jconv-tmp";
+    int h = openFile(summaryTemp, "w");
     if (h >= 0) {
       write(h, s);
       close(h);
+      if (!publishIfChanged(summaryTemp, summaryPath)) {
+        osRemove(summaryTemp);
+        print("jconv: could not publish summary " + summaryPath);
+      }
     }
     print("converted " + this.filesConverted + " of " + this.filesSeen + " Java files (" + this.filesSkipped + " skipped, " + this.filesFailed + " failed)");
     print("wrote " + this.unitsWritten + " SLeeLa files: " + this.typesTotal + " types, " + this.membersTotal + " members, " + this.stubsTotal + " stubbed");
