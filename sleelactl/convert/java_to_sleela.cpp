@@ -1000,8 +1000,8 @@ private:
                 int cost=0; bool applicable=true;
                 for (size_t i=0; i<args.size(); ++i) {
                     Ty target;
-                    if (i<n) target=m.params[i];
-                    else if (variable && n) target=mk(m.params.back().n,m.params.back().dims-1);
+                    if (variable && n && i>=n-1) target=mk(m.params.back().n,m.params.back().dims-1);
+                    else if (i<n) target=m.params[i];
                     else { applicable=false; break; }
                     if (args[i].lambdaPos != (size_t)-1) {
                         // A lambda is compatible only after its target interface is known.
