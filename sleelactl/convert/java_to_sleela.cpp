@@ -3126,12 +3126,19 @@ private:
                 if (isOp(";")) p++;
                 if (full.empty()) continue;
                 if (isStatic) {
-                    if (full.size() > 2 && full.compare(full.size()-2,2,".*") == 0)
-                        staticWildcardImports_.push_back(full.substr(0,full.size()-2));
-                    else {
+                    if (full.size() > 2 && full.compare(full.size()-2,2,".*") == 0) {
+                        std::string owner = full.substr(0,full.size()-2);
+                        size_t ownerDot = owner.rfind('.');
+                        if (ownerDot != std::string::npos) owner = owner.substr(ownerDot+1);
+                        staticWildcardImports_.push_back(owner);
+                    } else {
                         size_t dot = full.rfind('.');
-                        if (dot != std::string::npos && dot + 1 < full.size())
-                            staticImports_[full.substr(dot+1)].push_back(full.substr(0,dot));
+                        if (dot != std::string::npos && dot + 1 < full.size()) {
+                            std::string owner = full.substr(0,dot);
+                            size_t ownerDot = owner.rfind('.');
+                            if (ownerDot != std::string::npos) owner = owner.substr(ownerDot+1);
+                            staticImports_[full.substr(dot+1)].push_back(owner);
+                        }
                     }
                 } else if (full.size() > 2 && full.compare(full.size()-2,2,".*") != 0) {
                     size_t dot = full.rfind('.');
