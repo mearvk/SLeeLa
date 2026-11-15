@@ -1487,6 +1487,27 @@ private:
         if (const FieldInfo* fi = findField(curClass, name)) {
             E r; r.code = safeName(name); r.ty = fi->ty; return r;
         }
+        {
+            std::vector<std::string> owners;
+            auto si = staticImports_.find(name);
+            if (si != staticImports_.end()) owners.insert(owners.end(), si->second.begin(), si->second.end());
+            owners.insert(owners.end(), staticWildcardImports_.begin(), staticWildcardImports_.end());
+            std::sort(owners.begin(), owners.end());
+            owners.erase(std::unique(owners.begin(), owners.end()), owners.end());
+            std::string owner;
+            const cm_rec* field = nullptr;
+            for (const auto& candidate : owners) {
+                const cm_rec* found = cm_find(&M, "field", candidate.c_str(), name.c_str(), nullptr);
+                if (!found) continue;
+                if (field && owner != candidate)
+                    fail("static-import-ambiguous", "unqualified field '" + name + "' matches more than one static import; qualify the owner");
+                owner = candidate;
+                field = found;
+            }
+            if (field) {
+                E r; r.code = owner + "." + name; r.ty = mk(field->f[2]); r.pure = true; return r;
+            }
+        }
         { E o; if (resolveOuter(name, &o)) return o; }
         if (isupper((unsigned char)name[0]) || classes.count(name) || nestedMap_.count(name)) {
             std::string tn = resolveTypeName(name);
