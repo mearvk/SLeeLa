@@ -1037,6 +1037,7 @@ private:
         MethodSig bestResolved;
         int bestCost=0x3fffffff;
         bool ambiguous=false;
+        bool sawUnsupportedGeneric=false;
         // JLS 15.12.2: fixed-arity applicability is considered before variable arity.
         // The supported generic subset infers unbounded method variables that occur as
         // complete parameter types (T, T[], T...). Nested generic arguments and bounds
@@ -1044,7 +1045,7 @@ private:
         for (int phase=0;phase<2 && !best;++phase) {
             for (const MethodSig* mp:candidates) {
                 const MethodSig& m=*mp;
-                if (m.hasTypeParamBounds) continue; // bounds are not yet represented in Ty; refuse rather than guess
+                if (m.hasTypeParamBounds) { sawUnsupportedGeneric=true; continue; } // bounds are not yet represented in Ty
                 const size_t n=m.params.size();
                 const bool fixed=n==args.size() && (!m.varargs || phase==0);
                 const bool variable=phase==1 && m.varargs && args.size()+1>=n;
@@ -1076,7 +1077,10 @@ private:
                     if(c<0){applicable=false;break;}
                     cost+=c;
                 }
-                if (!applicable || inferred.size()!=m.typeParams.size()) continue;
+                if (!applicable || inferred.size()!=m.typeParams.size()) {
+                    if (!m.typeParams.empty()) sawUnsupportedGeneric=true;
+                    continue;
+                }
                 MethodSig resolved=m;
                 auto instantiate=[&](Ty t) {
                     if (t.n.rfind("$T$",0)==0) {
@@ -1103,6 +1107,9 @@ private:
         }
         if(ambiguous) throw ConvErr{cur().line,cur().col,"overload-ambiguous",
             "multiple applicable overloads of '"+cls+"."+name+"' remain incomparable under supported Java invocation conversions"};
+        if (!best && sawUnsupportedGeneric)
+            throw ConvErr{cur().line,cur().col,"generic-inference",
+                "generic overload '"+cls+"."+name+"' requires bounds, nested generic substitution, target typing, or a common-type inference rule not yet supported"};
         if (best) resolvedMethods_[best]=bestResolved;
         return best;
     }
