@@ -128,6 +128,26 @@ std::string jsonEscape(const std::string& s) {
     return o;
 }
 
+struct InputFile {
+    fs::path path;
+    fs::path rel;
+    std::string source; // immutable snapshot shared by indexing and conversion
+};
+
+bool writeIfChanged(const fs::path& path, const std::string& bytes, std::string* why) {
+    std::string old;
+    if (readFile(path, &old) && old == bytes) return true;
+    std::error_code ec;
+    fs::create_directories(path.parent_path(), ec);
+    if (ec) { *why = "cannot create output directory: " + ec.message(); return false; }
+    std::ofstream out(path, std::ios::binary | std::ios::trunc);
+    if (!out) { *why = "cannot open output: " + path.string(); return false; }
+    out.write(bytes.data(), static_cast<std::streamsize>(bytes.size()));
+    out.close();
+    if (!out) { *why = "cannot write output: " + path.string(); return false; }
+    return true;
+}
+
 struct FileOutcome {
     std::string rel;
     bool ok = false;
@@ -188,11 +208,11 @@ int main(int argc, char** argv) {
         return missing ? 1 : 0;
     }
 
-    std::vector<std::pair<fs::path, fs::path>> inputs;  // source file, path relative to source root
+    std::vector<InputFile> inputs;  // sorted, immutable source snapshot
     fs::path outRoot;
     if (!c.file.empty()) {
         if (c.out.empty()) { std::cerr << "javaconv: --file needs --out\n"; return 2; }
-        inputs.push_back({fs::path(c.file), fs::path(fs::path(c.file).filename())});
+        inputs.push_back({fs::path(c.file), fs::path(fs::path(c.file).filename()), {}});
         outRoot = c.out;
     } else {
         fs::path src;
@@ -227,7 +247,7 @@ int main(int argc, char** argv) {
             if (regular && entry.path().extension() == ".java") {
                 const std::string fn = entry.path().filename().string();
                 if (fn != "module-info.java" && fn != "package-info.java")
-                    inputs.push_back({entry.path(), fs::relative(entry.path(), src)});
+                    inputs.push_back({entry.path(), fs::relative(entry.path(), src), {}});
             }
             it.increment(ec);
             if (ec) {
@@ -235,45 +255,53 @@ int main(int argc, char** argv) {
                 return 2;
             }
         }
-        std::sort(inputs.begin(), inputs.end());
+        std::sort(inputs.begin(), inputs.end(), [](const InputFile& a, const InputFile& b) { return a.rel.generic_string() < b.rel.generic_string(); });
     }
 
-    // Pass 1 over the whole tree: record every type signature so that calls and field
-    // reads across files are typed (the JDK is one program, not 900 separate ones).
-    javaconv::SymbolTable table;
+    // Read each source exactly once. Both project indexing and translation consume
+    // this immutable byte snapshot, so a changing source tree cannot produce a
+    // mixed-generation symbol table and output.
+
     for (auto& in : inputs) {
-        std::string text;
-        if (!readFile(in.first, &text)) {
-            std::cerr << "javaconv: cannot read source during project indexing: " << in.first.string() << "\n";
+        std::error_code sec;
+        const fs::file_status st = fs::symlink_status(in.path, sec);
+        if (sec || fs::is_symlink(st) || !fs::is_regular_file(st)) {
+            std::cerr << "javaconv: refusing non-regular or symlink source: " << in.path.string() << "\n";
             cm_free(&model);
             return 2;
         }
+        if (!readFile(in.path, &in.source)) {
+            std::cerr << "javaconv: cannot read source: " << in.path.string() << "\n";
+            cm_free(&model);
+            return 2;
+        }
+    }
+
+    // Pass 1 over the whole immutable snapshot: calls and field reads across files
+    // are typed against one consistent source generation.
+    javaconv::SymbolTable table;
+    for (auto& in : inputs) {
         javaconv::Options o;
-        o.sourceName = in.second.generic_string();
+        o.sourceName = in.rel.generic_string();
         o.jdkVersion = c.version;
         o.singleThread = c.singleThread;
         o.checkedArrays = !c.uncheckedSizes;
-        javaconv::collect(text, model, o, table);
+        javaconv::collect(in.source, model, o, table);
     }
 
-    // A file that now fails closed must leave NO output. Remove what an earlier run emitted (the list is
-    // kept in outRoot/.javaconv-emitted); only files this tool wrote are ever deleted.
+    // Keep the previous ownership manifest intact until the new output set is
+    // known. Existing files may be replaced only when the prior manifest owns them.
     const fs::path emittedList = outRoot / ".javaconv-emitted";
+    std::vector<std::string> previousOwned;
     {
         std::ifstream prev(emittedList);
-        if (prev) {
-            std::string rel, why;
-            while (std::getline(prev, rel)) {
-                if (!rel.empty() && !removeOwnedOutput(outRoot, rel, &why)) {
-                    std::cerr << "javaconv: " << why << "\n";
-                    return 2;
-                }
-            }
-            if (!prev.eof()) {
-                std::cerr << "javaconv: failed while reading " << emittedList.string() << "\n";
-                return 2;
-            }
+        std::string rel;
+        while (std::getline(prev, rel)) {
+            if (rel.empty()) continue;
+            if (!safeManifestPath(rel)) { std::cerr << "javaconv: unsafe path in .javaconv-emitted: " << rel << "\n"; return 2; }
+            if (std::find(previousOwned.begin(), previousOwned.end(), rel) == previousOwned.end()) previousOwned.push_back(rel);
         }
+        if (prev.bad()) { std::cerr << "javaconv: failed while reading " << emittedList.string() << "\n"; return 2; }
     }
     std::vector<std::string> emittedRel;
 
@@ -282,15 +310,7 @@ int main(int argc, char** argv) {
     size_t emitted = 0;
     for (auto& in : inputs) {
         FileOutcome fo;
-        fo.rel = in.second.generic_string();
-        std::string text;
-        if (!readFile(in.first, &text)) {
-            javaconv::Diagnostic d; d.construct = "io"; d.message = "cannot read file";
-            fo.diags.push_back(d);
-            outcomes.push_back(fo);
-            byConstruct["io"]++;
-            continue;
-        }
+        fo.rel = in.rel.generic_string();
         javaconv::Options opt;
         opt.sourceName = fo.rel;
         opt.jdkVersion = c.version;
@@ -299,10 +319,10 @@ int main(int argc, char** argv) {
         opt.checkedArrays = !c.uncheckedSizes;
         opt.bundle = c.bundle || !c.file.empty();
         if (c.split) opt.bundle = false;
-        opt.bundleName = in.first.stem().string();
-        javaconv::Result r = javaconv::convert(text, model, opt, &table);
+        opt.bundleName = in.path.stem().string();
+        javaconv::Result r = javaconv::convert(in.source, model, opt, &table);
         if (r.ok() && !r.files.empty()) {
-            fs::path dir = outRoot / in.second.parent_path();
+            fs::path dir = outRoot / in.rel.parent_path();
             std::error_code ec;
             fs::create_directories(dir, ec);
             if (ec) {
@@ -317,7 +337,7 @@ int main(int argc, char** argv) {
             }
             for (auto& f : r.files) {
                 const fs::path outputPath = dir / (f.typeName + ".sleela");
-                const std::string relOutput = (in.second.parent_path() / (f.typeName + ".sleela")).generic_string();
+                const std::string relOutput = (in.rel.parent_path() / (f.typeName + ".sleela")).generic_string();
                 if (!safeManifestPath(relOutput)) {
                     std::cerr << "javaconv: translator produced an unsafe output path: " << relOutput << "\n";
                     return 2;
@@ -328,7 +348,13 @@ int main(int argc, char** argv) {
                 }
                 std::error_code existsEc;
                 const fs::file_status existing = fs::symlink_status(outputPath, existsEc);
-                if (!existsEc && existing.type() != fs::file_type::not_found) {
+                const bool exists = !existsEc && existing.type() != fs::file_type::not_found;
+                const bool wasOwned = std::find(previousOwned.begin(), previousOwned.end(), relOutput) != previousOwned.end();
+                if (exists && (fs::is_symlink(existing) || !fs::is_regular_file(existing))) {
+                    std::cerr << "javaconv: refusing non-regular or symlink output: " << outputPath.string() << "\n";
+                    return 2;
+                }
+                if (exists && !wasOwned) {
                     std::cerr << "javaconv: refusing to overwrite output not owned by the previous manifest: " << outputPath.string() << "\n";
                     return 2;
                 }
@@ -336,10 +362,8 @@ int main(int argc, char** argv) {
                     std::cerr << "javaconv: cannot inspect output path '" << outputPath.string() << "': " << existsEc.message() << "\n";
                     return 2;
                 }
-                std::ofstream o(outputPath, std::ios::binary);
-                o << f.text;
-                o.close();
-                if (!o) { std::cerr << "javaconv: cannot write " << outputPath.string() << "\n"; return 2; }
+                std::string writeError;
+                if (!writeIfChanged(outputPath, f.text, &writeError)) { std::cerr << "javaconv: " << writeError << "\n"; return 2; }
                 emittedRel.push_back(relOutput);
                 fo.emitted++;
                 emitted++;
@@ -356,12 +380,19 @@ int main(int argc, char** argv) {
         outcomes.push_back(fo);
     }
 
-    {
-        std::error_code mkec;
-        fs::create_directories(outRoot, mkec);
-        std::ofstream list(emittedList);
-        for (auto& r : emittedRel) list << r << "\n";
+    // Remove only outputs owned by the previous run that are absent from this
+    // run. Unchanged output bytes are never rewritten, preserving mtimes.
+    for (const auto& oldRel : previousOwned) {
+        if (std::find(emittedRel.begin(), emittedRel.end(), oldRel) == emittedRel.end()) {
+            std::string why;
+            if (!removeOwnedOutput(outRoot, oldRel, &why)) { std::cerr << "javaconv: " << why << "\n"; return 2; }
+        }
     }
+    std::sort(emittedRel.begin(), emittedRel.end());
+    std::ostringstream manifest;
+    for (const auto& rel : emittedRel) manifest << rel << "\n";
+    std::string manifestError;
+    if (!writeIfChanged(emittedList, manifest.str(), &manifestError)) { std::cerr << "javaconv: " << manifestError << "\n"; return 2; }
     size_t okFiles = 0, failed = 0;
     for (auto& o : outcomes) (o.ok ? okFiles : failed)++;
 
@@ -387,7 +418,10 @@ int main(int argc, char** argv) {
             }
         }
         j << "\n  ]\n}\n";
-        std::ofstream("" + (outRoot / "CONVERSION-REPORT.json").string()) << j.str();
+        std::string reportError;
+        if (!writeIfChanged(outRoot / "CONVERSION-REPORT.json", j.str(), &reportError)) {
+            std::cerr << "javaconv: " << reportError << "\n"; cm_free(&model); return 2;
+        }
         if (c.json) std::cout << j.str();
     }
     {
@@ -411,7 +445,10 @@ int main(int argc, char** argv) {
                 m << "\n";
             }
         }
-        std::ofstream("" + (outRoot / "CONVERSION-REPORT.md").string()) << m.str();
+        std::string reportError;
+        if (!writeIfChanged(outRoot / "CONVERSION-REPORT.md", m.str(), &reportError)) {
+            std::cerr << "javaconv: " << reportError << "\n"; cm_free(&model); return 2;
+        }
     }
 
     if (!c.quiet) {
