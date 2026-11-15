@@ -28,13 +28,14 @@ struct Ty {
     std::string n = "?";  // "?" unknown; "null"; "type:<name>" for a type used as a qualifier
     int dims = 0;
     bool operator==(const Ty& o) const { return n == o.n && dims == o.dims; }
-    bool known() const { return n != "?"; }
+    bool known() const { return n != "?" && n.rfind("$T$", 0) != 0; }
 };
 
 struct MethodSig {
     std::string name;
     Ty ret;
     std::vector<Ty> params;
+    std::vector<std::string> typeParams; // method-level type variables retained for invocation inference
     bool isStatic = false;
     bool varargs = false;   // the last parameter is T... (its type is stored as T[])
     bool isAbstract = false; // declared without a body (an interface method, or abstract)
