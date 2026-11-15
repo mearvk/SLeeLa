@@ -938,23 +938,7 @@ private:
             return -1;
         }
         if (kPrim.count(from.n) && kPrim.count(to.n)) {
-            static const char* widening[][7] = {
-                {"byte","short","int","long","float","double",nullptr},
-                {"short","int","long","float","double",nullptr,nullptr},
-                {"char","int","long","float","double",nullptr,nullptr},
-                {"int","long","float","double",nullptr,nullptr,nullptr},
-                {"long","float","double",nullptr,nullptr,nullptr,nullptr},
-                {"float","double",nullptr,nullptr,nullptr,nullptr,nullptr},
-                {"double",nullptr,nullptr,nullptr,nullptr,nullptr,nullptr}
-            };
-            int row = -1;
-            if (from.n == "byte") row=0; else if(from.n=="short") row=1;
-            else if(from.n=="char") row=2; else if(from.n=="int") row=3;
-            else if(from.n=="long") row=4; else if(from.n=="float") row=5;
-            else if(from.n=="double") row=6;
-            if (row >= 0) for (int j=0; j<6 && widening[row][j]; ++j)
-                if (to.n == widening[row][j]) return j+1;
-            return -1;
+            return cm_find(&M, "widen", from.n.c_str(), to.n.c_str(), nullptr) ? 1 : -1;
         }
         if (from.n == to.n) return 0;
         auto it = classes.find(from.n);
