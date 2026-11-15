@@ -98,6 +98,7 @@ class JConvEmitter {
      bytes. JConvSource compares decoded UTF-16 code units after validating UTF-8;
      generated SLeeLa is valid UTF-8, so this preserves exact text equality. >
   boolean sameTextFile(String a, String b) {
+    if (osFileSize(a) != osFileSize(b)) { return false; }
     JConvSource left = new JConvSource();
     JConvSource right = new JConvSource();
     if (!left.load(a) || !right.load(b) || left.length != right.length) { return false; }
