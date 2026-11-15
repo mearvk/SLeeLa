@@ -405,7 +405,7 @@ private:
         }
         if (target.dims == 0 && target.n == "double" && v.ty.dims == 0) {
             std::string c = classOf(v.ty);
-            if (c == "int" || c == "long") {
+            if (c == "int" || c == "long" || c == "float") {
                 E r = v;
                 r.code = v.isLitInt ? std::to_string(v.iv) + ".0" : "(double) " + paren(v.code);
                 r.ty = mk("double");
