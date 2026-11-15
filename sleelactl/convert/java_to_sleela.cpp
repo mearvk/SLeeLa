@@ -122,6 +122,8 @@ private:
     // per-type / per-method state
     std::string curClass;
     std::set<std::string> typeVars;
+    std::set<std::string> methodTypeVars_;
+    mutable std::map<const MethodSig*, MethodSig> resolvedMethods_;
     bool curIsInterface = false;
     std::vector<std::map<std::string, std::pair<std::string, Ty>>> scopes;
     std::set<std::string> usedNames;
@@ -356,7 +358,8 @@ private:
         }
         while (isOp("[") && isOpAt(p + 1, "]")) { p += 2; depth++; }
         Ty t = mk(name, depth);
-        if (qual.empty() && typeVars.count(name)) t.n = "?";
+        if (qual.empty() && methodTypeVars_.count(name)) t.n = "$T$" + name;
+        else if (qual.empty() && typeVars.count(name)) t.n = "?";
         else if (qual.empty()) t.n = resolveTypeName(name);
         else t.n = qual + "__" + name;
         // A boxed type written as a type (Integer i, (Long) o, Double[] a). The converter holds
@@ -369,7 +372,7 @@ private:
 
     std::string emitType(const Ty& t) const {
         std::string n = t.n;
-        if (n == "?") n = "Any";
+        if (n == "?" || n.rfind("$T$", 0) == 0) n = "Any";
         if (n == "float") n = "double";   // a binary32 value is held in a double that is rounded to 24 bits after each operation (JavaFloat)
         for (int i = 0; i < t.dims; i++) n += "[]";
         return n;
@@ -994,6 +997,11 @@ private:
         for (const auto& iface:it->second.ifaces) collectNamedMethods(iface,name,out,depth+1);
     }
 
+    const MethodSig& resolvedMethod(const MethodSig* method) const {
+        auto it = resolvedMethods_.find(method);
+        return it == resolvedMethods_.end() ? *method : it->second;
+    }
+
     const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0) const {
         if (depth > 32) return nullptr;
         std::vector<const MethodSig*> all;
@@ -1013,9 +1021,13 @@ private:
             if (!merged) candidates.push_back(m);
         }
         const MethodSig* best=nullptr;
+        MethodSig bestResolved;
         int bestCost=0x3fffffff;
         bool ambiguous=false;
         // JLS 15.12.2: fixed-arity applicability is considered before variable arity.
+        // The supported generic subset infers unbounded method variables that occur as
+        // complete parameter types (T, T[], T...). Nested generic arguments and bounds
+        // remain fail-closed because this converter's Ty model erases those structures.
         for (int phase=0;phase<2 && !best;++phase) {
             for (const MethodSig* mp:candidates) {
                 const MethodSig& m=*mp;
@@ -1023,12 +1035,21 @@ private:
                 const bool fixed=n==args.size() && (!m.varargs || phase==0);
                 const bool variable=phase==1 && m.varargs && args.size()+1>=n;
                 if (!fixed && !variable) continue;
+                std::map<std::string,Ty> inferred;
                 int cost=0; bool applicable=true;
                 for (size_t i=0;i<args.size();++i) {
                     Ty target;
                     if (variable && n && i>=n-1) target=mk(m.params.back().n,m.params.back().dims-1);
                     else if (i<n) target=m.params[i];
                     else { applicable=false; break; }
+                    if (target.n.rfind("$T$",0)==0) {
+                        if (args[i].lambdaPos!=(size_t)-1 || !args[i].ty.known()) { applicable=false; break; }
+                        const std::string variableName=target.n.substr(3);
+                        auto ti=inferred.find(variableName);
+                        if (ti==inferred.end()) inferred[variableName]=args[i].ty;
+                        else if (!(ti->second==args[i].ty)) { applicable=false; break; }
+                        target=args[i].ty;
+                    }
                     if (args[i].lambdaPos!=(size_t)-1) {
                         if (phase==0 && m.varargs && n && i==n-1) { applicable=false; break; }
                         if (target.dims != 0 || !functionalMethod(target.n)) { applicable=false; break; }
@@ -1038,17 +1059,34 @@ private:
                     if(c<0){applicable=false;break;}
                     cost+=c;
                 }
-                if(!applicable) continue;
-                if(!best || cost<bestCost) { best=mp;bestCost=cost;ambiguous=false; }
-                else if(cost==bestCost && best) {
-                    if(moreSpecific(m,*best)) { best=mp;ambiguous=false; }
-                    else if(!moreSpecific(*best,m) && (m.params!=best->params || m.varargs!=best->varargs)) ambiguous=true;
+                if (!applicable || inferred.size()!=m.typeParams.size()) continue;
+                MethodSig resolved=m;
+                auto instantiate=[&](Ty t) {
+                    if (t.n.rfind("$T$",0)==0) {
+                        auto it=inferred.find(t.n.substr(3));
+                        if (it!=inferred.end()) { Ty value=it->second; value.dims+=t.dims; return value; }
+                    }
+                    return t;
+                };
+                for (Ty& t:resolved.params) t=instantiate(t);
+                resolved.ret=instantiate(resolved.ret);
+                if(!best || cost<bestCost) {
+                    best=mp; bestResolved=resolved; bestCost=cost; ambiguous=false;
+                } else if(cost==bestCost && best) {
+                    if(moreSpecific(resolved,bestResolved) ||
+                       (resolved.params==bestResolved.params && resolved.typeParams.empty() && !bestResolved.typeParams.empty())) {
+                        best=mp; bestResolved=resolved; ambiguous=false;
+                    } else if(!moreSpecific(bestResolved,resolved) &&
+                              (resolved.params!=bestResolved.params || resolved.varargs!=bestResolved.varargs)) {
+                        ambiguous=true;
+                    }
                 }
             }
             if(best) break;
         }
         if(ambiguous) throw ConvErr{cur().line,cur().col,"overload-ambiguous",
             "multiple applicable overloads of '"+cls+"."+name+"' remain incomparable under supported Java invocation conversions"};
+        if (best) resolvedMethods_[best]=bestResolved;
         return best;
     }
     // Java method invocation conversion (JLS 5.3, 15.12.4.2) for a resolved target: pack the trailing
@@ -1056,25 +1094,26 @@ private:
     // parameters (an int left in a double parameter would later divide as integers).
     std::vector<E> adaptArgs(const MethodSig* m, std::vector<E> args) {
         if (!m) return args;
-        const size_t n = m->params.size();
-        const bool directVarargs = m->varargs && n > 0 && args.size() == n &&
-            (args.back().isNull || (args.back().ty.dims == m->params.back().dims && args.back().ty.n == m->params.back().n));
+        const MethodSig& selected = resolvedMethod(m);
+        const size_t n = selected.params.size();
+        const bool directVarargs = selected.varargs && n > 0 && args.size() == n &&
+            (args.back().isNull || (args.back().ty.dims == selected.params.back().dims && args.back().ty.n == selected.params.back().n));
         for (size_t i = 0; i < args.size(); i++) {
             if (args[i].lambdaPos == (size_t)-1) continue;
-            const size_t pi = i < n ? i : (m->varargs && n > 0 ? n-1 : n);
+            const size_t pi = i < n ? i : (selected.varargs && n > 0 ? n-1 : n);
             if (pi >= n) continue;
             size_t save = p;
             p = args[i].lambdaPos;
-            lambdaTarget_ = (m->varargs && !directVarargs && i >= n-1)
-                ? mk(m->params.back().n, m->params.back().dims-1) : m->params[pi];
+            lambdaTarget_ = (selected.varargs && !directVarargs && i >= n-1)
+                ? mk(selected.params.back().n, selected.params.back().dims-1) : selected.params[pi];
             E lam = isLambdaAhead() ? parseLambda() : parseExpr();
             p = save;
             args[i] = lam;
         }
         size_t fixed = n;
-        if (m->varargs) {
+        if (selected.varargs) {
             fixed = n - 1;
-            const Ty& vt = m->params.back();
+            const Ty& vt = selected.params.back();
             const bool direct = directVarargs;
             if (!direct) {
                 Ty et = mk(vt.n, vt.dims - 1);
@@ -1099,7 +1138,7 @@ private:
                 args.push_back(packed);
             }
         }
-        for (size_t i = 0; i < fixed && i < args.size(); i++) args[i] = coerce(args[i], m->params[i]);
+        for (size_t i = 0; i < fixed && i < args.size(); i++) args[i] = coerce(args[i], selected.params[i]);
         return args;
     }
 
@@ -1136,7 +1175,7 @@ private:
         r.pure = false;
         (void)staticCall;
         if (const MethodSig* m = pickMethod(recvType, name, args)) {
-            r.ty = m->ret;
+            r.ty = resolvedMethod(m).ret;
             return r;
         }
         refuseObjectMethod(recvType, name);
@@ -1153,7 +1192,7 @@ private:
             auto ci = classes.find(up);
             if (ci == classes.end() || ci->second.super.empty() || ci->second.super == up) break;
             up = ci->second.super;
-            if (const MethodSig* m = pickMethod(up, name, args)) { r.ty = m->ret; return r; }
+            if (const MethodSig* m = pickMethod(up, name, args)) { r.ty = resolvedMethod(m).ret; return r; }
             rec = cm_find(&M, "ret", up.c_str(), name.c_str(), nullptr);
         }
         if (rec) {
@@ -1421,7 +1460,7 @@ private:
             E r;
             r.code = qualifier + mapMember(safeNameForCall(name)) + "(" + joinArgs(a) + ")";
             r.pure = false;
-            if (pm) r.ty = pm->ret;
+            if (pm) r.ty = resolvedMethod(pm).ret;
             else if (!importedOwner.empty()) r = callResult(importedOwner, name, a, r.code, true);
             else r.ty = mk("?");
             return r;
@@ -3361,6 +3400,8 @@ private:
         std::vector<std::string> mtp;
         std::set<std::string> savedVars = typeVars;
         skipTypeParams(&mtp);
+        methodTypeVars_.clear();
+        methodTypeVars_.insert(mtp.begin(), mtp.end());
 
         bool isStatic = mods.has("static");
         bool isAbstract = mods.has("abstract");
@@ -3376,7 +3417,7 @@ private:
             if (isKw("throws")) skipThrows();
             curRet = mk("void");
             if (pass == 1) {
-                MethodSig ms; ms.name = "<init>"; ms.ret = mk("void"); ms.varargs = ctorVarargs;
+                MethodSig ms; ms.name = "<init>"; ms.ret = mk("void"); ms.varargs = ctorVarargs; ms.typeParams = mtp;
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }
@@ -3423,7 +3464,7 @@ private:
             if (isKw("throws")) skipThrows();
             curRet = ty;
             if (pass == 1) {
-                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls;
+                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls; ms.typeParams = mtp;
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }
