@@ -1,7 +1,7 @@
 # SLeeLa Pi 20,000-Digit Native Math Benchmark
 
 **Date:** 2026-11-09  
-**Status:** Historical PASS (branch run; not yet rerun on current master)  
+**Status:** Historical PASS (original branch run; current-master rerun is now automated)  
 **Branch:** `pi-20000-sleelactl-native-math`  
 **Test commit:** `2feed4fb627adc22196766f55dd7706fa9812773`  
 **Workflow run:** [Pi 20,000-digit native math benchmark](https://github.com/mearvk/SLeeLa/actions/runs/42690168886)
@@ -40,7 +40,7 @@ An independent `mpmath` reference, evaluated at 20,080 decimal places, was compa
 The Pi generation command was:
 
 ```sh
-timeout 30m impl/build/sleela run pi-generator/PiChudnovsky.sleela
+timeout 30m impl/build/sleela run pi-generator/PiChudnovsky20k.sleela
 ```
 
 The registered native math subject was separately exercised through:
