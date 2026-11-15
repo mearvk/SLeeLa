@@ -767,6 +767,7 @@ The Windows failure in Native C/C++ Portability run **43629021139** was traced f
 
 1. `b7787b9` — keep the ConPTY output pipe open and drain it on a dedicated Windows thread while `ClosePseudoConsole()` completes, allowing shutdown-frame output to be consumed.
 2. `2b10fff` — if the drain thread cannot be created, close the output reader before calling `ClosePseudoConsole()` as the documented fallback; preserve an explicit error result.
+3. `f221cd9` — add flushed `terminal close: begin` / `terminal close: end (rc=...)` markers to the Windows smoke test so the next CI log captures the exact teardown boundary.
 
 The repair follows Microsoft's ConPTY shutdown guidance: older Windows releases may wait for output to be drained or the output pipe to be closed. See [ClosePseudoConsole](https://learn.microsoft.com/en-us/windows/console/closepseudoconsole) and [Creating a Pseudoconsole session](https://learn.microsoft.com/en-us/windows/console/creating-a-pseudoconsole-session).
 
