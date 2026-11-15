@@ -1023,7 +1023,10 @@ private:
                     if (variable && n && i>=n-1) target=mk(m.params.back().n,m.params.back().dims-1);
                     else if (i<n) target=m.params[i];
                     else { applicable=false; break; }
-                    if (args[i].lambdaPos!=(size_t)-1) { cost+=64; continue; }
+                    if (args[i].lambdaPos!=(size_t)-1) {
+                        if (phase==0 && m.varargs && n && i==n-1) { applicable=false; break; }
+                        cost+=64; continue;
+                    }
                     int c=invocationCost(args[i].ty,target);
                     if(c<0){applicable=false;break;}
                     cost+=c;
@@ -1046,21 +1049,24 @@ private:
     // parameters (an int left in a double parameter would later divide as integers).
     std::vector<E> adaptArgs(const MethodSig* m, std::vector<E> args) {
         if (!m) return args;
-        for (size_t i = 0; i < args.size() && i < m->params.size(); i++) {
+        const size_t n = m->params.size();
+        const bool directVarargs = m->varargs && args.size() == n &&
+            (args.back().isNull || (args.back().ty.dims == m->params.back().dims && args.back().ty.n == m->params.back().n));
+        for (size_t i = 0; i < args.size() && i < n; i++) {
             if (args[i].lambdaPos == (size_t)-1) continue;
             size_t save = p;
             p = args[i].lambdaPos;
-            lambdaTarget_ = m->params[i];
+            lambdaTarget_ = (m->varargs && !directVarargs && i >= n-1)
+                ? mk(m->params.back().n, m->params.back().dims-1) : m->params[i];
             E lam = isLambdaAhead() ? parseLambda() : parseExpr();
             p = save;
             args[i] = lam;
         }
-        const size_t n = m->params.size();
         size_t fixed = n;
         if (m->varargs) {
             fixed = n - 1;
             const Ty& vt = m->params.back();
-            const bool direct = args.size() == n && (args.back().isNull || (args.back().ty.dims == vt.dims && args.back().ty.n == vt.n));
+            const bool direct = directVarargs;
             if (!direct) {
                 Ty et = mk(vt.n, vt.dims - 1);
                 std::string body;
