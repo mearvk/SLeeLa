@@ -357,6 +357,6 @@ class JConvModel {
 
   String describe() {
     if (!this.loaded) { return "built-in defaults (model file not read: " + this.path + ")"; }
-    return this.modelName + " " + this.revision + " (" + this.retRows + " ret rows, " + this.path + ")";
+    return this.modelName + " " + this.revision + " (" + this.retRows + " ret rows, " + this.widenN + " widening rows, " + this.path + ")";
   }
 }
