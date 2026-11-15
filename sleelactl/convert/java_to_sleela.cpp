@@ -1050,14 +1050,16 @@ private:
     std::vector<E> adaptArgs(const MethodSig* m, std::vector<E> args) {
         if (!m) return args;
         const size_t n = m->params.size();
-        const bool directVarargs = m->varargs && args.size() == n &&
+        const bool directVarargs = m->varargs && n > 0 && args.size() == n &&
             (args.back().isNull || (args.back().ty.dims == m->params.back().dims && args.back().ty.n == m->params.back().n));
-        for (size_t i = 0; i < args.size() && i < n; i++) {
+        for (size_t i = 0; i < args.size(); i++) {
             if (args[i].lambdaPos == (size_t)-1) continue;
+            const size_t pi = i < n ? i : (m->varargs && n > 0 ? n-1 : n);
+            if (pi >= n) continue;
             size_t save = p;
             p = args[i].lambdaPos;
             lambdaTarget_ = (m->varargs && !directVarargs && i >= n-1)
-                ? mk(m->params.back().n, m->params.back().dims-1) : m->params[i];
+                ? mk(m->params.back().n, m->params.back().dims-1) : m->params[pi];
             E lam = isLambdaAhead() ? parseLambda() : parseExpr();
             p = save;
             args[i] = lam;
