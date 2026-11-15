@@ -24,18 +24,36 @@ The typed array/linear-algebra integration is also required:
 
 ## ISA and compatibility constraints
 
-The current source/native ISA contains 195 entries, numbered 0 through 194.
-The fixed IPC block remains:
+The executable source/native ISA currently ends at opcode 194. Existing
+assignments 0–194 are frozen and append-only, including the fixed IPC block:
 
 - 179 — `OP_IPC_OPEN`
 - 180 — `OP_IPC_CALL`
 - 181 — `OP_IPC_CLOSE`
 
-Opcodes 182–194 remain unchanged. The next possible append-only ID is 195.
-No opcode is assigned by this plan. A future opcode change must update the
-source ISA, native enum, compile-time ID assertions, artifact validation,
-opcode map, and ISA verification together. The old native-math branch's
-assignment of `OP_MATH_CALL` to 179 is invalid for this repository state.
+Opcodes 182–194 remain unchanged. The reserved native-math allocation is:
+
+| Range | Family |
+|---:|---|
+| 195–199 | Shared native math |
+| 200–207 | Vector |
+| 208–215 | Matrix |
+| 216–223 | Complex |
+| 224–231 | Decomposition |
+| 232–281 | Transform |
+
+Within the shared block, 195 is planned for scalar `OP_MATH_CALL`, 196 for
+typed `OP_MATH_ARRAY_CALL`, and 197–199 remain vacant. All ranges are
+inclusive; unused positions remain reserved for their family. Transform has
+50 positions, 232 through 281.
+
+These are reservations, not executable instructions. Do not insert placeholder
+entries into the source registry or native enum. Reserved IDs must fail closed
+until implementation, compiler lowering, dispatch, artifact validation,
+supported VM-generation contracts, tests, and documentation land together.
+Function IDs and typed operation IDs remain distinct from opcode IDs. The
+historical native-math branch's assignment of `OP_MATH_CALL` to 179 is invalid
+for this repository state.
 
 ## VM array ownership and safety contract
 
