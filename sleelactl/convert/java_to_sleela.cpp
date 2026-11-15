@@ -1006,8 +1006,15 @@ private:
         auto it=classes.find(cls);
         if (it==classes.end()) return;
         for (const auto& m:it->second.methods) if (m.name==name) out.push_back(&m);
+        // Constructors are not inherited. Interface static methods are not inherited
+        // either, although default and abstract instance methods are.
+        if (name == "<init>") return;
         if (!it->second.super.empty()) collectNamedMethods(it->second.super,name,out,depth+1);
-        for (const auto& iface:it->second.ifaces) collectNamedMethods(iface,name,out,depth+1);
+        for (const auto& iface:it->second.ifaces) {
+            std::vector<const MethodSig*> inherited;
+            collectNamedMethods(iface,name,inherited,depth+1);
+            for (const MethodSig* method : inherited) if (!method->isStatic) out.push_back(method);
+        }
     }
 
     const MethodSig& resolvedMethod(const MethodSig* method) const {
