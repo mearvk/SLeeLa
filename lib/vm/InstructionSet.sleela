@@ -9,7 +9,10 @@ material;
    152 OP_CHECKCAST; 153 OP_INSTANCEOF; 154 OP_DUP2; 155 OP_OSLS_CALL;
    156..178 append-only math/native/Java-string/exception extensions;
    179..181 reserved Native IPC worker instructions; 182 OP_REF object references;
-   183..184 Java UTF-16 String to legacy UTF-8 and run-time code-unit bridges.) >>
+   183..194 append-only UTF-16, bitwise, char, and multidimensional-array extensions.
+   195..281 are reserved math-family allocation ranges, not executable entries:
+   195..199 shared native math; 200..207 Vector; 208..215 Matrix;
+   216..223 Complex; 224..231 Decomposition; 232..281 Transform.) >>
 < Operating-system system calls (OP_OS_*, syntax 1.5) are a runtime-service family like sockets/files: a spawned process is a VM-local bounded handle. See /lib/vm/RUNTIME-SERVICES.md and /lib/operating-system/OS.md. >
 < OP_NOP >
 < OP_CONST >
@@ -493,3 +496,20 @@ class SLISAddChar { String name; int code; }
 
 < OP_NEWARRAYND 194 -- syntax 3.1 (SLEELA.syntax 46): operand a = sized dimensions n (2..8) | innermost fill kind << 8; pop n sizes (last on top) and push a rectangular array of arrays, outermost first >
 class SLISNewArrayND { String name; int code; }
+
+< Reserved ISA allocation — these numbers are not executable opcode entries.
+  Do not add them to the source registry or native SLOp enum until their
+  implementation, dispatch, artifact validation, and VM compatibility work
+  land together. Reserved IDs are never reassigned outside their family.
+
+  Shared native math: 195..199
+    195 OP_MATH_CALL       (planned scalar IEEE-754 dispatch)
+    196 OP_MATH_ARRAY_CALL (planned typed VM-array dispatch)
+    197..199 reserved for shared math dispatch extensions
+
+  Vector:       200..207
+  Matrix:       208..215
+  Complex:      216..223
+  Decomposition:224..231
+  Transform:    232..281 (50 positions, inclusive)
+  Unused positions remain reserved within their assigned family. >
