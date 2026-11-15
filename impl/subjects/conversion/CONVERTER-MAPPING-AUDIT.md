@@ -103,9 +103,10 @@ must distinguish complete conversion, partial/stubbed output, and refusal.
   with differing return types collapse to an unknown return type.
 - It now loads the shared primitive `widen` rows into `JConvModel`, exposes
   `canWiden` through `JConvRules`, and keeps matching defaults when the model
-  file is unavailable. `JConvExpr.promote` now uses that query for Java `char`
-  to `int` unary numeric promotion. The remaining binary promotion and cast
-  decisions are still represented by native kind rules. Its member table also
+  file is unavailable. `JConvExpr.promote` and `JConvExpr.merge` now use that query for `char` to
+  `int` unary/binary promotion and the supported int/char/long widening paths
+  to `long`/`double`. Cast decisions and some primitive-kind distinctions are
+  still represented by native kind rules. Its member table also
   erases overloads by name and does not implement generic invocation inference.
 - It does not currently provide a project-wide generic type substitution and
   overload-resolution phase comparable to the C++ symbol table.
