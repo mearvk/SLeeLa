@@ -989,7 +989,6 @@ private:
         const MethodSig* best = nullptr;
         int bestCost = 0x3fffffff;
         bool ambiguous = false;
-        bool fixedPhase = false;
         // JLS 15.12.2: fixed-arity applicability is considered before variable arity.
         for (int phase=0; phase<2 && !best; ++phase) {
             for (const auto& m : it->second.methods) {
@@ -1017,7 +1016,7 @@ private:
                 if (!variable && m.varargs && n==args.size()) {
                     // An array passed directly to a varargs declaration is fixed arity.
                 }
-                if (!best || cost<bestCost) { best=&m;bestCost=cost;ambiguous=false;fixedPhase=(phase==0); }
+                if (!best || cost<bestCost) { best=&m;bestCost=cost;ambiguous=false;}
                 else if(cost==bestCost && best) {
                     if (moreSpecific(m,*best)) { best=&m;ambiguous=false; }
                     else if (!moreSpecific(*best,m) && (m.params!=best->params || m.varargs!=best->varargs)) ambiguous=true;
