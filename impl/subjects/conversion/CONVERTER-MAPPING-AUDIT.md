@@ -76,9 +76,10 @@ must distinguish complete conversion, partial/stubbed output, and refusal.
   Method-level type variables are retained as signature metadata for the direct
   unbounded forms `T`, `T[]`, and `T...`.
 - `pickMethod` now evaluates fixed-arity applicability before variable arity,
-  uses identity, model-driven primitive widening and known reference-subtype
-  conversions, walks inherited class/interface methods, collapses overridden
-  signatures, and selects among supported most-specific candidates. It fails
+  uses identity, model-driven primitive widening, known reference-subtype and
+  recursive reference-array conversions, walks inherited class/interface
+  methods, collapses overridden signatures, and selects among supported
+  most-specific candidates. It fails
   closed when supported candidates remain incomparable. This is a meaningful
   partial JLS implementation, not full Java overload resolution.
 - Direct unbounded method-variable inference now binds `T`, `T[]`, and `T...`
@@ -172,9 +173,9 @@ creation time. Do not count an unknown-target stub as successful conversion.
 2. Consolidate identifier rename and built-in qualification data, retaining
    context-sensitive rename categories.
 3. Complete C++ invocation applicability and specificity beyond the current
-   supported subset: boxing/unboxing, generic inference/substitution, array
-   covariance, and the remaining JLS ambiguity rules. Add focused differential
-   fixtures before claiming broader coverage.
+   supported subset: boxing/unboxing, bounded/class/nested generic inference,
+   wildcard capture, and the remaining JLS ambiguity rules. Add focused
+   differential fixtures before claiming broader coverage.
 4. Extend `JConvExpr` model use from char-to-int unary promotion to the full
    supported numeric-promotion/cast set, then bring the SLeeLa-native signature
    index toward overload-aware resolution and add generic SAM substitution.
