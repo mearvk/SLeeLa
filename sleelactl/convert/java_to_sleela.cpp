@@ -51,7 +51,8 @@ const std::set<std::string> kModifiers = {"public", "private", "protected", "sta
 const std::set<std::string> kSleelaReserved = {"struct", "material", "spark", "int32", "record", "close", "native",
                                                "Any", "print", "enum", "interface", "super", "yield", "throw",
                                                "instanceof", "switch", "synchronized", "assert",
-                                               "join", "spawn", "sleep", "arrayLength", "arrayNew", "arraySet", "structPack", "structUnpack"};
+                                               "join", "spawn", "sleep", "arrayLength", "arrayNew", "arraySet", "structPack", "structUnpack",
+                                               "require", "usualgc", "usualmem", "int64", "int128"};
 
 struct Tok {
     jt_kind kind = JT_EOF;
@@ -252,6 +253,9 @@ private:
 
     // ---------------------------------------------------------- idents ----
     static std::string safeName(const std::string& n) {
+        // `next` is a contextual VM word: in value position it evaluates to 1.
+        // Rename variables/fields, but keep a method named next() callable.
+        if (n == "next") return "next_";
         return kSleelaReserved.count(n) ? n + "_" : n;
     }
     void pushScope() { scopes.emplace_back(); }
@@ -401,7 +405,7 @@ private:
         }
         if (target.dims == 0 && target.n == "double" && v.ty.dims == 0) {
             std::string c = classOf(v.ty);
-            if (c == "int" || c == "long") {
+            if (c == "int" || c == "long" || c == "float") {
                 E r = v;
                 r.code = v.isLitInt ? std::to_string(v.iv) + ".0" : "(double) " + paren(v.code);
                 r.ty = mk("double");
@@ -919,46 +923,153 @@ private:
         return false;
     }
 
-    const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0) const {
-        auto it = classes.find(cls);
-        if (it == classes.end() || depth > 32) return nullptr;
-        const MethodSig* best = nullptr;
-        int bestScore = -1;
-        for (const auto& m : it->second.methods) {
-            if (m.name != name) continue;
-            const bool exact = m.params.size() == args.size();
-            if (!exact && !(m.varargs && args.size() + 1 >= m.params.size())) continue;
-            int score = exact && !m.varargs ? 100 : 0;
-            for (size_t i = 0; i < args.size() && i < m.params.size(); i++) if (m.params[i] == args[i].ty) score++;
-            if (score > bestScore) { bestScore = score; best = &m; }
+    // JLS 5.3 invocation conversions used during overload selection. This deliberately
+    // handles identity, primitive widening and known reference subtyping; boxing,
+    // unchecked conversions and capture conversion remain fail-closed.
+    int invocationCost(const Ty& from, const Ty& to, int depth = 0) const {
+        if (!from.known() || !to.known() || depth > 32) return -1;
+        if (from == to) return 0;
+        if (from.n == "null" && to.dims >= 0 && to.n != "?" && to.n != "void" &&
+            !(to.dims == 0 && kPrim.count(to.n))) return 1;
+        if (from.dims > 0 && to.dims == 0 && to.n == "Object") return 8;
+        if (from.dims != to.dims) return -1;
+        if (from.dims > 0) {
+            if (from.n == to.n) return 0;
+            if (to.n == "Object" && !kPrim.count(from.n)) return 8;
+            return -1;
         }
-        if (best) return best;
-        if (name == "<init>") return nullptr;   // constructors are not inherited
-        if (!it->second.super.empty()) if (const MethodSig* s = pickMethod(it->second.super, name, args, depth + 1)) return s;
-        for (const auto& i : it->second.ifaces) if (const MethodSig* s = pickMethod(i, name, args, depth + 1)) return s;
-        return nullptr;
+        if (kPrim.count(from.n) && kPrim.count(to.n)) {
+            return cm_find(&M, "widen", from.n.c_str(), to.n.c_str(), nullptr) ? 1 : -1;
+        }
+        if (from.n == to.n) return 0;
+        auto it = classes.find(from.n);
+        if (it != classes.end()) {
+            if (!it->second.super.empty()) {
+                int c = invocationCost(mk(it->second.super), to, depth+1);
+                if (c >= 0) return c+1;
+            }
+            for (const auto& iface : it->second.ifaces) {
+                int c = invocationCost(mk(iface), to, depth+1);
+                if (c >= 0) return c+1;
+            }
+        }
+        if (to.n == "Object") return 8;
+        return -1;
     }
 
+    bool moreSpecific(const MethodSig& a, const MethodSig& b) const {
+        if (a.params.size() != b.params.size()) return false;
+        bool strict = false;
+        for (size_t i=0; i<a.params.size(); ++i) {
+            int c = invocationCost(a.params[i], b.params[i]);
+            if (c < 0) return false;
+            if (c > 0) strict = true;
+        }
+        return strict;
+    }
+
+    bool isSubtypeName(const std::string& from, const std::string& to, int depth = 0) const {
+        if (from == to) return true;
+        if (depth > 32) return false;
+        auto it=classes.find(from);
+        if (it==classes.end()) return to=="Object";
+        if (!it->second.super.empty() && isSubtypeName(it->second.super,to,depth+1)) return true;
+        for (const auto& iface:it->second.ifaces) if (isSubtypeName(iface,to,depth+1)) return true;
+        return false;
+    }
+
+    void collectNamedMethods(const std::string& cls, const std::string& name,
+                             std::vector<const MethodSig*>& out, int depth = 0) const {
+        if (depth > 32) return;
+        auto it=classes.find(cls);
+        if (it==classes.end()) return;
+        for (const auto& m:it->second.methods) if (m.name==name) out.push_back(&m);
+        if (!it->second.super.empty()) collectNamedMethods(it->second.super,name,out,depth+1);
+        for (const auto& iface:it->second.ifaces) collectNamedMethods(iface,name,out,depth+1);
+    }
+
+    const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0) const {
+        if (depth > 32) return nullptr;
+        std::vector<const MethodSig*> all;
+        collectNamedMethods(cls,name,all);
+        std::vector<const MethodSig*> candidates;
+        // Collapse overrides with the same erased signature, retaining the declaration
+        // from the most-derived owner. Distinct overloads remain separate candidates.
+        for (const MethodSig* m:all) {
+            bool merged=false;
+            for (size_t i=0;i<candidates.size();++i) {
+                const MethodSig* prior=candidates[i];
+                if (m->params==prior->params && m->varargs==prior->varargs && m->isStatic==prior->isStatic) {
+                    if (isSubtypeName(m->owner,prior->owner)) candidates[i]=m;
+                    merged=true; break;
+                }
+            }
+            if (!merged) candidates.push_back(m);
+        }
+        const MethodSig* best=nullptr;
+        int bestCost=0x3fffffff;
+        bool ambiguous=false;
+        // JLS 15.12.2: fixed-arity applicability is considered before variable arity.
+        for (int phase=0;phase<2 && !best;++phase) {
+            for (const MethodSig* mp:candidates) {
+                const MethodSig& m=*mp;
+                const size_t n=m.params.size();
+                const bool fixed=n==args.size() && (!m.varargs || phase==0);
+                const bool variable=phase==1 && m.varargs && args.size()+1>=n;
+                if (!fixed && !variable) continue;
+                int cost=0; bool applicable=true;
+                for (size_t i=0;i<args.size();++i) {
+                    Ty target;
+                    if (variable && n && i>=n-1) target=mk(m.params.back().n,m.params.back().dims-1);
+                    else if (i<n) target=m.params[i];
+                    else { applicable=false; break; }
+                    if (args[i].lambdaPos!=(size_t)-1) {
+                        if (phase==0 && m.varargs && n && i==n-1) { applicable=false; break; }
+                        if (target.dims != 0 || !functionalMethod(target.n)) { applicable=false; break; }
+                        cost+=64; continue;
+                    }
+                    int c=invocationCost(args[i].ty,target);
+                    if(c<0){applicable=false;break;}
+                    cost+=c;
+                }
+                if(!applicable) continue;
+                if(!best || cost<bestCost) { best=mp;bestCost=cost;ambiguous=false; }
+                else if(cost==bestCost && best) {
+                    if(moreSpecific(m,*best)) { best=mp;ambiguous=false; }
+                    else if(!moreSpecific(*best,m) && (m.params!=best->params || m.varargs!=best->varargs)) ambiguous=true;
+                }
+            }
+            if(best) break;
+        }
+        if(ambiguous) throw ConvErr{cur().line,cur().col,"overload-ambiguous",
+            "multiple applicable overloads of '"+cls+"."+name+"' remain incomparable under supported Java invocation conversions"};
+        return best;
+    }
     // Java method invocation conversion (JLS 5.3, 15.12.4.2) for a resolved target: pack the trailing
     // arguments of a variable-arity call into an array, and widen int/long arguments to double
     // parameters (an int left in a double parameter would later divide as integers).
     std::vector<E> adaptArgs(const MethodSig* m, std::vector<E> args) {
         if (!m) return args;
-        for (size_t i = 0; i < args.size() && i < m->params.size(); i++) {
+        const size_t n = m->params.size();
+        const bool directVarargs = m->varargs && n > 0 && args.size() == n &&
+            (args.back().isNull || (args.back().ty.dims == m->params.back().dims && args.back().ty.n == m->params.back().n));
+        for (size_t i = 0; i < args.size(); i++) {
             if (args[i].lambdaPos == (size_t)-1) continue;
+            const size_t pi = i < n ? i : (m->varargs && n > 0 ? n-1 : n);
+            if (pi >= n) continue;
             size_t save = p;
             p = args[i].lambdaPos;
-            lambdaTarget_ = m->params[i];
+            lambdaTarget_ = (m->varargs && !directVarargs && i >= n-1)
+                ? mk(m->params.back().n, m->params.back().dims-1) : m->params[pi];
             E lam = isLambdaAhead() ? parseLambda() : parseExpr();
             p = save;
             args[i] = lam;
         }
-        const size_t n = m->params.size();
         size_t fixed = n;
         if (m->varargs) {
             fixed = n - 1;
             const Ty& vt = m->params.back();
-            const bool direct = args.size() == n && (args.back().isNull || (args.back().ty.dims == vt.dims && args.back().ty.n == vt.n));
+            const bool direct = directVarargs;
             if (!direct) {
                 Ty et = mk(vt.n, vt.dims - 1);
                 std::string body;
@@ -1308,7 +1419,10 @@ private:
         }
         E r; r.code = safeName(name); r.ty = mk("?"); return r;
     }
-    static std::string safeNameForCall(const std::string& n) { return safeName(n); }
+    static std::string safeNameForCall(const std::string& n) {
+        // `Iterator.next()` and user-declared next() are ordinary Java methods.
+        return n == "next" ? n : safeName(n);
+    }
 
     E parseNew() {
         expectKw("new");
