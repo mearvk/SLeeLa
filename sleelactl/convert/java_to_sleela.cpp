@@ -925,13 +925,29 @@ private:
         if (it == classes.end() || depth > 32) return nullptr;
         const MethodSig* best = nullptr;
         int bestScore = -1;
+        bool ambiguous = false;
         for (const auto& m : it->second.methods) {
             if (m.name != name) continue;
             const bool exact = m.params.size() == args.size();
             if (!exact && !(m.varargs && args.size() + 1 >= m.params.size())) continue;
             int score = exact && !m.varargs ? 100 : 0;
             for (size_t i = 0; i < args.size() && i < m.params.size(); i++) if (m.params[i] == args[i].ty) score++;
-            if (score > bestScore) { bestScore = score; best = &m; }
+            if (score > bestScore) {
+                bestScore = score;
+                best = &m;
+                ambiguous = false;
+            } else if (score == bestScore && best) {
+                // Until JLS applicability and most-specific selection are implemented,
+                // never choose an overload by declaration order. Identical signatures
+                // are duplicates in the index; distinct signatures at the same score
+                // are unresolved and must fail closed.
+                if (m.params != best->params || m.varargs != best->varargs) ambiguous = true;
+            }
+        }
+        if (ambiguous) {
+            throw ConvErr{cur().line, cur().col, "overload-ambiguous",
+                          "multiple overloads of '" + cls + "." + name +
+                          "' have the same provisional match score; Java most-specific overload resolution is not implemented for this call"};
         }
         if (best) return best;
         if (name == "<init>") return nullptr;   // constructors are not inherited
