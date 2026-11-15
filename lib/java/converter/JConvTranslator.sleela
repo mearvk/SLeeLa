@@ -86,6 +86,7 @@ class JConvTranslator {
   int fileTypes;
   int fileMembers;
   int fileStubs;
+  boolean outputFailed;
 
   JConvTranslator(JConvRules r, JConvConfig c, JConvReport p, String date) {
     this.rules = r;
@@ -107,6 +108,7 @@ class JConvTranslator {
     this.innerOf = "";
     this.innerBase = false;
     this.javaType = "";
+    this.outputFailed = false;
   }
 
   < ---- small helpers ---- >
@@ -190,6 +192,7 @@ class JConvTranslator {
     this.fileTypes = 0;
     this.fileMembers = 0;
     this.fileStubs = 0;
+    this.outputFailed = false;
     String path = this.cfg.inRoot + "/" + relPath;
     if (!this.src.load(path)) {
       this.rep.note(this.src.failure);
@@ -281,7 +284,11 @@ class JConvTranslator {
     }
     < test hook (JCONV_TEST_STOP_IN): stop the VM here, output written, totals not yet recorded, as a fault would >
     if (relPath == this.cfg.testStopIn) { int zero = 0; int stop = 1 / zero; }
-    this.rep.fileLine("converted", relPath, this.fileUnits, this.fileTypes, this.fileMembers, this.fileStubs);
+    if (this.outputFailed) {
+      this.rep.fileLine("failed", relPath, this.fileUnits, this.fileTypes, this.fileMembers, this.fileStubs);
+    } else {
+      this.rep.fileLine("converted", relPath, this.fileUnits, this.fileTypes, this.fileMembers, this.fileStubs);
+    }
   }
 
   << Record each type the file declares, with its binary name and kind, for the
@@ -555,6 +562,7 @@ class JConvTranslator {
       this.em.blankLine();
       this.em.comment("<< Nested Java type " + this.javaType + ", bundled into this document as a top-level class (JCONV_BUNDLE=1). >>");
     } else if (!this.em.openOut(this.outDir + "/" + stem + ".sleela")) {
+      this.outputFailed = true;
       this.rep.note("cannot write " + outRel);
       return;
     }
@@ -653,7 +661,10 @@ class JConvTranslator {
     this.em.lineOut("< conversion: " + this.unitMembers + " members, " + this.unitStubs + " stubbed (fail loud, see the Java body kept beside each) >");
     if (!this.cfg.bundle) {
       this.rw.lam.writeTable(this.em);
-      this.em.finishOut();
+      if (!this.em.finishOut()) {
+        this.outputFailed = true;
+        this.rep.note("cannot publish " + outRel);
+      }
     }
     if (!inBundle) { this.fileUnits = this.fileUnits + 1; }
     this.fileMembers = this.fileMembers + this.unitMembers;
