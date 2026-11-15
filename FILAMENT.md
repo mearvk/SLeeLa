@@ -772,3 +772,31 @@ The Windows failure in Native C/C++ Portability run **43629021139** was traced f
 The repair follows Microsoft's ConPTY shutdown guidance: older Windows releases may wait for output to be drained or the output pipe to be closed. See [ClosePseudoConsole](https://learn.microsoft.com/en-us/windows/console/closepseudoconsole) and [Creating a Pseudoconsole session](https://learn.microsoft.com/en-us/windows/console/creating-a-pseudoconsole-session).
 
 **Qualification status:** repair is committed, but not yet proven. The Windows job must be rerun and must print `terminal platform smoke: PASS`, complete the remaining VM regression suite, and exit successfully. Do not convert the prior timeout into a PASS. Linux and macOS remain PASS for run 43629021139.
+
+
+## Source audit and build-recipe hardening — 2026-11-14
+
+This pass was deliberately source-focused. No CI was manually dispatched or rerun. Changes below were committed directly to `master`; they are source/build-recipe edits, not qualification evidence.
+
+### Repairs committed
+
+| Area | File | Change | Commit |
+|---|---|---|---|
+| Win32 message dispatch | `user-interface/src/backend/win32.cpp` | The unmatched `WM_GETMINMAXINFO` path now falls through to `DefWindowProcW` after the switch instead of reaching the end of the non-void handler. | `d977a7d19f7f8a938d9bdd1ce2a50f84fff0c7e5` |
+| Root clean propagation | `Makefile` | Premium VM clean loop now uses fail-fast shell handling, so a failed child clean stops the root clean target. | `f70da4a5b19be7dc229d29265d599c7a386fda57` |
+| Optional Ballum qualification | `Makefile` | Portable-test fallback is now limited to recognized missing display SDK/development libraries. Missing compiler/toolchain or unexpected dependency-check failures propagate as failures instead of being silently treated as optional. | `f70da4a5b19be7dc229d29265d599c7a386fda57` |
+| Catalog test failure visibility | `impl/Makefile` | Nordshrift command output is captured before summarizing with `head`/`tail`, preserving the producer's exit status under POSIX shells. | `e06bd2b39863a69cb3be84532137770d28e19f36` |
+
+### Additional source findings — still open
+
+- **ConPTY shutdown needs a Windows reproducer and focused review.** The current `slterminal_close()` starts a synchronous output-drain thread, calls `ClosePseudoConsole()` on the caller thread, then waits up to five seconds for the drain thread and attempts cancellation. The wait is bounded only *after* `ClosePseudoConsole()` returns; that API call itself has no independent timeout in this implementation. A hang inside that call can therefore still hold the caller indefinitely. Do not claim this is fixed based solely on the presence of the drain thread. The thread/pipe cancellation and handle lifetime need a Windows-specific reproducer before another teardown redesign.
+- **Winsock include ordering remains to be corrected.** `impl/core/sleela_time.c` includes `windows.h` before `winsock2.h` and `ws2tcpip.h`. Winsock 2 headers should precede `windows.h` (or Windows headers should be constrained with `WIN32_LEAN_AND_MEAN`) to avoid legacy Winsock declarations and header conflicts.
+- **Artifact UTF-16 length guard needs a warning-clean portable expression.** `impl/core/sleela_artifact.c` compares a `uint32_t` length, cast to `size_t`, against `SIZE_MAX / sizeof(uint16_t)`. On common 64-bit targets this comparison is provably false and can trigger `-Wtype-limits`; preserve the 32-bit overflow protection without producing an always-false warning.
+- **FILAMENT test semantics must remain explicit.** Root `make tests` invokes `tests/check`, which executes the smoke binaries after building them. Root `make all` also invokes `install-check`; that is an install validation/check target, not a claim that the package was installed onto the host.
+- **No active NTT unused-variable defect is recorded in this pass.** The earlier suspicion was not sufficiently tied to a current line/diagnostic to promote it to a confirmed finding.
+
+### Source-review status
+
+The three build-recipe/dispatch fixes above are committed, but have not been compiled or executed in this pass. The core-source items (ConPTY shutdown, Winsock header ordering, and UTF-16 overflow-warning portability) remain open. The trusted manifest file could not be retrieved through the repository file interface in this session, so no manifest-covered core source was edited and no manifest refresh was attempted.
+
+**Status: SOURCE REPAIRS COMMITTED — LOCAL/HOSTED RETEST NOT PERFORMED — ROOT BUILD NOT QUALIFIED.** No CI result is implied by these commits.
