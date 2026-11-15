@@ -931,10 +931,11 @@ private:
         if (from == to) return 0;
         if (from.n == "null" && to.dims >= 0 && to.n != "?" && to.n != "void" &&
             !(to.dims == 0 && kPrim.count(to.n))) return 1;
+        if (from.dims > 0 && to.dims == 0 && to.n == "Object") return 8;
         if (from.dims != to.dims) return -1;
         if (from.dims > 0) {
             if (from.n == to.n) return 0;
-            if (to.n == "Object") return 8;
+            if (to.n == "Object" && !kPrim.count(from.n)) return 8;
             return -1;
         }
         if (kPrim.count(from.n) && kPrim.count(to.n)) {
