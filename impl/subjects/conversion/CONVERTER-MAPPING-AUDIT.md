@@ -132,7 +132,7 @@ unqualified static method calls are resolved only after ordinary in-scope
 lookup, and multiple applicable static-import owners fail with
 `static-import-ambiguous`. Imported static owners are reduced to the model's
 simple owner name. This is not yet a complete Java name-resolution engine:
-static field imports, wildcard type-import package indexing, module readability,
+wildcard type-import package indexing, module readability,
 package-private accessibility, and nested type imports remain open. The
 SLeeLa-native converter already records package and import tokens for class
 literals, but does not yet share the C++ project symbol resolver.
