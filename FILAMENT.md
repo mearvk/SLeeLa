@@ -783,9 +783,9 @@ This pass was deliberately source-focused. No CI was manually dispatched or reru
 | Area | File | Change | Commit |
 |---|---|---|---|
 | Win32 message dispatch | `user-interface/src/backend/win32.cpp` | The unmatched `WM_GETMINMAXINFO` path now falls through to `DefWindowProcW` after the switch instead of reaching the end of the non-void handler. | `d977a7d19f7f8a938d9bdd1ce2a50f84fff0c7e5` |
-| Root clean propagation | `Makefile` | Premium VM clean loop now uses fail-fast shell handling, so a failed child clean stops the root clean target. | `f70da4a5b19be7dc229d29265d599c7a386fda57` |
+| Root clean propagation | `Makefile` | Premium VM clean loop now uses fail-fast shell handling, so a failed child clean stops the root clean target. | `08a2eb3b5b1a2c3311bdb8762f37324cee1ea59c` |
 | Optional Ballum qualification | `Makefile` | Portable-test fallback is now limited to recognized missing display SDK/development libraries. Missing compiler/toolchain or unexpected dependency-check failures propagate as failures instead of being silently treated as optional. | `f70da4a5b19be7dc229d29265d599c7a386fda57` |
-| Catalog test failure visibility | `impl/Makefile` | Nordshrift command output is captured before summarizing with `head`/`tail`, preserving the producer's exit status under POSIX shells. | `e06bd2b39863a69cb3be84532137770d28e19f36` |
+| Catalog test failure visibility | `impl/Makefile` | Nordshrift command output is captured before summarizing with `head`/`tail`, preserving the producer's exit status under POSIX shells. | `b620521569103c0fc82ec3ae4a7b34663eae2444` |
 
 ### Additional source findings — still open
 
@@ -800,3 +800,8 @@ This pass was deliberately source-focused. No CI was manually dispatched or reru
 The three build-recipe/dispatch fixes above are committed, but have not been compiled or executed in this pass. The core-source items (ConPTY shutdown, Winsock header ordering, and UTF-16 overflow-warning portability) remain open. The trusted manifest file could not be retrieved through the repository file interface in this session, so no manifest-covered core source was edited and no manifest refresh was attempted.
 
 **Status: SOURCE REPAIRS COMMITTED — LOCAL/HOSTED RETEST NOT PERFORMED — ROOT BUILD NOT QUALIFIED.** No CI result is implied by these commits.
+
+
+### Recipe escaping correction
+
+A follow-up source inspection caught a Make-specific escaping issue in the new shell recipes: shell variables and command substitutions must be written with doubled dollar signs in Makefile recipes. The committed root Ballum and Nordshrift catalog recipes were corrected and re-fetched from `master` to confirm the literal `$$` forms are now present. The commit IDs in the repair table above identify the corrected revisions. This correction is source inspection only; it is not a build or runtime pass.
