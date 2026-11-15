@@ -1015,7 +1015,7 @@ private:
         return it == resolvedMethods_.end() ? *method : it->second;
     }
 
-    const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0) const {
+    const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0, int invocationKind = -1) const {
         if (depth > 32) return nullptr;
         std::vector<const MethodSig*> all;
         collectNamedMethods(cls,name,all);
@@ -1023,6 +1023,7 @@ private:
         // Collapse overrides with the same erased signature, retaining the declaration
         // from the most-derived owner. Distinct overloads remain separate candidates.
         for (const MethodSig* m:all) {
+            if (invocationKind >= 0 && m->isStatic != (invocationKind == 1)) continue;
             bool merged=false;
             for (size_t i=0;i<candidates.size();++i) {
                 const MethodSig* prior=candidates[i];
@@ -2522,31 +2523,70 @@ private:
         if (inGenerated()) fail("anonymous-nested", "a method reference inside an anonymous class or lambda is not converted");
         const size_t n = fm->params.size();
         std::vector<std::string> pn;
-        for (size_t i = 0; i < n; i++) pn.push_back("a" + std::to_string(i));
-        auto args = [&](size_t from) { std::string r; for (size_t i = from; i < n; i++) r += (r.empty() ? "" : ", ") + pn[i]; return r; };
+        std::vector<E> samArgs;
+        for (size_t i = 0; i < n; i++) {
+            pn.push_back("a" + std::to_string(i));
+            E arg; arg.code = pn.back(); arg.ty = fm->params[i]; samArgs.push_back(arg);
+        }
+        auto argsFrom = [&](size_t from) {
+            std::vector<E> result;
+            for (size_t i = from; i < samArgs.size(); i++) result.push_back(samArgs[i]);
+            return result;
+        };
+        auto argsText = [&](const std::vector<E>& values) { return joinArgs(values); };
         std::string call;
-        std::string capture;   // a captured receiver, by its local name
+        std::string capture;
+        Ty resultType;
         if (mname == "new") {
             if (!recv.isType) fail("methodref", "Type::new needs a type");
-            call = "new " + recv.code + "(" + args(0) + ")";
+            const MethodSig* ctor = pickMethod(recv.code, "<init>", samArgs);
+            if (!ctor && !samArgs.empty())
+                fail("methodref", "no collected constructor of '" + recv.code + "' accepts the functional-interface parameters");
+            if (ctor) {
+                samArgs = adaptArgs(ctor, samArgs);
+            }
+            call = "new " + recv.code + "(" + argsText(samArgs) + ")";
+            resultType = mk(recv.code);
         } else if (recv.isType) {
             const std::string tn = recv.code;
-            bool isStatic = false, found = false;
-            std::vector<E> probe;
-            auto it = classes.find(tn);
-            if (it != classes.end()) for (const auto& m : it->second.methods) if (m.name == mname && !m.isAbstract) { found = true; isStatic = m.isStatic; }
-            if (it != classes.end()) for (const auto& m : it->second.methods) if (m.name == mname) { found = true; isStatic = m.isStatic; }
-            if (!found) fail("methodref", "cannot tell whether " + tn + "::" + mname + " is static or an instance method (its source was not collected)");
-            if (isStatic) call = tn + "." + mapMember(mname) + "(" + args(0) + ")";
-            else { if (n < 1) fail("methodref", "an unbound instance method reference needs a receiver parameter"); call = pn[0] + "." + mapMember(mname) + "(" + args(1) + ")"; }
+            const MethodSig* staticMethod = pickMethod(tn, mname, samArgs, 0, 1);
+            std::vector<E> instanceArgs = argsFrom(1);
+            const MethodSig* instanceMethod = n > 0 ? pickMethod(tn, mname, instanceArgs, 0, 0) : nullptr;
+            if (staticMethod && instanceMethod)
+                fail("methodref-ambiguous", "both static and unbound instance forms of '" + tn + "::" + mname + "' match the target interface");
+            if (staticMethod) {
+                samArgs = adaptArgs(staticMethod, samArgs);
+                resultType = resolvedMethod(staticMethod).ret;
+                call = tn + "." + mapMember(mname) + "(" + argsText(samArgs) + ")";
+            } else if (instanceMethod) {
+                if (invocationCost(fm->params[0], mk(tn)) < 0)
+                    fail("methodref", "the first functional-interface parameter is not a receiver of '" + tn + "'");
+                instanceArgs = adaptArgs(instanceMethod, instanceArgs);
+                resultType = resolvedMethod(instanceMethod).ret;
+                call = pn[0] + "." + mapMember(mname) + "(" + argsText(instanceArgs) + ")";
+            } else {
+                fail("methodref", "no static or unbound instance overload of '" + tn + "::" + mname + "' matches the functional-interface parameters");
+            }
         } else if (recv.code == "this") {
-            call = "outer_." + mapMember(mname) + "(" + args(0) + ")";
+            const MethodSig* method = pickMethod(curClass, mname, samArgs, 0, 0);
+            if (!method) fail("methodref", "no instance overload of 'this::" + mname + "' matches the functional-interface parameters");
+            samArgs = adaptArgs(method, samArgs);
+            resultType = resolvedMethod(method).ret;
+            call = "outer_." + mapMember(mname) + "(" + argsText(samArgs) + ")";
         } else {
             bool isLocal = false;
             for (size_t i = scopes.size(); i-- > 0;) for (auto& kv : scopes[i]) if (kv.second.first == recv.code) isLocal = true;
             if (!isLocal) fail("methodref", "a method reference on a receiver that is not a local variable is not converted");
+            const MethodSig* method = pickMethod(recv.ty.n, mname, samArgs, 0, 0);
+            if (!method) fail("methodref", "no bound instance overload of '" + recv.ty.n + "::" + mname + "' matches the functional-interface parameters");
+            samArgs = adaptArgs(method, samArgs);
+            resultType = resolvedMethod(method).ret;
             capture = recv.code;
-            call = "cap_" + recv.code + "." + mapMember(mname) + "(" + args(0) + ")";
+            call = "cap_" + recv.code + "." + mapMember(mname) + "(" + argsText(samArgs) + ")";
+        }
+        if (fm->ret.n != "void" || fm->ret.dims != 0) {
+            if (resultType.n == "void" || invocationCost(resultType, fm->ret) < 0)
+                fail("methodref-return", "the referenced method result is not compatible with the functional-interface return type");
         }
         AnonCtx a;
         a.sub = nextAnonName();
@@ -2576,7 +2616,6 @@ private:
         r.ty = target;
         return r;
     }
-
     // a name that is not a local, a field of the current class or a type: inside a generated class it
     // may be a captured local variable of the enclosing method or a member of the enclosing class
     bool resolveOuter(const std::string& name, E* res) {
