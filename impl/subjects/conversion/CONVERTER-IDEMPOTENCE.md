@@ -76,19 +76,29 @@ converter; unrelated files must remain untouched.
 - Implemented byte comparison before writing generated files, preserving
   modification times when output bytes are unchanged.
 - Implemented a sorted ownership manifest and deferred stale-output cleanup.
-- **Not yet complete:** output generation is not yet staged as a transaction;
-  a late I/O failure can leave some newly written files before the manifest is
-  committed. There is not yet a cryptographic source/model provenance manifest
-  or automatic verification that the source tree is genuinely JDK 28.
+- Added `CONVERSION-PROVENANCE.json`: SHA-256 digests cover the exact model
+  bytes, immutable input snapshot, converter source inputs, and emitted output
+  bytes. The manifest has no timestamps or absolute checkout paths and labels
+  the JDK version as a declared label rather than asserting release authenticity.
+- **Not yet complete:** output generation is not yet staged as a whole-run
+  transaction; a late I/O failure can leave some newly written files before
+  the ownership manifest is committed. The provenance record does not verify
+  that the source tree is an official JDK release archive.
 - **Not yet verified:** no local compile or test run has been recorded for
   these changes. Do not call this pass green.
 
 ### SLeeLa-native converter
 
-- The walker sorts directory entries, but the emitter opens outputs directly
-  in write mode. The report includes a run date, and the run script clears
-  progress/state at startup. It therefore does not yet satisfy the same
-  byte-and-mtime idempotence contract.
+- The walker sorts directory entries. The emitter now writes each output to a
+  same-directory `.jconv-tmp`, compares it with the existing file, preserves
+  unchanged mtimes, and renames a complete changed file into place. The report
+  TSV and summary use the same staged compare/publish pattern. Model descriptions
+  omit absolute paths, and generated `metaDate`/`metaBirthDate` are now `unknown`
+  rather than wall-clock values, so identical inputs do not vary by run date.
+- **Not yet complete:** the SLeeLa-native converter has no SHA-256 provenance
+  manifest for source/model/converter/output bytes, and its per-file publication
+  is not a whole-run transaction. Its batch script still resets transient
+  progress state for a fresh run.
 - Its per-member-stub policy remains a different acceptance result from the
   C++ converter's per-file fail-closed policy. Reports must keep these outcomes
   distinct; a stubbed output is not a complete mapping.
@@ -120,11 +130,11 @@ source snapshot:
 
 ## Next implementation order
 
-1. Complete transactional staging/publication and source/model SHA-256
-   provenance in the C++ converter.
-2. Add a repeat-run/mtime regression test to the C++ differential harness.
-3. Give the SLeeLa-native converter a deterministic provenance mode and
-   compare-before-replace output path, then stage and publish its manifest.
+1. Complete whole-run transactional staging/publication in the C++ converter.
+2. Add a repeat-run/mtime regression test for both converter output paths and
+   validate the C++ provenance manifest against independently computed hashes.
+3. Give the SLeeLa-native converter source/model/converter/output SHA-256
+   provenance, then stage and publish its whole-run manifest.
 4. Pin the exact JDK 28 source archive/revision used for the conformance corpus.
 5. Run both converters independently; report complete, partial/stubbed,
    refused, and infrastructure-failed counts separately.
