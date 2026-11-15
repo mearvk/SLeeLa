@@ -164,6 +164,12 @@ private:
         InitScope(Translator* t_, ClassInit* n) : t(t_), saved(t_->classInit_) { t->classInit_ = n; }
         ~InitScope() { t->classInit_ = saved; }
     };
+    struct SetScope {
+        std::set<std::string>& target;
+        std::set<std::string> saved;
+        explicit SetScope(std::set<std::string>& value) : target(value), saved(value) {}
+        ~SetScope() { target.swap(saved); }
+    };
     static constexpr const char* kInitMarker = "@@FIELDINIT@@";
     std::string curSimple_;         // the source name of the class being parsed (constructors are written with it)
     std::string resolveTypeName(const std::string& n) const {
@@ -1043,7 +1049,7 @@ private:
                     else if (i<n) target=m.params[i];
                     else { applicable=false; break; }
                     if (target.n.rfind("$T$",0)==0) {
-                        if (args[i].lambdaPos!=(size_t)-1 || !args[i].ty.known()) { applicable=false; break; }
+                        if (args[i].lambdaPos!=(size_t)-1 || !args[i].ty.known() || args[i].ty.n == "null") { applicable=false; break; }
                         const std::string variableName=target.n.substr(3);
                         auto ti=inferred.find(variableName);
                         if (ti==inferred.end()) inferred[variableName]=args[i].ty;
@@ -3400,6 +3406,7 @@ private:
         std::vector<std::string> mtp;
         std::set<std::string> savedVars = typeVars;
         skipTypeParams(&mtp);
+        SetScope methodTypeVarScope(methodTypeVars_);
         methodTypeVars_.clear();
         methodTypeVars_.insert(mtp.begin(), mtp.end());
 
