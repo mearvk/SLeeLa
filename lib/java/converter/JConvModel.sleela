@@ -8,7 +8,7 @@
    of an int shift, division and remainder (binop int rows), the 32-bit wrap
    (the cast long int row) and the string conversion template of a double,
    char or reference (tostr rows), every cast row, and the chartext rows (a
-   library parameter that takes a char as text). Only rows of those kinds are read. When the
+   library parameter that takes a char as text). The `widen` rows are also read so both converter implementations share primitive invocation-conversion facts. When the
    file is missing the built-in defaults below are used and the report says so. >>
 #sleela 3.0
 material;
@@ -61,6 +61,10 @@ class JConvModel {
   String revision;
   boolean loaded;
   int retRows;
+  < JLS 5.1.2 primitive widening edges from the shared conversion model >
+  String[] widenFrom;
+  String[] widenTo;
+  int widenN;
   < ret rows: "Owner.member" to the result type (open addressing) >
   String[] retKeys;
   String[] retVals;
@@ -93,12 +97,43 @@ class JConvModel {
   String[] qualifyNames;
   int qualifyN;
 
+  void addWiden(String from, String to) {
+    if (this.canWiden(from, to)) { return; }
+    if (this.widenN < arrayLength(this.widenFrom)) {
+      this.widenFrom[this.widenN] = from;
+      this.widenTo[this.widenN] = to;
+      this.widenN = this.widenN + 1;
+    }
+  }
+
   JConvModel() {
     this.path = "";
     this.modelName = "built-in defaults";
     this.revision = "";
     this.loaded = false;
     this.retRows = 0;
+    this.widenFrom = new String[64];
+    this.widenTo = new String[64];
+    this.widenN = 0;
+    this.addWiden("byte", "short");
+    this.addWiden("byte", "int");
+    this.addWiden("byte", "long");
+    this.addWiden("byte", "float");
+    this.addWiden("byte", "double");
+    this.addWiden("short", "int");
+    this.addWiden("short", "long");
+    this.addWiden("short", "float");
+    this.addWiden("short", "double");
+    this.addWiden("char", "int");
+    this.addWiden("char", "long");
+    this.addWiden("char", "float");
+    this.addWiden("char", "double");
+    this.addWiden("int", "long");
+    this.addWiden("int", "float");
+    this.addWiden("int", "double");
+    this.addWiden("long", "float");
+    this.addWiden("long", "double");
+    this.addWiden("float", "double");
     this.retKeys = new String[32768];
     this.retVals = new String[32768];
     this.fieldKeys = new String[1024];
@@ -205,7 +240,10 @@ class JConvModel {
     while (i <= src.length) {
       if (i == src.length || src.at(i) == 10) {
         if (i > a) {
-          if (startsAt(src, a, "ret")) {
+          if (startsAt(src, a, "widen")) {
+            String[] fw = fieldsAt(src, a, i, 3);
+            if (fw[1] != null && fw[2] != null) { this.addWiden(fw[1], fw[2]); }
+          } else if (startsAt(src, a, "ret")) {
             String[] f = fieldsAt(src, a, i, 4);
             if (f[3] != null) {
               put(this.retKeys, this.retVals, f[1] + "." + f[2], f[3]);
@@ -265,6 +303,16 @@ class JConvModel {
     return true;
   }
 
+  < true when the shared model permits Java primitive widening from -> to >
+  boolean canWiden(String from, String to) {
+    int i = 0;
+    while (i < this.widenN) {
+      if (this.widenFrom[i] == from && this.widenTo[i] == to) { return true; }
+      i = i + 1;
+    }
+    return false;
+  }
+
   int parseIndex(String t) {
     int v = 0;
     int i = 0;
@@ -309,6 +357,6 @@ class JConvModel {
 
   String describe() {
     if (!this.loaded) { return "built-in defaults (model file not read: " + this.path + ")"; }
-    return this.modelName + " " + this.revision + " (" + this.retRows + " ret rows, " + this.path + ")";
+    return this.modelName + " " + this.revision + " (" + this.retRows + " ret rows, " + this.widenN + " widening rows, " + this.path + ")";
   }
 }
