@@ -71,8 +71,15 @@ int main(void) {
     /* Close immediately after the first visible marker. This deliberately leaves
      * trailing VT/final-frame bytes unread and verifies shutdown does not block
      * while discarding them. */
-    if (slterminal_close(terminal) != 0) {
-        fprintf(stderr, "terminal close failed\n");
+    /* Keep explicit teardown markers in CI logs so a legacy ConPTY hang is
+     * distinguishable from a successful read followed by a later test failure. */
+    printf("terminal close: begin\n");
+    fflush(stdout);
+    rc = slterminal_close(terminal);
+    printf("terminal close: end (rc=%d)\n", rc);
+    fflush(stdout);
+    if (rc != 0) {
+        fprintf(stderr, "terminal close failed: %d\n", rc);
         return 1;
     }
     printf("terminal platform: %s\n", slterminal_platform_name());
