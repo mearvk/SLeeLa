@@ -720,7 +720,7 @@ The CI workflow logs are authoritative for hosted qualification. A green result 
 
 ### Root dispatcher and qualification-trigger follow-up
 
-A second static pass found that the root Actions workflow's path filters did not include several source trees consumed by `make all`. Changes in these directories could therefore leave the root qualification workflow untriggered. The diagnostic branch now adds explicit push and pull-request filters for `api/**`, `artificial-intelligence/**`, `sleela-virtual-machine/**`, `tools/**`, `scripts/**`, `security/**`, `route/**`, `sleeladoc/**`, and `build-registry.sh`.
+A second static pass found that the root Actions workflow's path filters did not include several source trees consumed by `make all`. Changes in these directories could therefore leave the root qualification workflow untriggered. The diagnostic branch now aligns push and pull-request filters for `api/**`, `artificial-intelligence/**`, `sleela-virtual-machine/**`, `tools/**`, `scripts/**`, `security/**`, `route/**`, `sleeladoc/**`, `bin/**`, `tutorial/**`, `examples/**`, and `build-registry.sh`.
 
 The root dispatcher was also tightened:
 - `make all` now includes `registry-test`; the target depends on `registry` so parallel builds cannot start registry tests before the registry build is ready.
