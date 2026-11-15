@@ -15,10 +15,15 @@ copied into the current tree.
 
 ## What is integrated now
 
-The standalone native linear-algebra C ABI is present in
-`linear_algebra.h/.cpp`, with an opt-in `make -C impl test-linear-algebra`
-qualification target. It covers vectors, matrices, LU/QR, complex arithmetic,
-eigen decomposition, FFT, and typed buffer dispatch.
+The standalone native scalar math C ABI is present in `math_kernel.hpp`,
+`sleela_math_kernel_c.h/.cpp`, with an opt-in
+`make -C impl test-native-math-kernel` qualification target. It covers the
+IEEE-754 scalar function set and stable function-ID/arity/method-name dispatch.
+
+The native linear-algebra C ABI is present in `linear_algebra.h/.cpp`, with an
+opt-in `make -C impl test-linear-algebra` qualification target. It covers
+vectors, matrices, LU/QR, complex arithmetic, eigen decomposition, FFT, and
+typed buffer dispatch.
 
 This is a native library boundary only. It does not yet pin VM-owned arrays,
 validate VM object layouts, marshal VM arrays into the typed descriptors, or
