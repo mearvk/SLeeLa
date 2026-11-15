@@ -102,7 +102,7 @@ std::string jsonEscape(const std::string& s) {
         switch (c) {
             case '"': o += "\\\""; break;
             case '\\': o += "\\\\"; break;
-            case '\n': o += "\\n"; break;
+            case '\n': o += "\n"; break;
             case '\t': o += "\\t"; break;
             default:
                 if (c < 0x20) { char b[8]; std::snprintf(b, sizeof b, "\\u%04x", c); o += b; }
@@ -197,7 +197,7 @@ int main(int argc, char** argv) {
         fs::recursive_directory_iterator it(src, fs::directory_options::skip_permission_denied, ec);
         const fs::recursive_directory_iterator end;
         if (ec) {
-            std::cerr << "javaconv: cannot walk source directory '" << src.string() << "': " << ec.message() << "\\n";
+            std::cerr << "javaconv: cannot walk source directory '" << src.string() << "': " << ec.message() << "\n";
             return 2;
         }
         while (it != end) {
@@ -210,7 +210,7 @@ int main(int argc, char** argv) {
             }
             it.increment(ec);
             if (ec) {
-                std::cerr << "javaconv: source walk failed under '" << src.string() << "': " << ec.message() << "\\n";
+                std::cerr << "javaconv: source walk failed under '" << src.string() << "': " << ec.message() << "\n";
                 return 2;
             }
         }
@@ -240,12 +240,12 @@ int main(int argc, char** argv) {
             std::string rel, why;
             while (std::getline(prev, rel)) {
                 if (!rel.empty() && !removeOwnedOutput(outRoot, rel, &why)) {
-                    std::cerr << "javaconv: " << why << "\\n";
+                    std::cerr << "javaconv: " << why << "\n";
                     return 2;
                 }
             }
             if (!prev.eof()) {
-                std::cerr << "javaconv: failed while reading " << emittedList.string() << "\\n";
+                std::cerr << "javaconv: failed while reading " << emittedList.string() << "\n";
                 return 2;
             }
         }
@@ -281,25 +281,25 @@ int main(int argc, char** argv) {
             std::error_code ec;
             fs::create_directories(dir, ec);
             if (ec) {
-                std::cerr << "javaconv: cannot create output directory '" << dir.string() << "': " << ec.message() << "\\n";
+                std::cerr << "javaconv: cannot create output directory '" << dir.string() << "': " << ec.message() << "\n";
                 return 2;
             }
             for (auto& f : r.files) {
                 const fs::path outputPath = dir / (f.typeName + ".sleela");
                 const std::string relOutput = (in.second.parent_path() / (f.typeName + ".sleela")).generic_string();
                 if (!safeManifestPath(relOutput)) {
-                    std::cerr << "javaconv: translator produced an unsafe output path: " << relOutput << "\\n";
+                    std::cerr << "javaconv: translator produced an unsafe output path: " << relOutput << "\n";
                     return 2;
                 }
                 if (std::find(emittedRel.begin(), emittedRel.end(), relOutput) != emittedRel.end()) {
-                    std::cerr << "javaconv: two Java declarations map to the same output path: " << relOutput << "\\n";
+                    std::cerr << "javaconv: two Java declarations map to the same output path: " << relOutput << "\n";
                     return 2;
                 }
                 std::ofstream o(outputPath, std::ios::binary);
                 o << f.text;
                 o.close();
-                if (!o) { std::cerr << "javaconv: cannot write " << (dir / (f.typeName + ".sleela")).string() << "\n"; return 2; }
-                emittedRel.push_back((in.second.parent_path() / (f.typeName + ".sleela")).generic_string());
+                if (!o) { std::cerr << "javaconv: cannot write " << outputPath.string() << "\n"; return 2; }
+                emittedRel.push_back(relOutput);
                 fo.emitted++;
                 emitted++;
             }
