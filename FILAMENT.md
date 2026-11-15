@@ -783,7 +783,7 @@ This pass was deliberately source-focused. No CI was manually dispatched or reru
 | Area | File | Change | Commit |
 |---|---|---|---|
 | Win32 message dispatch | `user-interface/src/backend/win32.cpp` | The unmatched `WM_GETMINMAXINFO` path now falls through to `DefWindowProcW` after the switch instead of reaching the end of the non-void handler. | `d977a7d19f7f8a938d9bdd1ce2a50f84fff0c7e5` |
-| Root clean propagation | `Makefile` | Premium VM clean loop now uses fail-fast shell handling, so a failed child clean stops the root clean target. | `08a2eb3b5b1a2c3311bdb8762f37324cee1ea59c` |
+| Root clean propagation | `Makefile` | Premium VM clean loop now uses fail-fast shell handling, so a failed child clean stops the root clean target. | `433e15427b0091ee9757d3d52986852939b399a0` |
 | Optional Ballum qualification | `Makefile` | Portable-test fallback is now limited to recognized missing display SDK/development libraries. Missing compiler/toolchain or unexpected dependency-check failures propagate as failures instead of being silently treated as optional. | `f70da4a5b19be7dc229d29265d599c7a386fda57` |
 | Catalog test failure visibility | `impl/Makefile` | Nordshrift command output is captured before summarizing with `head`/`tail`, preserving the producer's exit status under POSIX shells. | `b620521569103c0fc82ec3ae4a7b34663eae2444` |
 
@@ -805,3 +805,6 @@ The three build-recipe/dispatch fixes above are committed, but have not been com
 ### Recipe escaping correction
 
 A follow-up source inspection caught a Make-specific escaping issue in the new shell recipes: shell variables and command substitutions must be written with doubled dollar signs in Makefile recipes. The committed root Ballum and Nordshrift catalog recipes were corrected and re-fetched from `master` to confirm the literal `$$` forms are now present. The commit IDs in the repair table above identify the corrected revisions. This correction is source inspection only; it is not a build or runtime pass.
+
+
+The root clean loop also requires doubled dollar escaping for its loop variable (`$$n`) so GNU Make passes it to the shell rather than expanding it as a Make variable. The current `master` recipe was re-fetched and confirms that correction. The corrected root recipe revision is `433e15427b0091ee9757d3d52986852939b399a0`.
