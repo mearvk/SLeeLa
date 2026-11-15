@@ -3,7 +3,7 @@
 # libslcore.a. Keep this fragment in sync with the native backend selection.
 
 ifeq ($(OS),Windows_NT)
-  CORE_UI_LIBS ?= -lopengl32 -lgdi32 -luser32 -lshell32 -lwlanapi -lole32
+  CORE_UI_LIBS ?= -lopengl32 -lgdi32 -luser32 -lshell32 -lwlanapi -liphlpapi -lole32
 else
   UNAME_S ?= $(shell uname -s)
   ifeq ($(UNAME_S),Linux)
