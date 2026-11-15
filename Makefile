@@ -444,8 +444,8 @@ premium-vms: core
 
 clean:
 	@set -e; for n in 001 002 003 004 005 006 007 008 009 010 011; do \
-	  echo "=== cleaning premium SLVM $n ==="; \
-	  $(MAKE) -C sleela-virtual-machine/$n clean; \
+	  echo "=== cleaning premium SLVM $$n ==="; \
+	  $(MAKE) -C sleela-virtual-machine/$$n clean; \
 	done
 	$(MAKE) -C registry clean
 	$(MAKE) -C impl clean
