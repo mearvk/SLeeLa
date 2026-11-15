@@ -3558,7 +3558,7 @@ private:
             if (isKw("throws")) skipThrows();
             curRet = ty;
             if (pass == 1) {
-                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls; ms.typeParams = mtp;
+                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls; ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded;
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }
