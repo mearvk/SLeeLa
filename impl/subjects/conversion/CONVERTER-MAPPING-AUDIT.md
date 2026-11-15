@@ -172,17 +172,19 @@ creation time. Do not count an unknown-target stub as successful conversion.
 
 ## Immediate work queue
 
-1. Complete the primitive-law audit and move float/promotion/cast decisions into
-   the shared model.
+1. Complete the primitive-law audit and move float, all promotion, and cast
+   decisions into the shared model; the native expression pass currently uses
+   shared widening only for the supported integer/long/double promotion paths.
 2. Consolidate identifier rename and built-in qualification data, retaining
    context-sensitive rename categories.
 3. Complete C++ invocation applicability and specificity beyond the current
    supported subset: boxing/unboxing, bounded/class/nested generic inference,
    wildcard capture, and the remaining JLS ambiguity rules. Add focused
    differential fixtures before claiming broader coverage.
-4. Extend `JConvExpr` model use from char-to-int unary promotion to the full
-   supported numeric-promotion/cast set, then bring the SLeeLa-native signature
-   index toward overload-aware resolution and add generic SAM substitution.
-   The emitter and reports now stage, compare, and publish per-file outputs;
-   native source/model/output provenance digests and a whole-run output
-   transaction are still missing.
+4. Extend the SLeeLa-native signature index toward overload-aware resolution,
+   add generic SAM substitution, and implement the same direct generic method
+   inference subset as C++.
+5. Complete package-aware symbol identity for colliding simple type names,
+   wildcard type-import indexing, module/accessibility checks, and static
+   nested-type imports. Add whole-run staging to C++ and SHA-256
+   source/model/converter/output provenance to the SLeeLa-native converter.
