@@ -1,0 +1,46 @@
+name: Native IPC stdio adapter
+
+on:
+  push:
+    paths:
+      - '.github/workflows/native-ipc-stdio.yml'
+      - 'impl/native-drive/native_ipc_stdio.c'
+      - 'impl/native-drive/native_ipc_stdio.h'
+      - 'impl/tests/native_drive/native_ipc_stdio_smoke.c'
+  pull_request:
+    paths:
+      - '.github/workflows/native-ipc-stdio.yml'
+      - 'impl/native-drive/native_ipc_stdio.c'
+      - 'impl/native-drive/native_ipc_stdio.h'
+      - 'impl/tests/native_drive/native_ipc_stdio_smoke.c'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  stdio-smoke:
+    name: Native IPC stdio (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and run stdio adapter smoke test (POSIX)
+        if: runner.os != 'Windows'
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror impl/native-drive/native_ipc_stdio.c impl/tests/native_drive/native_ipc_stdio_smoke.c -o native-ipc-stdio-smoke
+          ./native-ipc-stdio-smoke
+      - name: Initialize MSVC environment
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+      - name: Compile and run stdio adapter smoke test (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          cl /nologo /std:c11 /W4 impl/native-drive/native_ipc_stdio.c impl/tests/native_drive/native_ipc_stdio_smoke.c /Fenative-ipc-stdio-smoke.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          .\native-ipc-stdio-smoke.exe
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

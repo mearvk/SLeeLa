@@ -426,7 +426,7 @@ common-rails: core
 registry: core
 	bash ./build-registry.sh
 
-registry-test:
+registry-test: registry
 	$(MAKE) -C registry test
 
 # Build the eleven premium SLVM generations as real runnable VMs. Each links
