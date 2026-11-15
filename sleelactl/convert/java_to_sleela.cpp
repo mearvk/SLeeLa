@@ -1044,6 +1044,7 @@ private:
         for (int phase=0;phase<2 && !best;++phase) {
             for (const MethodSig* mp:candidates) {
                 const MethodSig& m=*mp;
+                if (m.hasTypeParamBounds) continue; // bounds are not yet represented in Ty; refuse rather than guess
                 const size_t n=m.params.size();
                 const bool fixed=n==args.size() && (!m.varargs || phase==0);
                 const bool variable=phase==1 && m.varargs && args.size()+1>=n;
@@ -3095,7 +3096,7 @@ private:
         return m;
     }
 
-    void skipTypeParams(std::vector<std::string>* names) {
+    void skipTypeParams(std::vector<std::string>* names, bool* bounded = nullptr) {
         if (!isOp("<")) return;
         int d = 0;
         bool expectName = true;
@@ -3103,7 +3104,8 @@ private:
             if (isOp("<")) { d++; expectName = (d == 1); }
             else if (isOp(">")) d--;
             else if (isOp(">>")) d -= 2;
-            else if (isOp(",")) { if (d == 1) expectName = true; }
+            else if (isOp(",") && d == 1) { expectName = true; }
+            else if (isKw("extends") && d == 1 && bounded) { *bounded = true; }
             else if (isIdentTok(cur()) && expectName && d == 1) { if (names) names->push_back(cur().text); typeVars.insert(cur().text); expectName = false; }
             p++;
         } while (d > 0 && !atEof());
@@ -3442,8 +3444,9 @@ private:
         if (mods.has("native")) fail("native", "native methods have no Java body to convert");
 
         std::vector<std::string> mtp;
+        bool mtpBounded = false;
         std::set<std::string> savedVars = typeVars;
-        skipTypeParams(&mtp);
+        skipTypeParams(&mtp, &mtpBounded);
         SetScope methodTypeVarScope(methodTypeVars_);
         methodTypeVars_.clear();
         methodTypeVars_.insert(mtp.begin(), mtp.end());
@@ -3462,7 +3465,7 @@ private:
             if (isKw("throws")) skipThrows();
             curRet = mk("void");
             if (pass == 1) {
-                MethodSig ms; ms.name = "<init>"; ms.ret = mk("void"); ms.varargs = ctorVarargs; ms.typeParams = mtp;
+                MethodSig ms; ms.name = "<init>"; ms.ret = mk("void"); ms.varargs = ctorVarargs; ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded;
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }
