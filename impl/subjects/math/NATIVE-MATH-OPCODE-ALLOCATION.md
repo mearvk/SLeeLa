@@ -1,17 +1,56 @@
 # Native math opcode allocation and VM integration plan
 
-## Current ISA boundary
+## Existing ISA boundary
 
-The Native IPC worker opcodes remain one contiguous, append-only group:
+The executable source/native ISA currently ends at opcode 194. Existing
+assignments 0–194 are frozen and append-only. In particular, the Native IPC
+worker opcodes remain one contiguous group:
 
 - 179 — `OP_IPC_OPEN`
 - 180 — `OP_IPC_CALL`
 - 181 — `OP_IPC_CLOSE`
 
-The current source ISA continues after that group: `OP_REF` occupies 182 and
-subsequent instructions occupy 183–194. The old native-math branches assigned
-`OP_MATH_CALL` to 179; that assignment is incompatible and must never be
-copied into the current tree.
+Opcodes 182–194 retain their existing meanings. The old native-math branches
+assigned `OP_MATH_CALL` to 179; that assignment conflicts with IPC and must
+never be imported.
+
+## Reserved native-math allocation
+
+The following ranges are now the reserved, canonical family allocation.
+Ranges are inclusive. Vacant positions remain reserved for their family and
+must not be filled by unrelated instructions.
+
+| Opcode range | Family | Reserved positions |
+|---:|---|---:|
+| 195–199 | Shared native math | 5 |
+| 200–207 | Vector | 8 |
+| 208–215 | Matrix | 8 |
+| 216–223 | Complex | 8 |
+| 224–231 | Decomposition | 8 |
+| 232–281 | Transform | 50 |
+
+The shared native-math block has these initial planned identifiers:
+
+- 195 — `OP_MATH_CALL`: scalar IEEE-754 dispatch using the stable
+  `SLMATHFunction` ID table and the original fallback stack contract
+  `[fallback marker, helper-name String, numeric arguments...]`.
+- 196 — `OP_MATH_ARRAY_CALL`: typed VM-array dispatch through
+  `slmath_vm_dispatch`, after the VM ownership, validation, and marshalling
+  adapter is implemented.
+- 197–199 remain reserved for future shared math dispatch extensions.
+
+The canonical family order is Vector, Matrix, Complex, Decomposition,
+Transform. Transform begins at 232 and ends at 281 inclusive. The 50-position
+Transform block is deliberate capacity, not a claim that 50 instructions
+already exist.
+
+**Reservation is not implementation.** Do not add placeholder instructions to
+`InstructionSet.sleela` or the native `SLOp` enum, and do not advertise these
+IDs as executable. A reserved ID becomes an executable opcode only when its
+compiler contract, native dispatch, artifact validation, supported VM
+generation behavior, tests, and documentation are implemented together.
+Unknown/reserved IDs must fail closed. Never renumber or repurpose an existing
+opcode.
 
 ## What is integrated now
 
@@ -27,8 +66,8 @@ typed buffer dispatch.
 
 This is a native library boundary only. It does not yet pin VM-owned arrays,
 validate VM object layouts, marshal VM arrays into the typed descriptors, or
-execute a math opcode from SLeeLa bytecode. The standalone C ABI test must not
-be described as VM bytecode integration.
+execute a math opcode from SLeeLa bytecode. Standalone C ABI tests must not be
+described as VM bytecode integration.
 
 ## Required integration continuity
 
@@ -37,45 +76,24 @@ as the typed array/linear-algebra path. The scalar function-ID table,
 `sl_math_kernel_*` C ABI, compiler lowering, native dispatch, and documented
 bytecode fallback are not to be dropped or replaced by an array-only design.
 The historical branch is a source of implementation behavior, not an ISA
-source: its `OP_MATH_CALL = 179` assignment conflicts with the fixed IPC block
-and must not be imported.
+source: its `OP_MATH_CALL = 179` assignment conflicts with the fixed IPC block.
 
 The full ownership, marshalling, compiler, artifact, regression, and delivery
 contracts are maintained in
 [`NATIVE-MATH-VM-INTEGRATION-PLAN.md`](NATIVE-MATH-VM-INTEGRATION-PLAN.md).
 
-## Append-only rule for future VM dispatch
+## Allocation and integration rules
 
-The next available numeric ID after the current source ISA is 195.
-To preserve the original scalar integration, the intended order is:
+1. Preserve all existing opcode assignments 0–194 exactly.
+2. Keep each future math family within its allocated inclusive range.
+3. Leave unused positions vacant; never borrow them for another family.
+4. Keep scalar math function IDs and typed operation IDs separate from opcode
+   IDs. One opcode may dispatch multiple stable function/operation IDs.
+5. Keep VM arrays VM-owned. Native kernels receive only bridge-owned snapshots
+   or buffers valid for the synchronous call.
+6. Older VM generations must reject unsupported opcodes explicitly; they
+   must never reinterpret them.
+7. Update source registry, native enum, compile-time assertions, dispatch,
+   compiler, artifact validation, opcode map, VM generation contracts, tests,
+   and trusted manifests as one coordinated implementation change.
 
-- 195 — `OP_MATH_CALL`: scalar IEEE-754 dispatch using the stable
-  `SLMATHFunction` ID table and the original fallback stack contract
-  `[fallback marker, helper-name String, numeric arguments...]`.
-- 196 — `OP_MATH_ARRAY_CALL`: typed VM-array dispatch through
-  `slmath_vm_dispatch`, after the VM ownership, validation, and marshalling
-  adapter is implemented.
-
-This deliberately separates the established scalar ABI from typed array
-operations while keeping both in one contiguous native-math opcode block. The
-old branch's scalar implementation is the compatibility reference for 195;
-its obsolete assignment of 179 is not. Do not insert math IDs between 179–181,
-and do not renumber 182–194.
-
-If additional math-specific opcodes are later proven necessary, append them
-after 196 in the canonical operation family order: vector, matrix, complex,
-decomposition, transform. Prefer operation selectors within the typed array
-dispatch over one opcode per mathematical function.
-
-No opcode ID is reserved by this planning document. Allocation becomes
-authoritative only when the same change includes, in maintenance order:
-
-1. `lib/vm/InstructionSet.sleela`;
-2. native `SLOp` enum and compile-time ID assertions;
-3. VM dispatch with bounds, ownership, pinning, and error handling;
-4. `lib/vm/OPCODE-MAP.md`;
-5. source/native ISA equality and artifact validation;
-6. VM-generation contracts, tests, and trusted-manifest updates.
-
-Until then, the C ABI remains independently usable and the bytecode path
-remains explicitly unimplemented.
