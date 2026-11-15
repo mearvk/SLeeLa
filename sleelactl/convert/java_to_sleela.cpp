@@ -2403,9 +2403,22 @@ private:
             bool duplicate = false;
             for (size_t i = 0; i < found.size(); ++i) {
                 if (m.name == found[i]->name && m.params == found[i]->params) {
-                    if (isSubtypeName(m.owner, found[i]->owner)) found[i] = &m;
-                    duplicate = true;
-                    break;
+                    const Ty& nextRet = m.ret;
+                    const Ty& priorRet = found[i]->ret;
+                    const bool sameRet = nextRet == priorRet;
+                    const bool nextCovariant = nextRet.dims == priorRet.dims &&
+                        !kPrim.count(nextRet.n) && !kPrim.count(priorRet.n) &&
+                        isSubtypeName(nextRet.n, priorRet.n);
+                    const bool priorCovariant = nextRet.dims == priorRet.dims &&
+                        !kPrim.count(nextRet.n) && !kPrim.count(priorRet.n) &&
+                        isSubtypeName(priorRet.n, nextRet.n);
+                    if (sameRet || nextCovariant || priorCovariant) {
+                        if (nextCovariant || (sameRet && isSubtypeName(m.owner, found[i]->owner))) found[i] = &m;
+                        duplicate = true;
+                        break;
+                    }
+                    // Same parameter signature with incompatible returns is not a
+                    // functional descriptor; keep both so functionalMethod rejects it.
                 }
             }
             if (!duplicate) found.push_back(&m);
