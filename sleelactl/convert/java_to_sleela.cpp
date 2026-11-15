@@ -1025,6 +1025,7 @@ private:
                     else { applicable=false; break; }
                     if (args[i].lambdaPos!=(size_t)-1) {
                         if (phase==0 && m.varargs && n && i==n-1) { applicable=false; break; }
+                        if (target.dims != 0 || !functionalMethod(target.n)) { applicable=false; break; }
                         cost+=64; continue;
                     }
                     int c=invocationCost(args[i].ty,target);
