@@ -1,0 +1,31 @@
+#sleela 3.0
+class ExceptionSourceSmoke {
+    static void raiseFromMethod() {
+        throw 73;
+    }
+
+    static void main() {
+        int preserved = 19;
+
+        // Exercise compiler lowering, nested handler selection, cross-frame
+        // unwind, rethrow from a catch body, and preservation of an outer local.
+        try {
+            try {
+                raiseFromMethod();
+            } catch (Any inner) {
+                throw inner;
+            }
+        } catch (Any outer) {
+            print("EXCEPTION-SOURCE-CAUGHT");
+            print(outer);
+            print(preserved);
+        }
+
+        // A normally completed try must pop its handler and skip the catch body.
+        try {
+            print("EXCEPTION-SOURCE-NORMAL");
+        } catch (Any unexpected) {
+            print("EXCEPTION-SOURCE-UNEXPECTED-CATCH");
+        }
+    }
+}

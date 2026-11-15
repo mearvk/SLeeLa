@@ -166,8 +166,12 @@ The current runtime branch now includes:
 - VM ABI minor version 6, with the artifact serialization layout unchanged.
 
 An opt-in C smoke test is available as `make -C impl test-exceptions`. It covers
-cross-frame catch dispatch and preservation of an uncaught false payload. It
-has been added but has not been run in this milestone.
+cross-frame catch dispatch and preservation of an uncaught false payload. A
+source-level integration smoke is available as `make -C impl
+test-exceptions-source`; it exercises nested catch selection, cross-method
+unwind, rethrow through an outer catch, preservation of a pre-existing local,
+and normal completion without entering the catch body. Both tests have been
+added but have not been run in this milestone.
 
 ## Current limitation
 

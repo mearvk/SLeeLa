@@ -803,6 +803,9 @@ $(EXCEPTION_VM_SMOKE): tests/exceptions/exception_vm_smoke.c $(SLCORE_LIB) | $(B
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) -Icore $< $(SLCORE_LIB) -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 test-exceptions: $(EXCEPTION_VM_SMOKE)
 	@$(EXCEPTION_VM_SMOKE)
+# Source-level compiler/VM integration smoke; opt-in and outside CI aggregates.
+test-exceptions-source: $(SLEELA_BIN)
+	@sh tests/exceptions/run_source_smoke.sh "$(abspath $(SLEELA_BIN))"
 
 test-java-string-source: $(SLEELA_BIN)
 	@cd $(CURDIR)/.. && $(CURDIR)/$(SLEELA_BIN) run impl/tests/java_transition/java_utf16_source.sleela
