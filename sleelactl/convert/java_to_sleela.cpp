@@ -49,7 +49,7 @@ const std::set<std::string> kModifiers = {"public", "private", "protected", "sta
                                           "default", "sealed"};
 // SLeeLa words that are legal Java identifiers but would collide in SLeeLa.
 const std::set<std::string> kSleelaReserved = {"struct", "material", "spark", "int32", "record", "close", "native",
-                                               "Any", "print", "enum", "interface", "super", "yield", "throw",
+                                               "Any", "String", "print", "enum", "interface", "super", "yield", "throw",
                                                "instanceof", "switch", "synchronized", "assert",
                                                "join", "spawn", "sleep", "arrayLength", "arrayNew", "arraySet", "structPack", "structUnpack",
                                                "require", "usualgc", "usualmem", "int64", "int128"};
@@ -253,6 +253,9 @@ private:
 
     // ---------------------------------------------------------- idents ----
     static std::string safeName(const std::string& n) {
+        // `next` is a contextual VM word: in value position it evaluates to 1.
+        // Rename variables/fields, but keep a method named next() callable.
+        if (n == "next") return "next_";
         return kSleelaReserved.count(n) ? n + "_" : n;
     }
     void pushScope() { scopes.emplace_back(); }
@@ -1325,7 +1328,10 @@ private:
         }
         E r; r.code = safeName(name); r.ty = mk("?"); return r;
     }
-    static std::string safeNameForCall(const std::string& n) { return safeName(n); }
+    static std::string safeNameForCall(const std::string& n) {
+        // `Iterator.next()` and user-declared next() are ordinary Java methods.
+        return n == "next" ? n : safeName(n);
+    }
 
     E parseNew() {
         expectKw("new");
