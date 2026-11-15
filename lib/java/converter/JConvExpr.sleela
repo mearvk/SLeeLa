@@ -652,6 +652,7 @@ class JConvExpr {
     if (a == "?" || b == "?") { return "?"; }
     if (a == "d" || b == "d") {
       String other = a == "d" ? b : a;
+      if (other != "d" && other != "i" && other != "c" && other != "l") { return "?"; }
       if (other == "i" && !this.rw.rules.canWiden("int", "double")) { return "?"; }
       if (other == "c" && !this.rw.rules.canWiden("char", "double")) { return "?"; }
       if (other == "l" && !this.rw.rules.canWiden("long", "double")) { return "?"; }
@@ -659,6 +660,7 @@ class JConvExpr {
     }
     if (a == "l" || b == "l") {
       String other = a == "l" ? b : a;
+      if (other != "i" && other != "c" && other != "l") { return "?"; }
       if (other == "i" && !this.rw.rules.canWiden("int", "long")) { return "?"; }
       if (other == "c" && !this.rw.rules.canWiden("char", "long")) { return "?"; }
       return "l";
