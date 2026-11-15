@@ -63,18 +63,18 @@ The refusal rows are the `unsupported` records of the model.
 
 `tests/javaconv_differential_test.sh` (also `make -C sleelactl/convert test`):
 
-- `tests/java/*.java` (24 fixtures currently present) run on a real JDK and, converted, on the SLeeLa VM; outputs must be
+- `tests/java/*.java` (25 fixtures currently present) run on a real JDK and, converted, on the SLeeLa VM; outputs must be
   identical: Anon, Basics, Bounds, Control, Enums, Floats, Flow, Formats, Functional, Grid, Init, Nested,
   ObjectText, Operands (191 lines of int/long/double/narrowing results), Records, Refs, Resources, Shapes, Strings,
-  Switches, Sync, Varargs, IdentifierParity, OverloadWidening. The two newest fixtures were added after the recorded 2026-11-13 run and are not yet verified. A `// flags:` line passes converter options (`Sync` uses `--single-thread`). Options: `--single-thread`, `--unchecked-sizes` (omit the `NegativeArraySizeException` wrapper), `--bundle`/`--split`.
-- `tests/reject/*.java` (9 programs) must be refused with the construct named on their `// expect:` line
+  Switches, Sync, Varargs, IdentifierParity, OverloadWidening, ReservedIdentifiers. The three new positive fixtures were added after the recorded 2026-11-13 run and are not yet verified. A `// flags:` line passes converter options (`Sync` uses `--single-thread`). Options: `--single-thread`, `--unchecked-sizes` (omit the `NegativeArraySizeException` wrapper), `--bundle`/`--split`.
+- `tests/reject/*.java` (10 programs) must be refused with the construct named on their `// expect:` line
   and write nothing.
 - stale output: a file converted on one run and failing closed on the next leaves no `.sleela` behind.
 
 ## Status (honest)
 
 Converted and proven against a JDK (`tests/javaconv_differential_test.sh`, 22 programs plus 9 refusals and a
-stale-output check, 32 of 32 passing on 2026-11-13; in CI as `.github/workflows/java-convert.yml`). The later `IdentifierParity` and `OverloadWidening` fixtures and the overload-resolution changes have not yet been run:
+stale-output check, 32 of 32 passing on 2026-11-13; in CI as `.github/workflows/java-convert.yml`). The later `IdentifierParity`, `OverloadWidening`, and `ReservedIdentifiers` fixtures, the `AmbiguousWideningOverload` refusal fixture, and the overload-resolution changes have not yet been run:
 integer, float, char and String semantics; `String.valueOf/join/format` (literal format); native `switch`
 (fallthrough, arrow cases, switch expressions); assignment and `++`/`--` as values; enums; varargs;
 try-with-resources; `synchronized`/`volatile` under `--single-thread`; arrays of any rank; anonymous
