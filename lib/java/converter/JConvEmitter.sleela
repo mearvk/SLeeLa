@@ -109,23 +109,23 @@ class JConvEmitter {
     return true;
   }
 
-  void finishOut() {
+  boolean finishOut() {
     if (!this.lineStart) { this.newline(); }
     if (this.handle >= 0) { close(this.handle); }
     this.handle = -1;
     if (this.failed) {
       if (this.tempPath != "") { osRemove(this.tempPath); }
-      return;
+      return false;
     }
     if (osExists(this.targetPath) == 1 && sameTextFile(this.targetPath, this.tempPath)) {
       osRemove(this.tempPath);
-      return;
+      return true;
     }
-    < osRename is same-directory rename: publish the complete file only after close. >
-    if (osRename(this.tempPath, this.targetPath) != 0) {
-      this.failed = true;
-      osRemove(this.tempPath);
-    }
+    < osRename is same-directory replace on Windows and rename on POSIX; publish only after close. >
+    if (osRename(this.tempPath, this.targetPath) == 0) { return true; }
+    this.failed = true;
+    osRemove(this.tempPath);
+    return false;
   }
 
   < write a piece straight to the file: no buffer, so no String is built here >
