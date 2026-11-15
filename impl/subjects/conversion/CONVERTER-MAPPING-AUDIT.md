@@ -102,10 +102,10 @@ must distinguish complete conversion, partial/stubbed output, and refusal.
   with differing return types collapse to an unknown return type.
 - It now loads the shared primitive `widen` rows into `JConvModel`, exposes
   `canWiden` through `JConvRules`, and keeps matching defaults when the model
-  file is unavailable. The current `JConvExpr` typed pass has no `canWiden`
-  call sites yet; its primitive conversion decisions remain separately
-  implemented. Its member table also erases overloads by name and does not
-  implement generic invocation inference.
+  file is unavailable. `JConvExpr.promote` now uses that query for Java `char`
+  to `int` unary numeric promotion. The remaining binary promotion and cast
+  decisions are still represented by native kind rules. Its member table also
+  erases overloads by name and does not implement generic invocation inference.
 - It does not currently provide a project-wide generic type substitution and
   overload-resolution phase comparable to the C++ symbol table.
 - The expression pass can use model return rows, but those rows do not by
@@ -175,8 +175,9 @@ creation time. Do not count an unknown-target stub as successful conversion.
    supported subset: boxing/unboxing, generic inference/substitution, array
    covariance, and the remaining JLS ambiguity rules. Add focused differential
    fixtures before claiming broader coverage.
-4. Wire `JConvExpr` to `JConvRules.canWiden`, then bring the SLeeLa-native
-   signature index toward overload-aware resolution and add generic SAM
-   substitution. The emitter and reports now stage, compare, and publish
-   per-file outputs; native source/model/output provenance digests and a
-   whole-run output transaction are still missing.
+4. Extend `JConvExpr` model use from char-to-int unary promotion to the full
+   supported numeric-promotion/cast set, then bring the SLeeLa-native signature
+   index toward overload-aware resolution and add generic SAM substitution.
+   The emitter and reports now stage, compare, and publish per-file outputs;
+   native source/model/output provenance digests and a whole-run output
+   transaction are still missing.
