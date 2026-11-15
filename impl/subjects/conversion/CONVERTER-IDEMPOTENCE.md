@@ -77,9 +77,11 @@ converter; unrelated files must remain untouched.
   modification times when output bytes are unchanged.
 - Implemented a sorted ownership manifest and deferred stale-output cleanup.
 - Added `CONVERSION-PROVENANCE.json`: SHA-256 digests cover the exact model
-  bytes, immutable input snapshot, converter source inputs, and emitted output
-  bytes. The manifest has no timestamps or absolute checkout paths and labels
-  the JDK version as a declared label rather than asserting release authenticity.
+  bytes, immutable input snapshot, available converter source files, and
+  emitted output bytes. `converterSourceComplete` records whether all expected
+  source files were present; the compiled binary identity is not recorded.
+  The manifest has no timestamps or absolute checkout paths and labels the JDK
+  version as a declared label rather than asserting release authenticity.
 - **Not yet complete:** output generation is not yet staged as a whole-run
   transaction; a late I/O failure can leave some newly written files before
   the ownership manifest is committed. The provenance record does not verify
@@ -95,6 +97,8 @@ converter; unrelated files must remain untouched.
   TSV and summary use the same staged compare/publish pattern. Model descriptions
   omit absolute paths, and generated `metaDate`/`metaBirthDate` are now `unknown`
   rather than wall-clock values, so identical inputs do not vary by run date.
+- Per-file output-open and staged-publication failures are now reported as
+  failed files rather than successful conversions.
 - **Not yet complete:** the SLeeLa-native converter has no SHA-256 provenance
   manifest for source/model/converter/output bytes, and its per-file publication
   is not a whole-run transaction. Its batch script still resets transient
