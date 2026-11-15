@@ -194,6 +194,7 @@ class JConvReport {
   }
 
   boolean sameTextFile(String a, String b) {
+    if (osFileSize(a) != osFileSize(b)) { return false; }
     JConvSource left = new JConvSource();
     JConvSource right = new JConvSource();
     if (!left.load(a) || !right.load(b) || left.length != right.length) { return false; }
