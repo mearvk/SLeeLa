@@ -93,8 +93,12 @@ must distinguish complete conversion, partial/stubbed output, and refusal.
   functional-interface target. The target must resolve to a collected or
   seeded interface with exactly one distinct abstract instance-method signature
   across its full inherited interface graph (diamond paths and duplicate
-  redeclarations collapse; Object methods are excluded). Method-reference
-  overload resolution and generic SAM substitution remain incomplete.
+  redeclarations collapse; Object methods are excluded). Method references now
+  select collected static, unbound-instance, bound-instance, `this::`, and
+  constructor overloads against the SAM parameter and return types, including
+  argument adaptation and static/instance disambiguation. Library method
+  references without collected signatures, generic SAM substitution, and
+  intersection-target resolution remain incomplete.
 
 ### SLeeLa-native converter
 
@@ -147,11 +151,10 @@ The SLeeLa-native converter has a defunctionalized lambda representation and
 supports selected lambda/method-reference forms.
 
 Remaining work is to make target typing a consequence of the same resolved
-method signature in both converters. Cover overloaded functional-interface
-parameters, generic functional-interface substitutions, inherited SAM methods,
-intersection targets, primitive-specialized functional interfaces, constructor
-references, bound/unbound instance references, and overload selection for
-referenced methods. Preserve receiver evaluation exactly once and at reference
+method signature in both converters. Cover generic functional-interface substitutions, intersection targets,
+primitive-specialized functional interfaces, library method-reference
+signatures, and overloaded method references where generic SAM types are
+involved. Preserve receiver evaluation exactly once and at reference
 creation time. Do not count an unknown-target stub as successful conversion.
 
 ## Acceptance checks for this pass
