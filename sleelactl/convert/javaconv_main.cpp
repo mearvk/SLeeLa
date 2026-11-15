@@ -148,7 +148,7 @@ std::string jsonEscape(const std::string& s) {
         switch (c) {
             case '"': o += "\\\""; break;
             case '\\': o += "\\\\"; break;
-            case '\n': o += "\n"; break;
+            case '\n': o += "\\n"; break;
             case '\t': o += "\\t"; break;
             default:
                 if (c < 0x20) { char b[8]; std::snprintf(b, sizeof b, "\\u%04x", c); o += b; }
@@ -473,6 +473,7 @@ int main(int argc, char** argv) {
       << "  \"jdkIdentity\": \"source-snapshot-digest; release authenticity is not inferred from the label\",\n"
       << "  \"model\": {\"name\": \"" << jsonEscape(model.name) << "\", \"revision\": \"" << jsonEscape(model.rev)
       << "\", \"sha256\": \"" << sha256Hex(modelBytes) << "\"},\n"
+      << "  \"converterSourceIdentity\": \"working-tree source files; compiled binary identity is not recorded\",\n"
       << "  \"converterSourceSha256\": \"" << sha256Hex(converterFingerprint) << "\",\n"
       << "  \"inputSnapshotSha256\": \"" << sha256Hex(sourceFingerprint) << "\",\n"
       << "  \"outputSnapshotSha256\": \"" << sha256Hex(outputFingerprint) << "\",\n"
