@@ -1,3 +1,4 @@
+// expect: generic-inference
 public class BoundedGenericInference {
     static <T extends Number> T identity(T value) {
         return value;
