@@ -75,6 +75,11 @@ class JConvRules {
 
   void useModel(JConvModel m) { this.model = m; }
 
+  < JLS 5.1.2 primitive invocation widening is shared with the C++ converter >
+  boolean canWiden(String from, String to) {
+    return this.model != null && this.model.canWiden(from, to);
+  }
+
   String charText(int c) {
     if (c >= 32 && c < 127) { return this.ascii[c]; }
     return "?";
