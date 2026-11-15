@@ -706,7 +706,10 @@ class JConvTranslator {
     this.rw.outer.clearContext();
     if (this.cfg.bundle && !inBundle) {
       this.rw.lam.writeTable(this.em);
-      this.em.finishOut();
+      if (!this.em.finishOut()) {
+        this.outputFailed = true;
+        this.rep.note("cannot publish " + outRel);
+      }
     }
   }
 
