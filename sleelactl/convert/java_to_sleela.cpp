@@ -51,7 +51,8 @@ const std::set<std::string> kModifiers = {"public", "private", "protected", "sta
 const std::set<std::string> kSleelaReserved = {"struct", "material", "spark", "int32", "record", "close", "native",
                                                "Any", "print", "enum", "interface", "super", "yield", "throw",
                                                "instanceof", "switch", "synchronized", "assert",
-                                               "join", "spawn", "sleep", "arrayLength", "arrayNew", "arraySet", "structPack", "structUnpack"};
+                                               "join", "spawn", "sleep", "arrayLength", "arrayNew", "arraySet", "structPack", "structUnpack",
+                                               "require", "usualgc", "usualmem", "int64", "int128"};
 
 struct Tok {
     jt_kind kind = JT_EOF;
