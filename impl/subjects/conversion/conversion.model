@@ -41,7 +41,7 @@
 # Template variables: $a $b operands, $t target type, $recv receiver, $args
 # comma-joined argument list, $0 $1 ... individual arguments.
 # ============================================================================
-model java-to-sleela 1.3.0
+model java-to-sleela 1.4.0
 
 # ---- 1. Types (JLS 4). SLeeLa int is a 64-bit slot, so the int-width types are
 #         kept as their own names and wrapped by the templates below.
@@ -78,14 +78,21 @@ widen byte short
 widen byte int
 widen byte long
 widen byte double
+widen byte float
 widen short int
 widen short long
 widen short double
+widen short float
 widen char int
 widen char long
 widen char double
+widen char float
 widen int long
 widen int double
+widen int float
+widen long float
+widen long double
+widen float double
 
 # ---- 5. Binary operators on promoted operand classes (JLS 15.17-15.24).
 #         int: 32-bit wrap; long: 64-bit native; double: IEEE binary64.
