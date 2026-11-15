@@ -642,11 +642,28 @@ class JConvExpr {
     return k;
   }
 
+  boolean modelPromotesToInt() {
+    return this.rw.rules.canWiden("byte", "int") &&
+      this.rw.rules.canWiden("short", "int") &&
+      this.rw.rules.canWiden("char", "int");
+  }
+
   String merge(String a, String b) {
     if (a == "?" || b == "?") { return "?"; }
-    if (a == "d" || b == "d") { return "d"; }
-    if (a == "l" || b == "l") { return "l"; }
-    if (intLike(a) && intLike(b)) { return "i"; }
+    if (a == "d" || b == "d") {
+      String other = a == "d" ? b : a;
+      if (other == "i" && !this.rw.rules.canWiden("int", "double")) { return "?"; }
+      if (other == "c" && !this.rw.rules.canWiden("char", "double")) { return "?"; }
+      if (other == "l" && !this.rw.rules.canWiden("long", "double")) { return "?"; }
+      return "d";
+    }
+    if (a == "l" || b == "l") {
+      String other = a == "l" ? b : a;
+      if (other == "i" && !this.rw.rules.canWiden("int", "long")) { return "?"; }
+      if (other == "c" && !this.rw.rules.canWiden("char", "long")) { return "?"; }
+      return "l";
+    }
+    if (intLike(a) && intLike(b)) { return modelPromotesToInt() ? "i" : "?"; }
     if (a == b) { return a; }
     return "?";
   }
