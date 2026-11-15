@@ -5,12 +5,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #ifdef _WIN32
-#include <windows.h>
-static int set_env(const char *k, const char *v) { return SetEnvironmentVariableA(k, v) ? 0 : 1; }
+#include <stdlib.h>
+static int set_env(const char *k, const char *v) { return _putenv_s(k, v ? v : ""); }
 #else
 static int set_env(const char *k, const char *v) { return v ? setenv(k, v, 1) : unsetenv(k); }
 #endif
-#define CHECK(c, n) do { if (!(c)) { fprintf(stderr, "VM config smoke failed: %d\n", (n)); return (n); } } while (0)
+#define CHECK(c, n) do { if (!(c)) { fprintf(stderr, "VM config smoke failed: %d\\n", (n)); return (n); } } while (0)
 int main(void) {
     SLEELA_VM_CONFIG c;
     int load_result;
@@ -20,11 +20,11 @@ int main(void) {
     CHECK(sleela_vm_config_set_version(&c, 12) != 0, 3);
     load_result = sleela_vm_config_load("config/vm.conf", &c);
     if (load_result != 0) {
-        fprintf(stderr, "VM config smoke failed: 4 (load returned %d; expected config/vm.conf from repository root)\n", load_result);
+        fprintf(stderr, "VM config smoke failed: 4 (load returned %d; expected config/vm.conf from repository root)\\n", load_result);
         return 4;
     }
     if (c.version != 11) {
-        fprintf(stderr, "VM config smoke failed: 4 (loaded version %d; expected 11)\n", c.version);
+        fprintf(stderr, "VM config smoke failed: 4 (loaded version %d; expected 11)\\n", c.version);
         return 4;
     }
     CHECK(set_env("SLEELA_VM_VERSION", "7") == 0, 5);
