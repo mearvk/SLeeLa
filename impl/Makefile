@@ -529,7 +529,7 @@ check-manifest:
 	@command -v $(firstword $(PYTHON)) >/dev/null 2>&1 || { echo "sleela: $(PYTHON) is required to check the manifest" >&2; exit 1; }
 	@if [ ! -r "$(GENERATE_TOOL)" ]; then echo "sleela: manifest generator not readable: $(GENERATE_TOOL)" >&2; exit 1; fi
 	@if [ ! -f "$(VERIFY_MANIFEST)" ]; then echo "sleela: trusted SHA-256 manifest not found: $(VERIFY_MANIFEST)" >&2; exit 1; fi
-	@tmp="$$(mktemp)"; \
+	@tmp="$$$(mktemp)"; \
 	 $(PYTHON) "$(GENERATE_TOOL)" --root "$(CURDIR)/.." --stdout > "$$tmp" || { rm -f "$$tmp"; exit 1; }; \
 	 if diff -u "$(VERIFY_MANIFEST)" "$$tmp" >/dev/null 2>&1; then \
 	   rm -f "$$tmp"; echo "check-manifest: OK - manifest matches the source tree"; \
@@ -1127,15 +1127,15 @@ test-time-platform: $(TIME_PLATFORM_SMOKE)
 test-pixel-terminal: $(PIXEL_TERMINAL_SMOKE)
 	@echo "=== native pixel terminal smoke ==="; $(PIXEL_TERMINAL_SMOKE)
 test-catalog: $(NORDSHRIFT_BIN)
-	@set -e; objects_out=$(mktemp); java_out=$(mktemp); \
-	trap 'rm -f "$objects_out" "$java_out"' 0 HUP INT TERM; \
+	@set -e; objects_out=$$(mktemp); java_out=$$(mktemp); \
+	trap 'rm -f "$$objects_out" "$$java_out"' 0 HUP INT TERM; \
 	export SLEELA_SHEET="$(CURDIR)/../SHEET.sheet"; \
 	echo "=== nordshrift objects (summary) ==="; \
-	$(NORDSHRIFT_BIN) objects >"$objects_out"; head -4 "$objects_out"; \
+	$(NORDSHRIFT_BIN) objects >"$$objects_out"; head -4 "$$objects_out"; \
 	echo "=== relevance --target=c Thread ==="; \
 	$(NORDSHRIFT_BIN) relevance --target=c Thread; \
 	echo "=== relevance --target=java (tally) ==="; \
-	$(NORDSHRIFT_BIN) relevance --target=java >"$java_out"; tail -1 "$java_out"
+	$(NORDSHRIFT_BIN) relevance --target=java >"$$java_out"; tail -1 "$$java_out"
 # Shared runner for a single subject *_values.sleela program: builds the
 # binary, then asserts the program runs cleanly, emits no FAIL line, and
 # produces exactly its EXPECTED_PASS count. $(1) is the subject basename.
