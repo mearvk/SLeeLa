@@ -715,7 +715,7 @@ The CI workflow logs are authoritative for hosted qualification. A green result 
 - Root workflow trigger update: `d8c38351277c14deeb1d2701ec5ad7d84e035f81`.
 - The root workflow's push path filter now includes `FILAMENT.md`; the native portability workflow is configured for every push to `master` / `main`.
 - Source-level fixes and trigger wiring are verified. Hosted run IDs and final job results remain **unverified** because the connected GitHub Actions interface available in this session exposes commit-associated PR runs and known-run job/log retrieval, but not a listing of push-triggered runs. Do not mark any of the six acceptance gates complete until their run records are inspected.
-- ConPTY remains the one identified Windows runtime blocker. The current close routine has bounded waits around child reaping, ConPTY close, output-drain cancellation, and thread joins, but the existing smoke still did not reach its post-close PASS marker in the prior Windows log. No speculative teardown rewrite was made without a Windows reproducer.
+- ConPTY remains the one identified Windows runtime blocker. Source inspection shows bounded waits for direct-child reaping and the output-drain thread join, but `ClosePseudoConsole()` itself is called synchronously with no timeout. Therefore the drain-thread timeout does not bound the ConPTY close call; a hang inside `ClosePseudoConsole()` can still block `slterminal_close()` indefinitely. No speculative teardown rewrite was made without a Windows reproducer.
 
 
 ### Root dispatcher and qualification-trigger follow-up
@@ -796,3 +796,19 @@ The Windows failure in Native C/C++ Portability run **43629021139** was traced f
 The repair follows Microsoft's ConPTY shutdown guidance: older Windows releases may wait for output to be drained or the output pipe to be closed. See [ClosePseudoConsole](https://learn.microsoft.com/en-us/windows/console/closepseudoconsole) and [Creating a Pseudoconsole session](https://learn.microsoft.com/en-us/windows/console/creating-a-pseudoconsole-session).
 
 **Qualification status:** repair is committed, but not yet proven. The Windows job must be rerun and must print `terminal platform smoke: PASS`, complete the remaining VM regression suite, and exit successfully. Do not convert the prior timeout into a PASS. Linux and macOS remain PASS for run 43629021139.
+
+## Follow-up audit — ConPTY shutdown boundary and staged installer — 2026-11-14
+
+### ConPTY source finding
+
+Inspection of `impl/core/sleela_terminal.c` on `diagnostics/windows-memory-root-failure` confirms that `slterminal_close()` bounds the direct-child wait (3 seconds, then a 2-second wait after termination) and the output-drain thread join (5 seconds, cancellation attempt, then a 1-second follow-up). However, `ClosePseudoConsole(t->console)` is a synchronous call with no timeout and occurs before the drain-thread join. A stall inside `ClosePseudoConsole()` therefore bypasses the later timeout entirely. The current implementation is not accurately described as having a bounded ConPTY close. The prior Windows smoke's missing post-close PASS marker remains consistent with this unresolved boundary, but does not alone prove which internal wait is stuck.
+
+No asynchronous close-thread workaround is committed: returning while a worker still owns the HPCON, output pipe, or terminal allocation would create lifetime and use-after-free hazards. A repair must define ownership and cancellation semantics before adding a timeout, and must be verified on Windows 10/11.
+
+### Staged installation source review
+
+The root workflow's POSIX staged-install steps do more than check file presence: they execute `sleela version`, `sleelvac --help`, and `nordshrift objects`, then invoke uninstall and assert the three staged commands are absent. The user-local and system-prefix paths are both represented. These are meaningful staged smoke tests, but remain unqualified until the workflow jobs actually run successfully.
+
+The installer Makefile consistently prefixes runtime, data, configuration, and binary destinations with `DESTDIR`; staged installs skip live-install backup behavior. The staged workflow still needs hosted evidence for the complete package tree, generated completions, selected standard-library contents, and manifest consistency. `install-all` / `uninstall-all` remain separate dependent sandbox qualification jobs, not covered by the two basic staged smoke steps.
+
+**Classification:** ConPTY close remains a runtime blocker; staged install recipes are present and statically coherent, but platform execution and full-tree qualification are pending. No build, install, or Windows runtime PASS is claimed by this source audit.
