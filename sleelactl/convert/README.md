@@ -27,8 +27,11 @@ Like `math` and `physics`, `conversion` is a subject with a model:
 promotion and primitive widening (JLS 5.1.2), operator templates for
 `int`/`long`/`double`/`boolean`/`String`, narrowing casts, compound-assignment
 and `++`/`--` rules, string conversion, and library result types. C++ overload
-selection consults the model for primitive invocation widening; the SLeeLa
-`JConvModel` now loads the same `widen` rows through `canWiden`. The int laws are
+selection consults the model for primitive invocation widening and considers
+fixed-arity calls before varargs, known reference subtyping, inherited overloads,
+and most-specific parameter types. Incomparable or unsupported candidates fail
+closed. The SLeeLa `JConvModel` loads the same `widen` rows (with matching
+built-in defaults) through `canWiden`. The int laws are
 executed by `lib/java/JavaOperands.sleela` (verified against a JDK by
 `examples/java/differential/OperandSemantics`).
 
