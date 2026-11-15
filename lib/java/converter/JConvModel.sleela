@@ -356,7 +356,7 @@ class JConvModel {
   }
 
   String describe() {
-    if (!this.loaded) { return "built-in defaults (model file not read: " + this.path + ")"; }
+    if (!this.loaded) { return "built-in defaults (shared model file not read)"; }
     < Do not include the absolute model path: it makes identical runs on
        different checkout roots produce different report bytes. >
     return this.modelName + " " + this.revision + " (" + this.retRows + " ret rows, " + this.widenN + " widening rows)";
