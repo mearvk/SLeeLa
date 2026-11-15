@@ -30,6 +30,20 @@ validate VM object layouts, marshal VM arrays into the typed descriptors, or
 execute a math opcode from SLeeLa bytecode. The standalone C ABI test must not
 be described as VM bytecode integration.
 
+## Required integration continuity
+
+The VM work must complete the original scalar native-math integration as well
+as the typed array/linear-algebra path. The scalar function-ID table,
+`sl_math_kernel_*` C ABI, compiler lowering, native dispatch, and documented
+bytecode fallback are not to be dropped or replaced by an array-only design.
+The historical branch is a source of implementation behavior, not an ISA
+source: its `OP_MATH_CALL = 179` assignment conflicts with the fixed IPC block
+and must not be imported.
+
+The full ownership, marshalling, compiler, artifact, regression, and delivery
+contracts are maintained in
+[`NATIVE-MATH-VM-INTEGRATION-PLAN.md`](NATIVE-MATH-VM-INTEGRATION-PLAN.md).
+
 ## Append-only rule for future VM dispatch
 
 A direct VM array-to-kernel instruction will need a new opcode once the VM
