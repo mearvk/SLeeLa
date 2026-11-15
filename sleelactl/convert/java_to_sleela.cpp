@@ -968,56 +968,79 @@ private:
         return strict;
     }
 
+    bool isSubtypeName(const std::string& from, const std::string& to, int depth = 0) const {
+        if (from == to) return true;
+        if (depth > 32) return false;
+        auto it=classes.find(from);
+        if (it==classes.end()) return to=="Object";
+        if (!it->second.super.empty() && isSubtypeName(it->second.super,to,depth+1)) return true;
+        for (const auto& iface:it->second.ifaces) if (isSubtypeName(iface,to,depth+1)) return true;
+        return false;
+    }
+
+    void collectNamedMethods(const std::string& cls, const std::string& name,
+                             std::vector<const MethodSig*>& out, int depth = 0) const {
+        if (depth > 32) return;
+        auto it=classes.find(cls);
+        if (it==classes.end()) return;
+        for (const auto& m:it->second.methods) if (m.name==name) out.push_back(&m);
+        if (!it->second.super.empty()) collectNamedMethods(it->second.super,name,out,depth+1);
+        for (const auto& iface:it->second.ifaces) collectNamedMethods(iface,name,out,depth+1);
+    }
+
     const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0) const {
-        auto it = classes.find(cls);
-        if (it == classes.end() || depth > 32) return nullptr;
-        const MethodSig* best = nullptr;
-        int bestCost = 0x3fffffff;
-        bool ambiguous = false;
+        if (depth > 32) return nullptr;
+        std::vector<const MethodSig*> all;
+        collectNamedMethods(cls,name,all);
+        std::vector<const MethodSig*> candidates;
+        // Collapse overrides with the same erased signature, retaining the declaration
+        // from the most-derived owner. Distinct overloads remain separate candidates.
+        for (const MethodSig* m:all) {
+            bool merged=false;
+            for (size_t i=0;i<candidates.size();++i) {
+                const MethodSig* prior=candidates[i];
+                if (m->params==prior->params && m->varargs==prior->varargs && m->isStatic==prior->isStatic) {
+                    if (isSubtypeName(m->owner,prior->owner)) candidates[i]=m;
+                    merged=true; break;
+                }
+            }
+            if (!merged) candidates.push_back(m);
+        }
+        const MethodSig* best=nullptr;
+        int bestCost=0x3fffffff;
+        bool ambiguous=false;
         // JLS 15.12.2: fixed-arity applicability is considered before variable arity.
-        for (int phase=0; phase<2 && !best; ++phase) {
-            for (const auto& m : it->second.methods) {
-                if (m.name != name) continue;
+        for (int phase=0;phase<2 && !best;++phase) {
+            for (const MethodSig* mp:candidates) {
+                const MethodSig& m=*mp;
                 const size_t n=m.params.size();
-                const bool fixed = n == args.size() && (!m.varargs || phase == 0);
-                const bool variable = phase == 1 && m.varargs && args.size()+1 >= n;
+                const bool fixed=n==args.size() && (!m.varargs || phase==0);
+                const bool variable=phase==1 && m.varargs && args.size()+1>=n;
                 if (!fixed && !variable) continue;
                 int cost=0; bool applicable=true;
-                for (size_t i=0; i<args.size(); ++i) {
+                for (size_t i=0;i<args.size();++i) {
                     Ty target;
                     if (variable && n && i>=n-1) target=mk(m.params.back().n,m.params.back().dims-1);
                     else if (i<n) target=m.params[i];
                     else { applicable=false; break; }
-                    if (args[i].lambdaPos != (size_t)-1) {
-                        // A lambda is compatible only after its target interface is known.
-                        // Keep the candidate provisional; ties will fail closed below.
-                        cost += 64; continue;
-                    }
+                    if (args[i].lambdaPos!=(size_t)-1) { cost+=64; continue; }
                     int c=invocationCost(args[i].ty,target);
                     if(c<0){applicable=false;break;}
-                    cost += c;
+                    cost+=c;
                 }
-                if (!applicable) continue;
-                if (!variable && m.varargs && n==args.size()) {
-                    // An array passed directly to a varargs declaration is fixed arity.
-                }
-                if (!best || cost<bestCost) { best=&m;bestCost=cost;ambiguous=false;}
+                if(!applicable) continue;
+                if(!best || cost<bestCost) { best=mp;bestCost=cost;ambiguous=false; }
                 else if(cost==bestCost && best) {
-                    if (moreSpecific(m,*best)) { best=&m;ambiguous=false; }
-                    else if (!moreSpecific(*best,m) && (m.params!=best->params || m.varargs!=best->varargs)) ambiguous=true;
+                    if(moreSpecific(m,*best)) { best=mp;ambiguous=false; }
+                    else if(!moreSpecific(*best,m) && (m.params!=best->params || m.varargs!=best->varargs)) ambiguous=true;
                 }
             }
-            if (best) break;
+            if(best) break;
         }
-        if (ambiguous) throw ConvErr{cur().line,cur().col,"overload-ambiguous",
+        if(ambiguous) throw ConvErr{cur().line,cur().col,"overload-ambiguous",
             "multiple applicable overloads of '"+cls+"."+name+"' remain incomparable under supported Java invocation conversions"};
-        if (best) return best;
-        if (name == "<init>") return nullptr;
-        if (!it->second.super.empty()) if (const MethodSig* m=pickMethod(it->second.super,name,args,depth+1)) return m;
-        for (const auto& iface:it->second.ifaces) if (const MethodSig* m=pickMethod(iface,name,args,depth+1)) return m;
-        return nullptr;
+        return best;
     }
-
     // Java method invocation conversion (JLS 5.3, 15.12.4.2) for a resolved target: pack the trailing
     // arguments of a variable-arity call into an array, and widen int/long arguments to double
     // parameters (an int left in a double parameter would later divide as integers).
