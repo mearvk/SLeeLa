@@ -420,7 +420,7 @@ int main(int argc, char** argv) {
         j << "\n  ]\n}\n";
         std::string reportError;
         if (!writeIfChanged(outRoot / "CONVERSION-REPORT.json", j.str(), &reportError)) {
-            std::cerr << "javaconv: " << reportError << "\\n"; cm_free(&model); return 2;
+            std::cerr << "javaconv: " << reportError << "\n"; cm_free(&model); return 2;
         }
         if (c.json) std::cout << j.str();
     }
@@ -447,7 +447,7 @@ int main(int argc, char** argv) {
         }
         std::string reportError;
         if (!writeIfChanged(outRoot / "CONVERSION-REPORT.md", m.str(), &reportError)) {
-            std::cerr << "javaconv: " << reportError << "\\n"; cm_free(&model); return 2;
+            std::cerr << "javaconv: " << reportError << "\n"; cm_free(&model); return 2;
         }
     }
 
