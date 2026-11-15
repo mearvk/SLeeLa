@@ -2419,7 +2419,7 @@ private:
                 if (m.name == found[i]->name && sameErasedParams(m.params, found[i]->params)) {
                     const Ty& nextRet = m.ret;
                     const Ty& priorRet = found[i]->ret;
-                    const bool sameRet = nextRet == priorRet;
+                    const bool sameRet = sameErasedType(nextRet, priorRet);
                     const bool nextCovariant = nextRet.dims == priorRet.dims &&
                         !kPrim.count(nextRet.n) && !kPrim.count(priorRet.n) &&
                         isSubtypeName(nextRet.n, priorRet.n);
