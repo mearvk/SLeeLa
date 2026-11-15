@@ -209,12 +209,19 @@ antivirus-integrity-check:
 # explicitly with `make ballum` on a host whose deps are present, or run
 # `make ballum-deps` first.
 ballum:
-	@if $(MAKE) -C ballum check-deps >/dev/null 2>&1; then \
+	@deps_log=$(mktemp); \
+	if $(MAKE) -C ballum check-deps >"$deps_log" 2>&1; then \
+	  cat "$deps_log"; rm -f "$deps_log"; \
 	  $(MAKE) -C ballum all; \
-	else \
-	  echo "ballum: OS display libraries missing -- building the portable test only."; \
-	  echo "        run 'make ballum-deps' (host package manager) then 'make ballum' for the real OS library."; \
+	elif grep -Eq 'MISSING: (x11|xrandr|xext) development files|MISSING: Apple frameworks|MISSING: MinGW Windows SDK' "$deps_log"; then \
+	  cat "$deps_log"; rm -f "$deps_log"; \
+	  echo "ballum: optional OS display development libraries are missing; building the portable tests only."; \
+	  echo "        run 'make ballum-deps' then 'make ballum' for the real OS library."; \
 	  $(MAKE) -C ballum test; \
+	else \
+	  cat "$deps_log" >&2; rm -f "$deps_log"; \
+	  echo "ballum: dependency check failed for a reason other than missing optional display libraries." >&2; \
+	  exit 1; \
 	fi
 
 ballum-test:
@@ -436,7 +443,10 @@ premium-vms: core
 	@echo "SLeeLa premium VMs built and selfchecked: sleela-virtual-machine/0NN/vm-build/slvm-NN"
 
 clean:
-	@for n in 001 002 003 004 005 006 007 008 009 010 011; do $(MAKE) -C sleela-virtual-machine/$$n clean; done
+	@set -e; for n in 001 002 003 004 005 006 007 008 009 010 011; do \
+	  echo "=== cleaning premium SLVM $n ==="; \
+	  $(MAKE) -C sleela-virtual-machine/$n clean; \
+	done
 	$(MAKE) -C registry clean
 	$(MAKE) -C impl clean
 	$(MAKE) -C impl/xlt clean
