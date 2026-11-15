@@ -61,6 +61,8 @@ class JConvEmitter {
   String prevText;
   int prevKind;
   boolean failed;
+  String targetPath;
+  String tempPath;
 
   JConvEmitter() {
     this.handle = -1;
@@ -71,10 +73,17 @@ class JConvEmitter {
     this.prevText = "";
     this.prevKind = 0;
     this.failed = false;
+    this.targetPath = "";
+    this.tempPath = "";
   }
 
   boolean openOut(String path) {
-    this.handle = openFile(path, "w");
+    < Stage beside the destination. A stopped VM leaves the previous output intact;
+       the next run removes the stale temporary file before starting again. >
+    this.targetPath = path;
+    this.tempPath = path + ".jconv-tmp";
+    if (osExists(this.tempPath) == 1) { osRemove(this.tempPath); }
+    this.handle = openFile(this.tempPath, "w");
     this.bytesOut = 0;
     this.depth = 0;
     this.lineStart = true;
@@ -85,10 +94,38 @@ class JConvEmitter {
     return !this.failed;
   }
 
+  < Compare the staged output with the existing file and publish only changed
+     bytes. JConvSource compares decoded UTF-16 code units after validating UTF-8;
+     generated SLeeLa is valid UTF-8, so this preserves exact text equality. >
+  boolean sameTextFile(String a, String b) {
+    JConvSource left = new JConvSource();
+    JConvSource right = new JConvSource();
+    if (!left.load(a) || !right.load(b) || left.length != right.length) { return false; }
+    int i = 0;
+    while (i < left.length) {
+      if (left.at(i) != right.at(i)) { return false; }
+      i = i + 1;
+    }
+    return true;
+  }
+
   void finishOut() {
     if (!this.lineStart) { this.newline(); }
     if (this.handle >= 0) { close(this.handle); }
     this.handle = -1;
+    if (this.failed) {
+      if (this.tempPath != "") { osRemove(this.tempPath); }
+      return;
+    }
+    if (osExists(this.targetPath) == 1 && sameTextFile(this.targetPath, this.tempPath)) {
+      osRemove(this.tempPath);
+      return;
+    }
+    < osRename is same-directory rename: publish the complete file only after close. >
+    if (osRename(this.tempPath, this.targetPath) != 0) {
+      this.failed = true;
+      osRemove(this.tempPath);
+    }
   }
 
   < write a piece straight to the file: no buffer, so no String is built here >
