@@ -27,7 +27,7 @@ The authoritative aggregate entry point is `make all`. The root Makefile current
 
 | Module / build stage | Build entry point | Current status | Evidence / qualification |
 |---|---|---|---|
-| Native runtime and core | `make core` / `make -C impl all` | **IN PROGRESS — RETEST PENDING** | Native C/C++ Portability run **43629021139** is running on commit `07f9a410`. The preceding completed run **43622491714** failed on the Windows VM regression timeout; Linux and macOS jobs passed. The timeout was raised to 40 minutes; the new result is not yet known. |
+| Native runtime and core | `make core` / `make -C impl all` | **WINDOWS RETEST REQUIRED — CONPTY REPAIR COMMITTED** | Native C/C++ Portability run **43629021139** passed Linux and macOS. Windows compiled and linked successfully, then stalled in `test-terminal-platform` during `slterminal_close()` after receiving `terminal-ok`; the 40-minute VM regression timeout was a teardown hang, not a compiler error. ConPTY output draining repair committed as `b7787b9` and fallback hardening as `2b10fff`; a fresh Windows retest is required. |
 | Java 28 bridge | `make java28` | **WIRED — NOT QUALIFIED** | Included in `make all`; no fresh complete root-build result establishing this target on all three OSes was found. |
 | XLT compiler | `make xlt` | **WIRED — NOT QUALIFIED** | Included in `make all`; root dispatcher invokes `impl/xlt`. Platform-wide completion remains to be demonstrated by a fresh full build. |
 | Regex | `make regex` | **WIRED — NOT QUALIFIED** | Included in `make all`; no dedicated current passing result identified. |
@@ -57,7 +57,7 @@ The VM inventory is larger than the single `make vm` package target. The reposit
 
 | VM family | Inventory | Repository / source location | Build and test entry points | Current assurance status |
 |---|---|---|---|---|
-| **Native implementation VM (Core)** | One authoritative operational VM | `/impl`, principally `impl/core/sleela_core.c` and its runtime/platform modules | `make core`; `make -C impl all`; `make -C impl test`; `make -C impl test-platform` | **IN PROGRESS / RETEST PENDING.** Native C/C++ Portability run 43629021139 was running at the last recorded check. Prior Linux/macOS jobs passed; Windows VM regression previously timed out. The 40-minute retest must finish before cross-platform PASS is claimed. |
+| **Native implementation VM (Core)** | One authoritative operational VM | `/impl`, principally `impl/core/sleela_core.c` and its runtime/platform modules | `make core`; `make -C impl all`; `make -C impl test`; `make -C impl test-platform` | **WINDOWS RETEST REQUIRED.** Run 43629021139 passed Linux/macOS and Windows compilation/linking, but hung in the ConPTY close path inside the full VM suite. Repair commits `b7787b9` and `2b10fff` now drain ConPTY output concurrently during shutdown; verify on a fresh Windows runner before PASS. |
 | **Standard selectable VM versions** | **10 registered versions: 001–010** (`SLVmVersion001` … `SLVmVersion010`) | `virtual-machine/vm-version/`, catalogued by `SLVmRegistry.sleela` | Registry/manifest validation; native VM selection and boot path; include in the root VM and integration test matrix | **REGISTERED — BOOT/BUILD QUALIFICATION REQUIRED.** The registry declares load, list, select, and boot for all ten. Registration alone is not evidence that each selected version builds and boots successfully. |
 | **Premium SLVM generations** | **11 generations: SLVM/1–SLVM/11** (`SLVmPremiumVersion001` … `SLVmPremiumVersion011`) | `sleela-virtual-machine/`, catalogued by `SLVmPremiumRegistry.sleela`; generation source under `sleela-virtual-machine/001` … `011` | `make premium-vms`; premium manifest/admission checks; per-generation build, boot, and execution tests | **WIRED — CURRENT FULL BUILD RETEST REQUIRED.** The target is included in root `make all`. Earlier admission checks passed for all eleven, but that historical result does not establish a fresh build-and-boot pass on the current commit or all three OSes. |
 
@@ -206,7 +206,7 @@ Do not mark the full repository build green until a clean-checkout aggregate bui
 |---|---|---|
 | Linux | Native portability jobs passed in the preceding run **43622491714**; the run as a whole failed later in Windows. | **Partial evidence; full root build not certified.** |
 | macOS | Native portability jobs passed in the preceding run **43622491714**; the run as a whole failed later in Windows. | **Partial evidence; full root build not certified.** |
-| Windows 10+ (MSYS2 UCRT64 / MinGW-w64) | Prior native portability run failed when the VM regression exceeded its 20-minute timeout. The Windows timeout has been raised to 40 minutes; run **43629021139** is in progress. | **Pending retest; do not mark green yet.** |
+| Windows 10+ (MSYS2 UCRT64 / MinGW-w64) | Run **43629021139** compiled and linked the native runtime, passed ISA and OSLS checks, and progressed through VM regressions. The log stopped after `terminal-ok` inside `test-terminal-platform`; no `terminal platform smoke: PASS` followed. This identifies ConPTY teardown in `slterminal_close()` as the blocking point. Fixes are committed in `b7787b9` and `2b10fff`; fresh retest pending. | **Pending retest; do not mark green yet.** |
 
 ## Build repairs already reflected in the current Makefile history
 
@@ -217,7 +217,7 @@ Do not mark the full repository build green until a clean-checkout aggregate bui
 - Python-based connector and churn checks accept multi-token launchers such as `py -3`.
 - OpenSSL preflight checks verify the SHA-256 header and actual symbol link.
 - Ballum dependency checks include Xext when MIT-SHM is enabled; the openSUSE `zypper` package list now includes `libXext-devel`.
-- The Windows VM regression timeout is now 40 minutes; its success remains pending until the current workflow finishes.
+- The Windows VM regression timeout is 40 minutes, but the latest run exposed a ConPTY teardown hang rather than a compile failure. `slterminal_close()` now drains ConPTY output on a dedicated thread while `ClosePseudoConsole()` completes; if thread creation fails, it uses Microsoft's documented close-output-pipe fallback. Retest is required.
 
 ## Release / assurance gate
 
@@ -750,3 +750,24 @@ The Premium VM generator and all eleven generated Makefiles were re-read from `m
 - [ ] Record the new workflow run IDs, commit SHA, and every platform/job conclusion.
 
 **Current classification: REPAIRS PUSHED — HOSTED RETEST PENDING — NOT QUALIFIED.** The fixes are source-verified, but no local Windows/macOS runtime result or new hosted green result is claimed yet. The aggregate root build/install qualification remains open until the complete matrix and dependent installer jobs pass.
+
+
+## CI causal diagnosis and ConPTY repair — 2026-11-14
+
+The Windows failure in Native C/C++ Portability run **43629021139** was traced from the job log rather than classified from the timeout summary alone:
+
+- Native runtime and static-core build: **PASS**.
+- Frozen ISA verification: **PASS**.
+- OSLS registry build/tests and OSLS VM dispatch: **PASS**.
+- VM regression reached class dispatch, lineage, object-reference, version-awareness, and native platform smoke tests. The version-awareness suite printed its expected rejection diagnostics, including the malformed pragma diagnostic; it was not the final blocker.
+- The final visible terminal output was `terminal-ok`. The expected `terminal platform smoke: PASS` never appeared. The job then remained blocked until its 40-minute timeout.
+- This localizes the stall to Windows ConPTY teardown in `slterminal_close()`, at or after `ClosePseudoConsole()`. It is not a C/C++ compile or link failure.
+
+**Repair committed to master:**
+
+1. `b7787b9` — keep the ConPTY output pipe open and drain it on a dedicated Windows thread while `ClosePseudoConsole()` completes, allowing shutdown-frame output to be consumed.
+2. `2b10fff` — if the drain thread cannot be created, close the output reader before calling `ClosePseudoConsole()` as the documented fallback; preserve an explicit error result.
+
+The repair follows Microsoft's ConPTY shutdown guidance: older Windows releases may wait for output to be drained or the output pipe to be closed. See [ClosePseudoConsole](https://learn.microsoft.com/en-us/windows/console/closepseudoconsole) and [Creating a Pseudoconsole session](https://learn.microsoft.com/en-us/windows/console/creating-a-pseudoconsole-session).
+
+**Qualification status:** repair is committed, but not yet proven. The Windows job must be rerun and must print `terminal platform smoke: PASS`, complete the remaining VM regression suite, and exit successfully. Do not convert the prior timeout into a PASS. Linux and macOS remain PASS for run 43629021139.
