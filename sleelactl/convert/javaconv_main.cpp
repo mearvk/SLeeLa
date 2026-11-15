@@ -326,6 +326,16 @@ int main(int argc, char** argv) {
                     std::cerr << "javaconv: two Java declarations map to the same output path: " << relOutput << "\n";
                     return 2;
                 }
+                std::error_code existsEc;
+                const fs::file_status existing = fs::symlink_status(outputPath, existsEc);
+                if (!existsEc && existing.type() != fs::file_type::not_found) {
+                    std::cerr << "javaconv: refusing to overwrite output not owned by the previous manifest: " << outputPath.string() << "\n";
+                    return 2;
+                }
+                if (existsEc != std::errc::no_such_file_or_directory && existsEc) {
+                    std::cerr << "javaconv: cannot inspect output path '" << outputPath.string() << "': " << existsEc.message() << "\n";
+                    return 2;
+                }
                 std::ofstream o(outputPath, std::ios::binary);
                 o << f.text;
                 o.close();
