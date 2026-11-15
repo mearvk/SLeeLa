@@ -115,6 +115,9 @@ private:
     std::map<std::string, ClassInfo>& classes;
     std::map<std::string, std::string>& nestedMap_;
     bool skipPass1;
+    std::map<std::string, std::string> importedTypes_;
+    std::map<std::string, std::vector<std::string>> staticImports_;
+    std::vector<std::string> staticWildcardImports_;
 
     // per-type / per-method state
     std::string curClass;
@@ -162,6 +165,9 @@ private:
     static constexpr const char* kInitMarker = "@@FIELDINIT@@";
     std::string curSimple_;         // the source name of the class being parsed (constructors are written with it)
     std::string resolveTypeName(const std::string& n) const {
+        auto im = importedTypes_.find(n);
+        if (im != importedTypes_.end() && im->second == "\x01")
+            throw ConvErr{cur().line, cur().col, "import-ambiguous", "the simple type name '" + n + "' is imported from more than one package"};
         auto it = nestedMap_.find(n);
         if (it == nestedMap_.end()) return n;
         if (it->second == "\x01") throw ConvErr{cur().line, cur().col, "nested-ambiguous", "the simple name '" + n + "' is used by several nested types"};
@@ -1375,7 +1381,28 @@ private:
             std::vector<E> a = parseArgs();
             const MethodSig* pm = pickMethod(curClass, name, a);
             std::string qualifier;
-            if (!pm && !anonStack_.empty()) {
+            std::string importedOwner;
+            if (!pm) {
+                std::vector<std::string> owners;
+                auto si = staticImports_.find(name);
+                if (si != staticImports_.end()) owners.insert(owners.end(), si->second.begin(), si->second.end());
+                owners.insert(owners.end(), staticWildcardImports_.begin(), staticWildcardImports_.end());
+                std::sort(owners.begin(), owners.end());
+                owners.erase(std::unique(owners.begin(), owners.end()), owners.end());
+                for (const auto& owner : owners) {
+                    const MethodSig* candidate = pickMethod(owner, name, a);
+                    const bool modeled = cm_find(&M, "ret", owner.c_str(), name.c_str(), nullptr) != nullptr ||
+                        cm_find(&M, "call", (owner + "." + name).c_str(), nullptr, nullptr) != nullptr;
+                    if (candidate && !candidate->isStatic) continue;
+                    if (!candidate && !modeled) continue;
+                    if (!importedOwner.empty() && importedOwner != owner)
+                        fail("static-import-ambiguous", "unqualified call '" + name + "' matches more than one static import; qualify the owner");
+                    importedOwner = owner;
+                    pm = candidate;
+                }
+                if (!importedOwner.empty()) qualifier = importedOwner + ".";
+            }
+            if (!pm && importedOwner.empty() && !anonStack_.empty()) {
                 const AnonCtx& ac = anonStack_.back();
                 if (const MethodSig* om = pickMethod(ac.outerClass, name, a)) {
                     pm = om;
@@ -1395,6 +1422,7 @@ private:
             r.code = qualifier + mapMember(safeNameForCall(name)) + "(" + joinArgs(a) + ")";
             r.pure = false;
             if (pm) r.ty = pm->ret;
+            else if (!importedOwner.empty()) r = callResult(importedOwner, name, a, r.code, true);
             else r.ty = mk("?");
             return r;
         }
@@ -2274,15 +2302,38 @@ private:
         return r;
     }
 
-    // the one abstract method of an interface (looked up through its super-interfaces)
-    const MethodSig* functionalMethod(const std::string& iface, int depth = 0) const {
+    // Count abstract instance-method signatures over the full interface graph.
+    // Diamond inheritance and same-signature redeclarations count once; an interface
+    // adding a second abstract signature is not a functional target.
+    void collectAbstractMethods(const std::string& iface, std::vector<const MethodSig*>& found,
+                                std::set<std::string>& visited, int depth = 0) const {
+        if (depth > 32 || !visited.insert(iface).second) return;
         auto it = classes.find(iface);
-        if (it == classes.end() || depth > 16) return nullptr;
-        const MethodSig* found = nullptr;
-        for (const auto& m : it->second.methods) if (m.isAbstract && !m.isStatic) { if (found) return nullptr; found = &m; }
-        if (found) return found;
-        for (const auto& i : it->second.ifaces) if (const MethodSig* f = functionalMethod(i, depth + 1)) return f;
-        return nullptr;
+        if (it == classes.end() || !it->second.isInterface) return;
+        for (const auto& m : it->second.methods) {
+            if (!m.isAbstract || m.isStatic) continue;
+            if ((m.name == "equals" && m.params.size() == 1 && m.params[0].n == "Object") ||
+                (m.name == "hashCode" && m.params.empty()) ||
+                (m.name == "toString" && m.params.empty())) continue;
+            bool duplicate = false;
+            for (size_t i = 0; i < found.size(); ++i) {
+                if (m.name == found[i]->name && m.params == found[i]->params) {
+                    if (isSubtypeName(m.owner, found[i]->owner)) found[i] = &m;
+                    duplicate = true;
+                    break;
+                }
+            }
+            if (!duplicate) found.push_back(&m);
+        }
+        for (const auto& parent : it->second.ifaces)
+            collectAbstractMethods(parent, found, visited, depth + 1);
+    }
+
+    const MethodSig* functionalMethod(const std::string& iface, int depth = 0) const {
+        std::vector<const MethodSig*> found;
+        std::set<std::string> visited;
+        collectAbstractMethods(iface, found, visited, depth);
+        return found.size() == 1 ? found[0] : nullptr;
     }
 
     bool looksLikeLambdaTypedParam() const {
@@ -3011,11 +3062,40 @@ private:
     }
 
     void parseUnit() {
-        // package / imports
+        // Preserve explicit imports and static-import owners. Unqualified static calls
+        // are considered only after normal in-scope and enclosing-instance lookup.
+        importedTypes_.clear();
+        staticImports_.clear();
+        staticWildcardImports_.clear();
         size_t guard = 0;
         try {
             if (isKw("package")) { while (!isOp(";") && !atEof()) p++; p++; }
-            while (isKw("import")) { while (!isOp(";") && !atEof()) p++; p++; }
+            while (isKw("import")) {
+                p++;
+                bool isStatic = acceptKw("static");
+                std::string full;
+                while (!isOp(";") && !atEof()) {
+                    if (cur().kind != JT_COMMENT) full += cur().text;
+                    p++;
+                }
+                if (isOp(";")) p++;
+                if (full.empty()) continue;
+                if (isStatic) {
+                    if (full.size() > 2 && full.compare(full.size()-2,2,".*") == 0)
+                        staticWildcardImports_.push_back(full.substr(0,full.size()-2));
+                    else {
+                        size_t dot = full.rfind('.');
+                        if (dot != std::string::npos && dot + 1 < full.size())
+                            staticImports_[full.substr(dot+1)].push_back(full.substr(0,dot));
+                    }
+                } else if (full.size() > 2 && full.compare(full.size()-2,2,".*") != 0) {
+                    size_t dot = full.rfind('.');
+                    std::string simple = dot == std::string::npos ? full : full.substr(dot+1);
+                    auto it = importedTypes_.find(simple);
+                    if (it == importedTypes_.end()) importedTypes_[simple] = full;
+                    else if (it->second != full) it->second = "\x01";
+                }
+            }
         } catch (const ConvErr& e) { diag(e); return; }
         while (!atEof()) {
             if (acceptOp(";")) continue;
