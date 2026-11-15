@@ -946,13 +946,20 @@ private:
         if (from == to) return 0;
         if (from.n == "null" && to.dims >= 0 && to.n != "?" && to.n != "void" &&
             !(to.dims == 0 && kPrim.count(to.n))) return 1;
-        if (from.dims > 0 && to.dims == 0 && to.n == "Object") return 8;
-        if (from.dims != to.dims) return -1;
-        if (from.dims > 0) {
-            if (from.n == to.n) return 0;
-            if (to.n == "Object" && !kPrim.count(from.n)) return 8;
-            return -1;
+        if (from.dims > 0 && to.dims == 0 &&
+            (to.n == "Object" || to.n == "Cloneable" || to.n == "Serializable")) return 8;
+        if (from.dims > 0 && to.dims > 0) {
+            // Java arrays are covariant in reference components. Strip one rank and
+            // compare component types recursively: int[][] is Object[] (its elements
+            // are int[] references), but int[] is not Object[].
+            Ty fromComponent=mk(from.n,from.dims-1);
+            Ty toComponent=mk(to.n,to.dims-1);
+            if (fromComponent.dims==0 && kPrim.count(fromComponent.n)) {
+                return fromComponent==toComponent ? 0 : -1;
+            }
+            return invocationCost(fromComponent,toComponent,depth+1);
         }
+        if (from.dims != to.dims) return -1;
         if (kPrim.count(from.n) && kPrim.count(to.n)) {
             return cm_find(&M, "widen", from.n.c_str(), to.n.c_str(), nullptr) ? 1 : -1;
         }
