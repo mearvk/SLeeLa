@@ -33,7 +33,8 @@ reference subtyping, inherited overloads, direct unbounded method-variable
 inference, and most-specific parameter types. Explicit and wildcard static
 method/field imports are resolved when their owner is known. Incomparable or
 unsupported candidates fail closed. The SLeeLa `JConvModel` loads the same `widen` rows (with matching
-built-in defaults) through `canWiden`. Direct unbounded method type variables
+built-in defaults) through `canWiden`; the native expression pass uses these
+edges for supported unary and binary numeric promotion. Direct unbounded method type variables
 (`T`, `T[]`, and `T...`) are inferred from argument types; bounded variables and
 nested generic-argument substitution remain fail-closed. Explicit and wildcard
 static imports resolve when their owner/method is present in the shared model or
