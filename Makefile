@@ -209,17 +209,17 @@ antivirus-integrity-check:
 # explicitly with `make ballum` on a host whose deps are present, or run
 # `make ballum-deps` first.
 ballum:
-	@deps_log=$(mktemp); \
-	if $(MAKE) -C ballum check-deps >"$deps_log" 2>&1; then \
-	  cat "$deps_log"; rm -f "$deps_log"; \
+	@deps_log=$$(mktemp); \
+	if $(MAKE) -C ballum check-deps >"$$deps_log" 2>&1; then \
+	  cat "$$deps_log"; rm -f "$$deps_log"; \
 	  $(MAKE) -C ballum all; \
-	elif grep -Eq 'MISSING: (x11|xrandr|xext) development files|MISSING: Apple frameworks|MISSING: MinGW Windows SDK' "$deps_log"; then \
-	  cat "$deps_log"; rm -f "$deps_log"; \
+	elif grep -Eq 'MISSING: (x11|xrandr|xext) development files|MISSING: Apple frameworks|MISSING: MinGW Windows SDK' "$$deps_log"; then \
+	  cat "$$deps_log"; rm -f "$$deps_log"; \
 	  echo "ballum: optional OS display development libraries are missing; building the portable tests only."; \
 	  echo "        run 'make ballum-deps' then 'make ballum' for the real OS library."; \
 	  $(MAKE) -C ballum test; \
 	else \
-	  cat "$deps_log" >&2; rm -f "$deps_log"; \
+	  cat "$$deps_log" >&2; rm -f "$$deps_log"; \
 	  echo "ballum: dependency check failed for a reason other than missing optional display libraries." >&2; \
 	  exit 1; \
 	fi
