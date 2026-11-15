@@ -3075,7 +3075,7 @@ private:
                 bool isStatic = acceptKw("static");
                 std::string full;
                 while (!isOp(";") && !atEof()) {
-                    if (cur().kind != JT_COMMENT) full += cur().text;
+                    full += cur().text;
                     p++;
                 }
                 if (isOp(";")) p++;
