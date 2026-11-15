@@ -442,11 +442,15 @@ int main(int argc, char** argv) {
     };
     std::vector<std::pair<std::string,std::string>> converterDigests, outputDigests;
     std::string converterFingerprint, sourceFingerprint, outputFingerprint;
+    bool converterSourcesComplete = true;
     for (const auto& rel : converterPaths) {
         std::string bytes;
         if (!readFile(root / rel, &bytes)) {
-            std::cerr << "javaconv: cannot read converter source for provenance: " << rel << "\n";
-            cm_free(&model); return 2;
+            // Installed distributions may ship the converter binary and model
+            // without its C++ sources. Record the limitation instead of making
+            // conversion itself depend on a source checkout.
+            converterSourcesComplete = false;
+            continue;
         }
         const std::string digest = sha256Hex(bytes);
         converterDigests.push_back({rel,digest});
@@ -473,7 +477,8 @@ int main(int argc, char** argv) {
       << "  \"jdkIdentity\": \"source-snapshot-digest; release authenticity is not inferred from the label\",\n"
       << "  \"model\": {\"name\": \"" << jsonEscape(model.name) << "\", \"revision\": \"" << jsonEscape(model.rev)
       << "\", \"sha256\": \"" << sha256Hex(modelBytes) << "\"},\n"
-      << "  \"converterSourceIdentity\": \"working-tree source files; compiled binary identity is not recorded\",\n"
+      << "  \"converterSourceIdentity\": \"available working-tree source files; compiled binary identity is not recorded\",\n"
+      << "  \"converterSourceComplete\": " << (converterSourcesComplete ? "true" : "false") << ",\n"
       << "  \"converterSourceSha256\": \"" << sha256Hex(converterFingerprint) << "\",\n"
       << "  \"inputSnapshotSha256\": \"" << sha256Hex(sourceFingerprint) << "\",\n"
       << "  \"outputSnapshotSha256\": \"" << sha256Hex(outputFingerprint) << "\",\n"
