@@ -51,13 +51,29 @@ bool safeManifestPath(const std::string& raw) {
     return true;
 }
 
+bool pathIsWithin(const fs::path& root, const fs::path& candidate) {
+    auto r = root.begin(), c = candidate.begin();
+    for (; r != root.end(); ++r, ++c) if (c == candidate.end() || *r != *c) return false;
+    return true;
+}
+
 bool removeOwnedOutput(const fs::path& root, const std::string& rel, std::string* why) {
     if (!safeManifestPath(rel)) {
         *why = "unsafe path in .javaconv-emitted: " + rel;
         return false;
     }
     std::error_code ec;
+    const fs::path canonicalRoot = fs::weakly_canonical(root, ec);
+    if (ec) {
+        *why = "cannot resolve output root '" + root.string() + "': " + ec.message();
+        return false;
+    }
     const fs::path target = root / fs::path(rel);
+    const fs::path canonicalParent = fs::weakly_canonical(target.parent_path(), ec);
+    if (ec || !pathIsWithin(canonicalRoot, canonicalParent)) {
+        *why = "previous output escapes output root through a symlink: " + target.string();
+        return false;
+    }
     const fs::file_status st = fs::symlink_status(target, ec);
     if (ec == std::errc::no_such_file_or_directory || st.type() == fs::file_type::not_found) return true;
     if (ec) {
@@ -194,7 +210,7 @@ int main(int argc, char** argv) {
                       << "  Place the presumed JDK " << c.version << " Java source tree there (see sleelactl/jdk/README.md).\n";
             return 2;
         }
-        fs::recursive_directory_iterator it(src, fs::directory_options::skip_permission_denied, ec);
+        fs::recursive_directory_iterator it(src, ec);
         const fs::recursive_directory_iterator end;
         if (ec) {
             std::cerr << "javaconv: cannot walk source directory '" << src.string() << "': " << ec.message() << "\n";
@@ -203,7 +219,12 @@ int main(int argc, char** argv) {
         while (it != end) {
             const fs::directory_entry entry = *it;
             std::error_code typeEc;
-            if (entry.is_regular_file(typeEc) && !typeEc && entry.path().extension() == ".java") {
+            const bool regular = entry.is_regular_file(typeEc);
+            if (typeEc) {
+                std::cerr << "javaconv: cannot inspect '" << entry.path().string() << "': " << typeEc.message() << "\n";
+                return 2;
+            }
+            if (regular && entry.path().extension() == ".java") {
                 const std::string fn = entry.path().filename().string();
                 if (fn != "module-info.java" && fn != "package-info.java")
                     inputs.push_back({entry.path(), fs::relative(entry.path(), src)});
@@ -222,7 +243,11 @@ int main(int argc, char** argv) {
     javaconv::SymbolTable table;
     for (auto& in : inputs) {
         std::string text;
-        if (!readFile(in.first, &text)) continue;
+        if (!readFile(in.first, &text)) {
+            std::cerr << "javaconv: cannot read source during project indexing: " << in.first.string() << "\n";
+            cm_free(&model);
+            return 2;
+        }
         javaconv::Options o;
         o.sourceName = in.second.generic_string();
         o.jdkVersion = c.version;
@@ -282,6 +307,12 @@ int main(int argc, char** argv) {
             fs::create_directories(dir, ec);
             if (ec) {
                 std::cerr << "javaconv: cannot create output directory '" << dir.string() << "': " << ec.message() << "\n";
+                return 2;
+            }
+            const fs::path canonicalRoot = fs::weakly_canonical(outRoot, ec);
+            const fs::path canonicalDir = fs::weakly_canonical(dir, ec);
+            if (ec || !pathIsWithin(canonicalRoot, canonicalDir)) {
+                std::cerr << "javaconv: output directory escapes output root through a symlink: " << dir.string() << "\n";
                 return 2;
             }
             for (auto& f : r.files) {
