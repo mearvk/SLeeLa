@@ -202,6 +202,18 @@ This is the human-readable support map for the canonical source-defined SLeeLa I
 180 | `OP_IPC_CALL` | Reserved; fail-closed pending process supervisor and VM worker table | `impl/core/sleela_core.c`
 181 | `OP_IPC_CLOSE` | Reserved; fail-closed pending process supervisor and VM worker table | `impl/core/sleela_core.c`
 182 | `OP_REF` | Implemented | `impl/core/sleela_core.c`
+183 | `OP_JSTR_TO_UTF8` | Implemented | `impl/core/sleela_core.c`
+184 | `OP_JSTR_FROM_CODE_UNIT` | Implemented | `impl/core/sleela_core.c`
+185 | `OP_BAND` | Implemented | `impl/core/sleela_core.c`
+186 | `OP_BOR` | Implemented | `impl/core/sleela_core.c`
+187 | `OP_BXOR` | Implemented | `impl/core/sleela_core.c`
+188 | `OP_BSHL` | Implemented | `impl/core/sleela_core.c`
+189 | `OP_BSHR` | Implemented | `impl/core/sleela_core.c`
+190 | `OP_BUSHR` | Implemented | `impl/core/sleela_core.c`
+191 | `OP_BNOT` | Implemented | `impl/core/sleela_core.c`
+192 | `OP_CHARSTR` | Implemented | `impl/core/sleela_core.c`
+193 | `OP_ADDCHAR` | Implemented | `impl/core/sleela_core.c`
+194 | `OP_NEWARRAYND` | Implemented | `impl/core/sleela_core.c`
 
 
 
@@ -241,6 +253,31 @@ aliasing a different object. Artifact validation checks the selector and the
 class operand. The VM artifact ABI minor version advances to 7; artifact
 serialization layout is unchanged, and older runtimes reject artifacts that
 contain the new opcode.
+
+## Reserved native math opcode ranges
+
+The native-math ISA allocation is reserved by family so future additions do
+not fragment the instruction set. These are **allocation reservations only**:
+they are not present in the executable source registry or native enum, and
+must be rejected as unsupported until each instruction is implemented and
+validated across the compiler, artifact loader, native VM, and supported VM
+generations.
+
+| Opcode range | Family | Allocation |
+|---:|---|---|
+| 195–199 | Shared native math | 195 `OP_MATH_CALL`; 196 `OP_MATH_ARRAY_CALL`; 197–199 unassigned within family |
+| 200–207 | Vector | 8 positions |
+| 208–215 | Matrix | 8 positions |
+| 216–223 | Complex | 8 positions |
+| 224–231 | Decomposition | 8 positions |
+| 232–281 | Transform | 50 positions |
+
+All ranges are inclusive. Vacant positions remain reserved for their family;
+they are not general-purpose gaps. In particular, Transform begins at 232 and
+ends at 281. Existing opcode IDs 0–194, including IPC 179–181, are unchanged.
+Do not create enum placeholders or source-registry entries for reserved IDs:
+the source/native ISA equality verifier must continue to describe executable
+instructions only.
 
 ## Runtime rule
 
