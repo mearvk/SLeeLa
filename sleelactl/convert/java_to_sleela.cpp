@@ -1051,9 +1051,12 @@ private:
                     if (target.n.rfind("$T$",0)==0) {
                         if (args[i].lambdaPos!=(size_t)-1 || !args[i].ty.known() || args[i].ty.n == "null") { applicable=false; break; }
                         const std::string variableName=target.n.substr(3);
+                        if (args[i].ty.dims < target.dims) { applicable=false; break; }
+                        Ty inferredType=args[i].ty;
+                        inferredType.dims-=target.dims;
                         auto ti=inferred.find(variableName);
-                        if (ti==inferred.end()) inferred[variableName]=args[i].ty;
-                        else if (!(ti->second==args[i].ty)) { applicable=false; break; }
+                        if (ti==inferred.end()) inferred[variableName]=inferredType;
+                        else if (!(ti->second==inferredType)) { applicable=false; break; }
                         target=args[i].ty;
                     }
                     if (args[i].lambdaPos!=(size_t)-1) {
