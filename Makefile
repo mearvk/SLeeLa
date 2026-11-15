@@ -45,7 +45,7 @@ export PYTHON
 EDITORS ?=
 EDITOR_ARGS ?=
 
-all: core java28 xlt regex compiler decompiler vm scripting jetbrains install-check tutorial-check tests config route common-rails codecs codecs-test churn churn-test antivirus antivirus-test runtime-test registry premium-vms ballum
+all: core java28 xlt regex compiler decompiler vm scripting jetbrains install-check tutorial-check tests config route common-rails codecs codecs-test churn churn-test antivirus antivirus-test runtime-test registry registry-test premium-vms ballum
 
 # `build` is the human-facing entry point: it performs the full `make all`
 # build and THEN offers, with a yes/no prompt, to simply install the advanced
@@ -445,6 +445,8 @@ clean:
 	$(MAKE) -C lib/compiler clean
 	$(MAKE) -C lib/decompiler clean
 	$(MAKE) -C lib/vm clean
+	$(MAKE) -C common-rails clean
+	$(MAKE) -C sleela-scripting clean
 	$(MAKE) -C tests clean
 	$(MAKE) -C runtime clean
 	$(MAKE) -C codecs clean
