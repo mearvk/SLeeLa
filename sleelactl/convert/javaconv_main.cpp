@@ -261,7 +261,6 @@ int main(int argc, char** argv) {
     // Read each source exactly once. Both project indexing and translation consume
     // this immutable byte snapshot, so a changing source tree cannot produce a
     // mixed-generation symbol table and output.
-    }
 
     for (auto& in : inputs) {
         std::error_code sec;
