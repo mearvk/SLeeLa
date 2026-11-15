@@ -428,8 +428,13 @@ private:
             }
             return 0;
         default:
-            return DefWindowProcW(hwnd, msg, wp, lp);
+            break;
         }
+        /* WM_GETMINMAXINFO can arrive before this HWND is registered in
+         * windows_. In that case, and for every unhandled message, preserve
+         * normal Win32 processing rather than falling off this non-void
+         * window-message handler. */
+        return DefWindowProcW(hwnd, msg, wp, lp);
     }
 
     std::string app_id_;
