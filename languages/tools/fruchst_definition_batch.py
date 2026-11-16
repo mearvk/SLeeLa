@@ -97,15 +97,24 @@ def extract_edition(path: Path, wanted: dict[str, set[str]]):
                 glosses = [norm(g.strip()) for g in glosses if isinstance(g, str) and g.strip()]
                 if not glosses:
                     continue
-                for qid in qids_for(sense):
-                    by_word = found[code].setdefault(word, {})
-                    by_word.setdefault((qid, pos), []).append({
-                        "glosses": glosses,
-                        "tags": sorted(t for t in (sense.get("tags") or []) if isinstance(t, str)),
-                        "senseid": sense.get("senseid", []),
-                        "source_line": line_no,
-                        "sense_index": sense_index,
-                    })
+                by_word = found[code].setdefault(word, {})
+            qids = qids_for(sense)
+            # QIDs are optional Wiktextract metadata. Preserve every gloss even
+            # when no QID exists; only QID-bearing senses can enter the strict
+            # cross-edition alignment set below.
+            record = {
+                "glosses": glosses,
+                "qids": qids,
+                "tags": sorted(t for t in (sense.get("tags") or []) if isinstance(t, str)),
+                "senseid": sense.get("senseid", []),
+                "source_line": line_no,
+                "sense_index": sense_index,
+            }
+            if qids:
+                for qid in qids:
+                    by_word.setdefault((qid, pos), []).append(record)
+            else:
+                by_word.setdefault(("", pos), []).append(record)
     return found
 
 def build_queue(code, doc, words, by_edition, source_meta):
@@ -116,7 +125,7 @@ def build_queue(code, doc, words, by_edition, source_meta):
         for edition in EDITIONS:
             raw = by_edition[edition].get(word, {})
             groups[edition] = {key: senses for key, senses in raw.items() if key[1] == wanted_pos}
-        common = set(groups["en"]) & set(groups["fr"]) & set(groups["es"])
+        common = (set(groups["en"]) & set(groups["fr"]) & set(groups["es"])) - {("", wanted_pos)}
         aligned = []
         for qid, pos in sorted(common):
             total_matches += 1
@@ -137,16 +146,36 @@ def build_queue(code, doc, words, by_edition, source_meta):
                 },
                 "review_status": "required",
             })
+        edition_candidates = {}
+        for edition in EDITIONS:
+            candidates = []
+            for (qid, pos), senses in sorted(groups[edition].items()):
+                if pos != wanted_pos:
+                    continue
+                for sense in senses:
+                    candidates.append({
+                        "wikidata_sense_qids": [qid] if qid else [],
+                        "glosses": sense["glosses"],
+                        "tags": sense["tags"],
+                        "senseid": sense["senseid"],
+                        "source_line": sense["source_line"],
+                        "sense_index": sense["sense_index"],
+                    })
+            edition_candidates[edition] = candidates
         if aligned:
             words_with_matches += 1
         rows.append({
             "rank": rank, "word": word, "candidate_pos": candidate.get("pos"),
             "frequency_count": candidate.get("frequency_count"),
-            "definition_status": "qid_pos_candidates_found" if aligned else "manual_lookup_required",
+            "definition_status": (
+                "qid_pos_candidates_found" if aligned else
+                "edition_gloss_candidates_found" if all(edition_candidates[e] for e in EDITIONS) else
+                "manual_lookup_required"
+            ),
             "aligned_candidates": aligned,
+            "edition_sense_candidates": edition_candidates,
             "edition_candidate_counts": {
-                edition: sum(len(v) for v in by_edition[edition].get(word, {}).values())
-                for edition in EDITIONS
+                edition: len(edition_candidates[edition]) for edition in EDITIONS
             },
         })
     return {
@@ -176,7 +205,12 @@ def build_queue(code, doc, words, by_edition, source_meta):
         "counts": {
             "candidate_words": len(rows),
             "words_with_qid_pos_candidates": words_with_matches,
-            "words_requiring_manual_lookup": len(rows) - words_with_matches,
+            "words_with_edition_gloss_candidates": sum(
+                1 for row in rows if all(row["edition_sense_candidates"][edition] for edition in EDITIONS)
+            ),
+            "words_requiring_manual_lookup": sum(
+                1 for row in rows if any(not row["edition_sense_candidates"][edition] for edition in EDITIONS)
+            ),
             "qid_pos_candidate_triples": total_matches,
             "production_definitions_approved": 0,
         },
