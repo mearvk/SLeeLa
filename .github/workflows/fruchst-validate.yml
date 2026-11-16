@@ -3,7 +3,7 @@ name: FRUCHST format validation
 on:
   push:
     paths:
-      - "languages/tools/fruchst.py"
+      - "languages/tools/**"
       - "languages/tools/test_fruchst.py"
       - "languages/FRUCHST_FORMAT.md"
       - "languages/FRUCHST_TARGETS.json"
