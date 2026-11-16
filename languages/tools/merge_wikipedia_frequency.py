@@ -54,8 +54,12 @@ def aggregate(input_dir: Path, output_dir: Path, registry_path: Path):
         profile = profiles[tag]
         if profile.get("status") == "frequency_candidates_staged":
             raise ValueError(f"{tag}: a frequency source is already staged")
-        shutil.copyfile(input_dir / f"wikipedia-{tag}.json",
-                        output_dir / f"wikipedia-{tag}.json")
+        doc["language_directory"] = profile["directory"]
+        destination = output_dir / f"wikipedia-{tag}.json"
+        destination.write_text(
+            json.dumps(doc, ensure_ascii=False, indent=2) + "\\n",
+            encoding="utf-8",
+        )
         source = doc["source"]
         profile.update({
             "status": "frequency_candidates_staged",
