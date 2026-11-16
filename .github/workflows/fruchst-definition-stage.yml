@@ -7,6 +7,7 @@ on:
     paths:
       - "languages/tools/fruchst_definition_batch.py"
       - "languages/tools/fruchst_english_pivot.py"
+      - "languages/tools/fruchst_close_variants.py"
       - ".github/workflows/fruchst-definition-stage.yml"
   workflow_dispatch:
 
@@ -67,12 +68,18 @@ jobs:
             --fr "$RUNNER_TEMP/fruchst-sources/fr.jsonl.gz" \
             --es "$RUNNER_TEMP/fruchst-sources/es.jsonl.gz" \
             --output languages/datasets/definition-pivot
+      - name: Find close-variant English definitions for words without one
+        run: |
+          python3 languages/tools/fruchst_close_variants.py \
+            --reviews languages/datasets/definition-review \
+            --en "$RUNNER_TEMP/fruchst-sources/en.jsonl.gz" \
+            --output languages/datasets/definition-variants
       - name: Commit review queues to master
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add languages/datasets/definition-review languages/datasets/definition-pivot
+          git add languages/datasets/definition-review languages/datasets/definition-pivot languages/datasets/definition-variants
           if git diff --cached --quiet; then
             echo "No definition review queue changes."
             exit 0

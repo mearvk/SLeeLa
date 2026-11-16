@@ -50,6 +50,20 @@ Each output file stores every English word once under `english_lookup`. `transla
 
 The pivot can cross senses (for example, an English gloss "bank" may lead to river-bank and money-bank translations), so every equivalent records the English word, both POS values, and source lines. Nothing is selected; every row stays `review_status: required`.
 
+## Close-variant English definitions
+
+`fruchst_close_variants.py` handles headwords with no English Wiktionary sense. It looks for a close variant in English Wiktionary, in the same Wiktionary language, and records that variant's English glosses as a close definition in `languages/datasets/definition-variants/<source>-<tag>.variants.json`. Methods, closest first:
+
+| Method | Meaning |
+|---|---|
+| `case_variant` | Same word, different letter case. |
+| `orthographic_variant` | Same word after removing optional marks: Latin/Cyrillic/Greek diacritics (e.g. Russian ё/е), Arabic short vowels and tatweel, and unifying Arabic-script letter variants (ي/ى/ی, ك/ک, أ/إ/آ/ا, ة/ه). Abugida vowel signs are never removed. |
+| `inflected_form` | The word appears in another entry's inflection table (`forms`), exactly or after the same mark removal (`via`). The close definition is that lemma's gloss. |
+| `transliteration` | Uzbek only: official Cyrillic-to-Latin conversion. |
+| `clitic_stripped` | Arabic only: a leading و/ف/ب/ل/ك and/or ال removed. |
+
+Each match records the variant, method, POS, source line, the listed form and its tags, and the variant's English senses (with `form_of` targets when present). Up to 20 matches are kept per headword. A close definition is not the headword's own definition, so every row stays `review_status: required`.
+
 ## Source and license
 
 The definition sources are Kaikki/Wiktextract extractions of the English, French, and Spanish Wiktionary editions. Wiktionary content is dual-licensed under CC BY-SA 4.0 and the GNU Free Documentation License (GFDL). Preserve attribution and comply with the applicable license terms; verify the source edition notices before redistributing derived definitions.
