@@ -37,7 +37,7 @@ def clean_headword(value: str) -> str:
         word = word[1:]
     while word and is_edge_punctuation(word[-1]):
         word = word[:-1]
-    if not word or not any(unicodedata.category(ch).startswith("L") for ch in word):
+    if not word or any(ch.isspace() for ch in word) or not any(unicodedata.category(ch).startswith("L") for ch in word):
         return ""
     return word
 
