@@ -72,6 +72,10 @@ third-party pack content is bundled, so there are no external licenses to track.
 | `th` | ไทย         | `th.lang`   | ltr              |
 | `ar` | العربية      | `ar.lang`   | rtl              |
 
+## FRUCHST ranked dictionaries
+
+The 80 research profiles also target a separate FRUCHST binary dictionary (`fruchst.<code>.bin`). FRUCHST v1 stores 1,000 ranked native-language headwords with aligned English, French, and Spanish definitions. The binary format is specified in [FRUCHST_FORMAT.md](FRUCHST_FORMAT.md), the 80-profile registry is [FRUCHST_TARGETS.json](FRUCHST_TARGETS.json), and the builder/validator is [tools/fruchst.py](tools/fruchst.py). A profile is not considered complete until its corpus, definition sources, and redistribution licenses have been reviewed and its binary validates. Existing alphabet XML/JSON and language-pack files are independent and remain unchanged.
+
 ## Using a pack from SLeeLa
 
 ```
