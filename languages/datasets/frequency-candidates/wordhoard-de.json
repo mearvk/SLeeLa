@@ -1,0 +1,8036 @@
+{
+  "schema": "SLeeLa FRUCHST frequency candidate staging v1",
+  "language_tag": "de",
+  "language_directory": "standard-german",
+  "source": {
+    "dataset": "wordhoard",
+    "upstream": "https://github.com/natema/wordhoard",
+    "revision": "main (retrieved 2026-11-15)",
+    "sample_path_template": "https://raw.githubusercontent.com/natema/wordhoard/main/samples/{lang}.csv",
+    "data_license": "CC-BY-SA-4.0",
+    "code_license": "MIT (not the license for extracted data)",
+    "frequency_source": "OpenSubtitles-2018 via hermitdave/FrequencyWords",
+    "frequency_source_license": "MIT",
+    "processing_sources": [
+      "spaCy language models",
+      "Wiktionary via Kaikki/Wiktextract"
+    ],
+    "attribution": [
+      "wordhoard — https://github.com/natema/wordhoard (dataset CC BY-SA 4.0)",
+      "OpenSubtitles-2018 frequency data via hermitdave/FrequencyWords (MIT)",
+      "spaCy — https://spacy.io (MIT; lemma/POS processing)",
+      "Wiktionary contributors via Kaikki/Wiktextract (CC BY-SA 4.0; upstream dataset attribution)"
+    ],
+    "selection": "First 1,000 unique NFC-normalized lemmas encountered in source frequency_rank order from the upstream top-2,000 preview. Duplicate lemmas across POS rows are collapsed to their highest-frequency row; original source_rank and frequency_count are retained.",
+    "caveats": [
+      "Frequency-candidate staging only; not a completed FRUCHST dictionary.",
+      "OpenSubtitles-derived rankings are subtitle-domain rankings, not a balanced general-purpose corpus.",
+      "Counts are corpus occurrences, not normalized per million; do not compare raw counts across languages.",
+      "Three definitions (English, French, Spanish) are not yet supplied; no binary should be generated from this staging data."
+    ]
+  },
+  "candidate_count": 1000,
+  "definitions_status": "pending",
+  "entries": [
+    {
+      "candidate_rank": 1,
+      "source_rank": 1,
+      "word": "ich",
+      "pos": "PRON",
+      "frequency_count": 5890279,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 2,
+      "source_rank": 2,
+      "word": "sein",
+      "pos": "VERB",
+      "frequency_count": 5825569,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 3,
+      "source_rank": 3,
+      "word": "der",
+      "pos": "DET",
+      "frequency_count": 5765727,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 4,
+      "source_rank": 4,
+      "word": "sie",
+      "pos": "PRON",
+      "frequency_count": 3806767,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 5,
+      "source_rank": 6,
+      "word": "du",
+      "pos": "PRON",
+      "frequency_count": 2947020,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 6,
+      "source_rank": 7,
+      "word": "nicht",
+      "pos": "PART",
+      "frequency_count": 2756783,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 7,
+      "source_rank": 8,
+      "word": "haben",
+      "pos": "AUX",
+      "frequency_count": 2742018,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 8,
+      "source_rank": 9,
+      "word": "ein",
+      "pos": "DET",
+      "frequency_count": 2687188,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 9,
+      "source_rank": 10,
+      "word": "es",
+      "pos": "PRON",
+      "frequency_count": 2303025,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 10,
+      "source_rank": 11,
+      "word": "und",
+      "pos": "CCONJ",
+      "frequency_count": 2289891,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 11,
+      "source_rank": 12,
+      "word": "zu",
+      "pos": "ADP",
+      "frequency_count": 1756381,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 12,
+      "source_rank": 13,
+      "word": "wir",
+      "pos": "PRON",
+      "frequency_count": 1721620,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 13,
+      "source_rank": 14,
+      "word": "was",
+      "pos": "PRON",
+      "frequency_count": 1696010,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 14,
+      "source_rank": 15,
+      "word": "er",
+      "pos": "PRON",
+      "frequency_count": 1352161,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 15,
+      "source_rank": 16,
+      "word": "in",
+      "pos": "ADP",
+      "frequency_count": 1311901,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 16,
+      "source_rank": 17,
+      "word": "ja",
+      "pos": "ADV",
+      "frequency_count": 1054114,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 17,
+      "source_rank": 18,
+      "word": "mir",
+      "pos": "PRON",
+      "frequency_count": 1019451,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 18,
+      "source_rank": 19,
+      "word": "mit",
+      "pos": "ADP",
+      "frequency_count": 1014541,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 19,
+      "source_rank": 20,
+      "word": "wie",
+      "pos": "ADV",
+      "frequency_count": 928920,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 20,
+      "source_rank": 21,
+      "word": "werden",
+      "pos": "VERB",
+      "frequency_count": 928821,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 21,
+      "source_rank": 22,
+      "word": "auf",
+      "pos": "ADP",
+      "frequency_count": 896444,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 22,
+      "source_rank": 23,
+      "word": "mich",
+      "pos": "PRON",
+      "frequency_count": 893076,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 23,
+      "source_rank": 24,
+      "word": "können",
+      "pos": "VERB",
+      "frequency_count": 884189,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 24,
+      "source_rank": 25,
+      "word": "dass",
+      "pos": "CCONJ",
+      "frequency_count": 879520,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 25,
+      "source_rank": 26,
+      "word": "aber",
+      "pos": "CCONJ",
+      "frequency_count": 854492,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 26,
+      "source_rank": 27,
+      "word": "so",
+      "pos": "ADV",
+      "frequency_count": 813903,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 27,
+      "source_rank": 28,
+      "word": "an",
+      "pos": "ADP",
+      "frequency_count": 809159,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 28,
+      "source_rank": 29,
+      "word": "von",
+      "pos": "ADP",
+      "frequency_count": 783087,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 29,
+      "source_rank": 30,
+      "word": "hier",
+      "pos": "ADV",
+      "frequency_count": 754243,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 30,
+      "source_rank": 31,
+      "word": "sagen",
+      "pos": "VERB",
+      "frequency_count": 752442,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 31,
+      "source_rank": 32,
+      "word": "für",
+      "pos": "ADP",
+      "frequency_count": 747737,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 32,
+      "source_rank": 33,
+      "word": "gehen",
+      "pos": "VERB",
+      "frequency_count": 719091,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 33,
+      "source_rank": 35,
+      "word": "kommen",
+      "pos": "VERB",
+      "frequency_count": 697922,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 34,
+      "source_rank": 36,
+      "word": "wenn",
+      "pos": "SCONJ",
+      "frequency_count": 694462,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 35,
+      "source_rank": 37,
+      "word": "dich",
+      "pos": "PRON",
+      "frequency_count": 688780,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 36,
+      "source_rank": 38,
+      "word": "machen",
+      "pos": "VERB",
+      "frequency_count": 685177,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 37,
+      "source_rank": 39,
+      "word": "wollen",
+      "pos": "VERB",
+      "frequency_count": 680906,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 38,
+      "source_rank": 40,
+      "word": "wissen",
+      "pos": "VERB",
+      "frequency_count": 658789,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 39,
+      "source_rank": 41,
+      "word": "ihr",
+      "pos": "PRON",
+      "frequency_count": 655351,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 40,
+      "source_rank": 42,
+      "word": "nein",
+      "pos": "PART",
+      "frequency_count": 641479,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 41,
+      "source_rank": 43,
+      "word": "sehen",
+      "pos": "VERB",
+      "frequency_count": 613915,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 42,
+      "source_rank": 45,
+      "word": "dieser",
+      "pos": "PRON",
+      "frequency_count": 592126,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 43,
+      "source_rank": 46,
+      "word": "mein",
+      "pos": "DET",
+      "frequency_count": 575542,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 44,
+      "source_rank": 47,
+      "word": "noch",
+      "pos": "ADV",
+      "frequency_count": 572486,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 45,
+      "source_rank": 48,
+      "word": "gut",
+      "pos": "ADV",
+      "frequency_count": 570446,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 46,
+      "source_rank": 49,
+      "word": "nur",
+      "pos": "ADV",
+      "frequency_count": 564245,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 47,
+      "source_rank": 50,
+      "word": "da",
+      "pos": "ADV",
+      "frequency_count": 564244,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 48,
+      "source_rank": 51,
+      "word": "dir",
+      "pos": "PRON",
+      "frequency_count": 554802,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 49,
+      "source_rank": 53,
+      "word": "tun",
+      "pos": "VERB",
+      "frequency_count": 536600,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 50,
+      "source_rank": 54,
+      "word": "sich",
+      "pos": "PRON",
+      "frequency_count": 533395,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 51,
+      "source_rank": 55,
+      "word": "uns",
+      "pos": "PRON",
+      "frequency_count": 523604,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 52,
+      "source_rank": 56,
+      "word": "einer",
+      "pos": "PRON",
+      "frequency_count": 476696,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 53,
+      "source_rank": 57,
+      "word": "auch",
+      "pos": "ADV",
+      "frequency_count": 449250,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 54,
+      "source_rank": 58,
+      "word": "geben",
+      "pos": "VERB",
+      "frequency_count": 444336,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 55,
+      "source_rank": 59,
+      "word": "schon",
+      "pos": "ADV",
+      "frequency_count": 442343,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 56,
+      "source_rank": 60,
+      "word": "als",
+      "pos": "ADP",
+      "frequency_count": 440490,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 57,
+      "source_rank": 61,
+      "word": "mal",
+      "pos": "ADV",
+      "frequency_count": 435631,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 58,
+      "source_rank": 62,
+      "word": "jetzt",
+      "pos": "ADV",
+      "frequency_count": 435411,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 59,
+      "source_rank": 63,
+      "word": "ihn",
+      "pos": "PRON",
+      "frequency_count": 435147,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 60,
+      "source_rank": 64,
+      "word": "dann",
+      "pos": "ADV",
+      "frequency_count": 429424,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 61,
+      "source_rank": 65,
+      "word": "aus",
+      "pos": "ADP",
+      "frequency_count": 425184,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 62,
+      "source_rank": 66,
+      "word": "um",
+      "pos": "ADP",
+      "frequency_count": 422503,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 63,
+      "source_rank": 67,
+      "word": "meinen",
+      "pos": "DET",
+      "frequency_count": 420280,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 64,
+      "source_rank": 69,
+      "word": "im",
+      "pos": "NOUN",
+      "frequency_count": 403791,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 65,
+      "source_rank": 70,
+      "word": "alle",
+      "pos": "PRON",
+      "frequency_count": 389365,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 66,
+      "source_rank": 71,
+      "word": "doch",
+      "pos": "CCONJ",
+      "frequency_count": 381456,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 67,
+      "source_rank": 72,
+      "word": "kein",
+      "pos": "DET",
+      "frequency_count": 349315,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 68,
+      "source_rank": 73,
+      "word": "lassen",
+      "pos": "VERB",
+      "frequency_count": 347689,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 69,
+      "source_rank": 74,
+      "word": "oder",
+      "pos": "CCONJ",
+      "frequency_count": 341214,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 70,
+      "source_rank": 75,
+      "word": "bei",
+      "pos": "ADP",
+      "frequency_count": 330760,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 71,
+      "source_rank": 76,
+      "word": "nach",
+      "pos": "ADP",
+      "frequency_count": 326208,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 72,
+      "source_rank": 77,
+      "word": "denken",
+      "pos": "VERB",
+      "frequency_count": 322655,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 73,
+      "source_rank": 78,
+      "word": "nichts",
+      "pos": "PRON",
+      "frequency_count": 308672,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 74,
+      "source_rank": 79,
+      "word": "sollen",
+      "pos": "VERB",
+      "frequency_count": 305928,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 75,
+      "source_rank": 80,
+      "word": "man",
+      "pos": "PRON",
+      "frequency_count": 300922,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 76,
+      "source_rank": 81,
+      "word": "Muss",
+      "pos": "PROPN",
+      "frequency_count": 295567,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 77,
+      "source_rank": 82,
+      "word": "ihnen",
+      "pos": "PRON",
+      "frequency_count": 292370,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 78,
+      "source_rank": 83,
+      "word": "wo",
+      "pos": "ADV",
+      "frequency_count": 288363,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 79,
+      "source_rank": 84,
+      "word": "etwas",
+      "pos": "PRON",
+      "frequency_count": 286968,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 80,
+      "source_rank": 85,
+      "word": "oh",
+      "pos": "INTJ",
+      "frequency_count": 284455,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 81,
+      "source_rank": 86,
+      "word": "mehr",
+      "pos": "ADV",
+      "frequency_count": 281301,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 82,
+      "source_rank": 87,
+      "word": "also",
+      "pos": "ADV",
+      "frequency_count": 276548,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 83,
+      "source_rank": 89,
+      "word": "bitte",
+      "pos": "ADV",
+      "frequency_count": 261548,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 84,
+      "source_rank": 90,
+      "word": "immer",
+      "pos": "ADV",
+      "frequency_count": 260238,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 85,
+      "source_rank": 91,
+      "word": "wer",
+      "pos": "PRON",
+      "frequency_count": 258062,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 86,
+      "source_rank": 92,
+      "word": "aller",
+      "pos": "PRON",
+      "frequency_count": 253795,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 87,
+      "source_rank": 93,
+      "word": "dein",
+      "pos": "DET",
+      "frequency_count": 252679,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 88,
+      "source_rank": 94,
+      "word": "warum",
+      "pos": "ADV",
+      "frequency_count": 251177,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 89,
+      "source_rank": 95,
+      "word": "vor",
+      "pos": "ADP",
+      "frequency_count": 250397,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 90,
+      "source_rank": 96,
+      "word": "hören",
+      "pos": "VERB",
+      "frequency_count": 249838,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 91,
+      "source_rank": 97,
+      "word": "glauben",
+      "pos": "VERB",
+      "frequency_count": 244427,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 92,
+      "source_rank": 98,
+      "word": "los",
+      "pos": "ADV",
+      "frequency_count": 242543,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 93,
+      "source_rank": 100,
+      "word": "wieder",
+      "pos": "ADV",
+      "frequency_count": 240508,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 94,
+      "source_rank": 101,
+      "word": "finden",
+      "pos": "VERB",
+      "frequency_count": 237535,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 95,
+      "source_rank": 102,
+      "word": "danke",
+      "pos": "NOUN",
+      "frequency_count": 227937,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 96,
+      "source_rank": 103,
+      "word": "sehr",
+      "pos": "ADV",
+      "frequency_count": 226425,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 97,
+      "source_rank": 104,
+      "word": "müssen",
+      "pos": "VERB",
+      "frequency_count": 224895,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 98,
+      "source_rank": 105,
+      "word": "unser",
+      "pos": "DET",
+      "frequency_count": 224871,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 99,
+      "source_rank": 106,
+      "word": "denn",
+      "pos": "CCONJ",
+      "frequency_count": 224543,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 100,
+      "source_rank": 107,
+      "word": "Mann",
+      "pos": "NOUN",
+      "frequency_count": 222707,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 101,
+      "source_rank": 108,
+      "word": "ihm",
+      "pos": "PRON",
+      "frequency_count": 217025,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 102,
+      "source_rank": 109,
+      "word": "leben",
+      "pos": "VERB",
+      "frequency_count": 212363,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 103,
+      "source_rank": 110,
+      "word": "vielleicht",
+      "pos": "ADV",
+      "frequency_count": 212216,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 104,
+      "source_rank": 111,
+      "word": "mögen",
+      "pos": "VERB",
+      "frequency_count": 211010,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 105,
+      "source_rank": 112,
+      "word": "euch",
+      "pos": "PRON",
+      "frequency_count": 206931,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 106,
+      "source_rank": 113,
+      "word": "über",
+      "pos": "ADP",
+      "frequency_count": 200720,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 107,
+      "source_rank": 115,
+      "word": "okay",
+      "pos": "PROPN",
+      "frequency_count": 196683,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 108,
+      "source_rank": 116,
+      "word": "brauchen",
+      "pos": "VERB",
+      "frequency_count": 194872,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 109,
+      "source_rank": 117,
+      "word": "anderer",
+      "pos": "PRON",
+      "frequency_count": 193758,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 110,
+      "source_rank": 119,
+      "word": "nehmen",
+      "pos": "VERB",
+      "frequency_count": 191509,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 111,
+      "source_rank": 121,
+      "word": "nie",
+      "pos": "ADV",
+      "frequency_count": 185925,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 112,
+      "source_rank": 122,
+      "word": "wirklich",
+      "pos": "ADV",
+      "frequency_count": 185166,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 113,
+      "source_rank": 123,
+      "word": "hey",
+      "pos": "PROPN",
+      "frequency_count": 185011,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 114,
+      "source_rank": 126,
+      "word": "viel",
+      "pos": "PRON",
+      "frequency_count": 176767,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 115,
+      "source_rank": 127,
+      "word": "Weg",
+      "pos": "ADV",
+      "frequency_count": 175124,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 116,
+      "source_rank": 128,
+      "word": "bringen",
+      "pos": "VERB",
+      "frequency_count": 174635,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 117,
+      "source_rank": 129,
+      "word": "einfach",
+      "pos": "ADV",
+      "frequency_count": 168892,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 118,
+      "source_rank": 130,
+      "word": "verstehen",
+      "pos": "VERB",
+      "frequency_count": 165382,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 119,
+      "source_rank": 131,
+      "word": "warten",
+      "pos": "VERB",
+      "frequency_count": 162479,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 120,
+      "source_rank": 132,
+      "word": "Zeit",
+      "pos": "NOUN",
+      "frequency_count": 160393,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 121,
+      "source_rank": 133,
+      "word": "weil",
+      "pos": "SCONJ",
+      "frequency_count": 159743,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 122,
+      "source_rank": 134,
+      "word": "bleiben",
+      "pos": "VERB",
+      "frequency_count": 154968,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 123,
+      "source_rank": 136,
+      "word": "heute",
+      "pos": "ADV",
+      "frequency_count": 154162,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 124,
+      "source_rank": 137,
+      "word": "damit",
+      "pos": "ADV",
+      "frequency_count": 150635,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 125,
+      "source_rank": 138,
+      "word": "ganz",
+      "pos": "ADV",
+      "frequency_count": 149683,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 126,
+      "source_rank": 139,
+      "word": "stehen",
+      "pos": "VERB",
+      "frequency_count": 149666,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 127,
+      "source_rank": 140,
+      "word": "jemand",
+      "pos": "PRON",
+      "frequency_count": 149073,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 128,
+      "source_rank": 141,
+      "word": "kennen",
+      "pos": "VERB",
+      "frequency_count": 148557,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 129,
+      "source_rank": 142,
+      "word": "reden",
+      "pos": "VERB",
+      "frequency_count": 148146,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 130,
+      "source_rank": 143,
+      "word": "weißt",
+      "pos": "VERB",
+      "frequency_count": 147614,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 131,
+      "source_rank": 144,
+      "word": "sicher",
+      "pos": "ADV",
+      "frequency_count": 145360,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 132,
+      "source_rank": 145,
+      "word": "jahr",
+      "pos": "NOUN",
+      "frequency_count": 144759,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 133,
+      "source_rank": 146,
+      "word": "Frau",
+      "pos": "NOUN",
+      "frequency_count": 143725,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 134,
+      "source_rank": 147,
+      "word": "nun",
+      "pos": "ADV",
+      "frequency_count": 143552,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 135,
+      "source_rank": 148,
+      "word": "helfen",
+      "pos": "VERB",
+      "frequency_count": 143177,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 136,
+      "source_rank": 149,
+      "word": "bis",
+      "pos": "CCONJ",
+      "frequency_count": 142166,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 137,
+      "source_rank": 150,
+      "word": "keiner",
+      "pos": "PRON",
+      "frequency_count": 140705,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 138,
+      "source_rank": 151,
+      "word": "Leid",
+      "pos": "NOUN",
+      "frequency_count": 140641,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 139,
+      "source_rank": 152,
+      "word": "na",
+      "pos": "INTJ",
+      "frequency_count": 140395,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 140,
+      "source_rank": 153,
+      "word": "zurück",
+      "pos": "ADV",
+      "frequency_count": 133326,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 141,
+      "source_rank": 154,
+      "word": "Tag",
+      "pos": "NOUN",
+      "frequency_count": 132670,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 142,
+      "source_rank": 155,
+      "word": "Hallo",
+      "pos": "PROPN",
+      "frequency_count": 128561,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 143,
+      "source_rank": 156,
+      "word": "kind",
+      "pos": "NOUN",
+      "frequency_count": 127864,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 144,
+      "source_rank": 157,
+      "word": "Gott",
+      "pos": "NOUN",
+      "frequency_count": 127498,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 145,
+      "source_rank": 158,
+      "word": "halten",
+      "pos": "VERB",
+      "frequency_count": 125436,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 146,
+      "source_rank": 159,
+      "word": "vater",
+      "pos": "NOUN",
+      "frequency_count": 120529,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 147,
+      "source_rank": 160,
+      "word": "genau",
+      "pos": "ADV",
+      "frequency_count": 117667,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 148,
+      "source_rank": 161,
+      "word": "schön",
+      "pos": "ADV",
+      "frequency_count": 115027,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 149,
+      "source_rank": 162,
+      "word": "dürfen",
+      "pos": "VERB",
+      "frequency_count": 113790,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 150,
+      "source_rank": 163,
+      "word": "klar",
+      "pos": "ADV",
+      "frequency_count": 113688,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 151,
+      "source_rank": 165,
+      "word": "morgen",
+      "pos": "ADV",
+      "frequency_count": 112042,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 152,
+      "source_rank": 166,
+      "word": "neu",
+      "pos": "ADJ",
+      "frequency_count": 111877,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 153,
+      "source_rank": 167,
+      "word": "passieren",
+      "pos": "VERB",
+      "frequency_count": 110584,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 154,
+      "source_rank": 168,
+      "word": "sprechen",
+      "pos": "VERB",
+      "frequency_count": 110425,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 155,
+      "source_rank": 169,
+      "word": "Leute",
+      "pos": "NOUN",
+      "frequency_count": 109956,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 156,
+      "source_rank": 170,
+      "word": "gehören",
+      "pos": "VERB",
+      "frequency_count": 109729,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 157,
+      "source_rank": 171,
+      "word": "jeder",
+      "pos": "PRON",
+      "frequency_count": 109126,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 158,
+      "source_rank": 172,
+      "word": "fahren",
+      "pos": "VERB",
+      "frequency_count": 106899,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 159,
+      "source_rank": 173,
+      "word": "fragen",
+      "pos": "VERB",
+      "frequency_count": 105526,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 160,
+      "source_rank": 174,
+      "word": "ab",
+      "pos": "ADP",
+      "frequency_count": 104853,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 161,
+      "source_rank": 175,
+      "word": "gerade",
+      "pos": "ADV",
+      "frequency_count": 104130,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 162,
+      "source_rank": 176,
+      "word": "durch",
+      "pos": "ADP",
+      "frequency_count": 101045,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 163,
+      "source_rank": 177,
+      "word": "wohl",
+      "pos": "ADV",
+      "frequency_count": 100488,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 164,
+      "source_rank": 178,
+      "word": "geld",
+      "pos": "NOUN",
+      "frequency_count": 99919,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 165,
+      "source_rank": 179,
+      "word": "Liebe",
+      "pos": "NOUN",
+      "frequency_count": 99301,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 166,
+      "source_rank": 180,
+      "word": "versuchen",
+      "pos": "VERB",
+      "frequency_count": 98405,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 167,
+      "source_rank": 181,
+      "word": "klein",
+      "pos": "ADJ",
+      "frequency_count": 97050,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 168,
+      "source_rank": 182,
+      "word": "ob",
+      "pos": "SCONJ",
+      "frequency_count": 97001,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 169,
+      "source_rank": 183,
+      "word": "groß",
+      "pos": "ADJ",
+      "frequency_count": 96812,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 170,
+      "source_rank": 184,
+      "word": "alt",
+      "pos": "ADJ",
+      "frequency_count": 96145,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 171,
+      "source_rank": 185,
+      "word": "Mutter",
+      "pos": "NOUN",
+      "frequency_count": 95349,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 172,
+      "source_rank": 186,
+      "word": "raus",
+      "pos": "ADV",
+      "frequency_count": 95012,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 173,
+      "source_rank": 187,
+      "word": "töten",
+      "pos": "VERB",
+      "frequency_count": 94662,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 174,
+      "source_rank": 188,
+      "word": "paar",
+      "pos": "PRON",
+      "frequency_count": 93818,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 175,
+      "source_rank": 189,
+      "word": "musst",
+      "pos": "VERB",
+      "frequency_count": 92429,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 176,
+      "source_rank": 190,
+      "word": "wieso",
+      "pos": "ADV",
+      "frequency_count": 92191,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 177,
+      "source_rank": 191,
+      "word": "sterben",
+      "pos": "VERB",
+      "frequency_count": 92121,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 178,
+      "source_rank": 192,
+      "word": "Sir",
+      "pos": "NOUN",
+      "frequency_count": 92012,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 179,
+      "source_rank": 193,
+      "word": "erzählen",
+      "pos": "VERB",
+      "frequency_count": 91581,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 180,
+      "source_rank": 194,
+      "word": "selbst",
+      "pos": "ADV",
+      "frequency_count": 90135,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 181,
+      "source_rank": 195,
+      "word": "bekommen",
+      "pos": "VERB",
+      "frequency_count": 89862,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 182,
+      "source_rank": 196,
+      "word": "arbeiten",
+      "pos": "VERB",
+      "frequency_count": 89713,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 183,
+      "source_rank": 197,
+      "word": "ohne",
+      "pos": "ADP",
+      "frequency_count": 88934,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 184,
+      "source_rank": 198,
+      "word": "nacht",
+      "pos": "NOUN",
+      "frequency_count": 88193,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 185,
+      "source_rank": 199,
+      "word": "her",
+      "pos": "ADV",
+      "frequency_count": 87571,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 186,
+      "source_rank": 200,
+      "word": "holen",
+      "pos": "VERB",
+      "frequency_count": 86946,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 187,
+      "source_rank": 201,
+      "word": "essen",
+      "pos": "VERB",
+      "frequency_count": 86684,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 188,
+      "source_rank": 202,
+      "word": "beide",
+      "pos": "PRON",
+      "frequency_count": 84588,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 189,
+      "source_rank": 203,
+      "word": "lange",
+      "pos": "ADV",
+      "frequency_count": 82872,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 190,
+      "source_rank": 204,
+      "word": "natürlich",
+      "pos": "ADV",
+      "frequency_count": 82710,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 191,
+      "source_rank": 205,
+      "word": "treffen",
+      "pos": "VERB",
+      "frequency_count": 82625,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 192,
+      "source_rank": 206,
+      "word": "ach",
+      "pos": "ADP",
+      "frequency_count": 82252,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 193,
+      "source_rank": 207,
+      "word": "gar",
+      "pos": "ADV",
+      "frequency_count": 82082,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 194,
+      "source_rank": 208,
+      "word": "sache",
+      "pos": "NOUN",
+      "frequency_count": 81509,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 195,
+      "source_rank": 209,
+      "word": "heißen",
+      "pos": "VERB",
+      "frequency_count": 80453,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 196,
+      "source_rank": 210,
+      "word": "dort",
+      "pos": "ADV",
+      "frequency_count": 79951,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 197,
+      "source_rank": 211,
+      "word": "spielen",
+      "pos": "VERB",
+      "frequency_count": 79794,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 198,
+      "source_rank": 212,
+      "word": "weiter",
+      "pos": "ADV",
+      "frequency_count": 79598,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 199,
+      "source_rank": 213,
+      "word": "niemand",
+      "pos": "PRON",
+      "frequency_count": 79468,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 200,
+      "source_rank": 214,
+      "word": "gleich",
+      "pos": "ADV",
+      "frequency_count": 78534,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 201,
+      "source_rank": 215,
+      "word": "seit",
+      "pos": "ADP",
+      "frequency_count": 78517,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 202,
+      "source_rank": 216,
+      "word": "fallen",
+      "pos": "VERB",
+      "frequency_count": 78213,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 203,
+      "source_rank": 217,
+      "word": "recht",
+      "pos": "ADV",
+      "frequency_count": 77861,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 204,
+      "source_rank": 218,
+      "word": "laufen",
+      "pos": "VERB",
+      "frequency_count": 77032,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 205,
+      "source_rank": 219,
+      "word": "problem",
+      "pos": "NOUN",
+      "frequency_count": 76995,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 206,
+      "source_rank": 220,
+      "word": "vergessen",
+      "pos": "VERB",
+      "frequency_count": 76946,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 207,
+      "source_rank": 221,
+      "word": "richtig",
+      "pos": "ADV",
+      "frequency_count": 76789,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 208,
+      "source_rank": 222,
+      "word": "ordnung",
+      "pos": "NOUN",
+      "frequency_count": 76635,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 209,
+      "source_rank": 223,
+      "word": "davon",
+      "pos": "ADV",
+      "frequency_count": 75947,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 210,
+      "source_rank": 224,
+      "word": "dafür",
+      "pos": "ADV",
+      "frequency_count": 75302,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 211,
+      "source_rank": 225,
+      "word": "stimmen",
+      "pos": "VERB",
+      "frequency_count": 74471,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 212,
+      "source_rank": 226,
+      "word": "Haus",
+      "pos": "NOUN",
+      "frequency_count": 74463,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 213,
+      "source_rank": 227,
+      "word": "zeigen",
+      "pos": "VERB",
+      "frequency_count": 74431,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 214,
+      "source_rank": 228,
+      "word": "mädchen",
+      "pos": "NOUN",
+      "frequency_count": 74196,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 215,
+      "source_rank": 229,
+      "word": "wegen",
+      "pos": "ADP",
+      "frequency_count": 74062,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 216,
+      "source_rank": 230,
+      "word": "suchen",
+      "pos": "VERB",
+      "frequency_count": 73968,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 217,
+      "source_rank": 231,
+      "word": "Hause",
+      "pos": "NOUN",
+      "frequency_count": 73059,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 218,
+      "source_rank": 232,
+      "word": "hin",
+      "pos": "ADV",
+      "frequency_count": 72272,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 219,
+      "source_rank": 234,
+      "word": "tot",
+      "pos": "ADJ",
+      "frequency_count": 71866,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 220,
+      "source_rank": 235,
+      "word": "abend",
+      "pos": "ADV",
+      "frequency_count": 71375,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 221,
+      "source_rank": 236,
+      "word": "verlieren",
+      "pos": "VERB",
+      "frequency_count": 70578,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 222,
+      "source_rank": 237,
+      "word": "deinen",
+      "pos": "AUX",
+      "frequency_count": 69621,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 223,
+      "source_rank": 238,
+      "word": "Freund",
+      "pos": "NOUN",
+      "frequency_count": 69586,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 224,
+      "source_rank": 239,
+      "word": "fühlen",
+      "pos": "VERB",
+      "frequency_count": 69046,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 225,
+      "source_rank": 241,
+      "word": "welt",
+      "pos": "NOUN",
+      "frequency_count": 68706,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 226,
+      "source_rank": 242,
+      "word": "angst",
+      "pos": "NOUN",
+      "frequency_count": 68379,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 227,
+      "source_rank": 243,
+      "word": "Herr",
+      "pos": "NOUN",
+      "frequency_count": 67840,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 228,
+      "source_rank": 244,
+      "word": "mensch",
+      "pos": "NOUN",
+      "frequency_count": 67662,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 229,
+      "source_rank": 245,
+      "word": "unter",
+      "pos": "ADP",
+      "frequency_count": 67613,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 230,
+      "source_rank": 246,
+      "word": "liegen",
+      "pos": "VERB",
+      "frequency_count": 66922,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 231,
+      "source_rank": 247,
+      "word": "zusammen",
+      "pos": "ADV",
+      "frequency_count": 66885,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 232,
+      "source_rank": 248,
+      "word": "hand",
+      "pos": "NOUN",
+      "frequency_count": 66819,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 233,
+      "source_rank": 249,
+      "word": "jung",
+      "pos": "ADJ",
+      "frequency_count": 66351,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 234,
+      "source_rank": 250,
+      "word": "schnell",
+      "pos": "ADV",
+      "frequency_count": 66011,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 235,
+      "source_rank": 251,
+      "word": "schaffen",
+      "pos": "VERB",
+      "frequency_count": 64342,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 236,
+      "source_rank": 252,
+      "word": "erst",
+      "pos": "ADV",
+      "frequency_count": 64092,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 237,
+      "source_rank": 253,
+      "word": "lieben",
+      "pos": "VERB",
+      "frequency_count": 64030,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 238,
+      "source_rank": 254,
+      "word": "rein",
+      "pos": "ADV",
+      "frequency_count": 64028,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 239,
+      "source_rank": 255,
+      "word": "moment",
+      "pos": "NOUN",
+      "frequency_count": 63578,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 240,
+      "source_rank": 256,
+      "word": "genug",
+      "pos": "DET",
+      "frequency_count": 62381,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 241,
+      "source_rank": 257,
+      "word": "stellen",
+      "pos": "VERB",
+      "frequency_count": 62186,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 242,
+      "source_rank": 258,
+      "word": "scheiß",
+      "pos": "NOUN",
+      "frequency_count": 61982,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 243,
+      "source_rank": 259,
+      "word": "familie",
+      "pos": "NOUN",
+      "frequency_count": 61973,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 244,
+      "source_rank": 260,
+      "word": "gegen",
+      "pos": "ADP",
+      "frequency_count": 61438,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 245,
+      "source_rank": 261,
+      "word": "sohn",
+      "pos": "NOUN",
+      "frequency_count": 60920,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 246,
+      "source_rank": 262,
+      "word": "mann",
+      "pos": "NOUN",
+      "frequency_count": 60695,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 247,
+      "source_rank": 263,
+      "word": "setzen",
+      "pos": "VERB",
+      "frequency_count": 60589,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 248,
+      "source_rank": 264,
+      "word": "sonst",
+      "pos": "ADV",
+      "frequency_count": 60478,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 249,
+      "source_rank": 265,
+      "word": "bruder",
+      "pos": "NOUN",
+      "frequency_count": 60461,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 250,
+      "source_rank": 266,
+      "word": "musik",
+      "pos": "NOUN",
+      "frequency_count": 59500,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 251,
+      "source_rank": 267,
+      "word": "Arbeit",
+      "pos": "NOUN",
+      "frequency_count": 59309,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 252,
+      "source_rank": 268,
+      "word": "erinnern",
+      "pos": "VERB",
+      "frequency_count": 57947,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 253,
+      "source_rank": 269,
+      "word": "dabei",
+      "pos": "ADV",
+      "frequency_count": 57923,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 254,
+      "source_rank": 270,
+      "word": "welcher",
+      "pos": "PRON",
+      "frequency_count": 56962,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 255,
+      "source_rank": 271,
+      "word": "Stunde",
+      "pos": "NOUN",
+      "frequency_count": 56909,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 256,
+      "source_rank": 272,
+      "word": "nennen",
+      "pos": "VERB",
+      "frequency_count": 56711,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 257,
+      "source_rank": 273,
+      "word": "sofort",
+      "pos": "ADV",
+      "frequency_count": 56605,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 258,
+      "source_rank": 274,
+      "word": "bevor",
+      "pos": "SCONJ",
+      "frequency_count": 56210,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 259,
+      "source_rank": 275,
+      "word": "entschuldigen",
+      "pos": "VERB",
+      "frequency_count": 56144,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 260,
+      "source_rank": 276,
+      "word": "nächster",
+      "pos": "ADJ",
+      "frequency_count": 55932,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 261,
+      "source_rank": 277,
+      "word": "letzter",
+      "pos": "ADJ",
+      "frequency_count": 55428,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 262,
+      "source_rank": 278,
+      "word": "einmal",
+      "pos": "ADV",
+      "frequency_count": 55398,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 263,
+      "source_rank": 279,
+      "word": "woche",
+      "pos": "NOUN",
+      "frequency_count": 54623,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 264,
+      "source_rank": 280,
+      "word": "freund",
+      "pos": "NOUN",
+      "frequency_count": 54382,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 265,
+      "source_rank": 281,
+      "word": "Wann",
+      "pos": "ADV",
+      "frequency_count": 54105,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 266,
+      "source_rank": 282,
+      "word": "Auge",
+      "pos": "NOUN",
+      "frequency_count": 54068,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 267,
+      "source_rank": 283,
+      "word": "minute",
+      "pos": "NOUN",
+      "frequency_count": 54000,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 268,
+      "source_rank": 284,
+      "word": "fertig",
+      "pos": "ADV",
+      "frequency_count": 53738,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 269,
+      "source_rank": 285,
+      "word": "halt",
+      "pos": "ADV",
+      "frequency_count": 53723,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 270,
+      "source_rank": 286,
+      "word": "allein",
+      "pos": "ADV",
+      "frequency_count": 53720,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 271,
+      "source_rank": 287,
+      "word": "Fall",
+      "pos": "NOUN",
+      "frequency_count": 53561,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 272,
+      "source_rank": 288,
+      "word": "wichtig",
+      "pos": "ADJ",
+      "frequency_count": 53193,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 273,
+      "source_rank": 289,
+      "word": "verschwinden",
+      "pos": "VERB",
+      "frequency_count": 52842,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 274,
+      "source_rank": 290,
+      "word": "verdammen",
+      "pos": "VERB",
+      "frequency_count": 52807,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 275,
+      "source_rank": 291,
+      "word": "hilfe",
+      "pos": "NOUN",
+      "frequency_count": 52723,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 276,
+      "source_rank": 292,
+      "word": "kriegen",
+      "pos": "VERB",
+      "frequency_count": 52537,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 277,
+      "source_rank": 293,
+      "word": "ne",
+      "pos": "PROPN",
+      "frequency_count": 52438,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 278,
+      "source_rank": 294,
+      "word": "gern",
+      "pos": "ADV",
+      "frequency_count": 52147,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 279,
+      "source_rank": 295,
+      "word": "darüber",
+      "pos": "ADV",
+      "frequency_count": 51711,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 280,
+      "source_rank": 296,
+      "word": "einzig",
+      "pos": "ADJ",
+      "frequency_count": 50807,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 281,
+      "source_rank": 297,
+      "word": "schlafen",
+      "pos": "VERB",
+      "frequency_count": 50770,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 282,
+      "source_rank": 298,
+      "word": "wahr",
+      "pos": "ADV",
+      "frequency_count": 50700,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 283,
+      "source_rank": 299,
+      "word": "nett",
+      "pos": "ADJ",
+      "frequency_count": 50638,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 284,
+      "source_rank": 300,
+      "word": "dazu",
+      "pos": "ADV",
+      "frequency_count": 50144,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 285,
+      "source_rank": 301,
+      "word": "daran",
+      "pos": "ADV",
+      "frequency_count": 50081,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 286,
+      "source_rank": 302,
+      "word": "schreiben",
+      "pos": "VERB",
+      "frequency_count": 50037,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 287,
+      "source_rank": 303,
+      "word": "baby",
+      "pos": "NOUN",
+      "frequency_count": 49833,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 288,
+      "source_rank": 304,
+      "word": "hoffen",
+      "pos": "VERB",
+      "frequency_count": 49549,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 289,
+      "source_rank": 305,
+      "word": "dank",
+      "pos": "ADP",
+      "frequency_count": 49155,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 290,
+      "source_rank": 306,
+      "word": "lieb",
+      "pos": "ADV",
+      "frequency_count": 49123,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 291,
+      "source_rank": 307,
+      "word": "früh",
+      "pos": "ADV",
+      "frequency_count": 48788,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 292,
+      "source_rank": 308,
+      "word": "egal",
+      "pos": "ADV",
+      "frequency_count": 48287,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 293,
+      "source_rank": 309,
+      "word": "stadt",
+      "pos": "NOUN",
+      "frequency_count": 48170,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 294,
+      "source_rank": 310,
+      "word": "dad",
+      "pos": "NOUN",
+      "frequency_count": 47884,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 295,
+      "source_rank": 311,
+      "word": "Frage",
+      "pos": "NOUN",
+      "frequency_count": 47512,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 296,
+      "source_rank": 312,
+      "word": "auto",
+      "pos": "NOUN",
+      "frequency_count": 47353,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 297,
+      "source_rank": 313,
+      "word": "trinken",
+      "pos": "VERB",
+      "frequency_count": 46962,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 298,
+      "source_rank": 314,
+      "word": "uhr",
+      "pos": "NOUN",
+      "frequency_count": 46935,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 299,
+      "source_rank": 315,
+      "word": "echt",
+      "pos": "ADV",
+      "frequency_count": 46884,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 300,
+      "source_rank": 316,
+      "word": "wort",
+      "pos": "NOUN",
+      "frequency_count": 46765,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 301,
+      "source_rank": 317,
+      "word": "eigentlich",
+      "pos": "ADV",
+      "frequency_count": 46744,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 302,
+      "source_rank": 318,
+      "word": "ziehen",
+      "pos": "VERB",
+      "frequency_count": 46721,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 303,
+      "source_rank": 320,
+      "word": "kopf",
+      "pos": "NOUN",
+      "frequency_count": 45736,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 304,
+      "source_rank": 321,
+      "word": "falsch",
+      "pos": "ADJ",
+      "frequency_count": 45716,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 305,
+      "source_rank": 322,
+      "word": "sorgen",
+      "pos": "VERB",
+      "frequency_count": 45584,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 306,
+      "source_rank": 323,
+      "word": "Name",
+      "pos": "NOUN",
+      "frequency_count": 44998,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 307,
+      "source_rank": 324,
+      "word": "rufen",
+      "pos": "VERB",
+      "frequency_count": 44991,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 308,
+      "source_rank": 325,
+      "word": "hi",
+      "pos": "INTJ",
+      "frequency_count": 44653,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 309,
+      "source_rank": 326,
+      "word": "spät",
+      "pos": "ADV",
+      "frequency_count": 44320,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 310,
+      "source_rank": 327,
+      "word": "Glück",
+      "pos": "NOUN",
+      "frequency_count": 44295,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 311,
+      "source_rank": 328,
+      "word": "lernen",
+      "pos": "VERB",
+      "frequency_count": 44099,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 312,
+      "source_rank": 329,
+      "word": "retten",
+      "pos": "VERB",
+      "frequency_count": 43966,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 313,
+      "source_rank": 330,
+      "word": "all",
+      "pos": "DET",
+      "frequency_count": 43808,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 314,
+      "source_rank": 331,
+      "word": "darauf",
+      "pos": "ADV",
+      "frequency_count": 43236,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 315,
+      "source_rank": 332,
+      "word": "Ende",
+      "pos": "NOUN",
+      "frequency_count": 43216,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 316,
+      "source_rank": 333,
+      "word": "frau",
+      "pos": "NOUN",
+      "frequency_count": 43158,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 317,
+      "source_rank": 334,
+      "word": "bald",
+      "pos": "ADV",
+      "frequency_count": 43080,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 318,
+      "source_rank": 335,
+      "word": "tragen",
+      "pos": "VERB",
+      "frequency_count": 42994,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 319,
+      "source_rank": 336,
+      "word": "bedeuten",
+      "pos": "VERB",
+      "frequency_count": 42915,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 320,
+      "source_rank": 337,
+      "word": "kerl",
+      "pos": "NOUN",
+      "frequency_count": 42783,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 321,
+      "source_rank": 338,
+      "word": "Ding",
+      "pos": "NOUN",
+      "frequency_count": 42560,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 322,
+      "source_rank": 339,
+      "word": "toll",
+      "pos": "ADV",
+      "frequency_count": 42438,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 323,
+      "source_rank": 340,
+      "word": "schwester",
+      "pos": "NOUN",
+      "frequency_count": 42398,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 324,
+      "source_rank": 341,
+      "word": "kümmern",
+      "pos": "VERB",
+      "frequency_count": 42057,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 325,
+      "source_rank": 342,
+      "word": "idee",
+      "pos": "NOUN",
+      "frequency_count": 42051,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 326,
+      "source_rank": 343,
+      "word": "schatz",
+      "pos": "NOUN",
+      "frequency_count": 42038,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 327,
+      "source_rank": 344,
+      "word": "bereit",
+      "pos": "ADV",
+      "frequency_count": 41925,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 328,
+      "source_rank": 345,
+      "word": "tod",
+      "pos": "NOUN",
+      "frequency_count": 41881,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 329,
+      "source_rank": 346,
+      "word": "waffe",
+      "pos": "NOUN",
+      "frequency_count": 41872,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 330,
+      "source_rank": 347,
+      "word": "monat",
+      "pos": "NOUN",
+      "frequency_count": 41783,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 331,
+      "source_rank": 348,
+      "word": "ahnung",
+      "pos": "NOUN",
+      "frequency_count": 41565,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 332,
+      "source_rank": 349,
+      "word": "weit",
+      "pos": "ADV",
+      "frequency_count": 41558,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 333,
+      "source_rank": 350,
+      "word": "tür",
+      "pos": "NOUN",
+      "frequency_count": 41482,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 334,
+      "source_rank": 351,
+      "word": "führen",
+      "pos": "VERB",
+      "frequency_count": 41478,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 335,
+      "source_rank": 352,
+      "word": "bisschen",
+      "pos": "VERB",
+      "frequency_count": 41471,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 336,
+      "source_rank": 353,
+      "word": "legen",
+      "pos": "VERB",
+      "frequency_count": 41370,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 337,
+      "source_rank": 354,
+      "word": "verlassen",
+      "pos": "VERB",
+      "frequency_count": 41222,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 338,
+      "source_rank": 355,
+      "word": "jungs",
+      "pos": "DET",
+      "frequency_count": 40783,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 339,
+      "source_rank": 356,
+      "word": "eure",
+      "pos": "NOUN",
+      "frequency_count": 40647,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 340,
+      "source_rank": 357,
+      "word": "polizei",
+      "pos": "NOUN",
+      "frequency_count": 40572,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 341,
+      "source_rank": 358,
+      "word": "wenig",
+      "pos": "ADJ",
+      "frequency_count": 40285,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 342,
+      "source_rank": 359,
+      "word": "draußen",
+      "pos": "ADV",
+      "frequency_count": 40075,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 343,
+      "source_rank": 360,
+      "word": "tochter",
+      "pos": "NOUN",
+      "frequency_count": 40056,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 344,
+      "source_rank": 361,
+      "word": "lesen",
+      "pos": "VERB",
+      "frequency_count": 39914,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 345,
+      "source_rank": 362,
+      "word": "erster",
+      "pos": "ADJ",
+      "frequency_count": 39698,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 346,
+      "source_rank": 363,
+      "word": "kaufen",
+      "pos": "VERB",
+      "frequency_count": 39682,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 347,
+      "source_rank": 364,
+      "word": "bestimmen",
+      "pos": "VERB",
+      "frequency_count": 39608,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 348,
+      "source_rank": 365,
+      "word": "fast",
+      "pos": "ADV",
+      "frequency_count": 39542,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 349,
+      "source_rank": 367,
+      "word": "versprechen",
+      "pos": "VERB",
+      "frequency_count": 39501,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 350,
+      "source_rank": 368,
+      "word": "scheinen",
+      "pos": "VERB",
+      "frequency_count": 39485,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 351,
+      "source_rank": 369,
+      "word": "runter",
+      "pos": "ADV",
+      "frequency_count": 39290,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 352,
+      "source_rank": 370,
+      "word": "anrufen",
+      "pos": "VERB",
+      "frequency_count": 39279,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 353,
+      "source_rank": 371,
+      "word": "sitzen",
+      "pos": "VERB",
+      "frequency_count": 39165,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 354,
+      "source_rank": 372,
+      "word": "geschichte",
+      "pos": "NOUN",
+      "frequency_count": 39013,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 355,
+      "source_rank": 373,
+      "word": "eigen",
+      "pos": "ADJ",
+      "frequency_count": 38968,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 356,
+      "source_rank": 374,
+      "word": "hinter",
+      "pos": "ADP",
+      "frequency_count": 38905,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 357,
+      "source_rank": 375,
+      "word": "vorbei",
+      "pos": "ADV",
+      "frequency_count": 38763,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 358,
+      "source_rank": 376,
+      "word": "gerne",
+      "pos": "ADV",
+      "frequency_count": 38739,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 359,
+      "source_rank": 377,
+      "word": "dran",
+      "pos": "ADV",
+      "frequency_count": 38593,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 360,
+      "source_rank": 378,
+      "word": "grund",
+      "pos": "NOUN",
+      "frequency_count": 38561,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 361,
+      "source_rank": 379,
+      "word": "Mom",
+      "pos": "NOUN",
+      "frequency_count": 38250,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 362,
+      "source_rank": 380,
+      "word": "verrückt",
+      "pos": "ADV",
+      "frequency_count": 38126,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 363,
+      "source_rank": 381,
+      "word": "lachen",
+      "pos": "VERB",
+      "frequency_count": 37430,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 364,
+      "source_rank": 382,
+      "word": "darum",
+      "pos": "ADV",
+      "frequency_count": 37424,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 365,
+      "source_rank": 384,
+      "word": "drin",
+      "pos": "ADV",
+      "frequency_count": 36941,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 366,
+      "source_rank": 385,
+      "word": "ruhig",
+      "pos": "ADV",
+      "frequency_count": 36940,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 367,
+      "source_rank": 386,
+      "word": "ganzen",
+      "pos": "VERB",
+      "frequency_count": 36929,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 368,
+      "source_rank": 387,
+      "word": "ziemlich",
+      "pos": "ADV",
+      "frequency_count": 36820,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 369,
+      "source_rank": 389,
+      "word": "schlagen",
+      "pos": "VERB",
+      "frequency_count": 36766,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 370,
+      "source_rank": 390,
+      "word": "umbringen",
+      "pos": "VERB",
+      "frequency_count": 36727,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 371,
+      "source_rank": 391,
+      "word": "reichen",
+      "pos": "VERB",
+      "frequency_count": 36681,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 372,
+      "source_rank": 392,
+      "word": "name",
+      "pos": "NOUN",
+      "frequency_count": 36668,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 373,
+      "source_rank": 393,
+      "word": "sogar",
+      "pos": "ADV",
+      "frequency_count": 36650,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 374,
+      "source_rank": 394,
+      "word": "teufel",
+      "pos": "NOUN",
+      "frequency_count": 36632,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 375,
+      "source_rank": 395,
+      "word": "kurz",
+      "pos": "ADV",
+      "frequency_count": 36629,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 376,
+      "source_rank": 396,
+      "word": "je",
+      "pos": "ADV",
+      "frequency_count": 36205,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 377,
+      "source_rank": 397,
+      "word": "woher",
+      "pos": "ADV",
+      "frequency_count": 36061,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 378,
+      "source_rank": 398,
+      "word": "lang",
+      "pos": "ADV",
+      "frequency_count": 36029,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 379,
+      "source_rank": 399,
+      "word": "Job",
+      "pos": "PROPN",
+      "frequency_count": 35995,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 380,
+      "source_rank": 400,
+      "word": "Art",
+      "pos": "NOUN",
+      "frequency_count": 35968,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 381,
+      "source_rank": 401,
+      "word": "gewinnen",
+      "pos": "VERB",
+      "frequency_count": 35786,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 382,
+      "source_rank": 402,
+      "word": "mama",
+      "pos": "NOUN",
+      "frequency_count": 35710,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 383,
+      "source_rank": 403,
+      "word": "hoch",
+      "pos": "ADV",
+      "frequency_count": 35678,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 384,
+      "source_rank": 404,
+      "word": "überhaupt",
+      "pos": "ADV",
+      "frequency_count": 35566,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 385,
+      "source_rank": 405,
+      "word": "seite",
+      "pos": "NOUN",
+      "frequency_count": 35463,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 386,
+      "source_rank": 406,
+      "word": "stecken",
+      "pos": "VERB",
+      "frequency_count": 35287,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 387,
+      "source_rank": 407,
+      "word": "wagen",
+      "pos": "VERB",
+      "frequency_count": 35260,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 388,
+      "source_rank": 408,
+      "word": "klingen",
+      "pos": "VERB",
+      "frequency_count": 35173,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 389,
+      "source_rank": 410,
+      "word": "Ruhe",
+      "pos": "NOUN",
+      "frequency_count": 34794,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 390,
+      "source_rank": 411,
+      "word": "freuen",
+      "pos": "VERB",
+      "frequency_count": 34694,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 391,
+      "source_rank": 412,
+      "word": "schlecht",
+      "pos": "ADV",
+      "frequency_count": 34552,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 392,
+      "source_rank": 413,
+      "word": "oben",
+      "pos": "ADV",
+      "frequency_count": 34115,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 393,
+      "source_rank": 414,
+      "word": "gestern",
+      "pos": "ADV",
+      "frequency_count": 34095,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 394,
+      "source_rank": 416,
+      "word": "endlich",
+      "pos": "ADV",
+      "frequency_count": 33924,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 395,
+      "source_rank": 417,
+      "word": "he",
+      "pos": "INTJ",
+      "frequency_count": 33922,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 396,
+      "source_rank": 418,
+      "word": "etwa",
+      "pos": "ADV",
+      "frequency_count": 33845,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 397,
+      "source_rank": 419,
+      "word": "mussen",
+      "pos": "VERB",
+      "frequency_count": 33750,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 398,
+      "source_rank": 420,
+      "word": "erwarten",
+      "pos": "VERB",
+      "frequency_count": 33676,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 399,
+      "source_rank": 421,
+      "word": "bitten",
+      "pos": "VERB",
+      "frequency_count": 33672,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 400,
+      "source_rank": 422,
+      "word": "schwer",
+      "pos": "ADV",
+      "frequency_count": 33640,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 401,
+      "source_rank": 423,
+      "word": "anders",
+      "pos": "ADV",
+      "frequency_count": 33554,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 402,
+      "source_rank": 424,
+      "word": "Miss",
+      "pos": "NOUN",
+      "frequency_count": 33536,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 403,
+      "source_rank": 425,
+      "word": "chance",
+      "pos": "NOUN",
+      "frequency_count": 33518,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 404,
+      "source_rank": 426,
+      "word": "Wasser",
+      "pos": "NOUN",
+      "frequency_count": 33387,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 405,
+      "source_rank": 427,
+      "word": "bezahlen",
+      "pos": "VERB",
+      "frequency_count": 33261,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 406,
+      "source_rank": 428,
+      "word": "heiraten",
+      "pos": "VERB",
+      "frequency_count": 33088,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 407,
+      "source_rank": 429,
+      "word": "glücklich",
+      "pos": "ADJ",
+      "frequency_count": 33077,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 408,
+      "source_rank": 430,
+      "word": "wahrheit",
+      "pos": "NOUN",
+      "frequency_count": 32893,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 409,
+      "source_rank": 431,
+      "word": "deshalb",
+      "pos": "ADV",
+      "frequency_count": 32451,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 410,
+      "source_rank": 432,
+      "word": "erklären",
+      "pos": "VERB",
+      "frequency_count": 32446,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 411,
+      "source_rank": 433,
+      "word": "fällen",
+      "pos": "VERB",
+      "frequency_count": 32073,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 412,
+      "source_rank": 434,
+      "word": "Schau",
+      "pos": "NOUN",
+      "frequency_count": 32038,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 413,
+      "source_rank": 435,
+      "word": "Zimmer",
+      "pos": "NOUN",
+      "frequency_count": 31929,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 414,
+      "source_rank": 436,
+      "word": "ändern",
+      "pos": "VERB",
+      "frequency_count": 31913,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 415,
+      "source_rank": 437,
+      "word": "ah",
+      "pos": "INTJ",
+      "frequency_count": 31832,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 416,
+      "source_rank": 438,
+      "word": "Land",
+      "pos": "NOUN",
+      "frequency_count": 31728,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 417,
+      "source_rank": 439,
+      "word": "Teil",
+      "pos": "NOUN",
+      "frequency_count": 31686,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 418,
+      "source_rank": 440,
+      "word": "Spaß",
+      "pos": "NOUN",
+      "frequency_count": 31361,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 419,
+      "source_rank": 441,
+      "word": "niemals",
+      "pos": "ADV",
+      "frequency_count": 31303,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 420,
+      "source_rank": 442,
+      "word": "stark",
+      "pos": "ADJ",
+      "frequency_count": 31257,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 421,
+      "source_rank": 443,
+      "word": "schuld",
+      "pos": "ADV",
+      "frequency_count": 31228,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 422,
+      "source_rank": 444,
+      "word": "möglich",
+      "pos": "ADJ",
+      "frequency_count": 31014,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 423,
+      "source_rank": 445,
+      "word": "oft",
+      "pos": "ADV",
+      "frequency_count": 30960,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 424,
+      "source_rank": 447,
+      "word": "gesicht",
+      "pos": "NOUN",
+      "frequency_count": 30811,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 425,
+      "source_rank": 448,
+      "word": "ernst",
+      "pos": "ADV",
+      "frequency_count": 30649,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 426,
+      "source_rank": 449,
+      "word": "schauen",
+      "pos": "VERB",
+      "frequency_count": 30641,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 427,
+      "source_rank": 450,
+      "word": "Ort",
+      "pos": "NOUN",
+      "frequency_count": 30562,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 428,
+      "source_rank": 451,
+      "word": "manchmal",
+      "pos": "ADV",
+      "frequency_count": 30500,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 429,
+      "source_rank": 452,
+      "word": "passen",
+      "pos": "VERB",
+      "frequency_count": 30430,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 430,
+      "source_rank": 453,
+      "word": "benutzen",
+      "pos": "VERB",
+      "frequency_count": 30428,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 431,
+      "source_rank": 454,
+      "word": "zwischen",
+      "pos": "ADP",
+      "frequency_count": 30326,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 432,
+      "source_rank": 455,
+      "word": "eben",
+      "pos": "ADV",
+      "frequency_count": 30288,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 433,
+      "source_rank": 456,
+      "word": "während",
+      "pos": "SCONJ",
+      "frequency_count": 30284,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 434,
+      "source_rank": 458,
+      "word": "Spiel",
+      "pos": "NOUN",
+      "frequency_count": 30057,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 435,
+      "source_rank": 459,
+      "word": "vertrauen",
+      "pos": "VERB",
+      "frequency_count": 30046,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 436,
+      "source_rank": 461,
+      "word": "freundin",
+      "pos": "VERB",
+      "frequency_count": 29850,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 437,
+      "source_rank": 462,
+      "word": "Schule",
+      "pos": "NOUN",
+      "frequency_count": 29828,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 438,
+      "source_rank": 463,
+      "word": "Krieg",
+      "pos": "NOUN",
+      "frequency_count": 29815,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 439,
+      "source_rank": 464,
+      "word": "gefühl",
+      "pos": "NOUN",
+      "frequency_count": 29679,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 440,
+      "source_rank": 465,
+      "word": "Plan",
+      "pos": "NOUN",
+      "frequency_count": 29672,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 441,
+      "source_rank": 466,
+      "word": "verkaufen",
+      "pos": "VERB",
+      "frequency_count": 29634,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 442,
+      "source_rank": 467,
+      "word": "solch",
+      "pos": "PRON",
+      "frequency_count": 29195,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 443,
+      "source_rank": 468,
+      "word": "wiedersehen",
+      "pos": "VERB",
+      "frequency_count": 29011,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 444,
+      "source_rank": 469,
+      "word": "Bett",
+      "pos": "NOUN",
+      "frequency_count": 28931,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 445,
+      "source_rank": 470,
+      "word": "fangen",
+      "pos": "VERB",
+      "frequency_count": 28863,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 446,
+      "source_rank": 471,
+      "word": "schlimm",
+      "pos": "ADV",
+      "frequency_count": 28776,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 447,
+      "source_rank": 472,
+      "word": "anfangen",
+      "pos": "VERB",
+      "frequency_count": 28674,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 448,
+      "source_rank": 473,
+      "word": "hund",
+      "pos": "NOUN",
+      "frequency_count": 28609,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 449,
+      "source_rank": 474,
+      "word": "Entschuldigung",
+      "pos": "NOUN",
+      "frequency_count": 28406,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 450,
+      "source_rank": 475,
+      "word": "John",
+      "pos": "PROPN",
+      "frequency_count": 28291,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 451,
+      "source_rank": 476,
+      "word": "aufhören",
+      "pos": "VERB",
+      "frequency_count": 28275,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 452,
+      "source_rank": 477,
+      "word": "funktionieren",
+      "pos": "VERB",
+      "frequency_count": 28145,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 453,
+      "source_rank": 478,
+      "word": "schicken",
+      "pos": "VERB",
+      "frequency_count": 28104,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 454,
+      "source_rank": 479,
+      "word": "typ",
+      "pos": "NOUN",
+      "frequency_count": 28058,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 455,
+      "source_rank": 480,
+      "word": "äh",
+      "pos": "INTJ",
+      "frequency_count": 27883,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 456,
+      "source_rank": 481,
+      "word": "fliegen",
+      "pos": "VERB",
+      "frequency_count": 27767,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 457,
+      "source_rank": 482,
+      "word": "frei",
+      "pos": "ADV",
+      "frequency_count": 27758,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 458,
+      "source_rank": 483,
+      "word": "geschehen",
+      "pos": "VERB",
+      "frequency_count": 27715,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 459,
+      "source_rank": 484,
+      "word": "eu",
+      "pos": "ADV",
+      "frequency_count": 27634,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 460,
+      "source_rank": 485,
+      "word": "Captain",
+      "pos": "PROPN",
+      "frequency_count": 27491,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 461,
+      "source_rank": 486,
+      "word": "falls",
+      "pos": "SCONJ",
+      "frequency_count": 27447,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 462,
+      "source_rank": 487,
+      "word": "bloß",
+      "pos": "ADV",
+      "frequency_count": 27288,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 463,
+      "source_rank": 488,
+      "word": "unten",
+      "pos": "ADV",
+      "frequency_count": 27259,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 464,
+      "source_rank": 489,
+      "word": "schießen",
+      "pos": "VERB",
+      "frequency_count": 27125,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 465,
+      "source_rank": 490,
+      "word": "Mensch",
+      "pos": "NOUN",
+      "frequency_count": 27093,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 466,
+      "source_rank": 491,
+      "word": "folgen",
+      "pos": "VERB",
+      "frequency_count": 26855,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 467,
+      "source_rank": 492,
+      "word": "Sorge",
+      "pos": "NOUN",
+      "frequency_count": 26812,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 468,
+      "source_rank": 493,
+      "word": "wohnen",
+      "pos": "VERB",
+      "frequency_count": 26717,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 469,
+      "source_rank": 494,
+      "word": "Jack",
+      "pos": "NOUN",
+      "frequency_count": 26567,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 470,
+      "source_rank": 495,
+      "word": "einige",
+      "pos": "PRON",
+      "frequency_count": 26477,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 471,
+      "source_rank": 496,
+      "word": "dies",
+      "pos": "PRON",
+      "frequency_count": 26436,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 472,
+      "source_rank": 497,
+      "word": "wünschen",
+      "pos": "VERB",
+      "frequency_count": 26401,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 473,
+      "source_rank": 498,
+      "word": "euer",
+      "pos": "DET",
+      "frequency_count": 26390,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 474,
+      "source_rank": 499,
+      "word": "ding",
+      "pos": "VERB",
+      "frequency_count": 26389,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 475,
+      "source_rank": 500,
+      "word": "unseren",
+      "pos": "DET",
+      "frequency_count": 26378,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 476,
+      "source_rank": 501,
+      "word": "verdienen",
+      "pos": "VERB",
+      "frequency_count": 26375,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 477,
+      "source_rank": 502,
+      "word": "Blut",
+      "pos": "NOUN",
+      "frequency_count": 26293,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 478,
+      "source_rank": 503,
+      "word": "ehrlich",
+      "pos": "ADV",
+      "frequency_count": 26290,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 479,
+      "source_rank": 504,
+      "word": "eltern",
+      "pos": "NOUN",
+      "frequency_count": 26221,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 480,
+      "source_rank": 505,
+      "word": "nummer",
+      "pos": "NOUN",
+      "frequency_count": 26141,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 481,
+      "source_rank": 506,
+      "word": "Herz",
+      "pos": "NOUN",
+      "frequency_count": 26008,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 482,
+      "source_rank": 507,
+      "word": "kämpfen",
+      "pos": "VERB",
+      "frequency_count": 25827,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 483,
+      "source_rank": 508,
+      "word": "Film",
+      "pos": "NOUN",
+      "frequency_count": 25821,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 484,
+      "source_rank": 509,
+      "word": "beginnen",
+      "pos": "VERB",
+      "frequency_count": 25805,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 485,
+      "source_rank": 511,
+      "word": "drauf",
+      "pos": "ADV",
+      "frequency_count": 25564,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 486,
+      "source_rank": 512,
+      "word": "papa",
+      "pos": "NOUN",
+      "frequency_count": 25454,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 487,
+      "source_rank": 513,
+      "word": "irgendwie",
+      "pos": "ADV",
+      "frequency_count": 25378,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 488,
+      "source_rank": 514,
+      "word": "aussehen",
+      "pos": "VERB",
+      "frequency_count": 25364,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 489,
+      "source_rank": 515,
+      "word": "arsch",
+      "pos": "NOUN",
+      "frequency_count": 25210,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 490,
+      "source_rank": 516,
+      "word": "fest",
+      "pos": "ADV",
+      "frequency_count": 25199,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 491,
+      "source_rank": 517,
+      "word": "Platz",
+      "pos": "NOUN",
+      "frequency_count": 25121,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 492,
+      "source_rank": 518,
+      "word": "kaum",
+      "pos": "ADV",
+      "frequency_count": 25058,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 493,
+      "source_rank": 519,
+      "word": "irgendwas",
+      "pos": "PRON",
+      "frequency_count": 24950,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 494,
+      "source_rank": 520,
+      "word": "singen",
+      "pos": "VERB",
+      "frequency_count": 24946,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 495,
+      "source_rank": 522,
+      "word": "sondern",
+      "pos": "CCONJ",
+      "frequency_count": 24687,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 496,
+      "source_rank": 523,
+      "word": "telefon",
+      "pos": "NOUN",
+      "frequency_count": 24673,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 497,
+      "source_rank": 524,
+      "word": "junge",
+      "pos": "NOUN",
+      "frequency_count": 24647,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 498,
+      "source_rank": 525,
+      "word": "werfen",
+      "pos": "VERB",
+      "frequency_count": 24642,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 499,
+      "source_rank": 526,
+      "word": "öffnen",
+      "pos": "VERB",
+      "frequency_count": 24618,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 500,
+      "source_rank": 528,
+      "word": "verstecken",
+      "pos": "VERB",
+      "frequency_count": 24581,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 501,
+      "source_rank": 529,
+      "word": "hübsch",
+      "pos": "ADJ",
+      "frequency_count": 24566,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 502,
+      "source_rank": 530,
+      "word": "erledigen",
+      "pos": "VERB",
+      "frequency_count": 24429,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 503,
+      "source_rank": 531,
+      "word": "wohin",
+      "pos": "ADV",
+      "frequency_count": 24373,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 504,
+      "source_rank": 532,
+      "word": "außer",
+      "pos": "ADP",
+      "frequency_count": 24306,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 505,
+      "source_rank": 533,
+      "word": "entscheiden",
+      "pos": "VERB",
+      "frequency_count": 24300,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 506,
+      "source_rank": 534,
+      "word": "brechen",
+      "pos": "VERB",
+      "frequency_count": 24219,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 507,
+      "source_rank": 535,
+      "word": "erfahren",
+      "pos": "VERB",
+      "frequency_count": 24165,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 508,
+      "source_rank": 536,
+      "word": "zuerst",
+      "pos": "ADV",
+      "frequency_count": 24005,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 509,
+      "source_rank": 537,
+      "word": "wahrscheinlich",
+      "pos": "ADV",
+      "frequency_count": 23968,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 510,
+      "source_rank": 538,
+      "word": "verletzen",
+      "pos": "VERB",
+      "frequency_count": 23957,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 511,
+      "source_rank": 539,
+      "word": "dauern",
+      "pos": "VERB",
+      "frequency_count": 23674,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 512,
+      "source_rank": 540,
+      "word": "König",
+      "pos": "NOUN",
+      "frequency_count": 23663,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 513,
+      "source_rank": 541,
+      "word": "froh",
+      "pos": "ADJ",
+      "frequency_count": 23637,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 514,
+      "source_rank": 542,
+      "word": "fehler",
+      "pos": "NOUN",
+      "frequency_count": 23593,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 515,
+      "source_rank": 543,
+      "word": "Antwort",
+      "pos": "NOUN",
+      "frequency_count": 23423,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 516,
+      "source_rank": 544,
+      "word": "dame",
+      "pos": "NOUN",
+      "frequency_count": 23405,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 517,
+      "source_rank": 545,
+      "word": "dollar",
+      "pos": "NOUN",
+      "frequency_count": 23404,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 518,
+      "source_rank": 546,
+      "word": "straße",
+      "pos": "NOUN",
+      "frequency_count": 23392,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 519,
+      "source_rank": 547,
+      "word": "willkommen",
+      "pos": "ADV",
+      "frequency_count": 23375,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 520,
+      "source_rank": 548,
+      "word": "hierher",
+      "pos": "ADV",
+      "frequency_count": 23229,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 521,
+      "source_rank": 549,
+      "word": "schließen",
+      "pos": "VERB",
+      "frequency_count": 23190,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 522,
+      "source_rank": 550,
+      "word": "büro",
+      "pos": "NOUN",
+      "frequency_count": 23116,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 523,
+      "source_rank": 551,
+      "word": "vorstellen",
+      "pos": "VERB",
+      "frequency_count": 23108,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 524,
+      "source_rank": 552,
+      "word": "wär",
+      "pos": "VERB",
+      "frequency_count": 23099,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 525,
+      "source_rank": 553,
+      "word": "leicht",
+      "pos": "ADV",
+      "frequency_count": 22926,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 526,
+      "source_rank": 554,
+      "word": "bewegen",
+      "pos": "VERB",
+      "frequency_count": 22831,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 527,
+      "source_rank": 555,
+      "word": "Pass",
+      "pos": "PROPN",
+      "frequency_count": 22790,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 528,
+      "source_rank": 556,
+      "word": "hängen",
+      "pos": "VERB",
+      "frequency_count": 22773,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 529,
+      "source_rank": 557,
+      "word": "Menge",
+      "pos": "NOUN",
+      "frequency_count": 22618,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 530,
+      "source_rank": 558,
+      "word": "langsam",
+      "pos": "ADV",
+      "frequency_count": 22581,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 531,
+      "source_rank": 559,
+      "word": "bereits",
+      "pos": "ADV",
+      "frequency_count": 22535,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 532,
+      "source_rank": 560,
+      "word": "stück",
+      "pos": "NOUN",
+      "frequency_count": 22444,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 533,
+      "source_rank": 561,
+      "word": "behalten",
+      "pos": "VERB",
+      "frequency_count": 22391,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 534,
+      "source_rank": 562,
+      "word": "erkennen",
+      "pos": "VERB",
+      "frequency_count": 22379,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 535,
+      "source_rank": 563,
+      "word": "zahlen",
+      "pos": "VERB",
+      "frequency_count": 22163,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 536,
+      "source_rank": 564,
+      "word": "cool",
+      "pos": "ADJ",
+      "frequency_count": 22000,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 537,
+      "source_rank": 565,
+      "word": "Ruf",
+      "pos": "NOUN",
+      "frequency_count": 21947,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 538,
+      "source_rank": 566,
+      "word": "leider",
+      "pos": "ADV",
+      "frequency_count": 21867,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 539,
+      "source_rank": 567,
+      "word": "foto",
+      "pos": "NOUN",
+      "frequency_count": 21751,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 540,
+      "source_rank": 568,
+      "word": "million",
+      "pos": "NOUN",
+      "frequency_count": 21748,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 541,
+      "source_rank": 570,
+      "word": "hölle",
+      "pos": "NOUN",
+      "frequency_count": 21711,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 542,
+      "source_rank": 571,
+      "word": "ansehen",
+      "pos": "VERB",
+      "frequency_count": 21592,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 543,
+      "source_rank": 572,
+      "word": "kumpel",
+      "pos": "NOUN",
+      "frequency_count": 21529,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 544,
+      "source_rank": 573,
+      "word": "trotzdem",
+      "pos": "ADV",
+      "frequency_count": 21476,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 545,
+      "source_rank": 574,
+      "word": "Doktor",
+      "pos": "NOUN",
+      "frequency_count": 21392,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 546,
+      "source_rank": 575,
+      "word": "tja",
+      "pos": "INTJ",
+      "frequency_count": 21330,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 547,
+      "source_rank": 576,
+      "word": "new",
+      "pos": "ADJ",
+      "frequency_count": 21321,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 548,
+      "source_rank": 577,
+      "word": "voll",
+      "pos": "ADV",
+      "frequency_count": 21320,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 549,
+      "source_rank": 578,
+      "word": "fehlen",
+      "pos": "VERB",
+      "frequency_count": 21309,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 550,
+      "source_rank": 579,
+      "word": "idiot",
+      "pos": "NOUN",
+      "frequency_count": 21191,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 551,
+      "source_rank": 580,
+      "word": "überall",
+      "pos": "ADV",
+      "frequency_count": 21161,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 552,
+      "source_rank": 581,
+      "word": "direkt",
+      "pos": "ADV",
+      "frequency_count": 21011,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 553,
+      "source_rank": 582,
+      "word": "Schiff",
+      "pos": "VERB",
+      "frequency_count": 20825,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 554,
+      "source_rank": 583,
+      "word": "zerstören",
+      "pos": "VERB",
+      "frequency_count": 20789,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 555,
+      "source_rank": 584,
+      "word": "Bild",
+      "pos": "NOUN",
+      "frequency_count": 20775,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 556,
+      "source_rank": 585,
+      "word": "laden",
+      "pos": "VERB",
+      "frequency_count": 20665,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 557,
+      "source_rank": 586,
+      "word": "danach",
+      "pos": "ADV",
+      "frequency_count": 20649,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 558,
+      "source_rank": 587,
+      "word": "deswegen",
+      "pos": "ADV",
+      "frequency_count": 20564,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 559,
+      "source_rank": 588,
+      "word": "Wow",
+      "pos": "PROPN",
+      "frequency_count": 20470,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 560,
+      "source_rank": 589,
+      "word": "hm",
+      "pos": "NOUN",
+      "frequency_count": 20416,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 561,
+      "source_rank": 590,
+      "word": "Feuer",
+      "pos": "NOUN",
+      "frequency_count": 20404,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 562,
+      "source_rank": 591,
+      "word": "alleine",
+      "pos": "ADV",
+      "frequency_count": 20359,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 563,
+      "source_rank": 592,
+      "word": "völlig",
+      "pos": "ADV",
+      "frequency_count": 20317,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 564,
+      "source_rank": 593,
+      "word": "ehren",
+      "pos": "VERB",
+      "frequency_count": 20301,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 565,
+      "source_rank": 594,
+      "word": "party",
+      "pos": "NOUN",
+      "frequency_count": 20226,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 566,
+      "source_rank": 595,
+      "word": "Stelle",
+      "pos": "NOUN",
+      "frequency_count": 20224,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 567,
+      "source_rank": 596,
+      "word": "kaffee",
+      "pos": "NOUN",
+      "frequency_count": 20108,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 568,
+      "source_rank": 597,
+      "word": "herausfinden",
+      "pos": "VERB",
+      "frequency_count": 20080,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 569,
+      "source_rank": 598,
+      "word": "bauen",
+      "pos": "VERB",
+      "frequency_count": 20030,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 570,
+      "source_rank": 599,
+      "word": "person",
+      "pos": "NOUN",
+      "frequency_count": 20028,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 571,
+      "source_rank": 600,
+      "word": "luft",
+      "pos": "NOUN",
+      "frequency_count": 20015,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 572,
+      "source_rank": 603,
+      "word": "lügen",
+      "pos": "VERB",
+      "frequency_count": 19462,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 573,
+      "source_rank": 604,
+      "word": "Suche",
+      "pos": "NOUN",
+      "frequency_count": 19440,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 574,
+      "source_rank": 605,
+      "word": "zwar",
+      "pos": "ADV",
+      "frequency_count": 19381,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 575,
+      "source_rank": 606,
+      "word": "drehen",
+      "pos": "VERB",
+      "frequency_count": 19315,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 576,
+      "source_rank": 607,
+      "word": "Buch",
+      "pos": "NOUN",
+      "frequency_count": 19306,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 577,
+      "source_rank": 608,
+      "word": "gefährlich",
+      "pos": "ADJ",
+      "frequency_count": 19304,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 578,
+      "source_rank": 609,
+      "word": "krank",
+      "pos": "ADV",
+      "frequency_count": 19265,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 579,
+      "source_rank": 610,
+      "word": "witz",
+      "pos": "NOUN",
+      "frequency_count": 19232,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 580,
+      "source_rank": 611,
+      "word": "onkel",
+      "pos": "NOUN",
+      "frequency_count": 19192,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 581,
+      "source_rank": 612,
+      "word": "komisch",
+      "pos": "ADJ",
+      "frequency_count": 19148,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 582,
+      "source_rank": 614,
+      "word": "wert",
+      "pos": "ADV",
+      "frequency_count": 19128,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 583,
+      "source_rank": 615,
+      "word": "Arzt",
+      "pos": "NOUN",
+      "frequency_count": 19080,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 584,
+      "source_rank": 616,
+      "word": "lustig",
+      "pos": "ADJ",
+      "frequency_count": 19080,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 585,
+      "source_rank": 617,
+      "word": "stehlen",
+      "pos": "VERB",
+      "frequency_count": 18903,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 586,
+      "source_rank": 618,
+      "word": "Sinn",
+      "pos": "NOUN",
+      "frequency_count": 18902,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 587,
+      "source_rank": 619,
+      "word": "erreichen",
+      "pos": "VERB",
+      "frequency_count": 18835,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 588,
+      "source_rank": 620,
+      "word": "Super",
+      "pos": "PROPN",
+      "frequency_count": 18808,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 589,
+      "source_rank": 621,
+      "word": "übernehmen",
+      "pos": "VERB",
+      "frequency_count": 18754,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 590,
+      "source_rank": 622,
+      "word": "Sam",
+      "pos": "PROPN",
+      "frequency_count": 18717,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 591,
+      "source_rank": 623,
+      "word": "treten",
+      "pos": "VERB",
+      "frequency_count": 18635,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 592,
+      "source_rank": 624,
+      "word": "total",
+      "pos": "ADV",
+      "frequency_count": 18569,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 593,
+      "source_rank": 625,
+      "word": "wunderbar",
+      "pos": "ADJ",
+      "frequency_count": 18562,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 594,
+      "source_rank": 626,
+      "word": "nah",
+      "pos": "ADV",
+      "frequency_count": 18554,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 595,
+      "source_rank": 627,
+      "word": "tagen",
+      "pos": "VERB",
+      "frequency_count": 18552,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 596,
+      "source_rank": 628,
+      "word": "körper",
+      "pos": "NOUN",
+      "frequency_count": 18490,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 597,
+      "source_rank": 629,
+      "word": "Wahl",
+      "pos": "NOUN",
+      "frequency_count": 18477,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 598,
+      "source_rank": 630,
+      "word": "kosten",
+      "pos": "VERB",
+      "frequency_count": 18470,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 599,
+      "source_rank": 631,
+      "word": "damals",
+      "pos": "ADV",
+      "frequency_count": 18434,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 600,
+      "source_rank": 632,
+      "word": "stören",
+      "pos": "VERB",
+      "frequency_count": 18306,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 601,
+      "source_rank": 633,
+      "word": "nachdem",
+      "pos": "CCONJ",
+      "frequency_count": 18300,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 602,
+      "source_rank": 634,
+      "word": "Beweis",
+      "pos": "NOUN",
+      "frequency_count": 18268,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 603,
+      "source_rank": 635,
+      "word": "Typ",
+      "pos": "NOUN",
+      "frequency_count": 18217,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 604,
+      "source_rank": 636,
+      "word": "interessiert",
+      "pos": "ADV",
+      "frequency_count": 18211,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 605,
+      "source_rank": 637,
+      "word": "pferd",
+      "pos": "NOUN",
+      "frequency_count": 18187,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 606,
+      "source_rank": 638,
+      "word": "erschießen",
+      "pos": "VERB",
+      "frequency_count": 18179,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 607,
+      "source_rank": 639,
+      "word": "irgendwo",
+      "pos": "ADV",
+      "frequency_count": 18104,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 608,
+      "source_rank": 640,
+      "word": "genauso",
+      "pos": "ADV",
+      "frequency_count": 18069,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 609,
+      "source_rank": 641,
+      "word": "zukunft",
+      "pos": "NOUN",
+      "frequency_count": 17963,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 610,
+      "source_rank": 642,
+      "word": "krankenhaus",
+      "pos": "NOUN",
+      "frequency_count": 17962,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 611,
+      "source_rank": 643,
+      "word": "weniger",
+      "pos": "PRON",
+      "frequency_count": 17950,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 612,
+      "source_rank": 644,
+      "word": "schwören",
+      "pos": "VERB",
+      "frequency_count": 17910,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 613,
+      "source_rank": 645,
+      "word": "gucken",
+      "pos": "VERB",
+      "frequency_count": 17890,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 614,
+      "source_rank": 646,
+      "word": "Licht",
+      "pos": "NOUN",
+      "frequency_count": 17780,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 615,
+      "source_rank": 647,
+      "word": "Himmel",
+      "pos": "NOUN",
+      "frequency_count": 17755,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 616,
+      "source_rank": 648,
+      "word": "nachricht",
+      "pos": "NOUN",
+      "frequency_count": 17710,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 617,
+      "source_rank": 649,
+      "word": "drüben",
+      "pos": "ADV",
+      "frequency_count": 17704,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 618,
+      "source_rank": 650,
+      "word": "bein",
+      "pos": "NOUN",
+      "frequency_count": 17660,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 619,
+      "source_rank": 651,
+      "word": "wohnung",
+      "pos": "NOUN",
+      "frequency_count": 17653,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 620,
+      "source_rank": 652,
+      "word": "beruhigen",
+      "pos": "VERB",
+      "frequency_count": 17645,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 621,
+      "source_rank": 653,
+      "word": "laut",
+      "pos": "ADP",
+      "frequency_count": 17612,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 622,
+      "source_rank": 654,
+      "word": "anwalt",
+      "pos": "NOUN",
+      "frequency_count": 17579,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 623,
+      "source_rank": 655,
+      "word": "daß",
+      "pos": "CCONJ",
+      "frequency_count": 17517,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 624,
+      "source_rank": 656,
+      "word": "Erde",
+      "pos": "PROPN",
+      "frequency_count": 17474,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 625,
+      "source_rank": 657,
+      "word": "dumm",
+      "pos": "ADJ",
+      "frequency_count": 17449,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 626,
+      "source_rank": 658,
+      "word": "agent",
+      "pos": "NOUN",
+      "frequency_count": 17448,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 627,
+      "source_rank": 659,
+      "word": "Schlüssel",
+      "pos": "NOUN",
+      "frequency_count": 17425,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 628,
+      "source_rank": 660,
+      "word": "Rest",
+      "pos": "NOUN",
+      "frequency_count": 17407,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 629,
+      "source_rank": 661,
+      "word": "tanzen",
+      "pos": "VERB",
+      "frequency_count": 17403,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 630,
+      "source_rank": 662,
+      "word": "eher",
+      "pos": "ADV",
+      "frequency_count": 17329,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 631,
+      "source_rank": 663,
+      "word": "team",
+      "pos": "NOUN",
+      "frequency_count": 17283,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 632,
+      "source_rank": 664,
+      "word": "meister",
+      "pos": "PRON",
+      "frequency_count": 17257,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 633,
+      "source_rank": 665,
+      "word": "entscheidung",
+      "pos": "NOUN",
+      "frequency_count": 17250,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 634,
+      "source_rank": 666,
+      "word": "nachdenken",
+      "pos": "VERB",
+      "frequency_count": 17209,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 635,
+      "source_rank": 667,
+      "word": "gefängnis",
+      "pos": "NOUN",
+      "frequency_count": 17175,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 636,
+      "source_rank": 668,
+      "word": "Opfer",
+      "pos": "NOUN",
+      "frequency_count": 17150,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 637,
+      "source_rank": 669,
+      "word": "misen",
+      "pos": "AUX",
+      "frequency_count": 17132,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 638,
+      "source_rank": 670,
+      "word": "mr",
+      "pos": "NOUN",
+      "frequency_count": 17083,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 639,
+      "source_rank": 671,
+      "word": "herr",
+      "pos": "NOUN",
+      "frequency_count": 17004,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 640,
+      "source_rank": 672,
+      "word": "böse",
+      "pos": "ADV",
+      "frequency_count": 16940,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 641,
+      "source_rank": 673,
+      "word": "Versuch",
+      "pos": "NOUN",
+      "frequency_count": 16884,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 642,
+      "source_rank": 674,
+      "word": "wovon",
+      "pos": "ADV",
+      "frequency_count": 16791,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 643,
+      "source_rank": 675,
+      "word": "sobald",
+      "pos": "CCONJ",
+      "frequency_count": 16778,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 644,
+      "source_rank": 676,
+      "word": "selber",
+      "pos": "PRON",
+      "frequency_count": 16764,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 645,
+      "source_rank": 677,
+      "word": "nochmal",
+      "pos": "ADV",
+      "frequency_count": 16749,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 646,
+      "source_rank": 678,
+      "word": "sex",
+      "pos": "NOUN",
+      "frequency_count": 16739,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 647,
+      "source_rank": 679,
+      "word": "beeilen",
+      "pos": "VERB",
+      "frequency_count": 16717,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 648,
+      "source_rank": 680,
+      "word": "weh",
+      "pos": "ADV",
+      "frequency_count": 16694,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 649,
+      "source_rank": 681,
+      "word": "melden",
+      "pos": "VERB",
+      "frequency_count": 16669,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 650,
+      "source_rank": 683,
+      "word": "Klasse",
+      "pos": "NOUN",
+      "frequency_count": 16595,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 651,
+      "source_rank": 685,
+      "word": "hart",
+      "pos": "ADV",
+      "frequency_count": 16572,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 652,
+      "source_rank": 686,
+      "word": "außerdem",
+      "pos": "ADV",
+      "frequency_count": 16556,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 653,
+      "source_rank": 687,
+      "word": "gedanke",
+      "pos": "NOUN",
+      "frequency_count": 16518,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 654,
+      "source_rank": 688,
+      "word": "wenigstens",
+      "pos": "ADV",
+      "frequency_count": 16418,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 655,
+      "source_rank": 689,
+      "word": "arm",
+      "pos": "ADV",
+      "frequency_count": 16396,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 656,
+      "source_rank": 690,
+      "word": "vorsichtig",
+      "pos": "ADV",
+      "frequency_count": 16349,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 657,
+      "source_rank": 691,
+      "word": "hauen",
+      "pos": "VERB",
+      "frequency_count": 16339,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 658,
+      "source_rank": 692,
+      "word": "handy",
+      "pos": "NOUN",
+      "frequency_count": 16337,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 659,
+      "source_rank": 693,
+      "word": "tier",
+      "pos": "NOUN",
+      "frequency_count": 16333,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 660,
+      "source_rank": 694,
+      "word": "daddy",
+      "pos": "PROPN",
+      "frequency_count": 16329,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 661,
+      "source_rank": 695,
+      "word": "stolz",
+      "pos": "ADV",
+      "frequency_count": 16247,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 662,
+      "source_rank": 696,
+      "word": "brief",
+      "pos": "NOUN",
+      "frequency_count": 16228,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 663,
+      "source_rank": 697,
+      "word": "überleben",
+      "pos": "VERB",
+      "frequency_count": 16219,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 664,
+      "source_rank": 698,
+      "word": "boden",
+      "pos": "NOUN",
+      "frequency_count": 16201,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 665,
+      "source_rank": 699,
+      "word": "leuten",
+      "pos": "VERB",
+      "frequency_count": 16172,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 666,
+      "source_rank": 700,
+      "word": "besonders",
+      "pos": "ADV",
+      "frequency_count": 16170,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 667,
+      "source_rank": 701,
+      "word": "regeln",
+      "pos": "VERB",
+      "frequency_count": 16123,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 668,
+      "source_rank": 702,
+      "word": "Schätz",
+      "pos": "NOUN",
+      "frequency_count": 16063,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 669,
+      "source_rank": 703,
+      "word": "solange",
+      "pos": "SCONJ",
+      "frequency_count": 16060,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 670,
+      "source_rank": 704,
+      "word": "bestehen",
+      "pos": "VERB",
+      "frequency_count": 16057,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 671,
+      "source_rank": 705,
+      "word": "general",
+      "pos": "NOUN",
+      "frequency_count": 16044,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 672,
+      "source_rank": 706,
+      "word": "verbringen",
+      "pos": "VERB",
+      "frequency_count": 16015,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 673,
+      "source_rank": 707,
+      "word": "sicherheit",
+      "pos": "NOUN",
+      "frequency_count": 16011,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 674,
+      "source_rank": 708,
+      "word": "beweisen",
+      "pos": "VERB",
+      "frequency_count": 15984,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 675,
+      "source_rank": 709,
+      "word": "boss",
+      "pos": "NOUN",
+      "frequency_count": 15983,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 676,
+      "source_rank": 710,
+      "word": "großartig",
+      "pos": "ADV",
+      "frequency_count": 15979,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 677,
+      "source_rank": 711,
+      "word": "arschloch",
+      "pos": "NOUN",
+      "frequency_count": 15949,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 678,
+      "source_rank": 712,
+      "word": "beschützen",
+      "pos": "VERB",
+      "frequency_count": 15919,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 679,
+      "source_rank": 713,
+      "word": "verzeihen",
+      "pos": "VERB",
+      "frequency_count": 15844,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 680,
+      "source_rank": 714,
+      "word": "Stimme",
+      "pos": "NOUN",
+      "frequency_count": 15843,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 681,
+      "source_rank": 715,
+      "word": "still",
+      "pos": "ADV",
+      "frequency_count": 15835,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 682,
+      "source_rank": 716,
+      "word": "weinen",
+      "pos": "VERB",
+      "frequency_count": 15832,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 683,
+      "source_rank": 717,
+      "word": "information",
+      "pos": "NOUN",
+      "frequency_count": 15825,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 684,
+      "source_rank": 718,
+      "word": "meinung",
+      "pos": "NOUN",
+      "frequency_count": 15787,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 685,
+      "source_rank": 719,
+      "word": "ma",
+      "pos": "ADV",
+      "frequency_count": 15762,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 686,
+      "source_rank": 720,
+      "word": "derselbe",
+      "pos": "PRON",
+      "frequency_count": 15762,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 687,
+      "source_rank": 721,
+      "word": "Mund",
+      "pos": "NOUN",
+      "frequency_count": 15761,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 688,
+      "source_rank": 722,
+      "word": "steigen",
+      "pos": "VERB",
+      "frequency_count": 15747,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 689,
+      "source_rank": 723,
+      "word": "erwischen",
+      "pos": "VERB",
+      "frequency_count": 15728,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 690,
+      "source_rank": 724,
+      "word": "zeug",
+      "pos": "NOUN",
+      "frequency_count": 15621,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 691,
+      "source_rank": 725,
+      "word": "überlegen",
+      "pos": "VERB",
+      "frequency_count": 15542,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 692,
+      "source_rank": 726,
+      "word": "hasse",
+      "pos": "NOUN",
+      "frequency_count": 15536,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 693,
+      "source_rank": 727,
+      "word": "verlangen",
+      "pos": "VERB",
+      "frequency_count": 15479,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 694,
+      "source_rank": 728,
+      "word": "unglaublich",
+      "pos": "ADV",
+      "frequency_count": 15444,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 695,
+      "source_rank": 729,
+      "word": "verändern",
+      "pos": "VERB",
+      "frequency_count": 15429,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 696,
+      "source_rank": 730,
+      "word": "kennenlernen",
+      "pos": "VERB",
+      "frequency_count": 15424,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 697,
+      "source_rank": 731,
+      "word": "aufhalten",
+      "pos": "VERB",
+      "frequency_count": 15416,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 698,
+      "source_rank": 732,
+      "word": "hotel",
+      "pos": "NOUN",
+      "frequency_count": 15335,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 699,
+      "source_rank": 733,
+      "word": "tisch",
+      "pos": "NOUN",
+      "frequency_count": 15332,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 700,
+      "source_rank": 734,
+      "word": "Mörder",
+      "pos": "NOUN",
+      "frequency_count": 15310,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 701,
+      "source_rank": 735,
+      "word": "Frank",
+      "pos": "PROPN",
+      "frequency_count": 15303,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 702,
+      "source_rank": 736,
+      "word": "süß",
+      "pos": "ADJ",
+      "frequency_count": 15295,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 703,
+      "source_rank": 737,
+      "word": "ähm",
+      "pos": "INTJ",
+      "frequency_count": 15268,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 704,
+      "source_rank": 738,
+      "word": "Geschäft",
+      "pos": "VERB",
+      "frequency_count": 15254,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 705,
+      "source_rank": 739,
+      "word": "Verzeihung",
+      "pos": "NOUN",
+      "frequency_count": 15194,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 706,
+      "source_rank": 740,
+      "word": "mike",
+      "pos": "PROPN",
+      "frequency_count": 15058,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 707,
+      "source_rank": 742,
+      "word": "York",
+      "pos": "PROPN",
+      "frequency_count": 15009,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 708,
+      "source_rank": 743,
+      "word": "vorher",
+      "pos": "ADV",
+      "frequency_count": 15005,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 709,
+      "source_rank": 744,
+      "word": "schluss",
+      "pos": "NOUN",
+      "frequency_count": 15005,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 710,
+      "source_rank": 745,
+      "word": "wunderschön",
+      "pos": "ADJ",
+      "frequency_count": 14996,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 711,
+      "source_rank": 746,
+      "word": "merken",
+      "pos": "VERB",
+      "frequency_count": 14971,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 712,
+      "source_rank": 747,
+      "word": "zählen",
+      "pos": "VERB",
+      "frequency_count": 14940,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 713,
+      "source_rank": 748,
+      "word": "besuchen",
+      "pos": "VERB",
+      "frequency_count": 14929,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 714,
+      "source_rank": 749,
+      "word": "michael",
+      "pos": "PROPN",
+      "frequency_count": 14920,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 715,
+      "source_rank": 750,
+      "word": "schützen",
+      "pos": "VERB",
+      "frequency_count": 14878,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 716,
+      "source_rank": 751,
+      "word": "geschenk",
+      "pos": "NOUN",
+      "frequency_count": 14872,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 717,
+      "source_rank": 752,
+      "word": "perfekt",
+      "pos": "ADV",
+      "frequency_count": 14848,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 718,
+      "source_rank": 753,
+      "word": "verheiraten",
+      "pos": "VERB",
+      "frequency_count": 14826,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 719,
+      "source_rank": 754,
+      "word": "hinten",
+      "pos": "ADV",
+      "frequency_count": 14804,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 720,
+      "source_rank": 755,
+      "word": "heiß",
+      "pos": "ADJ",
+      "frequency_count": 14799,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 721,
+      "source_rank": 756,
+      "word": "schnappen",
+      "pos": "VERB",
+      "frequency_count": 14787,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 722,
+      "source_rank": 757,
+      "word": "soldat",
+      "pos": "NOUN",
+      "frequency_count": 14763,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 723,
+      "source_rank": 758,
+      "word": "besondere",
+      "pos": "ADJ",
+      "frequency_count": 14744,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 724,
+      "source_rank": 760,
+      "word": "nötig",
+      "pos": "ADV",
+      "frequency_count": 14694,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 725,
+      "source_rank": 761,
+      "word": "Schmerz",
+      "pos": "NOUN",
+      "frequency_count": 14687,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 726,
+      "source_rank": 762,
+      "word": "Mord",
+      "pos": "NOUN",
+      "frequency_count": 14671,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 727,
+      "source_rank": 763,
+      "word": "Klappe",
+      "pos": "NOUN",
+      "frequency_count": 14671,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 728,
+      "source_rank": 764,
+      "word": "heraus",
+      "pos": "ADV",
+      "frequency_count": 14613,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 729,
+      "source_rank": 765,
+      "word": "spüren",
+      "pos": "VERB",
+      "frequency_count": 14608,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 730,
+      "source_rank": 766,
+      "word": "tag",
+      "pos": "NOUN",
+      "frequency_count": 14578,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 731,
+      "source_rank": 767,
+      "word": "beziehung",
+      "pos": "NOUN",
+      "frequency_count": 14561,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 732,
+      "source_rank": 768,
+      "word": "unmöglich",
+      "pos": "ADV",
+      "frequency_count": 14555,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 733,
+      "source_rank": 769,
+      "word": "Charlie",
+      "pos": "PROPN",
+      "frequency_count": 14515,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 734,
+      "source_rank": 770,
+      "word": "kampf",
+      "pos": "NOUN",
+      "frequency_count": 14499,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 735,
+      "source_rank": 771,
+      "word": "tatsächlich",
+      "pos": "ADV",
+      "frequency_count": 14483,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 736,
+      "source_rank": 772,
+      "word": "erhalten",
+      "pos": "VERB",
+      "frequency_count": 14471,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 737,
+      "source_rank": 773,
+      "word": "seele",
+      "pos": "NOUN",
+      "frequency_count": 14419,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 738,
+      "source_rank": 774,
+      "word": "Nähe",
+      "pos": "NOUN",
+      "frequency_count": 14368,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 739,
+      "source_rank": 775,
+      "word": "ständig",
+      "pos": "ADJ",
+      "frequency_count": 14345,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 740,
+      "source_rank": 777,
+      "word": "beenden",
+      "pos": "VERB",
+      "frequency_count": 14270,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 741,
+      "source_rank": 778,
+      "word": "plötzlich",
+      "pos": "ADV",
+      "frequency_count": 14269,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 742,
+      "source_rank": 780,
+      "word": "bellen",
+      "pos": "VERB",
+      "frequency_count": 14216,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 743,
+      "source_rank": 781,
+      "word": "rennen",
+      "pos": "VERB",
+      "frequency_count": 14187,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 744,
+      "source_rank": 782,
+      "word": "jemals",
+      "pos": "ADV",
+      "frequency_count": 14154,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 745,
+      "source_rank": 783,
+      "word": "Punkt",
+      "pos": "NOUN",
+      "frequency_count": 14099,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 746,
+      "source_rank": 784,
+      "word": "riechen",
+      "pos": "VERB",
+      "frequency_count": 14098,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 747,
+      "source_rank": 785,
+      "word": "verlieben",
+      "pos": "VERB",
+      "frequency_count": 14070,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 748,
+      "source_rank": 786,
+      "word": "springen",
+      "pos": "VERB",
+      "frequency_count": 14018,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 749,
+      "source_rank": 787,
+      "word": "ha",
+      "pos": "INTJ",
+      "frequency_count": 13954,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 750,
+      "source_rank": 788,
+      "word": "Meister",
+      "pos": "NOUN",
+      "frequency_count": 13869,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 751,
+      "source_rank": 790,
+      "word": "fenster",
+      "pos": "NOUN",
+      "frequency_count": 13800,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 752,
+      "source_rank": 791,
+      "word": "obwohl",
+      "pos": "CCONJ",
+      "frequency_count": 13796,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 753,
+      "source_rank": 792,
+      "word": "überprüfen",
+      "pos": "VERB",
+      "frequency_count": 13793,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 754,
+      "source_rank": 793,
+      "word": "fassen",
+      "pos": "VERB",
+      "frequency_count": 13758,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 755,
+      "source_rank": 794,
+      "word": "wirken",
+      "pos": "VERB",
+      "frequency_count": 13740,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 756,
+      "source_rank": 795,
+      "word": "verpassen",
+      "pos": "VERB",
+      "frequency_count": 13731,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 757,
+      "source_rank": 796,
+      "word": "hassen",
+      "pos": "VERB",
+      "frequency_count": 13720,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 758,
+      "source_rank": 797,
+      "word": "zweiter",
+      "pos": "ADJ",
+      "frequency_count": 13705,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 759,
+      "source_rank": 798,
+      "word": "voller",
+      "pos": "ADP",
+      "frequency_count": 13701,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 760,
+      "source_rank": 799,
+      "word": "unterwegs",
+      "pos": "ADV",
+      "frequency_count": 13693,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 761,
+      "source_rank": 800,
+      "word": "treiben",
+      "pos": "VERB",
+      "frequency_count": 13691,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 762,
+      "source_rank": 801,
+      "word": "antun",
+      "pos": "VERB",
+      "frequency_count": 13690,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 763,
+      "source_rank": 802,
+      "word": "tasche",
+      "pos": "NOUN",
+      "frequency_count": 13685,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 764,
+      "source_rank": 803,
+      "word": "Ärger",
+      "pos": "NOUN",
+      "frequency_count": 13682,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 765,
+      "source_rank": 804,
+      "word": "George",
+      "pos": "PROPN",
+      "frequency_count": 13673,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 766,
+      "source_rank": 805,
+      "word": "dagegen",
+      "pos": "ADV",
+      "frequency_count": 13607,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 767,
+      "source_rank": 806,
+      "word": "zurückkommen",
+      "pos": "VERB",
+      "frequency_count": 13583,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 768,
+      "source_rank": 807,
+      "word": "tom",
+      "pos": "PROPN",
+      "frequency_count": 13560,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 769,
+      "source_rank": 808,
+      "word": "traum",
+      "pos": "NOUN",
+      "frequency_count": 13552,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 770,
+      "source_rank": 809,
+      "word": "verfolgen",
+      "pos": "VERB",
+      "frequency_count": 13523,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 771,
+      "source_rank": 810,
+      "word": "Leiche",
+      "pos": "ADJ",
+      "frequency_count": 13500,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 772,
+      "source_rank": 811,
+      "word": "behandeln",
+      "pos": "VERB",
+      "frequency_count": 13470,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 773,
+      "source_rank": 812,
+      "word": "besorgen",
+      "pos": "VERB",
+      "frequency_count": 13456,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 774,
+      "source_rank": 813,
+      "word": "schulden",
+      "pos": "VERB",
+      "frequency_count": 13445,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 775,
+      "source_rank": 814,
+      "word": "möglichkeit",
+      "pos": "NOUN",
+      "frequency_count": 13435,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 776,
+      "source_rank": 815,
+      "word": "peter",
+      "pos": "PROPN",
+      "frequency_count": 13405,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 777,
+      "source_rank": 816,
+      "word": "wählen",
+      "pos": "VERB",
+      "frequency_count": 13402,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 778,
+      "source_rank": 817,
+      "word": "Zieh",
+      "pos": "NOUN",
+      "frequency_count": 13387,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 779,
+      "source_rank": 818,
+      "word": "erlauben",
+      "pos": "VERB",
+      "frequency_count": 13348,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 780,
+      "source_rank": 819,
+      "word": "atmen",
+      "pos": "VERB",
+      "frequency_count": 13222,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 781,
+      "source_rank": 820,
+      "word": "teilen",
+      "pos": "VERB",
+      "frequency_count": 13207,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 782,
+      "source_rank": 821,
+      "word": "fort",
+      "pos": "ADV",
+      "frequency_count": 13175,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 783,
+      "source_rank": 822,
+      "word": "geist",
+      "pos": "NOUN",
+      "frequency_count": 13123,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 784,
+      "source_rank": 823,
+      "word": "polizist",
+      "pos": "NOUN",
+      "frequency_count": 13117,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 785,
+      "source_rank": 824,
+      "word": "handeln",
+      "pos": "VERB",
+      "frequency_count": 13101,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 786,
+      "source_rank": 825,
+      "word": "verhaften",
+      "pos": "VERB",
+      "frequency_count": 13097,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 787,
+      "source_rank": 826,
+      "word": "gefahr",
+      "pos": "NOUN",
+      "frequency_count": 13071,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 788,
+      "source_rank": 827,
+      "word": "Rum",
+      "pos": "NOUN",
+      "frequency_count": 13071,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 789,
+      "source_rank": 828,
+      "word": "absolut",
+      "pos": "ADV",
+      "frequency_count": 13045,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 790,
+      "source_rank": 829,
+      "word": "hochzeit",
+      "pos": "NOUN",
+      "frequency_count": 13044,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 791,
+      "source_rank": 830,
+      "word": "Mary",
+      "pos": "PROPN",
+      "frequency_count": 13042,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 792,
+      "source_rank": 831,
+      "word": "Augenblick",
+      "pos": "NOUN",
+      "frequency_count": 13032,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 793,
+      "source_rank": 832,
+      "word": "bier",
+      "pos": "NOUN",
+      "frequency_count": 13031,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 794,
+      "source_rank": 833,
+      "word": "Bescheid",
+      "pos": "NOUN",
+      "frequency_count": 13023,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 795,
+      "source_rank": 834,
+      "word": "manch",
+      "pos": "PRON",
+      "frequency_count": 13021,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 796,
+      "source_rank": 835,
+      "word": "planen",
+      "pos": "VERB",
+      "frequency_count": 13006,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 797,
+      "source_rank": 836,
+      "word": "verbindung",
+      "pos": "NOUN",
+      "frequency_count": 12989,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 798,
+      "source_rank": 837,
+      "word": "anfang",
+      "pos": "NOUN",
+      "frequency_count": 12968,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 799,
+      "source_rank": 838,
+      "word": "Ziel",
+      "pos": "NOUN",
+      "frequency_count": 12939,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 800,
+      "source_rank": 839,
+      "word": "david",
+      "pos": "PROPN",
+      "frequency_count": 12879,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 801,
+      "source_rank": 840,
+      "word": "deutsch",
+      "pos": "ADJ",
+      "frequency_count": 12859,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 802,
+      "source_rank": 841,
+      "word": "Bewegung",
+      "pos": "NOUN",
+      "frequency_count": 12855,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 803,
+      "source_rank": 842,
+      "word": "schwierig",
+      "pos": "ADJ",
+      "frequency_count": 12848,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 804,
+      "source_rank": 843,
+      "word": "Schritt",
+      "pos": "NOUN",
+      "frequency_count": 12792,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 805,
+      "source_rank": 845,
+      "word": "schwein",
+      "pos": "NOUN",
+      "frequency_count": 12779,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 806,
+      "source_rank": 846,
+      "word": "annehmen",
+      "pos": "VERB",
+      "frequency_count": 12779,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 807,
+      "source_rank": 847,
+      "word": "unfall",
+      "pos": "NOUN",
+      "frequency_count": 12762,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 808,
+      "source_rank": 848,
+      "word": "überraschen",
+      "pos": "VERB",
+      "frequency_count": 12761,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 809,
+      "source_rank": 849,
+      "word": "rücken",
+      "pos": "VERB",
+      "frequency_count": 12748,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 810,
+      "source_rank": 850,
+      "word": "herkommen",
+      "pos": "VERB",
+      "frequency_count": 12694,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 811,
+      "source_rank": 851,
+      "word": "enden",
+      "pos": "VERB",
+      "frequency_count": 12664,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 812,
+      "source_rank": 853,
+      "word": "jagen",
+      "pos": "VERB",
+      "frequency_count": 12655,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 813,
+      "source_rank": 854,
+      "word": "offen",
+      "pos": "ADV",
+      "frequency_count": 12623,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 814,
+      "source_rank": 855,
+      "word": "bieten",
+      "pos": "VERB",
+      "frequency_count": 12615,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 815,
+      "source_rank": 856,
+      "word": "daten",
+      "pos": "VERB",
+      "frequency_count": 12595,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 816,
+      "source_rank": 857,
+      "word": "schönen",
+      "pos": "VERB",
+      "frequency_count": 12585,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 817,
+      "source_rank": 858,
+      "word": "monsieur",
+      "pos": "NOUN",
+      "frequency_count": 12579,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 818,
+      "source_rank": 859,
+      "word": "Arm",
+      "pos": "NOUN",
+      "frequency_count": 12576,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 819,
+      "source_rank": 860,
+      "word": "leiden",
+      "pos": "VERB",
+      "frequency_count": 12553,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 820,
+      "source_rank": 861,
+      "word": "Partner",
+      "pos": "NOUN",
+      "frequency_count": 12484,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 821,
+      "source_rank": 862,
+      "word": "gesetz",
+      "pos": "NOUN",
+      "frequency_count": 12453,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 822,
+      "source_rank": 863,
+      "word": "bekannt",
+      "pos": "ADV",
+      "frequency_count": 12436,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 823,
+      "source_rank": 865,
+      "word": "herum",
+      "pos": "ADV",
+      "frequency_count": 12404,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 824,
+      "source_rank": 866,
+      "word": "Finger",
+      "pos": "ADV",
+      "frequency_count": 12399,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 825,
+      "source_rank": 867,
+      "word": "einladen",
+      "pos": "VERB",
+      "frequency_count": 12386,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 826,
+      "source_rank": 868,
+      "word": "Rolle",
+      "pos": "NOUN",
+      "frequency_count": 12375,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 827,
+      "source_rank": 869,
+      "word": "Preis",
+      "pos": "NOUN",
+      "frequency_count": 12336,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 828,
+      "source_rank": 870,
+      "word": "max",
+      "pos": "PROPN",
+      "frequency_count": 12310,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 829,
+      "source_rank": 871,
+      "word": "lösen",
+      "pos": "VERB",
+      "frequency_count": 12310,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 830,
+      "source_rank": 872,
+      "word": "paris",
+      "pos": "PROPN",
+      "frequency_count": 12301,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 831,
+      "source_rank": 873,
+      "word": "Wach",
+      "pos": "ADV",
+      "frequency_count": 12280,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 832,
+      "source_rank": 874,
+      "word": "wozu",
+      "pos": "ADV",
+      "frequency_count": 12270,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 833,
+      "source_rank": 875,
+      "word": "feiern",
+      "pos": "VERB",
+      "frequency_count": 12270,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 834,
+      "source_rank": 876,
+      "word": "schuh",
+      "pos": "NOUN",
+      "frequency_count": 12220,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 835,
+      "source_rank": 877,
+      "word": "Chef",
+      "pos": "NOUN",
+      "frequency_count": 12195,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 836,
+      "source_rank": 878,
+      "word": "hoffentlich",
+      "pos": "ADV",
+      "frequency_count": 12163,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 837,
+      "source_rank": 879,
+      "word": "paul",
+      "pos": "PROPN",
+      "frequency_count": 12160,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 838,
+      "source_rank": 880,
+      "word": "zuhause",
+      "pos": "ADV",
+      "frequency_count": 12137,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 839,
+      "source_rank": 881,
+      "word": "beschäftigen",
+      "pos": "VERB",
+      "frequency_count": 12105,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 840,
+      "source_rank": 882,
+      "word": "nutzen",
+      "pos": "VERB",
+      "frequency_count": 12105,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 841,
+      "source_rank": 883,
+      "word": "Reise",
+      "pos": "NOUN",
+      "frequency_count": 12030,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 842,
+      "source_rank": 884,
+      "word": "aufgeben",
+      "pos": "VERB",
+      "frequency_count": 12000,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 843,
+      "source_rank": 885,
+      "word": "irgendwann",
+      "pos": "ADV",
+      "frequency_count": 11991,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 844,
+      "source_rank": 886,
+      "word": "Chffffff",
+      "pos": "PROPN",
+      "frequency_count": 11990,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 845,
+      "source_rank": 887,
+      "word": "alex",
+      "pos": "PROPN",
+      "frequency_count": 11988,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 846,
+      "source_rank": 888,
+      "word": "ermorden",
+      "pos": "VERB",
+      "frequency_count": 11983,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 847,
+      "source_rank": 889,
+      "word": "jedenfalls",
+      "pos": "ADV",
+      "frequency_count": 11973,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 848,
+      "source_rank": 890,
+      "word": "Schreit",
+      "pos": "NOUN",
+      "frequency_count": 11962,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 849,
+      "source_rank": 891,
+      "word": "Tolle",
+      "pos": "VERB",
+      "frequency_count": 11960,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 850,
+      "source_rank": 892,
+      "word": "rüber",
+      "pos": "ADV",
+      "frequency_count": 11953,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 851,
+      "source_rank": 893,
+      "word": "gast",
+      "pos": "NOUN",
+      "frequency_count": 11943,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 852,
+      "source_rank": 894,
+      "word": "Wein",
+      "pos": "NOUN",
+      "frequency_count": 11940,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 853,
+      "source_rank": 895,
+      "word": "stöhnen",
+      "pos": "VERB",
+      "frequency_count": 11939,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 854,
+      "source_rank": 896,
+      "word": "tschüss",
+      "pos": "INTJ",
+      "frequency_count": 11927,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 855,
+      "source_rank": 897,
+      "word": "Raum",
+      "pos": "NOUN",
+      "frequency_count": 11906,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 856,
+      "source_rank": 899,
+      "word": "träumen",
+      "pos": "VERB",
+      "frequency_count": 11895,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 857,
+      "source_rank": 900,
+      "word": "kalt",
+      "pos": "ADV",
+      "frequency_count": 11893,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 858,
+      "source_rank": 901,
+      "word": "reich",
+      "pos": "ADV",
+      "frequency_count": 11880,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 859,
+      "source_rank": 902,
+      "word": "irgendetwas",
+      "pos": "PRON",
+      "frequency_count": 11872,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 860,
+      "source_rank": 903,
+      "word": "Weile",
+      "pos": "VERB",
+      "frequency_count": 11866,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 861,
+      "source_rank": 904,
+      "word": "bisher",
+      "pos": "ADV",
+      "frequency_count": 11864,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 862,
+      "source_rank": 905,
+      "word": "ohr",
+      "pos": "NOUN",
+      "frequency_count": 11850,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 863,
+      "source_rank": 906,
+      "word": "unbedingt",
+      "pos": "ADV",
+      "frequency_count": 11830,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 864,
+      "source_rank": 907,
+      "word": "Zug",
+      "pos": "NOUN",
+      "frequency_count": 11819,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 865,
+      "source_rank": 908,
+      "word": "sekunden",
+      "pos": "VERB",
+      "frequency_count": 11789,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 866,
+      "source_rank": 909,
+      "word": "wofür",
+      "pos": "ADV",
+      "frequency_count": 11771,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 867,
+      "source_rank": 910,
+      "word": "kontrolle",
+      "pos": "NOUN",
+      "frequency_count": 11758,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 868,
+      "source_rank": 911,
+      "word": "nen",
+      "pos": "VERB",
+      "frequency_count": 11756,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 869,
+      "source_rank": 912,
+      "word": "kamera",
+      "pos": "NOUN",
+      "frequency_count": 11735,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 870,
+      "source_rank": 914,
+      "word": "beispiel",
+      "pos": "NOUN",
+      "frequency_count": 11699,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 871,
+      "source_rank": 917,
+      "word": "überzeugen",
+      "pos": "VERB",
+      "frequency_count": 11636,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 872,
+      "source_rank": 918,
+      "word": "müde",
+      "pos": "ADV",
+      "frequency_count": 11612,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 873,
+      "source_rank": 919,
+      "word": "bank",
+      "pos": "NOUN",
+      "frequency_count": 11612,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 874,
+      "source_rank": 920,
+      "word": "harry",
+      "pos": "PROPN",
+      "frequency_count": 11596,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 875,
+      "source_rank": 921,
+      "word": "volk",
+      "pos": "NOUN",
+      "frequency_count": 11584,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 876,
+      "source_rank": 922,
+      "word": "überraschung",
+      "pos": "NOUN",
+      "frequency_count": 11576,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 877,
+      "source_rank": 923,
+      "word": "beobachten",
+      "pos": "VERB",
+      "frequency_count": 11554,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 878,
+      "source_rank": 924,
+      "word": "flugzeug",
+      "pos": "NOUN",
+      "frequency_count": 11541,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 879,
+      "source_rank": 925,
+      "word": "tante",
+      "pos": "NOUN",
+      "frequency_count": 11538,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 880,
+      "source_rank": 926,
+      "word": "landen",
+      "pos": "VERB",
+      "frequency_count": 11529,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 881,
+      "source_rank": 927,
+      "word": "dahin",
+      "pos": "ADV",
+      "frequency_count": 11442,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 882,
+      "source_rank": 928,
+      "word": "Kontakt",
+      "pos": "NOUN",
+      "frequency_count": 11439,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 883,
+      "source_rank": 929,
+      "word": "Lady",
+      "pos": "NOUN",
+      "frequency_count": 11422,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 884,
+      "source_rank": 930,
+      "word": "dasselbe",
+      "pos": "PRON",
+      "frequency_count": 11414,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 885,
+      "source_rank": 931,
+      "word": "herzen",
+      "pos": "VERB",
+      "frequency_count": 11392,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 886,
+      "source_rank": 932,
+      "word": "wütend",
+      "pos": "ADV",
+      "frequency_count": 11387,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 887,
+      "source_rank": 933,
+      "word": "schreien",
+      "pos": "VERB",
+      "frequency_count": 11383,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 888,
+      "source_rank": 934,
+      "word": "Weise",
+      "pos": "NOUN",
+      "frequency_count": 11381,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 889,
+      "source_rank": 935,
+      "word": "zwingen",
+      "pos": "VERB",
+      "frequency_count": 11378,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 890,
+      "source_rank": 936,
+      "word": "leisten",
+      "pos": "VERB",
+      "frequency_count": 11366,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 891,
+      "source_rank": 937,
+      "word": "darin",
+      "pos": "ADV",
+      "frequency_count": 11359,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 892,
+      "source_rank": 938,
+      "word": "gebären",
+      "pos": "VERB",
+      "frequency_count": 11345,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 893,
+      "source_rank": 939,
+      "word": "gott",
+      "pos": "ADJ",
+      "frequency_count": 11340,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 894,
+      "source_rank": 940,
+      "word": "aufpassen",
+      "pos": "VERB",
+      "frequency_count": 11296,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 895,
+      "source_rank": 941,
+      "word": "Vorsicht",
+      "pos": "NOUN",
+      "frequency_count": 11286,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 896,
+      "source_rank": 942,
+      "word": "ben",
+      "pos": "PROPN",
+      "frequency_count": 11273,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 897,
+      "source_rank": 943,
+      "word": "zumindest",
+      "pos": "ADV",
+      "frequency_count": 11261,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 898,
+      "source_rank": 944,
+      "word": "vermisst",
+      "pos": "VERB",
+      "frequency_count": 11248,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 899,
+      "source_rank": 945,
+      "word": "tief",
+      "pos": "ADV",
+      "frequency_count": 11225,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 900,
+      "source_rank": 946,
+      "word": "trennen",
+      "pos": "VERB",
+      "frequency_count": 11225,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 901,
+      "source_rank": 947,
+      "word": "Richtung",
+      "pos": "NOUN",
+      "frequency_count": 11223,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 902,
+      "source_rank": 948,
+      "word": "Lage",
+      "pos": "NOUN",
+      "frequency_count": 11222,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 903,
+      "source_rank": 949,
+      "word": "gericht",
+      "pos": "NOUN",
+      "frequency_count": 11221,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 904,
+      "source_rank": 950,
+      "word": "sowieso",
+      "pos": "ADV",
+      "frequency_count": 11215,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 905,
+      "source_rank": 952,
+      "word": "Kraft",
+      "pos": "ADP",
+      "frequency_count": 11202,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 906,
+      "source_rank": 953,
+      "word": "normal",
+      "pos": "ADV",
+      "frequency_count": 11201,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 907,
+      "source_rank": 954,
+      "word": "Lauf",
+      "pos": "ADV",
+      "frequency_count": 11188,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 908,
+      "source_rank": 955,
+      "word": "erwähnen",
+      "pos": "VERB",
+      "frequency_count": 11184,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 909,
+      "source_rank": 956,
+      "word": "feuern",
+      "pos": "VERB",
+      "frequency_count": 11173,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 910,
+      "source_rank": 957,
+      "word": "bar",
+      "pos": "ADV",
+      "frequency_count": 11161,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 911,
+      "source_rank": 958,
+      "word": "gesund",
+      "pos": "ADJ",
+      "frequency_count": 11154,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 912,
+      "source_rank": 959,
+      "word": "bulle",
+      "pos": "NOUN",
+      "frequency_count": 11116,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 913,
+      "source_rank": 960,
+      "word": "Hunger",
+      "pos": "NOUN",
+      "frequency_count": 11083,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 914,
+      "source_rank": 961,
+      "word": "kaputt",
+      "pos": "ADJ",
+      "frequency_count": 11034,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 915,
+      "source_rank": 962,
+      "word": "erinnerung",
+      "pos": "NOUN",
+      "frequency_count": 11020,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 916,
+      "source_rank": 963,
+      "word": "wald",
+      "pos": "NOUN",
+      "frequency_count": 11017,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 917,
+      "source_rank": 964,
+      "word": "geburtstag",
+      "pos": "NOUN",
+      "frequency_count": 11013,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 918,
+      "source_rank": 965,
+      "word": "hoffnung",
+      "pos": "NOUN",
+      "frequency_count": 10972,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 919,
+      "source_rank": 966,
+      "word": "angreifen",
+      "pos": "VERB",
+      "frequency_count": 10958,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 920,
+      "source_rank": 967,
+      "word": "warnen",
+      "pos": "VERB",
+      "frequency_count": 10953,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 921,
+      "source_rank": 968,
+      "word": "kirche",
+      "pos": "NOUN",
+      "frequency_count": 10946,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 922,
+      "source_rank": 969,
+      "word": "Frieden",
+      "pos": "NOUN",
+      "frequency_count": 10944,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 923,
+      "source_rank": 970,
+      "word": "Liste",
+      "pos": "NOUN",
+      "frequency_count": 10890,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 924,
+      "source_rank": 971,
+      "word": "neben",
+      "pos": "ADP",
+      "frequency_count": 10880,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 925,
+      "source_rank": 972,
+      "word": "drücken",
+      "pos": "VERB",
+      "frequency_count": 10880,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 926,
+      "source_rank": 973,
+      "word": "firma",
+      "pos": "NOUN",
+      "frequency_count": 10871,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 927,
+      "source_rank": 974,
+      "word": "witzig",
+      "pos": "ADJ",
+      "frequency_count": 10866,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 928,
+      "source_rank": 975,
+      "word": "schrecklich",
+      "pos": "ADV",
+      "frequency_count": 10850,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 929,
+      "source_rank": 976,
+      "word": "major",
+      "pos": "NOUN",
+      "frequency_count": 10816,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 930,
+      "source_rank": 977,
+      "word": "derjenige",
+      "pos": "PRON",
+      "frequency_count": 10808,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 931,
+      "source_rank": 978,
+      "word": "wunder",
+      "pos": "NOUN",
+      "frequency_count": 10790,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 932,
+      "source_rank": 979,
+      "word": "Boot",
+      "pos": "NOUN",
+      "frequency_count": 10787,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 933,
+      "source_rank": 980,
+      "word": "seltsam",
+      "pos": "ADV",
+      "frequency_count": 10778,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 934,
+      "source_rank": 981,
+      "word": "fürcht",
+      "pos": "ADJ",
+      "frequency_count": 10771,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 935,
+      "source_rank": 982,
+      "word": "majestät",
+      "pos": "NOUN",
+      "frequency_count": 10751,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 936,
+      "source_rank": 983,
+      "word": "klingeln",
+      "pos": "VERB",
+      "frequency_count": 10744,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 937,
+      "source_rank": 984,
+      "word": "entspannen",
+      "pos": "VERB",
+      "frequency_count": 10727,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 938,
+      "source_rank": 985,
+      "word": "sauer",
+      "pos": "ADV",
+      "frequency_count": 10704,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 939,
+      "source_rank": 986,
+      "word": "vermutlich",
+      "pos": "ADV",
+      "frequency_count": 10690,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 940,
+      "source_rank": 987,
+      "word": "computer",
+      "pos": "NOUN",
+      "frequency_count": 10656,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 941,
+      "source_rank": 988,
+      "word": "trauen",
+      "pos": "VERB",
+      "frequency_count": 10643,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 942,
+      "source_rank": 989,
+      "word": "glas",
+      "pos": "NOUN",
+      "frequency_count": 10638,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 943,
+      "source_rank": 990,
+      "word": "de",
+      "pos": "PROPN",
+      "frequency_count": 10624,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 944,
+      "source_rank": 991,
+      "word": "--",
+      "pos": "PROPN",
+      "frequency_count": 10618,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 945,
+      "source_rank": 992,
+      "word": "links",
+      "pos": "ADV",
+      "frequency_count": 10601,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 946,
+      "source_rank": 993,
+      "word": "ergeben",
+      "pos": "VERB",
+      "frequency_count": 10580,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 947,
+      "source_rank": 994,
+      "word": "colonel",
+      "pos": "NOUN",
+      "frequency_count": 10567,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 948,
+      "source_rank": 995,
+      "word": "Bericht",
+      "pos": "NOUN",
+      "frequency_count": 10560,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 949,
+      "source_rank": 996,
+      "word": "unschuldig",
+      "pos": "ADJ",
+      "frequency_count": 10552,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 950,
+      "source_rank": 997,
+      "word": "nase",
+      "pos": "NOUN",
+      "frequency_count": 10526,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 951,
+      "source_rank": 998,
+      "word": "menschlich",
+      "pos": "ADJ",
+      "frequency_count": 10516,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 952,
+      "source_rank": 999,
+      "word": "hose",
+      "pos": "NOUN",
+      "frequency_count": 10501,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 953,
+      "source_rank": 1000,
+      "word": "madame",
+      "pos": "NOUN",
+      "frequency_count": 10500,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 954,
+      "source_rank": 1001,
+      "word": "anruf",
+      "pos": "NOUN",
+      "frequency_count": 10499,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 955,
+      "source_rank": 1002,
+      "word": "erleben",
+      "pos": "VERB",
+      "frequency_count": 10496,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 956,
+      "source_rank": 1003,
+      "word": "mitbringen",
+      "pos": "VERB",
+      "frequency_count": 10483,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 957,
+      "source_rank": 1004,
+      "word": "aufnehmen",
+      "pos": "VERB",
+      "frequency_count": 10467,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 958,
+      "source_rank": 1005,
+      "word": "verran",
+      "pos": "VERB",
+      "frequency_count": 10465,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 959,
+      "source_rank": 1006,
+      "word": "Befehl",
+      "pos": "NOUN",
+      "frequency_count": 10449,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 960,
+      "source_rank": 1007,
+      "word": "sekunde",
+      "pos": "NOUN",
+      "frequency_count": 10449,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 961,
+      "source_rank": 1008,
+      "word": "regierung",
+      "pos": "NOUN",
+      "frequency_count": 10423,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 962,
+      "source_rank": 1009,
+      "word": "wettn",
+      "pos": "VERB",
+      "frequency_count": 10412,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 963,
+      "source_rank": 1010,
+      "word": "show",
+      "pos": "NOUN",
+      "frequency_count": 10390,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 964,
+      "source_rank": 1011,
+      "word": "James",
+      "pos": "PROPN",
+      "frequency_count": 10388,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 965,
+      "source_rank": 1013,
+      "word": "mitnehmen",
+      "pos": "VERB",
+      "frequency_count": 10379,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 966,
+      "source_rank": 1014,
+      "word": "zeit",
+      "pos": "NOUN",
+      "frequency_count": 10374,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 967,
+      "source_rank": 1016,
+      "word": "traurig",
+      "pos": "ADV",
+      "frequency_count": 10364,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 968,
+      "source_rank": 1017,
+      "word": "karte",
+      "pos": "NOUN",
+      "frequency_count": 10359,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 969,
+      "source_rank": 1018,
+      "word": "ausgehen",
+      "pos": "VERB",
+      "frequency_count": 10357,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 970,
+      "source_rank": 1019,
+      "word": "Nachricht",
+      "pos": "NOUN",
+      "frequency_count": 10341,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 971,
+      "source_rank": 1020,
+      "word": "vorbereiten",
+      "pos": "VERB",
+      "frequency_count": 10293,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 972,
+      "source_rank": 1021,
+      "word": "güte",
+      "pos": "NOUN",
+      "frequency_count": 10288,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 973,
+      "source_rank": 1022,
+      "word": "geraten",
+      "pos": "VERB",
+      "frequency_count": 10285,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 974,
+      "source_rank": 1023,
+      "word": "diesmal",
+      "pos": "ADV",
+      "frequency_count": 10282,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 975,
+      "source_rank": 1024,
+      "word": "schade",
+      "pos": "ADV",
+      "frequency_count": 10280,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 976,
+      "source_rank": 1025,
+      "word": "entdecken",
+      "pos": "VERB",
+      "frequency_count": 10278,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 977,
+      "source_rank": 1026,
+      "word": "persönlich",
+      "pos": "ADV",
+      "frequency_count": 10269,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 978,
+      "source_rank": 1027,
+      "word": "leiben",
+      "pos": "VERB",
+      "frequency_count": 10252,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 979,
+      "source_rank": 1028,
+      "word": "ankommen",
+      "pos": "VERB",
+      "frequency_count": 10244,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 980,
+      "source_rank": 1030,
+      "word": "lächeln",
+      "pos": "VERB",
+      "frequency_count": 10205,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 981,
+      "source_rank": 1031,
+      "word": "gold",
+      "pos": "NOUN",
+      "frequency_count": 10187,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 982,
+      "source_rank": 1032,
+      "word": "Sonne",
+      "pos": "NOUN",
+      "frequency_count": 10157,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 983,
+      "source_rank": 1033,
+      "word": "nämlich",
+      "pos": "ADV",
+      "frequency_count": 10147,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 984,
+      "source_rank": 1034,
+      "word": "letzte",
+      "pos": "ADJ",
+      "frequency_count": 10140,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 985,
+      "source_rank": 1035,
+      "word": "probieren",
+      "pos": "VERB",
+      "frequency_count": 10122,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 986,
+      "source_rank": 1036,
+      "word": "vermissen",
+      "pos": "VERB",
+      "frequency_count": 10119,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 987,
+      "source_rank": 1037,
+      "word": "gebäude",
+      "pos": "NOUN",
+      "frequency_count": 10096,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 988,
+      "source_rank": 1038,
+      "word": "klopfen",
+      "pos": "VERB",
+      "frequency_count": 10093,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 989,
+      "source_rank": 1039,
+      "word": "Professor",
+      "pos": "NOUN",
+      "frequency_count": 10089,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 990,
+      "source_rank": 1040,
+      "word": "befinden",
+      "pos": "VERB",
+      "frequency_count": 10085,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 991,
+      "source_rank": 1041,
+      "word": "toten",
+      "pos": "VERB",
+      "frequency_count": 10074,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 992,
+      "source_rank": 1042,
+      "word": "ewig",
+      "pos": "ADV",
+      "frequency_count": 10062,
+      "cefr_estimate": "B1"
+    },
+    {
+      "candidate_rank": 993,
+      "source_rank": 1043,
+      "word": "Yeah",
+      "pos": "PROPN",
+      "frequency_count": 10043,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 994,
+      "source_rank": 1044,
+      "word": "schenken",
+      "pos": "VERB",
+      "frequency_count": 10034,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 995,
+      "source_rank": 1045,
+      "word": "Weihnachten",
+      "pos": "NOUN",
+      "frequency_count": 10033,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 996,
+      "source_rank": 1046,
+      "word": "situation",
+      "pos": "NOUN",
+      "frequency_count": 10018,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 997,
+      "source_rank": 1047,
+      "word": "offensichtlich",
+      "pos": "ADV",
+      "frequency_count": 9998,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 998,
+      "source_rank": 1048,
+      "word": "naja",
+      "pos": "INTJ",
+      "frequency_count": 9996,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 999,
+      "source_rank": 1049,
+      "word": "Henry",
+      "pos": "PROPN",
+      "frequency_count": 9995,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 1000,
+      "source_rank": 1050,
+      "word": "hinterlassen",
+      "pos": "VERB",
+      "frequency_count": 9991,
+      "cefr_estimate": "B1"
+    }
+  ]
+}
