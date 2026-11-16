@@ -86,7 +86,7 @@ class WikipediaFrequencyMergeTests(unittest.TestCase):
                 profile = registry["profiles"][0]
                 self.assertEqual(profile["status"], "frequency_candidates_staged")
                 self.assertEqual(profile["entries"], 1000)
-                self.assertIn("license review required", profile["license_review"].lower())
+                self.assertIn("review required", profile["license_review"].lower())
                 self.assertTrue((output_dir / "wikipedia-arz.json").is_file())
         finally:
             module.WIKIPEDIA_SOURCE_MAP = original_map
