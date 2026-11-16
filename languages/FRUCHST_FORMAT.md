@@ -60,7 +60,7 @@ Ranks are contiguous and authoritative. The input data must already be ordered b
 ## 5. Provenance and licensing
 
 The binary embeds a source identifier. The adjacent `fruchst.<code>.manifest.json` records:
-- source name, version, URL, retrieval date, and corpus description;
+- source name, immutable dump revision, URL, retrieval date, downloaded-file SHA-256 and size, and corpus description;
 - source license and attribution requirements;
 - frequency unit and tokenization methodology;
 - definition source, license, attribution, and sense-selection method;
@@ -79,7 +79,8 @@ A production dictionary MUST:
 6. have unique non-empty headwords;
 7. have all three non-empty definitions for every entry;
 8. have non-negative finite frequencies;
-9. have a matching provenance manifest and redistributable source license.
+9. have a matching provenance manifest and redistributable source license;
+10. have recorded human approval and selected-sense evidence for every entry.
 
 ## 7. Compatibility
 
@@ -87,4 +88,4 @@ Readers MUST reject unsupported major versions and unknown required flags. Minor
 
 ## 8. Reference implementation
 
-The reference writer and validator are in `languages/tools/fruchst.py`. The input JSON schema and dataset acquisition rules are documented in `languages/datasets/README.md`.
+The reference writer and validator are in `languages/tools/fruchst.py`. Production builds require a manifest and explicit human approval evidence for every entry; unreviewed queue candidates are not production input. The input JSON schema and dataset acquisition rules are documented in `languages/datasets/README.md`.
