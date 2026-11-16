@@ -16,6 +16,13 @@ never be imported.
 
 ## Reserved native-math allocation
 
+The machine-readable allocation mirror is
+`tools/isa/opcode-registry-3.0.json`. It records assigned instruction
+IDs, family boundaries, fail-closed reservations, and the current operand
+contract documentation status. `tools/verify-opcode-registry.py` checks this
+catalog against the authoritative `lib/vm/InstructionSet.sleela` source order
+and native `SLOp` enum. The catalog does not make a reserved ID executable.
+
 The following ranges are now the canonical family allocation. Opcode 195 is
 implemented; all other vacant positions remain reserved for their family.
 Ranges are inclusive and must not be filled by unrelated instructions.
