@@ -57,9 +57,10 @@ The pivot can cross senses (for example, an English gloss "bank" may lead to riv
 | Method | Meaning |
 |---|---|
 | `case_variant` | Same word, different letter case. |
-| `orthographic_variant` | Same word after removing optional marks: Latin/Cyrillic/Greek diacritics (e.g. Russian ё/е), Arabic short vowels and tatweel, and unifying Arabic-script letter variants (ي/ى/ی, ك/ک; for Arabic only, also أ/إ/آ/ٱ to ا). ة and ه stay distinct because they separate words. Abugida vowel signs are never removed. |
-| `inflected_form` | The word appears in another entry's inflection table (`forms`), exactly or after the same mark removal (`via`). The close definition is that lemma's gloss. For Chinese, only forms tagged exactly `Simplified-Chinese` are used; dialectal and alternative characters are skipped. |
+| `orthographic_variant` | Same word after removing conventionally optional marks: Arabic short vowels, tanween, shadda and tatweel; Russian ё written as е; Romanian cedilla ş/ţ as comma-below ș/ț; Arabic-script letter variants ي/ى/ی and ك/ک; and for Arabic only, hamza/madda alef forms أ/إ/آ/ٱ as ا. ة and ه stay distinct because they separate words. |
+| `inflected_form` | The word appears in another entry's inflection table (`forms`), exactly or after the same optional-mark removal (`via`). The close definition is that lemma's gloss. For Chinese, only forms tagged exactly `Simplified-Chinese` are used; dialectal and alternative characters are skipped. |
 | `transliteration` | Uzbek only: official Cyrillic-to-Latin conversion. |
+| `diacritic_variant` | Looser: every Latin, Cyrillic or Greek accent or tone mark removed (e.g. Yoruba hàn vs han). Marked with `caution`, because these marks can distinguish different words. Abugida vowel signs are never removed. |
 | `clitic_stripped` | Arabic only: a leading و/ف/ب/ل/ك and/or ال removed. |
 
 Each match records the variant, method, POS, source line, the listed form and its tags, and the variant's English senses (with `form_of` targets when present). Up to 20 matches are kept per headword. A close definition is not the headword's own definition, so every row stays `review_status: required`.

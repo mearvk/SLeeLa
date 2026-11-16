@@ -10,6 +10,8 @@ variant's English glosses as a *close* definition. Methods, closest first:
                         Greek diacritics, Arabic short vowels and tatweel, and
                         unifying Arabic-script letter variants (ي/ى/ی, ك/ک; for
                         Arabic only also أ/إ/آ/ٱ to ا). ة and ه are kept distinct.
+  diacritic_variant     looser: all Latin/Cyrillic/Greek accent and tone marks
+                        removed; flagged because marks can distinguish words
   inflected_form        the word is listed in another entry's inflection table
                         ("forms"); the close definition is that lemma's gloss
   transliteration       Uzbek only: official Cyrillic-to-Latin conversion
@@ -30,7 +32,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from fruchst_definition_batch import SOURCE_CATALOG, TARGETS, norm, pos_key, wiktionary_codes  # noqa: E402
 
-METHOD_ORDER = ("case_variant", "orthographic_variant", "inflected_form", "transliteration", "clitic_stripped")
+METHOD_ORDER = ("case_variant", "orthographic_variant", "inflected_form", "transliteration", "diacritic_variant", "clitic_stripped")
 SKIP_FORM_TAGS = {"romanization", "transliteration", "table-tags", "inflection-template", "class", "canonical"}
 MAX_MATCHES = 20
 
@@ -49,6 +51,9 @@ ALEF_CODES = {"ar"}
 # characters; only the plain simplified form of a traditional entry is used.
 ZH_FORM_TAGS = {"Simplified-Chinese"}
 STRIP_SCRIPTS = ("LATIN", "CYRILLIC", "GREEK")
+# Conventionally optional spellings: Russian/Belarusian ё is usually written е;
+# Romanian cedilla letters are legacy encodings of the comma-below letters.
+OPTIONAL_LETTERS = str.maketrans({"ё": "е", "ş": "ș", "ţ": "ț"})
 APOSTROPHES = str.maketrans({"'": "ʻ", "‘": "ʻ", "’": "ʼ", "`": "ʻ", "ʹ": "ʻ"})
 
 UZ_CYR = {
@@ -61,12 +66,18 @@ UZ_VOWELS = set("аеёиоуўэюя")
 AR_PREFIXES = ("وال", "فال", "بال", "كال", "لل", "ال", "و", "ف", "ب", "ل", "ك")
 
 
-def strip_key(word: str, alef: bool = False) -> str:
-    """Case-fold and remove optional marks, without touching abugida vowel signs."""
+def strip_key(word: str, alef: bool = False, diacritics: bool = False) -> str:
+    """Case-fold and remove conventionally optional marks.
+
+    With diacritics=True, every Latin/Cyrillic/Greek combining mark is also
+    removed (looser: tone and accent marks can distinguish words). Abugida
+    vowel signs are never touched.
+    """
     out = []
     word = "".join(ch for ch in unicodedata.normalize("NFC", word) if ch not in ARABIC_MARKS)
-    for ch in unicodedata.normalize("NFD", word.casefold()):
-        if unicodedata.category(ch) == "Mn" and out:
+    word = word.casefold().translate(OPTIONAL_LETTERS)
+    for ch in unicodedata.normalize("NFD", word):
+        if diacritics and unicodedata.category(ch) == "Mn" and out:
             base = unicodedata.name(out[-1], "")
             if base.startswith(STRIP_SCRIPTS):
                 continue
@@ -129,6 +140,7 @@ def main() -> int:
     # Lookup keys: (wiktionary_code, key) -> [(tag, headword, method)]
     exact_keys: dict[tuple, list] = {}
     strip_keys: dict[tuple, list] = {}
+    loose_keys: dict[tuple, list] = {}
     missing: dict[str, list[str]] = {}
     for doc in reviews.values():
         tag = doc["language_tag"]
@@ -140,6 +152,7 @@ def main() -> int:
             for word in words:
                 exact_keys.setdefault((code, word.casefold()), []).append((tag, word, "case_variant"))
                 strip_keys.setdefault((code, strip_key(word, tag in ALEF_TAGS)), []).append((tag, word, "orthographic_variant"))
+                loose_keys.setdefault((code, strip_key(word, tag in ALEF_TAGS, True)), []).append((tag, word, "diacritic_variant"))
                 if tag == "uz":
                     strip_keys.setdefault((code, strip_key(uz_latin(word))), []).append((tag, word, "transliteration"))
                 if tag == "ar":
@@ -177,10 +190,15 @@ def main() -> int:
                 if head != word:
                     add(tag, head, method, entry, line_no)
             seen_exact = {(t, h) for t, h, _ in exact_keys.get((code, word.casefold()), [])}
-            for tag, head, method in strip_keys.get((code, strip_key(word, code in ALEF_CODES)), []):
+            safe_hits = strip_keys.get((code, strip_key(word, code in ALEF_CODES)), [])
+            for tag, head, method in safe_hits:
                 if method == "orthographic_variant" and (tag, head) in seen_exact:
                     continue
                 add(tag, head, method, entry, line_no)
+            seen_safe = seen_exact | {(t, h) for t, h, _ in safe_hits}
+            for tag, head, method in loose_keys.get((code, strip_key(word, code in ALEF_CODES, True)), []):
+                if (tag, head) not in seen_safe:
+                    add(tag, head, method, entry, line_no, {"caution": "accent or tone marks differ; may be a different word"})
             for form in entry.get("forms") or []:
                 if not isinstance(form, dict) or not isinstance(form.get("form"), str):
                     continue
