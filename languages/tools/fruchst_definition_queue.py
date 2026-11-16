@@ -9,6 +9,7 @@ and POS for the target-language headword. Every result remains review-required.
 from __future__ import annotations
 
 import argparse
+import gzip
 import json
 import re
 import sys
@@ -69,7 +70,8 @@ def load_words(path: Path) -> tuple[dict, dict[str, dict]]:
 
 def extract_edition(path: Path, target_lang_code: str, wanted: set[str]) -> dict:
     found: dict[str, list[dict]] = {}
-    with path.open("r", encoding="utf-8") as stream:
+    opener = gzip.open if path.suffix.casefold() == ".gz" else open
+    with opener(path, "rt", encoding="utf-8") as stream:
         for line_no, line in enumerate(stream, 1):
             if not line.strip():
                 continue
