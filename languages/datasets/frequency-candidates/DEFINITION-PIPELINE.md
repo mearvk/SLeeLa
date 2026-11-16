@@ -62,15 +62,17 @@ downloads (check the catalog for newer revisions before each production run):
 
 - English edition: https://kaikki.org/dictionary/raw-wiktextract-data.jsonl.gz
   (about 2.9 GB compressed; English glosses)
-- French edition: https://kaikki.org/dictionary/downloads/fr/fr-extract.jsonl.gz
-  (about 702.5 MB compressed; French glosses)
-- Spanish edition: https://kaikki.org/dictionary/downloads/es/es-extract.jsonl.gz
-  (about 98.8 MB compressed; Spanish glosses)
+- French edition: https://kaikki.org/frwiktionary/raw-wiktextract-data.jsonl.gz
+  (about 702.5 MB compressed; French glosses; dump revision 2026-10-01)
+- Spanish edition: https://kaikki.org/eswiktionary/raw-wiktextract-data.jsonl.gz
+  (about 98.8 MB compressed; Spanish glosses; dump revision 2026-11-01)
 
 The corresponding uncompressed extracts are very large (English about 24.8 GB,
 French about 6.4 GB, Spanish about 1.1 GB). Keep source dumps outside the
-repository; never commit them. The current catalog identifies the English dump
-as dated 2026-10-01 and the French and Spanish dumps as dated 2026-11-01.
-Record exact retrieval dates and dump revisions in any production manifest.
+repository; never commit them. The verified catalog revisions used by the staging workflow are English
+2026-10-01, French 2026-10-01, and Spanish 2026-11-01. Refresh these revision
+labels when Kaikki publishes newer dumps. Generated review queues record the
+exact download URL, dump revision, retrieval timestamp, compressed-file size,
+and SHA-256 for each edition. The SHA-256 identifies the actual bytes used.
 
 Source catalog: https://kaikki.org/dictionary/rawdata.html
