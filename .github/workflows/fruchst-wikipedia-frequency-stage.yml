@@ -1,0 +1,171 @@
+name: FRUCHST Wikipedia frequency candidate staging
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "languages/tools/stage_wikipedia_frequency.py"
+      - "languages/tools/merge_wikipedia_frequency.py"
+      - ".github/workflows/fruchst-wikipedia-frequency-stage.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fruchst-wikipedia-frequency-stage-master
+  cancel-in-progress: false
+
+jobs:
+  stage:
+    name: Stage ${{ matrix.language_tag }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - { language_tag: arz, wiki_code: arz }
+          - { language_tag: mr, wiki_code: mr }
+          - { language_tag: ha, wiki_code: ha }
+          - { language_tag: pnb-Arab, wiki_code: pnb }
+          - { language_tag: sw, wiki_code: sw }
+          - { language_tag: jv, wiki_code: jv }
+          - { language_tag: gu, wiki_code: gu }
+          - { language_tag: am, wiki_code: am }
+          - { language_tag: kn, wiki_code: kn }
+          - { language_tag: bho, wiki_code: bh }
+          - { language_tag: yo, wiki_code: yo }
+          - { language_tag: ln, wiki_code: ln }
+          - { language_tag: ary, wiki_code: ary }
+          - { language_tag: or, wiki_code: or }
+          - { language_tag: sd, wiki_code: sd }
+          - { language_tag: pa-Guru, wiki_code: pa }
+          - { language_tag: su, wiki_code: su }
+          - { language_tag: ig, wiki_code: ig }
+          - { language_tag: ne, wiki_code: ne }
+          - { language_tag: uz, wiki_code: uz }
+          - { language_tag: zu, wiki_code: zu }
+          - { language_tag: skr, wiki_code: skr }
+          - { language_tag: so, wiki_code: so }
+          - { language_tag: as, wiki_code: as }
+          - { language_tag: ceb, wiki_code: ceb }
+          - { language_tag: mag, wiki_code: mag }
+          - { language_tag: xh, wiki_code: xh }
+          - { language_tag: mai, wiki_code: mai }
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Download latest article dump and verify SHA-1
+        shell: bash
+        env:
+          WIKI_CODE: ${{ matrix.wiki_code }}
+          LANGUAGE_TAG: ${{ matrix.language_tag }}
+        run: |
+          set -euo pipefail
+          mkdir -p source output
+          wiki="${WIKI_CODE}wiki"
+          base="https://dumps.wikimedia.org/${wiki}/latest"
+          selected=""
+          for suffix in pages-articles-multistream.xml.bz2 pages-articles.xml.bz2; do
+            candidate="${wiki}-latest-${suffix}"
+            if curl --fail --location --silent --show-error \
+                --retry 4 --retry-all-errors --retry-delay 5 \
+                --output source/dump.xml.bz2 \
+                --write-out '%{url_effective}' \
+                "${base}/${candidate}" > source/source-url.txt; then
+              selected="${candidate}"
+              break
+            fi
+          done
+          if [[ -z "${selected}" ]]; then
+            echo "No supported pages-articles dump found for ${wiki}" >&2
+            exit 1
+          fi
+
+          curl --fail --location --silent --show-error \
+            --retry 4 --retry-all-errors --retry-delay 5 \
+            "${base}/${wiki}-latest-sha1sums.txt" \
+            --output source/sha1sums.txt
+          expected="$(awk -v file="${selected}" '
+            { name=$2; sub(/^\*/, "", name); if (name == file) { print $1; exit } }
+          ' source/sha1sums.txt)"
+          if [[ ! "${expected}" =~ ^[[:xdigit:]]{40}$ ]]; then
+            echo "Missing valid SHA-1 for ${selected}" >&2
+            exit 1
+          fi
+          printf '%s  %s\n' "${expected}" source/dump.xml.bz2 | sha1sum --check --status
+          printf 'Dump selected: %s\n' "${selected}"
+          printf 'SHA-1 verified: %s\n' "${expected}"
+          printf 'Source URL: %s\n' "$(cat source/source-url.txt)"
+          printf '%s\n' "${expected}" > source/expected-sha1.txt
+
+      - name: Build corpus frequency candidates
+        env:
+          LANGUAGE_TAG: ${{ matrix.language_tag }}
+        run: |
+          set -euo pipefail
+          python3 languages/tools/stage_wikipedia_frequency.py \
+            --language-tag "${LANGUAGE_TAG}" \
+            --source-file source/dump.xml.bz2 \
+            --source-url "$(cat source/source-url.txt)" \
+            --sha1 "$(cat source/expected-sha1.txt)" \
+            --output-file "output/wikipedia-${LANGUAGE_TAG}.json"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fruchst-wikipedia-${{ matrix.language_tag }}
+          path: output/wikipedia-${{ matrix.language_tag }}.json
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Validate and publish all Wikipedia candidates
+    needs: stage
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: fruchst-wikipedia-*
+          path: staged
+          merge-multiple: true
+      - name: Validate all artifacts and update registry
+        run: |
+          set -euo pipefail
+          python3 languages/tools/merge_wikipedia_frequency.py \
+            --input-dir staged \
+            --output-dir languages/datasets/frequency-candidates \
+            --registry languages/FRUCHST_TARGETS.json
+      - name: Commit candidate sets and registry updates
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add languages/datasets/frequency-candidates/wikipedia-*.json languages/FRUCHST_TARGETS.json
+          if git diff --cached --quiet; then
+            echo "No Wikipedia candidate changes."
+            exit 0
+          fi
+          git commit -m "Stage FRUCHST Wikipedia frequency candidates"
+          for attempt in 1 2 3; do
+            git fetch origin master
+            git rebase origin/master
+            if git push origin HEAD:master; then
+              exit 0
+            fi
+            echo "Push raced with another master update (attempt ${attempt}/3); retrying."
+          done
+          echo "Unable to publish Wikipedia candidate sets after three attempts." >&2
+          exit 1
