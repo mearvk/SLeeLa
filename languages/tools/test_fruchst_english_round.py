@@ -204,6 +204,15 @@ class EnglishRoundTests(unittest.TestCase):
         self.assertEqual(book[1]["english_translations"][0]["english_lemma"], "volume")
         self.assertEqual(hits[("bn", "বইটি")][0]["match"], "form")
 
+        bn = review("bn", ["বই", "বইটি"], {})
+        scanner = module.Scanner({"bn": bn}, {}, {})
+        scanner.lexemes = hits
+        out = module.build_profile(Path("bn.review.json"), bn, scanner, None)
+        rows = {r["word"]: r for r in out["entries"]}
+        self.assertEqual(rows["বই"]["english_status"], "lexeme_sense_found")
+        self.assertEqual(rows["বই"]["lead_candidate"]["text"], "book")
+        self.assertEqual(rows["বইটি"]["definitions"][0]["display"], "form of বই: book")
+
     def test_lexeme_lemma_uses_profile_script(self):
         lexeme = {"type": "lexeme", "id": "L5", "language": "Q58635", "lexicalCategory": "Q1084",
                   "lemmas": {"pnb": {"language": "pnb", "value": "دِن"}, "pa": {"language": "pa", "value": "ਦਿਨ"}},
@@ -214,15 +223,6 @@ class EnglishRoundTests(unittest.TestCase):
             path.write_text("[\n" + json.dumps(lexeme, ensure_ascii=False) + "\n]\n", encoding="utf-8")
             hits = lexeme_module.scan_lexemes(path, {"pa-Guru": {"ਦਿਨੀਂ"}})
         self.assertEqual(hits[("pa-Guru", "ਦਿਨੀਂ")][0]["lemma"], "ਦਿਨ")
-
-        bn = review("bn", ["বই", "বইটি"], {})
-        scanner = module.Scanner({"bn": bn}, {}, {})
-        scanner.lexemes = hits
-        out = module.build_profile(Path("bn.review.json"), bn, scanner, None)
-        rows = {r["word"]: r for r in out["entries"]}
-        self.assertEqual(rows["বই"]["english_status"], "lexeme_sense_found")
-        self.assertEqual(rows["বই"]["lead_candidate"]["text"], "book")
-        self.assertEqual(rows["বইটি"]["definitions"][0]["display"], "form of বই: book")
 
 
 if __name__ == "__main__":
