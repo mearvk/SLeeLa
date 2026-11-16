@@ -1,4 +1,5 @@
 name: FRUCHST source definition staging
+# Download source data only on explicit FRUCHST pipeline changes.
 
 on:
   push:
