@@ -8,6 +8,8 @@ Snapshot as of 2026-11-16. Counts come from the committed data in `datasets/freq
 |---|---|
 | Profiles with a 1,000-word list | 51 of 80 (51,000 of 80,000 words) |
 | Words with an English definition | 28,111 |
+| Words without English that have a close-variant English definition | 5,277 of 22,889 (23.1%) |
+| Words with English, own or close variant | 33,388 (65.5%; 64.8% without accent-stripped matches) |
 | Words with a French definition or equivalent | 25,010 |
 | Words with a Spanish definition or equivalent | 22,485 |
 | Words with all three (direct Wiktionary only) | 4,462 |
@@ -17,6 +19,21 @@ Snapshot as of 2026-11-16. Counts come from the committed data in `datasets/freq
 | Profiles with all 1,000 words fully defined | 0 |
 
 A word counts as having all three when it has an English Wiktionary definition and a French and a Spanish definition or equivalent. French and Spanish come either directly from French/Spanish Wiktionary or through English: the English word from the definition is looked up in English Wiktionary translation tables and in French/Spanish Wiktionary (`tools/fruchst_english_pivot.py`, see `datasets/frequency-candidates/DEFINITION-PIPELINE.md`). "Part of speech matched" means the English word was found with the same part of speech as the original sense.
+
+## Close-variant English definitions
+
+`tools/fruchst_close_variants.py` (output in `datasets/definition-variants/`) finds an English definition for words that have none by matching a close variant in English Wiktionary. Counts by closest method:
+
+| Method | Words |
+|---|---|
+| Inflected form listed in another entry's inflection table | 3,922 |
+| Case variant | 490 |
+| Orthographic variant (optional marks only) | 424 |
+| Accent/tone marks removed (flagged with a caution) | 328 |
+| Uzbek Cyrillic-to-Latin transliteration | 111 |
+| Arabic clitic removed | 2 |
+
+Highest gains: Arabic 523 of 569 words without English, Uzbek 505 of 961, Persian 335 of 486, Mandarin 291 of 492. The per-profile table below still counts only each word's own English definition. Close definitions are not yet passed through the French/Spanish English pivot.
 
 ## Per profile
 
