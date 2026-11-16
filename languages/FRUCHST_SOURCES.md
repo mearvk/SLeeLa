@@ -24,3 +24,8 @@ A language is marked complete only after:
 5. the generated binary passes the FRUCHST validator and its SHA-256 is recorded.
 
 A missing source or unclear license is a tracked blocker, not a reason to synthesize frequency ranks or invent definitions.
+
+
+## First frequency-candidate batch (English, French, Spanish, German)
+
+The initial candidate lists are staged under `datasets/frequency-candidates/` from wordhoard's top-2,000 samples at pinned revision `1bc5730e8d6e682c416c03680b7cb8c6c7ca8cd0`. The source dataset is CC BY-SA 4.0; the upstream code is MIT. Its frequency backbone is OpenSubtitles-2018 via FrequencyWords. This is a subtitle-domain ranking, not a balanced general-language corpus. The staged lists preserve raw occurrence counts and POS, collapse duplicate lemmas, and are not yet FRUCHST dictionaries. English/French/Spanish definitions remain outstanding for all four language lists. See `datasets/frequency-candidates/README.md` and `tools/stage_wordhoard.py`.
