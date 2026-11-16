@@ -51,7 +51,7 @@ class DefinitionQueueTests(unittest.TestCase):
     def test_no_common_qid_means_manual_review(self):
         for edition, path in self.paths.items():
             entry = json.loads(path.read_text(encoding="utf-8"))
-            entry["senses"][0]["wikidata"] = [f"Q{100+len(edition)}"]
+            entry["senses"][0]["wikidata"] = {"en": ["Q101"], "fr": ["Q102"], "es": ["Q103"]}[edition]
             path.write_text(json.dumps(entry) + "\n", encoding="utf-8")
         queue = module.build_queue(self.candidate, "es", self.paths)
         self.assertEqual(queue["entries"][0]["definition_status"], "manual_lookup_required")
