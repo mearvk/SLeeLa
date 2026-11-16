@@ -33,7 +33,7 @@
       "file": "/home/runner/work/_temp/fruchst-sources/en.jsonl.gz",
       "sha256": "5ff2c072f8099f2d2ce484bd6957bf179f046d2ad37bc36555edf8bb84cb5291",
       "size_bytes": 3082476978,
-      "retrieved_at_utc": "2026-11-16T03:57:40.233093+00:00",
+      "retrieved_at_utc": "2026-11-16T14:24:35.459432+00:00",
       "license": "Wiktionary dual license: CC BY-SA 4.0 and GFDL; preserve attribution and verify edition notices"
     },
     "fr": {
@@ -43,7 +43,7 @@
       "file": "/home/runner/work/_temp/fruchst-sources/fr.jsonl.gz",
       "sha256": "33c7b73bc11d2533c9c0e0be6484ded76bd9ff29337065f2070b4f1b7d2e4f3c",
       "size_bytes": 736596796,
-      "retrieved_at_utc": "2026-11-16T03:57:40.233093+00:00",
+      "retrieved_at_utc": "2026-11-16T14:24:35.459432+00:00",
       "license": "Wiktionary dual license: CC BY-SA 4.0 and GFDL; preserve attribution and verify edition notices"
     },
     "es": {
@@ -53,7 +53,7 @@
       "file": "/home/runner/work/_temp/fruchst-sources/es.jsonl.gz",
       "sha256": "206001cbdfc783cf4076789366e2c0cb27860da739ddfcc0189c4c878b189da1",
       "size_bytes": 103584114,
-      "retrieved_at_utc": "2026-11-16T03:57:40.233093+00:00",
+      "retrieved_at_utc": "2026-11-16T14:24:35.459432+00:00",
       "license": "Wiktionary dual license: CC BY-SA 4.0 and GFDL; preserve attribution and verify edition notices"
     }
   },
@@ -87,7 +87,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8492994,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -159,7 +160,8 @@
             ],
             "senseid": [],
             "source_line": 7211886,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -190,7 +192,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7077912,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -204,7 +207,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 965988,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ]
       },
@@ -233,7 +237,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8069019,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -264,7 +269,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10555672,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -275,7 +281,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10555672,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -308,7 +315,8 @@
             ],
             "senseid": [],
             "source_line": 2417268,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -319,7 +327,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 2417269,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -333,7 +342,8 @@
             ],
             "senseid": [],
             "source_line": 2417270,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [
@@ -346,7 +356,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5407769,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "es": [
@@ -359,7 +370,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 968141,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ]
       },
@@ -409,7 +421,8 @@
             ],
             "senseid": [],
             "source_line": 4271386,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -420,7 +433,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 4271387,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -433,7 +447,8 @@
             ],
             "senseid": [],
             "source_line": 4271388,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -446,7 +461,8 @@
             ],
             "senseid": [],
             "source_line": 4271388,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -460,7 +476,8 @@
             ],
             "senseid": [],
             "source_line": 4271389,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [
@@ -473,7 +490,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5204367,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "es": [
@@ -486,7 +504,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 968138,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ]
       },
@@ -517,7 +536,8 @@
             ],
             "senseid": [],
             "source_line": 7077921,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -590,7 +610,8 @@
             ],
             "senseid": [],
             "source_line": 7088705,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -621,7 +642,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6409338,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -671,7 +693,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8691443,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -702,7 +725,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484733,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -713,7 +737,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484733,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -724,7 +749,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484733,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -735,7 +761,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484733,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -746,7 +773,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484733,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -757,7 +785,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484733,
-            "sense_index": 6
+            "sense_index": 6,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -768,7 +797,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484734,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -779,7 +809,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484734,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -793,7 +824,8 @@
             ],
             "senseid": [],
             "source_line": 8484735,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -807,7 +839,8 @@
             ],
             "senseid": [],
             "source_line": 8484736,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -841,7 +874,8 @@
             ],
             "senseid": [],
             "source_line": 8767568,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -891,7 +925,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10588354,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -902,7 +937,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10588353,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -913,7 +949,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10588353,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -944,7 +981,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8691448,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -994,7 +1032,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8812139,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1005,7 +1044,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8812139,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1057,7 +1097,8 @@
             ],
             "senseid": [],
             "source_line": 8134131,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1068,7 +1109,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134130,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1099,7 +1141,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767327,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1110,7 +1153,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767327,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1121,7 +1165,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767327,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1132,7 +1177,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767327,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1143,7 +1189,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767327,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1177,7 +1224,8 @@
             ],
             "senseid": [],
             "source_line": 9176702,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1191,7 +1239,8 @@
             ],
             "senseid": [],
             "source_line": 9176703,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1260,7 +1309,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7088807,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1271,7 +1321,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7088807,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1282,7 +1333,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7088806,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1293,7 +1345,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7088806,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1304,7 +1357,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7088806,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1335,7 +1389,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7211885,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1366,7 +1421,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8492709,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1379,7 +1435,8 @@
             ],
             "senseid": [],
             "source_line": 8492710,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1390,7 +1447,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8492708,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1440,7 +1498,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8764020,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1471,7 +1530,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421187,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1484,7 +1544,8 @@
             ],
             "senseid": [],
             "source_line": 8421187,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1534,7 +1595,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8430001,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1547,7 +1609,8 @@
             ],
             "senseid": [],
             "source_line": 8430001,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1597,7 +1660,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8422634,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1628,7 +1692,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6409337,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1659,7 +1724,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7165272,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1670,7 +1736,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7165272,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1681,7 +1748,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7165272,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1712,7 +1780,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8483098,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1743,7 +1812,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8691447,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1793,7 +1863,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7163763,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1862,7 +1933,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8136079,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1893,7 +1965,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8691650,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1907,7 +1980,8 @@
             ],
             "senseid": [],
             "source_line": 8691649,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1938,7 +2012,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6409342,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -1969,7 +2044,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8494623,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1980,7 +2056,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8494623,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -1991,7 +2068,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8494622,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2002,7 +2080,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8494622,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2013,7 +2092,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8494624,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2024,7 +2104,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8494624,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -2093,7 +2174,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6409353,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2107,7 +2189,8 @@
             ],
             "senseid": [],
             "source_line": 6409354,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -2138,7 +2221,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767250,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2149,7 +2233,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767250,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2160,7 +2245,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767250,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2171,7 +2257,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767250,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -2202,7 +2289,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5085465,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2215,7 +2303,8 @@
             ],
             "senseid": [],
             "source_line": 5085465,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -2265,7 +2354,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8491691,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2276,7 +2366,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8491691,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2287,7 +2378,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8491691,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2298,7 +2390,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8491691,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2309,7 +2402,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8491691,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -2343,7 +2437,8 @@
             ],
             "senseid": [],
             "source_line": 9729579,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -2450,7 +2545,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8486747,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2461,7 +2557,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8486747,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2472,7 +2569,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8486746,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2483,7 +2581,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8486746,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2494,7 +2593,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8486746,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -2563,7 +2663,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8265206,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2574,7 +2675,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8265206,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -2684,7 +2786,8 @@
             ],
             "senseid": [],
             "source_line": 10729065,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -2715,7 +2818,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8802604,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2726,7 +2830,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8802604,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -2757,7 +2862,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134877,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2768,7 +2874,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134878,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2779,7 +2886,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134876,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -2790,7 +2898,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134876,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -2823,7 +2932,8 @@
             ],
             "senseid": [],
             "source_line": 3156507,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [
@@ -2836,7 +2946,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5407933,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "es": [
@@ -2849,7 +2960,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 968149,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ]
       },
@@ -2916,7 +3028,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9763237,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -2949,7 +3062,8 @@
             ],
             "senseid": [],
             "source_line": 8069025,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -2999,7 +3113,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421186,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -3010,7 +3125,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421186,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3041,7 +3157,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8764275,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3072,7 +3189,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7561757,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -3083,7 +3201,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7561757,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -3094,7 +3213,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7561757,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3127,7 +3247,8 @@
             ],
             "senseid": [],
             "source_line": 8131608,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3160,7 +3281,8 @@
             ],
             "senseid": [],
             "source_line": 7077562,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -3171,7 +3293,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7077561,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -3182,7 +3305,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7077561,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3213,7 +3337,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8136102,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -3224,7 +3349,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8136102,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -3235,7 +3361,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8136103,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3266,7 +3393,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8697601,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3297,7 +3425,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421194,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -3308,7 +3437,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421194,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3377,7 +3507,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8312377,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -3390,7 +3521,8 @@
             ],
             "senseid": [],
             "source_line": 8312377,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -3403,7 +3535,8 @@
             ],
             "senseid": [],
             "source_line": 8312377,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3436,7 +3569,8 @@
             ],
             "senseid": [],
             "source_line": 6409335,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3486,7 +3620,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8842598,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -3497,7 +3632,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8842598,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3623,7 +3759,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8292600,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -3634,7 +3771,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8292600,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -3645,7 +3783,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8292600,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3695,7 +3834,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134146,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3745,7 +3885,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8033950,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3795,7 +3936,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8710150,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3845,7 +3987,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6409343,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3876,7 +4019,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8790140,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3907,7 +4051,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8691446,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3938,7 +4083,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8170574,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -3949,7 +4095,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8170575,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -3980,7 +4127,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8006156,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -4108,7 +4256,8 @@
             ],
             "senseid": [],
             "source_line": 8733139,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -4121,7 +4270,8 @@
             ],
             "senseid": [],
             "source_line": 8733139,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -4132,7 +4282,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8733139,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -4163,7 +4314,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8430004,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -4177,7 +4329,8 @@
             ],
             "senseid": [],
             "source_line": 8430005,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -4208,7 +4361,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8483035,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -4298,7 +4452,8 @@
             ],
             "senseid": [],
             "source_line": 8498687,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -4348,7 +4503,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9168009,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -4363,7 +4519,8 @@
             ],
             "senseid": [],
             "source_line": 9168008,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -4396,7 +4553,8 @@
             ],
             "senseid": [],
             "source_line": 8767587,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -4409,7 +4567,8 @@
             ],
             "senseid": [],
             "source_line": 8767587,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -4420,7 +4579,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767587,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -4470,7 +4630,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421185,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -4558,7 +4719,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 4691681,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -4589,7 +4751,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8802602,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -4660,7 +4823,8 @@
             ],
             "senseid": [],
             "source_line": 8171204,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -4748,7 +4912,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8740735,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -4761,7 +4926,8 @@
             ],
             "senseid": [],
             "source_line": 8740735,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [
@@ -4774,7 +4940,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 4206967,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "es": []
@@ -4880,7 +5047,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 471689,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -4911,7 +5079,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8778400,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -4945,7 +5114,8 @@
             ],
             "senseid": [],
             "source_line": 9729584,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -5035,7 +5205,8 @@
             ],
             "senseid": [],
             "source_line": 8131874,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -5048,7 +5219,8 @@
             ],
             "senseid": [],
             "source_line": 8131874,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -5117,7 +5289,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10559101,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -5128,7 +5301,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10559101,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -5178,7 +5352,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8727206,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -5247,7 +5422,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7560771,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -5335,7 +5511,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8429999,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -5423,7 +5600,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421163,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -5473,7 +5651,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6409326,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -5484,7 +5663,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6409326,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -5495,7 +5675,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6409326,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -5564,7 +5745,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8496139,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -5575,7 +5757,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8496139,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -5589,7 +5772,8 @@
             ],
             "senseid": [],
             "source_line": 8496140,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -5639,7 +5823,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8482972,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -5650,7 +5835,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8482971,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -5661,7 +5847,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8482971,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -5672,7 +5859,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8482971,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -5683,7 +5871,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8482971,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -5714,7 +5903,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8498607,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -5783,7 +5973,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8725746,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -5890,7 +6081,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8131782,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -5901,7 +6093,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8131781,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -6084,7 +6277,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8435852,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -6095,7 +6289,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8435852,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -6106,7 +6301,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8435852,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -6117,7 +6313,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8435853,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -6243,7 +6440,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 469014,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [
@@ -6256,7 +6454,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7379108,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "es": [
@@ -6269,7 +6468,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 88701,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ]
       },
@@ -6298,7 +6498,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8763345,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -6329,7 +6530,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8776696,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -6379,7 +6581,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8483309,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -6390,7 +6593,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8483309,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -6401,7 +6605,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8483309,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -6412,7 +6617,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8483309,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -6462,7 +6668,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8486921,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -6550,7 +6757,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7561755,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -6602,7 +6810,8 @@
             ],
             "senseid": [],
             "source_line": 8069036,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -6615,7 +6824,8 @@
             ],
             "senseid": [],
             "source_line": 8069036,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -6687,7 +6897,8 @@
             ],
             "senseid": [],
             "source_line": 9778742,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -6718,7 +6929,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8262961,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -6729,7 +6941,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8262961,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -6740,7 +6953,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8262961,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -6751,7 +6965,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8262961,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -6801,7 +7016,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421188,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -6851,7 +7067,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8430088,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -6901,7 +7118,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8794657,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -6912,7 +7130,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8794657,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -6943,7 +7162,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8764421,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -6954,7 +7174,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8764421,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -7004,7 +7225,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8312376,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7015,7 +7237,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8312376,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7026,7 +7249,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8312376,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7037,7 +7261,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8312376,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7048,7 +7273,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8312376,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -7079,7 +7305,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8136063,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7090,7 +7317,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8136064,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7101,7 +7329,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8136065,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7112,7 +7341,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8136066,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -7181,7 +7411,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8482955,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -7212,7 +7443,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7699864,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7223,7 +7455,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7699864,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -7330,7 +7563,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 471424,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7341,7 +7575,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 471423,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -7600,7 +7835,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767391,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7611,7 +7847,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767391,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7622,7 +7859,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767391,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7633,7 +7871,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767391,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7644,7 +7883,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767391,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7655,7 +7895,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767391,
-            "sense_index": 6
+            "sense_index": 6,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -7686,7 +7927,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10588370,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7697,7 +7939,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10588370,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7708,7 +7951,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10588370,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -7777,7 +8021,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9748451,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -7808,7 +8053,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8842586,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -7819,7 +8065,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8842586,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -7872,7 +8119,8 @@
             ],
             "senseid": [],
             "source_line": 8171167,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -7998,7 +8246,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 4691705,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -8009,7 +8258,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 4691705,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8043,7 +8293,8 @@
             ],
             "senseid": [],
             "source_line": 8483040,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8093,7 +8344,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134780,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8238,7 +8490,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134916,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8288,7 +8541,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9399205,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -8302,7 +8556,8 @@
             ],
             "senseid": [],
             "source_line": 9399206,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8352,7 +8607,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9780936,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8402,7 +8658,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8429737,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -8415,7 +8672,8 @@
             ],
             "senseid": [],
             "source_line": 8429737,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -8428,7 +8686,8 @@
             ],
             "senseid": [],
             "source_line": 8429737,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8497,7 +8756,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8498180,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -8508,7 +8768,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8498180,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -8519,7 +8780,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8498180,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8550,7 +8812,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8691438,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8600,7 +8863,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767583,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8650,7 +8914,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767339,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8700,7 +8965,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6409327,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8731,7 +8997,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421165,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8762,7 +9029,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8522421,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8795,7 +9063,8 @@
             ],
             "senseid": [],
             "source_line": 8767356,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8864,7 +9133,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7560762,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -8914,7 +9184,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7699934,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -8925,7 +9196,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7699933,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -8936,7 +9208,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7699933,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -8947,7 +9220,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7699933,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -9149,7 +9423,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9773104,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -9199,7 +9474,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8495582,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -9230,7 +9506,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 11120200,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -9243,7 +9520,8 @@
             ],
             "senseid": [],
             "source_line": 11120200,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -9312,7 +9590,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8432562,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -9323,7 +9602,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8432562,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -9334,7 +9614,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8432562,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -9345,7 +9626,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8432562,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -9356,7 +9638,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8432562,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -9444,7 +9727,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8463714,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -9455,7 +9739,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8463714,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -9466,7 +9751,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8463714,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -9554,7 +9840,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8702481,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -9680,7 +9967,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7249082,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [
@@ -9693,7 +9981,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 3035086,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "es": [
@@ -9706,7 +9995,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 991482,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ]
       },
@@ -9830,7 +10120,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8425049,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -9845,7 +10136,8 @@
             ],
             "senseid": [],
             "source_line": 8425050,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -9876,7 +10168,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421144,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -9926,7 +10219,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134918,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -9957,7 +10251,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8769361,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -10026,7 +10321,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 1261752,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -10076,7 +10372,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8486966,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -10087,7 +10384,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8486966,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -10101,7 +10399,8 @@
             ],
             "senseid": [],
             "source_line": 8486967,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -10132,7 +10431,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8494591,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -10201,7 +10501,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 4575264,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -10212,7 +10513,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 4575265,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -10223,7 +10525,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 4575266,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -10292,7 +10595,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8433033,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -10342,7 +10646,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767936,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -10353,7 +10658,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767936,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -10366,7 +10672,8 @@
             ],
             "senseid": [],
             "source_line": 8767936,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -10400,7 +10707,8 @@
             ],
             "senseid": [],
             "source_line": 8766505,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -10488,7 +10796,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8697617,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -10557,7 +10866,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8492182,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -10629,7 +10939,8 @@
             ],
             "senseid": [],
             "source_line": 8766500,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -10774,7 +11085,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8440399,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -10824,7 +11136,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8764691,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -10912,7 +11225,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8131845,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -10923,7 +11237,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8131845,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -10934,7 +11249,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8131845,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -11041,7 +11357,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767336,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -11091,7 +11408,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8779146,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -11102,7 +11420,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8779146,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -11113,7 +11432,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8779146,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -11144,7 +11464,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 11119257,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -11155,7 +11476,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 11119257,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -11186,7 +11508,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8687840,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -11197,7 +11520,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8687840,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -11228,7 +11552,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8425101,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -11449,7 +11774,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8764746,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -11480,7 +11806,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8130566,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -11514,7 +11841,8 @@
             ],
             "senseid": [],
             "source_line": 10820352,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -11528,7 +11856,8 @@
             ],
             "senseid": [],
             "source_line": 10820353,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -11597,7 +11926,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9153843,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -11647,7 +11977,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7671246,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -11658,7 +11989,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7671246,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -11669,7 +12001,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7671246,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -11680,7 +12013,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7671246,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -11787,7 +12121,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8131868,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -11837,7 +12172,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8131784,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -11848,7 +12184,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8131783,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -11958,7 +12295,8 @@
             ],
             "senseid": [],
             "source_line": 8867375,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -12008,7 +12346,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8307712,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -12019,7 +12358,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8307712,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -12050,7 +12390,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8495151,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -12061,7 +12402,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8495151,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -12072,7 +12414,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8495151,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -12103,7 +12446,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8301549,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -12114,7 +12458,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8301549,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -12125,7 +12470,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8301549,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -12136,7 +12482,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8301549,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -12224,7 +12571,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8131672,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -12235,7 +12583,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8131672,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -12266,7 +12615,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8265619,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -12373,7 +12723,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767380,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -12384,7 +12735,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767380,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -12472,7 +12824,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8170548,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -12483,7 +12836,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8170549,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -12533,7 +12887,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8498707,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -12547,7 +12902,8 @@
             ],
             "senseid": [],
             "source_line": 8498708,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -12597,7 +12953,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767576,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -12608,7 +12965,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767576,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -12619,7 +12977,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767576,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -12669,7 +13028,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8205958,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -12779,7 +13139,8 @@
             ],
             "senseid": [],
             "source_line": 8846779,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -12908,7 +13269,8 @@
             ],
             "senseid": [],
             "source_line": 8721021,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -12922,7 +13284,8 @@
             ],
             "senseid": [],
             "source_line": 8721022,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -13029,7 +13392,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6674850,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13040,7 +13404,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6674850,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13051,7 +13416,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6674850,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13062,7 +13428,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6674850,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -13076,7 +13443,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 88674,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ]
       },
@@ -13143,7 +13511,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8129391,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -13174,7 +13543,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8496150,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -13281,7 +13651,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8764351,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -13312,7 +13683,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8798298,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13323,7 +13695,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8798298,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13337,7 +13710,8 @@
             ],
             "senseid": [],
             "source_line": 8798298,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13350,7 +13724,8 @@
             ],
             "senseid": [],
             "source_line": 8798298,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -13419,7 +13794,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10899647,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -13450,7 +13826,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8908432,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13461,7 +13838,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8908432,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -13530,7 +13908,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8322104,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13541,7 +13920,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8322104,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13552,7 +13932,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8322104,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13563,7 +13944,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8322104,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -13594,7 +13976,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134875,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13605,7 +13988,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134875,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -13674,7 +14058,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5630276,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13685,7 +14070,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5630276,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13696,7 +14082,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5630276,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -13784,7 +14171,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10544307,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13795,7 +14183,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10544307,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13806,7 +14195,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10544307,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13817,7 +14207,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10544308,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13828,7 +14219,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 10544308,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -13859,7 +14251,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 11120284,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -13890,7 +14283,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 1522527,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13901,7 +14295,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 1522527,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -13912,7 +14307,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 1522527,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -14019,7 +14415,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8794537,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -14030,7 +14427,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8794537,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -14118,7 +14516,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8691439,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -14149,7 +14548,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8169116,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -14160,7 +14560,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8169116,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -14191,7 +14592,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8691700,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -14260,7 +14662,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767578,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -14271,7 +14674,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767579,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -14340,7 +14744,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421168,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -14390,7 +14795,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8435905,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -14404,7 +14810,8 @@
             ],
             "senseid": [],
             "source_line": 8435904,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -14492,7 +14899,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8863572,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -14580,7 +14988,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8470878,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -14591,7 +15000,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8470878,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -14679,7 +15089,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8757199,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -14690,7 +15101,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8757199,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -14701,7 +15113,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8757200,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -14735,7 +15148,8 @@
             ],
             "senseid": [],
             "source_line": 8766509,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -14804,7 +15218,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484732,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -14815,7 +15230,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484732,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -14826,7 +15242,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484732,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -14837,7 +15254,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484732,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -14848,7 +15266,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484732,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -14879,7 +15298,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8263707,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -15005,7 +15425,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8794017,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -15016,7 +15437,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8794017,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -15027,7 +15449,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8794017,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -15038,7 +15461,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8794017,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -15088,7 +15512,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8136138,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -15176,7 +15601,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 4691719,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -15248,7 +15674,8 @@
             ],
             "senseid": [],
             "source_line": 8778000,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -15317,7 +15744,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9691165,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -15367,7 +15795,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8425107,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -15378,7 +15807,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8425107,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -15389,7 +15819,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8425107,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -15423,7 +15854,8 @@
             ],
             "senseid": [],
             "source_line": 8766498,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -15511,7 +15943,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8315244,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -15522,7 +15955,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8315244,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -15533,7 +15967,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8315244,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -15544,7 +15979,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8315244,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -15594,7 +16030,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8499471,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -15605,7 +16042,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8499471,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -15616,7 +16054,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8499471,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -15647,7 +16086,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8429514,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -15887,7 +16327,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134920,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -15921,7 +16362,8 @@
             ],
             "senseid": [],
             "source_line": 8725745,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -15952,7 +16394,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6914458,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -15983,7 +16426,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9746055,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -15994,7 +16438,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9746055,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -16063,7 +16508,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8843936,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -16074,7 +16520,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8843936,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -16085,7 +16532,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8843936,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -16306,7 +16754,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5299460,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -16413,7 +16862,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8766166,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -16424,7 +16874,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8766166,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -16550,7 +17001,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 469590,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -16695,7 +17147,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8265224,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -16745,7 +17198,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8529417,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -16795,7 +17249,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767331,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -16806,7 +17261,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767331,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -16856,7 +17312,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8169580,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -16867,7 +17324,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8169580,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -16898,7 +17356,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134917,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -16929,7 +17388,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8136128,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -16979,7 +17439,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8483149,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -16990,7 +17451,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8483148,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -17138,7 +17600,8 @@
             ],
             "senseid": [],
             "source_line": 9729578,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -17172,7 +17635,8 @@
             ],
             "senseid": [],
             "source_line": 8778875,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -17279,7 +17743,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 4691720,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -17290,7 +17755,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 4691720,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -17321,7 +17787,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8372049,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -17393,7 +17860,8 @@
             ],
             "senseid": [],
             "source_line": 11110564,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -17404,7 +17872,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 11110564,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -17415,7 +17884,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 11110564,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -17426,7 +17896,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 11110564,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -17533,7 +18004,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8129413,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -17621,7 +18093,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8768131,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -17652,7 +18125,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8802618,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -17683,7 +18157,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8342061,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -17733,7 +18208,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8438741,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -17744,7 +18220,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8438741,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -17832,7 +18309,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7689015,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -17845,7 +18323,8 @@
             ],
             "senseid": [],
             "source_line": 7689015,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -17858,7 +18337,8 @@
             ],
             "senseid": [],
             "source_line": 7689015,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -18044,7 +18524,8 @@
             ],
             "senseid": [],
             "source_line": 8323395,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -18132,7 +18613,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421169,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -18146,7 +18628,8 @@
             ],
             "senseid": [],
             "source_line": 8421170,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -18177,7 +18660,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484615,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -18188,7 +18672,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484615,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -18276,7 +18761,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8495661,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -18307,7 +18793,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8766175,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -18320,7 +18807,8 @@
             ],
             "senseid": [],
             "source_line": 8766175,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -18427,7 +18915,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134231,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -18458,7 +18947,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8136080,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -18469,7 +18959,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8136080,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -18576,7 +19067,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8802935,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -18587,7 +19079,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8802935,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -18598,7 +19091,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8802935,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -18648,7 +19142,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484766,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -18679,7 +19174,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484740,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -18690,7 +19186,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484740,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -18721,7 +19218,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8130443,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -18771,7 +19269,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8710169,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -18785,7 +19284,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 88730,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ]
       },
@@ -18833,7 +19333,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767286,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -18844,7 +19345,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767286,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -18875,7 +19377,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8486750,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -18886,7 +19389,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8486749,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -18897,7 +19401,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8486749,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -19194,7 +19699,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421190,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -19205,7 +19711,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421190,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -19293,7 +19800,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8723203,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -19476,7 +19984,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9042901,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -19507,7 +20016,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8537129,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -19636,7 +20146,8 @@
             ],
             "senseid": [],
             "source_line": 8766501,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -19686,7 +20197,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8435903,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -19697,7 +20209,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8435903,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -19710,7 +20223,8 @@
             ],
             "senseid": [],
             "source_line": 8435903,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -19779,7 +20293,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8792204,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -19790,7 +20305,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8792204,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -19801,7 +20317,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8792204,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -19908,7 +20425,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8552145,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -19939,7 +20457,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8620785,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -19950,7 +20469,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8620785,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -20000,7 +20520,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8782269,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20011,7 +20532,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8782269,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20022,7 +20544,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8782269,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20033,7 +20556,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8782269,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -20121,7 +20645,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767584,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -20152,7 +20677,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8691449,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -20202,7 +20728,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8131675,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20213,7 +20740,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8131675,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -20263,7 +20791,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9194492,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -20294,7 +20823,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5315721,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20305,7 +20835,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5315721,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20316,7 +20847,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5315721,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20327,7 +20859,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5315721,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20338,7 +20871,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5315721,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20349,7 +20883,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5315721,
-            "sense_index": 6
+            "sense_index": 6,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20360,7 +20895,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5315721,
-            "sense_index": 7
+            "sense_index": 7,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -20448,7 +20984,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8425051,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -20482,7 +21019,8 @@
             ],
             "senseid": [],
             "source_line": 4575263,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -20532,7 +21070,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9729721,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20543,7 +21082,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9729721,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20554,7 +21094,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9729721,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20565,7 +21106,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9729721,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20576,7 +21118,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9729721,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20587,7 +21130,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9729721,
-            "sense_index": 6
+            "sense_index": 6,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -20640,7 +21184,8 @@
             ],
             "senseid": [],
             "source_line": 8221153,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -20842,7 +21387,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8471156,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20853,7 +21399,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8471156,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20864,7 +21411,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8471156,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -20933,7 +21481,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8763971,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20944,7 +21493,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8763971,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20955,7 +21505,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8763971,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20966,7 +21517,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8763971,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -20977,7 +21529,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8763971,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -21008,7 +21561,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8425104,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -21096,7 +21650,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6409340,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -21107,7 +21662,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6409340,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -21118,7 +21674,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6409340,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -21129,7 +21686,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6409340,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -21142,7 +21700,8 @@
             ],
             "senseid": [],
             "source_line": 6409340,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -21153,7 +21712,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 6409341,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -21184,7 +21744,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8463722,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -21310,7 +21871,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134200,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -21360,7 +21922,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 11110699,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -21486,7 +22049,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8697619,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -21859,7 +22423,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9722517,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -21985,7 +22550,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8312393,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -21996,7 +22562,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8312393,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -22046,7 +22613,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8435398,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -22136,7 +22704,8 @@
             ],
             "senseid": [],
             "source_line": 8433057,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -22186,7 +22755,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8794719,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22197,7 +22767,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8794719,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -22266,7 +22837,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8133052,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -22335,7 +22907,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484768,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22346,7 +22919,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484768,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22357,7 +22931,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484768,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -22371,7 +22946,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 991274,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22382,7 +22958,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 991274,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22393,7 +22970,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 991274,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ]
       },
@@ -22444,7 +23022,8 @@
             ],
             "senseid": [],
             "source_line": 10588358,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22457,7 +23036,8 @@
             ],
             "senseid": [],
             "source_line": 10588358,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -22507,7 +23087,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8432617,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -22747,7 +23328,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8778466,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22758,7 +23340,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8778466,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22769,7 +23352,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8778466,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22780,7 +23364,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8778466,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22791,7 +23376,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8778466,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22802,7 +23388,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8778466,
-            "sense_index": 6
+            "sense_index": 6,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -22833,7 +23420,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 2488296,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -22864,7 +23452,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8489972,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22875,7 +23464,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8489972,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22886,7 +23476,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8489972,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22897,7 +23488,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8489972,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22908,7 +23500,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8489972,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -22939,7 +23532,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8483125,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22950,7 +23544,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8483125,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22961,7 +23556,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8483125,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -22972,7 +23568,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8483125,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -23060,7 +23657,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 7175229,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -23091,7 +23689,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8169479,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -23122,7 +23721,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767547,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -23133,7 +23733,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8767548,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -23259,7 +23860,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8779038,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -23270,7 +23872,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8779038,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -23358,7 +23961,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8764797,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -23427,7 +24031,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8423544,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -23461,7 +24066,8 @@
             ],
             "senseid": [],
             "source_line": 8438293,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -23587,7 +24193,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8775169,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -23694,7 +24301,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484593,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -23705,7 +24313,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484593,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -23716,7 +24325,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484593,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -23727,7 +24337,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484593,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -23738,7 +24349,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8484593,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -23788,7 +24400,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8842590,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -23799,7 +24412,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8842590,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -23830,7 +24444,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8764418,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -23841,7 +24456,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8764418,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -23852,7 +24468,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8764418,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -23866,7 +24483,8 @@
             ],
             "senseid": [],
             "source_line": 8764419,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -23935,7 +24553,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8779148,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -24118,7 +24737,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8279432,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24129,7 +24749,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8279432,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -24160,7 +24781,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8432441,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -24210,7 +24832,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8481310,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24221,7 +24844,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8481310,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24232,7 +24856,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8481310,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24243,7 +24868,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8481310,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24254,7 +24880,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8481310,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24265,7 +24892,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8481310,
-            "sense_index": 6
+            "sense_index": 6,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24276,7 +24904,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8481310,
-            "sense_index": 7
+            "sense_index": 7,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24287,7 +24916,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8481310,
-            "sense_index": 8
+            "sense_index": 8,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -24375,7 +25005,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421126,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24386,7 +25017,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421126,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24397,7 +25029,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421126,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24408,7 +25041,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421126,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24419,7 +25053,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421126,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -24469,7 +25104,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8725744,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -24576,7 +25212,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9235915,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24590,7 +25227,8 @@
             ],
             "senseid": [],
             "source_line": 9235916,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -24621,7 +25259,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8764364,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24632,7 +25271,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8764364,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -24701,7 +25341,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8262872,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24712,7 +25353,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8262872,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -24743,7 +25385,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8731003,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24754,7 +25397,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8731003,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -24785,7 +25429,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8772070,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -24819,7 +25464,8 @@
             ],
             "senseid": [],
             "source_line": 8846776,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -24891,7 +25537,8 @@
             ],
             "senseid": [],
             "source_line": 9729570,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -24979,7 +25626,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 902068,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -24992,7 +25640,8 @@
             ],
             "senseid": [],
             "source_line": 902068,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -25080,7 +25729,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8432450,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -25091,7 +25741,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8432451,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -25163,7 +25814,8 @@
             ],
             "senseid": [],
             "source_line": 8766546,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -25194,7 +25846,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8482966,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -25205,7 +25858,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8482966,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -25216,7 +25870,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8482966,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -25304,7 +25959,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8069029,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -25335,7 +25991,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8437990,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -25346,7 +26003,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8437989,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -25396,7 +26054,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 5084164,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -25427,7 +26086,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8421181,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -25534,7 +26194,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8691451,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -25622,7 +26283,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8129412,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -25633,7 +26295,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8129412,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -25702,7 +26365,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8768551,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -25713,7 +26377,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8768551,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -25724,7 +26389,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8768551,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -25755,7 +26421,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8494744,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -25766,7 +26433,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8494744,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -25777,7 +26445,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8494744,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -25903,7 +26572,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8133056,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -26048,7 +26718,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8067734,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -26059,7 +26730,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8067734,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -26070,7 +26742,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8067734,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -26253,7 +26926,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8711231,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -26303,7 +26977,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8437918,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -26375,7 +27050,8 @@
             ],
             "senseid": [],
             "source_line": 9307451,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -26386,7 +27062,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 9307452,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -26493,7 +27170,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8287454,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -26504,7 +27182,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8287454,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -26515,7 +27194,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8287454,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -26526,7 +27206,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8287454,
-            "sense_index": 4
+            "sense_index": 4,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -26537,7 +27218,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8287454,
-            "sense_index": 5
+            "sense_index": 5,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -26701,7 +27383,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8432726,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -26732,7 +27415,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8429517,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -26877,7 +27561,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8487394,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -26890,7 +27575,8 @@
             ],
             "senseid": [],
             "source_line": 8487394,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -26921,7 +27607,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8432619,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -26952,7 +27639,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8429543,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -27002,7 +27690,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8130466,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -27013,7 +27702,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8130466,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -27044,7 +27734,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8422610,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -27055,7 +27746,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8422610,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -27066,7 +27758,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8422609,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -27211,7 +27904,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8795805,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -27222,7 +27916,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8795805,
-            "sense_index": 2
+            "sense_index": 2,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -27233,7 +27928,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8795805,
-            "sense_index": 3
+            "sense_index": 3,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
@@ -27340,7 +28036,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134750,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -27351,7 +28048,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134749,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           },
           {
             "wikidata_sense_qids": [],
@@ -27362,7 +28060,8 @@
             "tags": [],
             "senseid": [],
             "source_line": 8134751,
-            "sense_index": 1
+            "sense_index": 1,
+            "source_lang_code": "ml"
           }
         ],
         "fr": [],
