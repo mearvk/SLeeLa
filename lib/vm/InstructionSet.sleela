@@ -497,6 +497,9 @@ class SLISAddChar { String name; int code; }
 < OP_NEWARRAYND 194 -- syntax 3.1 (SLEELA.syntax 46): operand a = sized dimensions n (2..8) | innermost fill kind << 8; pop n sizes (last on top) and push a rectangular array of arrays, outermost first >
 class SLISNewArrayND { String name; int code; }
 
+< OP_MATH_CALL 195 -- scalar native IEEE-754 math dispatch; operand a is stable SLMATHFunction ID; stack is null fallback marker, helper-name String, then numeric arguments; unsupported VM-owned arguments fall back to the synthesized Core helper >
+class SLISMathCall { String name; int code; }
+
 < Reserved ISA allocation — these numbers are not executable opcode entries.
   Do not add them to the source registry or native SLOp enum until their
   implementation, dispatch, artifact validation, and VM compatibility work
