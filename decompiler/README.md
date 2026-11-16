@@ -155,6 +155,17 @@ recovery (not only the linear sweep), reconciling symbol virtual addresses with 
 file-offset sweep so symbol-named functions lift their bodies, 8-bit/16-bit x86 register
 naming for byte-form opcodes, and SSA/dataflow typing over the lifted SLIR.
 
+## SLeeLa VM bytecode boundary
+
+This decompiler currently analyzes native executable and object formats. It
+does not yet parse the SLeeLa `.sleela` VM artifact container or decode its
+VM opcode stream. In particular, scalar native-math opcode 195
+(`OP_MATH_CALL`) is implemented by the SLeeLa runtime, but is not yet a
+decompiler input instruction. A dedicated artifact reader and bytecode-to-SLIR
+decoder are required before SLeeLa VM bytecode reconstruction is supported.
+The native x86/x86-64/ARM/AArch64 decoder must not be treated as a substitute
+for that VM-specific reader.
+
 ## Native artifact classes
 
 1. **Executable** — a native program image.
