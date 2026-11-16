@@ -21,7 +21,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "en"
     },
     {
       "directory": "mandarin-chinese",
@@ -33,7 +34,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "zh"
     },
     {
       "directory": "hindi",
@@ -45,7 +47,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "hi"
     },
     {
       "directory": "spanish",
@@ -57,7 +60,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "es"
     },
     {
       "directory": "standard-arabic",
@@ -69,7 +73,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "ar"
     },
     {
       "directory": "french",
@@ -81,7 +86,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "fr"
     },
     {
       "directory": "bengali",
@@ -93,7 +99,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "bn"
     },
     {
       "directory": "portuguese",
@@ -105,7 +112,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "pt"
     },
     {
       "directory": "russian",
@@ -117,7 +125,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "ru"
     },
     {
       "directory": "indonesian",
@@ -129,7 +138,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "id"
     },
     {
       "directory": "urdu",
@@ -141,7 +151,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "ur"
     },
     {
       "directory": "standard-german",
@@ -153,7 +164,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "de"
     },
     {
       "directory": "japanese",
@@ -165,7 +177,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "ja"
     },
     {
       "directory": "nigerian-pidgin",
@@ -177,7 +190,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "egyptian-arabic",
@@ -189,7 +203,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "marathi",
@@ -201,7 +216,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "mr"
     },
     {
       "directory": "vietnamese",
@@ -213,7 +229,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "vi"
     },
     {
       "directory": "telugu",
@@ -225,7 +242,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "te"
     },
     {
       "directory": "hausa",
@@ -237,7 +255,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "ha"
     },
     {
       "directory": "turkish",
@@ -249,7 +268,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "tr"
     },
     {
       "directory": "western-punjabi",
@@ -261,7 +281,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "swahili",
@@ -273,7 +294,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "sw"
     },
     {
       "directory": "tagalog",
@@ -285,7 +307,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "tl"
     },
     {
       "directory": "tamil",
@@ -297,7 +320,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "ta"
     },
     {
       "directory": "yue-chinese",
@@ -309,7 +333,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "wu-chinese",
@@ -321,7 +346,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "iranian-persian",
@@ -333,7 +359,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "fa"
     },
     {
       "directory": "korean",
@@ -345,7 +372,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "ko"
     },
     {
       "directory": "thai",
@@ -357,7 +385,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "th"
     },
     {
       "directory": "javanese",
@@ -369,7 +398,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "jv"
     },
     {
       "directory": "italian",
@@ -381,7 +411,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "it"
     },
     {
       "directory": "gujarati",
@@ -393,7 +424,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "gu"
     },
     {
       "directory": "levantine-arabic",
@@ -405,7 +437,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "amharic",
@@ -417,7 +450,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "am"
     },
     {
       "directory": "kannada",
@@ -429,7 +463,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "kn"
     },
     {
       "directory": "bhojpuri",
@@ -441,7 +476,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "sudanese-arabic",
@@ -453,7 +489,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "yoruba",
@@ -465,7 +502,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "yo"
     },
     {
       "directory": "jinyu-chinese",
@@ -477,7 +515,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "min-nan-chinese",
@@ -489,7 +528,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "polish",
@@ -501,7 +541,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "pl"
     },
     {
       "directory": "burmese",
@@ -513,7 +554,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "my"
     },
     {
       "directory": "algerian-arabic",
@@ -525,7 +567,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "hakka-chinese",
@@ -537,7 +580,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "lingala",
@@ -549,7 +593,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "ln"
     },
     {
       "directory": "moroccan-arabic",
@@ -561,7 +606,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "odia",
@@ -573,7 +619,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "or"
     },
     {
       "directory": "ukrainian",
@@ -585,7 +632,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "uk"
     },
     {
       "directory": "xiang-chinese",
@@ -597,7 +645,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "malayalam",
@@ -609,7 +658,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "ml"
     },
     {
       "directory": "sindhi",
@@ -621,7 +671,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "sd"
     },
     {
       "directory": "eastern-punjabi",
@@ -633,7 +684,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "pa"
     },
     {
       "directory": "sunda",
@@ -645,7 +697,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "su"
     },
     {
       "directory": "igbo",
@@ -657,7 +710,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "ig"
     },
     {
       "directory": "dari",
@@ -669,7 +723,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "nepali",
@@ -681,7 +736,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "ne"
     },
     {
       "directory": "malay",
@@ -693,7 +749,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "ms"
     },
     {
       "directory": "northern-uzbek",
@@ -705,7 +762,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "uz"
     },
     {
       "directory": "zulu",
@@ -717,7 +775,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "zu"
     },
     {
       "directory": "saidi-arabic",
@@ -729,7 +788,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "northern-pashto",
@@ -741,7 +801,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "west-central-oromo",
@@ -753,7 +814,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "saraiki",
@@ -765,7 +827,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "dutch",
@@ -777,7 +840,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "nl"
     },
     {
       "directory": "somali",
@@ -789,7 +853,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "so"
     },
     {
       "directory": "romanian",
@@ -801,7 +866,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "ro"
     },
     {
       "directory": "assamese",
@@ -813,7 +879,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "as"
     },
     {
       "directory": "gan-chinese",
@@ -825,7 +892,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "southern-pashto",
@@ -837,7 +905,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "cebuano",
@@ -849,7 +918,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "ceb"
     },
     {
       "directory": "kazakh",
@@ -861,7 +931,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "kk"
     },
     {
       "directory": "magahi",
@@ -873,7 +944,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "najdi-arabic",
@@ -885,7 +957,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "sinhala",
@@ -897,7 +970,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "si"
     },
     {
       "directory": "mesopotamian-arabic",
@@ -909,7 +983,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "xhosa",
@@ -921,7 +996,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "xh"
     },
     {
       "directory": "khmer",
@@ -933,7 +1009,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "km"
     },
     {
       "directory": "afrikaans",
@@ -945,7 +1022,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": "af"
     },
     {
       "directory": "nigerian-fulfulde",
@@ -957,7 +1035,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     },
     {
       "directory": "maithili",
@@ -969,7 +1048,8 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
+      "iso_639_1": null
     }
   ]
 }
