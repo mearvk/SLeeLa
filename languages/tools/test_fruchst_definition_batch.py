@@ -47,6 +47,24 @@ class DefinitionBatchTests(unittest.TestCase):
         self.assertEqual(queue["definition_sources"]["en"]["url"],"https://example.invalid/en.jsonl.gz")
         self.assertEqual(queue["definition_sources"]["en"]["dump_revision"],"2026-01-01")
 
+    def test_glosses_without_qids_are_preserved_for_manual_review(self):
+        doc = {"language_tag":"es","source":{"id":"fixture"}}
+        words = {"casa":{"pos":"NOUN","frequency_count":5}}
+        sense = {"glosses":["house"],"source_line":1,"sense_index":1,"senseid":[],"tags":[]}
+        by_edition = {edition:{"casa":{("", "noun"):[sense]}} for edition in module.EDITIONS}
+        source_meta = {edition:{"url":f"https://example.invalid/{edition}.jsonl.gz",
+                               "dump_revision":"2026-01-01","file":edition,"sha256":"0"*64,
+                               "size_bytes":1,"retrieved_at_utc":"2026-01-01T00:00:00+00:00"}
+                       for edition in module.EDITIONS}
+        queue = module.build_queue("es",doc,words,by_edition,source_meta)
+        row = queue["entries"][0]
+        self.assertEqual(row["definition_status"],"edition_gloss_candidates_found")
+        self.assertEqual(row["aligned_candidates"],[])
+        self.assertEqual(row["edition_candidate_counts"],{"en":1,"fr":1,"es":1})
+        self.assertEqual(row["edition_sense_candidates"]["fr"][0]["glosses"],["house"])
+        self.assertEqual(queue["counts"]["words_with_edition_gloss_candidates"],1)
+        self.assertEqual(queue["counts"]["production_definitions_approved"],0)
+
     def test_all_common_senses_are_preserved(self):
         doc = {"language_tag":"es","source":{"id":"fixture"}}
         words = {"casa":{"pos":"NOUN","frequency_count":5}}
