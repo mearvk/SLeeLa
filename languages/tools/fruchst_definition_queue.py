@@ -14,7 +14,7 @@ import re
 import sys
 import unicodedata
 from pathlib import Path
-from typing import Iterable
+from itertools import product
 
 EDITIONS = ("en", "fr", "es")
 POS_ALIASES = {
@@ -104,8 +104,8 @@ def extract_edition(path: Path, target_lang_code: str, wanted: set[str]) -> dict
                         "qid": qid,
                         "pos": pos,
                         "glosses": glosses,
-                        "tags": sorted(t for t in sense.get("tags", []) if isinstance(t, str)),
-                        "senseid": sense.get("senseid", []),
+                        "tags": sorted(t for t in (sense.get("tags") or []) if isinstance(t, str)),
+                        "senseid": sense.get("senseid", []) if isinstance(sense.get("senseid", []), list) else [sense.get("senseid")],
                         "source_word": word,
                         "source_pos": entry.get("pos", ""),
                         "source_line": line_no,
@@ -128,32 +128,33 @@ def build_queue(candidate_path: Path, target_lang_code: str, edition_paths: dict
             edition: by_edition[edition].get(word, [])
             for edition in EDITIONS
         }
-        maps = {
-            edition: {(sense["qid"], sense["pos"]): sense for sense in per_edition[edition]}
-            for edition in EDITIONS
-        }
-        common = set(maps["en"]) & set(maps["fr"]) & set(maps["es"])
+        grouped = {edition: {} for edition in EDITIONS}
+        for edition in EDITIONS:
+            for sense in per_edition[edition]:
+                grouped[edition].setdefault((sense["qid"], sense["pos"]), []).append(sense)
+        common = set(grouped["en"]) & set(grouped["fr"]) & set(grouped["es"])
         aligned = []
         for qid, pos in sorted(common):
-            aligned.append({
-                "wikidata_sense_qid": qid,
-                "pos": pos,
-                "definitions": {
-                    edition: maps[edition][(qid, pos)]["glosses"]
-                    for edition in EDITIONS
-                },
-                "source_evidence": {
-                    edition: {
-                        "edition": edition,
-                        "source_line": maps[edition][(qid, pos)]["source_line"],
-                        "sense_index": maps[edition][(qid, pos)]["sense_index"],
-                        "senseid": maps[edition][(qid, pos)]["senseid"],
-                        "tags": maps[edition][(qid, pos)]["tags"],
-                    }
-                    for edition in EDITIONS
-                },
-                "review_status": "required",
-            })
+            # Preserve every matching sense; never hide polysemy by overwriting.
+            for en_sense, fr_sense, es_sense in product(
+                grouped["en"][(qid, pos)], grouped["fr"][(qid, pos)], grouped["es"][(qid, pos)]
+            ):
+                selected = {"en": en_sense, "fr": fr_sense, "es": es_sense}
+                aligned.append({
+                    "wikidata_sense_qid": qid,
+                    "pos": pos,
+                    "definitions": {edition: selected[edition]["glosses"] for edition in EDITIONS},
+                    "source_evidence": {
+                        edition: {
+                            "edition": edition,
+                            "source_line": selected[edition]["source_line"],
+                            "sense_index": selected[edition]["sense_index"],
+                            "senseid": selected[edition]["senseid"],
+                            "tags": selected[edition]["tags"],
+                        } for edition in EDITIONS
+                    },
+                    "review_status": "required",
+                })
         if aligned:
             aligned_total += 1
         rows.append({
