@@ -58,7 +58,14 @@ for this repository state.
 
 ## VM-owned array adapter contract
 
-The implementation contract is maintained in [`VM-ARRAY-ADAPTER-CONTRACT.md`](VM-ARRAY-ADAPTER-CONTRACT.md). It fixes the ownership, lock, snapshot, shape, alias, rollback, and qualification requirements before opcode 196 is activated. In particular, the first adapter transaction uses the existing `array_mtx` across validation, snapshot, native dispatch, and commit; the interpreter's `workers_cached` fast path is not treated as permission to bypass native-dispatch synchronization. No placeholder opcode is added for any reserved position.
+The implementation contract is maintained in [`VM-ARRAY-ADAPTER-CONTRACT.md`](VM-ARRAY-ADAPTER-CONTRACT.md).
+
+The 2026-11-15 source audit found an additional prerequisite: array handles are
+currently slot-based and the active-slot validity check has no incarnation
+counter. Harden handle identity consistently across all array opcodes and GC
+slot reuse before implementing the math adapter. See
+[`VM-ARRAY-ADAPTER-SOURCE-AUDIT.md`](VM-ARRAY-ADAPTER-SOURCE-AUDIT.md).
+ It fixes the ownership, lock, snapshot, shape, alias, rollback, and qualification requirements before opcode 196 is activated. In particular, the first adapter transaction uses the existing `array_mtx` across validation, snapshot, native dispatch, and commit; the interpreter's `workers_cached` fast path is not treated as permission to bypass native-dispatch synchronization. No placeholder opcode is added for any reserved position.
 
 ## VM-generation and decompiler boundary
 
@@ -181,13 +188,14 @@ impossible argument counts, and malformed stack contracts before execution.
 ## Delivery sequence
 
 1. Recover and reconcile the original scalar integration against current master — complete: opcode 195, stable function-ID lowering, VM dispatch, C ABI linkage, artifact operand validation, and the original Core bytecode fallback are integrated.
-2. Implement the VM-owned array validation, rooting, locking, and transactional snapshot/write-back adapter.
-3. Connect the existing typed C ABI through that adapter; preserve VM ownership and never retain pointers into VM array storage.
-4. Append and validate `OP_MATH_ARRAY_CALL` at 196 only after steps 2–3 define its complete stack, shape, and aliasing contract.
-5. Add deterministic typed compiler lowering and explicit diagnostics; retain the scalar lowering at 195.
-6. Add scalar and typed-array regression coverage, including artifact round-trip, fallback, ownership, marshalling, and numerical behavior.
-7. Update the opcode map, SLVM/1–11 shared-Core compatibility contracts, API docs, and trusted manifests. Add a dedicated SLeeLa VM-artifact decoder to the decompiler before claiming bytecode decompilation support.
-8. Run targeted scalar and typed qualification, then the broader platform/build matrix. Do not create broad CI runs before the targeted source and build causes are understood.
+2. Harden array handle identity across all array operations and GC slot reuse; slot-only handles cannot reject stale references after reuse.
+3. Implement the VM-owned array validation, rooting, locking, and transactional snapshot/write-back adapter.
+4. Connect the existing typed C ABI through that adapter; preserve VM ownership and never retain pointers into VM array storage.
+5. Append and validate `OP_MATH_ARRAY_CALL` at 196 only after steps 3–4 define its complete stack, shape, and aliasing contract.
+6. Add deterministic typed compiler lowering and explicit diagnostics; retain the scalar lowering at 195.
+7. Add scalar and typed-array regression coverage, including artifact round-trip, fallback, ownership, marshalling, and numerical behavior.
+8. Update the opcode map, SLVM/1–11 shared-Core compatibility contracts, API docs, and trusted manifests. Add a dedicated SLeeLa VM-artifact decoder to the decompiler before claiming bytecode decompilation support.
+9. Run targeted scalar and typed qualification, then the broader platform/build matrix. Do not create broad CI runs before the targeted source and build causes are understood.
 
 Do not describe standalone C ABI qualification as proof of VM bytecode
 integration. Do not mark this integration complete until the source compiler,
