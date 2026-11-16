@@ -1,0 +1,2575 @@
+{
+  "schema": "SLeeLa-Opcode-Registry-1",
+  "isa_version": "3.0",
+  "authority": "lib/vm/InstructionSet.sleela",
+  "native_mirror": "impl/core/sleela_core.h",
+  "policy": {
+    "numeric_order": "Canonical source records and native SLOp enum must match exactly by name and position.",
+    "compatibility": "Existing opcode IDs 0-194 are frozen; all additions are append-only.",
+    "family_ranges": "Reserved ranges are inclusive and may only be allocated to their named family.",
+    "reservations": "Reserved IDs are not executable enum/source entries and must fail closed.",
+    "placeholders": "Do not add placeholder enum entries or source records for reserved IDs.",
+    "operand_contracts": "Legacy operand contracts are not yet normalized in this catalog; consult the referenced native declaration. New opcodes must add an explicit machine-readable operand contract before activation."
+  },
+  "assigned_count": 196,
+  "executable_high_watermark": 195,
+  "allocated_high_watermark": 281,
+  "families": [
+    {
+      "id": "core",
+      "start": 0,
+      "end": 97
+    },
+    {
+      "id": "array",
+      "start": 98,
+      "end": 102
+    },
+    {
+      "id": "os",
+      "start": 103,
+      "end": 123
+    },
+    {
+      "id": "gc-system",
+      "start": 124,
+      "end": 125
+    },
+    {
+      "id": "idea-canvas",
+      "start": 126,
+      "end": 147
+    },
+    {
+      "id": "vm-and-host-bridge",
+      "start": 148,
+      "end": 155
+    },
+    {
+      "id": "native-and-language-extensions",
+      "start": 156,
+      "end": 178
+    },
+    {
+      "id": "ipc",
+      "start": 179,
+      "end": 181
+    },
+    {
+      "id": "object-string-bitwise-array-extensions",
+      "start": 182,
+      "end": 194
+    },
+    {
+      "id": "shared-native-math",
+      "start": 195,
+      "end": 199
+    },
+    {
+      "id": "vector",
+      "start": 200,
+      "end": 207
+    },
+    {
+      "id": "matrix",
+      "start": 208,
+      "end": 215
+    },
+    {
+      "id": "complex",
+      "start": 216,
+      "end": 223
+    },
+    {
+      "id": "decomposition",
+      "start": 224,
+      "end": 231
+    },
+    {
+      "id": "transform",
+      "start": 232,
+      "end": 281
+    }
+  ],
+  "assigned": [
+    {
+      "code": 0,
+      "name": "OP_NOP",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 1,
+      "name": "OP_CONST",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 2,
+      "name": "OP_POP",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 3,
+      "name": "OP_DUP",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 4,
+      "name": "OP_LOADG",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 5,
+      "name": "OP_STOREG",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 6,
+      "name": "OP_LOADL",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 7,
+      "name": "OP_STOREL",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 8,
+      "name": "OP_ADD",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 9,
+      "name": "OP_SUB",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 10,
+      "name": "OP_MUL",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 11,
+      "name": "OP_DIV",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 12,
+      "name": "OP_MOD",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 13,
+      "name": "OP_NEG",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 14,
+      "name": "OP_EQ",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 15,
+      "name": "OP_NE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 16,
+      "name": "OP_LT",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 17,
+      "name": "OP_LE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 18,
+      "name": "OP_GT",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 19,
+      "name": "OP_GE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 20,
+      "name": "OP_AND",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 21,
+      "name": "OP_OR",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 22,
+      "name": "OP_NOT",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 23,
+      "name": "OP_JMP",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 24,
+      "name": "OP_JMPF",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 25,
+      "name": "OP_CALL",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 26,
+      "name": "OP_RET",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 27,
+      "name": "OP_PRINT",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 28,
+      "name": "OP_SPAWN",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 29,
+      "name": "OP_JOINALL",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 30,
+      "name": "OP_LOCK",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 31,
+      "name": "OP_UNLOCK",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 32,
+      "name": "OP_SEND",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 33,
+      "name": "OP_RECV",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 34,
+      "name": "OP_LISTEN",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 35,
+      "name": "OP_ACCEPT",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 36,
+      "name": "OP_CONNECT",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 37,
+      "name": "OP_SOCKREAD",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 38,
+      "name": "OP_SOCKWRITE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 39,
+      "name": "OP_SOCKCLOSE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 40,
+      "name": "OP_PIPE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 41,
+      "name": "OP_PIPEPEER",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 42,
+      "name": "OP_FIFO_MK",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 43,
+      "name": "OP_FILEOPEN",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 44,
+      "name": "OP_FILEREAD",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 45,
+      "name": "OP_FILEWRITE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 46,
+      "name": "OP_FILECLOSE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 47,
+      "name": "OP_FILEUNLINK",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 48,
+      "name": "OP_HALT",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 49,
+      "name": "OP_TIME_UTC_MS",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 50,
+      "name": "OP_TIME_UTC_NS",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 51,
+      "name": "OP_TIME_MONO_NS",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 52,
+      "name": "OP_TIME_PRECISION_MS",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 53,
+      "name": "OP_TIME_LOCATION",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 54,
+      "name": "OP_TIME_HTTP_DATE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 55,
+      "name": "OP_TIME_JSON",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 56,
+      "name": "OP_TIME_NTP",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 57,
+      "name": "OP_TIME_SET_LOCATION",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 58,
+      "name": "OP_NEWSTRUCT",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 59,
+      "name": "OP_GETFIELD",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 60,
+      "name": "OP_SETFIELD",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 61,
+      "name": "OP_STRUCTPACK",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 62,
+      "name": "OP_STRUCTUNPACK",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 63,
+      "name": "OP_SYN_OPEN",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 64,
+      "name": "OP_SYN_DISPATCH",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 65,
+      "name": "OP_SYN_STAT",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 66,
+      "name": "OP_SYN_REPORT",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 67,
+      "name": "OP_SYN_CLOSE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 68,
+      "name": "OP_MUN_START",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 69,
+      "name": "OP_MUN_CONNECT",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 70,
+      "name": "OP_MUN_ENABLE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 71,
+      "name": "OP_MUN_SEND",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 72,
+      "name": "OP_MUN_THATCH",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 73,
+      "name": "OP_MUN_CONSUME",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 74,
+      "name": "OP_MUN_LATCH",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 75,
+      "name": "OP_MUN_RECEPTION",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 76,
+      "name": "OP_MUN_CLOSE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 77,
+      "name": "OP_BEST_NEW",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 78,
+      "name": "OP_BEST_WEIGHT",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 79,
+      "name": "OP_BEST_MINVER",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 80,
+      "name": "OP_BEST_BUDGET",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 81,
+      "name": "OP_BEST_CAND",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 82,
+      "name": "OP_BEST_RECORD",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 83,
+      "name": "OP_BEST_SCORE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 84,
+      "name": "OP_BEST_BEST",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 85,
+      "name": "OP_BEST_STAT",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 86,
+      "name": "OP_BEST_CHOICE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 87,
+      "name": "OP_BEST_REPORT",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 88,
+      "name": "OP_BEST_ARCH",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 89,
+      "name": "OP_BEST_ARCH_STATE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 90,
+      "name": "OP_BEST_CLOSE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 91,
+      "name": "OP_AUDIO_NEW",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 92,
+      "name": "OP_AUDIO_ADD",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 93,
+      "name": "OP_AUDIO_CONTROLS",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 94,
+      "name": "OP_AUDIO_VALIDATE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 95,
+      "name": "OP_AUDIO_RENDER",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 96,
+      "name": "OP_AUDIO_CLOSE",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 97,
+      "name": "OP_AUDIO_PLATFORM",
+      "family": "core",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 98,
+      "name": "OP_NEWARRAY",
+      "family": "array",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 99,
+      "name": "OP_ARRGET",
+      "family": "array",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 100,
+      "name": "OP_ARRSET",
+      "family": "array",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 101,
+      "name": "OP_ARRLEN",
+      "family": "array",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 102,
+      "name": "OP_ARRPUSH",
+      "family": "array",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 103,
+      "name": "OP_OS_PLATFORM",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 104,
+      "name": "OP_OS_CAPABILITY",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 105,
+      "name": "OP_OS_GETENV",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 106,
+      "name": "OP_OS_SETENV",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 107,
+      "name": "OP_OS_CWD",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 108,
+      "name": "OP_OS_CHDIR",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 109,
+      "name": "OP_OS_HOSTNAME",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 110,
+      "name": "OP_OS_USERNAME",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 111,
+      "name": "OP_OS_TEMPDIR",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 112,
+      "name": "OP_OS_PID",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 113,
+      "name": "OP_OS_EXISTS",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 114,
+      "name": "OP_OS_ISDIR",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 115,
+      "name": "OP_OS_FILESIZE",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 116,
+      "name": "OP_OS_MKDIR",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 117,
+      "name": "OP_OS_REMOVE",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 118,
+      "name": "OP_OS_RENAME",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 119,
+      "name": "OP_OS_RUN",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 120,
+      "name": "OP_OS_SPAWN",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 121,
+      "name": "OP_OS_WAIT",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 122,
+      "name": "OP_OS_KILL",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 123,
+      "name": "OP_OS_PCLOSE",
+      "family": "os",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 124,
+      "name": "OP_GC_HINT",
+      "family": "gc-system",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 125,
+      "name": "OP_RAN_MEM",
+      "family": "gc-system",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 126,
+      "name": "OP_IC_CREATE",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 127,
+      "name": "OP_IC_DESTROY",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 128,
+      "name": "OP_IC_COLS",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 129,
+      "name": "OP_IC_ROWS",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 130,
+      "name": "OP_IC_COUNT",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 131,
+      "name": "OP_IC_SETPARAMS",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 132,
+      "name": "OP_IC_EXCITE",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 133,
+      "name": "OP_IC_STEP",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 134,
+      "name": "OP_IC_ADVANCE",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 135,
+      "name": "OP_IC_TIMESTEP",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 136,
+      "name": "OP_IC_INTENSITY",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 137,
+      "name": "OP_IC_HASREND",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 138,
+      "name": "OP_IC_OPENWIN",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 139,
+      "name": "OP_IC_SHOULDCLOSE",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 140,
+      "name": "OP_IC_PRESENT",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 141,
+      "name": "OP_IC_RUN",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 142,
+      "name": "OP_IC_SETPOLICY",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 143,
+      "name": "OP_IC_POLICY",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 144,
+      "name": "OP_IC_BACKEND",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 145,
+      "name": "OP_IC_GPUAVAIL",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 146,
+      "name": "OP_IC_MEASHZ",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 147,
+      "name": "OP_IC_MIGRATE",
+      "family": "idea-canvas",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 148,
+      "name": "OP_VM_SELECT",
+      "family": "vm-and-host-bridge",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 149,
+      "name": "OP_MODIUM_SCAN",
+      "family": "vm-and-host-bridge",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 150,
+      "name": "OP_UI_CALL",
+      "family": "vm-and-host-bridge",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 151,
+      "name": "OP_SSEND",
+      "family": "vm-and-host-bridge",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 152,
+      "name": "OP_CHECKCAST",
+      "family": "vm-and-host-bridge",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 153,
+      "name": "OP_INSTANCEOF",
+      "family": "vm-and-host-bridge",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 154,
+      "name": "OP_DUP2",
+      "family": "vm-and-host-bridge",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 155,
+      "name": "OP_OSLS_CALL",
+      "family": "vm-and-host-bridge",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 156,
+      "name": "OP_BIGMUL",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 157,
+      "name": "OP_SLEEP",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 158,
+      "name": "OP_BIGADD",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 159,
+      "name": "OP_BIGDIVMOD",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 160,
+      "name": "OP_BIGSUB",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 161,
+      "name": "OP_BIGDIV",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 162,
+      "name": "OP_BIGISQRT",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 163,
+      "name": "OP_NATIVE_CALL",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 164,
+      "name": "OP_NATIVE_OPEN",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 165,
+      "name": "OP_NATIVE_CLOSE",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 166,
+      "name": "OP_JSTR_LENGTH",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 167,
+      "name": "OP_JSTR_CHAR_AT",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 168,
+      "name": "OP_JSTR_CODE_POINT_AT",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 169,
+      "name": "OP_JSTR_CODE_POINT_COUNT",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 170,
+      "name": "OP_JSTR_OFFSET_BY_CODE_POINTS",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 171,
+      "name": "OP_JSTR_SUBSTRING",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 172,
+      "name": "OP_JSTR_CONCAT",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 173,
+      "name": "OP_JSTR_HASH_CODE",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 174,
+      "name": "OP_JSTR_COMPARE_TO",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 175,
+      "name": "OP_JSTR_FROM_UTF8",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 176,
+      "name": "OP_TRY_PUSH",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 177,
+      "name": "OP_TRY_POP",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 178,
+      "name": "OP_THROW",
+      "family": "native-and-language-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 179,
+      "name": "OP_IPC_OPEN",
+      "family": "ipc",
+      "status": "reserved-fail-closed",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 180,
+      "name": "OP_IPC_CALL",
+      "family": "ipc",
+      "status": "reserved-fail-closed",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 181,
+      "name": "OP_IPC_CLOSE",
+      "family": "ipc",
+      "status": "reserved-fail-closed",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 182,
+      "name": "OP_REF",
+      "family": "object-string-bitwise-array-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 183,
+      "name": "OP_JSTR_TO_UTF8",
+      "family": "object-string-bitwise-array-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 184,
+      "name": "OP_JSTR_FROM_CODE_UNIT",
+      "family": "object-string-bitwise-array-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 185,
+      "name": "OP_BAND",
+      "family": "object-string-bitwise-array-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 186,
+      "name": "OP_BOR",
+      "family": "object-string-bitwise-array-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 187,
+      "name": "OP_BXOR",
+      "family": "object-string-bitwise-array-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 188,
+      "name": "OP_BSHL",
+      "family": "object-string-bitwise-array-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 189,
+      "name": "OP_BSHR",
+      "family": "object-string-bitwise-array-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 190,
+      "name": "OP_BUSHR",
+      "family": "object-string-bitwise-array-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 191,
+      "name": "OP_BNOT",
+      "family": "object-string-bitwise-array-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 192,
+      "name": "OP_CHARSTR",
+      "family": "object-string-bitwise-array-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 193,
+      "name": "OP_ADDCHAR",
+      "family": "object-string-bitwise-array-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 194,
+      "name": "OP_NEWARRAYND",
+      "family": "object-string-bitwise-array-extensions",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "legacy-not-normalized",
+        "source": "impl/core/sleela_core.h"
+      }
+    },
+    {
+      "code": 195,
+      "name": "OP_MATH_CALL",
+      "family": "shared-native-math",
+      "status": "implemented",
+      "operand_contract": {
+        "status": "documented",
+        "description": "Operand a is stable SLMATHFunction ID; stack is fallback marker, helper-name String, then numeric arguments.",
+        "source": "lib/vm/InstructionSet.sleela"
+      }
+    }
+  ],
+  "reserved": [
+    {
+      "code": 196,
+      "family": "shared-native-math",
+      "status": "reserved-not-executable",
+      "name": "OP_MATH_ARRAY_CALL"
+    },
+    {
+      "code": 197,
+      "family": "shared-native-math",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 198,
+      "family": "shared-native-math",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 199,
+      "family": "shared-native-math",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 200,
+      "family": "vector",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 201,
+      "family": "vector",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 202,
+      "family": "vector",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 203,
+      "family": "vector",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 204,
+      "family": "vector",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 205,
+      "family": "vector",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 206,
+      "family": "vector",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 207,
+      "family": "vector",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 208,
+      "family": "matrix",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 209,
+      "family": "matrix",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 210,
+      "family": "matrix",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 211,
+      "family": "matrix",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 212,
+      "family": "matrix",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 213,
+      "family": "matrix",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 214,
+      "family": "matrix",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 215,
+      "family": "matrix",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 216,
+      "family": "complex",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 217,
+      "family": "complex",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 218,
+      "family": "complex",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 219,
+      "family": "complex",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 220,
+      "family": "complex",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 221,
+      "family": "complex",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 222,
+      "family": "complex",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 223,
+      "family": "complex",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 224,
+      "family": "decomposition",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 225,
+      "family": "decomposition",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 226,
+      "family": "decomposition",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 227,
+      "family": "decomposition",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 228,
+      "family": "decomposition",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 229,
+      "family": "decomposition",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 230,
+      "family": "decomposition",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 231,
+      "family": "decomposition",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 232,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 233,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 234,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 235,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 236,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 237,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 238,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 239,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 240,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 241,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 242,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 243,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 244,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 245,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 246,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 247,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 248,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 249,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 250,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 251,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 252,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 253,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 254,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 255,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 256,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 257,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 258,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 259,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 260,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 261,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 262,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 263,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 264,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 265,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 266,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 267,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 268,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 269,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 270,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 271,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 272,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 273,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 274,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 275,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 276,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 277,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 278,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 279,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 280,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    },
+    {
+      "code": 281,
+      "family": "transform",
+      "status": "reserved-not-executable",
+      "name": null
+    }
+  ]
+}
