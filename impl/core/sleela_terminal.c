@@ -157,9 +157,21 @@ int slterminal_spawn(SLTerminalHandle* terminal, const char* command,
 
 SLTerminalCount slterminal_read(SLTerminalHandle terminal, void* buffer, size_t size) {
     SLWinTerminal* t = as_terminal(terminal);
+    DWORD available = 0;
+    DWORD request;
     DWORD got = 0;
-    if (!t || !buffer || size == 0 || size > 0xffffffffu) return -1;
-    if (!ReadFile(t->output_read, buffer, (DWORD)size, &got, NULL)) return -1;
+    if (!t || !buffer || size == 0) return -1;
+
+    /* ConPTY output is backed by an anonymous pipe. Read only bytes already
+     * available instead of issuing a large blocking ReadFile request: on
+     * Windows 10/11 the ConPTY pipe can keep that request pending after the
+     * child has emitted its complete line, preventing callers from reaching
+     * terminal teardown. A zero result means "no bytes ready yet". */
+    if (!PeekNamedPipe(t->output_read, NULL, 0, NULL, &available, NULL)) return -1;
+    if (available == 0) return 0;
+    request = available;
+    if (size < (size_t)request) request = (DWORD)size;
+    if (!ReadFile(t->output_read, buffer, request, &got, NULL)) return -1;
     return (SLTerminalCount)got;
 }
 
