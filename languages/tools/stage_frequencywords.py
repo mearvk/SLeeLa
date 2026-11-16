@@ -28,7 +28,7 @@ SOURCE_CODES = {
     "vi": "vi", "te": "te", "tr": "tr", "tl": "tl", "fa": "fa",
     "ko": "ko", "th": "th", "it": "it", "pl": "pl", "uk": "uk",
     "ta": "ta", "ms": "ms", "nl": "nl", "ro": "ro", "af": "af",
-    "si": "si",
+    "si": "si", "ml": "ml", "kk": "kk",
 }
 
 def is_edge_punctuation(character: str) -> bool:
