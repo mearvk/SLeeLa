@@ -6,8 +6,10 @@ on:
     branches: [master]
     paths:
       - ".github/workflows/fruchst-definition-stage.yml"
+      - "languages/tools/fruchst.py"
       - "languages/tools/fruchst_definition_batch.py"
       - "languages/tools/test_fruchst_definition_batch.py"
+      - "languages/tools/test_fruchst_production.py"
       - "languages/datasets/frequency-candidates/wordhoard-*.json"
   workflow_dispatch:
 
