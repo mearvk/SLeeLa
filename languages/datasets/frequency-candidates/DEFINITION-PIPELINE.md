@@ -57,8 +57,8 @@ The pivot can cross senses (for example, an English gloss "bank" may lead to riv
 | Method | Meaning |
 |---|---|
 | `case_variant` | Same word, different letter case. |
-| `orthographic_variant` | Same word after removing optional marks: Latin/Cyrillic/Greek diacritics (e.g. Russian ё/е), Arabic short vowels and tatweel, and unifying Arabic-script letter variants (ي/ى/ی, ك/ک, أ/إ/آ/ا, ة/ه). Abugida vowel signs are never removed. |
-| `inflected_form` | The word appears in another entry's inflection table (`forms`), exactly or after the same mark removal (`via`). The close definition is that lemma's gloss. |
+| `orthographic_variant` | Same word after removing optional marks: Latin/Cyrillic/Greek diacritics (e.g. Russian ё/е), Arabic short vowels and tatweel, and unifying Arabic-script letter variants (ي/ى/ی, ك/ک; for Arabic only, also أ/إ/آ/ٱ to ا). ة and ه stay distinct because they separate words. Abugida vowel signs are never removed. |
+| `inflected_form` | The word appears in another entry's inflection table (`forms`), exactly or after the same mark removal (`via`). The close definition is that lemma's gloss. For Chinese, only forms tagged exactly `Simplified-Chinese` are used; dialectal and alternative characters are skipped. |
 | `transliteration` | Uzbek only: official Cyrillic-to-Latin conversion. |
 | `clitic_stripped` | Arabic only: a leading و/ف/ب/ل/ك and/or ال removed. |
 

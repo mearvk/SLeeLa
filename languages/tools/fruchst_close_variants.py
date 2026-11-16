@@ -8,7 +8,8 @@ variant's English glosses as a *close* definition. Methods, closest first:
   case_variant          same word, different letter case
   orthographic_variant  same word after removing optional marks: Latin/Cyrillic/
                         Greek diacritics, Arabic short vowels and tatweel, and
-                        unifying Arabic-script letter variants (ي/ى/ی, ك/ک, أ/إ/آ/ا, ة/ه)
+                        unifying Arabic-script letter variants (ي/ى/ی, ك/ک; for
+                        Arabic only also أ/إ/آ/ٱ to ا). ة and ه are kept distinct.
   inflected_form        the word is listed in another entry's inflection table
                         ("forms"); the close definition is that lemma's gloss
   transliteration       Uzbek only: official Cyrillic-to-Latin conversion
@@ -33,10 +34,20 @@ METHOD_ORDER = ("case_variant", "orthographic_variant", "inflected_form", "trans
 SKIP_FORM_TAGS = {"romanization", "transliteration", "table-tags", "inflection-template", "class", "canonical"}
 MAX_MATCHES = 20
 
-ARABIC_MARKS = {chr(c) for c in range(0x064B, 0x0660)} | {"\u0670", "\u0640"}
-ARABIC_LETTERS = str.maketrans({
-    "ى": "ي", "ی": "ي", "ې": "ي", "ك": "ک", "أ": "ا", "إ": "ا", "آ": "ا", "ٱ": "ا", "ة": "ه", "ۀ": "ه",
-})
+# Short vowels, tanween, shadda, sukun, dagger alef and tatweel. Hamza and
+# madda (U+0653-U+0655) are letters-in-use and are kept.
+ARABIC_MARKS = {chr(c) for c in range(0x064B, 0x0653)} | {"\u0670", "\u0640"}
+# Letter variants that are interchangeable spellings. Teh marbuta (ة) and heh
+# (ه) are NOT merged: they distinguish words (كله "all of it" vs كلة "shell").
+ARABIC_LETTERS = str.maketrans({"ى": "ي", "ی": "ي", "ې": "ي", "ك": "ک"})
+# Hamza seat omission is a common informal Arabic spelling. In Urdu/Persian,
+# alef madda is distinct (آتا "comes" vs اتا), so this applies to Arabic only.
+ARABIC_ALEF = str.maketrans({"أ": "ا", "إ": "ا", "آ": "ا", "ٱ": "ا"})
+ALEF_TAGS = {"ar"}
+ALEF_CODES = {"ar"}
+# Chinese inflection-table "forms" also list dialectal and alternative
+# characters; only the plain simplified form of a traditional entry is used.
+ZH_FORM_TAGS = {"Simplified-Chinese"}
 STRIP_SCRIPTS = ("LATIN", "CYRILLIC", "GREEK")
 APOSTROPHES = str.maketrans({"'": "ʻ", "‘": "ʻ", "’": "ʼ", "`": "ʻ", "ʹ": "ʻ"})
 
@@ -50,18 +61,18 @@ UZ_VOWELS = set("аеёиоуўэюя")
 AR_PREFIXES = ("وال", "فال", "بال", "كال", "لل", "ال", "و", "ف", "ب", "ل", "ك")
 
 
-def strip_key(word: str) -> str:
+def strip_key(word: str, alef: bool = False) -> str:
     """Case-fold and remove optional marks, without touching abugida vowel signs."""
     out = []
+    word = "".join(ch for ch in unicodedata.normalize("NFC", word) if ch not in ARABIC_MARKS)
     for ch in unicodedata.normalize("NFD", word.casefold()):
-        if ch in ARABIC_MARKS:
-            continue
         if unicodedata.category(ch) == "Mn" and out:
             base = unicodedata.name(out[-1], "")
             if base.startswith(STRIP_SCRIPTS):
                 continue
         out.append(ch)
-    return unicodedata.normalize("NFC", "".join(out)).translate(ARABIC_LETTERS).translate(APOSTROPHES)
+    key = unicodedata.normalize("NFC", "".join(out)).translate(ARABIC_LETTERS).translate(APOSTROPHES)
+    return key.translate(ARABIC_ALEF) if alef else key
 
 
 def uz_latin(word: str) -> str:
@@ -128,12 +139,12 @@ def main() -> int:
         for code in wiktionary_codes(tag):
             for word in words:
                 exact_keys.setdefault((code, word.casefold()), []).append((tag, word, "case_variant"))
-                strip_keys.setdefault((code, strip_key(word)), []).append((tag, word, "orthographic_variant"))
+                strip_keys.setdefault((code, strip_key(word, tag in ALEF_TAGS)), []).append((tag, word, "orthographic_variant"))
                 if tag == "uz":
                     strip_keys.setdefault((code, strip_key(uz_latin(word))), []).append((tag, word, "transliteration"))
                 if tag == "ar":
                     for stem in ar_stems(word):
-                        strip_keys.setdefault((code, strip_key(stem)), []).append((tag, word, "clitic_stripped"))
+                        strip_keys.setdefault((code, strip_key(stem, True)), []).append((tag, word, "clitic_stripped"))
     codes = {code for code, _ in exact_keys}
     form_keys = {k: [(t, w, "inflected_form") for t, w, _ in v] for k, v in exact_keys.items()}
 
@@ -166,7 +177,7 @@ def main() -> int:
                 if head != word:
                     add(tag, head, method, entry, line_no)
             seen_exact = {(t, h) for t, h, _ in exact_keys.get((code, word.casefold()), [])}
-            for tag, head, method in strip_keys.get((code, strip_key(word)), []):
+            for tag, head, method in strip_keys.get((code, strip_key(word, code in ALEF_CODES)), []):
                 if method == "orthographic_variant" and (tag, head) in seen_exact:
                     continue
                 add(tag, head, method, entry, line_no)
@@ -176,13 +187,15 @@ def main() -> int:
                 tags = set(form.get("tags") or [])
                 if tags & SKIP_FORM_TAGS:
                     continue
+                if code == "zh" and tags != ZH_FORM_TAGS:
+                    continue
                 surface = norm(form["form"].strip())
                 extra = {"form_tags": sorted(tags), "listed_form": surface}
                 exact_hits = form_keys.get((code, surface.casefold()), [])
                 for tag, head, method in exact_hits:
                     add(tag, head, method, entry, line_no, extra)
                 exact_heads = {(t, h) for t, h, _ in exact_hits}
-                for tag, head, via in strip_keys.get((code, strip_key(surface)), []):
+                for tag, head, via in strip_keys.get((code, strip_key(surface, code in ALEF_CODES)), []):
                     if (tag, head) not in exact_heads:
                         add(tag, head, "inflected_form", entry, line_no, {**extra, "via": via})
 
