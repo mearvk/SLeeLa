@@ -1,6 +1,6 @@
 # FRUCHST definition candidate pipeline
 
-`fruchst_definition_queue.py` creates a **review queue**, not production definitions.
+`fruchst_definition_queue.py` creates versioned **review queues**, not production definitions.
 It reads one 1,000-word frequency candidate file and three Kaikki/Wiktextract
 JSONL extracts: English, French, and Spanish Wiktionary editions.
 
@@ -25,14 +25,19 @@ Kaikki/Wiktextract dump; decompress it before invoking this script.
 - Exact NFC headword matching is required; no fuzzy spelling substitution.
 - The entry's `lang_code` must match the target language (not the Wiktionary
   edition's language).
-- A triple is proposed only when all three editions expose the same
-  **sense-level** Wikidata QID and normalized part of speech.
+- Every matching headword/POS gloss is retained independently for each
+  Wiktionary edition, including senses without a Wikidata QID.
+- A cross-edition alignment candidate is additionally proposed only when all
+  three editions expose the same **sense-level** Wikidata QID and normalized
+  part of speech.
 - Gloss arrays and source line/sense evidence are retained; nothing is silently
   selected when multiple senses exist.
 - QID/POS agreement is a candidate signal, not proof of equivalence. Every
-  triple remains `review_status: required`; no production definition is
-  approved by this tool.
-- Missing QIDs, missing editions, and unmatched senses go to manual lookup.
+  aligned candidate remains `review_status: required`; no production
+  definition is approved by this tool.
+- Missing edition glosses go to manual lookup. Missing QIDs do not cause glosses
+  to be discarded; those remain independent edition candidates for human
+  sense alignment.
 
 ## Source and license
 
