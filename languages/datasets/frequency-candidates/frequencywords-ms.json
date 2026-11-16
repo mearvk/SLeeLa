@@ -1,0 +1,7030 @@
+{
+  "schema": "SLeeLa FRUCHST frequency candidate staging v1",
+  "language_tag": "ms",
+  "language_directory": "malay",
+  "source": {
+    "dataset": "FrequencyWords",
+    "upstream": "https://github.com/hermitdave/FrequencyWords",
+    "revision": "525f9b560de45753a5ea01069454e72e9aa541c6",
+    "sample": "content/2018/ms/ms_full.txt",
+    "data_license": "CC-BY-SA-4.0",
+    "code_license": "MIT",
+    "frequency_source": "OpenSubtitles-2018",
+    "attribution": [
+      "Hermit Dave / FrequencyWords — https://github.com/hermitdave/FrequencyWords",
+      "OpenSubtitles 2018 — https://opus.nlpl.eu/OpenSubtitles2018.php"
+    ],
+    "selection": "First 1,000 unique NFC-normalized lexical surface forms in source frequency order. Punctuation-only tokens are excluded; source line rank and raw occurrence count are retained.",
+    "limitations": [
+      "Surface forms, not lemmatized headwords.",
+      "Subtitle-domain frequency ranking; not a balanced general-purpose corpus.",
+      "No POS or sense labels are supplied by this source.",
+      "English, French, and Spanish definitions remain pending."
+    ],
+    "license_notice": "FrequencyWords content is CC BY-SA 4.0; preserve attribution and share-alike terms. The repository's code is MIT and does not change the data license."
+  },
+  "candidate_count": 1000,
+  "definitions_status": "pending",
+  "entries": [
+    {
+      "candidate_rank": 1,
+      "source_rank": 1,
+      "word": "saya",
+      "pos": null,
+      "frequency_count": 386821
+    },
+    {
+      "candidate_rank": 2,
+      "source_rank": 2,
+      "word": "yang",
+      "pos": null,
+      "frequency_count": 253087
+    },
+    {
+      "candidate_rank": 3,
+      "source_rank": 3,
+      "word": "aku",
+      "pos": null,
+      "frequency_count": 209980
+    },
+    {
+      "candidate_rank": 4,
+      "source_rank": 4,
+      "word": "dia",
+      "pos": null,
+      "frequency_count": 175687
+    },
+    {
+      "candidate_rank": 5,
+      "source_rank": 5,
+      "word": "awak",
+      "pos": null,
+      "frequency_count": 175660
+    },
+    {
+      "candidate_rank": 6,
+      "source_rank": 6,
+      "word": "kau",
+      "pos": null,
+      "frequency_count": 159596
+    },
+    {
+      "candidate_rank": 7,
+      "source_rank": 7,
+      "word": "ini",
+      "pos": null,
+      "frequency_count": 149318
+    },
+    {
+      "candidate_rank": 8,
+      "source_rank": 8,
+      "word": "di",
+      "pos": null,
+      "frequency_count": 148161
+    },
+    {
+      "candidate_rank": 9,
+      "source_rank": 9,
+      "word": "tak",
+      "pos": null,
+      "frequency_count": 146394
+    },
+    {
+      "candidate_rank": 10,
+      "source_rank": 10,
+      "word": "dan",
+      "pos": null,
+      "frequency_count": 145662
+    },
+    {
+      "candidate_rank": 11,
+      "source_rank": 11,
+      "word": "akan",
+      "pos": null,
+      "frequency_count": 141787
+    },
+    {
+      "candidate_rank": 12,
+      "source_rank": 12,
+      "word": "tidak",
+      "pos": null,
+      "frequency_count": 136484
+    },
+    {
+      "candidate_rank": 13,
+      "source_rank": 13,
+      "word": "kita",
+      "pos": null,
+      "frequency_count": 129737
+    },
+    {
+      "candidate_rank": 14,
+      "source_rank": 14,
+      "word": "apa",
+      "pos": null,
+      "frequency_count": 128535
+    },
+    {
+      "candidate_rank": 15,
+      "source_rank": 15,
+      "word": "kamu",
+      "pos": null,
+      "frequency_count": 126302
+    },
+    {
+      "candidate_rank": 16,
+      "source_rank": 16,
+      "word": "itu",
+      "pos": null,
+      "frequency_count": 125127
+    },
+    {
+      "candidate_rank": 17,
+      "source_rank": 17,
+      "word": "untuk",
+      "pos": null,
+      "frequency_count": 107800
+    },
+    {
+      "candidate_rank": 18,
+      "source_rank": 18,
+      "word": "ada",
+      "pos": null,
+      "frequency_count": 89941
+    },
+    {
+      "candidate_rank": 19,
+      "source_rank": 19,
+      "word": "boleh",
+      "pos": null,
+      "frequency_count": 83169
+    },
+    {
+      "candidate_rank": 20,
+      "source_rank": 20,
+      "word": "mereka",
+      "pos": null,
+      "frequency_count": 81605
+    },
+    {
+      "candidate_rank": 21,
+      "source_rank": 21,
+      "word": "dengan",
+      "pos": null,
+      "frequency_count": 80780
+    },
+    {
+      "candidate_rank": 22,
+      "source_rank": 22,
+      "word": "anda",
+      "pos": null,
+      "frequency_count": 77429
+    },
+    {
+      "candidate_rank": 23,
+      "source_rank": 23,
+      "word": "tahu",
+      "pos": null,
+      "frequency_count": 69946
+    },
+    {
+      "candidate_rank": 24,
+      "source_rank": 24,
+      "word": "ke",
+      "pos": null,
+      "frequency_count": 67259
+    },
+    {
+      "candidate_rank": 25,
+      "source_rank": 25,
+      "word": "kami",
+      "pos": null,
+      "frequency_count": 61260
+    },
+    {
+      "candidate_rank": 26,
+      "source_rank": 26,
+      "word": "ya",
+      "pos": null,
+      "frequency_count": 60861
+    },
+    {
+      "candidate_rank": 27,
+      "source_rank": 27,
+      "word": "dari",
+      "pos": null,
+      "frequency_count": 52467
+    },
+    {
+      "candidate_rank": 28,
+      "source_rank": 28,
+      "word": "dalam",
+      "pos": null,
+      "frequency_count": 51873
+    },
+    {
+      "candidate_rank": 29,
+      "source_rank": 29,
+      "word": "sini",
+      "pos": null,
+      "frequency_count": 50812
+    },
+    {
+      "candidate_rank": 30,
+      "source_rank": 30,
+      "word": "semua",
+      "pos": null,
+      "frequency_count": 48162
+    },
+    {
+      "candidate_rank": 31,
+      "source_rank": 31,
+      "word": "tapi",
+      "pos": null,
+      "frequency_count": 47855
+    },
+    {
+      "candidate_rank": 32,
+      "source_rank": 32,
+      "word": "pergi",
+      "pos": null,
+      "frequency_count": 47377
+    },
+    {
+      "candidate_rank": 33,
+      "source_rank": 33,
+      "word": "orang",
+      "pos": null,
+      "frequency_count": 47120
+    },
+    {
+      "candidate_rank": 34,
+      "source_rank": 34,
+      "word": "adalah",
+      "pos": null,
+      "frequency_count": 45932
+    },
+    {
+      "candidate_rank": 35,
+      "source_rank": 35,
+      "word": "nak",
+      "pos": null,
+      "frequency_count": 43133
+    },
+    {
+      "candidate_rank": 36,
+      "source_rank": 36,
+      "word": "ia",
+      "pos": null,
+      "frequency_count": 42703
+    },
+    {
+      "candidate_rank": 37,
+      "source_rank": 37,
+      "word": "jadi",
+      "pos": null,
+      "frequency_count": 39540
+    },
+    {
+      "candidate_rank": 38,
+      "source_rank": 38,
+      "word": "sekarang",
+      "pos": null,
+      "frequency_count": 39457
+    },
+    {
+      "candidate_rank": 39,
+      "source_rank": 39,
+      "word": "lagi",
+      "pos": null,
+      "frequency_count": 39413
+    },
+    {
+      "candidate_rank": 40,
+      "source_rank": 40,
+      "word": "pada",
+      "pos": null,
+      "frequency_count": 37834
+    },
+    {
+      "candidate_rank": 41,
+      "source_rank": 41,
+      "word": "jangan",
+      "pos": null,
+      "frequency_count": 35869
+    },
+    {
+      "candidate_rank": 42,
+      "source_rank": 42,
+      "word": "dah",
+      "pos": null,
+      "frequency_count": 35704
+    },
+    {
+      "candidate_rank": 43,
+      "source_rank": 43,
+      "word": "bukan",
+      "pos": null,
+      "frequency_count": 35009
+    },
+    {
+      "candidate_rank": 44,
+      "source_rank": 44,
+      "word": "buat",
+      "pos": null,
+      "frequency_count": 34350
+    },
+    {
+      "candidate_rank": 45,
+      "source_rank": 45,
+      "word": "sudah",
+      "pos": null,
+      "frequency_count": 32785
+    },
+    {
+      "candidate_rank": 46,
+      "source_rank": 46,
+      "word": "seperti",
+      "pos": null,
+      "frequency_count": 32626
+    },
+    {
+      "candidate_rank": 47,
+      "source_rank": 47,
+      "word": "jika",
+      "pos": null,
+      "frequency_count": 31966
+    },
+    {
+      "candidate_rank": 48,
+      "source_rank": 48,
+      "word": "baik",
+      "pos": null,
+      "frequency_count": 31845
+    },
+    {
+      "candidate_rank": 49,
+      "source_rank": 49,
+      "word": "perlu",
+      "pos": null,
+      "frequency_count": 30456
+    },
+    {
+      "candidate_rank": 50,
+      "source_rank": 50,
+      "word": "mana",
+      "pos": null,
+      "frequency_count": 29689
+    },
+    {
+      "candidate_rank": 51,
+      "source_rank": 51,
+      "word": "satu",
+      "pos": null,
+      "frequency_count": 29433
+    },
+    {
+      "candidate_rank": 52,
+      "source_rank": 52,
+      "word": "telah",
+      "pos": null,
+      "frequency_count": 28691
+    },
+    {
+      "candidate_rank": 53,
+      "source_rank": 53,
+      "word": "hanya",
+      "pos": null,
+      "frequency_count": 28172
+    },
+    {
+      "candidate_rank": 54,
+      "source_rank": 54,
+      "word": "lebih",
+      "pos": null,
+      "frequency_count": 27687
+    },
+    {
+      "candidate_rank": 55,
+      "source_rank": 55,
+      "word": "datang",
+      "pos": null,
+      "frequency_count": 25700
+    },
+    {
+      "candidate_rank": 56,
+      "source_rank": 56,
+      "word": "oh",
+      "pos": null,
+      "frequency_count": 25471
+    },
+    {
+      "candidate_rank": 57,
+      "source_rank": 57,
+      "word": "mungkin",
+      "pos": null,
+      "frequency_count": 25402
+    },
+    {
+      "candidate_rank": 58,
+      "source_rank": 58,
+      "word": "saja",
+      "pos": null,
+      "frequency_count": 24791
+    },
+    {
+      "candidate_rank": 59,
+      "source_rank": 59,
+      "word": "kenapa",
+      "pos": null,
+      "frequency_count": 24613
+    },
+    {
+      "candidate_rank": 60,
+      "source_rank": 60,
+      "word": "ayah",
+      "pos": null,
+      "frequency_count": 24456
+    },
+    {
+      "candidate_rank": 61,
+      "source_rank": 61,
+      "word": "sangat",
+      "pos": null,
+      "frequency_count": 24184
+    },
+    {
+      "candidate_rank": 62,
+      "source_rank": 62,
+      "word": "siapa",
+      "pos": null,
+      "frequency_count": 24001
+    },
+    {
+      "candidate_rank": 63,
+      "source_rank": 63,
+      "word": "mahu",
+      "pos": null,
+      "frequency_count": 23464
+    },
+    {
+      "candidate_rank": 64,
+      "source_rank": 64,
+      "word": "bagaimana",
+      "pos": null,
+      "frequency_count": 23174
+    },
+    {
+      "candidate_rank": 65,
+      "source_rank": 65,
+      "word": "seorang",
+      "pos": null,
+      "frequency_count": 22266
+    },
+    {
+      "candidate_rank": 66,
+      "source_rank": 66,
+      "word": "hari",
+      "pos": null,
+      "frequency_count": 22226
+    },
+    {
+      "candidate_rank": 67,
+      "source_rank": 67,
+      "word": "dapat",
+      "pos": null,
+      "frequency_count": 21918
+    },
+    {
+      "candidate_rank": 68,
+      "source_rank": 68,
+      "word": "juga",
+      "pos": null,
+      "frequency_count": 21773
+    },
+    {
+      "candidate_rank": 69,
+      "source_rank": 69,
+      "word": "terima",
+      "pos": null,
+      "frequency_count": 21756
+    },
+    {
+      "candidate_rank": 70,
+      "source_rank": 70,
+      "word": "rasa",
+      "pos": null,
+      "frequency_count": 21282
+    },
+    {
+      "candidate_rank": 71,
+      "source_rank": 71,
+      "word": "kasih",
+      "pos": null,
+      "frequency_count": 21046
+    },
+    {
+      "candidate_rank": 72,
+      "source_rank": 72,
+      "word": "masa",
+      "pos": null,
+      "frequency_count": 20856
+    },
+    {
+      "candidate_rank": 73,
+      "source_rank": 73,
+      "word": "kalau",
+      "pos": null,
+      "frequency_count": 20294
+    },
+    {
+      "candidate_rank": 74,
+      "source_rank": 74,
+      "word": "ni",
+      "pos": null,
+      "frequency_count": 19698
+    },
+    {
+      "candidate_rank": 75,
+      "source_rank": 75,
+      "word": "lakukan",
+      "pos": null,
+      "frequency_count": 19436
+    },
+    {
+      "candidate_rank": 76,
+      "source_rank": 76,
+      "word": "tuan",
+      "pos": null,
+      "frequency_count": 19427
+    },
+    {
+      "candidate_rank": 77,
+      "source_rank": 77,
+      "word": "pernah",
+      "pos": null,
+      "frequency_count": 19398
+    },
+    {
+      "candidate_rank": 78,
+      "source_rank": 78,
+      "word": "tu",
+      "pos": null,
+      "frequency_count": 19336
+    },
+    {
+      "candidate_rank": 79,
+      "source_rank": 79,
+      "word": "atau",
+      "pos": null,
+      "frequency_count": 19151
+    },
+    {
+      "candidate_rank": 80,
+      "source_rank": 80,
+      "word": "sesuatu",
+      "pos": null,
+      "frequency_count": 18559
+    },
+    {
+      "candidate_rank": 81,
+      "source_rank": 81,
+      "word": "mari",
+      "pos": null,
+      "frequency_count": 18470
+    },
+    {
+      "candidate_rank": 82,
+      "source_rank": 82,
+      "word": "sana",
+      "pos": null,
+      "frequency_count": 18338
+    },
+    {
+      "candidate_rank": 83,
+      "source_rank": 83,
+      "word": "kepada",
+      "pos": null,
+      "frequency_count": 17844
+    },
+    {
+      "candidate_rank": 84,
+      "source_rank": 84,
+      "word": "masih",
+      "pos": null,
+      "frequency_count": 17747
+    },
+    {
+      "candidate_rank": 85,
+      "source_rank": 85,
+      "word": "mati",
+      "pos": null,
+      "frequency_count": 17563
+    },
+    {
+      "candidate_rank": 86,
+      "source_rank": 86,
+      "word": "adakah",
+      "pos": null,
+      "frequency_count": 17435
+    },
+    {
+      "candidate_rank": 87,
+      "source_rank": 87,
+      "word": "tiada",
+      "pos": null,
+      "frequency_count": 17291
+    },
+    {
+      "candidate_rank": 88,
+      "source_rank": 88,
+      "word": "kerana",
+      "pos": null,
+      "frequency_count": 17248
+    },
+    {
+      "candidate_rank": 89,
+      "source_rank": 89,
+      "word": "baiklah",
+      "pos": null,
+      "frequency_count": 17143
+    },
+    {
+      "candidate_rank": 90,
+      "source_rank": 90,
+      "word": "menjadi",
+      "pos": null,
+      "frequency_count": 16928
+    },
+    {
+      "candidate_rank": 91,
+      "source_rank": 91,
+      "word": "banyak",
+      "pos": null,
+      "frequency_count": 16901
+    },
+    {
+      "candidate_rank": 92,
+      "source_rank": 92,
+      "word": "cakap",
+      "pos": null,
+      "frequency_count": 16781
+    },
+    {
+      "candidate_rank": 93,
+      "source_rank": 93,
+      "word": "betul",
+      "pos": null,
+      "frequency_count": 16759
+    },
+    {
+      "candidate_rank": 94,
+      "source_rank": 94,
+      "word": "keluar",
+      "pos": null,
+      "frequency_count": 16757
+    },
+    {
+      "candidate_rank": 95,
+      "source_rank": 95,
+      "word": "tentang",
+      "pos": null,
+      "frequency_count": 16654
+    },
+    {
+      "candidate_rank": 96,
+      "source_rank": 96,
+      "word": "lain",
+      "pos": null,
+      "frequency_count": 16588
+    },
+    {
+      "candidate_rank": 97,
+      "source_rank": 97,
+      "word": "begitu",
+      "pos": null,
+      "frequency_count": 16564
+    },
+    {
+      "candidate_rank": 98,
+      "source_rank": 98,
+      "word": "dengar",
+      "pos": null,
+      "frequency_count": 16268
+    },
+    {
+      "candidate_rank": 99,
+      "source_rank": 99,
+      "word": "tempat",
+      "pos": null,
+      "frequency_count": 16259
+    },
+    {
+      "candidate_rank": 100,
+      "source_rank": 100,
+      "word": "beritahu",
+      "pos": null,
+      "frequency_count": 15936
+    },
+    {
+      "candidate_rank": 101,
+      "source_rank": 101,
+      "word": "selamat",
+      "pos": null,
+      "frequency_count": 15375
+    },
+    {
+      "candidate_rank": 102,
+      "source_rank": 102,
+      "word": "bagus",
+      "pos": null,
+      "frequency_count": 15256
+    },
+    {
+      "candidate_rank": 103,
+      "source_rank": 103,
+      "word": "macam",
+      "pos": null,
+      "frequency_count": 15206
+    },
+    {
+      "candidate_rank": 104,
+      "source_rank": 104,
+      "word": "lihat",
+      "pos": null,
+      "frequency_count": 15160
+    },
+    {
+      "candidate_rank": 105,
+      "source_rank": 105,
+      "word": "harus",
+      "pos": null,
+      "frequency_count": 15159
+    },
+    {
+      "candidate_rank": 106,
+      "source_rank": 106,
+      "word": "anak",
+      "pos": null,
+      "frequency_count": 15101
+    },
+    {
+      "candidate_rank": 107,
+      "source_rank": 107,
+      "word": "hei",
+      "pos": null,
+      "frequency_count": 14965
+    },
+    {
+      "candidate_rank": 108,
+      "source_rank": 108,
+      "word": "hidup",
+      "pos": null,
+      "frequency_count": 14945
+    },
+    {
+      "candidate_rank": 109,
+      "source_rank": 109,
+      "word": "maaf",
+      "pos": null,
+      "frequency_count": 14888
+    },
+    {
+      "candidate_rank": 110,
+      "source_rank": 110,
+      "word": "diri",
+      "pos": null,
+      "frequency_count": 14722
+    },
+    {
+      "candidate_rank": 111,
+      "source_rank": 111,
+      "word": "kembali",
+      "pos": null,
+      "frequency_count": 14451
+    },
+    {
+      "candidate_rank": 112,
+      "source_rank": 112,
+      "word": "ingin",
+      "pos": null,
+      "frequency_count": 14256
+    },
+    {
+      "candidate_rank": 113,
+      "source_rank": 113,
+      "word": "lelaki",
+      "pos": null,
+      "frequency_count": 14115
+    },
+    {
+      "candidate_rank": 114,
+      "source_rank": 114,
+      "word": "malam",
+      "pos": null,
+      "frequency_count": 13717
+    },
+    {
+      "candidate_rank": 115,
+      "source_rank": 115,
+      "word": "baru",
+      "pos": null,
+      "frequency_count": 13640
+    },
+    {
+      "candidate_rank": 116,
+      "source_rank": 116,
+      "word": "tunggu",
+      "pos": null,
+      "frequency_count": 13639
+    },
+    {
+      "candidate_rank": 117,
+      "source_rank": 117,
+      "word": "melihat",
+      "pos": null,
+      "frequency_count": 13399
+    },
+    {
+      "candidate_rank": 118,
+      "source_rank": 118,
+      "word": "cepat",
+      "pos": null,
+      "frequency_count": 13284
+    },
+    {
+      "candidate_rank": 119,
+      "source_rank": 119,
+      "word": "pun",
+      "pos": null,
+      "frequency_count": 13097
+    },
+    {
+      "candidate_rank": 120,
+      "source_rank": 120,
+      "word": "tolong",
+      "pos": null,
+      "frequency_count": 13068
+    },
+    {
+      "candidate_rank": 121,
+      "source_rank": 121,
+      "word": "sedang",
+      "pos": null,
+      "frequency_count": 12796
+    },
+    {
+      "candidate_rank": 122,
+      "source_rank": 122,
+      "word": "rumah",
+      "pos": null,
+      "frequency_count": 12762
+    },
+    {
+      "candidate_rank": 123,
+      "source_rank": 123,
+      "word": "kan",
+      "pos": null,
+      "frequency_count": 12715
+    },
+    {
+      "candidate_rank": 124,
+      "source_rank": 124,
+      "word": "masuk",
+      "pos": null,
+      "frequency_count": 12675
+    },
+    {
+      "candidate_rank": 125,
+      "source_rank": 125,
+      "word": "nampak",
+      "pos": null,
+      "frequency_count": 12553
+    },
+    {
+      "candidate_rank": 126,
+      "source_rank": 126,
+      "word": "cuma",
+      "pos": null,
+      "frequency_count": 12356
+    },
+    {
+      "candidate_rank": 127,
+      "source_rank": 127,
+      "word": "tahun",
+      "pos": null,
+      "frequency_count": 12058
+    },
+    {
+      "candidate_rank": 128,
+      "source_rank": 128,
+      "word": "berada",
+      "pos": null,
+      "frequency_count": 12034
+    },
+    {
+      "candidate_rank": 129,
+      "source_rank": 129,
+      "word": "suka",
+      "pos": null,
+      "frequency_count": 12009
+    },
+    {
+      "candidate_rank": 130,
+      "source_rank": 130,
+      "word": "tetapi",
+      "pos": null,
+      "frequency_count": 11998
+    },
+    {
+      "candidate_rank": 131,
+      "source_rank": 131,
+      "word": "berlaku",
+      "pos": null,
+      "frequency_count": 11977
+    },
+    {
+      "candidate_rank": 132,
+      "source_rank": 132,
+      "word": "kata",
+      "pos": null,
+      "frequency_count": 11952
+    },
+    {
+      "candidate_rank": 133,
+      "source_rank": 133,
+      "word": "sama",
+      "pos": null,
+      "frequency_count": 11852
+    },
+    {
+      "candidate_rank": 134,
+      "source_rank": 134,
+      "word": "kawan",
+      "pos": null,
+      "frequency_count": 11789
+    },
+    {
+      "candidate_rank": 135,
+      "source_rank": 135,
+      "word": "fikir",
+      "pos": null,
+      "frequency_count": 11564
+    },
+    {
+      "candidate_rank": 136,
+      "source_rank": 136,
+      "word": "okey",
+      "pos": null,
+      "frequency_count": 11556
+    },
+    {
+      "candidate_rank": 137,
+      "source_rank": 137,
+      "word": "cuba",
+      "pos": null,
+      "frequency_count": 11470
+    },
+    {
+      "candidate_rank": 138,
+      "source_rank": 138,
+      "word": "pasti",
+      "pos": null,
+      "frequency_count": 11415
+    },
+    {
+      "candidate_rank": 139,
+      "source_rank": 139,
+      "word": "sendiri",
+      "pos": null,
+      "frequency_count": 11108
+    },
+    {
+      "candidate_rank": 140,
+      "source_rank": 140,
+      "word": "mempunyai",
+      "pos": null,
+      "frequency_count": 11098
+    },
+    {
+      "candidate_rank": 141,
+      "source_rank": 141,
+      "word": "takkan",
+      "pos": null,
+      "frequency_count": 10973
+    },
+    {
+      "candidate_rank": 142,
+      "source_rank": 142,
+      "word": "jumpa",
+      "pos": null,
+      "frequency_count": 10930
+    },
+    {
+      "candidate_rank": 143,
+      "source_rank": 143,
+      "word": "atas",
+      "pos": null,
+      "frequency_count": 10787
+    },
+    {
+      "candidate_rank": 144,
+      "source_rank": 144,
+      "word": "dua",
+      "pos": null,
+      "frequency_count": 10784
+    },
+    {
+      "candidate_rank": 145,
+      "source_rank": 145,
+      "word": "tuhan",
+      "pos": null,
+      "frequency_count": 10593
+    },
+    {
+      "candidate_rank": 146,
+      "source_rank": 146,
+      "word": "daripada",
+      "pos": null,
+      "frequency_count": 10553
+    },
+    {
+      "candidate_rank": 147,
+      "source_rank": 147,
+      "word": "masalah",
+      "pos": null,
+      "frequency_count": 10473
+    },
+    {
+      "candidate_rank": 148,
+      "source_rank": 148,
+      "word": "lama",
+      "pos": null,
+      "frequency_count": 10469
+    },
+    {
+      "candidate_rank": 149,
+      "source_rank": 149,
+      "word": "salah",
+      "pos": null,
+      "frequency_count": 10437
+    },
+    {
+      "candidate_rank": 150,
+      "source_rank": 150,
+      "word": "faham",
+      "pos": null,
+      "frequency_count": 10433
+    },
+    {
+      "candidate_rank": 151,
+      "source_rank": 151,
+      "word": "mengapa",
+      "pos": null,
+      "frequency_count": 10322
+    },
+    {
+      "candidate_rank": 152,
+      "source_rank": 152,
+      "word": "beberapa",
+      "pos": null,
+      "frequency_count": 10215
+    },
+    {
+      "candidate_rank": 153,
+      "source_rank": 153,
+      "word": "besar",
+      "pos": null,
+      "frequency_count": 9964
+    },
+    {
+      "candidate_rank": 154,
+      "source_rank": 154,
+      "word": "bahawa",
+      "pos": null,
+      "frequency_count": 9954
+    },
+    {
+      "candidate_rank": 155,
+      "source_rank": 155,
+      "word": "kena",
+      "pos": null,
+      "frequency_count": 9931
+    },
+    {
+      "candidate_rank": 156,
+      "source_rank": 156,
+      "word": "ibu",
+      "pos": null,
+      "frequency_count": 9862
+    },
+    {
+      "candidate_rank": 157,
+      "source_rank": 157,
+      "word": "mak",
+      "pos": null,
+      "frequency_count": 9861
+    },
+    {
+      "candidate_rank": 158,
+      "source_rank": 158,
+      "word": "bersama",
+      "pos": null,
+      "frequency_count": 9823
+    },
+    {
+      "candidate_rank": 159,
+      "source_rank": 159,
+      "word": "sebab",
+      "pos": null,
+      "frequency_count": 9818
+    },
+    {
+      "candidate_rank": 160,
+      "source_rank": 160,
+      "word": "sebelum",
+      "pos": null,
+      "frequency_count": 9801
+    },
+    {
+      "candidate_rank": 161,
+      "source_rank": 161,
+      "word": "bila",
+      "pos": null,
+      "frequency_count": 9714
+    },
+    {
+      "candidate_rank": 162,
+      "source_rank": 162,
+      "word": "memang",
+      "pos": null,
+      "frequency_count": 9695
+    },
+    {
+      "candidate_rank": 163,
+      "source_rank": 163,
+      "word": "okay",
+      "pos": null,
+      "frequency_count": 9693
+    },
+    {
+      "candidate_rank": 164,
+      "source_rank": 164,
+      "word": "sekali",
+      "pos": null,
+      "frequency_count": 9674
+    },
+    {
+      "candidate_rank": 165,
+      "source_rank": 165,
+      "word": "bercakap",
+      "pos": null,
+      "frequency_count": 9662
+    },
+    {
+      "candidate_rank": 166,
+      "source_rank": 166,
+      "word": "ambil",
+      "pos": null,
+      "frequency_count": 9457
+    },
+    {
+      "candidate_rank": 167,
+      "source_rank": 167,
+      "word": "tinggal",
+      "pos": null,
+      "frequency_count": 9436
+    },
+    {
+      "candidate_rank": 168,
+      "source_rank": 168,
+      "word": "perkara",
+      "pos": null,
+      "frequency_count": 9432
+    },
+    {
+      "candidate_rank": 169,
+      "source_rank": 169,
+      "word": "membuat",
+      "pos": null,
+      "frequency_count": 9406
+    },
+    {
+      "candidate_rank": 170,
+      "source_rank": 170,
+      "word": "bawa",
+      "pos": null,
+      "frequency_count": 9403
+    },
+    {
+      "candidate_rank": 171,
+      "source_rank": 171,
+      "word": "nama",
+      "pos": null,
+      "frequency_count": 9283
+    },
+    {
+      "candidate_rank": 172,
+      "source_rank": 172,
+      "word": "dunia",
+      "pos": null,
+      "frequency_count": 9249
+    },
+    {
+      "candidate_rank": 173,
+      "source_rank": 173,
+      "word": "ingat",
+      "pos": null,
+      "frequency_count": 9236
+    },
+    {
+      "candidate_rank": 174,
+      "source_rank": 174,
+      "word": "sayang",
+      "pos": null,
+      "frequency_count": 9207
+    },
+    {
+      "candidate_rank": 175,
+      "source_rank": 175,
+      "word": "kali",
+      "pos": null,
+      "frequency_count": 9183
+    },
+    {
+      "candidate_rank": 176,
+      "source_rank": 176,
+      "word": "berhenti",
+      "pos": null,
+      "frequency_count": 9096
+    },
+    {
+      "candidate_rank": 177,
+      "source_rank": 177,
+      "word": "ayuh",
+      "pos": null,
+      "frequency_count": 9042
+    },
+    {
+      "candidate_rank": 178,
+      "source_rank": 178,
+      "word": "oleh",
+      "pos": null,
+      "frequency_count": 9031
+    },
+    {
+      "candidate_rank": 179,
+      "source_rank": 179,
+      "word": "melakukan",
+      "pos": null,
+      "frequency_count": 8993
+    },
+    {
+      "candidate_rank": 180,
+      "source_rank": 180,
+      "word": "semuanya",
+      "pos": null,
+      "frequency_count": 8958
+    },
+    {
+      "candidate_rank": 181,
+      "source_rank": 181,
+      "word": "makan",
+      "pos": null,
+      "frequency_count": 8926
+    },
+    {
+      "candidate_rank": 182,
+      "source_rank": 182,
+      "word": "hey",
+      "pos": null,
+      "frequency_count": 8652
+    },
+    {
+      "candidate_rank": 183,
+      "source_rank": 183,
+      "word": "bunuh",
+      "pos": null,
+      "frequency_count": 8592
+    },
+    {
+      "candidate_rank": 184,
+      "source_rank": 184,
+      "word": "cara",
+      "pos": null,
+      "frequency_count": 8568
+    },
+    {
+      "candidate_rank": 185,
+      "source_rank": 185,
+      "word": "kereta",
+      "pos": null,
+      "frequency_count": 8487
+    },
+    {
+      "candidate_rank": 186,
+      "source_rank": 186,
+      "word": "itulah",
+      "pos": null,
+      "frequency_count": 8447
+    },
+    {
+      "candidate_rank": 187,
+      "source_rank": 187,
+      "word": "bagi",
+      "pos": null,
+      "frequency_count": 8349
+    },
+    {
+      "candidate_rank": 188,
+      "source_rank": 188,
+      "word": "jalan",
+      "pos": null,
+      "frequency_count": 8334
+    },
+    {
+      "candidate_rank": 189,
+      "source_rank": 189,
+      "word": "setiap",
+      "pos": null,
+      "frequency_count": 8236
+    },
+    {
+      "candidate_rank": 190,
+      "source_rank": 190,
+      "word": "seseorang",
+      "pos": null,
+      "frequency_count": 8141
+    },
+    {
+      "candidate_rank": 191,
+      "source_rank": 191,
+      "word": "sampai",
+      "pos": null,
+      "frequency_count": 8114
+    },
+    {
+      "candidate_rank": 192,
+      "source_rank": 192,
+      "word": "sebagai",
+      "pos": null,
+      "frequency_count": 8108
+    },
+    {
+      "candidate_rank": 193,
+      "source_rank": 193,
+      "word": "terjadi",
+      "pos": null,
+      "frequency_count": 8032
+    },
+    {
+      "candidate_rank": 194,
+      "source_rank": 194,
+      "word": "kemudian",
+      "pos": null,
+      "frequency_count": 7937
+    },
+    {
+      "candidate_rank": 195,
+      "source_rank": 195,
+      "word": "minta",
+      "pos": null,
+      "frequency_count": 7804
+    },
+    {
+      "candidate_rank": 196,
+      "source_rank": 196,
+      "word": "dulu",
+      "pos": null,
+      "frequency_count": 7788
+    },
+    {
+      "candidate_rank": 197,
+      "source_rank": 197,
+      "word": "belum",
+      "pos": null,
+      "frequency_count": 7764
+    },
+    {
+      "candidate_rank": 198,
+      "source_rank": 198,
+      "word": "perlukan",
+      "pos": null,
+      "frequency_count": 7756
+    },
+    {
+      "candidate_rank": 199,
+      "source_rank": 199,
+      "word": "kerja",
+      "pos": null,
+      "frequency_count": 7731
+    },
+    {
+      "candidate_rank": 200,
+      "source_rank": 200,
+      "word": "pertama",
+      "pos": null,
+      "frequency_count": 7672
+    },
+    {
+      "candidate_rank": 201,
+      "source_rank": 201,
+      "word": "percaya",
+      "pos": null,
+      "frequency_count": 7624
+    },
+    {
+      "candidate_rank": 202,
+      "source_rank": 202,
+      "word": "luar",
+      "pos": null,
+      "frequency_count": 7619
+    },
+    {
+      "candidate_rank": 203,
+      "source_rank": 203,
+      "word": "sedikit",
+      "pos": null,
+      "frequency_count": 7576
+    },
+    {
+      "candidate_rank": 204,
+      "source_rank": 204,
+      "word": "yeah",
+      "pos": null,
+      "frequency_count": 7568
+    },
+    {
+      "candidate_rank": 205,
+      "source_rank": 205,
+      "word": "membunuh",
+      "pos": null,
+      "frequency_count": 7538
+    },
+    {
+      "candidate_rank": 206,
+      "source_rank": 206,
+      "word": "mencari",
+      "pos": null,
+      "frequency_count": 7516
+    },
+    {
+      "candidate_rank": 207,
+      "source_rank": 207,
+      "word": "cari",
+      "pos": null,
+      "frequency_count": 7501
+    },
+    {
+      "candidate_rank": 208,
+      "source_rank": 208,
+      "word": "hebat",
+      "pos": null,
+      "frequency_count": 7469
+    },
+    {
+      "candidate_rank": 209,
+      "source_rank": 209,
+      "word": "polis",
+      "pos": null,
+      "frequency_count": 7445
+    },
+    {
+      "candidate_rank": 210,
+      "source_rank": 210,
+      "word": "terlalu",
+      "pos": null,
+      "frequency_count": 7363
+    },
+    {
+      "candidate_rank": 211,
+      "source_rank": 211,
+      "word": "katakan",
+      "pos": null,
+      "frequency_count": 7311
+    },
+    {
+      "candidate_rank": 212,
+      "source_rank": 212,
+      "word": "ketika",
+      "pos": null,
+      "frequency_count": 7286
+    },
+    {
+      "candidate_rank": 213,
+      "source_rank": 213,
+      "word": "apakah",
+      "pos": null,
+      "frequency_count": 7215
+    },
+    {
+      "candidate_rank": 214,
+      "source_rank": 214,
+      "word": "cukup",
+      "pos": null,
+      "frequency_count": 7208
+    },
+    {
+      "candidate_rank": 215,
+      "source_rank": 215,
+      "word": "maksud",
+      "pos": null,
+      "frequency_count": 7200
+    },
+    {
+      "candidate_rank": 216,
+      "source_rank": 216,
+      "word": "tengok",
+      "pos": null,
+      "frequency_count": 7162
+    },
+    {
+      "candidate_rank": 217,
+      "source_rank": 217,
+      "word": "ok",
+      "pos": null,
+      "frequency_count": 7142
+    },
+    {
+      "candidate_rank": 218,
+      "source_rank": 218,
+      "word": "lalu",
+      "pos": null,
+      "frequency_count": 7071
+    },
+    {
+      "candidate_rank": 219,
+      "source_rank": 219,
+      "word": "sebenarnya",
+      "pos": null,
+      "frequency_count": 7044
+    },
+    {
+      "candidate_rank": 220,
+      "source_rank": 220,
+      "word": "tentu",
+      "pos": null,
+      "frequency_count": 7026
+    },
+    {
+      "candidate_rank": 221,
+      "source_rank": 221,
+      "word": "ianya",
+      "pos": null,
+      "frequency_count": 6992
+    },
+    {
+      "candidate_rank": 222,
+      "source_rank": 222,
+      "word": "tangan",
+      "pos": null,
+      "frequency_count": 6964
+    },
+    {
+      "candidate_rank": 223,
+      "source_rank": 223,
+      "word": "mesti",
+      "pos": null,
+      "frequency_count": 6920
+    },
+    {
+      "candidate_rank": 224,
+      "source_rank": 224,
+      "word": "mengambil",
+      "pos": null,
+      "frequency_count": 6871
+    },
+    {
+      "candidate_rank": 225,
+      "source_rank": 225,
+      "word": "kecil",
+      "pos": null,
+      "frequency_count": 6775
+    },
+    {
+      "candidate_rank": 226,
+      "source_rank": 226,
+      "word": "manusia",
+      "pos": null,
+      "frequency_count": 6751
+    },
+    {
+      "candidate_rank": 227,
+      "source_rank": 227,
+      "word": "nanti",
+      "pos": null,
+      "frequency_count": 6742
+    },
+    {
+      "candidate_rank": 228,
+      "source_rank": 228,
+      "word": "tanpa",
+      "pos": null,
+      "frequency_count": 6740
+    },
+    {
+      "candidate_rank": 229,
+      "source_rank": 229,
+      "word": "berapa",
+      "pos": null,
+      "frequency_count": 6694
+    },
+    {
+      "candidate_rank": 230,
+      "source_rank": 230,
+      "word": "sebuah",
+      "pos": null,
+      "frequency_count": 6661
+    },
+    {
+      "candidate_rank": 231,
+      "source_rank": 231,
+      "word": "bisa",
+      "pos": null,
+      "frequency_count": 6656
+    },
+    {
+      "candidate_rank": 232,
+      "source_rank": 232,
+      "word": "benda",
+      "pos": null,
+      "frequency_count": 6544
+    },
+    {
+      "candidate_rank": 233,
+      "source_rank": 233,
+      "word": "ikut",
+      "pos": null,
+      "frequency_count": 6541
+    },
+    {
+      "candidate_rank": 234,
+      "source_rank": 234,
+      "word": "balik",
+      "pos": null,
+      "frequency_count": 6497
+    },
+    {
+      "candidate_rank": 235,
+      "source_rank": 235,
+      "word": "selalu",
+      "pos": null,
+      "frequency_count": 6459
+    },
+    {
+      "candidate_rank": 236,
+      "source_rank": 236,
+      "word": "mendapat",
+      "pos": null,
+      "frequency_count": 6434
+    },
+    {
+      "candidate_rank": 237,
+      "source_rank": 237,
+      "word": "maafkan",
+      "pos": null,
+      "frequency_count": 6411
+    },
+    {
+      "candidate_rank": 238,
+      "source_rank": 238,
+      "word": "berikan",
+      "pos": null,
+      "frequency_count": 6395
+    },
+    {
+      "candidate_rank": 239,
+      "source_rank": 239,
+      "word": "bawah",
+      "pos": null,
+      "frequency_count": 6358
+    },
+    {
+      "candidate_rank": 240,
+      "source_rank": 240,
+      "word": "benar",
+      "pos": null,
+      "frequency_count": 6354
+    },
+    {
+      "candidate_rank": 241,
+      "source_rank": 241,
+      "word": "terus",
+      "pos": null,
+      "frequency_count": 6348
+    },
+    {
+      "candidate_rank": 242,
+      "source_rank": 242,
+      "word": "bodoh",
+      "pos": null,
+      "frequency_count": 6315
+    },
+    {
+      "candidate_rank": 243,
+      "source_rank": 243,
+      "word": "gila",
+      "pos": null,
+      "frequency_count": 6312
+    },
+    {
+      "candidate_rank": 244,
+      "source_rank": 244,
+      "word": "budak",
+      "pos": null,
+      "frequency_count": 6263
+    },
+    {
+      "candidate_rank": 245,
+      "source_rank": 245,
+      "word": "patut",
+      "pos": null,
+      "frequency_count": 6248
+    },
+    {
+      "candidate_rank": 246,
+      "source_rank": 246,
+      "word": "hal",
+      "pos": null,
+      "frequency_count": 6184
+    },
+    {
+      "candidate_rank": 247,
+      "source_rank": 247,
+      "word": "keluarga",
+      "pos": null,
+      "frequency_count": 6123
+    },
+    {
+      "candidate_rank": 248,
+      "source_rank": 248,
+      "word": "perempuan",
+      "pos": null,
+      "frequency_count": 6005
+    },
+    {
+      "candidate_rank": 249,
+      "source_rank": 249,
+      "word": "takut",
+      "pos": null,
+      "frequency_count": 5941
+    },
+    {
+      "candidate_rank": 250,
+      "source_rank": 250,
+      "word": "wanita",
+      "pos": null,
+      "frequency_count": 5857
+    },
+    {
+      "candidate_rank": 251,
+      "source_rank": 251,
+      "word": "selepas",
+      "pos": null,
+      "frequency_count": 5842
+    },
+    {
+      "candidate_rank": 252,
+      "source_rank": 252,
+      "word": "bekerja",
+      "pos": null,
+      "frequency_count": 5811
+    },
+    {
+      "candidate_rank": 253,
+      "source_rank": 253,
+      "word": "bergerak",
+      "pos": null,
+      "frequency_count": 5792
+    },
+    {
+      "candidate_rank": 254,
+      "source_rank": 254,
+      "word": "telefon",
+      "pos": null,
+      "frequency_count": 5784
+    },
+    {
+      "candidate_rank": 255,
+      "source_rank": 255,
+      "word": "biarkan",
+      "pos": null,
+      "frequency_count": 5779
+    },
+    {
+      "candidate_rank": 256,
+      "source_rank": 256,
+      "word": "the",
+      "pos": null,
+      "frequency_count": 5701
+    },
+    {
+      "candidate_rank": 257,
+      "source_rank": 257,
+      "word": "biar",
+      "pos": null,
+      "frequency_count": 5694
+    },
+    {
+      "candidate_rank": 258,
+      "source_rank": 258,
+      "word": "saat",
+      "pos": null,
+      "frequency_count": 5683
+    },
+    {
+      "candidate_rank": 259,
+      "source_rank": 259,
+      "word": "tiga",
+      "pos": null,
+      "frequency_count": 5679
+    },
+    {
+      "candidate_rank": 260,
+      "source_rank": 260,
+      "word": "berjaya",
+      "pos": null,
+      "frequency_count": 5666
+    },
+    {
+      "candidate_rank": 261,
+      "source_rank": 261,
+      "word": "paling",
+      "pos": null,
+      "frequency_count": 5660
+    },
+    {
+      "candidate_rank": 262,
+      "source_rank": 262,
+      "word": "apabila",
+      "pos": null,
+      "frequency_count": 5633
+    },
+    {
+      "candidate_rank": 263,
+      "source_rank": 263,
+      "word": "punya",
+      "pos": null,
+      "frequency_count": 5604
+    },
+    {
+      "candidate_rank": 264,
+      "source_rank": 264,
+      "word": "gadis",
+      "pos": null,
+      "frequency_count": 5595
+    },
+    {
+      "candidate_rank": 265,
+      "source_rank": 265,
+      "word": "mata",
+      "pos": null,
+      "frequency_count": 5588
+    },
+    {
+      "candidate_rank": 266,
+      "source_rank": 266,
+      "word": "tidur",
+      "pos": null,
+      "frequency_count": 5544
+    },
+    {
+      "candidate_rank": 267,
+      "source_rank": 267,
+      "word": "membawa",
+      "pos": null,
+      "frequency_count": 5507
+    },
+    {
+      "candidate_rank": 268,
+      "source_rank": 268,
+      "word": "hati",
+      "pos": null,
+      "frequency_count": 5504
+    },
+    {
+      "candidate_rank": 269,
+      "source_rank": 269,
+      "word": "guna",
+      "pos": null,
+      "frequency_count": 5458
+    },
+    {
+      "candidate_rank": 270,
+      "source_rank": 270,
+      "word": "duduk",
+      "pos": null,
+      "frequency_count": 5439
+    },
+    {
+      "candidate_rank": 271,
+      "source_rank": 271,
+      "word": "air",
+      "pos": null,
+      "frequency_count": 5413
+    },
+    {
+      "candidate_rank": 272,
+      "source_rank": 272,
+      "word": "senjata",
+      "pos": null,
+      "frequency_count": 5381
+    },
+    {
+      "candidate_rank": 273,
+      "source_rank": 273,
+      "word": "pintu",
+      "pos": null,
+      "frequency_count": 5341
+    },
+    {
+      "candidate_rank": 274,
+      "source_rank": 274,
+      "word": "selama",
+      "pos": null,
+      "frequency_count": 5310
+    },
+    {
+      "candidate_rank": 275,
+      "source_rank": 275,
+      "word": "pulang",
+      "pos": null,
+      "frequency_count": 5287
+    },
+    {
+      "candidate_rank": 276,
+      "source_rank": 276,
+      "word": "beliau",
+      "pos": null,
+      "frequency_count": 5276
+    },
+    {
+      "candidate_rank": 277,
+      "source_rank": 277,
+      "word": "beri",
+      "pos": null,
+      "frequency_count": 5273
+    },
+    {
+      "candidate_rank": 278,
+      "source_rank": 278,
+      "word": "bandar",
+      "pos": null,
+      "frequency_count": 5194
+    },
+    {
+      "candidate_rank": 279,
+      "source_rank": 279,
+      "word": "dapatkan",
+      "pos": null,
+      "frequency_count": 5158
+    },
+    {
+      "candidate_rank": 280,
+      "source_rank": 280,
+      "word": "semula",
+      "pos": null,
+      "frequency_count": 5151
+    },
+    {
+      "candidate_rank": 281,
+      "source_rank": 281,
+      "word": "jam",
+      "pos": null,
+      "frequency_count": 5145
+    },
+    {
+      "candidate_rank": 282,
+      "source_rank": 282,
+      "word": "waktu",
+      "pos": null,
+      "frequency_count": 5128
+    },
+    {
+      "candidate_rank": 283,
+      "source_rank": 283,
+      "word": "bilik",
+      "pos": null,
+      "frequency_count": 5125
+    },
+    {
+      "candidate_rank": 284,
+      "source_rank": 284,
+      "word": "disini",
+      "pos": null,
+      "frequency_count": 5107
+    },
+    {
+      "candidate_rank": 285,
+      "source_rank": 285,
+      "word": "berdua",
+      "pos": null,
+      "frequency_count": 5103
+    },
+    {
+      "candidate_rank": 286,
+      "source_rank": 286,
+      "word": "hilang",
+      "pos": null,
+      "frequency_count": 5077
+    },
+    {
+      "candidate_rank": 287,
+      "source_rank": 287,
+      "word": "pasukan",
+      "pos": null,
+      "frequency_count": 5030
+    },
+    {
+      "candidate_rank": 288,
+      "source_rank": 288,
+      "word": "biasa",
+      "pos": null,
+      "frequency_count": 5024
+    },
+    {
+      "candidate_rank": 289,
+      "source_rank": 289,
+      "word": "gembira",
+      "pos": null,
+      "frequency_count": 5016
+    },
+    {
+      "candidate_rank": 290,
+      "source_rank": 290,
+      "word": "membantu",
+      "pos": null,
+      "frequency_count": 5015
+    },
+    {
+      "candidate_rank": 291,
+      "source_rank": 291,
+      "word": "tadi",
+      "pos": null,
+      "frequency_count": 4994
+    },
+    {
+      "candidate_rank": 292,
+      "source_rank": 292,
+      "word": "ialah",
+      "pos": null,
+      "frequency_count": 4929
+    },
+    {
+      "candidate_rank": 293,
+      "source_rank": 293,
+      "word": "mendapatkan",
+      "pos": null,
+      "frequency_count": 4891
+    },
+    {
+      "candidate_rank": 294,
+      "source_rank": 294,
+      "word": "sesiapa",
+      "pos": null,
+      "frequency_count": 4882
+    },
+    {
+      "candidate_rank": 295,
+      "source_rank": 295,
+      "word": "sahaja",
+      "pos": null,
+      "frequency_count": 4880
+    },
+    {
+      "candidate_rank": 296,
+      "source_rank": 296,
+      "word": "terakhir",
+      "pos": null,
+      "frequency_count": 4873
+    },
+    {
+      "candidate_rank": 297,
+      "source_rank": 297,
+      "word": "mengatakan",
+      "pos": null,
+      "frequency_count": 4809
+    },
+    {
+      "candidate_rank": 298,
+      "source_rank": 298,
+      "word": "pagi",
+      "pos": null,
+      "frequency_count": 4733
+    },
+    {
+      "candidate_rank": 299,
+      "source_rank": 299,
+      "word": "penting",
+      "pos": null,
+      "frequency_count": 4718
+    },
+    {
+      "candidate_rank": 300,
+      "source_rank": 300,
+      "word": "cinta",
+      "pos": null,
+      "frequency_count": 4706
+    },
+    {
+      "candidate_rank": 301,
+      "source_rank": 301,
+      "word": "kalian",
+      "pos": null,
+      "frequency_count": 4694
+    },
+    {
+      "candidate_rank": 302,
+      "source_rank": 302,
+      "word": "melakukannya",
+      "pos": null,
+      "frequency_count": 4673
+    },
+    {
+      "candidate_rank": 303,
+      "source_rank": 303,
+      "word": "font",
+      "pos": null,
+      "frequency_count": 4673
+    },
+    {
+      "candidate_rank": 304,
+      "source_rank": 304,
+      "word": "abang",
+      "pos": null,
+      "frequency_count": 4661
+    },
+    {
+      "candidate_rank": 305,
+      "source_rank": 305,
+      "word": "color",
+      "pos": null,
+      "frequency_count": 4660
+    },
+    {
+      "candidate_rank": 306,
+      "source_rank": 306,
+      "word": "depan",
+      "pos": null,
+      "frequency_count": 4648
+    },
+    {
+      "candidate_rank": 307,
+      "source_rank": 307,
+      "word": "terbaik",
+      "pos": null,
+      "frequency_count": 4645
+    },
+    {
+      "candidate_rank": 308,
+      "source_rank": 308,
+      "word": "belakang",
+      "pos": null,
+      "frequency_count": 4619
+    },
+    {
+      "candidate_rank": 309,
+      "source_rank": 309,
+      "word": "cantik",
+      "pos": null,
+      "frequency_count": 4602
+    },
+    {
+      "candidate_rank": 310,
+      "source_rank": 310,
+      "word": "lari",
+      "pos": null,
+      "frequency_count": 4575
+    },
+    {
+      "candidate_rank": 311,
+      "source_rank": 311,
+      "word": "sehingga",
+      "pos": null,
+      "frequency_count": 4538
+    },
+    {
+      "candidate_rank": 312,
+      "source_rank": 312,
+      "word": "minit",
+      "pos": null,
+      "frequency_count": 4507
+    },
+    {
+      "candidate_rank": 313,
+      "source_rank": 313,
+      "word": "bertemu",
+      "pos": null,
+      "frequency_count": 4463
+    },
+    {
+      "candidate_rank": 314,
+      "source_rank": 314,
+      "word": "teruk",
+      "pos": null,
+      "frequency_count": 4438
+    },
+    {
+      "candidate_rank": 315,
+      "source_rank": 315,
+      "word": "kapal",
+      "pos": null,
+      "frequency_count": 4419
+    },
+    {
+      "candidate_rank": 316,
+      "source_rank": 316,
+      "word": "i",
+      "pos": null,
+      "frequency_count": 4414
+    },
+    {
+      "candidate_rank": 317,
+      "source_rank": 317,
+      "word": "hai",
+      "pos": null,
+      "frequency_count": 4406
+    },
+    {
+      "candidate_rank": 318,
+      "source_rank": 318,
+      "word": "hello",
+      "pos": null,
+      "frequency_count": 4392
+    },
+    {
+      "candidate_rank": 319,
+      "source_rank": 319,
+      "word": "yg",
+      "pos": null,
+      "frequency_count": 4358
+    },
+    {
+      "candidate_rank": 320,
+      "source_rank": 320,
+      "word": "kenal",
+      "pos": null,
+      "frequency_count": 4261
+    },
+    {
+      "candidate_rank": 321,
+      "source_rank": 321,
+      "word": "sepatutnya",
+      "pos": null,
+      "frequency_count": 4194
+    },
+    {
+      "candidate_rank": 322,
+      "source_rank": 322,
+      "word": "mendengar",
+      "pos": null,
+      "frequency_count": 4193
+    },
+    {
+      "candidate_rank": 323,
+      "source_rank": 323,
+      "word": "semasa",
+      "pos": null,
+      "frequency_count": 4192
+    },
+    {
+      "candidate_rank": 324,
+      "source_rank": 324,
+      "word": "tolonglah",
+      "pos": null,
+      "frequency_count": 4190
+    },
+    {
+      "candidate_rank": 325,
+      "source_rank": 325,
+      "word": "secara",
+      "pos": null,
+      "frequency_count": 4168
+    },
+    {
+      "candidate_rank": 326,
+      "source_rank": 326,
+      "word": "tinggalkan",
+      "pos": null,
+      "frequency_count": 4147
+    },
+    {
+      "candidate_rank": 327,
+      "source_rank": 327,
+      "word": "lepaskan",
+      "pos": null,
+      "frequency_count": 4141
+    },
+    {
+      "candidate_rank": 328,
+      "source_rank": 328,
+      "word": "wang",
+      "pos": null,
+      "frequency_count": 4139
+    },
+    {
+      "candidate_rank": 329,
+      "source_rank": 329,
+      "word": "jauh",
+      "pos": null,
+      "frequency_count": 4127
+    },
+    {
+      "candidate_rank": 330,
+      "source_rank": 330,
+      "word": "hentikan",
+      "pos": null,
+      "frequency_count": 4120
+    },
+    {
+      "candidate_rank": 331,
+      "source_rank": 331,
+      "word": "duit",
+      "pos": null,
+      "frequency_count": 4098
+    },
+    {
+      "candidate_rank": 332,
+      "source_rank": 332,
+      "word": "memberitahu",
+      "pos": null,
+      "frequency_count": 4091
+    },
+    {
+      "candidate_rank": 333,
+      "source_rank": 333,
+      "word": "mula",
+      "pos": null,
+      "frequency_count": 4035
+    },
+    {
+      "candidate_rank": 334,
+      "source_rank": 334,
+      "word": "kuat",
+      "pos": null,
+      "frequency_count": 4008
+    },
+    {
+      "candidate_rank": 335,
+      "source_rank": 335,
+      "word": "yakin",
+      "pos": null,
+      "frequency_count": 3998
+    },
+    {
+      "candidate_rank": 336,
+      "source_rank": 336,
+      "word": "minum",
+      "pos": null,
+      "frequency_count": 3973
+    },
+    {
+      "candidate_rank": 337,
+      "source_rank": 337,
+      "word": "seluruh",
+      "pos": null,
+      "frequency_count": 3971
+    },
+    {
+      "candidate_rank": 338,
+      "source_rank": 338,
+      "word": "hampir",
+      "pos": null,
+      "frequency_count": 3964
+    },
+    {
+      "candidate_rank": 339,
+      "source_rank": 339,
+      "word": "buruk",
+      "pos": null,
+      "frequency_count": 3959
+    },
+    {
+      "candidate_rank": 340,
+      "source_rank": 340,
+      "word": "mudah",
+      "pos": null,
+      "frequency_count": 3957
+    },
+    {
+      "candidate_rank": 341,
+      "source_rank": 341,
+      "word": "kepala",
+      "pos": null,
+      "frequency_count": 3927
+    },
+    {
+      "candidate_rank": 342,
+      "source_rank": 342,
+      "word": "kehilangan",
+      "pos": null,
+      "frequency_count": 3914
+    },
+    {
+      "candidate_rank": 343,
+      "source_rank": 343,
+      "word": "sekolah",
+      "pos": null,
+      "frequency_count": 3899
+    },
+    {
+      "candidate_rank": 344,
+      "source_rank": 344,
+      "word": "en",
+      "pos": null,
+      "frequency_count": 3891
+    },
+    {
+      "candidate_rank": 345,
+      "source_rank": 345,
+      "word": "kaki",
+      "pos": null,
+      "frequency_count": 3874
+    },
+    {
+      "candidate_rank": 346,
+      "source_rank": 346,
+      "word": "bulan",
+      "pos": null,
+      "frequency_count": 3864
+    },
+    {
+      "candidate_rank": 347,
+      "source_rank": 347,
+      "word": "diam",
+      "pos": null,
+      "frequency_count": 3846
+    },
+    {
+      "candidate_rank": 348,
+      "source_rank": 348,
+      "word": "cik",
+      "pos": null,
+      "frequency_count": 3841
+    },
+    {
+      "candidate_rank": 349,
+      "source_rank": 349,
+      "word": "si",
+      "pos": null,
+      "frequency_count": 3836
+    },
+    {
+      "candidate_rank": 350,
+      "source_rank": 350,
+      "word": "tembak",
+      "pos": null,
+      "frequency_count": 3822
+    },
+    {
+      "candidate_rank": 351,
+      "source_rank": 351,
+      "word": "keadaan",
+      "pos": null,
+      "frequency_count": 3819
+    },
+    {
+      "candidate_rank": 352,
+      "source_rank": 352,
+      "word": "walaupun",
+      "pos": null,
+      "frequency_count": 3818
+    },
+    {
+      "candidate_rank": 353,
+      "source_rank": 353,
+      "word": "berkata",
+      "pos": null,
+      "frequency_count": 3766
+    },
+    {
+      "candidate_rank": 354,
+      "source_rank": 354,
+      "word": "bantuan",
+      "pos": null,
+      "frequency_count": 3729
+    },
+    {
+      "candidate_rank": 355,
+      "source_rank": 355,
+      "word": "tetap",
+      "pos": null,
+      "frequency_count": 3703
+    },
+    {
+      "candidate_rank": 356,
+      "source_rank": 356,
+      "word": "berjalan",
+      "pos": null,
+      "frequency_count": 3695
+    },
+    {
+      "candidate_rank": 357,
+      "source_rank": 357,
+      "word": "kehidupan",
+      "pos": null,
+      "frequency_count": 3694
+    },
+    {
+      "candidate_rank": 358,
+      "source_rank": 358,
+      "word": "menarik",
+      "pos": null,
+      "frequency_count": 3664
+    },
+    {
+      "candidate_rank": 359,
+      "source_rank": 359,
+      "word": "bangun",
+      "pos": null,
+      "frequency_count": 3661
+    },
+    {
+      "candidate_rank": 360,
+      "source_rank": 360,
+      "word": "a",
+      "pos": null,
+      "frequency_count": 3655
+    },
+    {
+      "candidate_rank": 361,
+      "source_rank": 361,
+      "word": "encik",
+      "pos": null,
+      "frequency_count": 3654
+    },
+    {
+      "candidate_rank": 362,
+      "source_rank": 362,
+      "word": "sakit",
+      "pos": null,
+      "frequency_count": 3623
+    },
+    {
+      "candidate_rank": 363,
+      "source_rank": 363,
+      "word": "bersedia",
+      "pos": null,
+      "frequency_count": 3597
+    },
+    {
+      "candidate_rank": 364,
+      "source_rank": 364,
+      "word": "puan",
+      "pos": null,
+      "frequency_count": 3594
+    },
+    {
+      "candidate_rank": 365,
+      "source_rank": 365,
+      "word": "memberi",
+      "pos": null,
+      "frequency_count": 3581
+    },
+    {
+      "candidate_rank": 366,
+      "source_rank": 366,
+      "word": "buka",
+      "pos": null,
+      "frequency_count": 3575
+    },
+    {
+      "candidate_rank": 367,
+      "source_rank": 367,
+      "word": "selesai",
+      "pos": null,
+      "frequency_count": 3559
+    },
+    {
+      "candidate_rank": 368,
+      "source_rank": 368,
+      "word": "menunggu",
+      "pos": null,
+      "frequency_count": 3542
+    },
+    {
+      "candidate_rank": 369,
+      "source_rank": 369,
+      "word": "sejak",
+      "pos": null,
+      "frequency_count": 3534
+    },
+    {
+      "candidate_rank": 370,
+      "source_rank": 370,
+      "word": "berfikir",
+      "pos": null,
+      "frequency_count": 3531
+    },
+    {
+      "candidate_rank": 371,
+      "source_rank": 371,
+      "word": "kelihatan",
+      "pos": null,
+      "frequency_count": 3523
+    },
+    {
+      "candidate_rank": 372,
+      "source_rank": 372,
+      "word": "tentera",
+      "pos": null,
+      "frequency_count": 3521
+    },
+    {
+      "candidate_rank": 373,
+      "source_rank": 373,
+      "word": "terbang",
+      "pos": null,
+      "frequency_count": 3499
+    },
+    {
+      "candidate_rank": 374,
+      "source_rank": 374,
+      "word": "meninggalkan",
+      "pos": null,
+      "frequency_count": 3493
+    },
+    {
+      "candidate_rank": 375,
+      "source_rank": 375,
+      "word": "antara",
+      "pos": null,
+      "frequency_count": 3485
+    },
+    {
+      "candidate_rank": 376,
+      "source_rank": 376,
+      "word": "mampu",
+      "pos": null,
+      "frequency_count": 3481
+    },
+    {
+      "candidate_rank": 377,
+      "source_rank": 377,
+      "word": "sila",
+      "pos": null,
+      "frequency_count": 3462
+    },
+    {
+      "candidate_rank": 378,
+      "source_rank": 378,
+      "word": "s",
+      "pos": null,
+      "frequency_count": 3458
+    },
+    {
+      "candidate_rank": 379,
+      "source_rank": 379,
+      "word": "sial",
+      "pos": null,
+      "frequency_count": 3444
+    },
+    {
+      "candidate_rank": 380,
+      "source_rank": 380,
+      "word": "agak",
+      "pos": null,
+      "frequency_count": 3438
+    },
+    {
+      "candidate_rank": 381,
+      "source_rank": 381,
+      "word": "dimana",
+      "pos": null,
+      "frequency_count": 3429
+    },
+    {
+      "candidate_rank": 382,
+      "source_rank": 382,
+      "word": "ramai",
+      "pos": null,
+      "frequency_count": 3425
+    },
+    {
+      "candidate_rank": 383,
+      "source_rank": 383,
+      "word": "esok",
+      "pos": null,
+      "frequency_count": 3425
+    },
+    {
+      "candidate_rank": 384,
+      "source_rank": 384,
+      "word": "you",
+      "pos": null,
+      "frequency_count": 3423
+    },
+    {
+      "candidate_rank": 385,
+      "source_rank": 385,
+      "word": "selamatkan",
+      "pos": null,
+      "frequency_count": 3403
+    },
+    {
+      "candidate_rank": 386,
+      "source_rank": 386,
+      "word": "ku",
+      "pos": null,
+      "frequency_count": 3401
+    },
+    {
+      "candidate_rank": 387,
+      "source_rank": 387,
+      "word": "uh",
+      "pos": null,
+      "frequency_count": 3387
+    },
+    {
+      "candidate_rank": 388,
+      "source_rank": 388,
+      "word": "tepat",
+      "pos": null,
+      "frequency_count": 3373
+    },
+    {
+      "candidate_rank": 389,
+      "source_rank": 389,
+      "word": "tanya",
+      "pos": null,
+      "frequency_count": 3351
+    },
+    {
+      "candidate_rank": 390,
+      "source_rank": 390,
+      "word": "bermain",
+      "pos": null,
+      "frequency_count": 3346
+    },
+    {
+      "candidate_rank": 391,
+      "source_rank": 391,
+      "word": "panggil",
+      "pos": null,
+      "frequency_count": 3345
+    },
+    {
+      "candidate_rank": 392,
+      "source_rank": 392,
+      "word": "peluang",
+      "pos": null,
+      "frequency_count": 3341
+    },
+    {
+      "candidate_rank": 393,
+      "source_rank": 393,
+      "word": "makanan",
+      "pos": null,
+      "frequency_count": 3333
+    },
+    {
+      "candidate_rank": 394,
+      "source_rank": 394,
+      "word": "lepas",
+      "pos": null,
+      "frequency_count": 3325
+    },
+    {
+      "candidate_rank": 395,
+      "source_rank": 395,
+      "word": "sedia",
+      "pos": null,
+      "frequency_count": 3322
+    },
+    {
+      "candidate_rank": 396,
+      "source_rank": 396,
+      "word": "pula",
+      "pos": null,
+      "frequency_count": 3317
+    },
+    {
+      "candidate_rank": 397,
+      "source_rank": 397,
+      "word": "darah",
+      "pos": null,
+      "frequency_count": 3313
+    },
+    {
+      "candidate_rank": 398,
+      "source_rank": 398,
+      "word": "dekat",
+      "pos": null,
+      "frequency_count": 3304
+    },
+    {
+      "candidate_rank": 399,
+      "source_rank": 399,
+      "word": "melalui",
+      "pos": null,
+      "frequency_count": 3296
+    },
+    {
+      "candidate_rank": 400,
+      "source_rank": 400,
+      "word": "raja",
+      "pos": null,
+      "frequency_count": 3294
+    },
+    {
+      "candidate_rank": 401,
+      "source_rank": 401,
+      "word": "teruskan",
+      "pos": null,
+      "frequency_count": 3293
+    },
+    {
+      "candidate_rank": 402,
+      "source_rank": 402,
+      "word": "bantu",
+      "pos": null,
+      "frequency_count": 3275
+    },
+    {
+      "candidate_rank": 403,
+      "source_rank": 403,
+      "word": "negara",
+      "pos": null,
+      "frequency_count": 3274
+    },
+    {
+      "candidate_rank": 404,
+      "source_rank": 404,
+      "word": "bahagian",
+      "pos": null,
+      "frequency_count": 3265
+    },
+    {
+      "candidate_rank": 405,
+      "source_rank": 405,
+      "word": "jatuh",
+      "pos": null,
+      "frequency_count": 3251
+    },
+    {
+      "candidate_rank": 406,
+      "source_rank": 406,
+      "word": "api",
+      "pos": null,
+      "frequency_count": 3247
+    },
+    {
+      "candidate_rank": 407,
+      "source_rank": 407,
+      "word": "amerika",
+      "pos": null,
+      "frequency_count": 3221
+    },
+    {
+      "candidate_rank": 408,
+      "source_rank": 408,
+      "word": "harap",
+      "pos": null,
+      "frequency_count": 3213
+    },
+    {
+      "candidate_rank": 409,
+      "source_rank": 409,
+      "word": "naik",
+      "pos": null,
+      "frequency_count": 3182
+    },
+    {
+      "candidate_rank": 410,
+      "source_rank": 410,
+      "word": "kapten",
+      "pos": null,
+      "frequency_count": 3178
+    },
+    {
+      "candidate_rank": 411,
+      "source_rank": 411,
+      "word": "nampaknya",
+      "pos": null,
+      "frequency_count": 3170
+    },
+    {
+      "candidate_rank": 412,
+      "source_rank": 412,
+      "word": "tua",
+      "pos": null,
+      "frequency_count": 3168
+    },
+    {
+      "candidate_rank": 413,
+      "source_rank": 413,
+      "word": "sentiasa",
+      "pos": null,
+      "frequency_count": 3166
+    },
+    {
+      "candidate_rank": 414,
+      "source_rank": 414,
+      "word": "mengenai",
+      "pos": null,
+      "frequency_count": 3137
+    },
+    {
+      "candidate_rank": 415,
+      "source_rank": 415,
+      "word": "memiliki",
+      "pos": null,
+      "frequency_count": 3128
+    },
+    {
+      "candidate_rank": 416,
+      "source_rank": 416,
+      "word": "tunjukkan",
+      "pos": null,
+      "frequency_count": 3118
+    },
+    {
+      "candidate_rank": 417,
+      "source_rank": 417,
+      "word": "pukul",
+      "pos": null,
+      "frequency_count": 3100
+    },
+    {
+      "candidate_rank": 418,
+      "source_rank": 418,
+      "word": "menggunakan",
+      "pos": null,
+      "frequency_count": 3069
+    },
+    {
+      "candidate_rank": 419,
+      "source_rank": 419,
+      "word": "turun",
+      "pos": null,
+      "frequency_count": 3062
+    },
+    {
+      "candidate_rank": 420,
+      "source_rank": 420,
+      "word": "supaya",
+      "pos": null,
+      "frequency_count": 3050
+    },
+    {
+      "candidate_rank": 421,
+      "source_rank": 421,
+      "word": "menang",
+      "pos": null,
+      "frequency_count": 3049
+    },
+    {
+      "candidate_rank": 422,
+      "source_rank": 422,
+      "word": "ahli",
+      "pos": null,
+      "frequency_count": 3046
+    },
+    {
+      "candidate_rank": 423,
+      "source_rank": 423,
+      "word": "kuasa",
+      "pos": null,
+      "frequency_count": 3023
+    },
+    {
+      "candidate_rank": 424,
+      "source_rank": 424,
+      "word": "belajar",
+      "pos": null,
+      "frequency_count": 3021
+    },
+    {
+      "candidate_rank": 425,
+      "source_rank": 425,
+      "word": "isteri",
+      "pos": null,
+      "frequency_count": 3006
+    },
+    {
+      "candidate_rank": 426,
+      "source_rank": 426,
+      "word": "ayo",
+      "pos": null,
+      "frequency_count": 2987
+    },
+    {
+      "candidate_rank": 427,
+      "source_rank": 427,
+      "word": "berakhir",
+      "pos": null,
+      "frequency_count": 2985
+    },
+    {
+      "candidate_rank": 428,
+      "source_rank": 428,
+      "word": "tiba",
+      "pos": null,
+      "frequency_count": 2981
+    },
+    {
+      "candidate_rank": 429,
+      "source_rank": 429,
+      "word": "minggu",
+      "pos": null,
+      "frequency_count": 2977
+    },
+    {
+      "candidate_rank": 430,
+      "source_rank": 430,
+      "word": "khabar",
+      "pos": null,
+      "frequency_count": 2968
+    },
+    {
+      "candidate_rank": 431,
+      "source_rank": 431,
+      "word": "arah",
+      "pos": null,
+      "frequency_count": 2953
+    },
+    {
+      "candidate_rank": 432,
+      "source_rank": 432,
+      "word": "memberikan",
+      "pos": null,
+      "frequency_count": 2949
+    },
+    {
+      "candidate_rank": 433,
+      "source_rank": 433,
+      "word": "mau",
+      "pos": null,
+      "frequency_count": 2940
+    },
+    {
+      "candidate_rank": 434,
+      "source_rank": 434,
+      "word": "rasanya",
+      "pos": null,
+      "frequency_count": 2936
+    },
+    {
+      "candidate_rank": 435,
+      "source_rank": 435,
+      "word": "suatu",
+      "pos": null,
+      "frequency_count": 2923
+    },
+    {
+      "candidate_rank": 436,
+      "source_rank": 436,
+      "word": "janji",
+      "pos": null,
+      "frequency_count": 2919
+    },
+    {
+      "candidate_rank": 437,
+      "source_rank": 437,
+      "word": "cerita",
+      "pos": null,
+      "frequency_count": 2918
+    },
+    {
+      "candidate_rank": 438,
+      "source_rank": 438,
+      "word": "anjing",
+      "pos": null,
+      "frequency_count": 2902
+    },
+    {
+      "candidate_rank": 439,
+      "source_rank": 439,
+      "word": "begini",
+      "pos": null,
+      "frequency_count": 2872
+    },
+    {
+      "candidate_rank": 440,
+      "source_rank": 440,
+      "word": "berubah",
+      "pos": null,
+      "frequency_count": 2869
+    },
+    {
+      "candidate_rank": 441,
+      "source_rank": 441,
+      "word": "berjumpa",
+      "pos": null,
+      "frequency_count": 2869
+    },
+    {
+      "candidate_rank": 442,
+      "source_rank": 442,
+      "word": "pilihan",
+      "pos": null,
+      "frequency_count": 2862
+    },
+    {
+      "candidate_rank": 443,
+      "source_rank": 443,
+      "word": "pasal",
+      "pos": null,
+      "frequency_count": 2853
+    },
+    {
+      "candidate_rank": 444,
+      "source_rank": 444,
+      "word": "inilah",
+      "pos": null,
+      "frequency_count": 2851
+    },
+    {
+      "candidate_rank": 445,
+      "source_rank": 445,
+      "word": "rancangan",
+      "pos": null,
+      "frequency_count": 2849
+    },
+    {
+      "candidate_rank": 446,
+      "source_rank": 446,
+      "word": "doktor",
+      "pos": null,
+      "frequency_count": 2844
+    },
+    {
+      "candidate_rank": 447,
+      "source_rank": 447,
+      "word": "tinggi",
+      "pos": null,
+      "frequency_count": 2841
+    },
+    {
+      "candidate_rank": 448,
+      "source_rank": 448,
+      "word": "lima",
+      "pos": null,
+      "frequency_count": 2837
+    },
+    {
+      "candidate_rank": 449,
+      "source_rank": 449,
+      "word": "tanah",
+      "pos": null,
+      "frequency_count": 2821
+    },
+    {
+      "candidate_rank": 450,
+      "source_rank": 450,
+      "word": "setelah",
+      "pos": null,
+      "frequency_count": 2814
+    },
+    {
+      "candidate_rank": 451,
+      "source_rank": 451,
+      "word": "hantar",
+      "pos": null,
+      "frequency_count": 2814
+    },
+    {
+      "candidate_rank": 452,
+      "source_rank": 452,
+      "word": "peduli",
+      "pos": null,
+      "frequency_count": 2810
+    },
+    {
+      "candidate_rank": 453,
+      "source_rank": 453,
+      "word": "ah",
+      "pos": null,
+      "frequency_count": 2804
+    },
+    {
+      "candidate_rank": 454,
+      "source_rank": 454,
+      "word": "lakukannya",
+      "pos": null,
+      "frequency_count": 2799
+    },
+    {
+      "candidate_rank": 455,
+      "source_rank": 455,
+      "word": "marah",
+      "pos": null,
+      "frequency_count": 2792
+    },
+    {
+      "candidate_rank": 456,
+      "source_rank": 456,
+      "word": "memerlukan",
+      "pos": null,
+      "frequency_count": 2789
+    },
+    {
+      "candidate_rank": 457,
+      "source_rank": 457,
+      "word": "akhirnya",
+      "pos": null,
+      "frequency_count": 2787
+    },
+    {
+      "candidate_rank": 458,
+      "source_rank": 458,
+      "word": "segera",
+      "pos": null,
+      "frequency_count": 2786
+    },
+    {
+      "candidate_rank": 459,
+      "source_rank": 459,
+      "word": "fikirkan",
+      "pos": null,
+      "frequency_count": 2783
+    },
+    {
+      "candidate_rank": 460,
+      "source_rank": 460,
+      "word": "jelas",
+      "pos": null,
+      "frequency_count": 2767
+    },
+    {
+      "candidate_rank": 461,
+      "source_rank": 461,
+      "word": "perjalanan",
+      "pos": null,
+      "frequency_count": 2764
+    },
+    {
+      "candidate_rank": 462,
+      "source_rank": 462,
+      "word": "bolehkah",
+      "pos": null,
+      "frequency_count": 2748
+    },
+    {
+      "candidate_rank": 463,
+      "source_rank": 463,
+      "word": "teman",
+      "pos": null,
+      "frequency_count": 2743
+    },
+    {
+      "candidate_rank": 464,
+      "source_rank": 464,
+      "word": "sebenar",
+      "pos": null,
+      "frequency_count": 2734
+    },
+    {
+      "candidate_rank": 465,
+      "source_rank": 465,
+      "word": "buku",
+      "pos": null,
+      "frequency_count": 2729
+    },
+    {
+      "candidate_rank": 466,
+      "source_rank": 466,
+      "word": "risau",
+      "pos": null,
+      "frequency_count": 2725
+    },
+    {
+      "candidate_rank": 467,
+      "source_rank": 467,
+      "word": "sukar",
+      "pos": null,
+      "frequency_count": 2721
+    },
+    {
+      "candidate_rank": 468,
+      "source_rank": 468,
+      "word": "idea",
+      "pos": null,
+      "frequency_count": 2712
+    },
+    {
+      "candidate_rank": 469,
+      "source_rank": 469,
+      "word": "kurang",
+      "pos": null,
+      "frequency_count": 2709
+    },
+    {
+      "candidate_rank": 470,
+      "source_rank": 470,
+      "word": "suruh",
+      "pos": null,
+      "frequency_count": 2693
+    },
+    {
+      "candidate_rank": 471,
+      "source_rank": 471,
+      "word": "berita",
+      "pos": null,
+      "frequency_count": 2687
+    },
+    {
+      "candidate_rank": 472,
+      "source_rank": 472,
+      "word": "dengannya",
+      "pos": null,
+      "frequency_count": 2687
+    },
+    {
+      "candidate_rank": 473,
+      "source_rank": 473,
+      "word": "penjara",
+      "pos": null,
+      "frequency_count": 2685
+    },
+    {
+      "candidate_rank": 474,
+      "source_rank": 474,
+      "word": "demi",
+      "pos": null,
+      "frequency_count": 2681
+    },
+    {
+      "candidate_rank": 475,
+      "source_rank": 475,
+      "word": "menyelamatkan",
+      "pos": null,
+      "frequency_count": 2672
+    },
+    {
+      "candidate_rank": 476,
+      "source_rank": 476,
+      "word": "perang",
+      "pos": null,
+      "frequency_count": 2665
+    },
+    {
+      "candidate_rank": 477,
+      "source_rank": 477,
+      "word": "serius",
+      "pos": null,
+      "frequency_count": 2654
+    },
+    {
+      "candidate_rank": 478,
+      "source_rank": 478,
+      "word": "kes",
+      "pos": null,
+      "frequency_count": 2650
+    },
+    {
+      "candidate_rank": 479,
+      "source_rank": 479,
+      "word": "kematian",
+      "pos": null,
+      "frequency_count": 2650
+    },
+    {
+      "candidate_rank": 480,
+      "source_rank": 480,
+      "word": "sepanjang",
+      "pos": null,
+      "frequency_count": 2641
+    },
+    {
+      "candidate_rank": 481,
+      "source_rank": 481,
+      "word": "bapa",
+      "pos": null,
+      "frequency_count": 2633
+    },
+    {
+      "candidate_rank": 482,
+      "source_rank": 482,
+      "word": "sungguh",
+      "pos": null,
+      "frequency_count": 2629
+    },
+    {
+      "candidate_rank": 483,
+      "source_rank": 483,
+      "word": "tangkap",
+      "pos": null,
+      "frequency_count": 2600
+    },
+    {
+      "candidate_rank": 484,
+      "source_rank": 484,
+      "word": "lupa",
+      "pos": null,
+      "frequency_count": 2579
+    },
+    {
+      "candidate_rank": 485,
+      "source_rank": 485,
+      "word": "nombor",
+      "pos": null,
+      "frequency_count": 2566
+    },
+    {
+      "candidate_rank": 486,
+      "source_rank": 486,
+      "word": "tengah",
+      "pos": null,
+      "frequency_count": 2560
+    },
+    {
+      "candidate_rank": 487,
+      "source_rank": 487,
+      "word": "jaga",
+      "pos": null,
+      "frequency_count": 2558
+    },
+    {
+      "candidate_rank": 488,
+      "source_rank": 488,
+      "word": "pelik",
+      "pos": null,
+      "frequency_count": 2557
+    },
+    {
+      "candidate_rank": 489,
+      "source_rank": 489,
+      "word": "kedua",
+      "pos": null,
+      "frequency_count": 2556
+    },
+    {
+      "candidate_rank": 490,
+      "source_rank": 490,
+      "word": "bukankah",
+      "pos": null,
+      "frequency_count": 2545
+    },
+    {
+      "candidate_rank": 491,
+      "source_rank": 491,
+      "word": "permainan",
+      "pos": null,
+      "frequency_count": 2544
+    },
+    {
+      "candidate_rank": 492,
+      "source_rank": 492,
+      "word": "padaku",
+      "pos": null,
+      "frequency_count": 2542
+    },
+    {
+      "candidate_rank": 493,
+      "source_rank": 493,
+      "word": "pesawat",
+      "pos": null,
+      "frequency_count": 2523
+    },
+    {
+      "candidate_rank": 494,
+      "source_rank": 494,
+      "word": "penuh",
+      "pos": null,
+      "frequency_count": 2520
+    },
+    {
+      "candidate_rank": 495,
+      "source_rank": 495,
+      "word": "la",
+      "pos": null,
+      "frequency_count": 2518
+    },
+    {
+      "candidate_rank": 496,
+      "source_rank": 496,
+      "word": "ketua",
+      "pos": null,
+      "frequency_count": 2517
+    },
+    {
+      "candidate_rank": 497,
+      "source_rank": 497,
+      "word": "batu",
+      "pos": null,
+      "frequency_count": 2505
+    },
+    {
+      "candidate_rank": 498,
+      "source_rank": 498,
+      "word": "sebentar",
+      "pos": null,
+      "frequency_count": 2501
+    },
+    {
+      "candidate_rank": 499,
+      "source_rank": 499,
+      "word": "bermakna",
+      "pos": null,
+      "frequency_count": 2488
+    },
+    {
+      "candidate_rank": 500,
+      "source_rank": 500,
+      "word": "semakin",
+      "pos": null,
+      "frequency_count": 2487
+    },
+    {
+      "candidate_rank": 501,
+      "source_rank": 501,
+      "word": "no",
+      "pos": null,
+      "frequency_count": 2485
+    },
+    {
+      "candidate_rank": 502,
+      "source_rank": 502,
+      "word": "maka",
+      "pos": null,
+      "frequency_count": 2474
+    },
+    {
+      "candidate_rank": 503,
+      "source_rank": 503,
+      "word": "meminta",
+      "pos": null,
+      "frequency_count": 2474
+    },
+    {
+      "candidate_rank": 504,
+      "source_rank": 504,
+      "word": "sekejap",
+      "pos": null,
+      "frequency_count": 2465
+    },
+    {
+      "candidate_rank": 505,
+      "source_rank": 505,
+      "word": "berani",
+      "pos": null,
+      "frequency_count": 2459
+    },
+    {
+      "candidate_rank": 506,
+      "source_rank": 506,
+      "word": "rahsia",
+      "pos": null,
+      "frequency_count": 2453
+    },
+    {
+      "candidate_rank": 507,
+      "source_rank": 507,
+      "word": "pergilah",
+      "pos": null,
+      "frequency_count": 2451
+    },
+    {
+      "candidate_rank": 508,
+      "source_rank": 508,
+      "word": "bertahan",
+      "pos": null,
+      "frequency_count": 2444
+    },
+    {
+      "candidate_rank": 509,
+      "source_rank": 509,
+      "word": "lah",
+      "pos": null,
+      "frequency_count": 2438
+    },
+    {
+      "candidate_rank": 510,
+      "source_rank": 510,
+      "word": "berdiri",
+      "pos": null,
+      "frequency_count": 2429
+    },
+    {
+      "candidate_rank": 511,
+      "source_rank": 511,
+      "word": "pastikan",
+      "pos": null,
+      "frequency_count": 2421
+    },
+    {
+      "candidate_rank": 512,
+      "source_rank": 512,
+      "word": "nah",
+      "pos": null,
+      "frequency_count": 2421
+    },
+    {
+      "candidate_rank": 513,
+      "source_rank": 513,
+      "word": "gambar",
+      "pos": null,
+      "frequency_count": 2418
+    },
+    {
+      "candidate_rank": 514,
+      "source_rank": 514,
+      "word": "jahat",
+      "pos": null,
+      "frequency_count": 2411
+    },
+    {
+      "candidate_rank": 515,
+      "source_rank": 515,
+      "word": "soalan",
+      "pos": null,
+      "frequency_count": 2407
+    },
+    {
+      "candidate_rank": 516,
+      "source_rank": 516,
+      "word": "adik",
+      "pos": null,
+      "frequency_count": 2404
+    },
+    {
+      "candidate_rank": 517,
+      "source_rank": 517,
+      "word": "kat",
+      "pos": null,
+      "frequency_count": 2396
+    },
+    {
+      "candidate_rank": 518,
+      "source_rank": 518,
+      "word": "sebelah",
+      "pos": null,
+      "frequency_count": 2388
+    },
+    {
+      "candidate_rank": 519,
+      "source_rank": 519,
+      "word": "milik",
+      "pos": null,
+      "frequency_count": 2387
+    },
+    {
+      "candidate_rank": 520,
+      "source_rank": 520,
+      "word": "bertenang",
+      "pos": null,
+      "frequency_count": 2383
+    },
+    {
+      "candidate_rank": 521,
+      "source_rank": 521,
+      "word": "muda",
+      "pos": null,
+      "frequency_count": 2377
+    },
+    {
+      "candidate_rank": 522,
+      "source_rank": 522,
+      "word": "melihatnya",
+      "pos": null,
+      "frequency_count": 2367
+    },
+    {
+      "candidate_rank": 523,
+      "source_rank": 523,
+      "word": "john",
+      "pos": null,
+      "frequency_count": 2356
+    },
+    {
+      "candidate_rank": 524,
+      "source_rank": 524,
+      "word": "terdapat",
+      "pos": null,
+      "frequency_count": 2355
+    },
+    {
+      "candidate_rank": 525,
+      "source_rank": 525,
+      "word": "apapun",
+      "pos": null,
+      "frequency_count": 2352
+    },
+    {
+      "candidate_rank": 526,
+      "source_rank": 526,
+      "word": "tenang",
+      "pos": null,
+      "frequency_count": 2342
+    },
+    {
+      "candidate_rank": 527,
+      "source_rank": 527,
+      "word": "merasa",
+      "pos": null,
+      "frequency_count": 2341
+    },
+    {
+      "candidate_rank": 528,
+      "source_rank": 528,
+      "word": "gunakan",
+      "pos": null,
+      "frequency_count": 2340
+    },
+    {
+      "candidate_rank": 529,
+      "source_rank": 529,
+      "word": "jenis",
+      "pos": null,
+      "frequency_count": 2318
+    },
+    {
+      "candidate_rank": 530,
+      "source_rank": 530,
+      "word": "berbeza",
+      "pos": null,
+      "frequency_count": 2308
+    },
+    {
+      "candidate_rank": 531,
+      "source_rank": 531,
+      "word": "para",
+      "pos": null,
+      "frequency_count": 2306
+    },
+    {
+      "candidate_rank": 532,
+      "source_rank": 532,
+      "word": "pihak",
+      "pos": null,
+      "frequency_count": 2305
+    },
+    {
+      "candidate_rank": 533,
+      "source_rank": 533,
+      "word": "bumi",
+      "pos": null,
+      "frequency_count": 2288
+    },
+    {
+      "candidate_rank": 534,
+      "source_rank": 534,
+      "word": "keselamatan",
+      "pos": null,
+      "frequency_count": 2287
+    },
+    {
+      "candidate_rank": 535,
+      "source_rank": 535,
+      "word": "wow",
+      "pos": null,
+      "frequency_count": 2282
+    },
+    {
+      "candidate_rank": 536,
+      "source_rank": 536,
+      "word": "tugas",
+      "pos": null,
+      "frequency_count": 2280
+    },
+    {
+      "candidate_rank": 537,
+      "source_rank": 537,
+      "word": "marilah",
+      "pos": null,
+      "frequency_count": 2267
+    },
+    {
+      "candidate_rank": 538,
+      "source_rank": 538,
+      "word": "kisah",
+      "pos": null,
+      "frequency_count": 2263
+    },
+    {
+      "candidate_rank": 539,
+      "source_rank": 539,
+      "word": "empat",
+      "pos": null,
+      "frequency_count": 2249
+    },
+    {
+      "candidate_rank": 540,
+      "source_rank": 540,
+      "word": "menuju",
+      "pos": null,
+      "frequency_count": 2245
+    },
+    {
+      "candidate_rank": 541,
+      "source_rank": 541,
+      "word": "pakai",
+      "pos": null,
+      "frequency_count": 2238
+    },
+    {
+      "candidate_rank": 542,
+      "source_rank": 542,
+      "word": "kawasan",
+      "pos": null,
+      "frequency_count": 2229
+    },
+    {
+      "candidate_rank": 543,
+      "source_rank": 543,
+      "word": "segalanya",
+      "pos": null,
+      "frequency_count": 2224
+    },
+    {
+      "candidate_rank": 544,
+      "source_rank": 544,
+      "word": "senang",
+      "pos": null,
+      "frequency_count": 2222
+    },
+    {
+      "candidate_rank": 545,
+      "source_rank": 545,
+      "word": "pak",
+      "pos": null,
+      "frequency_count": 2214
+    },
+    {
+      "candidate_rank": 546,
+      "source_rank": 546,
+      "word": "maklumat",
+      "pos": null,
+      "frequency_count": 2210
+    },
+    {
+      "candidate_rank": 547,
+      "source_rank": 547,
+      "word": "suara",
+      "pos": null,
+      "frequency_count": 2207
+    },
+    {
+      "candidate_rank": 548,
+      "source_rank": 548,
+      "word": "sedar",
+      "pos": null,
+      "frequency_count": 2204
+    },
+    {
+      "candidate_rank": 549,
+      "source_rank": 549,
+      "word": "kunci",
+      "pos": null,
+      "frequency_count": 2204
+    },
+    {
+      "candidate_rank": 550,
+      "source_rank": 550,
+      "word": "tutup",
+      "pos": null,
+      "frequency_count": 2202
+    },
+    {
+      "candidate_rank": 551,
+      "source_rank": 551,
+      "word": "padanya",
+      "pos": null,
+      "frequency_count": 2201
+    },
+    {
+      "candidate_rank": 552,
+      "source_rank": 552,
+      "word": "presiden",
+      "pos": null,
+      "frequency_count": 2191
+    },
+    {
+      "candidate_rank": 553,
+      "source_rank": 553,
+      "word": "barang",
+      "pos": null,
+      "frequency_count": 2190
+    },
+    {
+      "candidate_rank": 554,
+      "source_rank": 554,
+      "word": "saudara",
+      "pos": null,
+      "frequency_count": 2176
+    },
+    {
+      "candidate_rank": 555,
+      "source_rank": 555,
+      "word": "dilakukan",
+      "pos": null,
+      "frequency_count": 2168
+    },
+    {
+      "candidate_rank": 556,
+      "source_rank": 556,
+      "word": "menembak",
+      "pos": null,
+      "frequency_count": 2149
+    },
+    {
+      "candidate_rank": 557,
+      "source_rank": 557,
+      "word": "rakan",
+      "pos": null,
+      "frequency_count": 2148
+    },
+    {
+      "candidate_rank": 558,
+      "source_rank": 558,
+      "word": "terhadap",
+      "pos": null,
+      "frequency_count": 2143
+    },
+    {
+      "candidate_rank": 559,
+      "source_rank": 559,
+      "word": "siap",
+      "pos": null,
+      "frequency_count": 2143
+    },
+    {
+      "candidate_rank": 560,
+      "source_rank": 560,
+      "word": "pembunuh",
+      "pos": null,
+      "frequency_count": 2138
+    },
+    {
+      "candidate_rank": 561,
+      "source_rank": 561,
+      "word": "periksa",
+      "pos": null,
+      "frequency_count": 2132
+    },
+    {
+      "candidate_rank": 562,
+      "source_rank": 562,
+      "word": "muka",
+      "pos": null,
+      "frequency_count": 2130
+    },
+    {
+      "candidate_rank": 563,
+      "source_rank": 563,
+      "word": "bahkan",
+      "pos": null,
+      "frequency_count": 2127
+    },
+    {
+      "candidate_rank": 564,
+      "source_rank": 564,
+      "word": "bahasa",
+      "pos": null,
+      "frequency_count": 2124
+    },
+    {
+      "candidate_rank": 565,
+      "source_rank": 565,
+      "word": "keputusan",
+      "pos": null,
+      "frequency_count": 2120
+    },
+    {
+      "candidate_rank": 566,
+      "source_rank": 566,
+      "word": "langsung",
+      "pos": null,
+      "frequency_count": 2113
+    },
+    {
+      "candidate_rank": 567,
+      "source_rank": 567,
+      "word": "syarikat",
+      "pos": null,
+      "frequency_count": 2113
+    },
+    {
+      "candidate_rank": 568,
+      "source_rank": 568,
+      "word": "bukannya",
+      "pos": null,
+      "frequency_count": 2109
+    },
+    {
+      "candidate_rank": 569,
+      "source_rank": 569,
+      "word": "celaka",
+      "pos": null,
+      "frequency_count": 2107
+    },
+    {
+      "candidate_rank": 570,
+      "source_rank": 570,
+      "word": "mulakan",
+      "pos": null,
+      "frequency_count": 2093
+    },
+    {
+      "candidate_rank": 571,
+      "source_rank": 571,
+      "word": "bos",
+      "pos": null,
+      "frequency_count": 2091
+    },
+    {
+      "candidate_rank": 572,
+      "source_rank": 572,
+      "word": "hubungi",
+      "pos": null,
+      "frequency_count": 2091
+    },
+    {
+      "candidate_rank": 573,
+      "source_rank": 573,
+      "word": "menerima",
+      "pos": null,
+      "frequency_count": 2089
+    },
+    {
+      "candidate_rank": 574,
+      "source_rank": 574,
+      "word": "menunjukkan",
+      "pos": null,
+      "frequency_count": 2088
+    },
+    {
+      "candidate_rank": 575,
+      "source_rank": 575,
+      "word": "kekuatan",
+      "pos": null,
+      "frequency_count": 2083
+    },
+    {
+      "candidate_rank": 576,
+      "source_rank": 576,
+      "word": "letakkan",
+      "pos": null,
+      "frequency_count": 2080
+    },
+    {
+      "candidate_rank": 577,
+      "source_rank": 577,
+      "word": "bukanlah",
+      "pos": null,
+      "frequency_count": 2078
+    },
+    {
+      "candidate_rank": 578,
+      "source_rank": 578,
+      "word": "panggilan",
+      "pos": null,
+      "frequency_count": 2074
+    },
+    {
+      "candidate_rank": 579,
+      "source_rank": 579,
+      "word": "oke",
+      "pos": null,
+      "frequency_count": 2071
+    },
+    {
+      "candidate_rank": 580,
+      "source_rank": 580,
+      "word": "bimbang",
+      "pos": null,
+      "frequency_count": 2070
+    },
+    {
+      "candidate_rank": 581,
+      "source_rank": 581,
+      "word": "panas",
+      "pos": null,
+      "frequency_count": 2070
+    },
+    {
+      "candidate_rank": 582,
+      "source_rank": 582,
+      "word": "situ",
+      "pos": null,
+      "frequency_count": 2069
+    },
+    {
+      "candidate_rank": 583,
+      "source_rank": 583,
+      "word": "bertanya",
+      "pos": null,
+      "frequency_count": 2069
+    },
+    {
+      "candidate_rank": 584,
+      "source_rank": 584,
+      "word": "karena",
+      "pos": null,
+      "frequency_count": 2065
+    },
+    {
+      "candidate_rank": 585,
+      "source_rank": 585,
+      "word": "serangan",
+      "pos": null,
+      "frequency_count": 2060
+    },
+    {
+      "candidate_rank": 586,
+      "source_rank": 586,
+      "word": "perasaan",
+      "pos": null,
+      "frequency_count": 2056
+    },
+    {
+      "candidate_rank": 587,
+      "source_rank": 587,
+      "word": "bermula",
+      "pos": null,
+      "frequency_count": 2051
+    },
+    {
+      "candidate_rank": 588,
+      "source_rank": 588,
+      "word": "lihatlah",
+      "pos": null,
+      "frequency_count": 2042
+    },
+    {
+      "candidate_rank": 589,
+      "source_rank": 589,
+      "word": "mahukan",
+      "pos": null,
+      "frequency_count": 2033
+    },
+    {
+      "candidate_rank": 590,
+      "source_rank": 590,
+      "word": "tahan",
+      "pos": null,
+      "frequency_count": 2022
+    },
+    {
+      "candidate_rank": 591,
+      "source_rank": 591,
+      "word": "hitam",
+      "pos": null,
+      "frequency_count": 2011
+    },
+    {
+      "candidate_rank": 592,
+      "source_rank": 592,
+      "word": "lupakan",
+      "pos": null,
+      "frequency_count": 2010
+    },
+    {
+      "candidate_rank": 593,
+      "source_rank": 593,
+      "word": "melindungi",
+      "pos": null,
+      "frequency_count": 2006
+    },
+    {
+      "candidate_rank": 594,
+      "source_rank": 594,
+      "word": "kira",
+      "pos": null,
+      "frequency_count": 2001
+    },
+    {
+      "candidate_rank": 595,
+      "source_rank": 595,
+      "word": "pejabat",
+      "pos": null,
+      "frequency_count": 1994
+    },
+    {
+      "candidate_rank": 596,
+      "source_rank": 596,
+      "word": "huh",
+      "pos": null,
+      "frequency_count": 1989
+    },
+    {
+      "candidate_rank": 597,
+      "source_rank": 597,
+      "word": "pegang",
+      "pos": null,
+      "frequency_count": 1982
+    },
+    {
+      "candidate_rank": 598,
+      "source_rank": 598,
+      "word": "hantu",
+      "pos": null,
+      "frequency_count": 1981
+    },
+    {
+      "candidate_rank": 599,
+      "source_rank": 599,
+      "word": "jack",
+      "pos": null,
+      "frequency_count": 1976
+    },
+    {
+      "candidate_rank": 600,
+      "source_rank": 600,
+      "word": "mulai",
+      "pos": null,
+      "frequency_count": 1976
+    },
+    {
+      "candidate_rank": 601,
+      "source_rank": 601,
+      "word": "oliver",
+      "pos": null,
+      "frequency_count": 1974
+    },
+    {
+      "candidate_rank": 602,
+      "source_rank": 602,
+      "word": "awal",
+      "pos": null,
+      "frequency_count": 1970
+    },
+    {
+      "candidate_rank": 603,
+      "source_rank": 603,
+      "word": "peluru",
+      "pos": null,
+      "frequency_count": 1964
+    },
+    {
+      "candidate_rank": 604,
+      "source_rank": 604,
+      "word": "bayi",
+      "pos": null,
+      "frequency_count": 1963
+    },
+    {
+      "candidate_rank": 605,
+      "source_rank": 605,
+      "word": "seterusnya",
+      "pos": null,
+      "frequency_count": 1953
+    },
+    {
+      "candidate_rank": 606,
+      "source_rank": 606,
+      "word": "kini",
+      "pos": null,
+      "frequency_count": 1951
+    },
+    {
+      "candidate_rank": 607,
+      "source_rank": 607,
+      "word": "hubungan",
+      "pos": null,
+      "frequency_count": 1946
+    },
+    {
+      "candidate_rank": 608,
+      "source_rank": 608,
+      "word": "pakaian",
+      "pos": null,
+      "frequency_count": 1944
+    },
+    {
+      "candidate_rank": 609,
+      "source_rank": 609,
+      "word": "kecuali",
+      "pos": null,
+      "frequency_count": 1940
+    },
+    {
+      "candidate_rank": 610,
+      "source_rank": 610,
+      "word": "bilang",
+      "pos": null,
+      "frequency_count": 1938
+    },
+    {
+      "candidate_rank": 611,
+      "source_rank": 611,
+      "word": "juta",
+      "pos": null,
+      "frequency_count": 1937
+    },
+    {
+      "candidate_rank": 612,
+      "source_rank": 612,
+      "word": "berharap",
+      "pos": null,
+      "frequency_count": 1930
+    },
+    {
+      "candidate_rank": 613,
+      "source_rank": 613,
+      "word": "indah",
+      "pos": null,
+      "frequency_count": 1929
+    },
+    {
+      "candidate_rank": 614,
+      "source_rank": 614,
+      "word": "musuh",
+      "pos": null,
+      "frequency_count": 1920
+    },
+    {
+      "candidate_rank": 615,
+      "source_rank": 615,
+      "word": "kerajaan",
+      "pos": null,
+      "frequency_count": 1920
+    },
+    {
+      "candidate_rank": 616,
+      "source_rank": 616,
+      "word": "meninggal",
+      "pos": null,
+      "frequency_count": 1912
+    },
+    {
+      "candidate_rank": 617,
+      "source_rank": 617,
+      "word": "masanya",
+      "pos": null,
+      "frequency_count": 1912
+    },
+    {
+      "candidate_rank": 618,
+      "source_rank": 618,
+      "word": "namanya",
+      "pos": null,
+      "frequency_count": 1912
+    },
+    {
+      "candidate_rank": 619,
+      "source_rank": 619,
+      "word": "terpaksa",
+      "pos": null,
+      "frequency_count": 1909
+    },
+    {
+      "candidate_rank": 620,
+      "source_rank": 620,
+      "word": "melawan",
+      "pos": null,
+      "frequency_count": 1897
+    },
+    {
+      "candidate_rank": 621,
+      "source_rank": 621,
+      "word": "keras",
+      "pos": null,
+      "frequency_count": 1888
+    },
+    {
+      "candidate_rank": 622,
+      "source_rank": 622,
+      "word": "menjaga",
+      "pos": null,
+      "frequency_count": 1887
+    },
+    {
+      "candidate_rank": 623,
+      "source_rank": 623,
+      "word": "nyawa",
+      "pos": null,
+      "frequency_count": 1887
+    },
+    {
+      "candidate_rank": 624,
+      "source_rank": 624,
+      "word": "muncul",
+      "pos": null,
+      "frequency_count": 1887
+    },
+    {
+      "candidate_rank": 625,
+      "source_rank": 625,
+      "word": "it",
+      "pos": null,
+      "frequency_count": 1882
+    },
+    {
+      "candidate_rank": 626,
+      "source_rank": 626,
+      "word": "perhatian",
+      "pos": null,
+      "frequency_count": 1881
+    },
+    {
+      "candidate_rank": 627,
+      "source_rank": 627,
+      "word": "sebabnya",
+      "pos": null,
+      "frequency_count": 1871
+    },
+    {
+      "candidate_rank": 628,
+      "source_rank": 628,
+      "word": "beg",
+      "pos": null,
+      "frequency_count": 1870
+    },
+    {
+      "candidate_rank": 629,
+      "source_rank": 629,
+      "word": "sistem",
+      "pos": null,
+      "frequency_count": 1869
+    },
+    {
+      "candidate_rank": 630,
+      "source_rank": 630,
+      "word": "surat",
+      "pos": null,
+      "frequency_count": 1869
+    },
+    {
+      "candidate_rank": 631,
+      "source_rank": 631,
+      "word": "keluarkan",
+      "pos": null,
+      "frequency_count": 1868
+    },
+    {
+      "candidate_rank": 632,
+      "source_rank": 632,
+      "word": "semoga",
+      "pos": null,
+      "frequency_count": 1865
+    },
+    {
+      "candidate_rank": 633,
+      "source_rank": 633,
+      "word": "setuju",
+      "pos": null,
+      "frequency_count": 1865
+    },
+    {
+      "candidate_rank": 634,
+      "source_rank": 634,
+      "word": "bom",
+      "pos": null,
+      "frequency_count": 1861
+    },
+    {
+      "candidate_rank": 635,
+      "source_rank": 635,
+      "word": "berat",
+      "pos": null,
+      "frequency_count": 1860
+    },
+    {
+      "candidate_rank": 636,
+      "source_rank": 636,
+      "word": "mimpi",
+      "pos": null,
+      "frequency_count": 1847
+    },
+    {
+      "candidate_rank": 637,
+      "source_rank": 637,
+      "word": "bijak",
+      "pos": null,
+      "frequency_count": 1845
+    },
+    {
+      "candidate_rank": 638,
+      "source_rank": 638,
+      "word": "sikit",
+      "pos": null,
+      "frequency_count": 1843
+    },
+    {
+      "candidate_rank": 639,
+      "source_rank": 639,
+      "word": "udara",
+      "pos": null,
+      "frequency_count": 1841
+    },
+    {
+      "candidate_rank": 640,
+      "source_rank": 640,
+      "word": "amat",
+      "pos": null,
+      "frequency_count": 1835
+    },
+    {
+      "candidate_rank": 641,
+      "source_rank": 641,
+      "word": "sesuai",
+      "pos": null,
+      "frequency_count": 1825
+    },
+    {
+      "candidate_rank": 642,
+      "source_rank": 642,
+      "word": "pekerjaan",
+      "pos": null,
+      "frequency_count": 1811
+    },
+    {
+      "candidate_rank": 643,
+      "source_rank": 643,
+      "word": "kanan",
+      "pos": null,
+      "frequency_count": 1802
+    },
+    {
+      "candidate_rank": 644,
+      "source_rank": 644,
+      "word": "guru",
+      "pos": null,
+      "frequency_count": 1797
+    },
+    {
+      "candidate_rank": 645,
+      "source_rank": 645,
+      "word": "yah",
+      "pos": null,
+      "frequency_count": 1795
+    },
+    {
+      "candidate_rank": 646,
+      "source_rank": 646,
+      "word": "bahaya",
+      "pos": null,
+      "frequency_count": 1786
+    },
+    {
+      "candidate_rank": 647,
+      "source_rank": 647,
+      "word": "fikiran",
+      "pos": null,
+      "frequency_count": 1778
+    },
+    {
+      "candidate_rank": 648,
+      "source_rank": 648,
+      "word": "pegawai",
+      "pos": null,
+      "frequency_count": 1775
+    },
+    {
+      "candidate_rank": 649,
+      "source_rank": 649,
+      "word": "kiri",
+      "pos": null,
+      "frequency_count": 1773
+    },
+    {
+      "candidate_rank": 650,
+      "source_rank": 650,
+      "word": "hadiah",
+      "pos": null,
+      "frequency_count": 1772
+    },
+    {
+      "candidate_rank": 651,
+      "source_rank": 651,
+      "word": "ruang",
+      "pos": null,
+      "frequency_count": 1768
+    },
+    {
+      "candidate_rank": 652,
+      "source_rank": 652,
+      "word": "pistol",
+      "pos": null,
+      "frequency_count": 1768
+    },
+    {
+      "candidate_rank": 653,
+      "source_rank": 653,
+      "word": "misi",
+      "pos": null,
+      "frequency_count": 1765
+    },
+    {
+      "candidate_rank": 654,
+      "source_rank": 654,
+      "word": "tarik",
+      "pos": null,
+      "frequency_count": 1764
+    },
+    {
+      "candidate_rank": 655,
+      "source_rank": 655,
+      "word": "sekitar",
+      "pos": null,
+      "frequency_count": 1760
+    },
+    {
+      "candidate_rank": 656,
+      "source_rank": 656,
+      "word": "jom",
+      "pos": null,
+      "frequency_count": 1754
+    },
+    {
+      "candidate_rank": 657,
+      "source_rank": 657,
+      "word": "bayar",
+      "pos": null,
+      "frequency_count": 1754
+    },
+    {
+      "candidate_rank": 658,
+      "source_rank": 658,
+      "word": "bergurau",
+      "pos": null,
+      "frequency_count": 1753
+    },
+    {
+      "candidate_rank": 659,
+      "source_rank": 659,
+      "word": "nya",
+      "pos": null,
+      "frequency_count": 1743
+    },
+    {
+      "candidate_rank": 660,
+      "source_rank": 660,
+      "word": "utama",
+      "pos": null,
+      "frequency_count": 1743
+    },
+    {
+      "candidate_rank": 661,
+      "source_rank": 661,
+      "word": "baju",
+      "pos": null,
+      "frequency_count": 1741
+    },
+    {
+      "candidate_rank": 662,
+      "source_rank": 662,
+      "word": "sebahagian",
+      "pos": null,
+      "frequency_count": 1739
+    },
+    {
+      "candidate_rank": 663,
+      "source_rank": 663,
+      "word": "makhluk",
+      "pos": null,
+      "frequency_count": 1737
+    },
+    {
+      "candidate_rank": 664,
+      "source_rank": 664,
+      "word": "hadapan",
+      "pos": null,
+      "frequency_count": 1736
+    },
+    {
+      "candidate_rank": 665,
+      "source_rank": 665,
+      "word": "gagal",
+      "pos": null,
+      "frequency_count": 1733
+    },
+    {
+      "candidate_rank": 666,
+      "source_rank": 666,
+      "word": "barry",
+      "pos": null,
+      "frequency_count": 1731
+    },
+    {
+      "candidate_rank": 667,
+      "source_rank": 667,
+      "word": "menghantar",
+      "pos": null,
+      "frequency_count": 1727
+    },
+    {
+      "candidate_rank": 668,
+      "source_rank": 668,
+      "word": "membiarkan",
+      "pos": null,
+      "frequency_count": 1726
+    },
+    {
+      "candidate_rank": 669,
+      "source_rank": 669,
+      "word": "kelas",
+      "pos": null,
+      "frequency_count": 1720
+    },
+    {
+      "candidate_rank": 670,
+      "source_rank": 670,
+      "word": "padamu",
+      "pos": null,
+      "frequency_count": 1706
+    },
+    {
+      "candidate_rank": 671,
+      "source_rank": 671,
+      "word": "disana",
+      "pos": null,
+      "frequency_count": 1706
+    },
+    {
+      "candidate_rank": 672,
+      "source_rank": 672,
+      "word": "meletakkan",
+      "pos": null,
+      "frequency_count": 1701
+    },
+    {
+      "candidate_rank": 673,
+      "source_rank": 673,
+      "word": "arahan",
+      "pos": null,
+      "frequency_count": 1698
+    },
+    {
+      "candidate_rank": 674,
+      "source_rank": 674,
+      "word": "sementara",
+      "pos": null,
+      "frequency_count": 1693
+    },
+    {
+      "candidate_rank": 675,
+      "source_rank": 675,
+      "word": "laut",
+      "pos": null,
+      "frequency_count": 1693
+    },
+    {
+      "candidate_rank": 676,
+      "source_rank": 676,
+      "word": "sam",
+      "pos": null,
+      "frequency_count": 1690
+    },
+    {
+      "candidate_rank": 677,
+      "source_rank": 677,
+      "word": "sihir",
+      "pos": null,
+      "frequency_count": 1685
+    },
+    {
+      "candidate_rank": 678,
+      "source_rank": 678,
+      "word": "kumpulan",
+      "pos": null,
+      "frequency_count": 1676
+    },
+    {
+      "candidate_rank": 679,
+      "source_rank": 679,
+      "word": "maksudnya",
+      "pos": null,
+      "frequency_count": 1675
+    },
+    {
+      "candidate_rank": 680,
+      "source_rank": 680,
+      "word": "harry",
+      "pos": null,
+      "frequency_count": 1675
+    },
+    {
+      "candidate_rank": 681,
+      "source_rank": 681,
+      "word": "dirinya",
+      "pos": null,
+      "frequency_count": 1672
+    },
+    {
+      "candidate_rank": 682,
+      "source_rank": 682,
+      "word": "burung",
+      "pos": null,
+      "frequency_count": 1671
+    },
+    {
+      "candidate_rank": 683,
+      "source_rank": 683,
+      "word": "mesin",
+      "pos": null,
+      "frequency_count": 1670
+    },
+    {
+      "candidate_rank": 684,
+      "source_rank": 684,
+      "word": "emas",
+      "pos": null,
+      "frequency_count": 1669
+    },
+    {
+      "candidate_rank": 685,
+      "source_rank": 685,
+      "word": "menangis",
+      "pos": null,
+      "frequency_count": 1664
+    },
+    {
+      "candidate_rank": 686,
+      "source_rank": 686,
+      "word": "berkahwin",
+      "pos": null,
+      "frequency_count": 1660
+    },
+    {
+      "candidate_rank": 687,
+      "source_rank": 687,
+      "word": "mencuri",
+      "pos": null,
+      "frequency_count": 1655
+    },
+    {
+      "candidate_rank": 688,
+      "source_rank": 688,
+      "word": "kalah",
+      "pos": null,
+      "frequency_count": 1653
+    },
+    {
+      "candidate_rank": 689,
+      "source_rank": 689,
+      "word": "badan",
+      "pos": null,
+      "frequency_count": 1652
+    },
+    {
+      "candidate_rank": 690,
+      "source_rank": 690,
+      "word": "memanggil",
+      "pos": null,
+      "frequency_count": 1652
+    },
+    {
+      "candidate_rank": 691,
+      "source_rank": 691,
+      "word": "mu",
+      "pos": null,
+      "frequency_count": 1651
+    },
+    {
+      "candidate_rank": 692,
+      "source_rank": 692,
+      "word": "angkat",
+      "pos": null,
+      "frequency_count": 1648
+    },
+    {
+      "candidate_rank": 693,
+      "source_rank": 693,
+      "word": "neraka",
+      "pos": null,
+      "frequency_count": 1635
+    },
+    {
+      "candidate_rank": 694,
+      "source_rank": 694,
+      "word": "bangunan",
+      "pos": null,
+      "frequency_count": 1633
+    },
+    {
+      "candidate_rank": 695,
+      "source_rank": 695,
+      "word": "bunyi",
+      "pos": null,
+      "frequency_count": 1627
+    },
+    {
+      "candidate_rank": 696,
+      "source_rank": 696,
+      "word": "merah",
+      "pos": null,
+      "frequency_count": 1626
+    },
+    {
+      "candidate_rank": 697,
+      "source_rank": 697,
+      "word": "putih",
+      "pos": null,
+      "frequency_count": 1625
+    },
+    {
+      "candidate_rank": 698,
+      "source_rank": 698,
+      "word": "segala",
+      "pos": null,
+      "frequency_count": 1625
+    },
+    {
+      "candidate_rank": 699,
+      "source_rank": 699,
+      "word": "kakak",
+      "pos": null,
+      "frequency_count": 1625
+    },
+    {
+      "candidate_rank": 700,
+      "source_rank": 700,
+      "word": "sempurna",
+      "pos": null,
+      "frequency_count": 1624
+    },
+    {
+      "candidate_rank": 701,
+      "source_rank": 701,
+      "word": "memilih",
+      "pos": null,
+      "frequency_count": 1619
+    },
+    {
+      "candidate_rank": 702,
+      "source_rank": 702,
+      "word": "menangkap",
+      "pos": null,
+      "frequency_count": 1618
+    },
+    {
+      "candidate_rank": 703,
+      "source_rank": 703,
+      "word": "sejuk",
+      "pos": null,
+      "frequency_count": 1614
+    },
+    {
+      "candidate_rank": 704,
+      "source_rank": 704,
+      "word": "memakai",
+      "pos": null,
+      "frequency_count": 1613
+    },
+    {
+      "candidate_rank": 705,
+      "source_rank": 705,
+      "word": "mengubah",
+      "pos": null,
+      "frequency_count": 1612
+    },
+    {
+      "candidate_rank": 706,
+      "source_rank": 706,
+      "word": "silakan",
+      "pos": null,
+      "frequency_count": 1609
+    },
+    {
+      "candidate_rank": 707,
+      "source_rank": 707,
+      "word": "beli",
+      "pos": null,
+      "frequency_count": 1607
+    },
+    {
+      "candidate_rank": 708,
+      "source_rank": 708,
+      "word": "parti",
+      "pos": null,
+      "frequency_count": 1602
+    },
+    {
+      "candidate_rank": 709,
+      "source_rank": 709,
+      "word": "bersalah",
+      "pos": null,
+      "frequency_count": 1598
+    },
+    {
+      "candidate_rank": 710,
+      "source_rank": 710,
+      "word": "benci",
+      "pos": null,
+      "frequency_count": 1591
+    },
+    {
+      "candidate_rank": 711,
+      "source_rank": 711,
+      "word": "alasan",
+      "pos": null,
+      "frequency_count": 1584
+    },
+    {
+      "candidate_rank": 712,
+      "source_rank": 712,
+      "word": "lagu",
+      "pos": null,
+      "frequency_count": 1579
+    },
+    {
+      "candidate_rank": 713,
+      "source_rank": 713,
+      "word": "ikan",
+      "pos": null,
+      "frequency_count": 1572
+    },
+    {
+      "candidate_rank": 714,
+      "source_rank": 714,
+      "word": "bahwa",
+      "pos": null,
+      "frequency_count": 1569
+    },
+    {
+      "candidate_rank": 715,
+      "source_rank": 715,
+      "word": "semalam",
+      "pos": null,
+      "frequency_count": 1565
+    },
+    {
+      "candidate_rank": 716,
+      "source_rank": 716,
+      "word": "to",
+      "pos": null,
+      "frequency_count": 1564
+    },
+    {
+      "candidate_rank": 717,
+      "source_rank": 717,
+      "word": "t",
+      "pos": null,
+      "frequency_count": 1563
+    },
+    {
+      "candidate_rank": 718,
+      "source_rank": 718,
+      "word": "bank",
+      "pos": null,
+      "frequency_count": 1563
+    },
+    {
+      "candidate_rank": 719,
+      "source_rank": 719,
+      "word": "nenek",
+      "pos": null,
+      "frequency_count": 1562
+    },
+    {
+      "candidate_rank": 720,
+      "source_rank": 720,
+      "word": "melarikan",
+      "pos": null,
+      "frequency_count": 1560
+    },
+    {
+      "candidate_rank": 721,
+      "source_rank": 721,
+      "word": "bola",
+      "pos": null,
+      "frequency_count": 1560
+    },
+    {
+      "candidate_rank": 722,
+      "source_rank": 722,
+      "word": "dahulu",
+      "pos": null,
+      "frequency_count": 1559
+    },
+    {
+      "candidate_rank": 723,
+      "source_rank": 723,
+      "word": "percayakan",
+      "pos": null,
+      "frequency_count": 1558
+    },
+    {
+      "candidate_rank": 724,
+      "source_rank": 724,
+      "word": "kota",
+      "pos": null,
+      "frequency_count": 1554
+    },
+    {
+      "candidate_rank": 725,
+      "source_rank": 725,
+      "word": "main",
+      "pos": null,
+      "frequency_count": 1552
+    },
+    {
+      "candidate_rank": 726,
+      "source_rank": 726,
+      "word": "kebenaran",
+      "pos": null,
+      "frequency_count": 1552
+    },
+    {
+      "candidate_rank": 727,
+      "source_rank": 727,
+      "word": "alamak",
+      "pos": null,
+      "frequency_count": 1552
+    },
+    {
+      "candidate_rank": 728,
+      "source_rank": 728,
+      "word": "jawab",
+      "pos": null,
+      "frequency_count": 1551
+    },
+    {
+      "candidate_rank": 729,
+      "source_rank": 729,
+      "word": "alat",
+      "pos": null,
+      "frequency_count": 1546
+    },
+    {
+      "candidate_rank": 730,
+      "source_rank": 730,
+      "word": "of",
+      "pos": null,
+      "frequency_count": 1545
+    },
+    {
+      "candidate_rank": 731,
+      "source_rank": 731,
+      "word": "filem",
+      "pos": null,
+      "frequency_count": 1538
+    },
+    {
+      "candidate_rank": 732,
+      "source_rank": 732,
+      "word": "dadah",
+      "pos": null,
+      "frequency_count": 1533
+    },
+    {
+      "candidate_rank": 733,
+      "source_rank": 733,
+      "word": "simpan",
+      "pos": null,
+      "frequency_count": 1532
+    },
+    {
+      "candidate_rank": 734,
+      "source_rank": 734,
+      "word": "bebas",
+      "pos": null,
+      "frequency_count": 1532
+    },
+    {
+      "candidate_rank": 735,
+      "source_rank": 735,
+      "word": "enam",
+      "pos": null,
+      "frequency_count": 1531
+    },
+    {
+      "candidate_rank": 736,
+      "source_rank": 736,
+      "word": "menakutkan",
+      "pos": null,
+      "frequency_count": 1527
+    },
+    {
+      "candidate_rank": 737,
+      "source_rank": 737,
+      "word": "maksudkan",
+      "pos": null,
+      "frequency_count": 1527
+    },
+    {
+      "candidate_rank": 738,
+      "source_rank": 738,
+      "word": "um",
+      "pos": null,
+      "frequency_count": 1525
+    },
+    {
+      "candidate_rank": 739,
+      "source_rank": 739,
+      "word": "sasaran",
+      "pos": null,
+      "frequency_count": 1525
+    },
+    {
+      "candidate_rank": 740,
+      "source_rank": 740,
+      "word": "menyerang",
+      "pos": null,
+      "frequency_count": 1524
+    },
+    {
+      "candidate_rank": 741,
+      "source_rank": 741,
+      "word": "kosong",
+      "pos": null,
+      "frequency_count": 1523
+    },
+    {
+      "candidate_rank": 742,
+      "source_rank": 742,
+      "word": "kedai",
+      "pos": null,
+      "frequency_count": 1522
+    },
+    {
+      "candidate_rank": 743,
+      "source_rank": 743,
+      "word": "bukti",
+      "pos": null,
+      "frequency_count": 1521
+    },
+    {
+      "candidate_rank": 744,
+      "source_rank": 744,
+      "word": "charlie",
+      "pos": null,
+      "frequency_count": 1519
+    },
+    {
+      "candidate_rank": 745,
+      "source_rank": 745,
+      "word": "whoa",
+      "pos": null,
+      "frequency_count": 1517
+    },
+    {
+      "candidate_rank": 746,
+      "source_rank": 746,
+      "word": "hospital",
+      "pos": null,
+      "frequency_count": 1514
+    },
+    {
+      "candidate_rank": 747,
+      "source_rank": 747,
+      "word": "and",
+      "pos": null,
+      "frequency_count": 1513
+    },
+    {
+      "candidate_rank": 748,
+      "source_rank": 748,
+      "word": "berjanji",
+      "pos": null,
+      "frequency_count": 1511
+    },
+    {
+      "candidate_rank": 749,
+      "source_rank": 749,
+      "word": "mengetahui",
+      "pos": null,
+      "frequency_count": 1509
+    },
+    {
+      "candidate_rank": 750,
+      "source_rank": 750,
+      "word": "hak",
+      "pos": null,
+      "frequency_count": 1508
+    },
+    {
+      "candidate_rank": 751,
+      "source_rank": 751,
+      "word": "tanda",
+      "pos": null,
+      "frequency_count": 1503
+    },
+    {
+      "candidate_rank": 752,
+      "source_rank": 752,
+      "word": "well",
+      "pos": null,
+      "frequency_count": 1500
+    },
+    {
+      "candidate_rank": 753,
+      "source_rank": 753,
+      "word": "pilih",
+      "pos": null,
+      "frequency_count": 1498
+    },
+    {
+      "candidate_rank": 754,
+      "source_rank": 754,
+      "word": "hutan",
+      "pos": null,
+      "frequency_count": 1493
+    },
+    {
+      "candidate_rank": 755,
+      "source_rank": 755,
+      "word": "letak",
+      "pos": null,
+      "frequency_count": 1491
+    },
+    {
+      "candidate_rank": 756,
+      "source_rank": 756,
+      "word": "rambut",
+      "pos": null,
+      "frequency_count": 1489
+    },
+    {
+      "candidate_rank": 757,
+      "source_rank": 757,
+      "word": "kamera",
+      "pos": null,
+      "frequency_count": 1485
+    },
+    {
+      "candidate_rank": 758,
+      "source_rank": 758,
+      "word": "sentuh",
+      "pos": null,
+      "frequency_count": 1484
+    },
+    {
+      "candidate_rank": 759,
+      "source_rank": 759,
+      "word": "inginkan",
+      "pos": null,
+      "frequency_count": 1481
+    },
+    {
+      "candidate_rank": 760,
+      "source_rank": 760,
+      "word": "terlepas",
+      "pos": null,
+      "frequency_count": 1471
+    },
+    {
+      "candidate_rank": 761,
+      "source_rank": 761,
+      "word": "pedang",
+      "pos": null,
+      "frequency_count": 1470
+    },
+    {
+      "candidate_rank": 762,
+      "source_rank": 762,
+      "word": "david",
+      "pos": null,
+      "frequency_count": 1469
+    },
+    {
+      "candidate_rank": 763,
+      "source_rank": 763,
+      "word": "ujian",
+      "pos": null,
+      "frequency_count": 1466
+    },
+    {
+      "candidate_rank": 764,
+      "source_rank": 764,
+      "word": "by",
+      "pos": null,
+      "frequency_count": 1466
+    },
+    {
+      "candidate_rank": 765,
+      "source_rank": 765,
+      "word": "habis",
+      "pos": null,
+      "frequency_count": 1465
+    },
+    {
+      "candidate_rank": 766,
+      "source_rank": 766,
+      "word": "mayat",
+      "pos": null,
+      "frequency_count": 1462
+    },
+    {
+      "candidate_rank": 767,
+      "source_rank": 767,
+      "word": "menakjubkan",
+      "pos": null,
+      "frequency_count": 1460
+    },
+    {
+      "candidate_rank": 768,
+      "source_rank": 768,
+      "word": "panjang",
+      "pos": null,
+      "frequency_count": 1457
+    },
+    {
+      "candidate_rank": 769,
+      "source_rank": 769,
+      "word": "menari",
+      "pos": null,
+      "frequency_count": 1457
+    },
+    {
+      "candidate_rank": 770,
+      "source_rank": 770,
+      "word": "betapa",
+      "pos": null,
+      "frequency_count": 1456
+    },
+    {
+      "candidate_rank": 771,
+      "source_rank": 771,
+      "word": "akal",
+      "pos": null,
+      "frequency_count": 1450
+    },
+    {
+      "candidate_rank": 772,
+      "source_rank": 772,
+      "word": "new",
+      "pos": null,
+      "frequency_count": 1448
+    },
+    {
+      "candidate_rank": 773,
+      "source_rank": 773,
+      "word": "pembunuhan",
+      "pos": null,
+      "frequency_count": 1444
+    },
+    {
+      "candidate_rank": 774,
+      "source_rank": 774,
+      "word": "kawalan",
+      "pos": null,
+      "frequency_count": 1443
+    },
+    {
+      "candidate_rank": 775,
+      "source_rank": 775,
+      "word": "akhir",
+      "pos": null,
+      "frequency_count": 1441
+    },
+    {
+      "candidate_rank": 776,
+      "source_rank": 776,
+      "word": "peraturan",
+      "pos": null,
+      "frequency_count": 1440
+    },
+    {
+      "candidate_rank": 777,
+      "source_rank": 777,
+      "word": "datuk",
+      "pos": null,
+      "frequency_count": 1438
+    },
+    {
+      "candidate_rank": 778,
+      "source_rank": 778,
+      "word": "dewa",
+      "pos": null,
+      "frequency_count": 1438
+    },
+    {
+      "candidate_rank": 779,
+      "source_rank": 779,
+      "word": "bunga",
+      "pos": null,
+      "frequency_count": 1437
+    },
+    {
+      "candidate_rank": 780,
+      "source_rank": 780,
+      "word": "ayuhlah",
+      "pos": null,
+      "frequency_count": 1433
+    },
+    {
+      "candidate_rank": 781,
+      "source_rank": 781,
+      "word": "langkah",
+      "pos": null,
+      "frequency_count": 1428
+    },
+    {
+      "candidate_rank": 782,
+      "source_rank": 782,
+      "word": "l",
+      "pos": null,
+      "frequency_count": 1428
+    },
+    {
+      "candidate_rank": 783,
+      "source_rank": 783,
+      "word": "kad",
+      "pos": null,
+      "frequency_count": 1427
+    },
+    {
+      "candidate_rank": 784,
+      "source_rank": 784,
+      "word": "merupakan",
+      "pos": null,
+      "frequency_count": 1423
+    },
+    {
+      "candidate_rank": 785,
+      "source_rank": 785,
+      "word": "m",
+      "pos": null,
+      "frequency_count": 1416
+    },
+    {
+      "candidate_rank": 786,
+      "source_rank": 786,
+      "word": "pulau",
+      "pos": null,
+      "frequency_count": 1413
+    },
+    {
+      "candidate_rank": 787,
+      "source_rank": 787,
+      "word": "selain",
+      "pos": null,
+      "frequency_count": 1412
+    },
+    {
+      "candidate_rank": 788,
+      "source_rank": 788,
+      "word": "mulut",
+      "pos": null,
+      "frequency_count": 1412
+    },
+    {
+      "candidate_rank": 789,
+      "source_rank": 789,
+      "word": "terlambat",
+      "pos": null,
+      "frequency_count": 1411
+    },
+    {
+      "candidate_rank": 790,
+      "source_rank": 790,
+      "word": "lawan",
+      "pos": null,
+      "frequency_count": 1409
+    },
+    {
+      "candidate_rank": 791,
+      "source_rank": 791,
+      "word": "kejadian",
+      "pos": null,
+      "frequency_count": 1408
+    },
+    {
+      "candidate_rank": 792,
+      "source_rank": 792,
+      "word": "matahari",
+      "pos": null,
+      "frequency_count": 1405
+    },
+    {
+      "candidate_rank": 793,
+      "source_rank": 793,
+      "word": "pengawal",
+      "pos": null,
+      "frequency_count": 1405
+    },
+    {
+      "candidate_rank": 794,
+      "source_rank": 794,
+      "word": "pusat",
+      "pos": null,
+      "frequency_count": 1403
+    },
+    {
+      "candidate_rank": 795,
+      "source_rank": 795,
+      "word": "latihan",
+      "pos": null,
+      "frequency_count": 1399
+    },
+    {
+      "candidate_rank": 796,
+      "source_rank": 796,
+      "word": "seharusnya",
+      "pos": null,
+      "frequency_count": 1399
+    },
+    {
+      "candidate_rank": 797,
+      "source_rank": 797,
+      "word": "malah",
+      "pos": null,
+      "frequency_count": 1399
+    },
+    {
+      "candidate_rank": 798,
+      "source_rank": 798,
+      "word": "cahaya",
+      "pos": null,
+      "frequency_count": 1395
+    },
+    {
+      "candidate_rank": 799,
+      "source_rank": 799,
+      "word": "berusaha",
+      "pos": null,
+      "frequency_count": 1394
+    },
+    {
+      "candidate_rank": 800,
+      "source_rank": 800,
+      "word": "sibuk",
+      "pos": null,
+      "frequency_count": 1394
+    },
+    {
+      "candidate_rank": 801,
+      "source_rank": 801,
+      "word": "membunuhnya",
+      "pos": null,
+      "frequency_count": 1393
+    },
+    {
+      "candidate_rank": 802,
+      "source_rank": 802,
+      "word": "utara",
+      "pos": null,
+      "frequency_count": 1393
+    },
+    {
+      "candidate_rank": 803,
+      "source_rank": 803,
+      "word": "suami",
+      "pos": null,
+      "frequency_count": 1390
+    },
+    {
+      "candidate_rank": 804,
+      "source_rank": 804,
+      "word": "ha",
+      "pos": null,
+      "frequency_count": 1386
+    },
+    {
+      "candidate_rank": 805,
+      "source_rank": 805,
+      "word": "selesaikan",
+      "pos": null,
+      "frequency_count": 1381
+    },
+    {
+      "candidate_rank": 806,
+      "source_rank": 806,
+      "word": "terbuka",
+      "pos": null,
+      "frequency_count": 1380
+    },
+    {
+      "candidate_rank": 807,
+      "source_rank": 807,
+      "word": "uruskan",
+      "pos": null,
+      "frequency_count": 1379
+    },
+    {
+      "candidate_rank": 808,
+      "source_rank": 808,
+      "word": "tersebut",
+      "pos": null,
+      "frequency_count": 1379
+    },
+    {
+      "candidate_rank": 809,
+      "source_rank": 809,
+      "word": "berguna",
+      "pos": null,
+      "frequency_count": 1378
+    },
+    {
+      "candidate_rank": 810,
+      "source_rank": 810,
+      "word": "membayar",
+      "pos": null,
+      "frequency_count": 1378
+    },
+    {
+      "candidate_rank": 811,
+      "source_rank": 811,
+      "word": "sendirian",
+      "pos": null,
+      "frequency_count": 1376
+    },
+    {
+      "candidate_rank": 812,
+      "source_rank": 812,
+      "word": "india",
+      "pos": null,
+      "frequency_count": 1371
+    },
+    {
+      "candidate_rank": 813,
+      "source_rank": 813,
+      "word": "buang",
+      "pos": null,
+      "frequency_count": 1369
+    },
+    {
+      "candidate_rank": 814,
+      "source_rank": 814,
+      "word": "hingga",
+      "pos": null,
+      "frequency_count": 1368
+    },
+    {
+      "candidate_rank": 815,
+      "source_rank": 815,
+      "word": "berbahaya",
+      "pos": null,
+      "frequency_count": 1367
+    },
+    {
+      "candidate_rank": 816,
+      "source_rank": 816,
+      "word": "asing",
+      "pos": null,
+      "frequency_count": 1366
+    },
+    {
+      "candidate_rank": 817,
+      "source_rank": 817,
+      "word": "memandu",
+      "pos": null,
+      "frequency_count": 1364
+    },
+    {
+      "candidate_rank": 818,
+      "source_rank": 818,
+      "word": "berundur",
+      "pos": null,
+      "frequency_count": 1361
+    },
+    {
+      "candidate_rank": 819,
+      "source_rank": 819,
+      "word": "susah",
+      "pos": null,
+      "frequency_count": 1360
+    },
+    {
+      "candidate_rank": 820,
+      "source_rank": 820,
+      "word": "kepadanya",
+      "pos": null,
+      "frequency_count": 1359
+    },
+    {
+      "candidate_rank": 821,
+      "source_rank": 821,
+      "word": "bertindak",
+      "pos": null,
+      "frequency_count": 1358
+    },
+    {
+      "candidate_rank": 822,
+      "source_rank": 822,
+      "word": "buatkan",
+      "pos": null,
+      "frequency_count": 1354
+    },
+    {
+      "candidate_rank": 823,
+      "source_rank": 823,
+      "word": "bicara",
+      "pos": null,
+      "frequency_count": 1353
+    },
+    {
+      "candidate_rank": 824,
+      "source_rank": 824,
+      "word": "perniagaan",
+      "pos": null,
+      "frequency_count": 1352
+    },
+    {
+      "candidate_rank": 825,
+      "source_rank": 825,
+      "word": "raksasa",
+      "pos": null,
+      "frequency_count": 1350
+    },
+    {
+      "candidate_rank": 826,
+      "source_rank": 826,
+      "word": "menemui",
+      "pos": null,
+      "frequency_count": 1348
+    },
+    {
+      "candidate_rank": 827,
+      "source_rank": 827,
+      "word": "angin",
+      "pos": null,
+      "frequency_count": 1344
+    },
+    {
+      "candidate_rank": 828,
+      "source_rank": 828,
+      "word": "tepi",
+      "pos": null,
+      "frequency_count": 1340
+    },
+    {
+      "candidate_rank": 829,
+      "source_rank": 829,
+      "word": "kuda",
+      "pos": null,
+      "frequency_count": 1337
+    },
+    {
+      "candidate_rank": 830,
+      "source_rank": 830,
+      "word": "tindakan",
+      "pos": null,
+      "frequency_count": 1334
+    },
+    {
+      "candidate_rank": 831,
+      "source_rank": 831,
+      "word": "nasib",
+      "pos": null,
+      "frequency_count": 1334
+    },
+    {
+      "candidate_rank": 832,
+      "source_rank": 832,
+      "word": "aneh",
+      "pos": null,
+      "frequency_count": 1331
+    },
+    {
+      "candidate_rank": 833,
+      "source_rank": 833,
+      "word": "anggota",
+      "pos": null,
+      "frequency_count": 1330
+    },
+    {
+      "candidate_rank": 834,
+      "source_rank": 834,
+      "word": "mustahil",
+      "pos": null,
+      "frequency_count": 1330
+    },
+    {
+      "candidate_rank": 835,
+      "source_rank": 835,
+      "word": "cepatlah",
+      "pos": null,
+      "frequency_count": 1328
+    },
+    {
+      "candidate_rank": 836,
+      "source_rank": 836,
+      "word": "kesalahan",
+      "pos": null,
+      "frequency_count": 1328
+    },
+    {
+      "candidate_rank": 837,
+      "source_rank": 837,
+      "word": "agar",
+      "pos": null,
+      "frequency_count": 1324
+    },
+    {
+      "candidate_rank": 838,
+      "source_rank": 838,
+      "word": "pandang",
+      "pos": null,
+      "frequency_count": 1324
+    },
+    {
+      "candidate_rank": 839,
+      "source_rank": 839,
+      "word": "tenaga",
+      "pos": null,
+      "frequency_count": 1324
+    },
+    {
+      "candidate_rank": 840,
+      "source_rank": 840,
+      "word": "tali",
+      "pos": null,
+      "frequency_count": 1323
+    },
+    {
+      "candidate_rank": 841,
+      "source_rank": 841,
+      "word": "tengoklah",
+      "pos": null,
+      "frequency_count": 1321
+    },
+    {
+      "candidate_rank": 842,
+      "source_rank": 842,
+      "word": "berfungsi",
+      "pos": null,
+      "frequency_count": 1319
+    },
+    {
+      "candidate_rank": 843,
+      "source_rank": 843,
+      "word": "man",
+      "pos": null,
+      "frequency_count": 1319
+    },
+    {
+      "candidate_rank": 844,
+      "source_rank": 844,
+      "word": "dolar",
+      "pos": null,
+      "frequency_count": 1319
+    },
+    {
+      "candidate_rank": 845,
+      "source_rank": 845,
+      "word": "dibunuh",
+      "pos": null,
+      "frequency_count": 1318
+    },
+    {
+      "candidate_rank": 846,
+      "source_rank": 846,
+      "word": "kesan",
+      "pos": null,
+      "frequency_count": 1317
+    },
+    {
+      "candidate_rank": 847,
+      "source_rank": 847,
+      "word": "pakcik",
+      "pos": null,
+      "frequency_count": 1316
+    },
+    {
+      "candidate_rank": 848,
+      "source_rank": 848,
+      "word": "mengganggu",
+      "pos": null,
+      "frequency_count": 1315
+    },
+    {
+      "candidate_rank": 849,
+      "source_rank": 849,
+      "word": "istimewa",
+      "pos": null,
+      "frequency_count": 1314
+    },
+    {
+      "candidate_rank": 850,
+      "source_rank": 850,
+      "word": "mengerti",
+      "pos": null,
+      "frequency_count": 1313
+    },
+    {
+      "candidate_rank": 851,
+      "source_rank": 851,
+      "word": "laporan",
+      "pos": null,
+      "frequency_count": 1309
+    },
+    {
+      "candidate_rank": 852,
+      "source_rank": 852,
+      "word": "tingkat",
+      "pos": null,
+      "frequency_count": 1309
+    },
+    {
+      "candidate_rank": 853,
+      "source_rank": 853,
+      "word": "laluan",
+      "pos": null,
+      "frequency_count": 1308
+    },
+    {
+      "candidate_rank": 854,
+      "source_rank": 854,
+      "word": "perjanjian",
+      "pos": null,
+      "frequency_count": 1307
+    },
+    {
+      "candidate_rank": 855,
+      "source_rank": 855,
+      "word": "terlibat",
+      "pos": null,
+      "frequency_count": 1306
+    },
+    {
+      "candidate_rank": 856,
+      "source_rank": 856,
+      "word": "percayalah",
+      "pos": null,
+      "frequency_count": 1304
+    },
+    {
+      "candidate_rank": 857,
+      "source_rank": 857,
+      "word": "mabuk",
+      "pos": null,
+      "frequency_count": 1299
+    },
+    {
+      "candidate_rank": 858,
+      "source_rank": 858,
+      "word": "lemah",
+      "pos": null,
+      "frequency_count": 1291
+    },
+    {
+      "candidate_rank": 859,
+      "source_rank": 859,
+      "word": "menonton",
+      "pos": null,
+      "frequency_count": 1288
+    },
+    {
+      "candidate_rank": 860,
+      "source_rank": 860,
+      "word": "musim",
+      "pos": null,
+      "frequency_count": 1288
+    },
+    {
+      "candidate_rank": 861,
+      "source_rank": 861,
+      "word": "helo",
+      "pos": null,
+      "frequency_count": 1283
+    },
+    {
+      "candidate_rank": 862,
+      "source_rank": 862,
+      "word": "lewat",
+      "pos": null,
+      "frequency_count": 1283
+    },
+    {
+      "candidate_rank": 863,
+      "source_rank": 863,
+      "word": "membuatkan",
+      "pos": null,
+      "frequency_count": 1279
+    },
+    {
+      "candidate_rank": 864,
+      "source_rank": 864,
+      "word": "masalahnya",
+      "pos": null,
+      "frequency_count": 1278
+    },
+    {
+      "candidate_rank": 865,
+      "source_rank": 865,
+      "word": "harapan",
+      "pos": null,
+      "frequency_count": 1271
+    },
+    {
+      "candidate_rank": 866,
+      "source_rank": 866,
+      "word": "pandai",
+      "pos": null,
+      "frequency_count": 1271
+    },
+    {
+      "candidate_rank": 867,
+      "source_rank": 867,
+      "word": "sejarah",
+      "pos": null,
+      "frequency_count": 1271
+    },
+    {
+      "candidate_rank": 868,
+      "source_rank": 868,
+      "word": "ajar",
+      "pos": null,
+      "frequency_count": 1268
+    },
+    {
+      "candidate_rank": 869,
+      "source_rank": 869,
+      "word": "membeli",
+      "pos": null,
+      "frequency_count": 1268
+    },
+    {
+      "candidate_rank": 870,
+      "source_rank": 870,
+      "word": "hmm",
+      "pos": null,
+      "frequency_count": 1268
+    },
+    {
+      "candidate_rank": 871,
+      "source_rank": 871,
+      "word": "dibuat",
+      "pos": null,
+      "frequency_count": 1261
+    },
+    {
+      "candidate_rank": 872,
+      "source_rank": 872,
+      "word": "halo",
+      "pos": null,
+      "frequency_count": 1261
+    },
+    {
+      "candidate_rank": 873,
+      "source_rank": 873,
+      "word": "memikirkan",
+      "pos": null,
+      "frequency_count": 1257
+    },
+    {
+      "candidate_rank": 874,
+      "source_rank": 874,
+      "word": "sangka",
+      "pos": null,
+      "frequency_count": 1256
+    },
+    {
+      "candidate_rank": 875,
+      "source_rank": 875,
+      "word": "denganmu",
+      "pos": null,
+      "frequency_count": 1252
+    },
+    {
+      "candidate_rank": 876,
+      "source_rank": 876,
+      "word": "menipu",
+      "pos": null,
+      "frequency_count": 1248
+    },
+    {
+      "candidate_rank": 877,
+      "source_rank": 877,
+      "word": "lampu",
+      "pos": null,
+      "frequency_count": 1244
+    },
+    {
+      "candidate_rank": 878,
+      "source_rank": 878,
+      "word": "daging",
+      "pos": null,
+      "frequency_count": 1243
+    },
+    {
+      "candidate_rank": 879,
+      "source_rank": 879,
+      "word": "membaca",
+      "pos": null,
+      "frequency_count": 1241
+    },
+    {
+      "candidate_rank": 880,
+      "source_rank": 880,
+      "word": "entahlah",
+      "pos": null,
+      "frequency_count": 1241
+    },
+    {
+      "candidate_rank": 881,
+      "source_rank": 881,
+      "word": "kemana",
+      "pos": null,
+      "frequency_count": 1240
+    },
+    {
+      "candidate_rank": 882,
+      "source_rank": 882,
+      "word": "bayangkan",
+      "pos": null,
+      "frequency_count": 1239
+    },
+    {
+      "candidate_rank": 883,
+      "source_rank": 883,
+      "word": "kotak",
+      "pos": null,
+      "frequency_count": 1238
+    },
+    {
+      "candidate_rank": 884,
+      "source_rank": 884,
+      "word": "perkataan",
+      "pos": null,
+      "frequency_count": 1236
+    },
+    {
+      "candidate_rank": 885,
+      "source_rank": 885,
+      "word": "tuanku",
+      "pos": null,
+      "frequency_count": 1234
+    },
+    {
+      "candidate_rank": 886,
+      "source_rank": 886,
+      "word": "ubat",
+      "pos": null,
+      "frequency_count": 1229
+    },
+    {
+      "candidate_rank": 887,
+      "source_rank": 887,
+      "word": "hi",
+      "pos": null,
+      "frequency_count": 1229
+    },
+    {
+      "candidate_rank": 888,
+      "source_rank": 888,
+      "word": "peribadi",
+      "pos": null,
+      "frequency_count": 1228
+    },
+    {
+      "candidate_rank": 889,
+      "source_rank": 889,
+      "word": "baca",
+      "pos": null,
+      "frequency_count": 1227
+    },
+    {
+      "candidate_rank": 890,
+      "source_rank": 890,
+      "word": "dirimu",
+      "pos": null,
+      "frequency_count": 1224
+    },
+    {
+      "candidate_rank": 891,
+      "source_rank": 891,
+      "word": "ingatkan",
+      "pos": null,
+      "frequency_count": 1222
+    },
+    {
+      "candidate_rank": 892,
+      "source_rank": 892,
+      "word": "bintang",
+      "pos": null,
+      "frequency_count": 1221
+    },
+    {
+      "candidate_rank": 893,
+      "source_rank": 893,
+      "word": "kulit",
+      "pos": null,
+      "frequency_count": 1221
+    },
+    {
+      "candidate_rank": 894,
+      "source_rank": 894,
+      "word": "kopi",
+      "pos": null,
+      "frequency_count": 1220
+    },
+    {
+      "candidate_rank": 895,
+      "source_rank": 895,
+      "word": "benarkan",
+      "pos": null,
+      "frequency_count": 1219
+    },
+    {
+      "candidate_rank": 896,
+      "source_rank": 896,
+      "word": "mike",
+      "pos": null,
+      "frequency_count": 1218
+    },
+    {
+      "candidate_rank": 897,
+      "source_rank": 897,
+      "word": "hotel",
+      "pos": null,
+      "frequency_count": 1217
+    },
+    {
+      "candidate_rank": 898,
+      "source_rank": 898,
+      "word": "tentulah",
+      "pos": null,
+      "frequency_count": 1216
+    },
+    {
+      "candidate_rank": 899,
+      "source_rank": 899,
+      "word": "menemukan",
+      "pos": null,
+      "frequency_count": 1214
+    },
+    {
+      "candidate_rank": 900,
+      "source_rank": 900,
+      "word": "pikir",
+      "pos": null,
+      "frequency_count": 1213
+    },
+    {
+      "candidate_rank": 901,
+      "source_rank": 901,
+      "word": "gelap",
+      "pos": null,
+      "frequency_count": 1211
+    },
+    {
+      "candidate_rank": 902,
+      "source_rank": 902,
+      "word": "urusan",
+      "pos": null,
+      "frequency_count": 1210
+    },
+    {
+      "candidate_rank": 903,
+      "source_rank": 903,
+      "word": "perkahwinan",
+      "pos": null,
+      "frequency_count": 1210
+    },
+    {
+      "candidate_rank": 904,
+      "source_rank": 904,
+      "word": "joe",
+      "pos": null,
+      "frequency_count": 1210
+    },
+    {
+      "candidate_rank": 905,
+      "source_rank": 905,
+      "word": "me",
+      "pos": null,
+      "frequency_count": 1206
+    },
+    {
+      "candidate_rank": 906,
+      "source_rank": 906,
+      "word": "tembakan",
+      "pos": null,
+      "frequency_count": 1205
+    },
+    {
+      "candidate_rank": 907,
+      "source_rank": 907,
+      "word": "bahan",
+      "pos": null,
+      "frequency_count": 1203
+    },
+    {
+      "candidate_rank": 908,
+      "source_rank": 908,
+      "word": "je",
+      "pos": null,
+      "frequency_count": 1200
+    },
+    {
+      "candidate_rank": 909,
+      "source_rank": 909,
+      "word": "sukakan",
+      "pos": null,
+      "frequency_count": 1200
+    },
+    {
+      "candidate_rank": 910,
+      "source_rank": 910,
+      "word": "kemalangan",
+      "pos": null,
+      "frequency_count": 1199
+    },
+    {
+      "candidate_rank": 911,
+      "source_rank": 911,
+      "word": "menulis",
+      "pos": null,
+      "frequency_count": 1197
+    },
+    {
+      "candidate_rank": 912,
+      "source_rank": 912,
+      "word": "tujuan",
+      "pos": null,
+      "frequency_count": 1195
+    },
+    {
+      "candidate_rank": 913,
+      "source_rank": 913,
+      "word": "berbuat",
+      "pos": null,
+      "frequency_count": 1195
+    },
+    {
+      "candidate_rank": 914,
+      "source_rank": 914,
+      "word": "jenayah",
+      "pos": null,
+      "frequency_count": 1195
+    },
+    {
+      "candidate_rank": 915,
+      "source_rank": 915,
+      "word": "max",
+      "pos": null,
+      "frequency_count": 1189
+    },
+    {
+      "candidate_rank": 916,
+      "source_rank": 916,
+      "word": "lapar",
+      "pos": null,
+      "frequency_count": 1187
+    },
+    {
+      "candidate_rank": 917,
+      "source_rank": 917,
+      "word": "kampung",
+      "pos": null,
+      "frequency_count": 1184
+    },
+    {
+      "candidate_rank": 918,
+      "source_rank": 918,
+      "word": "muzik",
+      "pos": null,
+      "frequency_count": 1182
+    },
+    {
+      "candidate_rank": 919,
+      "source_rank": 919,
+      "word": "berjuang",
+      "pos": null,
+      "frequency_count": 1180
+    },
+    {
+      "candidate_rank": 920,
+      "source_rank": 920,
+      "word": "bermaksud",
+      "pos": null,
+      "frequency_count": 1179
+    },
+    {
+      "candidate_rank": 921,
+      "source_rank": 921,
+      "word": "otak",
+      "pos": null,
+      "frequency_count": 1173
+    },
+    {
+      "candidate_rank": 922,
+      "source_rank": 922,
+      "word": "sedap",
+      "pos": null,
+      "frequency_count": 1171
+    },
+    {
+      "candidate_rank": 923,
+      "source_rank": 923,
+      "word": "sepertinya",
+      "pos": null,
+      "frequency_count": 1168
+    },
+    {
+      "candidate_rank": 924,
+      "source_rank": 924,
+      "word": "bahagia",
+      "pos": null,
+      "frequency_count": 1166
+    },
+    {
+      "candidate_rank": 925,
+      "source_rank": 925,
+      "word": "separuh",
+      "pos": null,
+      "frequency_count": 1159
+    },
+    {
+      "candidate_rank": 926,
+      "source_rank": 926,
+      "word": "menjerit",
+      "pos": null,
+      "frequency_count": 1159
+    },
+    {
+      "candidate_rank": 927,
+      "source_rank": 927,
+      "word": "buah",
+      "pos": null,
+      "frequency_count": 1159
+    },
+    {
+      "candidate_rank": 928,
+      "source_rank": 928,
+      "word": "seekor",
+      "pos": null,
+      "frequency_count": 1159
+    },
+    {
+      "candidate_rank": 929,
+      "source_rank": 929,
+      "word": "planet",
+      "pos": null,
+      "frequency_count": 1158
+    },
+    {
+      "candidate_rank": 930,
+      "source_rank": 930,
+      "word": "sanggup",
+      "pos": null,
+      "frequency_count": 1158
+    },
+    {
+      "candidate_rank": 931,
+      "source_rank": 931,
+      "word": "ketakutan",
+      "pos": null,
+      "frequency_count": 1157
+    },
+    {
+      "candidate_rank": 932,
+      "source_rank": 932,
+      "word": "video",
+      "pos": null,
+      "frequency_count": 1156
+    },
+    {
+      "candidate_rank": 933,
+      "source_rank": 933,
+      "word": "terkejut",
+      "pos": null,
+      "frequency_count": 1151
+    },
+    {
+      "candidate_rank": 934,
+      "source_rank": 934,
+      "word": "layak",
+      "pos": null,
+      "frequency_count": 1151
+    },
+    {
+      "candidate_rank": 935,
+      "source_rank": 935,
+      "word": "pertandingan",
+      "pos": null,
+      "frequency_count": 1151
+    },
+    {
+      "candidate_rank": 936,
+      "source_rank": 936,
+      "word": "wajah",
+      "pos": null,
+      "frequency_count": 1150
+    },
+    {
+      "candidate_rank": 937,
+      "source_rank": 937,
+      "word": "pokok",
+      "pos": null,
+      "frequency_count": 1146
+    },
+    {
+      "candidate_rank": 938,
+      "source_rank": 938,
+      "word": "frank",
+      "pos": null,
+      "frequency_count": 1143
+    },
+    {
+      "candidate_rank": 939,
+      "source_rank": 939,
+      "word": "hanyalah",
+      "pos": null,
+      "frequency_count": 1143
+    },
+    {
+      "candidate_rank": 940,
+      "source_rank": 940,
+      "word": "tn",
+      "pos": null,
+      "frequency_count": 1142
+    },
+    {
+      "candidate_rank": 941,
+      "source_rank": 941,
+      "word": "lubang",
+      "pos": null,
+      "frequency_count": 1142
+    },
+    {
+      "candidate_rank": 942,
+      "source_rank": 942,
+      "word": "komputer",
+      "pos": null,
+      "frequency_count": 1141
+    },
+    {
+      "candidate_rank": 943,
+      "source_rank": 943,
+      "word": "operasi",
+      "pos": null,
+      "frequency_count": 1141
+    },
+    {
+      "candidate_rank": 944,
+      "source_rank": 944,
+      "word": "membuka",
+      "pos": null,
+      "frequency_count": 1140
+    },
+    {
+      "candidate_rank": 945,
+      "source_rank": 945,
+      "word": "selamanya",
+      "pos": null,
+      "frequency_count": 1140
+    },
+    {
+      "candidate_rank": 946,
+      "source_rank": 946,
+      "word": "dipanggil",
+      "pos": null,
+      "frequency_count": 1140
+    },
+    {
+      "candidate_rank": 947,
+      "source_rank": 947,
+      "word": "kaya",
+      "pos": null,
+      "frequency_count": 1138
+    },
+    {
+      "candidate_rank": 948,
+      "source_rank": 948,
+      "word": "anakku",
+      "pos": null,
+      "frequency_count": 1137
+    },
+    {
+      "candidate_rank": 949,
+      "source_rank": 949,
+      "word": "kesilapan",
+      "pos": null,
+      "frequency_count": 1133
+    },
+    {
+      "candidate_rank": 950,
+      "source_rank": 950,
+      "word": "rendah",
+      "pos": null,
+      "frequency_count": 1130
+    },
+    {
+      "candidate_rank": 951,
+      "source_rank": 951,
+      "word": "meja",
+      "pos": null,
+      "frequency_count": 1127
+    },
+    {
+      "candidate_rank": 952,
+      "source_rank": 952,
+      "word": "askar",
+      "pos": null,
+      "frequency_count": 1127
+    },
+    {
+      "candidate_rank": 953,
+      "source_rank": 953,
+      "word": "alam",
+      "pos": null,
+      "frequency_count": 1125
+    },
+    {
+      "candidate_rank": 954,
+      "source_rank": 954,
+      "word": "lokasi",
+      "pos": null,
+      "frequency_count": 1124
+    },
+    {
+      "candidate_rank": 955,
+      "source_rank": 955,
+      "word": "rakyat",
+      "pos": null,
+      "frequency_count": 1121
+    },
+    {
+      "candidate_rank": 956,
+      "source_rank": 956,
+      "word": "jawapan",
+      "pos": null,
+      "frequency_count": 1118
+    },
+    {
+      "candidate_rank": 957,
+      "source_rank": 957,
+      "word": "sialan",
+      "pos": null,
+      "frequency_count": 1118
+    },
+    {
+      "candidate_rank": 958,
+      "source_rank": 958,
+      "word": "perintah",
+      "pos": null,
+      "frequency_count": 1117
+    },
+    {
+      "candidate_rank": 959,
+      "source_rank": 959,
+      "word": "dinding",
+      "pos": null,
+      "frequency_count": 1114
+    },
+    {
+      "candidate_rank": 960,
+      "source_rank": 960,
+      "word": "menyebabkan",
+      "pos": null,
+      "frequency_count": 1112
+    },
+    {
+      "candidate_rank": 961,
+      "source_rank": 961,
+      "word": "penerbangan",
+      "pos": null,
+      "frequency_count": 1110
+    },
+    {
+      "candidate_rank": 962,
+      "source_rank": 962,
+      "word": "jelaskan",
+      "pos": null,
+      "frequency_count": 1109
+    },
+    {
+      "candidate_rank": 963,
+      "source_rank": 963,
+      "word": "mencuba",
+      "pos": null,
+      "frequency_count": 1109
+    },
+    {
+      "candidate_rank": 964,
+      "source_rank": 964,
+      "word": "detektif",
+      "pos": null,
+      "frequency_count": 1108
+    },
+    {
+      "candidate_rank": 965,
+      "source_rank": 965,
+      "word": "pahlawan",
+      "pos": null,
+      "frequency_count": 1105
+    },
+    {
+      "candidate_rank": 966,
+      "source_rank": 966,
+      "word": "selatan",
+      "pos": null,
+      "frequency_count": 1103
+    },
+    {
+      "candidate_rank": 967,
+      "source_rank": 967,
+      "word": "mengalami",
+      "pos": null,
+      "frequency_count": 1102
+    },
+    {
+      "candidate_rank": 968,
+      "source_rank": 968,
+      "word": "namun",
+      "pos": null,
+      "frequency_count": 1102
+    },
+    {
+      "candidate_rank": 969,
+      "source_rank": 969,
+      "word": "bau",
+      "pos": null,
+      "frequency_count": 1099
+    },
+    {
+      "candidate_rank": 970,
+      "source_rank": 970,
+      "word": "berehat",
+      "pos": null,
+      "frequency_count": 1098
+    },
+    {
+      "candidate_rank": 971,
+      "source_rank": 971,
+      "word": "setengah",
+      "pos": null,
+      "frequency_count": 1097
+    },
+    {
+      "candidate_rank": 972,
+      "source_rank": 972,
+      "word": "tubuh",
+      "pos": null,
+      "frequency_count": 1096
+    },
+    {
+      "candidate_rank": 973,
+      "source_rank": 973,
+      "word": "kod",
+      "pos": null,
+      "frequency_count": 1096
+    },
+    {
+      "candidate_rank": 974,
+      "source_rank": 974,
+      "word": "kasut",
+      "pos": null,
+      "frequency_count": 1094
+    },
+    {
+      "candidate_rank": 975,
+      "source_rank": 975,
+      "word": "kekal",
+      "pos": null,
+      "frequency_count": 1094
+    },
+    {
+      "candidate_rank": 976,
+      "source_rank": 976,
+      "word": "sampah",
+      "pos": null,
+      "frequency_count": 1093
+    },
+    {
+      "candidate_rank": 977,
+      "source_rank": 977,
+      "word": "isyarat",
+      "pos": null,
+      "frequency_count": 1092
+    },
+    {
+      "candidate_rank": 978,
+      "source_rank": 978,
+      "word": "digunakan",
+      "pos": null,
+      "frequency_count": 1091
+    },
+    {
+      "candidate_rank": 979,
+      "source_rank": 979,
+      "word": "york",
+      "pos": null,
+      "frequency_count": 1090
+    },
+    {
+      "candidate_rank": 980,
+      "source_rank": 980,
+      "word": "bertarung",
+      "pos": null,
+      "frequency_count": 1090
+    },
+    {
+      "candidate_rank": 981,
+      "source_rank": 981,
+      "word": "mulia",
+      "pos": null,
+      "frequency_count": 1087
+    },
+    {
+      "candidate_rank": 982,
+      "source_rank": 982,
+      "word": "tv",
+      "pos": null,
+      "frequency_count": 1087
+    },
+    {
+      "candidate_rank": 983,
+      "source_rank": 983,
+      "word": "berbohong",
+      "pos": null,
+      "frequency_count": 1087
+    },
+    {
+      "candidate_rank": 984,
+      "source_rank": 984,
+      "word": "wujud",
+      "pos": null,
+      "frequency_count": 1086
+    },
+    {
+      "candidate_rank": 985,
+      "source_rank": 985,
+      "word": "pendapat",
+      "pos": null,
+      "frequency_count": 1085
+    },
+    {
+      "candidate_rank": 986,
+      "source_rank": 986,
+      "word": "jujur",
+      "pos": null,
+      "frequency_count": 1084
+    },
+    {
+      "candidate_rank": 987,
+      "source_rank": 987,
+      "word": "minuman",
+      "pos": null,
+      "frequency_count": 1083
+    },
+    {
+      "candidate_rank": 988,
+      "source_rank": 988,
+      "word": "gunung",
+      "pos": null,
+      "frequency_count": 1083
+    },
+    {
+      "candidate_rank": 989,
+      "source_rank": 989,
+      "word": "disebabkan",
+      "pos": null,
+      "frequency_count": 1082
+    },
+    {
+      "candidate_rank": 990,
+      "source_rank": 990,
+      "word": "bye",
+      "pos": null,
+      "frequency_count": 1081
+    },
+    {
+      "candidate_rank": 991,
+      "source_rank": 991,
+      "word": "dendam",
+      "pos": null,
+      "frequency_count": 1079
+    },
+    {
+      "candidate_rank": 992,
+      "source_rank": 992,
+      "word": "bersumpah",
+      "pos": null,
+      "frequency_count": 1078
+    },
+    {
+      "candidate_rank": 993,
+      "source_rank": 993,
+      "word": "tipu",
+      "pos": null,
+      "frequency_count": 1076
+    },
+    {
+      "candidate_rank": 994,
+      "source_rank": 994,
+      "word": "jari",
+      "pos": null,
+      "frequency_count": 1076
+    },
+    {
+      "candidate_rank": 995,
+      "source_rank": 995,
+      "word": "bekas",
+      "pos": null,
+      "frequency_count": 1075
+    },
+    {
+      "candidate_rank": 996,
+      "source_rank": 996,
+      "word": "silap",
+      "pos": null,
+      "frequency_count": 1072
+    },
+    {
+      "candidate_rank": 997,
+      "source_rank": 997,
+      "word": "soal",
+      "pos": null,
+      "frequency_count": 1072
+    },
+    {
+      "candidate_rank": 998,
+      "source_rank": 998,
+      "word": "mengajar",
+      "pos": null,
+      "frequency_count": 1070
+    },
+    {
+      "candidate_rank": 999,
+      "source_rank": 999,
+      "word": "tamat",
+      "pos": null,
+      "frequency_count": 1070
+    },
+    {
+      "candidate_rank": 1000,
+      "source_rank": 1000,
+      "word": "memahami",
+      "pos": null,
+      "frequency_count": 1069
+    }
+  ]
+}

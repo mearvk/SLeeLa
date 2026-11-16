@@ -1,0 +1,7030 @@
+{
+  "schema": "SLeeLa FRUCHST frequency candidate staging v1",
+  "language_tag": "vi",
+  "language_directory": "vietnamese",
+  "source": {
+    "dataset": "FrequencyWords",
+    "upstream": "https://github.com/hermitdave/FrequencyWords",
+    "revision": "525f9b560de45753a5ea01069454e72e9aa541c6",
+    "sample": "content/2018/vi/vi_full.txt",
+    "data_license": "CC-BY-SA-4.0",
+    "code_license": "MIT",
+    "frequency_source": "OpenSubtitles-2018",
+    "attribution": [
+      "Hermit Dave / FrequencyWords — https://github.com/hermitdave/FrequencyWords",
+      "OpenSubtitles 2018 — https://opus.nlpl.eu/OpenSubtitles2018.php"
+    ],
+    "selection": "First 1,000 unique NFC-normalized lexical surface forms in source frequency order. Punctuation-only tokens are excluded; source line rank and raw occurrence count are retained.",
+    "limitations": [
+      "Surface forms, not lemmatized headwords.",
+      "Subtitle-domain frequency ranking; not a balanced general-purpose corpus.",
+      "No POS or sense labels are supplied by this source.",
+      "English, French, and Spanish definitions remain pending."
+    ],
+    "license_notice": "FrequencyWords content is CC BY-SA 4.0; preserve attribution and share-alike terms. The repository's code is MIT and does not change the data license."
+  },
+  "candidate_count": 1000,
+  "definitions_status": "pending",
+  "entries": [
+    {
+      "candidate_rank": 1,
+      "source_rank": 1,
+      "word": "tôi",
+      "pos": null,
+      "frequency_count": 711535
+    },
+    {
+      "candidate_rank": 2,
+      "source_rank": 2,
+      "word": "không",
+      "pos": null,
+      "frequency_count": 668048
+    },
+    {
+      "candidate_rank": 3,
+      "source_rank": 3,
+      "word": "là",
+      "pos": null,
+      "frequency_count": 477066
+    },
+    {
+      "candidate_rank": 4,
+      "source_rank": 4,
+      "word": "anh",
+      "pos": null,
+      "frequency_count": 469245
+    },
+    {
+      "candidate_rank": 5,
+      "source_rank": 5,
+      "word": "có",
+      "pos": null,
+      "frequency_count": 468127
+    },
+    {
+      "candidate_rank": 6,
+      "source_rank": 6,
+      "word": "ta",
+      "pos": null,
+      "frequency_count": 342219
+    },
+    {
+      "candidate_rank": 7,
+      "source_rank": 7,
+      "word": "của",
+      "pos": null,
+      "frequency_count": 261208
+    },
+    {
+      "candidate_rank": 8,
+      "source_rank": 8,
+      "word": "đi",
+      "pos": null,
+      "frequency_count": 254203
+    },
+    {
+      "candidate_rank": 9,
+      "source_rank": 9,
+      "word": "đã",
+      "pos": null,
+      "frequency_count": 247638
+    },
+    {
+      "candidate_rank": 10,
+      "source_rank": 10,
+      "word": "đó",
+      "pos": null,
+      "frequency_count": 242931
+    },
+    {
+      "candidate_rank": 11,
+      "source_rank": 11,
+      "word": "sẽ",
+      "pos": null,
+      "frequency_count": 241323
+    },
+    {
+      "candidate_rank": 12,
+      "source_rank": 12,
+      "word": "chúng",
+      "pos": null,
+      "frequency_count": 236973
+    },
+    {
+      "candidate_rank": 13,
+      "source_rank": 13,
+      "word": "gì",
+      "pos": null,
+      "frequency_count": 236762
+    },
+    {
+      "candidate_rank": 14,
+      "source_rank": 14,
+      "word": "một",
+      "pos": null,
+      "frequency_count": 234520
+    },
+    {
+      "candidate_rank": 15,
+      "source_rank": 15,
+      "word": "được",
+      "pos": null,
+      "frequency_count": 230371
+    },
+    {
+      "candidate_rank": 16,
+      "source_rank": 16,
+      "word": "và",
+      "pos": null,
+      "frequency_count": 222351
+    },
+    {
+      "candidate_rank": 17,
+      "source_rank": 17,
+      "word": "cô",
+      "pos": null,
+      "frequency_count": 214453
+    },
+    {
+      "candidate_rank": 18,
+      "source_rank": 18,
+      "word": "làm",
+      "pos": null,
+      "frequency_count": 206886
+    },
+    {
+      "candidate_rank": 19,
+      "source_rank": 19,
+      "word": "phải",
+      "pos": null,
+      "frequency_count": 205989
+    },
+    {
+      "candidate_rank": 20,
+      "source_rank": 20,
+      "word": "rồi",
+      "pos": null,
+      "frequency_count": 198863
+    },
+    {
+      "candidate_rank": 21,
+      "source_rank": 21,
+      "word": "người",
+      "pos": null,
+      "frequency_count": 196684
+    },
+    {
+      "candidate_rank": 22,
+      "source_rank": 22,
+      "word": "này",
+      "pos": null,
+      "frequency_count": 191625
+    },
+    {
+      "candidate_rank": 23,
+      "source_rank": 23,
+      "word": "cho",
+      "pos": null,
+      "frequency_count": 185833
+    },
+    {
+      "candidate_rank": 24,
+      "source_rank": 24,
+      "word": "em",
+      "pos": null,
+      "frequency_count": 177577
+    },
+    {
+      "candidate_rank": 25,
+      "source_rank": 25,
+      "word": "đây",
+      "pos": null,
+      "frequency_count": 174127
+    },
+    {
+      "candidate_rank": 26,
+      "source_rank": 26,
+      "word": "con",
+      "pos": null,
+      "frequency_count": 168380
+    },
+    {
+      "candidate_rank": 27,
+      "source_rank": 27,
+      "word": "sao",
+      "pos": null,
+      "frequency_count": 162224
+    },
+    {
+      "candidate_rank": 28,
+      "source_rank": 28,
+      "word": "biết",
+      "pos": null,
+      "frequency_count": 156116
+    },
+    {
+      "candidate_rank": 29,
+      "source_rank": 29,
+      "word": "ông",
+      "pos": null,
+      "frequency_count": 155744
+    },
+    {
+      "candidate_rank": 30,
+      "source_rank": 30,
+      "word": "nói",
+      "pos": null,
+      "frequency_count": 155663
+    },
+    {
+      "candidate_rank": 31,
+      "source_rank": 31,
+      "word": "nó",
+      "pos": null,
+      "frequency_count": 154403
+    },
+    {
+      "candidate_rank": 32,
+      "source_rank": 32,
+      "word": "thể",
+      "pos": null,
+      "frequency_count": 152739
+    },
+    {
+      "candidate_rank": 33,
+      "source_rank": 33,
+      "word": "với",
+      "pos": null,
+      "frequency_count": 144172
+    },
+    {
+      "candidate_rank": 34,
+      "source_rank": 34,
+      "word": "cậu",
+      "pos": null,
+      "frequency_count": 142665
+    },
+    {
+      "candidate_rank": 35,
+      "source_rank": 35,
+      "word": "thế",
+      "pos": null,
+      "frequency_count": 137439
+    },
+    {
+      "candidate_rank": 36,
+      "source_rank": 36,
+      "word": "lại",
+      "pos": null,
+      "frequency_count": 133969
+    },
+    {
+      "candidate_rank": 37,
+      "source_rank": 37,
+      "word": "ra",
+      "pos": null,
+      "frequency_count": 133754
+    },
+    {
+      "candidate_rank": 38,
+      "source_rank": 38,
+      "word": "vậy",
+      "pos": null,
+      "frequency_count": 132086
+    },
+    {
+      "candidate_rank": 39,
+      "source_rank": 39,
+      "word": "để",
+      "pos": null,
+      "frequency_count": 121695
+    },
+    {
+      "candidate_rank": 40,
+      "source_rank": 40,
+      "word": "nào",
+      "pos": null,
+      "frequency_count": 121332
+    },
+    {
+      "candidate_rank": 41,
+      "source_rank": 41,
+      "word": "ấy",
+      "pos": null,
+      "frequency_count": 118465
+    },
+    {
+      "candidate_rank": 42,
+      "source_rank": 42,
+      "word": "cái",
+      "pos": null,
+      "frequency_count": 117809
+    },
+    {
+      "candidate_rank": 43,
+      "source_rank": 43,
+      "word": "đang",
+      "pos": null,
+      "frequency_count": 112941
+    },
+    {
+      "candidate_rank": 44,
+      "source_rank": 44,
+      "word": "muốn",
+      "pos": null,
+      "frequency_count": 108510
+    },
+    {
+      "candidate_rank": 45,
+      "source_rank": 45,
+      "word": "trong",
+      "pos": null,
+      "frequency_count": 108108
+    },
+    {
+      "candidate_rank": 46,
+      "source_rank": 46,
+      "word": "mà",
+      "pos": null,
+      "frequency_count": 106079
+    },
+    {
+      "candidate_rank": 47,
+      "source_rank": 47,
+      "word": "như",
+      "pos": null,
+      "frequency_count": 105810
+    },
+    {
+      "candidate_rank": 48,
+      "source_rank": 48,
+      "word": "nhưng",
+      "pos": null,
+      "frequency_count": 104672
+    },
+    {
+      "candidate_rank": 49,
+      "source_rank": 49,
+      "word": "khi",
+      "pos": null,
+      "frequency_count": 96056
+    },
+    {
+      "candidate_rank": 50,
+      "source_rank": 50,
+      "word": "những",
+      "pos": null,
+      "frequency_count": 95951
+    },
+    {
+      "candidate_rank": 51,
+      "source_rank": 51,
+      "word": "đến",
+      "pos": null,
+      "frequency_count": 95759
+    },
+    {
+      "candidate_rank": 52,
+      "source_rank": 52,
+      "word": "đâu",
+      "pos": null,
+      "frequency_count": 95631
+    },
+    {
+      "candidate_rank": 53,
+      "source_rank": 53,
+      "word": "chuyện",
+      "pos": null,
+      "frequency_count": 93298
+    },
+    {
+      "candidate_rank": 54,
+      "source_rank": 54,
+      "word": "chỉ",
+      "pos": null,
+      "frequency_count": 90053
+    },
+    {
+      "candidate_rank": 55,
+      "source_rank": 55,
+      "word": "cả",
+      "pos": null,
+      "frequency_count": 87140
+    },
+    {
+      "candidate_rank": 56,
+      "source_rank": 56,
+      "word": "về",
+      "pos": null,
+      "frequency_count": 86595
+    },
+    {
+      "candidate_rank": 57,
+      "source_rank": 57,
+      "word": "thì",
+      "pos": null,
+      "frequency_count": 86015
+    },
+    {
+      "candidate_rank": 58,
+      "source_rank": 58,
+      "word": "họ",
+      "pos": null,
+      "frequency_count": 85147
+    },
+    {
+      "candidate_rank": 59,
+      "source_rank": 59,
+      "word": "giờ",
+      "pos": null,
+      "frequency_count": 82815
+    },
+    {
+      "candidate_rank": 60,
+      "source_rank": 60,
+      "word": "thôi",
+      "pos": null,
+      "frequency_count": 82257
+    },
+    {
+      "candidate_rank": 61,
+      "source_rank": 61,
+      "word": "thấy",
+      "pos": null,
+      "frequency_count": 81560
+    },
+    {
+      "candidate_rank": 62,
+      "source_rank": 62,
+      "word": "còn",
+      "pos": null,
+      "frequency_count": 81162
+    },
+    {
+      "candidate_rank": 63,
+      "source_rank": 63,
+      "word": "cũng",
+      "pos": null,
+      "frequency_count": 79398
+    },
+    {
+      "candidate_rank": 64,
+      "source_rank": 64,
+      "word": "vào",
+      "pos": null,
+      "frequency_count": 77039
+    },
+    {
+      "candidate_rank": 65,
+      "source_rank": 65,
+      "word": "các",
+      "pos": null,
+      "frequency_count": 75968
+    },
+    {
+      "candidate_rank": 66,
+      "source_rank": 66,
+      "word": "bị",
+      "pos": null,
+      "frequency_count": 74580
+    },
+    {
+      "candidate_rank": 67,
+      "source_rank": 67,
+      "word": "nghĩ",
+      "pos": null,
+      "frequency_count": 74181
+    },
+    {
+      "candidate_rank": 68,
+      "source_rank": 68,
+      "word": "đấy",
+      "pos": null,
+      "frequency_count": 72983
+    },
+    {
+      "candidate_rank": 69,
+      "source_rank": 69,
+      "word": "ai",
+      "pos": null,
+      "frequency_count": 72950
+    },
+    {
+      "candidate_rank": 70,
+      "source_rank": 70,
+      "word": "thật",
+      "pos": null,
+      "frequency_count": 72462
+    },
+    {
+      "candidate_rank": 71,
+      "source_rank": 71,
+      "word": "hắn",
+      "pos": null,
+      "frequency_count": 71154
+    },
+    {
+      "candidate_rank": 72,
+      "source_rank": 72,
+      "word": "nếu",
+      "pos": null,
+      "frequency_count": 70886
+    },
+    {
+      "candidate_rank": 73,
+      "source_rank": 73,
+      "word": "mình",
+      "pos": null,
+      "frequency_count": 69850
+    },
+    {
+      "candidate_rank": 74,
+      "source_rank": 74,
+      "word": "việc",
+      "pos": null,
+      "frequency_count": 66672
+    },
+    {
+      "candidate_rank": 75,
+      "source_rank": 75,
+      "word": "nữa",
+      "pos": null,
+      "frequency_count": 65710
+    },
+    {
+      "candidate_rank": 76,
+      "source_rank": 76,
+      "word": "rất",
+      "pos": null,
+      "frequency_count": 65684
+    },
+    {
+      "candidate_rank": 77,
+      "source_rank": 77,
+      "word": "vì",
+      "pos": null,
+      "frequency_count": 65423
+    },
+    {
+      "candidate_rank": 78,
+      "source_rank": 78,
+      "word": "cần",
+      "pos": null,
+      "frequency_count": 64886
+    },
+    {
+      "candidate_rank": 79,
+      "source_rank": 79,
+      "word": "chứ",
+      "pos": null,
+      "frequency_count": 61642
+    },
+    {
+      "candidate_rank": 80,
+      "source_rank": 80,
+      "word": "à",
+      "pos": null,
+      "frequency_count": 61569
+    },
+    {
+      "candidate_rank": 81,
+      "source_rank": 81,
+      "word": "điều",
+      "pos": null,
+      "frequency_count": 61281
+    },
+    {
+      "candidate_rank": 82,
+      "source_rank": 82,
+      "word": "sự",
+      "pos": null,
+      "frequency_count": 57977
+    },
+    {
+      "candidate_rank": 83,
+      "source_rank": 83,
+      "word": "tới",
+      "pos": null,
+      "frequency_count": 56078
+    },
+    {
+      "candidate_rank": 84,
+      "source_rank": 84,
+      "word": "xin",
+      "pos": null,
+      "frequency_count": 54951
+    },
+    {
+      "candidate_rank": 85,
+      "source_rank": 85,
+      "word": "thứ",
+      "pos": null,
+      "frequency_count": 54351
+    },
+    {
+      "candidate_rank": 86,
+      "source_rank": 86,
+      "word": "chưa",
+      "pos": null,
+      "frequency_count": 54331
+    },
+    {
+      "candidate_rank": 87,
+      "source_rank": 87,
+      "word": "nhà",
+      "pos": null,
+      "frequency_count": 53987
+    },
+    {
+      "candidate_rank": 88,
+      "source_rank": 88,
+      "word": "lên",
+      "pos": null,
+      "frequency_count": 53245
+    },
+    {
+      "candidate_rank": 89,
+      "source_rank": 89,
+      "word": "đúng",
+      "pos": null,
+      "frequency_count": 52929
+    },
+    {
+      "candidate_rank": 90,
+      "source_rank": 90,
+      "word": "từ",
+      "pos": null,
+      "frequency_count": 52633
+    },
+    {
+      "candidate_rank": 91,
+      "source_rank": 91,
+      "word": "mẹ",
+      "pos": null,
+      "frequency_count": 52302
+    },
+    {
+      "candidate_rank": 92,
+      "source_rank": 92,
+      "word": "nghe",
+      "pos": null,
+      "frequency_count": 51467
+    },
+    {
+      "candidate_rank": 93,
+      "source_rank": 93,
+      "word": "hơn",
+      "pos": null,
+      "frequency_count": 50810
+    },
+    {
+      "candidate_rank": 94,
+      "source_rank": 94,
+      "word": "mọi",
+      "pos": null,
+      "frequency_count": 50009
+    },
+    {
+      "candidate_rank": 95,
+      "source_rank": 95,
+      "word": "bạn",
+      "pos": null,
+      "frequency_count": 49923
+    },
+    {
+      "candidate_rank": 96,
+      "source_rank": 96,
+      "word": "tớ",
+      "pos": null,
+      "frequency_count": 49551
+    },
+    {
+      "candidate_rank": 97,
+      "source_rank": 97,
+      "word": "nên",
+      "pos": null,
+      "frequency_count": 49046
+    },
+    {
+      "candidate_rank": 98,
+      "source_rank": 98,
+      "word": "chết",
+      "pos": null,
+      "frequency_count": 48483
+    },
+    {
+      "candidate_rank": 99,
+      "source_rank": 99,
+      "word": "mày",
+      "pos": null,
+      "frequency_count": 48264
+    },
+    {
+      "candidate_rank": 100,
+      "source_rank": 100,
+      "word": "ơn",
+      "pos": null,
+      "frequency_count": 47895
+    },
+    {
+      "candidate_rank": 101,
+      "source_rank": 101,
+      "word": "đầu",
+      "pos": null,
+      "frequency_count": 47584
+    },
+    {
+      "candidate_rank": 102,
+      "source_rank": 102,
+      "word": "đừng",
+      "pos": null,
+      "frequency_count": 46663
+    },
+    {
+      "candidate_rank": 103,
+      "source_rank": 103,
+      "word": "tìm",
+      "pos": null,
+      "frequency_count": 46658
+    },
+    {
+      "candidate_rank": 104,
+      "source_rank": 104,
+      "word": "tốt",
+      "pos": null,
+      "frequency_count": 46052
+    },
+    {
+      "candidate_rank": 105,
+      "source_rank": 105,
+      "word": "tin",
+      "pos": null,
+      "frequency_count": 43073
+    },
+    {
+      "candidate_rank": 106,
+      "source_rank": 106,
+      "word": "hãy",
+      "pos": null,
+      "frequency_count": 42324
+    },
+    {
+      "candidate_rank": 107,
+      "source_rank": 107,
+      "word": "quá",
+      "pos": null,
+      "frequency_count": 41886
+    },
+    {
+      "candidate_rank": 108,
+      "source_rank": 108,
+      "word": "nhiều",
+      "pos": null,
+      "frequency_count": 41738
+    },
+    {
+      "candidate_rank": 109,
+      "source_rank": 109,
+      "word": "trước",
+      "pos": null,
+      "frequency_count": 41474
+    },
+    {
+      "candidate_rank": 110,
+      "source_rank": 110,
+      "word": "cảm",
+      "pos": null,
+      "frequency_count": 41307
+    },
+    {
+      "candidate_rank": 111,
+      "source_rank": 111,
+      "word": "bà",
+      "pos": null,
+      "frequency_count": 41271
+    },
+    {
+      "candidate_rank": 112,
+      "source_rank": 112,
+      "word": "ý",
+      "pos": null,
+      "frequency_count": 40978
+    },
+    {
+      "candidate_rank": 113,
+      "source_rank": 113,
+      "word": "hay",
+      "pos": null,
+      "frequency_count": 40080
+    },
+    {
+      "candidate_rank": 114,
+      "source_rank": 114,
+      "word": "công",
+      "pos": null,
+      "frequency_count": 39715
+    },
+    {
+      "candidate_rank": 115,
+      "source_rank": 115,
+      "word": "nhất",
+      "pos": null,
+      "frequency_count": 39553
+    },
+    {
+      "candidate_rank": 116,
+      "source_rank": 116,
+      "word": "tao",
+      "pos": null,
+      "frequency_count": 39537
+    },
+    {
+      "candidate_rank": 117,
+      "source_rank": 117,
+      "word": "bố",
+      "pos": null,
+      "frequency_count": 39165
+    },
+    {
+      "candidate_rank": 118,
+      "source_rank": 118,
+      "word": "tất",
+      "pos": null,
+      "frequency_count": 38630
+    },
+    {
+      "candidate_rank": 119,
+      "source_rank": 119,
+      "word": "bao",
+      "pos": null,
+      "frequency_count": 38062
+    },
+    {
+      "candidate_rank": 120,
+      "source_rank": 120,
+      "word": "trên",
+      "pos": null,
+      "frequency_count": 37958
+    },
+    {
+      "candidate_rank": 121,
+      "source_rank": 121,
+      "word": "tên",
+      "pos": null,
+      "frequency_count": 37934
+    },
+    {
+      "candidate_rank": 122,
+      "source_rank": 122,
+      "word": "lỗi",
+      "pos": null,
+      "frequency_count": 37243
+    },
+    {
+      "candidate_rank": 123,
+      "source_rank": 123,
+      "word": "tại",
+      "pos": null,
+      "frequency_count": 36748
+    },
+    {
+      "candidate_rank": 124,
+      "source_rank": 124,
+      "word": "thành",
+      "pos": null,
+      "frequency_count": 35778
+    },
+    {
+      "candidate_rank": 125,
+      "source_rank": 125,
+      "word": "sau",
+      "pos": null,
+      "frequency_count": 35762
+    },
+    {
+      "candidate_rank": 126,
+      "source_rank": 126,
+      "word": "cháu",
+      "pos": null,
+      "frequency_count": 35472
+    },
+    {
+      "candidate_rank": 127,
+      "source_rank": 127,
+      "word": "ngày",
+      "pos": null,
+      "frequency_count": 35407
+    },
+    {
+      "candidate_rank": 128,
+      "source_rank": 128,
+      "word": "khác",
+      "pos": null,
+      "frequency_count": 35283
+    },
+    {
+      "candidate_rank": 129,
+      "source_rank": 129,
+      "word": "xem",
+      "pos": null,
+      "frequency_count": 35017
+    },
+    {
+      "candidate_rank": 130,
+      "source_rank": 130,
+      "word": "theo",
+      "pos": null,
+      "frequency_count": 34891
+    },
+    {
+      "candidate_rank": 131,
+      "source_rank": 131,
+      "word": "chắc",
+      "pos": null,
+      "frequency_count": 34430
+    },
+    {
+      "candidate_rank": 132,
+      "source_rank": 132,
+      "word": "gặp",
+      "pos": null,
+      "frequency_count": 34160
+    },
+    {
+      "candidate_rank": 133,
+      "source_rank": 133,
+      "word": "bắt",
+      "pos": null,
+      "frequency_count": 34019
+    },
+    {
+      "candidate_rank": 134,
+      "source_rank": 134,
+      "word": "yêu",
+      "pos": null,
+      "frequency_count": 34009
+    },
+    {
+      "candidate_rank": 135,
+      "source_rank": 135,
+      "word": "cứ",
+      "pos": null,
+      "frequency_count": 33853
+    },
+    {
+      "candidate_rank": 136,
+      "source_rank": 136,
+      "word": "qua",
+      "pos": null,
+      "frequency_count": 33596
+    },
+    {
+      "candidate_rank": 137,
+      "source_rank": 137,
+      "word": "vẫn",
+      "pos": null,
+      "frequency_count": 33554
+    },
+    {
+      "candidate_rank": 138,
+      "source_rank": 138,
+      "word": "cùng",
+      "pos": null,
+      "frequency_count": 33515
+    },
+    {
+      "candidate_rank": 139,
+      "source_rank": 139,
+      "word": "ngay",
+      "pos": null,
+      "frequency_count": 33507
+    },
+    {
+      "candidate_rank": 140,
+      "source_rank": 140,
+      "word": "thích",
+      "pos": null,
+      "frequency_count": 33480
+    },
+    {
+      "candidate_rank": 141,
+      "source_rank": 141,
+      "word": "cách",
+      "pos": null,
+      "frequency_count": 33425
+    },
+    {
+      "candidate_rank": 142,
+      "source_rank": 142,
+      "word": "nhìn",
+      "pos": null,
+      "frequency_count": 33315
+    },
+    {
+      "candidate_rank": 143,
+      "source_rank": 143,
+      "word": "sống",
+      "pos": null,
+      "frequency_count": 32847
+    },
+    {
+      "candidate_rank": 144,
+      "source_rank": 144,
+      "word": "bọn",
+      "pos": null,
+      "frequency_count": 32818
+    },
+    {
+      "candidate_rank": 145,
+      "source_rank": 145,
+      "word": "lúc",
+      "pos": null,
+      "frequency_count": 32401
+    },
+    {
+      "candidate_rank": 146,
+      "source_rank": 146,
+      "word": "giết",
+      "pos": null,
+      "frequency_count": 32240
+    },
+    {
+      "candidate_rank": 147,
+      "source_rank": 147,
+      "word": "mới",
+      "pos": null,
+      "frequency_count": 31965
+    },
+    {
+      "candidate_rank": 148,
+      "source_rank": 148,
+      "word": "quan",
+      "pos": null,
+      "frequency_count": 31729
+    },
+    {
+      "candidate_rank": 149,
+      "source_rank": 149,
+      "word": "chào",
+      "pos": null,
+      "frequency_count": 31674
+    },
+    {
+      "candidate_rank": 150,
+      "source_rank": 150,
+      "word": "đưa",
+      "pos": null,
+      "frequency_count": 31285
+    },
+    {
+      "candidate_rank": 151,
+      "source_rank": 151,
+      "word": "lắm",
+      "pos": null,
+      "frequency_count": 31247
+    },
+    {
+      "candidate_rank": 152,
+      "source_rank": 152,
+      "word": "gọi",
+      "pos": null,
+      "frequency_count": 30702
+    },
+    {
+      "candidate_rank": 153,
+      "source_rank": 153,
+      "word": "hết",
+      "pos": null,
+      "frequency_count": 30564
+    },
+    {
+      "candidate_rank": 154,
+      "source_rank": 154,
+      "word": "bảo",
+      "pos": null,
+      "frequency_count": 30515
+    },
+    {
+      "candidate_rank": 155,
+      "source_rank": 155,
+      "word": "hai",
+      "pos": null,
+      "frequency_count": 30391
+    },
+    {
+      "candidate_rank": 156,
+      "source_rank": 156,
+      "word": "rằng",
+      "pos": null,
+      "frequency_count": 30188
+    },
+    {
+      "candidate_rank": 157,
+      "source_rank": 157,
+      "word": "ăn",
+      "pos": null,
+      "frequency_count": 29738
+    },
+    {
+      "candidate_rank": 158,
+      "source_rank": 158,
+      "word": "giúp",
+      "pos": null,
+      "frequency_count": 29578
+    },
+    {
+      "candidate_rank": 159,
+      "source_rank": 159,
+      "word": "hiểu",
+      "pos": null,
+      "frequency_count": 29557
+    },
+    {
+      "candidate_rank": 160,
+      "source_rank": 160,
+      "word": "lấy",
+      "pos": null,
+      "frequency_count": 29303
+    },
+    {
+      "candidate_rank": 161,
+      "source_rank": 161,
+      "word": "ngài",
+      "pos": null,
+      "frequency_count": 28943
+    },
+    {
+      "candidate_rank": 162,
+      "source_rank": 162,
+      "word": "tự",
+      "pos": null,
+      "frequency_count": 28842
+    },
+    {
+      "candidate_rank": 163,
+      "source_rank": 163,
+      "word": "lần",
+      "pos": null,
+      "frequency_count": 28697
+    },
+    {
+      "candidate_rank": 164,
+      "source_rank": 164,
+      "word": "chính",
+      "pos": null,
+      "frequency_count": 28419
+    },
+    {
+      "candidate_rank": 165,
+      "source_rank": 165,
+      "word": "tay",
+      "pos": null,
+      "frequency_count": 28344
+    },
+    {
+      "candidate_rank": 166,
+      "source_rank": 166,
+      "word": "nhân",
+      "pos": null,
+      "frequency_count": 27894
+    },
+    {
+      "candidate_rank": 167,
+      "source_rank": 167,
+      "word": "cuộc",
+      "pos": null,
+      "frequency_count": 27777
+    },
+    {
+      "candidate_rank": 168,
+      "source_rank": 168,
+      "word": "bỏ",
+      "pos": null,
+      "frequency_count": 27717
+    },
+    {
+      "candidate_rank": 169,
+      "source_rank": 169,
+      "word": "năm",
+      "pos": null,
+      "frequency_count": 27049
+    },
+    {
+      "candidate_rank": 170,
+      "source_rank": 170,
+      "word": "mất",
+      "pos": null,
+      "frequency_count": 26886
+    },
+    {
+      "candidate_rank": 171,
+      "source_rank": 171,
+      "word": "hả",
+      "pos": null,
+      "frequency_count": 26854
+    },
+    {
+      "candidate_rank": 172,
+      "source_rank": 172,
+      "word": "vụ",
+      "pos": null,
+      "frequency_count": 26661
+    },
+    {
+      "candidate_rank": 173,
+      "source_rank": 173,
+      "word": "xe",
+      "pos": null,
+      "frequency_count": 26531
+    },
+    {
+      "candidate_rank": 174,
+      "source_rank": 174,
+      "word": "ngươi",
+      "pos": null,
+      "frequency_count": 26465
+    },
+    {
+      "candidate_rank": 175,
+      "source_rank": 175,
+      "word": "nhận",
+      "pos": null,
+      "frequency_count": 26071
+    },
+    {
+      "candidate_rank": 176,
+      "source_rank": 176,
+      "word": "cha",
+      "pos": null,
+      "frequency_count": 26048
+    },
+    {
+      "candidate_rank": 177,
+      "source_rank": 177,
+      "word": "chúa",
+      "pos": null,
+      "frequency_count": 25620
+    },
+    {
+      "candidate_rank": 178,
+      "source_rank": 178,
+      "word": "khỏi",
+      "pos": null,
+      "frequency_count": 24903
+    },
+    {
+      "candidate_rank": 179,
+      "source_rank": 179,
+      "word": "nay",
+      "pos": null,
+      "frequency_count": 24835
+    },
+    {
+      "candidate_rank": 180,
+      "source_rank": 180,
+      "word": "định",
+      "pos": null,
+      "frequency_count": 24628
+    },
+    {
+      "candidate_rank": 181,
+      "source_rank": 181,
+      "word": "tiền",
+      "pos": null,
+      "frequency_count": 24403
+    },
+    {
+      "candidate_rank": 182,
+      "source_rank": 182,
+      "word": "thời",
+      "pos": null,
+      "frequency_count": 24285
+    },
+    {
+      "candidate_rank": 183,
+      "source_rank": 183,
+      "word": "cơ",
+      "pos": null,
+      "frequency_count": 24072
+    },
+    {
+      "candidate_rank": 184,
+      "source_rank": 184,
+      "word": "nhé",
+      "pos": null,
+      "frequency_count": 23831
+    },
+    {
+      "candidate_rank": 185,
+      "source_rank": 185,
+      "word": "do",
+      "pos": null,
+      "frequency_count": 23443
+    },
+    {
+      "candidate_rank": 186,
+      "source_rank": 186,
+      "word": "trở",
+      "pos": null,
+      "frequency_count": 23438
+    },
+    {
+      "candidate_rank": 187,
+      "source_rank": 187,
+      "word": "bé",
+      "pos": null,
+      "frequency_count": 23287
+    },
+    {
+      "candidate_rank": 188,
+      "source_rank": 188,
+      "word": "mặt",
+      "pos": null,
+      "frequency_count": 23196
+    },
+    {
+      "candidate_rank": 189,
+      "source_rank": 189,
+      "word": "đường",
+      "pos": null,
+      "frequency_count": 23158
+    },
+    {
+      "candidate_rank": 190,
+      "source_rank": 190,
+      "word": "vâng",
+      "pos": null,
+      "frequency_count": 22814
+    },
+    {
+      "candidate_rank": 191,
+      "source_rank": 191,
+      "word": "gái",
+      "pos": null,
+      "frequency_count": 22754
+    },
+    {
+      "candidate_rank": 192,
+      "source_rank": 192,
+      "word": "luôn",
+      "pos": null,
+      "frequency_count": 22701
+    },
+    {
+      "candidate_rank": 193,
+      "source_rank": 193,
+      "word": "mấy",
+      "pos": null,
+      "frequency_count": 22636
+    },
+    {
+      "candidate_rank": 194,
+      "source_rank": 194,
+      "word": "gia",
+      "pos": null,
+      "frequency_count": 22587
+    },
+    {
+      "candidate_rank": 195,
+      "source_rank": 195,
+      "word": "nhau",
+      "pos": null,
+      "frequency_count": 22524
+    },
+    {
+      "candidate_rank": 196,
+      "source_rank": 196,
+      "word": "lời",
+      "pos": null,
+      "frequency_count": 22243
+    },
+    {
+      "candidate_rank": 197,
+      "source_rank": 197,
+      "word": "nơi",
+      "pos": null,
+      "frequency_count": 22222
+    },
+    {
+      "candidate_rank": 198,
+      "source_rank": 198,
+      "word": "chị",
+      "pos": null,
+      "frequency_count": 22135
+    },
+    {
+      "candidate_rank": 199,
+      "source_rank": 199,
+      "word": "xuống",
+      "pos": null,
+      "frequency_count": 22124
+    },
+    {
+      "candidate_rank": 200,
+      "source_rank": 200,
+      "word": "bây",
+      "pos": null,
+      "frequency_count": 22120
+    },
+    {
+      "candidate_rank": 201,
+      "source_rank": 201,
+      "word": "thưa",
+      "pos": null,
+      "frequency_count": 22059
+    },
+    {
+      "candidate_rank": 202,
+      "source_rank": 202,
+      "word": "số",
+      "pos": null,
+      "frequency_count": 21965
+    },
+    {
+      "candidate_rank": 203,
+      "source_rank": 203,
+      "word": "động",
+      "pos": null,
+      "frequency_count": 21962
+    },
+    {
+      "candidate_rank": 204,
+      "source_rank": 204,
+      "word": "đồ",
+      "pos": null,
+      "frequency_count": 21857
+    },
+    {
+      "candidate_rank": 205,
+      "source_rank": 205,
+      "word": "ngoài",
+      "pos": null,
+      "frequency_count": 21784
+    },
+    {
+      "candidate_rank": 206,
+      "source_rank": 206,
+      "word": "toàn",
+      "pos": null,
+      "frequency_count": 21764
+    },
+    {
+      "candidate_rank": 207,
+      "source_rank": 207,
+      "word": "bất",
+      "pos": null,
+      "frequency_count": 21690
+    },
+    {
+      "candidate_rank": 208,
+      "source_rank": 208,
+      "word": "sát",
+      "pos": null,
+      "frequency_count": 21687
+    },
+    {
+      "candidate_rank": 209,
+      "source_rank": 209,
+      "word": "thực",
+      "pos": null,
+      "frequency_count": 21461
+    },
+    {
+      "candidate_rank": 210,
+      "source_rank": 210,
+      "word": "từng",
+      "pos": null,
+      "frequency_count": 21435
+    },
+    {
+      "candidate_rank": 211,
+      "source_rank": 211,
+      "word": "phòng",
+      "pos": null,
+      "frequency_count": 21402
+    },
+    {
+      "candidate_rank": 212,
+      "source_rank": 212,
+      "word": "thằng",
+      "pos": null,
+      "frequency_count": 21209
+    },
+    {
+      "candidate_rank": 213,
+      "source_rank": 213,
+      "word": "kẻ",
+      "pos": null,
+      "frequency_count": 21157
+    },
+    {
+      "candidate_rank": 214,
+      "source_rank": 214,
+      "word": "hàng",
+      "pos": null,
+      "frequency_count": 20865
+    },
+    {
+      "candidate_rank": 215,
+      "source_rank": 215,
+      "word": "bằng",
+      "pos": null,
+      "frequency_count": 20737
+    },
+    {
+      "candidate_rank": 216,
+      "source_rank": 216,
+      "word": "chẳng",
+      "pos": null,
+      "frequency_count": 20672
+    },
+    {
+      "candidate_rank": 217,
+      "source_rank": 217,
+      "word": "chút",
+      "pos": null,
+      "frequency_count": 20621
+    },
+    {
+      "candidate_rank": 218,
+      "source_rank": 218,
+      "word": "nhớ",
+      "pos": null,
+      "frequency_count": 20581
+    },
+    {
+      "candidate_rank": 219,
+      "source_rank": 219,
+      "word": "chú",
+      "pos": null,
+      "frequency_count": 20528
+    },
+    {
+      "candidate_rank": 220,
+      "source_rank": 220,
+      "word": "nhiên",
+      "pos": null,
+      "frequency_count": 20357
+    },
+    {
+      "candidate_rank": 221,
+      "source_rank": 221,
+      "word": "lý",
+      "pos": null,
+      "frequency_count": 20307
+    },
+    {
+      "candidate_rank": 222,
+      "source_rank": 222,
+      "word": "chỗ",
+      "pos": null,
+      "frequency_count": 20281
+    },
+    {
+      "candidate_rank": 223,
+      "source_rank": 223,
+      "word": "học",
+      "pos": null,
+      "frequency_count": 20188
+    },
+    {
+      "candidate_rank": 224,
+      "source_rank": 224,
+      "word": "nhanh",
+      "pos": null,
+      "frequency_count": 20137
+    },
+    {
+      "candidate_rank": 225,
+      "source_rank": 225,
+      "word": "quay",
+      "pos": null,
+      "frequency_count": 20117
+    },
+    {
+      "candidate_rank": 226,
+      "source_rank": 226,
+      "word": "sĩ",
+      "pos": null,
+      "frequency_count": 19954
+    },
+    {
+      "candidate_rank": 227,
+      "source_rank": 227,
+      "word": "cố",
+      "pos": null,
+      "frequency_count": 19944
+    },
+    {
+      "candidate_rank": 228,
+      "source_rank": 228,
+      "word": "tuyệt",
+      "pos": null,
+      "frequency_count": 19906
+    },
+    {
+      "candidate_rank": 229,
+      "source_rank": 229,
+      "word": "lẽ",
+      "pos": null,
+      "frequency_count": 19825
+    },
+    {
+      "candidate_rank": 230,
+      "source_rank": 230,
+      "word": "chiến",
+      "pos": null,
+      "frequency_count": 19765
+    },
+    {
+      "candidate_rank": 231,
+      "source_rank": 231,
+      "word": "hỏi",
+      "pos": null,
+      "frequency_count": 19763
+    },
+    {
+      "candidate_rank": 232,
+      "source_rank": 232,
+      "word": "đại",
+      "pos": null,
+      "frequency_count": 19737
+    },
+    {
+      "candidate_rank": 233,
+      "source_rank": 233,
+      "word": "tiếp",
+      "pos": null,
+      "frequency_count": 19675
+    },
+    {
+      "candidate_rank": 234,
+      "source_rank": 234,
+      "word": "tình",
+      "pos": null,
+      "frequency_count": 19580
+    },
+    {
+      "candidate_rank": 235,
+      "source_rank": 235,
+      "word": "ơi",
+      "pos": null,
+      "frequency_count": 19526
+    },
+    {
+      "candidate_rank": 236,
+      "source_rank": 236,
+      "word": "bên",
+      "pos": null,
+      "frequency_count": 19478
+    },
+    {
+      "candidate_rank": 237,
+      "source_rank": 237,
+      "word": "đồng",
+      "pos": null,
+      "frequency_count": 19470
+    },
+    {
+      "candidate_rank": 238,
+      "source_rank": 238,
+      "word": "vui",
+      "pos": null,
+      "frequency_count": 19428
+    },
+    {
+      "candidate_rank": 239,
+      "source_rank": 239,
+      "word": "ổn",
+      "pos": null,
+      "frequency_count": 19356
+    },
+    {
+      "candidate_rank": 240,
+      "source_rank": 240,
+      "word": "gian",
+      "pos": null,
+      "frequency_count": 19306
+    },
+    {
+      "candidate_rank": 241,
+      "source_rank": 241,
+      "word": "tâm",
+      "pos": null,
+      "frequency_count": 19297
+    },
+    {
+      "candidate_rank": 242,
+      "source_rank": 242,
+      "word": "cứu",
+      "pos": null,
+      "frequency_count": 19250
+    },
+    {
+      "candidate_rank": 243,
+      "source_rank": 243,
+      "word": "đề",
+      "pos": null,
+      "frequency_count": 19025
+    },
+    {
+      "candidate_rank": 244,
+      "source_rank": 244,
+      "word": "i",
+      "pos": null,
+      "frequency_count": 18920
+    },
+    {
+      "candidate_rank": 245,
+      "source_rank": 245,
+      "word": "sinh",
+      "pos": null,
+      "frequency_count": 18849
+    },
+    {
+      "candidate_rank": 246,
+      "source_rank": 246,
+      "word": "trả",
+      "pos": null,
+      "frequency_count": 18730
+    },
+    {
+      "candidate_rank": 247,
+      "source_rank": 247,
+      "word": "bộ",
+      "pos": null,
+      "frequency_count": 18692
+    },
+    {
+      "candidate_rank": 248,
+      "source_rank": 248,
+      "word": "đều",
+      "pos": null,
+      "frequency_count": 18686
+    },
+    {
+      "candidate_rank": 249,
+      "source_rank": 249,
+      "word": "máy",
+      "pos": null,
+      "frequency_count": 18671
+    },
+    {
+      "candidate_rank": 250,
+      "source_rank": 250,
+      "word": "vài",
+      "pos": null,
+      "frequency_count": 18480
+    },
+    {
+      "candidate_rank": 251,
+      "source_rank": 251,
+      "word": "vị",
+      "pos": null,
+      "frequency_count": 18374
+    },
+    {
+      "candidate_rank": 252,
+      "source_rank": 252,
+      "word": "nước",
+      "pos": null,
+      "frequency_count": 18307
+    },
+    {
+      "candidate_rank": 253,
+      "source_rank": 253,
+      "word": "giống",
+      "pos": null,
+      "frequency_count": 18286
+    },
+    {
+      "candidate_rank": 254,
+      "source_rank": 254,
+      "word": "đánh",
+      "pos": null,
+      "frequency_count": 18276
+    },
+    {
+      "candidate_rank": 255,
+      "source_rank": 255,
+      "word": "xảy",
+      "pos": null,
+      "frequency_count": 18265
+    },
+    {
+      "candidate_rank": 256,
+      "source_rank": 256,
+      "word": "chơi",
+      "pos": null,
+      "frequency_count": 18245
+    },
+    {
+      "candidate_rank": 257,
+      "source_rank": 257,
+      "word": "trai",
+      "pos": null,
+      "frequency_count": 18193
+    },
+    {
+      "candidate_rank": 258,
+      "source_rank": 258,
+      "word": "tối",
+      "pos": null,
+      "frequency_count": 18125
+    },
+    {
+      "candidate_rank": 259,
+      "source_rank": 259,
+      "word": "cảnh",
+      "pos": null,
+      "frequency_count": 18036
+    },
+    {
+      "candidate_rank": 260,
+      "source_rank": 260,
+      "word": "câu",
+      "pos": null,
+      "frequency_count": 17642
+    },
+    {
+      "candidate_rank": 261,
+      "source_rank": 261,
+      "word": "kia",
+      "pos": null,
+      "frequency_count": 17524
+    },
+    {
+      "candidate_rank": 262,
+      "source_rank": 262,
+      "word": "ko",
+      "pos": null,
+      "frequency_count": 17522
+    },
+    {
+      "candidate_rank": 263,
+      "source_rank": 263,
+      "word": "giữ",
+      "pos": null,
+      "frequency_count": 17406
+    },
+    {
+      "candidate_rank": 264,
+      "source_rank": 264,
+      "word": "hành",
+      "pos": null,
+      "frequency_count": 17243
+    },
+    {
+      "candidate_rank": 265,
+      "source_rank": 265,
+      "word": "vô",
+      "pos": null,
+      "frequency_count": 17163
+    },
+    {
+      "candidate_rank": 266,
+      "source_rank": 266,
+      "word": "kết",
+      "pos": null,
+      "frequency_count": 16968
+    },
+    {
+      "candidate_rank": 267,
+      "source_rank": 267,
+      "word": "bởi",
+      "pos": null,
+      "frequency_count": 16703
+    },
+    {
+      "candidate_rank": 268,
+      "source_rank": 268,
+      "word": "hiện",
+      "pos": null,
+      "frequency_count": 16692
+    },
+    {
+      "candidate_rank": 269,
+      "source_rank": 269,
+      "word": "giới",
+      "pos": null,
+      "frequency_count": 16611
+    },
+    {
+      "candidate_rank": 270,
+      "source_rank": 270,
+      "word": "vừa",
+      "pos": null,
+      "frequency_count": 16582
+    },
+    {
+      "candidate_rank": 271,
+      "source_rank": 271,
+      "word": "tiếng",
+      "pos": null,
+      "frequency_count": 16517
+    },
+    {
+      "candidate_rank": 272,
+      "source_rank": 272,
+      "word": "báo",
+      "pos": null,
+      "frequency_count": 16504
+    },
+    {
+      "candidate_rank": 273,
+      "source_rank": 273,
+      "word": "tưởng",
+      "pos": null,
+      "frequency_count": 16251
+    },
+    {
+      "candidate_rank": 274,
+      "source_rank": 274,
+      "word": "chờ",
+      "pos": null,
+      "frequency_count": 16120
+    },
+    {
+      "candidate_rank": 275,
+      "source_rank": 275,
+      "word": "lo",
+      "pos": null,
+      "frequency_count": 16114
+    },
+    {
+      "candidate_rank": 276,
+      "source_rank": 276,
+      "word": "đẹp",
+      "pos": null,
+      "frequency_count": 16033
+    },
+    {
+      "candidate_rank": 277,
+      "source_rank": 277,
+      "word": "hôm",
+      "pos": null,
+      "frequency_count": 15936
+    },
+    {
+      "candidate_rank": 278,
+      "source_rank": 278,
+      "word": "viên",
+      "pos": null,
+      "frequency_count": 15818
+    },
+    {
+      "candidate_rank": 279,
+      "source_rank": 279,
+      "word": "hình",
+      "pos": null,
+      "frequency_count": 15808
+    },
+    {
+      "candidate_rank": 280,
+      "source_rank": 280,
+      "word": "đáng",
+      "pos": null,
+      "frequency_count": 15719
+    },
+    {
+      "candidate_rank": 281,
+      "source_rank": 281,
+      "word": "vấn",
+      "pos": null,
+      "frequency_count": 15471
+    },
+    {
+      "candidate_rank": 282,
+      "source_rank": 282,
+      "word": "trọng",
+      "pos": null,
+      "frequency_count": 15441
+    },
+    {
+      "candidate_rank": 283,
+      "source_rank": 283,
+      "word": "bình",
+      "pos": null,
+      "frequency_count": 15165
+    },
+    {
+      "candidate_rank": 284,
+      "source_rank": 284,
+      "word": "đủ",
+      "pos": null,
+      "frequency_count": 15022
+    },
+    {
+      "candidate_rank": 285,
+      "source_rank": 285,
+      "word": "oh",
+      "pos": null,
+      "frequency_count": 14969
+    },
+    {
+      "candidate_rank": 286,
+      "source_rank": 286,
+      "word": "cám",
+      "pos": null,
+      "frequency_count": 14933
+    },
+    {
+      "candidate_rank": 287,
+      "source_rank": 287,
+      "word": "lớn",
+      "pos": null,
+      "frequency_count": 14885
+    },
+    {
+      "candidate_rank": 288,
+      "source_rank": 288,
+      "word": "sáng",
+      "pos": null,
+      "frequency_count": 14844
+    },
+    {
+      "candidate_rank": 289,
+      "source_rank": 289,
+      "word": "bác",
+      "pos": null,
+      "frequency_count": 14762
+    },
+    {
+      "candidate_rank": 290,
+      "source_rank": 290,
+      "word": "lâu",
+      "pos": null,
+      "frequency_count": 14701
+    },
+    {
+      "candidate_rank": 291,
+      "source_rank": 291,
+      "word": "thần",
+      "pos": null,
+      "frequency_count": 14568
+    },
+    {
+      "candidate_rank": 292,
+      "source_rank": 292,
+      "word": "sợ",
+      "pos": null,
+      "frequency_count": 14560
+    },
+    {
+      "candidate_rank": 293,
+      "source_rank": 293,
+      "word": "biệt",
+      "pos": null,
+      "frequency_count": 14557
+    },
+    {
+      "candidate_rank": 294,
+      "source_rank": 294,
+      "word": "thông",
+      "pos": null,
+      "frequency_count": 14514
+    },
+    {
+      "candidate_rank": 295,
+      "source_rank": 295,
+      "word": "cổ",
+      "pos": null,
+      "frequency_count": 14506
+    },
+    {
+      "candidate_rank": 296,
+      "source_rank": 296,
+      "word": "giải",
+      "pos": null,
+      "frequency_count": 14490
+    },
+    {
+      "candidate_rank": 297,
+      "source_rank": 297,
+      "word": "phụ",
+      "pos": null,
+      "frequency_count": 14429
+    },
+    {
+      "candidate_rank": 298,
+      "source_rank": 298,
+      "word": "thường",
+      "pos": null,
+      "frequency_count": 14321
+    },
+    {
+      "candidate_rank": 299,
+      "source_rank": 299,
+      "word": "thương",
+      "pos": null,
+      "frequency_count": 14316
+    },
+    {
+      "candidate_rank": 300,
+      "source_rank": 300,
+      "word": "vẻ",
+      "pos": null,
+      "frequency_count": 14313
+    },
+    {
+      "candidate_rank": 301,
+      "source_rank": 301,
+      "word": "cuối",
+      "pos": null,
+      "frequency_count": 14225
+    },
+    {
+      "candidate_rank": 302,
+      "source_rank": 302,
+      "word": "rõ",
+      "pos": null,
+      "frequency_count": 14223
+    },
+    {
+      "candidate_rank": 303,
+      "source_rank": 303,
+      "word": "cửa",
+      "pos": null,
+      "frequency_count": 14183
+    },
+    {
+      "candidate_rank": 304,
+      "source_rank": 304,
+      "word": "hợp",
+      "pos": null,
+      "frequency_count": 14138
+    },
+    {
+      "candidate_rank": 305,
+      "source_rank": 305,
+      "word": "trung",
+      "pos": null,
+      "frequency_count": 14016
+    },
+    {
+      "candidate_rank": 306,
+      "source_rank": 306,
+      "word": "bản",
+      "pos": null,
+      "frequency_count": 13987
+    },
+    {
+      "candidate_rank": 307,
+      "source_rank": 307,
+      "word": "dùng",
+      "pos": null,
+      "frequency_count": 13981
+    },
+    {
+      "candidate_rank": 308,
+      "source_rank": 308,
+      "word": "ôi",
+      "pos": null,
+      "frequency_count": 13962
+    },
+    {
+      "candidate_rank": 309,
+      "source_rank": 309,
+      "word": "tra",
+      "pos": null,
+      "frequency_count": 13945
+    },
+    {
+      "candidate_rank": 310,
+      "source_rank": 310,
+      "word": "bắn",
+      "pos": null,
+      "frequency_count": 13901
+    },
+    {
+      "candidate_rank": 311,
+      "source_rank": 311,
+      "word": "cầu",
+      "pos": null,
+      "frequency_count": 13763
+    },
+    {
+      "candidate_rank": 312,
+      "source_rank": 312,
+      "word": "ba",
+      "pos": null,
+      "frequency_count": 13721
+    },
+    {
+      "candidate_rank": 313,
+      "source_rank": 313,
+      "word": "hội",
+      "pos": null,
+      "frequency_count": 13716
+    },
+    {
+      "candidate_rank": 314,
+      "source_rank": 314,
+      "word": "t",
+      "pos": null,
+      "frequency_count": 13715
+    },
+    {
+      "candidate_rank": 315,
+      "source_rank": 315,
+      "word": "đội",
+      "pos": null,
+      "frequency_count": 13660
+    },
+    {
+      "candidate_rank": 316,
+      "source_rank": 316,
+      "word": "tiên",
+      "pos": null,
+      "frequency_count": 13567
+    },
+    {
+      "candidate_rank": 317,
+      "source_rank": 317,
+      "word": "thân",
+      "pos": null,
+      "frequency_count": 13566
+    },
+    {
+      "candidate_rank": 318,
+      "source_rank": 318,
+      "word": "chạy",
+      "pos": null,
+      "frequency_count": 13550
+    },
+    {
+      "candidate_rank": 319,
+      "source_rank": 319,
+      "word": "thêm",
+      "pos": null,
+      "frequency_count": 13524
+    },
+    {
+      "candidate_rank": 320,
+      "source_rank": 320,
+      "word": "đứa",
+      "pos": null,
+      "frequency_count": 13512
+    },
+    {
+      "candidate_rank": 321,
+      "source_rank": 321,
+      "word": "thay",
+      "pos": null,
+      "frequency_count": 13470
+    },
+    {
+      "candidate_rank": 322,
+      "source_rank": 322,
+      "word": "mang",
+      "pos": null,
+      "frequency_count": 13421
+    },
+    {
+      "candidate_rank": 323,
+      "source_rank": 323,
+      "word": "quân",
+      "pos": null,
+      "frequency_count": 13395
+    },
+    {
+      "candidate_rank": 324,
+      "source_rank": 324,
+      "word": "xác",
+      "pos": null,
+      "frequency_count": 13363
+    },
+    {
+      "candidate_rank": 325,
+      "source_rank": 325,
+      "word": "đời",
+      "pos": null,
+      "frequency_count": 13348
+    },
+    {
+      "candidate_rank": 326,
+      "source_rank": 326,
+      "word": "ngủ",
+      "pos": null,
+      "frequency_count": 13347
+    },
+    {
+      "candidate_rank": 327,
+      "source_rank": 327,
+      "word": "trời",
+      "pos": null,
+      "frequency_count": 13320
+    },
+    {
+      "candidate_rank": 328,
+      "source_rank": 328,
+      "word": "đổi",
+      "pos": null,
+      "frequency_count": 13220
+    },
+    {
+      "candidate_rank": 329,
+      "source_rank": 329,
+      "word": "nhỏ",
+      "pos": null,
+      "frequency_count": 13138
+    },
+    {
+      "candidate_rank": 330,
+      "source_rank": 330,
+      "word": "liên",
+      "pos": null,
+      "frequency_count": 13067
+    },
+    {
+      "candidate_rank": 331,
+      "source_rank": 331,
+      "word": "tội",
+      "pos": null,
+      "frequency_count": 12895
+    },
+    {
+      "candidate_rank": 332,
+      "source_rank": 332,
+      "word": "nghĩa",
+      "pos": null,
+      "frequency_count": 12885
+    },
+    {
+      "candidate_rank": 333,
+      "source_rank": 333,
+      "word": "an",
+      "pos": null,
+      "frequency_count": 12812
+    },
+    {
+      "candidate_rank": 334,
+      "source_rank": 334,
+      "word": "điện",
+      "pos": null,
+      "frequency_count": 12809
+    },
+    {
+      "candidate_rank": 335,
+      "source_rank": 335,
+      "word": "dù",
+      "pos": null,
+      "frequency_count": 12696
+    },
+    {
+      "candidate_rank": 336,
+      "source_rank": 336,
+      "word": "bay",
+      "pos": null,
+      "frequency_count": 12669
+    },
+    {
+      "candidate_rank": 337,
+      "source_rank": 337,
+      "word": "nữ",
+      "pos": null,
+      "frequency_count": 12611
+    },
+    {
+      "candidate_rank": 338,
+      "source_rank": 338,
+      "word": "vệ",
+      "pos": null,
+      "frequency_count": 12590
+    },
+    {
+      "candidate_rank": 339,
+      "source_rank": 339,
+      "word": "phát",
+      "pos": null,
+      "frequency_count": 12510
+    },
+    {
+      "candidate_rank": 340,
+      "source_rank": 340,
+      "word": "đối",
+      "pos": null,
+      "frequency_count": 12464
+    },
+    {
+      "candidate_rank": 341,
+      "source_rank": 341,
+      "word": "c",
+      "pos": null,
+      "frequency_count": 12456
+    },
+    {
+      "candidate_rank": 342,
+      "source_rank": 342,
+      "word": "đêm",
+      "pos": null,
+      "frequency_count": 12447
+    },
+    {
+      "candidate_rank": 343,
+      "source_rank": 343,
+      "word": "trẻ",
+      "pos": null,
+      "frequency_count": 12409
+    },
+    {
+      "candidate_rank": 344,
+      "source_rank": 344,
+      "word": "bệnh",
+      "pos": null,
+      "frequency_count": 12395
+    },
+    {
+      "candidate_rank": 345,
+      "source_rank": 345,
+      "word": "gần",
+      "pos": null,
+      "frequency_count": 12375
+    },
+    {
+      "candidate_rank": 346,
+      "source_rank": 346,
+      "word": "hoàn",
+      "pos": null,
+      "frequency_count": 12318
+    },
+    {
+      "candidate_rank": 347,
+      "source_rank": 347,
+      "word": "trường",
+      "pos": null,
+      "frequency_count": 12261
+    },
+    {
+      "candidate_rank": 348,
+      "source_rank": 348,
+      "word": "đợi",
+      "pos": null,
+      "frequency_count": 12057
+    },
+    {
+      "candidate_rank": 349,
+      "source_rank": 349,
+      "word": "tính",
+      "pos": null,
+      "frequency_count": 12056
+    },
+    {
+      "candidate_rank": 350,
+      "source_rank": 350,
+      "word": "nhỉ",
+      "pos": null,
+      "frequency_count": 12026
+    },
+    {
+      "candidate_rank": 351,
+      "source_rank": 351,
+      "word": "đất",
+      "pos": null,
+      "frequency_count": 11969
+    },
+    {
+      "candidate_rank": 352,
+      "source_rank": 352,
+      "word": "đứng",
+      "pos": null,
+      "frequency_count": 11887
+    },
+    {
+      "candidate_rank": 353,
+      "source_rank": 353,
+      "word": "ngồi",
+      "pos": null,
+      "frequency_count": 11851
+    },
+    {
+      "candidate_rank": 354,
+      "source_rank": 354,
+      "word": "trông",
+      "pos": null,
+      "frequency_count": 11846
+    },
+    {
+      "candidate_rank": 355,
+      "source_rank": 355,
+      "word": "chiếc",
+      "pos": null,
+      "frequency_count": 11844
+    },
+    {
+      "candidate_rank": 356,
+      "source_rank": 356,
+      "word": "n",
+      "pos": null,
+      "frequency_count": 11646
+    },
+    {
+      "candidate_rank": 357,
+      "source_rank": 357,
+      "word": "xa",
+      "pos": null,
+      "frequency_count": 11618
+    },
+    {
+      "candidate_rank": 358,
+      "source_rank": 358,
+      "word": "coi",
+      "pos": null,
+      "frequency_count": 11613
+    },
+    {
+      "candidate_rank": 359,
+      "source_rank": 359,
+      "word": "chứng",
+      "pos": null,
+      "frequency_count": 11559
+    },
+    {
+      "candidate_rank": 360,
+      "source_rank": 360,
+      "word": "ảnh",
+      "pos": null,
+      "frequency_count": 11499
+    },
+    {
+      "candidate_rank": 361,
+      "source_rank": 361,
+      "word": "kể",
+      "pos": null,
+      "frequency_count": 11486
+    },
+    {
+      "candidate_rank": 362,
+      "source_rank": 362,
+      "word": "khó",
+      "pos": null,
+      "frequency_count": 11453
+    },
+    {
+      "candidate_rank": 363,
+      "source_rank": 363,
+      "word": "quyết",
+      "pos": null,
+      "frequency_count": 11428
+    },
+    {
+      "candidate_rank": 364,
+      "source_rank": 364,
+      "word": "chịu",
+      "pos": null,
+      "frequency_count": 11284
+    },
+    {
+      "candidate_rank": 365,
+      "source_rank": 365,
+      "word": "năng",
+      "pos": null,
+      "frequency_count": 11241
+    },
+    {
+      "candidate_rank": 366,
+      "source_rank": 366,
+      "word": "tập",
+      "pos": null,
+      "frequency_count": 11238
+    },
+    {
+      "candidate_rank": 367,
+      "source_rank": 367,
+      "word": "súng",
+      "pos": null,
+      "frequency_count": 11196
+    },
+    {
+      "candidate_rank": 368,
+      "source_rank": 368,
+      "word": "vọng",
+      "pos": null,
+      "frequency_count": 11173
+    },
+    {
+      "candidate_rank": 369,
+      "source_rank": 369,
+      "word": "giá",
+      "pos": null,
+      "frequency_count": 10982
+    },
+    {
+      "candidate_rank": 370,
+      "source_rank": 370,
+      "word": "hoặc",
+      "pos": null,
+      "frequency_count": 10961
+    },
+    {
+      "candidate_rank": 371,
+      "source_rank": 371,
+      "word": "sắp",
+      "pos": null,
+      "frequency_count": 10955
+    },
+    {
+      "candidate_rank": 372,
+      "source_rank": 372,
+      "word": "xong",
+      "pos": null,
+      "frequency_count": 10928
+    },
+    {
+      "candidate_rank": 373,
+      "source_rank": 373,
+      "word": "tử",
+      "pos": null,
+      "frequency_count": 10920
+    },
+    {
+      "candidate_rank": 374,
+      "source_rank": 374,
+      "word": "đàn",
+      "pos": null,
+      "frequency_count": 10912
+    },
+    {
+      "candidate_rank": 375,
+      "source_rank": 375,
+      "word": "sẵn",
+      "pos": null,
+      "frequency_count": 10877
+    },
+    {
+      "candidate_rank": 376,
+      "source_rank": 376,
+      "word": "kiểm",
+      "pos": null,
+      "frequency_count": 10854
+    },
+    {
+      "candidate_rank": 377,
+      "source_rank": 377,
+      "word": "mở",
+      "pos": null,
+      "frequency_count": 10845
+    },
+    {
+      "candidate_rank": 378,
+      "source_rank": 378,
+      "word": "cao",
+      "pos": null,
+      "frequency_count": 10808
+    },
+    {
+      "candidate_rank": 379,
+      "source_rank": 379,
+      "word": "uống",
+      "pos": null,
+      "frequency_count": 10762
+    },
+    {
+      "candidate_rank": 380,
+      "source_rank": 380,
+      "word": "chuyển",
+      "pos": null,
+      "frequency_count": 10753
+    },
+    {
+      "candidate_rank": 381,
+      "source_rank": 381,
+      "word": "dừng",
+      "pos": null,
+      "frequency_count": 10741
+    },
+    {
+      "candidate_rank": 382,
+      "source_rank": 382,
+      "word": "ít",
+      "pos": null,
+      "frequency_count": 10670
+    },
+    {
+      "candidate_rank": 383,
+      "source_rank": 383,
+      "word": "dưới",
+      "pos": null,
+      "frequency_count": 10662
+    },
+    {
+      "candidate_rank": 384,
+      "source_rank": 384,
+      "word": "đình",
+      "pos": null,
+      "frequency_count": 10633
+    },
+    {
+      "candidate_rank": 385,
+      "source_rank": 385,
+      "word": "chủ",
+      "pos": null,
+      "frequency_count": 10631
+    },
+    {
+      "candidate_rank": 386,
+      "source_rank": 386,
+      "word": "chọn",
+      "pos": null,
+      "frequency_count": 10630
+    },
+    {
+      "candidate_rank": 387,
+      "source_rank": 387,
+      "word": "điên",
+      "pos": null,
+      "frequency_count": 10610
+    },
+    {
+      "candidate_rank": 388,
+      "source_rank": 388,
+      "word": "vật",
+      "pos": null,
+      "frequency_count": 10534
+    },
+    {
+      "candidate_rank": 389,
+      "source_rank": 389,
+      "word": "thử",
+      "pos": null,
+      "frequency_count": 10522
+    },
+    {
+      "candidate_rank": 390,
+      "source_rank": 390,
+      "word": "thống",
+      "pos": null,
+      "frequency_count": 10494
+    },
+    {
+      "candidate_rank": 391,
+      "source_rank": 391,
+      "word": "kiếm",
+      "pos": null,
+      "frequency_count": 10464
+    },
+    {
+      "candidate_rank": 392,
+      "source_rank": 392,
+      "word": "mắt",
+      "pos": null,
+      "frequency_count": 10408
+    },
+    {
+      "candidate_rank": 393,
+      "source_rank": 393,
+      "word": "trưởng",
+      "pos": null,
+      "frequency_count": 10401
+    },
+    {
+      "candidate_rank": 394,
+      "source_rank": 394,
+      "word": "kế",
+      "pos": null,
+      "frequency_count": 10390
+    },
+    {
+      "candidate_rank": 395,
+      "source_rank": 395,
+      "word": "phần",
+      "pos": null,
+      "frequency_count": 10390
+    },
+    {
+      "candidate_rank": 396,
+      "source_rank": 396,
+      "word": "biến",
+      "pos": null,
+      "frequency_count": 10339
+    },
+    {
+      "candidate_rank": 397,
+      "source_rank": 397,
+      "word": "lòng",
+      "pos": null,
+      "frequency_count": 10282
+    },
+    {
+      "candidate_rank": 398,
+      "source_rank": 398,
+      "word": "sư",
+      "pos": null,
+      "frequency_count": 10220
+    },
+    {
+      "candidate_rank": 399,
+      "source_rank": 399,
+      "word": "loại",
+      "pos": null,
+      "frequency_count": 10144
+    },
+    {
+      "candidate_rank": 400,
+      "source_rank": 400,
+      "word": "mạnh",
+      "pos": null,
+      "frequency_count": 10120
+    },
+    {
+      "candidate_rank": 401,
+      "source_rank": 401,
+      "word": "thuốc",
+      "pos": null,
+      "frequency_count": 10084
+    },
+    {
+      "candidate_rank": 402,
+      "source_rank": 402,
+      "word": "đấu",
+      "pos": null,
+      "frequency_count": 10032
+    },
+    {
+      "candidate_rank": 403,
+      "source_rank": 403,
+      "word": "thức",
+      "pos": null,
+      "frequency_count": 9946
+    },
+    {
+      "candidate_rank": 404,
+      "source_rank": 404,
+      "word": "dễ",
+      "pos": null,
+      "frequency_count": 9840
+    },
+    {
+      "candidate_rank": 405,
+      "source_rank": 405,
+      "word": "vợ",
+      "pos": null,
+      "frequency_count": 9830
+    },
+    {
+      "candidate_rank": 406,
+      "source_rank": 406,
+      "word": "dụng",
+      "pos": null,
+      "frequency_count": 9829
+    },
+    {
+      "candidate_rank": 407,
+      "source_rank": 407,
+      "word": "y",
+      "pos": null,
+      "frequency_count": 9784
+    },
+    {
+      "candidate_rank": 408,
+      "source_rank": 408,
+      "word": "trái",
+      "pos": null,
+      "frequency_count": 9769
+    },
+    {
+      "candidate_rank": 409,
+      "source_rank": 409,
+      "word": "quái",
+      "pos": null,
+      "frequency_count": 9729
+    },
+    {
+      "candidate_rank": 410,
+      "source_rank": 410,
+      "word": "phía",
+      "pos": null,
+      "frequency_count": 9724
+    },
+    {
+      "candidate_rank": 411,
+      "source_rank": 411,
+      "word": "tiến",
+      "pos": null,
+      "frequency_count": 9717
+    },
+    {
+      "candidate_rank": 412,
+      "source_rank": 412,
+      "word": "đau",
+      "pos": null,
+      "frequency_count": 9717
+    },
+    {
+      "candidate_rank": 413,
+      "source_rank": 413,
+      "word": "yeah",
+      "pos": null,
+      "frequency_count": 9688
+    },
+    {
+      "candidate_rank": 414,
+      "source_rank": 414,
+      "word": "điểm",
+      "pos": null,
+      "frequency_count": 9669
+    },
+    {
+      "candidate_rank": 415,
+      "source_rank": 415,
+      "word": "lực",
+      "pos": null,
+      "frequency_count": 9661
+    },
+    {
+      "candidate_rank": 416,
+      "source_rank": 416,
+      "word": "sai",
+      "pos": null,
+      "frequency_count": 9627
+    },
+    {
+      "candidate_rank": 417,
+      "source_rank": 417,
+      "word": "ng",
+      "pos": null,
+      "frequency_count": 9598
+    },
+    {
+      "candidate_rank": 418,
+      "source_rank": 418,
+      "word": "tệ",
+      "pos": null,
+      "frequency_count": 9595
+    },
+    {
+      "candidate_rank": 419,
+      "source_rank": 419,
+      "word": "chắn",
+      "pos": null,
+      "frequency_count": 9590
+    },
+    {
+      "candidate_rank": 420,
+      "source_rank": 420,
+      "word": "quả",
+      "pos": null,
+      "frequency_count": 9562
+    },
+    {
+      "candidate_rank": 421,
+      "source_rank": 421,
+      "word": "khốn",
+      "pos": null,
+      "frequency_count": 9548
+    },
+    {
+      "candidate_rank": 422,
+      "source_rank": 422,
+      "word": "sàng",
+      "pos": null,
+      "frequency_count": 9491
+    },
+    {
+      "candidate_rank": 423,
+      "source_rank": 423,
+      "word": "quên",
+      "pos": null,
+      "frequency_count": 9486
+    },
+    {
+      "candidate_rank": 424,
+      "source_rank": 425,
+      "word": "phút",
+      "pos": null,
+      "frequency_count": 9467
+    },
+    {
+      "candidate_rank": 425,
+      "source_rank": 426,
+      "word": "minh",
+      "pos": null,
+      "frequency_count": 9434
+    },
+    {
+      "candidate_rank": 426,
+      "source_rank": 427,
+      "word": "gã",
+      "pos": null,
+      "frequency_count": 9409
+    },
+    {
+      "candidate_rank": 427,
+      "source_rank": 428,
+      "word": "mừng",
+      "pos": null,
+      "frequency_count": 9409
+    },
+    {
+      "candidate_rank": 428,
+      "source_rank": 429,
+      "word": "kỳ",
+      "pos": null,
+      "frequency_count": 9380
+    },
+    {
+      "candidate_rank": 429,
+      "source_rank": 430,
+      "word": "hơi",
+      "pos": null,
+      "frequency_count": 9320
+    },
+    {
+      "candidate_rank": 430,
+      "source_rank": 431,
+      "word": "a",
+      "pos": null,
+      "frequency_count": 9303
+    },
+    {
+      "candidate_rank": 431,
+      "source_rank": 432,
+      "word": "chân",
+      "pos": null,
+      "frequency_count": 9242
+    },
+    {
+      "candidate_rank": 432,
+      "source_rank": 433,
+      "word": "kinh",
+      "pos": null,
+      "frequency_count": 9177
+    },
+    {
+      "candidate_rank": 433,
+      "source_rank": 434,
+      "word": "tuần",
+      "pos": null,
+      "frequency_count": 9157
+    },
+    {
+      "candidate_rank": 434,
+      "source_rank": 436,
+      "word": "mua",
+      "pos": null,
+      "frequency_count": 9076
+    },
+    {
+      "candidate_rank": 435,
+      "source_rank": 437,
+      "word": "thủ",
+      "pos": null,
+      "frequency_count": 9070
+    },
+    {
+      "candidate_rank": 436,
+      "source_rank": 438,
+      "word": "đặc",
+      "pos": null,
+      "frequency_count": 9061
+    },
+    {
+      "candidate_rank": 437,
+      "source_rank": 439,
+      "word": "may",
+      "pos": null,
+      "frequency_count": 9000
+    },
+    {
+      "candidate_rank": 438,
+      "source_rank": 440,
+      "word": "duy",
+      "pos": null,
+      "frequency_count": 8994
+    },
+    {
+      "candidate_rank": 439,
+      "source_rank": 441,
+      "word": "trí",
+      "pos": null,
+      "frequency_count": 8970
+    },
+    {
+      "candidate_rank": 440,
+      "source_rank": 442,
+      "word": "tàu",
+      "pos": null,
+      "frequency_count": 8966
+    },
+    {
+      "candidate_rank": 441,
+      "source_rank": 443,
+      "word": "sức",
+      "pos": null,
+      "frequency_count": 8907
+    },
+    {
+      "candidate_rank": 442,
+      "source_rank": 444,
+      "word": "trò",
+      "pos": null,
+      "frequency_count": 8854
+    },
+    {
+      "candidate_rank": 443,
+      "source_rank": 445,
+      "word": "quyền",
+      "pos": null,
+      "frequency_count": 8837
+    },
+    {
+      "candidate_rank": 444,
+      "source_rank": 446,
+      "word": "kìa",
+      "pos": null,
+      "frequency_count": 8807
+    },
+    {
+      "candidate_rank": 445,
+      "source_rank": 447,
+      "word": "mỗi",
+      "pos": null,
+      "frequency_count": 8781
+    },
+    {
+      "candidate_rank": 446,
+      "source_rank": 448,
+      "word": "quý",
+      "pos": null,
+      "frequency_count": 8743
+    },
+    {
+      "candidate_rank": 447,
+      "source_rank": 449,
+      "word": "phố",
+      "pos": null,
+      "frequency_count": 8743
+    },
+    {
+      "candidate_rank": 448,
+      "source_rank": 450,
+      "word": "buổi",
+      "pos": null,
+      "frequency_count": 8716
+    },
+    {
+      "candidate_rank": 449,
+      "source_rank": 451,
+      "word": "thư",
+      "pos": null,
+      "frequency_count": 8677
+    },
+    {
+      "candidate_rank": 450,
+      "source_rank": 452,
+      "word": "hạ",
+      "pos": null,
+      "frequency_count": 8661
+    },
+    {
+      "candidate_rank": 451,
+      "source_rank": 453,
+      "word": "bài",
+      "pos": null,
+      "frequency_count": 8636
+    },
+    {
+      "candidate_rank": 452,
+      "source_rank": 454,
+      "word": "đặt",
+      "pos": null,
+      "frequency_count": 8626
+    },
+    {
+      "candidate_rank": 453,
+      "source_rank": 455,
+      "word": "tháng",
+      "pos": null,
+      "frequency_count": 8617
+    },
+    {
+      "candidate_rank": 454,
+      "source_rank": 456,
+      "word": "hôn",
+      "pos": null,
+      "frequency_count": 8614
+    },
+    {
+      "candidate_rank": 455,
+      "source_rank": 457,
+      "word": "mai",
+      "pos": null,
+      "frequency_count": 8601
+    },
+    {
+      "candidate_rank": 456,
+      "source_rank": 458,
+      "word": "tài",
+      "pos": null,
+      "frequency_count": 8598
+    },
+    {
+      "candidate_rank": 457,
+      "source_rank": 459,
+      "word": "diễn",
+      "pos": null,
+      "frequency_count": 8594
+    },
+    {
+      "candidate_rank": 458,
+      "source_rank": 460,
+      "word": "to",
+      "pos": null,
+      "frequency_count": 8593
+    },
+    {
+      "candidate_rank": 459,
+      "source_rank": 461,
+      "word": "the",
+      "pos": null,
+      "frequency_count": 8588
+    },
+    {
+      "candidate_rank": 460,
+      "source_rank": 462,
+      "word": "phép",
+      "pos": null,
+      "frequency_count": 8575
+    },
+    {
+      "candidate_rank": 461,
+      "source_rank": 463,
+      "word": "nổi",
+      "pos": null,
+      "frequency_count": 8571
+    },
+    {
+      "candidate_rank": 462,
+      "source_rank": 464,
+      "word": "pháp",
+      "pos": null,
+      "frequency_count": 8561
+    },
+    {
+      "candidate_rank": 463,
+      "source_rank": 465,
+      "word": "khách",
+      "pos": null,
+      "frequency_count": 8546
+    },
+    {
+      "candidate_rank": 464,
+      "source_rank": 466,
+      "word": "đôi",
+      "pos": null,
+      "frequency_count": 8527
+    },
+    {
+      "candidate_rank": 465,
+      "source_rank": 467,
+      "word": "hiệu",
+      "pos": null,
+      "frequency_count": 8506
+    },
+    {
+      "candidate_rank": 466,
+      "source_rank": 468,
+      "word": "mặc",
+      "pos": null,
+      "frequency_count": 8496
+    },
+    {
+      "candidate_rank": 467,
+      "source_rank": 469,
+      "word": "vũ",
+      "pos": null,
+      "frequency_count": 8476
+    },
+    {
+      "candidate_rank": 468,
+      "source_rank": 470,
+      "word": "yên",
+      "pos": null,
+      "frequency_count": 8462
+    },
+    {
+      "candidate_rank": 469,
+      "source_rank": 471,
+      "word": "quốc",
+      "pos": null,
+      "frequency_count": 8424
+    },
+    {
+      "candidate_rank": 470,
+      "source_rank": 472,
+      "word": "máu",
+      "pos": null,
+      "frequency_count": 8418
+    },
+    {
+      "candidate_rank": 471,
+      "source_rank": 473,
+      "word": "hệ",
+      "pos": null,
+      "frequency_count": 8363
+    },
+    {
+      "candidate_rank": 472,
+      "source_rank": 474,
+      "word": "đơn",
+      "pos": null,
+      "frequency_count": 8346
+    },
+    {
+      "candidate_rank": 473,
+      "source_rank": 475,
+      "word": "khí",
+      "pos": null,
+      "frequency_count": 8342
+    },
+    {
+      "candidate_rank": 474,
+      "source_rank": 476,
+      "word": "khiến",
+      "pos": null,
+      "frequency_count": 8318
+    },
+    {
+      "candidate_rank": 475,
+      "source_rank": 477,
+      "word": "phá",
+      "pos": null,
+      "frequency_count": 8303
+    },
+    {
+      "candidate_rank": 476,
+      "source_rank": 478,
+      "word": "tục",
+      "pos": null,
+      "frequency_count": 8278
+    },
+    {
+      "candidate_rank": 477,
+      "source_rank": 479,
+      "word": "thú",
+      "pos": null,
+      "frequency_count": 8265
+    },
+    {
+      "candidate_rank": 478,
+      "source_rank": 480,
+      "word": "tuổi",
+      "pos": null,
+      "frequency_count": 8262
+    },
+    {
+      "candidate_rank": 479,
+      "source_rank": 481,
+      "word": "dân",
+      "pos": null,
+      "frequency_count": 8255
+    },
+    {
+      "candidate_rank": 480,
+      "source_rank": 482,
+      "word": "chuẩn",
+      "pos": null,
+      "frequency_count": 8189
+    },
+    {
+      "candidate_rank": 481,
+      "source_rank": 483,
+      "word": "tạo",
+      "pos": null,
+      "frequency_count": 8183
+    },
+    {
+      "candidate_rank": 482,
+      "source_rank": 484,
+      "word": "cá",
+      "pos": null,
+      "frequency_count": 8177
+    },
+    {
+      "candidate_rank": 483,
+      "source_rank": 485,
+      "word": "luật",
+      "pos": null,
+      "frequency_count": 8175
+    },
+    {
+      "candidate_rank": 484,
+      "source_rank": 486,
+      "word": "dẫn",
+      "pos": null,
+      "frequency_count": 8175
+    },
+    {
+      "candidate_rank": 485,
+      "source_rank": 487,
+      "word": "phục",
+      "pos": null,
+      "frequency_count": 8171
+    },
+    {
+      "candidate_rank": 486,
+      "source_rank": 488,
+      "word": "m",
+      "pos": null,
+      "frequency_count": 8123
+    },
+    {
+      "candidate_rank": 487,
+      "source_rank": 489,
+      "word": "nhiêu",
+      "pos": null,
+      "frequency_count": 8072
+    },
+    {
+      "candidate_rank": 488,
+      "source_rank": 490,
+      "word": "mau",
+      "pos": null,
+      "frequency_count": 8038
+    },
+    {
+      "candidate_rank": 489,
+      "source_rank": 491,
+      "word": "hiểm",
+      "pos": null,
+      "frequency_count": 7961
+    },
+    {
+      "candidate_rank": 490,
+      "source_rank": 492,
+      "word": "bàn",
+      "pos": null,
+      "frequency_count": 7863
+    },
+    {
+      "candidate_rank": 491,
+      "source_rank": 493,
+      "word": "hoàng",
+      "pos": null,
+      "frequency_count": 7862
+    },
+    {
+      "candidate_rank": 492,
+      "source_rank": 494,
+      "word": "độ",
+      "pos": null,
+      "frequency_count": 7857
+    },
+    {
+      "candidate_rank": 493,
+      "source_rank": 495,
+      "word": "mạng",
+      "pos": null,
+      "frequency_count": 7847
+    },
+    {
+      "candidate_rank": 494,
+      "source_rank": 496,
+      "word": "sách",
+      "pos": null,
+      "frequency_count": 7834
+    },
+    {
+      "candidate_rank": 495,
+      "source_rank": 497,
+      "word": "chó",
+      "pos": null,
+      "frequency_count": 7825
+    },
+    {
+      "candidate_rank": 496,
+      "source_rank": 498,
+      "word": "tiêu",
+      "pos": null,
+      "frequency_count": 7802
+    },
+    {
+      "candidate_rank": 497,
+      "source_rank": 499,
+      "word": "ư",
+      "pos": null,
+      "frequency_count": 7792
+    },
+    {
+      "candidate_rank": 498,
+      "source_rank": 500,
+      "word": "phạm",
+      "pos": null,
+      "frequency_count": 7785
+    },
+    {
+      "candidate_rank": 499,
+      "source_rank": 501,
+      "word": "chúc",
+      "pos": null,
+      "frequency_count": 7783
+    },
+    {
+      "candidate_rank": 500,
+      "source_rank": 502,
+      "word": "nhiệm",
+      "pos": null,
+      "frequency_count": 7707
+    },
+    {
+      "candidate_rank": 501,
+      "source_rank": 503,
+      "word": "thoại",
+      "pos": null,
+      "frequency_count": 7706
+    },
+    {
+      "candidate_rank": 502,
+      "source_rank": 504,
+      "word": "tinh",
+      "pos": null,
+      "frequency_count": 7688
+    },
+    {
+      "candidate_rank": 503,
+      "source_rank": 505,
+      "word": "tránh",
+      "pos": null,
+      "frequency_count": 7688
+    },
+    {
+      "candidate_rank": 504,
+      "source_rank": 506,
+      "word": "gây",
+      "pos": null,
+      "frequency_count": 7687
+    },
+    {
+      "candidate_rank": 505,
+      "source_rank": 507,
+      "word": "thúc",
+      "pos": null,
+      "frequency_count": 7674
+    },
+    {
+      "candidate_rank": 506,
+      "source_rank": 508,
+      "word": "khu",
+      "pos": null,
+      "frequency_count": 7666
+    },
+    {
+      "candidate_rank": 507,
+      "source_rank": 509,
+      "word": "danh",
+      "pos": null,
+      "frequency_count": 7665
+    },
+    {
+      "candidate_rank": 508,
+      "source_rank": 510,
+      "word": "tranh",
+      "pos": null,
+      "frequency_count": 7642
+    },
+    {
+      "candidate_rank": 509,
+      "source_rank": 511,
+      "word": "ổng",
+      "pos": null,
+      "frequency_count": 7635
+    },
+    {
+      "candidate_rank": 510,
+      "source_rank": 512,
+      "word": "thắng",
+      "pos": null,
+      "frequency_count": 7619
+    },
+    {
+      "candidate_rank": 511,
+      "source_rank": 513,
+      "word": "cây",
+      "pos": null,
+      "frequency_count": 7606
+    },
+    {
+      "candidate_rank": 512,
+      "source_rank": 514,
+      "word": "xấu",
+      "pos": null,
+      "frequency_count": 7554
+    },
+    {
+      "candidate_rank": 513,
+      "source_rank": 515,
+      "word": "you",
+      "pos": null,
+      "frequency_count": 7530
+    },
+    {
+      "candidate_rank": 514,
+      "source_rank": 516,
+      "word": "xuất",
+      "pos": null,
+      "frequency_count": 7500
+    },
+    {
+      "candidate_rank": 515,
+      "source_rank": 517,
+      "word": "áo",
+      "pos": null,
+      "frequency_count": 7497
+    },
+    {
+      "candidate_rank": 516,
+      "source_rank": 518,
+      "word": "s",
+      "pos": null,
+      "frequency_count": 7497
+    },
+    {
+      "candidate_rank": 517,
+      "source_rank": 519,
+      "word": "sếp",
+      "pos": null,
+      "frequency_count": 7430
+    },
+    {
+      "candidate_rank": 518,
+      "source_rank": 520,
+      "word": "hy",
+      "pos": null,
+      "frequency_count": 7429
+    },
+    {
+      "candidate_rank": 519,
+      "source_rank": 521,
+      "word": "tiệt",
+      "pos": null,
+      "frequency_count": 7428
+    },
+    {
+      "candidate_rank": 520,
+      "source_rank": 522,
+      "word": "chí",
+      "pos": null,
+      "frequency_count": 7416
+    },
+    {
+      "candidate_rank": 521,
+      "source_rank": 523,
+      "word": "cấp",
+      "pos": null,
+      "frequency_count": 7368
+    },
+    {
+      "candidate_rank": 522,
+      "source_rank": 524,
+      "word": "giả",
+      "pos": null,
+      "frequency_count": 7332
+    },
+    {
+      "candidate_rank": 523,
+      "source_rank": 525,
+      "word": "xử",
+      "pos": null,
+      "frequency_count": 7325
+    },
+    {
+      "candidate_rank": 524,
+      "source_rank": 526,
+      "word": "tấn",
+      "pos": null,
+      "frequency_count": 7316
+    },
+    {
+      "candidate_rank": 525,
+      "source_rank": 527,
+      "word": "mật",
+      "pos": null,
+      "frequency_count": 7279
+    },
+    {
+      "candidate_rank": 526,
+      "source_rank": 528,
+      "word": "thiết",
+      "pos": null,
+      "frequency_count": 7254
+    },
+    {
+      "candidate_rank": 527,
+      "source_rank": 529,
+      "word": "khá",
+      "pos": null,
+      "frequency_count": 7249
+    },
+    {
+      "candidate_rank": 528,
+      "source_rank": 530,
+      "word": "liệu",
+      "pos": null,
+      "frequency_count": 7211
+    },
+    {
+      "candidate_rank": 529,
+      "source_rank": 531,
+      "word": "địa",
+      "pos": null,
+      "frequency_count": 7197
+    },
+    {
+      "candidate_rank": 530,
+      "source_rank": 532,
+      "word": "lạc",
+      "pos": null,
+      "frequency_count": 7191
+    },
+    {
+      "candidate_rank": 531,
+      "source_rank": 533,
+      "word": "bán",
+      "pos": null,
+      "frequency_count": 7164
+    },
+    {
+      "candidate_rank": 532,
+      "source_rank": 534,
+      "word": "trình",
+      "pos": null,
+      "frequency_count": 7157
+    },
+    {
+      "candidate_rank": 533,
+      "source_rank": 535,
+      "word": "tượng",
+      "pos": null,
+      "frequency_count": 7156
+    },
+    {
+      "candidate_rank": 534,
+      "source_rank": 536,
+      "word": "thoát",
+      "pos": null,
+      "frequency_count": 7133
+    },
+    {
+      "candidate_rank": 535,
+      "source_rank": 537,
+      "word": "tạm",
+      "pos": null,
+      "frequency_count": 7087
+    },
+    {
+      "candidate_rank": 536,
+      "source_rank": 538,
+      "word": "ngon",
+      "pos": null,
+      "frequency_count": 7048
+    },
+    {
+      "candidate_rank": 537,
+      "source_rank": 539,
+      "word": "đoán",
+      "pos": null,
+      "frequency_count": 7046
+    },
+    {
+      "candidate_rank": 538,
+      "source_rank": 540,
+      "word": "thiên",
+      "pos": null,
+      "frequency_count": 7041
+    },
+    {
+      "candidate_rank": 539,
+      "source_rank": 541,
+      "word": "giáo",
+      "pos": null,
+      "frequency_count": 7039
+    },
+    {
+      "candidate_rank": 540,
+      "source_rank": 542,
+      "word": "mời",
+      "pos": null,
+      "frequency_count": 7035
+    },
+    {
+      "candidate_rank": 541,
+      "source_rank": 543,
+      "word": "rời",
+      "pos": null,
+      "frequency_count": 6993
+    },
+    {
+      "candidate_rank": 542,
+      "source_rank": 544,
+      "word": "thanh",
+      "pos": null,
+      "frequency_count": 6977
+    },
+    {
+      "candidate_rank": 543,
+      "source_rank": 545,
+      "word": "okay",
+      "pos": null,
+      "frequency_count": 6975
+    },
+    {
+      "candidate_rank": 544,
+      "source_rank": 546,
+      "word": "dự",
+      "pos": null,
+      "frequency_count": 6972
+    },
+    {
+      "candidate_rank": 545,
+      "source_rank": 547,
+      "word": "chàng",
+      "pos": null,
+      "frequency_count": 6968
+    },
+    {
+      "candidate_rank": 546,
+      "source_rank": 548,
+      "word": "lệnh",
+      "pos": null,
+      "frequency_count": 6955
+    },
+    {
+      "candidate_rank": 547,
+      "source_rank": 549,
+      "word": "l",
+      "pos": null,
+      "frequency_count": 6954
+    },
+    {
+      "candidate_rank": 548,
+      "source_rank": 550,
+      "word": "hứa",
+      "pos": null,
+      "frequency_count": 6905
+    },
+    {
+      "candidate_rank": 549,
+      "source_rank": 551,
+      "word": "nằm",
+      "pos": null,
+      "frequency_count": 6900
+    },
+    {
+      "candidate_rank": 550,
+      "source_rank": 552,
+      "word": "sớm",
+      "pos": null,
+      "frequency_count": 6895
+    },
+    {
+      "candidate_rank": 551,
+      "source_rank": 553,
+      "word": "hey",
+      "pos": null,
+      "frequency_count": 6864
+    },
+    {
+      "candidate_rank": 552,
+      "source_rank": 554,
+      "word": "dối",
+      "pos": null,
+      "frequency_count": 6832
+    },
+    {
+      "candidate_rank": 553,
+      "source_rank": 555,
+      "word": "dịch",
+      "pos": null,
+      "frequency_count": 6821
+    },
+    {
+      "candidate_rank": 554,
+      "source_rank": 556,
+      "word": "viết",
+      "pos": null,
+      "frequency_count": 6792
+    },
+    {
+      "candidate_rank": 555,
+      "source_rank": 557,
+      "word": "hoạch",
+      "pos": null,
+      "frequency_count": 6777
+    },
+    {
+      "candidate_rank": 556,
+      "source_rank": 558,
+      "word": "vời",
+      "pos": null,
+      "frequency_count": 6762
+    },
+    {
+      "candidate_rank": 557,
+      "source_rank": 559,
+      "word": "giữa",
+      "pos": null,
+      "frequency_count": 6686
+    },
+    {
+      "candidate_rank": 558,
+      "source_rank": 560,
+      "word": "ma",
+      "pos": null,
+      "frequency_count": 6685
+    },
+    {
+      "candidate_rank": 559,
+      "source_rank": 561,
+      "word": "bóng",
+      "pos": null,
+      "frequency_count": 6667
+    },
+    {
+      "candidate_rank": 560,
+      "source_rank": 562,
+      "word": "hộ",
+      "pos": null,
+      "frequency_count": 6613
+    },
+    {
+      "candidate_rank": 561,
+      "source_rank": 563,
+      "word": "nghỉ",
+      "pos": null,
+      "frequency_count": 6610
+    },
+    {
+      "candidate_rank": 562,
+      "source_rank": 564,
+      "word": "sử",
+      "pos": null,
+      "frequency_count": 6608
+    },
+    {
+      "candidate_rank": 563,
+      "source_rank": 565,
+      "word": "nạn",
+      "pos": null,
+      "frequency_count": 6602
+    },
+    {
+      "candidate_rank": 564,
+      "source_rank": 566,
+      "word": "hại",
+      "pos": null,
+      "frequency_count": 6580
+    },
+    {
+      "candidate_rank": 565,
+      "source_rank": 567,
+      "word": "căn",
+      "pos": null,
+      "frequency_count": 6577
+    },
+    {
+      "candidate_rank": 566,
+      "source_rank": 568,
+      "word": "tim",
+      "pos": null,
+      "frequency_count": 6573
+    },
+    {
+      "candidate_rank": 567,
+      "source_rank": 569,
+      "word": "nguy",
+      "pos": null,
+      "frequency_count": 6569
+    },
+    {
+      "candidate_rank": 568,
+      "source_rank": 570,
+      "word": "hồ",
+      "pos": null,
+      "frequency_count": 6564
+    },
+    {
+      "candidate_rank": 569,
+      "source_rank": 571,
+      "word": "dậy",
+      "pos": null,
+      "frequency_count": 6537
+    },
+    {
+      "candidate_rank": 570,
+      "source_rank": 572,
+      "word": "băng",
+      "pos": null,
+      "frequency_count": 6516
+    },
+    {
+      "candidate_rank": 571,
+      "source_rank": 573,
+      "word": "mục",
+      "pos": null,
+      "frequency_count": 6510
+    },
+    {
+      "candidate_rank": 572,
+      "source_rank": 574,
+      "word": "phim",
+      "pos": null,
+      "frequency_count": 6510
+    },
+    {
+      "candidate_rank": 573,
+      "source_rank": 575,
+      "word": "giỏi",
+      "pos": null,
+      "frequency_count": 6499
+    },
+    {
+      "candidate_rank": 574,
+      "source_rank": 576,
+      "word": "viện",
+      "pos": null,
+      "frequency_count": 6470
+    },
+    {
+      "candidate_rank": 575,
+      "source_rank": 577,
+      "word": "hướng",
+      "pos": null,
+      "frequency_count": 6440
+    },
+    {
+      "candidate_rank": 576,
+      "source_rank": 578,
+      "word": "tế",
+      "pos": null,
+      "frequency_count": 6435
+    },
+    {
+      "candidate_rank": 577,
+      "source_rank": 579,
+      "word": "tĩnh",
+      "pos": null,
+      "frequency_count": 6422
+    },
+    {
+      "candidate_rank": 578,
+      "source_rank": 580,
+      "word": "thuật",
+      "pos": null,
+      "frequency_count": 6408
+    },
+    {
+      "candidate_rank": 579,
+      "source_rank": 581,
+      "word": "nhóc",
+      "pos": null,
+      "frequency_count": 6394
+    },
+    {
+      "candidate_rank": 580,
+      "source_rank": 582,
+      "word": "đọc",
+      "pos": null,
+      "frequency_count": 6394
+    },
+    {
+      "candidate_rank": 581,
+      "source_rank": 583,
+      "word": "kiểu",
+      "pos": null,
+      "frequency_count": 6385
+    },
+    {
+      "candidate_rank": 582,
+      "source_rank": 584,
+      "word": "trị",
+      "pos": null,
+      "frequency_count": 6368
+    },
+    {
+      "candidate_rank": 583,
+      "source_rank": 585,
+      "word": "phản",
+      "pos": null,
+      "frequency_count": 6354
+    },
+    {
+      "candidate_rank": 584,
+      "source_rank": 586,
+      "word": "giao",
+      "pos": null,
+      "frequency_count": 6351
+    },
+    {
+      "candidate_rank": 585,
+      "source_rank": 587,
+      "word": "tù",
+      "pos": null,
+      "frequency_count": 6349
+    },
+    {
+      "candidate_rank": 586,
+      "source_rank": 588,
+      "word": "rối",
+      "pos": null,
+      "frequency_count": 6342
+    },
+    {
+      "candidate_rank": 587,
+      "source_rank": 589,
+      "word": "trốn",
+      "pos": null,
+      "frequency_count": 6315
+    },
+    {
+      "candidate_rank": 588,
+      "source_rank": 590,
+      "word": "rượu",
+      "pos": null,
+      "frequency_count": 6314
+    },
+    {
+      "candidate_rank": 589,
+      "source_rank": 591,
+      "word": "đá",
+      "pos": null,
+      "frequency_count": 6310
+    },
+    {
+      "candidate_rank": 590,
+      "source_rank": 592,
+      "word": "bước",
+      "pos": null,
+      "frequency_count": 6298
+    },
+    {
+      "candidate_rank": 591,
+      "source_rank": 593,
+      "word": "dấu",
+      "pos": null,
+      "frequency_count": 6285
+    },
+    {
+      "candidate_rank": 592,
+      "source_rank": 594,
+      "word": "ngu",
+      "pos": null,
+      "frequency_count": 6275
+    },
+    {
+      "candidate_rank": 593,
+      "source_rank": 595,
+      "word": "đức",
+      "pos": null,
+      "frequency_count": 6273
+    },
+    {
+      "candidate_rank": 594,
+      "source_rank": 596,
+      "word": "cười",
+      "pos": null,
+      "frequency_count": 6262
+    },
+    {
+      "candidate_rank": 595,
+      "source_rank": 597,
+      "word": "tư",
+      "pos": null,
+      "frequency_count": 6229
+    },
+    {
+      "candidate_rank": 596,
+      "source_rank": 598,
+      "word": "cánh",
+      "pos": null,
+      "frequency_count": 6218
+    },
+    {
+      "candidate_rank": 597,
+      "source_rank": 599,
+      "word": "vòng",
+      "pos": null,
+      "frequency_count": 6209
+    },
+    {
+      "candidate_rank": 598,
+      "source_rank": 600,
+      "word": "mỹ",
+      "pos": null,
+      "frequency_count": 6206
+    },
+    {
+      "candidate_rank": 599,
+      "source_rank": 601,
+      "word": "hoa",
+      "pos": null,
+      "frequency_count": 6205
+    },
+    {
+      "candidate_rank": 600,
+      "source_rank": 602,
+      "word": "lập",
+      "pos": null,
+      "frequency_count": 6203
+    },
+    {
+      "candidate_rank": 601,
+      "source_rank": 603,
+      "word": "lạ",
+      "pos": null,
+      "frequency_count": 6193
+    },
+    {
+      "candidate_rank": 602,
+      "source_rank": 604,
+      "word": "tổng",
+      "pos": null,
+      "frequency_count": 6185
+    },
+    {
+      "candidate_rank": 603,
+      "source_rank": 605,
+      "word": "ban",
+      "pos": null,
+      "frequency_count": 6153
+    },
+    {
+      "candidate_rank": 604,
+      "source_rank": 606,
+      "word": "đóng",
+      "pos": null,
+      "frequency_count": 6150
+    },
+    {
+      "candidate_rank": 605,
+      "source_rank": 607,
+      "word": "tác",
+      "pos": null,
+      "frequency_count": 6123
+    },
+    {
+      "candidate_rank": 606,
+      "source_rank": 608,
+      "word": "hề",
+      "pos": null,
+      "frequency_count": 6068
+    },
+    {
+      "candidate_rank": 607,
+      "source_rank": 609,
+      "word": "lượng",
+      "pos": null,
+      "frequency_count": 6055
+    },
+    {
+      "candidate_rank": 608,
+      "source_rank": 610,
+      "word": "tụi",
+      "pos": null,
+      "frequency_count": 6035
+    },
+    {
+      "candidate_rank": 609,
+      "source_rank": 611,
+      "word": "càng",
+      "pos": null,
+      "frequency_count": 6031
+    },
+    {
+      "candidate_rank": 610,
+      "source_rank": 612,
+      "word": "thận",
+      "pos": null,
+      "frequency_count": 6028
+    },
+    {
+      "candidate_rank": 611,
+      "source_rank": 613,
+      "word": "di",
+      "pos": null,
+      "frequency_count": 6025
+    },
+    {
+      "candidate_rank": 612,
+      "source_rank": 614,
+      "word": "bánh",
+      "pos": null,
+      "frequency_count": 6013
+    },
+    {
+      "candidate_rank": 613,
+      "source_rank": 615,
+      "word": "da",
+      "pos": null,
+      "frequency_count": 6006
+    },
+    {
+      "candidate_rank": 614,
+      "source_rank": 616,
+      "word": "ngốc",
+      "pos": null,
+      "frequency_count": 6005
+    },
+    {
+      "candidate_rank": 615,
+      "source_rank": 617,
+      "word": "án",
+      "pos": null,
+      "frequency_count": 5997
+    },
+    {
+      "candidate_rank": 616,
+      "source_rank": 618,
+      "word": "đám",
+      "pos": null,
+      "frequency_count": 5981
+    },
+    {
+      "candidate_rank": 617,
+      "source_rank": 619,
+      "word": "tham",
+      "pos": null,
+      "frequency_count": 5971
+    },
+    {
+      "candidate_rank": 618,
+      "source_rank": 620,
+      "word": "tức",
+      "pos": null,
+      "frequency_count": 5949
+    },
+    {
+      "candidate_rank": 619,
+      "source_rank": 621,
+      "word": "văn",
+      "pos": null,
+      "frequency_count": 5938
+    },
+    {
+      "candidate_rank": 620,
+      "source_rank": 622,
+      "word": "mong",
+      "pos": null,
+      "frequency_count": 5925
+    },
+    {
+      "candidate_rank": 621,
+      "source_rank": 623,
+      "word": "già",
+      "pos": null,
+      "frequency_count": 5915
+    },
+    {
+      "candidate_rank": 622,
+      "source_rank": 624,
+      "word": "nghiệp",
+      "pos": null,
+      "frequency_count": 5912
+    },
+    {
+      "candidate_rank": 623,
+      "source_rank": 625,
+      "word": "thuyền",
+      "pos": null,
+      "frequency_count": 5906
+    },
+    {
+      "candidate_rank": 624,
+      "source_rank": 626,
+      "word": "bí",
+      "pos": null,
+      "frequency_count": 5905
+    },
+    {
+      "candidate_rank": 625,
+      "source_rank": 627,
+      "word": "trang",
+      "pos": null,
+      "frequency_count": 5893
+    },
+    {
+      "candidate_rank": 626,
+      "source_rank": 628,
+      "word": "nè",
+      "pos": null,
+      "frequency_count": 5885
+    },
+    {
+      "candidate_rank": 627,
+      "source_rank": 629,
+      "word": "lũ",
+      "pos": null,
+      "frequency_count": 5880
+    },
+    {
+      "candidate_rank": 628,
+      "source_rank": 630,
+      "word": "hồi",
+      "pos": null,
+      "frequency_count": 5805
+    },
+    {
+      "candidate_rank": 629,
+      "source_rank": 631,
+      "word": "độc",
+      "pos": null,
+      "frequency_count": 5780
+    },
+    {
+      "candidate_rank": 630,
+      "source_rank": 632,
+      "word": "hạnh",
+      "pos": null,
+      "frequency_count": 5778
+    },
+    {
+      "candidate_rank": 631,
+      "source_rank": 633,
+      "word": "khỏe",
+      "pos": null,
+      "frequency_count": 5775
+    },
+    {
+      "candidate_rank": 632,
+      "source_rank": 634,
+      "word": "hẹn",
+      "pos": null,
+      "frequency_count": 5772
+    },
+    {
+      "candidate_rank": 633,
+      "source_rank": 635,
+      "word": "gửi",
+      "pos": null,
+      "frequency_count": 5771
+    },
+    {
+      "candidate_rank": 634,
+      "source_rank": 636,
+      "word": "đùa",
+      "pos": null,
+      "frequency_count": 5765
+    },
+    {
+      "candidate_rank": 635,
+      "source_rank": 637,
+      "word": "trừ",
+      "pos": null,
+      "frequency_count": 5712
+    },
+    {
+      "candidate_rank": 636,
+      "source_rank": 638,
+      "word": "cáo",
+      "pos": null,
+      "frequency_count": 5699
+    },
+    {
+      "candidate_rank": 637,
+      "source_rank": 639,
+      "word": "khoảng",
+      "pos": null,
+      "frequency_count": 5683
+    },
+    {
+      "candidate_rank": 638,
+      "source_rank": 640,
+      "word": "nhảy",
+      "pos": null,
+      "frequency_count": 5680
+    },
+    {
+      "candidate_rank": 639,
+      "source_rank": 641,
+      "word": "giác",
+      "pos": null,
+      "frequency_count": 5672
+    },
+    {
+      "candidate_rank": 640,
+      "source_rank": 642,
+      "word": "thầy",
+      "pos": null,
+      "frequency_count": 5643
+    },
+    {
+      "candidate_rank": 641,
+      "source_rank": 643,
+      "word": "đầy",
+      "pos": null,
+      "frequency_count": 5615
+    },
+    {
+      "candidate_rank": 642,
+      "source_rank": 644,
+      "word": "khoan",
+      "pos": null,
+      "frequency_count": 5600
+    },
+    {
+      "candidate_rank": 643,
+      "source_rank": 645,
+      "word": "món",
+      "pos": null,
+      "frequency_count": 5595
+    },
+    {
+      "candidate_rank": 644,
+      "source_rank": 646,
+      "word": "khả",
+      "pos": null,
+      "frequency_count": 5587
+    },
+    {
+      "candidate_rank": 645,
+      "source_rank": 647,
+      "word": "phi",
+      "pos": null,
+      "frequency_count": 5575
+    },
+    {
+      "candidate_rank": 646,
+      "source_rank": 648,
+      "word": "nghiệm",
+      "pos": null,
+      "frequency_count": 5568
+    },
+    {
+      "candidate_rank": 647,
+      "source_rank": 649,
+      "word": "hóa",
+      "pos": null,
+      "frequency_count": 5542
+    },
+    {
+      "candidate_rank": 648,
+      "source_rank": 650,
+      "word": "cẩn",
+      "pos": null,
+      "frequency_count": 5531
+    },
+    {
+      "candidate_rank": 649,
+      "source_rank": 651,
+      "word": "suy",
+      "pos": null,
+      "frequency_count": 5514
+    },
+    {
+      "candidate_rank": 650,
+      "source_rank": 652,
+      "word": "đông",
+      "pos": null,
+      "frequency_count": 5504
+    },
+    {
+      "candidate_rank": 651,
+      "source_rank": 653,
+      "word": "suốt",
+      "pos": null,
+      "frequency_count": 5494
+    },
+    {
+      "candidate_rank": 652,
+      "source_rank": 654,
+      "word": "vua",
+      "pos": null,
+      "frequency_count": 5461
+    },
+    {
+      "candidate_rank": 653,
+      "source_rank": 655,
+      "word": "kéo",
+      "pos": null,
+      "frequency_count": 5454
+    },
+    {
+      "candidate_rank": 654,
+      "source_rank": 656,
+      "word": "chồng",
+      "pos": null,
+      "frequency_count": 5449
+    },
+    {
+      "candidate_rank": 655,
+      "source_rank": 657,
+      "word": "thất",
+      "pos": null,
+      "frequency_count": 5444
+    },
+    {
+      "candidate_rank": 656,
+      "source_rank": 658,
+      "word": "đô",
+      "pos": null,
+      "frequency_count": 5433
+    },
+    {
+      "candidate_rank": 657,
+      "source_rank": 659,
+      "word": "nhật",
+      "pos": null,
+      "frequency_count": 5428
+    },
+    {
+      "candidate_rank": 658,
+      "source_rank": 660,
+      "word": "nghi",
+      "pos": null,
+      "frequency_count": 5420
+    },
+    {
+      "candidate_rank": 659,
+      "source_rank": 661,
+      "word": "khủng",
+      "pos": null,
+      "frequency_count": 5411
+    },
+    {
+      "candidate_rank": 660,
+      "source_rank": 662,
+      "word": "tiếc",
+      "pos": null,
+      "frequency_count": 5408
+    },
+    {
+      "candidate_rank": 661,
+      "source_rank": 663,
+      "word": "dành",
+      "pos": null,
+      "frequency_count": 5385
+    },
+    {
+      "candidate_rank": 662,
+      "source_rank": 664,
+      "word": "thị",
+      "pos": null,
+      "frequency_count": 5368
+    },
+    {
+      "candidate_rank": 663,
+      "source_rank": 665,
+      "word": "lái",
+      "pos": null,
+      "frequency_count": 5358
+    },
+    {
+      "candidate_rank": 664,
+      "source_rank": 666,
+      "word": "tương",
+      "pos": null,
+      "frequency_count": 5356
+    },
+    {
+      "candidate_rank": 665,
+      "source_rank": 667,
+      "word": "bữa",
+      "pos": null,
+      "frequency_count": 5348
+    },
+    {
+      "candidate_rank": 666,
+      "source_rank": 669,
+      "word": "chả",
+      "pos": null,
+      "frequency_count": 5332
+    },
+    {
+      "candidate_rank": 667,
+      "source_rank": 670,
+      "word": "kiếp",
+      "pos": null,
+      "frequency_count": 5328
+    },
+    {
+      "candidate_rank": 668,
+      "source_rank": 671,
+      "word": "trận",
+      "pos": null,
+      "frequency_count": 5326
+    },
+    {
+      "candidate_rank": 669,
+      "source_rank": 672,
+      "word": "im",
+      "pos": null,
+      "frequency_count": 5309
+    },
+    {
+      "candidate_rank": 670,
+      "source_rank": 673,
+      "word": "bức",
+      "pos": null,
+      "frequency_count": 5307
+    },
+    {
+      "candidate_rank": 671,
+      "source_rank": 674,
+      "word": "mãi",
+      "pos": null,
+      "frequency_count": 5305
+    },
+    {
+      "candidate_rank": 672,
+      "source_rank": 675,
+      "word": "triệu",
+      "pos": null,
+      "frequency_count": 5303
+    },
+    {
+      "candidate_rank": 673,
+      "source_rank": 676,
+      "word": "quanh",
+      "pos": null,
+      "frequency_count": 5300
+    },
+    {
+      "candidate_rank": 674,
+      "source_rank": 677,
+      "word": "màu",
+      "pos": null,
+      "frequency_count": 5285
+    },
+    {
+      "candidate_rank": 675,
+      "source_rank": 678,
+      "word": "buồn",
+      "pos": null,
+      "frequency_count": 5266
+    },
+    {
+      "candidate_rank": 676,
+      "source_rank": 681,
+      "word": "riêng",
+      "pos": null,
+      "frequency_count": 5250
+    },
+    {
+      "candidate_rank": 677,
+      "source_rank": 682,
+      "word": "biển",
+      "pos": null,
+      "frequency_count": 5245
+    },
+    {
+      "candidate_rank": 678,
+      "source_rank": 683,
+      "word": "nàng",
+      "pos": null,
+      "frequency_count": 5239
+    },
+    {
+      "candidate_rank": 679,
+      "source_rank": 684,
+      "word": "dài",
+      "pos": null,
+      "frequency_count": 5235
+    },
+    {
+      "candidate_rank": 680,
+      "source_rank": 685,
+      "word": "đỡ",
+      "pos": null,
+      "frequency_count": 5209
+    },
+    {
+      "candidate_rank": 681,
+      "source_rank": 686,
+      "word": "sơ",
+      "pos": null,
+      "frequency_count": 5203
+    },
+    {
+      "candidate_rank": 682,
+      "source_rank": 687,
+      "word": "ngờ",
+      "pos": null,
+      "frequency_count": 5142
+    },
+    {
+      "candidate_rank": 683,
+      "source_rank": 688,
+      "word": "nổ",
+      "pos": null,
+      "frequency_count": 5135
+    },
+    {
+      "candidate_rank": 684,
+      "source_rank": 689,
+      "word": "đạo",
+      "pos": null,
+      "frequency_count": 5131
+    },
+    {
+      "candidate_rank": 685,
+      "source_rank": 690,
+      "word": "đem",
+      "pos": null,
+      "frequency_count": 5129
+    },
+    {
+      "candidate_rank": 686,
+      "source_rank": 691,
+      "word": "linh",
+      "pos": null,
+      "frequency_count": 5117
+    },
+    {
+      "candidate_rank": 687,
+      "source_rank": 692,
+      "word": "chức",
+      "pos": null,
+      "frequency_count": 5087
+    },
+    {
+      "candidate_rank": 688,
+      "source_rank": 693,
+      "word": "chất",
+      "pos": null,
+      "frequency_count": 5052
+    },
+    {
+      "candidate_rank": 689,
+      "source_rank": 694,
+      "word": "thẳng",
+      "pos": null,
+      "frequency_count": 5045
+    },
+    {
+      "candidate_rank": 690,
+      "source_rank": 695,
+      "word": "chống",
+      "pos": null,
+      "frequency_count": 5043
+    },
+    {
+      "candidate_rank": 691,
+      "source_rank": 696,
+      "word": "mơ",
+      "pos": null,
+      "frequency_count": 5043
+    },
+    {
+      "candidate_rank": 692,
+      "source_rank": 697,
+      "word": "tổ",
+      "pos": null,
+      "frequency_count": 5017
+    },
+    {
+      "candidate_rank": 693,
+      "source_rank": 698,
+      "word": "hoạt",
+      "pos": null,
+      "frequency_count": 5001
+    },
+    {
+      "candidate_rank": 694,
+      "source_rank": 700,
+      "word": "mắn",
+      "pos": null,
+      "frequency_count": 4996
+    },
+    {
+      "candidate_rank": 695,
+      "source_rank": 701,
+      "word": "lịch",
+      "pos": null,
+      "frequency_count": 4995
+    },
+    {
+      "candidate_rank": 696,
+      "source_rank": 702,
+      "word": "gắng",
+      "pos": null,
+      "frequency_count": 4992
+    },
+    {
+      "candidate_rank": 697,
+      "source_rank": 703,
+      "word": "quen",
+      "pos": null,
+      "frequency_count": 4986
+    },
+    {
+      "candidate_rank": 698,
+      "source_rank": 704,
+      "word": "chừng",
+      "pos": null,
+      "frequency_count": 4979
+    },
+    {
+      "candidate_rank": 699,
+      "source_rank": 705,
+      "word": "thù",
+      "pos": null,
+      "frequency_count": 4978
+    },
+    {
+      "candidate_rank": 700,
+      "source_rank": 708,
+      "word": "khóa",
+      "pos": null,
+      "frequency_count": 4961
+    },
+    {
+      "candidate_rank": 701,
+      "source_rank": 710,
+      "word": "đuổi",
+      "pos": null,
+      "frequency_count": 4957
+    },
+    {
+      "candidate_rank": 702,
+      "source_rank": 711,
+      "word": "nguyên",
+      "pos": null,
+      "frequency_count": 4949
+    },
+    {
+      "candidate_rank": 703,
+      "source_rank": 712,
+      "word": "cầm",
+      "pos": null,
+      "frequency_count": 4947
+    },
+    {
+      "candidate_rank": 704,
+      "source_rank": 713,
+      "word": "thuộc",
+      "pos": null,
+      "frequency_count": 4924
+    },
+    {
+      "candidate_rank": 705,
+      "source_rank": 714,
+      "word": "lửa",
+      "pos": null,
+      "frequency_count": 4919
+    },
+    {
+      "candidate_rank": 706,
+      "source_rank": 715,
+      "word": "uh",
+      "pos": null,
+      "frequency_count": 4917
+    },
+    {
+      "candidate_rank": 707,
+      "source_rank": 716,
+      "word": "lính",
+      "pos": null,
+      "frequency_count": 4902
+    },
+    {
+      "candidate_rank": 708,
+      "source_rank": 717,
+      "word": "ghét",
+      "pos": null,
+      "frequency_count": 4883
+    },
+    {
+      "candidate_rank": 709,
+      "source_rank": 718,
+      "word": "dạy",
+      "pos": null,
+      "frequency_count": 4860
+    },
+    {
+      "candidate_rank": 710,
+      "source_rank": 719,
+      "word": "ngăn",
+      "pos": null,
+      "frequency_count": 4835
+    },
+    {
+      "candidate_rank": 711,
+      "source_rank": 720,
+      "word": "kiến",
+      "pos": null,
+      "frequency_count": 4815
+    },
+    {
+      "candidate_rank": 712,
+      "source_rank": 721,
+      "word": "thả",
+      "pos": null,
+      "frequency_count": 4810
+    },
+    {
+      "candidate_rank": 713,
+      "source_rank": 722,
+      "word": "thu",
+      "pos": null,
+      "frequency_count": 4804
+    },
+    {
+      "candidate_rank": 714,
+      "source_rank": 723,
+      "word": "thiếu",
+      "pos": null,
+      "frequency_count": 4804
+    },
+    {
+      "candidate_rank": 715,
+      "source_rank": 724,
+      "word": "ngôi",
+      "pos": null,
+      "frequency_count": 4797
+    },
+    {
+      "candidate_rank": 716,
+      "source_rank": 725,
+      "word": "lợi",
+      "pos": null,
+      "frequency_count": 4794
+    },
+    {
+      "candidate_rank": 717,
+      "source_rank": 726,
+      "word": "nam",
+      "pos": null,
+      "frequency_count": 4773
+    },
+    {
+      "candidate_rank": 718,
+      "source_rank": 727,
+      "word": "chia",
+      "pos": null,
+      "frequency_count": 4770
+    },
+    {
+      "candidate_rank": 719,
+      "source_rank": 728,
+      "word": "cắt",
+      "pos": null,
+      "frequency_count": 4757
+    },
+    {
+      "candidate_rank": 720,
+      "source_rank": 729,
+      "word": "dây",
+      "pos": null,
+      "frequency_count": 4749
+    },
+    {
+      "candidate_rank": 721,
+      "source_rank": 730,
+      "word": "lắng",
+      "pos": null,
+      "frequency_count": 4748
+    },
+    {
+      "candidate_rank": 722,
+      "source_rank": 731,
+      "word": "thậm",
+      "pos": null,
+      "frequency_count": 4736
+    },
+    {
+      "candidate_rank": 723,
+      "source_rank": 732,
+      "word": "sở",
+      "pos": null,
+      "frequency_count": 4733
+    },
+    {
+      "candidate_rank": 724,
+      "source_rank": 733,
+      "word": "nhập",
+      "pos": null,
+      "frequency_count": 4722
+    },
+    {
+      "candidate_rank": 725,
+      "source_rank": 734,
+      "word": "trách",
+      "pos": null,
+      "frequency_count": 4710
+    },
+    {
+      "candidate_rank": 726,
+      "source_rank": 735,
+      "word": "ghi",
+      "pos": null,
+      "frequency_count": 4697
+    },
+    {
+      "candidate_rank": 727,
+      "source_rank": 736,
+      "word": "đen",
+      "pos": null,
+      "frequency_count": 4692
+    },
+    {
+      "candidate_rank": 728,
+      "source_rank": 737,
+      "word": "lão",
+      "pos": null,
+      "frequency_count": 4690
+    },
+    {
+      "candidate_rank": 729,
+      "source_rank": 738,
+      "word": "cưới",
+      "pos": null,
+      "frequency_count": 4682
+    },
+    {
+      "candidate_rank": 730,
+      "source_rank": 739,
+      "word": "hẳn",
+      "pos": null,
+      "frequency_count": 4679
+    },
+    {
+      "candidate_rank": 731,
+      "source_rank": 740,
+      "word": "ly",
+      "pos": null,
+      "frequency_count": 4669
+    },
+    {
+      "candidate_rank": 732,
+      "source_rank": 741,
+      "word": "âm",
+      "pos": null,
+      "frequency_count": 4668
+    },
+    {
+      "candidate_rank": 733,
+      "source_rank": 742,
+      "word": "nghị",
+      "pos": null,
+      "frequency_count": 4657
+    },
+    {
+      "candidate_rank": 734,
+      "source_rank": 743,
+      "word": "ngựa",
+      "pos": null,
+      "frequency_count": 4653
+    },
+    {
+      "candidate_rank": 735,
+      "source_rank": 744,
+      "word": "binh",
+      "pos": null,
+      "frequency_count": 4651
+    },
+    {
+      "candidate_rank": 736,
+      "source_rank": 745,
+      "word": "cũ",
+      "pos": null,
+      "frequency_count": 4634
+    },
+    {
+      "candidate_rank": 737,
+      "source_rank": 746,
+      "word": "vàng",
+      "pos": null,
+      "frequency_count": 4604
+    },
+    {
+      "candidate_rank": 738,
+      "source_rank": 747,
+      "word": "phân",
+      "pos": null,
+      "frequency_count": 4590
+    },
+    {
+      "candidate_rank": 739,
+      "source_rank": 748,
+      "word": "hủy",
+      "pos": null,
+      "frequency_count": 4587
+    },
+    {
+      "candidate_rank": 740,
+      "source_rank": 749,
+      "word": "phương",
+      "pos": null,
+      "frequency_count": 4586
+    },
+    {
+      "candidate_rank": 741,
+      "source_rank": 750,
+      "word": "v",
+      "pos": null,
+      "frequency_count": 4584
+    },
+    {
+      "candidate_rank": 742,
+      "source_rank": 751,
+      "word": "trợ",
+      "pos": null,
+      "frequency_count": 4573
+    },
+    {
+      "candidate_rank": 743,
+      "source_rank": 752,
+      "word": "ngoại",
+      "pos": null,
+      "frequency_count": 4573
+    },
+    {
+      "candidate_rank": 744,
+      "source_rank": 753,
+      "word": "tây",
+      "pos": null,
+      "frequency_count": 4572
+    },
+    {
+      "candidate_rank": 745,
+      "source_rank": 754,
+      "word": "tòa",
+      "pos": null,
+      "frequency_count": 4564
+    },
+    {
+      "candidate_rank": 746,
+      "source_rank": 755,
+      "word": "tai",
+      "pos": null,
+      "frequency_count": 4559
+    },
+    {
+      "candidate_rank": 747,
+      "source_rank": 756,
+      "word": "truyền",
+      "pos": null,
+      "frequency_count": 4557
+    },
+    {
+      "candidate_rank": 748,
+      "source_rank": 757,
+      "word": "đạn",
+      "pos": null,
+      "frequency_count": 4543
+    },
+    {
+      "candidate_rank": 749,
+      "source_rank": 758,
+      "word": "kì",
+      "pos": null,
+      "frequency_count": 4536
+    },
+    {
+      "candidate_rank": 750,
+      "source_rank": 759,
+      "word": "ký",
+      "pos": null,
+      "frequency_count": 4517
+    },
+    {
+      "candidate_rank": 751,
+      "source_rank": 760,
+      "word": "nghiêm",
+      "pos": null,
+      "frequency_count": 4503
+    },
+    {
+      "candidate_rank": 752,
+      "source_rank": 761,
+      "word": "tá",
+      "pos": null,
+      "frequency_count": 4496
+    },
+    {
+      "candidate_rank": 753,
+      "source_rank": 762,
+      "word": "vết",
+      "pos": null,
+      "frequency_count": 4495
+    },
+    {
+      "candidate_rank": 754,
+      "source_rank": 763,
+      "word": "nhắc",
+      "pos": null,
+      "frequency_count": 4491
+    },
+    {
+      "candidate_rank": 755,
+      "source_rank": 764,
+      "word": "đảm",
+      "pos": null,
+      "frequency_count": 4491
+    },
+    {
+      "candidate_rank": 756,
+      "source_rank": 765,
+      "word": "tiệc",
+      "pos": null,
+      "frequency_count": 4482
+    },
+    {
+      "candidate_rank": 757,
+      "source_rank": 766,
+      "word": "dám",
+      "pos": null,
+      "frequency_count": 4476
+    },
+    {
+      "candidate_rank": 758,
+      "source_rank": 767,
+      "word": "la",
+      "pos": null,
+      "frequency_count": 4471
+    },
+    {
+      "candidate_rank": 759,
+      "source_rank": 768,
+      "word": "ok",
+      "pos": null,
+      "frequency_count": 4459
+    },
+    {
+      "candidate_rank": 760,
+      "source_rank": 769,
+      "word": "quần",
+      "pos": null,
+      "frequency_count": 4457
+    },
+    {
+      "candidate_rank": 761,
+      "source_rank": 770,
+      "word": "mối",
+      "pos": null,
+      "frequency_count": 4454
+    },
+    {
+      "candidate_rank": 762,
+      "source_rank": 771,
+      "word": "chấp",
+      "pos": null,
+      "frequency_count": 4452
+    },
+    {
+      "candidate_rank": 763,
+      "source_rank": 772,
+      "word": "phiền",
+      "pos": null,
+      "frequency_count": 4446
+    },
+    {
+      "candidate_rank": 764,
+      "source_rank": 773,
+      "word": "th",
+      "pos": null,
+      "frequency_count": 4437
+    },
+    {
+      "candidate_rank": 765,
+      "source_rank": 775,
+      "word": "đổ",
+      "pos": null,
+      "frequency_count": 4401
+    },
+    {
+      "candidate_rank": 766,
+      "source_rank": 776,
+      "word": "lựa",
+      "pos": null,
+      "frequency_count": 4390
+    },
+    {
+      "candidate_rank": 767,
+      "source_rank": 777,
+      "word": "ràng",
+      "pos": null,
+      "frequency_count": 4383
+    },
+    {
+      "candidate_rank": 768,
+      "source_rank": 778,
+      "word": "nửa",
+      "pos": null,
+      "frequency_count": 4367
+    },
+    {
+      "candidate_rank": 769,
+      "source_rank": 779,
+      "word": "lầm",
+      "pos": null,
+      "frequency_count": 4359
+    },
+    {
+      "candidate_rank": 770,
+      "source_rank": 780,
+      "word": "chung",
+      "pos": null,
+      "frequency_count": 4355
+    },
+    {
+      "candidate_rank": 771,
+      "source_rank": 781,
+      "word": "chế",
+      "pos": null,
+      "frequency_count": 4352
+    },
+    {
+      "candidate_rank": 772,
+      "source_rank": 782,
+      "word": "ước",
+      "pos": null,
+      "frequency_count": 4329
+    },
+    {
+      "candidate_rank": 773,
+      "source_rank": 783,
+      "word": "chi",
+      "pos": null,
+      "frequency_count": 4313
+    },
+    {
+      "candidate_rank": 774,
+      "source_rank": 785,
+      "word": "cướp",
+      "pos": null,
+      "frequency_count": 4309
+    },
+    {
+      "candidate_rank": 775,
+      "source_rank": 786,
+      "word": "hi",
+      "pos": null,
+      "frequency_count": 4308
+    },
+    {
+      "candidate_rank": 776,
+      "source_rank": 787,
+      "word": "john",
+      "pos": null,
+      "frequency_count": 4294
+    },
+    {
+      "candidate_rank": 777,
+      "source_rank": 788,
+      "word": "nhờ",
+      "pos": null,
+      "frequency_count": 4293
+    },
+    {
+      "candidate_rank": 778,
+      "source_rank": 791,
+      "word": "bại",
+      "pos": null,
+      "frequency_count": 4278
+    },
+    {
+      "candidate_rank": 779,
+      "source_rank": 792,
+      "word": "quỷ",
+      "pos": null,
+      "frequency_count": 4270
+    },
+    {
+      "candidate_rank": 780,
+      "source_rank": 793,
+      "word": "huy",
+      "pos": null,
+      "frequency_count": 4266
+    },
+    {
+      "candidate_rank": 781,
+      "source_rank": 794,
+      "word": "ch",
+      "pos": null,
+      "frequency_count": 4251
+    },
+    {
+      "candidate_rank": 782,
+      "source_rank": 795,
+      "word": "đằng",
+      "pos": null,
+      "frequency_count": 4246
+    },
+    {
+      "candidate_rank": 783,
+      "source_rank": 796,
+      "word": "tiểu",
+      "pos": null,
+      "frequency_count": 4207
+    },
+    {
+      "candidate_rank": 784,
+      "source_rank": 797,
+      "word": "hát",
+      "pos": null,
+      "frequency_count": 4191
+    },
+    {
+      "candidate_rank": 785,
+      "source_rank": 798,
+      "word": "cử",
+      "pos": null,
+      "frequency_count": 4188
+    },
+    {
+      "candidate_rank": 786,
+      "source_rank": 799,
+      "word": "ca",
+      "pos": null,
+      "frequency_count": 4167
+    },
+    {
+      "candidate_rank": 787,
+      "source_rank": 800,
+      "word": "cưng",
+      "pos": null,
+      "frequency_count": 4164
+    },
+    {
+      "candidate_rank": 788,
+      "source_rank": 801,
+      "word": "mã",
+      "pos": null,
+      "frequency_count": 4163
+    },
+    {
+      "candidate_rank": 789,
+      "source_rank": 802,
+      "word": "chuyến",
+      "pos": null,
+      "frequency_count": 4158
+    },
+    {
+      "candidate_rank": 790,
+      "source_rank": 803,
+      "word": "thi",
+      "pos": null,
+      "frequency_count": 4142
+    },
+    {
+      "candidate_rank": 791,
+      "source_rank": 804,
+      "word": "khăn",
+      "pos": null,
+      "frequency_count": 4138
+    },
+    {
+      "candidate_rank": 792,
+      "source_rank": 807,
+      "word": "lễ",
+      "pos": null,
+      "frequency_count": 4122
+    },
+    {
+      "candidate_rank": 793,
+      "source_rank": 808,
+      "word": "lai",
+      "pos": null,
+      "frequency_count": 4089
+    },
+    {
+      "candidate_rank": 794,
+      "source_rank": 809,
+      "word": "vượt",
+      "pos": null,
+      "frequency_count": 4087
+    },
+    {
+      "candidate_rank": 795,
+      "source_rank": 810,
+      "word": "lối",
+      "pos": null,
+      "frequency_count": 4071
+    },
+    {
+      "candidate_rank": 796,
+      "source_rank": 811,
+      "word": "thuyết",
+      "pos": null,
+      "frequency_count": 4068
+    },
+    {
+      "candidate_rank": 797,
+      "source_rank": 812,
+      "word": "tha",
+      "pos": null,
+      "frequency_count": 4064
+    },
+    {
+      "candidate_rank": 798,
+      "source_rank": 813,
+      "word": "nóng",
+      "pos": null,
+      "frequency_count": 4053
+    },
+    {
+      "candidate_rank": 799,
+      "source_rank": 814,
+      "word": "vùng",
+      "pos": null,
+      "frequency_count": 4045
+    },
+    {
+      "candidate_rank": 800,
+      "source_rank": 815,
+      "word": "phúc",
+      "pos": null,
+      "frequency_count": 4045
+    },
+    {
+      "candidate_rank": 801,
+      "source_rank": 816,
+      "word": "giấy",
+      "pos": null,
+      "frequency_count": 4028
+    },
+    {
+      "candidate_rank": 802,
+      "source_rank": 817,
+      "word": "tích",
+      "pos": null,
+      "frequency_count": 4028
+    },
+    {
+      "candidate_rank": 803,
+      "source_rank": 819,
+      "word": "thái",
+      "pos": null,
+      "frequency_count": 4021
+    },
+    {
+      "candidate_rank": 804,
+      "source_rank": 820,
+      "word": "nhạc",
+      "pos": null,
+      "frequency_count": 4010
+    },
+    {
+      "candidate_rank": 805,
+      "source_rank": 821,
+      "word": "tận",
+      "pos": null,
+      "frequency_count": 3989
+    },
+    {
+      "candidate_rank": 806,
+      "source_rank": 822,
+      "word": "rắc",
+      "pos": null,
+      "frequency_count": 3985
+    },
+    {
+      "candidate_rank": 807,
+      "source_rank": 823,
+      "word": "u",
+      "pos": null,
+      "frequency_count": 3957
+    },
+    {
+      "candidate_rank": 808,
+      "source_rank": 824,
+      "word": "buộc",
+      "pos": null,
+      "frequency_count": 3952
+    },
+    {
+      "candidate_rank": 809,
+      "source_rank": 825,
+      "word": "xét",
+      "pos": null,
+      "frequency_count": 3952
+    },
+    {
+      "candidate_rank": 810,
+      "source_rank": 826,
+      "word": "kích",
+      "pos": null,
+      "frequency_count": 3946
+    },
+    {
+      "candidate_rank": 811,
+      "source_rank": 827,
+      "word": "đoàn",
+      "pos": null,
+      "frequency_count": 3946
+    },
+    {
+      "candidate_rank": 812,
+      "source_rank": 828,
+      "word": "tiết",
+      "pos": null,
+      "frequency_count": 3938
+    },
+    {
+      "candidate_rank": 813,
+      "source_rank": 829,
+      "word": "thịt",
+      "pos": null,
+      "frequency_count": 3927
+    },
+    {
+      "candidate_rank": 814,
+      "source_rank": 830,
+      "word": "tóc",
+      "pos": null,
+      "frequency_count": 3911
+    },
+    {
+      "candidate_rank": 815,
+      "source_rank": 831,
+      "word": "trắng",
+      "pos": null,
+      "frequency_count": 3901
+    },
+    {
+      "candidate_rank": 816,
+      "source_rank": 832,
+      "word": "thuận",
+      "pos": null,
+      "frequency_count": 3882
+    },
+    {
+      "candidate_rank": 817,
+      "source_rank": 833,
+      "word": "phù",
+      "pos": null,
+      "frequency_count": 3872
+    },
+    {
+      "candidate_rank": 818,
+      "source_rank": 834,
+      "word": "rơi",
+      "pos": null,
+      "frequency_count": 3853
+    },
+    {
+      "candidate_rank": 819,
+      "source_rank": 835,
+      "word": "chăm",
+      "pos": null,
+      "frequency_count": 3844
+    },
+    {
+      "candidate_rank": 820,
+      "source_rank": 836,
+      "word": "lạnh",
+      "pos": null,
+      "frequency_count": 3844
+    },
+    {
+      "candidate_rank": 821,
+      "source_rank": 837,
+      "word": "cực",
+      "pos": null,
+      "frequency_count": 3842
+    },
+    {
+      "candidate_rank": 822,
+      "source_rank": 838,
+      "word": "nhóm",
+      "pos": null,
+      "frequency_count": 3840
+    },
+    {
+      "candidate_rank": 823,
+      "source_rank": 839,
+      "word": "kim",
+      "pos": null,
+      "frequency_count": 3808
+    },
+    {
+      "candidate_rank": 824,
+      "source_rank": 840,
+      "word": "b",
+      "pos": null,
+      "frequency_count": 3801
+    },
+    {
+      "candidate_rank": 825,
+      "source_rank": 841,
+      "word": "tỉnh",
+      "pos": null,
+      "frequency_count": 3795
+    },
+    {
+      "candidate_rank": 826,
+      "source_rank": 842,
+      "word": "cộng",
+      "pos": null,
+      "frequency_count": 3782
+    },
+    {
+      "candidate_rank": 827,
+      "source_rank": 843,
+      "word": "mái",
+      "pos": null,
+      "frequency_count": 3772
+    },
+    {
+      "candidate_rank": 828,
+      "source_rank": 844,
+      "word": "ty",
+      "pos": null,
+      "frequency_count": 3756
+    },
+    {
+      "candidate_rank": 829,
+      "source_rank": 845,
+      "word": "cung",
+      "pos": null,
+      "frequency_count": 3749
+    },
+    {
+      "candidate_rank": 830,
+      "source_rank": 846,
+      "word": "săn",
+      "pos": null,
+      "frequency_count": 3744
+    },
+    {
+      "candidate_rank": 831,
+      "source_rank": 847,
+      "word": "cuốn",
+      "pos": null,
+      "frequency_count": 3732
+    },
+    {
+      "candidate_rank": 832,
+      "source_rank": 848,
+      "word": "tướng",
+      "pos": null,
+      "frequency_count": 3728
+    },
+    {
+      "candidate_rank": 833,
+      "source_rank": 849,
+      "word": "dữ",
+      "pos": null,
+      "frequency_count": 3723
+    },
+    {
+      "candidate_rank": 834,
+      "source_rank": 850,
+      "word": "giận",
+      "pos": null,
+      "frequency_count": 3723
+    },
+    {
+      "candidate_rank": 835,
+      "source_rank": 851,
+      "word": "thượng",
+      "pos": null,
+      "frequency_count": 3714
+    },
+    {
+      "candidate_rank": 836,
+      "source_rank": 852,
+      "word": "miệng",
+      "pos": null,
+      "frequency_count": 3711
+    },
+    {
+      "candidate_rank": 837,
+      "source_rank": 853,
+      "word": "soát",
+      "pos": null,
+      "frequency_count": 3708
+    },
+    {
+      "candidate_rank": 838,
+      "source_rank": 854,
+      "word": "sản",
+      "pos": null,
+      "frequency_count": 3699
+    },
+    {
+      "candidate_rank": 839,
+      "source_rank": 855,
+      "word": "tăng",
+      "pos": null,
+      "frequency_count": 3695
+    },
+    {
+      "candidate_rank": 840,
+      "source_rank": 856,
+      "word": "ứng",
+      "pos": null,
+      "frequency_count": 3690
+    },
+    {
+      "candidate_rank": 841,
+      "source_rank": 857,
+      "word": "bắc",
+      "pos": null,
+      "frequency_count": 3687
+    },
+    {
+      "candidate_rank": 842,
+      "source_rank": 858,
+      "word": "vi",
+      "pos": null,
+      "frequency_count": 3683
+    },
+    {
+      "candidate_rank": 843,
+      "source_rank": 859,
+      "word": "trộm",
+      "pos": null,
+      "frequency_count": 3675
+    },
+    {
+      "candidate_rank": 844,
+      "source_rank": 860,
+      "word": "phí",
+      "pos": null,
+      "frequency_count": 3669
+    },
+    {
+      "candidate_rank": 845,
+      "source_rank": 861,
+      "word": "sửa",
+      "pos": null,
+      "frequency_count": 3669
+    },
+    {
+      "candidate_rank": 846,
+      "source_rank": 862,
+      "word": "lệ",
+      "pos": null,
+      "frequency_count": 3661
+    },
+    {
+      "candidate_rank": 847,
+      "source_rank": 863,
+      "word": "cà",
+      "pos": null,
+      "frequency_count": 3636
+    },
+    {
+      "candidate_rank": 848,
+      "source_rank": 864,
+      "word": "lừa",
+      "pos": null,
+      "frequency_count": 3623
+    },
+    {
+      "candidate_rank": 849,
+      "source_rank": 865,
+      "word": "mức",
+      "pos": null,
+      "frequency_count": 3614
+    },
+    {
+      "candidate_rank": 850,
+      "source_rank": 866,
+      "word": "túi",
+      "pos": null,
+      "frequency_count": 3605
+    },
+    {
+      "candidate_rank": 851,
+      "source_rank": 867,
+      "word": "thánh",
+      "pos": null,
+      "frequency_count": 3605
+    },
+    {
+      "candidate_rank": 852,
+      "source_rank": 868,
+      "word": "đỏ",
+      "pos": null,
+      "frequency_count": 3584
+    },
+    {
+      "candidate_rank": 853,
+      "source_rank": 869,
+      "word": "giây",
+      "pos": null,
+      "frequency_count": 3584
+    },
+    {
+      "candidate_rank": 854,
+      "source_rank": 870,
+      "word": "hưởng",
+      "pos": null,
+      "frequency_count": 3582
+    },
+    {
+      "candidate_rank": 855,
+      "source_rank": 871,
+      "word": "yếu",
+      "pos": null,
+      "frequency_count": 3563
+    },
+    {
+      "candidate_rank": 856,
+      "source_rank": 872,
+      "word": "dõi",
+      "pos": null,
+      "frequency_count": 3557
+    },
+    {
+      "candidate_rank": 857,
+      "source_rank": 873,
+      "word": "and",
+      "pos": null,
+      "frequency_count": 3548
+    },
+    {
+      "candidate_rank": 858,
+      "source_rank": 874,
+      "word": "ích",
+      "pos": null,
+      "frequency_count": 3529
+    },
+    {
+      "candidate_rank": 859,
+      "source_rank": 875,
+      "word": "trại",
+      "pos": null,
+      "frequency_count": 3521
+    },
+    {
+      "candidate_rank": 860,
+      "source_rank": 876,
+      "word": "cơn",
+      "pos": null,
+      "frequency_count": 3498
+    },
+    {
+      "candidate_rank": 861,
+      "source_rank": 877,
+      "word": "khai",
+      "pos": null,
+      "frequency_count": 3498
+    },
+    {
+      "candidate_rank": 862,
+      "source_rank": 878,
+      "word": "sâu",
+      "pos": null,
+      "frequency_count": 3497
+    },
+    {
+      "candidate_rank": 863,
+      "source_rank": 879,
+      "word": "vương",
+      "pos": null,
+      "frequency_count": 3495
+    },
+    {
+      "candidate_rank": 864,
+      "source_rank": 880,
+      "word": "thở",
+      "pos": null,
+      "frequency_count": 3490
+    },
+    {
+      "candidate_rank": 865,
+      "source_rank": 881,
+      "word": "jack",
+      "pos": null,
+      "frequency_count": 3487
+    },
+    {
+      "candidate_rank": 866,
+      "source_rank": 882,
+      "word": "tí",
+      "pos": null,
+      "frequency_count": 3486
+    },
+    {
+      "candidate_rank": 867,
+      "source_rank": 883,
+      "word": "ah",
+      "pos": null,
+      "frequency_count": 3482
+    },
+    {
+      "candidate_rank": 868,
+      "source_rank": 884,
+      "word": "diện",
+      "pos": null,
+      "frequency_count": 3458
+    },
+    {
+      "candidate_rank": 869,
+      "source_rank": 885,
+      "word": "hồn",
+      "pos": null,
+      "frequency_count": 3452
+    },
+    {
+      "candidate_rank": 870,
+      "source_rank": 886,
+      "word": "hầu",
+      "pos": null,
+      "frequency_count": 3445
+    },
+    {
+      "candidate_rank": 871,
+      "source_rank": 887,
+      "word": "đảo",
+      "pos": null,
+      "frequency_count": 3444
+    },
+    {
+      "candidate_rank": 872,
+      "source_rank": 888,
+      "word": "tín",
+      "pos": null,
+      "frequency_count": 3441
+    },
+    {
+      "candidate_rank": 873,
+      "source_rank": 889,
+      "word": "xúc",
+      "pos": null,
+      "frequency_count": 3423
+    },
+    {
+      "candidate_rank": 874,
+      "source_rank": 890,
+      "word": "nỗi",
+      "pos": null,
+      "frequency_count": 3421
+    },
+    {
+      "candidate_rank": 875,
+      "source_rank": 891,
+      "word": "phủ",
+      "pos": null,
+      "frequency_count": 3421
+    },
+    {
+      "candidate_rank": 876,
+      "source_rank": 892,
+      "word": "biểu",
+      "pos": null,
+      "frequency_count": 3414
+    },
+    {
+      "candidate_rank": 877,
+      "source_rank": 893,
+      "word": "hòa",
+      "pos": null,
+      "frequency_count": 3402
+    },
+    {
+      "candidate_rank": 878,
+      "source_rank": 894,
+      "word": "loạn",
+      "pos": null,
+      "frequency_count": 3400
+    },
+    {
+      "candidate_rank": 879,
+      "source_rank": 895,
+      "word": "nặng",
+      "pos": null,
+      "frequency_count": 3395
+    },
+    {
+      "candidate_rank": 880,
+      "source_rank": 896,
+      "word": "tấm",
+      "pos": null,
+      "frequency_count": 3394
+    },
+    {
+      "candidate_rank": 881,
+      "source_rank": 897,
+      "word": "lớp",
+      "pos": null,
+      "frequency_count": 3387
+    },
+    {
+      "candidate_rank": 882,
+      "source_rank": 898,
+      "word": "bom",
+      "pos": null,
+      "frequency_count": 3385
+    },
+    {
+      "candidate_rank": 883,
+      "source_rank": 899,
+      "word": "nh",
+      "pos": null,
+      "frequency_count": 3372
+    },
+    {
+      "candidate_rank": 884,
+      "source_rank": 900,
+      "word": "chuyên",
+      "pos": null,
+      "frequency_count": 3372
+    },
+    {
+      "candidate_rank": 885,
+      "source_rank": 901,
+      "word": "ác",
+      "pos": null,
+      "frequency_count": 3370
+    },
+    {
+      "candidate_rank": 886,
+      "source_rank": 902,
+      "word": "bận",
+      "pos": null,
+      "frequency_count": 3364
+    },
+    {
+      "candidate_rank": 887,
+      "source_rank": 903,
+      "word": "huynh",
+      "pos": null,
+      "frequency_count": 3363
+    },
+    {
+      "candidate_rank": 888,
+      "source_rank": 904,
+      "word": "dĩ",
+      "pos": null,
+      "frequency_count": 3361
+    },
+    {
+      "candidate_rank": 889,
+      "source_rank": 905,
+      "word": "chương",
+      "pos": null,
+      "frequency_count": 3358
+    },
+    {
+      "candidate_rank": 890,
+      "source_rank": 906,
+      "word": "lí",
+      "pos": null,
+      "frequency_count": 3354
+    },
+    {
+      "candidate_rank": 891,
+      "source_rank": 907,
+      "word": "chữa",
+      "pos": null,
+      "frequency_count": 3354
+    },
+    {
+      "candidate_rank": 892,
+      "source_rank": 908,
+      "word": "lãnh",
+      "pos": null,
+      "frequency_count": 3353
+    },
+    {
+      "candidate_rank": 893,
+      "source_rank": 909,
+      "word": "đột",
+      "pos": null,
+      "frequency_count": 3339
+    },
+    {
+      "candidate_rank": 894,
+      "source_rank": 910,
+      "word": "kính",
+      "pos": null,
+      "frequency_count": 3339
+    },
+    {
+      "candidate_rank": 895,
+      "source_rank": 911,
+      "word": "rút",
+      "pos": null,
+      "frequency_count": 3337
+    },
+    {
+      "candidate_rank": 896,
+      "source_rank": 912,
+      "word": "phóng",
+      "pos": null,
+      "frequency_count": 3336
+    },
+    {
+      "candidate_rank": 897,
+      "source_rank": 913,
+      "word": "ở",
+      "pos": null,
+      "frequency_count": 3332
+    },
+    {
+      "candidate_rank": 898,
+      "source_rank": 914,
+      "word": "thỏa",
+      "pos": null,
+      "frequency_count": 3323
+    },
+    {
+      "candidate_rank": 899,
+      "source_rank": 915,
+      "word": "khỉ",
+      "pos": null,
+      "frequency_count": 3318
+    },
+    {
+      "candidate_rank": 900,
+      "source_rank": 916,
+      "word": "á",
+      "pos": null,
+      "frequency_count": 3315
+    },
+    {
+      "candidate_rank": 901,
+      "source_rank": 917,
+      "word": "lộ",
+      "pos": null,
+      "frequency_count": 3311
+    },
+    {
+      "candidate_rank": 902,
+      "source_rank": 918,
+      "word": "cạnh",
+      "pos": null,
+      "frequency_count": 3311
+    },
+    {
+      "candidate_rank": 903,
+      "source_rank": 919,
+      "word": "kỹ",
+      "pos": null,
+      "frequency_count": 3300
+    },
+    {
+      "candidate_rank": 904,
+      "source_rank": 920,
+      "word": "hậu",
+      "pos": null,
+      "frequency_count": 3294
+    },
+    {
+      "candidate_rank": 905,
+      "source_rank": 921,
+      "word": "hùng",
+      "pos": null,
+      "frequency_count": 3293
+    },
+    {
+      "candidate_rank": 906,
+      "source_rank": 922,
+      "word": "sang",
+      "pos": null,
+      "frequency_count": 3292
+    },
+    {
+      "candidate_rank": 907,
+      "source_rank": 923,
+      "word": "thề",
+      "pos": null,
+      "frequency_count": 3292
+    },
+    {
+      "candidate_rank": 908,
+      "source_rank": 924,
+      "word": "đoạn",
+      "pos": null,
+      "frequency_count": 3287
+    },
+    {
+      "candidate_rank": 909,
+      "source_rank": 925,
+      "word": "sóc",
+      "pos": null,
+      "frequency_count": 3271
+    },
+    {
+      "candidate_rank": 910,
+      "source_rank": 926,
+      "word": "khẩu",
+      "pos": null,
+      "frequency_count": 3270
+    },
+    {
+      "candidate_rank": 911,
+      "source_rank": 927,
+      "word": "luyện",
+      "pos": null,
+      "frequency_count": 3269
+    },
+    {
+      "candidate_rank": 912,
+      "source_rank": 928,
+      "word": "thăm",
+      "pos": null,
+      "frequency_count": 3262
+    },
+    {
+      "candidate_rank": 913,
+      "source_rank": 929,
+      "word": "giản",
+      "pos": null,
+      "frequency_count": 3252
+    },
+    {
+      "candidate_rank": 914,
+      "source_rank": 930,
+      "word": "sạch",
+      "pos": null,
+      "frequency_count": 3251
+    },
+    {
+      "candidate_rank": 915,
+      "source_rank": 931,
+      "word": "frank",
+      "pos": null,
+      "frequency_count": 3247
+    },
+    {
+      "candidate_rank": 916,
+      "source_rank": 932,
+      "word": "chim",
+      "pos": null,
+      "frequency_count": 3245
+    },
+    {
+      "candidate_rank": 917,
+      "source_rank": 933,
+      "word": "xếp",
+      "pos": null,
+      "frequency_count": 3242
+    },
+    {
+      "candidate_rank": 918,
+      "source_rank": 934,
+      "word": "nha",
+      "pos": null,
+      "frequency_count": 3240
+    },
+    {
+      "candidate_rank": 919,
+      "source_rank": 935,
+      "word": "quán",
+      "pos": null,
+      "frequency_count": 3239
+    },
+    {
+      "candidate_rank": 920,
+      "source_rank": 936,
+      "word": "mùi",
+      "pos": null,
+      "frequency_count": 3237
+    },
+    {
+      "candidate_rank": 921,
+      "source_rank": 938,
+      "word": "ánh",
+      "pos": null,
+      "frequency_count": 3225
+    },
+    {
+      "candidate_rank": 922,
+      "source_rank": 939,
+      "word": "đón",
+      "pos": null,
+      "frequency_count": 3224
+    },
+    {
+      "candidate_rank": 923,
+      "source_rank": 941,
+      "word": "lá",
+      "pos": null,
+      "frequency_count": 3218
+    },
+    {
+      "candidate_rank": 924,
+      "source_rank": 942,
+      "word": "tồi",
+      "pos": null,
+      "frequency_count": 3213
+    },
+    {
+      "candidate_rank": 925,
+      "source_rank": 943,
+      "word": "phong",
+      "pos": null,
+      "frequency_count": 3203
+    },
+    {
+      "candidate_rank": 926,
+      "source_rank": 944,
+      "word": "ngạc",
+      "pos": null,
+      "frequency_count": 3197
+    },
+    {
+      "candidate_rank": 927,
+      "source_rank": 945,
+      "word": "giấu",
+      "pos": null,
+      "frequency_count": 3181
+    },
+    {
+      "candidate_rank": 928,
+      "source_rank": 946,
+      "word": "thủy",
+      "pos": null,
+      "frequency_count": 3174
+    },
+    {
+      "candidate_rank": 929,
+      "source_rank": 947,
+      "word": "quản",
+      "pos": null,
+      "frequency_count": 3172
+    },
+    {
+      "candidate_rank": 930,
+      "source_rank": 948,
+      "word": "thuê",
+      "pos": null,
+      "frequency_count": 3170
+    },
+    {
+      "candidate_rank": 931,
+      "source_rank": 949,
+      "word": "lành",
+      "pos": null,
+      "frequency_count": 3166
+    },
+    {
+      "candidate_rank": 932,
+      "source_rank": 950,
+      "word": "tôn",
+      "pos": null,
+      "frequency_count": 3157
+    },
+    {
+      "candidate_rank": 933,
+      "source_rank": 951,
+      "word": "tường",
+      "pos": null,
+      "frequency_count": 3156
+    },
+    {
+      "candidate_rank": 934,
+      "source_rank": 952,
+      "word": "hỏng",
+      "pos": null,
+      "frequency_count": 3155
+    },
+    {
+      "candidate_rank": 935,
+      "source_rank": 954,
+      "word": "não",
+      "pos": null,
+      "frequency_count": 3148
+    },
+    {
+      "candidate_rank": 936,
+      "source_rank": 955,
+      "word": "new",
+      "pos": null,
+      "frequency_count": 3144
+    },
+    {
+      "candidate_rank": 937,
+      "source_rank": 956,
+      "word": "tầm",
+      "pos": null,
+      "frequency_count": 3139
+    },
+    {
+      "candidate_rank": 938,
+      "source_rank": 957,
+      "word": "ê",
+      "pos": null,
+      "frequency_count": 3135
+    },
+    {
+      "candidate_rank": 939,
+      "source_rank": 958,
+      "word": "vực",
+      "pos": null,
+      "frequency_count": 3128
+    },
+    {
+      "candidate_rank": 940,
+      "source_rank": 960,
+      "word": "loài",
+      "pos": null,
+      "frequency_count": 3119
+    },
+    {
+      "candidate_rank": 941,
+      "source_rank": 961,
+      "word": "hộp",
+      "pos": null,
+      "frequency_count": 3107
+    },
+    {
+      "candidate_rank": 942,
+      "source_rank": 962,
+      "word": "xanh",
+      "pos": null,
+      "frequency_count": 3106
+    },
+    {
+      "candidate_rank": 943,
+      "source_rank": 963,
+      "word": "tắm",
+      "pos": null,
+      "frequency_count": 3090
+    },
+    {
+      "candidate_rank": 944,
+      "source_rank": 964,
+      "word": "tắt",
+      "pos": null,
+      "frequency_count": 3088
+    },
+    {
+      "candidate_rank": 945,
+      "source_rank": 965,
+      "word": "ngừng",
+      "pos": null,
+      "frequency_count": 3086
+    },
+    {
+      "candidate_rank": 946,
+      "source_rank": 966,
+      "word": "siêu",
+      "pos": null,
+      "frequency_count": 3083
+    },
+    {
+      "candidate_rank": 947,
+      "source_rank": 967,
+      "word": "dọn",
+      "pos": null,
+      "frequency_count": 3078
+    },
+    {
+      "candidate_rank": 948,
+      "source_rank": 968,
+      "word": "nhắn",
+      "pos": null,
+      "frequency_count": 3078
+    },
+    {
+      "candidate_rank": 949,
+      "source_rank": 969,
+      "word": "ấn",
+      "pos": null,
+      "frequency_count": 3056
+    },
+    {
+      "candidate_rank": 950,
+      "source_rank": 970,
+      "word": "thừa",
+      "pos": null,
+      "frequency_count": 3056
+    },
+    {
+      "candidate_rank": 951,
+      "source_rank": 971,
+      "word": "ô",
+      "pos": null,
+      "frequency_count": 3052
+    },
+    {
+      "candidate_rank": 952,
+      "source_rank": 972,
+      "word": "nguyện",
+      "pos": null,
+      "frequency_count": 3050
+    },
+    {
+      "candidate_rank": 953,
+      "source_rank": 973,
+      "word": "dựng",
+      "pos": null,
+      "frequency_count": 3049
+    },
+    {
+      "candidate_rank": 954,
+      "source_rank": 974,
+      "word": "sân",
+      "pos": null,
+      "frequency_count": 3043
+    },
+    {
+      "candidate_rank": 955,
+      "source_rank": 977,
+      "word": "nợ",
+      "pos": null,
+      "frequency_count": 3020
+    },
+    {
+      "candidate_rank": 956,
+      "source_rank": 978,
+      "word": "lặng",
+      "pos": null,
+      "frequency_count": 3020
+    },
+    {
+      "candidate_rank": 957,
+      "source_rank": 979,
+      "word": "nội",
+      "pos": null,
+      "frequency_count": 3020
+    },
+    {
+      "candidate_rank": 958,
+      "source_rank": 980,
+      "word": "mùa",
+      "pos": null,
+      "frequency_count": 3018
+    },
+    {
+      "candidate_rank": 959,
+      "source_rank": 981,
+      "word": "it",
+      "pos": null,
+      "frequency_count": 3015
+    },
+    {
+      "candidate_rank": 960,
+      "source_rank": 982,
+      "word": "đập",
+      "pos": null,
+      "frequency_count": 3007
+    },
+    {
+      "candidate_rank": 961,
+      "source_rank": 983,
+      "word": "diệt",
+      "pos": null,
+      "frequency_count": 2999
+    },
+    {
+      "candidate_rank": 962,
+      "source_rank": 984,
+      "word": "chà",
+      "pos": null,
+      "frequency_count": 2998
+    },
+    {
+      "candidate_rank": 963,
+      "source_rank": 985,
+      "word": "tầng",
+      "pos": null,
+      "frequency_count": 2994
+    },
+    {
+      "candidate_rank": 964,
+      "source_rank": 986,
+      "word": "hạn",
+      "pos": null,
+      "frequency_count": 2992
+    },
+    {
+      "candidate_rank": 965,
+      "source_rank": 987,
+      "word": "kiện",
+      "pos": null,
+      "frequency_count": 2992
+    },
+    {
+      "candidate_rank": 966,
+      "source_rank": 988,
+      "word": "mắc",
+      "pos": null,
+      "frequency_count": 2985
+    },
+    {
+      "candidate_rank": 967,
+      "source_rank": 989,
+      "word": "trực",
+      "pos": null,
+      "frequency_count": 2984
+    },
+    {
+      "candidate_rank": 968,
+      "source_rank": 990,
+      "word": "đài",
+      "pos": null,
+      "frequency_count": 2965
+    },
+    {
+      "candidate_rank": 969,
+      "source_rank": 991,
+      "word": "muộn",
+      "pos": null,
+      "frequency_count": 2962
+    },
+    {
+      "candidate_rank": 970,
+      "source_rank": 992,
+      "word": "bạc",
+      "pos": null,
+      "frequency_count": 2958
+    },
+    {
+      "candidate_rank": 971,
+      "source_rank": 993,
+      "word": "sót",
+      "pos": null,
+      "frequency_count": 2957
+    },
+    {
+      "candidate_rank": 972,
+      "source_rank": 994,
+      "word": "lưu",
+      "pos": null,
+      "frequency_count": 2957
+    },
+    {
+      "candidate_rank": 973,
+      "source_rank": 995,
+      "word": "can",
+      "pos": null,
+      "frequency_count": 2956
+    },
+    {
+      "candidate_rank": 974,
+      "source_rank": 996,
+      "word": "quà",
+      "pos": null,
+      "frequency_count": 2955
+    },
+    {
+      "candidate_rank": 975,
+      "source_rank": 997,
+      "word": "say",
+      "pos": null,
+      "frequency_count": 2955
+    },
+    {
+      "candidate_rank": 976,
+      "source_rank": 998,
+      "word": "đống",
+      "pos": null,
+      "frequency_count": 2954
+    },
+    {
+      "candidate_rank": 977,
+      "source_rank": 999,
+      "word": "khắp",
+      "pos": null,
+      "frequency_count": 2947
+    },
+    {
+      "candidate_rank": 978,
+      "source_rank": 1000,
+      "word": "hút",
+      "pos": null,
+      "frequency_count": 2937
+    },
+    {
+      "candidate_rank": 979,
+      "source_rank": 1001,
+      "word": "giám",
+      "pos": null,
+      "frequency_count": 2917
+    },
+    {
+      "candidate_rank": 980,
+      "source_rank": 1002,
+      "word": "giường",
+      "pos": null,
+      "frequency_count": 2904
+    },
+    {
+      "candidate_rank": 981,
+      "source_rank": 1004,
+      "word": "chặn",
+      "pos": null,
+      "frequency_count": 2899
+    },
+    {
+      "candidate_rank": 982,
+      "source_rank": 1005,
+      "word": "hảo",
+      "pos": null,
+      "frequency_count": 2875
+    },
+    {
+      "candidate_rank": 983,
+      "source_rank": 1007,
+      "word": "xinh",
+      "pos": null,
+      "frequency_count": 2869
+    },
+    {
+      "candidate_rank": 984,
+      "source_rank": 1008,
+      "word": "cục",
+      "pos": null,
+      "frequency_count": 2866
+    },
+    {
+      "candidate_rank": 985,
+      "source_rank": 1009,
+      "word": "trấn",
+      "pos": null,
+      "frequency_count": 2866
+    },
+    {
+      "candidate_rank": 986,
+      "source_rank": 1010,
+      "word": "in",
+      "pos": null,
+      "frequency_count": 2856
+    },
+    {
+      "candidate_rank": 987,
+      "source_rank": 1011,
+      "word": "du",
+      "pos": null,
+      "frequency_count": 2852
+    },
+    {
+      "candidate_rank": 988,
+      "source_rank": 1012,
+      "word": "núi",
+      "pos": null,
+      "frequency_count": 2844
+    },
+    {
+      "candidate_rank": 989,
+      "source_rank": 1013,
+      "word": "đích",
+      "pos": null,
+      "frequency_count": 2841
+    },
+    {
+      "candidate_rank": 990,
+      "source_rank": 1014,
+      "word": "nắm",
+      "pos": null,
+      "frequency_count": 2838
+    },
+    {
+      "candidate_rank": 991,
+      "source_rank": 1015,
+      "word": "chạm",
+      "pos": null,
+      "frequency_count": 2826
+    },
+    {
+      "candidate_rank": 992,
+      "source_rank": 1016,
+      "word": "nguồn",
+      "pos": null,
+      "frequency_count": 2819
+    },
+    {
+      "candidate_rank": 993,
+      "source_rank": 1018,
+      "word": "chụp",
+      "pos": null,
+      "frequency_count": 2816
+    },
+    {
+      "candidate_rank": 994,
+      "source_rank": 1019,
+      "word": "phê",
+      "pos": null,
+      "frequency_count": 2811
+    },
+    {
+      "candidate_rank": 995,
+      "source_rank": 1020,
+      "word": "h",
+      "pos": null,
+      "frequency_count": 2810
+    },
+    {
+      "candidate_rank": 996,
+      "source_rank": 1021,
+      "word": "hữu",
+      "pos": null,
+      "frequency_count": 2810
+    },
+    {
+      "candidate_rank": 997,
+      "source_rank": 1022,
+      "word": "khoa",
+      "pos": null,
+      "frequency_count": 2809
+    },
+    {
+      "candidate_rank": 998,
+      "source_rank": 1023,
+      "word": "so",
+      "pos": null,
+      "frequency_count": 2807
+    },
+    {
+      "candidate_rank": 999,
+      "source_rank": 1024,
+      "word": "truy",
+      "pos": null,
+      "frequency_count": 2798
+    },
+    {
+      "candidate_rank": 1000,
+      "source_rank": 1025,
+      "word": "thua",
+      "pos": null,
+      "frequency_count": 2798
+    }
+  ]
+}

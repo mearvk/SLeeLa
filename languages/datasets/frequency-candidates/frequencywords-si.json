@@ -1,0 +1,7030 @@
+{
+  "schema": "SLeeLa FRUCHST frequency candidate staging v1",
+  "language_tag": "si",
+  "language_directory": "sinhala",
+  "source": {
+    "dataset": "FrequencyWords",
+    "upstream": "https://github.com/hermitdave/FrequencyWords",
+    "revision": "525f9b560de45753a5ea01069454e72e9aa541c6",
+    "sample": "content/2018/si/si_full.txt",
+    "data_license": "CC-BY-SA-4.0",
+    "code_license": "MIT",
+    "frequency_source": "OpenSubtitles-2018",
+    "attribution": [
+      "Hermit Dave / FrequencyWords — https://github.com/hermitdave/FrequencyWords",
+      "OpenSubtitles 2018 — https://opus.nlpl.eu/OpenSubtitles2018.php"
+    ],
+    "selection": "First 1,000 unique NFC-normalized lexical surface forms in source frequency order. Punctuation-only tokens are excluded; source line rank and raw occurrence count are retained.",
+    "limitations": [
+      "Surface forms, not lemmatized headwords.",
+      "Subtitle-domain frequency ranking; not a balanced general-purpose corpus.",
+      "No POS or sense labels are supplied by this source.",
+      "English, French, and Spanish definitions remain pending."
+    ],
+    "license_notice": "FrequencyWords content is CC BY-SA 4.0; preserve attribution and share-alike terms. The repository's code is MIT and does not change the data license."
+  },
+  "candidate_count": 1000,
+  "definitions_status": "pending",
+  "entries": [
+    {
+      "candidate_rank": 1,
+      "source_rank": 1,
+      "word": "මම",
+      "pos": null,
+      "frequency_count": 87914
+    },
+    {
+      "candidate_rank": 2,
+      "source_rank": 2,
+      "word": "මට",
+      "pos": null,
+      "frequency_count": 55753
+    },
+    {
+      "candidate_rank": 3,
+      "source_rank": 3,
+      "word": "ඒක",
+      "pos": null,
+      "frequency_count": 42619
+    },
+    {
+      "candidate_rank": 4,
+      "source_rank": 4,
+      "word": "ඒ",
+      "pos": null,
+      "frequency_count": 28489
+    },
+    {
+      "candidate_rank": 5,
+      "source_rank": 5,
+      "word": "එක",
+      "pos": null,
+      "frequency_count": 24500
+    },
+    {
+      "candidate_rank": 6,
+      "source_rank": 6,
+      "word": "ඕන",
+      "pos": null,
+      "frequency_count": 10518
+    },
+    {
+      "candidate_rank": 7,
+      "source_rank": 7,
+      "word": "ඔබ",
+      "pos": null,
+      "frequency_count": 7606
+    },
+    {
+      "candidate_rank": 8,
+      "source_rank": 8,
+      "word": "ඇය",
+      "pos": null,
+      "frequency_count": 5930
+    },
+    {
+      "candidate_rank": 9,
+      "source_rank": 9,
+      "word": "ය",
+      "pos": null,
+      "frequency_count": 5410
+    },
+    {
+      "candidate_rank": 10,
+      "source_rank": 10,
+      "word": "සහ",
+      "pos": null,
+      "frequency_count": 5368
+    },
+    {
+      "candidate_rank": 11,
+      "source_rank": 11,
+      "word": "තව",
+      "pos": null,
+      "frequency_count": 5070
+    },
+    {
+      "candidate_rank": 12,
+      "source_rank": 12,
+      "word": "කරන",
+      "pos": null,
+      "frequency_count": 5031
+    },
+    {
+      "candidate_rank": 13,
+      "source_rank": 13,
+      "word": "අර",
+      "pos": null,
+      "frequency_count": 4906
+    },
+    {
+      "candidate_rank": 14,
+      "source_rank": 14,
+      "word": "එකට",
+      "pos": null,
+      "frequency_count": 4636
+    },
+    {
+      "candidate_rank": 15,
+      "source_rank": 15,
+      "word": "වල",
+      "pos": null,
+      "frequency_count": 4590
+    },
+    {
+      "candidate_rank": 16,
+      "source_rank": 16,
+      "word": "වලට",
+      "pos": null,
+      "frequency_count": 4590
+    },
+    {
+      "candidate_rank": 17,
+      "source_rank": 17,
+      "word": "ඒකට",
+      "pos": null,
+      "frequency_count": 4452
+    },
+    {
+      "candidate_rank": 18,
+      "source_rank": 18,
+      "word": "ඔය",
+      "pos": null,
+      "frequency_count": 4141
+    },
+    {
+      "candidate_rank": 19,
+      "source_rank": 19,
+      "word": "අද",
+      "pos": null,
+      "frequency_count": 4122
+    },
+    {
+      "candidate_rank": 20,
+      "source_rank": 20,
+      "word": "උඹ",
+      "pos": null,
+      "frequency_count": 3771
+    },
+    {
+      "candidate_rank": 21,
+      "source_rank": 21,
+      "word": "ද",
+      "pos": null,
+      "frequency_count": 3648
+    },
+    {
+      "candidate_rank": 22,
+      "source_rank": 22,
+      "word": "ඔබට",
+      "pos": null,
+      "frequency_count": 3500
+    },
+    {
+      "candidate_rank": 23,
+      "source_rank": 23,
+      "word": "අය",
+      "pos": null,
+      "frequency_count": 3222
+    },
+    {
+      "candidate_rank": 24,
+      "source_rank": 24,
+      "word": "නම",
+      "pos": null,
+      "frequency_count": 3158
+    },
+    {
+      "candidate_rank": 25,
+      "source_rank": 25,
+      "word": "එය",
+      "pos": null,
+      "frequency_count": 2875
+    },
+    {
+      "candidate_rank": 26,
+      "source_rank": 26,
+      "word": "එකම",
+      "pos": null,
+      "frequency_count": 2519
+    },
+    {
+      "candidate_rank": 27,
+      "source_rank": 27,
+      "word": "යන",
+      "pos": null,
+      "frequency_count": 2412
+    },
+    {
+      "candidate_rank": 28,
+      "source_rank": 28,
+      "word": "කර",
+      "pos": null,
+      "frequency_count": 2147
+    },
+    {
+      "candidate_rank": 29,
+      "source_rank": 29,
+      "word": "බව",
+      "pos": null,
+      "frequency_count": 2094
+    },
+    {
+      "candidate_rank": 30,
+      "source_rank": 30,
+      "word": "ඊට",
+      "pos": null,
+      "frequency_count": 2013
+    },
+    {
+      "candidate_rank": 31,
+      "source_rank": 31,
+      "word": "බය",
+      "pos": null,
+      "frequency_count": 1987
+    },
+    {
+      "candidate_rank": 32,
+      "source_rank": 32,
+      "word": "ට",
+      "pos": null,
+      "frequency_count": 1908
+    },
+    {
+      "candidate_rank": 33,
+      "source_rank": 33,
+      "word": "ඇයට",
+      "pos": null,
+      "frequency_count": 1896
+    },
+    {
+      "candidate_rank": 34,
+      "source_rank": 34,
+      "word": "සමහර",
+      "pos": null,
+      "frequency_count": 1878
+    },
+    {
+      "candidate_rank": 35,
+      "source_rank": 35,
+      "word": "ර",
+      "pos": null,
+      "frequency_count": 1876
+    },
+    {
+      "candidate_rank": 36,
+      "source_rank": 36,
+      "word": "අමතක",
+      "pos": null,
+      "frequency_count": 1870
+    },
+    {
+      "candidate_rank": 37,
+      "source_rank": 37,
+      "word": "ඕක",
+      "pos": null,
+      "frequency_count": 1805
+    },
+    {
+      "candidate_rank": 38,
+      "source_rank": 38,
+      "word": "ආ",
+      "pos": null,
+      "frequency_count": 1796
+    },
+    {
+      "candidate_rank": 39,
+      "source_rank": 39,
+      "word": "එතන",
+      "pos": null,
+      "frequency_count": 1768
+    },
+    {
+      "candidate_rank": 40,
+      "source_rank": 40,
+      "word": "ආදරය",
+      "pos": null,
+      "frequency_count": 1767
+    },
+    {
+      "candidate_rank": 41,
+      "source_rank": 41,
+      "word": "උබ",
+      "pos": null,
+      "frequency_count": 1753
+    },
+    {
+      "candidate_rank": 42,
+      "source_rank": 42,
+      "word": "ඇයව",
+      "pos": null,
+      "frequency_count": 1691
+    },
+    {
+      "candidate_rank": 43,
+      "source_rank": 43,
+      "word": "ම",
+      "pos": null,
+      "frequency_count": 1617
+    },
+    {
+      "candidate_rank": 44,
+      "source_rank": 44,
+      "word": "ඌ",
+      "pos": null,
+      "frequency_count": 1602
+    },
+    {
+      "candidate_rank": 45,
+      "source_rank": 45,
+      "word": "කට",
+      "pos": null,
+      "frequency_count": 1583
+    },
+    {
+      "candidate_rank": 46,
+      "source_rank": 46,
+      "word": "නරක",
+      "pos": null,
+      "frequency_count": 1556
+    },
+    {
+      "candidate_rank": 47,
+      "source_rank": 47,
+      "word": "අත",
+      "pos": null,
+      "frequency_count": 1529
+    },
+    {
+      "candidate_rank": 48,
+      "source_rank": 48,
+      "word": "උඹට",
+      "pos": null,
+      "frequency_count": 1480
+    },
+    {
+      "candidate_rank": 49,
+      "source_rank": 49,
+      "word": "ඉවර",
+      "pos": null,
+      "frequency_count": 1441
+    },
+    {
+      "candidate_rank": 50,
+      "source_rank": 50,
+      "word": "ව",
+      "pos": null,
+      "frequency_count": 1432
+    },
+    {
+      "candidate_rank": 51,
+      "source_rank": 51,
+      "word": "කරල",
+      "pos": null,
+      "frequency_count": 1362
+    },
+    {
+      "candidate_rank": 52,
+      "source_rank": 52,
+      "word": "කරනවද",
+      "pos": null,
+      "frequency_count": 1327
+    },
+    {
+      "candidate_rank": 53,
+      "source_rank": 53,
+      "word": "මතක",
+      "pos": null,
+      "frequency_count": 1315
+    },
+    {
+      "candidate_rank": 54,
+      "source_rank": 54,
+      "word": "ඉඩ",
+      "pos": null,
+      "frequency_count": 1314
+    },
+    {
+      "candidate_rank": 55,
+      "source_rank": 55,
+      "word": "කරනව",
+      "pos": null,
+      "frequency_count": 1300
+    },
+    {
+      "candidate_rank": 56,
+      "source_rank": 56,
+      "word": "න",
+      "pos": null,
+      "frequency_count": 1212
+    },
+    {
+      "candidate_rank": 57,
+      "source_rank": 57,
+      "word": "අතර",
+      "pos": null,
+      "frequency_count": 1153
+    },
+    {
+      "candidate_rank": 58,
+      "source_rank": 58,
+      "word": "කළ",
+      "pos": null,
+      "frequency_count": 1123
+    },
+    {
+      "candidate_rank": 59,
+      "source_rank": 59,
+      "word": "එන",
+      "pos": null,
+      "frequency_count": 1119
+    },
+    {
+      "candidate_rank": 60,
+      "source_rank": 60,
+      "word": "උඩ",
+      "pos": null,
+      "frequency_count": 1037
+    },
+    {
+      "candidate_rank": 61,
+      "source_rank": 61,
+      "word": "සමග",
+      "pos": null,
+      "frequency_count": 1028
+    },
+    {
+      "candidate_rank": 62,
+      "source_rank": 62,
+      "word": "ක",
+      "pos": null,
+      "frequency_count": 1027
+    },
+    {
+      "candidate_rank": 63,
+      "source_rank": 63,
+      "word": "ඇත",
+      "pos": null,
+      "frequency_count": 1017
+    },
+    {
+      "candidate_rank": 64,
+      "source_rank": 64,
+      "word": "ඔබව",
+      "pos": null,
+      "frequency_count": 967
+    },
+    {
+      "candidate_rank": 65,
+      "source_rank": 65,
+      "word": "කල",
+      "pos": null,
+      "frequency_count": 963
+    },
+    {
+      "candidate_rank": 66,
+      "source_rank": 66,
+      "word": "නතර",
+      "pos": null,
+      "frequency_count": 929
+    },
+    {
+      "candidate_rank": 67,
+      "source_rank": 67,
+      "word": "පහර",
+      "pos": null,
+      "frequency_count": 912
+    },
+    {
+      "candidate_rank": 68,
+      "source_rank": 68,
+      "word": "කරදර",
+      "pos": null,
+      "frequency_count": 908
+    },
+    {
+      "candidate_rank": 69,
+      "source_rank": 69,
+      "word": "අපට",
+      "pos": null,
+      "frequency_count": 905
+    },
+    {
+      "candidate_rank": 70,
+      "source_rank": 70,
+      "word": "ලග",
+      "pos": null,
+      "frequency_count": 900
+    },
+    {
+      "candidate_rank": 71,
+      "source_rank": 71,
+      "word": "පරණ",
+      "pos": null,
+      "frequency_count": 891
+    },
+    {
+      "candidate_rank": 72,
+      "source_rank": 72,
+      "word": "අයට",
+      "pos": null,
+      "frequency_count": 865
+    },
+    {
+      "candidate_rank": 73,
+      "source_rank": 73,
+      "word": "වන",
+      "pos": null,
+      "frequency_count": 840
+    },
+    {
+      "candidate_rank": 74,
+      "source_rank": 74,
+      "word": "ආව",
+      "pos": null,
+      "frequency_count": 824
+    },
+    {
+      "candidate_rank": 75,
+      "source_rank": 75,
+      "word": "මත",
+      "pos": null,
+      "frequency_count": 824
+    },
+    {
+      "candidate_rank": 76,
+      "source_rank": 76,
+      "word": "ළඟ",
+      "pos": null,
+      "frequency_count": 814
+    },
+    {
+      "candidate_rank": 77,
+      "source_rank": 77,
+      "word": "උඩට",
+      "pos": null,
+      "frequency_count": 810
+    },
+    {
+      "candidate_rank": 78,
+      "source_rank": 78,
+      "word": "තවම",
+      "pos": null,
+      "frequency_count": 805
+    },
+    {
+      "candidate_rank": 79,
+      "source_rank": 79,
+      "word": "ගත",
+      "pos": null,
+      "frequency_count": 796
+    },
+    {
+      "candidate_rank": 80,
+      "source_rank": 80,
+      "word": "ඕනද",
+      "pos": null,
+      "frequency_count": 787
+    },
+    {
+      "candidate_rank": 81,
+      "source_rank": 81,
+      "word": "මහ",
+      "pos": null,
+      "frequency_count": 782
+    },
+    {
+      "candidate_rank": 82,
+      "source_rank": 82,
+      "word": "යනව",
+      "pos": null,
+      "frequency_count": 778
+    },
+    {
+      "candidate_rank": 83,
+      "source_rank": 83,
+      "word": "ඒව",
+      "pos": null,
+      "frequency_count": 761
+    },
+    {
+      "candidate_rank": 84,
+      "source_rank": 84,
+      "word": "උබට",
+      "pos": null,
+      "frequency_count": 750
+    },
+    {
+      "candidate_rank": 85,
+      "source_rank": 85,
+      "word": "බලය",
+      "pos": null,
+      "frequency_count": 750
+    },
+    {
+      "candidate_rank": 86,
+      "source_rank": 86,
+      "word": "the",
+      "pos": null,
+      "frequency_count": 741
+    },
+    {
+      "candidate_rank": 87,
+      "source_rank": 87,
+      "word": "you",
+      "pos": null,
+      "frequency_count": 733
+    },
+    {
+      "candidate_rank": 88,
+      "source_rank": 88,
+      "word": "දවස",
+      "pos": null,
+      "frequency_count": 712
+    },
+    {
+      "candidate_rank": 89,
+      "source_rank": 89,
+      "word": "අ",
+      "pos": null,
+      "frequency_count": 696
+    },
+    {
+      "candidate_rank": 90,
+      "source_rank": 90,
+      "word": "බවට",
+      "pos": null,
+      "frequency_count": 679
+    },
+    {
+      "candidate_rank": 91,
+      "source_rank": 91,
+      "word": "ඔන",
+      "pos": null,
+      "frequency_count": 660
+    },
+    {
+      "candidate_rank": 92,
+      "source_rank": 92,
+      "word": "උන",
+      "pos": null,
+      "frequency_count": 639
+    },
+    {
+      "candidate_rank": 93,
+      "source_rank": 93,
+      "word": "ඕ",
+      "pos": null,
+      "frequency_count": 634
+    },
+    {
+      "candidate_rank": 94,
+      "source_rank": 94,
+      "word": "යට",
+      "pos": null,
+      "frequency_count": 625
+    },
+    {
+      "candidate_rank": 95,
+      "source_rank": 95,
+      "word": "ඌව",
+      "pos": null,
+      "frequency_count": 620
+    },
+    {
+      "candidate_rank": 96,
+      "source_rank": 96,
+      "word": "වද",
+      "pos": null,
+      "frequency_count": 616
+    },
+    {
+      "candidate_rank": 97,
+      "source_rank": 97,
+      "word": "මතකද",
+      "pos": null,
+      "frequency_count": 590
+    },
+    {
+      "candidate_rank": 98,
+      "source_rank": 98,
+      "word": "රය",
+      "pos": null,
+      "frequency_count": 582
+    },
+    {
+      "candidate_rank": 99,
+      "source_rank": 99,
+      "word": "කලබල",
+      "pos": null,
+      "frequency_count": 578
+    },
+    {
+      "candidate_rank": 100,
+      "source_rank": 100,
+      "word": "අදහස",
+      "pos": null,
+      "frequency_count": 572
+    },
+    {
+      "candidate_rank": 101,
+      "source_rank": 101,
+      "word": "ඕනම",
+      "pos": null,
+      "frequency_count": 572
+    },
+    {
+      "candidate_rank": 102,
+      "source_rank": 102,
+      "word": "අප",
+      "pos": null,
+      "frequency_count": 560
+    },
+    {
+      "candidate_rank": 103,
+      "source_rank": 103,
+      "word": "a",
+      "pos": null,
+      "frequency_count": 559
+    },
+    {
+      "candidate_rank": 104,
+      "source_rank": 104,
+      "word": "i",
+      "pos": null,
+      "frequency_count": 557
+    },
+    {
+      "candidate_rank": 105,
+      "source_rank": 105,
+      "word": "එනව",
+      "pos": null,
+      "frequency_count": 555
+    },
+    {
+      "candidate_rank": 106,
+      "source_rank": 106,
+      "word": "එ",
+      "pos": null,
+      "frequency_count": 550
+    },
+    {
+      "candidate_rank": 107,
+      "source_rank": 107,
+      "word": "යය",
+      "pos": null,
+      "frequency_count": 538
+    },
+    {
+      "candidate_rank": 108,
+      "source_rank": 108,
+      "word": "අතන",
+      "pos": null,
+      "frequency_count": 530
+    },
+    {
+      "candidate_rank": 109,
+      "source_rank": 109,
+      "word": "හදවත",
+      "pos": null,
+      "frequency_count": 522
+    },
+    {
+      "candidate_rank": 110,
+      "source_rank": 110,
+      "word": "ලඟ",
+      "pos": null,
+      "frequency_count": 519
+    },
+    {
+      "candidate_rank": 111,
+      "source_rank": 111,
+      "word": "මග",
+      "pos": null,
+      "frequency_count": 509
+    },
+    {
+      "candidate_rank": 112,
+      "source_rank": 112,
+      "word": "යනවද",
+      "pos": null,
+      "frequency_count": 509
+    },
+    {
+      "candidate_rank": 113,
+      "source_rank": 113,
+      "word": "අවසර",
+      "pos": null,
+      "frequency_count": 508
+    },
+    {
+      "candidate_rank": 114,
+      "source_rank": 114,
+      "word": "මරණය",
+      "pos": null,
+      "frequency_count": 495
+    },
+    {
+      "candidate_rank": 115,
+      "source_rank": 115,
+      "word": "දවසක",
+      "pos": null,
+      "frequency_count": 495
+    },
+    {
+      "candidate_rank": 116,
+      "source_rank": 116,
+      "word": "අතට",
+      "pos": null,
+      "frequency_count": 495
+    },
+    {
+      "candidate_rank": 117,
+      "source_rank": 117,
+      "word": "සමඟ",
+      "pos": null,
+      "frequency_count": 495
+    },
+    {
+      "candidate_rank": 118,
+      "source_rank": 118,
+      "word": "පහලට",
+      "pos": null,
+      "frequency_count": 494
+    },
+    {
+      "candidate_rank": 119,
+      "source_rank": 119,
+      "word": "උඹව",
+      "pos": null,
+      "frequency_count": 492
+    },
+    {
+      "candidate_rank": 120,
+      "source_rank": 120,
+      "word": "ලගට",
+      "pos": null,
+      "frequency_count": 486
+    },
+    {
+      "candidate_rank": 121,
+      "source_rank": 121,
+      "word": "වචන",
+      "pos": null,
+      "frequency_count": 473
+    },
+    {
+      "candidate_rank": 122,
+      "source_rank": 122,
+      "word": "එතනට",
+      "pos": null,
+      "frequency_count": 456
+    },
+    {
+      "candidate_rank": 123,
+      "source_rank": 123,
+      "word": "බල",
+      "pos": null,
+      "frequency_count": 442
+    },
+    {
+      "candidate_rank": 124,
+      "source_rank": 124,
+      "word": "ස",
+      "pos": null,
+      "frequency_count": 442
+    },
+    {
+      "candidate_rank": 125,
+      "source_rank": 125,
+      "word": "ල",
+      "pos": null,
+      "frequency_count": 439
+    },
+    {
+      "candidate_rank": 126,
+      "source_rank": 126,
+      "word": "ඔතන",
+      "pos": null,
+      "frequency_count": 436
+    },
+    {
+      "candidate_rank": 127,
+      "source_rank": 127,
+      "word": "එනවද",
+      "pos": null,
+      "frequency_count": 436
+    },
+    {
+      "candidate_rank": 128,
+      "source_rank": 128,
+      "word": "s",
+      "pos": null,
+      "frequency_count": 431
+    },
+    {
+      "candidate_rank": 129,
+      "source_rank": 129,
+      "word": "ත",
+      "pos": null,
+      "frequency_count": 430
+    },
+    {
+      "candidate_rank": 130,
+      "source_rank": 130,
+      "word": "වයස",
+      "pos": null,
+      "frequency_count": 412
+    },
+    {
+      "candidate_rank": 131,
+      "source_rank": 131,
+      "word": "නගරය",
+      "pos": null,
+      "frequency_count": 409
+    },
+    {
+      "candidate_rank": 132,
+      "source_rank": 132,
+      "word": "පහල",
+      "pos": null,
+      "frequency_count": 409
+    },
+    {
+      "candidate_rank": 133,
+      "source_rank": 133,
+      "word": "ඌට",
+      "pos": null,
+      "frequency_count": 398
+    },
+    {
+      "candidate_rank": 134,
+      "source_rank": 134,
+      "word": "හදන",
+      "pos": null,
+      "frequency_count": 396
+    },
+    {
+      "candidate_rank": 135,
+      "source_rank": 135,
+      "word": "ඊලග",
+      "pos": null,
+      "frequency_count": 393
+    },
+    {
+      "candidate_rank": 136,
+      "source_rank": 136,
+      "word": "අයව",
+      "pos": null,
+      "frequency_count": 393
+    },
+    {
+      "candidate_rank": 137,
+      "source_rank": 137,
+      "word": "වසර",
+      "pos": null,
+      "frequency_count": 387
+    },
+    {
+      "candidate_rank": 138,
+      "source_rank": 138,
+      "word": "ලඟට",
+      "pos": null,
+      "frequency_count": 380
+    },
+    {
+      "candidate_rank": 139,
+      "source_rank": 139,
+      "word": "ඊළඟ",
+      "pos": null,
+      "frequency_count": 375
+    },
+    {
+      "candidate_rank": 140,
+      "source_rank": 140,
+      "word": "fbi",
+      "pos": null,
+      "frequency_count": 369
+    },
+    {
+      "candidate_rank": 141,
+      "source_rank": 141,
+      "word": "එකක",
+      "pos": null,
+      "frequency_count": 367
+    },
+    {
+      "candidate_rank": 142,
+      "source_rank": 142,
+      "word": "ආවරණය",
+      "pos": null,
+      "frequency_count": 351
+    },
+    {
+      "candidate_rank": 143,
+      "source_rank": 143,
+      "word": "තරහ",
+      "pos": null,
+      "frequency_count": 351
+    },
+    {
+      "candidate_rank": 144,
+      "source_rank": 144,
+      "word": "to",
+      "pos": null,
+      "frequency_count": 348
+    },
+    {
+      "candidate_rank": 145,
+      "source_rank": 145,
+      "word": "අහකට",
+      "pos": null,
+      "frequency_count": 343
+    },
+    {
+      "candidate_rank": 146,
+      "source_rank": 146,
+      "word": "බර",
+      "pos": null,
+      "frequency_count": 336
+    },
+    {
+      "candidate_rank": 147,
+      "source_rank": 147,
+      "word": "ප",
+      "pos": null,
+      "frequency_count": 332
+    },
+    {
+      "candidate_rank": 148,
+      "source_rank": 148,
+      "word": "අගය",
+      "pos": null,
+      "frequency_count": 332
+    },
+    {
+      "candidate_rank": 149,
+      "source_rank": 149,
+      "word": "පණ",
+      "pos": null,
+      "frequency_count": 327
+    },
+    {
+      "candidate_rank": 150,
+      "source_rank": 150,
+      "word": "එකකට",
+      "pos": null,
+      "frequency_count": 318
+    },
+    {
+      "candidate_rank": 151,
+      "source_rank": 151,
+      "word": "ඔ",
+      "pos": null,
+      "frequency_count": 316
+    },
+    {
+      "candidate_rank": 152,
+      "source_rank": 152,
+      "word": "එකද",
+      "pos": null,
+      "frequency_count": 313
+    },
+    {
+      "candidate_rank": 153,
+      "source_rank": 153,
+      "word": "it",
+      "pos": null,
+      "frequency_count": 310
+    },
+    {
+      "candidate_rank": 154,
+      "source_rank": 154,
+      "word": "අණ",
+      "pos": null,
+      "frequency_count": 306
+    },
+    {
+      "candidate_rank": 155,
+      "source_rank": 155,
+      "word": "of",
+      "pos": null,
+      "frequency_count": 305
+    },
+    {
+      "candidate_rank": 156,
+      "source_rank": 156,
+      "word": "තම",
+      "pos": null,
+      "frequency_count": 297
+    },
+    {
+      "candidate_rank": 157,
+      "source_rank": 157,
+      "word": "හතර",
+      "pos": null,
+      "frequency_count": 296
+    },
+    {
+      "candidate_rank": 158,
+      "source_rank": 158,
+      "word": "නව",
+      "pos": null,
+      "frequency_count": 292
+    },
+    {
+      "candidate_rank": 159,
+      "source_rank": 159,
+      "word": "රට",
+      "pos": null,
+      "frequency_count": 289
+    },
+    {
+      "candidate_rank": 160,
+      "source_rank": 160,
+      "word": "ආවද",
+      "pos": null,
+      "frequency_count": 286
+    },
+    {
+      "candidate_rank": 161,
+      "source_rank": 161,
+      "word": "ගමන",
+      "pos": null,
+      "frequency_count": 286
+    },
+    {
+      "candidate_rank": 162,
+      "source_rank": 162,
+      "word": "මරණ",
+      "pos": null,
+      "frequency_count": 284
+    },
+    {
+      "candidate_rank": 163,
+      "source_rank": 163,
+      "word": "මල",
+      "pos": null,
+      "frequency_count": 284
+    },
+    {
+      "candidate_rank": 164,
+      "source_rank": 164,
+      "word": "ආවම",
+      "pos": null,
+      "frequency_count": 282
+    },
+    {
+      "candidate_rank": 165,
+      "source_rank": 165,
+      "word": "ආදර",
+      "pos": null,
+      "frequency_count": 281
+    },
+    {
+      "candidate_rank": 166,
+      "source_rank": 166,
+      "word": "ජය",
+      "pos": null,
+      "frequency_count": 279
+    },
+    {
+      "candidate_rank": 167,
+      "source_rank": 167,
+      "word": "තද",
+      "pos": null,
+      "frequency_count": 274
+    },
+    {
+      "candidate_rank": 168,
+      "source_rank": 168,
+      "word": "උපකරණ",
+      "pos": null,
+      "frequency_count": 274
+    },
+    {
+      "candidate_rank": 169,
+      "source_rank": 169,
+      "word": "හ",
+      "pos": null,
+      "frequency_count": 274
+    },
+    {
+      "candidate_rank": 170,
+      "source_rank": 170,
+      "word": "t",
+      "pos": null,
+      "frequency_count": 274
+    },
+    {
+      "candidate_rank": 171,
+      "source_rank": 171,
+      "word": "හට",
+      "pos": null,
+      "frequency_count": 270
+    },
+    {
+      "candidate_rank": 172,
+      "source_rank": 172,
+      "word": "ඒකද",
+      "pos": null,
+      "frequency_count": 267
+    },
+    {
+      "candidate_rank": 173,
+      "source_rank": 173,
+      "word": "me",
+      "pos": null,
+      "frequency_count": 264
+    },
+    {
+      "candidate_rank": 174,
+      "source_rank": 174,
+      "word": "and",
+      "pos": null,
+      "frequency_count": 258
+    },
+    {
+      "candidate_rank": 175,
+      "source_rank": 175,
+      "word": "in",
+      "pos": null,
+      "frequency_count": 257
+    },
+    {
+      "candidate_rank": 176,
+      "source_rank": 176,
+      "word": "ඉහල",
+      "pos": null,
+      "frequency_count": 257
+    },
+    {
+      "candidate_rank": 177,
+      "source_rank": 177,
+      "word": "ළඟට",
+      "pos": null,
+      "frequency_count": 255
+    },
+    {
+      "candidate_rank": 178,
+      "source_rank": 178,
+      "word": "බලන",
+      "pos": null,
+      "frequency_count": 251
+    },
+    {
+      "candidate_rank": 179,
+      "source_rank": 179,
+      "word": "ඇ",
+      "pos": null,
+      "frequency_count": 251
+    },
+    {
+      "candidate_rank": 180,
+      "source_rank": 180,
+      "word": "එම",
+      "pos": null,
+      "frequency_count": 250
+    },
+    {
+      "candidate_rank": 181,
+      "source_rank": 181,
+      "word": "ඊලඟ",
+      "pos": null,
+      "frequency_count": 250
+    },
+    {
+      "candidate_rank": 182,
+      "source_rank": 182,
+      "word": "is",
+      "pos": null,
+      "frequency_count": 249
+    },
+    {
+      "candidate_rank": 183,
+      "source_rank": 183,
+      "word": "ඉර",
+      "pos": null,
+      "frequency_count": 249
+    },
+    {
+      "candidate_rank": 184,
+      "source_rank": 184,
+      "word": "එයට",
+      "pos": null,
+      "frequency_count": 248
+    },
+    {
+      "candidate_rank": 185,
+      "source_rank": 185,
+      "word": "ඉඳල",
+      "pos": null,
+      "frequency_count": 242
+    },
+    {
+      "candidate_rank": 186,
+      "source_rank": 186,
+      "word": "සදහටම",
+      "pos": null,
+      "frequency_count": 238
+    },
+    {
+      "candidate_rank": 187,
+      "source_rank": 187,
+      "word": "රමය",
+      "pos": null,
+      "frequency_count": 234
+    },
+    {
+      "candidate_rank": 188,
+      "source_rank": 188,
+      "word": "සහය",
+      "pos": null,
+      "frequency_count": 233
+    },
+    {
+      "candidate_rank": 189,
+      "source_rank": 189,
+      "word": "ඒකම",
+      "pos": null,
+      "frequency_count": 232
+    },
+    {
+      "candidate_rank": 190,
+      "source_rank": 190,
+      "word": "ආවට",
+      "pos": null,
+      "frequency_count": 229
+    },
+    {
+      "candidate_rank": 191,
+      "source_rank": 191,
+      "word": "එකඟ",
+      "pos": null,
+      "frequency_count": 229
+    },
+    {
+      "candidate_rank": 192,
+      "source_rank": 192,
+      "word": "රස",
+      "pos": null,
+      "frequency_count": 226
+    },
+    {
+      "candidate_rank": 193,
+      "source_rank": 193,
+      "word": "අහල",
+      "pos": null,
+      "frequency_count": 225
+    },
+    {
+      "candidate_rank": 194,
+      "source_rank": 194,
+      "word": "තරමට",
+      "pos": null,
+      "frequency_count": 224
+    },
+    {
+      "candidate_rank": 195,
+      "source_rank": 195,
+      "word": "ග",
+      "pos": null,
+      "frequency_count": 224
+    },
+    {
+      "candidate_rank": 196,
+      "source_rank": 196,
+      "word": "ගහන",
+      "pos": null,
+      "frequency_count": 223
+    },
+    {
+      "candidate_rank": 197,
+      "source_rank": 197,
+      "word": "නරකම",
+      "pos": null,
+      "frequency_count": 222
+    },
+    {
+      "candidate_rank": 198,
+      "source_rank": 198,
+      "word": "පහළට",
+      "pos": null,
+      "frequency_count": 220
+    },
+    {
+      "candidate_rank": 199,
+      "source_rank": 199,
+      "word": "උස",
+      "pos": null,
+      "frequency_count": 220
+    },
+    {
+      "candidate_rank": 200,
+      "source_rank": 200,
+      "word": "කන",
+      "pos": null,
+      "frequency_count": 215
+    },
+    {
+      "candidate_rank": 201,
+      "source_rank": 201,
+      "word": "උබව",
+      "pos": null,
+      "frequency_count": 214
+    },
+    {
+      "candidate_rank": 202,
+      "source_rank": 202,
+      "word": "ණය",
+      "pos": null,
+      "frequency_count": 214
+    },
+    {
+      "candidate_rank": 203,
+      "source_rank": 203,
+      "word": "ඒවට",
+      "pos": null,
+      "frequency_count": 211
+    },
+    {
+      "candidate_rank": 204,
+      "source_rank": 204,
+      "word": "අරක",
+      "pos": null,
+      "frequency_count": 209
+    },
+    {
+      "candidate_rank": 205,
+      "source_rank": 205,
+      "word": "n",
+      "pos": null,
+      "frequency_count": 209
+    },
+    {
+      "candidate_rank": 206,
+      "source_rank": 206,
+      "word": "my",
+      "pos": null,
+      "frequency_count": 209
+    },
+    {
+      "candidate_rank": 207,
+      "source_rank": 207,
+      "word": "cia",
+      "pos": null,
+      "frequency_count": 208
+    },
+    {
+      "candidate_rank": 208,
+      "source_rank": 208,
+      "word": "මරල",
+      "pos": null,
+      "frequency_count": 208
+    },
+    {
+      "candidate_rank": 209,
+      "source_rank": 209,
+      "word": "මටම",
+      "pos": null,
+      "frequency_count": 201
+    },
+    {
+      "candidate_rank": 210,
+      "source_rank": 210,
+      "word": "මනස",
+      "pos": null,
+      "frequency_count": 201
+    },
+    {
+      "candidate_rank": 211,
+      "source_rank": 211,
+      "word": "මඟ",
+      "pos": null,
+      "frequency_count": 200
+    },
+    {
+      "candidate_rank": 212,
+      "source_rank": 212,
+      "word": "ඊලඟට",
+      "pos": null,
+      "frequency_count": 200
+    },
+    {
+      "candidate_rank": 213,
+      "source_rank": 213,
+      "word": "යකඩ",
+      "pos": null,
+      "frequency_count": 196
+    },
+    {
+      "candidate_rank": 214,
+      "source_rank": 214,
+      "word": "රම",
+      "pos": null,
+      "frequency_count": 194
+    },
+    {
+      "candidate_rank": 215,
+      "source_rank": 215,
+      "word": "ජලය",
+      "pos": null,
+      "frequency_count": 193
+    },
+    {
+      "candidate_rank": 216,
+      "source_rank": 216,
+      "word": "වයසක",
+      "pos": null,
+      "frequency_count": 192
+    },
+    {
+      "candidate_rank": 217,
+      "source_rank": 217,
+      "word": "will",
+      "pos": null,
+      "frequency_count": 191
+    },
+    {
+      "candidate_rank": 218,
+      "source_rank": 218,
+      "word": "රජය",
+      "pos": null,
+      "frequency_count": 191
+    },
+    {
+      "candidate_rank": 219,
+      "source_rank": 219,
+      "word": "කම",
+      "pos": null,
+      "frequency_count": 189
+    },
+    {
+      "candidate_rank": 220,
+      "source_rank": 220,
+      "word": "කවදද",
+      "pos": null,
+      "frequency_count": 189
+    },
+    {
+      "candidate_rank": 221,
+      "source_rank": 221,
+      "word": "බරපතල",
+      "pos": null,
+      "frequency_count": 188
+    },
+    {
+      "candidate_rank": 222,
+      "source_rank": 222,
+      "word": "වග",
+      "pos": null,
+      "frequency_count": 186
+    },
+    {
+      "candidate_rank": 223,
+      "source_rank": 223,
+      "word": "ගමට",
+      "pos": null,
+      "frequency_count": 185
+    },
+    {
+      "candidate_rank": 224,
+      "source_rank": 224,
+      "word": "l",
+      "pos": null,
+      "frequency_count": 185
+    },
+    {
+      "candidate_rank": 225,
+      "source_rank": 225,
+      "word": "ආස",
+      "pos": null,
+      "frequency_count": 185
+    },
+    {
+      "candidate_rank": 226,
+      "source_rank": 226,
+      "word": "බ",
+      "pos": null,
+      "frequency_count": 182
+    },
+    {
+      "candidate_rank": 227,
+      "source_rank": 227,
+      "word": "අමතර",
+      "pos": null,
+      "frequency_count": 179
+    },
+    {
+      "candidate_rank": 228,
+      "source_rank": 228,
+      "word": "රහස",
+      "pos": null,
+      "frequency_count": 178
+    },
+    {
+      "candidate_rank": 229,
+      "source_rank": 229,
+      "word": "වරද",
+      "pos": null,
+      "frequency_count": 178
+    },
+    {
+      "candidate_rank": 230,
+      "source_rank": 230,
+      "word": "ලබන",
+      "pos": null,
+      "frequency_count": 178
+    },
+    {
+      "candidate_rank": 231,
+      "source_rank": 231,
+      "word": "මතකය",
+      "pos": null,
+      "frequency_count": 176
+    },
+    {
+      "candidate_rank": 232,
+      "source_rank": 232,
+      "word": "ළග",
+      "pos": null,
+      "frequency_count": 174
+    },
+    {
+      "candidate_rank": 233,
+      "source_rank": 233,
+      "word": "නගරයට",
+      "pos": null,
+      "frequency_count": 173
+    },
+    {
+      "candidate_rank": 234,
+      "source_rank": 234,
+      "word": "මරණයට",
+      "pos": null,
+      "frequency_count": 173
+    },
+    {
+      "candidate_rank": 235,
+      "source_rank": 235,
+      "word": "your",
+      "pos": null,
+      "frequency_count": 170
+    },
+    {
+      "candidate_rank": 236,
+      "source_rank": 236,
+      "word": "හවස",
+      "pos": null,
+      "frequency_count": 170
+    },
+    {
+      "candidate_rank": 237,
+      "source_rank": 237,
+      "word": "පහළ",
+      "pos": null,
+      "frequency_count": 170
+    },
+    {
+      "candidate_rank": 238,
+      "source_rank": 238,
+      "word": "වමට",
+      "pos": null,
+      "frequency_count": 169
+    },
+    {
+      "candidate_rank": 239,
+      "source_rank": 239,
+      "word": "this",
+      "pos": null,
+      "frequency_count": 168
+    },
+    {
+      "candidate_rank": 240,
+      "source_rank": 240,
+      "word": "සරල",
+      "pos": null,
+      "frequency_count": 168
+    },
+    {
+      "candidate_rank": 241,
+      "source_rank": 241,
+      "word": "වචනය",
+      "pos": null,
+      "frequency_count": 167
+    },
+    {
+      "candidate_rank": 242,
+      "source_rank": 242,
+      "word": "මමම",
+      "pos": null,
+      "frequency_count": 167
+    },
+    {
+      "candidate_rank": 243,
+      "source_rank": 243,
+      "word": "දවසට",
+      "pos": null,
+      "frequency_count": 165
+    },
+    {
+      "candidate_rank": 244,
+      "source_rank": 244,
+      "word": "උ",
+      "pos": null,
+      "frequency_count": 163
+    },
+    {
+      "candidate_rank": 245,
+      "source_rank": 245,
+      "word": "පල",
+      "pos": null,
+      "frequency_count": 163
+    },
+    {
+      "candidate_rank": 246,
+      "source_rank": 246,
+      "word": "මව",
+      "pos": null,
+      "frequency_count": 162
+    },
+    {
+      "candidate_rank": 247,
+      "source_rank": 247,
+      "word": "හඬ",
+      "pos": null,
+      "frequency_count": 162
+    },
+    {
+      "candidate_rank": 248,
+      "source_rank": 248,
+      "word": "භය",
+      "pos": null,
+      "frequency_count": 162
+    },
+    {
+      "candidate_rank": 249,
+      "source_rank": 249,
+      "word": "යම",
+      "pos": null,
+      "frequency_count": 160
+    },
+    {
+      "candidate_rank": 250,
+      "source_rank": 250,
+      "word": "හද",
+      "pos": null,
+      "frequency_count": 158
+    },
+    {
+      "candidate_rank": 251,
+      "source_rank": 251,
+      "word": "වට",
+      "pos": null,
+      "frequency_count": 158
+    },
+    {
+      "candidate_rank": 252,
+      "source_rank": 252,
+      "word": "ගම",
+      "pos": null,
+      "frequency_count": 158
+    },
+    {
+      "candidate_rank": 253,
+      "source_rank": 253,
+      "word": "love",
+      "pos": null,
+      "frequency_count": 157
+    },
+    {
+      "candidate_rank": 254,
+      "source_rank": 254,
+      "word": "පමන",
+      "pos": null,
+      "frequency_count": 156
+    },
+    {
+      "candidate_rank": 255,
+      "source_rank": 255,
+      "word": "m",
+      "pos": null,
+      "frequency_count": 155
+    },
+    {
+      "candidate_rank": 256,
+      "source_rank": 256,
+      "word": "මමද",
+      "pos": null,
+      "frequency_count": 155
+    },
+    {
+      "candidate_rank": 257,
+      "source_rank": 257,
+      "word": "අහන",
+      "pos": null,
+      "frequency_count": 153
+    },
+    {
+      "candidate_rank": 258,
+      "source_rank": 258,
+      "word": "ගහ",
+      "pos": null,
+      "frequency_count": 152
+    },
+    {
+      "candidate_rank": 259,
+      "source_rank": 259,
+      "word": "පහත",
+      "pos": null,
+      "frequency_count": 152
+    },
+    {
+      "candidate_rank": 260,
+      "source_rank": 260,
+      "word": "බඩ",
+      "pos": null,
+      "frequency_count": 151
+    },
+    {
+      "candidate_rank": 261,
+      "source_rank": 261,
+      "word": "රහණය",
+      "pos": null,
+      "frequency_count": 151
+    },
+    {
+      "candidate_rank": 262,
+      "source_rank": 262,
+      "word": "අසරණ",
+      "pos": null,
+      "frequency_count": 150
+    },
+    {
+      "candidate_rank": 263,
+      "source_rank": 263,
+      "word": "ඇට",
+      "pos": null,
+      "frequency_count": 150
+    },
+    {
+      "candidate_rank": 264,
+      "source_rank": 264,
+      "word": "are",
+      "pos": null,
+      "frequency_count": 150
+    },
+    {
+      "candidate_rank": 265,
+      "source_rank": 265,
+      "word": "for",
+      "pos": null,
+      "frequency_count": 149
+    },
+    {
+      "candidate_rank": 266,
+      "source_rank": 266,
+      "word": "ඊ",
+      "pos": null,
+      "frequency_count": 148
+    },
+    {
+      "candidate_rank": 267,
+      "source_rank": 267,
+      "word": "ඊලගට",
+      "pos": null,
+      "frequency_count": 147
+    },
+    {
+      "candidate_rank": 268,
+      "source_rank": 268,
+      "word": "උඹලට",
+      "pos": null,
+      "frequency_count": 147
+    },
+    {
+      "candidate_rank": 269,
+      "source_rank": 269,
+      "word": "chowllye",
+      "pos": null,
+      "frequency_count": 146
+    },
+    {
+      "candidate_rank": 270,
+      "source_rank": 270,
+      "word": "that",
+      "pos": null,
+      "frequency_count": 144
+    },
+    {
+      "candidate_rank": 271,
+      "source_rank": 271,
+      "word": "ඉහළ",
+      "pos": null,
+      "frequency_count": 142
+    },
+    {
+      "candidate_rank": 272,
+      "source_rank": 272,
+      "word": "john",
+      "pos": null,
+      "frequency_count": 142
+    },
+    {
+      "candidate_rank": 273,
+      "source_rank": 273,
+      "word": "හඩ",
+      "pos": null,
+      "frequency_count": 142
+    },
+    {
+      "candidate_rank": 274,
+      "source_rank": 274,
+      "word": "on",
+      "pos": null,
+      "frequency_count": 141
+    },
+    {
+      "candidate_rank": 275,
+      "source_rank": 275,
+      "word": "ඊළඟට",
+      "pos": null,
+      "frequency_count": 141
+    },
+    {
+      "candidate_rank": 276,
+      "source_rank": 276,
+      "word": "හදල",
+      "pos": null,
+      "frequency_count": 140
+    },
+    {
+      "candidate_rank": 277,
+      "source_rank": 277,
+      "word": "ඉදල",
+      "pos": null,
+      "frequency_count": 139
+    },
+    {
+      "candidate_rank": 278,
+      "source_rank": 278,
+      "word": "can",
+      "pos": null,
+      "frequency_count": 138
+    },
+    {
+      "candidate_rank": 279,
+      "source_rank": 279,
+      "word": "තරගය",
+      "pos": null,
+      "frequency_count": 137
+    },
+    {
+      "candidate_rank": 280,
+      "source_rank": 280,
+      "word": "dna",
+      "pos": null,
+      "frequency_count": 137
+    },
+    {
+      "candidate_rank": 281,
+      "source_rank": 281,
+      "word": "b",
+      "pos": null,
+      "frequency_count": 136
+    },
+    {
+      "candidate_rank": 282,
+      "source_rank": 282,
+      "word": "tv",
+      "pos": null,
+      "frequency_count": 136
+    },
+    {
+      "candidate_rank": 283,
+      "source_rank": 283,
+      "word": "ඉහලට",
+      "pos": null,
+      "frequency_count": 135
+    },
+    {
+      "candidate_rank": 284,
+      "source_rank": 284,
+      "word": "උණ",
+      "pos": null,
+      "frequency_count": 135
+    },
+    {
+      "candidate_rank": 285,
+      "source_rank": 285,
+      "word": "ඇඟ",
+      "pos": null,
+      "frequency_count": 134
+    },
+    {
+      "candidate_rank": 286,
+      "source_rank": 286,
+      "word": "ඈතට",
+      "pos": null,
+      "frequency_count": 134
+    },
+    {
+      "candidate_rank": 287,
+      "source_rank": 287,
+      "word": "ඕකට",
+      "pos": null,
+      "frequency_count": 132
+    },
+    {
+      "candidate_rank": 288,
+      "source_rank": 288,
+      "word": "fs",
+      "pos": null,
+      "frequency_count": 132
+    },
+    {
+      "candidate_rank": 289,
+      "source_rank": 289,
+      "word": "කවද",
+      "pos": null,
+      "frequency_count": 131
+    },
+    {
+      "candidate_rank": 290,
+      "source_rank": 290,
+      "word": "පරන",
+      "pos": null,
+      "frequency_count": 131
+    },
+    {
+      "candidate_rank": 291,
+      "source_rank": 291,
+      "word": "නගර",
+      "pos": null,
+      "frequency_count": 131
+    },
+    {
+      "candidate_rank": 292,
+      "source_rank": 292,
+      "word": "හය",
+      "pos": null,
+      "frequency_count": 130
+    },
+    {
+      "candidate_rank": 293,
+      "source_rank": 293,
+      "word": "පහ",
+      "pos": null,
+      "frequency_count": 130
+    },
+    {
+      "candidate_rank": 294,
+      "source_rank": 294,
+      "word": "මළ",
+      "pos": null,
+      "frequency_count": 129
+    },
+    {
+      "candidate_rank": 295,
+      "source_rank": 295,
+      "word": "ඉරණම",
+      "pos": null,
+      "frequency_count": 129
+    },
+    {
+      "candidate_rank": 296,
+      "source_rank": 296,
+      "word": "frodo",
+      "pos": null,
+      "frequency_count": 128
+    },
+    {
+      "candidate_rank": 297,
+      "source_rank": 297,
+      "word": "කහ",
+      "pos": null,
+      "frequency_count": 128
+    },
+    {
+      "candidate_rank": 298,
+      "source_rank": 298,
+      "word": "දවසකට",
+      "pos": null,
+      "frequency_count": 127
+    },
+    {
+      "candidate_rank": 299,
+      "source_rank": 299,
+      "word": "ඇද",
+      "pos": null,
+      "frequency_count": 127
+    },
+    {
+      "candidate_rank": 300,
+      "source_rank": 300,
+      "word": "ගඟ",
+      "pos": null,
+      "frequency_count": 127
+    },
+    {
+      "candidate_rank": 301,
+      "source_rank": 301,
+      "word": "එකග",
+      "pos": null,
+      "frequency_count": 126
+    },
+    {
+      "candidate_rank": 302,
+      "source_rank": 302,
+      "word": "දවසම",
+      "pos": null,
+      "frequency_count": 126
+    },
+    {
+      "candidate_rank": 303,
+      "source_rank": 303,
+      "word": "ඔයට",
+      "pos": null,
+      "frequency_count": 125
+    },
+    {
+      "candidate_rank": 304,
+      "source_rank": 304,
+      "word": "උප",
+      "pos": null,
+      "frequency_count": 125
+    },
+    {
+      "candidate_rank": 305,
+      "source_rank": 305,
+      "word": "what",
+      "pos": null,
+      "frequency_count": 125
+    },
+    {
+      "candidate_rank": 306,
+      "source_rank": 306,
+      "word": "ඊළගට",
+      "pos": null,
+      "frequency_count": 125
+    },
+    {
+      "candidate_rank": 307,
+      "source_rank": 307,
+      "word": "oh",
+      "pos": null,
+      "frequency_count": 125
+    },
+    {
+      "candidate_rank": 308,
+      "source_rank": 308,
+      "word": "ඕනවට",
+      "pos": null,
+      "frequency_count": 125
+    },
+    {
+      "candidate_rank": 309,
+      "source_rank": 309,
+      "word": "එකටම",
+      "pos": null,
+      "frequency_count": 124
+    },
+    {
+      "candidate_rank": 310,
+      "source_rank": 310,
+      "word": "වහල",
+      "pos": null,
+      "frequency_count": 124
+    },
+    {
+      "candidate_rank": 311,
+      "source_rank": 311,
+      "word": "බලල",
+      "pos": null,
+      "frequency_count": 123
+    },
+    {
+      "candidate_rank": 312,
+      "source_rank": 312,
+      "word": "ජල",
+      "pos": null,
+      "frequency_count": 123
+    },
+    {
+      "candidate_rank": 313,
+      "source_rank": 313,
+      "word": "සටන",
+      "pos": null,
+      "frequency_count": 122
+    },
+    {
+      "candidate_rank": 314,
+      "source_rank": 314,
+      "word": "තරඟ",
+      "pos": null,
+      "frequency_count": 122
+    },
+    {
+      "candidate_rank": 315,
+      "source_rank": 315,
+      "word": "තරග",
+      "pos": null,
+      "frequency_count": 122
+    },
+    {
+      "candidate_rank": 316,
+      "source_rank": 316,
+      "word": "c",
+      "pos": null,
+      "frequency_count": 121
+    },
+    {
+      "candidate_rank": 317,
+      "source_rank": 317,
+      "word": "අහස",
+      "pos": null,
+      "frequency_count": 120
+    },
+    {
+      "candidate_rank": 318,
+      "source_rank": 318,
+      "word": "ගඳ",
+      "pos": null,
+      "frequency_count": 118
+    },
+    {
+      "candidate_rank": 319,
+      "source_rank": 319,
+      "word": "ගහල",
+      "pos": null,
+      "frequency_count": 117
+    },
+    {
+      "candidate_rank": 320,
+      "source_rank": 320,
+      "word": "ගල",
+      "pos": null,
+      "frequency_count": 116
+    },
+    {
+      "candidate_rank": 321,
+      "source_rank": 321,
+      "word": "රජ",
+      "pos": null,
+      "frequency_count": 116
+    },
+    {
+      "candidate_rank": 322,
+      "source_rank": 322,
+      "word": "ඈ",
+      "pos": null,
+      "frequency_count": 114
+    },
+    {
+      "candidate_rank": 323,
+      "source_rank": 323,
+      "word": "o",
+      "pos": null,
+      "frequency_count": 114
+    },
+    {
+      "candidate_rank": 324,
+      "source_rank": 324,
+      "word": "mr",
+      "pos": null,
+      "frequency_count": 114
+    },
+    {
+      "candidate_rank": 325,
+      "source_rank": 325,
+      "word": "තරඟය",
+      "pos": null,
+      "frequency_count": 113
+    },
+    {
+      "candidate_rank": 326,
+      "source_rank": 326,
+      "word": "කඩ",
+      "pos": null,
+      "frequency_count": 113
+    },
+    {
+      "candidate_rank": 327,
+      "source_rank": 327,
+      "word": "කරනවට",
+      "pos": null,
+      "frequency_count": 112
+    },
+    {
+      "candidate_rank": 328,
+      "source_rank": 328,
+      "word": "අපව",
+      "pos": null,
+      "frequency_count": 112
+    },
+    {
+      "candidate_rank": 329,
+      "source_rank": 329,
+      "word": "ගණනය",
+      "pos": null,
+      "frequency_count": 112
+    },
+    {
+      "candidate_rank": 330,
+      "source_rank": 330,
+      "word": "we",
+      "pos": null,
+      "frequency_count": 111
+    },
+    {
+      "candidate_rank": 331,
+      "source_rank": 331,
+      "word": "ලද",
+      "pos": null,
+      "frequency_count": 111
+    },
+    {
+      "candidate_rank": 332,
+      "source_rank": 332,
+      "word": "අවට",
+      "pos": null,
+      "frequency_count": 110
+    },
+    {
+      "candidate_rank": 333,
+      "source_rank": 333,
+      "word": "ළමයව",
+      "pos": null,
+      "frequency_count": 110
+    },
+    {
+      "candidate_rank": 334,
+      "source_rank": 334,
+      "word": "all",
+      "pos": null,
+      "frequency_count": 109
+    },
+    {
+      "candidate_rank": 335,
+      "source_rank": 335,
+      "word": "පමණ",
+      "pos": null,
+      "frequency_count": 108
+    },
+    {
+      "candidate_rank": 336,
+      "source_rank": 336,
+      "word": "ඉ",
+      "pos": null,
+      "frequency_count": 107
+    },
+    {
+      "candidate_rank": 337,
+      "source_rank": 337,
+      "word": "ඈත",
+      "pos": null,
+      "frequency_count": 106
+    },
+    {
+      "candidate_rank": 338,
+      "source_rank": 338,
+      "word": "පන",
+      "pos": null,
+      "frequency_count": 106
+    },
+    {
+      "candidate_rank": 339,
+      "source_rank": 339,
+      "word": "වයසට",
+      "pos": null,
+      "frequency_count": 104
+    },
+    {
+      "candidate_rank": 340,
+      "source_rank": 340,
+      "word": "ඉවරද",
+      "pos": null,
+      "frequency_count": 104
+    },
+    {
+      "candidate_rank": 341,
+      "source_rank": 341,
+      "word": "ඒකක",
+      "pos": null,
+      "frequency_count": 103
+    },
+    {
+      "candidate_rank": 342,
+      "source_rank": 342,
+      "word": "බලනවද",
+      "pos": null,
+      "frequency_count": 102
+    },
+    {
+      "candidate_rank": 343,
+      "source_rank": 343,
+      "word": "රටට",
+      "pos": null,
+      "frequency_count": 101
+    },
+    {
+      "candidate_rank": 344,
+      "source_rank": 344,
+      "word": "d",
+      "pos": null,
+      "frequency_count": 101
+    },
+    {
+      "candidate_rank": 345,
+      "source_rank": 345,
+      "word": "මහත",
+      "pos": null,
+      "frequency_count": 101
+    },
+    {
+      "candidate_rank": 346,
+      "source_rank": 346,
+      "word": "නමට",
+      "pos": null,
+      "frequency_count": 101
+    },
+    {
+      "candidate_rank": 347,
+      "source_rank": 347,
+      "word": "හදවතට",
+      "pos": null,
+      "frequency_count": 100
+    },
+    {
+      "candidate_rank": 348,
+      "source_rank": 348,
+      "word": "no",
+      "pos": null,
+      "frequency_count": 99
+    },
+    {
+      "candidate_rank": 349,
+      "source_rank": 349,
+      "word": "ඒකකය",
+      "pos": null,
+      "frequency_count": 99
+    },
+    {
+      "candidate_rank": 350,
+      "source_rank": 350,
+      "word": "ඔක",
+      "pos": null,
+      "frequency_count": 99
+    },
+    {
+      "candidate_rank": 351,
+      "source_rank": 351,
+      "word": "ජ",
+      "pos": null,
+      "frequency_count": 98
+    },
+    {
+      "candidate_rank": 352,
+      "source_rank": 352,
+      "word": "මරන",
+      "pos": null,
+      "frequency_count": 98
+    },
+    {
+      "candidate_rank": 353,
+      "source_rank": 353,
+      "word": "so",
+      "pos": null,
+      "frequency_count": 98
+    },
+    {
+      "candidate_rank": 354,
+      "source_rank": 354,
+      "word": "be",
+      "pos": null,
+      "frequency_count": 98
+    },
+    {
+      "candidate_rank": 355,
+      "source_rank": 355,
+      "word": "don",
+      "pos": null,
+      "frequency_count": 97
+    },
+    {
+      "candidate_rank": 356,
+      "source_rank": 356,
+      "word": "උපකරණය",
+      "pos": null,
+      "frequency_count": 96
+    },
+    {
+      "candidate_rank": 357,
+      "source_rank": 357,
+      "word": "අවසරය",
+      "pos": null,
+      "frequency_count": 96
+    },
+    {
+      "candidate_rank": 358,
+      "source_rank": 358,
+      "word": "ළගට",
+      "pos": null,
+      "frequency_count": 96
+    },
+    {
+      "candidate_rank": 359,
+      "source_rank": 359,
+      "word": "by",
+      "pos": null,
+      "frequency_count": 96
+    },
+    {
+      "candidate_rank": 360,
+      "source_rank": 360,
+      "word": "උඹල",
+      "pos": null,
+      "frequency_count": 95
+    },
+    {
+      "candidate_rank": 361,
+      "source_rank": 361,
+      "word": "සහගත",
+      "pos": null,
+      "frequency_count": 95
+    },
+    {
+      "candidate_rank": 362,
+      "source_rank": 362,
+      "word": "ආසන",
+      "pos": null,
+      "frequency_count": 94
+    },
+    {
+      "candidate_rank": 363,
+      "source_rank": 363,
+      "word": "හම",
+      "pos": null,
+      "frequency_count": 92
+    },
+    {
+      "candidate_rank": 364,
+      "source_rank": 364,
+      "word": "රපට",
+      "pos": null,
+      "frequency_count": 91
+    },
+    {
+      "candidate_rank": 365,
+      "source_rank": 365,
+      "word": "රණ",
+      "pos": null,
+      "frequency_count": 91
+    },
+    {
+      "candidate_rank": 366,
+      "source_rank": 366,
+      "word": "නවතම",
+      "pos": null,
+      "frequency_count": 90
+    },
+    {
+      "candidate_rank": 367,
+      "source_rank": 367,
+      "word": "රමණය",
+      "pos": null,
+      "frequency_count": 89
+    },
+    {
+      "candidate_rank": 368,
+      "source_rank": 368,
+      "word": "හදනවද",
+      "pos": null,
+      "frequency_count": 89
+    },
+    {
+      "candidate_rank": 369,
+      "source_rank": 369,
+      "word": "රථය",
+      "pos": null,
+      "frequency_count": 89
+    },
+    {
+      "candidate_rank": 370,
+      "source_rank": 370,
+      "word": "not",
+      "pos": null,
+      "frequency_count": 89
+    },
+    {
+      "candidate_rank": 371,
+      "source_rank": 371,
+      "word": "ළමයට",
+      "pos": null,
+      "frequency_count": 88
+    },
+    {
+      "candidate_rank": 372,
+      "source_rank": 372,
+      "word": "ඩ",
+      "pos": null,
+      "frequency_count": 88
+    },
+    {
+      "candidate_rank": 373,
+      "source_rank": 373,
+      "word": "අට",
+      "pos": null,
+      "frequency_count": 88
+    },
+    {
+      "candidate_rank": 374,
+      "source_rank": 374,
+      "word": "යටට",
+      "pos": null,
+      "frequency_count": 88
+    },
+    {
+      "candidate_rank": 375,
+      "source_rank": 375,
+      "word": "with",
+      "pos": null,
+      "frequency_count": 87
+    },
+    {
+      "candidate_rank": 376,
+      "source_rank": 376,
+      "word": "නහය",
+      "pos": null,
+      "frequency_count": 87
+    },
+    {
+      "candidate_rank": 377,
+      "source_rank": 377,
+      "word": "බලනව",
+      "pos": null,
+      "frequency_count": 87
+    },
+    {
+      "candidate_rank": 378,
+      "source_rank": 378,
+      "word": "රණය",
+      "pos": null,
+      "frequency_count": 87
+    },
+    {
+      "candidate_rank": 379,
+      "source_rank": 379,
+      "word": "go",
+      "pos": null,
+      "frequency_count": 86
+    },
+    {
+      "candidate_rank": 380,
+      "source_rank": 380,
+      "word": "ඇග",
+      "pos": null,
+      "frequency_count": 86
+    },
+    {
+      "candidate_rank": 381,
+      "source_rank": 381,
+      "word": "අහ",
+      "pos": null,
+      "frequency_count": 86
+    },
+    {
+      "candidate_rank": 382,
+      "source_rank": 382,
+      "word": "ඇඳට",
+      "pos": null,
+      "frequency_count": 85
+    },
+    {
+      "candidate_rank": 383,
+      "source_rank": 383,
+      "word": "ඉව",
+      "pos": null,
+      "frequency_count": 85
+    },
+    {
+      "candidate_rank": 384,
+      "source_rank": 384,
+      "word": "වස",
+      "pos": null,
+      "frequency_count": 85
+    },
+    {
+      "candidate_rank": 385,
+      "source_rank": 385,
+      "word": "oya",
+      "pos": null,
+      "frequency_count": 85
+    },
+    {
+      "candidate_rank": 386,
+      "source_rank": 386,
+      "word": "ඔතනම",
+      "pos": null,
+      "frequency_count": 84
+    },
+    {
+      "candidate_rank": 387,
+      "source_rank": 387,
+      "word": "k",
+      "pos": null,
+      "frequency_count": 84
+    },
+    {
+      "candidate_rank": 388,
+      "source_rank": 388,
+      "word": "ඇඳ",
+      "pos": null,
+      "frequency_count": 83
+    },
+    {
+      "candidate_rank": 389,
+      "source_rank": 389,
+      "word": "රහ",
+      "pos": null,
+      "frequency_count": 83
+    },
+    {
+      "candidate_rank": 390,
+      "source_rank": 390,
+      "word": "z",
+      "pos": null,
+      "frequency_count": 83
+    },
+    {
+      "candidate_rank": 391,
+      "source_rank": 391,
+      "word": "අමන",
+      "pos": null,
+      "frequency_count": 82
+    },
+    {
+      "candidate_rank": 392,
+      "source_rank": 392,
+      "word": "ඇදල",
+      "pos": null,
+      "frequency_count": 82
+    },
+    {
+      "candidate_rank": 393,
+      "source_rank": 393,
+      "word": "රහය",
+      "pos": null,
+      "frequency_count": 82
+    },
+    {
+      "candidate_rank": 394,
+      "source_rank": 394,
+      "word": "ආසම",
+      "pos": null,
+      "frequency_count": 81
+    },
+    {
+      "candidate_rank": 395,
+      "source_rank": 395,
+      "word": "අතරට",
+      "pos": null,
+      "frequency_count": 81
+    },
+    {
+      "candidate_rank": 396,
+      "source_rank": 396,
+      "word": "ඊළග",
+      "pos": null,
+      "frequency_count": 81
+    },
+    {
+      "candidate_rank": 397,
+      "source_rank": 397,
+      "word": "ළමය",
+      "pos": null,
+      "frequency_count": 81
+    },
+    {
+      "candidate_rank": 398,
+      "source_rank": 398,
+      "word": "පහකට",
+      "pos": null,
+      "frequency_count": 80
+    },
+    {
+      "candidate_rank": 399,
+      "source_rank": 399,
+      "word": "රථ",
+      "pos": null,
+      "frequency_count": 80
+    },
+    {
+      "candidate_rank": 400,
+      "source_rank": 400,
+      "word": "ඇගට",
+      "pos": null,
+      "frequency_count": 79
+    },
+    {
+      "candidate_rank": 401,
+      "source_rank": 401,
+      "word": "වහනව",
+      "pos": null,
+      "frequency_count": 79
+    },
+    {
+      "candidate_rank": 402,
+      "source_rank": 402,
+      "word": "ආවහම",
+      "pos": null,
+      "frequency_count": 77
+    },
+    {
+      "candidate_rank": 403,
+      "source_rank": 403,
+      "word": "ආදරයට",
+      "pos": null,
+      "frequency_count": 77
+    },
+    {
+      "candidate_rank": 404,
+      "source_rank": 404,
+      "word": "තරමටම",
+      "pos": null,
+      "frequency_count": 77
+    },
+    {
+      "candidate_rank": 405,
+      "source_rank": 405,
+      "word": "රථම",
+      "pos": null,
+      "frequency_count": 77
+    },
+    {
+      "candidate_rank": 406,
+      "source_rank": 406,
+      "word": "අවම",
+      "pos": null,
+      "frequency_count": 76
+    },
+    {
+      "candidate_rank": 407,
+      "source_rank": 407,
+      "word": "he",
+      "pos": null,
+      "frequency_count": 76
+    },
+    {
+      "candidate_rank": 408,
+      "source_rank": 408,
+      "word": "have",
+      "pos": null,
+      "frequency_count": 76
+    },
+    {
+      "candidate_rank": 409,
+      "source_rank": 409,
+      "word": "ආයතනය",
+      "pos": null,
+      "frequency_count": 75
+    },
+    {
+      "candidate_rank": 410,
+      "source_rank": 410,
+      "word": "හයකට",
+      "pos": null,
+      "frequency_count": 75
+    },
+    {
+      "candidate_rank": 411,
+      "source_rank": 411,
+      "word": "සහජ",
+      "pos": null,
+      "frequency_count": 75
+    },
+    {
+      "candidate_rank": 412,
+      "source_rank": 412,
+      "word": "mṇ",
+      "pos": null,
+      "frequency_count": 74
+    },
+    {
+      "candidate_rank": 413,
+      "source_rank": 413,
+      "word": "කටහඩ",
+      "pos": null,
+      "frequency_count": 74
+    },
+    {
+      "candidate_rank": 414,
+      "source_rank": 414,
+      "word": "one",
+      "pos": null,
+      "frequency_count": 73
+    },
+    {
+      "candidate_rank": 415,
+      "source_rank": 415,
+      "word": "ඉවතට",
+      "pos": null,
+      "frequency_count": 73
+    },
+    {
+      "candidate_rank": 416,
+      "source_rank": 416,
+      "word": "do",
+      "pos": null,
+      "frequency_count": 73
+    },
+    {
+      "candidate_rank": 417,
+      "source_rank": 417,
+      "word": "am",
+      "pos": null,
+      "frequency_count": 73
+    },
+    {
+      "candidate_rank": 418,
+      "source_rank": 418,
+      "word": "රජයට",
+      "pos": null,
+      "frequency_count": 72
+    },
+    {
+      "candidate_rank": 419,
+      "source_rank": 419,
+      "word": "සම",
+      "pos": null,
+      "frequency_count": 72
+    },
+    {
+      "candidate_rank": 420,
+      "source_rank": 420,
+      "word": "උඔ",
+      "pos": null,
+      "frequency_count": 71
+    },
+    {
+      "candidate_rank": 421,
+      "source_rank": 421,
+      "word": "රවය",
+      "pos": null,
+      "frequency_count": 70
+    },
+    {
+      "candidate_rank": 422,
+      "source_rank": 422,
+      "word": "charles",
+      "pos": null,
+      "frequency_count": 70
+    },
+    {
+      "candidate_rank": 423,
+      "source_rank": 423,
+      "word": "හවසට",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 424,
+      "source_rank": 424,
+      "word": "ඕව",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 425,
+      "source_rank": 425,
+      "word": "නරකද",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 426,
+      "source_rank": 426,
+      "word": "ඇස",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 427,
+      "source_rank": 427,
+      "word": "කපල",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 428,
+      "source_rank": 428,
+      "word": "ඇඟට",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 429,
+      "source_rank": 429,
+      "word": "gandalf",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 430,
+      "source_rank": 430,
+      "word": "අසල",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 431,
+      "source_rank": 431,
+      "word": "ඇප",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 432,
+      "source_rank": 432,
+      "word": "if",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 433,
+      "source_rank": 433,
+      "word": "වහ",
+      "pos": null,
+      "frequency_count": 68
+    },
+    {
+      "candidate_rank": 434,
+      "source_rank": 434,
+      "word": "ලඟම",
+      "pos": null,
+      "frequency_count": 68
+    },
+    {
+      "candidate_rank": 435,
+      "source_rank": 435,
+      "word": "මඩ",
+      "pos": null,
+      "frequency_count": 68
+    },
+    {
+      "candidate_rank": 436,
+      "source_rank": 436,
+      "word": "ගහනව",
+      "pos": null,
+      "frequency_count": 67
+    },
+    {
+      "candidate_rank": 437,
+      "source_rank": 437,
+      "word": "ඉඩම",
+      "pos": null,
+      "frequency_count": 67
+    },
+    {
+      "candidate_rank": 438,
+      "source_rank": 438,
+      "word": "us",
+      "pos": null,
+      "frequency_count": 67
+    },
+    {
+      "candidate_rank": 439,
+      "source_rank": 439,
+      "word": "ll",
+      "pos": null,
+      "frequency_count": 67
+    },
+    {
+      "candidate_rank": 440,
+      "source_rank": 440,
+      "word": "subject",
+      "pos": null,
+      "frequency_count": 67
+    },
+    {
+      "candidate_rank": 441,
+      "source_rank": 441,
+      "word": "come",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 442,
+      "source_rank": 442,
+      "word": "ඇරල",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 443,
+      "source_rank": 443,
+      "word": "him",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 444,
+      "source_rank": 444,
+      "word": "හදනව",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 445,
+      "source_rank": 445,
+      "word": "sam",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 446,
+      "source_rank": 446,
+      "word": "ජනපද",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 447,
+      "source_rank": 447,
+      "word": "ආවරණ",
+      "pos": null,
+      "frequency_count": 65
+    },
+    {
+      "candidate_rank": 448,
+      "source_rank": 448,
+      "word": "heart",
+      "pos": null,
+      "frequency_count": 65
+    },
+    {
+      "candidate_rank": 449,
+      "source_rank": 449,
+      "word": "now",
+      "pos": null,
+      "frequency_count": 65
+    },
+    {
+      "candidate_rank": 450,
+      "source_rank": 450,
+      "word": "දහය",
+      "pos": null,
+      "frequency_count": 65
+    },
+    {
+      "candidate_rank": 451,
+      "source_rank": 451,
+      "word": "lost",
+      "pos": null,
+      "frequency_count": 65
+    },
+    {
+      "candidate_rank": 452,
+      "source_rank": 452,
+      "word": "රබල",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 453,
+      "source_rank": 453,
+      "word": "hey",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 454,
+      "source_rank": 454,
+      "word": "යද",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 455,
+      "source_rank": 455,
+      "word": "chitti",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 456,
+      "source_rank": 456,
+      "word": "ඉඳලම",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 457,
+      "source_rank": 457,
+      "word": "man",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 458,
+      "source_rank": 458,
+      "word": "කරලද",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 459,
+      "source_rank": 459,
+      "word": "there",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 460,
+      "source_rank": 460,
+      "word": "like",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 461,
+      "source_rank": 461,
+      "word": "please",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 462,
+      "source_rank": 462,
+      "word": "උබල",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 463,
+      "source_rank": 463,
+      "word": "game",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 464,
+      "source_rank": 464,
+      "word": "හතරකට",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 465,
+      "source_rank": 465,
+      "word": "නටන",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 466,
+      "source_rank": 466,
+      "word": "අදට",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 467,
+      "source_rank": 467,
+      "word": "යයට",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 468,
+      "source_rank": 468,
+      "word": "ලමයව",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 469,
+      "source_rank": 469,
+      "word": "ගඟට",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 470,
+      "source_rank": 470,
+      "word": "get",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 471,
+      "source_rank": 471,
+      "word": "අමතරව",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 472,
+      "source_rank": 472,
+      "word": "රයට",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 473,
+      "source_rank": 473,
+      "word": "ගමම",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 474,
+      "source_rank": 474,
+      "word": "ලගම",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 475,
+      "source_rank": 475,
+      "word": "ණයට",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 476,
+      "source_rank": 476,
+      "word": "e",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 477,
+      "source_rank": 477,
+      "word": "කනවද",
+      "pos": null,
+      "frequency_count": 59
+    },
+    {
+      "candidate_rank": 478,
+      "source_rank": 478,
+      "word": "දවසකම",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 479,
+      "source_rank": 479,
+      "word": "අවනත",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 480,
+      "source_rank": 480,
+      "word": "ඒත",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 481,
+      "source_rank": 481,
+      "word": "යවන",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 482,
+      "source_rank": 482,
+      "word": "w",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 483,
+      "source_rank": 483,
+      "word": "යව",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 484,
+      "source_rank": 484,
+      "word": "shaw",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 485,
+      "source_rank": 485,
+      "word": "රහනය",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 486,
+      "source_rank": 486,
+      "word": "at",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 487,
+      "source_rank": 487,
+      "word": "කරවන",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 488,
+      "source_rank": 488,
+      "word": "want",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 489,
+      "source_rank": 489,
+      "word": "කනට",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 490,
+      "source_rank": 490,
+      "word": "ධවල",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 491,
+      "source_rank": 491,
+      "word": "when",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 492,
+      "source_rank": 492,
+      "word": "ඔනද",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 493,
+      "source_rank": 493,
+      "word": "අදම",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 494,
+      "source_rank": 494,
+      "word": "යමය",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 495,
+      "source_rank": 495,
+      "word": "කටට",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 496,
+      "source_rank": 496,
+      "word": "කටහඬ",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 497,
+      "source_rank": 497,
+      "word": "michael",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 498,
+      "source_rank": 498,
+      "word": "ve",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 499,
+      "source_rank": 499,
+      "word": "වම",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 500,
+      "source_rank": 500,
+      "word": "අහනවද",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 501,
+      "source_rank": 501,
+      "word": "සමය",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 502,
+      "source_rank": 502,
+      "word": "ච",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 503,
+      "source_rank": 503,
+      "word": "her",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 504,
+      "source_rank": 504,
+      "word": "අතනට",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 505,
+      "source_rank": 505,
+      "word": "how",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 506,
+      "source_rank": 506,
+      "word": "ඕකව",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 507,
+      "source_rank": 507,
+      "word": "මකර",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 508,
+      "source_rank": 508,
+      "word": "bye",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 509,
+      "source_rank": 509,
+      "word": "සටනට",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 510,
+      "source_rank": 510,
+      "word": "ගණන",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 511,
+      "source_rank": 511,
+      "word": "එතනම",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 512,
+      "source_rank": 512,
+      "word": "තරම",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 513,
+      "source_rank": 513,
+      "word": "won",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 514,
+      "source_rank": 514,
+      "word": "දණ",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 515,
+      "source_rank": 515,
+      "word": "ඝන",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 516,
+      "source_rank": 516,
+      "word": "let",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 517,
+      "source_rank": 517,
+      "word": "මරනව",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 518,
+      "source_rank": 518,
+      "word": "has",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 519,
+      "source_rank": 519,
+      "word": "කඩල",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 520,
+      "source_rank": 520,
+      "word": "උබලට",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 521,
+      "source_rank": 521,
+      "word": "ඇර",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 522,
+      "source_rank": 522,
+      "word": "දන",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 523,
+      "source_rank": 523,
+      "word": "ඉහලම",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 524,
+      "source_rank": 524,
+      "word": "take",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 525,
+      "source_rank": 525,
+      "word": "බයද",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 526,
+      "source_rank": 526,
+      "word": "දහ",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 527,
+      "source_rank": 527,
+      "word": "ආභරණ",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 528,
+      "source_rank": 528,
+      "word": "even",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 529,
+      "source_rank": 529,
+      "word": "වටය",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 530,
+      "source_rank": 530,
+      "word": "ජනපදය",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 531,
+      "source_rank": 531,
+      "word": "වධ",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 532,
+      "source_rank": 532,
+      "word": "වර",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 533,
+      "source_rank": 533,
+      "word": "ගහනවද",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 534,
+      "source_rank": 534,
+      "word": "they",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 535,
+      "source_rank": 535,
+      "word": "තදට",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 536,
+      "source_rank": 536,
+      "word": "nypd",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 537,
+      "source_rank": 537,
+      "word": "ඉදලම",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 538,
+      "source_rank": 538,
+      "word": "මටද",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 539,
+      "source_rank": 539,
+      "word": "උමග",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 540,
+      "source_rank": 540,
+      "word": "බලයට",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 541,
+      "source_rank": 541,
+      "word": "දර",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 542,
+      "source_rank": 542,
+      "word": "gps",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 543,
+      "source_rank": 543,
+      "word": "උපත",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 544,
+      "source_rank": 544,
+      "word": "එකටද",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 545,
+      "source_rank": 545,
+      "word": "මනසට",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 546,
+      "source_rank": 546,
+      "word": "අයද",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 547,
+      "source_rank": 547,
+      "word": "level",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 548,
+      "source_rank": 548,
+      "word": "උනහම",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 549,
+      "source_rank": 549,
+      "word": "ok",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 550,
+      "source_rank": 550,
+      "word": "re",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 551,
+      "source_rank": 551,
+      "word": "මතට",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 552,
+      "source_rank": 552,
+      "word": "පය",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 553,
+      "source_rank": 553,
+      "word": "කමට",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 554,
+      "source_rank": 554,
+      "word": "පථය",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 555,
+      "source_rank": 555,
+      "word": "ඒකව",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 556,
+      "source_rank": 556,
+      "word": "තරණය",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 557,
+      "source_rank": 557,
+      "word": "ඉද",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 558,
+      "source_rank": 558,
+      "word": "දහයකට",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 559,
+      "source_rank": 559,
+      "word": "mŧ",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 560,
+      "source_rank": 560,
+      "word": "අහසට",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 561,
+      "source_rank": 561,
+      "word": "උට",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 562,
+      "source_rank": 562,
+      "word": "කපන",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 563,
+      "source_rank": 563,
+      "word": "as",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 564,
+      "source_rank": 564,
+      "word": "සමගම",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 565,
+      "source_rank": 565,
+      "word": "okay",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 566,
+      "source_rank": 566,
+      "word": "fischer",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 567,
+      "source_rank": 567,
+      "word": "සඳ",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 568,
+      "source_rank": 568,
+      "word": "අග",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 569,
+      "source_rank": 569,
+      "word": "sana",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 570,
+      "source_rank": 570,
+      "word": "හත",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 571,
+      "source_rank": 571,
+      "word": "ne",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 572,
+      "source_rank": 572,
+      "word": "මහජන",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 573,
+      "source_rank": 573,
+      "word": "ඔතනට",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 574,
+      "source_rank": 574,
+      "word": "yn",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 575,
+      "source_rank": 575,
+      "word": "here",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 576,
+      "source_rank": 576,
+      "word": "x",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 577,
+      "source_rank": 577,
+      "word": "යනවට",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 578,
+      "source_rank": 578,
+      "word": "who",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 579,
+      "source_rank": 579,
+      "word": "හඳ",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 580,
+      "source_rank": 580,
+      "word": "රමයට",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 581,
+      "source_rank": 581,
+      "word": "why",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 582,
+      "source_rank": 582,
+      "word": "නහර",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 583,
+      "source_rank": 583,
+      "word": "අජය",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 584,
+      "source_rank": 584,
+      "word": "ෂ",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 585,
+      "source_rank": 585,
+      "word": "අහනව",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 586,
+      "source_rank": 586,
+      "word": "saruman",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 587,
+      "source_rank": 587,
+      "word": "කළබල",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 588,
+      "source_rank": 588,
+      "word": "up",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 589,
+      "source_rank": 589,
+      "word": "තලය",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 590,
+      "source_rank": 590,
+      "word": "සත",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 591,
+      "source_rank": 591,
+      "word": "life",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 592,
+      "source_rank": 592,
+      "word": "time",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 593,
+      "source_rank": 593,
+      "word": "ආය",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 594,
+      "source_rank": 594,
+      "word": "බයට",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 595,
+      "source_rank": 595,
+      "word": "from",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 596,
+      "source_rank": 596,
+      "word": "out",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 597,
+      "source_rank": 597,
+      "word": "ආගම",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 598,
+      "source_rank": 598,
+      "word": "මරනය",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 599,
+      "source_rank": 599,
+      "word": "ඉහළට",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 600,
+      "source_rank": 600,
+      "word": "පදනම",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 601,
+      "source_rank": 601,
+      "word": "ගද",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 602,
+      "source_rank": 602,
+      "word": "බට",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 603,
+      "source_rank": 603,
+      "word": "erik",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 604,
+      "source_rank": 604,
+      "word": "උඩටම",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 605,
+      "source_rank": 605,
+      "word": "පහට",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 606,
+      "source_rank": 606,
+      "word": "but",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 607,
+      "source_rank": 607,
+      "word": "ළඟටම",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 608,
+      "source_rank": 608,
+      "word": "h",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 609,
+      "source_rank": 609,
+      "word": "සහයක",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 610,
+      "source_rank": 610,
+      "word": "චලනය",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 611,
+      "source_rank": 611,
+      "word": "merry",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 612,
+      "source_rank": 612,
+      "word": "බහ",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 613,
+      "source_rank": 613,
+      "word": "dea",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 614,
+      "source_rank": 614,
+      "word": "ඉගන",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 615,
+      "source_rank": 615,
+      "word": "r",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 616,
+      "source_rank": 616,
+      "word": "සටහන",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 617,
+      "source_rank": 617,
+      "word": "she",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 618,
+      "source_rank": 618,
+      "word": "යනය",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 619,
+      "source_rank": 619,
+      "word": "තරගයට",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 620,
+      "source_rank": 620,
+      "word": "ධන",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 621,
+      "source_rank": 621,
+      "word": "selene",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 622,
+      "source_rank": 622,
+      "word": "yeah",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 623,
+      "source_rank": 623,
+      "word": "gil",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 624,
+      "source_rank": 624,
+      "word": "පර",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 625,
+      "source_rank": 625,
+      "word": "අතකට",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 626,
+      "source_rank": 626,
+      "word": "make",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 627,
+      "source_rank": 627,
+      "word": "ෂක",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 628,
+      "source_rank": 628,
+      "word": "watney",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 629,
+      "source_rank": 629,
+      "word": "ඉදලද",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 630,
+      "source_rank": 630,
+      "word": "කඩන",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 631,
+      "source_rank": 631,
+      "word": "stop",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 632,
+      "source_rank": 632,
+      "word": "right",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 633,
+      "source_rank": 633,
+      "word": "an",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 634,
+      "source_rank": 634,
+      "word": "good",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 635,
+      "source_rank": 635,
+      "word": "වලද",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 636,
+      "source_rank": 636,
+      "word": "ආසද",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 637,
+      "source_rank": 637,
+      "word": "thank",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 638,
+      "source_rank": 638,
+      "word": "පස",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 639,
+      "source_rank": 639,
+      "word": "was",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 640,
+      "source_rank": 640,
+      "word": "give",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 641,
+      "source_rank": 641,
+      "word": "පහතට",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 642,
+      "source_rank": 642,
+      "word": "යයනය",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 643,
+      "source_rank": 643,
+      "word": "ඉඳලද",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 644,
+      "source_rank": 644,
+      "word": "ඊතල",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 645,
+      "source_rank": 645,
+      "word": "කමකට",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 646,
+      "source_rank": 646,
+      "word": "p",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 647,
+      "source_rank": 647,
+      "word": "භට",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 648,
+      "source_rank": 648,
+      "word": "oyaŧ",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 649,
+      "source_rank": 649,
+      "word": "තරහව",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 650,
+      "source_rank": 650,
+      "word": "අරයට",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 651,
+      "source_rank": 651,
+      "word": "වසරකට",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 652,
+      "source_rank": 652,
+      "word": "වරදට",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 653,
+      "source_rank": 653,
+      "word": "ආසනය",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 654,
+      "source_rank": 654,
+      "word": "ජන",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 655,
+      "source_rank": 655,
+      "word": "අඩ",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 656,
+      "source_rank": 656,
+      "word": "nash",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 657,
+      "source_rank": 657,
+      "word": "ඵලකය",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 658,
+      "source_rank": 658,
+      "word": "අල",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 659,
+      "source_rank": 659,
+      "word": "aragorn",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 660,
+      "source_rank": 660,
+      "word": "රව",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 661,
+      "source_rank": 661,
+      "word": "අමතකද",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 662,
+      "source_rank": 662,
+      "word": "dom",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 663,
+      "source_rank": 663,
+      "word": "අහක",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 664,
+      "source_rank": 664,
+      "word": "දඩයම",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 665,
+      "source_rank": 665,
+      "word": "sauron",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 666,
+      "source_rank": 666,
+      "word": "උයන",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 667,
+      "source_rank": 667,
+      "word": "මතය",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 668,
+      "source_rank": 668,
+      "word": "down",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 669,
+      "source_rank": 669,
+      "word": "උපදවන",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 670,
+      "source_rank": 670,
+      "word": "our",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 671,
+      "source_rank": 671,
+      "word": "දමන",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 672,
+      "source_rank": 672,
+      "word": "මහල",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 673,
+      "source_rank": 673,
+      "word": "yes",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 674,
+      "source_rank": 674,
+      "word": "හතකට",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 675,
+      "source_rank": 675,
+      "word": "රසය",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 676,
+      "source_rank": 676,
+      "word": "gondor",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 677,
+      "source_rank": 677,
+      "word": "stacks",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 678,
+      "source_rank": 678,
+      "word": "පත",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 679,
+      "source_rank": 679,
+      "word": "never",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 680,
+      "source_rank": 680,
+      "word": "උඹලව",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 681,
+      "source_rank": 681,
+      "word": "cbi",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 682,
+      "source_rank": 682,
+      "word": "baby",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 683,
+      "source_rank": 683,
+      "word": "his",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 684,
+      "source_rank": 684,
+      "word": "taha",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 685,
+      "source_rank": 685,
+      "word": "යවල",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 686,
+      "source_rank": 686,
+      "word": "ගලන",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 687,
+      "source_rank": 687,
+      "word": "krn",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 688,
+      "source_rank": 688,
+      "word": "rango",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 689,
+      "source_rank": 689,
+      "word": "ශ",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 690,
+      "source_rank": 690,
+      "word": "ආයතන",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 691,
+      "source_rank": 691,
+      "word": "beans",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 692,
+      "source_rank": 692,
+      "word": "cobb",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 693,
+      "source_rank": 693,
+      "word": "ඉඳ",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 694,
+      "source_rank": 694,
+      "word": "mordor",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 695,
+      "source_rank": 695,
+      "word": "beauty",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 696,
+      "source_rank": 696,
+      "word": "මර",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 697,
+      "source_rank": 697,
+      "word": "hi",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 698,
+      "source_rank": 698,
+      "word": "එකකම",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 699,
+      "source_rank": 699,
+      "word": "see",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 700,
+      "source_rank": 700,
+      "word": "පහක",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 701,
+      "source_rank": 701,
+      "word": "කරලම",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 702,
+      "source_rank": 702,
+      "word": "උසට",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 703,
+      "source_rank": 703,
+      "word": "pam",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 704,
+      "source_rank": 704,
+      "word": "ඇල",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 705,
+      "source_rank": 705,
+      "word": "choong",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 706,
+      "source_rank": 706,
+      "word": "රපටවල",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 707,
+      "source_rank": 707,
+      "word": "අරයව",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 708,
+      "source_rank": 708,
+      "word": "emp",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 709,
+      "source_rank": 709,
+      "word": "hello",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 710,
+      "source_rank": 710,
+      "word": "know",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 711,
+      "source_rank": 711,
+      "word": "new",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 712,
+      "source_rank": 712,
+      "word": "ඖෂධ",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 713,
+      "source_rank": 713,
+      "word": "රපටය",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 714,
+      "source_rank": 714,
+      "word": "සටනකට",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 715,
+      "source_rank": 715,
+      "word": "රභවය",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 716,
+      "source_rank": 716,
+      "word": "alicia",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 717,
+      "source_rank": 717,
+      "word": "දස",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 718,
+      "source_rank": 718,
+      "word": "අරය",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 719,
+      "source_rank": 719,
+      "word": "ladyship",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 720,
+      "source_rank": 720,
+      "word": "දළ",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 721,
+      "source_rank": 721,
+      "word": "දත",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 722,
+      "source_rank": 722,
+      "word": "නමය",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 723,
+      "source_rank": 723,
+      "word": "charlie",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 724,
+      "source_rank": 724,
+      "word": "වලම",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 725,
+      "source_rank": 725,
+      "word": "ඔබම",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 726,
+      "source_rank": 726,
+      "word": "ඇදට",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 727,
+      "source_rank": 727,
+      "word": "just",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 728,
+      "source_rank": 728,
+      "word": "කනව",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 729,
+      "source_rank": 729,
+      "word": "may",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 730,
+      "source_rank": 730,
+      "word": "පවසන",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 731,
+      "source_rank": 731,
+      "word": "zamani",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 732,
+      "source_rank": 732,
+      "word": "lj",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 733,
+      "source_rank": 733,
+      "word": "හතරක",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 734,
+      "source_rank": 734,
+      "word": "two",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 735,
+      "source_rank": 735,
+      "word": "eyes",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 736,
+      "source_rank": 736,
+      "word": "david",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 737,
+      "source_rank": 737,
+      "word": "robot",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 738,
+      "source_rank": 738,
+      "word": "professor",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 739,
+      "source_rank": 739,
+      "word": "po",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 740,
+      "source_rank": 740,
+      "word": "gollum",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 741,
+      "source_rank": 741,
+      "word": "or",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 742,
+      "source_rank": 742,
+      "word": "මරණව",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 743,
+      "source_rank": 743,
+      "word": "over",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 744,
+      "source_rank": 744,
+      "word": "dr",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 745,
+      "source_rank": 745,
+      "word": "la",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 746,
+      "source_rank": 746,
+      "word": "රථයකට",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 747,
+      "source_rank": 747,
+      "word": "ගමනට",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 748,
+      "source_rank": 748,
+      "word": "අනවසර",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 749,
+      "source_rank": 749,
+      "word": "é",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 750,
+      "source_rank": 750,
+      "word": "නවය",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 751,
+      "source_rank": 751,
+      "word": "ep",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 752,
+      "source_rank": 752,
+      "word": "mav",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 753,
+      "source_rank": 753,
+      "word": "කසල",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 754,
+      "source_rank": 754,
+      "word": "රටම",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 755,
+      "source_rank": 755,
+      "word": "quinton",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 756,
+      "source_rank": 756,
+      "word": "arthur",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 757,
+      "source_rank": 757,
+      "word": "එල",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 758,
+      "source_rank": 758,
+      "word": "ig",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 759,
+      "source_rank": 759,
+      "word": "ලමය",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 760,
+      "source_rank": 760,
+      "word": "where",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 761,
+      "source_rank": 761,
+      "word": "යවනව",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 762,
+      "source_rank": 762,
+      "word": "subtitle",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 763,
+      "source_rank": 763,
+      "word": "say",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 764,
+      "source_rank": 764,
+      "word": "දහයක",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 765,
+      "source_rank": 765,
+      "word": "ඇණ",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 766,
+      "source_rank": 766,
+      "word": "did",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 767,
+      "source_rank": 767,
+      "word": "නගරයම",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 768,
+      "source_rank": 768,
+      "word": "been",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 769,
+      "source_rank": 769,
+      "word": "නමද",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 770,
+      "source_rank": 770,
+      "word": "තඹ",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 771,
+      "source_rank": 771,
+      "word": "eagle",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 772,
+      "source_rank": 772,
+      "word": "pippin",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 773,
+      "source_rank": 773,
+      "word": "ගණනක",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 774,
+      "source_rank": 774,
+      "word": "ආවරනය",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 775,
+      "source_rank": 775,
+      "word": "පට",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 776,
+      "source_rank": 776,
+      "word": "hank",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 777,
+      "source_rank": 777,
+      "word": "කරදරයක",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 778,
+      "source_rank": 778,
+      "word": "එකකටම",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 779,
+      "source_rank": 779,
+      "word": "bilbo",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 780,
+      "source_rank": 780,
+      "word": "ඔබද",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 781,
+      "source_rank": 781,
+      "word": "ඇඳල",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 782,
+      "source_rank": 782,
+      "word": "ඔහ",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 783,
+      "source_rank": 783,
+      "word": "අහවර",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 784,
+      "source_rank": 784,
+      "word": "අදහසට",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 785,
+      "source_rank": 785,
+      "word": "මරනවද",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 786,
+      "source_rank": 786,
+      "word": "lena",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 787,
+      "source_rank": 787,
+      "word": "lord",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 788,
+      "source_rank": 788,
+      "word": "උඹද",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 789,
+      "source_rank": 789,
+      "word": "ék",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 790,
+      "source_rank": 790,
+      "word": "only",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 791,
+      "source_rank": 791,
+      "word": "කරගත",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 792,
+      "source_rank": 792,
+      "word": "මතකයට",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 793,
+      "source_rank": 793,
+      "word": "රටක",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 794,
+      "source_rank": 794,
+      "word": "ඒම",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 795,
+      "source_rank": 795,
+      "word": "මහලට",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 796,
+      "source_rank": 796,
+      "word": "cdc",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 797,
+      "source_rank": 797,
+      "word": "යහපත",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 798,
+      "source_rank": 798,
+      "word": "vip",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 799,
+      "source_rank": 799,
+      "word": "උඩම",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 800,
+      "source_rank": 800,
+      "word": "ඒමට",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 801,
+      "source_rank": 801,
+      "word": "ඇම",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 802,
+      "source_rank": 802,
+      "word": "nora",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 803,
+      "source_rank": 803,
+      "word": "සපයන",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 804,
+      "source_rank": 804,
+      "word": "wckd",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 805,
+      "source_rank": 805,
+      "word": "හයක",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 806,
+      "source_rank": 806,
+      "word": "ón",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 807,
+      "source_rank": 807,
+      "word": "star",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 808,
+      "source_rank": 808,
+      "word": "then",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 809,
+      "source_rank": 809,
+      "word": "thanks",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 810,
+      "source_rank": 810,
+      "word": "panda",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 811,
+      "source_rank": 811,
+      "word": "three",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 812,
+      "source_rank": 812,
+      "word": "ජනක",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 813,
+      "source_rank": 813,
+      "word": "ළඟම",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 814,
+      "source_rank": 814,
+      "word": "ඉට",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 815,
+      "source_rank": 815,
+      "word": "against",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 816,
+      "source_rank": 816,
+      "word": "එයව",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 817,
+      "source_rank": 817,
+      "word": "font",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 818,
+      "source_rank": 818,
+      "word": "ssc",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 819,
+      "source_rank": 819,
+      "word": "j",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 820,
+      "source_rank": 820,
+      "word": "sook",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 821,
+      "source_rank": 821,
+      "word": "ඔබල",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 822,
+      "source_rank": 822,
+      "word": "ඉවත",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 823,
+      "source_rank": 823,
+      "word": "සහන",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 824,
+      "source_rank": 824,
+      "word": "ලමයට",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 825,
+      "source_rank": 825,
+      "word": "wing",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 826,
+      "source_rank": 826,
+      "word": "any",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 827,
+      "source_rank": 827,
+      "word": "උසම",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 828,
+      "source_rank": 828,
+      "word": "mgé",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 829,
+      "source_rank": 829,
+      "word": "world",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 830,
+      "source_rank": 830,
+      "word": "about",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 831,
+      "source_rank": 831,
+      "word": "sir",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 832,
+      "source_rank": 832,
+      "word": "call",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 833,
+      "source_rank": 833,
+      "word": "help",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 834,
+      "source_rank": 834,
+      "word": "globodyne",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 835,
+      "source_rank": 835,
+      "word": "off",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 836,
+      "source_rank": 836,
+      "word": "yeong",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 837,
+      "source_rank": 837,
+      "word": "සලකන",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 838,
+      "source_rank": 838,
+      "word": "දඩ",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 839,
+      "source_rank": 839,
+      "word": "ඇසට",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 840,
+      "source_rank": 840,
+      "word": "උඹම",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 841,
+      "source_rank": 841,
+      "word": "shire",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 842,
+      "source_rank": 842,
+      "word": "mcallister",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 843,
+      "source_rank": 843,
+      "word": "එකඟද",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 844,
+      "source_rank": 844,
+      "word": "නවක",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 845,
+      "source_rank": 845,
+      "word": "rv",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 846,
+      "source_rank": 846,
+      "word": "පදවන",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 847,
+      "source_rank": 847,
+      "word": "සරලවම",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 848,
+      "source_rank": 848,
+      "word": "කවර",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 849,
+      "source_rank": 849,
+      "word": "හරහට",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 850,
+      "source_rank": 850,
+      "word": "shall",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 851,
+      "source_rank": 851,
+      "word": "ඈතකට",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 852,
+      "source_rank": 852,
+      "word": "into",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 853,
+      "source_rank": 853,
+      "word": "බඩට",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 854,
+      "source_rank": 854,
+      "word": "away",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 855,
+      "source_rank": 855,
+      "word": "api",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 856,
+      "source_rank": 856,
+      "word": "මනහර",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 857,
+      "source_rank": 857,
+      "word": "තරමක",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 858,
+      "source_rank": 858,
+      "word": "sol",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 859,
+      "source_rank": 859,
+      "word": "පරතරය",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 860,
+      "source_rank": 860,
+      "word": "නරකට",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 861,
+      "source_rank": 861,
+      "word": "lp",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 862,
+      "source_rank": 862,
+      "word": "ip",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 863,
+      "source_rank": 863,
+      "word": "fitzie",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 864,
+      "source_rank": 864,
+      "word": "bettina",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 865,
+      "source_rank": 865,
+      "word": "oyagé",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 866,
+      "source_rank": 866,
+      "word": "වලටද",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 867,
+      "source_rank": 867,
+      "word": "පහන",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 868,
+      "source_rank": 868,
+      "word": "house",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 869,
+      "source_rank": 869,
+      "word": "ඇටය",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 870,
+      "source_rank": 870,
+      "word": "ලඟද",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 871,
+      "source_rank": 871,
+      "word": "way",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 872,
+      "source_rank": 872,
+      "word": "ආයතනයට",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 873,
+      "source_rank": 873,
+      "word": "cctv",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 874,
+      "source_rank": 874,
+      "word": "සහයට",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 875,
+      "source_rank": 875,
+      "word": "තදබදය",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 876,
+      "source_rank": 876,
+      "word": "salas",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 877,
+      "source_rank": 877,
+      "word": "මකල",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 878,
+      "source_rank": 878,
+      "word": "zeus",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 879,
+      "source_rank": 879,
+      "word": "ලගටම",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 880,
+      "source_rank": 880,
+      "word": "sylvia",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 881,
+      "source_rank": 881,
+      "word": "doctor",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 882,
+      "source_rank": 882,
+      "word": "chun",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 883,
+      "source_rank": 883,
+      "word": "leito",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 884,
+      "source_rank": 884,
+      "word": "අටකට",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 885,
+      "source_rank": 885,
+      "word": "තබන",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 886,
+      "source_rank": 886,
+      "word": "ඔබලට",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 887,
+      "source_rank": 887,
+      "word": "යටතට",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 888,
+      "source_rank": 888,
+      "word": "king",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 889,
+      "source_rank": 889,
+      "word": "whoa",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 890,
+      "source_rank": 890,
+      "word": "red",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 891,
+      "source_rank": 891,
+      "word": "දඩයමට",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 892,
+      "source_rank": 892,
+      "word": "ධනය",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 893,
+      "source_rank": 893,
+      "word": "nsa",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 894,
+      "source_rank": 894,
+      "word": "perseus",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 895,
+      "source_rank": 895,
+      "word": "ඉන",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 896,
+      "source_rank": 896,
+      "word": "tat",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 897,
+      "source_rank": 897,
+      "word": "කණට",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 898,
+      "source_rank": 898,
+      "word": "පථයට",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 899,
+      "source_rank": 899,
+      "word": "තර",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 900,
+      "source_rank": 900,
+      "word": "nasa",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 901,
+      "source_rank": 901,
+      "word": "mockingjay",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 902,
+      "source_rank": 902,
+      "word": "back",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 903,
+      "source_rank": 903,
+      "word": "rohan",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 904,
+      "source_rank": 904,
+      "word": "knight",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 905,
+      "source_rank": 905,
+      "word": "yours",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 906,
+      "source_rank": 906,
+      "word": "අරගන",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 907,
+      "source_rank": 907,
+      "word": "ගව",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 908,
+      "source_rank": 908,
+      "word": "බරපතලව",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 909,
+      "source_rank": 909,
+      "word": "මද",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 910,
+      "source_rank": 910,
+      "word": "අඩන",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 911,
+      "source_rank": 911,
+      "word": "ගස",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 912,
+      "source_rank": 912,
+      "word": "පළ",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 913,
+      "source_rank": 913,
+      "word": "අඬ",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 914,
+      "source_rank": 914,
+      "word": "fox",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 915,
+      "source_rank": 915,
+      "word": "එනවට",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 916,
+      "source_rank": 916,
+      "word": "vaseegaran",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 917,
+      "source_rank": 917,
+      "word": "ගහට",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 918,
+      "source_rank": 918,
+      "word": "leave",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 919,
+      "source_rank": 919,
+      "word": "අඹ",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 920,
+      "source_rank": 920,
+      "word": "scb",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 921,
+      "source_rank": 921,
+      "word": "without",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 922,
+      "source_rank": 922,
+      "word": "ඒකකයට",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 923,
+      "source_rank": 923,
+      "word": "ජනගහනය",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 924,
+      "source_rank": 924,
+      "word": "ඕවට",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 925,
+      "source_rank": 925,
+      "word": "බරපතළ",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 926,
+      "source_rank": 926,
+      "word": "going",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 927,
+      "source_rank": 927,
+      "word": "අවයව",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 928,
+      "source_rank": 928,
+      "word": "ලට",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 929,
+      "source_rank": 929,
+      "word": "baggins",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 930,
+      "source_rank": 930,
+      "word": "තදබල",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 931,
+      "source_rank": 931,
+      "word": "වනය",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 932,
+      "source_rank": 932,
+      "word": "ධ",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 933,
+      "source_rank": 933,
+      "word": "oz",
+      "pos": null,
+      "frequency_count": 22
+    },
+    {
+      "candidate_rank": 934,
+      "source_rank": 934,
+      "word": "දශක",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 935,
+      "source_rank": 935,
+      "word": "v",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 936,
+      "source_rank": 936,
+      "word": "එප",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 937,
+      "source_rank": 937,
+      "word": "them",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 938,
+      "source_rank": 938,
+      "word": "සරලව",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 939,
+      "source_rank": 939,
+      "word": "ගන",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 940,
+      "source_rank": 940,
+      "word": "sing",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 941,
+      "source_rank": 941,
+      "word": "f",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 942,
+      "source_rank": 942,
+      "word": "got",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 943,
+      "source_rank": 943,
+      "word": "some",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 944,
+      "source_rank": 944,
+      "word": "alpha",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 945,
+      "source_rank": 945,
+      "word": "සද",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 946,
+      "source_rank": 946,
+      "word": "ගහක",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 947,
+      "source_rank": 947,
+      "word": "kill",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 948,
+      "source_rank": 948,
+      "word": "dj",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 949,
+      "source_rank": 949,
+      "word": "madge",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 950,
+      "source_rank": 950,
+      "word": "ඕකම",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 951,
+      "source_rank": 951,
+      "word": "අතපය",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 952,
+      "source_rank": 952,
+      "word": "දරන",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 953,
+      "source_rank": 953,
+      "word": "oogway",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 954,
+      "source_rank": 954,
+      "word": "තල",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 955,
+      "source_rank": 955,
+      "word": "tung",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 956,
+      "source_rank": 956,
+      "word": "කරකර",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 957,
+      "source_rank": 957,
+      "word": "mai",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 958,
+      "source_rank": 958,
+      "word": "රළ",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 959,
+      "source_rank": 959,
+      "word": "imf",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 960,
+      "source_rank": 960,
+      "word": "එවන",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 961,
+      "source_rank": 961,
+      "word": "jeremy",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 962,
+      "source_rank": 962,
+      "word": "after",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 963,
+      "source_rank": 963,
+      "word": "shit",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 964,
+      "source_rank": 964,
+      "word": "හමන",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 965,
+      "source_rank": 965,
+      "word": "day",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 966,
+      "source_rank": 966,
+      "word": "උව",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 967,
+      "source_rank": 967,
+      "word": "වසරකම",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 968,
+      "source_rank": 968,
+      "word": "cd",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 969,
+      "source_rank": 969,
+      "word": "creations",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 970,
+      "source_rank": 970,
+      "word": "play",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 971,
+      "source_rank": 971,
+      "word": "ඉහළම",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 972,
+      "source_rank": 972,
+      "word": "අඬන",
+      "pos": null,
+      "frequency_count": 21
+    },
+    {
+      "candidate_rank": 973,
+      "source_rank": 973,
+      "word": "cm",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 974,
+      "source_rank": 974,
+      "word": "elementary",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 975,
+      "source_rank": 975,
+      "word": "q",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 976,
+      "source_rank": 976,
+      "word": "වහනය",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 977,
+      "source_rank": 977,
+      "word": "අම",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 978,
+      "source_rank": 978,
+      "word": "air",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 979,
+      "source_rank": 979,
+      "word": "අතරම",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 980,
+      "source_rank": 980,
+      "word": "sms",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 981,
+      "source_rank": 981,
+      "word": "ඈතක",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 982,
+      "source_rank": 982,
+      "word": "seal",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 983,
+      "source_rank": 983,
+      "word": "acp",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 984,
+      "source_rank": 984,
+      "word": "එකවර",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 985,
+      "source_rank": 985,
+      "word": "ඒකටම",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 986,
+      "source_rank": 986,
+      "word": "එත",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 987,
+      "source_rank": 987,
+      "word": "bender",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 988,
+      "source_rank": 988,
+      "word": "වලටම",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 989,
+      "source_rank": 989,
+      "word": "happy",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 990,
+      "source_rank": 990,
+      "word": "chffffff",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 991,
+      "source_rank": 991,
+      "word": "code",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 992,
+      "source_rank": 992,
+      "word": "අසරන",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 993,
+      "source_rank": 993,
+      "word": "එලවන",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 994,
+      "source_rank": 994,
+      "word": "ඔනම",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 995,
+      "source_rank": 995,
+      "word": "උනද",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 996,
+      "source_rank": 996,
+      "word": "g",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 997,
+      "source_rank": 997,
+      "word": "ඒවද",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 998,
+      "source_rank": 998,
+      "word": "lear",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 999,
+      "source_rank": 999,
+      "word": "ගලවල",
+      "pos": null,
+      "frequency_count": 20
+    },
+    {
+      "candidate_rank": 1000,
+      "source_rank": 1000,
+      "word": "think",
+      "pos": null,
+      "frequency_count": 20
+    }
+  ]
+}

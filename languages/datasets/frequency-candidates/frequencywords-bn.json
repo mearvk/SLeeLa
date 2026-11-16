@@ -1,0 +1,7030 @@
+{
+  "schema": "SLeeLa FRUCHST frequency candidate staging v1",
+  "language_tag": "bn",
+  "language_directory": "bengali",
+  "source": {
+    "dataset": "FrequencyWords",
+    "upstream": "https://github.com/hermitdave/FrequencyWords",
+    "revision": "525f9b560de45753a5ea01069454e72e9aa541c6",
+    "sample": "content/2018/bn/bn_full.txt",
+    "data_license": "CC-BY-SA-4.0",
+    "code_license": "MIT",
+    "frequency_source": "OpenSubtitles-2018",
+    "attribution": [
+      "Hermit Dave / FrequencyWords — https://github.com/hermitdave/FrequencyWords",
+      "OpenSubtitles 2018 — https://opus.nlpl.eu/OpenSubtitles2018.php"
+    ],
+    "selection": "First 1,000 unique NFC-normalized lexical surface forms in source frequency order. Punctuation-only tokens are excluded; source line rank and raw occurrence count are retained.",
+    "limitations": [
+      "Surface forms, not lemmatized headwords.",
+      "Subtitle-domain frequency ranking; not a balanced general-purpose corpus.",
+      "No POS or sense labels are supplied by this source.",
+      "English, French, and Spanish definitions remain pending."
+    ],
+    "license_notice": "FrequencyWords content is CC BY-SA 4.0; preserve attribution and share-alike terms. The repository's code is MIT and does not change the data license."
+  },
+  "candidate_count": 1000,
+  "definitions_status": "pending",
+  "entries": [
+    {
+      "candidate_rank": 1,
+      "source_rank": 2,
+      "word": "আমি",
+      "pos": null,
+      "frequency_count": 62498
+    },
+    {
+      "candidate_rank": 2,
+      "source_rank": 3,
+      "word": "না",
+      "pos": null,
+      "frequency_count": 55643
+    },
+    {
+      "candidate_rank": 3,
+      "source_rank": 4,
+      "word": "তুমি",
+      "pos": null,
+      "frequency_count": 34867
+    },
+    {
+      "candidate_rank": 4,
+      "source_rank": 5,
+      "word": "আমার",
+      "pos": null,
+      "frequency_count": 33644
+    },
+    {
+      "candidate_rank": 5,
+      "source_rank": 6,
+      "word": "কি",
+      "pos": null,
+      "frequency_count": 27254
+    },
+    {
+      "candidate_rank": 6,
+      "source_rank": 7,
+      "word": "এটা",
+      "pos": null,
+      "frequency_count": 24032
+    },
+    {
+      "candidate_rank": 7,
+      "source_rank": 8,
+      "word": "আর",
+      "pos": null,
+      "frequency_count": 22565
+    },
+    {
+      "candidate_rank": 8,
+      "source_rank": 9,
+      "word": "তোমার",
+      "pos": null,
+      "frequency_count": 21084
+    },
+    {
+      "candidate_rank": 9,
+      "source_rank": 10,
+      "word": "আছে",
+      "pos": null,
+      "frequency_count": 19261
+    },
+    {
+      "candidate_rank": 10,
+      "source_rank": 11,
+      "word": "সে",
+      "pos": null,
+      "frequency_count": 16923
+    },
+    {
+      "candidate_rank": 11,
+      "source_rank": 12,
+      "word": "এই",
+      "pos": null,
+      "frequency_count": 16910
+    },
+    {
+      "candidate_rank": 12,
+      "source_rank": 13,
+      "word": "আমরা",
+      "pos": null,
+      "frequency_count": 16906
+    },
+    {
+      "candidate_rank": 13,
+      "source_rank": 14,
+      "word": "করে",
+      "pos": null,
+      "frequency_count": 14778
+    },
+    {
+      "candidate_rank": 14,
+      "source_rank": 15,
+      "word": "হবে",
+      "pos": null,
+      "frequency_count": 14123
+    },
+    {
+      "candidate_rank": 15,
+      "source_rank": 16,
+      "word": "জন্য",
+      "pos": null,
+      "frequency_count": 14032
+    },
+    {
+      "candidate_rank": 16,
+      "source_rank": 17,
+      "word": "আমাদের",
+      "pos": null,
+      "frequency_count": 13667
+    },
+    {
+      "candidate_rank": 17,
+      "source_rank": 18,
+      "word": "করতে",
+      "pos": null,
+      "frequency_count": 13516
+    },
+    {
+      "candidate_rank": 18,
+      "source_rank": 19,
+      "word": "একটা",
+      "pos": null,
+      "frequency_count": 13288
+    },
+    {
+      "candidate_rank": 19,
+      "source_rank": 20,
+      "word": "আমাকে",
+      "pos": null,
+      "frequency_count": 12796
+    },
+    {
+      "candidate_rank": 20,
+      "source_rank": 21,
+      "word": "ঠিক",
+      "pos": null,
+      "frequency_count": 12581
+    },
+    {
+      "candidate_rank": 21,
+      "source_rank": 22,
+      "word": "আপনি",
+      "pos": null,
+      "frequency_count": 12523
+    },
+    {
+      "candidate_rank": 22,
+      "source_rank": 23,
+      "word": "তো",
+      "pos": null,
+      "frequency_count": 11893
+    },
+    {
+      "candidate_rank": 23,
+      "source_rank": 24,
+      "word": "যে",
+      "pos": null,
+      "frequency_count": 11434
+    },
+    {
+      "candidate_rank": 24,
+      "source_rank": 25,
+      "word": "তার",
+      "pos": null,
+      "frequency_count": 11204
+    },
+    {
+      "candidate_rank": 25,
+      "source_rank": 26,
+      "word": "থেকে",
+      "pos": null,
+      "frequency_count": 10917
+    },
+    {
+      "candidate_rank": 26,
+      "source_rank": 27,
+      "word": "কিছু",
+      "pos": null,
+      "frequency_count": 10768
+    },
+    {
+      "candidate_rank": 27,
+      "source_rank": 28,
+      "word": "সাথে",
+      "pos": null,
+      "frequency_count": 10611
+    },
+    {
+      "candidate_rank": 28,
+      "source_rank": 29,
+      "word": "কিন্তু",
+      "pos": null,
+      "frequency_count": 10462
+    },
+    {
+      "candidate_rank": 29,
+      "source_rank": 30,
+      "word": "এখানে",
+      "pos": null,
+      "frequency_count": 9373
+    },
+    {
+      "candidate_rank": 30,
+      "source_rank": 31,
+      "word": "তোমাকে",
+      "pos": null,
+      "frequency_count": 9308
+    },
+    {
+      "candidate_rank": 31,
+      "source_rank": 32,
+      "word": "এখন",
+      "pos": null,
+      "frequency_count": 9283
+    },
+    {
+      "candidate_rank": 32,
+      "source_rank": 33,
+      "word": "কোন",
+      "pos": null,
+      "frequency_count": 9239
+    },
+    {
+      "candidate_rank": 33,
+      "source_rank": 34,
+      "word": "কথা",
+      "pos": null,
+      "frequency_count": 9188
+    },
+    {
+      "candidate_rank": 34,
+      "source_rank": 35,
+      "word": "মনে",
+      "pos": null,
+      "frequency_count": 9157
+    },
+    {
+      "candidate_rank": 35,
+      "source_rank": 36,
+      "word": "কী",
+      "pos": null,
+      "frequency_count": 8060
+    },
+    {
+      "candidate_rank": 36,
+      "source_rank": 37,
+      "word": "যদি",
+      "pos": null,
+      "frequency_count": 7580
+    },
+    {
+      "candidate_rank": 37,
+      "source_rank": 38,
+      "word": "এবং",
+      "pos": null,
+      "frequency_count": 7365
+    },
+    {
+      "candidate_rank": 38,
+      "source_rank": 39,
+      "word": "হয়",
+      "pos": null,
+      "frequency_count": 7242
+    },
+    {
+      "candidate_rank": 39,
+      "source_rank": 40,
+      "word": "আপনার",
+      "pos": null,
+      "frequency_count": 7211
+    },
+    {
+      "candidate_rank": 40,
+      "source_rank": 41,
+      "word": "নিয়ে",
+      "pos": null,
+      "frequency_count": 7100
+    },
+    {
+      "candidate_rank": 41,
+      "source_rank": 42,
+      "word": "ছিল",
+      "pos": null,
+      "frequency_count": 7017
+    },
+    {
+      "candidate_rank": 42,
+      "source_rank": 43,
+      "word": "তাকে",
+      "pos": null,
+      "frequency_count": 6734
+    },
+    {
+      "candidate_rank": 43,
+      "source_rank": 44,
+      "word": "তারা",
+      "pos": null,
+      "frequency_count": 6718
+    },
+    {
+      "candidate_rank": 44,
+      "source_rank": 45,
+      "word": "নেই",
+      "pos": null,
+      "frequency_count": 6677
+    },
+    {
+      "candidate_rank": 45,
+      "source_rank": 46,
+      "word": "হয়ে",
+      "pos": null,
+      "frequency_count": 6667
+    },
+    {
+      "candidate_rank": 46,
+      "source_rank": 47,
+      "word": "তাহলে",
+      "pos": null,
+      "frequency_count": 6619
+    },
+    {
+      "candidate_rank": 47,
+      "source_rank": 48,
+      "word": "অনেক",
+      "pos": null,
+      "frequency_count": 6557
+    },
+    {
+      "candidate_rank": 48,
+      "source_rank": 49,
+      "word": "কেন",
+      "pos": null,
+      "frequency_count": 6532
+    },
+    {
+      "candidate_rank": 49,
+      "source_rank": 50,
+      "word": "করা",
+      "pos": null,
+      "frequency_count": 6196
+    },
+    {
+      "candidate_rank": 50,
+      "source_rank": 51,
+      "word": "হ্যাঁ",
+      "pos": null,
+      "frequency_count": 6061
+    },
+    {
+      "candidate_rank": 51,
+      "source_rank": 52,
+      "word": "করো",
+      "pos": null,
+      "frequency_count": 5995
+    },
+    {
+      "candidate_rank": 52,
+      "source_rank": 53,
+      "word": "তাই",
+      "pos": null,
+      "frequency_count": 5886
+    },
+    {
+      "candidate_rank": 53,
+      "source_rank": 54,
+      "word": "সব",
+      "pos": null,
+      "frequency_count": 5841
+    },
+    {
+      "candidate_rank": 54,
+      "source_rank": 55,
+      "word": "এক",
+      "pos": null,
+      "frequency_count": 5538
+    },
+    {
+      "candidate_rank": 55,
+      "source_rank": 56,
+      "word": "এর",
+      "pos": null,
+      "frequency_count": 5506
+    },
+    {
+      "candidate_rank": 56,
+      "source_rank": 57,
+      "word": "হচ্ছে",
+      "pos": null,
+      "frequency_count": 5423
+    },
+    {
+      "candidate_rank": 57,
+      "source_rank": 58,
+      "word": "যাও",
+      "pos": null,
+      "frequency_count": 5261
+    },
+    {
+      "candidate_rank": 58,
+      "source_rank": 59,
+      "word": "কাজ",
+      "pos": null,
+      "frequency_count": 5250
+    },
+    {
+      "candidate_rank": 59,
+      "source_rank": 60,
+      "word": "হয়েছে",
+      "pos": null,
+      "frequency_count": 5230
+    },
+    {
+      "candidate_rank": 60,
+      "source_rank": 61,
+      "word": "ও",
+      "pos": null,
+      "frequency_count": 5230
+    },
+    {
+      "candidate_rank": 61,
+      "source_rank": 62,
+      "word": "কে",
+      "pos": null,
+      "frequency_count": 5075
+    },
+    {
+      "candidate_rank": 62,
+      "source_rank": 63,
+      "word": "কাছে",
+      "pos": null,
+      "frequency_count": 5061
+    },
+    {
+      "candidate_rank": 63,
+      "source_rank": 64,
+      "word": "শুধু",
+      "pos": null,
+      "frequency_count": 5035
+    },
+    {
+      "candidate_rank": 64,
+      "source_rank": 65,
+      "word": "একটি",
+      "pos": null,
+      "frequency_count": 4937
+    },
+    {
+      "candidate_rank": 65,
+      "source_rank": 66,
+      "word": "স্যার",
+      "pos": null,
+      "frequency_count": 4914
+    },
+    {
+      "candidate_rank": 66,
+      "source_rank": 67,
+      "word": "দাও",
+      "pos": null,
+      "frequency_count": 4851
+    },
+    {
+      "candidate_rank": 67,
+      "source_rank": 68,
+      "word": "তাদের",
+      "pos": null,
+      "frequency_count": 4797
+    },
+    {
+      "candidate_rank": 68,
+      "source_rank": 69,
+      "word": "ভালো",
+      "pos": null,
+      "frequency_count": 4782
+    },
+    {
+      "candidate_rank": 69,
+      "source_rank": 70,
+      "word": "যা",
+      "pos": null,
+      "frequency_count": 4540
+    },
+    {
+      "candidate_rank": 70,
+      "source_rank": 71,
+      "word": "একজন",
+      "pos": null,
+      "frequency_count": 4511
+    },
+    {
+      "candidate_rank": 71,
+      "source_rank": 72,
+      "word": "ভাল",
+      "pos": null,
+      "frequency_count": 4509
+    },
+    {
+      "candidate_rank": 72,
+      "source_rank": 73,
+      "word": "জানি",
+      "pos": null,
+      "frequency_count": 4497
+    },
+    {
+      "candidate_rank": 73,
+      "source_rank": 74,
+      "word": "যেতে",
+      "pos": null,
+      "frequency_count": 4477
+    },
+    {
+      "candidate_rank": 74,
+      "source_rank": 75,
+      "word": "দিয়ে",
+      "pos": null,
+      "frequency_count": 4330
+    },
+    {
+      "candidate_rank": 75,
+      "source_rank": 76,
+      "word": "খুব",
+      "pos": null,
+      "frequency_count": 4324
+    },
+    {
+      "candidate_rank": 76,
+      "source_rank": 77,
+      "word": "কোথায়",
+      "pos": null,
+      "frequency_count": 4277
+    },
+    {
+      "candidate_rank": 77,
+      "source_rank": 78,
+      "word": "করবে",
+      "pos": null,
+      "frequency_count": 4126
+    },
+    {
+      "candidate_rank": 78,
+      "source_rank": 79,
+      "word": "যাবে",
+      "pos": null,
+      "frequency_count": 4101
+    },
+    {
+      "candidate_rank": 79,
+      "source_rank": 80,
+      "word": "চাই",
+      "pos": null,
+      "frequency_count": 4070
+    },
+    {
+      "candidate_rank": 80,
+      "source_rank": 81,
+      "word": "পারে",
+      "pos": null,
+      "frequency_count": 3996
+    },
+    {
+      "candidate_rank": 81,
+      "source_rank": 82,
+      "word": "শেষ",
+      "pos": null,
+      "frequency_count": 3981
+    },
+    {
+      "candidate_rank": 82,
+      "source_rank": 83,
+      "word": "করার",
+      "pos": null,
+      "frequency_count": 3947
+    },
+    {
+      "candidate_rank": 83,
+      "source_rank": 84,
+      "word": "ধন্যবাদ",
+      "pos": null,
+      "frequency_count": 3909
+    },
+    {
+      "candidate_rank": 84,
+      "source_rank": 85,
+      "word": "যখন",
+      "pos": null,
+      "frequency_count": 3900
+    },
+    {
+      "candidate_rank": 85,
+      "source_rank": 86,
+      "word": "বলতে",
+      "pos": null,
+      "frequency_count": 3867
+    },
+    {
+      "candidate_rank": 86,
+      "source_rank": 87,
+      "word": "কেউ",
+      "pos": null,
+      "frequency_count": 3857
+    },
+    {
+      "candidate_rank": 87,
+      "source_rank": 88,
+      "word": "করি",
+      "pos": null,
+      "frequency_count": 3766
+    },
+    {
+      "candidate_rank": 88,
+      "source_rank": 89,
+      "word": "সময়",
+      "pos": null,
+      "frequency_count": 3742
+    },
+    {
+      "candidate_rank": 89,
+      "source_rank": 90,
+      "word": "তুই",
+      "pos": null,
+      "frequency_count": 3708
+    },
+    {
+      "candidate_rank": 90,
+      "source_rank": 91,
+      "word": "গেছে",
+      "pos": null,
+      "frequency_count": 3668
+    },
+    {
+      "candidate_rank": 91,
+      "source_rank": 92,
+      "word": "বাবা",
+      "pos": null,
+      "frequency_count": 3660
+    },
+    {
+      "candidate_rank": 92,
+      "source_rank": 93,
+      "word": "ওকে",
+      "pos": null,
+      "frequency_count": 3651
+    },
+    {
+      "candidate_rank": 93,
+      "source_rank": 94,
+      "word": "মত",
+      "pos": null,
+      "frequency_count": 3629
+    },
+    {
+      "candidate_rank": 94,
+      "source_rank": 95,
+      "word": "সেটা",
+      "pos": null,
+      "frequency_count": 3624
+    },
+    {
+      "candidate_rank": 95,
+      "source_rank": 96,
+      "word": "হতে",
+      "pos": null,
+      "frequency_count": 3616
+    },
+    {
+      "candidate_rank": 96,
+      "source_rank": 97,
+      "word": "চলে",
+      "pos": null,
+      "frequency_count": 3563
+    },
+    {
+      "candidate_rank": 97,
+      "source_rank": 98,
+      "word": "ওহ",
+      "pos": null,
+      "frequency_count": 3472
+    },
+    {
+      "candidate_rank": 98,
+      "source_rank": 99,
+      "word": "নয়",
+      "pos": null,
+      "frequency_count": 3471
+    },
+    {
+      "candidate_rank": 99,
+      "source_rank": 100,
+      "word": "হ্যা",
+      "pos": null,
+      "frequency_count": 3423
+    },
+    {
+      "candidate_rank": 100,
+      "source_rank": 101,
+      "word": "একটু",
+      "pos": null,
+      "frequency_count": 3412
+    },
+    {
+      "candidate_rank": 101,
+      "source_rank": 102,
+      "word": "পারি",
+      "pos": null,
+      "frequency_count": 3330
+    },
+    {
+      "candidate_rank": 102,
+      "source_rank": 103,
+      "word": "দেখতে",
+      "pos": null,
+      "frequency_count": 3308
+    },
+    {
+      "candidate_rank": 103,
+      "source_rank": 104,
+      "word": "সবাই",
+      "pos": null,
+      "frequency_count": 3248
+    },
+    {
+      "candidate_rank": 104,
+      "source_rank": 105,
+      "word": "আগে",
+      "pos": null,
+      "frequency_count": 3240
+    },
+    {
+      "candidate_rank": 105,
+      "source_rank": 106,
+      "word": "দেখা",
+      "pos": null,
+      "frequency_count": 3225
+    },
+    {
+      "candidate_rank": 106,
+      "source_rank": 107,
+      "word": "করছি",
+      "pos": null,
+      "frequency_count": 3219
+    },
+    {
+      "candidate_rank": 107,
+      "source_rank": 108,
+      "word": "তিনি",
+      "pos": null,
+      "frequency_count": 3163
+    },
+    {
+      "candidate_rank": 108,
+      "source_rank": 109,
+      "word": "বের",
+      "pos": null,
+      "frequency_count": 3111
+    },
+    {
+      "candidate_rank": 109,
+      "source_rank": 110,
+      "word": "বলে",
+      "pos": null,
+      "frequency_count": 3055
+    },
+    {
+      "candidate_rank": 110,
+      "source_rank": 111,
+      "word": "ঐ",
+      "pos": null,
+      "frequency_count": 3046
+    },
+    {
+      "candidate_rank": 111,
+      "source_rank": 112,
+      "word": "কর",
+      "pos": null,
+      "frequency_count": 3035
+    },
+    {
+      "candidate_rank": 112,
+      "source_rank": 113,
+      "word": "আবার",
+      "pos": null,
+      "frequency_count": 2967
+    },
+    {
+      "candidate_rank": 113,
+      "source_rank": 114,
+      "word": "দিতে",
+      "pos": null,
+      "frequency_count": 2931
+    },
+    {
+      "candidate_rank": 114,
+      "source_rank": 115,
+      "word": "নাম",
+      "pos": null,
+      "frequency_count": 2861
+    },
+    {
+      "candidate_rank": 115,
+      "source_rank": 116,
+      "word": "যায়",
+      "pos": null,
+      "frequency_count": 2845
+    },
+    {
+      "candidate_rank": 116,
+      "source_rank": 117,
+      "word": "ওর",
+      "pos": null,
+      "frequency_count": 2839
+    },
+    {
+      "candidate_rank": 117,
+      "source_rank": 118,
+      "word": "পারবে",
+      "pos": null,
+      "frequency_count": 2835
+    },
+    {
+      "candidate_rank": 118,
+      "source_rank": 119,
+      "word": "নাকি",
+      "pos": null,
+      "frequency_count": 2817
+    },
+    {
+      "candidate_rank": 119,
+      "source_rank": 120,
+      "word": "কিভাবে",
+      "pos": null,
+      "frequency_count": 2808
+    },
+    {
+      "candidate_rank": 120,
+      "source_rank": 121,
+      "word": "মধ্যে",
+      "pos": null,
+      "frequency_count": 2792
+    },
+    {
+      "candidate_rank": 121,
+      "source_rank": 122,
+      "word": "তোমরা",
+      "pos": null,
+      "frequency_count": 2756
+    },
+    {
+      "candidate_rank": 122,
+      "source_rank": 123,
+      "word": "ফিরে",
+      "pos": null,
+      "frequency_count": 2663
+    },
+    {
+      "candidate_rank": 123,
+      "source_rank": 124,
+      "word": "আচ্ছা",
+      "pos": null,
+      "frequency_count": 2657
+    },
+    {
+      "candidate_rank": 124,
+      "source_rank": 125,
+      "word": "সাহায্য",
+      "pos": null,
+      "frequency_count": 2652
+    },
+    {
+      "candidate_rank": 125,
+      "source_rank": 126,
+      "word": "আপনাকে",
+      "pos": null,
+      "frequency_count": 2645
+    },
+    {
+      "candidate_rank": 126,
+      "source_rank": 127,
+      "word": "মানুষ",
+      "pos": null,
+      "frequency_count": 2594
+    },
+    {
+      "candidate_rank": 127,
+      "source_rank": 128,
+      "word": "তা",
+      "pos": null,
+      "frequency_count": 2558
+    },
+    {
+      "candidate_rank": 128,
+      "source_rank": 129,
+      "word": "মা",
+      "pos": null,
+      "frequency_count": 2555
+    },
+    {
+      "candidate_rank": 129,
+      "source_rank": 130,
+      "word": "এ",
+      "pos": null,
+      "frequency_count": 2548
+    },
+    {
+      "candidate_rank": 130,
+      "source_rank": 131,
+      "word": "করেছে",
+      "pos": null,
+      "frequency_count": 2536
+    },
+    {
+      "candidate_rank": 131,
+      "source_rank": 132,
+      "word": "দিকে",
+      "pos": null,
+      "frequency_count": 2514
+    },
+    {
+      "candidate_rank": 132,
+      "source_rank": 133,
+      "word": "দরকার",
+      "pos": null,
+      "frequency_count": 2512
+    },
+    {
+      "candidate_rank": 133,
+      "source_rank": 134,
+      "word": "সেই",
+      "pos": null,
+      "frequency_count": 2500
+    },
+    {
+      "candidate_rank": 134,
+      "source_rank": 135,
+      "word": "আসলে",
+      "pos": null,
+      "frequency_count": 2494
+    },
+    {
+      "candidate_rank": 135,
+      "source_rank": 136,
+      "word": "শুরু",
+      "pos": null,
+      "frequency_count": 2493
+    },
+    {
+      "candidate_rank": 136,
+      "source_rank": 137,
+      "word": "ওটা",
+      "pos": null,
+      "frequency_count": 2493
+    },
+    {
+      "candidate_rank": 137,
+      "source_rank": 138,
+      "word": "দুঃখিত",
+      "pos": null,
+      "frequency_count": 2489
+    },
+    {
+      "candidate_rank": 138,
+      "source_rank": 139,
+      "word": "দিন",
+      "pos": null,
+      "frequency_count": 2485
+    },
+    {
+      "candidate_rank": 139,
+      "source_rank": 140,
+      "word": "চলো",
+      "pos": null,
+      "frequency_count": 2483
+    },
+    {
+      "candidate_rank": 140,
+      "source_rank": 141,
+      "word": "মানে",
+      "pos": null,
+      "frequency_count": 2483
+    },
+    {
+      "candidate_rank": 141,
+      "source_rank": 142,
+      "word": "কিন্ত",
+      "pos": null,
+      "frequency_count": 2482
+    },
+    {
+      "candidate_rank": 142,
+      "source_rank": 143,
+      "word": "তোর",
+      "pos": null,
+      "frequency_count": 2442
+    },
+    {
+      "candidate_rank": 143,
+      "source_rank": 144,
+      "word": "তোমাদের",
+      "pos": null,
+      "frequency_count": 2410
+    },
+    {
+      "candidate_rank": 144,
+      "source_rank": 145,
+      "word": "করছে",
+      "pos": null,
+      "frequency_count": 2387
+    },
+    {
+      "candidate_rank": 145,
+      "source_rank": 146,
+      "word": "বলছি",
+      "pos": null,
+      "frequency_count": 2380
+    },
+    {
+      "candidate_rank": 146,
+      "source_rank": 147,
+      "word": "বিশ্বাস",
+      "pos": null,
+      "frequency_count": 2374
+    },
+    {
+      "candidate_rank": 147,
+      "source_rank": 148,
+      "word": "বন্ধ",
+      "pos": null,
+      "frequency_count": 2339
+    },
+    {
+      "candidate_rank": 148,
+      "source_rank": 149,
+      "word": "করেছি",
+      "pos": null,
+      "frequency_count": 2332
+    },
+    {
+      "candidate_rank": 149,
+      "source_rank": 150,
+      "word": "এমন",
+      "pos": null,
+      "frequency_count": 2260
+    },
+    {
+      "candidate_rank": 150,
+      "source_rank": 151,
+      "word": "অবশ্যই",
+      "pos": null,
+      "frequency_count": 2248
+    },
+    {
+      "candidate_rank": 151,
+      "source_rank": 152,
+      "word": "নিজের",
+      "pos": null,
+      "frequency_count": 2217
+    },
+    {
+      "candidate_rank": 152,
+      "source_rank": 153,
+      "word": "কারণ",
+      "pos": null,
+      "frequency_count": 2216
+    },
+    {
+      "candidate_rank": 153,
+      "source_rank": 154,
+      "word": "বড়",
+      "pos": null,
+      "frequency_count": 2196
+    },
+    {
+      "candidate_rank": 154,
+      "source_rank": 155,
+      "word": "করবো",
+      "pos": null,
+      "frequency_count": 2185
+    },
+    {
+      "candidate_rank": 155,
+      "source_rank": 156,
+      "word": "বেশি",
+      "pos": null,
+      "frequency_count": 2174
+    },
+    {
+      "candidate_rank": 156,
+      "source_rank": 157,
+      "word": "বছর",
+      "pos": null,
+      "frequency_count": 2155
+    },
+    {
+      "candidate_rank": 157,
+      "source_rank": 158,
+      "word": "উপর",
+      "pos": null,
+      "frequency_count": 2110
+    },
+    {
+      "candidate_rank": 158,
+      "source_rank": 159,
+      "word": "যাচ্ছে",
+      "pos": null,
+      "frequency_count": 2105
+    },
+    {
+      "candidate_rank": 159,
+      "source_rank": 160,
+      "word": "আসো",
+      "pos": null,
+      "frequency_count": 2099
+    },
+    {
+      "candidate_rank": 160,
+      "source_rank": 161,
+      "word": "চেষ্টা",
+      "pos": null,
+      "frequency_count": 2095
+    },
+    {
+      "candidate_rank": 161,
+      "source_rank": 162,
+      "word": "তারপর",
+      "pos": null,
+      "frequency_count": 2092
+    },
+    {
+      "candidate_rank": 162,
+      "source_rank": 163,
+      "word": "হল",
+      "pos": null,
+      "frequency_count": 2087
+    },
+    {
+      "candidate_rank": 163,
+      "source_rank": 165,
+      "word": "হেই",
+      "pos": null,
+      "frequency_count": 2081
+    },
+    {
+      "candidate_rank": 164,
+      "source_rank": 166,
+      "word": "এসব",
+      "pos": null,
+      "frequency_count": 2064
+    },
+    {
+      "candidate_rank": 165,
+      "source_rank": 167,
+      "word": "দেখো",
+      "pos": null,
+      "frequency_count": 2057
+    },
+    {
+      "candidate_rank": 166,
+      "source_rank": 168,
+      "word": "কিছুই",
+      "pos": null,
+      "frequency_count": 2053
+    },
+    {
+      "candidate_rank": 167,
+      "source_rank": 169,
+      "word": "কোনো",
+      "pos": null,
+      "frequency_count": 2041
+    },
+    {
+      "candidate_rank": 168,
+      "source_rank": 170,
+      "word": "এটাই",
+      "pos": null,
+      "frequency_count": 2035
+    },
+    {
+      "candidate_rank": 169,
+      "source_rank": 171,
+      "word": "আছি",
+      "pos": null,
+      "frequency_count": 2034
+    },
+    {
+      "candidate_rank": 170,
+      "source_rank": 172,
+      "word": "টাকা",
+      "pos": null,
+      "frequency_count": 2032
+    },
+    {
+      "candidate_rank": 171,
+      "source_rank": 173,
+      "word": "যাচ্ছি",
+      "pos": null,
+      "frequency_count": 2032
+    },
+    {
+      "candidate_rank": 172,
+      "source_rank": 174,
+      "word": "জানো",
+      "pos": null,
+      "frequency_count": 2023
+    },
+    {
+      "candidate_rank": 173,
+      "source_rank": 175,
+      "word": "বুঝতে",
+      "pos": null,
+      "frequency_count": 1997
+    },
+    {
+      "candidate_rank": 174,
+      "source_rank": 176,
+      "word": "আজ",
+      "pos": null,
+      "frequency_count": 1979
+    },
+    {
+      "candidate_rank": 175,
+      "source_rank": 177,
+      "word": "ছিলো",
+      "pos": null,
+      "frequency_count": 1978
+    },
+    {
+      "candidate_rank": 176,
+      "source_rank": 178,
+      "word": "বলো",
+      "pos": null,
+      "frequency_count": 1967
+    },
+    {
+      "candidate_rank": 177,
+      "source_rank": 179,
+      "word": "মতো",
+      "pos": null,
+      "frequency_count": 1962
+    },
+    {
+      "candidate_rank": 178,
+      "source_rank": 180,
+      "word": "ধরে",
+      "pos": null,
+      "frequency_count": 1949
+    },
+    {
+      "candidate_rank": 179,
+      "source_rank": 181,
+      "word": "কখনো",
+      "pos": null,
+      "frequency_count": 1936
+    },
+    {
+      "candidate_rank": 180,
+      "source_rank": 182,
+      "word": "খারাপ",
+      "pos": null,
+      "frequency_count": 1934
+    },
+    {
+      "candidate_rank": 181,
+      "source_rank": 183,
+      "word": "কেমন",
+      "pos": null,
+      "frequency_count": 1927
+    },
+    {
+      "candidate_rank": 182,
+      "source_rank": 184,
+      "word": "প্লিজ",
+      "pos": null,
+      "frequency_count": 1916
+    },
+    {
+      "candidate_rank": 183,
+      "source_rank": 185,
+      "word": "মারা",
+      "pos": null,
+      "frequency_count": 1911
+    },
+    {
+      "candidate_rank": 184,
+      "source_rank": 186,
+      "word": "পছন্দ",
+      "pos": null,
+      "frequency_count": 1870
+    },
+    {
+      "candidate_rank": 185,
+      "source_rank": 187,
+      "word": "সেখানে",
+      "pos": null,
+      "frequency_count": 1866
+    },
+    {
+      "candidate_rank": 186,
+      "source_rank": 188,
+      "word": "চাও",
+      "pos": null,
+      "frequency_count": 1850
+    },
+    {
+      "candidate_rank": 187,
+      "source_rank": 189,
+      "word": "নাও",
+      "pos": null,
+      "frequency_count": 1826
+    },
+    {
+      "candidate_rank": 188,
+      "source_rank": 190,
+      "word": "সমস্যা",
+      "pos": null,
+      "frequency_count": 1819
+    },
+    {
+      "candidate_rank": 189,
+      "source_rank": 191,
+      "word": "দেখে",
+      "pos": null,
+      "frequency_count": 1815
+    },
+    {
+      "candidate_rank": 190,
+      "source_rank": 192,
+      "word": "নি",
+      "pos": null,
+      "frequency_count": 1808
+    },
+    {
+      "candidate_rank": 191,
+      "source_rank": 193,
+      "word": "পর",
+      "pos": null,
+      "frequency_count": 1802
+    },
+    {
+      "candidate_rank": 192,
+      "source_rank": 194,
+      "word": "থাকে",
+      "pos": null,
+      "frequency_count": 1801
+    },
+    {
+      "candidate_rank": 193,
+      "source_rank": 195,
+      "word": "এখনো",
+      "pos": null,
+      "frequency_count": 1801
+    },
+    {
+      "candidate_rank": 194,
+      "source_rank": 196,
+      "word": "সুন্দর",
+      "pos": null,
+      "frequency_count": 1775
+    },
+    {
+      "candidate_rank": 195,
+      "source_rank": 197,
+      "word": "তখন",
+      "pos": null,
+      "frequency_count": 1737
+    },
+    {
+      "candidate_rank": 196,
+      "source_rank": 198,
+      "word": "ভুল",
+      "pos": null,
+      "frequency_count": 1727
+    },
+    {
+      "candidate_rank": 197,
+      "source_rank": 199,
+      "word": "ভাই",
+      "pos": null,
+      "frequency_count": 1724
+    },
+    {
+      "candidate_rank": 198,
+      "source_rank": 200,
+      "word": "ওখানে",
+      "pos": null,
+      "frequency_count": 1721
+    },
+    {
+      "candidate_rank": 199,
+      "source_rank": 201,
+      "word": "পর্যন্ত",
+      "pos": null,
+      "frequency_count": 1719
+    },
+    {
+      "candidate_rank": 200,
+      "source_rank": 202,
+      "word": "করব",
+      "pos": null,
+      "frequency_count": 1714
+    },
+    {
+      "candidate_rank": 201,
+      "source_rank": 203,
+      "word": "নতুন",
+      "pos": null,
+      "frequency_count": 1707
+    },
+    {
+      "candidate_rank": 202,
+      "source_rank": 204,
+      "word": "পরে",
+      "pos": null,
+      "frequency_count": 1701
+    },
+    {
+      "candidate_rank": 203,
+      "source_rank": 205,
+      "word": "থাকতে",
+      "pos": null,
+      "frequency_count": 1697
+    },
+    {
+      "candidate_rank": 204,
+      "source_rank": 206,
+      "word": "ওরা",
+      "pos": null,
+      "frequency_count": 1690
+    },
+    {
+      "candidate_rank": 205,
+      "source_rank": 207,
+      "word": "যাই",
+      "pos": null,
+      "frequency_count": 1675
+    },
+    {
+      "candidate_rank": 206,
+      "source_rank": 208,
+      "word": "অন্য",
+      "pos": null,
+      "frequency_count": 1659
+    },
+    {
+      "candidate_rank": 207,
+      "source_rank": 209,
+      "word": "হলো",
+      "pos": null,
+      "frequency_count": 1653
+    },
+    {
+      "candidate_rank": 208,
+      "source_rank": 210,
+      "word": "খুঁজে",
+      "pos": null,
+      "frequency_count": 1633
+    },
+    {
+      "candidate_rank": 209,
+      "source_rank": 211,
+      "word": "ভয়",
+      "pos": null,
+      "frequency_count": 1632
+    },
+    {
+      "candidate_rank": 210,
+      "source_rank": 212,
+      "word": "ব্যাপারে",
+      "pos": null,
+      "frequency_count": 1629
+    },
+    {
+      "candidate_rank": 211,
+      "source_rank": 213,
+      "word": "ছেড়ে",
+      "pos": null,
+      "frequency_count": 1604
+    },
+    {
+      "candidate_rank": 212,
+      "source_rank": 214,
+      "word": "আরো",
+      "pos": null,
+      "frequency_count": 1597
+    },
+    {
+      "candidate_rank": 213,
+      "source_rank": 215,
+      "word": "নিতে",
+      "pos": null,
+      "frequency_count": 1591
+    },
+    {
+      "candidate_rank": 214,
+      "source_rank": 216,
+      "word": "থাকবে",
+      "pos": null,
+      "frequency_count": 1581
+    },
+    {
+      "candidate_rank": 215,
+      "source_rank": 217,
+      "word": "করুন",
+      "pos": null,
+      "frequency_count": 1581
+    },
+    {
+      "candidate_rank": 216,
+      "source_rank": 218,
+      "word": "লোক",
+      "pos": null,
+      "frequency_count": 1577
+    },
+    {
+      "candidate_rank": 217,
+      "source_rank": 219,
+      "word": "আরে",
+      "pos": null,
+      "frequency_count": 1574
+    },
+    {
+      "candidate_rank": 218,
+      "source_rank": 220,
+      "word": "ফোন",
+      "pos": null,
+      "frequency_count": 1557
+    },
+    {
+      "candidate_rank": 219,
+      "source_rank": 221,
+      "word": "বন্ধু",
+      "pos": null,
+      "frequency_count": 1531
+    },
+    {
+      "candidate_rank": 220,
+      "source_rank": 222,
+      "word": "হাত",
+      "pos": null,
+      "frequency_count": 1527
+    },
+    {
+      "candidate_rank": 221,
+      "source_rank": 223,
+      "word": "লাগবে",
+      "pos": null,
+      "frequency_count": 1517
+    },
+    {
+      "candidate_rank": 222,
+      "source_rank": 224,
+      "word": "এসো",
+      "pos": null,
+      "frequency_count": 1512
+    },
+    {
+      "candidate_rank": 223,
+      "source_rank": 225,
+      "word": "ওই",
+      "pos": null,
+      "frequency_count": 1503
+    },
+    {
+      "candidate_rank": 224,
+      "source_rank": 226,
+      "word": "যেন",
+      "pos": null,
+      "frequency_count": 1494
+    },
+    {
+      "candidate_rank": 225,
+      "source_rank": 227,
+      "word": "সত্যি",
+      "pos": null,
+      "frequency_count": 1490
+    },
+    {
+      "candidate_rank": 226,
+      "source_rank": 228,
+      "word": "জীবন",
+      "pos": null,
+      "frequency_count": 1489
+    },
+    {
+      "candidate_rank": 227,
+      "source_rank": 229,
+      "word": "বল",
+      "pos": null,
+      "frequency_count": 1482
+    },
+    {
+      "candidate_rank": 228,
+      "source_rank": 230,
+      "word": "চিন্তা",
+      "pos": null,
+      "frequency_count": 1481
+    },
+    {
+      "candidate_rank": 229,
+      "source_rank": 231,
+      "word": "সম্পর্কে",
+      "pos": null,
+      "frequency_count": 1473
+    },
+    {
+      "candidate_rank": 230,
+      "source_rank": 232,
+      "word": "ছেলে",
+      "pos": null,
+      "frequency_count": 1470
+    },
+    {
+      "candidate_rank": 231,
+      "source_rank": 233,
+      "word": "এত",
+      "pos": null,
+      "frequency_count": 1463
+    },
+    {
+      "candidate_rank": 232,
+      "source_rank": 234,
+      "word": "যেটা",
+      "pos": null,
+      "frequency_count": 1442
+    },
+    {
+      "candidate_rank": 233,
+      "source_rank": 235,
+      "word": "সামনে",
+      "pos": null,
+      "frequency_count": 1437
+    },
+    {
+      "candidate_rank": 234,
+      "source_rank": 236,
+      "word": "জিনিস",
+      "pos": null,
+      "frequency_count": 1432
+    },
+    {
+      "candidate_rank": 235,
+      "source_rank": 237,
+      "word": "খুবই",
+      "pos": null,
+      "frequency_count": 1404
+    },
+    {
+      "candidate_rank": 236,
+      "source_rank": 238,
+      "word": "পারবো",
+      "pos": null,
+      "frequency_count": 1403
+    },
+    {
+      "candidate_rank": 237,
+      "source_rank": 239,
+      "word": "এটি",
+      "pos": null,
+      "frequency_count": 1395
+    },
+    {
+      "candidate_rank": 238,
+      "source_rank": 240,
+      "word": "হ্যালো",
+      "pos": null,
+      "frequency_count": 1389
+    },
+    {
+      "candidate_rank": 239,
+      "source_rank": 241,
+      "word": "ছিলাম",
+      "pos": null,
+      "frequency_count": 1388
+    },
+    {
+      "candidate_rank": 240,
+      "source_rank": 242,
+      "word": "অপেক্ষা",
+      "pos": null,
+      "frequency_count": 1381
+    },
+    {
+      "candidate_rank": 241,
+      "source_rank": 243,
+      "word": "করবেন",
+      "pos": null,
+      "frequency_count": 1379
+    },
+    {
+      "candidate_rank": 242,
+      "source_rank": 244,
+      "word": "সবকিছু",
+      "pos": null,
+      "frequency_count": 1373
+    },
+    {
+      "candidate_rank": 243,
+      "source_rank": 245,
+      "word": "উচিত",
+      "pos": null,
+      "frequency_count": 1359
+    },
+    {
+      "candidate_rank": 244,
+      "source_rank": 246,
+      "word": "ব্যাপার",
+      "pos": null,
+      "frequency_count": 1357
+    },
+    {
+      "candidate_rank": 245,
+      "source_rank": 247,
+      "word": "নিচে",
+      "pos": null,
+      "frequency_count": 1352
+    },
+    {
+      "candidate_rank": 246,
+      "source_rank": 248,
+      "word": "থাকো",
+      "pos": null,
+      "frequency_count": 1347
+    },
+    {
+      "candidate_rank": 247,
+      "source_rank": 249,
+      "word": "পারো",
+      "pos": null,
+      "frequency_count": 1338
+    },
+    {
+      "candidate_rank": 248,
+      "source_rank": 250,
+      "word": "নিশ্চিত",
+      "pos": null,
+      "frequency_count": 1337
+    },
+    {
+      "candidate_rank": 249,
+      "source_rank": 251,
+      "word": "হলে",
+      "pos": null,
+      "frequency_count": 1328
+    },
+    {
+      "candidate_rank": 250,
+      "source_rank": 252,
+      "word": "এসেছে",
+      "pos": null,
+      "frequency_count": 1328
+    },
+    {
+      "candidate_rank": 251,
+      "source_rank": 253,
+      "word": "বা",
+      "pos": null,
+      "frequency_count": 1327
+    },
+    {
+      "candidate_rank": 252,
+      "source_rank": 254,
+      "word": "প্রথম",
+      "pos": null,
+      "frequency_count": 1316
+    },
+    {
+      "candidate_rank": 253,
+      "source_rank": 255,
+      "word": "এখান",
+      "pos": null,
+      "frequency_count": 1316
+    },
+    {
+      "candidate_rank": 254,
+      "source_rank": 256,
+      "word": "জলদি",
+      "pos": null,
+      "frequency_count": 1309
+    },
+    {
+      "candidate_rank": 255,
+      "source_rank": 257,
+      "word": "কত",
+      "pos": null,
+      "frequency_count": 1303
+    },
+    {
+      "candidate_rank": 256,
+      "source_rank": 258,
+      "word": "জানতে",
+      "pos": null,
+      "frequency_count": 1282
+    },
+    {
+      "candidate_rank": 257,
+      "source_rank": 259,
+      "word": "মেয়ে",
+      "pos": null,
+      "frequency_count": 1279
+    },
+    {
+      "candidate_rank": 258,
+      "source_rank": 260,
+      "word": "আসবে",
+      "pos": null,
+      "frequency_count": 1261
+    },
+    {
+      "candidate_rank": 259,
+      "source_rank": 261,
+      "word": "হও",
+      "pos": null,
+      "frequency_count": 1258
+    },
+    {
+      "candidate_rank": 260,
+      "source_rank": 262,
+      "word": "এসে",
+      "pos": null,
+      "frequency_count": 1256
+    },
+    {
+      "candidate_rank": 261,
+      "source_rank": 263,
+      "word": "করছ",
+      "pos": null,
+      "frequency_count": 1255
+    },
+    {
+      "candidate_rank": 262,
+      "source_rank": 264,
+      "word": "এরকম",
+      "pos": null,
+      "frequency_count": 1255
+    },
+    {
+      "candidate_rank": 263,
+      "source_rank": 265,
+      "word": "ওদের",
+      "pos": null,
+      "frequency_count": 1248
+    },
+    {
+      "candidate_rank": 264,
+      "source_rank": 266,
+      "word": "দুই",
+      "pos": null,
+      "frequency_count": 1242
+    },
+    {
+      "candidate_rank": 265,
+      "source_rank": 267,
+      "word": "দেখ",
+      "pos": null,
+      "frequency_count": 1241
+    },
+    {
+      "candidate_rank": 266,
+      "source_rank": 268,
+      "word": "তৈরি",
+      "pos": null,
+      "frequency_count": 1240
+    },
+    {
+      "candidate_rank": 267,
+      "source_rank": 269,
+      "word": "জন",
+      "pos": null,
+      "frequency_count": 1239
+    },
+    {
+      "candidate_rank": 268,
+      "source_rank": 270,
+      "word": "পারেন",
+      "pos": null,
+      "frequency_count": 1225
+    },
+    {
+      "candidate_rank": 269,
+      "source_rank": 271,
+      "word": "ছাড়া",
+      "pos": null,
+      "frequency_count": 1225
+    },
+    {
+      "candidate_rank": 270,
+      "source_rank": 272,
+      "word": "হাতে",
+      "pos": null,
+      "frequency_count": 1222
+    },
+    {
+      "candidate_rank": 271,
+      "source_rank": 273,
+      "word": "সবচেয়ে",
+      "pos": null,
+      "frequency_count": 1219
+    },
+    {
+      "candidate_rank": 272,
+      "source_rank": 274,
+      "word": "হয়তো",
+      "pos": null,
+      "frequency_count": 1218
+    },
+    {
+      "candidate_rank": 273,
+      "source_rank": 275,
+      "word": "আসছে",
+      "pos": null,
+      "frequency_count": 1210
+    },
+    {
+      "candidate_rank": 274,
+      "source_rank": 276,
+      "word": "একদম",
+      "pos": null,
+      "frequency_count": 1208
+    },
+    {
+      "candidate_rank": 275,
+      "source_rank": 277,
+      "word": "নাই",
+      "pos": null,
+      "frequency_count": 1206
+    },
+    {
+      "candidate_rank": 276,
+      "source_rank": 278,
+      "word": "লাগছে",
+      "pos": null,
+      "frequency_count": 1194
+    },
+    {
+      "candidate_rank": 277,
+      "source_rank": 279,
+      "word": "যাক",
+      "pos": null,
+      "frequency_count": 1181
+    },
+    {
+      "candidate_rank": 278,
+      "source_rank": 280,
+      "word": "মেরে",
+      "pos": null,
+      "frequency_count": 1176
+    },
+    {
+      "candidate_rank": 279,
+      "source_rank": 281,
+      "word": "সত্যিই",
+      "pos": null,
+      "frequency_count": 1174
+    },
+    {
+      "candidate_rank": 280,
+      "source_rank": 282,
+      "word": "বাইরে",
+      "pos": null,
+      "frequency_count": 1170
+    },
+    {
+      "candidate_rank": 281,
+      "source_rank": 283,
+      "word": "বেশ",
+      "pos": null,
+      "frequency_count": 1170
+    },
+    {
+      "candidate_rank": 282,
+      "source_rank": 284,
+      "word": "আসতে",
+      "pos": null,
+      "frequency_count": 1168
+    },
+    {
+      "candidate_rank": 283,
+      "source_rank": 285,
+      "word": "গুলি",
+      "pos": null,
+      "frequency_count": 1165
+    },
+    {
+      "candidate_rank": 284,
+      "source_rank": 286,
+      "word": "বলা",
+      "pos": null,
+      "frequency_count": 1164
+    },
+    {
+      "candidate_rank": 285,
+      "source_rank": 287,
+      "word": "এটার",
+      "pos": null,
+      "frequency_count": 1158
+    },
+    {
+      "candidate_rank": 286,
+      "source_rank": 288,
+      "word": "এসেছি",
+      "pos": null,
+      "frequency_count": 1149
+    },
+    {
+      "candidate_rank": 287,
+      "source_rank": 289,
+      "word": "পড়ে",
+      "pos": null,
+      "frequency_count": 1140
+    },
+    {
+      "candidate_rank": 288,
+      "source_rank": 290,
+      "word": "পুরো",
+      "pos": null,
+      "frequency_count": 1137
+    },
+    {
+      "candidate_rank": 289,
+      "source_rank": 291,
+      "word": "যান",
+      "pos": null,
+      "frequency_count": 1134
+    },
+    {
+      "candidate_rank": 290,
+      "source_rank": 292,
+      "word": "এগুলো",
+      "pos": null,
+      "frequency_count": 1122
+    },
+    {
+      "candidate_rank": 291,
+      "source_rank": 293,
+      "word": "ছোট",
+      "pos": null,
+      "frequency_count": 1117
+    },
+    {
+      "candidate_rank": 292,
+      "source_rank": 294,
+      "word": "দিয়েছে",
+      "pos": null,
+      "frequency_count": 1115
+    },
+    {
+      "candidate_rank": 293,
+      "source_rank": 295,
+      "word": "আমিও",
+      "pos": null,
+      "frequency_count": 1112
+    },
+    {
+      "candidate_rank": 294,
+      "source_rank": 296,
+      "word": "সবসময়",
+      "pos": null,
+      "frequency_count": 1104
+    },
+    {
+      "candidate_rank": 295,
+      "source_rank": 297,
+      "word": "চল",
+      "pos": null,
+      "frequency_count": 1095
+    },
+    {
+      "candidate_rank": 296,
+      "source_rank": 298,
+      "word": "পেয়েছি",
+      "pos": null,
+      "frequency_count": 1084
+    },
+    {
+      "candidate_rank": 297,
+      "source_rank": 299,
+      "word": "মিনিট",
+      "pos": null,
+      "frequency_count": 1083
+    },
+    {
+      "candidate_rank": 298,
+      "source_rank": 300,
+      "word": "চায়",
+      "pos": null,
+      "frequency_count": 1082
+    },
+    {
+      "candidate_rank": 299,
+      "source_rank": 301,
+      "word": "মজা",
+      "pos": null,
+      "frequency_count": 1080
+    },
+    {
+      "candidate_rank": 300,
+      "source_rank": 302,
+      "word": "আশা",
+      "pos": null,
+      "frequency_count": 1068
+    },
+    {
+      "candidate_rank": 301,
+      "source_rank": 303,
+      "word": "গিয়ে",
+      "pos": null,
+      "frequency_count": 1067
+    },
+    {
+      "candidate_rank": 302,
+      "source_rank": 304,
+      "word": "বলেছে",
+      "pos": null,
+      "frequency_count": 1063
+    },
+    {
+      "candidate_rank": 303,
+      "source_rank": 305,
+      "word": "তোকে",
+      "pos": null,
+      "frequency_count": 1063
+    },
+    {
+      "candidate_rank": 304,
+      "source_rank": 306,
+      "word": "যেখানে",
+      "pos": null,
+      "frequency_count": 1056
+    },
+    {
+      "candidate_rank": 305,
+      "source_rank": 307,
+      "word": "এবার",
+      "pos": null,
+      "frequency_count": 1049
+    },
+    {
+      "candidate_rank": 306,
+      "source_rank": 308,
+      "word": "আরও",
+      "pos": null,
+      "frequency_count": 1039
+    },
+    {
+      "candidate_rank": 307,
+      "source_rank": 309,
+      "word": "থামো",
+      "pos": null,
+      "frequency_count": 1035
+    },
+    {
+      "candidate_rank": 308,
+      "source_rank": 310,
+      "word": "পুলিশ",
+      "pos": null,
+      "frequency_count": 1033
+    },
+    {
+      "candidate_rank": 309,
+      "source_rank": 311,
+      "word": "কাউকে",
+      "pos": null,
+      "frequency_count": 1032
+    },
+    {
+      "candidate_rank": 310,
+      "source_rank": 312,
+      "word": "যাবো",
+      "pos": null,
+      "frequency_count": 1030
+    },
+    {
+      "candidate_rank": 311,
+      "source_rank": 313,
+      "word": "হোক",
+      "pos": null,
+      "frequency_count": 1029
+    },
+    {
+      "candidate_rank": 312,
+      "source_rank": 314,
+      "word": "নিজেকে",
+      "pos": null,
+      "frequency_count": 1029
+    },
+    {
+      "candidate_rank": 313,
+      "source_rank": 315,
+      "word": "পারব",
+      "pos": null,
+      "frequency_count": 1029
+    },
+    {
+      "candidate_rank": 314,
+      "source_rank": 316,
+      "word": "যারা",
+      "pos": null,
+      "frequency_count": 1027
+    },
+    {
+      "candidate_rank": 315,
+      "source_rank": 317,
+      "word": "শুনতে",
+      "pos": null,
+      "frequency_count": 1025
+    },
+    {
+      "candidate_rank": 316,
+      "source_rank": 318,
+      "word": "মানুষের",
+      "pos": null,
+      "frequency_count": 1024
+    },
+    {
+      "candidate_rank": 317,
+      "source_rank": 319,
+      "word": "র",
+      "pos": null,
+      "frequency_count": 1022
+    },
+    {
+      "candidate_rank": 318,
+      "source_rank": 320,
+      "word": "জায়গা",
+      "pos": null,
+      "frequency_count": 1022
+    },
+    {
+      "candidate_rank": 319,
+      "source_rank": 321,
+      "word": "তাড়াতাড়ি",
+      "pos": null,
+      "frequency_count": 1016
+    },
+    {
+      "candidate_rank": 320,
+      "source_rank": 322,
+      "word": "কীভাবে",
+      "pos": null,
+      "frequency_count": 1016
+    },
+    {
+      "candidate_rank": 321,
+      "source_rank": 323,
+      "word": "বসে",
+      "pos": null,
+      "frequency_count": 1016
+    },
+    {
+      "candidate_rank": 322,
+      "source_rank": 324,
+      "word": "ফেলে",
+      "pos": null,
+      "frequency_count": 1013
+    },
+    {
+      "candidate_rank": 323,
+      "source_rank": 325,
+      "word": "দয়া",
+      "pos": null,
+      "frequency_count": 1011
+    },
+    {
+      "candidate_rank": 324,
+      "source_rank": 326,
+      "word": "জানে",
+      "pos": null,
+      "frequency_count": 1008
+    },
+    {
+      "candidate_rank": 325,
+      "source_rank": 327,
+      "word": "উপরে",
+      "pos": null,
+      "frequency_count": 1007
+    },
+    {
+      "candidate_rank": 326,
+      "source_rank": 328,
+      "word": "মাথা",
+      "pos": null,
+      "frequency_count": 999
+    },
+    {
+      "candidate_rank": 327,
+      "source_rank": 330,
+      "word": "বাড়ি",
+      "pos": null,
+      "frequency_count": 998
+    },
+    {
+      "candidate_rank": 328,
+      "source_rank": 331,
+      "word": "মি",
+      "pos": null,
+      "frequency_count": 991
+    },
+    {
+      "candidate_rank": 329,
+      "source_rank": 332,
+      "word": "দেখি",
+      "pos": null,
+      "frequency_count": 989
+    },
+    {
+      "candidate_rank": 330,
+      "source_rank": 333,
+      "word": "টা",
+      "pos": null,
+      "frequency_count": 983
+    },
+    {
+      "candidate_rank": 331,
+      "source_rank": 334,
+      "word": "খুন",
+      "pos": null,
+      "frequency_count": 982
+    },
+    {
+      "candidate_rank": 332,
+      "source_rank": 335,
+      "word": "আসে",
+      "pos": null,
+      "frequency_count": 981
+    },
+    {
+      "candidate_rank": 333,
+      "source_rank": 336,
+      "word": "সঙ্গে",
+      "pos": null,
+      "frequency_count": 977
+    },
+    {
+      "candidate_rank": 334,
+      "source_rank": 337,
+      "word": "মাত্র",
+      "pos": null,
+      "frequency_count": 977
+    },
+    {
+      "candidate_rank": 335,
+      "source_rank": 338,
+      "word": "অথবা",
+      "pos": null,
+      "frequency_count": 974
+    },
+    {
+      "candidate_rank": 336,
+      "source_rank": 339,
+      "word": "আসছি",
+      "pos": null,
+      "frequency_count": 972
+    },
+    {
+      "candidate_rank": 337,
+      "source_rank": 340,
+      "word": "করলে",
+      "pos": null,
+      "frequency_count": 965
+    },
+    {
+      "candidate_rank": 338,
+      "source_rank": 341,
+      "word": "মাঝে",
+      "pos": null,
+      "frequency_count": 958
+    },
+    {
+      "candidate_rank": 339,
+      "source_rank": 342,
+      "word": "দিচ্ছি",
+      "pos": null,
+      "frequency_count": 957
+    },
+    {
+      "candidate_rank": 340,
+      "source_rank": 343,
+      "word": "আপনাদের",
+      "pos": null,
+      "frequency_count": 956
+    },
+    {
+      "candidate_rank": 341,
+      "source_rank": 344,
+      "word": "রাতে",
+      "pos": null,
+      "frequency_count": 956
+    },
+    {
+      "candidate_rank": 342,
+      "source_rank": 345,
+      "word": "গাড়ি",
+      "pos": null,
+      "frequency_count": 950
+    },
+    {
+      "candidate_rank": 343,
+      "source_rank": 346,
+      "word": "হয়েছিল",
+      "pos": null,
+      "frequency_count": 949
+    },
+    {
+      "candidate_rank": 344,
+      "source_rank": 347,
+      "word": "চুপ",
+      "pos": null,
+      "frequency_count": 947
+    },
+    {
+      "candidate_rank": 345,
+      "source_rank": 348,
+      "word": "ভুলে",
+      "pos": null,
+      "frequency_count": 946
+    },
+    {
+      "candidate_rank": 346,
+      "source_rank": 349,
+      "word": "দাঁড়াও",
+      "pos": null,
+      "frequency_count": 940
+    },
+    {
+      "candidate_rank": 347,
+      "source_rank": 350,
+      "word": "ব্যবহার",
+      "pos": null,
+      "frequency_count": 939
+    },
+    {
+      "candidate_rank": 348,
+      "source_rank": 351,
+      "word": "আছো",
+      "pos": null,
+      "frequency_count": 935
+    },
+    {
+      "candidate_rank": 349,
+      "source_rank": 352,
+      "word": "অবস্থা",
+      "pos": null,
+      "frequency_count": 934
+    },
+    {
+      "candidate_rank": 350,
+      "source_rank": 353,
+      "word": "উচিৎ",
+      "pos": null,
+      "frequency_count": 933
+    },
+    {
+      "candidate_rank": 351,
+      "source_rank": 354,
+      "word": "এখনও",
+      "pos": null,
+      "frequency_count": 933
+    },
+    {
+      "candidate_rank": 352,
+      "source_rank": 355,
+      "word": "মিস",
+      "pos": null,
+      "frequency_count": 929
+    },
+    {
+      "candidate_rank": 353,
+      "source_rank": 356,
+      "word": "করেন",
+      "pos": null,
+      "frequency_count": 925
+    },
+    {
+      "candidate_rank": 354,
+      "source_rank": 357,
+      "word": "করছো",
+      "pos": null,
+      "frequency_count": 923
+    },
+    {
+      "candidate_rank": 355,
+      "source_rank": 358,
+      "word": "যাব",
+      "pos": null,
+      "frequency_count": 922
+    },
+    {
+      "candidate_rank": 356,
+      "source_rank": 359,
+      "word": "সবাইকে",
+      "pos": null,
+      "frequency_count": 921
+    },
+    {
+      "candidate_rank": 357,
+      "source_rank": 360,
+      "word": "তবে",
+      "pos": null,
+      "frequency_count": 919
+    },
+    {
+      "candidate_rank": 358,
+      "source_rank": 361,
+      "word": "এটাকে",
+      "pos": null,
+      "frequency_count": 916
+    },
+    {
+      "candidate_rank": 359,
+      "source_rank": 362,
+      "word": "সবার",
+      "pos": null,
+      "frequency_count": 915
+    },
+    {
+      "candidate_rank": 360,
+      "source_rank": 363,
+      "word": "পেতে",
+      "pos": null,
+      "frequency_count": 915
+    },
+    {
+      "candidate_rank": 361,
+      "source_rank": 364,
+      "word": "বাচ্চা",
+      "pos": null,
+      "frequency_count": 913
+    },
+    {
+      "candidate_rank": 362,
+      "source_rank": 365,
+      "word": "বেঁচে",
+      "pos": null,
+      "frequency_count": 911
+    },
+    {
+      "candidate_rank": 363,
+      "source_rank": 366,
+      "word": "হিসেবে",
+      "pos": null,
+      "frequency_count": 909
+    },
+    {
+      "candidate_rank": 364,
+      "source_rank": 367,
+      "word": "পারছি",
+      "pos": null,
+      "frequency_count": 906
+    },
+    {
+      "candidate_rank": 365,
+      "source_rank": 368,
+      "word": "প্রয়োজন",
+      "pos": null,
+      "frequency_count": 904
+    },
+    {
+      "candidate_rank": 366,
+      "source_rank": 369,
+      "word": "একা",
+      "pos": null,
+      "frequency_count": 902
+    },
+    {
+      "candidate_rank": 367,
+      "source_rank": 370,
+      "word": "যাওয়া",
+      "pos": null,
+      "frequency_count": 893
+    },
+    {
+      "candidate_rank": 368,
+      "source_rank": 371,
+      "word": "উনি",
+      "pos": null,
+      "frequency_count": 892
+    },
+    {
+      "candidate_rank": 369,
+      "source_rank": 372,
+      "word": "চেয়ে",
+      "pos": null,
+      "frequency_count": 890
+    },
+    {
+      "candidate_rank": 370,
+      "source_rank": 373,
+      "word": "তাঁর",
+      "pos": null,
+      "frequency_count": 886
+    },
+    {
+      "candidate_rank": 371,
+      "source_rank": 374,
+      "word": "বলেছি",
+      "pos": null,
+      "frequency_count": 884
+    },
+    {
+      "candidate_rank": 372,
+      "source_rank": 375,
+      "word": "এভাবে",
+      "pos": null,
+      "frequency_count": 883
+    },
+    {
+      "candidate_rank": 373,
+      "source_rank": 376,
+      "word": "পাবে",
+      "pos": null,
+      "frequency_count": 882
+    },
+    {
+      "candidate_rank": 374,
+      "source_rank": 377,
+      "word": "দেখেছি",
+      "pos": null,
+      "frequency_count": 881
+    },
+    {
+      "candidate_rank": 375,
+      "source_rank": 378,
+      "word": "দ্রুত",
+      "pos": null,
+      "frequency_count": 881
+    },
+    {
+      "candidate_rank": 376,
+      "source_rank": 379,
+      "word": "আয়",
+      "pos": null,
+      "frequency_count": 881
+    },
+    {
+      "candidate_rank": 377,
+      "source_rank": 380,
+      "word": "প্রতি",
+      "pos": null,
+      "frequency_count": 880
+    },
+    {
+      "candidate_rank": 378,
+      "source_rank": 381,
+      "word": "ভিতরে",
+      "pos": null,
+      "frequency_count": 878
+    },
+    {
+      "candidate_rank": 379,
+      "source_rank": 382,
+      "word": "পাগল",
+      "pos": null,
+      "frequency_count": 878
+    },
+    {
+      "candidate_rank": 380,
+      "source_rank": 383,
+      "word": "যাওয়ার",
+      "pos": null,
+      "frequency_count": 877
+    },
+    {
+      "candidate_rank": 381,
+      "source_rank": 384,
+      "word": "কারন",
+      "pos": null,
+      "frequency_count": 874
+    },
+    {
+      "candidate_rank": 382,
+      "source_rank": 385,
+      "word": "আপনারা",
+      "pos": null,
+      "frequency_count": 874
+    },
+    {
+      "candidate_rank": 383,
+      "source_rank": 386,
+      "word": "দূরে",
+      "pos": null,
+      "frequency_count": 867
+    },
+    {
+      "candidate_rank": 384,
+      "source_rank": 387,
+      "word": "দেয়",
+      "pos": null,
+      "frequency_count": 866
+    },
+    {
+      "candidate_rank": 385,
+      "source_rank": 388,
+      "word": "যুদ্ধ",
+      "pos": null,
+      "frequency_count": 865
+    },
+    {
+      "candidate_rank": 386,
+      "source_rank": 389,
+      "word": "যার",
+      "pos": null,
+      "frequency_count": 859
+    },
+    {
+      "candidate_rank": 387,
+      "source_rank": 390,
+      "word": "পাওয়া",
+      "pos": null,
+      "frequency_count": 859
+    },
+    {
+      "candidate_rank": 388,
+      "source_rank": 391,
+      "word": "দিবে",
+      "pos": null,
+      "frequency_count": 858
+    },
+    {
+      "candidate_rank": 389,
+      "source_rank": 392,
+      "word": "নই",
+      "pos": null,
+      "frequency_count": 857
+    },
+    {
+      "candidate_rank": 390,
+      "source_rank": 393,
+      "word": "জানেন",
+      "pos": null,
+      "frequency_count": 852
+    },
+    {
+      "candidate_rank": 391,
+      "source_rank": 394,
+      "word": "লাগে",
+      "pos": null,
+      "frequency_count": 850
+    },
+    {
+      "candidate_rank": 392,
+      "source_rank": 395,
+      "word": "শান্ত",
+      "pos": null,
+      "frequency_count": 850
+    },
+    {
+      "candidate_rank": 393,
+      "source_rank": 396,
+      "word": "শুভ",
+      "pos": null,
+      "frequency_count": 849
+    },
+    {
+      "candidate_rank": 394,
+      "source_rank": 397,
+      "word": "আসল",
+      "pos": null,
+      "frequency_count": 849
+    },
+    {
+      "candidate_rank": 395,
+      "source_rank": 398,
+      "word": "একই",
+      "pos": null,
+      "frequency_count": 848
+    },
+    {
+      "candidate_rank": 396,
+      "source_rank": 399,
+      "word": "করেছ",
+      "pos": null,
+      "frequency_count": 844
+    },
+    {
+      "candidate_rank": 397,
+      "source_rank": 400,
+      "word": "খবর",
+      "pos": null,
+      "frequency_count": 844
+    },
+    {
+      "candidate_rank": 398,
+      "source_rank": 401,
+      "word": "একবার",
+      "pos": null,
+      "frequency_count": 841
+    },
+    {
+      "candidate_rank": 399,
+      "source_rank": 402,
+      "word": "মিঃ",
+      "pos": null,
+      "frequency_count": 839
+    },
+    {
+      "candidate_rank": 400,
+      "source_rank": 403,
+      "word": "বাবার",
+      "pos": null,
+      "frequency_count": 837
+    },
+    {
+      "candidate_rank": 401,
+      "source_rank": 404,
+      "word": "খুশি",
+      "pos": null,
+      "frequency_count": 837
+    },
+    {
+      "candidate_rank": 402,
+      "source_rank": 405,
+      "word": "বলবে",
+      "pos": null,
+      "frequency_count": 836
+    },
+    {
+      "candidate_rank": 403,
+      "source_rank": 406,
+      "word": "আগেই",
+      "pos": null,
+      "frequency_count": 836
+    },
+    {
+      "candidate_rank": 404,
+      "source_rank": 407,
+      "word": "পার",
+      "pos": null,
+      "frequency_count": 836
+    },
+    {
+      "candidate_rank": 405,
+      "source_rank": 408,
+      "word": "রাখো",
+      "pos": null,
+      "frequency_count": 835
+    },
+    {
+      "candidate_rank": 406,
+      "source_rank": 409,
+      "word": "গেল",
+      "pos": null,
+      "frequency_count": 825
+    },
+    {
+      "candidate_rank": 407,
+      "source_rank": 410,
+      "word": "চান",
+      "pos": null,
+      "frequency_count": 820
+    },
+    {
+      "candidate_rank": 408,
+      "source_rank": 411,
+      "word": "নিশ্চয়ই",
+      "pos": null,
+      "frequency_count": 820
+    },
+    {
+      "candidate_rank": 409,
+      "source_rank": 412,
+      "word": "সুযোগ",
+      "pos": null,
+      "frequency_count": 819
+    },
+    {
+      "candidate_rank": 410,
+      "source_rank": 413,
+      "word": "কাজে",
+      "pos": null,
+      "frequency_count": 819
+    },
+    {
+      "candidate_rank": 411,
+      "source_rank": 414,
+      "word": "গিয়েছে",
+      "pos": null,
+      "frequency_count": 817
+    },
+    {
+      "candidate_rank": 412,
+      "source_rank": 415,
+      "word": "আসলেই",
+      "pos": null,
+      "frequency_count": 815
+    },
+    {
+      "candidate_rank": 413,
+      "source_rank": 416,
+      "word": "সম্ভব",
+      "pos": null,
+      "frequency_count": 814
+    },
+    {
+      "candidate_rank": 414,
+      "source_rank": 417,
+      "word": "আছেন",
+      "pos": null,
+      "frequency_count": 813
+    },
+    {
+      "candidate_rank": 415,
+      "source_rank": 418,
+      "word": "হয়নি",
+      "pos": null,
+      "frequency_count": 810
+    },
+    {
+      "candidate_rank": 416,
+      "source_rank": 419,
+      "word": "বলছে",
+      "pos": null,
+      "frequency_count": 807
+    },
+    {
+      "candidate_rank": 417,
+      "source_rank": 420,
+      "word": "দেবে",
+      "pos": null,
+      "frequency_count": 807
+    },
+    {
+      "candidate_rank": 418,
+      "source_rank": 421,
+      "word": "বিয়ে",
+      "pos": null,
+      "frequency_count": 801
+    },
+    {
+      "candidate_rank": 419,
+      "source_rank": 422,
+      "word": "যথেষ্ট",
+      "pos": null,
+      "frequency_count": 801
+    },
+    {
+      "candidate_rank": 420,
+      "source_rank": 423,
+      "word": "দরজা",
+      "pos": null,
+      "frequency_count": 800
+    },
+    {
+      "candidate_rank": 421,
+      "source_rank": 424,
+      "word": "রেখে",
+      "pos": null,
+      "frequency_count": 797
+    },
+    {
+      "candidate_rank": 422,
+      "source_rank": 425,
+      "word": "এখানেই",
+      "pos": null,
+      "frequency_count": 796
+    },
+    {
+      "candidate_rank": 423,
+      "source_rank": 426,
+      "word": "এমনকি",
+      "pos": null,
+      "frequency_count": 794
+    },
+    {
+      "candidate_rank": 424,
+      "source_rank": 427,
+      "word": "পথ",
+      "pos": null,
+      "frequency_count": 787
+    },
+    {
+      "candidate_rank": 425,
+      "source_rank": 428,
+      "word": "হওয়ার",
+      "pos": null,
+      "frequency_count": 785
+    },
+    {
+      "candidate_rank": 426,
+      "source_rank": 429,
+      "word": "কিনা",
+      "pos": null,
+      "frequency_count": 783
+    },
+    {
+      "candidate_rank": 427,
+      "source_rank": 430,
+      "word": "তিন",
+      "pos": null,
+      "frequency_count": 783
+    },
+    {
+      "candidate_rank": 428,
+      "source_rank": 431,
+      "word": "জানিনা",
+      "pos": null,
+      "frequency_count": 782
+    },
+    {
+      "candidate_rank": 429,
+      "source_rank": 432,
+      "word": "চোখ",
+      "pos": null,
+      "frequency_count": 781
+    },
+    {
+      "candidate_rank": 430,
+      "source_rank": 433,
+      "word": "ভেতরে",
+      "pos": null,
+      "frequency_count": 779
+    },
+    {
+      "candidate_rank": 431,
+      "source_rank": 434,
+      "word": "যাতে",
+      "pos": null,
+      "frequency_count": 776
+    },
+    {
+      "candidate_rank": 432,
+      "source_rank": 435,
+      "word": "কোথাও",
+      "pos": null,
+      "frequency_count": 772
+    },
+    {
+      "candidate_rank": 433,
+      "source_rank": 436,
+      "word": "প্রশ্ন",
+      "pos": null,
+      "frequency_count": 768
+    },
+    {
+      "candidate_rank": 434,
+      "source_rank": 437,
+      "word": "রাখতে",
+      "pos": null,
+      "frequency_count": 767
+    },
+    {
+      "candidate_rank": 435,
+      "source_rank": 438,
+      "word": "উত্তর",
+      "pos": null,
+      "frequency_count": 765
+    },
+    {
+      "candidate_rank": 436,
+      "source_rank": 439,
+      "word": "এদিকে",
+      "pos": null,
+      "frequency_count": 762
+    },
+    {
+      "candidate_rank": 437,
+      "source_rank": 440,
+      "word": "ভাবে",
+      "pos": null,
+      "frequency_count": 758
+    },
+    {
+      "candidate_rank": 438,
+      "source_rank": 441,
+      "word": "জায়গায়",
+      "pos": null,
+      "frequency_count": 756
+    },
+    {
+      "candidate_rank": 439,
+      "source_rank": 442,
+      "word": "ব্যাপারটা",
+      "pos": null,
+      "frequency_count": 754
+    },
+    {
+      "candidate_rank": 440,
+      "source_rank": 443,
+      "word": "প্রস্তুত",
+      "pos": null,
+      "frequency_count": 752
+    },
+    {
+      "candidate_rank": 441,
+      "source_rank": 444,
+      "word": "আমাদেরকে",
+      "pos": null,
+      "frequency_count": 749
+    },
+    {
+      "candidate_rank": 442,
+      "source_rank": 445,
+      "word": "you",
+      "pos": null,
+      "frequency_count": 747
+    },
+    {
+      "candidate_rank": 443,
+      "source_rank": 446,
+      "word": "করছেন",
+      "pos": null,
+      "frequency_count": 746
+    },
+    {
+      "candidate_rank": 444,
+      "source_rank": 447,
+      "word": "দেখছি",
+      "pos": null,
+      "frequency_count": 743
+    },
+    {
+      "candidate_rank": 445,
+      "source_rank": 448,
+      "word": "চমৎকার",
+      "pos": null,
+      "frequency_count": 741
+    },
+    {
+      "candidate_rank": 446,
+      "source_rank": 449,
+      "word": "সোনা",
+      "pos": null,
+      "frequency_count": 741
+    },
+    {
+      "candidate_rank": 447,
+      "source_rank": 450,
+      "word": "খাবার",
+      "pos": null,
+      "frequency_count": 740
+    },
+    {
+      "candidate_rank": 448,
+      "source_rank": 451,
+      "word": "বলার",
+      "pos": null,
+      "frequency_count": 738
+    },
+    {
+      "candidate_rank": 449,
+      "source_rank": 452,
+      "word": "দেয়া",
+      "pos": null,
+      "frequency_count": 736
+    },
+    {
+      "candidate_rank": 450,
+      "source_rank": 453,
+      "word": "হাই",
+      "pos": null,
+      "frequency_count": 734
+    },
+    {
+      "candidate_rank": 451,
+      "source_rank": 454,
+      "word": "আছ",
+      "pos": null,
+      "frequency_count": 731
+    },
+    {
+      "candidate_rank": 452,
+      "source_rank": 455,
+      "word": "করেছিলাম",
+      "pos": null,
+      "frequency_count": 731
+    },
+    {
+      "candidate_rank": 453,
+      "source_rank": 456,
+      "word": "হুম",
+      "pos": null,
+      "frequency_count": 730
+    },
+    {
+      "candidate_rank": 454,
+      "source_rank": 457,
+      "word": "রয়েছে",
+      "pos": null,
+      "frequency_count": 730
+    },
+    {
+      "candidate_rank": 455,
+      "source_rank": 458,
+      "word": "দে",
+      "pos": null,
+      "frequency_count": 729
+    },
+    {
+      "candidate_rank": 456,
+      "source_rank": 459,
+      "word": "আহ",
+      "pos": null,
+      "frequency_count": 721
+    },
+    {
+      "candidate_rank": 457,
+      "source_rank": 460,
+      "word": "ভেবেছিলাম",
+      "pos": null,
+      "frequency_count": 720
+    },
+    {
+      "candidate_rank": 458,
+      "source_rank": 461,
+      "word": "করেছেন",
+      "pos": null,
+      "frequency_count": 718
+    },
+    {
+      "candidate_rank": 459,
+      "source_rank": 462,
+      "word": "পানি",
+      "pos": null,
+      "frequency_count": 717
+    },
+    {
+      "candidate_rank": 460,
+      "source_rank": 463,
+      "word": "গেলে",
+      "pos": null,
+      "frequency_count": 715
+    },
+    {
+      "candidate_rank": 461,
+      "source_rank": 464,
+      "word": "বলি",
+      "pos": null,
+      "frequency_count": 715
+    },
+    {
+      "candidate_rank": 462,
+      "source_rank": 465,
+      "word": "জ্যাক",
+      "pos": null,
+      "frequency_count": 714
+    },
+    {
+      "candidate_rank": 463,
+      "source_rank": 466,
+      "word": "কেবল",
+      "pos": null,
+      "frequency_count": 713
+    },
+    {
+      "candidate_rank": 464,
+      "source_rank": 467,
+      "word": "শুধুমাত্র",
+      "pos": null,
+      "frequency_count": 711
+    },
+    {
+      "candidate_rank": 465,
+      "source_rank": 468,
+      "word": "দেওয়া",
+      "pos": null,
+      "frequency_count": 710
+    },
+    {
+      "candidate_rank": 466,
+      "source_rank": 469,
+      "word": "দেখুন",
+      "pos": null,
+      "frequency_count": 707
+    },
+    {
+      "candidate_rank": 467,
+      "source_rank": 470,
+      "word": "শব্দ",
+      "pos": null,
+      "frequency_count": 707
+    },
+    {
+      "candidate_rank": 468,
+      "source_rank": 471,
+      "word": "ক্ষমা",
+      "pos": null,
+      "frequency_count": 706
+    },
+    {
+      "candidate_rank": 469,
+      "source_rank": 472,
+      "word": "নষ্ট",
+      "pos": null,
+      "frequency_count": 706
+    },
+    {
+      "candidate_rank": 470,
+      "source_rank": 473,
+      "word": "হত্যা",
+      "pos": null,
+      "frequency_count": 704
+    },
+    {
+      "candidate_rank": 471,
+      "source_rank": 474,
+      "word": "একসাথে",
+      "pos": null,
+      "frequency_count": 704
+    },
+    {
+      "candidate_rank": 472,
+      "source_rank": 475,
+      "word": "সম্ভবত",
+      "pos": null,
+      "frequency_count": 704
+    },
+    {
+      "candidate_rank": 473,
+      "source_rank": 476,
+      "word": "the",
+      "pos": null,
+      "frequency_count": 703
+    },
+    {
+      "candidate_rank": 474,
+      "source_rank": 477,
+      "word": "সহজ",
+      "pos": null,
+      "frequency_count": 701
+    },
+    {
+      "candidate_rank": 475,
+      "source_rank": 478,
+      "word": "ক্যাপ্টেন",
+      "pos": null,
+      "frequency_count": 699
+    },
+    {
+      "candidate_rank": 476,
+      "source_rank": 479,
+      "word": "রাস্তা",
+      "pos": null,
+      "frequency_count": 696
+    },
+    {
+      "candidate_rank": 477,
+      "source_rank": 480,
+      "word": "বলুন",
+      "pos": null,
+      "frequency_count": 696
+    },
+    {
+      "candidate_rank": 478,
+      "source_rank": 481,
+      "word": "রে",
+      "pos": null,
+      "frequency_count": 696
+    },
+    {
+      "candidate_rank": 479,
+      "source_rank": 482,
+      "word": "বলেছিলাম",
+      "pos": null,
+      "frequency_count": 694
+    },
+    {
+      "candidate_rank": 480,
+      "source_rank": 483,
+      "word": "প্রায়",
+      "pos": null,
+      "frequency_count": 689
+    },
+    {
+      "candidate_rank": 481,
+      "source_rank": 484,
+      "word": "আমায়",
+      "pos": null,
+      "frequency_count": 687
+    },
+    {
+      "candidate_rank": 482,
+      "source_rank": 485,
+      "word": "রক্ষা",
+      "pos": null,
+      "frequency_count": 683
+    },
+    {
+      "candidate_rank": 483,
+      "source_rank": 486,
+      "word": "বাকি",
+      "pos": null,
+      "frequency_count": 681
+    },
+    {
+      "candidate_rank": 484,
+      "source_rank": 487,
+      "word": "দিয়েছি",
+      "pos": null,
+      "frequency_count": 681
+    },
+    {
+      "candidate_rank": 485,
+      "source_rank": 488,
+      "word": "কাছ",
+      "pos": null,
+      "frequency_count": 681
+    },
+    {
+      "candidate_rank": 486,
+      "source_rank": 489,
+      "word": "কারো",
+      "pos": null,
+      "frequency_count": 678
+    },
+    {
+      "candidate_rank": 487,
+      "source_rank": 490,
+      "word": "তুমিই",
+      "pos": null,
+      "frequency_count": 676
+    },
+    {
+      "candidate_rank": 488,
+      "source_rank": 491,
+      "word": "কঠিন",
+      "pos": null,
+      "frequency_count": 675
+    },
+    {
+      "candidate_rank": 489,
+      "source_rank": 492,
+      "word": "কল",
+      "pos": null,
+      "frequency_count": 675
+    },
+    {
+      "candidate_rank": 490,
+      "source_rank": 493,
+      "word": "বস",
+      "pos": null,
+      "frequency_count": 672
+    },
+    {
+      "candidate_rank": 491,
+      "source_rank": 494,
+      "word": "গেলো",
+      "pos": null,
+      "frequency_count": 671
+    },
+    {
+      "candidate_rank": 492,
+      "source_rank": 495,
+      "word": "নাম্বার",
+      "pos": null,
+      "frequency_count": 669
+    },
+    {
+      "candidate_rank": 493,
+      "source_rank": 496,
+      "word": "খোদা",
+      "pos": null,
+      "frequency_count": 667
+    },
+    {
+      "candidate_rank": 494,
+      "source_rank": 497,
+      "word": "রাজা",
+      "pos": null,
+      "frequency_count": 667
+    },
+    {
+      "candidate_rank": 495,
+      "source_rank": 498,
+      "word": "এতো",
+      "pos": null,
+      "frequency_count": 666
+    },
+    {
+      "candidate_rank": 496,
+      "source_rank": 499,
+      "word": "ধ্বংস",
+      "pos": null,
+      "frequency_count": 665
+    },
+    {
+      "candidate_rank": 497,
+      "source_rank": 500,
+      "word": "কেনো",
+      "pos": null,
+      "frequency_count": 664
+    },
+    {
+      "candidate_rank": 498,
+      "source_rank": 501,
+      "word": "জীবনের",
+      "pos": null,
+      "frequency_count": 662
+    },
+    {
+      "candidate_rank": 499,
+      "source_rank": 502,
+      "word": "থাকার",
+      "pos": null,
+      "frequency_count": 661
+    },
+    {
+      "candidate_rank": 500,
+      "source_rank": 503,
+      "word": "hey",
+      "pos": null,
+      "frequency_count": 660
+    },
+    {
+      "candidate_rank": 501,
+      "source_rank": 504,
+      "word": "সত্য",
+      "pos": null,
+      "frequency_count": 660
+    },
+    {
+      "candidate_rank": 502,
+      "source_rank": 505,
+      "word": "কষ্ট",
+      "pos": null,
+      "frequency_count": 656
+    },
+    {
+      "candidate_rank": 503,
+      "source_rank": 506,
+      "word": "পিছনে",
+      "pos": null,
+      "frequency_count": 653
+    },
+    {
+      "candidate_rank": 504,
+      "source_rank": 507,
+      "word": "ধরো",
+      "pos": null,
+      "frequency_count": 648
+    },
+    {
+      "candidate_rank": 505,
+      "source_rank": 508,
+      "word": "মন",
+      "pos": null,
+      "frequency_count": 648
+    },
+    {
+      "candidate_rank": 506,
+      "source_rank": 509,
+      "word": "শোন",
+      "pos": null,
+      "frequency_count": 648
+    },
+    {
+      "candidate_rank": 507,
+      "source_rank": 510,
+      "word": "আমিই",
+      "pos": null,
+      "frequency_count": 647
+    },
+    {
+      "candidate_rank": 508,
+      "source_rank": 511,
+      "word": "মুখ",
+      "pos": null,
+      "frequency_count": 644
+    },
+    {
+      "candidate_rank": 509,
+      "source_rank": 512,
+      "word": "এখনই",
+      "pos": null,
+      "frequency_count": 643
+    },
+    {
+      "candidate_rank": 510,
+      "source_rank": 513,
+      "word": "মিথ্যা",
+      "pos": null,
+      "frequency_count": 643
+    },
+    {
+      "candidate_rank": 511,
+      "source_rank": 514,
+      "word": "চুরি",
+      "pos": null,
+      "frequency_count": 640
+    },
+    {
+      "candidate_rank": 512,
+      "source_rank": 515,
+      "word": "একে",
+      "pos": null,
+      "frequency_count": 637
+    },
+    {
+      "candidate_rank": 513,
+      "source_rank": 516,
+      "word": "যেমন",
+      "pos": null,
+      "frequency_count": 634
+    },
+    {
+      "candidate_rank": 514,
+      "source_rank": 517,
+      "word": "থাক",
+      "pos": null,
+      "frequency_count": 628
+    },
+    {
+      "candidate_rank": 515,
+      "source_rank": 518,
+      "word": "সেটাই",
+      "pos": null,
+      "frequency_count": 623
+    },
+    {
+      "candidate_rank": 516,
+      "source_rank": 519,
+      "word": "ঈশ্বর",
+      "pos": null,
+      "frequency_count": 621
+    },
+    {
+      "candidate_rank": 517,
+      "source_rank": 520,
+      "word": "আঘাত",
+      "pos": null,
+      "frequency_count": 620
+    },
+    {
+      "candidate_rank": 518,
+      "source_rank": 521,
+      "word": "একমাত্র",
+      "pos": null,
+      "frequency_count": 619
+    },
+    {
+      "candidate_rank": 519,
+      "source_rank": 522,
+      "word": "কখনোই",
+      "pos": null,
+      "frequency_count": 619
+    },
+    {
+      "candidate_rank": 520,
+      "source_rank": 523,
+      "word": "আসুন",
+      "pos": null,
+      "frequency_count": 616
+    },
+    {
+      "candidate_rank": 521,
+      "source_rank": 524,
+      "word": "পাচ্ছি",
+      "pos": null,
+      "frequency_count": 613
+    },
+    {
+      "candidate_rank": 522,
+      "source_rank": 525,
+      "word": "কম",
+      "pos": null,
+      "frequency_count": 613
+    },
+    {
+      "candidate_rank": 523,
+      "source_rank": 526,
+      "word": "থাকা",
+      "pos": null,
+      "frequency_count": 612
+    },
+    {
+      "candidate_rank": 524,
+      "source_rank": 527,
+      "word": "জানতাম",
+      "pos": null,
+      "frequency_count": 612
+    },
+    {
+      "candidate_rank": 525,
+      "source_rank": 528,
+      "word": "কার",
+      "pos": null,
+      "frequency_count": 611
+    },
+    {
+      "candidate_rank": 526,
+      "source_rank": 529,
+      "word": "রাখা",
+      "pos": null,
+      "frequency_count": 610
+    },
+    {
+      "candidate_rank": 527,
+      "source_rank": 530,
+      "word": "জান",
+      "pos": null,
+      "frequency_count": 609
+    },
+    {
+      "candidate_rank": 528,
+      "source_rank": 531,
+      "word": "দিব",
+      "pos": null,
+      "frequency_count": 609
+    },
+    {
+      "candidate_rank": 529,
+      "source_rank": 532,
+      "word": "কখনও",
+      "pos": null,
+      "frequency_count": 609
+    },
+    {
+      "candidate_rank": 530,
+      "source_rank": 533,
+      "word": "হাজার",
+      "pos": null,
+      "frequency_count": 609
+    },
+    {
+      "candidate_rank": 531,
+      "source_rank": 534,
+      "word": "গেছি",
+      "pos": null,
+      "frequency_count": 608
+    },
+    {
+      "candidate_rank": 532,
+      "source_rank": 535,
+      "word": "হ্যারি",
+      "pos": null,
+      "frequency_count": 604
+    },
+    {
+      "candidate_rank": 533,
+      "source_rank": 536,
+      "word": "আসার",
+      "pos": null,
+      "frequency_count": 602
+    },
+    {
+      "candidate_rank": 534,
+      "source_rank": 537,
+      "word": "জিজ্ঞেস",
+      "pos": null,
+      "frequency_count": 596
+    },
+    {
+      "candidate_rank": 535,
+      "source_rank": 538,
+      "word": "করেছো",
+      "pos": null,
+      "frequency_count": 594
+    },
+    {
+      "candidate_rank": 536,
+      "source_rank": 539,
+      "word": "শক্তি",
+      "pos": null,
+      "frequency_count": 591
+    },
+    {
+      "candidate_rank": 537,
+      "source_rank": 540,
+      "word": "সিদ্ধান্ত",
+      "pos": null,
+      "frequency_count": 590
+    },
+    {
+      "candidate_rank": 538,
+      "source_rank": 541,
+      "word": "খেলা",
+      "pos": null,
+      "frequency_count": 590
+    },
+    {
+      "candidate_rank": 539,
+      "source_rank": 542,
+      "word": "বেশী",
+      "pos": null,
+      "frequency_count": 588
+    },
+    {
+      "candidate_rank": 540,
+      "source_rank": 543,
+      "word": "সরে",
+      "pos": null,
+      "frequency_count": 585
+    },
+    {
+      "candidate_rank": 541,
+      "source_rank": 544,
+      "word": "পরিষ্কার",
+      "pos": null,
+      "frequency_count": 585
+    },
+    {
+      "candidate_rank": 542,
+      "source_rank": 545,
+      "word": "i",
+      "pos": null,
+      "frequency_count": 584
+    },
+    {
+      "candidate_rank": 543,
+      "source_rank": 546,
+      "word": "করলাম",
+      "pos": null,
+      "frequency_count": 582
+    },
+    {
+      "candidate_rank": 544,
+      "source_rank": 547,
+      "word": "নিরাপদ",
+      "pos": null,
+      "frequency_count": 582
+    },
+    {
+      "candidate_rank": 545,
+      "source_rank": 548,
+      "word": "খেতে",
+      "pos": null,
+      "frequency_count": 580
+    },
+    {
+      "candidate_rank": 546,
+      "source_rank": 549,
+      "word": "ছিলে",
+      "pos": null,
+      "frequency_count": 580
+    },
+    {
+      "candidate_rank": 547,
+      "source_rank": 550,
+      "word": "দেবো",
+      "pos": null,
+      "frequency_count": 579
+    },
+    {
+      "candidate_rank": 548,
+      "source_rank": 551,
+      "word": "বাদ",
+      "pos": null,
+      "frequency_count": 579
+    },
+    {
+      "candidate_rank": 549,
+      "source_rank": 552,
+      "word": "বলবো",
+      "pos": null,
+      "frequency_count": 578
+    },
+    {
+      "candidate_rank": 550,
+      "source_rank": 553,
+      "word": "ছবি",
+      "pos": null,
+      "frequency_count": 576
+    },
+    {
+      "candidate_rank": 551,
+      "source_rank": 554,
+      "word": "পেছনে",
+      "pos": null,
+      "frequency_count": 575
+    },
+    {
+      "candidate_rank": 552,
+      "source_rank": 555,
+      "word": "মহান",
+      "pos": null,
+      "frequency_count": 575
+    },
+    {
+      "candidate_rank": 553,
+      "source_rank": 556,
+      "word": "এতে",
+      "pos": null,
+      "frequency_count": 574
+    },
+    {
+      "candidate_rank": 554,
+      "source_rank": 557,
+      "word": "পেয়ে",
+      "pos": null,
+      "frequency_count": 574
+    },
+    {
+      "candidate_rank": 555,
+      "source_rank": 558,
+      "word": "কাজের",
+      "pos": null,
+      "frequency_count": 573
+    },
+    {
+      "candidate_rank": 556,
+      "source_rank": 559,
+      "word": "বললে",
+      "pos": null,
+      "frequency_count": 571
+    },
+    {
+      "candidate_rank": 557,
+      "source_rank": 560,
+      "word": "সকল",
+      "pos": null,
+      "frequency_count": 571
+    },
+    {
+      "candidate_rank": 558,
+      "source_rank": 561,
+      "word": "করেছিল",
+      "pos": null,
+      "frequency_count": 566
+    },
+    {
+      "candidate_rank": 559,
+      "source_rank": 562,
+      "word": "কিসের",
+      "pos": null,
+      "frequency_count": 565
+    },
+    {
+      "candidate_rank": 560,
+      "source_rank": 563,
+      "word": "দেরি",
+      "pos": null,
+      "frequency_count": 565
+    },
+    {
+      "candidate_rank": 561,
+      "source_rank": 564,
+      "word": "আসা",
+      "pos": null,
+      "frequency_count": 564
+    },
+    {
+      "candidate_rank": 562,
+      "source_rank": 565,
+      "word": "বিদায়",
+      "pos": null,
+      "frequency_count": 562
+    },
+    {
+      "candidate_rank": 563,
+      "source_rank": 566,
+      "word": "জানা",
+      "pos": null,
+      "frequency_count": 561
+    },
+    {
+      "candidate_rank": 564,
+      "source_rank": 567,
+      "word": "তাইনা",
+      "pos": null,
+      "frequency_count": 561
+    },
+    {
+      "candidate_rank": 565,
+      "source_rank": 568,
+      "word": "বাসায়",
+      "pos": null,
+      "frequency_count": 561
+    },
+    {
+      "candidate_rank": 566,
+      "source_rank": 569,
+      "word": "থাকলে",
+      "pos": null,
+      "frequency_count": 559
+    },
+    {
+      "candidate_rank": 567,
+      "source_rank": 570,
+      "word": "থেকেই",
+      "pos": null,
+      "frequency_count": 558
+    },
+    {
+      "candidate_rank": 568,
+      "source_rank": 571,
+      "word": "হওয়া",
+      "pos": null,
+      "frequency_count": 556
+    },
+    {
+      "candidate_rank": 569,
+      "source_rank": 572,
+      "word": "অস্ত্র",
+      "pos": null,
+      "frequency_count": 555
+    },
+    {
+      "candidate_rank": 570,
+      "source_rank": 573,
+      "word": "শালা",
+      "pos": null,
+      "frequency_count": 555
+    },
+    {
+      "candidate_rank": 571,
+      "source_rank": 574,
+      "word": "পারবেন",
+      "pos": null,
+      "frequency_count": 554
+    },
+    {
+      "candidate_rank": 572,
+      "source_rank": 575,
+      "word": "স্বাগতম",
+      "pos": null,
+      "frequency_count": 553
+    },
+    {
+      "candidate_rank": 573,
+      "source_rank": 576,
+      "word": "আরেকটা",
+      "pos": null,
+      "frequency_count": 552
+    },
+    {
+      "candidate_rank": 574,
+      "source_rank": 577,
+      "word": "ওহ্",
+      "pos": null,
+      "frequency_count": 551
+    },
+    {
+      "candidate_rank": 575,
+      "source_rank": 578,
+      "word": "কারণে",
+      "pos": null,
+      "frequency_count": 550
+    },
+    {
+      "candidate_rank": 576,
+      "source_rank": 579,
+      "word": "তাদেরকে",
+      "pos": null,
+      "frequency_count": 550
+    },
+    {
+      "candidate_rank": 577,
+      "source_rank": 580,
+      "word": "খুজে",
+      "pos": null,
+      "frequency_count": 548
+    },
+    {
+      "candidate_rank": 578,
+      "source_rank": 581,
+      "word": "নামে",
+      "pos": null,
+      "frequency_count": 548
+    },
+    {
+      "candidate_rank": 579,
+      "source_rank": 582,
+      "word": "খুলে",
+      "pos": null,
+      "frequency_count": 547
+    },
+    {
+      "candidate_rank": 580,
+      "source_rank": 583,
+      "word": "দাড়াও",
+      "pos": null,
+      "frequency_count": 546
+    },
+    {
+      "candidate_rank": 581,
+      "source_rank": 584,
+      "word": "ইচ্ছা",
+      "pos": null,
+      "frequency_count": 546
+    },
+    {
+      "candidate_rank": 582,
+      "source_rank": 585,
+      "word": "সঠিক",
+      "pos": null,
+      "frequency_count": 545
+    },
+    {
+      "candidate_rank": 583,
+      "source_rank": 586,
+      "word": "চাচ্ছি",
+      "pos": null,
+      "frequency_count": 543
+    },
+    {
+      "candidate_rank": 584,
+      "source_rank": 587,
+      "word": "তোমায়",
+      "pos": null,
+      "frequency_count": 542
+    },
+    {
+      "candidate_rank": 585,
+      "source_rank": 588,
+      "word": "ঘরে",
+      "pos": null,
+      "frequency_count": 541
+    },
+    {
+      "candidate_rank": 586,
+      "source_rank": 589,
+      "word": "পরিবার",
+      "pos": null,
+      "frequency_count": 539
+    },
+    {
+      "candidate_rank": 587,
+      "source_rank": 590,
+      "word": "পা",
+      "pos": null,
+      "frequency_count": 538
+    },
+    {
+      "candidate_rank": 588,
+      "source_rank": 591,
+      "word": "জন্যে",
+      "pos": null,
+      "frequency_count": 535
+    },
+    {
+      "candidate_rank": 589,
+      "source_rank": 592,
+      "word": "মিস্টার",
+      "pos": null,
+      "frequency_count": 534
+    },
+    {
+      "candidate_rank": 590,
+      "source_rank": 593,
+      "word": "পৃথিবীর",
+      "pos": null,
+      "frequency_count": 533
+    },
+    {
+      "candidate_rank": 591,
+      "source_rank": 594,
+      "word": "মাফ",
+      "pos": null,
+      "frequency_count": 533
+    },
+    {
+      "candidate_rank": 592,
+      "source_rank": 595,
+      "word": "বলছ",
+      "pos": null,
+      "frequency_count": 532
+    },
+    {
+      "candidate_rank": 593,
+      "source_rank": 596,
+      "word": "মৃত্যুর",
+      "pos": null,
+      "frequency_count": 530
+    },
+    {
+      "candidate_rank": 594,
+      "source_rank": 597,
+      "word": "দ্বারা",
+      "pos": null,
+      "frequency_count": 528
+    },
+    {
+      "candidate_rank": 595,
+      "source_rank": 598,
+      "word": "চেক",
+      "pos": null,
+      "frequency_count": 525
+    },
+    {
+      "candidate_rank": 596,
+      "source_rank": 600,
+      "word": "by",
+      "pos": null,
+      "frequency_count": 525
+    },
+    {
+      "candidate_rank": 597,
+      "source_rank": 601,
+      "word": "নিজে",
+      "pos": null,
+      "frequency_count": 524
+    },
+    {
+      "candidate_rank": 598,
+      "source_rank": 602,
+      "word": "ই",
+      "pos": null,
+      "frequency_count": 523
+    },
+    {
+      "candidate_rank": 599,
+      "source_rank": 603,
+      "word": "দেই",
+      "pos": null,
+      "frequency_count": 522
+    },
+    {
+      "candidate_rank": 600,
+      "source_rank": 604,
+      "word": "ধরনের",
+      "pos": null,
+      "frequency_count": 521
+    },
+    {
+      "candidate_rank": 601,
+      "source_rank": 605,
+      "word": "হারিয়ে",
+      "pos": null,
+      "frequency_count": 520
+    },
+    {
+      "candidate_rank": 602,
+      "source_rank": 606,
+      "word": "বিশেষ",
+      "pos": null,
+      "frequency_count": 520
+    },
+    {
+      "candidate_rank": 603,
+      "source_rank": 607,
+      "word": "a",
+      "pos": null,
+      "frequency_count": 519
+    },
+    {
+      "candidate_rank": 604,
+      "source_rank": 609,
+      "word": "আজকে",
+      "pos": null,
+      "frequency_count": 517
+    },
+    {
+      "candidate_rank": 605,
+      "source_rank": 610,
+      "word": "বাড়িতে",
+      "pos": null,
+      "frequency_count": 517
+    },
+    {
+      "candidate_rank": 606,
+      "source_rank": 611,
+      "word": "কাল",
+      "pos": null,
+      "frequency_count": 517
+    },
+    {
+      "candidate_rank": 607,
+      "source_rank": 612,
+      "word": "ফিরিয়ে",
+      "pos": null,
+      "frequency_count": 516
+    },
+    {
+      "candidate_rank": 608,
+      "source_rank": 613,
+      "word": "কখন",
+      "pos": null,
+      "frequency_count": 514
+    },
+    {
+      "candidate_rank": 609,
+      "source_rank": 614,
+      "word": "ডাক্তার",
+      "pos": null,
+      "frequency_count": 514
+    },
+    {
+      "candidate_rank": 610,
+      "source_rank": 616,
+      "word": "বার",
+      "pos": null,
+      "frequency_count": 512
+    },
+    {
+      "candidate_rank": 611,
+      "source_rank": 617,
+      "word": "প্রথমে",
+      "pos": null,
+      "frequency_count": 512
+    },
+    {
+      "candidate_rank": 612,
+      "source_rank": 618,
+      "word": "নিজেই",
+      "pos": null,
+      "frequency_count": 512
+    },
+    {
+      "candidate_rank": 613,
+      "source_rank": 619,
+      "word": "রক্ত",
+      "pos": null,
+      "frequency_count": 510
+    },
+    {
+      "candidate_rank": 614,
+      "source_rank": 620,
+      "word": "ওপর",
+      "pos": null,
+      "frequency_count": 509
+    },
+    {
+      "candidate_rank": 615,
+      "source_rank": 621,
+      "word": "আস্তে",
+      "pos": null,
+      "frequency_count": 508
+    },
+    {
+      "candidate_rank": 616,
+      "source_rank": 622,
+      "word": "ছিলেন",
+      "pos": null,
+      "frequency_count": 508
+    },
+    {
+      "candidate_rank": 617,
+      "source_rank": 623,
+      "word": "গল্প",
+      "pos": null,
+      "frequency_count": 505
+    },
+    {
+      "candidate_rank": 618,
+      "source_rank": 624,
+      "word": "গত",
+      "pos": null,
+      "frequency_count": 504
+    },
+    {
+      "candidate_rank": 619,
+      "source_rank": 625,
+      "word": "মাথায়",
+      "pos": null,
+      "frequency_count": 503
+    },
+    {
+      "candidate_rank": 620,
+      "source_rank": 626,
+      "word": "একদিন",
+      "pos": null,
+      "frequency_count": 503
+    },
+    {
+      "candidate_rank": 621,
+      "source_rank": 627,
+      "word": "দেব",
+      "pos": null,
+      "frequency_count": 501
+    },
+    {
+      "candidate_rank": 622,
+      "source_rank": 628,
+      "word": "আগের",
+      "pos": null,
+      "frequency_count": 501
+    },
+    {
+      "candidate_rank": 623,
+      "source_rank": 630,
+      "word": "দারুণ",
+      "pos": null,
+      "frequency_count": 499
+    },
+    {
+      "candidate_rank": 624,
+      "source_rank": 631,
+      "word": "হা",
+      "pos": null,
+      "frequency_count": 489
+    },
+    {
+      "candidate_rank": 625,
+      "source_rank": 632,
+      "word": "যাচ্ছ",
+      "pos": null,
+      "frequency_count": 489
+    },
+    {
+      "candidate_rank": 626,
+      "source_rank": 633,
+      "word": "উপায়",
+      "pos": null,
+      "frequency_count": 488
+    },
+    {
+      "candidate_rank": 627,
+      "source_rank": 634,
+      "word": "শুনেছি",
+      "pos": null,
+      "frequency_count": 488
+    },
+    {
+      "candidate_rank": 628,
+      "source_rank": 635,
+      "word": "স্বপ্ন",
+      "pos": null,
+      "frequency_count": 487
+    },
+    {
+      "candidate_rank": 629,
+      "source_rank": 636,
+      "word": "ধরতে",
+      "pos": null,
+      "frequency_count": 486
+    },
+    {
+      "candidate_rank": 630,
+      "source_rank": 638,
+      "word": "দল",
+      "pos": null,
+      "frequency_count": 484
+    },
+    {
+      "candidate_rank": 631,
+      "source_rank": 639,
+      "word": "সকাল",
+      "pos": null,
+      "frequency_count": 484
+    },
+    {
+      "candidate_rank": 632,
+      "source_rank": 640,
+      "word": "ভালোই",
+      "pos": null,
+      "frequency_count": 483
+    },
+    {
+      "candidate_rank": 633,
+      "source_rank": 641,
+      "word": "স্ত্রী",
+      "pos": null,
+      "frequency_count": 483
+    },
+    {
+      "candidate_rank": 634,
+      "source_rank": 642,
+      "word": "খালি",
+      "pos": null,
+      "frequency_count": 483
+    },
+    {
+      "candidate_rank": 635,
+      "source_rank": 643,
+      "word": "দু",
+      "pos": null,
+      "frequency_count": 481
+    },
+    {
+      "candidate_rank": 636,
+      "source_rank": 644,
+      "word": "খেয়ে",
+      "pos": null,
+      "frequency_count": 480
+    },
+    {
+      "candidate_rank": 637,
+      "source_rank": 645,
+      "word": "বছরের",
+      "pos": null,
+      "frequency_count": 476
+    },
+    {
+      "candidate_rank": 638,
+      "source_rank": 646,
+      "word": "লড়াই",
+      "pos": null,
+      "frequency_count": 475
+    },
+    {
+      "candidate_rank": 639,
+      "source_rank": 647,
+      "word": "বিষয়",
+      "pos": null,
+      "frequency_count": 474
+    },
+    {
+      "candidate_rank": 640,
+      "source_rank": 648,
+      "word": "অদ্ভুত",
+      "pos": null,
+      "frequency_count": 473
+    },
+    {
+      "candidate_rank": 641,
+      "source_rank": 649,
+      "word": "ছোট্ট",
+      "pos": null,
+      "frequency_count": 472
+    },
+    {
+      "candidate_rank": 642,
+      "source_rank": 650,
+      "word": "ক্ষমতা",
+      "pos": null,
+      "frequency_count": 472
+    },
+    {
+      "candidate_rank": 643,
+      "source_rank": 651,
+      "word": "করিনি",
+      "pos": null,
+      "frequency_count": 470
+    },
+    {
+      "candidate_rank": 644,
+      "source_rank": 652,
+      "word": "বলব",
+      "pos": null,
+      "frequency_count": 470
+    },
+    {
+      "candidate_rank": 645,
+      "source_rank": 653,
+      "word": "পাই",
+      "pos": null,
+      "frequency_count": 470
+    },
+    {
+      "candidate_rank": 646,
+      "source_rank": 654,
+      "word": "পান",
+      "pos": null,
+      "frequency_count": 468
+    },
+    {
+      "candidate_rank": 647,
+      "source_rank": 655,
+      "word": "গান",
+      "pos": null,
+      "frequency_count": 467
+    },
+    {
+      "candidate_rank": 648,
+      "source_rank": 656,
+      "word": "বলেন",
+      "pos": null,
+      "frequency_count": 466
+    },
+    {
+      "candidate_rank": 649,
+      "source_rank": 657,
+      "word": "গুরুত্বপূর্ণ",
+      "pos": null,
+      "frequency_count": 464
+    },
+    {
+      "candidate_rank": 650,
+      "source_rank": 658,
+      "word": "অংশ",
+      "pos": null,
+      "frequency_count": 463
+    },
+    {
+      "candidate_rank": 651,
+      "source_rank": 659,
+      "word": "আলাদা",
+      "pos": null,
+      "frequency_count": 463
+    },
+    {
+      "candidate_rank": 652,
+      "source_rank": 660,
+      "word": "উঠে",
+      "pos": null,
+      "frequency_count": 462
+    },
+    {
+      "candidate_rank": 653,
+      "source_rank": 661,
+      "word": "শোনো",
+      "pos": null,
+      "frequency_count": 462
+    },
+    {
+      "candidate_rank": 654,
+      "source_rank": 662,
+      "word": "মারতে",
+      "pos": null,
+      "frequency_count": 462
+    },
+    {
+      "candidate_rank": 655,
+      "source_rank": 663,
+      "word": "যদিও",
+      "pos": null,
+      "frequency_count": 461
+    },
+    {
+      "candidate_rank": 656,
+      "source_rank": 664,
+      "word": "মৃত",
+      "pos": null,
+      "frequency_count": 459
+    },
+    {
+      "candidate_rank": 657,
+      "source_rank": 665,
+      "word": "প্রমাণ",
+      "pos": null,
+      "frequency_count": 459
+    },
+    {
+      "candidate_rank": 658,
+      "source_rank": 666,
+      "word": "লাভ",
+      "pos": null,
+      "frequency_count": 458
+    },
+    {
+      "candidate_rank": 659,
+      "source_rank": 667,
+      "word": "পাশে",
+      "pos": null,
+      "frequency_count": 458
+    },
+    {
+      "candidate_rank": 660,
+      "source_rank": 668,
+      "word": "বাজে",
+      "pos": null,
+      "frequency_count": 458
+    },
+    {
+      "candidate_rank": 661,
+      "source_rank": 669,
+      "word": "পথে",
+      "pos": null,
+      "frequency_count": 457
+    },
+    {
+      "candidate_rank": 662,
+      "source_rank": 670,
+      "word": "ফেলবে",
+      "pos": null,
+      "frequency_count": 455
+    },
+    {
+      "candidate_rank": 663,
+      "source_rank": 671,
+      "word": "কেটে",
+      "pos": null,
+      "frequency_count": 453
+    },
+    {
+      "candidate_rank": 664,
+      "source_rank": 672,
+      "word": "ধারণা",
+      "pos": null,
+      "frequency_count": 452
+    },
+    {
+      "candidate_rank": 665,
+      "source_rank": 673,
+      "word": "জন্যই",
+      "pos": null,
+      "frequency_count": 450
+    },
+    {
+      "candidate_rank": 666,
+      "source_rank": 674,
+      "word": "মায়ের",
+      "pos": null,
+      "frequency_count": 449
+    },
+    {
+      "candidate_rank": 667,
+      "source_rank": 675,
+      "word": "সাহস",
+      "pos": null,
+      "frequency_count": 449
+    },
+    {
+      "candidate_rank": 668,
+      "source_rank": 676,
+      "word": "তুমিও",
+      "pos": null,
+      "frequency_count": 448
+    },
+    {
+      "candidate_rank": 669,
+      "source_rank": 677,
+      "word": "ধীরে",
+      "pos": null,
+      "frequency_count": 448
+    },
+    {
+      "candidate_rank": 670,
+      "source_rank": 678,
+      "word": "শক্তিশালী",
+      "pos": null,
+      "frequency_count": 448
+    },
+    {
+      "candidate_rank": 671,
+      "source_rank": 679,
+      "word": "পায়",
+      "pos": null,
+      "frequency_count": 448
+    },
+    {
+      "candidate_rank": 672,
+      "source_rank": 680,
+      "word": "তাঁকে",
+      "pos": null,
+      "frequency_count": 447
+    },
+    {
+      "candidate_rank": 673,
+      "source_rank": 681,
+      "word": "তথ্য",
+      "pos": null,
+      "frequency_count": 447
+    },
+    {
+      "candidate_rank": 674,
+      "source_rank": 682,
+      "word": "এসেছ",
+      "pos": null,
+      "frequency_count": 444
+    },
+    {
+      "candidate_rank": 675,
+      "source_rank": 683,
+      "word": "পেরেছি",
+      "pos": null,
+      "frequency_count": 444
+    },
+    {
+      "candidate_rank": 676,
+      "source_rank": 684,
+      "word": "মুক্ত",
+      "pos": null,
+      "frequency_count": 443
+    },
+    {
+      "candidate_rank": 677,
+      "source_rank": 686,
+      "word": "তাকাও",
+      "pos": null,
+      "frequency_count": 442
+    },
+    {
+      "candidate_rank": 678,
+      "source_rank": 687,
+      "word": "দিলে",
+      "pos": null,
+      "frequency_count": 440
+    },
+    {
+      "candidate_rank": 679,
+      "source_rank": 688,
+      "word": "তাতে",
+      "pos": null,
+      "frequency_count": 439
+    },
+    {
+      "candidate_rank": 680,
+      "source_rank": 689,
+      "word": "নিজেদের",
+      "pos": null,
+      "frequency_count": 438
+    },
+    {
+      "candidate_rank": 681,
+      "source_rank": 690,
+      "word": "দোস্ত",
+      "pos": null,
+      "frequency_count": 438
+    },
+    {
+      "candidate_rank": 682,
+      "source_rank": 692,
+      "word": "এরা",
+      "pos": null,
+      "frequency_count": 436
+    },
+    {
+      "candidate_rank": 683,
+      "source_rank": 693,
+      "word": "শুনে",
+      "pos": null,
+      "frequency_count": 436
+    },
+    {
+      "candidate_rank": 684,
+      "source_rank": 694,
+      "word": "হে",
+      "pos": null,
+      "frequency_count": 436
+    },
+    {
+      "candidate_rank": 685,
+      "source_rank": 695,
+      "word": "জিজ্ঞাসা",
+      "pos": null,
+      "frequency_count": 434
+    },
+    {
+      "candidate_rank": 686,
+      "source_rank": 696,
+      "word": "দারুন",
+      "pos": null,
+      "frequency_count": 431
+    },
+    {
+      "candidate_rank": 687,
+      "source_rank": 697,
+      "word": "চালু",
+      "pos": null,
+      "frequency_count": 431
+    },
+    {
+      "candidate_rank": 688,
+      "source_rank": 698,
+      "word": "আনতে",
+      "pos": null,
+      "frequency_count": 430
+    },
+    {
+      "candidate_rank": 689,
+      "source_rank": 699,
+      "word": "গোপন",
+      "pos": null,
+      "frequency_count": 428
+    },
+    {
+      "candidate_rank": 690,
+      "source_rank": 700,
+      "word": "দোষ",
+      "pos": null,
+      "frequency_count": 428
+    },
+    {
+      "candidate_rank": 691,
+      "source_rank": 701,
+      "word": "হয়ত",
+      "pos": null,
+      "frequency_count": 427
+    },
+    {
+      "candidate_rank": 692,
+      "source_rank": 702,
+      "word": "পরিবর্তন",
+      "pos": null,
+      "frequency_count": 426
+    },
+    {
+      "candidate_rank": 693,
+      "source_rank": 703,
+      "word": "বিরুদ্ধে",
+      "pos": null,
+      "frequency_count": 426
+    },
+    {
+      "candidate_rank": 694,
+      "source_rank": 704,
+      "word": "রাত",
+      "pos": null,
+      "frequency_count": 424
+    },
+    {
+      "candidate_rank": 695,
+      "source_rank": 705,
+      "word": "অনুভব",
+      "pos": null,
+      "frequency_count": 423
+    },
+    {
+      "candidate_rank": 696,
+      "source_rank": 706,
+      "word": "তুলে",
+      "pos": null,
+      "frequency_count": 421
+    },
+    {
+      "candidate_rank": 697,
+      "source_rank": 707,
+      "word": "ঠিকই",
+      "pos": null,
+      "frequency_count": 418
+    },
+    {
+      "candidate_rank": 698,
+      "source_rank": 708,
+      "word": "mr",
+      "pos": null,
+      "frequency_count": 418
+    },
+    {
+      "candidate_rank": 699,
+      "source_rank": 709,
+      "word": "গিয়েছিল",
+      "pos": null,
+      "frequency_count": 418
+    },
+    {
+      "candidate_rank": 700,
+      "source_rank": 710,
+      "word": "অন্তত",
+      "pos": null,
+      "frequency_count": 418
+    },
+    {
+      "candidate_rank": 701,
+      "source_rank": 711,
+      "word": "পেয়েছে",
+      "pos": null,
+      "frequency_count": 418
+    },
+    {
+      "candidate_rank": 702,
+      "source_rank": 712,
+      "word": "পাওয়ার",
+      "pos": null,
+      "frequency_count": 417
+    },
+    {
+      "candidate_rank": 703,
+      "source_rank": 713,
+      "word": "বলেছেন",
+      "pos": null,
+      "frequency_count": 417
+    },
+    {
+      "candidate_rank": 704,
+      "source_rank": 714,
+      "word": "পরীক্ষা",
+      "pos": null,
+      "frequency_count": 416
+    },
+    {
+      "candidate_rank": 705,
+      "source_rank": 715,
+      "word": "হবেনা",
+      "pos": null,
+      "frequency_count": 416
+    },
+    {
+      "candidate_rank": 706,
+      "source_rank": 716,
+      "word": "চাইলে",
+      "pos": null,
+      "frequency_count": 415
+    },
+    {
+      "candidate_rank": 707,
+      "source_rank": 717,
+      "word": "বাচ্চাদের",
+      "pos": null,
+      "frequency_count": 414
+    },
+    {
+      "candidate_rank": 708,
+      "source_rank": 718,
+      "word": "পরিবারের",
+      "pos": null,
+      "frequency_count": 414
+    },
+    {
+      "candidate_rank": 709,
+      "source_rank": 719,
+      "word": "পারবেনা",
+      "pos": null,
+      "frequency_count": 413
+    },
+    {
+      "candidate_rank": 710,
+      "source_rank": 720,
+      "word": "যত",
+      "pos": null,
+      "frequency_count": 413
+    },
+    {
+      "candidate_rank": 711,
+      "source_rank": 721,
+      "word": "অসম্ভব",
+      "pos": null,
+      "frequency_count": 413
+    },
+    {
+      "candidate_rank": 712,
+      "source_rank": 722,
+      "word": "বসো",
+      "pos": null,
+      "frequency_count": 413
+    },
+    {
+      "candidate_rank": 713,
+      "source_rank": 723,
+      "word": "সেরা",
+      "pos": null,
+      "frequency_count": 412
+    },
+    {
+      "candidate_rank": 714,
+      "source_rank": 724,
+      "word": "বদলে",
+      "pos": null,
+      "frequency_count": 412
+    },
+    {
+      "candidate_rank": 715,
+      "source_rank": 725,
+      "word": "প্রিয়",
+      "pos": null,
+      "frequency_count": 411
+    },
+    {
+      "candidate_rank": 716,
+      "source_rank": 726,
+      "word": "এইতো",
+      "pos": null,
+      "frequency_count": 410
+    },
+    {
+      "candidate_rank": 717,
+      "source_rank": 727,
+      "word": "করত",
+      "pos": null,
+      "frequency_count": 409
+    },
+    {
+      "candidate_rank": 718,
+      "source_rank": 728,
+      "word": "ব্যবস্থা",
+      "pos": null,
+      "frequency_count": 409
+    },
+    {
+      "candidate_rank": 719,
+      "source_rank": 729,
+      "word": "মাস",
+      "pos": null,
+      "frequency_count": 408
+    },
+    {
+      "candidate_rank": 720,
+      "source_rank": 730,
+      "word": "মহিলা",
+      "pos": null,
+      "frequency_count": 408
+    },
+    {
+      "candidate_rank": 721,
+      "source_rank": 732,
+      "word": "জীবনে",
+      "pos": null,
+      "frequency_count": 408
+    },
+    {
+      "candidate_rank": 722,
+      "source_rank": 733,
+      "word": "হতো",
+      "pos": null,
+      "frequency_count": 407
+    },
+    {
+      "candidate_rank": 723,
+      "source_rank": 734,
+      "word": "মেয়ের",
+      "pos": null,
+      "frequency_count": 407
+    },
+    {
+      "candidate_rank": 724,
+      "source_rank": 735,
+      "word": "তেমন",
+      "pos": null,
+      "frequency_count": 406
+    },
+    {
+      "candidate_rank": 725,
+      "source_rank": 736,
+      "word": "টাকার",
+      "pos": null,
+      "frequency_count": 406
+    },
+    {
+      "candidate_rank": 726,
+      "source_rank": 737,
+      "word": "সামান্য",
+      "pos": null,
+      "frequency_count": 406
+    },
+    {
+      "candidate_rank": 727,
+      "source_rank": 738,
+      "word": "চলছে",
+      "pos": null,
+      "frequency_count": 406
+    },
+    {
+      "candidate_rank": 728,
+      "source_rank": 739,
+      "word": "কিছুটা",
+      "pos": null,
+      "frequency_count": 405
+    },
+    {
+      "candidate_rank": 729,
+      "source_rank": 740,
+      "word": "লুকিয়ে",
+      "pos": null,
+      "frequency_count": 405
+    },
+    {
+      "candidate_rank": 730,
+      "source_rank": 741,
+      "word": "অসাধারণ",
+      "pos": null,
+      "frequency_count": 405
+    },
+    {
+      "candidate_rank": 731,
+      "source_rank": 742,
+      "word": "মৃত্যু",
+      "pos": null,
+      "frequency_count": 404
+    },
+    {
+      "candidate_rank": 732,
+      "source_rank": 743,
+      "word": "এখনি",
+      "pos": null,
+      "frequency_count": 404
+    },
+    {
+      "candidate_rank": 733,
+      "source_rank": 744,
+      "word": "ধরা",
+      "pos": null,
+      "frequency_count": 403
+    },
+    {
+      "candidate_rank": 734,
+      "source_rank": 745,
+      "word": "দিনের",
+      "pos": null,
+      "frequency_count": 403
+    },
+    {
+      "candidate_rank": 735,
+      "source_rank": 746,
+      "word": "কালো",
+      "pos": null,
+      "frequency_count": 403
+    },
+    {
+      "candidate_rank": 736,
+      "source_rank": 747,
+      "word": "বোকা",
+      "pos": null,
+      "frequency_count": 403
+    },
+    {
+      "candidate_rank": 737,
+      "source_rank": 748,
+      "word": "ভেবে",
+      "pos": null,
+      "frequency_count": 401
+    },
+    {
+      "candidate_rank": 738,
+      "source_rank": 749,
+      "word": "করেনি",
+      "pos": null,
+      "frequency_count": 401
+    },
+    {
+      "candidate_rank": 739,
+      "source_rank": 750,
+      "word": "প্রফেসর",
+      "pos": null,
+      "frequency_count": 400
+    },
+    {
+      "candidate_rank": 740,
+      "source_rank": 751,
+      "word": "ফেরত",
+      "pos": null,
+      "frequency_count": 399
+    },
+    {
+      "candidate_rank": 741,
+      "source_rank": 752,
+      "word": "অনুমতি",
+      "pos": null,
+      "frequency_count": 398
+    },
+    {
+      "candidate_rank": 742,
+      "source_rank": 753,
+      "word": "চিৎকার",
+      "pos": null,
+      "frequency_count": 397
+    },
+    {
+      "candidate_rank": 743,
+      "source_rank": 754,
+      "word": "সকালে",
+      "pos": null,
+      "frequency_count": 397
+    },
+    {
+      "candidate_rank": 744,
+      "source_rank": 755,
+      "word": "ডলার",
+      "pos": null,
+      "frequency_count": 395
+    },
+    {
+      "candidate_rank": 745,
+      "source_rank": 756,
+      "word": "করছিলাম",
+      "pos": null,
+      "frequency_count": 395
+    },
+    {
+      "candidate_rank": 746,
+      "source_rank": 757,
+      "word": "সোজা",
+      "pos": null,
+      "frequency_count": 395
+    },
+    {
+      "candidate_rank": 747,
+      "source_rank": 758,
+      "word": "খেয়াল",
+      "pos": null,
+      "frequency_count": 395
+    },
+    {
+      "candidate_rank": 748,
+      "source_rank": 759,
+      "word": "লেগেছে",
+      "pos": null,
+      "frequency_count": 395
+    },
+    {
+      "candidate_rank": 749,
+      "source_rank": 760,
+      "word": "কোনও",
+      "pos": null,
+      "frequency_count": 395
+    },
+    {
+      "candidate_rank": 750,
+      "source_rank": 761,
+      "word": "জীবিত",
+      "pos": null,
+      "frequency_count": 394
+    },
+    {
+      "candidate_rank": 751,
+      "source_rank": 762,
+      "word": "বন্দুক",
+      "pos": null,
+      "frequency_count": 394
+    },
+    {
+      "candidate_rank": 752,
+      "source_rank": 763,
+      "word": "বলছেন",
+      "pos": null,
+      "frequency_count": 394
+    },
+    {
+      "candidate_rank": 753,
+      "source_rank": 764,
+      "word": "অধিকার",
+      "pos": null,
+      "frequency_count": 393
+    },
+    {
+      "candidate_rank": 754,
+      "source_rank": 765,
+      "word": "কয়েক",
+      "pos": null,
+      "frequency_count": 392
+    },
+    {
+      "candidate_rank": 755,
+      "source_rank": 766,
+      "word": "বিক্রি",
+      "pos": null,
+      "frequency_count": 392
+    },
+    {
+      "candidate_rank": 756,
+      "source_rank": 767,
+      "word": "নিন",
+      "pos": null,
+      "frequency_count": 390
+    },
+    {
+      "candidate_rank": 757,
+      "source_rank": 768,
+      "word": "বললাম",
+      "pos": null,
+      "frequency_count": 389
+    },
+    {
+      "candidate_rank": 758,
+      "source_rank": 769,
+      "word": "লেখা",
+      "pos": null,
+      "frequency_count": 388
+    },
+    {
+      "candidate_rank": 759,
+      "source_rank": 770,
+      "word": "দিচ্ছে",
+      "pos": null,
+      "frequency_count": 388
+    },
+    {
+      "candidate_rank": 760,
+      "source_rank": 771,
+      "word": "পৃথিবী",
+      "pos": null,
+      "frequency_count": 387
+    },
+    {
+      "candidate_rank": 761,
+      "source_rank": 772,
+      "word": "হলাম",
+      "pos": null,
+      "frequency_count": 387
+    },
+    {
+      "candidate_rank": 762,
+      "source_rank": 773,
+      "word": "আসি",
+      "pos": null,
+      "frequency_count": 387
+    },
+    {
+      "candidate_rank": 763,
+      "source_rank": 774,
+      "word": "সাবধানে",
+      "pos": null,
+      "frequency_count": 386
+    },
+    {
+      "candidate_rank": 764,
+      "source_rank": 775,
+      "word": "দেখার",
+      "pos": null,
+      "frequency_count": 386
+    },
+    {
+      "candidate_rank": 765,
+      "source_rank": 776,
+      "word": "রাখবে",
+      "pos": null,
+      "frequency_count": 384
+    },
+    {
+      "candidate_rank": 766,
+      "source_rank": 777,
+      "word": "করতাম",
+      "pos": null,
+      "frequency_count": 384
+    },
+    {
+      "candidate_rank": 767,
+      "source_rank": 778,
+      "word": "বলেছিল",
+      "pos": null,
+      "frequency_count": 384
+    },
+    {
+      "candidate_rank": 768,
+      "source_rank": 779,
+      "word": "বয়স",
+      "pos": null,
+      "frequency_count": 383
+    },
+    {
+      "candidate_rank": 769,
+      "source_rank": 780,
+      "word": "সন্দেহ",
+      "pos": null,
+      "frequency_count": 383
+    },
+    {
+      "candidate_rank": 770,
+      "source_rank": 781,
+      "word": "বাহিরে",
+      "pos": null,
+      "frequency_count": 383
+    },
+    {
+      "candidate_rank": 771,
+      "source_rank": 782,
+      "word": "সময়ে",
+      "pos": null,
+      "frequency_count": 383
+    },
+    {
+      "candidate_rank": 772,
+      "source_rank": 783,
+      "word": "বলছো",
+      "pos": null,
+      "frequency_count": 382
+    },
+    {
+      "candidate_rank": 773,
+      "source_rank": 784,
+      "word": "দিও",
+      "pos": null,
+      "frequency_count": 382
+    },
+    {
+      "candidate_rank": 774,
+      "source_rank": 785,
+      "word": "সাধারণ",
+      "pos": null,
+      "frequency_count": 381
+    },
+    {
+      "candidate_rank": 775,
+      "source_rank": 786,
+      "word": "জাহাজ",
+      "pos": null,
+      "frequency_count": 380
+    },
+    {
+      "candidate_rank": 776,
+      "source_rank": 787,
+      "word": "থাম",
+      "pos": null,
+      "frequency_count": 380
+    },
+    {
+      "candidate_rank": 777,
+      "source_rank": 788,
+      "word": "গুলো",
+      "pos": null,
+      "frequency_count": 379
+    },
+    {
+      "candidate_rank": 778,
+      "source_rank": 789,
+      "word": "ঘটনা",
+      "pos": null,
+      "frequency_count": 379
+    },
+    {
+      "candidate_rank": 779,
+      "source_rank": 790,
+      "word": "করেই",
+      "pos": null,
+      "frequency_count": 378
+    },
+    {
+      "candidate_rank": 780,
+      "source_rank": 791,
+      "word": "ইয়াহ",
+      "pos": null,
+      "frequency_count": 377
+    },
+    {
+      "candidate_rank": 781,
+      "source_rank": 792,
+      "word": "মজার",
+      "pos": null,
+      "frequency_count": 377
+    },
+    {
+      "candidate_rank": 782,
+      "source_rank": 793,
+      "word": "ফেলো",
+      "pos": null,
+      "frequency_count": 376
+    },
+    {
+      "candidate_rank": 783,
+      "source_rank": 794,
+      "word": "চার",
+      "pos": null,
+      "frequency_count": 376
+    },
+    {
+      "candidate_rank": 784,
+      "source_rank": 796,
+      "word": "বলেছ",
+      "pos": null,
+      "frequency_count": 376
+    },
+    {
+      "candidate_rank": 785,
+      "source_rank": 797,
+      "word": "বলেছিলে",
+      "pos": null,
+      "frequency_count": 376
+    },
+    {
+      "candidate_rank": 786,
+      "source_rank": 798,
+      "word": "করলো",
+      "pos": null,
+      "frequency_count": 375
+    },
+    {
+      "candidate_rank": 787,
+      "source_rank": 799,
+      "word": "সেকেন্ড",
+      "pos": null,
+      "frequency_count": 375
+    },
+    {
+      "candidate_rank": 788,
+      "source_rank": 800,
+      "word": "এইটা",
+      "pos": null,
+      "frequency_count": 373
+    },
+    {
+      "candidate_rank": 789,
+      "source_rank": 801,
+      "word": "দিলাম",
+      "pos": null,
+      "frequency_count": 372
+    },
+    {
+      "candidate_rank": 790,
+      "source_rank": 802,
+      "word": "কাজটা",
+      "pos": null,
+      "frequency_count": 372
+    },
+    {
+      "candidate_rank": 791,
+      "source_rank": 803,
+      "word": "ভালই",
+      "pos": null,
+      "frequency_count": 372
+    },
+    {
+      "candidate_rank": 792,
+      "source_rank": 804,
+      "word": "চেহারা",
+      "pos": null,
+      "frequency_count": 371
+    },
+    {
+      "candidate_rank": 793,
+      "source_rank": 805,
+      "word": "থাকি",
+      "pos": null,
+      "frequency_count": 371
+    },
+    {
+      "candidate_rank": 794,
+      "source_rank": 806,
+      "word": "তাঁরা",
+      "pos": null,
+      "frequency_count": 371
+    },
+    {
+      "candidate_rank": 795,
+      "source_rank": 807,
+      "word": "সারা",
+      "pos": null,
+      "frequency_count": 370
+    },
+    {
+      "candidate_rank": 796,
+      "source_rank": 808,
+      "word": "ডঃ",
+      "pos": null,
+      "frequency_count": 369
+    },
+    {
+      "candidate_rank": 797,
+      "source_rank": 809,
+      "word": "পেলে",
+      "pos": null,
+      "frequency_count": 369
+    },
+    {
+      "candidate_rank": 798,
+      "source_rank": 810,
+      "word": "এইসব",
+      "pos": null,
+      "frequency_count": 369
+    },
+    {
+      "candidate_rank": 799,
+      "source_rank": 811,
+      "word": "পাবেন",
+      "pos": null,
+      "frequency_count": 368
+    },
+    {
+      "candidate_rank": 800,
+      "source_rank": 812,
+      "word": "জনাব",
+      "pos": null,
+      "frequency_count": 368
+    },
+    {
+      "candidate_rank": 801,
+      "source_rank": 813,
+      "word": "সাবধান",
+      "pos": null,
+      "frequency_count": 368
+    },
+    {
+      "candidate_rank": 802,
+      "source_rank": 814,
+      "word": "মাধ্যমে",
+      "pos": null,
+      "frequency_count": 367
+    },
+    {
+      "candidate_rank": 803,
+      "source_rank": 815,
+      "word": "জর্জ",
+      "pos": null,
+      "frequency_count": 366
+    },
+    {
+      "candidate_rank": 804,
+      "source_rank": 816,
+      "word": "পাঁচ",
+      "pos": null,
+      "frequency_count": 364
+    },
+    {
+      "candidate_rank": 805,
+      "source_rank": 817,
+      "word": "মেয়েকে",
+      "pos": null,
+      "frequency_count": 364
+    },
+    {
+      "candidate_rank": 806,
+      "source_rank": 818,
+      "word": "চিনি",
+      "pos": null,
+      "frequency_count": 362
+    },
+    {
+      "candidate_rank": 807,
+      "source_rank": 819,
+      "word": "ধর",
+      "pos": null,
+      "frequency_count": 362
+    },
+    {
+      "candidate_rank": 808,
+      "source_rank": 820,
+      "word": "সপ্তাহ",
+      "pos": null,
+      "frequency_count": 362
+    },
+    {
+      "candidate_rank": 809,
+      "source_rank": 821,
+      "word": "দেখলে",
+      "pos": null,
+      "frequency_count": 362
+    },
+    {
+      "candidate_rank": 810,
+      "source_rank": 822,
+      "word": "স্কুলে",
+      "pos": null,
+      "frequency_count": 361
+    },
+    {
+      "candidate_rank": 811,
+      "source_rank": 823,
+      "word": "চোখে",
+      "pos": null,
+      "frequency_count": 361
+    },
+    {
+      "candidate_rank": 812,
+      "source_rank": 824,
+      "word": "পারিনি",
+      "pos": null,
+      "frequency_count": 360
+    },
+    {
+      "candidate_rank": 813,
+      "source_rank": 825,
+      "word": "বাবাকে",
+      "pos": null,
+      "frequency_count": 360
+    },
+    {
+      "candidate_rank": 814,
+      "source_rank": 826,
+      "word": "পুরনো",
+      "pos": null,
+      "frequency_count": 359
+    },
+    {
+      "candidate_rank": 815,
+      "source_rank": 827,
+      "word": "পরিকল্পনা",
+      "pos": null,
+      "frequency_count": 358
+    },
+    {
+      "candidate_rank": 816,
+      "source_rank": 828,
+      "word": "পরের",
+      "pos": null,
+      "frequency_count": 357
+    },
+    {
+      "candidate_rank": 817,
+      "source_rank": 829,
+      "word": "যাকে",
+      "pos": null,
+      "frequency_count": 357
+    },
+    {
+      "candidate_rank": 818,
+      "source_rank": 830,
+      "word": "চেয়েও",
+      "pos": null,
+      "frequency_count": 356
+    },
+    {
+      "candidate_rank": 819,
+      "source_rank": 831,
+      "word": "মার",
+      "pos": null,
+      "frequency_count": 356
+    },
+    {
+      "candidate_rank": 820,
+      "source_rank": 832,
+      "word": "ভালোবাসি",
+      "pos": null,
+      "frequency_count": 356
+    },
+    {
+      "candidate_rank": 821,
+      "source_rank": 833,
+      "word": "বোন",
+      "pos": null,
+      "frequency_count": 356
+    },
+    {
+      "candidate_rank": 822,
+      "source_rank": 834,
+      "word": "বন্ধুরা",
+      "pos": null,
+      "frequency_count": 356
+    },
+    {
+      "candidate_rank": 823,
+      "source_rank": 835,
+      "word": "মরে",
+      "pos": null,
+      "frequency_count": 355
+    },
+    {
+      "candidate_rank": 824,
+      "source_rank": 836,
+      "word": "হয়েছি",
+      "pos": null,
+      "frequency_count": 355
+    },
+    {
+      "candidate_rank": 825,
+      "source_rank": 837,
+      "word": "গেলাম",
+      "pos": null,
+      "frequency_count": 355
+    },
+    {
+      "candidate_rank": 826,
+      "source_rank": 838,
+      "word": "ফেলেছি",
+      "pos": null,
+      "frequency_count": 355
+    },
+    {
+      "candidate_rank": 827,
+      "source_rank": 839,
+      "word": "ভেঙ্গে",
+      "pos": null,
+      "frequency_count": 355
+    },
+    {
+      "candidate_rank": 828,
+      "source_rank": 840,
+      "word": "এগিয়ে",
+      "pos": null,
+      "frequency_count": 354
+    },
+    {
+      "candidate_rank": 829,
+      "source_rank": 841,
+      "word": "to",
+      "pos": null,
+      "frequency_count": 354
+    },
+    {
+      "candidate_rank": 830,
+      "source_rank": 842,
+      "word": "লোকদের",
+      "pos": null,
+      "frequency_count": 353
+    },
+    {
+      "candidate_rank": 831,
+      "source_rank": 843,
+      "word": "সম্মান",
+      "pos": null,
+      "frequency_count": 353
+    },
+    {
+      "candidate_rank": 832,
+      "source_rank": 844,
+      "word": "হায়",
+      "pos": null,
+      "frequency_count": 352
+    },
+    {
+      "candidate_rank": 833,
+      "source_rank": 845,
+      "word": "কোথাকার",
+      "pos": null,
+      "frequency_count": 352
+    },
+    {
+      "candidate_rank": 834,
+      "source_rank": 846,
+      "word": "শহর",
+      "pos": null,
+      "frequency_count": 350
+    },
+    {
+      "candidate_rank": 835,
+      "source_rank": 847,
+      "word": "প্রধান",
+      "pos": null,
+      "frequency_count": 350
+    },
+    {
+      "candidate_rank": 836,
+      "source_rank": 848,
+      "word": "গিয়েছিলাম",
+      "pos": null,
+      "frequency_count": 349
+    },
+    {
+      "candidate_rank": 837,
+      "source_rank": 849,
+      "word": "নও",
+      "pos": null,
+      "frequency_count": 348
+    },
+    {
+      "candidate_rank": 838,
+      "source_rank": 850,
+      "word": "ভালবাসি",
+      "pos": null,
+      "frequency_count": 347
+    },
+    {
+      "candidate_rank": 839,
+      "source_rank": 851,
+      "word": "জি",
+      "pos": null,
+      "frequency_count": 347
+    },
+    {
+      "candidate_rank": 840,
+      "source_rank": 852,
+      "word": "ভাগ্য",
+      "pos": null,
+      "frequency_count": 346
+    },
+    {
+      "candidate_rank": 841,
+      "source_rank": 853,
+      "word": "হয়েছিলো",
+      "pos": null,
+      "frequency_count": 346
+    },
+    {
+      "candidate_rank": 842,
+      "source_rank": 854,
+      "word": "চোখের",
+      "pos": null,
+      "frequency_count": 346
+    },
+    {
+      "candidate_rank": 843,
+      "source_rank": 855,
+      "word": "ঝামেলা",
+      "pos": null,
+      "frequency_count": 346
+    },
+    {
+      "candidate_rank": 844,
+      "source_rank": 856,
+      "word": "অবস্থায়",
+      "pos": null,
+      "frequency_count": 346
+    },
+    {
+      "candidate_rank": 845,
+      "source_rank": 857,
+      "word": "my",
+      "pos": null,
+      "frequency_count": 346
+    },
+    {
+      "candidate_rank": 846,
+      "source_rank": 858,
+      "word": "ঘৃণা",
+      "pos": null,
+      "frequency_count": 345
+    },
+    {
+      "candidate_rank": 847,
+      "source_rank": 859,
+      "word": "পালিয়ে",
+      "pos": null,
+      "frequency_count": 345
+    },
+    {
+      "candidate_rank": 848,
+      "source_rank": 860,
+      "word": "বাস",
+      "pos": null,
+      "frequency_count": 344
+    },
+    {
+      "candidate_rank": 849,
+      "source_rank": 861,
+      "word": "মধ্যেই",
+      "pos": null,
+      "frequency_count": 343
+    },
+    {
+      "candidate_rank": 850,
+      "source_rank": 862,
+      "word": "শহরের",
+      "pos": null,
+      "frequency_count": 343
+    },
+    {
+      "candidate_rank": 851,
+      "source_rank": 863,
+      "word": "হবার",
+      "pos": null,
+      "frequency_count": 342
+    },
+    {
+      "candidate_rank": 852,
+      "source_rank": 864,
+      "word": "ভালোবাসা",
+      "pos": null,
+      "frequency_count": 342
+    },
+    {
+      "candidate_rank": 853,
+      "source_rank": 865,
+      "word": "দূর",
+      "pos": null,
+      "frequency_count": 341
+    },
+    {
+      "candidate_rank": 854,
+      "source_rank": 866,
+      "word": "দুটো",
+      "pos": null,
+      "frequency_count": 341
+    },
+    {
+      "candidate_rank": 855,
+      "source_rank": 867,
+      "word": "me",
+      "pos": null,
+      "frequency_count": 340
+    },
+    {
+      "candidate_rank": 856,
+      "source_rank": 868,
+      "word": "ভাগ",
+      "pos": null,
+      "frequency_count": 340
+    },
+    {
+      "candidate_rank": 857,
+      "source_rank": 869,
+      "word": "একেবারে",
+      "pos": null,
+      "frequency_count": 340
+    },
+    {
+      "candidate_rank": 858,
+      "source_rank": 870,
+      "word": "আটকে",
+      "pos": null,
+      "frequency_count": 339
+    },
+    {
+      "candidate_rank": 859,
+      "source_rank": 872,
+      "word": "শহরে",
+      "pos": null,
+      "frequency_count": 338
+    },
+    {
+      "candidate_rank": 860,
+      "source_rank": 873,
+      "word": "সময়ের",
+      "pos": null,
+      "frequency_count": 338
+    },
+    {
+      "candidate_rank": 861,
+      "source_rank": 874,
+      "word": "কাছাকাছি",
+      "pos": null,
+      "frequency_count": 338
+    },
+    {
+      "candidate_rank": 862,
+      "source_rank": 875,
+      "word": "বুঝেছি",
+      "pos": null,
+      "frequency_count": 338
+    },
+    {
+      "candidate_rank": 863,
+      "source_rank": 876,
+      "word": "এরপর",
+      "pos": null,
+      "frequency_count": 338
+    },
+    {
+      "candidate_rank": 864,
+      "source_rank": 877,
+      "word": "দেবতা",
+      "pos": null,
+      "frequency_count": 336
+    },
+    {
+      "candidate_rank": 865,
+      "source_rank": 878,
+      "word": "আদেশ",
+      "pos": null,
+      "frequency_count": 336
+    },
+    {
+      "candidate_rank": 866,
+      "source_rank": 879,
+      "word": "দিবো",
+      "pos": null,
+      "frequency_count": 336
+    },
+    {
+      "candidate_rank": 867,
+      "source_rank": 880,
+      "word": "বই",
+      "pos": null,
+      "frequency_count": 336
+    },
+    {
+      "candidate_rank": 868,
+      "source_rank": 881,
+      "word": "দেওয়ার",
+      "pos": null,
+      "frequency_count": 334
+    },
+    {
+      "candidate_rank": 869,
+      "source_rank": 882,
+      "word": "বানিয়ে",
+      "pos": null,
+      "frequency_count": 333
+    },
+    {
+      "candidate_rank": 870,
+      "source_rank": 883,
+      "word": "থাকবো",
+      "pos": null,
+      "frequency_count": 333
+    },
+    {
+      "candidate_rank": 871,
+      "source_rank": 884,
+      "word": "ফেলেছে",
+      "pos": null,
+      "frequency_count": 333
+    },
+    {
+      "candidate_rank": 872,
+      "source_rank": 885,
+      "word": "তোরা",
+      "pos": null,
+      "frequency_count": 332
+    },
+    {
+      "candidate_rank": 873,
+      "source_rank": 886,
+      "word": "এদের",
+      "pos": null,
+      "frequency_count": 332
+    },
+    {
+      "candidate_rank": 874,
+      "source_rank": 887,
+      "word": "যোগাযোগ",
+      "pos": null,
+      "frequency_count": 332
+    },
+    {
+      "candidate_rank": 875,
+      "source_rank": 888,
+      "word": "ঘর",
+      "pos": null,
+      "frequency_count": 332
+    },
+    {
+      "candidate_rank": 876,
+      "source_rank": 889,
+      "word": "দেখাতে",
+      "pos": null,
+      "frequency_count": 331
+    },
+    {
+      "candidate_rank": 877,
+      "source_rank": 890,
+      "word": "আসবো",
+      "pos": null,
+      "frequency_count": 331
+    },
+    {
+      "candidate_rank": 878,
+      "source_rank": 891,
+      "word": "প্ল্যান",
+      "pos": null,
+      "frequency_count": 329
+    },
+    {
+      "candidate_rank": 879,
+      "source_rank": 892,
+      "word": "গরম",
+      "pos": null,
+      "frequency_count": 329
+    },
+    {
+      "candidate_rank": 880,
+      "source_rank": 893,
+      "word": "হিসাবে",
+      "pos": null,
+      "frequency_count": 329
+    },
+    {
+      "candidate_rank": 881,
+      "source_rank": 894,
+      "word": "মতই",
+      "pos": null,
+      "frequency_count": 329
+    },
+    {
+      "candidate_rank": 882,
+      "source_rank": 895,
+      "word": "ম্যাডাম",
+      "pos": null,
+      "frequency_count": 329
+    },
+    {
+      "candidate_rank": 883,
+      "source_rank": 896,
+      "word": "পারতাম",
+      "pos": null,
+      "frequency_count": 328
+    },
+    {
+      "candidate_rank": 884,
+      "source_rank": 897,
+      "word": "দেখাও",
+      "pos": null,
+      "frequency_count": 328
+    },
+    {
+      "candidate_rank": 885,
+      "source_rank": 898,
+      "word": "অনুসরণ",
+      "pos": null,
+      "frequency_count": 328
+    },
+    {
+      "candidate_rank": 886,
+      "source_rank": 899,
+      "word": "and",
+      "pos": null,
+      "frequency_count": 328
+    },
+    {
+      "candidate_rank": 887,
+      "source_rank": 900,
+      "word": "পারলে",
+      "pos": null,
+      "frequency_count": 328
+    },
+    {
+      "candidate_rank": 888,
+      "source_rank": 901,
+      "word": "পরিচিত",
+      "pos": null,
+      "frequency_count": 328
+    },
+    {
+      "candidate_rank": 889,
+      "source_rank": 902,
+      "word": "সমাধান",
+      "pos": null,
+      "frequency_count": 328
+    },
+    {
+      "candidate_rank": 890,
+      "source_rank": 903,
+      "word": "রুমে",
+      "pos": null,
+      "frequency_count": 327
+    },
+    {
+      "candidate_rank": 891,
+      "source_rank": 904,
+      "word": "কই",
+      "pos": null,
+      "frequency_count": 327
+    },
+    {
+      "candidate_rank": 892,
+      "source_rank": 905,
+      "word": "ঘুরে",
+      "pos": null,
+      "frequency_count": 327
+    },
+    {
+      "candidate_rank": 893,
+      "source_rank": 906,
+      "word": "রকম",
+      "pos": null,
+      "frequency_count": 326
+    },
+    {
+      "candidate_rank": 894,
+      "source_rank": 907,
+      "word": "ঘন্টা",
+      "pos": null,
+      "frequency_count": 326
+    },
+    {
+      "candidate_rank": 895,
+      "source_rank": 908,
+      "word": "তাঁদের",
+      "pos": null,
+      "frequency_count": 326
+    },
+    {
+      "candidate_rank": 896,
+      "source_rank": 909,
+      "word": "জোরে",
+      "pos": null,
+      "frequency_count": 326
+    },
+    {
+      "candidate_rank": 897,
+      "source_rank": 910,
+      "word": "দায়িত্ব",
+      "pos": null,
+      "frequency_count": 325
+    },
+    {
+      "candidate_rank": 898,
+      "source_rank": 911,
+      "word": "দুজন",
+      "pos": null,
+      "frequency_count": 325
+    },
+    {
+      "candidate_rank": 899,
+      "source_rank": 912,
+      "word": "বিরক্ত",
+      "pos": null,
+      "frequency_count": 325
+    },
+    {
+      "candidate_rank": 900,
+      "source_rank": 913,
+      "word": "রাখ",
+      "pos": null,
+      "frequency_count": 324
+    },
+    {
+      "candidate_rank": 901,
+      "source_rank": 914,
+      "word": "is",
+      "pos": null,
+      "frequency_count": 323
+    },
+    {
+      "candidate_rank": 902,
+      "source_rank": 915,
+      "word": "t",
+      "pos": null,
+      "frequency_count": 323
+    },
+    {
+      "candidate_rank": 903,
+      "source_rank": 916,
+      "word": "বেরিয়ে",
+      "pos": null,
+      "frequency_count": 322
+    },
+    {
+      "candidate_rank": 904,
+      "source_rank": 917,
+      "word": "লর্ড",
+      "pos": null,
+      "frequency_count": 320
+    },
+    {
+      "candidate_rank": 905,
+      "source_rank": 918,
+      "word": "হয়তোবা",
+      "pos": null,
+      "frequency_count": 319
+    },
+    {
+      "candidate_rank": 906,
+      "source_rank": 919,
+      "word": "পড়েছে",
+      "pos": null,
+      "frequency_count": 319
+    },
+    {
+      "candidate_rank": 907,
+      "source_rank": 920,
+      "word": "উনার",
+      "pos": null,
+      "frequency_count": 319
+    },
+    {
+      "candidate_rank": 908,
+      "source_rank": 921,
+      "word": "যেভাবে",
+      "pos": null,
+      "frequency_count": 319
+    },
+    {
+      "candidate_rank": 909,
+      "source_rank": 922,
+      "word": "পরিচয়",
+      "pos": null,
+      "frequency_count": 319
+    },
+    {
+      "candidate_rank": 910,
+      "source_rank": 923,
+      "word": "of",
+      "pos": null,
+      "frequency_count": 319
+    },
+    {
+      "candidate_rank": 911,
+      "source_rank": 924,
+      "word": "ফেল",
+      "pos": null,
+      "frequency_count": 319
+    },
+    {
+      "candidate_rank": 912,
+      "source_rank": 925,
+      "word": "খোলা",
+      "pos": null,
+      "frequency_count": 319
+    },
+    {
+      "candidate_rank": 913,
+      "source_rank": 926,
+      "word": "মাস্টার",
+      "pos": null,
+      "frequency_count": 318
+    },
+    {
+      "candidate_rank": 914,
+      "source_rank": 927,
+      "word": "তে",
+      "pos": null,
+      "frequency_count": 317
+    },
+    {
+      "candidate_rank": 915,
+      "source_rank": 928,
+      "word": "জন্ম",
+      "pos": null,
+      "frequency_count": 317
+    },
+    {
+      "candidate_rank": 916,
+      "source_rank": 929,
+      "word": "আগুন",
+      "pos": null,
+      "frequency_count": 317
+    },
+    {
+      "candidate_rank": 917,
+      "source_rank": 930,
+      "word": "দাঁড়িয়ে",
+      "pos": null,
+      "frequency_count": 316
+    },
+    {
+      "candidate_rank": 918,
+      "source_rank": 931,
+      "word": "ছেলের",
+      "pos": null,
+      "frequency_count": 316
+    },
+    {
+      "candidate_rank": 919,
+      "source_rank": 932,
+      "word": "সম্পর্ক",
+      "pos": null,
+      "frequency_count": 316
+    },
+    {
+      "candidate_rank": 920,
+      "source_rank": 933,
+      "word": "রাজি",
+      "pos": null,
+      "frequency_count": 316
+    },
+    {
+      "candidate_rank": 921,
+      "source_rank": 934,
+      "word": "করতো",
+      "pos": null,
+      "frequency_count": 315
+    },
+    {
+      "candidate_rank": 922,
+      "source_rank": 935,
+      "word": "মেনে",
+      "pos": null,
+      "frequency_count": 315
+    },
+    {
+      "candidate_rank": 923,
+      "source_rank": 936,
+      "word": "নিরাপত্তা",
+      "pos": null,
+      "frequency_count": 315
+    },
+    {
+      "candidate_rank": 924,
+      "source_rank": 937,
+      "word": "মরতে",
+      "pos": null,
+      "frequency_count": 314
+    },
+    {
+      "candidate_rank": 925,
+      "source_rank": 938,
+      "word": "মাই",
+      "pos": null,
+      "frequency_count": 314
+    },
+    {
+      "candidate_rank": 926,
+      "source_rank": 939,
+      "word": "হত",
+      "pos": null,
+      "frequency_count": 314
+    },
+    {
+      "candidate_rank": 927,
+      "source_rank": 940,
+      "word": "নিউ",
+      "pos": null,
+      "frequency_count": 314
+    },
+    {
+      "candidate_rank": 928,
+      "source_rank": 941,
+      "word": "দেয়ার",
+      "pos": null,
+      "frequency_count": 313
+    },
+    {
+      "candidate_rank": 929,
+      "source_rank": 942,
+      "word": "দিক",
+      "pos": null,
+      "frequency_count": 313
+    },
+    {
+      "candidate_rank": 930,
+      "source_rank": 943,
+      "word": "রাতের",
+      "pos": null,
+      "frequency_count": 313
+    },
+    {
+      "candidate_rank": 931,
+      "source_rank": 944,
+      "word": "শান্তি",
+      "pos": null,
+      "frequency_count": 312
+    },
+    {
+      "candidate_rank": 932,
+      "source_rank": 945,
+      "word": "জেনে",
+      "pos": null,
+      "frequency_count": 312
+    },
+    {
+      "candidate_rank": 933,
+      "source_rank": 946,
+      "word": "চেয়েছিলাম",
+      "pos": null,
+      "frequency_count": 312
+    },
+    {
+      "candidate_rank": 934,
+      "source_rank": 947,
+      "word": "সমস্ত",
+      "pos": null,
+      "frequency_count": 312
+    },
+    {
+      "candidate_rank": 935,
+      "source_rank": 948,
+      "word": "রেডি",
+      "pos": null,
+      "frequency_count": 312
+    },
+    {
+      "candidate_rank": 936,
+      "source_rank": 949,
+      "word": "থামাও",
+      "pos": null,
+      "frequency_count": 311
+    },
+    {
+      "candidate_rank": 937,
+      "source_rank": 950,
+      "word": "মানুষকে",
+      "pos": null,
+      "frequency_count": 311
+    },
+    {
+      "candidate_rank": 938,
+      "source_rank": 951,
+      "word": "এজেন্ট",
+      "pos": null,
+      "frequency_count": 309
+    },
+    {
+      "candidate_rank": 939,
+      "source_rank": 952,
+      "word": "জিনিসটা",
+      "pos": null,
+      "frequency_count": 308
+    },
+    {
+      "candidate_rank": 940,
+      "source_rank": 953,
+      "word": "দেখাচ্ছে",
+      "pos": null,
+      "frequency_count": 308
+    },
+    {
+      "candidate_rank": 941,
+      "source_rank": 954,
+      "word": "বললো",
+      "pos": null,
+      "frequency_count": 308
+    },
+    {
+      "candidate_rank": 942,
+      "source_rank": 955,
+      "word": "সাথেই",
+      "pos": null,
+      "frequency_count": 307
+    },
+    {
+      "candidate_rank": 943,
+      "source_rank": 956,
+      "word": "গুড",
+      "pos": null,
+      "frequency_count": 307
+    },
+    {
+      "candidate_rank": 944,
+      "source_rank": 957,
+      "word": "থাকব",
+      "pos": null,
+      "frequency_count": 307
+    },
+    {
+      "candidate_rank": 945,
+      "source_rank": 958,
+      "word": "পিটার",
+      "pos": null,
+      "frequency_count": 306
+    },
+    {
+      "candidate_rank": 946,
+      "source_rank": 959,
+      "word": "বলল",
+      "pos": null,
+      "frequency_count": 306
+    },
+    {
+      "candidate_rank": 947,
+      "source_rank": 960,
+      "word": "ঘটেছে",
+      "pos": null,
+      "frequency_count": 306
+    },
+    {
+      "candidate_rank": 948,
+      "source_rank": 961,
+      "word": "মিনিটের",
+      "pos": null,
+      "frequency_count": 305
+    },
+    {
+      "candidate_rank": 949,
+      "source_rank": 962,
+      "word": "আস",
+      "pos": null,
+      "frequency_count": 305
+    },
+    {
+      "candidate_rank": 950,
+      "source_rank": 963,
+      "word": "ঘুম",
+      "pos": null,
+      "frequency_count": 304
+    },
+    {
+      "candidate_rank": 951,
+      "source_rank": 964,
+      "word": "চাইনা",
+      "pos": null,
+      "frequency_count": 304
+    },
+    {
+      "candidate_rank": 952,
+      "source_rank": 965,
+      "word": "in",
+      "pos": null,
+      "frequency_count": 303
+    },
+    {
+      "candidate_rank": 953,
+      "source_rank": 966,
+      "word": "রুম",
+      "pos": null,
+      "frequency_count": 303
+    },
+    {
+      "candidate_rank": 954,
+      "source_rank": 967,
+      "word": "দেখেছ",
+      "pos": null,
+      "frequency_count": 303
+    },
+    {
+      "candidate_rank": 955,
+      "source_rank": 968,
+      "word": "translated",
+      "pos": null,
+      "frequency_count": 303
+    },
+    {
+      "candidate_rank": 956,
+      "source_rank": 969,
+      "word": "পড়তে",
+      "pos": null,
+      "frequency_count": 303
+    },
+    {
+      "candidate_rank": 957,
+      "source_rank": 970,
+      "word": "ফেলতে",
+      "pos": null,
+      "frequency_count": 302
+    },
+    {
+      "candidate_rank": 958,
+      "source_rank": 971,
+      "word": "ক্ষতি",
+      "pos": null,
+      "frequency_count": 302
+    },
+    {
+      "candidate_rank": 959,
+      "source_rank": 972,
+      "word": "প্রেসিডেন্ট",
+      "pos": null,
+      "frequency_count": 301
+    },
+    {
+      "candidate_rank": 960,
+      "source_rank": 973,
+      "word": "ওরে",
+      "pos": null,
+      "frequency_count": 301
+    },
+    {
+      "candidate_rank": 961,
+      "source_rank": 974,
+      "word": "গাছ",
+      "pos": null,
+      "frequency_count": 301
+    },
+    {
+      "candidate_rank": 962,
+      "source_rank": 975,
+      "word": "যাবার",
+      "pos": null,
+      "frequency_count": 301
+    },
+    {
+      "candidate_rank": 963,
+      "source_rank": 976,
+      "word": "গ্রহণ",
+      "pos": null,
+      "frequency_count": 301
+    },
+    {
+      "candidate_rank": 964,
+      "source_rank": 977,
+      "word": "বাঁচাতে",
+      "pos": null,
+      "frequency_count": 300
+    },
+    {
+      "candidate_rank": 965,
+      "source_rank": 978,
+      "word": "রেখো",
+      "pos": null,
+      "frequency_count": 300
+    },
+    {
+      "candidate_rank": 966,
+      "source_rank": 979,
+      "word": "শক্ত",
+      "pos": null,
+      "frequency_count": 300
+    },
+    {
+      "candidate_rank": 967,
+      "source_rank": 981,
+      "word": "লোকটা",
+      "pos": null,
+      "frequency_count": 299
+    },
+    {
+      "candidate_rank": 968,
+      "source_rank": 982,
+      "word": "দেখলাম",
+      "pos": null,
+      "frequency_count": 299
+    },
+    {
+      "candidate_rank": 969,
+      "source_rank": 983,
+      "word": "কিচ্ছু",
+      "pos": null,
+      "frequency_count": 298
+    },
+    {
+      "candidate_rank": 970,
+      "source_rank": 984,
+      "word": "অামি",
+      "pos": null,
+      "frequency_count": 298
+    },
+    {
+      "candidate_rank": 971,
+      "source_rank": 985,
+      "word": "নিয়েছে",
+      "pos": null,
+      "frequency_count": 298
+    },
+    {
+      "candidate_rank": 972,
+      "source_rank": 986,
+      "word": "পৃথিবীতে",
+      "pos": null,
+      "frequency_count": 298
+    },
+    {
+      "candidate_rank": 973,
+      "source_rank": 987,
+      "word": "এসেছেন",
+      "pos": null,
+      "frequency_count": 298
+    },
+    {
+      "candidate_rank": 974,
+      "source_rank": 988,
+      "word": "করিয়ে",
+      "pos": null,
+      "frequency_count": 298
+    },
+    {
+      "candidate_rank": 975,
+      "source_rank": 989,
+      "word": "চুক্তি",
+      "pos": null,
+      "frequency_count": 297
+    },
+    {
+      "candidate_rank": 976,
+      "source_rank": 990,
+      "word": "অর্থ",
+      "pos": null,
+      "frequency_count": 297
+    },
+    {
+      "candidate_rank": 977,
+      "source_rank": 991,
+      "word": "ধুর",
+      "pos": null,
+      "frequency_count": 297
+    },
+    {
+      "candidate_rank": 978,
+      "source_rank": 992,
+      "word": "মুখে",
+      "pos": null,
+      "frequency_count": 297
+    },
+    {
+      "candidate_rank": 979,
+      "source_rank": 993,
+      "word": "শীঘ্রই",
+      "pos": null,
+      "frequency_count": 297
+    },
+    {
+      "candidate_rank": 980,
+      "source_rank": 994,
+      "word": "লক্ষ্য",
+      "pos": null,
+      "frequency_count": 297
+    },
+    {
+      "candidate_rank": 981,
+      "source_rank": 995,
+      "word": "যতক্ষণ",
+      "pos": null,
+      "frequency_count": 297
+    },
+    {
+      "candidate_rank": 982,
+      "source_rank": 996,
+      "word": "কবে",
+      "pos": null,
+      "frequency_count": 296
+    },
+    {
+      "candidate_rank": 983,
+      "source_rank": 997,
+      "word": "জ্বি",
+      "pos": null,
+      "frequency_count": 296
+    },
+    {
+      "candidate_rank": 984,
+      "source_rank": 998,
+      "word": "সম্পূর্ণ",
+      "pos": null,
+      "frequency_count": 296
+    },
+    {
+      "candidate_rank": 985,
+      "source_rank": 999,
+      "word": "করেছিলে",
+      "pos": null,
+      "frequency_count": 296
+    },
+    {
+      "candidate_rank": 986,
+      "source_rank": 1000,
+      "word": "বরং",
+      "pos": null,
+      "frequency_count": 295
+    },
+    {
+      "candidate_rank": 987,
+      "source_rank": 1001,
+      "word": "এভাবেই",
+      "pos": null,
+      "frequency_count": 295
+    },
+    {
+      "candidate_rank": 988,
+      "source_rank": 1002,
+      "word": "কাহিনী",
+      "pos": null,
+      "frequency_count": 295
+    },
+    {
+      "candidate_rank": 989,
+      "source_rank": 1003,
+      "word": "ভেতর",
+      "pos": null,
+      "frequency_count": 295
+    },
+    {
+      "candidate_rank": 990,
+      "source_rank": 1004,
+      "word": "সেগুলো",
+      "pos": null,
+      "frequency_count": 294
+    },
+    {
+      "candidate_rank": 991,
+      "source_rank": 1005,
+      "word": "চলবে",
+      "pos": null,
+      "frequency_count": 293
+    },
+    {
+      "candidate_rank": 992,
+      "source_rank": 1006,
+      "word": "আজকের",
+      "pos": null,
+      "frequency_count": 292
+    },
+    {
+      "candidate_rank": 993,
+      "source_rank": 1007,
+      "word": "মেয়েটা",
+      "pos": null,
+      "frequency_count": 292
+    },
+    {
+      "candidate_rank": 994,
+      "source_rank": 1008,
+      "word": "বিষয়ে",
+      "pos": null,
+      "frequency_count": 292
+    },
+    {
+      "candidate_rank": 995,
+      "source_rank": 1009,
+      "word": "লোকজন",
+      "pos": null,
+      "frequency_count": 292
+    },
+    {
+      "candidate_rank": 996,
+      "source_rank": 1010,
+      "word": "দাম",
+      "pos": null,
+      "frequency_count": 291
+    },
+    {
+      "candidate_rank": 997,
+      "source_rank": 1011,
+      "word": "কেউই",
+      "pos": null,
+      "frequency_count": 291
+    },
+    {
+      "candidate_rank": 998,
+      "source_rank": 1012,
+      "word": "সতর্ক",
+      "pos": null,
+      "frequency_count": 291
+    },
+    {
+      "candidate_rank": 999,
+      "source_rank": 1013,
+      "word": "আগামীকাল",
+      "pos": null,
+      "frequency_count": 291
+    },
+    {
+      "candidate_rank": 1000,
+      "source_rank": 1014,
+      "word": "শরীর",
+      "pos": null,
+      "frequency_count": 290
+    }
+  ]
+}

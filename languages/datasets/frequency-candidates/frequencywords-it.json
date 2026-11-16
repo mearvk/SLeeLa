@@ -1,0 +1,7030 @@
+{
+  "schema": "SLeeLa FRUCHST frequency candidate staging v1",
+  "language_tag": "it",
+  "language_directory": "italian",
+  "source": {
+    "dataset": "FrequencyWords",
+    "upstream": "https://github.com/hermitdave/FrequencyWords",
+    "revision": "525f9b560de45753a5ea01069454e72e9aa541c6",
+    "sample": "content/2018/it/it_full.txt",
+    "data_license": "CC-BY-SA-4.0",
+    "code_license": "MIT",
+    "frequency_source": "OpenSubtitles-2018",
+    "attribution": [
+      "Hermit Dave / FrequencyWords — https://github.com/hermitdave/FrequencyWords",
+      "OpenSubtitles 2018 — https://opus.nlpl.eu/OpenSubtitles2018.php"
+    ],
+    "selection": "First 1,000 unique NFC-normalized lexical surface forms in source frequency order. Punctuation-only tokens are excluded; source line rank and raw occurrence count are retained.",
+    "limitations": [
+      "Surface forms, not lemmatized headwords.",
+      "Subtitle-domain frequency ranking; not a balanced general-purpose corpus.",
+      "No POS or sense labels are supplied by this source.",
+      "English, French, and Spanish definitions remain pending."
+    ],
+    "license_notice": "FrequencyWords content is CC BY-SA 4.0; preserve attribution and share-alike terms. The repository's code is MIT and does not change the data license."
+  },
+  "candidate_count": 1000,
+  "definitions_status": "pending",
+  "entries": [
+    {
+      "candidate_rank": 1,
+      "source_rank": 1,
+      "word": "e",
+      "pos": null,
+      "frequency_count": 7389373
+    },
+    {
+      "candidate_rank": 2,
+      "source_rank": 2,
+      "word": "non",
+      "pos": null,
+      "frequency_count": 6257811
+    },
+    {
+      "candidate_rank": 3,
+      "source_rank": 3,
+      "word": "che",
+      "pos": null,
+      "frequency_count": 6063914
+    },
+    {
+      "candidate_rank": 4,
+      "source_rank": 4,
+      "word": "di",
+      "pos": null,
+      "frequency_count": 5880995
+    },
+    {
+      "candidate_rank": 5,
+      "source_rank": 5,
+      "word": "la",
+      "pos": null,
+      "frequency_count": 3887197
+    },
+    {
+      "candidate_rank": 6,
+      "source_rank": 6,
+      "word": "il",
+      "pos": null,
+      "frequency_count": 3726599
+    },
+    {
+      "candidate_rank": 7,
+      "source_rank": 7,
+      "word": "un",
+      "pos": null,
+      "frequency_count": 3555300
+    },
+    {
+      "candidate_rank": 8,
+      "source_rank": 8,
+      "word": "a",
+      "pos": null,
+      "frequency_count": 3451723
+    },
+    {
+      "candidate_rank": 9,
+      "source_rank": 9,
+      "word": "per",
+      "pos": null,
+      "frequency_count": 2866558
+    },
+    {
+      "candidate_rank": 10,
+      "source_rank": 10,
+      "word": "è",
+      "pos": null,
+      "frequency_count": 2559257
+    },
+    {
+      "candidate_rank": 11,
+      "source_rank": 11,
+      "word": "in",
+      "pos": null,
+      "frequency_count": 2156931
+    },
+    {
+      "candidate_rank": 12,
+      "source_rank": 12,
+      "word": "una",
+      "pos": null,
+      "frequency_count": 2153925
+    },
+    {
+      "candidate_rank": 13,
+      "source_rank": 13,
+      "word": "mi",
+      "pos": null,
+      "frequency_count": 2013071
+    },
+    {
+      "candidate_rank": 14,
+      "source_rank": 14,
+      "word": "sono",
+      "pos": null,
+      "frequency_count": 2005178
+    },
+    {
+      "candidate_rank": 15,
+      "source_rank": 15,
+      "word": "ho",
+      "pos": null,
+      "frequency_count": 1823350
+    },
+    {
+      "candidate_rank": 16,
+      "source_rank": 16,
+      "word": "l",
+      "pos": null,
+      "frequency_count": 1819882
+    },
+    {
+      "candidate_rank": 17,
+      "source_rank": 17,
+      "word": "si",
+      "pos": null,
+      "frequency_count": 1772472
+    },
+    {
+      "candidate_rank": 18,
+      "source_rank": 18,
+      "word": "ha",
+      "pos": null,
+      "frequency_count": 1662783
+    },
+    {
+      "candidate_rank": 19,
+      "source_rank": 19,
+      "word": "ma",
+      "pos": null,
+      "frequency_count": 1650248
+    },
+    {
+      "candidate_rank": 20,
+      "source_rank": 20,
+      "word": "lo",
+      "pos": null,
+      "frequency_count": 1507340
+    },
+    {
+      "candidate_rank": 21,
+      "source_rank": 21,
+      "word": "cosa",
+      "pos": null,
+      "frequency_count": 1462858
+    },
+    {
+      "candidate_rank": 22,
+      "source_rank": 22,
+      "word": "con",
+      "pos": null,
+      "frequency_count": 1440540
+    },
+    {
+      "candidate_rank": 23,
+      "source_rank": 23,
+      "word": "no",
+      "pos": null,
+      "frequency_count": 1433410
+    },
+    {
+      "candidate_rank": 24,
+      "source_rank": 24,
+      "word": "le",
+      "pos": null,
+      "frequency_count": 1425870
+    },
+    {
+      "candidate_rank": 25,
+      "source_rank": 25,
+      "word": "ti",
+      "pos": null,
+      "frequency_count": 1405833
+    },
+    {
+      "candidate_rank": 26,
+      "source_rank": 26,
+      "word": "se",
+      "pos": null,
+      "frequency_count": 1328637
+    },
+    {
+      "candidate_rank": 27,
+      "source_rank": 27,
+      "word": "da",
+      "pos": null,
+      "frequency_count": 1309931
+    },
+    {
+      "candidate_rank": 28,
+      "source_rank": 28,
+      "word": "i",
+      "pos": null,
+      "frequency_count": 1281797
+    },
+    {
+      "candidate_rank": 29,
+      "source_rank": 29,
+      "word": "come",
+      "pos": null,
+      "frequency_count": 1248657
+    },
+    {
+      "candidate_rank": 30,
+      "source_rank": 30,
+      "word": "io",
+      "pos": null,
+      "frequency_count": 1147459
+    },
+    {
+      "candidate_rank": 31,
+      "source_rank": 31,
+      "word": "ci",
+      "pos": null,
+      "frequency_count": 1131202
+    },
+    {
+      "candidate_rank": 32,
+      "source_rank": 32,
+      "word": "hai",
+      "pos": null,
+      "frequency_count": 1037387
+    },
+    {
+      "candidate_rank": 33,
+      "source_rank": 33,
+      "word": "questo",
+      "pos": null,
+      "frequency_count": 1011634
+    },
+    {
+      "candidate_rank": 34,
+      "source_rank": 34,
+      "word": "bene",
+      "pos": null,
+      "frequency_count": 978877
+    },
+    {
+      "candidate_rank": 35,
+      "source_rank": 35,
+      "word": "qui",
+      "pos": null,
+      "frequency_count": 927883
+    },
+    {
+      "candidate_rank": 36,
+      "source_rank": 36,
+      "word": "sei",
+      "pos": null,
+      "frequency_count": 921410
+    },
+    {
+      "candidate_rank": 37,
+      "source_rank": 37,
+      "word": "del",
+      "pos": null,
+      "frequency_count": 886758
+    },
+    {
+      "candidate_rank": 38,
+      "source_rank": 38,
+      "word": "tu",
+      "pos": null,
+      "frequency_count": 847129
+    },
+    {
+      "candidate_rank": 39,
+      "source_rank": 39,
+      "word": "solo",
+      "pos": null,
+      "frequency_count": 791998
+    },
+    {
+      "candidate_rank": 40,
+      "source_rank": 40,
+      "word": "mio",
+      "pos": null,
+      "frequency_count": 752241
+    },
+    {
+      "candidate_rank": 41,
+      "source_rank": 41,
+      "word": "al",
+      "pos": null,
+      "frequency_count": 745025
+    },
+    {
+      "candidate_rank": 42,
+      "source_rank": 42,
+      "word": "me",
+      "pos": null,
+      "frequency_count": 742942
+    },
+    {
+      "candidate_rank": 43,
+      "source_rank": 43,
+      "word": "tutto",
+      "pos": null,
+      "frequency_count": 704866
+    },
+    {
+      "candidate_rank": 44,
+      "source_rank": 44,
+      "word": "c",
+      "pos": null,
+      "frequency_count": 684182
+    },
+    {
+      "candidate_rank": 45,
+      "source_rank": 45,
+      "word": "te",
+      "pos": null,
+      "frequency_count": 681861
+    },
+    {
+      "candidate_rank": 46,
+      "source_rank": 46,
+      "word": "era",
+      "pos": null,
+      "frequency_count": 657610
+    },
+    {
+      "candidate_rank": 47,
+      "source_rank": 47,
+      "word": "della",
+      "pos": null,
+      "frequency_count": 630649
+    },
+    {
+      "candidate_rank": 48,
+      "source_rank": 48,
+      "word": "mia",
+      "pos": null,
+      "frequency_count": 610137
+    },
+    {
+      "candidate_rank": 49,
+      "source_rank": 49,
+      "word": "fatto",
+      "pos": null,
+      "frequency_count": 599010
+    },
+    {
+      "candidate_rank": 50,
+      "source_rank": 50,
+      "word": "fare",
+      "pos": null,
+      "frequency_count": 583810
+    },
+    {
+      "candidate_rank": 51,
+      "source_rank": 51,
+      "word": "essere",
+      "pos": null,
+      "frequency_count": 582628
+    },
+    {
+      "candidate_rank": 52,
+      "source_rank": 52,
+      "word": "so",
+      "pos": null,
+      "frequency_count": 576344
+    },
+    {
+      "candidate_rank": 53,
+      "source_rank": 53,
+      "word": "quando",
+      "pos": null,
+      "frequency_count": 566220
+    },
+    {
+      "candidate_rank": 54,
+      "source_rank": 54,
+      "word": "sì",
+      "pos": null,
+      "frequency_count": 561011
+    },
+    {
+      "candidate_rank": 55,
+      "source_rank": 55,
+      "word": "ora",
+      "pos": null,
+      "frequency_count": 559590
+    },
+    {
+      "candidate_rank": 56,
+      "source_rank": 56,
+      "word": "lei",
+      "pos": null,
+      "frequency_count": 554384
+    },
+    {
+      "candidate_rank": 57,
+      "source_rank": 57,
+      "word": "gli",
+      "pos": null,
+      "frequency_count": 550741
+    },
+    {
+      "candidate_rank": 58,
+      "source_rank": 58,
+      "word": "ne",
+      "pos": null,
+      "frequency_count": 545511
+    },
+    {
+      "candidate_rank": 59,
+      "source_rank": 59,
+      "word": "oh",
+      "pos": null,
+      "frequency_count": 536995
+    },
+    {
+      "candidate_rank": 60,
+      "source_rank": 60,
+      "word": "questa",
+      "pos": null,
+      "frequency_count": 534612
+    },
+    {
+      "candidate_rank": 61,
+      "source_rank": 61,
+      "word": "detto",
+      "pos": null,
+      "frequency_count": 530015
+    },
+    {
+      "candidate_rank": 62,
+      "source_rank": 62,
+      "word": "ok",
+      "pos": null,
+      "frequency_count": 513655
+    },
+    {
+      "candidate_rank": 63,
+      "source_rank": 63,
+      "word": "va",
+      "pos": null,
+      "frequency_count": 507886
+    },
+    {
+      "candidate_rank": 64,
+      "source_rank": 64,
+      "word": "perche",
+      "pos": null,
+      "frequency_count": 489341
+    },
+    {
+      "candidate_rank": 65,
+      "source_rank": 65,
+      "word": "quello",
+      "pos": null,
+      "frequency_count": 485627
+    },
+    {
+      "candidate_rank": 66,
+      "source_rank": 66,
+      "word": "mai",
+      "pos": null,
+      "frequency_count": 477108
+    },
+    {
+      "candidate_rank": 67,
+      "source_rank": 67,
+      "word": "alla",
+      "pos": null,
+      "frequency_count": 469810
+    },
+    {
+      "candidate_rank": 68,
+      "source_rank": 68,
+      "word": "o",
+      "pos": null,
+      "frequency_count": 468425
+    },
+    {
+      "candidate_rank": 69,
+      "source_rank": 69,
+      "word": "anche",
+      "pos": null,
+      "frequency_count": 467913
+    },
+    {
+      "candidate_rank": 70,
+      "source_rank": 70,
+      "word": "stato",
+      "pos": null,
+      "frequency_count": 462618
+    },
+    {
+      "candidate_rank": 71,
+      "source_rank": 71,
+      "word": "abbiamo",
+      "pos": null,
+      "frequency_count": 443684
+    },
+    {
+      "candidate_rank": 72,
+      "source_rank": 72,
+      "word": "tutti",
+      "pos": null,
+      "frequency_count": 442057
+    },
+    {
+      "candidate_rank": 73,
+      "source_rank": 73,
+      "word": "dei",
+      "pos": null,
+      "frequency_count": 437381
+    },
+    {
+      "candidate_rank": 74,
+      "source_rank": 74,
+      "word": "grazie",
+      "pos": null,
+      "frequency_count": 436103
+    },
+    {
+      "candidate_rank": 75,
+      "source_rank": 75,
+      "word": "chi",
+      "pos": null,
+      "frequency_count": 432988
+    },
+    {
+      "candidate_rank": 76,
+      "source_rank": 76,
+      "word": "sta",
+      "pos": null,
+      "frequency_count": 432121
+    },
+    {
+      "candidate_rank": 77,
+      "source_rank": 77,
+      "word": "molto",
+      "pos": null,
+      "frequency_count": 430250
+    },
+    {
+      "candidate_rank": 78,
+      "source_rank": 78,
+      "word": "più",
+      "pos": null,
+      "frequency_count": 424219
+    },
+    {
+      "candidate_rank": 79,
+      "source_rank": 79,
+      "word": "voglio",
+      "pos": null,
+      "frequency_count": 421594
+    },
+    {
+      "candidate_rank": 80,
+      "source_rank": 80,
+      "word": "perché",
+      "pos": null,
+      "frequency_count": 417508
+    },
+    {
+      "candidate_rank": 81,
+      "source_rank": 81,
+      "word": "tuo",
+      "pos": null,
+      "frequency_count": 415427
+    },
+    {
+      "candidate_rank": 82,
+      "source_rank": 82,
+      "word": "beh",
+      "pos": null,
+      "frequency_count": 415077
+    },
+    {
+      "candidate_rank": 83,
+      "source_rank": 83,
+      "word": "sia",
+      "pos": null,
+      "frequency_count": 410543
+    },
+    {
+      "candidate_rank": 84,
+      "source_rank": 84,
+      "word": "nel",
+      "pos": null,
+      "frequency_count": 402628
+    },
+    {
+      "candidate_rank": 85,
+      "source_rank": 85,
+      "word": "lui",
+      "pos": null,
+      "frequency_count": 400840
+    },
+    {
+      "candidate_rank": 86,
+      "source_rank": 86,
+      "word": "allora",
+      "pos": null,
+      "frequency_count": 394873
+    },
+    {
+      "candidate_rank": 87,
+      "source_rank": 87,
+      "word": "posso",
+      "pos": null,
+      "frequency_count": 394735
+    },
+    {
+      "candidate_rank": 88,
+      "source_rank": 88,
+      "word": "piu",
+      "pos": null,
+      "frequency_count": 394239
+    },
+    {
+      "candidate_rank": 89,
+      "source_rank": 89,
+      "word": "ehi",
+      "pos": null,
+      "frequency_count": 390822
+    },
+    {
+      "candidate_rank": 90,
+      "source_rank": 90,
+      "word": "prima",
+      "pos": null,
+      "frequency_count": 387026
+    },
+    {
+      "candidate_rank": 91,
+      "source_rank": 91,
+      "word": "tua",
+      "pos": null,
+      "frequency_count": 382254
+    },
+    {
+      "candidate_rank": 92,
+      "source_rank": 92,
+      "word": "suo",
+      "pos": null,
+      "frequency_count": 381756
+    },
+    {
+      "candidate_rank": 93,
+      "source_rank": 93,
+      "word": "niente",
+      "pos": null,
+      "frequency_count": 376096
+    },
+    {
+      "candidate_rank": 94,
+      "source_rank": 94,
+      "word": "qualcosa",
+      "pos": null,
+      "frequency_count": 375353
+    },
+    {
+      "candidate_rank": 95,
+      "source_rank": 95,
+      "word": "sai",
+      "pos": null,
+      "frequency_count": 374989
+    },
+    {
+      "candidate_rank": 96,
+      "source_rank": 96,
+      "word": "siamo",
+      "pos": null,
+      "frequency_count": 373550
+    },
+    {
+      "candidate_rank": 97,
+      "source_rank": 98,
+      "word": "cosi",
+      "pos": null,
+      "frequency_count": 369960
+    },
+    {
+      "candidate_rank": 98,
+      "source_rank": 99,
+      "word": "davvero",
+      "pos": null,
+      "frequency_count": 362026
+    },
+    {
+      "candidate_rank": 99,
+      "source_rank": 100,
+      "word": "ancora",
+      "pos": null,
+      "frequency_count": 357766
+    },
+    {
+      "candidate_rank": 100,
+      "source_rank": 101,
+      "word": "hanno",
+      "pos": null,
+      "frequency_count": 357477
+    },
+    {
+      "candidate_rank": 101,
+      "source_rank": 102,
+      "word": "stai",
+      "pos": null,
+      "frequency_count": 356920
+    },
+    {
+      "candidate_rank": 102,
+      "source_rank": 103,
+      "word": "fa",
+      "pos": null,
+      "frequency_count": 356906
+    },
+    {
+      "candidate_rank": 103,
+      "source_rank": 104,
+      "word": "sua",
+      "pos": null,
+      "frequency_count": 354383
+    },
+    {
+      "candidate_rank": 104,
+      "source_rank": 105,
+      "word": "così",
+      "pos": null,
+      "frequency_count": 351367
+    },
+    {
+      "candidate_rank": 105,
+      "source_rank": 106,
+      "word": "casa",
+      "pos": null,
+      "frequency_count": 349304
+    },
+    {
+      "candidate_rank": 106,
+      "source_rank": 107,
+      "word": "uno",
+      "pos": null,
+      "frequency_count": 345353
+    },
+    {
+      "candidate_rank": 107,
+      "source_rank": 108,
+      "word": "dove",
+      "pos": null,
+      "frequency_count": 344643
+    },
+    {
+      "candidate_rank": 108,
+      "source_rank": 109,
+      "word": "su",
+      "pos": null,
+      "frequency_count": 340528
+    },
+    {
+      "candidate_rank": 109,
+      "source_rank": 110,
+      "word": "vero",
+      "pos": null,
+      "frequency_count": 337704
+    },
+    {
+      "candidate_rank": 110,
+      "source_rank": 111,
+      "word": "vuoi",
+      "pos": null,
+      "frequency_count": 334292
+    },
+    {
+      "candidate_rank": 111,
+      "source_rank": 112,
+      "word": "noi",
+      "pos": null,
+      "frequency_count": 329262
+    },
+    {
+      "candidate_rank": 112,
+      "source_rank": 113,
+      "word": "due",
+      "pos": null,
+      "frequency_count": 328195
+    },
+    {
+      "candidate_rank": 113,
+      "source_rank": 114,
+      "word": "quindi",
+      "pos": null,
+      "frequency_count": 327478
+    },
+    {
+      "candidate_rank": 114,
+      "source_rank": 115,
+      "word": "dire",
+      "pos": null,
+      "frequency_count": 315462
+    },
+    {
+      "candidate_rank": 115,
+      "source_rank": 116,
+      "word": "d",
+      "pos": null,
+      "frequency_count": 312992
+    },
+    {
+      "candidate_rank": 116,
+      "source_rank": 117,
+      "word": "delle",
+      "pos": null,
+      "frequency_count": 310943
+    },
+    {
+      "candidate_rank": 117,
+      "source_rank": 118,
+      "word": "quella",
+      "pos": null,
+      "frequency_count": 296929
+    },
+    {
+      "candidate_rank": 118,
+      "source_rank": 119,
+      "word": "sempre",
+      "pos": null,
+      "frequency_count": 293460
+    },
+    {
+      "candidate_rank": 119,
+      "source_rank": 120,
+      "word": "altro",
+      "pos": null,
+      "frequency_count": 292721
+    },
+    {
+      "candidate_rank": 120,
+      "source_rank": 121,
+      "word": "sto",
+      "pos": null,
+      "frequency_count": 290409
+    },
+    {
+      "candidate_rank": 121,
+      "source_rank": 122,
+      "word": "andare",
+      "pos": null,
+      "frequency_count": 289404
+    },
+    {
+      "candidate_rank": 122,
+      "source_rank": 123,
+      "word": "ad",
+      "pos": null,
+      "frequency_count": 287858
+    },
+    {
+      "candidate_rank": 123,
+      "source_rank": 124,
+      "word": "po",
+      "pos": null,
+      "frequency_count": 282817
+    },
+    {
+      "candidate_rank": 124,
+      "source_rank": 125,
+      "word": "loro",
+      "pos": null,
+      "frequency_count": 278369
+    },
+    {
+      "candidate_rank": 125,
+      "source_rank": 126,
+      "word": "devo",
+      "pos": null,
+      "frequency_count": 277618
+    },
+    {
+      "candidate_rank": 126,
+      "source_rank": 127,
+      "word": "quel",
+      "pos": null,
+      "frequency_count": 275369
+    },
+    {
+      "candidate_rank": 127,
+      "source_rank": 128,
+      "word": "forse",
+      "pos": null,
+      "frequency_count": 270956
+    },
+    {
+      "candidate_rank": 128,
+      "source_rank": 129,
+      "word": "li",
+      "pos": null,
+      "frequency_count": 268514
+    },
+    {
+      "candidate_rank": 129,
+      "source_rank": 130,
+      "word": "proprio",
+      "pos": null,
+      "frequency_count": 265256
+    },
+    {
+      "candidate_rank": 130,
+      "source_rank": 131,
+      "word": "certo",
+      "pos": null,
+      "frequency_count": 264768
+    },
+    {
+      "candidate_rank": 131,
+      "source_rank": 132,
+      "word": "tempo",
+      "pos": null,
+      "frequency_count": 260978
+    },
+    {
+      "candidate_rank": 132,
+      "source_rank": 133,
+      "word": "nella",
+      "pos": null,
+      "frequency_count": 255595
+    },
+    {
+      "candidate_rank": 133,
+      "source_rank": 134,
+      "word": "poi",
+      "pos": null,
+      "frequency_count": 254985
+    },
+    {
+      "candidate_rank": 134,
+      "source_rank": 135,
+      "word": "vi",
+      "pos": null,
+      "frequency_count": 253715
+    },
+    {
+      "candidate_rank": 135,
+      "source_rank": 136,
+      "word": "credo",
+      "pos": null,
+      "frequency_count": 249237
+    },
+    {
+      "candidate_rank": 136,
+      "source_rank": 137,
+      "word": "vita",
+      "pos": null,
+      "frequency_count": 248223
+    },
+    {
+      "candidate_rank": 137,
+      "source_rank": 138,
+      "word": "cose",
+      "pos": null,
+      "frequency_count": 248094
+    },
+    {
+      "candidate_rank": 138,
+      "source_rank": 139,
+      "word": "sul",
+      "pos": null,
+      "frequency_count": 246230
+    },
+    {
+      "candidate_rank": 139,
+      "source_rank": 140,
+      "word": "quanto",
+      "pos": null,
+      "frequency_count": 244964
+    },
+    {
+      "candidate_rank": 140,
+      "source_rank": 141,
+      "word": "puoi",
+      "pos": null,
+      "frequency_count": 244689
+    },
+    {
+      "candidate_rank": 141,
+      "source_rank": 142,
+      "word": "fuori",
+      "pos": null,
+      "frequency_count": 244593
+    },
+    {
+      "candidate_rank": 142,
+      "source_rank": 143,
+      "word": "anni",
+      "pos": null,
+      "frequency_count": 244192
+    },
+    {
+      "candidate_rank": 143,
+      "source_rank": 144,
+      "word": "cui",
+      "pos": null,
+      "frequency_count": 242757
+    },
+    {
+      "candidate_rank": 144,
+      "source_rank": 145,
+      "word": "andiamo",
+      "pos": null,
+      "frequency_count": 239851
+    },
+    {
+      "candidate_rank": 145,
+      "source_rank": 146,
+      "word": "dell",
+      "pos": null,
+      "frequency_count": 238490
+    },
+    {
+      "candidate_rank": 146,
+      "source_rank": 147,
+      "word": "parte",
+      "pos": null,
+      "frequency_count": 237878
+    },
+    {
+      "candidate_rank": 147,
+      "source_rank": 148,
+      "word": "visto",
+      "pos": null,
+      "frequency_count": 237793
+    },
+    {
+      "candidate_rank": 148,
+      "source_rank": 149,
+      "word": "qualcuno",
+      "pos": null,
+      "frequency_count": 232548
+    },
+    {
+      "candidate_rank": 149,
+      "source_rank": 150,
+      "word": "all",
+      "pos": null,
+      "frequency_count": 230349
+    },
+    {
+      "candidate_rank": 150,
+      "source_rank": 151,
+      "word": "lavoro",
+      "pos": null,
+      "frequency_count": 227975
+    },
+    {
+      "candidate_rank": 151,
+      "source_rank": 152,
+      "word": "voi",
+      "pos": null,
+      "frequency_count": 227702
+    },
+    {
+      "candidate_rank": 152,
+      "source_rank": 153,
+      "word": "ciao",
+      "pos": null,
+      "frequency_count": 225358
+    },
+    {
+      "candidate_rank": 153,
+      "source_rank": 154,
+      "word": "dio",
+      "pos": null,
+      "frequency_count": 225110
+    },
+    {
+      "candidate_rank": 154,
+      "source_rank": 155,
+      "word": "volta",
+      "pos": null,
+      "frequency_count": 224925
+    },
+    {
+      "candidate_rank": 155,
+      "source_rank": 156,
+      "word": "dopo",
+      "pos": null,
+      "frequency_count": 219627
+    },
+    {
+      "candidate_rank": 156,
+      "source_rank": 157,
+      "word": "adesso",
+      "pos": null,
+      "frequency_count": 217200
+    },
+    {
+      "candidate_rank": 157,
+      "source_rank": 158,
+      "word": "stata",
+      "pos": null,
+      "frequency_count": 216946
+    },
+    {
+      "candidate_rank": 158,
+      "source_rank": 159,
+      "word": "uomo",
+      "pos": null,
+      "frequency_count": 216269
+    },
+    {
+      "candidate_rank": 159,
+      "source_rank": 160,
+      "word": "padre",
+      "pos": null,
+      "frequency_count": 211947
+    },
+    {
+      "candidate_rank": 160,
+      "source_rank": 161,
+      "word": "devi",
+      "pos": null,
+      "frequency_count": 207895
+    },
+    {
+      "candidate_rank": 161,
+      "source_rank": 162,
+      "word": "bisogno",
+      "pos": null,
+      "frequency_count": 207740
+    },
+    {
+      "candidate_rank": 162,
+      "source_rank": 163,
+      "word": "gia",
+      "pos": null,
+      "frequency_count": 205703
+    },
+    {
+      "candidate_rank": 163,
+      "source_rank": 164,
+      "word": "amico",
+      "pos": null,
+      "frequency_count": 205236
+    },
+    {
+      "candidate_rank": 164,
+      "source_rank": 165,
+      "word": "ed",
+      "pos": null,
+      "frequency_count": 203015
+    },
+    {
+      "candidate_rank": 165,
+      "source_rank": 166,
+      "word": "posto",
+      "pos": null,
+      "frequency_count": 201344
+    },
+    {
+      "candidate_rank": 166,
+      "source_rank": 167,
+      "word": "nessuno",
+      "pos": null,
+      "frequency_count": 198499
+    },
+    {
+      "candidate_rank": 167,
+      "source_rank": 168,
+      "word": "via",
+      "pos": null,
+      "frequency_count": 196759
+    },
+    {
+      "candidate_rank": 168,
+      "source_rank": 169,
+      "word": "cos",
+      "pos": null,
+      "frequency_count": 196526
+    },
+    {
+      "candidate_rank": 169,
+      "source_rank": 170,
+      "word": "fai",
+      "pos": null,
+      "frequency_count": 195314
+    },
+    {
+      "candidate_rank": 170,
+      "source_rank": 171,
+      "word": "signore",
+      "pos": null,
+      "frequency_count": 192704
+    },
+    {
+      "candidate_rank": 171,
+      "source_rank": 172,
+      "word": "meglio",
+      "pos": null,
+      "frequency_count": 190791
+    },
+    {
+      "candidate_rank": 172,
+      "source_rank": 173,
+      "word": "cazzo",
+      "pos": null,
+      "frequency_count": 190133
+    },
+    {
+      "candidate_rank": 173,
+      "source_rank": 174,
+      "word": "dai",
+      "pos": null,
+      "frequency_count": 187292
+    },
+    {
+      "candidate_rank": 174,
+      "source_rank": 175,
+      "word": "dal",
+      "pos": null,
+      "frequency_count": 186438
+    },
+    {
+      "candidate_rank": 175,
+      "source_rank": 176,
+      "word": "vuole",
+      "pos": null,
+      "frequency_count": 185134
+    },
+    {
+      "candidate_rank": 176,
+      "source_rank": 177,
+      "word": "sembra",
+      "pos": null,
+      "frequency_count": 185098
+    },
+    {
+      "candidate_rank": 177,
+      "source_rank": 178,
+      "word": "giorno",
+      "pos": null,
+      "frequency_count": 182690
+    },
+    {
+      "candidate_rank": 178,
+      "source_rank": 179,
+      "word": "ogni",
+      "pos": null,
+      "frequency_count": 180604
+    },
+    {
+      "candidate_rank": 179,
+      "source_rank": 180,
+      "word": "modo",
+      "pos": null,
+      "frequency_count": 180304
+    },
+    {
+      "candidate_rank": 180,
+      "source_rank": 181,
+      "word": "senza",
+      "pos": null,
+      "frequency_count": 180036
+    },
+    {
+      "candidate_rank": 181,
+      "source_rank": 182,
+      "word": "vedere",
+      "pos": null,
+      "frequency_count": 179423
+    },
+    {
+      "candidate_rank": 182,
+      "source_rank": 183,
+      "word": "dobbiamo",
+      "pos": null,
+      "frequency_count": 179373
+    },
+    {
+      "candidate_rank": 183,
+      "source_rank": 184,
+      "word": "signor",
+      "pos": null,
+      "frequency_count": 177154
+    },
+    {
+      "candidate_rank": 184,
+      "source_rank": 185,
+      "word": "qualche",
+      "pos": null,
+      "frequency_count": 176926
+    },
+    {
+      "candidate_rank": 185,
+      "source_rank": 186,
+      "word": "dispiace",
+      "pos": null,
+      "frequency_count": 176847
+    },
+    {
+      "candidate_rank": 186,
+      "source_rank": 187,
+      "word": "penso",
+      "pos": null,
+      "frequency_count": 174213
+    },
+    {
+      "candidate_rank": 187,
+      "source_rank": 188,
+      "word": "ecco",
+      "pos": null,
+      "frequency_count": 173039
+    },
+    {
+      "candidate_rank": 188,
+      "source_rank": 189,
+      "word": "parlare",
+      "pos": null,
+      "frequency_count": 166324
+    },
+    {
+      "candidate_rank": 189,
+      "source_rank": 190,
+      "word": "tra",
+      "pos": null,
+      "frequency_count": 165237
+    },
+    {
+      "candidate_rank": 190,
+      "source_rank": 191,
+      "word": "mamma",
+      "pos": null,
+      "frequency_count": 164145
+    },
+    {
+      "candidate_rank": 191,
+      "source_rank": 192,
+      "word": "già",
+      "pos": null,
+      "frequency_count": 164090
+    },
+    {
+      "candidate_rank": 192,
+      "source_rank": 193,
+      "word": "sarebbe",
+      "pos": null,
+      "frequency_count": 161625
+    },
+    {
+      "candidate_rank": 193,
+      "source_rank": 194,
+      "word": "dalla",
+      "pos": null,
+      "frequency_count": 161488
+    },
+    {
+      "candidate_rank": 194,
+      "source_rank": 195,
+      "word": "troppo",
+      "pos": null,
+      "frequency_count": 161296
+    },
+    {
+      "candidate_rank": 195,
+      "source_rank": 196,
+      "word": "fosse",
+      "pos": null,
+      "frequency_count": 159796
+    },
+    {
+      "candidate_rank": 196,
+      "source_rank": 197,
+      "word": "possiamo",
+      "pos": null,
+      "frequency_count": 159449
+    },
+    {
+      "candidate_rank": 197,
+      "source_rank": 198,
+      "word": "ce",
+      "pos": null,
+      "frequency_count": 159445
+    },
+    {
+      "candidate_rank": 198,
+      "source_rank": 199,
+      "word": "nuovo",
+      "pos": null,
+      "frequency_count": 159184
+    },
+    {
+      "candidate_rank": 199,
+      "source_rank": 200,
+      "word": "male",
+      "pos": null,
+      "frequency_count": 158724
+    },
+    {
+      "candidate_rank": 200,
+      "source_rank": 201,
+      "word": "madre",
+      "pos": null,
+      "frequency_count": 158668
+    },
+    {
+      "candidate_rank": 201,
+      "source_rank": 202,
+      "word": "avete",
+      "pos": null,
+      "frequency_count": 158581
+    },
+    {
+      "candidate_rank": 202,
+      "source_rank": 203,
+      "word": "tanto",
+      "pos": null,
+      "frequency_count": 158527
+    },
+    {
+      "candidate_rank": 203,
+      "source_rank": 204,
+      "word": "favore",
+      "pos": null,
+      "frequency_count": 157525
+    },
+    {
+      "candidate_rank": 204,
+      "source_rank": 205,
+      "word": "successo",
+      "pos": null,
+      "frequency_count": 157392
+    },
+    {
+      "candidate_rank": 205,
+      "source_rank": 206,
+      "word": "vai",
+      "pos": null,
+      "frequency_count": 156443
+    },
+    {
+      "candidate_rank": 206,
+      "source_rank": 207,
+      "word": "sulla",
+      "pos": null,
+      "frequency_count": 155948
+    },
+    {
+      "candidate_rank": 207,
+      "source_rank": 208,
+      "word": "giusto",
+      "pos": null,
+      "frequency_count": 155910
+    },
+    {
+      "candidate_rank": 208,
+      "source_rank": 209,
+      "word": "sa",
+      "pos": null,
+      "frequency_count": 154585
+    },
+    {
+      "candidate_rank": 209,
+      "source_rank": 210,
+      "word": "miei",
+      "pos": null,
+      "frequency_count": 154222
+    },
+    {
+      "candidate_rank": 210,
+      "source_rank": 211,
+      "word": "aspetta",
+      "pos": null,
+      "frequency_count": 151942
+    },
+    {
+      "candidate_rank": 211,
+      "source_rank": 212,
+      "word": "avere",
+      "pos": null,
+      "frequency_count": 151301
+    },
+    {
+      "candidate_rank": 212,
+      "source_rank": 213,
+      "word": "altra",
+      "pos": null,
+      "frequency_count": 150803
+    },
+    {
+      "candidate_rank": 213,
+      "source_rank": 214,
+      "word": "farlo",
+      "pos": null,
+      "frequency_count": 150609
+    },
+    {
+      "candidate_rank": 214,
+      "source_rank": 215,
+      "word": "alle",
+      "pos": null,
+      "frequency_count": 149069
+    },
+    {
+      "candidate_rank": 215,
+      "source_rank": 216,
+      "word": "facendo",
+      "pos": null,
+      "frequency_count": 149009
+    },
+    {
+      "candidate_rank": 216,
+      "source_rank": 217,
+      "word": "abbia",
+      "pos": null,
+      "frequency_count": 148510
+    },
+    {
+      "candidate_rank": 217,
+      "source_rank": 218,
+      "word": "momento",
+      "pos": null,
+      "frequency_count": 146779
+    },
+    {
+      "candidate_rank": 218,
+      "source_rank": 219,
+      "word": "ero",
+      "pos": null,
+      "frequency_count": 145812
+    },
+    {
+      "candidate_rank": 219,
+      "source_rank": 220,
+      "word": "aveva",
+      "pos": null,
+      "frequency_count": 143513
+    },
+    {
+      "candidate_rank": 220,
+      "source_rank": 221,
+      "word": "ragazzi",
+      "pos": null,
+      "frequency_count": 143228
+    },
+    {
+      "candidate_rank": 221,
+      "source_rank": 222,
+      "word": "deve",
+      "pos": null,
+      "frequency_count": 141717
+    },
+    {
+      "candidate_rank": 222,
+      "source_rank": 223,
+      "word": "persone",
+      "pos": null,
+      "frequency_count": 140564
+    },
+    {
+      "candidate_rank": 223,
+      "source_rank": 224,
+      "word": "nostro",
+      "pos": null,
+      "frequency_count": 140377
+    },
+    {
+      "candidate_rank": 224,
+      "source_rank": 225,
+      "word": "tipo",
+      "pos": null,
+      "frequency_count": 139082
+    },
+    {
+      "candidate_rank": 225,
+      "source_rank": 226,
+      "word": "prego",
+      "pos": null,
+      "frequency_count": 138775
+    },
+    {
+      "candidate_rank": 226,
+      "source_rank": 227,
+      "word": "grande",
+      "pos": null,
+      "frequency_count": 138400
+    },
+    {
+      "candidate_rank": 227,
+      "source_rank": 228,
+      "word": "può",
+      "pos": null,
+      "frequency_count": 136302
+    },
+    {
+      "candidate_rank": 228,
+      "source_rank": 229,
+      "word": "senti",
+      "pos": null,
+      "frequency_count": 136056
+    },
+    {
+      "candidate_rank": 229,
+      "source_rank": 230,
+      "word": "appena",
+      "pos": null,
+      "frequency_count": 135684
+    },
+    {
+      "candidate_rank": 230,
+      "source_rank": 231,
+      "word": "potrebbe",
+      "pos": null,
+      "frequency_count": 135454
+    },
+    {
+      "candidate_rank": 231,
+      "source_rank": 232,
+      "word": "soldi",
+      "pos": null,
+      "frequency_count": 135293
+    },
+    {
+      "candidate_rank": 232,
+      "source_rank": 233,
+      "word": "dice",
+      "pos": null,
+      "frequency_count": 134285
+    },
+    {
+      "candidate_rank": 233,
+      "source_rank": 234,
+      "word": "sapere",
+      "pos": null,
+      "frequency_count": 133642
+    },
+    {
+      "candidate_rank": 234,
+      "source_rank": 235,
+      "word": "tre",
+      "pos": null,
+      "frequency_count": 132830
+    },
+    {
+      "candidate_rank": 235,
+      "source_rank": 236,
+      "word": "oggi",
+      "pos": null,
+      "frequency_count": 132722
+    },
+    {
+      "candidate_rank": 236,
+      "source_rank": 237,
+      "word": "questi",
+      "pos": null,
+      "frequency_count": 131893
+    },
+    {
+      "candidate_rank": 237,
+      "source_rank": 238,
+      "word": "piace",
+      "pos": null,
+      "frequency_count": 131518
+    },
+    {
+      "candidate_rank": 238,
+      "source_rank": 239,
+      "word": "idea",
+      "pos": null,
+      "frequency_count": 130009
+    },
+    {
+      "candidate_rank": 239,
+      "source_rank": 240,
+      "word": "siete",
+      "pos": null,
+      "frequency_count": 129317
+    },
+    {
+      "candidate_rank": 240,
+      "source_rank": 241,
+      "word": "ai",
+      "pos": null,
+      "frequency_count": 129235
+    },
+    {
+      "candidate_rank": 241,
+      "source_rank": 242,
+      "word": "avevo",
+      "pos": null,
+      "frequency_count": 129167
+    },
+    {
+      "candidate_rank": 242,
+      "source_rank": 243,
+      "word": "figlio",
+      "pos": null,
+      "frequency_count": 129115
+    },
+    {
+      "candidate_rank": 243,
+      "source_rank": 244,
+      "word": "accordo",
+      "pos": null,
+      "frequency_count": 129100
+    },
+    {
+      "candidate_rank": 244,
+      "source_rank": 245,
+      "word": "gente",
+      "pos": null,
+      "frequency_count": 129045
+    },
+    {
+      "candidate_rank": 245,
+      "source_rank": 246,
+      "word": "sicuro",
+      "pos": null,
+      "frequency_count": 128972
+    },
+    {
+      "candidate_rank": 246,
+      "source_rank": 247,
+      "word": "vieni",
+      "pos": null,
+      "frequency_count": 128608
+    },
+    {
+      "candidate_rank": 247,
+      "source_rank": 248,
+      "word": "degli",
+      "pos": null,
+      "frequency_count": 126852
+    },
+    {
+      "candidate_rank": 248,
+      "source_rank": 249,
+      "word": "guarda",
+      "pos": null,
+      "frequency_count": 125602
+    },
+    {
+      "candidate_rank": 249,
+      "source_rank": 250,
+      "word": "dentro",
+      "pos": null,
+      "frequency_count": 124725
+    },
+    {
+      "candidate_rank": 250,
+      "source_rank": 251,
+      "word": "trovato",
+      "pos": null,
+      "frequency_count": 123977
+    },
+    {
+      "candidate_rank": 251,
+      "source_rank": 252,
+      "word": "queste",
+      "pos": null,
+      "frequency_count": 123323
+    },
+    {
+      "candidate_rank": 252,
+      "source_rank": 253,
+      "word": "caso",
+      "pos": null,
+      "frequency_count": 123317
+    },
+    {
+      "candidate_rank": 253,
+      "source_rank": 254,
+      "word": "forza",
+      "pos": null,
+      "frequency_count": 122800
+    },
+    {
+      "candidate_rank": 254,
+      "source_rank": 255,
+      "word": "dov",
+      "pos": null,
+      "frequency_count": 122180
+    },
+    {
+      "candidate_rank": 255,
+      "source_rank": 256,
+      "word": "tutte",
+      "pos": null,
+      "frequency_count": 121576
+    },
+    {
+      "candidate_rank": 256,
+      "source_rank": 257,
+      "word": "pensi",
+      "pos": null,
+      "frequency_count": 120588
+    },
+    {
+      "candidate_rank": 257,
+      "source_rank": 258,
+      "word": "signora",
+      "pos": null,
+      "frequency_count": 120368
+    },
+    {
+      "candidate_rank": 258,
+      "source_rank": 259,
+      "word": "faccio",
+      "pos": null,
+      "frequency_count": 119853
+    },
+    {
+      "candidate_rank": 259,
+      "source_rank": 260,
+      "word": "nome",
+      "pos": null,
+      "frequency_count": 119807
+    },
+    {
+      "candidate_rank": 260,
+      "source_rank": 261,
+      "word": "avuto",
+      "pos": null,
+      "frequency_count": 119366
+    },
+    {
+      "candidate_rank": 261,
+      "source_rank": 262,
+      "word": "problema",
+      "pos": null,
+      "frequency_count": 119026
+    },
+    {
+      "candidate_rank": 262,
+      "source_rank": 263,
+      "word": "altri",
+      "pos": null,
+      "frequency_count": 118858
+    },
+    {
+      "candidate_rank": 263,
+      "source_rank": 264,
+      "word": "puo",
+      "pos": null,
+      "frequency_count": 118841
+    },
+    {
+      "candidate_rank": 264,
+      "source_rank": 265,
+      "word": "aver",
+      "pos": null,
+      "frequency_count": 118732
+    },
+    {
+      "candidate_rank": 265,
+      "source_rank": 266,
+      "word": "mondo",
+      "pos": null,
+      "frequency_count": 118133
+    },
+    {
+      "candidate_rank": 266,
+      "source_rank": 267,
+      "word": "tutta",
+      "pos": null,
+      "frequency_count": 117856
+    },
+    {
+      "candidate_rank": 267,
+      "source_rank": 268,
+      "word": "preso",
+      "pos": null,
+      "frequency_count": 117634
+    },
+    {
+      "candidate_rank": 268,
+      "source_rank": 269,
+      "word": "nulla",
+      "pos": null,
+      "frequency_count": 117293
+    },
+    {
+      "candidate_rank": 269,
+      "source_rank": 270,
+      "word": "nostra",
+      "pos": null,
+      "frequency_count": 116902
+    },
+    {
+      "candidate_rank": 270,
+      "source_rank": 271,
+      "word": "donna",
+      "pos": null,
+      "frequency_count": 116773
+    },
+    {
+      "candidate_rank": 271,
+      "source_rank": 272,
+      "word": "stare",
+      "pos": null,
+      "frequency_count": 116354
+    },
+    {
+      "candidate_rank": 272,
+      "source_rank": 273,
+      "word": "basta",
+      "pos": null,
+      "frequency_count": 115835
+    },
+    {
+      "candidate_rank": 273,
+      "source_rank": 274,
+      "word": "insieme",
+      "pos": null,
+      "frequency_count": 115108
+    },
+    {
+      "candidate_rank": 274,
+      "source_rank": 275,
+      "word": "faccia",
+      "pos": null,
+      "frequency_count": 114861
+    },
+    {
+      "candidate_rank": 275,
+      "source_rank": 276,
+      "word": "ragazza",
+      "pos": null,
+      "frequency_count": 114359
+    },
+    {
+      "candidate_rank": 276,
+      "source_rank": 277,
+      "word": "subito",
+      "pos": null,
+      "frequency_count": 113842
+    },
+    {
+      "candidate_rank": 277,
+      "source_rank": 278,
+      "word": "famiglia",
+      "pos": null,
+      "frequency_count": 113327
+    },
+    {
+      "candidate_rank": 278,
+      "source_rank": 279,
+      "word": "ragazzo",
+      "pos": null,
+      "frequency_count": 113236
+    },
+    {
+      "candidate_rank": 279,
+      "source_rank": 280,
+      "word": "volevo",
+      "pos": null,
+      "frequency_count": 112989
+    },
+    {
+      "candidate_rank": 280,
+      "source_rank": 281,
+      "word": "okay",
+      "pos": null,
+      "frequency_count": 111028
+    },
+    {
+      "candidate_rank": 281,
+      "source_rank": 282,
+      "word": "sentito",
+      "pos": null,
+      "frequency_count": 110086
+    },
+    {
+      "candidate_rank": 282,
+      "source_rank": 283,
+      "word": "ah",
+      "pos": null,
+      "frequency_count": 109801
+    },
+    {
+      "candidate_rank": 283,
+      "source_rank": 284,
+      "word": "stesso",
+      "pos": null,
+      "frequency_count": 108783
+    },
+    {
+      "candidate_rank": 284,
+      "source_rank": 285,
+      "word": "ragione",
+      "pos": null,
+      "frequency_count": 108483
+    },
+    {
+      "candidate_rank": 285,
+      "source_rank": 286,
+      "word": "sarà",
+      "pos": null,
+      "frequency_count": 107998
+    },
+    {
+      "candidate_rank": 286,
+      "source_rank": 287,
+      "word": "tuoi",
+      "pos": null,
+      "frequency_count": 107623
+    },
+    {
+      "candidate_rank": 287,
+      "source_rank": 288,
+      "word": "capito",
+      "pos": null,
+      "frequency_count": 107460
+    },
+    {
+      "candidate_rank": 288,
+      "source_rank": 289,
+      "word": "notte",
+      "pos": null,
+      "frequency_count": 107292
+    },
+    {
+      "candidate_rank": 289,
+      "source_rank": 290,
+      "word": "volte",
+      "pos": null,
+      "frequency_count": 106818
+    },
+    {
+      "candidate_rank": 290,
+      "source_rank": 291,
+      "word": "testa",
+      "pos": null,
+      "frequency_count": 106617
+    },
+    {
+      "candidate_rank": 291,
+      "source_rank": 292,
+      "word": "serve",
+      "pos": null,
+      "frequency_count": 106161
+    },
+    {
+      "candidate_rank": 292,
+      "source_rank": 293,
+      "word": "tesoro",
+      "pos": null,
+      "frequency_count": 106015
+    },
+    {
+      "candidate_rank": 293,
+      "source_rank": 294,
+      "word": "sotto",
+      "pos": null,
+      "frequency_count": 106013
+    },
+    {
+      "candidate_rank": 294,
+      "source_rank": 295,
+      "word": "eh",
+      "pos": null,
+      "frequency_count": 104575
+    },
+    {
+      "candidate_rank": 295,
+      "source_rank": 296,
+      "word": "suoi",
+      "pos": null,
+      "frequency_count": 104470
+    },
+    {
+      "candidate_rank": 296,
+      "source_rank": 297,
+      "word": "vado",
+      "pos": null,
+      "frequency_count": 104383
+    },
+    {
+      "candidate_rank": 297,
+      "source_rank": 298,
+      "word": "sara",
+      "pos": null,
+      "frequency_count": 103404
+    },
+    {
+      "candidate_rank": 298,
+      "source_rank": 299,
+      "word": "dato",
+      "pos": null,
+      "frequency_count": 102947
+    },
+    {
+      "candidate_rank": 299,
+      "source_rank": 300,
+      "word": "stiamo",
+      "pos": null,
+      "frequency_count": 102944
+    },
+    {
+      "candidate_rank": 300,
+      "source_rank": 301,
+      "word": "bella",
+      "pos": null,
+      "frequency_count": 102872
+    },
+    {
+      "candidate_rank": 301,
+      "source_rank": 302,
+      "word": "scusa",
+      "pos": null,
+      "frequency_count": 101934
+    },
+    {
+      "candidate_rank": 302,
+      "source_rank": 303,
+      "word": "erano",
+      "pos": null,
+      "frequency_count": 101700
+    },
+    {
+      "candidate_rank": 303,
+      "source_rank": 304,
+      "word": "pensavo",
+      "pos": null,
+      "frequency_count": 101441
+    },
+    {
+      "candidate_rank": 304,
+      "source_rank": 305,
+      "word": "avrei",
+      "pos": null,
+      "frequency_count": 101264
+    },
+    {
+      "candidate_rank": 305,
+      "source_rank": 306,
+      "word": "prendere",
+      "pos": null,
+      "frequency_count": 100586
+    },
+    {
+      "candidate_rank": 306,
+      "source_rank": 307,
+      "word": "buona",
+      "pos": null,
+      "frequency_count": 100038
+    },
+    {
+      "candidate_rank": 307,
+      "source_rank": 308,
+      "word": "porta",
+      "pos": null,
+      "frequency_count": 98021
+    },
+    {
+      "candidate_rank": 308,
+      "source_rank": 309,
+      "word": "bello",
+      "pos": null,
+      "frequency_count": 97844
+    },
+    {
+      "candidate_rank": 309,
+      "source_rank": 310,
+      "word": "moglie",
+      "pos": null,
+      "frequency_count": 97797
+    },
+    {
+      "candidate_rank": 310,
+      "source_rank": 311,
+      "word": "vorrei",
+      "pos": null,
+      "frequency_count": 97478
+    },
+    {
+      "candidate_rank": 311,
+      "source_rank": 312,
+      "word": "storia",
+      "pos": null,
+      "frequency_count": 97342
+    },
+    {
+      "candidate_rank": 312,
+      "source_rank": 313,
+      "word": "succede",
+      "pos": null,
+      "frequency_count": 97183
+    },
+    {
+      "candidate_rank": 313,
+      "source_rank": 314,
+      "word": "morto",
+      "pos": null,
+      "frequency_count": 97060
+    },
+    {
+      "candidate_rank": 314,
+      "source_rank": 315,
+      "word": "cercando",
+      "pos": null,
+      "frequency_count": 95366
+    },
+    {
+      "candidate_rank": 315,
+      "source_rank": 316,
+      "word": "dici",
+      "pos": null,
+      "frequency_count": 95354
+    },
+    {
+      "candidate_rank": 316,
+      "source_rank": 317,
+      "word": "persona",
+      "pos": null,
+      "frequency_count": 95254
+    },
+    {
+      "candidate_rank": 317,
+      "source_rank": 318,
+      "word": "pronto",
+      "pos": null,
+      "frequency_count": 94258
+    },
+    {
+      "candidate_rank": 318,
+      "source_rank": 319,
+      "word": "meno",
+      "pos": null,
+      "frequency_count": 93373
+    },
+    {
+      "candidate_rank": 319,
+      "source_rank": 320,
+      "word": "dovuto",
+      "pos": null,
+      "frequency_count": 93267
+    },
+    {
+      "candidate_rank": 320,
+      "source_rank": 321,
+      "word": "avanti",
+      "pos": null,
+      "frequency_count": 91453
+    },
+    {
+      "candidate_rank": 321,
+      "source_rank": 322,
+      "word": "capisco",
+      "pos": null,
+      "frequency_count": 91340
+    },
+    {
+      "candidate_rank": 322,
+      "source_rank": 323,
+      "word": "secondo",
+      "pos": null,
+      "frequency_count": 90669
+    },
+    {
+      "candidate_rank": 323,
+      "source_rank": 324,
+      "word": "venire",
+      "pos": null,
+      "frequency_count": 90399
+    },
+    {
+      "candidate_rank": 324,
+      "source_rank": 325,
+      "word": "polizia",
+      "pos": null,
+      "frequency_count": 90196
+    },
+    {
+      "candidate_rank": 325,
+      "source_rank": 326,
+      "word": "lì",
+      "pos": null,
+      "frequency_count": 89911
+    },
+    {
+      "candidate_rank": 326,
+      "source_rank": 327,
+      "word": "avrebbe",
+      "pos": null,
+      "frequency_count": 88617
+    },
+    {
+      "candidate_rank": 327,
+      "source_rank": 328,
+      "word": "stanno",
+      "pos": null,
+      "frequency_count": 88329
+    },
+    {
+      "candidate_rank": 328,
+      "source_rank": 329,
+      "word": "mentre",
+      "pos": null,
+      "frequency_count": 87853
+    },
+    {
+      "candidate_rank": 329,
+      "source_rank": 330,
+      "word": "letto",
+      "pos": null,
+      "frequency_count": 87334
+    },
+    {
+      "candidate_rank": 330,
+      "source_rank": 331,
+      "word": "fino",
+      "pos": null,
+      "frequency_count": 87029
+    },
+    {
+      "candidate_rank": 331,
+      "source_rank": 332,
+      "word": "dico",
+      "pos": null,
+      "frequency_count": 86720
+    },
+    {
+      "candidate_rank": 332,
+      "source_rank": 333,
+      "word": "amici",
+      "pos": null,
+      "frequency_count": 86394
+    },
+    {
+      "candidate_rank": 333,
+      "source_rank": 334,
+      "word": "fine",
+      "pos": null,
+      "frequency_count": 86358
+    },
+    {
+      "candidate_rank": 334,
+      "source_rank": 335,
+      "word": "aiuto",
+      "pos": null,
+      "frequency_count": 86224
+    },
+    {
+      "candidate_rank": 335,
+      "source_rank": 336,
+      "word": "paura",
+      "pos": null,
+      "frequency_count": 85829
+    },
+    {
+      "candidate_rank": 336,
+      "source_rank": 337,
+      "word": "fratello",
+      "pos": null,
+      "frequency_count": 85320
+    },
+    {
+      "candidate_rank": 337,
+      "source_rank": 338,
+      "word": "stavo",
+      "pos": null,
+      "frequency_count": 85144
+    },
+    {
+      "candidate_rank": 338,
+      "source_rank": 339,
+      "word": "uomini",
+      "pos": null,
+      "frequency_count": 85054
+    },
+    {
+      "candidate_rank": 339,
+      "source_rank": 340,
+      "word": "nell",
+      "pos": null,
+      "frequency_count": 85051
+    },
+    {
+      "candidate_rank": 340,
+      "source_rank": 341,
+      "word": "domani",
+      "pos": null,
+      "frequency_count": 85002
+    },
+    {
+      "candidate_rank": 341,
+      "source_rank": 342,
+      "word": "facciamo",
+      "pos": null,
+      "frequency_count": 84221
+    },
+    {
+      "candidate_rank": 342,
+      "source_rank": 343,
+      "word": "abbastanza",
+      "pos": null,
+      "frequency_count": 84028
+    },
+    {
+      "candidate_rank": 343,
+      "source_rank": 344,
+      "word": "capo",
+      "pos": null,
+      "frequency_count": 83858
+    },
+    {
+      "candidate_rank": 344,
+      "source_rank": 345,
+      "word": "amore",
+      "pos": null,
+      "frequency_count": 83502
+    },
+    {
+      "candidate_rank": 345,
+      "source_rank": 346,
+      "word": "nei",
+      "pos": null,
+      "frequency_count": 83338
+    },
+    {
+      "candidate_rank": 346,
+      "source_rank": 347,
+      "word": "ucciso",
+      "pos": null,
+      "frequency_count": 83264
+    },
+    {
+      "candidate_rank": 347,
+      "source_rank": 348,
+      "word": "state",
+      "pos": null,
+      "frequency_count": 82920
+    },
+    {
+      "candidate_rank": 348,
+      "source_rank": 349,
+      "word": "piano",
+      "pos": null,
+      "frequency_count": 82812
+    },
+    {
+      "candidate_rank": 349,
+      "source_rank": 350,
+      "word": "macchina",
+      "pos": null,
+      "frequency_count": 82522
+    },
+    {
+      "candidate_rank": 350,
+      "source_rank": 351,
+      "word": "trovare",
+      "pos": null,
+      "frequency_count": 82166
+    },
+    {
+      "candidate_rank": 351,
+      "source_rank": 352,
+      "word": "comunque",
+      "pos": null,
+      "frequency_count": 82046
+    },
+    {
+      "candidate_rank": 352,
+      "source_rank": 353,
+      "word": "vediamo",
+      "pos": null,
+      "frequency_count": 81806
+    },
+    {
+      "candidate_rank": 353,
+      "source_rank": 354,
+      "word": "giorni",
+      "pos": null,
+      "frequency_count": 81066
+    },
+    {
+      "candidate_rank": 354,
+      "source_rank": 355,
+      "word": "nemmeno",
+      "pos": null,
+      "frequency_count": 81033
+    },
+    {
+      "candidate_rank": 355,
+      "source_rank": 356,
+      "word": "mano",
+      "pos": null,
+      "frequency_count": 80423
+    },
+    {
+      "candidate_rank": 356,
+      "source_rank": 357,
+      "word": "dall",
+      "pos": null,
+      "frequency_count": 80341
+    },
+    {
+      "candidate_rank": 357,
+      "source_rank": 358,
+      "word": "presto",
+      "pos": null,
+      "frequency_count": 80233
+    },
+    {
+      "candidate_rank": 358,
+      "source_rank": 359,
+      "word": "stati",
+      "pos": null,
+      "frequency_count": 79916
+    },
+    {
+      "candidate_rank": 359,
+      "source_rank": 360,
+      "word": "merda",
+      "pos": null,
+      "frequency_count": 79692
+    },
+    {
+      "candidate_rank": 360,
+      "source_rank": 361,
+      "word": "far",
+      "pos": null,
+      "frequency_count": 79591
+    },
+    {
+      "candidate_rank": 361,
+      "source_rank": 362,
+      "word": "bambino",
+      "pos": null,
+      "frequency_count": 79508
+    },
+    {
+      "candidate_rank": 362,
+      "source_rank": 363,
+      "word": "andato",
+      "pos": null,
+      "frequency_count": 79227
+    },
+    {
+      "candidate_rank": 363,
+      "source_rank": 364,
+      "word": "vedo",
+      "pos": null,
+      "frequency_count": 79175
+    },
+    {
+      "candidate_rank": 364,
+      "source_rank": 365,
+      "word": "tornare",
+      "pos": null,
+      "frequency_count": 78980
+    },
+    {
+      "candidate_rank": 365,
+      "source_rank": 366,
+      "word": "quelle",
+      "pos": null,
+      "frequency_count": 78978
+    },
+    {
+      "candidate_rank": 366,
+      "source_rank": 367,
+      "word": "cio",
+      "pos": null,
+      "frequency_count": 78771
+    },
+    {
+      "candidate_rank": 367,
+      "source_rank": 368,
+      "word": "primo",
+      "pos": null,
+      "frequency_count": 78747
+    },
+    {
+      "candidate_rank": 368,
+      "source_rank": 369,
+      "word": "vostro",
+      "pos": null,
+      "frequency_count": 78512
+    },
+    {
+      "candidate_rank": 369,
+      "source_rank": 370,
+      "word": "neanche",
+      "pos": null,
+      "frequency_count": 78191
+    },
+    {
+      "candidate_rank": 370,
+      "source_rank": 371,
+      "word": "sera",
+      "pos": null,
+      "frequency_count": 77766
+    },
+    {
+      "candidate_rank": 371,
+      "source_rank": 372,
+      "word": "giro",
+      "pos": null,
+      "frequency_count": 77718
+    },
+    {
+      "candidate_rank": 372,
+      "source_rank": 373,
+      "word": "morte",
+      "pos": null,
+      "frequency_count": 77648
+    },
+    {
+      "candidate_rank": 373,
+      "source_rank": 375,
+      "word": "qua",
+      "pos": null,
+      "frequency_count": 77592
+    },
+    {
+      "candidate_rank": 374,
+      "source_rank": 376,
+      "word": "pensato",
+      "pos": null,
+      "frequency_count": 77419
+    },
+    {
+      "candidate_rank": 375,
+      "source_rank": 377,
+      "word": "buon",
+      "pos": null,
+      "frequency_count": 77308
+    },
+    {
+      "candidate_rank": 376,
+      "source_rank": 378,
+      "word": "anno",
+      "pos": null,
+      "frequency_count": 76410
+    },
+    {
+      "candidate_rank": 377,
+      "source_rank": 379,
+      "word": "mie",
+      "pos": null,
+      "frequency_count": 76140
+    },
+    {
+      "candidate_rank": 378,
+      "source_rank": 380,
+      "word": "diavolo",
+      "pos": null,
+      "frequency_count": 76107
+    },
+    {
+      "candidate_rank": 379,
+      "source_rank": 381,
+      "word": "quasi",
+      "pos": null,
+      "frequency_count": 75598
+    },
+    {
+      "candidate_rank": 380,
+      "source_rank": 382,
+      "word": "piacere",
+      "pos": null,
+      "frequency_count": 75430
+    },
+    {
+      "candidate_rank": 381,
+      "source_rank": 383,
+      "word": "bel",
+      "pos": null,
+      "frequency_count": 75097
+    },
+    {
+      "candidate_rank": 382,
+      "source_rank": 384,
+      "word": "dovrei",
+      "pos": null,
+      "frequency_count": 74657
+    },
+    {
+      "candidate_rank": 383,
+      "source_rank": 385,
+      "word": "nessun",
+      "pos": null,
+      "frequency_count": 74557
+    },
+    {
+      "candidate_rank": 384,
+      "source_rank": 386,
+      "word": "contro",
+      "pos": null,
+      "frequency_count": 74064
+    },
+    {
+      "candidate_rank": 385,
+      "source_rank": 387,
+      "word": "stessa",
+      "pos": null,
+      "frequency_count": 73974
+    },
+    {
+      "candidate_rank": 386,
+      "source_rank": 388,
+      "word": "felice",
+      "pos": null,
+      "frequency_count": 73508
+    },
+    {
+      "candidate_rank": 387,
+      "source_rank": 389,
+      "word": "colpa",
+      "pos": null,
+      "frequency_count": 73444
+    },
+    {
+      "candidate_rank": 388,
+      "source_rank": 390,
+      "word": "punto",
+      "pos": null,
+      "frequency_count": 73135
+    },
+    {
+      "candidate_rank": 389,
+      "source_rank": 391,
+      "word": "andata",
+      "pos": null,
+      "frequency_count": 72631
+    },
+    {
+      "candidate_rank": 390,
+      "source_rank": 392,
+      "word": "dovrebbe",
+      "pos": null,
+      "frequency_count": 72424
+    },
+    {
+      "candidate_rank": 391,
+      "source_rank": 393,
+      "word": "vedi",
+      "pos": null,
+      "frequency_count": 72393
+    },
+    {
+      "candidate_rank": 392,
+      "source_rank": 394,
+      "word": "quale",
+      "pos": null,
+      "frequency_count": 72339
+    },
+    {
+      "candidate_rank": 393,
+      "source_rank": 395,
+      "word": "chiesto",
+      "pos": null,
+      "frequency_count": 72307
+    },
+    {
+      "candidate_rank": 394,
+      "source_rank": 396,
+      "word": "invece",
+      "pos": null,
+      "frequency_count": 71686
+    },
+    {
+      "candidate_rank": 395,
+      "source_rank": 397,
+      "word": "perchè",
+      "pos": null,
+      "frequency_count": 71521
+    },
+    {
+      "candidate_rank": 396,
+      "source_rank": 398,
+      "word": "migliore",
+      "pos": null,
+      "frequency_count": 71263
+    },
+    {
+      "candidate_rank": 397,
+      "source_rank": 399,
+      "word": "nostri",
+      "pos": null,
+      "frequency_count": 71251
+    },
+    {
+      "candidate_rank": 398,
+      "source_rank": 400,
+      "word": "finito",
+      "pos": null,
+      "frequency_count": 71141
+    },
+    {
+      "candidate_rank": 399,
+      "source_rank": 401,
+      "word": "figlia",
+      "pos": null,
+      "frequency_count": 71086
+    },
+    {
+      "candidate_rank": 400,
+      "source_rank": 402,
+      "word": "dovresti",
+      "pos": null,
+      "frequency_count": 71046
+    },
+    {
+      "candidate_rank": 401,
+      "source_rank": 403,
+      "word": "papa",
+      "pos": null,
+      "frequency_count": 70992
+    },
+    {
+      "candidate_rank": 402,
+      "source_rank": 404,
+      "word": "almeno",
+      "pos": null,
+      "frequency_count": 70410
+    },
+    {
+      "candidate_rank": 403,
+      "source_rank": 405,
+      "word": "sento",
+      "pos": null,
+      "frequency_count": 70388
+    },
+    {
+      "candidate_rank": 404,
+      "source_rank": 406,
+      "word": "quei",
+      "pos": null,
+      "frequency_count": 69770
+    },
+    {
+      "candidate_rank": 405,
+      "source_rank": 407,
+      "word": "col",
+      "pos": null,
+      "frequency_count": 69323
+    },
+    {
+      "candidate_rank": 406,
+      "source_rank": 408,
+      "word": "ore",
+      "pos": null,
+      "frequency_count": 69165
+    },
+    {
+      "candidate_rank": 407,
+      "source_rank": 409,
+      "word": "passato",
+      "pos": null,
+      "frequency_count": 69134
+    },
+    {
+      "candidate_rank": 408,
+      "source_rank": 410,
+      "word": "magari",
+      "pos": null,
+      "frequency_count": 68849
+    },
+    {
+      "candidate_rank": 409,
+      "source_rank": 411,
+      "word": "minuti",
+      "pos": null,
+      "frequency_count": 68593
+    },
+    {
+      "candidate_rank": 410,
+      "source_rank": 412,
+      "word": "terra",
+      "pos": null,
+      "frequency_count": 68331
+    },
+    {
+      "candidate_rank": 411,
+      "source_rank": 413,
+      "word": "vostra",
+      "pos": null,
+      "frequency_count": 68199
+    },
+    {
+      "candidate_rank": 412,
+      "source_rank": 414,
+      "word": "strada",
+      "pos": null,
+      "frequency_count": 67968
+    },
+    {
+      "candidate_rank": 413,
+      "source_rank": 415,
+      "word": "sola",
+      "pos": null,
+      "frequency_count": 67937
+    },
+    {
+      "candidate_rank": 414,
+      "source_rank": 416,
+      "word": "credi",
+      "pos": null,
+      "frequency_count": 67923
+    },
+    {
+      "candidate_rank": 415,
+      "source_rank": 417,
+      "word": "importante",
+      "pos": null,
+      "frequency_count": 67848
+    },
+    {
+      "candidate_rank": 416,
+      "source_rank": 418,
+      "word": "sue",
+      "pos": null,
+      "frequency_count": 67687
+    },
+    {
+      "candidate_rank": 417,
+      "source_rank": 419,
+      "word": "salve",
+      "pos": null,
+      "frequency_count": 67388
+    },
+    {
+      "candidate_rank": 418,
+      "source_rank": 420,
+      "word": "settimana",
+      "pos": null,
+      "frequency_count": 67192
+    },
+    {
+      "candidate_rank": 419,
+      "source_rank": 421,
+      "word": "perso",
+      "pos": null,
+      "frequency_count": 67176
+    },
+    {
+      "candidate_rank": 420,
+      "source_rank": 422,
+      "word": "uscire",
+      "pos": null,
+      "frequency_count": 67056
+    },
+    {
+      "candidate_rank": 421,
+      "source_rank": 423,
+      "word": "parlato",
+      "pos": null,
+      "frequency_count": 66990
+    },
+    {
+      "candidate_rank": 422,
+      "source_rank": 424,
+      "word": "papà",
+      "pos": null,
+      "frequency_count": 66780
+    },
+    {
+      "candidate_rank": 423,
+      "source_rank": 425,
+      "word": "stasera",
+      "pos": null,
+      "frequency_count": 66698
+    },
+    {
+      "candidate_rank": 424,
+      "source_rank": 426,
+      "word": "scusi",
+      "pos": null,
+      "frequency_count": 66665
+    },
+    {
+      "candidate_rank": 425,
+      "source_rank": 427,
+      "word": "dollari",
+      "pos": null,
+      "frequency_count": 66617
+    },
+    {
+      "candidate_rank": 426,
+      "source_rank": 428,
+      "word": "occhi",
+      "pos": null,
+      "frequency_count": 66229
+    },
+    {
+      "candidate_rank": 427,
+      "source_rank": 429,
+      "word": "mani",
+      "pos": null,
+      "frequency_count": 66106
+    },
+    {
+      "candidate_rank": 428,
+      "source_rank": 430,
+      "word": "ultima",
+      "pos": null,
+      "frequency_count": 66059
+    },
+    {
+      "candidate_rank": 429,
+      "source_rank": 431,
+      "word": "possibile",
+      "pos": null,
+      "frequency_count": 66058
+    },
+    {
+      "candidate_rank": 430,
+      "source_rank": 432,
+      "word": "scuola",
+      "pos": null,
+      "frequency_count": 65965
+    },
+    {
+      "candidate_rank": 431,
+      "source_rank": 433,
+      "word": "significa",
+      "pos": null,
+      "frequency_count": 65799
+    },
+    {
+      "candidate_rank": 432,
+      "source_rank": 434,
+      "word": "sapevo",
+      "pos": null,
+      "frequency_count": 65718
+    },
+    {
+      "candidate_rank": 433,
+      "source_rank": 435,
+      "word": "nelle",
+      "pos": null,
+      "frequency_count": 65294
+    },
+    {
+      "candidate_rank": 434,
+      "source_rank": 436,
+      "word": "potrei",
+      "pos": null,
+      "frequency_count": 65268
+    },
+    {
+      "candidate_rank": 435,
+      "source_rank": 437,
+      "word": "stava",
+      "pos": null,
+      "frequency_count": 65197
+    },
+    {
+      "candidate_rank": 436,
+      "source_rank": 438,
+      "word": "bambini",
+      "pos": null,
+      "frequency_count": 65172
+    },
+    {
+      "candidate_rank": 437,
+      "source_rank": 439,
+      "word": "eri",
+      "pos": null,
+      "frequency_count": 64764
+    },
+    {
+      "candidate_rank": 438,
+      "source_rank": 440,
+      "word": "importa",
+      "pos": null,
+      "frequency_count": 64705
+    },
+    {
+      "candidate_rank": 439,
+      "source_rank": 441,
+      "word": "indietro",
+      "pos": null,
+      "frequency_count": 64558
+    },
+    {
+      "candidate_rank": 440,
+      "source_rank": 442,
+      "word": "riesco",
+      "pos": null,
+      "frequency_count": 64481
+    },
+    {
+      "candidate_rank": 441,
+      "source_rank": 443,
+      "word": "sangue",
+      "pos": null,
+      "frequency_count": 63943
+    },
+    {
+      "candidate_rank": 442,
+      "source_rank": 444,
+      "word": "chiama",
+      "pos": null,
+      "frequency_count": 63801
+    },
+    {
+      "candidate_rank": 443,
+      "source_rank": 445,
+      "word": "messo",
+      "pos": null,
+      "frequency_count": 63408
+    },
+    {
+      "candidate_rank": 444,
+      "source_rank": 446,
+      "word": "piccolo",
+      "pos": null,
+      "frequency_count": 63260
+    },
+    {
+      "candidate_rank": 445,
+      "source_rank": 447,
+      "word": "traduzione",
+      "pos": null,
+      "frequency_count": 63150
+    },
+    {
+      "candidate_rank": 446,
+      "source_rank": 448,
+      "word": "tardi",
+      "pos": null,
+      "frequency_count": 63126
+    },
+    {
+      "candidate_rank": 447,
+      "source_rank": 449,
+      "word": "cuore",
+      "pos": null,
+      "frequency_count": 62968
+    },
+    {
+      "candidate_rank": 448,
+      "source_rank": 450,
+      "word": "marito",
+      "pos": null,
+      "frequency_count": 62553
+    },
+    {
+      "candidate_rank": 449,
+      "source_rank": 451,
+      "word": "viene",
+      "pos": null,
+      "frequency_count": 62171
+    },
+    {
+      "candidate_rank": 450,
+      "source_rank": 452,
+      "word": "venuto",
+      "pos": null,
+      "frequency_count": 62163
+    },
+    {
+      "candidate_rank": 451,
+      "source_rank": 453,
+      "word": "ieri",
+      "pos": null,
+      "frequency_count": 62079
+    },
+    {
+      "candidate_rank": 452,
+      "source_rank": 454,
+      "word": "spero",
+      "pos": null,
+      "frequency_count": 61888
+    },
+    {
+      "candidate_rank": 453,
+      "source_rank": 455,
+      "word": "ricordi",
+      "pos": null,
+      "frequency_count": 61865
+    },
+    {
+      "candidate_rank": 454,
+      "source_rank": 456,
+      "word": "quelli",
+      "pos": null,
+      "frequency_count": 61732
+    },
+    {
+      "candidate_rank": 455,
+      "source_rank": 457,
+      "word": "dovremmo",
+      "pos": null,
+      "frequency_count": 61640
+    },
+    {
+      "candidate_rank": 456,
+      "source_rank": 458,
+      "word": "lasciato",
+      "pos": null,
+      "frequency_count": 61632
+    },
+    {
+      "candidate_rank": 457,
+      "source_rank": 459,
+      "word": "ascolta",
+      "pos": null,
+      "frequency_count": 61486
+    },
+    {
+      "candidate_rank": 458,
+      "source_rank": 460,
+      "word": "difficile",
+      "pos": null,
+      "frequency_count": 61280
+    },
+    {
+      "candidate_rank": 459,
+      "source_rank": 461,
+      "word": "quell",
+      "pos": null,
+      "frequency_count": 61012
+    },
+    {
+      "candidate_rank": 460,
+      "source_rank": 462,
+      "word": "auto",
+      "pos": null,
+      "frequency_count": 61008
+    },
+    {
+      "candidate_rank": 461,
+      "source_rank": 463,
+      "word": "chiamato",
+      "pos": null,
+      "frequency_count": 60982
+    },
+    {
+      "candidate_rank": 462,
+      "source_rank": 464,
+      "word": "ciò",
+      "pos": null,
+      "frequency_count": 60821
+    },
+    {
+      "candidate_rank": 463,
+      "source_rank": 465,
+      "word": "altre",
+      "pos": null,
+      "frequency_count": 60408
+    },
+    {
+      "candidate_rank": 464,
+      "source_rank": 466,
+      "word": "parlando",
+      "pos": null,
+      "frequency_count": 60256
+    },
+    {
+      "candidate_rank": 465,
+      "source_rank": 467,
+      "word": "pensare",
+      "pos": null,
+      "frequency_count": 60231
+    },
+    {
+      "candidate_rank": 466,
+      "source_rank": 468,
+      "word": "fantastico",
+      "pos": null,
+      "frequency_count": 60113
+    },
+    {
+      "candidate_rank": 467,
+      "source_rank": 469,
+      "word": "fatta",
+      "pos": null,
+      "frequency_count": 60085
+    },
+    {
+      "candidate_rank": 468,
+      "source_rank": 470,
+      "word": "numero",
+      "pos": null,
+      "frequency_count": 60059
+    },
+    {
+      "candidate_rank": 469,
+      "source_rank": 471,
+      "word": "veramente",
+      "pos": null,
+      "frequency_count": 60007
+    },
+    {
+      "candidate_rank": 470,
+      "source_rank": 472,
+      "word": "fanno",
+      "pos": null,
+      "frequency_count": 59945
+    },
+    {
+      "candidate_rank": 471,
+      "source_rank": 473,
+      "word": "com",
+      "pos": null,
+      "frequency_count": 59820
+    },
+    {
+      "candidate_rank": 472,
+      "source_rank": 474,
+      "word": "serio",
+      "pos": null,
+      "frequency_count": 59775
+    },
+    {
+      "candidate_rank": 473,
+      "source_rank": 475,
+      "word": "possa",
+      "pos": null,
+      "frequency_count": 59645
+    },
+    {
+      "candidate_rank": 474,
+      "source_rank": 476,
+      "word": "fossi",
+      "pos": null,
+      "frequency_count": 59530
+    },
+    {
+      "candidate_rank": 475,
+      "source_rank": 477,
+      "word": "entrare",
+      "pos": null,
+      "frequency_count": 59221
+    },
+    {
+      "candidate_rank": 476,
+      "source_rank": 478,
+      "word": "anch",
+      "pos": null,
+      "frequency_count": 59206
+    },
+    {
+      "candidate_rank": 477,
+      "source_rank": 479,
+      "word": "qualsiasi",
+      "pos": null,
+      "frequency_count": 59149
+    },
+    {
+      "candidate_rank": 478,
+      "source_rank": 480,
+      "word": "pensa",
+      "pos": null,
+      "frequency_count": 59078
+    },
+    {
+      "candidate_rank": 479,
+      "source_rank": 481,
+      "word": "dicendo",
+      "pos": null,
+      "frequency_count": 58855
+    },
+    {
+      "candidate_rank": 480,
+      "source_rank": 482,
+      "word": "acqua",
+      "pos": null,
+      "frequency_count": 58651
+    },
+    {
+      "candidate_rank": 481,
+      "source_rank": 483,
+      "word": "portato",
+      "pos": null,
+      "frequency_count": 58647
+    },
+    {
+      "candidate_rank": 482,
+      "source_rank": 484,
+      "word": "stanza",
+      "pos": null,
+      "frequency_count": 58547
+    },
+    {
+      "candidate_rank": 483,
+      "source_rank": 485,
+      "word": "problemi",
+      "pos": null,
+      "frequency_count": 58073
+    },
+    {
+      "candidate_rank": 484,
+      "source_rank": 486,
+      "word": "forte",
+      "pos": null,
+      "frequency_count": 57843
+    },
+    {
+      "candidate_rank": 485,
+      "source_rank": 487,
+      "word": "nessuna",
+      "pos": null,
+      "frequency_count": 57823
+    },
+    {
+      "candidate_rank": 486,
+      "source_rank": 488,
+      "word": "lascia",
+      "pos": null,
+      "frequency_count": 57619
+    },
+    {
+      "candidate_rank": 487,
+      "source_rank": 489,
+      "word": "amo",
+      "pos": null,
+      "frequency_count": 57577
+    },
+    {
+      "candidate_rank": 488,
+      "source_rank": 490,
+      "word": "roba",
+      "pos": null,
+      "frequency_count": 57341
+    },
+    {
+      "candidate_rank": 489,
+      "source_rank": 491,
+      "word": "agente",
+      "pos": null,
+      "frequency_count": 57290
+    },
+    {
+      "candidate_rank": 490,
+      "source_rank": 492,
+      "word": "dietro",
+      "pos": null,
+      "frequency_count": 56981
+    },
+    {
+      "candidate_rank": 491,
+      "source_rank": 493,
+      "word": "corpo",
+      "pos": null,
+      "frequency_count": 56973
+    },
+    {
+      "candidate_rank": 492,
+      "source_rank": 494,
+      "word": "pare",
+      "pos": null,
+      "frequency_count": 56863
+    },
+    {
+      "candidate_rank": 493,
+      "source_rank": 495,
+      "word": "sentire",
+      "pos": null,
+      "frequency_count": 56801
+    },
+    {
+      "candidate_rank": 494,
+      "source_rank": 496,
+      "word": "foto",
+      "pos": null,
+      "frequency_count": 56644
+    },
+    {
+      "candidate_rank": 495,
+      "source_rank": 497,
+      "word": "telefono",
+      "pos": null,
+      "frequency_count": 56565
+    },
+    {
+      "candidate_rank": 496,
+      "source_rank": 498,
+      "word": "voleva",
+      "pos": null,
+      "frequency_count": 56265
+    },
+    {
+      "candidate_rank": 497,
+      "source_rank": 499,
+      "word": "poco",
+      "pos": null,
+      "frequency_count": 56227
+    },
+    {
+      "candidate_rank": 498,
+      "source_rank": 500,
+      "word": "prendi",
+      "pos": null,
+      "frequency_count": 56164
+    },
+    {
+      "candidate_rank": 499,
+      "source_rank": 501,
+      "word": "piccola",
+      "pos": null,
+      "frequency_count": 56125
+    },
+    {
+      "candidate_rank": 500,
+      "source_rank": 502,
+      "word": "vicino",
+      "pos": null,
+      "frequency_count": 55996
+    },
+    {
+      "candidate_rank": 501,
+      "source_rank": 503,
+      "word": "quest",
+      "pos": null,
+      "frequency_count": 55837
+    },
+    {
+      "candidate_rank": 502,
+      "source_rank": 504,
+      "word": "sacco",
+      "pos": null,
+      "frequency_count": 55778
+    },
+    {
+      "candidate_rank": 503,
+      "source_rank": 505,
+      "word": "stia",
+      "pos": null,
+      "frequency_count": 55698
+    },
+    {
+      "candidate_rank": 504,
+      "source_rank": 506,
+      "word": "capire",
+      "pos": null,
+      "frequency_count": 55475
+    },
+    {
+      "candidate_rank": 505,
+      "source_rank": 507,
+      "word": "potuto",
+      "pos": null,
+      "frequency_count": 55442
+    },
+    {
+      "candidate_rank": 506,
+      "source_rank": 508,
+      "word": "cinque",
+      "pos": null,
+      "frequency_count": 55436
+    },
+    {
+      "candidate_rank": 507,
+      "source_rank": 509,
+      "word": "strano",
+      "pos": null,
+      "frequency_count": 55292
+    },
+    {
+      "candidate_rank": 508,
+      "source_rank": 510,
+      "word": "tue",
+      "pos": null,
+      "frequency_count": 54912
+    },
+    {
+      "candidate_rank": 509,
+      "source_rank": 511,
+      "word": "andando",
+      "pos": null,
+      "frequency_count": 54736
+    },
+    {
+      "candidate_rank": 510,
+      "source_rank": 512,
+      "word": "donne",
+      "pos": null,
+      "frequency_count": 54728
+    },
+    {
+      "candidate_rank": 511,
+      "source_rank": 513,
+      "word": "sappiamo",
+      "pos": null,
+      "frequency_count": 54405
+    },
+    {
+      "candidate_rank": 512,
+      "source_rank": 514,
+      "word": "bravo",
+      "pos": null,
+      "frequency_count": 54264
+    },
+    {
+      "candidate_rank": 513,
+      "source_rank": 515,
+      "word": "ragazze",
+      "pos": null,
+      "frequency_count": 54178
+    },
+    {
+      "candidate_rank": 514,
+      "source_rank": 516,
+      "word": "festa",
+      "pos": null,
+      "frequency_count": 54052
+    },
+    {
+      "candidate_rank": 515,
+      "source_rank": 517,
+      "word": "senso",
+      "pos": null,
+      "frequency_count": 53977
+    },
+    {
+      "candidate_rank": 516,
+      "source_rank": 518,
+      "word": "genere",
+      "pos": null,
+      "frequency_count": 53941
+    },
+    {
+      "candidate_rank": 517,
+      "source_rank": 519,
+      "word": "quattro",
+      "pos": null,
+      "frequency_count": 53750
+    },
+    {
+      "candidate_rank": 518,
+      "source_rank": 520,
+      "word": "dare",
+      "pos": null,
+      "frequency_count": 53534
+    },
+    {
+      "candidate_rank": 519,
+      "source_rank": 521,
+      "word": "attimo",
+      "pos": null,
+      "frequency_count": 53428
+    },
+    {
+      "candidate_rank": 520,
+      "source_rank": 522,
+      "word": "sorella",
+      "pos": null,
+      "frequency_count": 53211
+    },
+    {
+      "candidate_rank": 521,
+      "source_rank": 523,
+      "word": "pure",
+      "pos": null,
+      "frequency_count": 53047
+    },
+    {
+      "candidate_rank": 522,
+      "source_rank": 524,
+      "word": "probabilmente",
+      "pos": null,
+      "frequency_count": 52894
+    },
+    {
+      "candidate_rank": 523,
+      "source_rank": 525,
+      "word": "film",
+      "pos": null,
+      "frequency_count": 52832
+    },
+    {
+      "candidate_rank": 524,
+      "source_rank": 526,
+      "word": "parla",
+      "pos": null,
+      "frequency_count": 52799
+    },
+    {
+      "candidate_rank": 525,
+      "source_rank": 527,
+      "word": "ufficio",
+      "pos": null,
+      "frequency_count": 52768
+    },
+    {
+      "candidate_rank": 526,
+      "source_rank": 528,
+      "word": "verso",
+      "pos": null,
+      "frequency_count": 52752
+    },
+    {
+      "candidate_rank": 527,
+      "source_rank": 529,
+      "word": "mesi",
+      "pos": null,
+      "frequency_count": 52606
+    },
+    {
+      "candidate_rank": 528,
+      "source_rank": 530,
+      "word": "farti",
+      "pos": null,
+      "frequency_count": 52593
+    },
+    {
+      "candidate_rank": 529,
+      "source_rank": 531,
+      "word": "unica",
+      "pos": null,
+      "frequency_count": 52564
+    },
+    {
+      "candidate_rank": 530,
+      "source_rank": 532,
+      "word": "morire",
+      "pos": null,
+      "frequency_count": 52543
+    },
+    {
+      "candidate_rank": 531,
+      "source_rank": 533,
+      "word": "signorina",
+      "pos": null,
+      "frequency_count": 52060
+    },
+    {
+      "candidate_rank": 532,
+      "source_rank": 534,
+      "word": "vecchio",
+      "pos": null,
+      "frequency_count": 51955
+    },
+    {
+      "candidate_rank": 533,
+      "source_rank": 535,
+      "word": "domanda",
+      "pos": null,
+      "frequency_count": 51805
+    },
+    {
+      "candidate_rank": 534,
+      "source_rank": 536,
+      "word": "ben",
+      "pos": null,
+      "frequency_count": 51786
+    },
+    {
+      "candidate_rank": 535,
+      "source_rank": 537,
+      "word": "guerra",
+      "pos": null,
+      "frequency_count": 51496
+    },
+    {
+      "candidate_rank": 536,
+      "source_rank": 538,
+      "word": "dottore",
+      "pos": null,
+      "frequency_count": 51471
+    },
+    {
+      "candidate_rank": 537,
+      "source_rank": 539,
+      "word": "conosco",
+      "pos": null,
+      "frequency_count": 51466
+    },
+    {
+      "candidate_rank": 538,
+      "source_rank": 540,
+      "word": "qual",
+      "pos": null,
+      "frequency_count": 51235
+    },
+    {
+      "candidate_rank": 539,
+      "source_rank": 541,
+      "word": "vivere",
+      "pos": null,
+      "frequency_count": 50627
+    },
+    {
+      "candidate_rank": 540,
+      "source_rank": 542,
+      "word": "vista",
+      "pos": null,
+      "frequency_count": 50593
+    },
+    {
+      "candidate_rank": 541,
+      "source_rank": 543,
+      "word": "prova",
+      "pos": null,
+      "frequency_count": 50161
+    },
+    {
+      "candidate_rank": 542,
+      "source_rank": 544,
+      "word": "nuova",
+      "pos": null,
+      "frequency_count": 49966
+    },
+    {
+      "candidate_rank": 543,
+      "source_rank": 545,
+      "word": "ricordo",
+      "pos": null,
+      "frequency_count": 49786
+    },
+    {
+      "candidate_rank": 544,
+      "source_rank": 546,
+      "word": "divertente",
+      "pos": null,
+      "frequency_count": 49581
+    },
+    {
+      "candidate_rank": 545,
+      "source_rank": 547,
+      "word": "avessi",
+      "pos": null,
+      "frequency_count": 49492
+    },
+    {
+      "candidate_rank": 546,
+      "source_rank": 548,
+      "word": "sicura",
+      "pos": null,
+      "frequency_count": 49481
+    },
+    {
+      "candidate_rank": 547,
+      "source_rank": 549,
+      "word": "paio",
+      "pos": null,
+      "frequency_count": 49342
+    },
+    {
+      "candidate_rank": 548,
+      "source_rank": 550,
+      "word": "conto",
+      "pos": null,
+      "frequency_count": 49289
+    },
+    {
+      "candidate_rank": 549,
+      "source_rank": 551,
+      "word": "perdere",
+      "pos": null,
+      "frequency_count": 49017
+    },
+    {
+      "candidate_rank": 550,
+      "source_rank": 552,
+      "word": "dimmi",
+      "pos": null,
+      "frequency_count": 48943
+    },
+    {
+      "candidate_rank": 551,
+      "source_rank": 553,
+      "word": "farmi",
+      "pos": null,
+      "frequency_count": 48776
+    },
+    {
+      "candidate_rank": 552,
+      "source_rank": 554,
+      "word": "figli",
+      "pos": null,
+      "frequency_count": 48137
+    },
+    {
+      "candidate_rank": 553,
+      "source_rank": 555,
+      "word": "mezzo",
+      "pos": null,
+      "frequency_count": 48105
+    },
+    {
+      "candidate_rank": 554,
+      "source_rank": 556,
+      "word": "lavorare",
+      "pos": null,
+      "frequency_count": 47934
+    },
+    {
+      "candidate_rank": 555,
+      "source_rank": 557,
+      "word": "unico",
+      "pos": null,
+      "frequency_count": 47910
+    },
+    {
+      "candidate_rank": 556,
+      "source_rank": 558,
+      "word": "esattamente",
+      "pos": null,
+      "frequency_count": 47713
+    },
+    {
+      "candidate_rank": 557,
+      "source_rank": 559,
+      "word": "squadra",
+      "pos": null,
+      "frequency_count": 47394
+    },
+    {
+      "candidate_rank": 558,
+      "source_rank": 560,
+      "word": "esatto",
+      "pos": null,
+      "frequency_count": 47389
+    },
+    {
+      "candidate_rank": 559,
+      "source_rank": 561,
+      "word": "possono",
+      "pos": null,
+      "frequency_count": 47326
+    },
+    {
+      "candidate_rank": 560,
+      "source_rank": 562,
+      "word": "fate",
+      "pos": null,
+      "frequency_count": 47229
+    },
+    {
+      "candidate_rank": 561,
+      "source_rank": 563,
+      "word": "faro",
+      "pos": null,
+      "frequency_count": 47219
+    },
+    {
+      "candidate_rank": 562,
+      "source_rank": 564,
+      "word": "sapete",
+      "pos": null,
+      "frequency_count": 47132
+    },
+    {
+      "candidate_rank": 563,
+      "source_rank": 565,
+      "word": "dottor",
+      "pos": null,
+      "frequency_count": 47078
+    },
+    {
+      "candidate_rank": 564,
+      "source_rank": 566,
+      "word": "parola",
+      "pos": null,
+      "frequency_count": 46974
+    },
+    {
+      "candidate_rank": 565,
+      "source_rank": 567,
+      "word": "piedi",
+      "pos": null,
+      "frequency_count": 46967
+    },
+    {
+      "candidate_rank": 566,
+      "source_rank": 568,
+      "word": "sopra",
+      "pos": null,
+      "frequency_count": 46678
+    },
+    {
+      "candidate_rank": 567,
+      "source_rank": 569,
+      "word": "motivo",
+      "pos": null,
+      "frequency_count": 46493
+    },
+    {
+      "candidate_rank": 568,
+      "source_rank": 570,
+      "word": "avevi",
+      "pos": null,
+      "frequency_count": 46043
+    },
+    {
+      "candidate_rank": 569,
+      "source_rank": 571,
+      "word": "cavolo",
+      "pos": null,
+      "frequency_count": 45826
+    },
+    {
+      "candidate_rank": 570,
+      "source_rank": 572,
+      "word": "capitano",
+      "pos": null,
+      "frequency_count": 45764
+    },
+    {
+      "candidate_rank": 571,
+      "source_rank": 573,
+      "word": "finita",
+      "pos": null,
+      "frequency_count": 45689
+    },
+    {
+      "candidate_rank": 572,
+      "source_rank": 574,
+      "word": "volete",
+      "pos": null,
+      "frequency_count": 45602
+    },
+    {
+      "candidate_rank": 573,
+      "source_rank": 575,
+      "word": "siano",
+      "pos": null,
+      "frequency_count": 45451
+    },
+    {
+      "candidate_rank": 574,
+      "source_rank": 576,
+      "word": "potresti",
+      "pos": null,
+      "frequency_count": 45204
+    },
+    {
+      "candidate_rank": 575,
+      "source_rank": 577,
+      "word": "gioco",
+      "pos": null,
+      "frequency_count": 45139
+    },
+    {
+      "candidate_rank": 576,
+      "source_rank": 578,
+      "word": "perfetto",
+      "pos": null,
+      "frequency_count": 45080
+    },
+    {
+      "candidate_rank": 577,
+      "source_rank": 579,
+      "word": "be",
+      "pos": null,
+      "frequency_count": 44966
+    },
+    {
+      "candidate_rank": 578,
+      "source_rank": 580,
+      "word": "mente",
+      "pos": null,
+      "frequency_count": 44663
+    },
+    {
+      "candidate_rank": 579,
+      "source_rank": 581,
+      "word": "mangiare",
+      "pos": null,
+      "frequency_count": 44651
+    },
+    {
+      "candidate_rank": 580,
+      "source_rank": 582,
+      "word": "resto",
+      "pos": null,
+      "frequency_count": 44550
+    },
+    {
+      "candidate_rank": 581,
+      "source_rank": 583,
+      "word": "credere",
+      "pos": null,
+      "frequency_count": 44330
+    },
+    {
+      "candidate_rank": 582,
+      "source_rank": 584,
+      "word": "fortuna",
+      "pos": null,
+      "frequency_count": 44319
+    },
+    {
+      "candidate_rank": 583,
+      "source_rank": 585,
+      "word": "tratta",
+      "pos": null,
+      "frequency_count": 44089
+    },
+    {
+      "candidate_rank": 584,
+      "source_rank": 586,
+      "word": "chiamo",
+      "pos": null,
+      "frequency_count": 44026
+    },
+    {
+      "candidate_rank": 585,
+      "source_rank": 587,
+      "word": "morta",
+      "pos": null,
+      "frequency_count": 43881
+    },
+    {
+      "candidate_rank": 586,
+      "source_rank": 588,
+      "word": "là",
+      "pos": null,
+      "frequency_count": 43774
+    },
+    {
+      "candidate_rank": 587,
+      "source_rank": 589,
+      "word": "entrambi",
+      "pos": null,
+      "frequency_count": 43640
+    },
+    {
+      "candidate_rank": 588,
+      "source_rank": 590,
+      "word": "avresti",
+      "pos": null,
+      "frequency_count": 43624
+    },
+    {
+      "candidate_rank": 589,
+      "source_rank": 591,
+      "word": "passare",
+      "pos": null,
+      "frequency_count": 43425
+    },
+    {
+      "candidate_rank": 590,
+      "source_rank": 592,
+      "word": "cena",
+      "pos": null,
+      "frequency_count": 43093
+    },
+    {
+      "candidate_rank": 591,
+      "source_rank": 593,
+      "word": "the",
+      "pos": null,
+      "frequency_count": 43070
+    },
+    {
+      "candidate_rank": 592,
+      "source_rank": 594,
+      "word": "sarei",
+      "pos": null,
+      "frequency_count": 42917
+    },
+    {
+      "candidate_rank": 593,
+      "source_rank": 595,
+      "word": "controllo",
+      "pos": null,
+      "frequency_count": 42629
+    },
+    {
+      "candidate_rank": 594,
+      "source_rank": 596,
+      "word": "affari",
+      "pos": null,
+      "frequency_count": 42520
+    },
+    {
+      "candidate_rank": 595,
+      "source_rank": 597,
+      "word": "spiace",
+      "pos": null,
+      "frequency_count": 42305
+    },
+    {
+      "candidate_rank": 596,
+      "source_rank": 598,
+      "word": "ultimo",
+      "pos": null,
+      "frequency_count": 42022
+    },
+    {
+      "candidate_rank": 597,
+      "source_rank": 599,
+      "word": "facile",
+      "pos": null,
+      "frequency_count": 42003
+    },
+    {
+      "candidate_rank": 598,
+      "source_rank": 600,
+      "word": "farò",
+      "pos": null,
+      "frequency_count": 41881
+    },
+    {
+      "candidate_rank": 599,
+      "source_rank": 601,
+      "word": "buongiorno",
+      "pos": null,
+      "frequency_count": 41843
+    },
+    {
+      "candidate_rank": 600,
+      "source_rank": 602,
+      "word": "davanti",
+      "pos": null,
+      "frequency_count": 41824
+    },
+    {
+      "candidate_rank": 601,
+      "source_rank": 603,
+      "word": "tizio",
+      "pos": null,
+      "frequency_count": 41748
+    },
+    {
+      "candidate_rank": 602,
+      "source_rank": 604,
+      "word": "dammi",
+      "pos": null,
+      "frequency_count": 41718
+    },
+    {
+      "candidate_rank": 603,
+      "source_rank": 605,
+      "word": "sicurezza",
+      "pos": null,
+      "frequency_count": 41672
+    },
+    {
+      "candidate_rank": 604,
+      "source_rank": 606,
+      "word": "dalle",
+      "pos": null,
+      "frequency_count": 41669
+    },
+    {
+      "candidate_rank": 605,
+      "source_rank": 607,
+      "word": "quanti",
+      "pos": null,
+      "frequency_count": 41632
+    },
+    {
+      "candidate_rank": 606,
+      "source_rank": 608,
+      "word": "dica",
+      "pos": null,
+      "frequency_count": 41556
+    },
+    {
+      "candidate_rank": 607,
+      "source_rank": 609,
+      "word": "matrimonio",
+      "pos": null,
+      "frequency_count": 41484
+    },
+    {
+      "candidate_rank": 608,
+      "source_rank": 610,
+      "word": "john",
+      "pos": null,
+      "frequency_count": 41475
+    },
+    {
+      "candidate_rank": 609,
+      "source_rank": 611,
+      "word": "vogliono",
+      "pos": null,
+      "frequency_count": 41470
+    },
+    {
+      "candidate_rank": 610,
+      "source_rank": 612,
+      "word": "molti",
+      "pos": null,
+      "frequency_count": 41355
+    },
+    {
+      "candidate_rank": 611,
+      "source_rank": 613,
+      "word": "culo",
+      "pos": null,
+      "frequency_count": 41260
+    },
+    {
+      "candidate_rank": 612,
+      "source_rank": 614,
+      "word": "fuoco",
+      "pos": null,
+      "frequency_count": 41254
+    },
+    {
+      "candidate_rank": 613,
+      "source_rank": 615,
+      "word": "cercare",
+      "pos": null,
+      "frequency_count": 41201
+    },
+    {
+      "candidate_rank": 614,
+      "source_rank": 616,
+      "word": "pistola",
+      "pos": null,
+      "frequency_count": 41140
+    },
+    {
+      "candidate_rank": 615,
+      "source_rank": 617,
+      "word": "potremmo",
+      "pos": null,
+      "frequency_count": 41100
+    },
+    {
+      "candidate_rank": 616,
+      "source_rank": 618,
+      "word": "re",
+      "pos": null,
+      "frequency_count": 40945
+    },
+    {
+      "candidate_rank": 617,
+      "source_rank": 619,
+      "word": "mandato",
+      "pos": null,
+      "frequency_count": 40926
+    },
+    {
+      "candidate_rank": 618,
+      "source_rank": 620,
+      "word": "puttana",
+      "pos": null,
+      "frequency_count": 40856
+    },
+    {
+      "candidate_rank": 619,
+      "source_rank": 621,
+      "word": "negli",
+      "pos": null,
+      "frequency_count": 40700
+    },
+    {
+      "candidate_rank": 620,
+      "source_rank": 622,
+      "word": "cioe",
+      "pos": null,
+      "frequency_count": 40593
+    },
+    {
+      "candidate_rank": 621,
+      "source_rank": 623,
+      "word": "inizio",
+      "pos": null,
+      "frequency_count": 40562
+    },
+    {
+      "candidate_rank": 622,
+      "source_rank": 624,
+      "word": "saranno",
+      "pos": null,
+      "frequency_count": 40400
+    },
+    {
+      "candidate_rank": 623,
+      "source_rank": 625,
+      "word": "causa",
+      "pos": null,
+      "frequency_count": 40373
+    },
+    {
+      "candidate_rank": 624,
+      "source_rank": 626,
+      "word": "voglia",
+      "pos": null,
+      "frequency_count": 40372
+    },
+    {
+      "candidate_rank": 625,
+      "source_rank": 627,
+      "word": "mettere",
+      "pos": null,
+      "frequency_count": 40369
+    },
+    {
+      "candidate_rank": 626,
+      "source_rank": 628,
+      "word": "fammi",
+      "pos": null,
+      "frequency_count": 40278
+    },
+    {
+      "candidate_rank": 627,
+      "source_rank": 629,
+      "word": "uccidere",
+      "pos": null,
+      "frequency_count": 40220
+    },
+    {
+      "candidate_rank": 628,
+      "source_rank": 630,
+      "word": "vogliamo",
+      "pos": null,
+      "frequency_count": 40189
+    },
+    {
+      "candidate_rank": 629,
+      "source_rank": 631,
+      "word": "faremo",
+      "pos": null,
+      "frequency_count": 40176
+    },
+    {
+      "candidate_rank": 630,
+      "source_rank": 632,
+      "word": "però",
+      "pos": null,
+      "frequency_count": 40149
+    },
+    {
+      "candidate_rank": 631,
+      "source_rank": 633,
+      "word": "genitori",
+      "pos": null,
+      "frequency_count": 40076
+    },
+    {
+      "candidate_rank": 632,
+      "source_rank": 634,
+      "word": "sesso",
+      "pos": null,
+      "frequency_count": 39956
+    },
+    {
+      "candidate_rank": 633,
+      "source_rank": 635,
+      "word": "potete",
+      "pos": null,
+      "frequency_count": 39822
+    },
+    {
+      "candidate_rank": 634,
+      "source_rank": 636,
+      "word": "ricevuto",
+      "pos": null,
+      "frequency_count": 39734
+    },
+    {
+      "candidate_rank": 635,
+      "source_rank": 637,
+      "word": "vivo",
+      "pos": null,
+      "frequency_count": 39628
+    },
+    {
+      "candidate_rank": 636,
+      "source_rank": 638,
+      "word": "presidente",
+      "pos": null,
+      "frequency_count": 39537
+    },
+    {
+      "candidate_rank": 637,
+      "source_rank": 639,
+      "word": "città",
+      "pos": null,
+      "frequency_count": 39454
+    },
+    {
+      "candidate_rank": 638,
+      "source_rank": 640,
+      "word": "citta",
+      "pos": null,
+      "frequency_count": 39401
+    },
+    {
+      "candidate_rank": 639,
+      "source_rank": 641,
+      "word": "succedendo",
+      "pos": null,
+      "frequency_count": 39388
+    },
+    {
+      "candidate_rank": 640,
+      "source_rank": 642,
+      "word": "ospedale",
+      "pos": null,
+      "frequency_count": 39345
+    },
+    {
+      "candidate_rank": 641,
+      "source_rank": 643,
+      "word": "fu",
+      "pos": null,
+      "frequency_count": 39305
+    },
+    {
+      "candidate_rank": 642,
+      "source_rank": 644,
+      "word": "agli",
+      "pos": null,
+      "frequency_count": 39237
+    },
+    {
+      "candidate_rank": 643,
+      "source_rank": 645,
+      "word": "scritto",
+      "pos": null,
+      "frequency_count": 39116
+    },
+    {
+      "candidate_rank": 644,
+      "source_rank": 646,
+      "word": "smettila",
+      "pos": null,
+      "frequency_count": 39023
+    },
+    {
+      "candidate_rank": 645,
+      "source_rank": 647,
+      "word": "vada",
+      "pos": null,
+      "frequency_count": 39013
+    },
+    {
+      "candidate_rank": 646,
+      "source_rank": 648,
+      "word": "attenzione",
+      "pos": null,
+      "frequency_count": 38891
+    },
+    {
+      "candidate_rank": 647,
+      "source_rank": 649,
+      "word": "sulle",
+      "pos": null,
+      "frequency_count": 38732
+    },
+    {
+      "candidate_rank": 648,
+      "source_rank": 650,
+      "word": "bere",
+      "pos": null,
+      "frequency_count": 38732
+    },
+    {
+      "candidate_rank": 649,
+      "source_rank": 651,
+      "word": "situazione",
+      "pos": null,
+      "frequency_count": 38688
+    },
+    {
+      "candidate_rank": 650,
+      "source_rank": 652,
+      "word": "omicidio",
+      "pos": null,
+      "frequency_count": 38605
+    },
+    {
+      "candidate_rank": 651,
+      "source_rank": 653,
+      "word": "revisione",
+      "pos": null,
+      "frequency_count": 38437
+    },
+    {
+      "candidate_rank": 652,
+      "source_rank": 654,
+      "word": "avesse",
+      "pos": null,
+      "frequency_count": 38260
+    },
+    {
+      "candidate_rank": 653,
+      "source_rank": 655,
+      "word": "ottimo",
+      "pos": null,
+      "frequency_count": 38244
+    },
+    {
+      "candidate_rank": 654,
+      "source_rank": 656,
+      "word": "cura",
+      "pos": null,
+      "frequency_count": 38235
+    },
+    {
+      "candidate_rank": 655,
+      "source_rank": 657,
+      "word": "durante",
+      "pos": null,
+      "frequency_count": 38077
+    },
+    {
+      "candidate_rank": 656,
+      "source_rank": 658,
+      "word": "provato",
+      "pos": null,
+      "frequency_count": 38069
+    },
+    {
+      "candidate_rank": 657,
+      "source_rank": 659,
+      "word": "parole",
+      "pos": null,
+      "frequency_count": 37888
+    },
+    {
+      "candidate_rank": 658,
+      "source_rank": 660,
+      "word": "lasciare",
+      "pos": null,
+      "frequency_count": 37877
+    },
+    {
+      "candidate_rank": 659,
+      "source_rank": 661,
+      "word": "dicono",
+      "pos": null,
+      "frequency_count": 37811
+    },
+    {
+      "candidate_rank": 660,
+      "source_rank": 662,
+      "word": "new",
+      "pos": null,
+      "frequency_count": 37800
+    },
+    {
+      "candidate_rank": 661,
+      "source_rank": 663,
+      "word": "prossima",
+      "pos": null,
+      "frequency_count": 37691
+    },
+    {
+      "candidate_rank": 662,
+      "source_rank": 664,
+      "word": "nostre",
+      "pos": null,
+      "frequency_count": 37687
+    },
+    {
+      "candidate_rank": 663,
+      "source_rank": 665,
+      "word": "arrivato",
+      "pos": null,
+      "frequency_count": 37654
+    },
+    {
+      "candidate_rank": 664,
+      "source_rank": 666,
+      "word": "paese",
+      "pos": null,
+      "frequency_count": 37633
+    },
+    {
+      "candidate_rank": 665,
+      "source_rank": 667,
+      "word": "sull",
+      "pos": null,
+      "frequency_count": 37550
+    },
+    {
+      "candidate_rank": 666,
+      "source_rank": 668,
+      "word": "andate",
+      "pos": null,
+      "frequency_count": 37408
+    },
+    {
+      "candidate_rank": 667,
+      "source_rank": 669,
+      "word": "chiunque",
+      "pos": null,
+      "frequency_count": 37356
+    },
+    {
+      "candidate_rank": 668,
+      "source_rank": 670,
+      "word": "capisci",
+      "pos": null,
+      "frequency_count": 37287
+    },
+    {
+      "candidate_rank": 669,
+      "source_rank": 671,
+      "word": "pace",
+      "pos": null,
+      "frequency_count": 37262
+    },
+    {
+      "candidate_rank": 670,
+      "source_rank": 672,
+      "word": "immagino",
+      "pos": null,
+      "frequency_count": 37228
+    },
+    {
+      "candidate_rank": 671,
+      "source_rank": 673,
+      "word": "musica",
+      "pos": null,
+      "frequency_count": 37171
+    },
+    {
+      "candidate_rank": 672,
+      "source_rank": 674,
+      "word": "tieni",
+      "pos": null,
+      "frequency_count": 37156
+    },
+    {
+      "candidate_rank": 673,
+      "source_rank": 675,
+      "word": "oddio",
+      "pos": null,
+      "frequency_count": 37008
+    },
+    {
+      "candidate_rank": 674,
+      "source_rank": 676,
+      "word": "jack",
+      "pos": null,
+      "frequency_count": 36995
+    },
+    {
+      "candidate_rank": 675,
+      "source_rank": 677,
+      "word": "libro",
+      "pos": null,
+      "frequency_count": 36974
+    },
+    {
+      "candidate_rank": 676,
+      "source_rank": 678,
+      "word": "eravamo",
+      "pos": null,
+      "frequency_count": 36900
+    },
+    {
+      "candidate_rank": 677,
+      "source_rank": 679,
+      "word": "amica",
+      "pos": null,
+      "frequency_count": 36883
+    },
+    {
+      "candidate_rank": 678,
+      "source_rank": 680,
+      "word": "diventare",
+      "pos": null,
+      "frequency_count": 36876
+    },
+    {
+      "candidate_rank": 679,
+      "source_rank": 681,
+      "word": "sui",
+      "pos": null,
+      "frequency_count": 36801
+    },
+    {
+      "candidate_rank": 680,
+      "source_rank": 682,
+      "word": "sbagliato",
+      "pos": null,
+      "frequency_count": 36774
+    },
+    {
+      "candidate_rank": 681,
+      "source_rank": 683,
+      "word": "dirmi",
+      "pos": null,
+      "frequency_count": 36757
+    },
+    {
+      "candidate_rank": 682,
+      "source_rank": 684,
+      "word": "wow",
+      "pos": null,
+      "frequency_count": 36746
+    },
+    {
+      "candidate_rank": 683,
+      "source_rank": 685,
+      "word": "farai",
+      "pos": null,
+      "frequency_count": 36559
+    },
+    {
+      "candidate_rank": 684,
+      "source_rank": 686,
+      "word": "entra",
+      "pos": null,
+      "frequency_count": 36488
+    },
+    {
+      "candidate_rank": 685,
+      "source_rank": 687,
+      "word": "venuta",
+      "pos": null,
+      "frequency_count": 36437
+    },
+    {
+      "candidate_rank": 686,
+      "source_rank": 688,
+      "word": "scelta",
+      "pos": null,
+      "frequency_count": 36337
+    },
+    {
+      "candidate_rank": 687,
+      "source_rank": 689,
+      "word": "voluto",
+      "pos": null,
+      "frequency_count": 36256
+    },
+    {
+      "candidate_rank": 688,
+      "source_rank": 690,
+      "word": "portare",
+      "pos": null,
+      "frequency_count": 36248
+    },
+    {
+      "candidate_rank": 689,
+      "source_rank": 691,
+      "word": "assolutamente",
+      "pos": null,
+      "frequency_count": 36177
+    },
+    {
+      "candidate_rank": 690,
+      "source_rank": 692,
+      "word": "molte",
+      "pos": null,
+      "frequency_count": 36038
+    },
+    {
+      "candidate_rank": 691,
+      "source_rank": 693,
+      "word": "chiedo",
+      "pos": null,
+      "frequency_count": 35957
+    },
+    {
+      "candidate_rank": 692,
+      "source_rank": 694,
+      "word": "torna",
+      "pos": null,
+      "frequency_count": 35930
+    },
+    {
+      "candidate_rank": 693,
+      "source_rank": 695,
+      "word": "scoperto",
+      "pos": null,
+      "frequency_count": 35881
+    },
+    {
+      "candidate_rank": 694,
+      "source_rank": 696,
+      "word": "fatti",
+      "pos": null,
+      "frequency_count": 35861
+    },
+    {
+      "candidate_rank": 695,
+      "source_rank": 697,
+      "word": "settimane",
+      "pos": null,
+      "frequency_count": 35855
+    },
+    {
+      "candidate_rank": 696,
+      "source_rank": 698,
+      "word": "dirlo",
+      "pos": null,
+      "frequency_count": 35840
+    },
+    {
+      "candidate_rank": 697,
+      "source_rank": 699,
+      "word": "alcuni",
+      "pos": null,
+      "frequency_count": 35716
+    },
+    {
+      "candidate_rank": 698,
+      "source_rank": 700,
+      "word": "prigione",
+      "pos": null,
+      "frequency_count": 35683
+    },
+    {
+      "candidate_rank": 699,
+      "source_rank": 701,
+      "word": "giornata",
+      "pos": null,
+      "frequency_count": 35633
+    },
+    {
+      "candidate_rank": 700,
+      "source_rank": 702,
+      "word": "piuttosto",
+      "pos": null,
+      "frequency_count": 35583
+    },
+    {
+      "candidate_rank": 701,
+      "source_rank": 703,
+      "word": "buono",
+      "pos": null,
+      "frequency_count": 35576
+    },
+    {
+      "candidate_rank": 702,
+      "source_rank": 704,
+      "word": "aspettare",
+      "pos": null,
+      "frequency_count": 35538
+    },
+    {
+      "candidate_rank": 703,
+      "source_rank": 705,
+      "word": "parli",
+      "pos": null,
+      "frequency_count": 35480
+    },
+    {
+      "candidate_rank": 704,
+      "source_rank": 706,
+      "word": "arrivare",
+      "pos": null,
+      "frequency_count": 35422
+    },
+    {
+      "candidate_rank": 705,
+      "source_rank": 707,
+      "word": "lungo",
+      "pos": null,
+      "frequency_count": 35357
+    },
+    {
+      "candidate_rank": 706,
+      "source_rank": 708,
+      "word": "vede",
+      "pos": null,
+      "frequency_count": 35334
+    },
+    {
+      "candidate_rank": 707,
+      "source_rank": 709,
+      "word": "avvocato",
+      "pos": null,
+      "frequency_count": 35309
+    },
+    {
+      "candidate_rank": 708,
+      "source_rank": 710,
+      "word": "deciso",
+      "pos": null,
+      "frequency_count": 35267
+    },
+    {
+      "candidate_rank": 709,
+      "source_rank": 711,
+      "word": "sarai",
+      "pos": null,
+      "frequency_count": 35262
+    },
+    {
+      "candidate_rank": 710,
+      "source_rank": 712,
+      "word": "messaggio",
+      "pos": null,
+      "frequency_count": 35168
+    },
+    {
+      "candidate_rank": 711,
+      "source_rank": 713,
+      "word": "dormire",
+      "pos": null,
+      "frequency_count": 35055
+    },
+    {
+      "candidate_rank": 712,
+      "source_rank": 714,
+      "word": "dieci",
+      "pos": null,
+      "frequency_count": 35039
+    },
+    {
+      "candidate_rank": 713,
+      "source_rank": 715,
+      "word": "stupido",
+      "pos": null,
+      "frequency_count": 34877
+    },
+    {
+      "candidate_rank": 714,
+      "source_rank": 716,
+      "word": "usare",
+      "pos": null,
+      "frequency_count": 34717
+    },
+    {
+      "candidate_rank": 715,
+      "source_rank": 717,
+      "word": "dello",
+      "pos": null,
+      "frequency_count": 34688
+    },
+    {
+      "candidate_rank": 716,
+      "source_rank": 718,
+      "word": "cielo",
+      "pos": null,
+      "frequency_count": 34656
+    },
+    {
+      "candidate_rank": 717,
+      "source_rank": 719,
+      "word": "guardare",
+      "pos": null,
+      "frequency_count": 34603
+    },
+    {
+      "candidate_rank": 718,
+      "source_rank": 720,
+      "word": "bagno",
+      "pos": null,
+      "frequency_count": 34585
+    },
+    {
+      "candidate_rank": 719,
+      "source_rank": 721,
+      "word": "aria",
+      "pos": null,
+      "frequency_count": 34562
+    },
+    {
+      "candidate_rank": 720,
+      "source_rank": 722,
+      "word": "voce",
+      "pos": null,
+      "frequency_count": 34514
+    },
+    {
+      "candidate_rank": 721,
+      "source_rank": 723,
+      "word": "tornato",
+      "pos": null,
+      "frequency_count": 34505
+    },
+    {
+      "candidate_rank": 722,
+      "source_rank": 724,
+      "word": "vuol",
+      "pos": null,
+      "frequency_count": 34483
+    },
+    {
+      "candidate_rank": 723,
+      "source_rank": 725,
+      "word": "giù",
+      "pos": null,
+      "frequency_count": 34239
+    },
+    {
+      "candidate_rank": 724,
+      "source_rank": 726,
+      "word": "conosci",
+      "pos": null,
+      "frequency_count": 34123
+    },
+    {
+      "candidate_rank": 725,
+      "source_rank": 727,
+      "word": "benissimo",
+      "pos": null,
+      "frequency_count": 34101
+    },
+    {
+      "candidate_rank": 726,
+      "source_rank": 728,
+      "word": "prendo",
+      "pos": null,
+      "frequency_count": 34014
+    },
+    {
+      "candidate_rank": 727,
+      "source_rank": 729,
+      "word": "verita",
+      "pos": null,
+      "frequency_count": 33992
+    },
+    {
+      "candidate_rank": 728,
+      "source_rank": 730,
+      "word": "cane",
+      "pos": null,
+      "frequency_count": 33958
+    },
+    {
+      "candidate_rank": 729,
+      "source_rank": 731,
+      "word": "restare",
+      "pos": null,
+      "frequency_count": 33939
+    },
+    {
+      "candidate_rank": 730,
+      "source_rank": 732,
+      "word": "chiamare",
+      "pos": null,
+      "frequency_count": 33931
+    },
+    {
+      "candidate_rank": 731,
+      "source_rank": 733,
+      "word": "poter",
+      "pos": null,
+      "frequency_count": 33801
+    },
+    {
+      "candidate_rank": 732,
+      "source_rank": 734,
+      "word": "campo",
+      "pos": null,
+      "frequency_count": 33702
+    },
+    {
+      "candidate_rank": 733,
+      "source_rank": 735,
+      "word": "luce",
+      "pos": null,
+      "frequency_count": 33690
+    },
+    {
+      "candidate_rank": 734,
+      "source_rank": 736,
+      "word": "sam",
+      "pos": null,
+      "frequency_count": 33675
+    },
+    {
+      "candidate_rank": 735,
+      "source_rank": 737,
+      "word": "qualunque",
+      "pos": null,
+      "frequency_count": 33626
+    },
+    {
+      "candidate_rank": 736,
+      "source_rank": 738,
+      "word": "giovane",
+      "pos": null,
+      "frequency_count": 33539
+    },
+    {
+      "candidate_rank": 737,
+      "source_rank": 739,
+      "word": "signori",
+      "pos": null,
+      "frequency_count": 33500
+    },
+    {
+      "candidate_rank": 738,
+      "source_rank": 740,
+      "word": "fra",
+      "pos": null,
+      "frequency_count": 33297
+    },
+    {
+      "candidate_rank": 739,
+      "source_rank": 741,
+      "word": "provare",
+      "pos": null,
+      "frequency_count": 33239
+    },
+    {
+      "candidate_rank": 740,
+      "source_rank": 742,
+      "word": "minuto",
+      "pos": null,
+      "frequency_count": 33161
+    },
+    {
+      "candidate_rank": 741,
+      "source_rank": 743,
+      "word": "saperlo",
+      "pos": null,
+      "frequency_count": 33097
+    },
+    {
+      "candidate_rank": 742,
+      "source_rank": 744,
+      "word": "lontano",
+      "pos": null,
+      "frequency_count": 33054
+    },
+    {
+      "candidate_rank": 743,
+      "source_rank": 745,
+      "word": "gruppo",
+      "pos": null,
+      "frequency_count": 32986
+    },
+    {
+      "candidate_rank": 744,
+      "source_rank": 746,
+      "word": "continua",
+      "pos": null,
+      "frequency_count": 32946
+    },
+    {
+      "candidate_rank": 745,
+      "source_rank": 747,
+      "word": "arrivo",
+      "pos": null,
+      "frequency_count": 32899
+    },
+    {
+      "candidate_rank": 746,
+      "source_rank": 748,
+      "word": "gran",
+      "pos": null,
+      "frequency_count": 32835
+    },
+    {
+      "candidate_rank": 747,
+      "source_rank": 749,
+      "word": "realta",
+      "pos": null,
+      "frequency_count": 32828
+    },
+    {
+      "candidate_rank": 748,
+      "source_rank": 750,
+      "word": "cerca",
+      "pos": null,
+      "frequency_count": 32799
+    },
+    {
+      "candidate_rank": 749,
+      "source_rank": 751,
+      "word": "passo",
+      "pos": null,
+      "frequency_count": 32787
+    },
+    {
+      "candidate_rank": 750,
+      "source_rank": 752,
+      "word": "domande",
+      "pos": null,
+      "frequency_count": 32765
+    },
+    {
+      "candidate_rank": 751,
+      "source_rank": 753,
+      "word": "insomma",
+      "pos": null,
+      "frequency_count": 32718
+    },
+    {
+      "candidate_rank": 752,
+      "source_rank": 754,
+      "word": "bambina",
+      "pos": null,
+      "frequency_count": 32679
+    },
+    {
+      "candidate_rank": 753,
+      "source_rank": 755,
+      "word": "pensando",
+      "pos": null,
+      "frequency_count": 32634
+    },
+    {
+      "candidate_rank": 754,
+      "source_rank": 756,
+      "word": "capelli",
+      "pos": null,
+      "frequency_count": 32604
+    },
+    {
+      "candidate_rank": 755,
+      "source_rank": 757,
+      "word": "trova",
+      "pos": null,
+      "frequency_count": 32593
+    },
+    {
+      "candidate_rank": 756,
+      "source_rank": 758,
+      "word": "onore",
+      "pos": null,
+      "frequency_count": 32569
+    },
+    {
+      "candidate_rank": 757,
+      "source_rank": 759,
+      "word": "aiutare",
+      "pos": null,
+      "frequency_count": 32566
+    },
+    {
+      "candidate_rank": 758,
+      "source_rank": 760,
+      "word": "verità",
+      "pos": null,
+      "frequency_count": 32541
+    },
+    {
+      "candidate_rank": 759,
+      "source_rank": 761,
+      "word": "prove",
+      "pos": null,
+      "frequency_count": 32527
+    },
+    {
+      "candidate_rank": 760,
+      "source_rank": 762,
+      "word": "n",
+      "pos": null,
+      "frequency_count": 32472
+    },
+    {
+      "candidate_rank": 761,
+      "source_rank": 763,
+      "word": "funziona",
+      "pos": null,
+      "frequency_count": 32417
+    },
+    {
+      "candidate_rank": 762,
+      "source_rank": 764,
+      "word": "alto",
+      "pos": null,
+      "frequency_count": 32362
+    },
+    {
+      "candidate_rank": 763,
+      "source_rank": 765,
+      "word": "giu",
+      "pos": null,
+      "frequency_count": 32316
+    },
+    {
+      "candidate_rank": 764,
+      "source_rank": 766,
+      "word": "credevo",
+      "pos": null,
+      "frequency_count": 32208
+    },
+    {
+      "candidate_rank": 765,
+      "source_rank": 767,
+      "word": "futuro",
+      "pos": null,
+      "frequency_count": 32203
+    },
+    {
+      "candidate_rank": 766,
+      "source_rank": 768,
+      "word": "preoccuparti",
+      "pos": null,
+      "frequency_count": 32145
+    },
+    {
+      "candidate_rank": 767,
+      "source_rank": 769,
+      "word": "idiota",
+      "pos": null,
+      "frequency_count": 32091
+    },
+    {
+      "candidate_rank": 768,
+      "source_rank": 770,
+      "word": "cibo",
+      "pos": null,
+      "frequency_count": 32073
+    },
+    {
+      "candidate_rank": 769,
+      "source_rank": 771,
+      "word": "fretta",
+      "pos": null,
+      "frequency_count": 31890
+    },
+    {
+      "candidate_rank": 770,
+      "source_rank": 772,
+      "word": "cara",
+      "pos": null,
+      "frequency_count": 31849
+    },
+    {
+      "candidate_rank": 771,
+      "source_rank": 773,
+      "word": "finalmente",
+      "pos": null,
+      "frequency_count": 31841
+    },
+    {
+      "candidate_rank": 772,
+      "source_rank": 774,
+      "word": "morti",
+      "pos": null,
+      "frequency_count": 31669
+    },
+    {
+      "candidate_rank": 773,
+      "source_rank": 775,
+      "word": "odio",
+      "pos": null,
+      "frequency_count": 31644
+    },
+    {
+      "candidate_rank": 774,
+      "source_rank": 776,
+      "word": "solito",
+      "pos": null,
+      "frequency_count": 31565
+    },
+    {
+      "candidate_rank": 775,
+      "source_rank": 777,
+      "word": "brava",
+      "pos": null,
+      "frequency_count": 31529
+    },
+    {
+      "candidate_rank": 776,
+      "source_rank": 778,
+      "word": "é",
+      "pos": null,
+      "frequency_count": 31392
+    },
+    {
+      "candidate_rank": 777,
+      "source_rank": 779,
+      "word": "incidente",
+      "pos": null,
+      "frequency_count": 31346
+    },
+    {
+      "candidate_rank": 778,
+      "source_rank": 780,
+      "word": "allo",
+      "pos": null,
+      "frequency_count": 31269
+    },
+    {
+      "candidate_rank": 779,
+      "source_rank": 781,
+      "word": "dev",
+      "pos": null,
+      "frequency_count": 31186
+    },
+    {
+      "candidate_rank": 780,
+      "source_rank": 782,
+      "word": "intenzione",
+      "pos": null,
+      "frequency_count": 31147
+    },
+    {
+      "candidate_rank": 781,
+      "source_rank": 783,
+      "word": "speciale",
+      "pos": null,
+      "frequency_count": 31144
+    },
+    {
+      "candidate_rank": 782,
+      "source_rank": 784,
+      "word": "cambiare",
+      "pos": null,
+      "frequency_count": 31140
+    },
+    {
+      "candidate_rank": 783,
+      "source_rank": 785,
+      "word": "vera",
+      "pos": null,
+      "frequency_count": 31138
+    },
+    {
+      "candidate_rank": 784,
+      "source_rank": 786,
+      "word": "camera",
+      "pos": null,
+      "frequency_count": 31102
+    },
+    {
+      "candidate_rank": 785,
+      "source_rank": 787,
+      "word": "oltre",
+      "pos": null,
+      "frequency_count": 31088
+    },
+    {
+      "candidate_rank": 786,
+      "source_rank": 788,
+      "word": "semplice",
+      "pos": null,
+      "frequency_count": 31031
+    },
+    {
+      "candidate_rank": 787,
+      "source_rank": 789,
+      "word": "dirti",
+      "pos": null,
+      "frequency_count": 31022
+    },
+    {
+      "candidate_rank": 788,
+      "source_rank": 790,
+      "word": "riguardo",
+      "pos": null,
+      "frequency_count": 30963
+    },
+    {
+      "candidate_rank": 789,
+      "source_rank": 791,
+      "word": "finche",
+      "pos": null,
+      "frequency_count": 30933
+    },
+    {
+      "candidate_rank": 790,
+      "source_rank": 792,
+      "word": "aspetto",
+      "pos": null,
+      "frequency_count": 30919
+    },
+    {
+      "candidate_rank": 791,
+      "source_rank": 793,
+      "word": "viaggio",
+      "pos": null,
+      "frequency_count": 30802
+    },
+    {
+      "candidate_rank": 792,
+      "source_rank": 794,
+      "word": "chiaro",
+      "pos": null,
+      "frequency_count": 30772
+    },
+    {
+      "candidate_rank": 793,
+      "source_rank": 795,
+      "word": "chiamata",
+      "pos": null,
+      "frequency_count": 30771
+    },
+    {
+      "candidate_rank": 794,
+      "source_rank": 796,
+      "word": "bocca",
+      "pos": null,
+      "frequency_count": 30661
+    },
+    {
+      "candidate_rank": 795,
+      "source_rank": 797,
+      "word": "permesso",
+      "pos": null,
+      "frequency_count": 30503
+    },
+    {
+      "candidate_rank": 796,
+      "source_rank": 798,
+      "word": "piacerebbe",
+      "pos": null,
+      "frequency_count": 30457
+    },
+    {
+      "candidate_rank": 797,
+      "source_rank": 799,
+      "word": "dovete",
+      "pos": null,
+      "frequency_count": 30289
+    },
+    {
+      "candidate_rank": 798,
+      "source_rank": 800,
+      "word": "giocare",
+      "pos": null,
+      "frequency_count": 30267
+    },
+    {
+      "candidate_rank": 799,
+      "source_rank": 801,
+      "word": "ordine",
+      "pos": null,
+      "frequency_count": 30252
+    },
+    {
+      "candidate_rank": 800,
+      "source_rank": 802,
+      "word": "circa",
+      "pos": null,
+      "frequency_count": 30207
+    },
+    {
+      "candidate_rank": 801,
+      "source_rank": 803,
+      "word": "ovviamente",
+      "pos": null,
+      "frequency_count": 30051
+    },
+    {
+      "candidate_rank": 802,
+      "source_rank": 804,
+      "word": "finire",
+      "pos": null,
+      "frequency_count": 30046
+    },
+    {
+      "candidate_rank": 803,
+      "source_rank": 806,
+      "word": "natale",
+      "pos": null,
+      "frequency_count": 29990
+    },
+    {
+      "candidate_rank": 804,
+      "source_rank": 808,
+      "word": "direi",
+      "pos": null,
+      "frequency_count": 29936
+    },
+    {
+      "candidate_rank": 805,
+      "source_rank": 809,
+      "word": "vostri",
+      "pos": null,
+      "frequency_count": 29765
+    },
+    {
+      "candidate_rank": 806,
+      "source_rank": 810,
+      "word": "occhio",
+      "pos": null,
+      "frequency_count": 29742
+    },
+    {
+      "candidate_rank": 807,
+      "source_rank": 811,
+      "word": "pronta",
+      "pos": null,
+      "frequency_count": 29723
+    },
+    {
+      "candidate_rank": 808,
+      "source_rank": 812,
+      "word": "scusami",
+      "pos": null,
+      "frequency_count": 29718
+    },
+    {
+      "candidate_rank": 809,
+      "source_rank": 813,
+      "word": "mattina",
+      "pos": null,
+      "frequency_count": 29693
+    },
+    {
+      "candidate_rank": 810,
+      "source_rank": 814,
+      "word": "cercato",
+      "pos": null,
+      "frequency_count": 29591
+    },
+    {
+      "candidate_rank": 811,
+      "source_rank": 815,
+      "word": "crede",
+      "pos": null,
+      "frequency_count": 29533
+    },
+    {
+      "candidate_rank": 812,
+      "source_rank": 816,
+      "word": "sistema",
+      "pos": null,
+      "frequency_count": 29455
+    },
+    {
+      "candidate_rank": 813,
+      "source_rank": 817,
+      "word": "york",
+      "pos": null,
+      "frequency_count": 29432
+    },
+    {
+      "candidate_rank": 814,
+      "source_rank": 818,
+      "word": "fondo",
+      "pos": null,
+      "frequency_count": 29402
+    },
+    {
+      "candidate_rank": 815,
+      "source_rank": 819,
+      "word": "resta",
+      "pos": null,
+      "frequency_count": 29301
+    },
+    {
+      "candidate_rank": 816,
+      "source_rank": 820,
+      "word": "devono",
+      "pos": null,
+      "frequency_count": 29257
+    },
+    {
+      "candidate_rank": 817,
+      "source_rank": 821,
+      "word": "prossimo",
+      "pos": null,
+      "frequency_count": 29085
+    },
+    {
+      "candidate_rank": 818,
+      "source_rank": 822,
+      "word": "pronti",
+      "pos": null,
+      "frequency_count": 29055
+    },
+    {
+      "candidate_rank": 819,
+      "source_rank": 823,
+      "word": "saputo",
+      "pos": null,
+      "frequency_count": 29025
+    },
+    {
+      "candidate_rank": 820,
+      "source_rank": 824,
+      "word": "scusate",
+      "pos": null,
+      "frequency_count": 28999
+    },
+    {
+      "candidate_rank": 821,
+      "source_rank": 825,
+      "word": "potere",
+      "pos": null,
+      "frequency_count": 28726
+    },
+    {
+      "candidate_rank": 822,
+      "source_rank": 826,
+      "word": "milioni",
+      "pos": null,
+      "frequency_count": 28725
+    },
+    {
+      "candidate_rank": 823,
+      "source_rank": 827,
+      "word": "soltanto",
+      "pos": null,
+      "frequency_count": 28690
+    },
+    {
+      "candidate_rank": 824,
+      "source_rank": 828,
+      "word": "armi",
+      "pos": null,
+      "frequency_count": 28654
+    },
+    {
+      "candidate_rank": 825,
+      "source_rank": 829,
+      "word": "arriva",
+      "pos": null,
+      "frequency_count": 28648
+    },
+    {
+      "candidate_rank": 826,
+      "source_rank": 830,
+      "word": "fermo",
+      "pos": null,
+      "frequency_count": 28645
+    },
+    {
+      "candidate_rank": 827,
+      "source_rank": 831,
+      "word": "mese",
+      "pos": null,
+      "frequency_count": 28602
+    },
+    {
+      "candidate_rank": 828,
+      "source_rank": 832,
+      "word": "chiedere",
+      "pos": null,
+      "frequency_count": 28594
+    },
+    {
+      "candidate_rank": 829,
+      "source_rank": 833,
+      "word": "cristo",
+      "pos": null,
+      "frequency_count": 28557
+    },
+    {
+      "candidate_rank": 830,
+      "source_rank": 834,
+      "word": "torno",
+      "pos": null,
+      "frequency_count": 28430
+    },
+    {
+      "candidate_rank": 831,
+      "source_rank": 835,
+      "word": "venite",
+      "pos": null,
+      "frequency_count": 28262
+    },
+    {
+      "candidate_rank": 832,
+      "source_rank": 836,
+      "word": "controllare",
+      "pos": null,
+      "frequency_count": 28240
+    },
+    {
+      "candidate_rank": 833,
+      "source_rank": 837,
+      "word": "appuntamento",
+      "pos": null,
+      "frequency_count": 28216
+    },
+    {
+      "candidate_rank": 834,
+      "source_rank": 838,
+      "word": "s",
+      "pos": null,
+      "frequency_count": 28200
+    },
+    {
+      "candidate_rank": 835,
+      "source_rank": 839,
+      "word": "chiami",
+      "pos": null,
+      "frequency_count": 28183
+    },
+    {
+      "candidate_rank": 836,
+      "source_rank": 840,
+      "word": "vecchia",
+      "pos": null,
+      "frequency_count": 28158
+    },
+    {
+      "candidate_rank": 837,
+      "source_rank": 841,
+      "word": "detective",
+      "pos": null,
+      "frequency_count": 28116
+    },
+    {
+      "candidate_rank": 838,
+      "source_rank": 842,
+      "word": "pero",
+      "pos": null,
+      "frequency_count": 28057
+    },
+    {
+      "candidate_rank": 839,
+      "source_rank": 843,
+      "word": "metti",
+      "pos": null,
+      "frequency_count": 28034
+    },
+    {
+      "candidate_rank": 840,
+      "source_rank": 844,
+      "word": "grado",
+      "pos": null,
+      "frequency_count": 28004
+    },
+    {
+      "candidate_rank": 841,
+      "source_rank": 845,
+      "word": "vanno",
+      "pos": null,
+      "frequency_count": 27995
+    },
+    {
+      "candidate_rank": 842,
+      "source_rank": 846,
+      "word": "nave",
+      "pos": null,
+      "frequency_count": 27941
+    },
+    {
+      "candidate_rank": 843,
+      "source_rank": 847,
+      "word": "iniziato",
+      "pos": null,
+      "frequency_count": 27923
+    },
+    {
+      "candidate_rank": 844,
+      "source_rank": 849,
+      "word": "informazioni",
+      "pos": null,
+      "frequency_count": 27859
+    },
+    {
+      "candidate_rank": 845,
+      "source_rank": 850,
+      "word": "libero",
+      "pos": null,
+      "frequency_count": 27782
+    },
+    {
+      "candidate_rank": 846,
+      "source_rank": 851,
+      "word": "stronzo",
+      "pos": null,
+      "frequency_count": 27765
+    },
+    {
+      "candidate_rank": 847,
+      "source_rank": 852,
+      "word": "grandi",
+      "pos": null,
+      "frequency_count": 27707
+    },
+    {
+      "candidate_rank": 848,
+      "source_rank": 853,
+      "word": "pezzo",
+      "pos": null,
+      "frequency_count": 27684
+    },
+    {
+      "candidate_rank": 849,
+      "source_rank": 854,
+      "word": "segreto",
+      "pos": null,
+      "frequency_count": 27664
+    },
+    {
+      "candidate_rank": 850,
+      "source_rank": 855,
+      "word": "colpo",
+      "pos": null,
+      "frequency_count": 27658
+    },
+    {
+      "candidate_rank": 851,
+      "source_rank": 856,
+      "word": "faceva",
+      "pos": null,
+      "frequency_count": 27562
+    },
+    {
+      "candidate_rank": 852,
+      "source_rank": 857,
+      "word": "piacciono",
+      "pos": null,
+      "frequency_count": 27507
+    },
+    {
+      "candidate_rank": 853,
+      "source_rank": 858,
+      "word": "porto",
+      "pos": null,
+      "frequency_count": 27440
+    },
+    {
+      "candidate_rank": 854,
+      "source_rank": 859,
+      "word": "oppure",
+      "pos": null,
+      "frequency_count": 27371
+    },
+    {
+      "candidate_rank": 855,
+      "source_rank": 860,
+      "word": "completamente",
+      "pos": null,
+      "frequency_count": 27354
+    },
+    {
+      "candidate_rank": 856,
+      "source_rank": 861,
+      "word": "vederti",
+      "pos": null,
+      "frequency_count": 27318
+    },
+    {
+      "candidate_rank": 857,
+      "source_rank": 862,
+      "word": "lista",
+      "pos": null,
+      "frequency_count": 27280
+    },
+    {
+      "candidate_rank": 858,
+      "source_rank": 863,
+      "word": "venga",
+      "pos": null,
+      "frequency_count": 27268
+    },
+    {
+      "candidate_rank": 859,
+      "source_rank": 864,
+      "word": "veloce",
+      "pos": null,
+      "frequency_count": 27221
+    },
+    {
+      "candidate_rank": 860,
+      "source_rank": 865,
+      "word": "assassino",
+      "pos": null,
+      "frequency_count": 27174
+    },
+    {
+      "candidate_rank": 861,
+      "source_rank": 866,
+      "word": "sapeva",
+      "pos": null,
+      "frequency_count": 27164
+    },
+    {
+      "candidate_rank": 862,
+      "source_rank": 867,
+      "word": "finché",
+      "pos": null,
+      "frequency_count": 27114
+    },
+    {
+      "candidate_rank": 863,
+      "source_rank": 868,
+      "word": "tom",
+      "pos": null,
+      "frequency_count": 27062
+    },
+    {
+      "candidate_rank": 864,
+      "source_rank": 869,
+      "word": "ormai",
+      "pos": null,
+      "frequency_count": 27060
+    },
+    {
+      "candidate_rank": 865,
+      "source_rank": 870,
+      "word": "interessa",
+      "pos": null,
+      "frequency_count": 27032
+    },
+    {
+      "candidate_rank": 866,
+      "source_rank": 871,
+      "word": "generale",
+      "pos": null,
+      "frequency_count": 27020
+    },
+    {
+      "candidate_rank": 867,
+      "source_rank": 872,
+      "word": "giusta",
+      "pos": null,
+      "frequency_count": 27015
+    },
+    {
+      "candidate_rank": 868,
+      "source_rank": 873,
+      "word": "tenere",
+      "pos": null,
+      "frequency_count": 27007
+    },
+    {
+      "candidate_rank": 869,
+      "source_rank": 874,
+      "word": "pazzo",
+      "pos": null,
+      "frequency_count": 26992
+    },
+    {
+      "candidate_rank": 870,
+      "source_rank": 875,
+      "word": "vittima",
+      "pos": null,
+      "frequency_count": 26978
+    },
+    {
+      "candidate_rank": 871,
+      "source_rank": 876,
+      "word": "giuro",
+      "pos": null,
+      "frequency_count": 26966
+    },
+    {
+      "candidate_rank": 872,
+      "source_rank": 877,
+      "word": "consiglio",
+      "pos": null,
+      "frequency_count": 26953
+    },
+    {
+      "candidate_rank": 873,
+      "source_rank": 878,
+      "word": "michael",
+      "pos": null,
+      "frequency_count": 26923
+    },
+    {
+      "candidate_rank": 874,
+      "source_rank": 879,
+      "word": "alcune",
+      "pos": null,
+      "frequency_count": 26881
+    },
+    {
+      "candidate_rank": 875,
+      "source_rank": 880,
+      "word": "semplicemente",
+      "pos": null,
+      "frequency_count": 26865
+    },
+    {
+      "candidate_rank": 876,
+      "source_rank": 881,
+      "word": "zio",
+      "pos": null,
+      "frequency_count": 26837
+    },
+    {
+      "candidate_rank": 877,
+      "source_rank": 882,
+      "word": "centro",
+      "pos": null,
+      "frequency_count": 26812
+    },
+    {
+      "candidate_rank": 878,
+      "source_rank": 883,
+      "word": "specie",
+      "pos": null,
+      "frequency_count": 26799
+    },
+    {
+      "candidate_rank": 879,
+      "source_rank": 884,
+      "word": "mille",
+      "pos": null,
+      "frequency_count": 26725
+    },
+    {
+      "candidate_rank": 880,
+      "source_rank": 885,
+      "word": "sogno",
+      "pos": null,
+      "frequency_count": 26675
+    },
+    {
+      "candidate_rank": 881,
+      "source_rank": 886,
+      "word": "lasci",
+      "pos": null,
+      "frequency_count": 26653
+    },
+    {
+      "candidate_rank": 882,
+      "source_rank": 887,
+      "word": "carino",
+      "pos": null,
+      "frequency_count": 26641
+    },
+    {
+      "candidate_rank": 883,
+      "source_rank": 888,
+      "word": "doveva",
+      "pos": null,
+      "frequency_count": 26623
+    },
+    {
+      "candidate_rank": 884,
+      "source_rank": 889,
+      "word": "brutto",
+      "pos": null,
+      "frequency_count": 26619
+    },
+    {
+      "candidate_rank": 885,
+      "source_rank": 890,
+      "word": "nello",
+      "pos": null,
+      "frequency_count": 26605
+    },
+    {
+      "candidate_rank": 886,
+      "source_rank": 891,
+      "word": "aspetti",
+      "pos": null,
+      "frequency_count": 26600
+    },
+    {
+      "candidate_rank": 887,
+      "source_rank": 892,
+      "word": "incredibile",
+      "pos": null,
+      "frequency_count": 26409
+    },
+    {
+      "candidate_rank": 888,
+      "source_rank": 893,
+      "word": "sole",
+      "pos": null,
+      "frequency_count": 26400
+    },
+    {
+      "candidate_rank": 889,
+      "source_rank": 894,
+      "word": "glielo",
+      "pos": null,
+      "frequency_count": 26386
+    },
+    {
+      "candidate_rank": 890,
+      "source_rank": 895,
+      "word": "legge",
+      "pos": null,
+      "frequency_count": 26358
+    },
+    {
+      "candidate_rank": 891,
+      "source_rank": 896,
+      "word": "spesso",
+      "pos": null,
+      "frequency_count": 26288
+    },
+    {
+      "candidate_rank": 892,
+      "source_rank": 897,
+      "word": "guardate",
+      "pos": null,
+      "frequency_count": 26233
+    },
+    {
+      "candidate_rank": 893,
+      "source_rank": 898,
+      "word": "cambiato",
+      "pos": null,
+      "frequency_count": 26223
+    },
+    {
+      "candidate_rank": 894,
+      "source_rank": 899,
+      "word": "scena",
+      "pos": null,
+      "frequency_count": 26156
+    },
+    {
+      "candidate_rank": 895,
+      "source_rank": 900,
+      "word": "volevi",
+      "pos": null,
+      "frequency_count": 26141
+    },
+    {
+      "candidate_rank": 896,
+      "source_rank": 901,
+      "word": "charlie",
+      "pos": null,
+      "frequency_count": 26128
+    },
+    {
+      "candidate_rank": 897,
+      "source_rank": 902,
+      "word": "lasciami",
+      "pos": null,
+      "frequency_count": 26113
+    },
+    {
+      "candidate_rank": 898,
+      "source_rank": 903,
+      "word": "gentile",
+      "pos": null,
+      "frequency_count": 26075
+    },
+    {
+      "candidate_rank": 899,
+      "source_rank": 904,
+      "word": "rispetto",
+      "pos": null,
+      "frequency_count": 26070
+    },
+    {
+      "candidate_rank": 900,
+      "source_rank": 905,
+      "word": "ve",
+      "pos": null,
+      "frequency_count": 26043
+    },
+    {
+      "candidate_rank": 901,
+      "source_rank": 906,
+      "word": "fara",
+      "pos": null,
+      "frequency_count": 25996
+    },
+    {
+      "candidate_rank": 902,
+      "source_rank": 907,
+      "word": "zitto",
+      "pos": null,
+      "frequency_count": 25966
+    },
+    {
+      "candidate_rank": 903,
+      "source_rank": 908,
+      "word": "incontro",
+      "pos": null,
+      "frequency_count": 25891
+    },
+    {
+      "candidate_rank": 904,
+      "source_rank": 909,
+      "word": "farà",
+      "pos": null,
+      "frequency_count": 25890
+    },
+    {
+      "candidate_rank": 905,
+      "source_rank": 910,
+      "word": "servono",
+      "pos": null,
+      "frequency_count": 25865
+    },
+    {
+      "candidate_rank": 906,
+      "source_rank": 911,
+      "word": "rapporto",
+      "pos": null,
+      "frequency_count": 25814
+    },
+    {
+      "candidate_rank": 907,
+      "source_rank": 912,
+      "word": "errore",
+      "pos": null,
+      "frequency_count": 25813
+    },
+    {
+      "candidate_rank": 908,
+      "source_rank": 913,
+      "word": "mike",
+      "pos": null,
+      "frequency_count": 25758
+    },
+    {
+      "candidate_rank": 909,
+      "source_rank": 914,
+      "word": "sanno",
+      "pos": null,
+      "frequency_count": 25709
+    },
+    {
+      "candidate_rank": 910,
+      "source_rank": 915,
+      "word": "pagare",
+      "pos": null,
+      "frequency_count": 25689
+    },
+    {
+      "candidate_rank": 911,
+      "source_rank": 916,
+      "word": "sorpresa",
+      "pos": null,
+      "frequency_count": 25562
+    },
+    {
+      "candidate_rank": 912,
+      "source_rank": 917,
+      "word": "occhiata",
+      "pos": null,
+      "frequency_count": 25561
+    },
+    {
+      "candidate_rank": 913,
+      "source_rank": 918,
+      "word": "risposta",
+      "pos": null,
+      "frequency_count": 25558
+    },
+    {
+      "candidate_rank": 914,
+      "source_rank": 919,
+      "word": "presa",
+      "pos": null,
+      "frequency_count": 25557
+    },
+    {
+      "candidate_rank": 915,
+      "source_rank": 920,
+      "word": "servizio",
+      "pos": null,
+      "frequency_count": 25544
+    },
+    {
+      "candidate_rank": 916,
+      "source_rank": 921,
+      "word": "medico",
+      "pos": null,
+      "frequency_count": 25532
+    },
+    {
+      "candidate_rank": 917,
+      "source_rank": 922,
+      "word": "usato",
+      "pos": null,
+      "frequency_count": 25489
+    },
+    {
+      "candidate_rank": 918,
+      "source_rank": 923,
+      "word": "hey",
+      "pos": null,
+      "frequency_count": 25473
+    },
+    {
+      "candidate_rank": 919,
+      "source_rank": 924,
+      "word": "caro",
+      "pos": null,
+      "frequency_count": 25455
+    },
+    {
+      "candidate_rank": 920,
+      "source_rank": 925,
+      "word": "schifo",
+      "pos": null,
+      "frequency_count": 25451
+    },
+    {
+      "candidate_rank": 921,
+      "source_rank": 926,
+      "word": "avrai",
+      "pos": null,
+      "frequency_count": 25368
+    },
+    {
+      "candidate_rank": 922,
+      "source_rank": 927,
+      "word": "dolore",
+      "pos": null,
+      "frequency_count": 25363
+    },
+    {
+      "candidate_rank": 923,
+      "source_rank": 928,
+      "word": "saresti",
+      "pos": null,
+      "frequency_count": 25334
+    },
+    {
+      "candidate_rank": 924,
+      "source_rank": 929,
+      "word": "personale",
+      "pos": null,
+      "frequency_count": 25317
+    },
+    {
+      "candidate_rank": 925,
+      "source_rank": 930,
+      "word": "quali",
+      "pos": null,
+      "frequency_count": 25292
+    },
+    {
+      "candidate_rank": 926,
+      "source_rank": 931,
+      "word": "saro",
+      "pos": null,
+      "frequency_count": 25272
+    },
+    {
+      "candidate_rank": 927,
+      "source_rank": 932,
+      "word": "peggio",
+      "pos": null,
+      "frequency_count": 25238
+    },
+    {
+      "candidate_rank": 928,
+      "source_rank": 933,
+      "word": "addio",
+      "pos": null,
+      "frequency_count": 25229
+    },
+    {
+      "candidate_rank": 929,
+      "source_rank": 934,
+      "word": "addosso",
+      "pos": null,
+      "frequency_count": 25226
+    },
+    {
+      "candidate_rank": 930,
+      "source_rank": 935,
+      "word": "dovevo",
+      "pos": null,
+      "frequency_count": 25217
+    },
+    {
+      "candidate_rank": 931,
+      "source_rank": 936,
+      "word": "poteva",
+      "pos": null,
+      "frequency_count": 25161
+    },
+    {
+      "candidate_rank": 932,
+      "source_rank": 937,
+      "word": "pieno",
+      "pos": null,
+      "frequency_count": 25142
+    },
+    {
+      "candidate_rank": 933,
+      "source_rank": 938,
+      "word": "diverso",
+      "pos": null,
+      "frequency_count": 25123
+    },
+    {
+      "candidate_rank": 934,
+      "source_rank": 939,
+      "word": "vestiti",
+      "pos": null,
+      "frequency_count": 25055
+    },
+    {
+      "candidate_rank": 935,
+      "source_rank": 940,
+      "word": "sparato",
+      "pos": null,
+      "frequency_count": 25039
+    },
+    {
+      "candidate_rank": 936,
+      "source_rank": 941,
+      "word": "realtà",
+      "pos": null,
+      "frequency_count": 25025
+    },
+    {
+      "candidate_rank": 937,
+      "source_rank": 942,
+      "word": "do",
+      "pos": null,
+      "frequency_count": 25019
+    },
+    {
+      "candidate_rank": 938,
+      "source_rank": 943,
+      "word": "sarò",
+      "pos": null,
+      "frequency_count": 24965
+    },
+    {
+      "candidate_rank": 939,
+      "source_rank": 944,
+      "word": "normale",
+      "pos": null,
+      "frequency_count": 24942
+    },
+    {
+      "candidate_rank": 940,
+      "source_rank": 945,
+      "word": "fame",
+      "pos": null,
+      "frequency_count": 24920
+    },
+    {
+      "candidate_rank": 941,
+      "source_rank": 946,
+      "word": "programma",
+      "pos": null,
+      "frequency_count": 24875
+    },
+    {
+      "candidate_rank": 942,
+      "source_rank": 947,
+      "word": "nonna",
+      "pos": null,
+      "frequency_count": 24820
+    },
+    {
+      "candidate_rank": 943,
+      "source_rank": 948,
+      "word": "sappia",
+      "pos": null,
+      "frequency_count": 24735
+    },
+    {
+      "candidate_rank": 944,
+      "source_rank": 949,
+      "word": "sembrava",
+      "pos": null,
+      "frequency_count": 24719
+    },
+    {
+      "candidate_rank": 945,
+      "source_rank": 950,
+      "word": "migliori",
+      "pos": null,
+      "frequency_count": 24704
+    },
+    {
+      "candidate_rank": 946,
+      "source_rank": 951,
+      "word": "notizie",
+      "pos": null,
+      "frequency_count": 24650
+    },
+    {
+      "candidate_rank": 947,
+      "source_rank": 952,
+      "word": "avevamo",
+      "pos": null,
+      "frequency_count": 24638
+    },
+    {
+      "candidate_rank": 948,
+      "source_rank": 953,
+      "word": "riesci",
+      "pos": null,
+      "frequency_count": 24638
+    },
+    {
+      "candidate_rank": 949,
+      "source_rank": 954,
+      "word": "posizione",
+      "pos": null,
+      "frequency_count": 24614
+    },
+    {
+      "candidate_rank": 950,
+      "source_rank": 955,
+      "word": "vengo",
+      "pos": null,
+      "frequency_count": 24547
+    },
+    {
+      "candidate_rank": 951,
+      "source_rank": 956,
+      "word": "rimanere",
+      "pos": null,
+      "frequency_count": 24544
+    },
+    {
+      "candidate_rank": 952,
+      "source_rank": 957,
+      "word": "compagnia",
+      "pos": null,
+      "frequency_count": 24520
+    },
+    {
+      "candidate_rank": 953,
+      "source_rank": 958,
+      "word": "proposito",
+      "pos": null,
+      "frequency_count": 24508
+    },
+    {
+      "candidate_rank": 954,
+      "source_rank": 959,
+      "word": "farci",
+      "pos": null,
+      "frequency_count": 24502
+    },
+    {
+      "candidate_rank": 955,
+      "source_rank": 960,
+      "word": "joe",
+      "pos": null,
+      "frequency_count": 24476
+    },
+    {
+      "candidate_rank": 956,
+      "source_rank": 961,
+      "word": "ricorda",
+      "pos": null,
+      "frequency_count": 24429
+    },
+    {
+      "candidate_rank": 957,
+      "source_rank": 962,
+      "word": "frank",
+      "pos": null,
+      "frequency_count": 24392
+    },
+    {
+      "candidate_rank": 958,
+      "source_rank": 963,
+      "word": "prende",
+      "pos": null,
+      "frequency_count": 24340
+    },
+    {
+      "candidate_rank": 959,
+      "source_rank": 964,
+      "word": "tante",
+      "pos": null,
+      "frequency_count": 24337
+    },
+    {
+      "candidate_rank": 960,
+      "source_rank": 965,
+      "word": "avevano",
+      "pos": null,
+      "frequency_count": 24313
+    },
+    {
+      "candidate_rank": 961,
+      "source_rank": 966,
+      "word": "arrivando",
+      "pos": null,
+      "frequency_count": 24287
+    },
+    {
+      "candidate_rank": 962,
+      "source_rank": 967,
+      "word": "chiuso",
+      "pos": null,
+      "frequency_count": 24272
+    },
+    {
+      "candidate_rank": 963,
+      "source_rank": 968,
+      "word": "terribile",
+      "pos": null,
+      "frequency_count": 24238
+    },
+    {
+      "candidate_rank": 964,
+      "source_rank": 969,
+      "word": "ritardo",
+      "pos": null,
+      "frequency_count": 24222
+    },
+    {
+      "candidate_rank": 965,
+      "source_rank": 970,
+      "word": "attento",
+      "pos": null,
+      "frequency_count": 24194
+    },
+    {
+      "candidate_rank": 966,
+      "source_rank": 971,
+      "word": "bar",
+      "pos": null,
+      "frequency_count": 24183
+    },
+    {
+      "candidate_rank": 967,
+      "source_rank": 972,
+      "word": "sembri",
+      "pos": null,
+      "frequency_count": 24146
+    },
+    {
+      "candidate_rank": 968,
+      "source_rank": 973,
+      "word": "fallo",
+      "pos": null,
+      "frequency_count": 24097
+    },
+    {
+      "candidate_rank": 969,
+      "source_rank": 974,
+      "word": "dimenticato",
+      "pos": null,
+      "frequency_count": 24007
+    },
+    {
+      "candidate_rank": 970,
+      "source_rank": 975,
+      "word": "bisogna",
+      "pos": null,
+      "frequency_count": 23987
+    },
+    {
+      "candidate_rank": 971,
+      "source_rank": 976,
+      "word": "impossibile",
+      "pos": null,
+      "frequency_count": 23949
+    },
+    {
+      "candidate_rank": 972,
+      "source_rank": 977,
+      "word": "cioè",
+      "pos": null,
+      "frequency_count": 23934
+    },
+    {
+      "candidate_rank": 973,
+      "source_rank": 978,
+      "word": "studio",
+      "pos": null,
+      "frequency_count": 23860
+    },
+    {
+      "candidate_rank": 974,
+      "source_rank": 979,
+      "word": "stessi",
+      "pos": null,
+      "frequency_count": 23846
+    },
+    {
+      "candidate_rank": 975,
+      "source_rank": 980,
+      "word": "arma",
+      "pos": null,
+      "frequency_count": 23819
+    },
+    {
+      "candidate_rank": 976,
+      "source_rank": 981,
+      "word": "conosce",
+      "pos": null,
+      "frequency_count": 23781
+    },
+    {
+      "candidate_rank": 977,
+      "source_rank": 982,
+      "word": "uscita",
+      "pos": null,
+      "frequency_count": 23763
+    },
+    {
+      "candidate_rank": 978,
+      "source_rank": 983,
+      "word": "ii",
+      "pos": null,
+      "frequency_count": 23745
+    },
+    {
+      "candidate_rank": 979,
+      "source_rank": 984,
+      "word": "fin",
+      "pos": null,
+      "frequency_count": 23741
+    },
+    {
+      "candidate_rank": 980,
+      "source_rank": 985,
+      "word": "disse",
+      "pos": null,
+      "frequency_count": 23659
+    },
+    {
+      "candidate_rank": 981,
+      "source_rank": 986,
+      "word": "david",
+      "pos": null,
+      "frequency_count": 23649
+    },
+    {
+      "candidate_rank": 982,
+      "source_rank": 987,
+      "word": "vattene",
+      "pos": null,
+      "frequency_count": 23618
+    },
+    {
+      "candidate_rank": 983,
+      "source_rank": 988,
+      "word": "quante",
+      "pos": null,
+      "frequency_count": 23607
+    },
+    {
+      "candidate_rank": 984,
+      "source_rank": 989,
+      "word": "guai",
+      "pos": null,
+      "frequency_count": 23549
+    },
+    {
+      "candidate_rank": 985,
+      "source_rank": 990,
+      "word": "intorno",
+      "pos": null,
+      "frequency_count": 23545
+    },
+    {
+      "candidate_rank": 986,
+      "source_rank": 991,
+      "word": "video",
+      "pos": null,
+      "frequency_count": 23506
+    },
+    {
+      "candidate_rank": 987,
+      "source_rank": 992,
+      "word": "manca",
+      "pos": null,
+      "frequency_count": 23459
+    },
+    {
+      "candidate_rank": 988,
+      "source_rank": 993,
+      "word": "esserci",
+      "pos": null,
+      "frequency_count": 23436
+    },
+    {
+      "candidate_rank": 989,
+      "source_rank": 994,
+      "word": "grosso",
+      "pos": null,
+      "frequency_count": 23390
+    },
+    {
+      "candidate_rank": 990,
+      "source_rank": 995,
+      "word": "tanti",
+      "pos": null,
+      "frequency_count": 23341
+    },
+    {
+      "candidate_rank": 991,
+      "source_rank": 996,
+      "word": "dolce",
+      "pos": null,
+      "frequency_count": 23316
+    },
+    {
+      "candidate_rank": 992,
+      "source_rank": 997,
+      "word": "chiave",
+      "pos": null,
+      "frequency_count": 23265
+    },
+    {
+      "candidate_rank": 993,
+      "source_rank": 998,
+      "word": "cervello",
+      "pos": null,
+      "frequency_count": 23237
+    },
+    {
+      "candidate_rank": 994,
+      "source_rank": 999,
+      "word": "coraggio",
+      "pos": null,
+      "frequency_count": 23216
+    },
+    {
+      "candidate_rank": 995,
+      "source_rank": 1000,
+      "word": "interessante",
+      "pos": null,
+      "frequency_count": 23216
+    },
+    {
+      "candidate_rank": 996,
+      "source_rank": 1001,
+      "word": "peccato",
+      "pos": null,
+      "frequency_count": 23215
+    },
+    {
+      "candidate_rank": 997,
+      "source_rank": 1002,
+      "word": "questione",
+      "pos": null,
+      "frequency_count": 23186
+    },
+    {
+      "candidate_rank": 998,
+      "source_rank": 1003,
+      "word": "adoro",
+      "pos": null,
+      "frequency_count": 23175
+    },
+    {
+      "candidate_rank": 999,
+      "source_rank": 1004,
+      "word": "aereo",
+      "pos": null,
+      "frequency_count": 23170
+    },
+    {
+      "candidate_rank": 1000,
+      "source_rank": 1005,
+      "word": "guardi",
+      "pos": null,
+      "frequency_count": 23131
+    }
+  ]
+}

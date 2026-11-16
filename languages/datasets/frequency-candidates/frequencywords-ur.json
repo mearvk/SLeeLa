@@ -1,0 +1,7030 @@
+{
+  "schema": "SLeeLa FRUCHST frequency candidate staging v1",
+  "language_tag": "ur",
+  "language_directory": "urdu",
+  "source": {
+    "dataset": "FrequencyWords",
+    "upstream": "https://github.com/hermitdave/FrequencyWords",
+    "revision": "525f9b560de45753a5ea01069454e72e9aa541c6",
+    "sample": "content/2018/ur/ur_full.txt",
+    "data_license": "CC-BY-SA-4.0",
+    "code_license": "MIT",
+    "frequency_source": "OpenSubtitles-2018",
+    "attribution": [
+      "Hermit Dave / FrequencyWords — https://github.com/hermitdave/FrequencyWords",
+      "OpenSubtitles 2018 — https://opus.nlpl.eu/OpenSubtitles2018.php"
+    ],
+    "selection": "First 1,000 unique NFC-normalized lexical surface forms in source frequency order. Punctuation-only tokens are excluded; source line rank and raw occurrence count are retained.",
+    "limitations": [
+      "Surface forms, not lemmatized headwords.",
+      "Subtitle-domain frequency ranking; not a balanced general-purpose corpus.",
+      "No POS or sense labels are supplied by this source.",
+      "English, French, and Spanish definitions remain pending."
+    ],
+    "license_notice": "FrequencyWords content is CC BY-SA 4.0; preserve attribution and share-alike terms. The repository's code is MIT and does not change the data license."
+  },
+  "candidate_count": 1000,
+  "definitions_status": "pending",
+  "entries": [
+    {
+      "candidate_rank": 1,
+      "source_rank": 1,
+      "word": "ہے",
+      "pos": null,
+      "frequency_count": 10553
+    },
+    {
+      "candidate_rank": 2,
+      "source_rank": 2,
+      "word": "میں",
+      "pos": null,
+      "frequency_count": 9271
+    },
+    {
+      "candidate_rank": 3,
+      "source_rank": 4,
+      "word": "کے",
+      "pos": null,
+      "frequency_count": 8970
+    },
+    {
+      "candidate_rank": 4,
+      "source_rank": 6,
+      "word": "نہیں",
+      "pos": null,
+      "frequency_count": 4725
+    },
+    {
+      "candidate_rank": 5,
+      "source_rank": 7,
+      "word": "آپ",
+      "pos": null,
+      "frequency_count": 4715
+    },
+    {
+      "candidate_rank": 6,
+      "source_rank": 8,
+      "word": "کی",
+      "pos": null,
+      "frequency_count": 4375
+    },
+    {
+      "candidate_rank": 7,
+      "source_rank": 9,
+      "word": "ایک",
+      "pos": null,
+      "frequency_count": 4199
+    },
+    {
+      "candidate_rank": 8,
+      "source_rank": 10,
+      "word": "سے",
+      "pos": null,
+      "frequency_count": 4191
+    },
+    {
+      "candidate_rank": 9,
+      "source_rank": 11,
+      "word": "ہیں",
+      "pos": null,
+      "frequency_count": 3960
+    },
+    {
+      "candidate_rank": 10,
+      "source_rank": 12,
+      "word": "کو",
+      "pos": null,
+      "frequency_count": 3737
+    },
+    {
+      "candidate_rank": 11,
+      "source_rank": 13,
+      "word": "اس",
+      "pos": null,
+      "frequency_count": 3615
+    },
+    {
+      "candidate_rank": 12,
+      "source_rank": 14,
+      "word": "نے",
+      "pos": null,
+      "frequency_count": 3324
+    },
+    {
+      "candidate_rank": 13,
+      "source_rank": 15,
+      "word": "یہ",
+      "pos": null,
+      "frequency_count": 3296
+    },
+    {
+      "candidate_rank": 14,
+      "source_rank": 16,
+      "word": "کیا",
+      "pos": null,
+      "frequency_count": 3282
+    },
+    {
+      "candidate_rank": 15,
+      "source_rank": 17,
+      "word": "تم",
+      "pos": null,
+      "frequency_count": 2966
+    },
+    {
+      "candidate_rank": 16,
+      "source_rank": 18,
+      "word": "اور",
+      "pos": null,
+      "frequency_count": 2884
+    },
+    {
+      "candidate_rank": 17,
+      "source_rank": 19,
+      "word": "وہ",
+      "pos": null,
+      "frequency_count": 2464
+    },
+    {
+      "candidate_rank": 18,
+      "source_rank": 20,
+      "word": "ہو",
+      "pos": null,
+      "frequency_count": 2379
+    },
+    {
+      "candidate_rank": 19,
+      "source_rank": 21,
+      "word": "کر",
+      "pos": null,
+      "frequency_count": 2355
+    },
+    {
+      "candidate_rank": 20,
+      "source_rank": 22,
+      "word": "ہم",
+      "pos": null,
+      "frequency_count": 2338
+    },
+    {
+      "candidate_rank": 21,
+      "source_rank": 23,
+      "word": "کہ",
+      "pos": null,
+      "frequency_count": 2274
+    },
+    {
+      "candidate_rank": 22,
+      "source_rank": 24,
+      "word": "لئے",
+      "pos": null,
+      "frequency_count": 2133
+    },
+    {
+      "candidate_rank": 23,
+      "source_rank": 25,
+      "word": "پر",
+      "pos": null,
+      "frequency_count": 1907
+    },
+    {
+      "candidate_rank": 24,
+      "source_rank": 26,
+      "word": "تھا",
+      "pos": null,
+      "frequency_count": 1878
+    },
+    {
+      "candidate_rank": 25,
+      "source_rank": 27,
+      "word": "ہوں",
+      "pos": null,
+      "frequency_count": 1855
+    },
+    {
+      "candidate_rank": 26,
+      "source_rank": 28,
+      "word": "کا",
+      "pos": null,
+      "frequency_count": 1832
+    },
+    {
+      "candidate_rank": 27,
+      "source_rank": 29,
+      "word": "مجھے",
+      "pos": null,
+      "frequency_count": 1699
+    },
+    {
+      "candidate_rank": 28,
+      "source_rank": 30,
+      "word": "بھی",
+      "pos": null,
+      "frequency_count": 1271
+    },
+    {
+      "candidate_rank": 29,
+      "source_rank": 31,
+      "word": "تو",
+      "pos": null,
+      "frequency_count": 1240
+    },
+    {
+      "candidate_rank": 30,
+      "source_rank": 32,
+      "word": "کرنے",
+      "pos": null,
+      "frequency_count": 1178
+    },
+    {
+      "candidate_rank": 31,
+      "source_rank": 33,
+      "word": "رہے",
+      "pos": null,
+      "frequency_count": 1138
+    },
+    {
+      "candidate_rank": 32,
+      "source_rank": 34,
+      "word": "ٹھیک",
+      "pos": null,
+      "frequency_count": 1118
+    },
+    {
+      "candidate_rank": 33,
+      "source_rank": 35,
+      "word": "گا",
+      "pos": null,
+      "frequency_count": 1110
+    },
+    {
+      "candidate_rank": 34,
+      "source_rank": 36,
+      "word": "کچھ",
+      "pos": null,
+      "frequency_count": 1108
+    },
+    {
+      "candidate_rank": 35,
+      "source_rank": 37,
+      "word": "کوئی",
+      "pos": null,
+      "frequency_count": 1088
+    },
+    {
+      "candidate_rank": 36,
+      "source_rank": 38,
+      "word": "رہا",
+      "pos": null,
+      "frequency_count": 1051
+    },
+    {
+      "candidate_rank": 37,
+      "source_rank": 39,
+      "word": "سب",
+      "pos": null,
+      "frequency_count": 1045
+    },
+    {
+      "candidate_rank": 38,
+      "source_rank": 40,
+      "word": "یہاں",
+      "pos": null,
+      "frequency_count": 990
+    },
+    {
+      "candidate_rank": 39,
+      "source_rank": 41,
+      "word": "ساتھ",
+      "pos": null,
+      "frequency_count": 960
+    },
+    {
+      "candidate_rank": 40,
+      "source_rank": 42,
+      "word": "ہاں",
+      "pos": null,
+      "frequency_count": 951
+    },
+    {
+      "candidate_rank": 41,
+      "source_rank": 43,
+      "word": "ان",
+      "pos": null,
+      "frequency_count": 912
+    },
+    {
+      "candidate_rank": 42,
+      "source_rank": 44,
+      "word": "گیا",
+      "pos": null,
+      "frequency_count": 898
+    },
+    {
+      "candidate_rank": 43,
+      "source_rank": 45,
+      "word": "اسے",
+      "pos": null,
+      "frequency_count": 892
+    },
+    {
+      "candidate_rank": 44,
+      "source_rank": 46,
+      "word": "اب",
+      "pos": null,
+      "frequency_count": 868
+    },
+    {
+      "candidate_rank": 45,
+      "source_rank": 47,
+      "word": "طرح",
+      "pos": null,
+      "frequency_count": 853
+    },
+    {
+      "candidate_rank": 46,
+      "source_rank": 48,
+      "word": "لیکن",
+      "pos": null,
+      "frequency_count": 848
+    },
+    {
+      "candidate_rank": 47,
+      "source_rank": 49,
+      "word": "سکتے",
+      "pos": null,
+      "frequency_count": 837
+    },
+    {
+      "candidate_rank": 48,
+      "source_rank": 50,
+      "word": "صرف",
+      "pos": null,
+      "frequency_count": 781
+    },
+    {
+      "candidate_rank": 49,
+      "source_rank": 51,
+      "word": "میرے",
+      "pos": null,
+      "frequency_count": 736
+    },
+    {
+      "candidate_rank": 50,
+      "source_rank": 52,
+      "word": "بہت",
+      "pos": null,
+      "frequency_count": 690
+    },
+    {
+      "candidate_rank": 51,
+      "source_rank": 53,
+      "word": "گے",
+      "pos": null,
+      "frequency_count": 687
+    },
+    {
+      "candidate_rank": 52,
+      "source_rank": 55,
+      "word": "بات",
+      "pos": null,
+      "frequency_count": 671
+    },
+    {
+      "candidate_rank": 53,
+      "source_rank": 56,
+      "word": "سکتا",
+      "pos": null,
+      "frequency_count": 667
+    },
+    {
+      "candidate_rank": 54,
+      "source_rank": 57,
+      "word": "اپنے",
+      "pos": null,
+      "frequency_count": 666
+    },
+    {
+      "candidate_rank": 55,
+      "source_rank": 58,
+      "word": "زیادہ",
+      "pos": null,
+      "frequency_count": 664
+    },
+    {
+      "candidate_rank": 56,
+      "source_rank": 59,
+      "word": "جی",
+      "pos": null,
+      "frequency_count": 619
+    },
+    {
+      "candidate_rank": 57,
+      "source_rank": 60,
+      "word": "کسی",
+      "pos": null,
+      "frequency_count": 611
+    },
+    {
+      "candidate_rank": 58,
+      "source_rank": 61,
+      "word": "دیا",
+      "pos": null,
+      "frequency_count": 573
+    },
+    {
+      "candidate_rank": 59,
+      "source_rank": 62,
+      "word": "جاؤ",
+      "pos": null,
+      "frequency_count": 553
+    },
+    {
+      "candidate_rank": 60,
+      "source_rank": 63,
+      "word": "بارے",
+      "pos": null,
+      "frequency_count": 550
+    },
+    {
+      "candidate_rank": 61,
+      "source_rank": 64,
+      "word": "دو",
+      "pos": null,
+      "frequency_count": 538
+    },
+    {
+      "candidate_rank": 62,
+      "source_rank": 65,
+      "word": "کرنا",
+      "pos": null,
+      "frequency_count": 532
+    },
+    {
+      "candidate_rank": 63,
+      "source_rank": 66,
+      "word": "چلو",
+      "pos": null,
+      "frequency_count": 529
+    },
+    {
+      "candidate_rank": 64,
+      "source_rank": 67,
+      "word": "تھے",
+      "pos": null,
+      "frequency_count": 524
+    },
+    {
+      "candidate_rank": 65,
+      "source_rank": 68,
+      "word": "جا",
+      "pos": null,
+      "frequency_count": 516
+    },
+    {
+      "candidate_rank": 66,
+      "source_rank": 69,
+      "word": "میری",
+      "pos": null,
+      "frequency_count": 508
+    },
+    {
+      "candidate_rank": 67,
+      "source_rank": 70,
+      "word": "باہر",
+      "pos": null,
+      "frequency_count": 503
+    },
+    {
+      "candidate_rank": 68,
+      "source_rank": 71,
+      "word": "تمہیں",
+      "pos": null,
+      "frequency_count": 497
+    },
+    {
+      "candidate_rank": 69,
+      "source_rank": 72,
+      "word": "ضرورت",
+      "pos": null,
+      "frequency_count": 489
+    },
+    {
+      "candidate_rank": 70,
+      "source_rank": 73,
+      "word": "کہا",
+      "pos": null,
+      "frequency_count": 488
+    },
+    {
+      "candidate_rank": 71,
+      "source_rank": 74,
+      "word": "ہی",
+      "pos": null,
+      "frequency_count": 484
+    },
+    {
+      "candidate_rank": 72,
+      "source_rank": 75,
+      "word": "حاصل",
+      "pos": null,
+      "frequency_count": 481
+    },
+    {
+      "candidate_rank": 73,
+      "source_rank": 76,
+      "word": "کریں",
+      "pos": null,
+      "frequency_count": 477
+    },
+    {
+      "candidate_rank": 74,
+      "source_rank": 77,
+      "word": "جو",
+      "pos": null,
+      "frequency_count": 476
+    },
+    {
+      "candidate_rank": 75,
+      "source_rank": 78,
+      "word": "طور",
+      "pos": null,
+      "frequency_count": 471
+    },
+    {
+      "candidate_rank": 76,
+      "source_rank": 79,
+      "word": "جانتے",
+      "pos": null,
+      "frequency_count": 470
+    },
+    {
+      "candidate_rank": 77,
+      "source_rank": 80,
+      "word": "وہاں",
+      "pos": null,
+      "frequency_count": 464
+    },
+    {
+      "candidate_rank": 78,
+      "source_rank": 81,
+      "word": "چاہتے",
+      "pos": null,
+      "frequency_count": 461
+    },
+    {
+      "candidate_rank": 79,
+      "source_rank": 82,
+      "word": "وقت",
+      "pos": null,
+      "frequency_count": 460
+    },
+    {
+      "candidate_rank": 80,
+      "source_rank": 83,
+      "word": "جائے",
+      "pos": null,
+      "frequency_count": 448
+    },
+    {
+      "candidate_rank": 81,
+      "source_rank": 84,
+      "word": "پھر",
+      "pos": null,
+      "frequency_count": 444
+    },
+    {
+      "candidate_rank": 82,
+      "source_rank": 85,
+      "word": "اچھا",
+      "pos": null,
+      "frequency_count": 428
+    },
+    {
+      "candidate_rank": 83,
+      "source_rank": 86,
+      "word": "کام",
+      "pos": null,
+      "frequency_count": 426
+    },
+    {
+      "candidate_rank": 84,
+      "source_rank": 87,
+      "word": "کرتے",
+      "pos": null,
+      "frequency_count": 422
+    },
+    {
+      "candidate_rank": 85,
+      "source_rank": 88,
+      "word": "اگر",
+      "pos": null,
+      "frequency_count": 419
+    },
+    {
+      "candidate_rank": 86,
+      "source_rank": 89,
+      "word": "کیوں",
+      "pos": null,
+      "frequency_count": 417
+    },
+    {
+      "candidate_rank": 87,
+      "source_rank": 90,
+      "word": "یا",
+      "pos": null,
+      "frequency_count": 413
+    },
+    {
+      "candidate_rank": 88,
+      "source_rank": 91,
+      "word": "کرو",
+      "pos": null,
+      "frequency_count": 412
+    },
+    {
+      "candidate_rank": 89,
+      "source_rank": 92,
+      "word": "آ",
+      "pos": null,
+      "frequency_count": 409
+    },
+    {
+      "candidate_rank": 90,
+      "source_rank": 93,
+      "word": "تک",
+      "pos": null,
+      "frequency_count": 399
+    },
+    {
+      "candidate_rank": 91,
+      "source_rank": 94,
+      "word": "کس",
+      "pos": null,
+      "frequency_count": 394
+    },
+    {
+      "candidate_rank": 92,
+      "source_rank": 95,
+      "word": "چاہتا",
+      "pos": null,
+      "frequency_count": 394
+    },
+    {
+      "candidate_rank": 93,
+      "source_rank": 96,
+      "word": "کبھی",
+      "pos": null,
+      "frequency_count": 379
+    },
+    {
+      "candidate_rank": 94,
+      "source_rank": 97,
+      "word": "لے",
+      "pos": null,
+      "frequency_count": 373
+    },
+    {
+      "candidate_rank": 95,
+      "source_rank": 98,
+      "word": "انہوں",
+      "pos": null,
+      "frequency_count": 370
+    },
+    {
+      "candidate_rank": 96,
+      "source_rank": 99,
+      "word": "پہلے",
+      "pos": null,
+      "frequency_count": 364
+    },
+    {
+      "candidate_rank": 97,
+      "source_rank": 100,
+      "word": "جب",
+      "pos": null,
+      "frequency_count": 358
+    },
+    {
+      "candidate_rank": 98,
+      "source_rank": 101,
+      "word": "ہمارے",
+      "pos": null,
+      "frequency_count": 353
+    },
+    {
+      "candidate_rank": 99,
+      "source_rank": 102,
+      "word": "کہاں",
+      "pos": null,
+      "frequency_count": 345
+    },
+    {
+      "candidate_rank": 100,
+      "source_rank": 103,
+      "word": "واپس",
+      "pos": null,
+      "frequency_count": 341
+    },
+    {
+      "candidate_rank": 101,
+      "source_rank": 104,
+      "word": "لگتا",
+      "pos": null,
+      "frequency_count": 340
+    },
+    {
+      "candidate_rank": 102,
+      "source_rank": 105,
+      "word": "کرتا",
+      "pos": null,
+      "frequency_count": 339
+    },
+    {
+      "candidate_rank": 103,
+      "source_rank": 106,
+      "word": "ء",
+      "pos": null,
+      "frequency_count": 336
+    },
+    {
+      "candidate_rank": 104,
+      "source_rank": 107,
+      "word": "مل",
+      "pos": null,
+      "frequency_count": 333
+    },
+    {
+      "candidate_rank": 105,
+      "source_rank": 108,
+      "word": "ہمیں",
+      "pos": null,
+      "frequency_count": 333
+    },
+    {
+      "candidate_rank": 106,
+      "source_rank": 109,
+      "word": "ن",
+      "pos": null,
+      "frequency_count": 320
+    },
+    {
+      "candidate_rank": 107,
+      "source_rank": 110,
+      "word": "نہ",
+      "pos": null,
+      "frequency_count": 319
+    },
+    {
+      "candidate_rank": 108,
+      "source_rank": 111,
+      "word": "ہر",
+      "pos": null,
+      "frequency_count": 318
+    },
+    {
+      "candidate_rank": 109,
+      "source_rank": 112,
+      "word": "مجھ",
+      "pos": null,
+      "frequency_count": 314
+    },
+    {
+      "candidate_rank": 110,
+      "source_rank": 113,
+      "word": "پاس",
+      "pos": null,
+      "frequency_count": 313
+    },
+    {
+      "candidate_rank": 111,
+      "source_rank": 114,
+      "word": "طرف",
+      "pos": null,
+      "frequency_count": 311
+    },
+    {
+      "candidate_rank": 112,
+      "source_rank": 115,
+      "word": "لوگوں",
+      "pos": null,
+      "frequency_count": 308
+    },
+    {
+      "candidate_rank": 113,
+      "source_rank": 116,
+      "word": "تمام",
+      "pos": null,
+      "frequency_count": 304
+    },
+    {
+      "candidate_rank": 114,
+      "source_rank": 117,
+      "word": "ئ",
+      "pos": null,
+      "frequency_count": 302
+    },
+    {
+      "candidate_rank": 115,
+      "source_rank": 118,
+      "word": "اپنی",
+      "pos": null,
+      "frequency_count": 296
+    },
+    {
+      "candidate_rank": 116,
+      "source_rank": 119,
+      "word": "آدمی",
+      "pos": null,
+      "frequency_count": 290
+    },
+    {
+      "candidate_rank": 117,
+      "source_rank": 120,
+      "word": "تھی",
+      "pos": null,
+      "frequency_count": 282
+    },
+    {
+      "candidate_rank": 118,
+      "source_rank": 121,
+      "word": "کون",
+      "pos": null,
+      "frequency_count": 281
+    },
+    {
+      "candidate_rank": 119,
+      "source_rank": 122,
+      "word": "میرا",
+      "pos": null,
+      "frequency_count": 281
+    },
+    {
+      "candidate_rank": 120,
+      "source_rank": 123,
+      "word": "ایسا",
+      "pos": null,
+      "frequency_count": 279
+    },
+    {
+      "candidate_rank": 121,
+      "source_rank": 124,
+      "word": "پتہ",
+      "pos": null,
+      "frequency_count": 277
+    },
+    {
+      "candidate_rank": 122,
+      "source_rank": 125,
+      "word": "بعد",
+      "pos": null,
+      "frequency_count": 274
+    },
+    {
+      "candidate_rank": 123,
+      "source_rank": 126,
+      "word": "ہ",
+      "pos": null,
+      "frequency_count": 271
+    },
+    {
+      "candidate_rank": 124,
+      "source_rank": 127,
+      "word": "لوگ",
+      "pos": null,
+      "frequency_count": 265
+    },
+    {
+      "candidate_rank": 125,
+      "source_rank": 128,
+      "word": "دیکھ",
+      "pos": null,
+      "frequency_count": 264
+    },
+    {
+      "candidate_rank": 126,
+      "source_rank": 129,
+      "word": "مدد",
+      "pos": null,
+      "frequency_count": 263
+    },
+    {
+      "candidate_rank": 127,
+      "source_rank": 130,
+      "word": "شکریہ",
+      "pos": null,
+      "frequency_count": 260
+    },
+    {
+      "candidate_rank": 128,
+      "source_rank": 131,
+      "word": "گھر",
+      "pos": null,
+      "frequency_count": 258
+    },
+    {
+      "candidate_rank": 129,
+      "source_rank": 132,
+      "word": "بند",
+      "pos": null,
+      "frequency_count": 250
+    },
+    {
+      "candidate_rank": 130,
+      "source_rank": 133,
+      "word": "ارے",
+      "pos": null,
+      "frequency_count": 250
+    },
+    {
+      "candidate_rank": 131,
+      "source_rank": 134,
+      "word": "یقین",
+      "pos": null,
+      "frequency_count": 249
+    },
+    {
+      "candidate_rank": 132,
+      "source_rank": 135,
+      "word": "نام",
+      "pos": null,
+      "frequency_count": 248
+    },
+    {
+      "candidate_rank": 133,
+      "source_rank": 136,
+      "word": "دے",
+      "pos": null,
+      "frequency_count": 246
+    },
+    {
+      "candidate_rank": 134,
+      "source_rank": 137,
+      "word": "لیے",
+      "pos": null,
+      "frequency_count": 244
+    },
+    {
+      "candidate_rank": 135,
+      "source_rank": 138,
+      "word": "لیا",
+      "pos": null,
+      "frequency_count": 241
+    },
+    {
+      "candidate_rank": 136,
+      "source_rank": 139,
+      "word": "ظ",
+      "pos": null,
+      "frequency_count": 240
+    },
+    {
+      "candidate_rank": 137,
+      "source_rank": 140,
+      "word": "خ",
+      "pos": null,
+      "frequency_count": 237
+    },
+    {
+      "candidate_rank": 138,
+      "source_rank": 141,
+      "word": "گی",
+      "pos": null,
+      "frequency_count": 231
+    },
+    {
+      "candidate_rank": 139,
+      "source_rank": 142,
+      "word": "اوہ",
+      "pos": null,
+      "frequency_count": 229
+    },
+    {
+      "candidate_rank": 140,
+      "source_rank": 143,
+      "word": "جانا",
+      "pos": null,
+      "frequency_count": 229
+    },
+    {
+      "candidate_rank": 141,
+      "source_rank": 144,
+      "word": "والا",
+      "pos": null,
+      "frequency_count": 227
+    },
+    {
+      "candidate_rank": 142,
+      "source_rank": 145,
+      "word": "کوشش",
+      "pos": null,
+      "frequency_count": 224
+    },
+    {
+      "candidate_rank": 143,
+      "source_rank": 146,
+      "word": "ہوگا",
+      "pos": null,
+      "frequency_count": 223
+    },
+    {
+      "candidate_rank": 144,
+      "source_rank": 147,
+      "word": "ماں",
+      "pos": null,
+      "frequency_count": 221
+    },
+    {
+      "candidate_rank": 145,
+      "source_rank": 148,
+      "word": "ہوا",
+      "pos": null,
+      "frequency_count": 220
+    },
+    {
+      "candidate_rank": 146,
+      "source_rank": 149,
+      "word": "تلاش",
+      "pos": null,
+      "frequency_count": 219
+    },
+    {
+      "candidate_rank": 147,
+      "source_rank": 150,
+      "word": "خیال",
+      "pos": null,
+      "frequency_count": 217
+    },
+    {
+      "candidate_rank": 148,
+      "source_rank": 151,
+      "word": "جاتا",
+      "pos": null,
+      "frequency_count": 217
+    },
+    {
+      "candidate_rank": 149,
+      "source_rank": 152,
+      "word": "چھوڑ",
+      "pos": null,
+      "frequency_count": 216
+    },
+    {
+      "candidate_rank": 150,
+      "source_rank": 153,
+      "word": "ہج",
+      "pos": null,
+      "frequency_count": 211
+    },
+    {
+      "candidate_rank": 151,
+      "source_rank": 154,
+      "word": "رات",
+      "pos": null,
+      "frequency_count": 209
+    },
+    {
+      "candidate_rank": 152,
+      "source_rank": 155,
+      "word": "ش",
+      "pos": null,
+      "frequency_count": 209
+    },
+    {
+      "candidate_rank": 153,
+      "source_rank": 156,
+      "word": "وجہ",
+      "pos": null,
+      "frequency_count": 206
+    },
+    {
+      "candidate_rank": 154,
+      "source_rank": 157,
+      "word": "دن",
+      "pos": null,
+      "frequency_count": 204
+    },
+    {
+      "candidate_rank": 155,
+      "source_rank": 158,
+      "word": "بار",
+      "pos": null,
+      "frequency_count": 200
+    },
+    {
+      "candidate_rank": 156,
+      "source_rank": 159,
+      "word": "بس",
+      "pos": null,
+      "frequency_count": 200
+    },
+    {
+      "candidate_rank": 157,
+      "source_rank": 160,
+      "word": "دیکھو",
+      "pos": null,
+      "frequency_count": 199
+    },
+    {
+      "candidate_rank": 158,
+      "source_rank": 161,
+      "word": "ي",
+      "pos": null,
+      "frequency_count": 199
+    },
+    {
+      "candidate_rank": 159,
+      "source_rank": 162,
+      "word": "نیچے",
+      "pos": null,
+      "frequency_count": 198
+    },
+    {
+      "candidate_rank": 160,
+      "source_rank": 163,
+      "word": "خدا",
+      "pos": null,
+      "frequency_count": 196
+    },
+    {
+      "candidate_rank": 161,
+      "source_rank": 164,
+      "word": "چاہئے",
+      "pos": null,
+      "frequency_count": 193
+    },
+    {
+      "candidate_rank": 162,
+      "source_rank": 165,
+      "word": "کیلئے",
+      "pos": null,
+      "frequency_count": 191
+    },
+    {
+      "candidate_rank": 163,
+      "source_rank": 166,
+      "word": "جانے",
+      "pos": null,
+      "frequency_count": 190
+    },
+    {
+      "candidate_rank": 164,
+      "source_rank": 167,
+      "word": "تمہارے",
+      "pos": null,
+      "frequency_count": 188
+    },
+    {
+      "candidate_rank": 165,
+      "source_rank": 168,
+      "word": "دور",
+      "pos": null,
+      "frequency_count": 185
+    },
+    {
+      "candidate_rank": 166,
+      "source_rank": 169,
+      "word": "جگہ",
+      "pos": null,
+      "frequency_count": 185
+    },
+    {
+      "candidate_rank": 167,
+      "source_rank": 170,
+      "word": "دیکھا",
+      "pos": null,
+      "frequency_count": 185
+    },
+    {
+      "candidate_rank": 168,
+      "source_rank": 171,
+      "word": "رہی",
+      "pos": null,
+      "frequency_count": 184
+    },
+    {
+      "candidate_rank": 169,
+      "source_rank": 172,
+      "word": "انتظار",
+      "pos": null,
+      "frequency_count": 183
+    },
+    {
+      "candidate_rank": 170,
+      "source_rank": 173,
+      "word": "مطلب",
+      "pos": null,
+      "frequency_count": 179
+    },
+    {
+      "candidate_rank": 171,
+      "source_rank": 174,
+      "word": "دنیا",
+      "pos": null,
+      "frequency_count": 178
+    },
+    {
+      "candidate_rank": 172,
+      "source_rank": 175,
+      "word": "تیار",
+      "pos": null,
+      "frequency_count": 178
+    },
+    {
+      "candidate_rank": 173,
+      "source_rank": 176,
+      "word": "صاحب",
+      "pos": null,
+      "frequency_count": 178
+    },
+    {
+      "candidate_rank": 174,
+      "source_rank": 177,
+      "word": "جانتا",
+      "pos": null,
+      "frequency_count": 177
+    },
+    {
+      "candidate_rank": 175,
+      "source_rank": 178,
+      "word": "کرے",
+      "pos": null,
+      "frequency_count": 174
+    },
+    {
+      "candidate_rank": 176,
+      "source_rank": 179,
+      "word": "ابھی",
+      "pos": null,
+      "frequency_count": 173
+    },
+    {
+      "candidate_rank": 177,
+      "source_rank": 180,
+      "word": "استعمال",
+      "pos": null,
+      "frequency_count": 172
+    },
+    {
+      "candidate_rank": 178,
+      "source_rank": 181,
+      "word": "ہمیشہ",
+      "pos": null,
+      "frequency_count": 172
+    },
+    {
+      "candidate_rank": 179,
+      "source_rank": 182,
+      "word": "بالکل",
+      "pos": null,
+      "frequency_count": 172
+    },
+    {
+      "candidate_rank": 180,
+      "source_rank": 183,
+      "word": "ہونا",
+      "pos": null,
+      "frequency_count": 171
+    },
+    {
+      "candidate_rank": 181,
+      "source_rank": 184,
+      "word": "پاگل",
+      "pos": null,
+      "frequency_count": 170
+    },
+    {
+      "candidate_rank": 182,
+      "source_rank": 185,
+      "word": "ك",
+      "pos": null,
+      "frequency_count": 170
+    },
+    {
+      "candidate_rank": 183,
+      "source_rank": 186,
+      "word": "جنگ",
+      "pos": null,
+      "frequency_count": 169
+    },
+    {
+      "candidate_rank": 184,
+      "source_rank": 187,
+      "word": "والد",
+      "pos": null,
+      "frequency_count": 169
+    },
+    {
+      "candidate_rank": 185,
+      "source_rank": 188,
+      "word": "معلوم",
+      "pos": null,
+      "frequency_count": 166
+    },
+    {
+      "candidate_rank": 186,
+      "source_rank": 189,
+      "word": "گئے",
+      "pos": null,
+      "frequency_count": 166
+    },
+    {
+      "candidate_rank": 187,
+      "source_rank": 190,
+      "word": "سال",
+      "pos": null,
+      "frequency_count": 166
+    },
+    {
+      "candidate_rank": 188,
+      "source_rank": 191,
+      "word": "واقعی",
+      "pos": null,
+      "frequency_count": 164
+    },
+    {
+      "candidate_rank": 189,
+      "source_rank": 193,
+      "word": "آج",
+      "pos": null,
+      "frequency_count": 161
+    },
+    {
+      "candidate_rank": 190,
+      "source_rank": 194,
+      "word": "بغیر",
+      "pos": null,
+      "frequency_count": 159
+    },
+    {
+      "candidate_rank": 191,
+      "source_rank": 195,
+      "word": "شاید",
+      "pos": null,
+      "frequency_count": 159
+    },
+    {
+      "candidate_rank": 192,
+      "source_rank": 196,
+      "word": "زندگی",
+      "pos": null,
+      "frequency_count": 159
+    },
+    {
+      "candidate_rank": 193,
+      "source_rank": 197,
+      "word": "رکو",
+      "pos": null,
+      "frequency_count": 158
+    },
+    {
+      "candidate_rank": 194,
+      "source_rank": 198,
+      "word": "یاد",
+      "pos": null,
+      "frequency_count": 155
+    },
+    {
+      "candidate_rank": 195,
+      "source_rank": 199,
+      "word": "دیں",
+      "pos": null,
+      "frequency_count": 153
+    },
+    {
+      "candidate_rank": 196,
+      "source_rank": 200,
+      "word": "کیونکہ",
+      "pos": null,
+      "frequency_count": 152
+    },
+    {
+      "candidate_rank": 197,
+      "source_rank": 201,
+      "word": "ہماری",
+      "pos": null,
+      "frequency_count": 151
+    },
+    {
+      "candidate_rank": 198,
+      "source_rank": 202,
+      "word": "کم",
+      "pos": null,
+      "frequency_count": 150
+    },
+    {
+      "candidate_rank": 199,
+      "source_rank": 203,
+      "word": "سر",
+      "pos": null,
+      "frequency_count": 149
+    },
+    {
+      "candidate_rank": 200,
+      "source_rank": 204,
+      "word": "ضروری",
+      "pos": null,
+      "frequency_count": 148
+    },
+    {
+      "candidate_rank": 201,
+      "source_rank": 205,
+      "word": "نہيں",
+      "pos": null,
+      "frequency_count": 148
+    },
+    {
+      "candidate_rank": 202,
+      "source_rank": 206,
+      "word": "پیچھے",
+      "pos": null,
+      "frequency_count": 147
+    },
+    {
+      "candidate_rank": 203,
+      "source_rank": 207,
+      "word": "ہونے",
+      "pos": null,
+      "frequency_count": 147
+    },
+    {
+      "candidate_rank": 204,
+      "source_rank": 208,
+      "word": "پسند",
+      "pos": null,
+      "frequency_count": 147
+    },
+    {
+      "candidate_rank": 205,
+      "source_rank": 209,
+      "word": "کیسے",
+      "pos": null,
+      "frequency_count": 145
+    },
+    {
+      "candidate_rank": 206,
+      "source_rank": 210,
+      "word": "کہہ",
+      "pos": null,
+      "frequency_count": 145
+    },
+    {
+      "candidate_rank": 207,
+      "source_rank": 211,
+      "word": "سمجھ",
+      "pos": null,
+      "frequency_count": 142
+    },
+    {
+      "candidate_rank": 208,
+      "source_rank": 212,
+      "word": "فون",
+      "pos": null,
+      "frequency_count": 142
+    },
+    {
+      "candidate_rank": 209,
+      "source_rank": 213,
+      "word": "ختم",
+      "pos": null,
+      "frequency_count": 142
+    },
+    {
+      "candidate_rank": 210,
+      "source_rank": 214,
+      "word": "خود",
+      "pos": null,
+      "frequency_count": 142
+    },
+    {
+      "candidate_rank": 211,
+      "source_rank": 215,
+      "word": "رہو",
+      "pos": null,
+      "frequency_count": 141
+    },
+    {
+      "candidate_rank": 212,
+      "source_rank": 216,
+      "word": "چیز",
+      "pos": null,
+      "frequency_count": 140
+    },
+    {
+      "candidate_rank": 213,
+      "source_rank": 217,
+      "word": "سی",
+      "pos": null,
+      "frequency_count": 139
+    },
+    {
+      "candidate_rank": 214,
+      "source_rank": 218,
+      "word": "شروع",
+      "pos": null,
+      "frequency_count": 138
+    },
+    {
+      "candidate_rank": 215,
+      "source_rank": 219,
+      "word": "منٹ",
+      "pos": null,
+      "frequency_count": 138
+    },
+    {
+      "candidate_rank": 216,
+      "source_rank": 220,
+      "word": "ب",
+      "pos": null,
+      "frequency_count": 138
+    },
+    {
+      "candidate_rank": 217,
+      "source_rank": 221,
+      "word": "آئے",
+      "pos": null,
+      "frequency_count": 137
+    },
+    {
+      "candidate_rank": 218,
+      "source_rank": 222,
+      "word": "والے",
+      "pos": null,
+      "frequency_count": 137
+    },
+    {
+      "candidate_rank": 219,
+      "source_rank": 223,
+      "word": "اندر",
+      "pos": null,
+      "frequency_count": 137
+    },
+    {
+      "candidate_rank": 220,
+      "source_rank": 224,
+      "word": "نمبر",
+      "pos": null,
+      "frequency_count": 136
+    },
+    {
+      "candidate_rank": 221,
+      "source_rank": 225,
+      "word": "مر",
+      "pos": null,
+      "frequency_count": 134
+    },
+    {
+      "candidate_rank": 222,
+      "source_rank": 226,
+      "word": "قسم",
+      "pos": null,
+      "frequency_count": 133
+    },
+    {
+      "candidate_rank": 223,
+      "source_rank": 227,
+      "word": "مت",
+      "pos": null,
+      "frequency_count": 133
+    },
+    {
+      "candidate_rank": 224,
+      "source_rank": 228,
+      "word": "معاف",
+      "pos": null,
+      "frequency_count": 133
+    },
+    {
+      "candidate_rank": 225,
+      "source_rank": 229,
+      "word": "یہی",
+      "pos": null,
+      "frequency_count": 131
+    },
+    {
+      "candidate_rank": 226,
+      "source_rank": 230,
+      "word": "اچھی",
+      "pos": null,
+      "frequency_count": 131
+    },
+    {
+      "candidate_rank": 227,
+      "source_rank": 232,
+      "word": "خوش",
+      "pos": null,
+      "frequency_count": 130
+    },
+    {
+      "candidate_rank": 228,
+      "source_rank": 233,
+      "word": "کروں",
+      "pos": null,
+      "frequency_count": 130
+    },
+    {
+      "candidate_rank": 229,
+      "source_rank": 234,
+      "word": "تمہاری",
+      "pos": null,
+      "frequency_count": 130
+    },
+    {
+      "candidate_rank": 230,
+      "source_rank": 235,
+      "word": "جس",
+      "pos": null,
+      "frequency_count": 129
+    },
+    {
+      "candidate_rank": 231,
+      "source_rank": 236,
+      "word": "د",
+      "pos": null,
+      "frequency_count": 129
+    },
+    {
+      "candidate_rank": 232,
+      "source_rank": 237,
+      "word": "بہتر",
+      "pos": null,
+      "frequency_count": 127
+    },
+    {
+      "candidate_rank": 233,
+      "source_rank": 238,
+      "word": "نظر",
+      "pos": null,
+      "frequency_count": 127
+    },
+    {
+      "candidate_rank": 234,
+      "source_rank": 239,
+      "word": "ہوئے",
+      "pos": null,
+      "frequency_count": 126
+    },
+    {
+      "candidate_rank": 235,
+      "source_rank": 240,
+      "word": "اہ",
+      "pos": null,
+      "frequency_count": 123
+    },
+    {
+      "candidate_rank": 236,
+      "source_rank": 241,
+      "word": "و",
+      "pos": null,
+      "frequency_count": 123
+    },
+    {
+      "candidate_rank": 237,
+      "source_rank": 242,
+      "word": "بن",
+      "pos": null,
+      "frequency_count": 123
+    },
+    {
+      "candidate_rank": 238,
+      "source_rank": 243,
+      "word": "انہیں",
+      "pos": null,
+      "frequency_count": 123
+    },
+    {
+      "candidate_rank": 239,
+      "source_rank": 244,
+      "word": "گئی",
+      "pos": null,
+      "frequency_count": 123
+    },
+    {
+      "candidate_rank": 240,
+      "source_rank": 245,
+      "word": "تین",
+      "pos": null,
+      "frequency_count": 122
+    },
+    {
+      "candidate_rank": 241,
+      "source_rank": 246,
+      "word": "دوست",
+      "pos": null,
+      "frequency_count": 122
+    },
+    {
+      "candidate_rank": 242,
+      "source_rank": 247,
+      "word": "ھ",
+      "pos": null,
+      "frequency_count": 121
+    },
+    {
+      "candidate_rank": 243,
+      "source_rank": 248,
+      "word": "صحیح",
+      "pos": null,
+      "frequency_count": 121
+    },
+    {
+      "candidate_rank": 244,
+      "source_rank": 249,
+      "word": "شہر",
+      "pos": null,
+      "frequency_count": 120
+    },
+    {
+      "candidate_rank": 245,
+      "source_rank": 250,
+      "word": "جیسے",
+      "pos": null,
+      "frequency_count": 120
+    },
+    {
+      "candidate_rank": 246,
+      "source_rank": 251,
+      "word": "پوشیدہ",
+      "pos": null,
+      "frequency_count": 119
+    },
+    {
+      "candidate_rank": 247,
+      "source_rank": 252,
+      "word": "مسئلہ",
+      "pos": null,
+      "frequency_count": 119
+    },
+    {
+      "candidate_rank": 248,
+      "source_rank": 253,
+      "word": "کہیں",
+      "pos": null,
+      "frequency_count": 119
+    },
+    {
+      "candidate_rank": 249,
+      "source_rank": 254,
+      "word": "دوسرے",
+      "pos": null,
+      "frequency_count": 119
+    },
+    {
+      "candidate_rank": 250,
+      "source_rank": 255,
+      "word": "آخر",
+      "pos": null,
+      "frequency_count": 118
+    },
+    {
+      "candidate_rank": 251,
+      "source_rank": 256,
+      "word": "مہربانی",
+      "pos": null,
+      "frequency_count": 118
+    },
+    {
+      "candidate_rank": 252,
+      "source_rank": 257,
+      "word": "وکٹر",
+      "pos": null,
+      "frequency_count": 118
+    },
+    {
+      "candidate_rank": 253,
+      "source_rank": 258,
+      "word": "موجود",
+      "pos": null,
+      "frequency_count": 118
+    },
+    {
+      "candidate_rank": 254,
+      "source_rank": 259,
+      "word": "بڑا",
+      "pos": null,
+      "frequency_count": 117
+    },
+    {
+      "candidate_rank": 255,
+      "source_rank": 260,
+      "word": "ویسے",
+      "pos": null,
+      "frequency_count": 117
+    },
+    {
+      "candidate_rank": 256,
+      "source_rank": 261,
+      "word": "منتقل",
+      "pos": null,
+      "frequency_count": 116
+    },
+    {
+      "candidate_rank": 257,
+      "source_rank": 262,
+      "word": "آیا",
+      "pos": null,
+      "frequency_count": 116
+    },
+    {
+      "candidate_rank": 258,
+      "source_rank": 263,
+      "word": "ہوتا",
+      "pos": null,
+      "frequency_count": 116
+    },
+    {
+      "candidate_rank": 259,
+      "source_rank": 264,
+      "word": "مار",
+      "pos": null,
+      "frequency_count": 115
+    },
+    {
+      "candidate_rank": 260,
+      "source_rank": 265,
+      "word": "ملا",
+      "pos": null,
+      "frequency_count": 115
+    },
+    {
+      "candidate_rank": 261,
+      "source_rank": 266,
+      "word": "محبت",
+      "pos": null,
+      "frequency_count": 115
+    },
+    {
+      "candidate_rank": 262,
+      "source_rank": 267,
+      "word": "سوچا",
+      "pos": null,
+      "frequency_count": 113
+    },
+    {
+      "candidate_rank": 263,
+      "source_rank": 268,
+      "word": "کافی",
+      "pos": null,
+      "frequency_count": 112
+    },
+    {
+      "candidate_rank": 264,
+      "source_rank": 269,
+      "word": "محفوظ",
+      "pos": null,
+      "frequency_count": 111
+    },
+    {
+      "candidate_rank": 265,
+      "source_rank": 270,
+      "word": "جہاں",
+      "pos": null,
+      "frequency_count": 109
+    },
+    {
+      "candidate_rank": 266,
+      "source_rank": 271,
+      "word": "آئی",
+      "pos": null,
+      "frequency_count": 109
+    },
+    {
+      "candidate_rank": 267,
+      "source_rank": 272,
+      "word": "بچے",
+      "pos": null,
+      "frequency_count": 109
+    },
+    {
+      "candidate_rank": 268,
+      "source_rank": 273,
+      "word": "براہ",
+      "pos": null,
+      "frequency_count": 109
+    },
+    {
+      "candidate_rank": 269,
+      "source_rank": 274,
+      "word": "چلا",
+      "pos": null,
+      "frequency_count": 107
+    },
+    {
+      "candidate_rank": 270,
+      "source_rank": 275,
+      "word": "سچ",
+      "pos": null,
+      "frequency_count": 106
+    },
+    {
+      "candidate_rank": 271,
+      "source_rank": 276,
+      "word": "لو",
+      "pos": null,
+      "frequency_count": 105
+    },
+    {
+      "candidate_rank": 272,
+      "source_rank": 277,
+      "word": "بھائی",
+      "pos": null,
+      "frequency_count": 105
+    },
+    {
+      "candidate_rank": 273,
+      "source_rank": 278,
+      "word": "ؤ",
+      "pos": null,
+      "frequency_count": 105
+    },
+    {
+      "candidate_rank": 274,
+      "source_rank": 279,
+      "word": "وعدہ",
+      "pos": null,
+      "frequency_count": 104
+    },
+    {
+      "candidate_rank": 275,
+      "source_rank": 280,
+      "word": "چاہیے",
+      "pos": null,
+      "frequency_count": 104
+    },
+    {
+      "candidate_rank": 276,
+      "source_rank": 281,
+      "word": "قتل",
+      "pos": null,
+      "frequency_count": 104
+    },
+    {
+      "candidate_rank": 277,
+      "source_rank": 282,
+      "word": "کہنا",
+      "pos": null,
+      "frequency_count": 104
+    },
+    {
+      "candidate_rank": 278,
+      "source_rank": 283,
+      "word": "ہيں",
+      "pos": null,
+      "frequency_count": 104
+    },
+    {
+      "candidate_rank": 279,
+      "source_rank": 284,
+      "word": "تمہارا",
+      "pos": null,
+      "frequency_count": 104
+    },
+    {
+      "candidate_rank": 280,
+      "source_rank": 285,
+      "word": "ڈاکٹر",
+      "pos": null,
+      "frequency_count": 103
+    },
+    {
+      "candidate_rank": 281,
+      "source_rank": 286,
+      "word": "چلے",
+      "pos": null,
+      "frequency_count": 101
+    },
+    {
+      "candidate_rank": 282,
+      "source_rank": 287,
+      "word": "امریکہ",
+      "pos": null,
+      "frequency_count": 101
+    },
+    {
+      "candidate_rank": 283,
+      "source_rank": 288,
+      "word": "دی",
+      "pos": null,
+      "frequency_count": 101
+    },
+    {
+      "candidate_rank": 284,
+      "source_rank": 289,
+      "word": "نظام",
+      "pos": null,
+      "frequency_count": 100
+    },
+    {
+      "candidate_rank": 285,
+      "source_rank": 290,
+      "word": "جان",
+      "pos": null,
+      "frequency_count": 100
+    },
+    {
+      "candidate_rank": 286,
+      "source_rank": 291,
+      "word": "شخص",
+      "pos": null,
+      "frequency_count": 99
+    },
+    {
+      "candidate_rank": 287,
+      "source_rank": 292,
+      "word": "ہاتھ",
+      "pos": null,
+      "frequency_count": 98
+    },
+    {
+      "candidate_rank": 288,
+      "source_rank": 293,
+      "word": "چلتے",
+      "pos": null,
+      "frequency_count": 98
+    },
+    {
+      "candidate_rank": 289,
+      "source_rank": 294,
+      "word": "ز",
+      "pos": null,
+      "frequency_count": 97
+    },
+    {
+      "candidate_rank": 290,
+      "source_rank": 295,
+      "word": "پروگرام",
+      "pos": null,
+      "frequency_count": 97
+    },
+    {
+      "candidate_rank": 291,
+      "source_rank": 296,
+      "word": "رہنے",
+      "pos": null,
+      "frequency_count": 97
+    },
+    {
+      "candidate_rank": 292,
+      "source_rank": 297,
+      "word": "جائیں",
+      "pos": null,
+      "frequency_count": 97
+    },
+    {
+      "candidate_rank": 293,
+      "source_rank": 298,
+      "word": "نا",
+      "pos": null,
+      "frequency_count": 97
+    },
+    {
+      "candidate_rank": 294,
+      "source_rank": 299,
+      "word": "اہم",
+      "pos": null,
+      "frequency_count": 96
+    },
+    {
+      "candidate_rank": 295,
+      "source_rank": 300,
+      "word": "اپنا",
+      "pos": null,
+      "frequency_count": 95
+    },
+    {
+      "candidate_rank": 296,
+      "source_rank": 301,
+      "word": "سا",
+      "pos": null,
+      "frequency_count": 95
+    },
+    {
+      "candidate_rank": 297,
+      "source_rank": 302,
+      "word": "تبدیل",
+      "pos": null,
+      "frequency_count": 95
+    },
+    {
+      "candidate_rank": 298,
+      "source_rank": 303,
+      "word": "تھوڑا",
+      "pos": null,
+      "frequency_count": 95
+    },
+    {
+      "candidate_rank": 299,
+      "source_rank": 304,
+      "word": "حملہ",
+      "pos": null,
+      "frequency_count": 95
+    },
+    {
+      "candidate_rank": 300,
+      "source_rank": 305,
+      "word": "بتا",
+      "pos": null,
+      "frequency_count": 94
+    },
+    {
+      "candidate_rank": 301,
+      "source_rank": 306,
+      "word": "ذریعے",
+      "pos": null,
+      "frequency_count": 94
+    },
+    {
+      "candidate_rank": 302,
+      "source_rank": 307,
+      "word": "رسائی",
+      "pos": null,
+      "frequency_count": 94
+    },
+    {
+      "candidate_rank": 303,
+      "source_rank": 308,
+      "word": "زمین",
+      "pos": null,
+      "frequency_count": 93
+    },
+    {
+      "candidate_rank": 304,
+      "source_rank": 309,
+      "word": "ملک",
+      "pos": null,
+      "frequency_count": 93
+    },
+    {
+      "candidate_rank": 305,
+      "source_rank": 310,
+      "word": "قابل",
+      "pos": null,
+      "frequency_count": 93
+    },
+    {
+      "candidate_rank": 306,
+      "source_rank": 311,
+      "word": "ہض",
+      "pos": null,
+      "frequency_count": 93
+    },
+    {
+      "candidate_rank": 307,
+      "source_rank": 312,
+      "word": "کہانی",
+      "pos": null,
+      "frequency_count": 93
+    },
+    {
+      "candidate_rank": 308,
+      "source_rank": 313,
+      "word": "دوبارہ",
+      "pos": null,
+      "frequency_count": 93
+    },
+    {
+      "candidate_rank": 309,
+      "source_rank": 314,
+      "word": "کل",
+      "pos": null,
+      "frequency_count": 93
+    },
+    {
+      "candidate_rank": 310,
+      "source_rank": 315,
+      "word": "ڈال",
+      "pos": null,
+      "frequency_count": 92
+    },
+    {
+      "candidate_rank": 311,
+      "source_rank": 316,
+      "word": "بتایا",
+      "pos": null,
+      "frequency_count": 92
+    },
+    {
+      "candidate_rank": 312,
+      "source_rank": 317,
+      "word": "ا",
+      "pos": null,
+      "frequency_count": 92
+    },
+    {
+      "candidate_rank": 313,
+      "source_rank": 318,
+      "word": "جلدی",
+      "pos": null,
+      "frequency_count": 92
+    },
+    {
+      "candidate_rank": 314,
+      "source_rank": 319,
+      "word": "پانچ",
+      "pos": null,
+      "frequency_count": 92
+    },
+    {
+      "candidate_rank": 315,
+      "source_rank": 320,
+      "word": "انسان",
+      "pos": null,
+      "frequency_count": 92
+    },
+    {
+      "candidate_rank": 316,
+      "source_rank": 321,
+      "word": "محسوس",
+      "pos": null,
+      "frequency_count": 91
+    },
+    {
+      "candidate_rank": 317,
+      "source_rank": 322,
+      "word": "ہیرو",
+      "pos": null,
+      "frequency_count": 91
+    },
+    {
+      "candidate_rank": 318,
+      "source_rank": 323,
+      "word": "بنجمن",
+      "pos": null,
+      "frequency_count": 91
+    },
+    {
+      "candidate_rank": 319,
+      "source_rank": 324,
+      "word": "پال",
+      "pos": null,
+      "frequency_count": 91
+    },
+    {
+      "candidate_rank": 320,
+      "source_rank": 325,
+      "word": "گولی",
+      "pos": null,
+      "frequency_count": 91
+    },
+    {
+      "candidate_rank": 321,
+      "source_rank": 326,
+      "word": "ہیک",
+      "pos": null,
+      "frequency_count": 90
+    },
+    {
+      "candidate_rank": 322,
+      "source_rank": 327,
+      "word": "برینڈن",
+      "pos": null,
+      "frequency_count": 90
+    },
+    {
+      "candidate_rank": 323,
+      "source_rank": 328,
+      "word": "درمیان",
+      "pos": null,
+      "frequency_count": 90
+    },
+    {
+      "candidate_rank": 324,
+      "source_rank": 329,
+      "word": "جنگل",
+      "pos": null,
+      "frequency_count": 89
+    },
+    {
+      "candidate_rank": 325,
+      "source_rank": 330,
+      "word": "کھانا",
+      "pos": null,
+      "frequency_count": 89
+    },
+    {
+      "candidate_rank": 326,
+      "source_rank": 331,
+      "word": "جناب",
+      "pos": null,
+      "frequency_count": 89
+    },
+    {
+      "candidate_rank": 327,
+      "source_rank": 332,
+      "word": "دروازے",
+      "pos": null,
+      "frequency_count": 89
+    },
+    {
+      "candidate_rank": 328,
+      "source_rank": 333,
+      "word": "ہیلو",
+      "pos": null,
+      "frequency_count": 89
+    },
+    {
+      "candidate_rank": 329,
+      "source_rank": 334,
+      "word": "لڑکی",
+      "pos": null,
+      "frequency_count": 88
+    },
+    {
+      "candidate_rank": 330,
+      "source_rank": 335,
+      "word": "اعتماد",
+      "pos": null,
+      "frequency_count": 88
+    },
+    {
+      "candidate_rank": 331,
+      "source_rank": 336,
+      "word": "ٹومی",
+      "pos": null,
+      "frequency_count": 87
+    },
+    {
+      "candidate_rank": 332,
+      "source_rank": 337,
+      "word": "ملے",
+      "pos": null,
+      "frequency_count": 87
+    },
+    {
+      "candidate_rank": 333,
+      "source_rank": 338,
+      "word": "خوبصورت",
+      "pos": null,
+      "frequency_count": 87
+    },
+    {
+      "candidate_rank": 334,
+      "source_rank": 339,
+      "word": "راستہ",
+      "pos": null,
+      "frequency_count": 86
+    },
+    {
+      "candidate_rank": 335,
+      "source_rank": 340,
+      "word": "پہ",
+      "pos": null,
+      "frequency_count": 86
+    },
+    {
+      "candidate_rank": 336,
+      "source_rank": 341,
+      "word": "ہا",
+      "pos": null,
+      "frequency_count": 85
+    },
+    {
+      "candidate_rank": 337,
+      "source_rank": 342,
+      "word": "آنے",
+      "pos": null,
+      "frequency_count": 85
+    },
+    {
+      "candidate_rank": 338,
+      "source_rank": 343,
+      "word": "گرد",
+      "pos": null,
+      "frequency_count": 85
+    },
+    {
+      "candidate_rank": 339,
+      "source_rank": 344,
+      "word": "مختلف",
+      "pos": null,
+      "frequency_count": 84
+    },
+    {
+      "candidate_rank": 340,
+      "source_rank": 345,
+      "word": "اے",
+      "pos": null,
+      "frequency_count": 83
+    },
+    {
+      "candidate_rank": 341,
+      "source_rank": 346,
+      "word": "بنا",
+      "pos": null,
+      "frequency_count": 83
+    },
+    {
+      "candidate_rank": 342,
+      "source_rank": 347,
+      "word": "ہوئی",
+      "pos": null,
+      "frequency_count": 83
+    },
+    {
+      "candidate_rank": 343,
+      "source_rank": 348,
+      "word": "زندہ",
+      "pos": null,
+      "frequency_count": 82
+    },
+    {
+      "candidate_rank": 344,
+      "source_rank": 349,
+      "word": "آخری",
+      "pos": null,
+      "frequency_count": 82
+    },
+    {
+      "candidate_rank": 345,
+      "source_rank": 350,
+      "word": "اتنا",
+      "pos": null,
+      "frequency_count": 81
+    },
+    {
+      "candidate_rank": 346,
+      "source_rank": 351,
+      "word": "گاڑی",
+      "pos": null,
+      "frequency_count": 81
+    },
+    {
+      "candidate_rank": 347,
+      "source_rank": 352,
+      "word": "آگے",
+      "pos": null,
+      "frequency_count": 81
+    },
+    {
+      "candidate_rank": 348,
+      "source_rank": 353,
+      "word": "اد",
+      "pos": null,
+      "frequency_count": 81
+    },
+    {
+      "candidate_rank": 349,
+      "source_rank": 354,
+      "word": "پولیس",
+      "pos": null,
+      "frequency_count": 80
+    },
+    {
+      "candidate_rank": 350,
+      "source_rank": 355,
+      "word": "غیر",
+      "pos": null,
+      "frequency_count": 80
+    },
+    {
+      "candidate_rank": 351,
+      "source_rank": 356,
+      "word": "پتا",
+      "pos": null,
+      "frequency_count": 80
+    },
+    {
+      "candidate_rank": 352,
+      "source_rank": 357,
+      "word": "ناورسکی",
+      "pos": null,
+      "frequency_count": 80
+    },
+    {
+      "candidate_rank": 353,
+      "source_rank": 358,
+      "word": "غلطی",
+      "pos": null,
+      "frequency_count": 80
+    },
+    {
+      "candidate_rank": 354,
+      "source_rank": 359,
+      "word": "غلط",
+      "pos": null,
+      "frequency_count": 80
+    },
+    {
+      "candidate_rank": 355,
+      "source_rank": 360,
+      "word": "بڑے",
+      "pos": null,
+      "frequency_count": 79
+    },
+    {
+      "candidate_rank": 356,
+      "source_rank": 361,
+      "word": "مکمل",
+      "pos": null,
+      "frequency_count": 79
+    },
+    {
+      "candidate_rank": 357,
+      "source_rank": 363,
+      "word": "خاندان",
+      "pos": null,
+      "frequency_count": 78
+    },
+    {
+      "candidate_rank": 358,
+      "source_rank": 364,
+      "word": "واضح",
+      "pos": null,
+      "frequency_count": 78
+    },
+    {
+      "candidate_rank": 359,
+      "source_rank": 365,
+      "word": "بے",
+      "pos": null,
+      "frequency_count": 78
+    },
+    {
+      "candidate_rank": 360,
+      "source_rank": 366,
+      "word": "پکڑ",
+      "pos": null,
+      "frequency_count": 78
+    },
+    {
+      "candidate_rank": 361,
+      "source_rank": 367,
+      "word": "لڑکے",
+      "pos": null,
+      "frequency_count": 78
+    },
+    {
+      "candidate_rank": 362,
+      "source_rank": 368,
+      "word": "سرور",
+      "pos": null,
+      "frequency_count": 78
+    },
+    {
+      "candidate_rank": 363,
+      "source_rank": 369,
+      "word": "بلیک",
+      "pos": null,
+      "frequency_count": 77
+    },
+    {
+      "candidate_rank": 364,
+      "source_rank": 370,
+      "word": "مسٹر",
+      "pos": null,
+      "frequency_count": 77
+    },
+    {
+      "candidate_rank": 365,
+      "source_rank": 371,
+      "word": "لینے",
+      "pos": null,
+      "frequency_count": 77
+    },
+    {
+      "candidate_rank": 366,
+      "source_rank": 372,
+      "word": "مقصد",
+      "pos": null,
+      "frequency_count": 77
+    },
+    {
+      "candidate_rank": 367,
+      "source_rank": 373,
+      "word": "لیں",
+      "pos": null,
+      "frequency_count": 77
+    },
+    {
+      "candidate_rank": 368,
+      "source_rank": 374,
+      "word": "مزید",
+      "pos": null,
+      "frequency_count": 76
+    },
+    {
+      "candidate_rank": 369,
+      "source_rank": 375,
+      "word": "آسان",
+      "pos": null,
+      "frequency_count": 76
+    },
+    {
+      "candidate_rank": 370,
+      "source_rank": 376,
+      "word": "امید",
+      "pos": null,
+      "frequency_count": 76
+    },
+    {
+      "candidate_rank": 371,
+      "source_rank": 377,
+      "word": "راستے",
+      "pos": null,
+      "frequency_count": 76
+    },
+    {
+      "candidate_rank": 372,
+      "source_rank": 378,
+      "word": "آتا",
+      "pos": null,
+      "frequency_count": 75
+    },
+    {
+      "candidate_rank": 373,
+      "source_rank": 379,
+      "word": "جواب",
+      "pos": null,
+      "frequency_count": 75
+    },
+    {
+      "candidate_rank": 374,
+      "source_rank": 380,
+      "word": "سپر",
+      "pos": null,
+      "frequency_count": 75
+    },
+    {
+      "candidate_rank": 375,
+      "source_rank": 381,
+      "word": "حقیقی",
+      "pos": null,
+      "frequency_count": 75
+    },
+    {
+      "candidate_rank": 376,
+      "source_rank": 382,
+      "word": "بڑی",
+      "pos": null,
+      "frequency_count": 74
+    },
+    {
+      "candidate_rank": 377,
+      "source_rank": 383,
+      "word": "پڑے",
+      "pos": null,
+      "frequency_count": 74
+    },
+    {
+      "candidate_rank": 378,
+      "source_rank": 384,
+      "word": "رکھنے",
+      "pos": null,
+      "frequency_count": 74
+    },
+    {
+      "candidate_rank": 379,
+      "source_rank": 385,
+      "word": "اط",
+      "pos": null,
+      "frequency_count": 73
+    },
+    {
+      "candidate_rank": 380,
+      "source_rank": 386,
+      "word": "دیکھنے",
+      "pos": null,
+      "frequency_count": 73
+    },
+    {
+      "candidate_rank": 381,
+      "source_rank": 387,
+      "word": "اوپر",
+      "pos": null,
+      "frequency_count": 73
+    },
+    {
+      "candidate_rank": 382,
+      "source_rank": 388,
+      "word": "عورت",
+      "pos": null,
+      "frequency_count": 72
+    },
+    {
+      "candidate_rank": 383,
+      "source_rank": 389,
+      "word": "خفیہ",
+      "pos": null,
+      "frequency_count": 72
+    },
+    {
+      "candidate_rank": 384,
+      "source_rank": 390,
+      "word": "پیدا",
+      "pos": null,
+      "frequency_count": 72
+    },
+    {
+      "candidate_rank": 385,
+      "source_rank": 391,
+      "word": "چیزیں",
+      "pos": null,
+      "frequency_count": 71
+    },
+    {
+      "candidate_rank": 386,
+      "source_rank": 392,
+      "word": "حق",
+      "pos": null,
+      "frequency_count": 71
+    },
+    {
+      "candidate_rank": 387,
+      "source_rank": 393,
+      "word": "اپ",
+      "pos": null,
+      "frequency_count": 71
+    },
+    {
+      "candidate_rank": 388,
+      "source_rank": 394,
+      "word": "معلومات",
+      "pos": null,
+      "frequency_count": 71
+    },
+    {
+      "candidate_rank": 389,
+      "source_rank": 395,
+      "word": "آرام",
+      "pos": null,
+      "frequency_count": 71
+    },
+    {
+      "candidate_rank": 390,
+      "source_rank": 396,
+      "word": "دونوں",
+      "pos": null,
+      "frequency_count": 70
+    },
+    {
+      "candidate_rank": 391,
+      "source_rank": 397,
+      "word": "دیر",
+      "pos": null,
+      "frequency_count": 70
+    },
+    {
+      "candidate_rank": 392,
+      "source_rank": 398,
+      "word": "افسوس",
+      "pos": null,
+      "frequency_count": 70
+    },
+    {
+      "candidate_rank": 393,
+      "source_rank": 399,
+      "word": "چل",
+      "pos": null,
+      "frequency_count": 70
+    },
+    {
+      "candidate_rank": 394,
+      "source_rank": 400,
+      "word": "قریب",
+      "pos": null,
+      "frequency_count": 70
+    },
+    {
+      "candidate_rank": 395,
+      "source_rank": 401,
+      "word": "جھوٹ",
+      "pos": null,
+      "frequency_count": 70
+    },
+    {
+      "candidate_rank": 396,
+      "source_rank": 402,
+      "word": "اتارنا",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 397,
+      "source_rank": 403,
+      "word": "پیسے",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 398,
+      "source_rank": 404,
+      "word": "خلاف",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 399,
+      "source_rank": 405,
+      "word": "سکتی",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 400,
+      "source_rank": 406,
+      "word": "آو",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 401,
+      "source_rank": 407,
+      "word": "لگا",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 402,
+      "source_rank": 408,
+      "word": "چار",
+      "pos": null,
+      "frequency_count": 68
+    },
+    {
+      "candidate_rank": 403,
+      "source_rank": 409,
+      "word": "حفاظت",
+      "pos": null,
+      "frequency_count": 68
+    },
+    {
+      "candidate_rank": 404,
+      "source_rank": 410,
+      "word": "رکھا",
+      "pos": null,
+      "frequency_count": 68
+    },
+    {
+      "candidate_rank": 405,
+      "source_rank": 411,
+      "word": "سانس",
+      "pos": null,
+      "frequency_count": 68
+    },
+    {
+      "candidate_rank": 406,
+      "source_rank": 412,
+      "word": "ہیکنگ",
+      "pos": null,
+      "frequency_count": 68
+    },
+    {
+      "candidate_rank": 407,
+      "source_rank": 413,
+      "word": "دادی",
+      "pos": null,
+      "frequency_count": 68
+    },
+    {
+      "candidate_rank": 408,
+      "source_rank": 414,
+      "word": "ہع",
+      "pos": null,
+      "frequency_count": 67
+    },
+    {
+      "candidate_rank": 409,
+      "source_rank": 415,
+      "word": "معذرت",
+      "pos": null,
+      "frequency_count": 67
+    },
+    {
+      "candidate_rank": 410,
+      "source_rank": 416,
+      "word": "داستان",
+      "pos": null,
+      "frequency_count": 67
+    },
+    {
+      "candidate_rank": 411,
+      "source_rank": 417,
+      "word": "جادو",
+      "pos": null,
+      "frequency_count": 67
+    },
+    {
+      "candidate_rank": 412,
+      "source_rank": 418,
+      "word": "چاہتی",
+      "pos": null,
+      "frequency_count": 67
+    },
+    {
+      "candidate_rank": 413,
+      "source_rank": 419,
+      "word": "پڑا",
+      "pos": null,
+      "frequency_count": 67
+    },
+    {
+      "candidate_rank": 414,
+      "source_rank": 420,
+      "word": "سپرمین",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 415,
+      "source_rank": 421,
+      "word": "دوسری",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 416,
+      "source_rank": 422,
+      "word": "ءِ",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 417,
+      "source_rank": 423,
+      "word": "بیٹھ",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 418,
+      "source_rank": 424,
+      "word": "رہنا",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 419,
+      "source_rank": 425,
+      "word": "یار",
+      "pos": null,
+      "frequency_count": 65
+    },
+    {
+      "candidate_rank": 420,
+      "source_rank": 426,
+      "word": "ابو",
+      "pos": null,
+      "frequency_count": 65
+    },
+    {
+      "candidate_rank": 421,
+      "source_rank": 427,
+      "word": "کھو",
+      "pos": null,
+      "frequency_count": 65
+    },
+    {
+      "candidate_rank": 422,
+      "source_rank": 428,
+      "word": "دینے",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 423,
+      "source_rank": 429,
+      "word": "سامنے",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 424,
+      "source_rank": 430,
+      "word": "کار",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 425,
+      "source_rank": 431,
+      "word": "لگ",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 426,
+      "source_rank": 432,
+      "word": "اصل",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 427,
+      "source_rank": 433,
+      "word": "ثابت",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 428,
+      "source_rank": 434,
+      "word": "گندگی",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 429,
+      "source_rank": 435,
+      "word": "خون",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 430,
+      "source_rank": 436,
+      "word": "امتحان",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 431,
+      "source_rank": 437,
+      "word": "پرواہ",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 432,
+      "source_rank": 438,
+      "word": "امریکی",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 433,
+      "source_rank": 439,
+      "word": "طریقہ",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 434,
+      "source_rank": 440,
+      "word": "اجازت",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 435,
+      "source_rank": 441,
+      "word": "فکر",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 436,
+      "source_rank": 442,
+      "word": "ارد",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 437,
+      "source_rank": 443,
+      "word": "چیزوں",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 438,
+      "source_rank": 444,
+      "word": "ح",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 439,
+      "source_rank": 445,
+      "word": "گر",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 440,
+      "source_rank": 446,
+      "word": "کال",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 441,
+      "source_rank": 447,
+      "word": "سن",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 442,
+      "source_rank": 448,
+      "word": "مگر",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 443,
+      "source_rank": 449,
+      "word": "تباہ",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 444,
+      "source_rank": 450,
+      "word": "توڑ",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 445,
+      "source_rank": 451,
+      "word": "سوال",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 446,
+      "source_rank": 452,
+      "word": "بیٹا",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 447,
+      "source_rank": 453,
+      "word": "اسی",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 448,
+      "source_rank": 454,
+      "word": "عظیم",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 449,
+      "source_rank": 455,
+      "word": "رہ",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 450,
+      "source_rank": 456,
+      "word": "تحفظ",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 451,
+      "source_rank": 457,
+      "word": "خاص",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 452,
+      "source_rank": 458,
+      "word": "سوچ",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 453,
+      "source_rank": 459,
+      "word": "گزشتہ",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 454,
+      "source_rank": 460,
+      "word": "موت",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 455,
+      "source_rank": 461,
+      "word": "رہتے",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 456,
+      "source_rank": 462,
+      "word": "منصوبہ",
+      "pos": null,
+      "frequency_count": 59
+    },
+    {
+      "candidate_rank": 457,
+      "source_rank": 463,
+      "word": "کہتے",
+      "pos": null,
+      "frequency_count": 59
+    },
+    {
+      "candidate_rank": 458,
+      "source_rank": 464,
+      "word": "معافی",
+      "pos": null,
+      "frequency_count": 59
+    },
+    {
+      "candidate_rank": 459,
+      "source_rank": 465,
+      "word": "اچھے",
+      "pos": null,
+      "frequency_count": 59
+    },
+    {
+      "candidate_rank": 460,
+      "source_rank": 466,
+      "word": "چاہیئے",
+      "pos": null,
+      "frequency_count": 59
+    },
+    {
+      "candidate_rank": 461,
+      "source_rank": 467,
+      "word": "سیکورٹی",
+      "pos": null,
+      "frequency_count": 59
+    },
+    {
+      "candidate_rank": 462,
+      "source_rank": 468,
+      "word": "چھوٹے",
+      "pos": null,
+      "frequency_count": 59
+    },
+    {
+      "candidate_rank": 463,
+      "source_rank": 469,
+      "word": "ادا",
+      "pos": null,
+      "frequency_count": 59
+    },
+    {
+      "candidate_rank": 464,
+      "source_rank": 470,
+      "word": "صاف",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 465,
+      "source_rank": 471,
+      "word": "لائن",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 466,
+      "source_rank": 472,
+      "word": "برا",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 467,
+      "source_rank": 473,
+      "word": "از",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 468,
+      "source_rank": 474,
+      "word": "ہوائی",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 469,
+      "source_rank": 475,
+      "word": "سنا",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 470,
+      "source_rank": 476,
+      "word": "درست",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 471,
+      "source_rank": 477,
+      "word": "توجہ",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 472,
+      "source_rank": 478,
+      "word": "ہہ",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 473,
+      "source_rank": 479,
+      "word": "دیتا",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 474,
+      "source_rank": 480,
+      "word": "دوسروں",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 475,
+      "source_rank": 481,
+      "word": "گائے",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 476,
+      "source_rank": 482,
+      "word": "حکومت",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 477,
+      "source_rank": 483,
+      "word": "سٹیفین",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 478,
+      "source_rank": 484,
+      "word": "پوری",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 479,
+      "source_rank": 485,
+      "word": "دل",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 480,
+      "source_rank": 486,
+      "word": "کھانے",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 481,
+      "source_rank": 487,
+      "word": "باقی",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 482,
+      "source_rank": 488,
+      "word": "لہذا",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 483,
+      "source_rank": 489,
+      "word": "جیک",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 484,
+      "source_rank": 490,
+      "word": "گھنٹے",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 485,
+      "source_rank": 491,
+      "word": "بادشاہ",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 486,
+      "source_rank": 492,
+      "word": "لمحے",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 487,
+      "source_rank": 493,
+      "word": "لادن",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 488,
+      "source_rank": 494,
+      "word": "بھیجا",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 489,
+      "source_rank": 496,
+      "word": "نکل",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 490,
+      "source_rank": 497,
+      "word": "کمپیوٹر",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 491,
+      "source_rank": 498,
+      "word": "تعلق",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 492,
+      "source_rank": 499,
+      "word": "بننا",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 493,
+      "source_rank": 500,
+      "word": "بچوں",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 494,
+      "source_rank": 501,
+      "word": "ہمارا",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 495,
+      "source_rank": 502,
+      "word": "زبان",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 496,
+      "source_rank": 503,
+      "word": "فوری",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 497,
+      "source_rank": 504,
+      "word": "سوالات",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 498,
+      "source_rank": 505,
+      "word": "ورک",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 499,
+      "source_rank": 506,
+      "word": "نیٹ",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 500,
+      "source_rank": 507,
+      "word": "چوری",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 501,
+      "source_rank": 508,
+      "word": "سائبر",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 502,
+      "source_rank": 509,
+      "word": "مذاق",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 503,
+      "source_rank": 510,
+      "word": "شادی",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 504,
+      "source_rank": 511,
+      "word": "ہوشیار",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 505,
+      "source_rank": 512,
+      "word": "جلد",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 506,
+      "source_rank": 513,
+      "word": "حل",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 507,
+      "source_rank": 514,
+      "word": "ناممکن",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 508,
+      "source_rank": 515,
+      "word": "ہیکروں",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 509,
+      "source_rank": 516,
+      "word": "بینک",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 510,
+      "source_rank": 517,
+      "word": "آتے",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 511,
+      "source_rank": 518,
+      "word": "چکا",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 512,
+      "source_rank": 519,
+      "word": "سو",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 513,
+      "source_rank": 520,
+      "word": "کمرے",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 514,
+      "source_rank": 521,
+      "word": "خوشی",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 515,
+      "source_rank": 522,
+      "word": "پہلی",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 516,
+      "source_rank": 523,
+      "word": "تاکہ",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 517,
+      "source_rank": 524,
+      "word": "دھوکہ",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 518,
+      "source_rank": 525,
+      "word": "چال",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 519,
+      "source_rank": 526,
+      "word": "فوج",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 520,
+      "source_rank": 527,
+      "word": "بہترین",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 521,
+      "source_rank": 528,
+      "word": "دیکھیں",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 522,
+      "source_rank": 529,
+      "word": "ہلاک",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 523,
+      "source_rank": 530,
+      "word": "والدین",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 524,
+      "source_rank": 531,
+      "word": "حملے",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 525,
+      "source_rank": 532,
+      "word": "ت",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 526,
+      "source_rank": 533,
+      "word": "معمولی",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 527,
+      "source_rank": 534,
+      "word": "چکے",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 528,
+      "source_rank": 535,
+      "word": "روسی",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 529,
+      "source_rank": 536,
+      "word": "دینا",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 530,
+      "source_rank": 537,
+      "word": "تاریخ",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 531,
+      "source_rank": 538,
+      "word": "سمجھتے",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 532,
+      "source_rank": 539,
+      "word": "کھیل",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 533,
+      "source_rank": 540,
+      "word": "بنایا",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 534,
+      "source_rank": 541,
+      "word": "آمدید",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 535,
+      "source_rank": 542,
+      "word": "چھوٹی",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 536,
+      "source_rank": 543,
+      "word": "بنانے",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 537,
+      "source_rank": 544,
+      "word": "ریکارڈ",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 538,
+      "source_rank": 545,
+      "word": "یہیں",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 539,
+      "source_rank": 546,
+      "word": "جہاز",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 540,
+      "source_rank": 547,
+      "word": "پیغام",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 541,
+      "source_rank": 548,
+      "word": "لانے",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 542,
+      "source_rank": 549,
+      "word": "مشکل",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 543,
+      "source_rank": 550,
+      "word": "بندی",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 544,
+      "source_rank": 551,
+      "word": "لات",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 545,
+      "source_rank": 552,
+      "word": "احمد",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 546,
+      "source_rank": 553,
+      "word": "گروپ",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 547,
+      "source_rank": 554,
+      "word": "بھول",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 548,
+      "source_rank": 555,
+      "word": "ماہ",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 549,
+      "source_rank": 556,
+      "word": "رکھیں",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 550,
+      "source_rank": 557,
+      "word": "رکھتا",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 551,
+      "source_rank": 558,
+      "word": "وہی",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 552,
+      "source_rank": 559,
+      "word": "صبح",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 553,
+      "source_rank": 560,
+      "word": "سیکنڈ",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 554,
+      "source_rank": 561,
+      "word": "دوران",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 555,
+      "source_rank": 562,
+      "word": "عجیب",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 556,
+      "source_rank": 563,
+      "word": "حصہ",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 557,
+      "source_rank": 564,
+      "word": "ظاہر",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 558,
+      "source_rank": 565,
+      "word": "بیوی",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 559,
+      "source_rank": 566,
+      "word": "پرواز",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 560,
+      "source_rank": 567,
+      "word": "الوداع",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 561,
+      "source_rank": 568,
+      "word": "داخل",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 562,
+      "source_rank": 569,
+      "word": "عام",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 563,
+      "source_rank": 570,
+      "word": "فیصلہ",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 564,
+      "source_rank": 571,
+      "word": "پیش",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 565,
+      "source_rank": 572,
+      "word": "ذرا",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 566,
+      "source_rank": 573,
+      "word": "ہفتے",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 567,
+      "source_rank": 574,
+      "word": "عمل",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 568,
+      "source_rank": 575,
+      "word": "مٹی",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 569,
+      "source_rank": 576,
+      "word": "جاؤں",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 570,
+      "source_rank": 577,
+      "word": "چند",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 571,
+      "source_rank": 578,
+      "word": "روکنے",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 572,
+      "source_rank": 579,
+      "word": "دیکھنا",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 573,
+      "source_rank": 580,
+      "word": "اکیلے",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 574,
+      "source_rank": 581,
+      "word": "رکھو",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 575,
+      "source_rank": 582,
+      "word": "رکھ",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 576,
+      "source_rank": 583,
+      "word": "ٹیم",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 577,
+      "source_rank": 584,
+      "word": "کمپنی",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 578,
+      "source_rank": 585,
+      "word": "کراکوژیہ",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 579,
+      "source_rank": 586,
+      "word": "مین",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 580,
+      "source_rank": 587,
+      "word": "نئے",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 581,
+      "source_rank": 588,
+      "word": "چھوٹا",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 582,
+      "source_rank": 589,
+      "word": "ڈنگ",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 583,
+      "source_rank": 590,
+      "word": "لی",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 584,
+      "source_rank": 591,
+      "word": "ج",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 585,
+      "source_rank": 592,
+      "word": "پی",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 586,
+      "source_rank": 593,
+      "word": "جاو",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 587,
+      "source_rank": 594,
+      "word": "باپ",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 588,
+      "source_rank": 595,
+      "word": "طاقت",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 589,
+      "source_rank": 596,
+      "word": "آہ",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 590,
+      "source_rank": 597,
+      "word": "خنجر",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 591,
+      "source_rank": 598,
+      "word": "بچہ",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 592,
+      "source_rank": 599,
+      "word": "دیکھتے",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 593,
+      "source_rank": 600,
+      "word": "ڈیٹا",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 594,
+      "source_rank": 601,
+      "word": "ملین",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 595,
+      "source_rank": 602,
+      "word": "کھڑے",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 596,
+      "source_rank": 603,
+      "word": "تعمیر",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 597,
+      "source_rank": 604,
+      "word": "گواہ",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 598,
+      "source_rank": 605,
+      "word": "کیجئے",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 599,
+      "source_rank": 606,
+      "word": "خبر",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 600,
+      "source_rank": 607,
+      "word": "روک",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 601,
+      "source_rank": 608,
+      "word": "ویڈیو",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 602,
+      "source_rank": 609,
+      "word": "سودا",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 603,
+      "source_rank": 610,
+      "word": "اگلے",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 604,
+      "source_rank": 611,
+      "word": "بھیج",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 605,
+      "source_rank": 612,
+      "word": "اتنی",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 606,
+      "source_rank": 613,
+      "word": "حکم",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 607,
+      "source_rank": 614,
+      "word": "سفر",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 608,
+      "source_rank": 615,
+      "word": "رابطہ",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 609,
+      "source_rank": 616,
+      "word": "مردہ",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 610,
+      "source_rank": 617,
+      "word": "ذمہ",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 611,
+      "source_rank": 618,
+      "word": "رکھتے",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 612,
+      "source_rank": 619,
+      "word": "شامل",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 613,
+      "source_rank": 620,
+      "word": "قبول",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 614,
+      "source_rank": 621,
+      "word": "بنیامین",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 615,
+      "source_rank": 622,
+      "word": "دیوار",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 616,
+      "source_rank": 623,
+      "word": "فوجی",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 617,
+      "source_rank": 624,
+      "word": "مرکزی",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 618,
+      "source_rank": 625,
+      "word": "موقع",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 619,
+      "source_rank": 626,
+      "word": "نکال",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 620,
+      "source_rank": 627,
+      "word": "جاننا",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 621,
+      "source_rank": 628,
+      "word": "پلیز",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 622,
+      "source_rank": 629,
+      "word": "مقابلے",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 623,
+      "source_rank": 630,
+      "word": "بیٹے",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 624,
+      "source_rank": 631,
+      "word": "ث",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 625,
+      "source_rank": 632,
+      "word": "جہنم",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 626,
+      "source_rank": 633,
+      "word": "نیویارک",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 627,
+      "source_rank": 634,
+      "word": "شمار",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 628,
+      "source_rank": 635,
+      "word": "احساس",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 629,
+      "source_rank": 636,
+      "word": "مردوں",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 630,
+      "source_rank": 637,
+      "word": "ہتھیار",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 631,
+      "source_rank": 638,
+      "word": "ار",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 632,
+      "source_rank": 639,
+      "word": "ایسی",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 633,
+      "source_rank": 640,
+      "word": "جاری",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 634,
+      "source_rank": 641,
+      "word": "ڈر",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 635,
+      "source_rank": 642,
+      "word": "ایسے",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 636,
+      "source_rank": 643,
+      "word": "پوچھا",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 637,
+      "source_rank": 644,
+      "word": "کب",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 638,
+      "source_rank": 645,
+      "word": "اٹھو",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 639,
+      "source_rank": 646,
+      "word": "دار",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 640,
+      "source_rank": 647,
+      "word": "ہد",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 641,
+      "source_rank": 648,
+      "word": "انٹرنیٹ",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 642,
+      "source_rank": 649,
+      "word": "اگرچہ",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 643,
+      "source_rank": 650,
+      "word": "کارڈ",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 644,
+      "source_rank": 651,
+      "word": "سروس",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 645,
+      "source_rank": 652,
+      "word": "پرسکون",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 646,
+      "source_rank": 653,
+      "word": "ایڈ",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 647,
+      "source_rank": 654,
+      "word": "حقیقت",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 648,
+      "source_rank": 655,
+      "word": "کرنی",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 649,
+      "source_rank": 656,
+      "word": "چکی",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 650,
+      "source_rank": 657,
+      "word": "بتاو",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 651,
+      "source_rank": 658,
+      "word": "سیم",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 652,
+      "source_rank": 659,
+      "word": "ع",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 653,
+      "source_rank": 660,
+      "word": "ہدایات",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 654,
+      "source_rank": 661,
+      "word": "قیادت",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 655,
+      "source_rank": 662,
+      "word": "پکڑو",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 656,
+      "source_rank": 663,
+      "word": "کرتی",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 657,
+      "source_rank": 664,
+      "word": "نوجوان",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 658,
+      "source_rank": 665,
+      "word": "جاتے",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 659,
+      "source_rank": 666,
+      "word": "تقریبا",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 660,
+      "source_rank": 667,
+      "word": "سنو",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 661,
+      "source_rank": 668,
+      "word": "فروخت",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 662,
+      "source_rank": 669,
+      "word": "حال",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 663,
+      "source_rank": 670,
+      "word": "مارا",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 664,
+      "source_rank": 671,
+      "word": "وین",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 665,
+      "source_rank": 672,
+      "word": "ملاقات",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 666,
+      "source_rank": 673,
+      "word": "امیلیہ",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 667,
+      "source_rank": 674,
+      "word": "دستخط",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 668,
+      "source_rank": 675,
+      "word": "مافیا",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 669,
+      "source_rank": 676,
+      "word": "مضبوط",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 670,
+      "source_rank": 677,
+      "word": "نقصان",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 671,
+      "source_rank": 678,
+      "word": "تصویر",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 672,
+      "source_rank": 679,
+      "word": "ہْ",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 673,
+      "source_rank": 680,
+      "word": "بیگ",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 674,
+      "source_rank": 681,
+      "word": "سامنا",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 675,
+      "source_rank": 682,
+      "word": "میل",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 676,
+      "source_rank": 683,
+      "word": "اتنے",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 677,
+      "source_rank": 684,
+      "word": "ض",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 678,
+      "source_rank": 685,
+      "word": "لعنت",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 679,
+      "source_rank": 686,
+      "word": "ہوتے",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 680,
+      "source_rank": 687,
+      "word": "کوبا",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 681,
+      "source_rank": 688,
+      "word": "دس",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 682,
+      "source_rank": 689,
+      "word": "بھر",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 683,
+      "source_rank": 690,
+      "word": "ممکن",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 684,
+      "source_rank": 691,
+      "word": "طریقے",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 685,
+      "source_rank": 692,
+      "word": "آگ",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 686,
+      "source_rank": 693,
+      "word": "پانی",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 687,
+      "source_rank": 694,
+      "word": "سفید",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 688,
+      "source_rank": 695,
+      "word": "محترم",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 689,
+      "source_rank": 696,
+      "word": "قسمت",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 690,
+      "source_rank": 697,
+      "word": "مشین",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 691,
+      "source_rank": 698,
+      "word": "بکری",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 692,
+      "source_rank": 699,
+      "word": "لن",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 693,
+      "source_rank": 700,
+      "word": "رہتا",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 694,
+      "source_rank": 701,
+      "word": "جمع",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 695,
+      "source_rank": 702,
+      "word": "چیک",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 696,
+      "source_rank": 703,
+      "word": "نیا",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 697,
+      "source_rank": 704,
+      "word": "خواہ",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 698,
+      "source_rank": 705,
+      "word": "بلغارین",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 699,
+      "source_rank": 706,
+      "word": "امن",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 700,
+      "source_rank": 707,
+      "word": "ایس",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 701,
+      "source_rank": 708,
+      "word": "ضرور",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 702,
+      "source_rank": 709,
+      "word": "چھ",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 703,
+      "source_rank": 710,
+      "word": "مطابق",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 704,
+      "source_rank": 711,
+      "word": "دہشت",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 705,
+      "source_rank": 712,
+      "word": "سماجی",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 706,
+      "source_rank": 713,
+      "word": "پیار",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 707,
+      "source_rank": 714,
+      "word": "جنس",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 708,
+      "source_rank": 715,
+      "word": "رہیں",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 709,
+      "source_rank": 716,
+      "word": "انٹیلی",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 710,
+      "source_rank": 717,
+      "word": "والی",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 711,
+      "source_rank": 718,
+      "word": "ریٹا",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 712,
+      "source_rank": 719,
+      "word": "طویل",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 713,
+      "source_rank": 720,
+      "word": "دفعہ",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 714,
+      "source_rank": 721,
+      "word": "کتنے",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 715,
+      "source_rank": 722,
+      "word": "پوچھ",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 716,
+      "source_rank": 723,
+      "word": "ریت",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 717,
+      "source_rank": 724,
+      "word": "این",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 718,
+      "source_rank": 726,
+      "word": "دوں",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 719,
+      "source_rank": 727,
+      "word": "سییلی",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 720,
+      "source_rank": 728,
+      "word": "پناہ",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 721,
+      "source_rank": 729,
+      "word": "لڑکیوں",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 722,
+      "source_rank": 730,
+      "word": "پکڑنے",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 723,
+      "source_rank": 731,
+      "word": "بی",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 724,
+      "source_rank": 732,
+      "word": "بتاؤ",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 725,
+      "source_rank": 733,
+      "word": "ہیگ",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 726,
+      "source_rank": 734,
+      "word": "ٹی",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 727,
+      "source_rank": 735,
+      "word": "جیت",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 728,
+      "source_rank": 736,
+      "word": "شکار",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 729,
+      "source_rank": 737,
+      "word": "بلایا",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 730,
+      "source_rank": 738,
+      "word": "رنگ",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 731,
+      "source_rank": 739,
+      "word": "برائن",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 732,
+      "source_rank": 740,
+      "word": "لطف",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 733,
+      "source_rank": 741,
+      "word": "گڈ",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 734,
+      "source_rank": 742,
+      "word": "خدمت",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 735,
+      "source_rank": 743,
+      "word": "مشہور",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 736,
+      "source_rank": 744,
+      "word": "صورت",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 737,
+      "source_rank": 745,
+      "word": "قدم",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 738,
+      "source_rank": 746,
+      "word": "میکس",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 739,
+      "source_rank": 747,
+      "word": "فٹ",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 740,
+      "source_rank": 748,
+      "word": "چلانے",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 741,
+      "source_rank": 749,
+      "word": "ذاتی",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 742,
+      "source_rank": 750,
+      "word": "ای",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 743,
+      "source_rank": 751,
+      "word": "ثبوت",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 744,
+      "source_rank": 752,
+      "word": "ق",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 745,
+      "source_rank": 753,
+      "word": "ریاست",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 746,
+      "source_rank": 754,
+      "word": "چھو",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 747,
+      "source_rank": 755,
+      "word": "ناکام",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 748,
+      "source_rank": 756,
+      "word": "رے",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 749,
+      "source_rank": 757,
+      "word": "ڈالر",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 750,
+      "source_rank": 758,
+      "word": "ہوگی",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 751,
+      "source_rank": 759,
+      "word": "فراہم",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 752,
+      "source_rank": 760,
+      "word": "فرق",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 753,
+      "source_rank": 761,
+      "word": "نصف",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 754,
+      "source_rank": 762,
+      "word": "پورے",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 755,
+      "source_rank": 763,
+      "word": "فرینک",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 756,
+      "source_rank": 764,
+      "word": "آزاد",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 757,
+      "source_rank": 765,
+      "word": "اعداد",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 758,
+      "source_rank": 766,
+      "word": "رقم",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 759,
+      "source_rank": 767,
+      "word": "شناخت",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 760,
+      "source_rank": 768,
+      "word": "بچانے",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 761,
+      "source_rank": 769,
+      "word": "تحقیقات",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 762,
+      "source_rank": 770,
+      "word": "پایا",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 763,
+      "source_rank": 771,
+      "word": "بم",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 764,
+      "source_rank": 772,
+      "word": "شام",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 765,
+      "source_rank": 773,
+      "word": "اقدام",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 766,
+      "source_rank": 774,
+      "word": "سارجنٹ",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 767,
+      "source_rank": 775,
+      "word": "تیزی",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 768,
+      "source_rank": 776,
+      "word": "بائیں",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 769,
+      "source_rank": 777,
+      "word": "جسم",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 770,
+      "source_rank": 778,
+      "word": "ہü",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 771,
+      "source_rank": 779,
+      "word": "قائم",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 772,
+      "source_rank": 780,
+      "word": "آنا",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 773,
+      "source_rank": 781,
+      "word": "ہمت",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 774,
+      "source_rank": 782,
+      "word": "قوانین",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 775,
+      "source_rank": 783,
+      "word": "بدل",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 776,
+      "source_rank": 784,
+      "word": "برانڈ",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 777,
+      "source_rank": 785,
+      "word": "کئی",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 778,
+      "source_rank": 786,
+      "word": "ایم",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 779,
+      "source_rank": 787,
+      "word": "لفظ",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 780,
+      "source_rank": 788,
+      "word": "پہلا",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 781,
+      "source_rank": 789,
+      "word": "چوٹ",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 782,
+      "source_rank": 790,
+      "word": "پوچھنا",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 783,
+      "source_rank": 791,
+      "word": "درخواست",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 784,
+      "source_rank": 792,
+      "word": "فہرست",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 785,
+      "source_rank": 793,
+      "word": "لڑکوں",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 786,
+      "source_rank": 794,
+      "word": "راست",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 787,
+      "source_rank": 795,
+      "word": "جیسا",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 788,
+      "source_rank": 796,
+      "word": "دروازہ",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 789,
+      "source_rank": 797,
+      "word": "نجی",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 790,
+      "source_rank": 798,
+      "word": "تاکنا",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 791,
+      "source_rank": 799,
+      "word": "مستقبل",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 792,
+      "source_rank": 800,
+      "word": "کتنا",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 793,
+      "source_rank": 801,
+      "word": "مزہ",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 794,
+      "source_rank": 802,
+      "word": "رکھنا",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 795,
+      "source_rank": 803,
+      "word": "رب",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 796,
+      "source_rank": 804,
+      "word": "چرایا",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 797,
+      "source_rank": 805,
+      "word": "سڑک",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 798,
+      "source_rank": 806,
+      "word": "ادویات",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 799,
+      "source_rank": 807,
+      "word": "سونے",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 800,
+      "source_rank": 808,
+      "word": "دھکا",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 801,
+      "source_rank": 809,
+      "word": "پرانے",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 802,
+      "source_rank": 810,
+      "word": "ڈوم",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 803,
+      "source_rank": 811,
+      "word": "الموت",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 804,
+      "source_rank": 812,
+      "word": "آدھی",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 805,
+      "source_rank": 813,
+      "word": "بتانا",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 806,
+      "source_rank": 814,
+      "word": "کاروبار",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 807,
+      "source_rank": 815,
+      "word": "ذ",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 808,
+      "source_rank": 816,
+      "word": "یقینی",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 809,
+      "source_rank": 817,
+      "word": "پاکستان",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 810,
+      "source_rank": 818,
+      "word": "خطرہ",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 811,
+      "source_rank": 819,
+      "word": "تحت",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 812,
+      "source_rank": 820,
+      "word": "چاہوں",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 813,
+      "source_rank": 821,
+      "word": "لڑائی",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 814,
+      "source_rank": 822,
+      "word": "ہاتھوں",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 815,
+      "source_rank": 823,
+      "word": "نیو",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 816,
+      "source_rank": 824,
+      "word": "موسیقی",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 817,
+      "source_rank": 825,
+      "word": "جرمن",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 818,
+      "source_rank": 826,
+      "word": "دیتے",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 819,
+      "source_rank": 827,
+      "word": "آµ",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 820,
+      "source_rank": 828,
+      "word": "بلکہ",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 821,
+      "source_rank": 829,
+      "word": "ریڈار",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 822,
+      "source_rank": 830,
+      "word": "غور",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 823,
+      "source_rank": 831,
+      "word": "انجینئرنگ",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 824,
+      "source_rank": 832,
+      "word": "آؤ",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 825,
+      "source_rank": 833,
+      "word": "حیرت",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 826,
+      "source_rank": 834,
+      "word": "عیسائی",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 827,
+      "source_rank": 835,
+      "word": "ڈیسمنڈ",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 828,
+      "source_rank": 837,
+      "word": "نو",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 829,
+      "source_rank": 838,
+      "word": "اڈے",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 830,
+      "source_rank": 839,
+      "word": "حضرات",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 831,
+      "source_rank": 840,
+      "word": "مرنے",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 832,
+      "source_rank": 841,
+      "word": "آتی",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 833,
+      "source_rank": 842,
+      "word": "ہوتی",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 834,
+      "source_rank": 843,
+      "word": "علاقے",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 835,
+      "source_rank": 844,
+      "word": "اندازہ",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 836,
+      "source_rank": 845,
+      "word": "چھپا",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 837,
+      "source_rank": 846,
+      "word": "کارروائی",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 838,
+      "source_rank": 847,
+      "word": "جیل",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 839,
+      "source_rank": 848,
+      "word": "نفرت",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 840,
+      "source_rank": 849,
+      "word": "پریشان",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 841,
+      "source_rank": 850,
+      "word": "سات",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 842,
+      "source_rank": 851,
+      "word": "اوکے",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 843,
+      "source_rank": 852,
+      "word": "کہو",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 844,
+      "source_rank": 853,
+      "word": "پہنچ",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 845,
+      "source_rank": 854,
+      "word": "تر",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 846,
+      "source_rank": 855,
+      "word": "چپ",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 847,
+      "source_rank": 856,
+      "word": "جبکہ",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 848,
+      "source_rank": 857,
+      "word": "لیتا",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 849,
+      "source_rank": 858,
+      "word": "فی",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 850,
+      "source_rank": 859,
+      "word": "بین",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 851,
+      "source_rank": 860,
+      "word": "جانچ",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 852,
+      "source_rank": 861,
+      "word": "ماسک",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 853,
+      "source_rank": 862,
+      "word": "فیڈرل",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 854,
+      "source_rank": 863,
+      "word": "آسمان",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 855,
+      "source_rank": 864,
+      "word": "توقع",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 856,
+      "source_rank": 865,
+      "word": "پورا",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 857,
+      "source_rank": 866,
+      "word": "لگی",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 858,
+      "source_rank": 867,
+      "word": "اینجل",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 859,
+      "source_rank": 868,
+      "word": "عدالت",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 860,
+      "source_rank": 869,
+      "word": "کیپٹن",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 861,
+      "source_rank": 870,
+      "word": "ف",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 862,
+      "source_rank": 871,
+      "word": "ھینی",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 863,
+      "source_rank": 872,
+      "word": "بتائیں",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 864,
+      "source_rank": 873,
+      "word": "خوف",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 865,
+      "source_rank": 874,
+      "word": "مرد",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 866,
+      "source_rank": 875,
+      "word": "اسکول",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 867,
+      "source_rank": 876,
+      "word": "بیٹ",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 868,
+      "source_rank": 877,
+      "word": "ٹروجن",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 869,
+      "source_rank": 878,
+      "word": "سوچتا",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 870,
+      "source_rank": 879,
+      "word": "مبارک",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 871,
+      "source_rank": 880,
+      "word": "نئی",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 872,
+      "source_rank": 881,
+      "word": "ساتھی",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 873,
+      "source_rank": 882,
+      "word": "انکار",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 874,
+      "source_rank": 883,
+      "word": "ملنے",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 875,
+      "source_rank": 884,
+      "word": "کمزور",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 876,
+      "source_rank": 885,
+      "word": "ہٹو",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 877,
+      "source_rank": 886,
+      "word": "افراد",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 878,
+      "source_rank": 887,
+      "word": "ہدف",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 879,
+      "source_rank": 888,
+      "word": "سیاسی",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 880,
+      "source_rank": 889,
+      "word": "کنٹرول",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 881,
+      "source_rank": 890,
+      "word": "روز",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 882,
+      "source_rank": 891,
+      "word": "آنکھیں",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 883,
+      "source_rank": 892,
+      "word": "پھینک",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 884,
+      "source_rank": 893,
+      "word": "لینا",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 885,
+      "source_rank": 894,
+      "word": "اٹھا",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 886,
+      "source_rank": 895,
+      "word": "اصلی",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 887,
+      "source_rank": 896,
+      "word": "غائب",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 888,
+      "source_rank": 897,
+      "word": "منگل",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 889,
+      "source_rank": 898,
+      "word": "خارج",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 890,
+      "source_rank": 899,
+      "word": "شہزادہ",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 891,
+      "source_rank": 900,
+      "word": "آنکھوں",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 892,
+      "source_rank": 901,
+      "word": "گھوڑے",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 893,
+      "source_rank": 902,
+      "word": "ملازمین",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 894,
+      "source_rank": 903,
+      "word": "انداز",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 895,
+      "source_rank": 904,
+      "word": "آواز",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 896,
+      "source_rank": 905,
+      "word": "پینا",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 897,
+      "source_rank": 906,
+      "word": "کاٹ",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 898,
+      "source_rank": 907,
+      "word": "سنوڈن",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 899,
+      "source_rank": 908,
+      "word": "یارک",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 900,
+      "source_rank": 909,
+      "word": "کتنی",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 901,
+      "source_rank": 910,
+      "word": "بول",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 902,
+      "source_rank": 911,
+      "word": "عالمی",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 903,
+      "source_rank": 912,
+      "word": "چچا",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 904,
+      "source_rank": 913,
+      "word": "جوتا",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 905,
+      "source_rank": 914,
+      "word": "ـ",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 906,
+      "source_rank": 915,
+      "word": "شدہ",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 907,
+      "source_rank": 916,
+      "word": "پھاٹک",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 908,
+      "source_rank": 917,
+      "word": "سیل",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 909,
+      "source_rank": 918,
+      "word": "تجھے",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 910,
+      "source_rank": 919,
+      "word": "معطل",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 911,
+      "source_rank": 920,
+      "word": "واحد",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 912,
+      "source_rank": 921,
+      "word": "بنائیں",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 913,
+      "source_rank": 922,
+      "word": "سکیں",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 914,
+      "source_rank": 923,
+      "word": "شہزادی",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 915,
+      "source_rank": 924,
+      "word": "ماضی",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 916,
+      "source_rank": 925,
+      "word": "خانے",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 917,
+      "source_rank": 926,
+      "word": "عراق",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 918,
+      "source_rank": 927,
+      "word": "مقدس",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 919,
+      "source_rank": 928,
+      "word": "ٹھہرو",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 920,
+      "source_rank": 929,
+      "word": "بیس",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 921,
+      "source_rank": 930,
+      "word": "کیٹ",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 922,
+      "source_rank": 931,
+      "word": "کانرائے",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 923,
+      "source_rank": 932,
+      "word": "قانونی",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 924,
+      "source_rank": 933,
+      "word": "پڑتا",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 925,
+      "source_rank": 934,
+      "word": "ملنا",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 926,
+      "source_rank": 935,
+      "word": "نپولین",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 927,
+      "source_rank": 936,
+      "word": "ہیکر",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 928,
+      "source_rank": 937,
+      "word": "ادءِ",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 929,
+      "source_rank": 938,
+      "word": "بچا",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 930,
+      "source_rank": 939,
+      "word": "معاملہ",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 931,
+      "source_rank": 940,
+      "word": "اچانک",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 932,
+      "source_rank": 941,
+      "word": "دھماکہ",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 933,
+      "source_rank": 942,
+      "word": "علاوہ",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 934,
+      "source_rank": 943,
+      "word": "چالوں",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 935,
+      "source_rank": 944,
+      "word": "صدر",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 936,
+      "source_rank": 945,
+      "word": "نکلنے",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 937,
+      "source_rank": 946,
+      "word": "یو",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 938,
+      "source_rank": 947,
+      "word": "اْس",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 939,
+      "source_rank": 948,
+      "word": "واہ",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 940,
+      "source_rank": 949,
+      "word": "دائیں",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 941,
+      "source_rank": 950,
+      "word": "عمارت",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 942,
+      "source_rank": 951,
+      "word": "ملتا",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 943,
+      "source_rank": 952,
+      "word": "سنجیدگی",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 944,
+      "source_rank": 953,
+      "word": "سیاہ",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 945,
+      "source_rank": 954,
+      "word": "لگے",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 946,
+      "source_rank": 955,
+      "word": "سخت",
+      "pos": null,
+      "frequency_count": 25
+    },
+    {
+      "candidate_rank": 947,
+      "source_rank": 956,
+      "word": "سرخ",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 948,
+      "source_rank": 957,
+      "word": "سان",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 949,
+      "source_rank": 958,
+      "word": "تیز",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 950,
+      "source_rank": 959,
+      "word": "مقام",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 951,
+      "source_rank": 960,
+      "word": "ایجنٹ",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 952,
+      "source_rank": 961,
+      "word": "کتیا",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 953,
+      "source_rank": 962,
+      "word": "تعریف",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 954,
+      "source_rank": 963,
+      "word": "باکس",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 955,
+      "source_rank": 964,
+      "word": "لڑکا",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 956,
+      "source_rank": 965,
+      "word": "جوتے",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 957,
+      "source_rank": 966,
+      "word": "پھنس",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 958,
+      "source_rank": 967,
+      "word": "تجویز",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 959,
+      "source_rank": 968,
+      "word": "ریمسی",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 960,
+      "source_rank": 969,
+      "word": "سارہ",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 961,
+      "source_rank": 970,
+      "word": "پوزیشن",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 962,
+      "source_rank": 971,
+      "word": "سکے",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 963,
+      "source_rank": 972,
+      "word": "جانتی",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 964,
+      "source_rank": 973,
+      "word": "پتھر",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 965,
+      "source_rank": 974,
+      "word": "دفن",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 966,
+      "source_rank": 975,
+      "word": "ملیں",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 967,
+      "source_rank": 976,
+      "word": "جنت",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 968,
+      "source_rank": 977,
+      "word": "ادھر",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 969,
+      "source_rank": 978,
+      "word": "موسم",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 970,
+      "source_rank": 979,
+      "word": "اختیار",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 971,
+      "source_rank": 980,
+      "word": "بھاڑ",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 972,
+      "source_rank": 981,
+      "word": "انگریزی",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 973,
+      "source_rank": 982,
+      "word": "چللا",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 974,
+      "source_rank": 983,
+      "word": "اندوز",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 975,
+      "source_rank": 984,
+      "word": "اترو",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 976,
+      "source_rank": 985,
+      "word": "چلنا",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 977,
+      "source_rank": 986,
+      "word": "برداشت",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 978,
+      "source_rank": 987,
+      "word": "لڑنے",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 979,
+      "source_rank": 988,
+      "word": "گپتا",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 980,
+      "source_rank": 989,
+      "word": "سوچنے",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 981,
+      "source_rank": 990,
+      "word": "زائد",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 982,
+      "source_rank": 991,
+      "word": "چیخ",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 983,
+      "source_rank": 992,
+      "word": "قانون",
+      "pos": null,
+      "frequency_count": 24
+    },
+    {
+      "candidate_rank": 984,
+      "source_rank": 993,
+      "word": "پڑتال",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 985,
+      "source_rank": 994,
+      "word": "بتانے",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 986,
+      "source_rank": 995,
+      "word": "کلاس",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 987,
+      "source_rank": 996,
+      "word": "مواد",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 988,
+      "source_rank": 997,
+      "word": "طاس",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 989,
+      "source_rank": 998,
+      "word": "سرورز",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 990,
+      "source_rank": 999,
+      "word": "اگلی",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 991,
+      "source_rank": 1000,
+      "word": "برائے",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 992,
+      "source_rank": 1001,
+      "word": "محترمہ",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 993,
+      "source_rank": 1002,
+      "word": "چھپانے",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 994,
+      "source_rank": 1003,
+      "word": "جاتی",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 995,
+      "source_rank": 1004,
+      "word": "فیسٹیول",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 996,
+      "source_rank": 1005,
+      "word": "کامیاب",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 997,
+      "source_rank": 1006,
+      "word": "ہوٹل",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 998,
+      "source_rank": 1007,
+      "word": "القاعدہ",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 999,
+      "source_rank": 1008,
+      "word": "دیگر",
+      "pos": null,
+      "frequency_count": 23
+    },
+    {
+      "candidate_rank": 1000,
+      "source_rank": 1009,
+      "word": "والوں",
+      "pos": null,
+      "frequency_count": 23
+    }
+  ]
+}

@@ -1,0 +1,7030 @@
+{
+  "schema": "SLeeLa FRUCHST frequency candidate staging v1",
+  "language_tag": "uk",
+  "language_directory": "ukrainian",
+  "source": {
+    "dataset": "FrequencyWords",
+    "upstream": "https://github.com/hermitdave/FrequencyWords",
+    "revision": "525f9b560de45753a5ea01069454e72e9aa541c6",
+    "sample": "content/2018/uk/uk_full.txt",
+    "data_license": "CC-BY-SA-4.0",
+    "code_license": "MIT",
+    "frequency_source": "OpenSubtitles-2018",
+    "attribution": [
+      "Hermit Dave / FrequencyWords — https://github.com/hermitdave/FrequencyWords",
+      "OpenSubtitles 2018 — https://opus.nlpl.eu/OpenSubtitles2018.php"
+    ],
+    "selection": "First 1,000 unique NFC-normalized lexical surface forms in source frequency order. Punctuation-only tokens are excluded; source line rank and raw occurrence count are retained.",
+    "limitations": [
+      "Surface forms, not lemmatized headwords.",
+      "Subtitle-domain frequency ranking; not a balanced general-purpose corpus.",
+      "No POS or sense labels are supplied by this source.",
+      "English, French, and Spanish definitions remain pending."
+    ],
+    "license_notice": "FrequencyWords content is CC BY-SA 4.0; preserve attribution and share-alike terms. The repository's code is MIT and does not change the data license."
+  },
+  "candidate_count": 1000,
+  "definitions_status": "pending",
+  "entries": [
+    {
+      "candidate_rank": 1,
+      "source_rank": 1,
+      "word": "я",
+      "pos": null,
+      "frequency_count": 168773
+    },
+    {
+      "candidate_rank": 2,
+      "source_rank": 2,
+      "word": "не",
+      "pos": null,
+      "frequency_count": 143925
+    },
+    {
+      "candidate_rank": 3,
+      "source_rank": 3,
+      "word": "в",
+      "pos": null,
+      "frequency_count": 69533
+    },
+    {
+      "candidate_rank": 4,
+      "source_rank": 4,
+      "word": "що",
+      "pos": null,
+      "frequency_count": 65560
+    },
+    {
+      "candidate_rank": 5,
+      "source_rank": 5,
+      "word": "на",
+      "pos": null,
+      "frequency_count": 56164
+    },
+    {
+      "candidate_rank": 6,
+      "source_rank": 6,
+      "word": "це",
+      "pos": null,
+      "frequency_count": 53544
+    },
+    {
+      "candidate_rank": 7,
+      "source_rank": 7,
+      "word": "ти",
+      "pos": null,
+      "frequency_count": 51330
+    },
+    {
+      "candidate_rank": 8,
+      "source_rank": 8,
+      "word": "что",
+      "pos": null,
+      "frequency_count": 49617
+    },
+    {
+      "candidate_rank": 9,
+      "source_rank": 9,
+      "word": "так",
+      "pos": null,
+      "frequency_count": 46601
+    },
+    {
+      "candidate_rank": 10,
+      "source_rank": 10,
+      "word": "у",
+      "pos": null,
+      "frequency_count": 45592
+    },
+    {
+      "candidate_rank": 11,
+      "source_rank": 11,
+      "word": "і",
+      "pos": null,
+      "frequency_count": 45530
+    },
+    {
+      "candidate_rank": 12,
+      "source_rank": 12,
+      "word": "ты",
+      "pos": null,
+      "frequency_count": 42364
+    },
+    {
+      "candidate_rank": 13,
+      "source_rank": 13,
+      "word": "и",
+      "pos": null,
+      "frequency_count": 37965
+    },
+    {
+      "candidate_rank": 14,
+      "source_rank": 14,
+      "word": "это",
+      "pos": null,
+      "frequency_count": 35690
+    },
+    {
+      "candidate_rank": 15,
+      "source_rank": 15,
+      "word": "з",
+      "pos": null,
+      "frequency_count": 35420
+    },
+    {
+      "candidate_rank": 16,
+      "source_rank": 16,
+      "word": "а",
+      "pos": null,
+      "frequency_count": 34876
+    },
+    {
+      "candidate_rank": 17,
+      "source_rank": 17,
+      "word": "ми",
+      "pos": null,
+      "frequency_count": 23988
+    },
+    {
+      "candidate_rank": 18,
+      "source_rank": 18,
+      "word": "все",
+      "pos": null,
+      "frequency_count": 23157
+    },
+    {
+      "candidate_rank": 19,
+      "source_rank": 19,
+      "word": "тебе",
+      "pos": null,
+      "frequency_count": 23019
+    },
+    {
+      "candidate_rank": 20,
+      "source_rank": 20,
+      "word": "він",
+      "pos": null,
+      "frequency_count": 22530
+    },
+    {
+      "candidate_rank": 21,
+      "source_rank": 21,
+      "word": "як",
+      "pos": null,
+      "frequency_count": 22470
+    },
+    {
+      "candidate_rank": 22,
+      "source_rank": 22,
+      "word": "за",
+      "pos": null,
+      "frequency_count": 22255
+    },
+    {
+      "candidate_rank": 23,
+      "source_rank": 23,
+      "word": "ви",
+      "pos": null,
+      "frequency_count": 22224
+    },
+    {
+      "candidate_rank": 24,
+      "source_rank": 24,
+      "word": "с",
+      "pos": null,
+      "frequency_count": 21017
+    },
+    {
+      "candidate_rank": 25,
+      "source_rank": 25,
+      "word": "до",
+      "pos": null,
+      "frequency_count": 19951
+    },
+    {
+      "candidate_rank": 26,
+      "source_rank": 26,
+      "word": "мене",
+      "pos": null,
+      "frequency_count": 19752
+    },
+    {
+      "candidate_rank": 27,
+      "source_rank": 27,
+      "word": "он",
+      "pos": null,
+      "frequency_count": 17964
+    },
+    {
+      "candidate_rank": 28,
+      "source_rank": 28,
+      "word": "мені",
+      "pos": null,
+      "frequency_count": 17545
+    },
+    {
+      "candidate_rank": 29,
+      "source_rank": 29,
+      "word": "ні",
+      "pos": null,
+      "frequency_count": 17516
+    },
+    {
+      "candidate_rank": 30,
+      "source_rank": 30,
+      "word": "але",
+      "pos": null,
+      "frequency_count": 17331
+    },
+    {
+      "candidate_rank": 31,
+      "source_rank": 31,
+      "word": "мы",
+      "pos": null,
+      "frequency_count": 16048
+    },
+    {
+      "candidate_rank": 32,
+      "source_rank": 32,
+      "word": "мне",
+      "pos": null,
+      "frequency_count": 15647
+    },
+    {
+      "candidate_rank": 33,
+      "source_rank": 33,
+      "word": "да",
+      "pos": null,
+      "frequency_count": 15449
+    },
+    {
+      "candidate_rank": 34,
+      "source_rank": 34,
+      "word": "как",
+      "pos": null,
+      "frequency_count": 15440
+    },
+    {
+      "candidate_rank": 35,
+      "source_rank": 35,
+      "word": "просто",
+      "pos": null,
+      "frequency_count": 14273
+    },
+    {
+      "candidate_rank": 36,
+      "source_rank": 36,
+      "word": "меня",
+      "pos": null,
+      "frequency_count": 14222
+    },
+    {
+      "candidate_rank": 37,
+      "source_rank": 37,
+      "word": "нет",
+      "pos": null,
+      "frequency_count": 14185
+    },
+    {
+      "candidate_rank": 38,
+      "source_rank": 38,
+      "word": "тут",
+      "pos": null,
+      "frequency_count": 14160
+    },
+    {
+      "candidate_rank": 39,
+      "source_rank": 39,
+      "word": "для",
+      "pos": null,
+      "frequency_count": 14069
+    },
+    {
+      "candidate_rank": 40,
+      "source_rank": 40,
+      "word": "його",
+      "pos": null,
+      "frequency_count": 14047
+    },
+    {
+      "candidate_rank": 41,
+      "source_rank": 41,
+      "word": "п",
+      "pos": null,
+      "frequency_count": 13794
+    },
+    {
+      "candidate_rank": 42,
+      "source_rank": 42,
+      "word": "о",
+      "pos": null,
+      "frequency_count": 13494
+    },
+    {
+      "candidate_rank": 43,
+      "source_rank": 43,
+      "word": "вы",
+      "pos": null,
+      "frequency_count": 13253
+    },
+    {
+      "candidate_rank": 44,
+      "source_rank": 44,
+      "word": "но",
+      "pos": null,
+      "frequency_count": 13136
+    },
+    {
+      "candidate_rank": 45,
+      "source_rank": 45,
+      "word": "то",
+      "pos": null,
+      "frequency_count": 12804
+    },
+    {
+      "candidate_rank": 46,
+      "source_rank": 46,
+      "word": "ну",
+      "pos": null,
+      "frequency_count": 12729
+    },
+    {
+      "candidate_rank": 47,
+      "source_rank": 47,
+      "word": "знаю",
+      "pos": null,
+      "frequency_count": 12673
+    },
+    {
+      "candidate_rank": 48,
+      "source_rank": 48,
+      "word": "про",
+      "pos": null,
+      "frequency_count": 12336
+    },
+    {
+      "candidate_rank": 49,
+      "source_rank": 49,
+      "word": "нас",
+      "pos": null,
+      "frequency_count": 12195
+    },
+    {
+      "candidate_rank": 50,
+      "source_rank": 50,
+      "word": "вас",
+      "pos": null,
+      "frequency_count": 11555
+    },
+    {
+      "candidate_rank": 51,
+      "source_rank": 51,
+      "word": "вони",
+      "pos": null,
+      "frequency_count": 11360
+    },
+    {
+      "candidate_rank": 52,
+      "source_rank": 52,
+      "word": "тебя",
+      "pos": null,
+      "frequency_count": 10749
+    },
+    {
+      "candidate_rank": 53,
+      "source_rank": 53,
+      "word": "вона",
+      "pos": null,
+      "frequency_count": 10702
+    },
+    {
+      "candidate_rank": 54,
+      "source_rank": 54,
+      "word": "она",
+      "pos": null,
+      "frequency_count": 10584
+    },
+    {
+      "candidate_rank": 55,
+      "source_rank": 55,
+      "word": "тобі",
+      "pos": null,
+      "frequency_count": 10481
+    },
+    {
+      "candidate_rank": 56,
+      "source_rank": 56,
+      "word": "ж",
+      "pos": null,
+      "frequency_count": 10340
+    },
+    {
+      "candidate_rank": 57,
+      "source_rank": 57,
+      "word": "его",
+      "pos": null,
+      "frequency_count": 10134
+    },
+    {
+      "candidate_rank": 58,
+      "source_rank": 58,
+      "word": "там",
+      "pos": null,
+      "frequency_count": 9865
+    },
+    {
+      "candidate_rank": 59,
+      "source_rank": 59,
+      "word": "якщо",
+      "pos": null,
+      "frequency_count": 9647
+    },
+    {
+      "candidate_rank": 60,
+      "source_rank": 60,
+      "word": "ще",
+      "pos": null,
+      "frequency_count": 9345
+    },
+    {
+      "candidate_rank": 61,
+      "source_rank": 61,
+      "word": "та",
+      "pos": null,
+      "frequency_count": 9265
+    },
+    {
+      "candidate_rank": 62,
+      "source_rank": 62,
+      "word": "добре",
+      "pos": null,
+      "frequency_count": 9187
+    },
+    {
+      "candidate_rank": 63,
+      "source_rank": 63,
+      "word": "щоб",
+      "pos": null,
+      "frequency_count": 9173
+    },
+    {
+      "candidate_rank": 64,
+      "source_rank": 64,
+      "word": "є",
+      "pos": null,
+      "frequency_count": 9051
+    },
+    {
+      "candidate_rank": 65,
+      "source_rank": 65,
+      "word": "вам",
+      "pos": null,
+      "frequency_count": 8997
+    },
+    {
+      "candidate_rank": 66,
+      "source_rank": 66,
+      "word": "по",
+      "pos": null,
+      "frequency_count": 8645
+    },
+    {
+      "candidate_rank": 67,
+      "source_rank": 67,
+      "word": "нам",
+      "pos": null,
+      "frequency_count": 8584
+    },
+    {
+      "candidate_rank": 68,
+      "source_rank": 68,
+      "word": "хочу",
+      "pos": null,
+      "frequency_count": 8378
+    },
+    {
+      "candidate_rank": 69,
+      "source_rank": 69,
+      "word": "коли",
+      "pos": null,
+      "frequency_count": 8342
+    },
+    {
+      "candidate_rank": 70,
+      "source_rank": 70,
+      "word": "если",
+      "pos": null,
+      "frequency_count": 8227
+    },
+    {
+      "candidate_rank": 71,
+      "source_rank": 71,
+      "word": "бы",
+      "pos": null,
+      "frequency_count": 8168
+    },
+    {
+      "candidate_rank": 72,
+      "source_rank": 72,
+      "word": "б",
+      "pos": null,
+      "frequency_count": 7800
+    },
+    {
+      "candidate_rank": 73,
+      "source_rank": 73,
+      "word": "же",
+      "pos": null,
+      "frequency_count": 7545
+    },
+    {
+      "candidate_rank": 74,
+      "source_rank": 74,
+      "word": "вже",
+      "pos": null,
+      "frequency_count": 7346
+    },
+    {
+      "candidate_rank": 75,
+      "source_rank": 75,
+      "word": "було",
+      "pos": null,
+      "frequency_count": 7260
+    },
+    {
+      "candidate_rank": 76,
+      "source_rank": 76,
+      "word": "її",
+      "pos": null,
+      "frequency_count": 7025
+    },
+    {
+      "candidate_rank": 77,
+      "source_rank": 77,
+      "word": "був",
+      "pos": null,
+      "frequency_count": 7008
+    },
+    {
+      "candidate_rank": 78,
+      "source_rank": 78,
+      "word": "они",
+      "pos": null,
+      "frequency_count": 6748
+    },
+    {
+      "candidate_rank": 79,
+      "source_rank": 79,
+      "word": "може",
+      "pos": null,
+      "frequency_count": 6708
+    },
+    {
+      "candidate_rank": 80,
+      "source_rank": 80,
+      "word": "чи",
+      "pos": null,
+      "frequency_count": 6573
+    },
+    {
+      "candidate_rank": 81,
+      "source_rank": 81,
+      "word": "чтобы",
+      "pos": null,
+      "frequency_count": 6505
+    },
+    {
+      "candidate_rank": 82,
+      "source_rank": 82,
+      "word": "дуже",
+      "pos": null,
+      "frequency_count": 6421
+    },
+    {
+      "candidate_rank": 83,
+      "source_rank": 83,
+      "word": "від",
+      "pos": null,
+      "frequency_count": 6329
+    },
+    {
+      "candidate_rank": 84,
+      "source_rank": 84,
+      "word": "хорошо",
+      "pos": null,
+      "frequency_count": 6199
+    },
+    {
+      "candidate_rank": 85,
+      "source_rank": 85,
+      "word": "чому",
+      "pos": null,
+      "frequency_count": 6197
+    },
+    {
+      "candidate_rank": 86,
+      "source_rank": 86,
+      "word": "буде",
+      "pos": null,
+      "frequency_count": 6079
+    },
+    {
+      "candidate_rank": 87,
+      "source_rank": 87,
+      "word": "хто",
+      "pos": null,
+      "frequency_count": 6071
+    },
+    {
+      "candidate_rank": 88,
+      "source_rank": 88,
+      "word": "есть",
+      "pos": null,
+      "frequency_count": 6042
+    },
+    {
+      "candidate_rank": 89,
+      "source_rank": 89,
+      "word": "всё",
+      "pos": null,
+      "frequency_count": 5923
+    },
+    {
+      "candidate_rank": 90,
+      "source_rank": 90,
+      "word": "давай",
+      "pos": null,
+      "frequency_count": 5871
+    },
+    {
+      "candidate_rank": 91,
+      "source_rank": 91,
+      "word": "тому",
+      "pos": null,
+      "frequency_count": 5847
+    },
+    {
+      "candidate_rank": 92,
+      "source_rank": 92,
+      "word": "де",
+      "pos": null,
+      "frequency_count": 5808
+    },
+    {
+      "candidate_rank": 93,
+      "source_rank": 93,
+      "word": "здесь",
+      "pos": null,
+      "frequency_count": 5747
+    },
+    {
+      "candidate_rank": 94,
+      "source_rank": 94,
+      "word": "треба",
+      "pos": null,
+      "frequency_count": 5701
+    },
+    {
+      "candidate_rank": 95,
+      "source_rank": 95,
+      "word": "от",
+      "pos": null,
+      "frequency_count": 5689
+    },
+    {
+      "candidate_rank": 96,
+      "source_rank": 96,
+      "word": "думаю",
+      "pos": null,
+      "frequency_count": 5553
+    },
+    {
+      "candidate_rank": 97,
+      "source_rank": 97,
+      "word": "к",
+      "pos": null,
+      "frequency_count": 5517
+    },
+    {
+      "candidate_rank": 98,
+      "source_rank": 98,
+      "word": "когда",
+      "pos": null,
+      "frequency_count": 5501
+    },
+    {
+      "candidate_rank": 99,
+      "source_rank": 99,
+      "word": "из",
+      "pos": null,
+      "frequency_count": 5433
+    },
+    {
+      "candidate_rank": 100,
+      "source_rank": 100,
+      "word": "того",
+      "pos": null,
+      "frequency_count": 5388
+    },
+    {
+      "candidate_rank": 101,
+      "source_rank": 101,
+      "word": "їх",
+      "pos": null,
+      "frequency_count": 5348
+    },
+    {
+      "candidate_rank": 102,
+      "source_rank": 102,
+      "word": "щось",
+      "pos": null,
+      "frequency_count": 5320
+    },
+    {
+      "candidate_rank": 103,
+      "source_rank": 103,
+      "word": "гаразд",
+      "pos": null,
+      "frequency_count": 5268
+    },
+    {
+      "candidate_rank": 104,
+      "source_rank": 104,
+      "word": "был",
+      "pos": null,
+      "frequency_count": 5266
+    },
+    {
+      "candidate_rank": 105,
+      "source_rank": 105,
+      "word": "цього",
+      "pos": null,
+      "frequency_count": 5209
+    },
+    {
+      "candidate_rank": 106,
+      "source_rank": 106,
+      "word": "только",
+      "pos": null,
+      "frequency_count": 5174
+    },
+    {
+      "candidate_rank": 107,
+      "source_rank": 107,
+      "word": "зараз",
+      "pos": null,
+      "frequency_count": 5044
+    },
+    {
+      "candidate_rank": 108,
+      "source_rank": 108,
+      "word": "было",
+      "pos": null,
+      "frequency_count": 4986
+    },
+    {
+      "candidate_rank": 109,
+      "source_rank": 109,
+      "word": "может",
+      "pos": null,
+      "frequency_count": 4930
+    },
+    {
+      "candidate_rank": 110,
+      "source_rank": 110,
+      "word": "нічого",
+      "pos": null,
+      "frequency_count": 4902
+    },
+    {
+      "candidate_rank": 111,
+      "source_rank": 111,
+      "word": "моя",
+      "pos": null,
+      "frequency_count": 4879
+    },
+    {
+      "candidate_rank": 112,
+      "source_rank": 112,
+      "word": "тільки",
+      "pos": null,
+      "frequency_count": 4799
+    },
+    {
+      "candidate_rank": 113,
+      "source_rank": 113,
+      "word": "те",
+      "pos": null,
+      "frequency_count": 4797
+    },
+    {
+      "candidate_rank": 114,
+      "source_rank": 114,
+      "word": "бути",
+      "pos": null,
+      "frequency_count": 4752
+    },
+    {
+      "candidate_rank": 115,
+      "source_rank": 115,
+      "word": "один",
+      "pos": null,
+      "frequency_count": 4615
+    },
+    {
+      "candidate_rank": 116,
+      "source_rank": 116,
+      "word": "уже",
+      "pos": null,
+      "frequency_count": 4600
+    },
+    {
+      "candidate_rank": 117,
+      "source_rank": 117,
+      "word": "й",
+      "pos": null,
+      "frequency_count": 4571
+    },
+    {
+      "candidate_rank": 118,
+      "source_rank": 118,
+      "word": "можу",
+      "pos": null,
+      "frequency_count": 4565
+    },
+    {
+      "candidate_rank": 119,
+      "source_rank": 119,
+      "word": "тепер",
+      "pos": null,
+      "frequency_count": 4546
+    },
+    {
+      "candidate_rank": 120,
+      "source_rank": 120,
+      "word": "мій",
+      "pos": null,
+      "frequency_count": 4509
+    },
+    {
+      "candidate_rank": 121,
+      "source_rank": 121,
+      "word": "быть",
+      "pos": null,
+      "frequency_count": 4504
+    },
+    {
+      "candidate_rank": 122,
+      "source_rank": 122,
+      "word": "ось",
+      "pos": null,
+      "frequency_count": 4490
+    },
+    {
+      "candidate_rank": 123,
+      "source_rank": 123,
+      "word": "почему",
+      "pos": null,
+      "frequency_count": 4425
+    },
+    {
+      "candidate_rank": 124,
+      "source_rank": 124,
+      "word": "дякую",
+      "pos": null,
+      "frequency_count": 4416
+    },
+    {
+      "candidate_rank": 125,
+      "source_rank": 125,
+      "word": "раз",
+      "pos": null,
+      "frequency_count": 4351
+    },
+    {
+      "candidate_rank": 126,
+      "source_rank": 126,
+      "word": "знаєш",
+      "pos": null,
+      "frequency_count": 4343
+    },
+    {
+      "candidate_rank": 127,
+      "source_rank": 127,
+      "word": "вот",
+      "pos": null,
+      "frequency_count": 4294
+    },
+    {
+      "candidate_rank": 128,
+      "source_rank": 128,
+      "word": "могу",
+      "pos": null,
+      "frequency_count": 4270
+    },
+    {
+      "candidate_rank": 129,
+      "source_rank": 129,
+      "word": "через",
+      "pos": null,
+      "frequency_count": 4188
+    },
+    {
+      "candidate_rank": 130,
+      "source_rank": 130,
+      "word": "нужно",
+      "pos": null,
+      "frequency_count": 4137
+    },
+    {
+      "candidate_rank": 131,
+      "source_rank": 131,
+      "word": "всі",
+      "pos": null,
+      "frequency_count": 4093
+    },
+    {
+      "candidate_rank": 132,
+      "source_rank": 132,
+      "word": "бо",
+      "pos": null,
+      "frequency_count": 4059
+    },
+    {
+      "candidate_rank": 133,
+      "source_rank": 133,
+      "word": "кто",
+      "pos": null,
+      "frequency_count": 4023
+    },
+    {
+      "candidate_rank": 134,
+      "source_rank": 134,
+      "word": "будет",
+      "pos": null,
+      "frequency_count": 3999
+    },
+    {
+      "candidate_rank": 135,
+      "source_rank": 135,
+      "word": "правда",
+      "pos": null,
+      "frequency_count": 3998
+    },
+    {
+      "candidate_rank": 136,
+      "source_rank": 136,
+      "word": "без",
+      "pos": null,
+      "frequency_count": 3964
+    },
+    {
+      "candidate_rank": 137,
+      "source_rank": 137,
+      "word": "себе",
+      "pos": null,
+      "frequency_count": 3897
+    },
+    {
+      "candidate_rank": 138,
+      "source_rank": 138,
+      "word": "більше",
+      "pos": null,
+      "frequency_count": 3842
+    },
+    {
+      "candidate_rank": 139,
+      "source_rank": 139,
+      "word": "тоді",
+      "pos": null,
+      "frequency_count": 3816
+    },
+    {
+      "candidate_rank": 140,
+      "source_rank": 140,
+      "word": "час",
+      "pos": null,
+      "frequency_count": 3765
+    },
+    {
+      "candidate_rank": 141,
+      "source_rank": 141,
+      "word": "день",
+      "pos": null,
+      "frequency_count": 3726
+    },
+    {
+      "candidate_rank": 142,
+      "source_rank": 142,
+      "word": "ладно",
+      "pos": null,
+      "frequency_count": 3698
+    },
+    {
+      "candidate_rank": 143,
+      "source_rank": 143,
+      "word": "сейчас",
+      "pos": null,
+      "frequency_count": 3686
+    },
+    {
+      "candidate_rank": 144,
+      "source_rank": 144,
+      "word": "можна",
+      "pos": null,
+      "frequency_count": 3684
+    },
+    {
+      "candidate_rank": 145,
+      "source_rank": 145,
+      "word": "була",
+      "pos": null,
+      "frequency_count": 3671
+    },
+    {
+      "candidate_rank": 146,
+      "source_rank": 146,
+      "word": "их",
+      "pos": null,
+      "frequency_count": 3670
+    },
+    {
+      "candidate_rank": 147,
+      "source_rank": 147,
+      "word": "боже",
+      "pos": null,
+      "frequency_count": 3642
+    },
+    {
+      "candidate_rank": 148,
+      "source_rank": 148,
+      "word": "еще",
+      "pos": null,
+      "frequency_count": 3632
+    },
+    {
+      "candidate_rank": 149,
+      "source_rank": 149,
+      "word": "спасибо",
+      "pos": null,
+      "frequency_count": 3626
+    },
+    {
+      "candidate_rank": 150,
+      "source_rank": 150,
+      "word": "или",
+      "pos": null,
+      "frequency_count": 3557
+    },
+    {
+      "candidate_rank": 151,
+      "source_rank": 151,
+      "word": "будь",
+      "pos": null,
+      "frequency_count": 3538
+    },
+    {
+      "candidate_rank": 152,
+      "source_rank": 152,
+      "word": "йому",
+      "pos": null,
+      "frequency_count": 3531
+    },
+    {
+      "candidate_rank": 153,
+      "source_rank": 153,
+      "word": "где",
+      "pos": null,
+      "frequency_count": 3515
+    },
+    {
+      "candidate_rank": 154,
+      "source_rank": 154,
+      "word": "лише",
+      "pos": null,
+      "frequency_count": 3476
+    },
+    {
+      "candidate_rank": 155,
+      "source_rank": 155,
+      "word": "очень",
+      "pos": null,
+      "frequency_count": 3421
+    },
+    {
+      "candidate_rank": 156,
+      "source_rank": 156,
+      "word": "была",
+      "pos": null,
+      "frequency_count": 3416
+    },
+    {
+      "candidate_rank": 157,
+      "source_rank": 157,
+      "word": "ним",
+      "pos": null,
+      "frequency_count": 3403
+    },
+    {
+      "candidate_rank": 158,
+      "source_rank": 158,
+      "word": "привіт",
+      "pos": null,
+      "frequency_count": 3401
+    },
+    {
+      "candidate_rank": 159,
+      "source_rank": 159,
+      "word": "них",
+      "pos": null,
+      "frequency_count": 3361
+    },
+    {
+      "candidate_rank": 160,
+      "source_rank": 160,
+      "word": "чем",
+      "pos": null,
+      "frequency_count": 3357
+    },
+    {
+      "candidate_rank": 161,
+      "source_rank": 161,
+      "word": "навіть",
+      "pos": null,
+      "frequency_count": 3349
+    },
+    {
+      "candidate_rank": 162,
+      "source_rank": 162,
+      "word": "ніколи",
+      "pos": null,
+      "frequency_count": 3343
+    },
+    {
+      "candidate_rank": 163,
+      "source_rank": 163,
+      "word": "знаешь",
+      "pos": null,
+      "frequency_count": 3337
+    },
+    {
+      "candidate_rank": 164,
+      "source_rank": 164,
+      "word": "этого",
+      "pos": null,
+      "frequency_count": 3321
+    },
+    {
+      "candidate_rank": 165,
+      "source_rank": 165,
+      "word": "буду",
+      "pos": null,
+      "frequency_count": 3318
+    },
+    {
+      "candidate_rank": 166,
+      "source_rank": 166,
+      "word": "би",
+      "pos": null,
+      "frequency_count": 3312
+    },
+    {
+      "candidate_rank": 167,
+      "source_rank": 167,
+      "word": "её",
+      "pos": null,
+      "frequency_count": 3296
+    },
+    {
+      "candidate_rank": 168,
+      "source_rank": 168,
+      "word": "зі",
+      "pos": null,
+      "frequency_count": 3228
+    },
+    {
+      "candidate_rank": 169,
+      "source_rank": 169,
+      "word": "ее",
+      "pos": null,
+      "frequency_count": 3216
+    },
+    {
+      "candidate_rank": 170,
+      "source_rank": 170,
+      "word": "мой",
+      "pos": null,
+      "frequency_count": 3214
+    },
+    {
+      "candidate_rank": 171,
+      "source_rank": 171,
+      "word": "немає",
+      "pos": null,
+      "frequency_count": 3212
+    },
+    {
+      "candidate_rank": 172,
+      "source_rank": 172,
+      "word": "ничего",
+      "pos": null,
+      "frequency_count": 3207
+    },
+    {
+      "candidate_rank": 173,
+      "source_rank": 173,
+      "word": "хочеш",
+      "pos": null,
+      "frequency_count": 3203
+    },
+    {
+      "candidate_rank": 174,
+      "source_rank": 174,
+      "word": "нього",
+      "pos": null,
+      "frequency_count": 3202
+    },
+    {
+      "candidate_rank": 175,
+      "source_rank": 175,
+      "word": "цей",
+      "pos": null,
+      "frequency_count": 3189
+    },
+    {
+      "candidate_rank": 176,
+      "source_rank": 176,
+      "word": "чого",
+      "pos": null,
+      "frequency_count": 3110
+    },
+    {
+      "candidate_rank": 177,
+      "source_rank": 177,
+      "word": "життя",
+      "pos": null,
+      "frequency_count": 3067
+    },
+    {
+      "candidate_rank": 178,
+      "source_rank": 178,
+      "word": "этом",
+      "pos": null,
+      "frequency_count": 3039
+    },
+    {
+      "candidate_rank": 179,
+      "source_rank": 179,
+      "word": "теж",
+      "pos": null,
+      "frequency_count": 3029
+    },
+    {
+      "candidate_rank": 180,
+      "source_rank": 180,
+      "word": "люди",
+      "pos": null,
+      "frequency_count": 3029
+    },
+    {
+      "candidate_rank": 181,
+      "source_rank": 181,
+      "word": "твоя",
+      "pos": null,
+      "frequency_count": 3017
+    },
+    {
+      "candidate_rank": 182,
+      "source_rank": 182,
+      "word": "со",
+      "pos": null,
+      "frequency_count": 2934
+    },
+    {
+      "candidate_rank": 183,
+      "source_rank": 183,
+      "word": "потому",
+      "pos": null,
+      "frequency_count": 2933
+    },
+    {
+      "candidate_rank": 184,
+      "source_rank": 184,
+      "word": "сказав",
+      "pos": null,
+      "frequency_count": 2908
+    },
+    {
+      "candidate_rank": 185,
+      "source_rank": 185,
+      "word": "i",
+      "pos": null,
+      "frequency_count": 2878
+    },
+    {
+      "candidate_rank": 186,
+      "source_rank": 186,
+      "word": "больше",
+      "pos": null,
+      "frequency_count": 2876
+    },
+    {
+      "candidate_rank": 187,
+      "source_rank": 187,
+      "word": "теперь",
+      "pos": null,
+      "frequency_count": 2856
+    },
+    {
+      "candidate_rank": 188,
+      "source_rank": 188,
+      "word": "ещё",
+      "pos": null,
+      "frequency_count": 2852
+    },
+    {
+      "candidate_rank": 189,
+      "source_rank": 189,
+      "word": "людей",
+      "pos": null,
+      "frequency_count": 2851
+    },
+    {
+      "candidate_rank": 190,
+      "source_rank": 190,
+      "word": "або",
+      "pos": null,
+      "frequency_count": 2803
+    },
+    {
+      "candidate_rank": 191,
+      "source_rank": 191,
+      "word": "свою",
+      "pos": null,
+      "frequency_count": 2760
+    },
+    {
+      "candidate_rank": 192,
+      "source_rank": 192,
+      "word": "привет",
+      "pos": null,
+      "frequency_count": 2712
+    },
+    {
+      "candidate_rank": 193,
+      "source_rank": 193,
+      "word": "який",
+      "pos": null,
+      "frequency_count": 2707
+    },
+    {
+      "candidate_rank": 194,
+      "source_rank": 194,
+      "word": "сюди",
+      "pos": null,
+      "frequency_count": 2698
+    },
+    {
+      "candidate_rank": 195,
+      "source_rank": 195,
+      "word": "таке",
+      "pos": null,
+      "frequency_count": 2692
+    },
+    {
+      "candidate_rank": 196,
+      "source_rank": 196,
+      "word": "даже",
+      "pos": null,
+      "frequency_count": 2667
+    },
+    {
+      "candidate_rank": 197,
+      "source_rank": 197,
+      "word": "із",
+      "pos": null,
+      "frequency_count": 2662
+    },
+    {
+      "candidate_rank": 198,
+      "source_rank": 198,
+      "word": "об",
+      "pos": null,
+      "frequency_count": 2649
+    },
+    {
+      "candidate_rank": 199,
+      "source_rank": 199,
+      "word": "тобою",
+      "pos": null,
+      "frequency_count": 2641
+    },
+    {
+      "candidate_rank": 200,
+      "source_rank": 200,
+      "word": "були",
+      "pos": null,
+      "frequency_count": 2640
+    },
+    {
+      "candidate_rank": 201,
+      "source_rank": 201,
+      "word": "два",
+      "pos": null,
+      "frequency_count": 2635
+    },
+    {
+      "candidate_rank": 202,
+      "source_rank": 202,
+      "word": "краще",
+      "pos": null,
+      "frequency_count": 2614
+    },
+    {
+      "candidate_rank": 203,
+      "source_rank": 203,
+      "word": "пока",
+      "pos": null,
+      "frequency_count": 2596
+    },
+    {
+      "candidate_rank": 204,
+      "source_rank": 204,
+      "word": "ему",
+      "pos": null,
+      "frequency_count": 2582
+    },
+    {
+      "candidate_rank": 205,
+      "source_rank": 205,
+      "word": "завжди",
+      "pos": null,
+      "frequency_count": 2574
+    },
+    {
+      "candidate_rank": 206,
+      "source_rank": 206,
+      "word": "хочешь",
+      "pos": null,
+      "frequency_count": 2571
+    },
+    {
+      "candidate_rank": 207,
+      "source_rank": 207,
+      "word": "должен",
+      "pos": null,
+      "frequency_count": 2569
+    },
+    {
+      "candidate_rank": 208,
+      "source_rank": 208,
+      "word": "багато",
+      "pos": null,
+      "frequency_count": 2559
+    },
+    {
+      "candidate_rank": 209,
+      "source_rank": 209,
+      "word": "you",
+      "pos": null,
+      "frequency_count": 2555
+    },
+    {
+      "candidate_rank": 210,
+      "source_rank": 210,
+      "word": "сьогодні",
+      "pos": null,
+      "frequency_count": 2553
+    },
+    {
+      "candidate_rank": 211,
+      "source_rank": 211,
+      "word": "ей",
+      "pos": null,
+      "frequency_count": 2552
+    },
+    {
+      "candidate_rank": 212,
+      "source_rank": 212,
+      "word": "точно",
+      "pos": null,
+      "frequency_count": 2542
+    },
+    {
+      "candidate_rank": 213,
+      "source_rank": 213,
+      "word": "ласка",
+      "pos": null,
+      "frequency_count": 2507
+    },
+    {
+      "candidate_rank": 214,
+      "source_rank": 214,
+      "word": "время",
+      "pos": null,
+      "frequency_count": 2498
+    },
+    {
+      "candidate_rank": 215,
+      "source_rank": 215,
+      "word": "эй",
+      "pos": null,
+      "frequency_count": 2498
+    },
+    {
+      "candidate_rank": 216,
+      "source_rank": 216,
+      "word": "той",
+      "pos": null,
+      "frequency_count": 2474
+    },
+    {
+      "candidate_rank": 217,
+      "source_rank": 217,
+      "word": "себя",
+      "pos": null,
+      "frequency_count": 2463
+    },
+    {
+      "candidate_rank": 218,
+      "source_rank": 218,
+      "word": "надо",
+      "pos": null,
+      "frequency_count": 2460
+    },
+    {
+      "candidate_rank": 219,
+      "source_rank": 219,
+      "word": "сам",
+      "pos": null,
+      "frequency_count": 2441
+    },
+    {
+      "candidate_rank": 220,
+      "source_rank": 220,
+      "word": "мною",
+      "pos": null,
+      "frequency_count": 2419
+    },
+    {
+      "candidate_rank": 221,
+      "source_rank": 221,
+      "word": "тоже",
+      "pos": null,
+      "frequency_count": 2413
+    },
+    {
+      "candidate_rank": 222,
+      "source_rank": 222,
+      "word": "этот",
+      "pos": null,
+      "frequency_count": 2394
+    },
+    {
+      "candidate_rank": 223,
+      "source_rank": 223,
+      "word": "має",
+      "pos": null,
+      "frequency_count": 2388
+    },
+    {
+      "candidate_rank": 224,
+      "source_rank": 224,
+      "word": "что-то",
+      "pos": null,
+      "frequency_count": 2365
+    },
+    {
+      "candidate_rank": 225,
+      "source_rank": 225,
+      "word": "прошу",
+      "pos": null,
+      "frequency_count": 2359
+    },
+    {
+      "candidate_rank": 226,
+      "source_rank": 226,
+      "word": "маю",
+      "pos": null,
+      "frequency_count": 2359
+    },
+    {
+      "candidate_rank": 227,
+      "source_rank": 227,
+      "word": "сказал",
+      "pos": null,
+      "frequency_count": 2357
+    },
+    {
+      "candidate_rank": 228,
+      "source_rank": 228,
+      "word": "мама",
+      "pos": null,
+      "frequency_count": 2335
+    },
+    {
+      "candidate_rank": 229,
+      "source_rank": 229,
+      "word": "ли",
+      "pos": null,
+      "frequency_count": 2317
+    },
+    {
+      "candidate_rank": 230,
+      "source_rank": 230,
+      "word": "зробити",
+      "pos": null,
+      "frequency_count": 2316
+    },
+    {
+      "candidate_rank": 231,
+      "source_rank": 231,
+      "word": "сказати",
+      "pos": null,
+      "frequency_count": 2300
+    },
+    {
+      "candidate_rank": 232,
+      "source_rank": 232,
+      "word": "сказала",
+      "pos": null,
+      "frequency_count": 2289
+    },
+    {
+      "candidate_rank": 233,
+      "source_rank": 233,
+      "word": "назад",
+      "pos": null,
+      "frequency_count": 2283
+    },
+    {
+      "candidate_rank": 234,
+      "source_rank": 234,
+      "word": "які",
+      "pos": null,
+      "frequency_count": 2277
+    },
+    {
+      "candidate_rank": 235,
+      "source_rank": 235,
+      "word": "можеш",
+      "pos": null,
+      "frequency_count": 2265
+    },
+    {
+      "candidate_rank": 236,
+      "source_rank": 236,
+      "word": "тобой",
+      "pos": null,
+      "frequency_count": 2252
+    },
+    {
+      "candidate_rank": 237,
+      "source_rank": 237,
+      "word": "трохи",
+      "pos": null,
+      "frequency_count": 2250
+    },
+    {
+      "candidate_rank": 238,
+      "source_rank": 238,
+      "word": "потрібно",
+      "pos": null,
+      "frequency_count": 2245
+    },
+    {
+      "candidate_rank": 239,
+      "source_rank": 239,
+      "word": "ці",
+      "pos": null,
+      "frequency_count": 2244
+    },
+    {
+      "candidate_rank": 240,
+      "source_rank": 240,
+      "word": "тогда",
+      "pos": null,
+      "frequency_count": 2225
+    },
+    {
+      "candidate_rank": 241,
+      "source_rank": 241,
+      "word": "порядке",
+      "pos": null,
+      "frequency_count": 2212
+    },
+    {
+      "candidate_rank": 242,
+      "source_rank": 242,
+      "word": "ага",
+      "pos": null,
+      "frequency_count": 2194
+    },
+    {
+      "candidate_rank": 243,
+      "source_rank": 243,
+      "word": "саме",
+      "pos": null,
+      "frequency_count": 2191
+    },
+    {
+      "candidate_rank": 244,
+      "source_rank": 244,
+      "word": "хотів",
+      "pos": null,
+      "frequency_count": 2180
+    },
+    {
+      "candidate_rank": 245,
+      "source_rank": 245,
+      "word": "можешь",
+      "pos": null,
+      "frequency_count": 2178
+    },
+    {
+      "candidate_rank": 246,
+      "source_rank": 246,
+      "word": "під",
+      "pos": null,
+      "frequency_count": 2151
+    },
+    {
+      "candidate_rank": 247,
+      "source_rank": 247,
+      "word": "три",
+      "pos": null,
+      "frequency_count": 2143
+    },
+    {
+      "candidate_rank": 248,
+      "source_rank": 248,
+      "word": "никогда",
+      "pos": null,
+      "frequency_count": 2126
+    },
+    {
+      "candidate_rank": 249,
+      "source_rank": 249,
+      "word": "можете",
+      "pos": null,
+      "frequency_count": 2122
+    },
+    {
+      "candidate_rank": 250,
+      "source_rank": 250,
+      "word": "років",
+      "pos": null,
+      "frequency_count": 2122
+    },
+    {
+      "candidate_rank": 251,
+      "source_rank": 251,
+      "word": "собі",
+      "pos": null,
+      "frequency_count": 2121
+    },
+    {
+      "candidate_rank": 252,
+      "source_rank": 252,
+      "word": "скажи",
+      "pos": null,
+      "frequency_count": 2108
+    },
+    {
+      "candidate_rank": 253,
+      "source_rank": 253,
+      "word": "него",
+      "pos": null,
+      "frequency_count": 2088
+    },
+    {
+      "candidate_rank": 254,
+      "source_rank": 254,
+      "word": "пане",
+      "pos": null,
+      "frequency_count": 2069
+    },
+    {
+      "candidate_rank": 255,
+      "source_rank": 255,
+      "word": "робити",
+      "pos": null,
+      "frequency_count": 2060
+    },
+    {
+      "candidate_rank": 256,
+      "source_rank": 256,
+      "word": "знову",
+      "pos": null,
+      "frequency_count": 2038
+    },
+    {
+      "candidate_rank": 257,
+      "source_rank": 257,
+      "word": "твій",
+      "pos": null,
+      "frequency_count": 2036
+    },
+    {
+      "candidate_rank": 258,
+      "source_rank": 258,
+      "word": "люблю",
+      "pos": null,
+      "frequency_count": 2023
+    },
+    {
+      "candidate_rank": 259,
+      "source_rank": 259,
+      "word": "пожалуйста",
+      "pos": null,
+      "frequency_count": 2019
+    },
+    {
+      "candidate_rank": 260,
+      "source_rank": 260,
+      "word": "наш",
+      "pos": null,
+      "frequency_count": 2009
+    },
+    {
+      "candidate_rank": 261,
+      "source_rank": 261,
+      "word": "ни",
+      "pos": null,
+      "frequency_count": 2005
+    },
+    {
+      "candidate_rank": 262,
+      "source_rank": 262,
+      "word": "сегодня",
+      "pos": null,
+      "frequency_count": 1981
+    },
+    {
+      "candidate_rank": 263,
+      "source_rank": 263,
+      "word": "мной",
+      "pos": null,
+      "frequency_count": 1961
+    },
+    {
+      "candidate_rank": 264,
+      "source_rank": 264,
+      "word": "потім",
+      "pos": null,
+      "frequency_count": 1960
+    },
+    {
+      "candidate_rank": 265,
+      "source_rank": 265,
+      "word": "ніж",
+      "pos": null,
+      "frequency_count": 1958
+    },
+    {
+      "candidate_rank": 266,
+      "source_rank": 266,
+      "word": "были",
+      "pos": null,
+      "frequency_count": 1951
+    },
+    {
+      "candidate_rank": 267,
+      "source_rank": 267,
+      "word": "the",
+      "pos": null,
+      "frequency_count": 1948
+    },
+    {
+      "candidate_rank": 268,
+      "source_rank": 268,
+      "word": "гей",
+      "pos": null,
+      "frequency_count": 1944
+    },
+    {
+      "candidate_rank": 269,
+      "source_rank": 269,
+      "word": "дай",
+      "pos": null,
+      "frequency_count": 1940
+    },
+    {
+      "candidate_rank": 270,
+      "source_rank": 270,
+      "word": "перед",
+      "pos": null,
+      "frequency_count": 1939
+    },
+    {
+      "candidate_rank": 271,
+      "source_rank": 271,
+      "word": "завтра",
+      "pos": null,
+      "frequency_count": 1937
+    },
+    {
+      "candidate_rank": 272,
+      "source_rank": 272,
+      "word": "вами",
+      "pos": null,
+      "frequency_count": 1925
+    },
+    {
+      "candidate_rank": 273,
+      "source_rank": 273,
+      "word": "яка",
+      "pos": null,
+      "frequency_count": 1911
+    },
+    {
+      "candidate_rank": 274,
+      "source_rank": 274,
+      "word": "одного",
+      "pos": null,
+      "frequency_count": 1904
+    },
+    {
+      "candidate_rank": 275,
+      "source_rank": 275,
+      "word": "ваша",
+      "pos": null,
+      "frequency_count": 1892
+    },
+    {
+      "candidate_rank": 276,
+      "source_rank": 276,
+      "word": "конечно",
+      "pos": null,
+      "frequency_count": 1891
+    },
+    {
+      "candidate_rank": 277,
+      "source_rank": 277,
+      "word": "сделать",
+      "pos": null,
+      "frequency_count": 1886
+    },
+    {
+      "candidate_rank": 278,
+      "source_rank": 278,
+      "word": "лучше",
+      "pos": null,
+      "frequency_count": 1861
+    },
+    {
+      "candidate_rank": 279,
+      "source_rank": 279,
+      "word": "цьому",
+      "pos": null,
+      "frequency_count": 1861
+    },
+    {
+      "candidate_rank": 280,
+      "source_rank": 280,
+      "word": "ваш",
+      "pos": null,
+      "frequency_count": 1847
+    },
+    {
+      "candidate_rank": 281,
+      "source_rank": 281,
+      "word": "знаєте",
+      "pos": null,
+      "frequency_count": 1837
+    },
+    {
+      "candidate_rank": 282,
+      "source_rank": 282,
+      "word": "цю",
+      "pos": null,
+      "frequency_count": 1836
+    },
+    {
+      "candidate_rank": 283,
+      "source_rank": 283,
+      "word": "сказать",
+      "pos": null,
+      "frequency_count": 1829
+    },
+    {
+      "candidate_rank": 284,
+      "source_rank": 284,
+      "word": "пам",
+      "pos": null,
+      "frequency_count": 1825
+    },
+    {
+      "candidate_rank": 285,
+      "source_rank": 285,
+      "word": "ніхто",
+      "pos": null,
+      "frequency_count": 1824
+    },
+    {
+      "candidate_rank": 286,
+      "source_rank": 286,
+      "word": "сюда",
+      "pos": null,
+      "frequency_count": 1816
+    },
+    {
+      "candidate_rank": 287,
+      "source_rank": 287,
+      "word": "нами",
+      "pos": null,
+      "frequency_count": 1808
+    },
+    {
+      "candidate_rank": 288,
+      "source_rank": 288,
+      "word": "можливо",
+      "pos": null,
+      "frequency_count": 1797
+    },
+    {
+      "candidate_rank": 289,
+      "source_rank": 289,
+      "word": "після",
+      "pos": null,
+      "frequency_count": 1791
+    },
+    {
+      "candidate_rank": 290,
+      "source_rank": 290,
+      "word": "значит",
+      "pos": null,
+      "frequency_count": 1789
+    },
+    {
+      "candidate_rank": 291,
+      "source_rank": 291,
+      "word": "прямо",
+      "pos": null,
+      "frequency_count": 1783
+    },
+    {
+      "candidate_rank": 292,
+      "source_rank": 292,
+      "word": "неї",
+      "pos": null,
+      "frequency_count": 1783
+    },
+    {
+      "candidate_rank": 293,
+      "source_rank": 293,
+      "word": "скільки",
+      "pos": null,
+      "frequency_count": 1758
+    },
+    {
+      "candidate_rank": 294,
+      "source_rank": 294,
+      "word": "одна",
+      "pos": null,
+      "frequency_count": 1755
+    },
+    {
+      "candidate_rank": 295,
+      "source_rank": 295,
+      "word": "чудово",
+      "pos": null,
+      "frequency_count": 1753
+    },
+    {
+      "candidate_rank": 296,
+      "source_rank": 296,
+      "word": "давайте",
+      "pos": null,
+      "frequency_count": 1737
+    },
+    {
+      "candidate_rank": 297,
+      "source_rank": 297,
+      "word": "бачив",
+      "pos": null,
+      "frequency_count": 1727
+    },
+    {
+      "candidate_rank": 298,
+      "source_rank": 298,
+      "word": "такий",
+      "pos": null,
+      "frequency_count": 1717
+    },
+    {
+      "candidate_rank": 299,
+      "source_rank": 299,
+      "word": "кого",
+      "pos": null,
+      "frequency_count": 1716
+    },
+    {
+      "candidate_rank": 300,
+      "source_rank": 300,
+      "word": "хтось",
+      "pos": null,
+      "frequency_count": 1711
+    },
+    {
+      "candidate_rank": 301,
+      "source_rank": 301,
+      "word": "сер",
+      "pos": null,
+      "frequency_count": 1709
+    },
+    {
+      "candidate_rank": 302,
+      "source_rank": 302,
+      "word": "їй",
+      "pos": null,
+      "frequency_count": 1709
+    },
+    {
+      "candidate_rank": 303,
+      "source_rank": 303,
+      "word": "ця",
+      "pos": null,
+      "frequency_count": 1708
+    },
+    {
+      "candidate_rank": 304,
+      "source_rank": 304,
+      "word": "мою",
+      "pos": null,
+      "frequency_count": 1702
+    },
+    {
+      "candidate_rank": 305,
+      "source_rank": 305,
+      "word": "усе",
+      "pos": null,
+      "frequency_count": 1700
+    },
+    {
+      "candidate_rank": 306,
+      "source_rank": 306,
+      "word": "разом",
+      "pos": null,
+      "frequency_count": 1698
+    },
+    {
+      "candidate_rank": 307,
+      "source_rank": 307,
+      "word": "їм",
+      "pos": null,
+      "frequency_count": 1695
+    },
+    {
+      "candidate_rank": 308,
+      "source_rank": 308,
+      "word": "чего",
+      "pos": null,
+      "frequency_count": 1693
+    },
+    {
+      "candidate_rank": 309,
+      "source_rank": 309,
+      "word": "куди",
+      "pos": null,
+      "frequency_count": 1693
+    },
+    {
+      "candidate_rank": 310,
+      "source_rank": 310,
+      "word": "звичайно",
+      "pos": null,
+      "frequency_count": 1692
+    },
+    {
+      "candidate_rank": 311,
+      "source_rank": 311,
+      "word": "справді",
+      "pos": null,
+      "frequency_count": 1677
+    },
+    {
+      "candidate_rank": 312,
+      "source_rank": 312,
+      "word": "поки",
+      "pos": null,
+      "frequency_count": 1672
+    },
+    {
+      "candidate_rank": 313,
+      "source_rank": 313,
+      "word": "должны",
+      "pos": null,
+      "frequency_count": 1667
+    },
+    {
+      "candidate_rank": 314,
+      "source_rank": 314,
+      "word": "всегда",
+      "pos": null,
+      "frequency_count": 1663
+    },
+    {
+      "candidate_rank": 315,
+      "source_rank": 315,
+      "word": "делать",
+      "pos": null,
+      "frequency_count": 1661
+    },
+    {
+      "candidate_rank": 316,
+      "source_rank": 316,
+      "word": "мої",
+      "pos": null,
+      "frequency_count": 1643
+    },
+    {
+      "candidate_rank": 317,
+      "source_rank": 317,
+      "word": "дело",
+      "pos": null,
+      "frequency_count": 1636
+    },
+    {
+      "candidate_rank": 318,
+      "source_rank": 318,
+      "word": "гроші",
+      "pos": null,
+      "frequency_count": 1604
+    },
+    {
+      "candidate_rank": 319,
+      "source_rank": 319,
+      "word": "цим",
+      "pos": null,
+      "frequency_count": 1586
+    },
+    {
+      "candidate_rank": 320,
+      "source_rank": 320,
+      "word": "міг",
+      "pos": null,
+      "frequency_count": 1580
+    },
+    {
+      "candidate_rank": 321,
+      "source_rank": 321,
+      "word": "том",
+      "pos": null,
+      "frequency_count": 1577
+    },
+    {
+      "candidate_rank": 322,
+      "source_rank": 322,
+      "word": "маєш",
+      "pos": null,
+      "frequency_count": 1574
+    },
+    {
+      "candidate_rank": 323,
+      "source_rank": 323,
+      "word": "хіба",
+      "pos": null,
+      "frequency_count": 1573
+    },
+    {
+      "candidate_rank": 324,
+      "source_rank": 324,
+      "word": "ней",
+      "pos": null,
+      "frequency_count": 1571
+    },
+    {
+      "candidate_rank": 325,
+      "source_rank": 325,
+      "word": "твой",
+      "pos": null,
+      "frequency_count": 1564
+    },
+    {
+      "candidate_rank": 326,
+      "source_rank": 326,
+      "word": "этим",
+      "pos": null,
+      "frequency_count": 1549
+    },
+    {
+      "candidate_rank": 327,
+      "source_rank": 327,
+      "word": "повинен",
+      "pos": null,
+      "frequency_count": 1547
+    },
+    {
+      "candidate_rank": 328,
+      "source_rank": 328,
+      "word": "друг",
+      "pos": null,
+      "frequency_count": 1546
+    },
+    {
+      "candidate_rank": 329,
+      "source_rank": 329,
+      "word": "можно",
+      "pos": null,
+      "frequency_count": 1530
+    },
+    {
+      "candidate_rank": 330,
+      "source_rank": 330,
+      "word": "дня",
+      "pos": null,
+      "frequency_count": 1527
+    },
+    {
+      "candidate_rank": 331,
+      "source_rank": 331,
+      "word": "досить",
+      "pos": null,
+      "frequency_count": 1523
+    },
+    {
+      "candidate_rank": 332,
+      "source_rank": 332,
+      "word": "можемо",
+      "pos": null,
+      "frequency_count": 1521
+    },
+    {
+      "candidate_rank": 333,
+      "source_rank": 333,
+      "word": "зробив",
+      "pos": null,
+      "frequency_count": 1517
+    },
+    {
+      "candidate_rank": 334,
+      "source_rank": 334,
+      "word": "много",
+      "pos": null,
+      "frequency_count": 1513
+    },
+    {
+      "candidate_rank": 335,
+      "source_rank": 335,
+      "word": "хотел",
+      "pos": null,
+      "frequency_count": 1509
+    },
+    {
+      "candidate_rank": 336,
+      "source_rank": 336,
+      "word": "над",
+      "pos": null,
+      "frequency_count": 1498
+    },
+    {
+      "candidate_rank": 337,
+      "source_rank": 337,
+      "word": "должна",
+      "pos": null,
+      "frequency_count": 1484
+    },
+    {
+      "candidate_rank": 338,
+      "source_rank": 338,
+      "word": "после",
+      "pos": null,
+      "frequency_count": 1484
+    },
+    {
+      "candidate_rank": 339,
+      "source_rank": 339,
+      "word": "хоче",
+      "pos": null,
+      "frequency_count": 1477
+    },
+    {
+      "candidate_rank": 340,
+      "source_rank": 340,
+      "word": "якби",
+      "pos": null,
+      "frequency_count": 1472
+    },
+    {
+      "candidate_rank": 341,
+      "source_rank": 341,
+      "word": "могли",
+      "pos": null,
+      "frequency_count": 1466
+    },
+    {
+      "candidate_rank": 342,
+      "source_rank": 342,
+      "word": "місце",
+      "pos": null,
+      "frequency_count": 1461
+    },
+    {
+      "candidate_rank": 343,
+      "source_rank": 343,
+      "word": "всего",
+      "pos": null,
+      "frequency_count": 1455
+    },
+    {
+      "candidate_rank": 344,
+      "source_rank": 344,
+      "word": "воно",
+      "pos": null,
+      "frequency_count": 1433
+    },
+    {
+      "candidate_rank": 345,
+      "source_rank": 345,
+      "word": "часу",
+      "pos": null,
+      "frequency_count": 1430
+    },
+    {
+      "candidate_rank": 346,
+      "source_rank": 346,
+      "word": "робиш",
+      "pos": null,
+      "frequency_count": 1430
+    },
+    {
+      "candidate_rank": 347,
+      "source_rank": 347,
+      "word": "хлопці",
+      "pos": null,
+      "frequency_count": 1426
+    },
+    {
+      "candidate_rank": 348,
+      "source_rank": 348,
+      "word": "вибачте",
+      "pos": null,
+      "frequency_count": 1425
+    },
+    {
+      "candidate_rank": 349,
+      "source_rank": 349,
+      "word": "додому",
+      "pos": null,
+      "frequency_count": 1421
+    },
+    {
+      "candidate_rank": 350,
+      "source_rank": 350,
+      "word": "весь",
+      "pos": null,
+      "frequency_count": 1408
+    },
+    {
+      "candidate_rank": 351,
+      "source_rank": 351,
+      "word": "руки",
+      "pos": null,
+      "frequency_count": 1396
+    },
+    {
+      "candidate_rank": 352,
+      "source_rank": 352,
+      "word": "ведь",
+      "pos": null,
+      "frequency_count": 1396
+    },
+    {
+      "candidate_rank": 353,
+      "source_rank": 353,
+      "word": "из-за",
+      "pos": null,
+      "frequency_count": 1394
+    },
+    {
+      "candidate_rank": 354,
+      "source_rank": 354,
+      "word": "ясно",
+      "pos": null,
+      "frequency_count": 1387
+    },
+    {
+      "candidate_rank": 355,
+      "source_rank": 355,
+      "word": "возможно",
+      "pos": null,
+      "frequency_count": 1386
+    },
+    {
+      "candidate_rank": 356,
+      "source_rank": 356,
+      "word": "вибач",
+      "pos": null,
+      "frequency_count": 1378
+    },
+    {
+      "candidate_rank": 357,
+      "source_rank": 357,
+      "word": "такой",
+      "pos": null,
+      "frequency_count": 1375
+    },
+    {
+      "candidate_rank": 358,
+      "source_rank": 358,
+      "word": "доктор",
+      "pos": null,
+      "frequency_count": 1369
+    },
+    {
+      "candidate_rank": 359,
+      "source_rank": 359,
+      "word": "to",
+      "pos": null,
+      "frequency_count": 1360
+    },
+    {
+      "candidate_rank": 360,
+      "source_rank": 360,
+      "word": "повинні",
+      "pos": null,
+      "frequency_count": 1354
+    },
+    {
+      "candidate_rank": 361,
+      "source_rank": 361,
+      "word": "эти",
+      "pos": null,
+      "frequency_count": 1352
+    },
+    {
+      "candidate_rank": 362,
+      "source_rank": 362,
+      "word": "говорить",
+      "pos": null,
+      "frequency_count": 1350
+    },
+    {
+      "candidate_rank": 363,
+      "source_rank": 363,
+      "word": "мого",
+      "pos": null,
+      "frequency_count": 1350
+    },
+    {
+      "candidate_rank": 364,
+      "source_rank": 364,
+      "word": "нема",
+      "pos": null,
+      "frequency_count": 1350
+    },
+    {
+      "candidate_rank": 365,
+      "source_rank": 365,
+      "word": "нб",
+      "pos": null,
+      "frequency_count": 1346
+    },
+    {
+      "candidate_rank": 366,
+      "source_rank": 366,
+      "word": "йди",
+      "pos": null,
+      "frequency_count": 1345
+    },
+    {
+      "candidate_rank": 367,
+      "source_rank": 367,
+      "word": "думаешь",
+      "pos": null,
+      "frequency_count": 1341
+    },
+    {
+      "candidate_rank": 368,
+      "source_rank": 368,
+      "word": "моей",
+      "pos": null,
+      "frequency_count": 1341
+    },
+    {
+      "candidate_rank": 369,
+      "source_rank": 369,
+      "word": "немного",
+      "pos": null,
+      "frequency_count": 1340
+    },
+    {
+      "candidate_rank": 370,
+      "source_rank": 370,
+      "word": "навіщо",
+      "pos": null,
+      "frequency_count": 1339
+    },
+    {
+      "candidate_rank": 371,
+      "source_rank": 371,
+      "word": "господи",
+      "pos": null,
+      "frequency_count": 1334
+    },
+    {
+      "candidate_rank": 372,
+      "source_rank": 372,
+      "word": "мабуть",
+      "pos": null,
+      "frequency_count": 1324
+    },
+    {
+      "candidate_rank": 373,
+      "source_rank": 373,
+      "word": "жизнь",
+      "pos": null,
+      "frequency_count": 1324
+    },
+    {
+      "candidate_rank": 374,
+      "source_rank": 374,
+      "word": "твою",
+      "pos": null,
+      "frequency_count": 1322
+    },
+    {
+      "candidate_rank": 375,
+      "source_rank": 375,
+      "word": "зачем",
+      "pos": null,
+      "frequency_count": 1317
+    },
+    {
+      "candidate_rank": 376,
+      "source_rank": 376,
+      "word": "чоловік",
+      "pos": null,
+      "frequency_count": 1311
+    },
+    {
+      "candidate_rank": 377,
+      "source_rank": 377,
+      "word": "ходімо",
+      "pos": null,
+      "frequency_count": 1311
+    },
+    {
+      "candidate_rank": 378,
+      "source_rank": 378,
+      "word": "лет",
+      "pos": null,
+      "frequency_count": 1310
+    },
+    {
+      "candidate_rank": 379,
+      "source_rank": 379,
+      "word": "такое",
+      "pos": null,
+      "frequency_count": 1309
+    },
+    {
+      "candidate_rank": 380,
+      "source_rank": 380,
+      "word": "случилось",
+      "pos": null,
+      "frequency_count": 1301
+    },
+    {
+      "candidate_rank": 381,
+      "source_rank": 381,
+      "word": "звідси",
+      "pos": null,
+      "frequency_count": 1301
+    },
+    {
+      "candidate_rank": 382,
+      "source_rank": 382,
+      "word": "слишком",
+      "pos": null,
+      "frequency_count": 1300
+    },
+    {
+      "candidate_rank": 383,
+      "source_rank": 383,
+      "word": "мати",
+      "pos": null,
+      "frequency_count": 1296
+    },
+    {
+      "candidate_rank": 384,
+      "source_rank": 384,
+      "word": "скажу",
+      "pos": null,
+      "frequency_count": 1293
+    },
+    {
+      "candidate_rank": 385,
+      "source_rank": 385,
+      "word": "скоро",
+      "pos": null,
+      "frequency_count": 1292
+    },
+    {
+      "candidate_rank": 386,
+      "source_rank": 386,
+      "word": "сталося",
+      "pos": null,
+      "frequency_count": 1292
+    },
+    {
+      "candidate_rank": 387,
+      "source_rank": 387,
+      "word": "s",
+      "pos": null,
+      "frequency_count": 1276
+    },
+    {
+      "candidate_rank": 388,
+      "source_rank": 388,
+      "word": "прости",
+      "pos": null,
+      "frequency_count": 1276
+    },
+    {
+      "candidate_rank": 389,
+      "source_rank": 389,
+      "word": "нормально",
+      "pos": null,
+      "frequency_count": 1265
+    },
+    {
+      "candidate_rank": 390,
+      "source_rank": 390,
+      "word": "здається",
+      "pos": null,
+      "frequency_count": 1262
+    },
+    {
+      "candidate_rank": 391,
+      "source_rank": 391,
+      "word": "пані",
+      "pos": null,
+      "frequency_count": 1258
+    },
+    {
+      "candidate_rank": 392,
+      "source_rank": 392,
+      "word": "a",
+      "pos": null,
+      "frequency_count": 1257
+    },
+    {
+      "candidate_rank": 393,
+      "source_rank": 393,
+      "word": "всіх",
+      "pos": null,
+      "frequency_count": 1256
+    },
+    {
+      "candidate_rank": 394,
+      "source_rank": 394,
+      "word": "також",
+      "pos": null,
+      "frequency_count": 1253
+    },
+    {
+      "candidate_rank": 395,
+      "source_rank": 395,
+      "word": "вместе",
+      "pos": null,
+      "frequency_count": 1252
+    },
+    {
+      "candidate_rank": 396,
+      "source_rank": 396,
+      "word": "кілька",
+      "pos": null,
+      "frequency_count": 1249
+    },
+    {
+      "candidate_rank": 397,
+      "source_rank": 397,
+      "word": "брат",
+      "pos": null,
+      "frequency_count": 1249
+    },
+    {
+      "candidate_rank": 398,
+      "source_rank": 398,
+      "word": "моє",
+      "pos": null,
+      "frequency_count": 1248
+    },
+    {
+      "candidate_rank": 399,
+      "source_rank": 399,
+      "word": "подобається",
+      "pos": null,
+      "frequency_count": 1223
+    },
+    {
+      "candidate_rank": 400,
+      "source_rank": 400,
+      "word": "чорт",
+      "pos": null,
+      "frequency_count": 1221
+    },
+    {
+      "candidate_rank": 401,
+      "source_rank": 401,
+      "word": "сама",
+      "pos": null,
+      "frequency_count": 1220
+    },
+    {
+      "candidate_rank": 402,
+      "source_rank": 402,
+      "word": "думаєш",
+      "pos": null,
+      "frequency_count": 1219
+    },
+    {
+      "candidate_rank": 403,
+      "source_rank": 403,
+      "word": "во",
+      "pos": null,
+      "frequency_count": 1218
+    },
+    {
+      "candidate_rank": 404,
+      "source_rank": 404,
+      "word": "потом",
+      "pos": null,
+      "frequency_count": 1218
+    },
+    {
+      "candidate_rank": 405,
+      "source_rank": 405,
+      "word": "такого",
+      "pos": null,
+      "frequency_count": 1217
+    },
+    {
+      "candidate_rank": 406,
+      "source_rank": 406,
+      "word": "казав",
+      "pos": null,
+      "frequency_count": 1216
+    },
+    {
+      "candidate_rank": 407,
+      "source_rank": 407,
+      "word": "розумію",
+      "pos": null,
+      "frequency_count": 1212
+    },
+    {
+      "candidate_rank": 408,
+      "source_rank": 408,
+      "word": "батько",
+      "pos": null,
+      "frequency_count": 1209
+    },
+    {
+      "candidate_rank": 409,
+      "source_rank": 409,
+      "word": "отже",
+      "pos": null,
+      "frequency_count": 1208
+    },
+    {
+      "candidate_rank": 410,
+      "source_rank": 410,
+      "word": "сделал",
+      "pos": null,
+      "frequency_count": 1207
+    },
+    {
+      "candidate_rank": 411,
+      "source_rank": 411,
+      "word": "таким",
+      "pos": null,
+      "frequency_count": 1200
+    },
+    {
+      "candidate_rank": 412,
+      "source_rank": 412,
+      "word": "могла",
+      "pos": null,
+      "frequency_count": 1199
+    },
+    {
+      "candidate_rank": 413,
+      "source_rank": 413,
+      "word": "тим",
+      "pos": null,
+      "frequency_count": 1199
+    },
+    {
+      "candidate_rank": 414,
+      "source_rank": 414,
+      "word": "швидше",
+      "pos": null,
+      "frequency_count": 1198
+    },
+    {
+      "candidate_rank": 415,
+      "source_rank": 415,
+      "word": "жаль",
+      "pos": null,
+      "frequency_count": 1193
+    },
+    {
+      "candidate_rank": 416,
+      "source_rank": 416,
+      "word": "туди",
+      "pos": null,
+      "frequency_count": 1189
+    },
+    {
+      "candidate_rank": 417,
+      "source_rank": 417,
+      "word": "речі",
+      "pos": null,
+      "frequency_count": 1188
+    },
+    {
+      "candidate_rank": 418,
+      "source_rank": 418,
+      "word": "знати",
+      "pos": null,
+      "frequency_count": 1186
+    },
+    {
+      "candidate_rank": 419,
+      "source_rank": 419,
+      "word": "поэтому",
+      "pos": null,
+      "frequency_count": 1186
+    },
+    {
+      "candidate_rank": 420,
+      "source_rank": 420,
+      "word": "мог",
+      "pos": null,
+      "frequency_count": 1184
+    },
+    {
+      "candidate_rank": 421,
+      "source_rank": 421,
+      "word": "свої",
+      "pos": null,
+      "frequency_count": 1183
+    },
+    {
+      "candidate_rank": 422,
+      "source_rank": 422,
+      "word": "хочете",
+      "pos": null,
+      "frequency_count": 1179
+    },
+    {
+      "candidate_rank": 423,
+      "source_rank": 423,
+      "word": "помочь",
+      "pos": null,
+      "frequency_count": 1176
+    },
+    {
+      "candidate_rank": 424,
+      "source_rank": 424,
+      "word": "одну",
+      "pos": null,
+      "frequency_count": 1172
+    },
+    {
+      "candidate_rank": 425,
+      "source_rank": 425,
+      "word": "всех",
+      "pos": null,
+      "frequency_count": 1170
+    },
+    {
+      "candidate_rank": 426,
+      "source_rank": 426,
+      "word": "который",
+      "pos": null,
+      "frequency_count": 1166
+    },
+    {
+      "candidate_rank": 427,
+      "source_rank": 427,
+      "word": "им",
+      "pos": null,
+      "frequency_count": 1164
+    },
+    {
+      "candidate_rank": 428,
+      "source_rank": 428,
+      "word": "ім",
+      "pos": null,
+      "frequency_count": 1160
+    },
+    {
+      "candidate_rank": 429,
+      "source_rank": 429,
+      "word": "думав",
+      "pos": null,
+      "frequency_count": 1160
+    },
+    {
+      "candidate_rank": 430,
+      "source_rank": 430,
+      "word": "можем",
+      "pos": null,
+      "frequency_count": 1156
+    },
+    {
+      "candidate_rank": 431,
+      "source_rank": 431,
+      "word": "под",
+      "pos": null,
+      "frequency_count": 1149
+    },
+    {
+      "candidate_rank": 432,
+      "source_rank": 432,
+      "word": "допомогти",
+      "pos": null,
+      "frequency_count": 1144
+    },
+    {
+      "candidate_rank": 433,
+      "source_rank": 433,
+      "word": "ю",
+      "pos": null,
+      "frequency_count": 1139
+    },
+    {
+      "candidate_rank": 434,
+      "source_rank": 434,
+      "word": "людина",
+      "pos": null,
+      "frequency_count": 1138
+    },
+    {
+      "candidate_rank": 435,
+      "source_rank": 435,
+      "word": "куда",
+      "pos": null,
+      "frequency_count": 1137
+    },
+    {
+      "candidate_rank": 436,
+      "source_rank": 436,
+      "word": "яку",
+      "pos": null,
+      "frequency_count": 1136
+    },
+    {
+      "candidate_rank": 437,
+      "source_rank": 437,
+      "word": "правильно",
+      "pos": null,
+      "frequency_count": 1135
+    },
+    {
+      "candidate_rank": 438,
+      "source_rank": 438,
+      "word": "давно",
+      "pos": null,
+      "frequency_count": 1135
+    },
+    {
+      "candidate_rank": 439,
+      "source_rank": 439,
+      "word": "зовсім",
+      "pos": null,
+      "frequency_count": 1132
+    },
+    {
+      "candidate_rank": 440,
+      "source_rank": 440,
+      "word": "при",
+      "pos": null,
+      "frequency_count": 1132
+    },
+    {
+      "candidate_rank": 441,
+      "source_rank": 441,
+      "word": "всю",
+      "pos": null,
+      "frequency_count": 1127
+    },
+    {
+      "candidate_rank": 442,
+      "source_rank": 442,
+      "word": "бачу",
+      "pos": null,
+      "frequency_count": 1120
+    },
+    {
+      "candidate_rank": 443,
+      "source_rank": 443,
+      "word": "этой",
+      "pos": null,
+      "frequency_count": 1116
+    },
+    {
+      "candidate_rank": 444,
+      "source_rank": 444,
+      "word": "снова",
+      "pos": null,
+      "frequency_count": 1116
+    },
+    {
+      "candidate_rank": 445,
+      "source_rank": 445,
+      "word": "видел",
+      "pos": null,
+      "frequency_count": 1111
+    },
+    {
+      "candidate_rank": 446,
+      "source_rank": 446,
+      "word": "думала",
+      "pos": null,
+      "frequency_count": 1107
+    },
+    {
+      "candidate_rank": 447,
+      "source_rank": 447,
+      "word": "така",
+      "pos": null,
+      "frequency_count": 1106
+    },
+    {
+      "candidate_rank": 448,
+      "source_rank": 448,
+      "word": "знав",
+      "pos": null,
+      "frequency_count": 1106
+    },
+    {
+      "candidate_rank": 449,
+      "source_rank": 449,
+      "word": "йти",
+      "pos": null,
+      "frequency_count": 1105
+    },
+    {
+      "candidate_rank": 450,
+      "source_rank": 450,
+      "word": "знайти",
+      "pos": null,
+      "frequency_count": 1105
+    },
+    {
+      "candidate_rank": 451,
+      "source_rank": 451,
+      "word": "дещо",
+      "pos": null,
+      "frequency_count": 1099
+    },
+    {
+      "candidate_rank": 452,
+      "source_rank": 452,
+      "word": "домой",
+      "pos": null,
+      "frequency_count": 1094
+    },
+    {
+      "candidate_rank": 453,
+      "source_rank": 453,
+      "word": "нею",
+      "pos": null,
+      "frequency_count": 1093
+    },
+    {
+      "candidate_rank": 454,
+      "source_rank": 454,
+      "word": "знає",
+      "pos": null,
+      "frequency_count": 1092
+    },
+    {
+      "candidate_rank": 455,
+      "source_rank": 455,
+      "word": "наша",
+      "pos": null,
+      "frequency_count": 1091
+    },
+    {
+      "candidate_rank": 456,
+      "source_rank": 456,
+      "word": "далі",
+      "pos": null,
+      "frequency_count": 1091
+    },
+    {
+      "candidate_rank": 457,
+      "source_rank": 457,
+      "word": "усі",
+      "pos": null,
+      "frequency_count": 1091
+    },
+    {
+      "candidate_rank": 458,
+      "source_rank": 458,
+      "word": "парень",
+      "pos": null,
+      "frequency_count": 1090
+    },
+    {
+      "candidate_rank": 459,
+      "source_rank": 459,
+      "word": "слухай",
+      "pos": null,
+      "frequency_count": 1090
+    },
+    {
+      "candidate_rank": 460,
+      "source_rank": 460,
+      "word": "ними",
+      "pos": null,
+      "frequency_count": 1086
+    },
+    {
+      "candidate_rank": 461,
+      "source_rank": 461,
+      "word": "отец",
+      "pos": null,
+      "frequency_count": 1083
+    },
+    {
+      "candidate_rank": 462,
+      "source_rank": 462,
+      "word": "делаешь",
+      "pos": null,
+      "frequency_count": 1080
+    },
+    {
+      "candidate_rank": 463,
+      "source_rank": 463,
+      "word": "машину",
+      "pos": null,
+      "frequency_count": 1076
+    },
+    {
+      "candidate_rank": 464,
+      "source_rank": 464,
+      "word": "нравится",
+      "pos": null,
+      "frequency_count": 1076
+    },
+    {
+      "candidate_rank": 465,
+      "source_rank": 465,
+      "word": "дійсно",
+      "pos": null,
+      "frequency_count": 1074
+    },
+    {
+      "candidate_rank": 466,
+      "source_rank": 466,
+      "word": "it",
+      "pos": null,
+      "frequency_count": 1070
+    },
+    {
+      "candidate_rank": 467,
+      "source_rank": 467,
+      "word": "эту",
+      "pos": null,
+      "frequency_count": 1070
+    },
+    {
+      "candidate_rank": 468,
+      "source_rank": 468,
+      "word": "мав",
+      "pos": null,
+      "frequency_count": 1069
+    },
+    {
+      "candidate_rank": 469,
+      "source_rank": 469,
+      "word": "кто-то",
+      "pos": null,
+      "frequency_count": 1066
+    },
+    {
+      "candidate_rank": 470,
+      "source_rank": 470,
+      "word": "звісно",
+      "pos": null,
+      "frequency_count": 1063
+    },
+    {
+      "candidate_rank": 471,
+      "source_rank": 471,
+      "word": "вперед",
+      "pos": null,
+      "frequency_count": 1063
+    },
+    {
+      "candidate_rank": 472,
+      "source_rank": 472,
+      "word": "разу",
+      "pos": null,
+      "frequency_count": 1062
+    },
+    {
+      "candidate_rank": 473,
+      "source_rank": 473,
+      "word": "никто",
+      "pos": null,
+      "frequency_count": 1055
+    },
+    {
+      "candidate_rank": 474,
+      "source_rank": 474,
+      "word": "мои",
+      "pos": null,
+      "frequency_count": 1054
+    },
+    {
+      "candidate_rank": 475,
+      "source_rank": 475,
+      "word": "разве",
+      "pos": null,
+      "frequency_count": 1054
+    },
+    {
+      "candidate_rank": 476,
+      "source_rank": 476,
+      "word": "сколько",
+      "pos": null,
+      "frequency_count": 1053
+    },
+    {
+      "candidate_rank": 477,
+      "source_rank": 477,
+      "word": "отлично",
+      "pos": null,
+      "frequency_count": 1052
+    },
+    {
+      "candidate_rank": 478,
+      "source_rank": 478,
+      "word": "человек",
+      "pos": null,
+      "frequency_count": 1050
+    },
+    {
+      "candidate_rank": 479,
+      "source_rank": 479,
+      "word": "гадаю",
+      "pos": null,
+      "frequency_count": 1048
+    },
+    {
+      "candidate_rank": 480,
+      "source_rank": 480,
+      "word": "тот",
+      "pos": null,
+      "frequency_count": 1046
+    },
+    {
+      "candidate_rank": 481,
+      "source_rank": 481,
+      "word": "слова",
+      "pos": null,
+      "frequency_count": 1045
+    },
+    {
+      "candidate_rank": 482,
+      "source_rank": 482,
+      "word": "звідки",
+      "pos": null,
+      "frequency_count": 1040
+    },
+    {
+      "candidate_rank": 483,
+      "source_rank": 483,
+      "word": "шкода",
+      "pos": null,
+      "frequency_count": 1037
+    },
+    {
+      "candidate_rank": 484,
+      "source_rank": 484,
+      "word": "справа",
+      "pos": null,
+      "frequency_count": 1036
+    },
+    {
+      "candidate_rank": 485,
+      "source_rank": 485,
+      "word": "чим",
+      "pos": null,
+      "frequency_count": 1033
+    },
+    {
+      "candidate_rank": 486,
+      "source_rank": 486,
+      "word": "ті",
+      "pos": null,
+      "frequency_count": 1030
+    },
+    {
+      "candidate_rank": 487,
+      "source_rank": 487,
+      "word": "проти",
+      "pos": null,
+      "frequency_count": 1029
+    },
+    {
+      "candidate_rank": 488,
+      "source_rank": 488,
+      "word": "похоже",
+      "pos": null,
+      "frequency_count": 1029
+    },
+    {
+      "candidate_rank": 489,
+      "source_rank": 489,
+      "word": "мамо",
+      "pos": null,
+      "frequency_count": 1027
+    },
+    {
+      "candidate_rank": 490,
+      "source_rank": 490,
+      "word": "піти",
+      "pos": null,
+      "frequency_count": 1024
+    },
+    {
+      "candidate_rank": 491,
+      "source_rank": 491,
+      "word": "чарлі",
+      "pos": null,
+      "frequency_count": 1022
+    },
+    {
+      "candidate_rank": 492,
+      "source_rank": 492,
+      "word": "свого",
+      "pos": null,
+      "frequency_count": 1021
+    },
+    {
+      "candidate_rank": 493,
+      "source_rank": 493,
+      "word": "номер",
+      "pos": null,
+      "frequency_count": 1019
+    },
+    {
+      "candidate_rank": 494,
+      "source_rank": 494,
+      "word": "справи",
+      "pos": null,
+      "frequency_count": 1019
+    },
+    {
+      "candidate_rank": 495,
+      "source_rank": 495,
+      "word": "дома",
+      "pos": null,
+      "frequency_count": 1019
+    },
+    {
+      "candidate_rank": 496,
+      "source_rank": 496,
+      "word": "пару",
+      "pos": null,
+      "frequency_count": 1017
+    },
+    {
+      "candidate_rank": 497,
+      "source_rank": 497,
+      "word": "такі",
+      "pos": null,
+      "frequency_count": 1015
+    },
+    {
+      "candidate_rank": 498,
+      "source_rank": 498,
+      "word": "знала",
+      "pos": null,
+      "frequency_count": 1014
+    },
+    {
+      "candidate_rank": 499,
+      "source_rank": 499,
+      "word": "хотела",
+      "pos": null,
+      "frequency_count": 1012
+    },
+    {
+      "candidate_rank": 500,
+      "source_rank": 500,
+      "word": "одно",
+      "pos": null,
+      "frequency_count": 1012
+    },
+    {
+      "candidate_rank": 501,
+      "source_rank": 501,
+      "word": "тож",
+      "pos": null,
+      "frequency_count": 1011
+    },
+    {
+      "candidate_rank": 502,
+      "source_rank": 502,
+      "word": "голову",
+      "pos": null,
+      "frequency_count": 1007
+    },
+    {
+      "candidate_rank": 503,
+      "source_rank": 503,
+      "word": "знать",
+      "pos": null,
+      "frequency_count": 1006
+    },
+    {
+      "candidate_rank": 504,
+      "source_rank": 504,
+      "word": "сім",
+      "pos": null,
+      "frequency_count": 1003
+    },
+    {
+      "candidate_rank": 505,
+      "source_rank": 505,
+      "word": "нехай",
+      "pos": null,
+      "frequency_count": 1002
+    },
+    {
+      "candidate_rank": 506,
+      "source_rank": 506,
+      "word": "понимаю",
+      "pos": null,
+      "frequency_count": 997
+    },
+    {
+      "candidate_rank": 507,
+      "source_rank": 507,
+      "word": "увазі",
+      "pos": null,
+      "frequency_count": 997
+    },
+    {
+      "candidate_rank": 508,
+      "source_rank": 508,
+      "word": "поговорить",
+      "pos": null,
+      "frequency_count": 996
+    },
+    {
+      "candidate_rank": 509,
+      "source_rank": 509,
+      "word": "знаете",
+      "pos": null,
+      "frequency_count": 995
+    },
+    {
+      "candidate_rank": 510,
+      "source_rank": 510,
+      "word": "фп",
+      "pos": null,
+      "frequency_count": 994
+    },
+    {
+      "candidate_rank": 511,
+      "source_rank": 511,
+      "word": "син",
+      "pos": null,
+      "frequency_count": 994
+    },
+    {
+      "candidate_rank": 512,
+      "source_rank": 512,
+      "word": "место",
+      "pos": null,
+      "frequency_count": 993
+    },
+    {
+      "candidate_rank": 513,
+      "source_rank": 513,
+      "word": "иди",
+      "pos": null,
+      "frequency_count": 993
+    },
+    {
+      "candidate_rank": 514,
+      "source_rank": 514,
+      "word": "бачиш",
+      "pos": null,
+      "frequency_count": 991
+    },
+    {
+      "candidate_rank": 515,
+      "source_rank": 515,
+      "word": "кажется",
+      "pos": null,
+      "frequency_count": 991
+    },
+    {
+      "candidate_rank": 516,
+      "source_rank": 516,
+      "word": "найти",
+      "pos": null,
+      "frequency_count": 987
+    },
+    {
+      "candidate_rank": 517,
+      "source_rank": 517,
+      "word": "свій",
+      "pos": null,
+      "frequency_count": 985
+    },
+    {
+      "candidate_rank": 518,
+      "source_rank": 518,
+      "word": "тобто",
+      "pos": null,
+      "frequency_count": 982
+    },
+    {
+      "candidate_rank": 519,
+      "source_rank": 519,
+      "word": "взагалі",
+      "pos": null,
+      "frequency_count": 978
+    },
+    {
+      "candidate_rank": 520,
+      "source_rank": 520,
+      "word": "пішли",
+      "pos": null,
+      "frequency_count": 976
+    },
+    {
+      "candidate_rank": 521,
+      "source_rank": 521,
+      "word": "сказали",
+      "pos": null,
+      "frequency_count": 972
+    },
+    {
+      "candidate_rank": 522,
+      "source_rank": 522,
+      "word": "ять",
+      "pos": null,
+      "frequency_count": 972
+    },
+    {
+      "candidate_rank": 523,
+      "source_rank": 523,
+      "word": "будешь",
+      "pos": null,
+      "frequency_count": 970
+    },
+    {
+      "candidate_rank": 524,
+      "source_rank": 524,
+      "word": "хочет",
+      "pos": null,
+      "frequency_count": 970
+    },
+    {
+      "candidate_rank": 525,
+      "source_rank": 525,
+      "word": "будеш",
+      "pos": null,
+      "frequency_count": 970
+    },
+    {
+      "candidate_rank": 526,
+      "source_rank": 526,
+      "word": "жизни",
+      "pos": null,
+      "frequency_count": 969
+    },
+    {
+      "candidate_rank": 527,
+      "source_rank": 527,
+      "word": "деньги",
+      "pos": null,
+      "frequency_count": 966
+    },
+    {
+      "candidate_rank": 528,
+      "source_rank": 528,
+      "word": "слушай",
+      "pos": null,
+      "frequency_count": 965
+    },
+    {
+      "candidate_rank": 529,
+      "source_rank": 529,
+      "word": "відбувається",
+      "pos": null,
+      "frequency_count": 962
+    },
+    {
+      "candidate_rank": 530,
+      "source_rank": 530,
+      "word": "розумієш",
+      "pos": null,
+      "frequency_count": 961
+    },
+    {
+      "candidate_rank": 531,
+      "source_rank": 531,
+      "word": "кбй",
+      "pos": null,
+      "frequency_count": 959
+    },
+    {
+      "candidate_rank": 532,
+      "source_rank": 532,
+      "word": "ме",
+      "pos": null,
+      "frequency_count": 959
+    },
+    {
+      "candidate_rank": 533,
+      "source_rank": 533,
+      "word": "эта",
+      "pos": null,
+      "frequency_count": 956
+    },
+    {
+      "candidate_rank": 534,
+      "source_rank": 534,
+      "word": "пішов",
+      "pos": null,
+      "frequency_count": 952
+    },
+    {
+      "candidate_rank": 535,
+      "source_rank": 535,
+      "word": "мистер",
+      "pos": null,
+      "frequency_count": 948
+    },
+    {
+      "candidate_rank": 536,
+      "source_rank": 536,
+      "word": "наші",
+      "pos": null,
+      "frequency_count": 948
+    },
+    {
+      "candidate_rank": 537,
+      "source_rank": 537,
+      "word": "якого",
+      "pos": null,
+      "frequency_count": 947
+    },
+    {
+      "candidate_rank": 538,
+      "source_rank": 538,
+      "word": "поговорити",
+      "pos": null,
+      "frequency_count": 945
+    },
+    {
+      "candidate_rank": 539,
+      "source_rank": 539,
+      "word": "порядку",
+      "pos": null,
+      "frequency_count": 942
+    },
+    {
+      "candidate_rank": 540,
+      "source_rank": 540,
+      "word": "что-нибудь",
+      "pos": null,
+      "frequency_count": 936
+    },
+    {
+      "candidate_rank": 541,
+      "source_rank": 541,
+      "word": "ой",
+      "pos": null,
+      "frequency_count": 935
+    },
+    {
+      "candidate_rank": 542,
+      "source_rank": 542,
+      "word": "думал",
+      "pos": null,
+      "frequency_count": 934
+    },
+    {
+      "candidate_rank": 543,
+      "source_rank": 543,
+      "word": "хоч",
+      "pos": null,
+      "frequency_count": 930
+    },
+    {
+      "candidate_rank": 544,
+      "source_rank": 544,
+      "word": "оу",
+      "pos": null,
+      "frequency_count": 929
+    },
+    {
+      "candidate_rank": 545,
+      "source_rank": 545,
+      "word": "ваше",
+      "pos": null,
+      "frequency_count": 927
+    },
+    {
+      "candidate_rank": 546,
+      "source_rank": 546,
+      "word": "тих",
+      "pos": null,
+      "frequency_count": 926
+    },
+    {
+      "candidate_rank": 547,
+      "source_rank": 547,
+      "word": "проблема",
+      "pos": null,
+      "frequency_count": 922
+    },
+    {
+      "candidate_rank": 548,
+      "source_rank": 548,
+      "word": "хотіла",
+      "pos": null,
+      "frequency_count": 922
+    },
+    {
+      "candidate_rank": 549,
+      "source_rank": 549,
+      "word": "роботу",
+      "pos": null,
+      "frequency_count": 917
+    },
+    {
+      "candidate_rank": 550,
+      "source_rank": 550,
+      "word": "ради",
+      "pos": null,
+      "frequency_count": 916
+    },
+    {
+      "candidate_rank": 551,
+      "source_rank": 551,
+      "word": "ох",
+      "pos": null,
+      "frequency_count": 913
+    },
+    {
+      "candidate_rank": 552,
+      "source_rank": 552,
+      "word": "будемо",
+      "pos": null,
+      "frequency_count": 912
+    },
+    {
+      "candidate_rank": 553,
+      "source_rank": 553,
+      "word": "двері",
+      "pos": null,
+      "frequency_count": 912
+    },
+    {
+      "candidate_rank": 554,
+      "source_rank": 554,
+      "word": "хлопець",
+      "pos": null,
+      "frequency_count": 909
+    },
+    {
+      "candidate_rank": 555,
+      "source_rank": 555,
+      "word": "потрібна",
+      "pos": null,
+      "frequency_count": 909
+    },
+    {
+      "candidate_rank": 556,
+      "source_rank": 556,
+      "word": "будем",
+      "pos": null,
+      "frequency_count": 908
+    },
+    {
+      "candidate_rank": 557,
+      "source_rank": 557,
+      "word": "стоит",
+      "pos": null,
+      "frequency_count": 907
+    },
+    {
+      "candidate_rank": 558,
+      "source_rank": 558,
+      "word": "знает",
+      "pos": null,
+      "frequency_count": 907
+    },
+    {
+      "candidate_rank": 559,
+      "source_rank": 559,
+      "word": "світ",
+      "pos": null,
+      "frequency_count": 903
+    },
+    {
+      "candidate_rank": 560,
+      "source_rank": 560,
+      "word": "чув",
+      "pos": null,
+      "frequency_count": 902
+    },
+    {
+      "candidate_rank": 561,
+      "source_rank": 561,
+      "word": "времени",
+      "pos": null,
+      "frequency_count": 902
+    },
+    {
+      "candidate_rank": 562,
+      "source_rank": 562,
+      "word": "майже",
+      "pos": null,
+      "frequency_count": 901
+    },
+    {
+      "candidate_rank": 563,
+      "source_rank": 563,
+      "word": "м",
+      "pos": null,
+      "frequency_count": 901
+    },
+    {
+      "candidate_rank": 564,
+      "source_rank": 564,
+      "word": "тату",
+      "pos": null,
+      "frequency_count": 897
+    },
+    {
+      "candidate_rank": 565,
+      "source_rank": 565,
+      "word": "можуть",
+      "pos": null,
+      "frequency_count": 897
+    },
+    {
+      "candidate_rank": 566,
+      "source_rank": 566,
+      "word": "именно",
+      "pos": null,
+      "frequency_count": 894
+    },
+    {
+      "candidate_rank": 567,
+      "source_rank": 567,
+      "word": "пора",
+      "pos": null,
+      "frequency_count": 894
+    },
+    {
+      "candidate_rank": 568,
+      "source_rank": 568,
+      "word": "зрозумів",
+      "pos": null,
+      "frequency_count": 891
+    },
+    {
+      "candidate_rank": 569,
+      "source_rank": 569,
+      "word": "насправді",
+      "pos": null,
+      "frequency_count": 890
+    },
+    {
+      "candidate_rank": 570,
+      "source_rank": 570,
+      "word": "своей",
+      "pos": null,
+      "frequency_count": 888
+    },
+    {
+      "candidate_rank": 571,
+      "source_rank": 571,
+      "word": "бачити",
+      "pos": null,
+      "frequency_count": 883
+    },
+    {
+      "candidate_rank": 572,
+      "source_rank": 572,
+      "word": "которые",
+      "pos": null,
+      "frequency_count": 880
+    },
+    {
+      "candidate_rank": 573,
+      "source_rank": 573,
+      "word": "швидко",
+      "pos": null,
+      "frequency_count": 880
+    },
+    {
+      "candidate_rank": 574,
+      "source_rank": 574,
+      "word": "тато",
+      "pos": null,
+      "frequency_count": 879
+    },
+    {
+      "candidate_rank": 575,
+      "source_rank": 575,
+      "word": "совсем",
+      "pos": null,
+      "frequency_count": 879
+    },
+    {
+      "candidate_rank": 576,
+      "source_rank": 576,
+      "word": "твої",
+      "pos": null,
+      "frequency_count": 874
+    },
+    {
+      "candidate_rank": 577,
+      "source_rank": 577,
+      "word": "всем",
+      "pos": null,
+      "frequency_count": 874
+    },
+    {
+      "candidate_rank": 578,
+      "source_rank": 578,
+      "word": "лишь",
+      "pos": null,
+      "frequency_count": 871
+    },
+    {
+      "candidate_rank": 579,
+      "source_rank": 579,
+      "word": "цих",
+      "pos": null,
+      "frequency_count": 871
+    },
+    {
+      "candidate_rank": 580,
+      "source_rank": 580,
+      "word": "говорил",
+      "pos": null,
+      "frequency_count": 871
+    },
+    {
+      "candidate_rank": 581,
+      "source_rank": 581,
+      "word": "бог",
+      "pos": null,
+      "frequency_count": 868
+    },
+    {
+      "candidate_rank": 582,
+      "source_rank": 582,
+      "word": "еянбй",
+      "pos": null,
+      "frequency_count": 867
+    },
+    {
+      "candidate_rank": 583,
+      "source_rank": 583,
+      "word": "кажу",
+      "pos": null,
+      "frequency_count": 864
+    },
+    {
+      "candidate_rank": 584,
+      "source_rank": 584,
+      "word": "наших",
+      "pos": null,
+      "frequency_count": 864
+    },
+    {
+      "candidate_rank": 585,
+      "source_rank": 585,
+      "word": "простите",
+      "pos": null,
+      "frequency_count": 863
+    },
+    {
+      "candidate_rank": 586,
+      "source_rank": 586,
+      "word": "схоже",
+      "pos": null,
+      "frequency_count": 862
+    },
+    {
+      "candidate_rank": 587,
+      "source_rank": 587,
+      "word": "права",
+      "pos": null,
+      "frequency_count": 860
+    },
+    {
+      "candidate_rank": 588,
+      "source_rank": 588,
+      "word": "своє",
+      "pos": null,
+      "frequency_count": 859
+    },
+    {
+      "candidate_rank": 589,
+      "source_rank": 589,
+      "word": "говорю",
+      "pos": null,
+      "frequency_count": 858
+    },
+    {
+      "candidate_rank": 590,
+      "source_rank": 590,
+      "word": "дом",
+      "pos": null,
+      "frequency_count": 857
+    },
+    {
+      "candidate_rank": 591,
+      "source_rank": 591,
+      "word": "чувак",
+      "pos": null,
+      "frequency_count": 853
+    },
+    {
+      "candidate_rank": 592,
+      "source_rank": 592,
+      "word": "сильно",
+      "pos": null,
+      "frequency_count": 848
+    },
+    {
+      "candidate_rank": 593,
+      "source_rank": 593,
+      "word": "піду",
+      "pos": null,
+      "frequency_count": 848
+    },
+    {
+      "candidate_rank": 594,
+      "source_rank": 594,
+      "word": "слово",
+      "pos": null,
+      "frequency_count": 848
+    },
+    {
+      "candidate_rank": 595,
+      "source_rank": 595,
+      "word": "раніше",
+      "pos": null,
+      "frequency_count": 847
+    },
+    {
+      "candidate_rank": 596,
+      "source_rank": 596,
+      "word": "ту",
+      "pos": null,
+      "frequency_count": 844
+    },
+    {
+      "candidate_rank": 597,
+      "source_rank": 597,
+      "word": "будуть",
+      "pos": null,
+      "frequency_count": 839
+    },
+    {
+      "candidate_rank": 598,
+      "source_rank": 598,
+      "word": "моего",
+      "pos": null,
+      "frequency_count": 839
+    },
+    {
+      "candidate_rank": 599,
+      "source_rank": 599,
+      "word": "потрібен",
+      "pos": null,
+      "frequency_count": 838
+    },
+    {
+      "candidate_rank": 600,
+      "source_rank": 600,
+      "word": "пґп",
+      "pos": null,
+      "frequency_count": 837
+    },
+    {
+      "candidate_rank": 601,
+      "source_rank": 601,
+      "word": "алло",
+      "pos": null,
+      "frequency_count": 836
+    },
+    {
+      "candidate_rank": 602,
+      "source_rank": 602,
+      "word": "питання",
+      "pos": null,
+      "frequency_count": 835
+    },
+    {
+      "candidate_rank": 603,
+      "source_rank": 603,
+      "word": "між",
+      "pos": null,
+      "frequency_count": 835
+    },
+    {
+      "candidate_rank": 604,
+      "source_rank": 604,
+      "word": "прийшов",
+      "pos": null,
+      "frequency_count": 832
+    },
+    {
+      "candidate_rank": 605,
+      "source_rank": 605,
+      "word": "доброго",
+      "pos": null,
+      "frequency_count": 829
+    },
+    {
+      "candidate_rank": 606,
+      "source_rank": 606,
+      "word": "тем",
+      "pos": null,
+      "frequency_count": 828
+    },
+    {
+      "candidate_rank": 607,
+      "source_rank": 607,
+      "word": "жінка",
+      "pos": null,
+      "frequency_count": 827
+    },
+    {
+      "candidate_rank": 608,
+      "source_rank": 608,
+      "word": "должно",
+      "pos": null,
+      "frequency_count": 827
+    },
+    {
+      "candidate_rank": 609,
+      "source_rank": 609,
+      "word": "знал",
+      "pos": null,
+      "frequency_count": 824
+    },
+    {
+      "candidate_rank": 610,
+      "source_rank": 610,
+      "word": "какой",
+      "pos": null,
+      "frequency_count": 822
+    },
+    {
+      "candidate_rank": 611,
+      "source_rank": 611,
+      "word": "смерть",
+      "pos": null,
+      "frequency_count": 818
+    },
+    {
+      "candidate_rank": 612,
+      "source_rank": 612,
+      "word": "b1",
+      "pos": null,
+      "frequency_count": 814
+    },
+    {
+      "candidate_rank": 613,
+      "source_rank": 613,
+      "word": "дітей",
+      "pos": null,
+      "frequency_count": 813
+    },
+    {
+      "candidate_rank": 614,
+      "source_rank": 614,
+      "word": "деле",
+      "pos": null,
+      "frequency_count": 813
+    },
+    {
+      "candidate_rank": 615,
+      "source_rank": 615,
+      "word": "добрий",
+      "pos": null,
+      "frequency_count": 811
+    },
+    {
+      "candidate_rank": 616,
+      "source_rank": 616,
+      "word": "шанс",
+      "pos": null,
+      "frequency_count": 810
+    },
+    {
+      "candidate_rank": 617,
+      "source_rank": 617,
+      "word": "нужна",
+      "pos": null,
+      "frequency_count": 810
+    },
+    {
+      "candidate_rank": 618,
+      "source_rank": 618,
+      "word": "одне",
+      "pos": null,
+      "frequency_count": 810
+    },
+    {
+      "candidate_rank": 619,
+      "source_rank": 619,
+      "word": "десь",
+      "pos": null,
+      "frequency_count": 808
+    },
+    {
+      "candidate_rank": 620,
+      "source_rank": 620,
+      "word": "сэр",
+      "pos": null,
+      "frequency_count": 808
+    },
+    {
+      "candidate_rank": 621,
+      "source_rank": 621,
+      "word": "колись",
+      "pos": null,
+      "frequency_count": 805
+    },
+    {
+      "candidate_rank": 622,
+      "source_rank": 622,
+      "word": "мало",
+      "pos": null,
+      "frequency_count": 803
+    },
+    {
+      "candidate_rank": 623,
+      "source_rank": 623,
+      "word": "означає",
+      "pos": null,
+      "frequency_count": 802
+    },
+    {
+      "candidate_rank": 624,
+      "source_rank": 624,
+      "word": "chffffff",
+      "pos": null,
+      "frequency_count": 802
+    },
+    {
+      "candidate_rank": 625,
+      "source_rank": 625,
+      "word": "черт",
+      "pos": null,
+      "frequency_count": 796
+    },
+    {
+      "candidate_rank": 626,
+      "source_rank": 626,
+      "word": "ніби",
+      "pos": null,
+      "frequency_count": 794
+    },
+    {
+      "candidate_rank": 627,
+      "source_rank": 627,
+      "word": "ваші",
+      "pos": null,
+      "frequency_count": 792
+    },
+    {
+      "candidate_rank": 628,
+      "source_rank": 628,
+      "word": "fntahoma",
+      "pos": null,
+      "frequency_count": 791
+    },
+    {
+      "candidate_rank": 629,
+      "source_rank": 629,
+      "word": "i0",
+      "pos": null,
+      "frequency_count": 790
+    },
+    {
+      "candidate_rank": 630,
+      "source_rank": 630,
+      "word": "твоей",
+      "pos": null,
+      "frequency_count": 790
+    },
+    {
+      "candidate_rank": 631,
+      "source_rank": 631,
+      "word": "fs52",
+      "pos": null,
+      "frequency_count": 788
+    },
+    {
+      "candidate_rank": 632,
+      "source_rank": 632,
+      "word": "говорити",
+      "pos": null,
+      "frequency_count": 788
+    },
+    {
+      "candidate_rank": 633,
+      "source_rank": 633,
+      "word": "друга",
+      "pos": null,
+      "frequency_count": 784
+    },
+    {
+      "candidate_rank": 634,
+      "source_rank": 634,
+      "word": "a2",
+      "pos": null,
+      "frequency_count": 781
+    },
+    {
+      "candidate_rank": 635,
+      "source_rank": 635,
+      "word": "происходит",
+      "pos": null,
+      "frequency_count": 780
+    },
+    {
+      "candidate_rank": 636,
+      "source_rank": 636,
+      "word": "геть",
+      "pos": null,
+      "frequency_count": 778
+    },
+    {
+      "candidate_rank": 637,
+      "source_rank": 637,
+      "word": "всього",
+      "pos": null,
+      "frequency_count": 774
+    },
+    {
+      "candidate_rank": 638,
+      "source_rank": 638,
+      "word": "that",
+      "pos": null,
+      "frequency_count": 773
+    },
+    {
+      "candidate_rank": 639,
+      "source_rank": 639,
+      "word": "варто",
+      "pos": null,
+      "frequency_count": 772
+    },
+    {
+      "candidate_rank": 640,
+      "source_rank": 640,
+      "word": "значить",
+      "pos": null,
+      "frequency_count": 771
+    },
+    {
+      "candidate_rank": 641,
+      "source_rank": 641,
+      "word": "яке",
+      "pos": null,
+      "frequency_count": 770
+    },
+    {
+      "candidate_rank": 642,
+      "source_rank": 642,
+      "word": "інші",
+      "pos": null,
+      "frequency_count": 769
+    },
+    {
+      "candidate_rank": 643,
+      "source_rank": 643,
+      "word": "and",
+      "pos": null,
+      "frequency_count": 768
+    },
+    {
+      "candidate_rank": 644,
+      "source_rank": 644,
+      "word": "досі",
+      "pos": null,
+      "frequency_count": 768
+    },
+    {
+      "candidate_rank": 645,
+      "source_rank": 645,
+      "word": "зв",
+      "pos": null,
+      "frequency_count": 768
+    },
+    {
+      "candidate_rank": 646,
+      "source_rank": 646,
+      "word": "раньше",
+      "pos": null,
+      "frequency_count": 768
+    },
+    {
+      "candidate_rank": 647,
+      "source_rank": 647,
+      "word": "руку",
+      "pos": null,
+      "frequency_count": 767
+    },
+    {
+      "candidate_rank": 648,
+      "source_rank": 648,
+      "word": "аби",
+      "pos": null,
+      "frequency_count": 765
+    },
+    {
+      "candidate_rank": 649,
+      "source_rank": 649,
+      "word": "туда",
+      "pos": null,
+      "frequency_count": 763
+    },
+    {
+      "candidate_rank": 650,
+      "source_rank": 650,
+      "word": "твоє",
+      "pos": null,
+      "frequency_count": 763
+    },
+    {
+      "candidate_rank": 651,
+      "source_rank": 651,
+      "word": "джон",
+      "pos": null,
+      "frequency_count": 763
+    },
+    {
+      "candidate_rank": 652,
+      "source_rank": 652,
+      "word": "маєте",
+      "pos": null,
+      "frequency_count": 761
+    },
+    {
+      "candidate_rank": 653,
+      "source_rank": 653,
+      "word": "занадто",
+      "pos": null,
+      "frequency_count": 760
+    },
+    {
+      "candidate_rank": 654,
+      "source_rank": 654,
+      "word": "хай",
+      "pos": null,
+      "frequency_count": 760
+    },
+    {
+      "candidate_rank": 655,
+      "source_rank": 655,
+      "word": "действительно",
+      "pos": null,
+      "frequency_count": 760
+    },
+    {
+      "candidate_rank": 656,
+      "source_rank": 656,
+      "word": "дві",
+      "pos": null,
+      "frequency_count": 759
+    },
+    {
+      "candidate_rank": 657,
+      "source_rank": 657,
+      "word": "маємо",
+      "pos": null,
+      "frequency_count": 757
+    },
+    {
+      "candidate_rank": 658,
+      "source_rank": 658,
+      "word": "план",
+      "pos": null,
+      "frequency_count": 755
+    },
+    {
+      "candidate_rank": 659,
+      "source_rank": 659,
+      "word": "in",
+      "pos": null,
+      "frequency_count": 755
+    },
+    {
+      "candidate_rank": 660,
+      "source_rank": 660,
+      "word": "уверен",
+      "pos": null,
+      "frequency_count": 753
+    },
+    {
+      "candidate_rank": 661,
+      "source_rank": 661,
+      "word": "пошли",
+      "pos": null,
+      "frequency_count": 752
+    },
+    {
+      "candidate_rank": 662,
+      "source_rank": 662,
+      "word": "чём",
+      "pos": null,
+      "frequency_count": 752
+    },
+    {
+      "candidate_rank": 663,
+      "source_rank": 663,
+      "word": "ден",
+      "pos": null,
+      "frequency_count": 752
+    },
+    {
+      "candidate_rank": 664,
+      "source_rank": 664,
+      "word": "довго",
+      "pos": null,
+      "frequency_count": 749
+    },
+    {
+      "candidate_rank": 665,
+      "source_rank": 665,
+      "word": "хватит",
+      "pos": null,
+      "frequency_count": 749
+    },
+    {
+      "candidate_rank": 666,
+      "source_rank": 666,
+      "word": "каже",
+      "pos": null,
+      "frequency_count": 743
+    },
+    {
+      "candidate_rank": 667,
+      "source_rank": 667,
+      "word": "своїх",
+      "pos": null,
+      "frequency_count": 743
+    },
+    {
+      "candidate_rank": 668,
+      "source_rank": 668,
+      "word": "кое-что",
+      "pos": null,
+      "frequency_count": 743
+    },
+    {
+      "candidate_rank": 669,
+      "source_rank": 669,
+      "word": "нашу",
+      "pos": null,
+      "frequency_count": 742
+    },
+    {
+      "candidate_rank": 670,
+      "source_rank": 670,
+      "word": "великий",
+      "pos": null,
+      "frequency_count": 739
+    },
+    {
+      "candidate_rank": 671,
+      "source_rank": 671,
+      "word": "нужен",
+      "pos": null,
+      "frequency_count": 738
+    },
+    {
+      "candidate_rank": 672,
+      "source_rank": 672,
+      "word": "побачити",
+      "pos": null,
+      "frequency_count": 738
+    },
+    {
+      "candidate_rank": 673,
+      "source_rank": 673,
+      "word": "щодо",
+      "pos": null,
+      "frequency_count": 735
+    },
+    {
+      "candidate_rank": 674,
+      "source_rank": 674,
+      "word": "біса",
+      "pos": null,
+      "frequency_count": 732
+    },
+    {
+      "candidate_rank": 675,
+      "source_rank": 675,
+      "word": "понял",
+      "pos": null,
+      "frequency_count": 731
+    },
+    {
+      "candidate_rank": 676,
+      "source_rank": 676,
+      "word": "ребята",
+      "pos": null,
+      "frequency_count": 731
+    },
+    {
+      "candidate_rank": 677,
+      "source_rank": 677,
+      "word": "папа",
+      "pos": null,
+      "frequency_count": 731
+    },
+    {
+      "candidate_rank": 678,
+      "source_rank": 678,
+      "word": "отсюда",
+      "pos": null,
+      "frequency_count": 729
+    },
+    {
+      "candidate_rank": 679,
+      "source_rank": 679,
+      "word": "несколько",
+      "pos": null,
+      "frequency_count": 727
+    },
+    {
+      "candidate_rank": 680,
+      "source_rank": 680,
+      "word": "біля",
+      "pos": null,
+      "frequency_count": 723
+    },
+    {
+      "candidate_rank": 681,
+      "source_rank": 681,
+      "word": "верно",
+      "pos": null,
+      "frequency_count": 721
+    },
+    {
+      "candidate_rank": 682,
+      "source_rank": 682,
+      "word": "жити",
+      "pos": null,
+      "frequency_count": 720
+    },
+    {
+      "candidate_rank": 683,
+      "source_rank": 683,
+      "word": "послухай",
+      "pos": null,
+      "frequency_count": 720
+    },
+    {
+      "candidate_rank": 684,
+      "source_rank": 684,
+      "word": "правду",
+      "pos": null,
+      "frequency_count": 720
+    },
+    {
+      "candidate_rank": 685,
+      "source_rank": 685,
+      "word": "we",
+      "pos": null,
+      "frequency_count": 719
+    },
+    {
+      "candidate_rank": 686,
+      "source_rank": 686,
+      "word": "идти",
+      "pos": null,
+      "frequency_count": 717
+    },
+    {
+      "candidate_rank": 687,
+      "source_rank": 687,
+      "word": "хороший",
+      "pos": null,
+      "frequency_count": 716
+    },
+    {
+      "candidate_rank": 688,
+      "source_rank": 688,
+      "word": "твои",
+      "pos": null,
+      "frequency_count": 715
+    },
+    {
+      "candidate_rank": 689,
+      "source_rank": 689,
+      "word": "негайно",
+      "pos": null,
+      "frequency_count": 713
+    },
+    {
+      "candidate_rank": 690,
+      "source_rank": 690,
+      "word": "ким",
+      "pos": null,
+      "frequency_count": 712
+    },
+    {
+      "candidate_rank": 691,
+      "source_rank": 691,
+      "word": "свои",
+      "pos": null,
+      "frequency_count": 710
+    },
+    {
+      "candidate_rank": 692,
+      "source_rank": 692,
+      "word": "уж",
+      "pos": null,
+      "frequency_count": 710
+    },
+    {
+      "candidate_rank": 693,
+      "source_rank": 693,
+      "word": "мать",
+      "pos": null,
+      "frequency_count": 710
+    },
+    {
+      "candidate_rank": 694,
+      "source_rank": 694,
+      "word": "пор",
+      "pos": null,
+      "frequency_count": 707
+    },
+    {
+      "candidate_rank": 695,
+      "source_rank": 695,
+      "word": "иб",
+      "pos": null,
+      "frequency_count": 707
+    },
+    {
+      "candidate_rank": 696,
+      "source_rank": 696,
+      "word": "говорила",
+      "pos": null,
+      "frequency_count": 707
+    },
+    {
+      "candidate_rank": 697,
+      "source_rank": 697,
+      "word": "оно",
+      "pos": null,
+      "frequency_count": 707
+    },
+    {
+      "candidate_rank": 698,
+      "source_rank": 698,
+      "word": "дела",
+      "pos": null,
+      "frequency_count": 705
+    },
+    {
+      "candidate_rank": 699,
+      "source_rank": 699,
+      "word": "хвилин",
+      "pos": null,
+      "frequency_count": 704
+    },
+    {
+      "candidate_rank": 700,
+      "source_rank": 700,
+      "word": "далеко",
+      "pos": null,
+      "frequency_count": 704
+    },
+    {
+      "candidate_rank": 701,
+      "source_rank": 701,
+      "word": "таких",
+      "pos": null,
+      "frequency_count": 703
+    },
+    {
+      "candidate_rank": 702,
+      "source_rank": 702,
+      "word": "вашу",
+      "pos": null,
+      "frequency_count": 703
+    },
+    {
+      "candidate_rank": 703,
+      "source_rank": 703,
+      "word": "мушу",
+      "pos": null,
+      "frequency_count": 701
+    },
+    {
+      "candidate_rank": 704,
+      "source_rank": 704,
+      "word": "свой",
+      "pos": null,
+      "frequency_count": 701
+    },
+    {
+      "candidate_rank": 705,
+      "source_rank": 705,
+      "word": "робота",
+      "pos": null,
+      "frequency_count": 697
+    },
+    {
+      "candidate_rank": 706,
+      "source_rank": 706,
+      "word": "t",
+      "pos": null,
+      "frequency_count": 697
+    },
+    {
+      "candidate_rank": 707,
+      "source_rank": 707,
+      "word": "работу",
+      "pos": null,
+      "frequency_count": 697
+    },
+    {
+      "candidate_rank": 708,
+      "source_rank": 708,
+      "word": "хотите",
+      "pos": null,
+      "frequency_count": 696
+    },
+    {
+      "candidate_rank": 709,
+      "source_rank": 709,
+      "word": "нее",
+      "pos": null,
+      "frequency_count": 695
+    },
+    {
+      "candidate_rank": 710,
+      "source_rank": 710,
+      "word": "усіх",
+      "pos": null,
+      "frequency_count": 695
+    },
+    {
+      "candidate_rank": 711,
+      "source_rank": 711,
+      "word": "будете",
+      "pos": null,
+      "frequency_count": 694
+    },
+    {
+      "candidate_rank": 712,
+      "source_rank": 712,
+      "word": "дайте",
+      "pos": null,
+      "frequency_count": 694
+    },
+    {
+      "candidate_rank": 713,
+      "source_rank": 713,
+      "word": "батька",
+      "pos": null,
+      "frequency_count": 687
+    },
+    {
+      "candidate_rank": 714,
+      "source_rank": 714,
+      "word": "убить",
+      "pos": null,
+      "frequency_count": 687
+    },
+    {
+      "candidate_rank": 715,
+      "source_rank": 715,
+      "word": "машина",
+      "pos": null,
+      "frequency_count": 686
+    },
+    {
+      "candidate_rank": 716,
+      "source_rank": 716,
+      "word": "важко",
+      "pos": null,
+      "frequency_count": 686
+    },
+    {
+      "candidate_rank": 717,
+      "source_rank": 717,
+      "word": "итак",
+      "pos": null,
+      "frequency_count": 686
+    },
+    {
+      "candidate_rank": 718,
+      "source_rank": 718,
+      "word": "твого",
+      "pos": null,
+      "frequency_count": 684
+    },
+    {
+      "candidate_rank": 719,
+      "source_rank": 719,
+      "word": "тех",
+      "pos": null,
+      "frequency_count": 682
+    },
+    {
+      "candidate_rank": 720,
+      "source_rank": 720,
+      "word": "легко",
+      "pos": null,
+      "frequency_count": 680
+    },
+    {
+      "candidate_rank": 721,
+      "source_rank": 721,
+      "word": "самом",
+      "pos": null,
+      "frequency_count": 679
+    },
+    {
+      "candidate_rank": 722,
+      "source_rank": 722,
+      "word": "очі",
+      "pos": null,
+      "frequency_count": 678
+    },
+    {
+      "candidate_rank": 723,
+      "source_rank": 723,
+      "word": "хоча",
+      "pos": null,
+      "frequency_count": 676
+    },
+    {
+      "candidate_rank": 724,
+      "source_rank": 724,
+      "word": "ко",
+      "pos": null,
+      "frequency_count": 676
+    },
+    {
+      "candidate_rank": 725,
+      "source_rank": 725,
+      "word": "кожен",
+      "pos": null,
+      "frequency_count": 676
+    },
+    {
+      "candidate_rank": 726,
+      "source_rank": 726,
+      "word": "спасибі",
+      "pos": null,
+      "frequency_count": 675
+    },
+    {
+      "candidate_rank": 727,
+      "source_rank": 727,
+      "word": "щойно",
+      "pos": null,
+      "frequency_count": 671
+    },
+    {
+      "candidate_rank": 728,
+      "source_rank": 728,
+      "word": "против",
+      "pos": null,
+      "frequency_count": 671
+    },
+    {
+      "candidate_rank": 729,
+      "source_rank": 729,
+      "word": "виду",
+      "pos": null,
+      "frequency_count": 670
+    },
+    {
+      "candidate_rank": 730,
+      "source_rank": 730,
+      "word": "имя",
+      "pos": null,
+      "frequency_count": 670
+    },
+    {
+      "candidate_rank": 731,
+      "source_rank": 731,
+      "word": "собою",
+      "pos": null,
+      "frequency_count": 669
+    },
+    {
+      "candidate_rank": 732,
+      "source_rank": 732,
+      "word": "курва",
+      "pos": null,
+      "frequency_count": 668
+    },
+    {
+      "candidate_rank": 733,
+      "source_rank": 733,
+      "word": "діти",
+      "pos": null,
+      "frequency_count": 665
+    },
+    {
+      "candidate_rank": 734,
+      "source_rank": 734,
+      "word": "цієї",
+      "pos": null,
+      "frequency_count": 664
+    },
+    {
+      "candidate_rank": 735,
+      "source_rank": 735,
+      "word": "вообще",
+      "pos": null,
+      "frequency_count": 664
+    },
+    {
+      "candidate_rank": 736,
+      "source_rank": 736,
+      "word": "світі",
+      "pos": null,
+      "frequency_count": 663
+    },
+    {
+      "candidate_rank": 737,
+      "source_rank": 737,
+      "word": "me",
+      "pos": null,
+      "frequency_count": 661
+    },
+    {
+      "candidate_rank": 738,
+      "source_rank": 738,
+      "word": "роботи",
+      "pos": null,
+      "frequency_count": 661
+    },
+    {
+      "candidate_rank": 739,
+      "source_rank": 739,
+      "word": "доведеться",
+      "pos": null,
+      "frequency_count": 660
+    },
+    {
+      "candidate_rank": 740,
+      "source_rank": 740,
+      "word": "погано",
+      "pos": null,
+      "frequency_count": 660
+    },
+    {
+      "candidate_rank": 741,
+      "source_rank": 741,
+      "word": "рада",
+      "pos": null,
+      "frequency_count": 659
+    },
+    {
+      "candidate_rank": 742,
+      "source_rank": 742,
+      "word": "понимаешь",
+      "pos": null,
+      "frequency_count": 659
+    },
+    {
+      "candidate_rank": 743,
+      "source_rank": 743,
+      "word": "готовий",
+      "pos": null,
+      "frequency_count": 657
+    },
+    {
+      "candidate_rank": 744,
+      "source_rank": 744,
+      "word": "ах",
+      "pos": null,
+      "frequency_count": 656
+    },
+    {
+      "candidate_rank": 745,
+      "source_rank": 745,
+      "word": "перший",
+      "pos": null,
+      "frequency_count": 656
+    },
+    {
+      "candidate_rank": 746,
+      "source_rank": 746,
+      "word": "вбити",
+      "pos": null,
+      "frequency_count": 654
+    },
+    {
+      "candidate_rank": 747,
+      "source_rank": 747,
+      "word": "працює",
+      "pos": null,
+      "frequency_count": 650
+    },
+    {
+      "candidate_rank": 748,
+      "source_rank": 748,
+      "word": "грошей",
+      "pos": null,
+      "frequency_count": 649
+    },
+    {
+      "candidate_rank": 749,
+      "source_rank": 749,
+      "word": "знайшов",
+      "pos": null,
+      "frequency_count": 648
+    },
+    {
+      "candidate_rank": 750,
+      "source_rank": 750,
+      "word": "робить",
+      "pos": null,
+      "frequency_count": 647
+    },
+    {
+      "candidate_rank": 751,
+      "source_rank": 751,
+      "word": "радий",
+      "pos": null,
+      "frequency_count": 647
+    },
+    {
+      "candidate_rank": 752,
+      "source_rank": 752,
+      "word": "кому",
+      "pos": null,
+      "frequency_count": 646
+    },
+    {
+      "candidate_rank": 753,
+      "source_rank": 753,
+      "word": "ніч",
+      "pos": null,
+      "frequency_count": 646
+    },
+    {
+      "candidate_rank": 754,
+      "source_rank": 754,
+      "word": "року",
+      "pos": null,
+      "frequency_count": 645
+    },
+    {
+      "candidate_rank": 755,
+      "source_rank": 755,
+      "word": "говори",
+      "pos": null,
+      "frequency_count": 645
+    },
+    {
+      "candidate_rank": 756,
+      "source_rank": 756,
+      "word": "момент",
+      "pos": null,
+      "frequency_count": 644
+    },
+    {
+      "candidate_rank": 757,
+      "source_rank": 757,
+      "word": "дивись",
+      "pos": null,
+      "frequency_count": 644
+    },
+    {
+      "candidate_rank": 758,
+      "source_rank": 758,
+      "word": "серйозно",
+      "pos": null,
+      "frequency_count": 644
+    },
+    {
+      "candidate_rank": 759,
+      "source_rank": 759,
+      "word": "напевно",
+      "pos": null,
+      "frequency_count": 643
+    },
+    {
+      "candidate_rank": 760,
+      "source_rank": 760,
+      "word": "такая",
+      "pos": null,
+      "frequency_count": 638
+    },
+    {
+      "candidate_rank": 761,
+      "source_rank": 761,
+      "word": "надеюсь",
+      "pos": null,
+      "frequency_count": 638
+    },
+    {
+      "candidate_rank": 762,
+      "source_rank": 762,
+      "word": "послушай",
+      "pos": null,
+      "frequency_count": 637
+    },
+    {
+      "candidate_rank": 763,
+      "source_rank": 763,
+      "word": "роки",
+      "pos": null,
+      "frequency_count": 637
+    },
+    {
+      "candidate_rank": 764,
+      "source_rank": 764,
+      "word": "землі",
+      "pos": null,
+      "frequency_count": 636
+    },
+    {
+      "candidate_rank": 765,
+      "source_rank": 765,
+      "word": "заради",
+      "pos": null,
+      "frequency_count": 636
+    },
+    {
+      "candidate_rank": 766,
+      "source_rank": 766,
+      "word": "стій",
+      "pos": null,
+      "frequency_count": 635
+    },
+    {
+      "candidate_rank": 767,
+      "source_rank": 767,
+      "word": "неё",
+      "pos": null,
+      "frequency_count": 635
+    },
+    {
+      "candidate_rank": 768,
+      "source_rank": 768,
+      "word": "проблем",
+      "pos": null,
+      "frequency_count": 635
+    },
+    {
+      "candidate_rank": 769,
+      "source_rank": 769,
+      "word": "честь",
+      "pos": null,
+      "frequency_count": 634
+    },
+    {
+      "candidate_rank": 770,
+      "source_rank": 770,
+      "word": "мпх",
+      "pos": null,
+      "frequency_count": 634
+    },
+    {
+      "candidate_rank": 771,
+      "source_rank": 771,
+      "word": "вітаю",
+      "pos": null,
+      "frequency_count": 632
+    },
+    {
+      "candidate_rank": 772,
+      "source_rank": 772,
+      "word": "ранку",
+      "pos": null,
+      "frequency_count": 632
+    },
+    {
+      "candidate_rank": 773,
+      "source_rank": 773,
+      "word": "говорит",
+      "pos": null,
+      "frequency_count": 632
+    },
+    {
+      "candidate_rank": 774,
+      "source_rank": 774,
+      "word": "телефон",
+      "pos": null,
+      "frequency_count": 631
+    },
+    {
+      "candidate_rank": 775,
+      "source_rank": 775,
+      "word": "зробили",
+      "pos": null,
+      "frequency_count": 630
+    },
+    {
+      "candidate_rank": 776,
+      "source_rank": 776,
+      "word": "вдома",
+      "pos": null,
+      "frequency_count": 630
+    },
+    {
+      "candidate_rank": 777,
+      "source_rank": 777,
+      "word": "равно",
+      "pos": null,
+      "frequency_count": 630
+    },
+    {
+      "candidate_rank": 778,
+      "source_rank": 778,
+      "word": "каждый",
+      "pos": null,
+      "frequency_count": 629
+    },
+    {
+      "candidate_rank": 779,
+      "source_rank": 779,
+      "word": "жить",
+      "pos": null,
+      "frequency_count": 628
+    },
+    {
+      "candidate_rank": 780,
+      "source_rank": 780,
+      "word": "будинок",
+      "pos": null,
+      "frequency_count": 628
+    },
+    {
+      "candidate_rank": 781,
+      "source_rank": 781,
+      "word": "брата",
+      "pos": null,
+      "frequency_count": 627
+    },
+    {
+      "candidate_rank": 782,
+      "source_rank": 782,
+      "word": "іди",
+      "pos": null,
+      "frequency_count": 627
+    },
+    {
+      "candidate_rank": 783,
+      "source_rank": 783,
+      "word": "король",
+      "pos": null,
+      "frequency_count": 626
+    },
+    {
+      "candidate_rank": 784,
+      "source_rank": 784,
+      "word": "бачили",
+      "pos": null,
+      "frequency_count": 626
+    },
+    {
+      "candidate_rank": 785,
+      "source_rank": 785,
+      "word": "круто",
+      "pos": null,
+      "frequency_count": 623
+    },
+    {
+      "candidate_rank": 786,
+      "source_rank": 786,
+      "word": "подожди",
+      "pos": null,
+      "frequency_count": 622
+    },
+    {
+      "candidate_rank": 787,
+      "source_rank": 787,
+      "word": "знаємо",
+      "pos": null,
+      "frequency_count": 622
+    },
+    {
+      "candidate_rank": 788,
+      "source_rank": 788,
+      "word": "будут",
+      "pos": null,
+      "frequency_count": 621
+    },
+    {
+      "candidate_rank": 789,
+      "source_rank": 789,
+      "word": "потрібні",
+      "pos": null,
+      "frequency_count": 620
+    },
+    {
+      "candidate_rank": 790,
+      "source_rank": 790,
+      "word": "сын",
+      "pos": null,
+      "frequency_count": 620
+    },
+    {
+      "candidate_rank": 791,
+      "source_rank": 791,
+      "word": "цій",
+      "pos": null,
+      "frequency_count": 619
+    },
+    {
+      "candidate_rank": 792,
+      "source_rank": 792,
+      "word": "нельзя",
+      "pos": null,
+      "frequency_count": 618
+    },
+    {
+      "candidate_rank": 793,
+      "source_rank": 793,
+      "word": "дам",
+      "pos": null,
+      "frequency_count": 616
+    },
+    {
+      "candidate_rank": 794,
+      "source_rank": 794,
+      "word": "смерті",
+      "pos": null,
+      "frequency_count": 615
+    },
+    {
+      "candidate_rank": 795,
+      "source_rank": 795,
+      "word": "возьми",
+      "pos": null,
+      "frequency_count": 611
+    },
+    {
+      "candidate_rank": 796,
+      "source_rank": 796,
+      "word": "знали",
+      "pos": null,
+      "frequency_count": 610
+    },
+    {
+      "candidate_rank": 797,
+      "source_rank": 797,
+      "word": "ноги",
+      "pos": null,
+      "frequency_count": 609
+    },
+    {
+      "candidate_rank": 798,
+      "source_rank": 798,
+      "word": "старий",
+      "pos": null,
+      "frequency_count": 609
+    },
+    {
+      "candidate_rank": 799,
+      "source_rank": 799,
+      "word": "моєї",
+      "pos": null,
+      "frequency_count": 609
+    },
+    {
+      "candidate_rank": 800,
+      "source_rank": 800,
+      "word": "убил",
+      "pos": null,
+      "frequency_count": 608
+    },
+    {
+      "candidate_rank": 801,
+      "source_rank": 801,
+      "word": "хотя",
+      "pos": null,
+      "frequency_count": 608
+    },
+    {
+      "candidate_rank": 802,
+      "source_rank": 802,
+      "word": "этих",
+      "pos": null,
+      "frequency_count": 608
+    },
+    {
+      "candidate_rank": 803,
+      "source_rank": 803,
+      "word": "когось",
+      "pos": null,
+      "frequency_count": 608
+    },
+    {
+      "candidate_rank": 804,
+      "source_rank": 804,
+      "word": "тихо",
+      "pos": null,
+      "frequency_count": 608
+    },
+    {
+      "candidate_rank": 805,
+      "source_rank": 805,
+      "word": "хоть",
+      "pos": null,
+      "frequency_count": 607
+    },
+    {
+      "candidate_rank": 806,
+      "source_rank": 806,
+      "word": "взяти",
+      "pos": null,
+      "frequency_count": 605
+    },
+    {
+      "candidate_rank": 807,
+      "source_rank": 807,
+      "word": "побачення",
+      "pos": null,
+      "frequency_count": 602
+    },
+    {
+      "candidate_rank": 808,
+      "source_rank": 808,
+      "word": "новий",
+      "pos": null,
+      "frequency_count": 602
+    },
+    {
+      "candidate_rank": 809,
+      "source_rank": 809,
+      "word": "проблеми",
+      "pos": null,
+      "frequency_count": 602
+    },
+    {
+      "candidate_rank": 810,
+      "source_rank": 810,
+      "word": "бувай",
+      "pos": null,
+      "frequency_count": 601
+    },
+    {
+      "candidate_rank": 811,
+      "source_rank": 811,
+      "word": "джек",
+      "pos": null,
+      "frequency_count": 596
+    },
+    {
+      "candidate_rank": 812,
+      "source_rank": 812,
+      "word": "місці",
+      "pos": null,
+      "frequency_count": 594
+    },
+    {
+      "candidate_rank": 813,
+      "source_rank": 813,
+      "word": "будто",
+      "pos": null,
+      "frequency_count": 594
+    },
+    {
+      "candidate_rank": 814,
+      "source_rank": 814,
+      "word": "сестра",
+      "pos": null,
+      "frequency_count": 592
+    },
+    {
+      "candidate_rank": 815,
+      "source_rank": 815,
+      "word": "моїх",
+      "pos": null,
+      "frequency_count": 592
+    },
+    {
+      "candidate_rank": 816,
+      "source_rank": 816,
+      "word": "містер",
+      "pos": null,
+      "frequency_count": 591
+    },
+    {
+      "candidate_rank": 817,
+      "source_rank": 817,
+      "word": "слід",
+      "pos": null,
+      "frequency_count": 591
+    },
+    {
+      "candidate_rank": 818,
+      "source_rank": 818,
+      "word": "бачила",
+      "pos": null,
+      "frequency_count": 591
+    },
+    {
+      "candidate_rank": 819,
+      "source_rank": 819,
+      "word": "стати",
+      "pos": null,
+      "frequency_count": 591
+    },
+    {
+      "candidate_rank": 820,
+      "source_rank": 820,
+      "word": "извини",
+      "pos": null,
+      "frequency_count": 590
+    },
+    {
+      "candidate_rank": 821,
+      "source_rank": 821,
+      "word": "наверное",
+      "pos": null,
+      "frequency_count": 590
+    },
+    {
+      "candidate_rank": 822,
+      "source_rank": 822,
+      "word": "готова",
+      "pos": null,
+      "frequency_count": 588
+    },
+    {
+      "candidate_rank": 823,
+      "source_rank": 823,
+      "word": "нашого",
+      "pos": null,
+      "frequency_count": 588
+    },
+    {
+      "candidate_rank": 824,
+      "source_rank": 824,
+      "word": "готов",
+      "pos": null,
+      "frequency_count": 587
+    },
+    {
+      "candidate_rank": 825,
+      "source_rank": 825,
+      "word": "видеть",
+      "pos": null,
+      "frequency_count": 587
+    },
+    {
+      "candidate_rank": 826,
+      "source_rank": 826,
+      "word": "этому",
+      "pos": null,
+      "frequency_count": 587
+    },
+    {
+      "candidate_rank": 827,
+      "source_rank": 827,
+      "word": "якось",
+      "pos": null,
+      "frequency_count": 586
+    },
+    {
+      "candidate_rank": 828,
+      "source_rank": 828,
+      "word": "пойду",
+      "pos": null,
+      "frequency_count": 586
+    },
+    {
+      "candidate_rank": 829,
+      "source_rank": 829,
+      "word": "прекрасно",
+      "pos": null,
+      "frequency_count": 585
+    },
+    {
+      "candidate_rank": 830,
+      "source_rank": 830,
+      "word": "джо",
+      "pos": null,
+      "frequency_count": 585
+    },
+    {
+      "candidate_rank": 831,
+      "source_rank": 831,
+      "word": "вся",
+      "pos": null,
+      "frequency_count": 583
+    },
+    {
+      "candidate_rank": 832,
+      "source_rank": 832,
+      "word": "отче",
+      "pos": null,
+      "frequency_count": 583
+    },
+    {
+      "candidate_rank": 833,
+      "source_rank": 833,
+      "word": "своего",
+      "pos": null,
+      "frequency_count": 583
+    },
+    {
+      "candidate_rank": 834,
+      "source_rank": 834,
+      "word": "посмотри",
+      "pos": null,
+      "frequency_count": 583
+    },
+    {
+      "candidate_rank": 835,
+      "source_rank": 835,
+      "word": "рік",
+      "pos": null,
+      "frequency_count": 582
+    },
+    {
+      "candidate_rank": 836,
+      "source_rank": 836,
+      "word": "бога",
+      "pos": null,
+      "frequency_count": 582
+    },
+    {
+      "candidate_rank": 837,
+      "source_rank": 837,
+      "word": "повинна",
+      "pos": null,
+      "frequency_count": 580
+    },
+    {
+      "candidate_rank": 838,
+      "source_rank": 838,
+      "word": "всім",
+      "pos": null,
+      "frequency_count": 580
+    },
+    {
+      "candidate_rank": 839,
+      "source_rank": 839,
+      "word": "другой",
+      "pos": null,
+      "frequency_count": 579
+    },
+    {
+      "candidate_rank": 840,
+      "source_rank": 840,
+      "word": "мала",
+      "pos": null,
+      "frequency_count": 578
+    },
+    {
+      "candidate_rank": 841,
+      "source_rank": 841,
+      "word": "зачекай",
+      "pos": null,
+      "frequency_count": 578
+    },
+    {
+      "candidate_rank": 842,
+      "source_rank": 842,
+      "word": "наче",
+      "pos": null,
+      "frequency_count": 578
+    },
+    {
+      "candidate_rank": 843,
+      "source_rank": 843,
+      "word": "наше",
+      "pos": null,
+      "frequency_count": 578
+    },
+    {
+      "candidate_rank": 844,
+      "source_rank": 844,
+      "word": "видела",
+      "pos": null,
+      "frequency_count": 577
+    },
+    {
+      "candidate_rank": 845,
+      "source_rank": 845,
+      "word": "откуда",
+      "pos": null,
+      "frequency_count": 577
+    },
+    {
+      "candidate_rank": 846,
+      "source_rank": 846,
+      "word": "кінець",
+      "pos": null,
+      "frequency_count": 576
+    },
+    {
+      "candidate_rank": 847,
+      "source_rank": 847,
+      "word": "чоловіка",
+      "pos": null,
+      "frequency_count": 574
+    },
+    {
+      "candidate_rank": 848,
+      "source_rank": 848,
+      "word": "знайшли",
+      "pos": null,
+      "frequency_count": 574
+    },
+    {
+      "candidate_rank": 849,
+      "source_rank": 849,
+      "word": "рядом",
+      "pos": null,
+      "frequency_count": 573
+    },
+    {
+      "candidate_rank": 850,
+      "source_rank": 850,
+      "word": "працювати",
+      "pos": null,
+      "frequency_count": 571
+    },
+    {
+      "candidate_rank": 851,
+      "source_rank": 851,
+      "word": "візьми",
+      "pos": null,
+      "frequency_count": 571
+    },
+    {
+      "candidate_rank": 852,
+      "source_rank": 852,
+      "word": "річ",
+      "pos": null,
+      "frequency_count": 571
+    },
+    {
+      "candidate_rank": 853,
+      "source_rank": 853,
+      "word": "дитина",
+      "pos": null,
+      "frequency_count": 570
+    },
+    {
+      "candidate_rank": 854,
+      "source_rank": 854,
+      "word": "he",
+      "pos": null,
+      "frequency_count": 570
+    },
+    {
+      "candidate_rank": 855,
+      "source_rank": 855,
+      "word": "сина",
+      "pos": null,
+      "frequency_count": 569
+    },
+    {
+      "candidate_rank": 856,
+      "source_rank": 856,
+      "word": "інших",
+      "pos": null,
+      "frequency_count": 568
+    },
+    {
+      "candidate_rank": 857,
+      "source_rank": 857,
+      "word": "нарешті",
+      "pos": null,
+      "frequency_count": 567
+    },
+    {
+      "candidate_rank": 858,
+      "source_rank": 858,
+      "word": "зовут",
+      "pos": null,
+      "frequency_count": 567
+    },
+    {
+      "candidate_rank": 859,
+      "source_rank": 859,
+      "word": "ночь",
+      "pos": null,
+      "frequency_count": 567
+    },
+    {
+      "candidate_rank": 860,
+      "source_rank": 860,
+      "word": "мам",
+      "pos": null,
+      "frequency_count": 565
+    },
+    {
+      "candidate_rank": 861,
+      "source_rank": 861,
+      "word": "двох",
+      "pos": null,
+      "frequency_count": 565
+    },
+    {
+      "candidate_rank": 862,
+      "source_rank": 862,
+      "word": "якийсь",
+      "pos": null,
+      "frequency_count": 563
+    },
+    {
+      "candidate_rank": 863,
+      "source_rank": 863,
+      "word": "смогу",
+      "pos": null,
+      "frequency_count": 562
+    },
+    {
+      "candidate_rank": 864,
+      "source_rank": 864,
+      "word": "здорово",
+      "pos": null,
+      "frequency_count": 561
+    },
+    {
+      "candidate_rank": 865,
+      "source_rank": 865,
+      "word": "надто",
+      "pos": null,
+      "frequency_count": 561
+    },
+    {
+      "candidate_rank": 866,
+      "source_rank": 866,
+      "word": "йде",
+      "pos": null,
+      "frequency_count": 560
+    },
+    {
+      "candidate_rank": 867,
+      "source_rank": 867,
+      "word": "пойти",
+      "pos": null,
+      "frequency_count": 558
+    },
+    {
+      "candidate_rank": 868,
+      "source_rank": 868,
+      "word": "вижу",
+      "pos": null,
+      "frequency_count": 557
+    },
+    {
+      "candidate_rank": 869,
+      "source_rank": 869,
+      "word": "of",
+      "pos": null,
+      "frequency_count": 556
+    },
+    {
+      "candidate_rank": 870,
+      "source_rank": 870,
+      "word": "мають",
+      "pos": null,
+      "frequency_count": 556
+    },
+    {
+      "candidate_rank": 871,
+      "source_rank": 871,
+      "word": "кажуть",
+      "pos": null,
+      "frequency_count": 555
+    },
+    {
+      "candidate_rank": 872,
+      "source_rank": 872,
+      "word": "мир",
+      "pos": null,
+      "frequency_count": 554
+    },
+    {
+      "candidate_rank": 873,
+      "source_rank": 873,
+      "word": "агов",
+      "pos": null,
+      "frequency_count": 553
+    },
+    {
+      "candidate_rank": 874,
+      "source_rank": 874,
+      "word": "абсолютно",
+      "pos": null,
+      "frequency_count": 552
+    },
+    {
+      "candidate_rank": 875,
+      "source_rank": 875,
+      "word": "чотири",
+      "pos": null,
+      "frequency_count": 552
+    },
+    {
+      "candidate_rank": 876,
+      "source_rank": 876,
+      "word": "звати",
+      "pos": null,
+      "frequency_count": 551
+    },
+    {
+      "candidate_rank": 877,
+      "source_rank": 877,
+      "word": "видишь",
+      "pos": null,
+      "frequency_count": 551
+    },
+    {
+      "candidate_rank": 878,
+      "source_rank": 878,
+      "word": "сделала",
+      "pos": null,
+      "frequency_count": 551
+    },
+    {
+      "candidate_rank": 879,
+      "source_rank": 879,
+      "word": "більш",
+      "pos": null,
+      "frequency_count": 550
+    },
+    {
+      "candidate_rank": 880,
+      "source_rank": 880,
+      "word": "прав",
+      "pos": null,
+      "frequency_count": 549
+    },
+    {
+      "candidate_rank": 881,
+      "source_rank": 881,
+      "word": "ночі",
+      "pos": null,
+      "frequency_count": 549
+    },
+    {
+      "candidate_rank": 882,
+      "source_rank": 882,
+      "word": "зрозуміло",
+      "pos": null,
+      "frequency_count": 548
+    },
+    {
+      "candidate_rank": 883,
+      "source_rank": 883,
+      "word": "m",
+      "pos": null,
+      "frequency_count": 548
+    },
+    {
+      "candidate_rank": 884,
+      "source_rank": 884,
+      "word": "нe",
+      "pos": null,
+      "frequency_count": 548
+    },
+    {
+      "candidate_rank": 885,
+      "source_rank": 885,
+      "word": "маленький",
+      "pos": null,
+      "frequency_count": 547
+    },
+    {
+      "candidate_rank": 886,
+      "source_rank": 886,
+      "word": "місто",
+      "pos": null,
+      "frequency_count": 547
+    },
+    {
+      "candidate_rank": 887,
+      "source_rank": 887,
+      "word": "достаточно",
+      "pos": null,
+      "frequency_count": 547
+    },
+    {
+      "candidate_rank": 888,
+      "source_rank": 888,
+      "word": "моїм",
+      "pos": null,
+      "frequency_count": 546
+    },
+    {
+      "candidate_rank": 889,
+      "source_rank": 889,
+      "word": "йдемо",
+      "pos": null,
+      "frequency_count": 546
+    },
+    {
+      "candidate_rank": 890,
+      "source_rank": 890,
+      "word": "лайно",
+      "pos": null,
+      "frequency_count": 546
+    },
+    {
+      "candidate_rank": 891,
+      "source_rank": 891,
+      "word": "часто",
+      "pos": null,
+      "frequency_count": 544
+    },
+    {
+      "candidate_rank": 892,
+      "source_rank": 892,
+      "word": "дні",
+      "pos": null,
+      "frequency_count": 543
+    },
+    {
+      "candidate_rank": 893,
+      "source_rank": 893,
+      "word": "впевнений",
+      "pos": null,
+      "frequency_count": 543
+    },
+    {
+      "candidate_rank": 894,
+      "source_rank": 894,
+      "word": "собираюсь",
+      "pos": null,
+      "frequency_count": 543
+    },
+    {
+      "candidate_rank": 895,
+      "source_rank": 895,
+      "word": "человека",
+      "pos": null,
+      "frequency_count": 542
+    },
+    {
+      "candidate_rank": 896,
+      "source_rank": 896,
+      "word": "моєму",
+      "pos": null,
+      "frequency_count": 542
+    },
+    {
+      "candidate_rank": 897,
+      "source_rank": 897,
+      "word": "стільки",
+      "pos": null,
+      "frequency_count": 541
+    },
+    {
+      "candidate_rank": 898,
+      "source_rank": 898,
+      "word": "зроблю",
+      "pos": null,
+      "frequency_count": 539
+    },
+    {
+      "candidate_rank": 899,
+      "source_rank": 899,
+      "word": "говорив",
+      "pos": null,
+      "frequency_count": 539
+    },
+    {
+      "candidate_rank": 900,
+      "source_rank": 900,
+      "word": "друже",
+      "pos": null,
+      "frequency_count": 539
+    },
+    {
+      "candidate_rank": 901,
+      "source_rank": 901,
+      "word": "йду",
+      "pos": null,
+      "frequency_count": 537
+    },
+    {
+      "candidate_rank": 902,
+      "source_rank": 902,
+      "word": "почти",
+      "pos": null,
+      "frequency_count": 537
+    },
+    {
+      "candidate_rank": 903,
+      "source_rank": 903,
+      "word": "ідея",
+      "pos": null,
+      "frequency_count": 536
+    },
+    {
+      "candidate_rank": 904,
+      "source_rank": 904,
+      "word": "днів",
+      "pos": null,
+      "frequency_count": 536
+    },
+    {
+      "candidate_rank": 905,
+      "source_rank": 905,
+      "word": "дати",
+      "pos": null,
+      "frequency_count": 536
+    },
+    {
+      "candidate_rank": 906,
+      "source_rank": 906,
+      "word": "людям",
+      "pos": null,
+      "frequency_count": 535
+    },
+    {
+      "candidate_rank": 907,
+      "source_rank": 907,
+      "word": "чуєш",
+      "pos": null,
+      "frequency_count": 534
+    },
+    {
+      "candidate_rank": 908,
+      "source_rank": 908,
+      "word": "інакше",
+      "pos": null,
+      "frequency_count": 533
+    },
+    {
+      "candidate_rank": 909,
+      "source_rank": 909,
+      "word": "минут",
+      "pos": null,
+      "frequency_count": 533
+    },
+    {
+      "candidate_rank": 910,
+      "source_rank": 910,
+      "word": "зможу",
+      "pos": null,
+      "frequency_count": 533
+    },
+    {
+      "candidate_rank": 911,
+      "source_rank": 911,
+      "word": "скажеш",
+      "pos": null,
+      "frequency_count": 532
+    },
+    {
+      "candidate_rank": 912,
+      "source_rank": 912,
+      "word": "месте",
+      "pos": null,
+      "frequency_count": 532
+    },
+    {
+      "candidate_rank": 913,
+      "source_rank": 913,
+      "word": "пан",
+      "pos": null,
+      "frequency_count": 531
+    },
+    {
+      "candidate_rank": 914,
+      "source_rank": 914,
+      "word": "ятаєш",
+      "pos": null,
+      "frequency_count": 531
+    },
+    {
+      "candidate_rank": 915,
+      "source_rank": 915,
+      "word": "вопрос",
+      "pos": null,
+      "frequency_count": 530
+    },
+    {
+      "candidate_rank": 916,
+      "source_rank": 916,
+      "word": "могут",
+      "pos": null,
+      "frequency_count": 529
+    },
+    {
+      "candidate_rank": 917,
+      "source_rank": 917,
+      "word": "между",
+      "pos": null,
+      "frequency_count": 529
+    },
+    {
+      "candidate_rank": 918,
+      "source_rank": 918,
+      "word": "дружина",
+      "pos": null,
+      "frequency_count": 528
+    },
+    {
+      "candidate_rank": 919,
+      "source_rank": 919,
+      "word": "світу",
+      "pos": null,
+      "frequency_count": 528
+    },
+    {
+      "candidate_rank": 920,
+      "source_rank": 920,
+      "word": "землю",
+      "pos": null,
+      "frequency_count": 526
+    },
+    {
+      "candidate_rank": 921,
+      "source_rank": 921,
+      "word": "говоришь",
+      "pos": null,
+      "frequency_count": 526
+    },
+    {
+      "candidate_rank": 922,
+      "source_rank": 922,
+      "word": "извините",
+      "pos": null,
+      "frequency_count": 525
+    },
+    {
+      "candidate_rank": 923,
+      "source_rank": 923,
+      "word": "кров",
+      "pos": null,
+      "frequency_count": 524
+    },
+    {
+      "candidate_rank": 924,
+      "source_rank": 924,
+      "word": "помощь",
+      "pos": null,
+      "frequency_count": 524
+    },
+    {
+      "candidate_rank": 925,
+      "source_rank": 925,
+      "word": "быстро",
+      "pos": null,
+      "frequency_count": 524
+    },
+    {
+      "candidate_rank": 926,
+      "source_rank": 926,
+      "word": "будинку",
+      "pos": null,
+      "frequency_count": 524
+    },
+    {
+      "candidate_rank": 927,
+      "source_rank": 927,
+      "word": "вашого",
+      "pos": null,
+      "frequency_count": 524
+    },
+    {
+      "candidate_rank": 928,
+      "source_rank": 928,
+      "word": "вірно",
+      "pos": null,
+      "frequency_count": 523
+    },
+    {
+      "candidate_rank": 929,
+      "source_rank": 929,
+      "word": "которая",
+      "pos": null,
+      "frequency_count": 523
+    },
+    {
+      "candidate_rank": 930,
+      "source_rank": 930,
+      "word": "десять",
+      "pos": null,
+      "frequency_count": 522
+    },
+    {
+      "candidate_rank": 931,
+      "source_rank": 931,
+      "word": "долго",
+      "pos": null,
+      "frequency_count": 521
+    },
+    {
+      "candidate_rank": 932,
+      "source_rank": 932,
+      "word": "твоего",
+      "pos": null,
+      "frequency_count": 521
+    },
+    {
+      "candidate_rank": 933,
+      "source_rank": 933,
+      "word": "вроде",
+      "pos": null,
+      "frequency_count": 520
+    },
+    {
+      "candidate_rank": 934,
+      "source_rank": 934,
+      "word": "ваших",
+      "pos": null,
+      "frequency_count": 520
+    },
+    {
+      "candidate_rank": 935,
+      "source_rank": 935,
+      "word": "no",
+      "pos": null,
+      "frequency_count": 520
+    },
+    {
+      "candidate_rank": 936,
+      "source_rank": 936,
+      "word": "вообще-то",
+      "pos": null,
+      "frequency_count": 519
+    },
+    {
+      "candidate_rank": 937,
+      "source_rank": 937,
+      "word": "вб",
+      "pos": null,
+      "frequency_count": 519
+    },
+    {
+      "candidate_rank": 938,
+      "source_rank": 938,
+      "word": "детей",
+      "pos": null,
+      "frequency_count": 518
+    },
+    {
+      "candidate_rank": 939,
+      "source_rank": 939,
+      "word": "люба",
+      "pos": null,
+      "frequency_count": 518
+    },
+    {
+      "candidate_rank": 940,
+      "source_rank": 940,
+      "word": "одним",
+      "pos": null,
+      "frequency_count": 517
+    },
+    {
+      "candidate_rank": 941,
+      "source_rank": 941,
+      "word": "смотри",
+      "pos": null,
+      "frequency_count": 517
+    },
+    {
+      "candidate_rank": 942,
+      "source_rank": 942,
+      "word": "вещи",
+      "pos": null,
+      "frequency_count": 517
+    },
+    {
+      "candidate_rank": 943,
+      "source_rank": 943,
+      "word": "what",
+      "pos": null,
+      "frequency_count": 517
+    },
+    {
+      "candidate_rank": 944,
+      "source_rank": 944,
+      "word": "яким",
+      "pos": null,
+      "frequency_count": 516
+    },
+    {
+      "candidate_rank": 945,
+      "source_rank": 945,
+      "word": "іншого",
+      "pos": null,
+      "frequency_count": 516
+    },
+    {
+      "candidate_rank": 946,
+      "source_rank": 946,
+      "word": "своїм",
+      "pos": null,
+      "frequency_count": 516
+    },
+    {
+      "candidate_rank": 947,
+      "source_rank": 947,
+      "word": "ятаю",
+      "pos": null,
+      "frequency_count": 515
+    },
+    {
+      "candidate_rank": 948,
+      "source_rank": 948,
+      "word": "важно",
+      "pos": null,
+      "frequency_count": 515
+    },
+    {
+      "candidate_rank": 949,
+      "source_rank": 949,
+      "word": "самого",
+      "pos": null,
+      "frequency_count": 514
+    },
+    {
+      "candidate_rank": 950,
+      "source_rank": 950,
+      "word": "розумієте",
+      "pos": null,
+      "frequency_count": 513
+    },
+    {
+      "candidate_rank": 951,
+      "source_rank": 951,
+      "word": "on",
+      "pos": null,
+      "frequency_count": 513
+    },
+    {
+      "candidate_rank": 952,
+      "source_rank": 952,
+      "word": "гарно",
+      "pos": null,
+      "frequency_count": 513
+    },
+    {
+      "candidate_rank": 953,
+      "source_rank": 953,
+      "word": "произошло",
+      "pos": null,
+      "frequency_count": 513
+    },
+    {
+      "candidate_rank": 954,
+      "source_rank": 954,
+      "word": "тримай",
+      "pos": null,
+      "frequency_count": 511
+    },
+    {
+      "candidate_rank": 955,
+      "source_rank": 955,
+      "word": "серце",
+      "pos": null,
+      "frequency_count": 511
+    },
+    {
+      "candidate_rank": 956,
+      "source_rank": 956,
+      "word": "забудь",
+      "pos": null,
+      "frequency_count": 511
+    },
+    {
+      "candidate_rank": 957,
+      "source_rank": 957,
+      "word": "более",
+      "pos": null,
+      "frequency_count": 510
+    },
+    {
+      "candidate_rank": 958,
+      "source_rank": 958,
+      "word": "хочуть",
+      "pos": null,
+      "frequency_count": 508
+    },
+    {
+      "candidate_rank": 959,
+      "source_rank": 959,
+      "word": "рад",
+      "pos": null,
+      "frequency_count": 508
+    },
+    {
+      "candidate_rank": 960,
+      "source_rank": 960,
+      "word": "собой",
+      "pos": null,
+      "frequency_count": 508
+    },
+    {
+      "candidate_rank": 961,
+      "source_rank": 961,
+      "word": "яких",
+      "pos": null,
+      "frequency_count": 508
+    },
+    {
+      "candidate_rank": 962,
+      "source_rank": 962,
+      "word": "нікого",
+      "pos": null,
+      "frequency_count": 508
+    },
+    {
+      "candidate_rank": 963,
+      "source_rank": 963,
+      "word": "справу",
+      "pos": null,
+      "frequency_count": 508
+    },
+    {
+      "candidate_rank": 964,
+      "source_rank": 964,
+      "word": "имею",
+      "pos": null,
+      "frequency_count": 507
+    },
+    {
+      "candidate_rank": 965,
+      "source_rank": 965,
+      "word": "цікаво",
+      "pos": null,
+      "frequency_count": 506
+    },
+    {
+      "candidate_rank": 966,
+      "source_rank": 966,
+      "word": "вчора",
+      "pos": null,
+      "frequency_count": 505
+    },
+    {
+      "candidate_rank": 967,
+      "source_rank": 967,
+      "word": "слышал",
+      "pos": null,
+      "frequency_count": 504
+    },
+    {
+      "candidate_rank": 968,
+      "source_rank": 968,
+      "word": "гарна",
+      "pos": null,
+      "frequency_count": 503
+    },
+    {
+      "candidate_rank": 969,
+      "source_rank": 969,
+      "word": "став",
+      "pos": null,
+      "frequency_count": 502
+    },
+    {
+      "candidate_rank": 970,
+      "source_rank": 970,
+      "word": "самое",
+      "pos": null,
+      "frequency_count": 502
+    },
+    {
+      "candidate_rank": 971,
+      "source_rank": 971,
+      "word": "житті",
+      "pos": null,
+      "frequency_count": 502
+    },
+    {
+      "candidate_rank": 972,
+      "source_rank": 972,
+      "word": "самі",
+      "pos": null,
+      "frequency_count": 502
+    },
+    {
+      "candidate_rank": 973,
+      "source_rank": 973,
+      "word": "любить",
+      "pos": null,
+      "frequency_count": 502
+    },
+    {
+      "candidate_rank": 974,
+      "source_rank": 974,
+      "word": "нашли",
+      "pos": null,
+      "frequency_count": 501
+    },
+    {
+      "candidate_rank": 975,
+      "source_rank": 975,
+      "word": "говорили",
+      "pos": null,
+      "frequency_count": 501
+    },
+    {
+      "candidate_rank": 976,
+      "source_rank": 976,
+      "word": "спати",
+      "pos": null,
+      "frequency_count": 500
+    },
+    {
+      "candidate_rank": 977,
+      "source_rank": 977,
+      "word": "знаем",
+      "pos": null,
+      "frequency_count": 500
+    },
+    {
+      "candidate_rank": 978,
+      "source_rank": 978,
+      "word": "друзі",
+      "pos": null,
+      "frequency_count": 500
+    },
+    {
+      "candidate_rank": 979,
+      "source_rank": 979,
+      "word": "уверена",
+      "pos": null,
+      "frequency_count": 499
+    },
+    {
+      "candidate_rank": 980,
+      "source_rank": 980,
+      "word": "рано",
+      "pos": null,
+      "frequency_count": 499
+    },
+    {
+      "candidate_rank": 981,
+      "source_rank": 981,
+      "word": "парня",
+      "pos": null,
+      "frequency_count": 499
+    },
+    {
+      "candidate_rank": 982,
+      "source_rank": 982,
+      "word": "поглянь",
+      "pos": null,
+      "frequency_count": 499
+    },
+    {
+      "candidate_rank": 983,
+      "source_rank": 983,
+      "word": "повернутися",
+      "pos": null,
+      "frequency_count": 498
+    },
+    {
+      "candidate_rank": 984,
+      "source_rank": 984,
+      "word": "увидеть",
+      "pos": null,
+      "frequency_count": 496
+    },
+    {
+      "candidate_rank": 985,
+      "source_rank": 985,
+      "word": "мило",
+      "pos": null,
+      "frequency_count": 495
+    },
+    {
+      "candidate_rank": 986,
+      "source_rank": 986,
+      "word": "дав",
+      "pos": null,
+      "frequency_count": 494
+    },
+    {
+      "candidate_rank": 987,
+      "source_rank": 987,
+      "word": "щo",
+      "pos": null,
+      "frequency_count": 493
+    },
+    {
+      "candidate_rank": 988,
+      "source_rank": 988,
+      "word": "отца",
+      "pos": null,
+      "frequency_count": 493
+    },
+    {
+      "candidate_rank": 989,
+      "source_rank": 989,
+      "word": "прийшли",
+      "pos": null,
+      "frequency_count": 493
+    },
+    {
+      "candidate_rank": 990,
+      "source_rank": 990,
+      "word": "вернуться",
+      "pos": null,
+      "frequency_count": 492
+    },
+    {
+      "candidate_rank": 991,
+      "source_rank": 991,
+      "word": "такие",
+      "pos": null,
+      "frequency_count": 492
+    },
+    {
+      "candidate_rank": 992,
+      "source_rank": 992,
+      "word": "інше",
+      "pos": null,
+      "frequency_count": 491
+    },
+    {
+      "candidate_rank": 993,
+      "source_rank": 993,
+      "word": "первый",
+      "pos": null,
+      "frequency_count": 490
+    },
+    {
+      "candidate_rank": 994,
+      "source_rank": 994,
+      "word": "вина",
+      "pos": null,
+      "frequency_count": 490
+    },
+    {
+      "candidate_rank": 995,
+      "source_rank": 995,
+      "word": "х",
+      "pos": null,
+      "frequency_count": 490
+    },
+    {
+      "candidate_rank": 996,
+      "source_rank": 996,
+      "word": "деякі",
+      "pos": null,
+      "frequency_count": 488
+    },
+    {
+      "candidate_rank": 997,
+      "source_rank": 997,
+      "word": "своих",
+      "pos": null,
+      "frequency_count": 488
+    },
+    {
+      "candidate_rank": 998,
+      "source_rank": 998,
+      "word": "помер",
+      "pos": null,
+      "frequency_count": 487
+    },
+    {
+      "candidate_rank": 999,
+      "source_rank": 999,
+      "word": "інший",
+      "pos": null,
+      "frequency_count": 487
+    },
+    {
+      "candidate_rank": 1000,
+      "source_rank": 1000,
+      "word": "зробила",
+      "pos": null,
+      "frequency_count": 486
+    }
+  ]
+}

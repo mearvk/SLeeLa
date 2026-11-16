@@ -1,0 +1,7030 @@
+{
+  "schema": "SLeeLa FRUCHST frequency candidate staging v1",
+  "language_tag": "af",
+  "language_directory": "afrikaans",
+  "source": {
+    "dataset": "FrequencyWords",
+    "upstream": "https://github.com/hermitdave/FrequencyWords",
+    "revision": "525f9b560de45753a5ea01069454e72e9aa541c6",
+    "sample": "content/2018/af/af_full.txt",
+    "data_license": "CC-BY-SA-4.0",
+    "code_license": "MIT",
+    "frequency_source": "OpenSubtitles-2018",
+    "attribution": [
+      "Hermit Dave / FrequencyWords — https://github.com/hermitdave/FrequencyWords",
+      "OpenSubtitles 2018 — https://opus.nlpl.eu/OpenSubtitles2018.php"
+    ],
+    "selection": "First 1,000 unique NFC-normalized lexical surface forms in source frequency order. Punctuation-only tokens are excluded; source line rank and raw occurrence count are retained.",
+    "limitations": [
+      "Surface forms, not lemmatized headwords.",
+      "Subtitle-domain frequency ranking; not a balanced general-purpose corpus.",
+      "No POS or sense labels are supplied by this source.",
+      "English, French, and Spanish definitions remain pending."
+    ],
+    "license_notice": "FrequencyWords content is CC BY-SA 4.0; preserve attribution and share-alike terms. The repository's code is MIT and does not change the data license."
+  },
+  "candidate_count": 1000,
+  "definitions_status": "pending",
+  "entries": [
+    {
+      "candidate_rank": 1,
+      "source_rank": 1,
+      "word": "die",
+      "pos": null,
+      "frequency_count": 12974
+    },
+    {
+      "candidate_rank": 2,
+      "source_rank": 2,
+      "word": "nie",
+      "pos": null,
+      "frequency_count": 12403
+    },
+    {
+      "candidate_rank": 3,
+      "source_rank": 3,
+      "word": "ek",
+      "pos": null,
+      "frequency_count": 12328
+    },
+    {
+      "candidate_rank": 4,
+      "source_rank": 4,
+      "word": "is",
+      "pos": null,
+      "frequency_count": 9816
+    },
+    {
+      "candidate_rank": 5,
+      "source_rank": 5,
+      "word": "het",
+      "pos": null,
+      "frequency_count": 8332
+    },
+    {
+      "candidate_rank": 6,
+      "source_rank": 6,
+      "word": "jy",
+      "pos": null,
+      "frequency_count": 8024
+    },
+    {
+      "candidate_rank": 7,
+      "source_rank": 7,
+      "word": "n",
+      "pos": null,
+      "frequency_count": 6771
+    },
+    {
+      "candidate_rank": 8,
+      "source_rank": 8,
+      "word": "dit",
+      "pos": null,
+      "frequency_count": 6212
+    },
+    {
+      "candidate_rank": 9,
+      "source_rank": 9,
+      "word": "my",
+      "pos": null,
+      "frequency_count": 5575
+    },
+    {
+      "candidate_rank": 10,
+      "source_rank": 10,
+      "word": "en",
+      "pos": null,
+      "frequency_count": 5203
+    },
+    {
+      "candidate_rank": 11,
+      "source_rank": 11,
+      "word": "ons",
+      "pos": null,
+      "frequency_count": 4858
+    },
+    {
+      "candidate_rank": 12,
+      "source_rank": 12,
+      "word": "wat",
+      "pos": null,
+      "frequency_count": 4298
+    },
+    {
+      "candidate_rank": 13,
+      "source_rank": 13,
+      "word": "jou",
+      "pos": null,
+      "frequency_count": 4070
+    },
+    {
+      "candidate_rank": 14,
+      "source_rank": 14,
+      "word": "van",
+      "pos": null,
+      "frequency_count": 3843
+    },
+    {
+      "candidate_rank": 15,
+      "source_rank": 15,
+      "word": "in",
+      "pos": null,
+      "frequency_count": 3347
+    },
+    {
+      "candidate_rank": 16,
+      "source_rank": 16,
+      "word": "te",
+      "pos": null,
+      "frequency_count": 3154
+    },
+    {
+      "candidate_rank": 17,
+      "source_rank": 17,
+      "word": "hy",
+      "pos": null,
+      "frequency_count": 2904
+    },
+    {
+      "candidate_rank": 18,
+      "source_rank": 18,
+      "word": "vir",
+      "pos": null,
+      "frequency_count": 2820
+    },
+    {
+      "candidate_rank": 19,
+      "source_rank": 19,
+      "word": "sy",
+      "pos": null,
+      "frequency_count": 2739
+    },
+    {
+      "candidate_rank": 20,
+      "source_rank": 20,
+      "word": "maar",
+      "pos": null,
+      "frequency_count": 2696
+    },
+    {
+      "candidate_rank": 21,
+      "source_rank": 21,
+      "word": "gaan",
+      "pos": null,
+      "frequency_count": 2682
+    },
+    {
+      "candidate_rank": 22,
+      "source_rank": 22,
+      "word": "sal",
+      "pos": null,
+      "frequency_count": 2644
+    },
+    {
+      "candidate_rank": 23,
+      "source_rank": 23,
+      "word": "kan",
+      "pos": null,
+      "frequency_count": 2594
+    },
+    {
+      "candidate_rank": 24,
+      "source_rank": 24,
+      "word": "om",
+      "pos": null,
+      "frequency_count": 2521
+    },
+    {
+      "candidate_rank": 25,
+      "source_rank": 25,
+      "word": "dis",
+      "pos": null,
+      "frequency_count": 2359
+    },
+    {
+      "candidate_rank": 26,
+      "source_rank": 26,
+      "word": "so",
+      "pos": null,
+      "frequency_count": 2205
+    },
+    {
+      "candidate_rank": 27,
+      "source_rank": 27,
+      "word": "u",
+      "pos": null,
+      "frequency_count": 2185
+    },
+    {
+      "candidate_rank": 28,
+      "source_rank": 28,
+      "word": "met",
+      "pos": null,
+      "frequency_count": 2113
+    },
+    {
+      "candidate_rank": 29,
+      "source_rank": 29,
+      "word": "dat",
+      "pos": null,
+      "frequency_count": 2103
+    },
+    {
+      "candidate_rank": 30,
+      "source_rank": 30,
+      "word": "hulle",
+      "pos": null,
+      "frequency_count": 2036
+    },
+    {
+      "candidate_rank": 31,
+      "source_rank": 31,
+      "word": "as",
+      "pos": null,
+      "frequency_count": 1977
+    },
+    {
+      "candidate_rank": 32,
+      "source_rank": 32,
+      "word": "was",
+      "pos": null,
+      "frequency_count": 1925
+    },
+    {
+      "candidate_rank": 33,
+      "source_rank": 33,
+      "word": "ja",
+      "pos": null,
+      "frequency_count": 1818
+    },
+    {
+      "candidate_rank": 34,
+      "source_rank": 34,
+      "word": "kom",
+      "pos": null,
+      "frequency_count": 1772
+    },
+    {
+      "candidate_rank": 35,
+      "source_rank": 35,
+      "word": "moet",
+      "pos": null,
+      "frequency_count": 1753
+    },
+    {
+      "candidate_rank": 36,
+      "source_rank": 36,
+      "word": "nou",
+      "pos": null,
+      "frequency_count": 1670
+    },
+    {
+      "candidate_rank": 37,
+      "source_rank": 37,
+      "word": "hier",
+      "pos": null,
+      "frequency_count": 1652
+    },
+    {
+      "candidate_rank": 38,
+      "source_rank": 38,
+      "word": "daar",
+      "pos": null,
+      "frequency_count": 1625
+    },
+    {
+      "candidate_rank": 39,
+      "source_rank": 39,
+      "word": "op",
+      "pos": null,
+      "frequency_count": 1580
+    },
+    {
+      "candidate_rank": 40,
+      "source_rank": 40,
+      "word": "wil",
+      "pos": null,
+      "frequency_count": 1486
+    },
+    {
+      "candidate_rank": 41,
+      "source_rank": 41,
+      "word": "na",
+      "pos": null,
+      "frequency_count": 1444
+    },
+    {
+      "candidate_rank": 42,
+      "source_rank": 42,
+      "word": "hom",
+      "pos": null,
+      "frequency_count": 1348
+    },
+    {
+      "candidate_rank": 43,
+      "source_rank": 43,
+      "word": "weet",
+      "pos": null,
+      "frequency_count": 1341
+    },
+    {
+      "candidate_rank": 44,
+      "source_rank": 44,
+      "word": "haar",
+      "pos": null,
+      "frequency_count": 1306
+    },
+    {
+      "candidate_rank": 45,
+      "source_rank": 45,
+      "word": "aan",
+      "pos": null,
+      "frequency_count": 1298
+    },
+    {
+      "candidate_rank": 46,
+      "source_rank": 46,
+      "word": "wees",
+      "pos": null,
+      "frequency_count": 1294
+    },
+    {
+      "candidate_rank": 47,
+      "source_rank": 47,
+      "word": "net",
+      "pos": null,
+      "frequency_count": 1232
+    },
+    {
+      "candidate_rank": 48,
+      "source_rank": 48,
+      "word": "nee",
+      "pos": null,
+      "frequency_count": 1183
+    },
+    {
+      "candidate_rank": 49,
+      "source_rank": 49,
+      "word": "doen",
+      "pos": null,
+      "frequency_count": 1167
+    },
+    {
+      "candidate_rank": 50,
+      "source_rank": 50,
+      "word": "nog",
+      "pos": null,
+      "frequency_count": 1132
+    },
+    {
+      "candidate_rank": 51,
+      "source_rank": 51,
+      "word": "goed",
+      "pos": null,
+      "frequency_count": 1083
+    },
+    {
+      "candidate_rank": 52,
+      "source_rank": 52,
+      "word": "dan",
+      "pos": null,
+      "frequency_count": 1074
+    },
+    {
+      "candidate_rank": 53,
+      "source_rank": 53,
+      "word": "hoe",
+      "pos": null,
+      "frequency_count": 1035
+    },
+    {
+      "candidate_rank": 54,
+      "source_rank": 54,
+      "word": "ook",
+      "pos": null,
+      "frequency_count": 1014
+    },
+    {
+      "candidate_rank": 55,
+      "source_rank": 55,
+      "word": "word",
+      "pos": null,
+      "frequency_count": 1003
+    },
+    {
+      "candidate_rank": 56,
+      "source_rank": 56,
+      "word": "s",
+      "pos": null,
+      "frequency_count": 930
+    },
+    {
+      "candidate_rank": 57,
+      "source_rank": 57,
+      "word": "sien",
+      "pos": null,
+      "frequency_count": 920
+    },
+    {
+      "candidate_rank": 58,
+      "source_rank": 58,
+      "word": "julle",
+      "pos": null,
+      "frequency_count": 913
+    },
+    {
+      "candidate_rank": 59,
+      "source_rank": 59,
+      "word": "laat",
+      "pos": null,
+      "frequency_count": 892
+    },
+    {
+      "candidate_rank": 60,
+      "source_rank": 60,
+      "word": "by",
+      "pos": null,
+      "frequency_count": 861
+    },
+    {
+      "candidate_rank": 61,
+      "source_rank": 61,
+      "word": "al",
+      "pos": null,
+      "frequency_count": 840
+    },
+    {
+      "candidate_rank": 62,
+      "source_rank": 62,
+      "word": "sê",
+      "pos": null,
+      "frequency_count": 834
+    },
+    {
+      "candidate_rank": 63,
+      "source_rank": 63,
+      "word": "se",
+      "pos": null,
+      "frequency_count": 826
+    },
+    {
+      "candidate_rank": 64,
+      "source_rank": 64,
+      "word": "baie",
+      "pos": null,
+      "frequency_count": 822
+    },
+    {
+      "candidate_rank": 65,
+      "source_rank": 65,
+      "word": "hierdie",
+      "pos": null,
+      "frequency_count": 805
+    },
+    {
+      "candidate_rank": 66,
+      "source_rank": 66,
+      "word": "soos",
+      "pos": null,
+      "frequency_count": 793
+    },
+    {
+      "candidate_rank": 67,
+      "source_rank": 67,
+      "word": "maak",
+      "pos": null,
+      "frequency_count": 793
+    },
+    {
+      "candidate_rank": 68,
+      "source_rank": 68,
+      "word": "dink",
+      "pos": null,
+      "frequency_count": 754
+    },
+    {
+      "candidate_rank": 69,
+      "source_rank": 69,
+      "word": "of",
+      "pos": null,
+      "frequency_count": 735
+    },
+    {
+      "candidate_rank": 70,
+      "source_rank": 70,
+      "word": "toe",
+      "pos": null,
+      "frequency_count": 718
+    },
+    {
+      "candidate_rank": 71,
+      "source_rank": 71,
+      "word": "waar",
+      "pos": null,
+      "frequency_count": 714
+    },
+    {
+      "candidate_rank": 72,
+      "source_rank": 72,
+      "word": "oor",
+      "pos": null,
+      "frequency_count": 673
+    },
+    {
+      "candidate_rank": 73,
+      "source_rank": 73,
+      "word": "alles",
+      "pos": null,
+      "frequency_count": 650
+    },
+    {
+      "candidate_rank": 74,
+      "source_rank": 74,
+      "word": "een",
+      "pos": null,
+      "frequency_count": 640
+    },
+    {
+      "candidate_rank": 75,
+      "source_rank": 75,
+      "word": "niks",
+      "pos": null,
+      "frequency_count": 628
+    },
+    {
+      "candidate_rank": 76,
+      "source_rank": 76,
+      "word": "uit",
+      "pos": null,
+      "frequency_count": 624
+    },
+    {
+      "candidate_rank": 77,
+      "source_rank": 77,
+      "word": "hou",
+      "pos": null,
+      "frequency_count": 619
+    },
+    {
+      "candidate_rank": 78,
+      "source_rank": 78,
+      "word": "bly",
+      "pos": null,
+      "frequency_count": 618
+    },
+    {
+      "candidate_rank": 79,
+      "source_rank": 79,
+      "word": "iets",
+      "pos": null,
+      "frequency_count": 601
+    },
+    {
+      "candidate_rank": 80,
+      "source_rank": 80,
+      "word": "waarom",
+      "pos": null,
+      "frequency_count": 598
+    },
+    {
+      "candidate_rank": 81,
+      "source_rank": 81,
+      "word": "wie",
+      "pos": null,
+      "frequency_count": 596
+    },
+    {
+      "candidate_rank": 82,
+      "source_rank": 82,
+      "word": "meer",
+      "pos": null,
+      "frequency_count": 596
+    },
+    {
+      "candidate_rank": 83,
+      "source_rank": 83,
+      "word": "sou",
+      "pos": null,
+      "frequency_count": 568
+    },
+    {
+      "candidate_rank": 84,
+      "source_rank": 84,
+      "word": "kry",
+      "pos": null,
+      "frequency_count": 556
+    },
+    {
+      "candidate_rank": 85,
+      "source_rank": 85,
+      "word": "kyk",
+      "pos": null,
+      "frequency_count": 556
+    },
+    {
+      "candidate_rank": 86,
+      "source_rank": 86,
+      "word": "goeie",
+      "pos": null,
+      "frequency_count": 515
+    },
+    {
+      "candidate_rank": 87,
+      "source_rank": 87,
+      "word": "man",
+      "pos": null,
+      "frequency_count": 513
+    },
+    {
+      "candidate_rank": 88,
+      "source_rank": 88,
+      "word": "dankie",
+      "pos": null,
+      "frequency_count": 507
+    },
+    {
+      "candidate_rank": 89,
+      "source_rank": 89,
+      "word": "weer",
+      "pos": null,
+      "frequency_count": 507
+    },
+    {
+      "candidate_rank": 90,
+      "source_rank": 90,
+      "word": "deur",
+      "pos": null,
+      "frequency_count": 500
+    },
+    {
+      "candidate_rank": 91,
+      "source_rank": 91,
+      "word": "tog",
+      "pos": null,
+      "frequency_count": 488
+    },
+    {
+      "candidate_rank": 92,
+      "source_rank": 92,
+      "word": "praat",
+      "pos": null,
+      "frequency_count": 484
+    },
+    {
+      "candidate_rank": 93,
+      "source_rank": 93,
+      "word": "gee",
+      "pos": null,
+      "frequency_count": 473
+    },
+    {
+      "candidate_rank": 94,
+      "source_rank": 94,
+      "word": "dag",
+      "pos": null,
+      "frequency_count": 469
+    },
+    {
+      "candidate_rank": 95,
+      "source_rank": 95,
+      "word": "vertel",
+      "pos": null,
+      "frequency_count": 461
+    },
+    {
+      "candidate_rank": 96,
+      "source_rank": 96,
+      "word": "geen",
+      "pos": null,
+      "frequency_count": 451
+    },
+    {
+      "candidate_rank": 97,
+      "source_rank": 97,
+      "word": "werk",
+      "pos": null,
+      "frequency_count": 449
+    },
+    {
+      "candidate_rank": 98,
+      "source_rank": 98,
+      "word": "hê",
+      "pos": null,
+      "frequency_count": 440
+    },
+    {
+      "candidate_rank": 99,
+      "source_rank": 99,
+      "word": "weg",
+      "pos": null,
+      "frequency_count": 436
+    },
+    {
+      "candidate_rank": 100,
+      "source_rank": 100,
+      "word": "nooit",
+      "pos": null,
+      "frequency_count": 434
+    },
+    {
+      "candidate_rank": 101,
+      "source_rank": 101,
+      "word": "wel",
+      "pos": null,
+      "frequency_count": 428
+    },
+    {
+      "candidate_rank": 102,
+      "source_rank": 102,
+      "word": "almal",
+      "pos": null,
+      "frequency_count": 412
+    },
+    {
+      "candidate_rank": 103,
+      "source_rank": 103,
+      "word": "reg",
+      "pos": null,
+      "frequency_count": 407
+    },
+    {
+      "candidate_rank": 104,
+      "source_rank": 104,
+      "word": "kon",
+      "pos": null,
+      "frequency_count": 402
+    },
+    {
+      "candidate_rank": 105,
+      "source_rank": 105,
+      "word": "mense",
+      "pos": null,
+      "frequency_count": 401
+    },
+    {
+      "candidate_rank": 106,
+      "source_rank": 106,
+      "word": "lewe",
+      "pos": null,
+      "frequency_count": 393
+    },
+    {
+      "candidate_rank": 107,
+      "source_rank": 107,
+      "word": "wag",
+      "pos": null,
+      "frequency_count": 389
+    },
+    {
+      "candidate_rank": 108,
+      "source_rank": 108,
+      "word": "altyd",
+      "pos": null,
+      "frequency_count": 386
+    },
+    {
+      "candidate_rank": 109,
+      "source_rank": 109,
+      "word": "terug",
+      "pos": null,
+      "frequency_count": 380
+    },
+    {
+      "candidate_rank": 110,
+      "source_rank": 110,
+      "word": "wou",
+      "pos": null,
+      "frequency_count": 380
+    },
+    {
+      "candidate_rank": 111,
+      "source_rank": 111,
+      "word": "dood",
+      "pos": null,
+      "frequency_count": 374
+    },
+    {
+      "candidate_rank": 112,
+      "source_rank": 112,
+      "word": "sit",
+      "pos": null,
+      "frequency_count": 363
+    },
+    {
+      "candidate_rank": 113,
+      "source_rank": 113,
+      "word": "ma",
+      "pos": null,
+      "frequency_count": 358
+    },
+    {
+      "candidate_rank": 114,
+      "source_rank": 114,
+      "word": "daardie",
+      "pos": null,
+      "frequency_count": 357
+    },
+    {
+      "candidate_rank": 115,
+      "source_rank": 115,
+      "word": "moenie",
+      "pos": null,
+      "frequency_count": 356
+    },
+    {
+      "candidate_rank": 116,
+      "source_rank": 116,
+      "word": "o",
+      "pos": null,
+      "frequency_count": 351
+    },
+    {
+      "candidate_rank": 117,
+      "source_rank": 117,
+      "word": "gesê",
+      "pos": null,
+      "frequency_count": 347
+    },
+    {
+      "candidate_rank": 118,
+      "source_rank": 118,
+      "word": "bietjie",
+      "pos": null,
+      "frequency_count": 340
+    },
+    {
+      "candidate_rank": 119,
+      "source_rank": 119,
+      "word": "ander",
+      "pos": null,
+      "frequency_count": 335
+    },
+    {
+      "candidate_rank": 120,
+      "source_rank": 120,
+      "word": "saam",
+      "pos": null,
+      "frequency_count": 328
+    },
+    {
+      "candidate_rank": 121,
+      "source_rank": 121,
+      "word": "mooi",
+      "pos": null,
+      "frequency_count": 326
+    },
+    {
+      "candidate_rank": 122,
+      "source_rank": 122,
+      "word": "help",
+      "pos": null,
+      "frequency_count": 324
+    },
+    {
+      "candidate_rank": 123,
+      "source_rank": 123,
+      "word": "mag",
+      "pos": null,
+      "frequency_count": 324
+    },
+    {
+      "candidate_rank": 124,
+      "source_rank": 124,
+      "word": "vra",
+      "pos": null,
+      "frequency_count": 321
+    },
+    {
+      "candidate_rank": 125,
+      "source_rank": 125,
+      "word": "lyk",
+      "pos": null,
+      "frequency_count": 319
+    },
+    {
+      "candidate_rank": 126,
+      "source_rank": 126,
+      "word": "voor",
+      "pos": null,
+      "frequency_count": 315
+    },
+    {
+      "candidate_rank": 127,
+      "source_rank": 127,
+      "word": "majesteit",
+      "pos": null,
+      "frequency_count": 313
+    },
+    {
+      "candidate_rank": 128,
+      "source_rank": 128,
+      "word": "tyd",
+      "pos": null,
+      "frequency_count": 305
+    },
+    {
+      "candidate_rank": 129,
+      "source_rank": 129,
+      "word": "asseblief",
+      "pos": null,
+      "frequency_count": 305
+    },
+    {
+      "candidate_rank": 130,
+      "source_rank": 130,
+      "word": "vrou",
+      "pos": null,
+      "frequency_count": 304
+    },
+    {
+      "candidate_rank": 131,
+      "source_rank": 131,
+      "word": "ken",
+      "pos": null,
+      "frequency_count": 299
+    },
+    {
+      "candidate_rank": 132,
+      "source_rank": 132,
+      "word": "tot",
+      "pos": null,
+      "frequency_count": 295
+    },
+    {
+      "candidate_rank": 133,
+      "source_rank": 133,
+      "word": "god",
+      "pos": null,
+      "frequency_count": 293
+    },
+    {
+      "candidate_rank": 134,
+      "source_rank": 134,
+      "word": "regtig",
+      "pos": null,
+      "frequency_count": 293
+    },
+    {
+      "candidate_rank": 135,
+      "source_rank": 135,
+      "word": "iemand",
+      "pos": null,
+      "frequency_count": 291
+    },
+    {
+      "candidate_rank": 136,
+      "source_rank": 136,
+      "word": "groot",
+      "pos": null,
+      "frequency_count": 291
+    },
+    {
+      "candidate_rank": 137,
+      "source_rank": 137,
+      "word": "seker",
+      "pos": null,
+      "frequency_count": 287
+    },
+    {
+      "candidate_rank": 138,
+      "source_rank": 138,
+      "word": "neem",
+      "pos": null,
+      "frequency_count": 287
+    },
+    {
+      "candidate_rank": 139,
+      "source_rank": 139,
+      "word": "twee",
+      "pos": null,
+      "frequency_count": 284
+    },
+    {
+      "candidate_rank": 140,
+      "source_rank": 140,
+      "word": "want",
+      "pos": null,
+      "frequency_count": 284
+    },
+    {
+      "candidate_rank": 141,
+      "source_rank": 141,
+      "word": "eers",
+      "pos": null,
+      "frequency_count": 283
+    },
+    {
+      "candidate_rank": 142,
+      "source_rank": 142,
+      "word": "nodig",
+      "pos": null,
+      "frequency_count": 270
+    },
+    {
+      "candidate_rank": 143,
+      "source_rank": 143,
+      "word": "kind",
+      "pos": null,
+      "frequency_count": 266
+    },
+    {
+      "candidate_rank": 144,
+      "source_rank": 144,
+      "word": "af",
+      "pos": null,
+      "frequency_count": 265
+    },
+    {
+      "candidate_rank": 145,
+      "source_rank": 145,
+      "word": "jammer",
+      "pos": null,
+      "frequency_count": 264
+    },
+    {
+      "candidate_rank": 146,
+      "source_rank": 146,
+      "word": "miskien",
+      "pos": null,
+      "frequency_count": 262
+    },
+    {
+      "candidate_rank": 147,
+      "source_rank": 147,
+      "word": "hoor",
+      "pos": null,
+      "frequency_count": 261
+    },
+    {
+      "candidate_rank": 148,
+      "source_rank": 148,
+      "word": "beter",
+      "pos": null,
+      "frequency_count": 259
+    },
+    {
+      "candidate_rank": 149,
+      "source_rank": 149,
+      "word": "begin",
+      "pos": null,
+      "frequency_count": 256
+    },
+    {
+      "candidate_rank": 150,
+      "source_rank": 150,
+      "word": "gedoen",
+      "pos": null,
+      "frequency_count": 256
+    },
+    {
+      "candidate_rank": 151,
+      "source_rank": 151,
+      "word": "meneer",
+      "pos": null,
+      "frequency_count": 255
+    },
+    {
+      "candidate_rank": 152,
+      "source_rank": 152,
+      "word": "anders",
+      "pos": null,
+      "frequency_count": 254
+    },
+    {
+      "candidate_rank": 153,
+      "source_rank": 153,
+      "word": "jaar",
+      "pos": null,
+      "frequency_count": 252
+    },
+    {
+      "candidate_rank": 154,
+      "source_rank": 154,
+      "word": "gebeur",
+      "pos": null,
+      "frequency_count": 250
+    },
+    {
+      "candidate_rank": 155,
+      "source_rank": 155,
+      "word": "gesien",
+      "pos": null,
+      "frequency_count": 246
+    },
+    {
+      "candidate_rank": 156,
+      "source_rank": 156,
+      "word": "verstaan",
+      "pos": null,
+      "frequency_count": 244
+    },
+    {
+      "candidate_rank": 157,
+      "source_rank": 157,
+      "word": "los",
+      "pos": null,
+      "frequency_count": 242
+    },
+    {
+      "candidate_rank": 158,
+      "source_rank": 158,
+      "word": "pa",
+      "pos": null,
+      "frequency_count": 242
+    },
+    {
+      "candidate_rank": 159,
+      "source_rank": 159,
+      "word": "probeer",
+      "pos": null,
+      "frequency_count": 239
+    },
+    {
+      "candidate_rank": 160,
+      "source_rank": 160,
+      "word": "vader",
+      "pos": null,
+      "frequency_count": 235
+    },
+    {
+      "candidate_rank": 161,
+      "source_rank": 161,
+      "word": "huis",
+      "pos": null,
+      "frequency_count": 235
+    },
+    {
+      "candidate_rank": 162,
+      "source_rank": 162,
+      "word": "elke",
+      "pos": null,
+      "frequency_count": 233
+    },
+    {
+      "candidate_rank": 163,
+      "source_rank": 163,
+      "word": "natuurlik",
+      "pos": null,
+      "frequency_count": 232
+    },
+    {
+      "candidate_rank": 164,
+      "source_rank": 164,
+      "word": "omdat",
+      "pos": null,
+      "frequency_count": 231
+    },
+    {
+      "candidate_rank": 165,
+      "source_rank": 165,
+      "word": "moes",
+      "pos": null,
+      "frequency_count": 227
+    },
+    {
+      "candidate_rank": 166,
+      "source_rank": 166,
+      "word": "lank",
+      "pos": null,
+      "frequency_count": 225
+    },
+    {
+      "candidate_rank": 167,
+      "source_rank": 167,
+      "word": "mnr",
+      "pos": null,
+      "frequency_count": 224
+    },
+    {
+      "candidate_rank": 168,
+      "source_rank": 168,
+      "word": "môre",
+      "pos": null,
+      "frequency_count": 223
+    },
+    {
+      "candidate_rank": 169,
+      "source_rank": 169,
+      "word": "gelukkig",
+      "pos": null,
+      "frequency_count": 223
+    },
+    {
+      "candidate_rank": 170,
+      "source_rank": 170,
+      "word": "glo",
+      "pos": null,
+      "frequency_count": 223
+    },
+    {
+      "candidate_rank": 171,
+      "source_rank": 171,
+      "word": "gou",
+      "pos": null,
+      "frequency_count": 223
+    },
+    {
+      "candidate_rank": 172,
+      "source_rank": 172,
+      "word": "eerste",
+      "pos": null,
+      "frequency_count": 222
+    },
+    {
+      "candidate_rank": 173,
+      "source_rank": 173,
+      "word": "mens",
+      "pos": null,
+      "frequency_count": 222
+    },
+    {
+      "candidate_rank": 174,
+      "source_rank": 174,
+      "word": "alleen",
+      "pos": null,
+      "frequency_count": 220
+    },
+    {
+      "candidate_rank": 175,
+      "source_rank": 175,
+      "word": "kinders",
+      "pos": null,
+      "frequency_count": 220
+    },
+    {
+      "candidate_rank": 176,
+      "source_rank": 176,
+      "word": "naam",
+      "pos": null,
+      "frequency_count": 219
+    },
+    {
+      "candidate_rank": 177,
+      "source_rank": 177,
+      "word": "lief",
+      "pos": null,
+      "frequency_count": 218
+    },
+    {
+      "candidate_rank": 178,
+      "source_rank": 178,
+      "word": "speel",
+      "pos": null,
+      "frequency_count": 217
+    },
+    {
+      "candidate_rank": 179,
+      "source_rank": 179,
+      "word": "seun",
+      "pos": null,
+      "frequency_count": 215
+    },
+    {
+      "candidate_rank": 180,
+      "source_rank": 180,
+      "word": "genoeg",
+      "pos": null,
+      "frequency_count": 215
+    },
+    {
+      "candidate_rank": 181,
+      "source_rank": 181,
+      "word": "niemand",
+      "pos": null,
+      "frequency_count": 214
+    },
+    {
+      "candidate_rank": 182,
+      "source_rank": 182,
+      "word": "staan",
+      "pos": null,
+      "frequency_count": 213
+    },
+    {
+      "candidate_rank": 183,
+      "source_rank": 183,
+      "word": "gedink",
+      "pos": null,
+      "frequency_count": 210
+    },
+    {
+      "candidate_rank": 184,
+      "source_rank": 184,
+      "word": "sonder",
+      "pos": null,
+      "frequency_count": 209
+    },
+    {
+      "candidate_rank": 185,
+      "source_rank": 185,
+      "word": "vergeet",
+      "pos": null,
+      "frequency_count": 208
+    },
+    {
+      "candidate_rank": 186,
+      "source_rank": 186,
+      "word": "voel",
+      "pos": null,
+      "frequency_count": 205
+    },
+    {
+      "candidate_rank": 187,
+      "source_rank": 187,
+      "word": "slaap",
+      "pos": null,
+      "frequency_count": 205
+    },
+    {
+      "candidate_rank": 188,
+      "source_rank": 188,
+      "word": "luister",
+      "pos": null,
+      "frequency_count": 203
+    },
+    {
+      "candidate_rank": 189,
+      "source_rank": 189,
+      "word": "liefde",
+      "pos": null,
+      "frequency_count": 201
+    },
+    {
+      "candidate_rank": 190,
+      "source_rank": 190,
+      "word": "selfs",
+      "pos": null,
+      "frequency_count": 201
+    },
+    {
+      "candidate_rank": 191,
+      "source_rank": 191,
+      "word": "heer",
+      "pos": null,
+      "frequency_count": 198
+    },
+    {
+      "candidate_rank": 192,
+      "source_rank": 192,
+      "word": "klein",
+      "pos": null,
+      "frequency_count": 196
+    },
+    {
+      "candidate_rank": 193,
+      "source_rank": 193,
+      "word": "verkeerd",
+      "pos": null,
+      "frequency_count": 195
+    },
+    {
+      "candidate_rank": 194,
+      "source_rank": 194,
+      "word": "vandag",
+      "pos": null,
+      "frequency_count": 194
+    },
+    {
+      "candidate_rank": 195,
+      "source_rank": 195,
+      "word": "bedoel",
+      "pos": null,
+      "frequency_count": 192
+    },
+    {
+      "candidate_rank": 196,
+      "source_rank": 196,
+      "word": "nuwe",
+      "pos": null,
+      "frequency_count": 191
+    },
+    {
+      "candidate_rank": 197,
+      "source_rank": 197,
+      "word": "daarvan",
+      "pos": null,
+      "frequency_count": 188
+    },
+    {
+      "candidate_rank": 198,
+      "source_rank": 198,
+      "word": "soek",
+      "pos": null,
+      "frequency_count": 186
+    },
+    {
+      "candidate_rank": 199,
+      "source_rank": 199,
+      "word": "geld",
+      "pos": null,
+      "frequency_count": 185
+    },
+    {
+      "candidate_rank": 200,
+      "source_rank": 200,
+      "word": "teen",
+      "pos": null,
+      "frequency_count": 183
+    },
+    {
+      "candidate_rank": 201,
+      "source_rank": 201,
+      "word": "graag",
+      "pos": null,
+      "frequency_count": 181
+    },
+    {
+      "candidate_rank": 202,
+      "source_rank": 202,
+      "word": "hoekom",
+      "pos": null,
+      "frequency_count": 179
+    },
+    {
+      "candidate_rank": 203,
+      "source_rank": 203,
+      "word": "stop",
+      "pos": null,
+      "frequency_count": 179
+    },
+    {
+      "candidate_rank": 204,
+      "source_rank": 204,
+      "word": "t",
+      "pos": null,
+      "frequency_count": 178
+    },
+    {
+      "candidate_rank": 205,
+      "source_rank": 205,
+      "word": "self",
+      "pos": null,
+      "frequency_count": 177
+    },
+    {
+      "candidate_rank": 206,
+      "source_rank": 206,
+      "word": "onder",
+      "pos": null,
+      "frequency_count": 174
+    },
+    {
+      "candidate_rank": 207,
+      "source_rank": 207,
+      "word": "bring",
+      "pos": null,
+      "frequency_count": 174
+    },
+    {
+      "candidate_rank": 208,
+      "source_rank": 208,
+      "word": "ag",
+      "pos": null,
+      "frequency_count": 173
+    },
+    {
+      "candidate_rank": 209,
+      "source_rank": 209,
+      "word": "liewe",
+      "pos": null,
+      "frequency_count": 173
+    },
+    {
+      "candidate_rank": 210,
+      "source_rank": 210,
+      "word": "eet",
+      "pos": null,
+      "frequency_count": 171
+    },
+    {
+      "candidate_rank": 211,
+      "source_rank": 211,
+      "word": "onthou",
+      "pos": null,
+      "frequency_count": 169
+    },
+    {
+      "candidate_rank": 212,
+      "source_rank": 212,
+      "word": "ou",
+      "pos": null,
+      "frequency_count": 169
+    },
+    {
+      "candidate_rank": 213,
+      "source_rank": 213,
+      "word": "keer",
+      "pos": null,
+      "frequency_count": 169
+    },
+    {
+      "candidate_rank": 214,
+      "source_rank": 214,
+      "word": "gehad",
+      "pos": null,
+      "frequency_count": 168
+    },
+    {
+      "candidate_rank": 215,
+      "source_rank": 215,
+      "word": "de",
+      "pos": null,
+      "frequency_count": 166
+    },
+    {
+      "candidate_rank": 216,
+      "source_rank": 216,
+      "word": "vind",
+      "pos": null,
+      "frequency_count": 165
+    },
+    {
+      "candidate_rank": 217,
+      "source_rank": 217,
+      "word": "plek",
+      "pos": null,
+      "frequency_count": 163
+    },
+    {
+      "candidate_rank": 218,
+      "source_rank": 218,
+      "word": "land",
+      "pos": null,
+      "frequency_count": 163
+    },
+    {
+      "candidate_rank": 219,
+      "source_rank": 219,
+      "word": "moeder",
+      "pos": null,
+      "frequency_count": 163
+    },
+    {
+      "candidate_rank": 220,
+      "source_rank": 220,
+      "word": "wanneer",
+      "pos": null,
+      "frequency_count": 158
+    },
+    {
+      "candidate_rank": 221,
+      "source_rank": 221,
+      "word": "stil",
+      "pos": null,
+      "frequency_count": 158
+    },
+    {
+      "candidate_rank": 222,
+      "source_rank": 222,
+      "word": "dae",
+      "pos": null,
+      "frequency_count": 158
+    },
+    {
+      "candidate_rank": 223,
+      "source_rank": 223,
+      "word": "gekom",
+      "pos": null,
+      "frequency_count": 157
+    },
+    {
+      "candidate_rank": 224,
+      "source_rank": 224,
+      "word": "mamma",
+      "pos": null,
+      "frequency_count": 157
+    },
+    {
+      "candidate_rank": 225,
+      "source_rank": 225,
+      "word": "verskoon",
+      "pos": null,
+      "frequency_count": 156
+    },
+    {
+      "candidate_rank": 226,
+      "source_rank": 226,
+      "word": "geweet",
+      "pos": null,
+      "frequency_count": 153
+    },
+    {
+      "candidate_rank": 227,
+      "source_rank": 227,
+      "word": "skryf",
+      "pos": null,
+      "frequency_count": 152
+    },
+    {
+      "candidate_rank": 228,
+      "source_rank": 228,
+      "word": "sissi",
+      "pos": null,
+      "frequency_count": 149
+    },
+    {
+      "candidate_rank": 229,
+      "source_rank": 229,
+      "word": "gekry",
+      "pos": null,
+      "frequency_count": 148
+    },
+    {
+      "candidate_rank": 230,
+      "source_rank": 230,
+      "word": "ontmoet",
+      "pos": null,
+      "frequency_count": 146
+    },
+    {
+      "candidate_rank": 231,
+      "source_rank": 231,
+      "word": "lees",
+      "pos": null,
+      "frequency_count": 146
+    },
+    {
+      "candidate_rank": 232,
+      "source_rank": 232,
+      "word": "drink",
+      "pos": null,
+      "frequency_count": 144
+    },
+    {
+      "candidate_rank": 233,
+      "source_rank": 233,
+      "word": "gebruik",
+      "pos": null,
+      "frequency_count": 141
+    },
+    {
+      "candidate_rank": 234,
+      "source_rank": 234,
+      "word": "lekker",
+      "pos": null,
+      "frequency_count": 141
+    },
+    {
+      "candidate_rank": 235,
+      "source_rank": 235,
+      "word": "eie",
+      "pos": null,
+      "frequency_count": 141
+    },
+    {
+      "candidate_rank": 236,
+      "source_rank": 236,
+      "word": "nag",
+      "pos": null,
+      "frequency_count": 140
+    },
+    {
+      "candidate_rank": 237,
+      "source_rank": 237,
+      "word": "mekaar",
+      "pos": null,
+      "frequency_count": 138
+    },
+    {
+      "candidate_rank": 238,
+      "source_rank": 238,
+      "word": "kamer",
+      "pos": null,
+      "frequency_count": 137
+    },
+    {
+      "candidate_rank": 239,
+      "source_rank": 239,
+      "word": "totsiens",
+      "pos": null,
+      "frequency_count": 137
+    },
+    {
+      "candidate_rank": 240,
+      "source_rank": 240,
+      "word": "leer",
+      "pos": null,
+      "frequency_count": 136
+    },
+    {
+      "candidate_rank": 241,
+      "source_rank": 241,
+      "word": "geluk",
+      "pos": null,
+      "frequency_count": 136
+    },
+    {
+      "candidate_rank": 242,
+      "source_rank": 242,
+      "word": "watter",
+      "pos": null,
+      "frequency_count": 135
+    },
+    {
+      "candidate_rank": 243,
+      "source_rank": 243,
+      "word": "vriend",
+      "pos": null,
+      "frequency_count": 134
+    },
+    {
+      "candidate_rank": 244,
+      "source_rank": 244,
+      "word": "verloor",
+      "pos": null,
+      "frequency_count": 134
+    },
+    {
+      "candidate_rank": 245,
+      "source_rank": 245,
+      "word": "anna",
+      "pos": null,
+      "frequency_count": 134
+    },
+    {
+      "candidate_rank": 246,
+      "source_rank": 246,
+      "word": "paar",
+      "pos": null,
+      "frequency_count": 133
+    },
+    {
+      "candidate_rank": 247,
+      "source_rank": 247,
+      "word": "laaste",
+      "pos": null,
+      "frequency_count": 130
+    },
+    {
+      "candidate_rank": 248,
+      "source_rank": 248,
+      "word": "hele",
+      "pos": null,
+      "frequency_count": 130
+    },
+    {
+      "candidate_rank": 249,
+      "source_rank": 249,
+      "word": "bang",
+      "pos": null,
+      "frequency_count": 129
+    },
+    {
+      "candidate_rank": 250,
+      "source_rank": 250,
+      "word": "raak",
+      "pos": null,
+      "frequency_count": 128
+    },
+    {
+      "candidate_rank": 251,
+      "source_rank": 251,
+      "word": "later",
+      "pos": null,
+      "frequency_count": 128
+    },
+    {
+      "candidate_rank": 252,
+      "source_rank": 252,
+      "word": "pas",
+      "pos": null,
+      "frequency_count": 128
+    },
+    {
+      "candidate_rank": 253,
+      "source_rank": 253,
+      "word": "hart",
+      "pos": null,
+      "frequency_count": 127
+    },
+    {
+      "candidate_rank": 254,
+      "source_rank": 254,
+      "word": "alle",
+      "pos": null,
+      "frequency_count": 127
+    },
+    {
+      "candidate_rank": 255,
+      "source_rank": 255,
+      "word": "verander",
+      "pos": null,
+      "frequency_count": 126
+    },
+    {
+      "candidate_rank": 256,
+      "source_rank": 256,
+      "word": "gehoor",
+      "pos": null,
+      "frequency_count": 125
+    },
+    {
+      "candidate_rank": 257,
+      "source_rank": 257,
+      "word": "dalk",
+      "pos": null,
+      "frequency_count": 123
+    },
+    {
+      "candidate_rank": 258,
+      "source_rank": 258,
+      "word": "sing",
+      "pos": null,
+      "frequency_count": 123
+    },
+    {
+      "candidate_rank": 259,
+      "source_rank": 259,
+      "word": "wêreld",
+      "pos": null,
+      "frequency_count": 123
+    },
+    {
+      "candidate_rank": 260,
+      "source_rank": 260,
+      "word": "gemaak",
+      "pos": null,
+      "frequency_count": 123
+    },
+    {
+      "candidate_rank": 261,
+      "source_rank": 261,
+      "word": "volgende",
+      "pos": null,
+      "frequency_count": 122
+    },
+    {
+      "candidate_rank": 262,
+      "source_rank": 262,
+      "word": "hoop",
+      "pos": null,
+      "frequency_count": 122
+    },
+    {
+      "candidate_rank": 263,
+      "source_rank": 263,
+      "word": "beste",
+      "pos": null,
+      "frequency_count": 121
+    },
+    {
+      "candidate_rank": 264,
+      "source_rank": 264,
+      "word": "meisie",
+      "pos": null,
+      "frequency_count": 118
+    },
+    {
+      "candidate_rank": 265,
+      "source_rank": 265,
+      "word": "oë",
+      "pos": null,
+      "frequency_count": 116
+    },
+    {
+      "candidate_rank": 266,
+      "source_rank": 266,
+      "word": "dadelik",
+      "pos": null,
+      "frequency_count": 116
+    },
+    {
+      "candidate_rank": 267,
+      "source_rank": 267,
+      "word": "vriende",
+      "pos": null,
+      "frequency_count": 116
+    },
+    {
+      "candidate_rank": 268,
+      "source_rank": 268,
+      "word": "vat",
+      "pos": null,
+      "frequency_count": 115
+    },
+    {
+      "candidate_rank": 269,
+      "source_rank": 269,
+      "word": "veel",
+      "pos": null,
+      "frequency_count": 114
+    },
+    {
+      "candidate_rank": 270,
+      "source_rank": 270,
+      "word": "gek",
+      "pos": null,
+      "frequency_count": 114
+    },
+    {
+      "candidate_rank": 271,
+      "source_rank": 271,
+      "word": "kop",
+      "pos": null,
+      "frequency_count": 114
+    },
+    {
+      "candidate_rank": 272,
+      "source_rank": 272,
+      "word": "leef",
+      "pos": null,
+      "frequency_count": 113
+    },
+    {
+      "candidate_rank": 273,
+      "source_rank": 273,
+      "word": "madame",
+      "pos": null,
+      "frequency_count": 111
+    },
+    {
+      "candidate_rank": 274,
+      "source_rank": 274,
+      "word": "me",
+      "pos": null,
+      "frequency_count": 111
+    },
+    {
+      "candidate_rank": 275,
+      "source_rank": 275,
+      "word": "dinge",
+      "pos": null,
+      "frequency_count": 108
+    },
+    {
+      "candidate_rank": 276,
+      "source_rank": 276,
+      "word": "geword",
+      "pos": null,
+      "frequency_count": 108
+    },
+    {
+      "candidate_rank": 277,
+      "source_rank": 277,
+      "word": "gelede",
+      "pos": null,
+      "frequency_count": 106
+    },
+    {
+      "candidate_rank": 278,
+      "source_rank": 278,
+      "word": "loop",
+      "pos": null,
+      "frequency_count": 106
+    },
+    {
+      "candidate_rank": 279,
+      "source_rank": 279,
+      "word": "enige",
+      "pos": null,
+      "frequency_count": 106
+    },
+    {
+      "candidate_rank": 280,
+      "source_rank": 280,
+      "word": "dogter",
+      "pos": null,
+      "frequency_count": 105
+    },
+    {
+      "candidate_rank": 281,
+      "source_rank": 281,
+      "word": "oop",
+      "pos": null,
+      "frequency_count": 105
+    },
+    {
+      "candidate_rank": 282,
+      "source_rank": 282,
+      "word": "oupa",
+      "pos": null,
+      "frequency_count": 105
+    },
+    {
+      "candidate_rank": 283,
+      "source_rank": 283,
+      "word": "betaal",
+      "pos": null,
+      "frequency_count": 104
+    },
+    {
+      "candidate_rank": 284,
+      "source_rank": 284,
+      "word": "haal",
+      "pos": null,
+      "frequency_count": 104
+    },
+    {
+      "candidate_rank": 285,
+      "source_rank": 285,
+      "word": "trou",
+      "pos": null,
+      "frequency_count": 103
+    },
+    {
+      "candidate_rank": 286,
+      "source_rank": 286,
+      "word": "here",
+      "pos": null,
+      "frequency_count": 103
+    },
+    {
+      "candidate_rank": 287,
+      "source_rank": 287,
+      "word": "beteken",
+      "pos": null,
+      "frequency_count": 103
+    },
+    {
+      "candidate_rank": 288,
+      "source_rank": 288,
+      "word": "lê",
+      "pos": null,
+      "frequency_count": 102
+    },
+    {
+      "candidate_rank": 289,
+      "source_rank": 289,
+      "word": "stel",
+      "pos": null,
+      "frequency_count": 102
+    },
+    {
+      "candidate_rank": 290,
+      "source_rank": 290,
+      "word": "dokter",
+      "pos": null,
+      "frequency_count": 101
+    },
+    {
+      "candidate_rank": 291,
+      "source_rank": 291,
+      "word": "wys",
+      "pos": null,
+      "frequency_count": 100
+    },
+    {
+      "candidate_rank": 292,
+      "source_rank": 292,
+      "word": "ver",
+      "pos": null,
+      "frequency_count": 100
+    },
+    {
+      "candidate_rank": 293,
+      "source_rank": 293,
+      "word": "besoek",
+      "pos": null,
+      "frequency_count": 99
+    },
+    {
+      "candidate_rank": 294,
+      "source_rank": 294,
+      "word": "dieselfde",
+      "pos": null,
+      "frequency_count": 99
+    },
+    {
+      "candidate_rank": 295,
+      "source_rank": 295,
+      "word": "familie",
+      "pos": null,
+      "frequency_count": 99
+    },
+    {
+      "candidate_rank": 296,
+      "source_rank": 296,
+      "word": "verkoop",
+      "pos": null,
+      "frequency_count": 98
+    },
+    {
+      "candidate_rank": 297,
+      "source_rank": 297,
+      "word": "daarvoor",
+      "pos": null,
+      "frequency_count": 98
+    },
+    {
+      "candidate_rank": 298,
+      "source_rank": 298,
+      "word": "drie",
+      "pos": null,
+      "frequency_count": 98
+    },
+    {
+      "candidate_rank": 299,
+      "source_rank": 299,
+      "word": "behoort",
+      "pos": null,
+      "frequency_count": 98
+    },
+    {
+      "candidate_rank": 300,
+      "source_rank": 300,
+      "word": "maklik",
+      "pos": null,
+      "frequency_count": 98
+    },
+    {
+      "candidate_rank": 301,
+      "source_rank": 301,
+      "word": "gibbs",
+      "pos": null,
+      "frequency_count": 97
+    },
+    {
+      "candidate_rank": 302,
+      "source_rank": 302,
+      "word": "saak",
+      "pos": null,
+      "frequency_count": 97
+    },
+    {
+      "candidate_rank": 303,
+      "source_rank": 303,
+      "word": "siek",
+      "pos": null,
+      "frequency_count": 97
+    },
+    {
+      "candidate_rank": 304,
+      "source_rank": 304,
+      "word": "liewer",
+      "pos": null,
+      "frequency_count": 97
+    },
+    {
+      "candidate_rank": 305,
+      "source_rank": 305,
+      "word": "gereed",
+      "pos": null,
+      "frequency_count": 97
+    },
+    {
+      "candidate_rank": 306,
+      "source_rank": 306,
+      "word": "gevra",
+      "pos": null,
+      "frequency_count": 97
+    },
+    {
+      "candidate_rank": 307,
+      "source_rank": 307,
+      "word": "agter",
+      "pos": null,
+      "frequency_count": 96
+    },
+    {
+      "candidate_rank": 308,
+      "source_rank": 308,
+      "word": "huistoe",
+      "pos": null,
+      "frequency_count": 96
+    },
+    {
+      "candidate_rank": 309,
+      "source_rank": 309,
+      "word": "sleg",
+      "pos": null,
+      "frequency_count": 95
+    },
+    {
+      "candidate_rank": 310,
+      "source_rank": 310,
+      "word": "franz",
+      "pos": null,
+      "frequency_count": 94
+    },
+    {
+      "candidate_rank": 311,
+      "source_rank": 311,
+      "word": "daaroor",
+      "pos": null,
+      "frequency_count": 93
+    },
+    {
+      "candidate_rank": 312,
+      "source_rank": 312,
+      "word": "jong",
+      "pos": null,
+      "frequency_count": 93
+    },
+    {
+      "candidate_rank": 313,
+      "source_rank": 313,
+      "word": "hoogheid",
+      "pos": null,
+      "frequency_count": 93
+    },
+    {
+      "candidate_rank": 314,
+      "source_rank": 314,
+      "word": "geskryf",
+      "pos": null,
+      "frequency_count": 92
+    },
+    {
+      "candidate_rank": 315,
+      "source_rank": 315,
+      "word": "hand",
+      "pos": null,
+      "frequency_count": 91
+    },
+    {
+      "candidate_rank": 316,
+      "source_rank": 316,
+      "word": "the",
+      "pos": null,
+      "frequency_count": 91
+    },
+    {
+      "candidate_rank": 317,
+      "source_rank": 317,
+      "word": "klaar",
+      "pos": null,
+      "frequency_count": 91
+    },
+    {
+      "candidate_rank": 318,
+      "source_rank": 318,
+      "word": "deel",
+      "pos": null,
+      "frequency_count": 90
+    },
+    {
+      "candidate_rank": 319,
+      "source_rank": 319,
+      "word": "hande",
+      "pos": null,
+      "frequency_count": 90
+    },
+    {
+      "candidate_rank": 320,
+      "source_rank": 320,
+      "word": "kos",
+      "pos": null,
+      "frequency_count": 90
+    },
+    {
+      "candidate_rank": 321,
+      "source_rank": 321,
+      "word": "pad",
+      "pos": null,
+      "frequency_count": 90
+    },
+    {
+      "candidate_rank": 322,
+      "source_rank": 322,
+      "word": "verder",
+      "pos": null,
+      "frequency_count": 90
+    },
+    {
+      "candidate_rank": 323,
+      "source_rank": 323,
+      "word": "uur",
+      "pos": null,
+      "frequency_count": 90
+    },
+    {
+      "candidate_rank": 324,
+      "source_rank": 324,
+      "word": "vroue",
+      "pos": null,
+      "frequency_count": 89
+    },
+    {
+      "candidate_rank": 325,
+      "source_rank": 325,
+      "word": "verlaat",
+      "pos": null,
+      "frequency_count": 89
+    },
+    {
+      "candidate_rank": 326,
+      "source_rank": 326,
+      "word": "noem",
+      "pos": null,
+      "frequency_count": 89
+    },
+    {
+      "candidate_rank": 327,
+      "source_rank": 327,
+      "word": "dr",
+      "pos": null,
+      "frequency_count": 88
+    },
+    {
+      "candidate_rank": 328,
+      "source_rank": 328,
+      "word": "brief",
+      "pos": null,
+      "frequency_count": 88
+    },
+    {
+      "candidate_rank": 329,
+      "source_rank": 329,
+      "word": "suster",
+      "pos": null,
+      "frequency_count": 88
+    },
+    {
+      "candidate_rank": 330,
+      "source_rank": 330,
+      "word": "sulke",
+      "pos": null,
+      "frequency_count": 88
+    },
+    {
+      "candidate_rank": 331,
+      "source_rank": 331,
+      "word": "ooit",
+      "pos": null,
+      "frequency_count": 88
+    },
+    {
+      "candidate_rank": 332,
+      "source_rank": 332,
+      "word": "oorlog",
+      "pos": null,
+      "frequency_count": 88
+    },
+    {
+      "candidate_rank": 333,
+      "source_rank": 333,
+      "word": "trek",
+      "pos": null,
+      "frequency_count": 87
+    },
+    {
+      "candidate_rank": 334,
+      "source_rank": 334,
+      "word": "steeds",
+      "pos": null,
+      "frequency_count": 87
+    },
+    {
+      "candidate_rank": 335,
+      "source_rank": 335,
+      "word": "tussen",
+      "pos": null,
+      "frequency_count": 87
+    },
+    {
+      "candidate_rank": 336,
+      "source_rank": 336,
+      "word": "skuld",
+      "pos": null,
+      "frequency_count": 86
+    },
+    {
+      "candidate_rank": 337,
+      "source_rank": 337,
+      "word": "mos",
+      "pos": null,
+      "frequency_count": 85
+    },
+    {
+      "candidate_rank": 338,
+      "source_rank": 338,
+      "word": "verby",
+      "pos": null,
+      "frequency_count": 84
+    },
+    {
+      "candidate_rank": 339,
+      "source_rank": 339,
+      "word": "gevind",
+      "pos": null,
+      "frequency_count": 84
+    },
+    {
+      "candidate_rank": 340,
+      "source_rank": 340,
+      "word": "manne",
+      "pos": null,
+      "frequency_count": 84
+    },
+    {
+      "candidate_rank": 341,
+      "source_rank": 341,
+      "word": "haai",
+      "pos": null,
+      "frequency_count": 84
+    },
+    {
+      "candidate_rank": 342,
+      "source_rank": 342,
+      "word": "baas",
+      "pos": null,
+      "frequency_count": 84
+    },
+    {
+      "candidate_rank": 343,
+      "source_rank": 343,
+      "word": "dra",
+      "pos": null,
+      "frequency_count": 84
+    },
+    {
+      "candidate_rank": 344,
+      "source_rank": 344,
+      "word": "regte",
+      "pos": null,
+      "frequency_count": 84
+    },
+    {
+      "candidate_rank": 345,
+      "source_rank": 345,
+      "word": "myne",
+      "pos": null,
+      "frequency_count": 84
+    },
+    {
+      "candidate_rank": 346,
+      "source_rank": 346,
+      "word": "a",
+      "pos": null,
+      "frequency_count": 83
+    },
+    {
+      "candidate_rank": 347,
+      "source_rank": 347,
+      "word": "verwag",
+      "pos": null,
+      "frequency_count": 83
+    },
+    {
+      "candidate_rank": 348,
+      "source_rank": 348,
+      "word": "agent",
+      "pos": null,
+      "frequency_count": 83
+    },
+    {
+      "candidate_rank": 349,
+      "source_rank": 349,
+      "word": "aarde",
+      "pos": null,
+      "frequency_count": 83
+    },
+    {
+      "candidate_rank": 350,
+      "source_rank": 350,
+      "word": "lag",
+      "pos": null,
+      "frequency_count": 83
+    },
+    {
+      "candidate_rank": 351,
+      "source_rank": 351,
+      "word": "koning",
+      "pos": null,
+      "frequency_count": 83
+    },
+    {
+      "candidate_rank": 352,
+      "source_rank": 352,
+      "word": "geval",
+      "pos": null,
+      "frequency_count": 83
+    },
+    {
+      "candidate_rank": 353,
+      "source_rank": 353,
+      "word": "enigste",
+      "pos": null,
+      "frequency_count": 83
+    },
+    {
+      "candidate_rank": 354,
+      "source_rank": 354,
+      "word": "stuur",
+      "pos": null,
+      "frequency_count": 83
+    },
+    {
+      "candidate_rank": 355,
+      "source_rank": 355,
+      "word": "water",
+      "pos": null,
+      "frequency_count": 82
+    },
+    {
+      "candidate_rank": 356,
+      "source_rank": 356,
+      "word": "benodig",
+      "pos": null,
+      "frequency_count": 82
+    },
+    {
+      "candidate_rank": 357,
+      "source_rank": 357,
+      "word": "moeilik",
+      "pos": null,
+      "frequency_count": 82
+    },
+    {
+      "candidate_rank": 358,
+      "source_rank": 358,
+      "word": "reeds",
+      "pos": null,
+      "frequency_count": 82
+    },
+    {
+      "candidate_rank": 359,
+      "source_rank": 359,
+      "word": "sterf",
+      "pos": null,
+      "frequency_count": 82
+    },
+    {
+      "candidate_rank": 360,
+      "source_rank": 360,
+      "word": "daarmee",
+      "pos": null,
+      "frequency_count": 82
+    },
+    {
+      "candidate_rank": 361,
+      "source_rank": 361,
+      "word": "luitenant",
+      "pos": null,
+      "frequency_count": 81
+    },
+    {
+      "candidate_rank": 362,
+      "source_rank": 362,
+      "word": "graaf",
+      "pos": null,
+      "frequency_count": 81
+    },
+    {
+      "candidate_rank": 363,
+      "source_rank": 363,
+      "word": "vanaand",
+      "pos": null,
+      "frequency_count": 81
+    },
+    {
+      "candidate_rank": 364,
+      "source_rank": 364,
+      "word": "broer",
+      "pos": null,
+      "frequency_count": 81
+    },
+    {
+      "candidate_rank": 365,
+      "source_rank": 365,
+      "word": "binne",
+      "pos": null,
+      "frequency_count": 81
+    },
+    {
+      "candidate_rank": 366,
+      "source_rank": 366,
+      "word": "woord",
+      "pos": null,
+      "frequency_count": 80
+    },
+    {
+      "candidate_rank": 367,
+      "source_rank": 367,
+      "word": "eintlik",
+      "pos": null,
+      "frequency_count": 80
+    },
+    {
+      "candidate_rank": 368,
+      "source_rank": 368,
+      "word": "pappa",
+      "pos": null,
+      "frequency_count": 80
+    },
+    {
+      "candidate_rank": 369,
+      "source_rank": 369,
+      "word": "besluit",
+      "pos": null,
+      "frequency_count": 80
+    },
+    {
+      "candidate_rank": 370,
+      "source_rank": 370,
+      "word": "dus",
+      "pos": null,
+      "frequency_count": 80
+    },
+    {
+      "candidate_rank": 371,
+      "source_rank": 371,
+      "word": "gaaf",
+      "pos": null,
+      "frequency_count": 80
+    },
+    {
+      "candidate_rank": 372,
+      "source_rank": 372,
+      "word": "stem",
+      "pos": null,
+      "frequency_count": 79
+    },
+    {
+      "candidate_rank": 373,
+      "source_rank": 373,
+      "word": "oomblik",
+      "pos": null,
+      "frequency_count": 79
+    },
+    {
+      "candidate_rank": 374,
+      "source_rank": 374,
+      "word": "keiser",
+      "pos": null,
+      "frequency_count": 79
+    },
+    {
+      "candidate_rank": 375,
+      "source_rank": 375,
+      "word": "koffie",
+      "pos": null,
+      "frequency_count": 79
+    },
+    {
+      "candidate_rank": 376,
+      "source_rank": 376,
+      "word": "idee",
+      "pos": null,
+      "frequency_count": 78
+    },
+    {
+      "candidate_rank": 377,
+      "source_rank": 377,
+      "word": "gegee",
+      "pos": null,
+      "frequency_count": 78
+    },
+    {
+      "candidate_rank": 378,
+      "source_rank": 378,
+      "word": "musiek",
+      "pos": null,
+      "frequency_count": 77
+    },
+    {
+      "candidate_rank": 379,
+      "source_rank": 379,
+      "word": "volg",
+      "pos": null,
+      "frequency_count": 77
+    },
+    {
+      "candidate_rank": 380,
+      "source_rank": 380,
+      "word": "arme",
+      "pos": null,
+      "frequency_count": 76
+    },
+    {
+      "candidate_rank": 381,
+      "source_rank": 381,
+      "word": "wens",
+      "pos": null,
+      "frequency_count": 76
+    },
+    {
+      "candidate_rank": 382,
+      "source_rank": 382,
+      "word": "lig",
+      "pos": null,
+      "frequency_count": 76
+    },
+    {
+      "candidate_rank": 383,
+      "source_rank": 383,
+      "word": "ten",
+      "pos": null,
+      "frequency_count": 76
+    },
+    {
+      "candidate_rank": 384,
+      "source_rank": 384,
+      "word": "gesig",
+      "pos": null,
+      "frequency_count": 75
+    },
+    {
+      "candidate_rank": 385,
+      "source_rank": 385,
+      "word": "daarom",
+      "pos": null,
+      "frequency_count": 75
+    },
+    {
+      "candidate_rank": 386,
+      "source_rank": 386,
+      "word": "gepraat",
+      "pos": null,
+      "frequency_count": 74
+    },
+    {
+      "candidate_rank": 387,
+      "source_rank": 387,
+      "word": "val",
+      "pos": null,
+      "frequency_count": 74
+    },
+    {
+      "candidate_rank": 388,
+      "source_rank": 388,
+      "word": "heidi",
+      "pos": null,
+      "frequency_count": 73
+    },
+    {
+      "candidate_rank": 389,
+      "source_rank": 389,
+      "word": "dames",
+      "pos": null,
+      "frequency_count": 73
+    },
+    {
+      "candidate_rank": 390,
+      "source_rank": 390,
+      "word": "sorg",
+      "pos": null,
+      "frequency_count": 73
+    },
+    {
+      "candidate_rank": 391,
+      "source_rank": 391,
+      "word": "son",
+      "pos": null,
+      "frequency_count": 73
+    },
+    {
+      "candidate_rank": 392,
+      "source_rank": 392,
+      "word": "hulp",
+      "pos": null,
+      "frequency_count": 72
+    },
+    {
+      "candidate_rank": 393,
+      "source_rank": 393,
+      "word": "martin",
+      "pos": null,
+      "frequency_count": 72
+    },
+    {
+      "candidate_rank": 394,
+      "source_rank": 394,
+      "word": "dom",
+      "pos": null,
+      "frequency_count": 72
+    },
+    {
+      "candidate_rank": 395,
+      "source_rank": 395,
+      "word": "buite",
+      "pos": null,
+      "frequency_count": 71
+    },
+    {
+      "candidate_rank": 396,
+      "source_rank": 396,
+      "word": "eer",
+      "pos": null,
+      "frequency_count": 71
+    },
+    {
+      "candidate_rank": 397,
+      "source_rank": 397,
+      "word": "moontlik",
+      "pos": null,
+      "frequency_count": 71
+    },
+    {
+      "candidate_rank": 398,
+      "source_rank": 398,
+      "word": "bed",
+      "pos": null,
+      "frequency_count": 71
+    },
+    {
+      "candidate_rank": 399,
+      "source_rank": 399,
+      "word": "vertrou",
+      "pos": null,
+      "frequency_count": 71
+    },
+    {
+      "candidate_rank": 400,
+      "source_rank": 400,
+      "word": "prins",
+      "pos": null,
+      "frequency_count": 71
+    },
+    {
+      "candidate_rank": 401,
+      "source_rank": 401,
+      "word": "gehou",
+      "pos": null,
+      "frequency_count": 71
+    },
+    {
+      "candidate_rank": 402,
+      "source_rank": 402,
+      "word": "besig",
+      "pos": null,
+      "frequency_count": 71
+    },
+    {
+      "candidate_rank": 403,
+      "source_rank": 403,
+      "word": "antwoord",
+      "pos": null,
+      "frequency_count": 70
+    },
+    {
+      "candidate_rank": 404,
+      "source_rank": 404,
+      "word": "von",
+      "pos": null,
+      "frequency_count": 70
+    },
+    {
+      "candidate_rank": 405,
+      "source_rank": 405,
+      "word": "probleem",
+      "pos": null,
+      "frequency_count": 70
+    },
+    {
+      "candidate_rank": 406,
+      "source_rank": 406,
+      "word": "aanvaar",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 407,
+      "source_rank": 407,
+      "word": "hoeveel",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 408,
+      "source_rank": 408,
+      "word": "verdomp",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 409,
+      "source_rank": 409,
+      "word": "welkom",
+      "pos": null,
+      "frequency_count": 69
+    },
+    {
+      "candidate_rank": 410,
+      "source_rank": 410,
+      "word": "skool",
+      "pos": null,
+      "frequency_count": 68
+    },
+    {
+      "candidate_rank": 411,
+      "source_rank": 411,
+      "word": "presies",
+      "pos": null,
+      "frequency_count": 68
+    },
+    {
+      "candidate_rank": 412,
+      "source_rank": 412,
+      "word": "geniet",
+      "pos": null,
+      "frequency_count": 68
+    },
+    {
+      "candidate_rank": 413,
+      "source_rank": 413,
+      "word": "rus",
+      "pos": null,
+      "frequency_count": 68
+    },
+    {
+      "candidate_rank": 414,
+      "source_rank": 414,
+      "word": "bel",
+      "pos": null,
+      "frequency_count": 68
+    },
+    {
+      "candidate_rank": 415,
+      "source_rank": 415,
+      "word": "vuur",
+      "pos": null,
+      "frequency_count": 67
+    },
+    {
+      "candidate_rank": 416,
+      "source_rank": 416,
+      "word": "mans",
+      "pos": null,
+      "frequency_count": 67
+    },
+    {
+      "candidate_rank": 417,
+      "source_rank": 417,
+      "word": "meisies",
+      "pos": null,
+      "frequency_count": 67
+    },
+    {
+      "candidate_rank": 418,
+      "source_rank": 418,
+      "word": "weke",
+      "pos": null,
+      "frequency_count": 67
+    },
+    {
+      "candidate_rank": 419,
+      "source_rank": 419,
+      "word": "naby",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 420,
+      "source_rank": 420,
+      "word": "koop",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 421,
+      "source_rank": 421,
+      "word": "keiserin",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 422,
+      "source_rank": 422,
+      "word": "mev",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 423,
+      "source_rank": 423,
+      "word": "eens",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 424,
+      "source_rank": 424,
+      "word": "snaaks",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 425,
+      "source_rank": 425,
+      "word": "anne",
+      "pos": null,
+      "frequency_count": 66
+    },
+    {
+      "candidate_rank": 426,
+      "source_rank": 426,
+      "word": "week",
+      "pos": null,
+      "frequency_count": 65
+    },
+    {
+      "candidate_rank": 427,
+      "source_rank": 427,
+      "word": "heel",
+      "pos": null,
+      "frequency_count": 65
+    },
+    {
+      "candidate_rank": 428,
+      "source_rank": 428,
+      "word": "verseker",
+      "pos": null,
+      "frequency_count": 65
+    },
+    {
+      "candidate_rank": 429,
+      "source_rank": 429,
+      "word": "gestuur",
+      "pos": null,
+      "frequency_count": 65
+    },
+    {
+      "candidate_rank": 430,
+      "source_rank": 430,
+      "word": "waarheid",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 431,
+      "source_rank": 431,
+      "word": "gegaan",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 432,
+      "source_rank": 432,
+      "word": "maal",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 433,
+      "source_rank": 433,
+      "word": "mevrou",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 434,
+      "source_rank": 434,
+      "word": "sommer",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 435,
+      "source_rank": 435,
+      "word": "wonderlik",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 436,
+      "source_rank": 436,
+      "word": "dame",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 437,
+      "source_rank": 437,
+      "word": "jouself",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 438,
+      "source_rank": 438,
+      "word": "vol",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 439,
+      "source_rank": 439,
+      "word": "mcgee",
+      "pos": null,
+      "frequency_count": 64
+    },
+    {
+      "candidate_rank": 440,
+      "source_rank": 440,
+      "word": "asb",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 441,
+      "source_rank": 441,
+      "word": "skilder",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 442,
+      "source_rank": 442,
+      "word": "bemin",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 443,
+      "source_rank": 443,
+      "word": "beweeg",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 444,
+      "source_rank": 444,
+      "word": "he",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 445,
+      "source_rank": 445,
+      "word": "ding",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 446,
+      "source_rank": 446,
+      "word": "rede",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 447,
+      "source_rank": 447,
+      "word": "daaraan",
+      "pos": null,
+      "frequency_count": 63
+    },
+    {
+      "candidate_rank": 448,
+      "source_rank": 448,
+      "word": "terugkom",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 449,
+      "source_rank": 449,
+      "word": "voorstel",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 450,
+      "source_rank": 450,
+      "word": "sodat",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 451,
+      "source_rank": 451,
+      "word": "waarvoor",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 452,
+      "source_rank": 452,
+      "word": "vertrek",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 453,
+      "source_rank": 453,
+      "word": "tante",
+      "pos": null,
+      "frequency_count": 62
+    },
+    {
+      "candidate_rank": 454,
+      "source_rank": 454,
+      "word": "woon",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 455,
+      "source_rank": 455,
+      "word": "dans",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 456,
+      "source_rank": 456,
+      "word": "you",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 457,
+      "source_rank": 457,
+      "word": "ouers",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 458,
+      "source_rank": 458,
+      "word": "ernstig",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 459,
+      "source_rank": 459,
+      "word": "haat",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 460,
+      "source_rank": 460,
+      "word": "bestaan",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 461,
+      "source_rank": 461,
+      "word": "bewys",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 462,
+      "source_rank": 462,
+      "word": "myself",
+      "pos": null,
+      "frequency_count": 61
+    },
+    {
+      "candidate_rank": 463,
+      "source_rank": 463,
+      "word": "minste",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 464,
+      "source_rank": 464,
+      "word": "swaar",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 465,
+      "source_rank": 465,
+      "word": "schiller",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 466,
+      "source_rank": 466,
+      "word": "huil",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 467,
+      "source_rank": 467,
+      "word": "gebring",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 468,
+      "source_rank": 468,
+      "word": "tony",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 469,
+      "source_rank": 469,
+      "word": "geheim",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 470,
+      "source_rank": 470,
+      "word": "manier",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 471,
+      "source_rank": 471,
+      "word": "parys",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 472,
+      "source_rank": 472,
+      "word": "gravin",
+      "pos": null,
+      "frequency_count": 60
+    },
+    {
+      "candidate_rank": 473,
+      "source_rank": 473,
+      "word": "terwyl",
+      "pos": null,
+      "frequency_count": 59
+    },
+    {
+      "candidate_rank": 474,
+      "source_rank": 474,
+      "word": "hul",
+      "pos": null,
+      "frequency_count": 59
+    },
+    {
+      "candidate_rank": 475,
+      "source_rank": 475,
+      "word": "slegte",
+      "pos": null,
+      "frequency_count": 59
+    },
+    {
+      "candidate_rank": 476,
+      "source_rank": 476,
+      "word": "oom",
+      "pos": null,
+      "frequency_count": 59
+    },
+    {
+      "candidate_rank": 477,
+      "source_rank": 477,
+      "word": "hemel",
+      "pos": null,
+      "frequency_count": 59
+    },
+    {
+      "candidate_rank": 478,
+      "source_rank": 478,
+      "word": "film",
+      "pos": null,
+      "frequency_count": 59
+    },
+    {
+      "candidate_rank": 479,
+      "source_rank": 479,
+      "word": "mee",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 480,
+      "source_rank": 480,
+      "word": "moeg",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 481,
+      "source_rank": 481,
+      "word": "tel",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 482,
+      "source_rank": 482,
+      "word": "sterk",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 483,
+      "source_rank": 483,
+      "word": "hoef",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 484,
+      "source_rank": 484,
+      "word": "beloof",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 485,
+      "source_rank": 485,
+      "word": "bo",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 486,
+      "source_rank": 486,
+      "word": "nene",
+      "pos": null,
+      "frequency_count": 58
+    },
+    {
+      "candidate_rank": 487,
+      "source_rank": 487,
+      "word": "woorde",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 488,
+      "source_rank": 488,
+      "word": "kwaad",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 489,
+      "source_rank": 489,
+      "word": "ongelukkig",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 490,
+      "source_rank": 490,
+      "word": "veg",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 491,
+      "source_rank": 491,
+      "word": "versigtig",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 492,
+      "source_rank": 492,
+      "word": "draai",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 493,
+      "source_rank": 493,
+      "word": "trots",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 494,
+      "source_rank": 494,
+      "word": "minute",
+      "pos": null,
+      "frequency_count": 57
+    },
+    {
+      "candidate_rank": 495,
+      "source_rank": 495,
+      "word": "warm",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 496,
+      "source_rank": 496,
+      "word": "klink",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 497,
+      "source_rank": 497,
+      "word": "ophou",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 498,
+      "source_rank": 498,
+      "word": "minder",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 499,
+      "source_rank": 499,
+      "word": "nê",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 500,
+      "source_rank": 500,
+      "word": "peter",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 501,
+      "source_rank": 501,
+      "word": "dikwels",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 502,
+      "source_rank": 502,
+      "word": "waarvan",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 503,
+      "source_rank": 503,
+      "word": "johannes",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 504,
+      "source_rank": 504,
+      "word": "asof",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 505,
+      "source_rank": 505,
+      "word": "per",
+      "pos": null,
+      "frequency_count": 56
+    },
+    {
+      "candidate_rank": 506,
+      "source_rank": 506,
+      "word": "storie",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 507,
+      "source_rank": 507,
+      "word": "gewerk",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 508,
+      "source_rank": 508,
+      "word": "ouma",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 509,
+      "source_rank": 509,
+      "word": "hard",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 510,
+      "source_rank": 510,
+      "word": "plan",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 511,
+      "source_rank": 511,
+      "word": "darem",
+      "pos": null,
+      "frequency_count": 55
+    },
+    {
+      "candidate_rank": 512,
+      "source_rank": 512,
+      "word": "prinses",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 513,
+      "source_rank": 513,
+      "word": "vas",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 514,
+      "source_rank": 514,
+      "word": "alreeds",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 515,
+      "source_rank": 515,
+      "word": "amper",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 516,
+      "source_rank": 516,
+      "word": "homself",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 517,
+      "source_rank": 517,
+      "word": "kort",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 518,
+      "source_rank": 518,
+      "word": "heeltemal",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 519,
+      "source_rank": 519,
+      "word": "oud",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 520,
+      "source_rank": 520,
+      "word": "ry",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 521,
+      "source_rank": 521,
+      "word": "bekommerd",
+      "pos": null,
+      "frequency_count": 54
+    },
+    {
+      "candidate_rank": 522,
+      "source_rank": 522,
+      "word": "red",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 523,
+      "source_rank": 523,
+      "word": "onmoontlik",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 524,
+      "source_rank": 524,
+      "word": "volgens",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 525,
+      "source_rank": 525,
+      "word": "wonder",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 526,
+      "source_rank": 526,
+      "word": "baba",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 527,
+      "source_rank": 527,
+      "word": "rustig",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 528,
+      "source_rank": 528,
+      "word": "lug",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 529,
+      "source_rank": 529,
+      "word": "duidelik",
+      "pos": null,
+      "frequency_count": 53
+    },
+    {
+      "candidate_rank": 530,
+      "source_rank": 530,
+      "word": "marie",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 531,
+      "source_rank": 531,
+      "word": "stad",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 532,
+      "source_rank": 532,
+      "word": "joune",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 533,
+      "source_rank": 533,
+      "word": "ziva",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 534,
+      "source_rank": 534,
+      "word": "maande",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 535,
+      "source_rank": 535,
+      "word": "hello",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 536,
+      "source_rank": 536,
+      "word": "vier",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 537,
+      "source_rank": 537,
+      "word": "vergewe",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 538,
+      "source_rank": 538,
+      "word": "lang",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 539,
+      "source_rank": 539,
+      "word": "ontvang",
+      "pos": null,
+      "frequency_count": 52
+    },
+    {
+      "candidate_rank": 540,
+      "source_rank": 540,
+      "word": "getroud",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 541,
+      "source_rank": 541,
+      "word": "jare",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 542,
+      "source_rank": 542,
+      "word": "geloof",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 543,
+      "source_rank": 543,
+      "word": "franse",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 544,
+      "source_rank": 544,
+      "word": "huwelik",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 545,
+      "source_rank": 545,
+      "word": "gevoel",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 546,
+      "source_rank": 546,
+      "word": "generaal",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 547,
+      "source_rank": 547,
+      "word": "reis",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 548,
+      "source_rank": 548,
+      "word": "albei",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 549,
+      "source_rank": 549,
+      "word": "bevel",
+      "pos": null,
+      "frequency_count": 51
+    },
+    {
+      "candidate_rank": 550,
+      "source_rank": 550,
+      "word": "vry",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 551,
+      "source_rank": 551,
+      "word": "albert",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 552,
+      "source_rank": 552,
+      "word": "wyn",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 553,
+      "source_rank": 553,
+      "word": "inger",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 554,
+      "source_rank": 554,
+      "word": "russe",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 555,
+      "source_rank": 555,
+      "word": "birkut",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 556,
+      "source_rank": 556,
+      "word": "majoor",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 557,
+      "source_rank": 557,
+      "word": "besef",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 558,
+      "source_rank": 558,
+      "word": "byna",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 559,
+      "source_rank": 559,
+      "word": "pragtige",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 560,
+      "source_rank": 560,
+      "word": "ben",
+      "pos": null,
+      "frequency_count": 50
+    },
+    {
+      "candidate_rank": 561,
+      "source_rank": 561,
+      "word": "geleer",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 562,
+      "source_rank": 562,
+      "word": "gewees",
+      "pos": null,
+      "frequency_count": 49
+    },
+    {
+      "candidate_rank": 563,
+      "source_rank": 563,
+      "word": "steek",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 564,
+      "source_rank": 564,
+      "word": "gladnie",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 565,
+      "source_rank": 565,
+      "word": "droom",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 566,
+      "source_rank": 566,
+      "word": "verdien",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 567,
+      "source_rank": 567,
+      "word": "vinnig",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 568,
+      "source_rank": 568,
+      "word": "blomme",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 569,
+      "source_rank": 569,
+      "word": "doodmaak",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 570,
+      "source_rank": 570,
+      "word": "eenmaal",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 571,
+      "source_rank": 571,
+      "word": "bos",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 572,
+      "source_rank": 572,
+      "word": "klomp",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 573,
+      "source_rank": 573,
+      "word": "breek",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 574,
+      "source_rank": 574,
+      "word": "kameraad",
+      "pos": null,
+      "frequency_count": 48
+    },
+    {
+      "candidate_rank": 575,
+      "source_rank": 575,
+      "word": "totaal",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 576,
+      "source_rank": 576,
+      "word": "pragtig",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 577,
+      "source_rank": 577,
+      "word": "leopold",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 578,
+      "source_rank": 578,
+      "word": "omtrent",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 579,
+      "source_rank": 579,
+      "word": "fout",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 580,
+      "source_rank": 580,
+      "word": "sekerlik",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 581,
+      "source_rank": 581,
+      "word": "nuus",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 582,
+      "source_rank": 582,
+      "word": "verduidelik",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 583,
+      "source_rank": 583,
+      "word": "ryk",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 584,
+      "source_rank": 584,
+      "word": "enigiets",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 585,
+      "source_rank": 585,
+      "word": "sweer",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 586,
+      "source_rank": 586,
+      "word": "gevaar",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 587,
+      "source_rank": 587,
+      "word": "maand",
+      "pos": null,
+      "frequency_count": 47
+    },
+    {
+      "candidate_rank": 588,
+      "source_rank": 588,
+      "word": "don",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 589,
+      "source_rank": 589,
+      "word": "grap",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 590,
+      "source_rank": 590,
+      "word": "erken",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 591,
+      "source_rank": 591,
+      "word": "doktor",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 592,
+      "source_rank": 592,
+      "word": "roep",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 593,
+      "source_rank": 593,
+      "word": "treurig",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 594,
+      "source_rank": 594,
+      "word": "oral",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 595,
+      "source_rank": 595,
+      "word": "dank",
+      "pos": null,
+      "frequency_count": 46
+    },
+    {
+      "candidate_rank": 596,
+      "source_rank": 596,
+      "word": "rok",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 597,
+      "source_rank": 597,
+      "word": "dinozzo",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 598,
+      "source_rank": 598,
+      "word": "kaptein",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 599,
+      "source_rank": 599,
+      "word": "duitse",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 600,
+      "source_rank": 600,
+      "word": "pyn",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 601,
+      "source_rank": 601,
+      "word": "kolonel",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 602,
+      "source_rank": 602,
+      "word": "einde",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 603,
+      "source_rank": 603,
+      "word": "rooi",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 604,
+      "source_rank": 604,
+      "word": "wenen",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 605,
+      "source_rank": 605,
+      "word": "bereik",
+      "pos": null,
+      "frequency_count": 45
+    },
+    {
+      "candidate_rank": 606,
+      "source_rank": 606,
+      "word": "gilles",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 607,
+      "source_rank": 607,
+      "word": "plesier",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 608,
+      "source_rank": 608,
+      "word": "mis",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 609,
+      "source_rank": 609,
+      "word": "charlotte",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 610,
+      "source_rank": 610,
+      "word": "hare",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 611,
+      "source_rank": 611,
+      "word": "slaan",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 612,
+      "source_rank": 612,
+      "word": "gebou",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 613,
+      "source_rank": 613,
+      "word": "herken",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 614,
+      "source_rank": 614,
+      "word": "liefhet",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 615,
+      "source_rank": 615,
+      "word": "nogal",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 616,
+      "source_rank": 616,
+      "word": "kies",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 617,
+      "source_rank": 617,
+      "word": "plaas",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 618,
+      "source_rank": 618,
+      "word": "tuis",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 619,
+      "source_rank": 619,
+      "word": "frankryk",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 620,
+      "source_rank": 620,
+      "word": "dié",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 621,
+      "source_rank": 621,
+      "word": "hoof",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 622,
+      "source_rank": 622,
+      "word": "frank",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 623,
+      "source_rank": 623,
+      "word": "sedert",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 624,
+      "source_rank": 624,
+      "word": "rembrandt",
+      "pos": null,
+      "frequency_count": 44
+    },
+    {
+      "candidate_rank": 625,
+      "source_rank": 625,
+      "word": "orde",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 626,
+      "source_rank": 626,
+      "word": "langs",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 627,
+      "source_rank": 627,
+      "word": "aand",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 628,
+      "source_rank": 628,
+      "word": "beskerm",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 629,
+      "source_rank": 629,
+      "word": "gesondheid",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 630,
+      "source_rank": 630,
+      "word": "stap",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 631,
+      "source_rank": 631,
+      "word": "venster",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 632,
+      "source_rank": 632,
+      "word": "vreugde",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 633,
+      "source_rank": 633,
+      "word": "deer",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 634,
+      "source_rank": 634,
+      "word": "chabert",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 635,
+      "source_rank": 635,
+      "word": "glimlag",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 636,
+      "source_rank": 636,
+      "word": "watse",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 637,
+      "source_rank": 637,
+      "word": "daarna",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 638,
+      "source_rank": 638,
+      "word": "duiwel",
+      "pos": null,
+      "frequency_count": 43
+    },
+    {
+      "candidate_rank": 639,
+      "source_rank": 639,
+      "word": "gesond",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 640,
+      "source_rank": 640,
+      "word": "spel",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 641,
+      "source_rank": 641,
+      "word": "kant",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 642,
+      "source_rank": 642,
+      "word": "vrede",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 643,
+      "source_rank": 643,
+      "word": "direkteur",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 644,
+      "source_rank": 644,
+      "word": "wakker",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 645,
+      "source_rank": 645,
+      "word": "hond",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 646,
+      "source_rank": 646,
+      "word": "verdwyn",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 647,
+      "source_rank": 647,
+      "word": "stilte",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 648,
+      "source_rank": 648,
+      "word": "hof",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 649,
+      "source_rank": 649,
+      "word": "bloed",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 650,
+      "source_rank": 650,
+      "word": "soort",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 651,
+      "source_rank": 651,
+      "word": "jan",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 652,
+      "source_rank": 652,
+      "word": "mathieu",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 653,
+      "source_rank": 653,
+      "word": "elkeen",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 654,
+      "source_rank": 654,
+      "word": "skoon",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 655,
+      "source_rank": 655,
+      "word": "gooi",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 656,
+      "source_rank": 656,
+      "word": "voordat",
+      "pos": null,
+      "frequency_count": 42
+    },
+    {
+      "candidate_rank": 657,
+      "source_rank": 657,
+      "word": "genoem",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 658,
+      "source_rank": 658,
+      "word": "gemors",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 659,
+      "source_rank": 659,
+      "word": "aangaan",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 660,
+      "source_rank": 660,
+      "word": "komaan",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 661,
+      "source_rank": 661,
+      "word": "gister",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 662,
+      "source_rank": 662,
+      "word": "belangrik",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 663,
+      "source_rank": 663,
+      "word": "voort",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 664,
+      "source_rank": 664,
+      "word": "skiet",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 665,
+      "source_rank": 665,
+      "word": "teken",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 666,
+      "source_rank": 666,
+      "word": "tafel",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 667,
+      "source_rank": 667,
+      "word": "lei",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 668,
+      "source_rank": 668,
+      "word": "min",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 669,
+      "source_rank": 669,
+      "word": "tant",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 670,
+      "source_rank": 670,
+      "word": "verlief",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 671,
+      "source_rank": 671,
+      "word": "see",
+      "pos": null,
+      "frequency_count": 41
+    },
+    {
+      "candidate_rank": 672,
+      "source_rank": 672,
+      "word": "george",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 673,
+      "source_rank": 673,
+      "word": "bier",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 674,
+      "source_rank": 674,
+      "word": "ciske",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 675,
+      "source_rank": 675,
+      "word": "belowe",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 676,
+      "source_rank": 676,
+      "word": "soveel",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 677,
+      "source_rank": 677,
+      "word": "monsieur",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 678,
+      "source_rank": 678,
+      "word": "rond",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 679,
+      "source_rank": 679,
+      "word": "staat",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 680,
+      "source_rank": 680,
+      "word": "boeke",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 681,
+      "source_rank": 681,
+      "word": "waaroor",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 682,
+      "source_rank": 682,
+      "word": "veilig",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 683,
+      "source_rank": 683,
+      "word": "lotte",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 684,
+      "source_rank": 684,
+      "word": "boek",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 685,
+      "source_rank": 685,
+      "word": "verkies",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 686,
+      "source_rank": 686,
+      "word": "oostenryk",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 687,
+      "source_rank": 687,
+      "word": "hitler",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 688,
+      "source_rank": 688,
+      "word": "toekoms",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 689,
+      "source_rank": 689,
+      "word": "soen",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 690,
+      "source_rank": 690,
+      "word": "begryp",
+      "pos": null,
+      "frequency_count": 40
+    },
+    {
+      "candidate_rank": 691,
+      "source_rank": 691,
+      "word": "siedler",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 692,
+      "source_rank": 692,
+      "word": "vyf",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 693,
+      "source_rank": 693,
+      "word": "sophie",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 694,
+      "source_rank": 694,
+      "word": "prokureur",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 695,
+      "source_rank": 695,
+      "word": "muur",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 696,
+      "source_rank": 696,
+      "word": "meester",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 697,
+      "source_rank": 697,
+      "word": "werklik",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 698,
+      "source_rank": 698,
+      "word": "tronk",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 699,
+      "source_rank": 699,
+      "word": "soms",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 700,
+      "source_rank": 700,
+      "word": "geneem",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 701,
+      "source_rank": 701,
+      "word": "nelly",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 702,
+      "source_rank": 702,
+      "word": "elk",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 703,
+      "source_rank": 703,
+      "word": "gelees",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 704,
+      "source_rank": 704,
+      "word": "mal",
+      "pos": null,
+      "frequency_count": 39
+    },
+    {
+      "candidate_rank": 705,
+      "source_rank": 705,
+      "word": "klara",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 706,
+      "source_rank": 706,
+      "word": "hertog",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 707,
+      "source_rank": 707,
+      "word": "engelse",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 708,
+      "source_rank": 708,
+      "word": "oh",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 709,
+      "source_rank": 709,
+      "word": "gaste",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 710,
+      "source_rank": 710,
+      "word": "keith",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 711,
+      "source_rank": 711,
+      "word": "vraag",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 712,
+      "source_rank": 712,
+      "word": "melk",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 713,
+      "source_rank": 713,
+      "word": "druk",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 714,
+      "source_rank": 714,
+      "word": "germain",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 715,
+      "source_rank": 715,
+      "word": "koningin",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 716,
+      "source_rank": 716,
+      "word": "heen",
+      "pos": null,
+      "frequency_count": 38
+    },
+    {
+      "candidate_rank": 717,
+      "source_rank": 717,
+      "word": "caroline",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 718,
+      "source_rank": 718,
+      "word": "klas",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 719,
+      "source_rank": 719,
+      "word": "erg",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 720,
+      "source_rank": 720,
+      "word": "gewoonlik",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 721,
+      "source_rank": 721,
+      "word": "stalingrad",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 722,
+      "source_rank": 722,
+      "word": "daarop",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 723,
+      "source_rank": 723,
+      "word": "madam",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 724,
+      "source_rank": 724,
+      "word": "vang",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 725,
+      "source_rank": 725,
+      "word": "vrees",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 726,
+      "source_rank": 726,
+      "word": "erger",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 727,
+      "source_rank": 727,
+      "word": "gesoek",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 728,
+      "source_rank": 728,
+      "word": "volk",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 729,
+      "source_rank": 729,
+      "word": "hallo",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 730,
+      "source_rank": 730,
+      "word": "grond",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 731,
+      "source_rank": 731,
+      "word": "vermoor",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 732,
+      "source_rank": 732,
+      "word": "verlede",
+      "pos": null,
+      "frequency_count": 37
+    },
+    {
+      "candidate_rank": 733,
+      "source_rank": 733,
+      "word": "perd",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 734,
+      "source_rank": 734,
+      "word": "vryheid",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 735,
+      "source_rank": 735,
+      "word": "ure",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 736,
+      "source_rank": 736,
+      "word": "beide",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 737,
+      "source_rank": 737,
+      "word": "vlieg",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 738,
+      "source_rank": 738,
+      "word": "hiernatoe",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 739,
+      "source_rank": 739,
+      "word": "bedank",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 740,
+      "source_rank": 740,
+      "word": "wen",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 741,
+      "source_rank": 741,
+      "word": "it",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 742,
+      "source_rank": 742,
+      "word": "mammie",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 743,
+      "source_rank": 743,
+      "word": "menere",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 744,
+      "source_rank": 744,
+      "word": "liggaam",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 745,
+      "source_rank": 745,
+      "word": "kans",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 746,
+      "source_rank": 746,
+      "word": "bratek",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 747,
+      "source_rank": 747,
+      "word": "dooie",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 748,
+      "source_rank": 748,
+      "word": "ete",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 749,
+      "source_rank": 749,
+      "word": "beveel",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 750,
+      "source_rank": 750,
+      "word": "ses",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 751,
+      "source_rank": 751,
+      "word": "i",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 752,
+      "source_rank": 752,
+      "word": "koud",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 753,
+      "source_rank": 753,
+      "word": "johan",
+      "pos": null,
+      "frequency_count": 36
+    },
+    {
+      "candidate_rank": 754,
+      "source_rank": 754,
+      "word": "beplan",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 755,
+      "source_rank": 755,
+      "word": "verlore",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 756,
+      "source_rank": 756,
+      "word": "duitsland",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 757,
+      "source_rank": 757,
+      "word": "arm",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 758,
+      "source_rank": 758,
+      "word": "werd",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 759,
+      "source_rank": 759,
+      "word": "gebore",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 760,
+      "source_rank": 760,
+      "word": "doodgaan",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 761,
+      "source_rank": 761,
+      "word": "aanval",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 762,
+      "source_rank": 762,
+      "word": "aandag",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 763,
+      "source_rank": 763,
+      "word": "veral",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 764,
+      "source_rank": 764,
+      "word": "vergeef",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 765,
+      "source_rank": 765,
+      "word": "vlaandere",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 766,
+      "source_rank": 766,
+      "word": "doel",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 767,
+      "source_rank": 767,
+      "word": "alceste",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 768,
+      "source_rank": 768,
+      "word": "donker",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 769,
+      "source_rank": 769,
+      "word": "goue",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 770,
+      "source_rank": 770,
+      "word": "jonk",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 771,
+      "source_rank": 771,
+      "word": "spesiale",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 772,
+      "source_rank": 772,
+      "word": "probleme",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 773,
+      "source_rank": 773,
+      "word": "ruyter",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 774,
+      "source_rank": 774,
+      "word": "swak",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 775,
+      "source_rank": 775,
+      "word": "vrae",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 776,
+      "source_rank": 776,
+      "word": "bou",
+      "pos": null,
+      "frequency_count": 35
+    },
+    {
+      "candidate_rank": 777,
+      "source_rank": 777,
+      "word": "jesus",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 778,
+      "source_rank": 778,
+      "word": "ly",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 779,
+      "source_rank": 779,
+      "word": "res",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 780,
+      "source_rank": 780,
+      "word": "seer",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 781,
+      "source_rank": 781,
+      "word": "geveg",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 782,
+      "source_rank": 782,
+      "word": "klop",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 783,
+      "source_rank": 783,
+      "word": "woonstel",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 784,
+      "source_rank": 784,
+      "word": "ncis",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 785,
+      "source_rank": 785,
+      "word": "party",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 786,
+      "source_rank": 786,
+      "word": "vlug",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 787,
+      "source_rank": 787,
+      "word": "eindelik",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 788,
+      "source_rank": 788,
+      "word": "onderwyser",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 789,
+      "source_rank": 789,
+      "word": "vinniger",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 790,
+      "source_rank": 790,
+      "word": "asem",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 791,
+      "source_rank": 791,
+      "word": "slag",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 792,
+      "source_rank": 792,
+      "word": "honger",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 793,
+      "source_rank": 793,
+      "word": "verdra",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 794,
+      "source_rank": 794,
+      "word": "pak",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 795,
+      "source_rank": 795,
+      "word": "liefie",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 796,
+      "source_rank": 796,
+      "word": "slim",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 797,
+      "source_rank": 797,
+      "word": "max",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 798,
+      "source_rank": 798,
+      "word": "papa",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 799,
+      "source_rank": 799,
+      "word": "more",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 800,
+      "source_rank": 800,
+      "word": "gevolg",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 801,
+      "source_rank": 801,
+      "word": "to",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 802,
+      "source_rank": 802,
+      "word": "sand",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 803,
+      "source_rank": 803,
+      "word": "spreek",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 804,
+      "source_rank": 804,
+      "word": "minister",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 805,
+      "source_rank": 805,
+      "word": "polisie",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 806,
+      "source_rank": 806,
+      "word": "prys",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 807,
+      "source_rank": 807,
+      "word": "dorp",
+      "pos": null,
+      "frequency_count": 34
+    },
+    {
+      "candidate_rank": 808,
+      "source_rank": 808,
+      "word": "belang",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 809,
+      "source_rank": 809,
+      "word": "voorbeeld",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 810,
+      "source_rank": 810,
+      "word": "anton",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 811,
+      "source_rank": 811,
+      "word": "hel",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 812,
+      "source_rank": 812,
+      "word": "regkom",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 813,
+      "source_rank": 813,
+      "word": "juis",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 814,
+      "source_rank": 814,
+      "word": "gedood",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 815,
+      "source_rank": 815,
+      "word": "marianne",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 816,
+      "source_rank": 816,
+      "word": "skip",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 817,
+      "source_rank": 817,
+      "word": "verskoning",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 818,
+      "source_rank": 818,
+      "word": "hang",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 819,
+      "source_rank": 819,
+      "word": "verrassing",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 820,
+      "source_rank": 820,
+      "word": "bravo",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 821,
+      "source_rank": 821,
+      "word": "stadig",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 822,
+      "source_rank": 822,
+      "word": "twak",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 823,
+      "source_rank": 823,
+      "word": "teenoor",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 824,
+      "source_rank": 824,
+      "word": "waarheen",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 825,
+      "source_rank": 825,
+      "word": "tuin",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 826,
+      "source_rank": 826,
+      "word": "saamgaan",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 827,
+      "source_rank": 827,
+      "word": "gebreek",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 828,
+      "source_rank": 828,
+      "word": "kalmeer",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 829,
+      "source_rank": 829,
+      "word": "behandel",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 830,
+      "source_rank": 830,
+      "word": "stuk",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 831,
+      "source_rank": 831,
+      "word": "naand",
+      "pos": null,
+      "frequency_count": 33
+    },
+    {
+      "candidate_rank": 832,
+      "source_rank": 832,
+      "word": "gespeel",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 833,
+      "source_rank": 833,
+      "word": "enkele",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 834,
+      "source_rank": 834,
+      "word": "trein",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 835,
+      "source_rank": 835,
+      "word": "eenvoudig",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 836,
+      "source_rank": 836,
+      "word": "situasie",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 837,
+      "source_rank": 837,
+      "word": "bal",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 838,
+      "source_rank": 838,
+      "word": "hongarye",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 839,
+      "source_rank": 839,
+      "word": "eendag",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 840,
+      "source_rank": 840,
+      "word": "mond",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 841,
+      "source_rank": 841,
+      "word": "behalwe",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 842,
+      "source_rank": 842,
+      "word": "hoed",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 843,
+      "source_rank": 843,
+      "word": "rol",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 844,
+      "source_rank": 844,
+      "word": "als",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 845,
+      "source_rank": 845,
+      "word": "boodskap",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 846,
+      "source_rank": 846,
+      "word": "alweer",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 847,
+      "source_rank": 847,
+      "word": "ontdek",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 848,
+      "source_rank": 848,
+      "word": "gelyk",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 849,
+      "source_rank": 849,
+      "word": "idioot",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 850,
+      "source_rank": 850,
+      "word": "nader",
+      "pos": null,
+      "frequency_count": 32
+    },
+    {
+      "candidate_rank": 851,
+      "source_rank": 851,
+      "word": "eboshi",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 852,
+      "source_rank": 852,
+      "word": "vreemd",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 853,
+      "source_rank": 853,
+      "word": "skielik",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 854,
+      "source_rank": 854,
+      "word": "geheime",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 855,
+      "source_rank": 855,
+      "word": "daarin",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 856,
+      "source_rank": 856,
+      "word": "lisa",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 857,
+      "source_rank": 857,
+      "word": "grootste",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 858,
+      "source_rank": 858,
+      "word": "lieflike",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 859,
+      "source_rank": 859,
+      "word": "abby",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 860,
+      "source_rank": 860,
+      "word": "ter",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 861,
+      "source_rank": 861,
+      "word": "wit",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 862,
+      "source_rank": 862,
+      "word": "gebel",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 863,
+      "source_rank": 863,
+      "word": "wind",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 864,
+      "source_rank": 864,
+      "word": "opdrag",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 865,
+      "source_rank": 865,
+      "word": "klim",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 866,
+      "source_rank": 866,
+      "word": "sluit",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 867,
+      "source_rank": 867,
+      "word": "leër",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 868,
+      "source_rank": 868,
+      "word": "moeite",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 869,
+      "source_rank": 869,
+      "word": "swart",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 870,
+      "source_rank": 870,
+      "word": "tas",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 871,
+      "source_rank": 871,
+      "word": "markies",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 872,
+      "source_rank": 872,
+      "word": "uitvind",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 873,
+      "source_rank": 873,
+      "word": "sake",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 874,
+      "source_rank": 874,
+      "word": "brand",
+      "pos": null,
+      "frequency_count": 31
+    },
+    {
+      "candidate_rank": 875,
+      "source_rank": 875,
+      "word": "ivan",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 876,
+      "source_rank": 876,
+      "word": "siel",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 877,
+      "source_rank": 877,
+      "word": "meeste",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 878,
+      "source_rank": 878,
+      "word": "mej",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 879,
+      "source_rank": 879,
+      "word": "verdedig",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 880,
+      "source_rank": 880,
+      "word": "pos",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 881,
+      "source_rank": 881,
+      "word": "langer",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 882,
+      "source_rank": 882,
+      "word": "weggaan",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 883,
+      "source_rank": 883,
+      "word": "vrolik",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 884,
+      "source_rank": 884,
+      "word": "verdomde",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 885,
+      "source_rank": 885,
+      "word": "and",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 886,
+      "source_rank": 886,
+      "word": "ongeluk",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 887,
+      "source_rank": 887,
+      "word": "nommer",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 888,
+      "source_rank": 888,
+      "word": "gewone",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 889,
+      "source_rank": 889,
+      "word": "fees",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 890,
+      "source_rank": 890,
+      "word": "persoon",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 891,
+      "source_rank": 891,
+      "word": "kasteel",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 892,
+      "source_rank": 892,
+      "word": "vroeër",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 893,
+      "source_rank": 893,
+      "word": "tee",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 894,
+      "source_rank": 894,
+      "word": "gryp",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 895,
+      "source_rank": 895,
+      "word": "punt",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 896,
+      "source_rank": 896,
+      "word": "krag",
+      "pos": null,
+      "frequency_count": 30
+    },
+    {
+      "candidate_rank": 897,
+      "source_rank": 897,
+      "word": "waarskynlik",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 898,
+      "source_rank": 898,
+      "word": "vroeg",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 899,
+      "source_rank": 899,
+      "word": "begrawe",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 900,
+      "source_rank": 900,
+      "word": "ruik",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 901,
+      "source_rank": 901,
+      "word": "berlyn",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 902,
+      "source_rank": 902,
+      "word": "verstand",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 903,
+      "source_rank": 903,
+      "word": "hardloop",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 904,
+      "source_rank": 904,
+      "word": "adres",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 905,
+      "source_rank": 905,
+      "word": "groter",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 906,
+      "source_rank": 906,
+      "word": "geskiedenis",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 907,
+      "source_rank": 907,
+      "word": "aurore",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 908,
+      "source_rank": 908,
+      "word": "hiervan",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 909,
+      "source_rank": 909,
+      "word": "seuns",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 910,
+      "source_rank": 910,
+      "word": "teruggaan",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 911,
+      "source_rank": 911,
+      "word": "morange",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 912,
+      "source_rank": 912,
+      "word": "geslaap",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 913,
+      "source_rank": 913,
+      "word": "hospitaal",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 914,
+      "source_rank": 914,
+      "word": "hoog",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 915,
+      "source_rank": 915,
+      "word": "heilige",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 916,
+      "source_rank": 916,
+      "word": "diep",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 917,
+      "source_rank": 917,
+      "word": "graf",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 918,
+      "source_rank": 918,
+      "word": "woud",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 919,
+      "source_rank": 919,
+      "word": "uiteindelik",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 920,
+      "source_rank": 920,
+      "word": "mikkel",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 921,
+      "source_rank": 921,
+      "word": "chopin",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 922,
+      "source_rank": 922,
+      "word": "kunstenaars",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 923,
+      "source_rank": 923,
+      "word": "jag",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 924,
+      "source_rank": 924,
+      "word": "smeek",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 925,
+      "source_rank": 925,
+      "word": "cis",
+      "pos": null,
+      "frequency_count": 29
+    },
+    {
+      "candidate_rank": 926,
+      "source_rank": 926,
+      "word": "herr",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 927,
+      "source_rank": 927,
+      "word": "vera",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 928,
+      "source_rank": 928,
+      "word": "arms",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 929,
+      "source_rank": 929,
+      "word": "weimar",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 930,
+      "source_rank": 930,
+      "word": "vermy",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 931,
+      "source_rank": 931,
+      "word": "bid",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 932,
+      "source_rank": 932,
+      "word": "gesit",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 933,
+      "source_rank": 933,
+      "word": "oortuig",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 934,
+      "source_rank": 934,
+      "word": "russiese",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 935,
+      "source_rank": 935,
+      "word": "moeilikheid",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 936,
+      "source_rank": 936,
+      "word": "henrik",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 937,
+      "source_rank": 937,
+      "word": "duur",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 938,
+      "source_rank": 938,
+      "word": "kontak",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 939,
+      "source_rank": 939,
+      "word": "twyfel",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 940,
+      "source_rank": 940,
+      "word": "foto",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 941,
+      "source_rank": 941,
+      "word": "karin",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 942,
+      "source_rank": 942,
+      "word": "versoek",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 943,
+      "source_rank": 943,
+      "word": "voer",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 944,
+      "source_rank": 944,
+      "word": "platform",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 945,
+      "source_rank": 945,
+      "word": "pérol",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 946,
+      "source_rank": 946,
+      "word": "ware",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 947,
+      "source_rank": 947,
+      "word": "bied",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 948,
+      "source_rank": 948,
+      "word": "admiraal",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 949,
+      "source_rank": 949,
+      "word": "professor",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 950,
+      "source_rank": 950,
+      "word": "vorentoe",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 951,
+      "source_rank": 951,
+      "word": "diens",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 952,
+      "source_rank": 952,
+      "word": "weier",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 953,
+      "source_rank": 953,
+      "word": "name",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 954,
+      "source_rank": 954,
+      "word": "beslis",
+      "pos": null,
+      "frequency_count": 28
+    },
+    {
+      "candidate_rank": 955,
+      "source_rank": 955,
+      "word": "bevestig",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 956,
+      "source_rank": 956,
+      "word": "verloof",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 957,
+      "source_rank": 957,
+      "word": "materiaal",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 958,
+      "source_rank": 958,
+      "word": "front",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 959,
+      "source_rank": 959,
+      "word": "dankbaar",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 960,
+      "source_rank": 960,
+      "word": "bespreek",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 961,
+      "source_rank": 961,
+      "word": "perfek",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 962,
+      "source_rank": 962,
+      "word": "vreemde",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 963,
+      "source_rank": 963,
+      "word": "rug",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 964,
+      "source_rank": 964,
+      "word": "verwyder",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 965,
+      "source_rank": 965,
+      "word": "gebly",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 966,
+      "source_rank": 966,
+      "word": "helder",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 967,
+      "source_rank": 967,
+      "word": "m",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 968,
+      "source_rank": 968,
+      "word": "gesteel",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 969,
+      "source_rank": 969,
+      "word": "skoonheid",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 970,
+      "source_rank": 970,
+      "word": "vorm",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 971,
+      "source_rank": 971,
+      "word": "sin",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 972,
+      "source_rank": 972,
+      "word": "straat",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 973,
+      "source_rank": 973,
+      "word": "haastig",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 974,
+      "source_rank": 974,
+      "word": "soldate",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 975,
+      "source_rank": 975,
+      "word": "moed",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 976,
+      "source_rank": 976,
+      "word": "mark",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 977,
+      "source_rank": 977,
+      "word": "ondersoek",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 978,
+      "source_rank": 978,
+      "word": "kar",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 979,
+      "source_rank": 979,
+      "word": "miljoen",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 980,
+      "source_rank": 980,
+      "word": "wells",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 981,
+      "source_rank": 981,
+      "word": "blou",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 982,
+      "source_rank": 982,
+      "word": "lot",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 983,
+      "source_rank": 983,
+      "word": "gang",
+      "pos": null,
+      "frequency_count": 27
+    },
+    {
+      "candidate_rank": 984,
+      "source_rank": 984,
+      "word": "ring",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 985,
+      "source_rank": 985,
+      "word": "derde",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 986,
+      "source_rank": 986,
+      "word": "weermag",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 987,
+      "source_rank": 987,
+      "word": "baron",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 988,
+      "source_rank": 988,
+      "word": "torgny",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 989,
+      "source_rank": 989,
+      "word": "skande",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 990,
+      "source_rank": 990,
+      "word": "lewer",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 991,
+      "source_rank": 991,
+      "word": "harte",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 992,
+      "source_rank": 992,
+      "word": "voorheen",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 993,
+      "source_rank": 993,
+      "word": "nooi",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 994,
+      "source_rank": 994,
+      "word": "talent",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 995,
+      "source_rank": 995,
+      "word": "moment",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 996,
+      "source_rank": 996,
+      "word": "tevrede",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 997,
+      "source_rank": 997,
+      "word": "skei",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 998,
+      "source_rank": 998,
+      "word": "straf",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 999,
+      "source_rank": 999,
+      "word": "gas",
+      "pos": null,
+      "frequency_count": 26
+    },
+    {
+      "candidate_rank": 1000,
+      "source_rank": 1000,
+      "word": "afspraak",
+      "pos": null,
+      "frequency_count": 26
+    }
+  ]
+}

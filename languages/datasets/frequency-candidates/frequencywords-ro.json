@@ -1,0 +1,7030 @@
+{
+  "schema": "SLeeLa FRUCHST frequency candidate staging v1",
+  "language_tag": "ro",
+  "language_directory": "romanian",
+  "source": {
+    "dataset": "FrequencyWords",
+    "upstream": "https://github.com/hermitdave/FrequencyWords",
+    "revision": "525f9b560de45753a5ea01069454e72e9aa541c6",
+    "sample": "content/2018/ro/ro_full.txt",
+    "data_license": "CC-BY-SA-4.0",
+    "code_license": "MIT",
+    "frequency_source": "OpenSubtitles-2018",
+    "attribution": [
+      "Hermit Dave / FrequencyWords — https://github.com/hermitdave/FrequencyWords",
+      "OpenSubtitles 2018 — https://opus.nlpl.eu/OpenSubtitles2018.php"
+    ],
+    "selection": "First 1,000 unique NFC-normalized lexical surface forms in source frequency order. Punctuation-only tokens are excluded; source line rank and raw occurrence count are retained.",
+    "limitations": [
+      "Surface forms, not lemmatized headwords.",
+      "Subtitle-domain frequency ranking; not a balanced general-purpose corpus.",
+      "No POS or sense labels are supplied by this source.",
+      "English, French, and Spanish definitions remain pending."
+    ],
+    "license_notice": "FrequencyWords content is CC BY-SA 4.0; preserve attribution and share-alike terms. The repository's code is MIT and does not change the data license."
+  },
+  "candidate_count": 1000,
+  "definitions_status": "pending",
+  "entries": [
+    {
+      "candidate_rank": 1,
+      "source_rank": 1,
+      "word": "de",
+      "pos": null,
+      "frequency_count": 9879614
+    },
+    {
+      "candidate_rank": 2,
+      "source_rank": 2,
+      "word": "nu",
+      "pos": null,
+      "frequency_count": 9041557
+    },
+    {
+      "candidate_rank": 3,
+      "source_rank": 3,
+      "word": "să",
+      "pos": null,
+      "frequency_count": 7859247
+    },
+    {
+      "candidate_rank": 4,
+      "source_rank": 4,
+      "word": "o",
+      "pos": null,
+      "frequency_count": 4761610
+    },
+    {
+      "candidate_rank": 5,
+      "source_rank": 5,
+      "word": "în",
+      "pos": null,
+      "frequency_count": 4579651
+    },
+    {
+      "candidate_rank": 6,
+      "source_rank": 6,
+      "word": "ce",
+      "pos": null,
+      "frequency_count": 4473740
+    },
+    {
+      "candidate_rank": 7,
+      "source_rank": 7,
+      "word": "e",
+      "pos": null,
+      "frequency_count": 4396284
+    },
+    {
+      "candidate_rank": 8,
+      "source_rank": 8,
+      "word": "că",
+      "pos": null,
+      "frequency_count": 4310924
+    },
+    {
+      "candidate_rank": 9,
+      "source_rank": 9,
+      "word": "şi",
+      "pos": null,
+      "frequency_count": 4266899
+    },
+    {
+      "candidate_rank": 10,
+      "source_rank": 10,
+      "word": "la",
+      "pos": null,
+      "frequency_count": 4037578
+    },
+    {
+      "candidate_rank": 11,
+      "source_rank": 11,
+      "word": "a",
+      "pos": null,
+      "frequency_count": 3971157
+    },
+    {
+      "candidate_rank": 12,
+      "source_rank": 12,
+      "word": "cu",
+      "pos": null,
+      "frequency_count": 3410697
+    },
+    {
+      "candidate_rank": 13,
+      "source_rank": 13,
+      "word": "pe",
+      "pos": null,
+      "frequency_count": 3352611
+    },
+    {
+      "candidate_rank": 14,
+      "source_rank": 14,
+      "word": "am",
+      "pos": null,
+      "frequency_count": 3307707
+    },
+    {
+      "candidate_rank": 15,
+      "source_rank": 15,
+      "word": "un",
+      "pos": null,
+      "frequency_count": 3177427
+    },
+    {
+      "candidate_rank": 16,
+      "source_rank": 16,
+      "word": "mai",
+      "pos": null,
+      "frequency_count": 2846690
+    },
+    {
+      "candidate_rank": 17,
+      "source_rank": 17,
+      "word": "asta",
+      "pos": null,
+      "frequency_count": 2630966
+    },
+    {
+      "candidate_rank": 18,
+      "source_rank": 18,
+      "word": "pentru",
+      "pos": null,
+      "frequency_count": 2448501
+    },
+    {
+      "candidate_rank": 19,
+      "source_rank": 19,
+      "word": "este",
+      "pos": null,
+      "frequency_count": 2200296
+    },
+    {
+      "candidate_rank": 20,
+      "source_rank": 20,
+      "word": "sunt",
+      "pos": null,
+      "frequency_count": 2135542
+    },
+    {
+      "candidate_rank": 21,
+      "source_rank": 21,
+      "word": "ai",
+      "pos": null,
+      "frequency_count": 2098932
+    },
+    {
+      "candidate_rank": 22,
+      "source_rank": 22,
+      "word": "te",
+      "pos": null,
+      "frequency_count": 2064307
+    },
+    {
+      "candidate_rank": 23,
+      "source_rank": 23,
+      "word": "bine",
+      "pos": null,
+      "frequency_count": 2029363
+    },
+    {
+      "candidate_rank": 24,
+      "source_rank": 24,
+      "word": "da",
+      "pos": null,
+      "frequency_count": 2027261
+    },
+    {
+      "candidate_rank": 25,
+      "source_rank": 25,
+      "word": "ca",
+      "pos": null,
+      "frequency_count": 1969644
+    },
+    {
+      "candidate_rank": 26,
+      "source_rank": 26,
+      "word": "dar",
+      "pos": null,
+      "frequency_count": 1879133
+    },
+    {
+      "candidate_rank": 27,
+      "source_rank": 27,
+      "word": "se",
+      "pos": null,
+      "frequency_count": 1738684
+    },
+    {
+      "candidate_rank": 28,
+      "source_rank": 28,
+      "word": "din",
+      "pos": null,
+      "frequency_count": 1686747
+    },
+    {
+      "candidate_rank": 29,
+      "source_rank": 29,
+      "word": "fost",
+      "pos": null,
+      "frequency_count": 1685414
+    },
+    {
+      "candidate_rank": 30,
+      "source_rank": 30,
+      "word": "care",
+      "pos": null,
+      "frequency_count": 1675392
+    },
+    {
+      "candidate_rank": 31,
+      "source_rank": 31,
+      "word": "fi",
+      "pos": null,
+      "frequency_count": 1564273
+    },
+    {
+      "candidate_rank": 32,
+      "source_rank": 32,
+      "word": "mă",
+      "pos": null,
+      "frequency_count": 1534003
+    },
+    {
+      "candidate_rank": 33,
+      "source_rank": 33,
+      "word": "eu",
+      "pos": null,
+      "frequency_count": 1466920
+    },
+    {
+      "candidate_rank": 34,
+      "source_rank": 34,
+      "word": "aici",
+      "pos": null,
+      "frequency_count": 1441923
+    },
+    {
+      "candidate_rank": 35,
+      "source_rank": 35,
+      "word": "sa",
+      "pos": null,
+      "frequency_count": 1344576
+    },
+    {
+      "candidate_rank": 36,
+      "source_rank": 36,
+      "word": "dacă",
+      "pos": null,
+      "frequency_count": 1265397
+    },
+    {
+      "candidate_rank": 37,
+      "source_rank": 37,
+      "word": "trebuie",
+      "pos": null,
+      "frequency_count": 1178442
+    },
+    {
+      "candidate_rank": 38,
+      "source_rank": 38,
+      "word": "va",
+      "pos": null,
+      "frequency_count": 1112739
+    },
+    {
+      "candidate_rank": 39,
+      "source_rank": 39,
+      "word": "cum",
+      "pos": null,
+      "frequency_count": 1082753
+    },
+    {
+      "candidate_rank": 40,
+      "source_rank": 40,
+      "word": "si",
+      "pos": null,
+      "frequency_count": 1078118
+    },
+    {
+      "candidate_rank": 41,
+      "source_rank": 41,
+      "word": "tu",
+      "pos": null,
+      "frequency_count": 1042352
+    },
+    {
+      "candidate_rank": 42,
+      "source_rank": 42,
+      "word": "acum",
+      "pos": null,
+      "frequency_count": 1037579
+    },
+    {
+      "candidate_rank": 43,
+      "source_rank": 43,
+      "word": "aşa",
+      "pos": null,
+      "frequency_count": 964454
+    },
+    {
+      "candidate_rank": 44,
+      "source_rank": 44,
+      "word": "el",
+      "pos": null,
+      "frequency_count": 958375
+    },
+    {
+      "candidate_rank": 45,
+      "source_rank": 45,
+      "word": "ar",
+      "pos": null,
+      "frequency_count": 938213
+    },
+    {
+      "candidate_rank": 46,
+      "source_rank": 46,
+      "word": "lui",
+      "pos": null,
+      "frequency_count": 927193
+    },
+    {
+      "candidate_rank": 47,
+      "source_rank": 47,
+      "word": "ceva",
+      "pos": null,
+      "frequency_count": 914077
+    },
+    {
+      "candidate_rank": 48,
+      "source_rank": 48,
+      "word": "când",
+      "pos": null,
+      "frequency_count": 900979
+    },
+    {
+      "candidate_rank": 49,
+      "source_rank": 49,
+      "word": "doar",
+      "pos": null,
+      "frequency_count": 891182
+    },
+    {
+      "candidate_rank": 50,
+      "source_rank": 50,
+      "word": "eşti",
+      "pos": null,
+      "frequency_count": 878932
+    },
+    {
+      "candidate_rank": 51,
+      "source_rank": 51,
+      "word": "ei",
+      "pos": null,
+      "frequency_count": 867727
+    },
+    {
+      "candidate_rank": 52,
+      "source_rank": 52,
+      "word": "ne",
+      "pos": null,
+      "frequency_count": 844072
+    },
+    {
+      "candidate_rank": 53,
+      "source_rank": 53,
+      "word": "mine",
+      "pos": null,
+      "frequency_count": 822643
+    },
+    {
+      "candidate_rank": 54,
+      "source_rank": 54,
+      "word": "tine",
+      "pos": null,
+      "frequency_count": 816508
+    },
+    {
+      "candidate_rank": 55,
+      "source_rank": 55,
+      "word": "poate",
+      "pos": null,
+      "frequency_count": 781407
+    },
+    {
+      "candidate_rank": 56,
+      "source_rank": 56,
+      "word": "pot",
+      "pos": null,
+      "frequency_count": 769397
+    },
+    {
+      "candidate_rank": 57,
+      "source_rank": 57,
+      "word": "voi",
+      "pos": null,
+      "frequency_count": 767849
+    },
+    {
+      "candidate_rank": 58,
+      "source_rank": 58,
+      "word": "face",
+      "pos": null,
+      "frequency_count": 764243
+    },
+    {
+      "candidate_rank": 59,
+      "source_rank": 59,
+      "word": "cred",
+      "pos": null,
+      "frequency_count": 752704
+    },
+    {
+      "candidate_rank": 60,
+      "source_rank": 60,
+      "word": "îmi",
+      "pos": null,
+      "frequency_count": 738638
+    },
+    {
+      "candidate_rank": 61,
+      "source_rank": 61,
+      "word": "au",
+      "pos": null,
+      "frequency_count": 722786
+    },
+    {
+      "candidate_rank": 62,
+      "source_rank": 62,
+      "word": "mea",
+      "pos": null,
+      "frequency_count": 710636
+    },
+    {
+      "candidate_rank": 63,
+      "source_rank": 63,
+      "word": "spus",
+      "pos": null,
+      "frequency_count": 688861
+    },
+    {
+      "candidate_rank": 64,
+      "source_rank": 64,
+      "word": "ştiu",
+      "pos": null,
+      "frequency_count": 667755
+    },
+    {
+      "candidate_rank": 65,
+      "source_rank": 65,
+      "word": "unde",
+      "pos": null,
+      "frequency_count": 665674
+    },
+    {
+      "candidate_rank": 66,
+      "source_rank": 66,
+      "word": "vă",
+      "pos": null,
+      "frequency_count": 642150
+    },
+    {
+      "candidate_rank": 67,
+      "source_rank": 67,
+      "word": "meu",
+      "pos": null,
+      "frequency_count": 641192
+    },
+    {
+      "candidate_rank": 68,
+      "source_rank": 68,
+      "word": "ea",
+      "pos": null,
+      "frequency_count": 640726
+    },
+    {
+      "candidate_rank": 69,
+      "source_rank": 69,
+      "word": "mult",
+      "pos": null,
+      "frequency_count": 618175
+    },
+    {
+      "candidate_rank": 70,
+      "source_rank": 70,
+      "word": "vreau",
+      "pos": null,
+      "frequency_count": 608321
+    },
+    {
+      "candidate_rank": 71,
+      "source_rank": 71,
+      "word": "s-a",
+      "pos": null,
+      "frequency_count": 604547
+    },
+    {
+      "candidate_rank": 72,
+      "source_rank": 72,
+      "word": "despre",
+      "pos": null,
+      "frequency_count": 597608
+    },
+    {
+      "candidate_rank": 73,
+      "source_rank": 73,
+      "word": "vrei",
+      "pos": null,
+      "frequency_count": 591530
+    },
+    {
+      "candidate_rank": 74,
+      "source_rank": 74,
+      "word": "sau",
+      "pos": null,
+      "frequency_count": 568030
+    },
+    {
+      "candidate_rank": 75,
+      "source_rank": 75,
+      "word": "tot",
+      "pos": null,
+      "frequency_count": 566944
+    },
+    {
+      "candidate_rank": 76,
+      "source_rank": 76,
+      "word": "foarte",
+      "pos": null,
+      "frequency_count": 565929
+    },
+    {
+      "candidate_rank": 77,
+      "source_rank": 77,
+      "word": "pare",
+      "pos": null,
+      "frequency_count": 559584
+    },
+    {
+      "candidate_rank": 78,
+      "source_rank": 78,
+      "word": "acolo",
+      "pos": null,
+      "frequency_count": 556825
+    },
+    {
+      "candidate_rank": 79,
+      "source_rank": 79,
+      "word": "chiar",
+      "pos": null,
+      "frequency_count": 551893
+    },
+    {
+      "candidate_rank": 80,
+      "source_rank": 80,
+      "word": "in",
+      "pos": null,
+      "frequency_count": 539348
+    },
+    {
+      "candidate_rank": 81,
+      "source_rank": 81,
+      "word": "noi",
+      "pos": null,
+      "frequency_count": 538727
+    },
+    {
+      "candidate_rank": 82,
+      "source_rank": 82,
+      "word": "bună",
+      "pos": null,
+      "frequency_count": 537111
+    },
+    {
+      "candidate_rank": 83,
+      "source_rank": 83,
+      "word": "ta",
+      "pos": null,
+      "frequency_count": 532503
+    },
+    {
+      "candidate_rank": 84,
+      "source_rank": 84,
+      "word": "era",
+      "pos": null,
+      "frequency_count": 521730
+    },
+    {
+      "candidate_rank": 85,
+      "source_rank": 85,
+      "word": "nimic",
+      "pos": null,
+      "frequency_count": 516329
+    },
+    {
+      "candidate_rank": 86,
+      "source_rank": 86,
+      "word": "faci",
+      "pos": null,
+      "frequency_count": 506806
+    },
+    {
+      "candidate_rank": 87,
+      "source_rank": 87,
+      "word": "are",
+      "pos": null,
+      "frequency_count": 505733
+    },
+    {
+      "candidate_rank": 88,
+      "source_rank": 88,
+      "word": "făcut",
+      "pos": null,
+      "frequency_count": 504982
+    },
+    {
+      "candidate_rank": 89,
+      "source_rank": 89,
+      "word": "cine",
+      "pos": null,
+      "frequency_count": 489338
+    },
+    {
+      "candidate_rank": 90,
+      "source_rank": 90,
+      "word": "nici",
+      "pos": null,
+      "frequency_count": 483812
+    },
+    {
+      "candidate_rank": 91,
+      "source_rank": 91,
+      "word": "putea",
+      "pos": null,
+      "frequency_count": 477731
+    },
+    {
+      "candidate_rank": 92,
+      "source_rank": 92,
+      "word": "ştii",
+      "pos": null,
+      "frequency_count": 462315
+    },
+    {
+      "candidate_rank": 93,
+      "source_rank": 93,
+      "word": "fac",
+      "pos": null,
+      "frequency_count": 455806
+    },
+    {
+      "candidate_rank": 94,
+      "source_rank": 94,
+      "word": "fie",
+      "pos": null,
+      "frequency_count": 446941
+    },
+    {
+      "candidate_rank": 95,
+      "source_rank": 95,
+      "word": "nevoie",
+      "pos": null,
+      "frequency_count": 438630
+    },
+    {
+      "candidate_rank": 96,
+      "source_rank": 96,
+      "word": "trebui",
+      "pos": null,
+      "frequency_count": 437007
+    },
+    {
+      "candidate_rank": 97,
+      "source_rank": 97,
+      "word": "rău",
+      "pos": null,
+      "frequency_count": 433822
+    },
+    {
+      "candidate_rank": 98,
+      "source_rank": 98,
+      "word": "atunci",
+      "pos": null,
+      "frequency_count": 415741
+    },
+    {
+      "candidate_rank": 99,
+      "source_rank": 99,
+      "word": "timp",
+      "pos": null,
+      "frequency_count": 403747
+    },
+    {
+      "candidate_rank": 100,
+      "source_rank": 100,
+      "word": "tău",
+      "pos": null,
+      "frequency_count": 399241
+    },
+    {
+      "candidate_rank": 101,
+      "source_rank": 101,
+      "word": "spun",
+      "pos": null,
+      "frequency_count": 393057
+    },
+    {
+      "candidate_rank": 102,
+      "source_rank": 102,
+      "word": "și",
+      "pos": null,
+      "frequency_count": 392140
+    },
+    {
+      "candidate_rank": 103,
+      "source_rank": 103,
+      "word": "rog",
+      "pos": null,
+      "frequency_count": 391445
+    },
+    {
+      "candidate_rank": 104,
+      "source_rank": 104,
+      "word": "acest",
+      "pos": null,
+      "frequency_count": 387233
+    },
+    {
+      "candidate_rank": 105,
+      "source_rank": 105,
+      "word": "îţi",
+      "pos": null,
+      "frequency_count": 384329
+    },
+    {
+      "candidate_rank": 106,
+      "source_rank": 106,
+      "word": "nu-i",
+      "pos": null,
+      "frequency_count": 379797
+    },
+    {
+      "candidate_rank": 107,
+      "source_rank": 107,
+      "word": "spune",
+      "pos": null,
+      "frequency_count": 377274
+    },
+    {
+      "candidate_rank": 108,
+      "source_rank": 108,
+      "word": "avem",
+      "pos": null,
+      "frequency_count": 372687
+    },
+    {
+      "candidate_rank": 109,
+      "source_rank": 109,
+      "word": "poţi",
+      "pos": null,
+      "frequency_count": 372178
+    },
+    {
+      "candidate_rank": 110,
+      "source_rank": 110,
+      "word": "al",
+      "pos": null,
+      "frequency_count": 369035
+    },
+    {
+      "candidate_rank": 111,
+      "source_rank": 111,
+      "word": "le",
+      "pos": null,
+      "frequency_count": 362497
+    },
+    {
+      "candidate_rank": 112,
+      "source_rank": 112,
+      "word": "după",
+      "pos": null,
+      "frequency_count": 361953
+    },
+    {
+      "candidate_rank": 113,
+      "source_rank": 113,
+      "word": "vom",
+      "pos": null,
+      "frequency_count": 358388
+    },
+    {
+      "candidate_rank": 114,
+      "source_rank": 114,
+      "word": "deci",
+      "pos": null,
+      "frequency_count": 358331
+    },
+    {
+      "candidate_rank": 115,
+      "source_rank": 115,
+      "word": "îl",
+      "pos": null,
+      "frequency_count": 358273
+    },
+    {
+      "candidate_rank": 116,
+      "source_rank": 116,
+      "word": "prea",
+      "pos": null,
+      "frequency_count": 356942
+    },
+    {
+      "candidate_rank": 117,
+      "source_rank": 117,
+      "word": "mulţumesc",
+      "pos": null,
+      "frequency_count": 352241
+    },
+    {
+      "candidate_rank": 118,
+      "source_rank": 118,
+      "word": "să-l",
+      "pos": null,
+      "frequency_count": 351746
+    },
+    {
+      "candidate_rank": 119,
+      "source_rank": 119,
+      "word": "cineva",
+      "pos": null,
+      "frequency_count": 349309
+    },
+    {
+      "candidate_rank": 120,
+      "source_rank": 120,
+      "word": "oh",
+      "pos": null,
+      "frequency_count": 347770
+    },
+    {
+      "candidate_rank": 121,
+      "source_rank": 121,
+      "word": "toate",
+      "pos": null,
+      "frequency_count": 345590
+    },
+    {
+      "candidate_rank": 122,
+      "source_rank": 122,
+      "word": "ani",
+      "pos": null,
+      "frequency_count": 332591
+    },
+    {
+      "candidate_rank": 123,
+      "source_rank": 123,
+      "word": "cel",
+      "pos": null,
+      "frequency_count": 329379
+    },
+    {
+      "candidate_rank": 124,
+      "source_rank": 124,
+      "word": "suntem",
+      "pos": null,
+      "frequency_count": 328910
+    },
+    {
+      "candidate_rank": 125,
+      "source_rank": 125,
+      "word": "vei",
+      "pos": null,
+      "frequency_count": 327499
+    },
+    {
+      "candidate_rank": 126,
+      "source_rank": 126,
+      "word": "bun",
+      "pos": null,
+      "frequency_count": 323813
+    },
+    {
+      "candidate_rank": 127,
+      "source_rank": 127,
+      "word": "sigur",
+      "pos": null,
+      "frequency_count": 323136
+    },
+    {
+      "candidate_rank": 128,
+      "source_rank": 128,
+      "word": "vor",
+      "pos": null,
+      "frequency_count": 315391
+    },
+    {
+      "candidate_rank": 129,
+      "source_rank": 129,
+      "word": "vrea",
+      "pos": null,
+      "frequency_count": 314648
+    },
+    {
+      "candidate_rank": 130,
+      "source_rank": 130,
+      "word": "mare",
+      "pos": null,
+      "frequency_count": 313314
+    },
+    {
+      "candidate_rank": 131,
+      "source_rank": 131,
+      "word": "îi",
+      "pos": null,
+      "frequency_count": 311775
+    },
+    {
+      "candidate_rank": 132,
+      "source_rank": 132,
+      "word": "iar",
+      "pos": null,
+      "frequency_count": 311167
+    },
+    {
+      "candidate_rank": 133,
+      "source_rank": 133,
+      "word": "până",
+      "pos": null,
+      "frequency_count": 310975
+    },
+    {
+      "candidate_rank": 134,
+      "source_rank": 134,
+      "word": "cât",
+      "pos": null,
+      "frequency_count": 310847
+    },
+    {
+      "candidate_rank": 135,
+      "source_rank": 135,
+      "word": "haide",
+      "pos": null,
+      "frequency_count": 308550
+    },
+    {
+      "candidate_rank": 136,
+      "source_rank": 136,
+      "word": "crezi",
+      "pos": null,
+      "frequency_count": 305041
+    },
+    {
+      "candidate_rank": 137,
+      "source_rank": 137,
+      "word": "încă",
+      "pos": null,
+      "frequency_count": 302347
+    },
+    {
+      "candidate_rank": 138,
+      "source_rank": 138,
+      "word": "hei",
+      "pos": null,
+      "frequency_count": 297680
+    },
+    {
+      "candidate_rank": 139,
+      "source_rank": 139,
+      "word": "stai",
+      "pos": null,
+      "frequency_count": 296362
+    },
+    {
+      "candidate_rank": 140,
+      "source_rank": 140,
+      "word": "atât",
+      "pos": null,
+      "frequency_count": 294884
+    },
+    {
+      "candidate_rank": 141,
+      "source_rank": 141,
+      "word": "totul",
+      "pos": null,
+      "frequency_count": 294320
+    },
+    {
+      "candidate_rank": 142,
+      "source_rank": 142,
+      "word": "avea",
+      "pos": null,
+      "frequency_count": 293783
+    },
+    {
+      "candidate_rank": 143,
+      "source_rank": 143,
+      "word": "venit",
+      "pos": null,
+      "frequency_count": 292111
+    },
+    {
+      "candidate_rank": 144,
+      "source_rank": 144,
+      "word": "spui",
+      "pos": null,
+      "frequency_count": 290182
+    },
+    {
+      "candidate_rank": 145,
+      "source_rank": 145,
+      "word": "ăsta",
+      "pos": null,
+      "frequency_count": 289218
+    },
+    {
+      "candidate_rank": 146,
+      "source_rank": 146,
+      "word": "avut",
+      "pos": null,
+      "frequency_count": 287633
+    },
+    {
+      "candidate_rank": 147,
+      "source_rank": 147,
+      "word": "m-am",
+      "pos": null,
+      "frequency_count": 287116
+    },
+    {
+      "candidate_rank": 148,
+      "source_rank": 148,
+      "word": "lucru",
+      "pos": null,
+      "frequency_count": 286445
+    },
+    {
+      "candidate_rank": 149,
+      "source_rank": 149,
+      "word": "să-ţi",
+      "pos": null,
+      "frequency_count": 282777
+    },
+    {
+      "candidate_rank": 150,
+      "source_rank": 150,
+      "word": "văzut",
+      "pos": null,
+      "frequency_count": 278704
+    },
+    {
+      "candidate_rank": 151,
+      "source_rank": 151,
+      "word": "fel",
+      "pos": null,
+      "frequency_count": 276254
+    },
+    {
+      "candidate_rank": 152,
+      "source_rank": 152,
+      "word": "să-i",
+      "pos": null,
+      "frequency_count": 269515
+    },
+    {
+      "candidate_rank": 153,
+      "source_rank": 153,
+      "word": "putem",
+      "pos": null,
+      "frequency_count": 268593
+    },
+    {
+      "candidate_rank": 154,
+      "source_rank": 154,
+      "word": "ceea",
+      "pos": null,
+      "frequency_count": 268493
+    },
+    {
+      "candidate_rank": 155,
+      "source_rank": 155,
+      "word": "n-am",
+      "pos": null,
+      "frequency_count": 264703
+    },
+    {
+      "candidate_rank": 156,
+      "source_rank": 156,
+      "word": "să-mi",
+      "pos": null,
+      "frequency_count": 259955
+    },
+    {
+      "candidate_rank": 157,
+      "source_rank": 157,
+      "word": "fără",
+      "pos": null,
+      "frequency_count": 257536
+    },
+    {
+      "candidate_rank": 158,
+      "source_rank": 158,
+      "word": "ma",
+      "pos": null,
+      "frequency_count": 255051
+    },
+    {
+      "candidate_rank": 159,
+      "source_rank": 159,
+      "word": "mama",
+      "pos": null,
+      "frequency_count": 254552
+    },
+    {
+      "candidate_rank": 160,
+      "source_rank": 160,
+      "word": "place",
+      "pos": null,
+      "frequency_count": 252180
+    },
+    {
+      "candidate_rank": 161,
+      "source_rank": 161,
+      "word": "aş",
+      "pos": null,
+      "frequency_count": 251975
+    },
+    {
+      "candidate_rank": 162,
+      "source_rank": 162,
+      "word": "decât",
+      "pos": null,
+      "frequency_count": 251785
+    },
+    {
+      "candidate_rank": 163,
+      "source_rank": 163,
+      "word": "asa",
+      "pos": null,
+      "frequency_count": 247160
+    },
+    {
+      "candidate_rank": 164,
+      "source_rank": 164,
+      "word": "domnule",
+      "pos": null,
+      "frequency_count": 245897
+    },
+    {
+      "candidate_rank": 165,
+      "source_rank": 165,
+      "word": "niciodată",
+      "pos": null,
+      "frequency_count": 242267
+    },
+    {
+      "candidate_rank": 166,
+      "source_rank": 166,
+      "word": "regulă",
+      "pos": null,
+      "frequency_count": 241931
+    },
+    {
+      "candidate_rank": 167,
+      "source_rank": 167,
+      "word": "mi-a",
+      "pos": null,
+      "frequency_count": 238255
+    },
+    {
+      "candidate_rank": 168,
+      "source_rank": 168,
+      "word": "prin",
+      "pos": null,
+      "frequency_count": 233313
+    },
+    {
+      "candidate_rank": 169,
+      "source_rank": 169,
+      "word": "s-o",
+      "pos": null,
+      "frequency_count": 232760
+    },
+    {
+      "candidate_rank": 170,
+      "source_rank": 170,
+      "word": "esti",
+      "pos": null,
+      "frequency_count": 232617
+    },
+    {
+      "candidate_rank": 171,
+      "source_rank": 171,
+      "word": "înainte",
+      "pos": null,
+      "frequency_count": 231760
+    },
+    {
+      "candidate_rank": 172,
+      "source_rank": 172,
+      "word": "văd",
+      "pos": null,
+      "frequency_count": 231397
+    },
+    {
+      "candidate_rank": 173,
+      "source_rank": 173,
+      "word": "mergem",
+      "pos": null,
+      "frequency_count": 228204
+    },
+    {
+      "candidate_rank": 174,
+      "source_rank": 174,
+      "word": "unul",
+      "pos": null,
+      "frequency_count": 225254
+    },
+    {
+      "candidate_rank": 175,
+      "source_rank": 175,
+      "word": "uite",
+      "pos": null,
+      "frequency_count": 224674
+    },
+    {
+      "candidate_rank": 176,
+      "source_rank": 176,
+      "word": "puţin",
+      "pos": null,
+      "frequency_count": 223910
+    },
+    {
+      "candidate_rank": 177,
+      "source_rank": 177,
+      "word": "hai",
+      "pos": null,
+      "frequency_count": 223331
+    },
+    {
+      "candidate_rank": 178,
+      "source_rank": 178,
+      "word": "loc",
+      "pos": null,
+      "frequency_count": 222826
+    },
+    {
+      "candidate_rank": 179,
+      "source_rank": 179,
+      "word": "nimeni",
+      "pos": null,
+      "frequency_count": 222168
+    },
+    {
+      "candidate_rank": 180,
+      "source_rank": 180,
+      "word": "toată",
+      "pos": null,
+      "frequency_count": 219571
+    },
+    {
+      "candidate_rank": 181,
+      "source_rank": 181,
+      "word": "apoi",
+      "pos": null,
+      "frequency_count": 217816
+    },
+    {
+      "candidate_rank": 182,
+      "source_rank": 182,
+      "word": "vezi",
+      "pos": null,
+      "frequency_count": 215815
+    },
+    {
+      "candidate_rank": 183,
+      "source_rank": 183,
+      "word": "dat",
+      "pos": null,
+      "frequency_count": 215617
+    },
+    {
+      "candidate_rank": 184,
+      "source_rank": 184,
+      "word": "întâmplat",
+      "pos": null,
+      "frequency_count": 214650
+    },
+    {
+      "candidate_rank": 185,
+      "source_rank": 185,
+      "word": "fii",
+      "pos": null,
+      "frequency_count": 213758
+    },
+    {
+      "candidate_rank": 186,
+      "source_rank": 186,
+      "word": "l-am",
+      "pos": null,
+      "frequency_count": 213577
+    },
+    {
+      "candidate_rank": 187,
+      "source_rank": 187,
+      "word": "naiba",
+      "pos": null,
+      "frequency_count": 212074
+    },
+    {
+      "candidate_rank": 188,
+      "source_rank": 188,
+      "word": "nou",
+      "pos": null,
+      "frequency_count": 211162
+    },
+    {
+      "candidate_rank": 189,
+      "source_rank": 189,
+      "word": "oameni",
+      "pos": null,
+      "frequency_count": 210721
+    },
+    {
+      "candidate_rank": 190,
+      "source_rank": 190,
+      "word": "ia",
+      "pos": null,
+      "frequency_count": 204361
+    },
+    {
+      "candidate_rank": 191,
+      "source_rank": 191,
+      "word": "facem",
+      "pos": null,
+      "frequency_count": 203898
+    },
+    {
+      "candidate_rank": 192,
+      "source_rank": 192,
+      "word": "zi",
+      "pos": null,
+      "frequency_count": 200797
+    },
+    {
+      "candidate_rank": 193,
+      "source_rank": 193,
+      "word": "acasă",
+      "pos": null,
+      "frequency_count": 200450
+    },
+    {
+      "candidate_rank": 194,
+      "source_rank": 194,
+      "word": "multe",
+      "pos": null,
+      "frequency_count": 200385
+    },
+    {
+      "candidate_rank": 195,
+      "source_rank": 195,
+      "word": "jos",
+      "pos": null,
+      "frequency_count": 198414
+    },
+    {
+      "candidate_rank": 196,
+      "source_rank": 196,
+      "word": "lumea",
+      "pos": null,
+      "frequency_count": 197718
+    },
+    {
+      "candidate_rank": 197,
+      "source_rank": 197,
+      "word": "două",
+      "pos": null,
+      "frequency_count": 196895
+    },
+    {
+      "candidate_rank": 198,
+      "source_rank": 198,
+      "word": "toţi",
+      "pos": null,
+      "frequency_count": 196884
+    },
+    {
+      "candidate_rank": 199,
+      "source_rank": 199,
+      "word": "nu-mi",
+      "pos": null,
+      "frequency_count": 196054
+    },
+    {
+      "candidate_rank": 200,
+      "source_rank": 200,
+      "word": "daca",
+      "pos": null,
+      "frequency_count": 191796
+    },
+    {
+      "candidate_rank": 201,
+      "source_rank": 201,
+      "word": "timpul",
+      "pos": null,
+      "frequency_count": 188469
+    },
+    {
+      "candidate_rank": 202,
+      "source_rank": 202,
+      "word": "această",
+      "pos": null,
+      "frequency_count": 186731
+    },
+    {
+      "candidate_rank": 203,
+      "source_rank": 203,
+      "word": "orice",
+      "pos": null,
+      "frequency_count": 184880
+    },
+    {
+      "candidate_rank": 204,
+      "source_rank": 204,
+      "word": "oamenii",
+      "pos": null,
+      "frequency_count": 184710
+    },
+    {
+      "candidate_rank": 205,
+      "source_rank": 205,
+      "word": "auzit",
+      "pos": null,
+      "frequency_count": 183693
+    },
+    {
+      "candidate_rank": 206,
+      "source_rank": 206,
+      "word": "doi",
+      "pos": null,
+      "frequency_count": 183254
+    },
+    {
+      "candidate_rank": 207,
+      "source_rank": 207,
+      "word": "dle",
+      "pos": null,
+      "frequency_count": 182847
+    },
+    {
+      "candidate_rank": 208,
+      "source_rank": 208,
+      "word": "luat",
+      "pos": null,
+      "frequency_count": 182477
+    },
+    {
+      "candidate_rank": 209,
+      "source_rank": 209,
+      "word": "fiecare",
+      "pos": null,
+      "frequency_count": 182163
+    },
+    {
+      "candidate_rank": 210,
+      "source_rank": 210,
+      "word": "peste",
+      "pos": null,
+      "frequency_count": 181114
+    },
+    {
+      "candidate_rank": 211,
+      "source_rank": 211,
+      "word": "vrut",
+      "pos": null,
+      "frequency_count": 180359
+    },
+    {
+      "candidate_rank": 212,
+      "source_rank": 212,
+      "word": "înapoi",
+      "pos": null,
+      "frequency_count": 179693
+    },
+    {
+      "candidate_rank": 213,
+      "source_rank": 213,
+      "word": "într-o",
+      "pos": null,
+      "frequency_count": 178543
+    },
+    {
+      "candidate_rank": 214,
+      "source_rank": 214,
+      "word": "astea",
+      "pos": null,
+      "frequency_count": 178347
+    },
+    {
+      "candidate_rank": 215,
+      "source_rank": 215,
+      "word": "aţi",
+      "pos": null,
+      "frequency_count": 177291
+    },
+    {
+      "candidate_rank": 216,
+      "source_rank": 216,
+      "word": "aia",
+      "pos": null,
+      "frequency_count": 175788
+    },
+    {
+      "candidate_rank": 217,
+      "source_rank": 217,
+      "word": "fiu",
+      "pos": null,
+      "frequency_count": 175685
+    },
+    {
+      "candidate_rank": 218,
+      "source_rank": 218,
+      "word": "dintre",
+      "pos": null,
+      "frequency_count": 174646
+    },
+    {
+      "candidate_rank": 219,
+      "source_rank": 219,
+      "word": "merge",
+      "pos": null,
+      "frequency_count": 174225
+    },
+    {
+      "candidate_rank": 220,
+      "source_rank": 220,
+      "word": "lor",
+      "pos": null,
+      "frequency_count": 173715
+    },
+    {
+      "candidate_rank": 221,
+      "source_rank": 221,
+      "word": "nişte",
+      "pos": null,
+      "frequency_count": 173667
+    },
+    {
+      "candidate_rank": 222,
+      "source_rank": 222,
+      "word": "trei",
+      "pos": null,
+      "frequency_count": 172570
+    },
+    {
+      "candidate_rank": 223,
+      "source_rank": 223,
+      "word": "numele",
+      "pos": null,
+      "frequency_count": 172271
+    },
+    {
+      "candidate_rank": 224,
+      "source_rank": 224,
+      "word": "om",
+      "pos": null,
+      "frequency_count": 171379
+    },
+    {
+      "candidate_rank": 225,
+      "source_rank": 225,
+      "word": "cea",
+      "pos": null,
+      "frequency_count": 166468
+    },
+    {
+      "candidate_rank": 226,
+      "source_rank": 226,
+      "word": "găsit",
+      "pos": null,
+      "frequency_count": 164597
+    },
+    {
+      "candidate_rank": 227,
+      "source_rank": 227,
+      "word": "cei",
+      "pos": null,
+      "frequency_count": 162848
+    },
+    {
+      "candidate_rank": 228,
+      "source_rank": 228,
+      "word": "doamne",
+      "pos": null,
+      "frequency_count": 161638
+    },
+    {
+      "candidate_rank": 229,
+      "source_rank": 229,
+      "word": "mele",
+      "pos": null,
+      "frequency_count": 160235
+    },
+    {
+      "candidate_rank": 230,
+      "source_rank": 230,
+      "word": "te-ai",
+      "pos": null,
+      "frequency_count": 159970
+    },
+    {
+      "candidate_rank": 231,
+      "source_rank": 231,
+      "word": "i",
+      "pos": null,
+      "frequency_count": 158268
+    },
+    {
+      "candidate_rank": 232,
+      "source_rank": 232,
+      "word": "stiu",
+      "pos": null,
+      "frequency_count": 156943
+    },
+    {
+      "candidate_rank": 233,
+      "source_rank": 233,
+      "word": "aceasta",
+      "pos": null,
+      "frequency_count": 156693
+    },
+    {
+      "candidate_rank": 234,
+      "source_rank": 234,
+      "word": "du-te",
+      "pos": null,
+      "frequency_count": 155094
+    },
+    {
+      "candidate_rank": 235,
+      "source_rank": 235,
+      "word": "viaţa",
+      "pos": null,
+      "frequency_count": 154660
+    },
+    {
+      "candidate_rank": 236,
+      "source_rank": 236,
+      "word": "deja",
+      "pos": null,
+      "frequency_count": 154205
+    },
+    {
+      "candidate_rank": 237,
+      "source_rank": 237,
+      "word": "ziua",
+      "pos": null,
+      "frequency_count": 153784
+    },
+    {
+      "candidate_rank": 238,
+      "source_rank": 238,
+      "word": "duc",
+      "pos": null,
+      "frequency_count": 153456
+    },
+    {
+      "candidate_rank": 239,
+      "source_rank": 239,
+      "word": "dată",
+      "pos": null,
+      "frequency_count": 153149
+    },
+    {
+      "candidate_rank": 240,
+      "source_rank": 240,
+      "word": "parte",
+      "pos": null,
+      "frequency_count": 152096
+    },
+    {
+      "candidate_rank": 241,
+      "source_rank": 241,
+      "word": "i-am",
+      "pos": null,
+      "frequency_count": 151654
+    },
+    {
+      "candidate_rank": 242,
+      "source_rank": 242,
+      "word": "vino",
+      "pos": null,
+      "frequency_count": 149419
+    },
+    {
+      "candidate_rank": 243,
+      "source_rank": 243,
+      "word": "destul",
+      "pos": null,
+      "frequency_count": 149381
+    },
+    {
+      "candidate_rank": 244,
+      "source_rank": 244,
+      "word": "câteva",
+      "pos": null,
+      "frequency_count": 148904
+    },
+    {
+      "candidate_rank": 245,
+      "source_rank": 245,
+      "word": "există",
+      "pos": null,
+      "frequency_count": 148539
+    },
+    {
+      "candidate_rank": 246,
+      "source_rank": 246,
+      "word": "serios",
+      "pos": null,
+      "frequency_count": 147858
+    },
+    {
+      "candidate_rank": 247,
+      "source_rank": 247,
+      "word": "gata",
+      "pos": null,
+      "frequency_count": 147682
+    },
+    {
+      "candidate_rank": 248,
+      "source_rank": 248,
+      "word": "bani",
+      "pos": null,
+      "frequency_count": 146967
+    },
+    {
+      "candidate_rank": 249,
+      "source_rank": 249,
+      "word": "vorbesc",
+      "pos": null,
+      "frequency_count": 144540
+    },
+    {
+      "candidate_rank": 250,
+      "source_rank": 250,
+      "word": "ok",
+      "pos": null,
+      "frequency_count": 143897
+    },
+    {
+      "candidate_rank": 251,
+      "source_rank": 251,
+      "word": "tatăl",
+      "pos": null,
+      "frequency_count": 143638
+    },
+    {
+      "candidate_rank": 252,
+      "source_rank": 252,
+      "word": "aproape",
+      "pos": null,
+      "frequency_count": 143473
+    },
+    {
+      "candidate_rank": 253,
+      "source_rank": 253,
+      "word": "vedem",
+      "pos": null,
+      "frequency_count": 143051
+    },
+    {
+      "candidate_rank": 254,
+      "source_rank": 254,
+      "word": "afară",
+      "pos": null,
+      "frequency_count": 142050
+    },
+    {
+      "candidate_rank": 255,
+      "source_rank": 255,
+      "word": "dau",
+      "pos": null,
+      "frequency_count": 141162
+    },
+    {
+      "candidate_rank": 256,
+      "source_rank": 256,
+      "word": "numai",
+      "pos": null,
+      "frequency_count": 141152
+    },
+    {
+      "candidate_rank": 257,
+      "source_rank": 257,
+      "word": "întâmplă",
+      "pos": null,
+      "frequency_count": 140625
+    },
+    {
+      "candidate_rank": 258,
+      "source_rank": 258,
+      "word": "nostru",
+      "pos": null,
+      "frequency_count": 140397
+    },
+    {
+      "candidate_rank": 259,
+      "source_rank": 259,
+      "word": "adevărat",
+      "pos": null,
+      "frequency_count": 140348
+    },
+    {
+      "candidate_rank": 260,
+      "source_rank": 260,
+      "word": "noastră",
+      "pos": null,
+      "frequency_count": 139979
+    },
+    {
+      "candidate_rank": 261,
+      "source_rank": 261,
+      "word": "înseamnă",
+      "pos": null,
+      "frequency_count": 139656
+    },
+    {
+      "candidate_rank": 262,
+      "source_rank": 262,
+      "word": "într-un",
+      "pos": null,
+      "frequency_count": 139653
+    },
+    {
+      "candidate_rank": 263,
+      "source_rank": 263,
+      "word": "una",
+      "pos": null,
+      "frequency_count": 139478
+    },
+    {
+      "candidate_rank": 264,
+      "source_rank": 264,
+      "word": "vin",
+      "pos": null,
+      "frequency_count": 138569
+    },
+    {
+      "candidate_rank": 265,
+      "source_rank": 265,
+      "word": "m-a",
+      "pos": null,
+      "frequency_count": 137102
+    },
+    {
+      "candidate_rank": 266,
+      "source_rank": 266,
+      "word": "eram",
+      "pos": null,
+      "frequency_count": 136488
+    },
+    {
+      "candidate_rank": 267,
+      "source_rank": 267,
+      "word": "locul",
+      "pos": null,
+      "frequency_count": 136308
+    },
+    {
+      "candidate_rank": 268,
+      "source_rank": 268,
+      "word": "scuze",
+      "pos": null,
+      "frequency_count": 135660
+    },
+    {
+      "candidate_rank": 269,
+      "source_rank": 269,
+      "word": "acesta",
+      "pos": null,
+      "frequency_count": 135466
+    },
+    {
+      "candidate_rank": 270,
+      "source_rank": 270,
+      "word": "vine",
+      "pos": null,
+      "frequency_count": 134729
+    },
+    {
+      "candidate_rank": 271,
+      "source_rank": 271,
+      "word": "repede",
+      "pos": null,
+      "frequency_count": 134026
+    },
+    {
+      "candidate_rank": 272,
+      "source_rank": 272,
+      "word": "zis",
+      "pos": null,
+      "frequency_count": 133726
+    },
+    {
+      "candidate_rank": 273,
+      "source_rank": 273,
+      "word": "fapt",
+      "pos": null,
+      "frequency_count": 133259
+    },
+    {
+      "candidate_rank": 274,
+      "source_rank": 274,
+      "word": "ori",
+      "pos": null,
+      "frequency_count": 133122
+    },
+    {
+      "candidate_rank": 275,
+      "source_rank": 275,
+      "word": "te-am",
+      "pos": null,
+      "frequency_count": 133096
+    },
+    {
+      "candidate_rank": 276,
+      "source_rank": 276,
+      "word": "n-o",
+      "pos": null,
+      "frequency_count": 132823
+    },
+    {
+      "candidate_rank": 277,
+      "source_rank": 277,
+      "word": "putut",
+      "pos": null,
+      "frequency_count": 132649
+    },
+    {
+      "candidate_rank": 278,
+      "source_rank": 278,
+      "word": "grijă",
+      "pos": null,
+      "frequency_count": 131544
+    },
+    {
+      "candidate_rank": 279,
+      "source_rank": 279,
+      "word": "tale",
+      "pos": null,
+      "frequency_count": 130936
+    },
+    {
+      "candidate_rank": 280,
+      "source_rank": 280,
+      "word": "lucruri",
+      "pos": null,
+      "frequency_count": 130729
+    },
+    {
+      "candidate_rank": 281,
+      "source_rank": 281,
+      "word": "singur",
+      "pos": null,
+      "frequency_count": 129948
+    },
+    {
+      "candidate_rank": 282,
+      "source_rank": 282,
+      "word": "prima",
+      "pos": null,
+      "frequency_count": 129865
+    },
+    {
+      "candidate_rank": 283,
+      "source_rank": 283,
+      "word": "casa",
+      "pos": null,
+      "frequency_count": 129818
+    },
+    {
+      "candidate_rank": 284,
+      "source_rank": 284,
+      "word": "probabil",
+      "pos": null,
+      "frequency_count": 129673
+    },
+    {
+      "candidate_rank": 285,
+      "source_rank": 285,
+      "word": "ajuns",
+      "pos": null,
+      "frequency_count": 129649
+    },
+    {
+      "candidate_rank": 286,
+      "source_rank": 286,
+      "word": "cam",
+      "pos": null,
+      "frequency_count": 129221
+    },
+    {
+      "candidate_rank": 287,
+      "source_rank": 287,
+      "word": "exact",
+      "pos": null,
+      "frequency_count": 128153
+    },
+    {
+      "candidate_rank": 288,
+      "source_rank": 288,
+      "word": "ştie",
+      "pos": null,
+      "frequency_count": 128043
+    },
+    {
+      "candidate_rank": 289,
+      "source_rank": 289,
+      "word": "sunteţi",
+      "pos": null,
+      "frequency_count": 127114
+    },
+    {
+      "candidate_rank": 290,
+      "source_rank": 290,
+      "word": "l-a",
+      "pos": null,
+      "frequency_count": 126778
+    },
+    {
+      "candidate_rank": 291,
+      "source_rank": 291,
+      "word": "dreptate",
+      "pos": null,
+      "frequency_count": 125615
+    },
+    {
+      "candidate_rank": 292,
+      "source_rank": 292,
+      "word": "simt",
+      "pos": null,
+      "frequency_count": 124928
+    },
+    {
+      "candidate_rank": 293,
+      "source_rank": 293,
+      "word": "tocmai",
+      "pos": null,
+      "frequency_count": 124497
+    },
+    {
+      "candidate_rank": 294,
+      "source_rank": 294,
+      "word": "noapte",
+      "pos": null,
+      "frequency_count": 123892
+    },
+    {
+      "candidate_rank": 295,
+      "source_rank": 295,
+      "word": "cele",
+      "pos": null,
+      "frequency_count": 123241
+    },
+    {
+      "candidate_rank": 296,
+      "source_rank": 296,
+      "word": "târziu",
+      "pos": null,
+      "frequency_count": 122871
+    },
+    {
+      "candidate_rank": 297,
+      "source_rank": 297,
+      "word": "trecut",
+      "pos": null,
+      "frequency_count": 122385
+    },
+    {
+      "candidate_rank": 298,
+      "source_rank": 298,
+      "word": "zile",
+      "pos": null,
+      "frequency_count": 122246
+    },
+    {
+      "candidate_rank": 299,
+      "source_rank": 299,
+      "word": "facă",
+      "pos": null,
+      "frequency_count": 122115
+    },
+    {
+      "candidate_rank": 300,
+      "source_rank": 300,
+      "word": "mereu",
+      "pos": null,
+      "frequency_count": 122110
+    },
+    {
+      "candidate_rank": 301,
+      "source_rank": 301,
+      "word": "adică",
+      "pos": null,
+      "frequency_count": 121605
+    },
+    {
+      "candidate_rank": 302,
+      "source_rank": 302,
+      "word": "partea",
+      "pos": null,
+      "frequency_count": 121291
+    },
+    {
+      "candidate_rank": 303,
+      "source_rank": 303,
+      "word": "seara",
+      "pos": null,
+      "frequency_count": 121083
+    },
+    {
+      "candidate_rank": 304,
+      "source_rank": 304,
+      "word": "lucrurile",
+      "pos": null,
+      "frequency_count": 120364
+    },
+    {
+      "candidate_rank": 305,
+      "source_rank": 305,
+      "word": "iau",
+      "pos": null,
+      "frequency_count": 120190
+    },
+    {
+      "candidate_rank": 306,
+      "source_rank": 306,
+      "word": "unui",
+      "pos": null,
+      "frequency_count": 120152
+    },
+    {
+      "candidate_rank": 307,
+      "source_rank": 307,
+      "word": "împreună",
+      "pos": null,
+      "frequency_count": 119977
+    },
+    {
+      "candidate_rank": 308,
+      "source_rank": 308,
+      "word": "plecat",
+      "pos": null,
+      "frequency_count": 119574
+    },
+    {
+      "candidate_rank": 309,
+      "source_rank": 309,
+      "word": "crezut",
+      "pos": null,
+      "frequency_count": 119330
+    },
+    {
+      "candidate_rank": 310,
+      "source_rank": 310,
+      "word": "omule",
+      "pos": null,
+      "frequency_count": 119084
+    },
+    {
+      "candidate_rank": 311,
+      "source_rank": 311,
+      "word": "fata",
+      "pos": null,
+      "frequency_count": 119047
+    },
+    {
+      "candidate_rank": 312,
+      "source_rank": 312,
+      "word": "imediat",
+      "pos": null,
+      "frequency_count": 117946
+    },
+    {
+      "candidate_rank": 313,
+      "source_rank": 313,
+      "word": "ne-am",
+      "pos": null,
+      "frequency_count": 117612
+    },
+    {
+      "candidate_rank": 314,
+      "source_rank": 314,
+      "word": "spre",
+      "pos": null,
+      "frequency_count": 117225
+    },
+    {
+      "candidate_rank": 315,
+      "source_rank": 315,
+      "word": "azi",
+      "pos": null,
+      "frequency_count": 116657
+    },
+    {
+      "candidate_rank": 316,
+      "source_rank": 316,
+      "word": "ţi-am",
+      "pos": null,
+      "frequency_count": 116383
+    },
+    {
+      "candidate_rank": 317,
+      "source_rank": 317,
+      "word": "departe",
+      "pos": null,
+      "frequency_count": 116244
+    },
+    {
+      "candidate_rank": 318,
+      "source_rank": 318,
+      "word": "aceste",
+      "pos": null,
+      "frequency_count": 115627
+    },
+    {
+      "candidate_rank": 319,
+      "source_rank": 319,
+      "word": "terminat",
+      "pos": null,
+      "frequency_count": 115549
+    },
+    {
+      "candidate_rank": 320,
+      "source_rank": 320,
+      "word": "început",
+      "pos": null,
+      "frequency_count": 115086
+    },
+    {
+      "candidate_rank": 321,
+      "source_rank": 321,
+      "word": "trebuia",
+      "pos": null,
+      "frequency_count": 114463
+    },
+    {
+      "candidate_rank": 322,
+      "source_rank": 322,
+      "word": "iubesc",
+      "pos": null,
+      "frequency_count": 114099
+    },
+    {
+      "candidate_rank": 323,
+      "source_rank": 323,
+      "word": "m-ai",
+      "pos": null,
+      "frequency_count": 113977
+    },
+    {
+      "candidate_rank": 324,
+      "source_rank": 324,
+      "word": "stii",
+      "pos": null,
+      "frequency_count": 113657
+    },
+    {
+      "candidate_rank": 325,
+      "source_rank": 325,
+      "word": "măcar",
+      "pos": null,
+      "frequency_count": 112396
+    },
+    {
+      "candidate_rank": 326,
+      "source_rank": 326,
+      "word": "pierdut",
+      "pos": null,
+      "frequency_count": 111701
+    },
+    {
+      "candidate_rank": 327,
+      "source_rank": 327,
+      "word": "tata",
+      "pos": null,
+      "frequency_count": 111597
+    },
+    {
+      "candidate_rank": 328,
+      "source_rank": 328,
+      "word": "sub",
+      "pos": null,
+      "frequency_count": 111558
+    },
+    {
+      "candidate_rank": 329,
+      "source_rank": 329,
+      "word": "copii",
+      "pos": null,
+      "frequency_count": 111475
+    },
+    {
+      "candidate_rank": 330,
+      "source_rank": 330,
+      "word": "frumos",
+      "pos": null,
+      "frequency_count": 111008
+    },
+    {
+      "candidate_rank": 331,
+      "source_rank": 331,
+      "word": "banii",
+      "pos": null,
+      "frequency_count": 110777
+    },
+    {
+      "candidate_rank": 332,
+      "source_rank": 332,
+      "word": "mâine",
+      "pos": null,
+      "frequency_count": 110515
+    },
+    {
+      "candidate_rank": 333,
+      "source_rank": 333,
+      "word": "n-ai",
+      "pos": null,
+      "frequency_count": 110499
+    },
+    {
+      "candidate_rank": 334,
+      "source_rank": 334,
+      "word": "mi-am",
+      "pos": null,
+      "frequency_count": 109890
+    },
+    {
+      "candidate_rank": 335,
+      "source_rank": 335,
+      "word": "mamă",
+      "pos": null,
+      "frequency_count": 109837
+    },
+    {
+      "candidate_rank": 336,
+      "source_rank": 336,
+      "word": "mi",
+      "pos": null,
+      "frequency_count": 109532
+    },
+    {
+      "candidate_rank": 337,
+      "source_rank": 337,
+      "word": "mei",
+      "pos": null,
+      "frequency_count": 108835
+    },
+    {
+      "candidate_rank": 338,
+      "source_rank": 338,
+      "word": "treaba",
+      "pos": null,
+      "frequency_count": 108728
+    },
+    {
+      "candidate_rank": 339,
+      "source_rank": 339,
+      "word": "l-ai",
+      "pos": null,
+      "frequency_count": 108112
+    },
+    {
+      "candidate_rank": 340,
+      "source_rank": 340,
+      "word": "tată",
+      "pos": null,
+      "frequency_count": 108033
+    },
+    {
+      "candidate_rank": 341,
+      "source_rank": 341,
+      "word": "plec",
+      "pos": null,
+      "frequency_count": 107994
+    },
+    {
+      "candidate_rank": 342,
+      "source_rank": 342,
+      "word": "sus",
+      "pos": null,
+      "frequency_count": 106213
+    },
+    {
+      "candidate_rank": 343,
+      "source_rank": 343,
+      "word": "păi",
+      "pos": null,
+      "frequency_count": 106177
+    },
+    {
+      "candidate_rank": 344,
+      "source_rank": 344,
+      "word": "n-a",
+      "pos": null,
+      "frequency_count": 106169
+    },
+    {
+      "candidate_rank": 345,
+      "source_rank": 345,
+      "word": "s-ar",
+      "pos": null,
+      "frequency_count": 106039
+    },
+    {
+      "candidate_rank": 346,
+      "source_rank": 346,
+      "word": "vorba",
+      "pos": null,
+      "frequency_count": 105968
+    },
+    {
+      "candidate_rank": 347,
+      "source_rank": 347,
+      "word": "ăla",
+      "pos": null,
+      "frequency_count": 105930
+    },
+    {
+      "candidate_rank": 348,
+      "source_rank": 348,
+      "word": "greu",
+      "pos": null,
+      "frequency_count": 105606
+    },
+    {
+      "candidate_rank": 349,
+      "source_rank": 349,
+      "word": "viaţă",
+      "pos": null,
+      "frequency_count": 105459
+    },
+    {
+      "candidate_rank": 350,
+      "source_rank": 350,
+      "word": "vedea",
+      "pos": null,
+      "frequency_count": 105133
+    },
+    {
+      "candidate_rank": 351,
+      "source_rank": 351,
+      "word": "mi-ai",
+      "pos": null,
+      "frequency_count": 104288
+    },
+    {
+      "candidate_rank": 352,
+      "source_rank": 352,
+      "word": "d-le",
+      "pos": null,
+      "frequency_count": 103973
+    },
+    {
+      "candidate_rank": 353,
+      "source_rank": 353,
+      "word": "dumnezeu",
+      "pos": null,
+      "frequency_count": 103954
+    },
+    {
+      "candidate_rank": 354,
+      "source_rank": 354,
+      "word": "tipul",
+      "pos": null,
+      "frequency_count": 102963
+    },
+    {
+      "candidate_rank": 355,
+      "source_rank": 355,
+      "word": "desigur",
+      "pos": null,
+      "frequency_count": 102449
+    },
+    {
+      "candidate_rank": 356,
+      "source_rank": 356,
+      "word": "drumul",
+      "pos": null,
+      "frequency_count": 102363
+    },
+    {
+      "candidate_rank": 357,
+      "source_rank": 357,
+      "word": "nu-ţi",
+      "pos": null,
+      "frequency_count": 101840
+    },
+    {
+      "candidate_rank": 358,
+      "source_rank": 358,
+      "word": "minute",
+      "pos": null,
+      "frequency_count": 100851
+    },
+    {
+      "candidate_rank": 359,
+      "source_rank": 359,
+      "word": "dracu",
+      "pos": null,
+      "frequency_count": 100753
+    },
+    {
+      "candidate_rank": 360,
+      "source_rank": 360,
+      "word": "înţeleg",
+      "pos": null,
+      "frequency_count": 100607
+    },
+    {
+      "candidate_rank": 361,
+      "source_rank": 361,
+      "word": "trebuit",
+      "pos": null,
+      "frequency_count": 100423
+    },
+    {
+      "candidate_rank": 362,
+      "source_rank": 362,
+      "word": "dai",
+      "pos": null,
+      "frequency_count": 100415
+    },
+    {
+      "candidate_rank": 363,
+      "source_rank": 363,
+      "word": "murit",
+      "pos": null,
+      "frequency_count": 100128
+    },
+    {
+      "candidate_rank": 364,
+      "source_rank": 364,
+      "word": "ajuta",
+      "pos": null,
+      "frequency_count": 100030
+    },
+    {
+      "candidate_rank": 365,
+      "source_rank": 365,
+      "word": "mie",
+      "pos": null,
+      "frequency_count": 98572
+    },
+    {
+      "candidate_rank": 366,
+      "source_rank": 366,
+      "word": "femeie",
+      "pos": null,
+      "frequency_count": 97989
+    },
+    {
+      "candidate_rank": 367,
+      "source_rank": 367,
+      "word": "idee",
+      "pos": null,
+      "frequency_count": 97915
+    },
+    {
+      "candidate_rank": 368,
+      "source_rank": 368,
+      "word": "copil",
+      "pos": null,
+      "frequency_count": 97453
+    },
+    {
+      "candidate_rank": 369,
+      "source_rank": 369,
+      "word": "aveţi",
+      "pos": null,
+      "frequency_count": 97372
+    },
+    {
+      "candidate_rank": 370,
+      "source_rank": 370,
+      "word": "gândit",
+      "pos": null,
+      "frequency_count": 96985
+    },
+    {
+      "candidate_rank": 371,
+      "source_rank": 371,
+      "word": "ultima",
+      "pos": null,
+      "frequency_count": 96370
+    },
+    {
+      "candidate_rank": 372,
+      "source_rank": 372,
+      "word": "ale",
+      "pos": null,
+      "frequency_count": 96361
+    },
+    {
+      "candidate_rank": 373,
+      "source_rank": 373,
+      "word": "moment",
+      "pos": null,
+      "frequency_count": 96128
+    },
+    {
+      "candidate_rank": 374,
+      "source_rank": 374,
+      "word": "tip",
+      "pos": null,
+      "frequency_count": 95868
+    },
+    {
+      "candidate_rank": 375,
+      "source_rank": 375,
+      "word": "i-a",
+      "pos": null,
+      "frequency_count": 95656
+    },
+    {
+      "candidate_rank": 376,
+      "source_rank": 376,
+      "word": "primul",
+      "pos": null,
+      "frequency_count": 95507
+    },
+    {
+      "candidate_rank": 377,
+      "source_rank": 377,
+      "word": "aceea",
+      "pos": null,
+      "frequency_count": 95449
+    },
+    {
+      "candidate_rank": 378,
+      "source_rank": 378,
+      "word": "multumesc",
+      "pos": null,
+      "frequency_count": 95415
+    },
+    {
+      "candidate_rank": 379,
+      "source_rank": 379,
+      "word": "pus",
+      "pos": null,
+      "frequency_count": 95207
+    },
+    {
+      "candidate_rank": 380,
+      "source_rank": 380,
+      "word": "sper",
+      "pos": null,
+      "frequency_count": 95075
+    },
+    {
+      "candidate_rank": 381,
+      "source_rank": 381,
+      "word": "noastre",
+      "pos": null,
+      "frequency_count": 94470
+    },
+    {
+      "candidate_rank": 382,
+      "source_rank": 382,
+      "word": "data",
+      "pos": null,
+      "frequency_count": 94424
+    },
+    {
+      "candidate_rank": 383,
+      "source_rank": 383,
+      "word": "merg",
+      "pos": null,
+      "frequency_count": 94366
+    },
+    {
+      "candidate_rank": 384,
+      "source_rank": 384,
+      "word": "pic",
+      "pos": null,
+      "frequency_count": 94018
+    },
+    {
+      "candidate_rank": 385,
+      "source_rank": 385,
+      "word": "s-au",
+      "pos": null,
+      "frequency_count": 93907
+    },
+    {
+      "candidate_rank": 386,
+      "source_rank": 386,
+      "word": "dus",
+      "pos": null,
+      "frequency_count": 93367
+    },
+    {
+      "candidate_rank": 387,
+      "source_rank": 387,
+      "word": "seama",
+      "pos": null,
+      "frequency_count": 93326
+    },
+    {
+      "candidate_rank": 388,
+      "source_rank": 388,
+      "word": "erau",
+      "pos": null,
+      "frequency_count": 93313
+    },
+    {
+      "candidate_rank": 389,
+      "source_rank": 389,
+      "word": "bune",
+      "pos": null,
+      "frequency_count": 93062
+    },
+    {
+      "candidate_rank": 390,
+      "source_rank": 390,
+      "word": "aşteaptă",
+      "pos": null,
+      "frequency_count": 92966
+    },
+    {
+      "candidate_rank": 391,
+      "source_rank": 391,
+      "word": "făcut-o",
+      "pos": null,
+      "frequency_count": 92846
+    },
+    {
+      "candidate_rank": 392,
+      "source_rank": 392,
+      "word": "imi",
+      "pos": null,
+      "frequency_count": 92760
+    },
+    {
+      "candidate_rank": 393,
+      "source_rank": 393,
+      "word": "spune-mi",
+      "pos": null,
+      "frequency_count": 92613
+    },
+    {
+      "candidate_rank": 394,
+      "source_rank": 394,
+      "word": "lua",
+      "pos": null,
+      "frequency_count": 92540
+    },
+    {
+      "candidate_rank": 395,
+      "source_rank": 395,
+      "word": "urmă",
+      "pos": null,
+      "frequency_count": 92365
+    },
+    {
+      "candidate_rank": 396,
+      "source_rank": 396,
+      "word": "tare",
+      "pos": null,
+      "frequency_count": 92112
+    },
+    {
+      "candidate_rank": 397,
+      "source_rank": 397,
+      "word": "griji",
+      "pos": null,
+      "frequency_count": 91781
+    },
+    {
+      "candidate_rank": 398,
+      "source_rank": 398,
+      "word": "înţeles",
+      "pos": null,
+      "frequency_count": 91681
+    },
+    {
+      "candidate_rank": 399,
+      "source_rank": 399,
+      "word": "cazul",
+      "pos": null,
+      "frequency_count": 91132
+    },
+    {
+      "candidate_rank": 400,
+      "source_rank": 400,
+      "word": "poti",
+      "pos": null,
+      "frequency_count": 91128
+    },
+    {
+      "candidate_rank": 401,
+      "source_rank": 401,
+      "word": "vreo",
+      "pos": null,
+      "frequency_count": 90989
+    },
+    {
+      "candidate_rank": 402,
+      "source_rank": 402,
+      "word": "problema",
+      "pos": null,
+      "frequency_count": 90912
+    },
+    {
+      "candidate_rank": 403,
+      "source_rank": 403,
+      "word": "buna",
+      "pos": null,
+      "frequency_count": 90887
+    },
+    {
+      "candidate_rank": 404,
+      "source_rank": 404,
+      "word": "nu-l",
+      "pos": null,
+      "frequency_count": 90448
+    },
+    {
+      "candidate_rank": 405,
+      "source_rank": 405,
+      "word": "cauza",
+      "pos": null,
+      "frequency_count": 90297
+    },
+    {
+      "candidate_rank": 406,
+      "source_rank": 406,
+      "word": "între",
+      "pos": null,
+      "frequency_count": 90224
+    },
+    {
+      "candidate_rank": 407,
+      "source_rank": 407,
+      "word": "ajunge",
+      "pos": null,
+      "frequency_count": 90013
+    },
+    {
+      "candidate_rank": 408,
+      "source_rank": 408,
+      "word": "duci",
+      "pos": null,
+      "frequency_count": 89277
+    },
+    {
+      "candidate_rank": 409,
+      "source_rank": 409,
+      "word": "ce-i",
+      "pos": null,
+      "frequency_count": 88988
+    },
+    {
+      "candidate_rank": 410,
+      "source_rank": 410,
+      "word": "camera",
+      "pos": null,
+      "frequency_count": 88756
+    },
+    {
+      "candidate_rank": 411,
+      "source_rank": 411,
+      "word": "ajutor",
+      "pos": null,
+      "frequency_count": 88453
+    },
+    {
+      "candidate_rank": 412,
+      "source_rank": 412,
+      "word": "mort",
+      "pos": null,
+      "frequency_count": 88398
+    },
+    {
+      "candidate_rank": 413,
+      "source_rank": 413,
+      "word": "noaptea",
+      "pos": null,
+      "frequency_count": 88251
+    },
+    {
+      "candidate_rank": 414,
+      "source_rank": 414,
+      "word": "vorbim",
+      "pos": null,
+      "frequency_count": 88120
+    },
+    {
+      "candidate_rank": 415,
+      "source_rank": 415,
+      "word": "corect",
+      "pos": null,
+      "frequency_count": 87792
+    },
+    {
+      "candidate_rank": 416,
+      "source_rank": 416,
+      "word": "cand",
+      "pos": null,
+      "frequency_count": 87772
+    },
+    {
+      "candidate_rank": 417,
+      "source_rank": 417,
+      "word": "întotdeauna",
+      "pos": null,
+      "frequency_count": 87658
+    },
+    {
+      "candidate_rank": 418,
+      "source_rank": 418,
+      "word": "minunat",
+      "pos": null,
+      "frequency_count": 87094
+    },
+    {
+      "candidate_rank": 419,
+      "source_rank": 419,
+      "word": "încercat",
+      "pos": null,
+      "frequency_count": 86689
+    },
+    {
+      "candidate_rank": 420,
+      "source_rank": 420,
+      "word": "ele",
+      "pos": null,
+      "frequency_count": 86660
+    },
+    {
+      "candidate_rank": 421,
+      "source_rank": 421,
+      "word": "poftim",
+      "pos": null,
+      "frequency_count": 86628
+    },
+    {
+      "candidate_rank": 422,
+      "source_rank": 422,
+      "word": "îşi",
+      "pos": null,
+      "frequency_count": 86550
+    },
+    {
+      "candidate_rank": 423,
+      "source_rank": 423,
+      "word": "ucis",
+      "pos": null,
+      "frequency_count": 86058
+    },
+    {
+      "candidate_rank": 424,
+      "source_rank": 424,
+      "word": "ore",
+      "pos": null,
+      "frequency_count": 86044
+    },
+    {
+      "candidate_rank": 425,
+      "source_rank": 425,
+      "word": "pune",
+      "pos": null,
+      "frequency_count": 85723
+    },
+    {
+      "candidate_rank": 426,
+      "source_rank": 426,
+      "word": "vreodată",
+      "pos": null,
+      "frequency_count": 85557
+    },
+    {
+      "candidate_rank": 427,
+      "source_rank": 427,
+      "word": "vorbeşti",
+      "pos": null,
+      "frequency_count": 85310
+    },
+    {
+      "candidate_rank": 428,
+      "source_rank": 428,
+      "word": "fiul",
+      "pos": null,
+      "frequency_count": 85217
+    },
+    {
+      "candidate_rank": 429,
+      "source_rank": 429,
+      "word": "ciudat",
+      "pos": null,
+      "frequency_count": 85154
+    },
+    {
+      "candidate_rank": 430,
+      "source_rank": 430,
+      "word": "unei",
+      "pos": null,
+      "frequency_count": 85128
+    },
+    {
+      "candidate_rank": 431,
+      "source_rank": 431,
+      "word": "dumnezeule",
+      "pos": null,
+      "frequency_count": 85064
+    },
+    {
+      "candidate_rank": 432,
+      "source_rank": 432,
+      "word": "dr",
+      "pos": null,
+      "frequency_count": 84665
+    },
+    {
+      "candidate_rank": 433,
+      "source_rank": 433,
+      "word": "ba",
+      "pos": null,
+      "frequency_count": 84573
+    },
+    {
+      "candidate_rank": 434,
+      "source_rank": 434,
+      "word": "probleme",
+      "pos": null,
+      "frequency_count": 84277
+    },
+    {
+      "candidate_rank": 435,
+      "source_rank": 435,
+      "word": "problemă",
+      "pos": null,
+      "frequency_count": 84175
+    },
+    {
+      "candidate_rank": 436,
+      "source_rank": 436,
+      "word": "vorbit",
+      "pos": null,
+      "frequency_count": 83857
+    },
+    {
+      "candidate_rank": 437,
+      "source_rank": 437,
+      "word": "adus",
+      "pos": null,
+      "frequency_count": 83487
+    },
+    {
+      "candidate_rank": 438,
+      "source_rank": 438,
+      "word": "familia",
+      "pos": null,
+      "frequency_count": 83122
+    },
+    {
+      "candidate_rank": 439,
+      "source_rank": 439,
+      "word": "simţi",
+      "pos": null,
+      "frequency_count": 82163
+    },
+    {
+      "candidate_rank": 440,
+      "source_rank": 440,
+      "word": "lasă-mă",
+      "pos": null,
+      "frequency_count": 81752
+    },
+    {
+      "candidate_rank": 441,
+      "source_rank": 441,
+      "word": "luni",
+      "pos": null,
+      "frequency_count": 81672
+    },
+    {
+      "candidate_rank": 442,
+      "source_rank": 442,
+      "word": "vii",
+      "pos": null,
+      "frequency_count": 81627
+    },
+    {
+      "candidate_rank": 443,
+      "source_rank": 443,
+      "word": "altă",
+      "pos": null,
+      "frequency_count": 81527
+    },
+    {
+      "candidate_rank": 444,
+      "source_rank": 444,
+      "word": "cap",
+      "pos": null,
+      "frequency_count": 81416
+    },
+    {
+      "candidate_rank": 445,
+      "source_rank": 445,
+      "word": "faţă",
+      "pos": null,
+      "frequency_count": 81369
+    },
+    {
+      "candidate_rank": 446,
+      "source_rank": 446,
+      "word": "cer",
+      "pos": null,
+      "frequency_count": 81273
+    },
+    {
+      "candidate_rank": 447,
+      "source_rank": 447,
+      "word": "ales",
+      "pos": null,
+      "frequency_count": 81164
+    },
+    {
+      "candidate_rank": 448,
+      "source_rank": 448,
+      "word": "uită-te",
+      "pos": null,
+      "frequency_count": 80833
+    },
+    {
+      "candidate_rank": 449,
+      "source_rank": 449,
+      "word": "crede",
+      "pos": null,
+      "frequency_count": 80605
+    },
+    {
+      "candidate_rank": 450,
+      "source_rank": 450,
+      "word": "cale",
+      "pos": null,
+      "frequency_count": 80465
+    },
+    {
+      "candidate_rank": 451,
+      "source_rank": 451,
+      "word": "credeam",
+      "pos": null,
+      "frequency_count": 80314
+    },
+    {
+      "candidate_rank": 452,
+      "source_rank": 452,
+      "word": "te-a",
+      "pos": null,
+      "frequency_count": 79886
+    },
+    {
+      "candidate_rank": 453,
+      "source_rank": 453,
+      "word": "ascultă",
+      "pos": null,
+      "frequency_count": 79691
+    },
+    {
+      "candidate_rank": 454,
+      "source_rank": 454,
+      "word": "nicio",
+      "pos": null,
+      "frequency_count": 79648
+    },
+    {
+      "candidate_rank": 455,
+      "source_rank": 455,
+      "word": "casă",
+      "pos": null,
+      "frequency_count": 78906
+    },
+    {
+      "candidate_rank": 456,
+      "source_rank": 456,
+      "word": "duce",
+      "pos": null,
+      "frequency_count": 78865
+    },
+    {
+      "candidate_rank": 457,
+      "source_rank": 457,
+      "word": "dă-mi",
+      "pos": null,
+      "frequency_count": 78738
+    },
+    {
+      "candidate_rank": 458,
+      "source_rank": 458,
+      "word": "bucur",
+      "pos": null,
+      "frequency_count": 78333
+    },
+    {
+      "candidate_rank": 459,
+      "source_rank": 459,
+      "word": "uitat",
+      "pos": null,
+      "frequency_count": 78205
+    },
+    {
+      "candidate_rank": 460,
+      "source_rank": 460,
+      "word": "cunosc",
+      "pos": null,
+      "frequency_count": 78035
+    },
+    {
+      "candidate_rank": 461,
+      "source_rank": 461,
+      "word": "acel",
+      "pos": null,
+      "frequency_count": 77740
+    },
+    {
+      "candidate_rank": 462,
+      "source_rank": 462,
+      "word": "încredere",
+      "pos": null,
+      "frequency_count": 77682
+    },
+    {
+      "candidate_rank": 463,
+      "source_rank": 463,
+      "word": "caz",
+      "pos": null,
+      "frequency_count": 77608
+    },
+    {
+      "candidate_rank": 464,
+      "source_rank": 464,
+      "word": "facut",
+      "pos": null,
+      "frequency_count": 77453
+    },
+    {
+      "candidate_rank": 465,
+      "source_rank": 465,
+      "word": "singură",
+      "pos": null,
+      "frequency_count": 77309
+    },
+    {
+      "candidate_rank": 466,
+      "source_rank": 466,
+      "word": "joc",
+      "pos": null,
+      "frequency_count": 77124
+    },
+    {
+      "candidate_rank": 467,
+      "source_rank": 467,
+      "word": "oricum",
+      "pos": null,
+      "frequency_count": 77026
+    },
+    {
+      "candidate_rank": 468,
+      "source_rank": 468,
+      "word": "mergi",
+      "pos": null,
+      "frequency_count": 77013
+    },
+    {
+      "candidate_rank": 469,
+      "source_rank": 469,
+      "word": "altceva",
+      "pos": null,
+      "frequency_count": 76942
+    },
+    {
+      "candidate_rank": 470,
+      "source_rank": 470,
+      "word": "primit",
+      "pos": null,
+      "frequency_count": 76863
+    },
+    {
+      "candidate_rank": 471,
+      "source_rank": 471,
+      "word": "asemenea",
+      "pos": null,
+      "frequency_count": 76773
+    },
+    {
+      "candidate_rank": 472,
+      "source_rank": 472,
+      "word": "faţa",
+      "pos": null,
+      "frequency_count": 76726
+    },
+    {
+      "candidate_rank": 473,
+      "source_rank": 473,
+      "word": "lume",
+      "pos": null,
+      "frequency_count": 76572
+    },
+    {
+      "candidate_rank": 474,
+      "source_rank": 474,
+      "word": "ochii",
+      "pos": null,
+      "frequency_count": 76542
+    },
+    {
+      "candidate_rank": 475,
+      "source_rank": 475,
+      "word": "acord",
+      "pos": null,
+      "frequency_count": 76043
+    },
+    {
+      "candidate_rank": 476,
+      "source_rank": 476,
+      "word": "cinci",
+      "pos": null,
+      "frequency_count": 75891
+    },
+    {
+      "candidate_rank": 477,
+      "source_rank": 477,
+      "word": "fată",
+      "pos": null,
+      "frequency_count": 75798
+    },
+    {
+      "candidate_rank": 478,
+      "source_rank": 478,
+      "word": "veni",
+      "pos": null,
+      "frequency_count": 75289
+    },
+    {
+      "candidate_rank": 479,
+      "source_rank": 479,
+      "word": "patru",
+      "pos": null,
+      "frequency_count": 75169
+    },
+    {
+      "candidate_rank": 480,
+      "source_rank": 480,
+      "word": "mulţi",
+      "pos": null,
+      "frequency_count": 75085
+    },
+    {
+      "candidate_rank": 481,
+      "source_rank": 481,
+      "word": "siguranţă",
+      "pos": null,
+      "frequency_count": 75067
+    },
+    {
+      "candidate_rank": 482,
+      "source_rank": 482,
+      "word": "iei",
+      "pos": null,
+      "frequency_count": 74865
+    },
+    {
+      "candidate_rank": 483,
+      "source_rank": 483,
+      "word": "lăsat",
+      "pos": null,
+      "frequency_count": 73983
+    },
+    {
+      "candidate_rank": 484,
+      "source_rank": 484,
+      "word": "telefon",
+      "pos": null,
+      "frequency_count": 73687
+    },
+    {
+      "candidate_rank": 485,
+      "source_rank": 485,
+      "word": "prins",
+      "pos": null,
+      "frequency_count": 73550
+    },
+    {
+      "candidate_rank": 486,
+      "source_rank": 486,
+      "word": "fratele",
+      "pos": null,
+      "frequency_count": 73432
+    },
+    {
+      "candidate_rank": 487,
+      "source_rank": 487,
+      "word": "băieţi",
+      "pos": null,
+      "frequency_count": 73276
+    },
+    {
+      "candidate_rank": 488,
+      "source_rank": 488,
+      "word": "simplu",
+      "pos": null,
+      "frequency_count": 72743
+    },
+    {
+      "candidate_rank": 489,
+      "source_rank": 489,
+      "word": "asta-i",
+      "pos": null,
+      "frequency_count": 72642
+    },
+    {
+      "candidate_rank": 490,
+      "source_rank": 490,
+      "word": "salut",
+      "pos": null,
+      "frequency_count": 72408
+    },
+    {
+      "candidate_rank": 491,
+      "source_rank": 491,
+      "word": "ţi-a",
+      "pos": null,
+      "frequency_count": 71965
+    },
+    {
+      "candidate_rank": 492,
+      "source_rank": 492,
+      "word": "uşor",
+      "pos": null,
+      "frequency_count": 71906
+    },
+    {
+      "candidate_rank": 493,
+      "source_rank": 493,
+      "word": "maşina",
+      "pos": null,
+      "frequency_count": 71769
+    },
+    {
+      "candidate_rank": 494,
+      "source_rank": 494,
+      "word": "prieten",
+      "pos": null,
+      "frequency_count": 71542
+    },
+    {
+      "candidate_rank": 495,
+      "source_rank": 495,
+      "word": "omul",
+      "pos": null,
+      "frequency_count": 71424
+    },
+    {
+      "candidate_rank": 496,
+      "source_rank": 496,
+      "word": "dragă",
+      "pos": null,
+      "frequency_count": 71407
+    },
+    {
+      "candidate_rank": 497,
+      "source_rank": 497,
+      "word": "i-ai",
+      "pos": null,
+      "frequency_count": 71307
+    },
+    {
+      "candidate_rank": 498,
+      "source_rank": 498,
+      "word": "important",
+      "pos": null,
+      "frequency_count": 71198
+    },
+    {
+      "candidate_rank": 499,
+      "source_rank": 499,
+      "word": "găsi",
+      "pos": null,
+      "frequency_count": 71020
+    },
+    {
+      "candidate_rank": 500,
+      "source_rank": 500,
+      "word": "lângă",
+      "pos": null,
+      "frequency_count": 70999
+    },
+    {
+      "candidate_rank": 501,
+      "source_rank": 501,
+      "word": "puteţi",
+      "pos": null,
+      "frequency_count": 70931
+    },
+    {
+      "candidate_rank": 502,
+      "source_rank": 502,
+      "word": "grozav",
+      "pos": null,
+      "frequency_count": 70796
+    },
+    {
+      "candidate_rank": 503,
+      "source_rank": 503,
+      "word": "doamnă",
+      "pos": null,
+      "frequency_count": 70474
+    },
+    {
+      "candidate_rank": 504,
+      "source_rank": 504,
+      "word": "rau",
+      "pos": null,
+      "frequency_count": 70447
+    },
+    {
+      "candidate_rank": 505,
+      "source_rank": 505,
+      "word": "câte",
+      "pos": null,
+      "frequency_count": 70441
+    },
+    {
+      "candidate_rank": 506,
+      "source_rank": 506,
+      "word": "vina",
+      "pos": null,
+      "frequency_count": 70324
+    },
+    {
+      "candidate_rank": 507,
+      "source_rank": 507,
+      "word": "zici",
+      "pos": null,
+      "frequency_count": 70039
+    },
+    {
+      "candidate_rank": 508,
+      "source_rank": 508,
+      "word": "şi-a",
+      "pos": null,
+      "frequency_count": 69727
+    },
+    {
+      "candidate_rank": 509,
+      "source_rank": 509,
+      "word": "vorbi",
+      "pos": null,
+      "frequency_count": 69419
+    },
+    {
+      "candidate_rank": 510,
+      "source_rank": 510,
+      "word": "dolari",
+      "pos": null,
+      "frequency_count": 69407
+    },
+    {
+      "candidate_rank": 511,
+      "source_rank": 511,
+      "word": "acea",
+      "pos": null,
+      "frequency_count": 69165
+    },
+    {
+      "candidate_rank": 512,
+      "source_rank": 512,
+      "word": "pasă",
+      "pos": null,
+      "frequency_count": 69105
+    },
+    {
+      "candidate_rank": 513,
+      "source_rank": 513,
+      "word": "mod",
+      "pos": null,
+      "frequency_count": 68842
+    },
+    {
+      "candidate_rank": 514,
+      "source_rank": 514,
+      "word": "ne-a",
+      "pos": null,
+      "frequency_count": 68646
+    },
+    {
+      "candidate_rank": 515,
+      "source_rank": 515,
+      "word": "faceţi",
+      "pos": null,
+      "frequency_count": 68551
+    },
+    {
+      "candidate_rank": 516,
+      "source_rank": 516,
+      "word": "uh",
+      "pos": null,
+      "frequency_count": 68400
+    },
+    {
+      "candidate_rank": 517,
+      "source_rank": 517,
+      "word": "pun",
+      "pos": null,
+      "frequency_count": 68379
+    },
+    {
+      "candidate_rank": 518,
+      "source_rank": 518,
+      "word": "maşină",
+      "pos": null,
+      "frequency_count": 67653
+    },
+    {
+      "candidate_rank": 519,
+      "source_rank": 519,
+      "word": "sunat",
+      "pos": null,
+      "frequency_count": 67476
+    },
+    {
+      "candidate_rank": 520,
+      "source_rank": 520,
+      "word": "ești",
+      "pos": null,
+      "frequency_count": 67361
+    },
+    {
+      "candidate_rank": 521,
+      "source_rank": 521,
+      "word": "mâna",
+      "pos": null,
+      "frequency_count": 67345
+    },
+    {
+      "candidate_rank": 522,
+      "source_rank": 522,
+      "word": "ştim",
+      "pos": null,
+      "frequency_count": 67085
+    },
+    {
+      "candidate_rank": 523,
+      "source_rank": 523,
+      "word": "rahat",
+      "pos": null,
+      "frequency_count": 66951
+    },
+    {
+      "candidate_rank": 524,
+      "source_rank": 524,
+      "word": "tau",
+      "pos": null,
+      "frequency_count": 66825
+    },
+    {
+      "candidate_rank": 525,
+      "source_rank": 525,
+      "word": "știu",
+      "pos": null,
+      "frequency_count": 66804
+    },
+    {
+      "candidate_rank": 526,
+      "source_rank": 526,
+      "word": "pleci",
+      "pos": null,
+      "frequency_count": 66646
+    },
+    {
+      "candidate_rank": 527,
+      "source_rank": 527,
+      "word": "prieteni",
+      "pos": null,
+      "frequency_count": 66424
+    },
+    {
+      "candidate_rank": 528,
+      "source_rank": 528,
+      "word": "odată",
+      "pos": null,
+      "frequency_count": 66399
+    },
+    {
+      "candidate_rank": 529,
+      "source_rank": 529,
+      "word": "pleacă",
+      "pos": null,
+      "frequency_count": 66319
+    },
+    {
+      "candidate_rank": 530,
+      "source_rank": 530,
+      "word": "stau",
+      "pos": null,
+      "frequency_count": 66253
+    },
+    {
+      "candidate_rank": 531,
+      "source_rank": 531,
+      "word": "drum",
+      "pos": null,
+      "frequency_count": 66171
+    },
+    {
+      "candidate_rank": 532,
+      "source_rank": 532,
+      "word": "alte",
+      "pos": null,
+      "frequency_count": 66127
+    },
+    {
+      "candidate_rank": 533,
+      "source_rank": 533,
+      "word": "dvs",
+      "pos": null,
+      "frequency_count": 66122
+    },
+    {
+      "candidate_rank": 534,
+      "source_rank": 534,
+      "word": "as",
+      "pos": null,
+      "frequency_count": 66003
+    },
+    {
+      "candidate_rank": 535,
+      "source_rank": 535,
+      "word": "astfel",
+      "pos": null,
+      "frequency_count": 65984
+    },
+    {
+      "candidate_rank": 536,
+      "source_rank": 536,
+      "word": "curând",
+      "pos": null,
+      "frequency_count": 65646
+    },
+    {
+      "candidate_rank": 537,
+      "source_rank": 537,
+      "word": "întors",
+      "pos": null,
+      "frequency_count": 65555
+    },
+    {
+      "candidate_rank": 538,
+      "source_rank": 538,
+      "word": "ora",
+      "pos": null,
+      "frequency_count": 65365
+    },
+    {
+      "candidate_rank": 539,
+      "source_rank": 539,
+      "word": "mi-e",
+      "pos": null,
+      "frequency_count": 65295
+    },
+    {
+      "candidate_rank": 540,
+      "source_rank": 540,
+      "word": "mic",
+      "pos": null,
+      "frequency_count": 65220
+    },
+    {
+      "candidate_rank": 541,
+      "source_rank": 541,
+      "word": "n-ar",
+      "pos": null,
+      "frequency_count": 64589
+    },
+    {
+      "candidate_rank": 542,
+      "source_rank": 542,
+      "word": "doua",
+      "pos": null,
+      "frequency_count": 64548
+    },
+    {
+      "candidate_rank": 543,
+      "source_rank": 543,
+      "word": "arată",
+      "pos": null,
+      "frequency_count": 64385
+    },
+    {
+      "candidate_rank": 544,
+      "source_rank": 544,
+      "word": "alt",
+      "pos": null,
+      "frequency_count": 64359
+    },
+    {
+      "candidate_rank": 545,
+      "source_rank": 545,
+      "word": "începe",
+      "pos": null,
+      "frequency_count": 64267
+    },
+    {
+      "candidate_rank": 546,
+      "source_rank": 546,
+      "word": "nouă",
+      "pos": null,
+      "frequency_count": 64043
+    },
+    {
+      "candidate_rank": 547,
+      "source_rank": 547,
+      "word": "de-a",
+      "pos": null,
+      "frequency_count": 63739
+    },
+    {
+      "candidate_rank": 548,
+      "source_rank": 548,
+      "word": "s",
+      "pos": null,
+      "frequency_count": 63599
+    },
+    {
+      "candidate_rank": 549,
+      "source_rank": 549,
+      "word": "singura",
+      "pos": null,
+      "frequency_count": 63579
+    },
+    {
+      "candidate_rank": 550,
+      "source_rank": 550,
+      "word": "gând",
+      "pos": null,
+      "frequency_count": 63551
+    },
+    {
+      "candidate_rank": 551,
+      "source_rank": 551,
+      "word": "treabă",
+      "pos": null,
+      "frequency_count": 63374
+    },
+    {
+      "candidate_rank": 552,
+      "source_rank": 552,
+      "word": "trimis",
+      "pos": null,
+      "frequency_count": 63355
+    },
+    {
+      "candidate_rank": 553,
+      "source_rank": 553,
+      "word": "capul",
+      "pos": null,
+      "frequency_count": 63121
+    },
+    {
+      "candidate_rank": 554,
+      "source_rank": 554,
+      "word": "apă",
+      "pos": null,
+      "frequency_count": 62912
+    },
+    {
+      "candidate_rank": 555,
+      "source_rank": 555,
+      "word": "copilul",
+      "pos": null,
+      "frequency_count": 62857
+    },
+    {
+      "candidate_rank": 556,
+      "source_rank": 556,
+      "word": "posibil",
+      "pos": null,
+      "frequency_count": 62850
+    },
+    {
+      "candidate_rank": 557,
+      "source_rank": 557,
+      "word": "singurul",
+      "pos": null,
+      "frequency_count": 62725
+    },
+    {
+      "candidate_rank": 558,
+      "source_rank": 558,
+      "word": "soţia",
+      "pos": null,
+      "frequency_count": 62551
+    },
+    {
+      "candidate_rank": 559,
+      "source_rank": 559,
+      "word": "alo",
+      "pos": null,
+      "frequency_count": 62476
+    },
+    {
+      "candidate_rank": 560,
+      "source_rank": 560,
+      "word": "noroc",
+      "pos": null,
+      "frequency_count": 62315
+    },
+    {
+      "candidate_rank": 561,
+      "source_rank": 561,
+      "word": "legătură",
+      "pos": null,
+      "frequency_count": 62120
+    },
+    {
+      "candidate_rank": 562,
+      "source_rank": 562,
+      "word": "spate",
+      "pos": null,
+      "frequency_count": 62055
+    },
+    {
+      "candidate_rank": 563,
+      "source_rank": 563,
+      "word": "adevărul",
+      "pos": null,
+      "frequency_count": 61874
+    },
+    {
+      "candidate_rank": 564,
+      "source_rank": 564,
+      "word": "frumoasă",
+      "pos": null,
+      "frequency_count": 61749
+    },
+    {
+      "candidate_rank": 565,
+      "source_rank": 565,
+      "word": "aveam",
+      "pos": null,
+      "frequency_count": 61734
+    },
+    {
+      "candidate_rank": 566,
+      "source_rank": 566,
+      "word": "viata",
+      "pos": null,
+      "frequency_count": 61550
+    },
+    {
+      "candidate_rank": 567,
+      "source_rank": 567,
+      "word": "împotriva",
+      "pos": null,
+      "frequency_count": 61541
+    },
+    {
+      "candidate_rank": 568,
+      "source_rank": 568,
+      "word": "către",
+      "pos": null,
+      "frequency_count": 61522
+    },
+    {
+      "candidate_rank": 569,
+      "source_rank": 569,
+      "word": "veţi",
+      "pos": null,
+      "frequency_count": 61443
+    },
+    {
+      "candidate_rank": 570,
+      "source_rank": 570,
+      "word": "inima",
+      "pos": null,
+      "frequency_count": 61421
+    },
+    {
+      "candidate_rank": 571,
+      "source_rank": 571,
+      "word": "lăsa",
+      "pos": null,
+      "frequency_count": 61345
+    },
+    {
+      "candidate_rank": 572,
+      "source_rank": 572,
+      "word": "tăi",
+      "pos": null,
+      "frequency_count": 61302
+    },
+    {
+      "candidate_rank": 573,
+      "source_rank": 573,
+      "word": "încearcă",
+      "pos": null,
+      "frequency_count": 61255
+    },
+    {
+      "candidate_rank": 574,
+      "source_rank": 574,
+      "word": "niciun",
+      "pos": null,
+      "frequency_count": 60978
+    },
+    {
+      "candidate_rank": 575,
+      "source_rank": 575,
+      "word": "rămâne",
+      "pos": null,
+      "frequency_count": 60903
+    },
+    {
+      "candidate_rank": 576,
+      "source_rank": 576,
+      "word": "întoarce",
+      "pos": null,
+      "frequency_count": 60847
+    },
+    {
+      "candidate_rank": 577,
+      "source_rank": 577,
+      "word": "oraş",
+      "pos": null,
+      "frequency_count": 60840
+    },
+    {
+      "candidate_rank": 578,
+      "source_rank": 578,
+      "word": "să-şi",
+      "pos": null,
+      "frequency_count": 60710
+    },
+    {
+      "candidate_rank": 579,
+      "source_rank": 579,
+      "word": "contează",
+      "pos": null,
+      "frequency_count": 60587
+    },
+    {
+      "candidate_rank": 580,
+      "source_rank": 580,
+      "word": "auzi",
+      "pos": null,
+      "frequency_count": 60531
+    },
+    {
+      "candidate_rank": 581,
+      "source_rank": 581,
+      "word": "prietenul",
+      "pos": null,
+      "frequency_count": 60459
+    },
+    {
+      "candidate_rank": 582,
+      "source_rank": 582,
+      "word": "ştiţi",
+      "pos": null,
+      "frequency_count": 60424
+    },
+    {
+      "candidate_rank": 583,
+      "source_rank": 583,
+      "word": "așa",
+      "pos": null,
+      "frequency_count": 60385
+    },
+    {
+      "candidate_rank": 584,
+      "source_rank": 584,
+      "word": "nume",
+      "pos": null,
+      "frequency_count": 60359
+    },
+    {
+      "candidate_rank": 585,
+      "source_rank": 585,
+      "word": "frate",
+      "pos": null,
+      "frequency_count": 60300
+    },
+    {
+      "candidate_rank": 586,
+      "source_rank": 586,
+      "word": "bărbat",
+      "pos": null,
+      "frequency_count": 60245
+    },
+    {
+      "candidate_rank": 587,
+      "source_rank": 587,
+      "word": "chestia",
+      "pos": null,
+      "frequency_count": 60216
+    },
+    {
+      "candidate_rank": 588,
+      "source_rank": 588,
+      "word": "astăzi",
+      "pos": null,
+      "frequency_count": 60112
+    },
+    {
+      "candidate_rank": 589,
+      "source_rank": 589,
+      "word": "familie",
+      "pos": null,
+      "frequency_count": 59918
+    },
+    {
+      "candidate_rank": 590,
+      "source_rank": 590,
+      "word": "las",
+      "pos": null,
+      "frequency_count": 59867
+    },
+    {
+      "candidate_rank": 591,
+      "source_rank": 591,
+      "word": "pleca",
+      "pos": null,
+      "frequency_count": 59739
+    },
+    {
+      "candidate_rank": 592,
+      "source_rank": 592,
+      "word": "taci",
+      "pos": null,
+      "frequency_count": 59663
+    },
+    {
+      "candidate_rank": 593,
+      "source_rank": 593,
+      "word": "întâmpla",
+      "pos": null,
+      "frequency_count": 59605
+    },
+    {
+      "candidate_rank": 594,
+      "source_rank": 594,
+      "word": "spatele",
+      "pos": null,
+      "frequency_count": 59507
+    },
+    {
+      "candidate_rank": 595,
+      "source_rank": 595,
+      "word": "domnul",
+      "pos": null,
+      "frequency_count": 59495
+    },
+    {
+      "candidate_rank": 596,
+      "source_rank": 596,
+      "word": "copiii",
+      "pos": null,
+      "frequency_count": 59389
+    },
+    {
+      "candidate_rank": 597,
+      "source_rank": 597,
+      "word": "încerc",
+      "pos": null,
+      "frequency_count": 59317
+    },
+    {
+      "candidate_rank": 598,
+      "source_rank": 598,
+      "word": "mers",
+      "pos": null,
+      "frequency_count": 59135
+    },
+    {
+      "candidate_rank": 599,
+      "source_rank": 599,
+      "word": "său",
+      "pos": null,
+      "frequency_count": 58947
+    },
+    {
+      "candidate_rank": 600,
+      "source_rank": 600,
+      "word": "vreme",
+      "pos": null,
+      "frequency_count": 58719
+    },
+    {
+      "candidate_rank": 601,
+      "source_rank": 601,
+      "word": "ştiam",
+      "pos": null,
+      "frequency_count": 58578
+    },
+    {
+      "candidate_rank": 602,
+      "source_rank": 602,
+      "word": "pace",
+      "pos": null,
+      "frequency_count": 58485
+    },
+    {
+      "candidate_rank": 603,
+      "source_rank": 603,
+      "word": "mersi",
+      "pos": null,
+      "frequency_count": 58333
+    },
+    {
+      "candidate_rank": 604,
+      "source_rank": 604,
+      "word": "ajut",
+      "pos": null,
+      "frequency_count": 58302
+    },
+    {
+      "candidate_rank": 605,
+      "source_rank": 605,
+      "word": "întorc",
+      "pos": null,
+      "frequency_count": 58251
+    },
+    {
+      "candidate_rank": 606,
+      "source_rank": 606,
+      "word": "fiica",
+      "pos": null,
+      "frequency_count": 57957
+    },
+    {
+      "candidate_rank": 607,
+      "source_rank": 607,
+      "word": "iti",
+      "pos": null,
+      "frequency_count": 57900
+    },
+    {
+      "candidate_rank": 608,
+      "source_rank": 608,
+      "word": "an",
+      "pos": null,
+      "frequency_count": 57749
+    },
+    {
+      "candidate_rank": 609,
+      "source_rank": 609,
+      "word": "le-am",
+      "pos": null,
+      "frequency_count": 57621
+    },
+    {
+      "candidate_rank": 610,
+      "source_rank": 610,
+      "word": "deloc",
+      "pos": null,
+      "frequency_count": 57544
+    },
+    {
+      "candidate_rank": 611,
+      "source_rank": 611,
+      "word": "motiv",
+      "pos": null,
+      "frequency_count": 57271
+    },
+    {
+      "candidate_rank": 612,
+      "source_rank": 612,
+      "word": "john",
+      "pos": null,
+      "frequency_count": 57123
+    },
+    {
+      "candidate_rank": 613,
+      "source_rank": 613,
+      "word": "pui",
+      "pos": null,
+      "frequency_count": 57032
+    },
+    {
+      "candidate_rank": 614,
+      "source_rank": 614,
+      "word": "minte",
+      "pos": null,
+      "frequency_count": 56941
+    },
+    {
+      "candidate_rank": 615,
+      "source_rank": 615,
+      "word": "întreb",
+      "pos": null,
+      "frequency_count": 56893
+    },
+    {
+      "candidate_rank": 616,
+      "source_rank": 616,
+      "word": "înţelegi",
+      "pos": null,
+      "frequency_count": 56871
+    },
+    {
+      "candidate_rank": 617,
+      "source_rank": 617,
+      "word": "oră",
+      "pos": null,
+      "frequency_count": 56623
+    },
+    {
+      "candidate_rank": 618,
+      "source_rank": 618,
+      "word": "ţine",
+      "pos": null,
+      "frequency_count": 56516
+    },
+    {
+      "candidate_rank": 619,
+      "source_rank": 619,
+      "word": "perfect",
+      "pos": null,
+      "frequency_count": 56464
+    },
+    {
+      "candidate_rank": 620,
+      "source_rank": 620,
+      "word": "uita",
+      "pos": null,
+      "frequency_count": 56384
+    },
+    {
+      "candidate_rank": 621,
+      "source_rank": 621,
+      "word": "mari",
+      "pos": null,
+      "frequency_count": 56370
+    },
+    {
+      "candidate_rank": 622,
+      "source_rank": 622,
+      "word": "amândoi",
+      "pos": null,
+      "frequency_count": 56366
+    },
+    {
+      "candidate_rank": 623,
+      "source_rank": 623,
+      "word": "știi",
+      "pos": null,
+      "frequency_count": 56314
+    },
+    {
+      "candidate_rank": 624,
+      "source_rank": 624,
+      "word": "plecăm",
+      "pos": null,
+      "frequency_count": 56281
+    },
+    {
+      "candidate_rank": 625,
+      "source_rank": 625,
+      "word": "sta",
+      "pos": null,
+      "frequency_count": 56059
+    },
+    {
+      "candidate_rank": 626,
+      "source_rank": 626,
+      "word": "jack",
+      "pos": null,
+      "frequency_count": 55747
+    },
+    {
+      "candidate_rank": 627,
+      "source_rank": 627,
+      "word": "erai",
+      "pos": null,
+      "frequency_count": 55567
+    },
+    {
+      "candidate_rank": 628,
+      "source_rank": 628,
+      "word": "persoană",
+      "pos": null,
+      "frequency_count": 55464
+    },
+    {
+      "candidate_rank": 629,
+      "source_rank": 629,
+      "word": "dupa",
+      "pos": null,
+      "frequency_count": 55406
+    },
+    {
+      "candidate_rank": 630,
+      "source_rank": 630,
+      "word": "mâinile",
+      "pos": null,
+      "frequency_count": 55404
+    },
+    {
+      "candidate_rank": 631,
+      "source_rank": 631,
+      "word": "ieşi",
+      "pos": null,
+      "frequency_count": 55403
+    },
+    {
+      "candidate_rank": 632,
+      "source_rank": 632,
+      "word": "devreme",
+      "pos": null,
+      "frequency_count": 55355
+    },
+    {
+      "candidate_rank": 633,
+      "source_rank": 633,
+      "word": "muncă",
+      "pos": null,
+      "frequency_count": 55213
+    },
+    {
+      "candidate_rank": 634,
+      "source_rank": 634,
+      "word": "parcă",
+      "pos": null,
+      "frequency_count": 55152
+    },
+    {
+      "candidate_rank": 635,
+      "source_rank": 635,
+      "word": "sora",
+      "pos": null,
+      "frequency_count": 55011
+    },
+    {
+      "candidate_rank": 636,
+      "source_rank": 636,
+      "word": "fă",
+      "pos": null,
+      "frequency_count": 54838
+    },
+    {
+      "candidate_rank": 637,
+      "source_rank": 637,
+      "word": "gândesc",
+      "pos": null,
+      "frequency_count": 54655
+    },
+    {
+      "candidate_rank": 638,
+      "source_rank": 638,
+      "word": "rămas",
+      "pos": null,
+      "frequency_count": 54489
+    },
+    {
+      "candidate_rank": 639,
+      "source_rank": 639,
+      "word": "fericit",
+      "pos": null,
+      "frequency_count": 54450
+    },
+    {
+      "candidate_rank": 640,
+      "source_rank": 640,
+      "word": "amintesc",
+      "pos": null,
+      "frequency_count": 54437
+    },
+    {
+      "candidate_rank": 641,
+      "source_rank": 641,
+      "word": "plac",
+      "pos": null,
+      "frequency_count": 54436
+    },
+    {
+      "candidate_rank": 642,
+      "source_rank": 642,
+      "word": "sigură",
+      "pos": null,
+      "frequency_count": 54283
+    },
+    {
+      "candidate_rank": 643,
+      "source_rank": 643,
+      "word": "revedere",
+      "pos": null,
+      "frequency_count": 54139
+    },
+    {
+      "candidate_rank": 644,
+      "source_rank": 644,
+      "word": "dl",
+      "pos": null,
+      "frequency_count": 53813
+    },
+    {
+      "candidate_rank": 645,
+      "source_rank": 645,
+      "word": "dimineaţa",
+      "pos": null,
+      "frequency_count": 53737
+    },
+    {
+      "candidate_rank": 646,
+      "source_rank": 646,
+      "word": "mică",
+      "pos": null,
+      "frequency_count": 53719
+    },
+    {
+      "candidate_rank": 647,
+      "source_rank": 647,
+      "word": "fiindcă",
+      "pos": null,
+      "frequency_count": 53657
+    },
+    {
+      "candidate_rank": 648,
+      "source_rank": 648,
+      "word": "prost",
+      "pos": null,
+      "frequency_count": 53597
+    },
+    {
+      "candidate_rank": 649,
+      "source_rank": 649,
+      "word": "acelaşi",
+      "pos": null,
+      "frequency_count": 53457
+    },
+    {
+      "candidate_rank": 650,
+      "source_rank": 650,
+      "word": "vină",
+      "pos": null,
+      "frequency_count": 53381
+    },
+    {
+      "candidate_rank": 651,
+      "source_rank": 651,
+      "word": "naibii",
+      "pos": null,
+      "frequency_count": 53171
+    },
+    {
+      "candidate_rank": 652,
+      "source_rank": 652,
+      "word": "putin",
+      "pos": null,
+      "frequency_count": 53034
+    },
+    {
+      "candidate_rank": 653,
+      "source_rank": 653,
+      "word": "urma",
+      "pos": null,
+      "frequency_count": 52871
+    },
+    {
+      "candidate_rank": 654,
+      "source_rank": 654,
+      "word": "sună",
+      "pos": null,
+      "frequency_count": 52842
+    },
+    {
+      "candidate_rank": 655,
+      "source_rank": 655,
+      "word": "vreţi",
+      "pos": null,
+      "frequency_count": 52839
+    },
+    {
+      "candidate_rank": 656,
+      "source_rank": 656,
+      "word": "nebun",
+      "pos": null,
+      "frequency_count": 52819
+    },
+    {
+      "candidate_rank": 657,
+      "source_rank": 657,
+      "word": "arma",
+      "pos": null,
+      "frequency_count": 52813
+    },
+    {
+      "candidate_rank": 658,
+      "source_rank": 658,
+      "word": "buni",
+      "pos": null,
+      "frequency_count": 52742
+    },
+    {
+      "candidate_rank": 659,
+      "source_rank": 659,
+      "word": "aduc",
+      "pos": null,
+      "frequency_count": 52674
+    },
+    {
+      "candidate_rank": 660,
+      "source_rank": 660,
+      "word": "jumătate",
+      "pos": null,
+      "frequency_count": 52650
+    },
+    {
+      "candidate_rank": 661,
+      "source_rank": 661,
+      "word": "sânge",
+      "pos": null,
+      "frequency_count": 52623
+    },
+    {
+      "candidate_rank": 662,
+      "source_rank": 662,
+      "word": "intrat",
+      "pos": null,
+      "frequency_count": 52337
+    },
+    {
+      "candidate_rank": 663,
+      "source_rank": 663,
+      "word": "ţi-ai",
+      "pos": null,
+      "frequency_count": 52288
+    },
+    {
+      "candidate_rank": 664,
+      "source_rank": 664,
+      "word": "spune-i",
+      "pos": null,
+      "frequency_count": 52226
+    },
+    {
+      "candidate_rank": 665,
+      "source_rank": 665,
+      "word": "sun",
+      "pos": null,
+      "frequency_count": 52079
+    },
+    {
+      "candidate_rank": 666,
+      "source_rank": 666,
+      "word": "aud",
+      "pos": null,
+      "frequency_count": 51751
+    },
+    {
+      "candidate_rank": 667,
+      "source_rank": 667,
+      "word": "acestea",
+      "pos": null,
+      "frequency_count": 51529
+    },
+    {
+      "candidate_rank": 668,
+      "source_rank": 668,
+      "word": "moarte",
+      "pos": null,
+      "frequency_count": 51513
+    },
+    {
+      "candidate_rank": 669,
+      "source_rank": 670,
+      "word": "cunoscut",
+      "pos": null,
+      "frequency_count": 51388
+    },
+    {
+      "candidate_rank": 670,
+      "source_rank": 671,
+      "word": "numărul",
+      "pos": null,
+      "frequency_count": 51372
+    },
+    {
+      "candidate_rank": 671,
+      "source_rank": 672,
+      "word": "restul",
+      "pos": null,
+      "frequency_count": 51051
+    },
+    {
+      "candidate_rank": 672,
+      "source_rank": 673,
+      "word": "găsesc",
+      "pos": null,
+      "frequency_count": 50670
+    },
+    {
+      "candidate_rank": 673,
+      "source_rank": 674,
+      "word": "undeva",
+      "pos": null,
+      "frequency_count": 50618
+    },
+    {
+      "candidate_rank": 674,
+      "source_rank": 675,
+      "word": "mi-ar",
+      "pos": null,
+      "frequency_count": 50456
+    },
+    {
+      "candidate_rank": 675,
+      "source_rank": 676,
+      "word": "faptul",
+      "pos": null,
+      "frequency_count": 50176
+    },
+    {
+      "candidate_rank": 676,
+      "source_rank": 677,
+      "word": "cerut",
+      "pos": null,
+      "frequency_count": 50033
+    },
+    {
+      "candidate_rank": 677,
+      "source_rank": 678,
+      "word": "asupra",
+      "pos": null,
+      "frequency_count": 49922
+    },
+    {
+      "candidate_rank": 678,
+      "source_rank": 679,
+      "word": "pa",
+      "pos": null,
+      "frequency_count": 49864
+    },
+    {
+      "candidate_rank": 679,
+      "source_rank": 680,
+      "word": "aduce",
+      "pos": null,
+      "frequency_count": 49744
+    },
+    {
+      "candidate_rank": 680,
+      "source_rank": 681,
+      "word": "zic",
+      "pos": null,
+      "frequency_count": 49721
+    },
+    {
+      "candidate_rank": 681,
+      "source_rank": 682,
+      "word": "doamna",
+      "pos": null,
+      "frequency_count": 49676
+    },
+    {
+      "candidate_rank": 682,
+      "source_rank": 683,
+      "word": "drept",
+      "pos": null,
+      "frequency_count": 49524
+    },
+    {
+      "candidate_rank": 683,
+      "source_rank": 684,
+      "word": "cumva",
+      "pos": null,
+      "frequency_count": 49437
+    },
+    {
+      "candidate_rank": 684,
+      "source_rank": 685,
+      "word": "aflat",
+      "pos": null,
+      "frequency_count": 49281
+    },
+    {
+      "candidate_rank": 685,
+      "source_rank": 686,
+      "word": "ah",
+      "pos": null,
+      "frequency_count": 49259
+    },
+    {
+      "candidate_rank": 686,
+      "source_rank": 687,
+      "word": "momentul",
+      "pos": null,
+      "frequency_count": 49127
+    },
+    {
+      "candidate_rank": 687,
+      "source_rank": 688,
+      "word": "vadă",
+      "pos": null,
+      "frequency_count": 49106
+    },
+    {
+      "candidate_rank": 688,
+      "source_rank": 689,
+      "word": "jur",
+      "pos": null,
+      "frequency_count": 49085
+    },
+    {
+      "candidate_rank": 689,
+      "source_rank": 690,
+      "word": "fim",
+      "pos": null,
+      "frequency_count": 48947
+    },
+    {
+      "candidate_rank": 690,
+      "source_rank": 691,
+      "word": "toti",
+      "pos": null,
+      "frequency_count": 48892
+    },
+    {
+      "candidate_rank": 691,
+      "source_rank": 692,
+      "word": "poliţia",
+      "pos": null,
+      "frequency_count": 48683
+    },
+    {
+      "candidate_rank": 692,
+      "source_rank": 693,
+      "word": "luăm",
+      "pos": null,
+      "frequency_count": 48548
+    },
+    {
+      "candidate_rank": 693,
+      "source_rank": 694,
+      "word": "drăguţ",
+      "pos": null,
+      "frequency_count": 48533
+    },
+    {
+      "candidate_rank": 694,
+      "source_rank": 695,
+      "word": "ce-ai",
+      "pos": null,
+      "frequency_count": 48510
+    },
+    {
+      "candidate_rank": 695,
+      "source_rank": 696,
+      "word": "sam",
+      "pos": null,
+      "frequency_count": 48508
+    },
+    {
+      "candidate_rank": 696,
+      "source_rank": 697,
+      "word": "vreun",
+      "pos": null,
+      "frequency_count": 48300
+    },
+    {
+      "candidate_rank": 697,
+      "source_rank": 698,
+      "word": "vrem",
+      "pos": null,
+      "frequency_count": 48103
+    },
+    {
+      "candidate_rank": 698,
+      "source_rank": 699,
+      "word": "afara",
+      "pos": null,
+      "frequency_count": 48009
+    },
+    {
+      "candidate_rank": 699,
+      "source_rank": 700,
+      "word": "ultimul",
+      "pos": null,
+      "frequency_count": 47981
+    },
+    {
+      "candidate_rank": 700,
+      "source_rank": 701,
+      "word": "sa-l",
+      "pos": null,
+      "frequency_count": 47968
+    },
+    {
+      "candidate_rank": 701,
+      "source_rank": 702,
+      "word": "moartea",
+      "pos": null,
+      "frequency_count": 47823
+    },
+    {
+      "candidate_rank": 702,
+      "source_rank": 703,
+      "word": "echipa",
+      "pos": null,
+      "frequency_count": 47765
+    },
+    {
+      "candidate_rank": 703,
+      "source_rank": 704,
+      "word": "întâi",
+      "pos": null,
+      "frequency_count": 47652
+    },
+    {
+      "candidate_rank": 704,
+      "source_rank": 705,
+      "word": "care-i",
+      "pos": null,
+      "frequency_count": 47601
+    },
+    {
+      "candidate_rank": 705,
+      "source_rank": 706,
+      "word": "genul",
+      "pos": null,
+      "frequency_count": 47552
+    },
+    {
+      "candidate_rank": 706,
+      "source_rank": 707,
+      "word": "il",
+      "pos": null,
+      "frequency_count": 47326
+    },
+    {
+      "candidate_rank": 707,
+      "source_rank": 708,
+      "word": "foc",
+      "pos": null,
+      "frequency_count": 47323
+    },
+    {
+      "candidate_rank": 708,
+      "source_rank": 709,
+      "word": "dă",
+      "pos": null,
+      "frequency_count": 47174
+    },
+    {
+      "candidate_rank": 709,
+      "source_rank": 710,
+      "word": "uneori",
+      "pos": null,
+      "frequency_count": 47102
+    },
+    {
+      "candidate_rank": 710,
+      "source_rank": 711,
+      "word": "altfel",
+      "pos": null,
+      "frequency_count": 47003
+    },
+    {
+      "candidate_rank": 711,
+      "source_rank": 712,
+      "word": "ştiut",
+      "pos": null,
+      "frequency_count": 46966
+    },
+    {
+      "candidate_rank": 712,
+      "source_rank": 713,
+      "word": "stat",
+      "pos": null,
+      "frequency_count": 46753
+    },
+    {
+      "candidate_rank": 713,
+      "source_rank": 714,
+      "word": "unele",
+      "pos": null,
+      "frequency_count": 46674
+    },
+    {
+      "candidate_rank": 714,
+      "source_rank": 715,
+      "word": "acela",
+      "pos": null,
+      "frequency_count": 46505
+    },
+    {
+      "candidate_rank": 715,
+      "source_rank": 716,
+      "word": "înăuntru",
+      "pos": null,
+      "frequency_count": 46480
+    },
+    {
+      "candidate_rank": 716,
+      "source_rank": 717,
+      "word": "deschide",
+      "pos": null,
+      "frequency_count": 46456
+    },
+    {
+      "candidate_rank": 717,
+      "source_rank": 718,
+      "word": "ati",
+      "pos": null,
+      "frequency_count": 46393
+    },
+    {
+      "candidate_rank": 718,
+      "source_rank": 719,
+      "word": "pur",
+      "pos": null,
+      "frequency_count": 46361
+    },
+    {
+      "candidate_rank": 719,
+      "source_rank": 720,
+      "word": "scris",
+      "pos": null,
+      "frequency_count": 46350
+    },
+    {
+      "candidate_rank": 720,
+      "source_rank": 721,
+      "word": "abia",
+      "pos": null,
+      "frequency_count": 46322
+    },
+    {
+      "candidate_rank": 721,
+      "source_rank": 722,
+      "word": "clar",
+      "pos": null,
+      "frequency_count": 46210
+    },
+    {
+      "candidate_rank": 722,
+      "source_rank": 723,
+      "word": "trece",
+      "pos": null,
+      "frequency_count": 46161
+    },
+    {
+      "candidate_rank": 723,
+      "source_rank": 724,
+      "word": "reuşit",
+      "pos": null,
+      "frequency_count": 46123
+    },
+    {
+      "candidate_rank": 724,
+      "source_rank": 725,
+      "word": "ţi",
+      "pos": null,
+      "frequency_count": 45999
+    },
+    {
+      "candidate_rank": 725,
+      "source_rank": 726,
+      "word": "dea",
+      "pos": null,
+      "frequency_count": 45945
+    },
+    {
+      "candidate_rank": 726,
+      "source_rank": 727,
+      "word": "schimbat",
+      "pos": null,
+      "frequency_count": 45776
+    },
+    {
+      "candidate_rank": 727,
+      "source_rank": 728,
+      "word": "dimineaţă",
+      "pos": null,
+      "frequency_count": 45755
+    },
+    {
+      "candidate_rank": 728,
+      "source_rank": 729,
+      "word": "new",
+      "pos": null,
+      "frequency_count": 45723
+    },
+    {
+      "candidate_rank": 729,
+      "source_rank": 730,
+      "word": "altcineva",
+      "pos": null,
+      "frequency_count": 45703
+    },
+    {
+      "candidate_rank": 730,
+      "source_rank": 731,
+      "word": "uşa",
+      "pos": null,
+      "frequency_count": 45560
+    },
+    {
+      "candidate_rank": 731,
+      "source_rank": 732,
+      "word": "prietenii",
+      "pos": null,
+      "frequency_count": 45536
+    },
+    {
+      "candidate_rank": 732,
+      "source_rank": 733,
+      "word": "ii",
+      "pos": null,
+      "frequency_count": 45401
+    },
+    {
+      "candidate_rank": 733,
+      "source_rank": 734,
+      "word": "devenit",
+      "pos": null,
+      "frequency_count": 45342
+    },
+    {
+      "candidate_rank": 734,
+      "source_rank": 735,
+      "word": "ieri",
+      "pos": null,
+      "frequency_count": 45183
+    },
+    {
+      "candidate_rank": 735,
+      "source_rank": 736,
+      "word": "dori",
+      "pos": null,
+      "frequency_count": 45143
+    },
+    {
+      "candidate_rank": 736,
+      "source_rank": 737,
+      "word": "aibă",
+      "pos": null,
+      "frequency_count": 45110
+    },
+    {
+      "candidate_rank": 737,
+      "source_rank": 738,
+      "word": "pământ",
+      "pos": null,
+      "frequency_count": 45060
+    },
+    {
+      "candidate_rank": 738,
+      "source_rank": 739,
+      "word": "the",
+      "pos": null,
+      "frequency_count": 45058
+    },
+    {
+      "candidate_rank": 739,
+      "source_rank": 740,
+      "word": "cameră",
+      "pos": null,
+      "frequency_count": 45038
+    },
+    {
+      "candidate_rank": 740,
+      "source_rank": 741,
+      "word": "amice",
+      "pos": null,
+      "frequency_count": 44894
+    },
+    {
+      "candidate_rank": 741,
+      "source_rank": 742,
+      "word": "tuturor",
+      "pos": null,
+      "frequency_count": 44780
+    },
+    {
+      "candidate_rank": 742,
+      "source_rank": 743,
+      "word": "sex",
+      "pos": null,
+      "frequency_count": 44665
+    },
+    {
+      "candidate_rank": 743,
+      "source_rank": 744,
+      "word": "afla",
+      "pos": null,
+      "frequency_count": 44618
+    },
+    {
+      "candidate_rank": 744,
+      "source_rank": 745,
+      "word": "femei",
+      "pos": null,
+      "frequency_count": 44455
+    },
+    {
+      "candidate_rank": 745,
+      "source_rank": 746,
+      "word": "frică",
+      "pos": null,
+      "frequency_count": 44384
+    },
+    {
+      "candidate_rank": 746,
+      "source_rank": 747,
+      "word": "totuşi",
+      "pos": null,
+      "frequency_count": 44359
+    },
+    {
+      "candidate_rank": 747,
+      "source_rank": 748,
+      "word": "sale",
+      "pos": null,
+      "frequency_count": 44306
+    },
+    {
+      "candidate_rank": 748,
+      "source_rank": 749,
+      "word": "folosit",
+      "pos": null,
+      "frequency_count": 44172
+    },
+    {
+      "candidate_rank": 749,
+      "source_rank": 750,
+      "word": "vorbeşte",
+      "pos": null,
+      "frequency_count": 43956
+    },
+    {
+      "candidate_rank": 750,
+      "source_rank": 751,
+      "word": "normal",
+      "pos": null,
+      "frequency_count": 43888
+    },
+    {
+      "candidate_rank": 751,
+      "source_rank": 752,
+      "word": "liber",
+      "pos": null,
+      "frequency_count": 43667
+    },
+    {
+      "candidate_rank": 752,
+      "source_rank": 753,
+      "word": "într-adevăr",
+      "pos": null,
+      "frequency_count": 43623
+    },
+    {
+      "candidate_rank": 753,
+      "source_rank": 754,
+      "word": "uit",
+      "pos": null,
+      "frequency_count": 43576
+    },
+    {
+      "candidate_rank": 754,
+      "source_rank": 755,
+      "word": "intră",
+      "pos": null,
+      "frequency_count": 43560
+    },
+    {
+      "candidate_rank": 755,
+      "source_rank": 756,
+      "word": "lasă",
+      "pos": null,
+      "frequency_count": 43533
+    },
+    {
+      "candidate_rank": 756,
+      "source_rank": 757,
+      "word": "sfârşit",
+      "pos": null,
+      "frequency_count": 43526
+    },
+    {
+      "candidate_rank": 757,
+      "source_rank": 758,
+      "word": "voiam",
+      "pos": null,
+      "frequency_count": 43499
+    },
+    {
+      "candidate_rank": 758,
+      "source_rank": 759,
+      "word": "soţul",
+      "pos": null,
+      "frequency_count": 43392
+    },
+    {
+      "candidate_rank": 759,
+      "source_rank": 760,
+      "word": "băiat",
+      "pos": null,
+      "frequency_count": 43372
+    },
+    {
+      "candidate_rank": 760,
+      "source_rank": 761,
+      "word": "săptămâni",
+      "pos": null,
+      "frequency_count": 43332
+    },
+    {
+      "candidate_rank": 761,
+      "source_rank": 762,
+      "word": "ăştia",
+      "pos": null,
+      "frequency_count": 43299
+    },
+    {
+      "candidate_rank": 762,
+      "source_rank": 763,
+      "word": "l-au",
+      "pos": null,
+      "frequency_count": 43299
+    },
+    {
+      "candidate_rank": 763,
+      "source_rank": 764,
+      "word": "încât",
+      "pos": null,
+      "frequency_count": 43223
+    },
+    {
+      "candidate_rank": 764,
+      "source_rank": 765,
+      "word": "multă",
+      "pos": null,
+      "frequency_count": 43200
+    },
+    {
+      "candidate_rank": 765,
+      "source_rank": 766,
+      "word": "greşit",
+      "pos": null,
+      "frequency_count": 43044
+    },
+    {
+      "candidate_rank": 766,
+      "source_rank": 767,
+      "word": "război",
+      "pos": null,
+      "frequency_count": 42955
+    },
+    {
+      "candidate_rank": 767,
+      "source_rank": 768,
+      "word": "milioane",
+      "pos": null,
+      "frequency_count": 42915
+    },
+    {
+      "candidate_rank": 768,
+      "source_rank": 769,
+      "word": "găsim",
+      "pos": null,
+      "frequency_count": 42895
+    },
+    {
+      "candidate_rank": 769,
+      "source_rank": 770,
+      "word": "trecută",
+      "pos": null,
+      "frequency_count": 42834
+    },
+    {
+      "candidate_rank": 770,
+      "source_rank": 771,
+      "word": "ci",
+      "pos": null,
+      "frequency_count": 42792
+    },
+    {
+      "candidate_rank": 771,
+      "source_rank": 772,
+      "word": "ideea",
+      "pos": null,
+      "frequency_count": 42777
+    },
+    {
+      "candidate_rank": 772,
+      "source_rank": 773,
+      "word": "biroul",
+      "pos": null,
+      "frequency_count": 42768
+    },
+    {
+      "candidate_rank": 773,
+      "source_rank": 774,
+      "word": "vazut",
+      "pos": null,
+      "frequency_count": 42727
+    },
+    {
+      "candidate_rank": 774,
+      "source_rank": 775,
+      "word": "închisoare",
+      "pos": null,
+      "frequency_count": 42720
+    },
+    {
+      "candidate_rank": 775,
+      "source_rank": 776,
+      "word": "v-am",
+      "pos": null,
+      "frequency_count": 42678
+    },
+    {
+      "candidate_rank": 776,
+      "source_rank": 777,
+      "word": "exista",
+      "pos": null,
+      "frequency_count": 42581
+    },
+    {
+      "candidate_rank": 777,
+      "source_rank": 778,
+      "word": "regula",
+      "pos": null,
+      "frequency_count": 42461
+    },
+    {
+      "candidate_rank": 778,
+      "source_rank": 779,
+      "word": "pat",
+      "pos": null,
+      "frequency_count": 42248
+    },
+    {
+      "candidate_rank": 779,
+      "source_rank": 780,
+      "word": "plus",
+      "pos": null,
+      "frequency_count": 42243
+    },
+    {
+      "candidate_rank": 780,
+      "source_rank": 781,
+      "word": "întâlnit",
+      "pos": null,
+      "frequency_count": 42181
+    },
+    {
+      "candidate_rank": 781,
+      "source_rank": 782,
+      "word": "muri",
+      "pos": null,
+      "frequency_count": 42164
+    },
+    {
+      "candidate_rank": 782,
+      "source_rank": 783,
+      "word": "amuzant",
+      "pos": null,
+      "frequency_count": 42099
+    },
+    {
+      "candidate_rank": 783,
+      "source_rank": 784,
+      "word": "sa-ti",
+      "pos": null,
+      "frequency_count": 42018
+    },
+    {
+      "candidate_rank": 784,
+      "source_rank": 785,
+      "word": "zice",
+      "pos": null,
+      "frequency_count": 41846
+    },
+    {
+      "candidate_rank": 785,
+      "source_rank": 786,
+      "word": "spital",
+      "pos": null,
+      "frequency_count": 41809
+    },
+    {
+      "candidate_rank": 786,
+      "source_rank": 787,
+      "word": "arăţi",
+      "pos": null,
+      "frequency_count": 41548
+    },
+    {
+      "candidate_rank": 787,
+      "source_rank": 788,
+      "word": "jurul",
+      "pos": null,
+      "frequency_count": 41547
+    },
+    {
+      "candidate_rank": 788,
+      "source_rank": 789,
+      "word": "lovit",
+      "pos": null,
+      "frequency_count": 41497
+    },
+    {
+      "candidate_rank": 789,
+      "source_rank": 790,
+      "word": "spună",
+      "pos": null,
+      "frequency_count": 41470
+    },
+    {
+      "candidate_rank": 790,
+      "source_rank": 791,
+      "word": "suficient",
+      "pos": null,
+      "frequency_count": 41454
+    },
+    {
+      "candidate_rank": 791,
+      "source_rank": 792,
+      "word": "trage",
+      "pos": null,
+      "frequency_count": 41440
+    },
+    {
+      "candidate_rank": 792,
+      "source_rank": 793,
+      "word": "şansă",
+      "pos": null,
+      "frequency_count": 41341
+    },
+    {
+      "candidate_rank": 793,
+      "source_rank": 794,
+      "word": "doctor",
+      "pos": null,
+      "frequency_count": 41325
+    },
+    {
+      "candidate_rank": 794,
+      "source_rank": 795,
+      "word": "plăcere",
+      "pos": null,
+      "frequency_count": 41285
+    },
+    {
+      "candidate_rank": 795,
+      "source_rank": 796,
+      "word": "draga",
+      "pos": null,
+      "frequency_count": 41264
+    },
+    {
+      "candidate_rank": 796,
+      "source_rank": 797,
+      "word": "alea",
+      "pos": null,
+      "frequency_count": 41179
+    },
+    {
+      "candidate_rank": 797,
+      "source_rank": 798,
+      "word": "domnilor",
+      "pos": null,
+      "frequency_count": 41093
+    },
+    {
+      "candidate_rank": 798,
+      "source_rank": 799,
+      "word": "direct",
+      "pos": null,
+      "frequency_count": 41090
+    },
+    {
+      "candidate_rank": 799,
+      "source_rank": 800,
+      "word": "petrecere",
+      "pos": null,
+      "frequency_count": 41069
+    },
+    {
+      "candidate_rank": 800,
+      "source_rank": 801,
+      "word": "oricine",
+      "pos": null,
+      "frequency_count": 41016
+    },
+    {
+      "candidate_rank": 801,
+      "source_rank": 802,
+      "word": "plăcut",
+      "pos": null,
+      "frequency_count": 40985
+    },
+    {
+      "candidate_rank": 802,
+      "source_rank": 803,
+      "word": "felul",
+      "pos": null,
+      "frequency_count": 40884
+    },
+    {
+      "candidate_rank": 803,
+      "source_rank": 804,
+      "word": "gura",
+      "pos": null,
+      "frequency_count": 40860
+    },
+    {
+      "candidate_rank": 804,
+      "source_rank": 805,
+      "word": "ochi",
+      "pos": null,
+      "frequency_count": 40774
+    },
+    {
+      "candidate_rank": 805,
+      "source_rank": 806,
+      "word": "ucide",
+      "pos": null,
+      "frequency_count": 40647
+    },
+    {
+      "candidate_rank": 806,
+      "source_rank": 807,
+      "word": "traducerea",
+      "pos": null,
+      "frequency_count": 40545
+    },
+    {
+      "candidate_rank": 807,
+      "source_rank": 808,
+      "word": "telefonul",
+      "pos": null,
+      "frequency_count": 40474
+    },
+    {
+      "candidate_rank": 808,
+      "source_rank": 809,
+      "word": "special",
+      "pos": null,
+      "frequency_count": 40335
+    },
+    {
+      "candidate_rank": 809,
+      "source_rank": 810,
+      "word": "şcoală",
+      "pos": null,
+      "frequency_count": 40247
+    },
+    {
+      "candidate_rank": 810,
+      "source_rank": 811,
+      "word": "munca",
+      "pos": null,
+      "frequency_count": 40215
+    },
+    {
+      "candidate_rank": 811,
+      "source_rank": 812,
+      "word": "niste",
+      "pos": null,
+      "frequency_count": 40120
+    },
+    {
+      "candidate_rank": 812,
+      "source_rank": 813,
+      "word": "omorât",
+      "pos": null,
+      "frequency_count": 40096
+    },
+    {
+      "candidate_rank": 813,
+      "source_rank": 814,
+      "word": "încerca",
+      "pos": null,
+      "frequency_count": 40087
+    },
+    {
+      "candidate_rank": 814,
+      "source_rank": 815,
+      "word": "dispărut",
+      "pos": null,
+      "frequency_count": 40049
+    },
+    {
+      "candidate_rank": 815,
+      "source_rank": 816,
+      "word": "voastră",
+      "pos": null,
+      "frequency_count": 39982
+    },
+    {
+      "candidate_rank": 816,
+      "source_rank": 817,
+      "word": "întâlnire",
+      "pos": null,
+      "frequency_count": 39960
+    },
+    {
+      "candidate_rank": 817,
+      "source_rank": 818,
+      "word": "unii",
+      "pos": null,
+      "frequency_count": 39897
+    },
+    {
+      "candidate_rank": 818,
+      "source_rank": 819,
+      "word": "cheamă",
+      "pos": null,
+      "frequency_count": 39889
+    },
+    {
+      "candidate_rank": 819,
+      "source_rank": 820,
+      "word": "haideţi",
+      "pos": null,
+      "frequency_count": 39843
+    },
+    {
+      "candidate_rank": 820,
+      "source_rank": 821,
+      "word": "şase",
+      "pos": null,
+      "frequency_count": 39840
+    },
+    {
+      "candidate_rank": 821,
+      "source_rank": 822,
+      "word": "ieşit",
+      "pos": null,
+      "frequency_count": 39822
+    },
+    {
+      "candidate_rank": 822,
+      "source_rank": 823,
+      "word": "fara",
+      "pos": null,
+      "frequency_count": 39682
+    },
+    {
+      "candidate_rank": 823,
+      "source_rank": 824,
+      "word": "complet",
+      "pos": null,
+      "frequency_count": 39665
+    },
+    {
+      "candidate_rank": 824,
+      "source_rank": 825,
+      "word": "dragoste",
+      "pos": null,
+      "frequency_count": 39503
+    },
+    {
+      "candidate_rank": 825,
+      "source_rank": 826,
+      "word": "zece",
+      "pos": null,
+      "frequency_count": 39495
+    },
+    {
+      "candidate_rank": 826,
+      "source_rank": 827,
+      "word": "povestea",
+      "pos": null,
+      "frequency_count": 39486
+    },
+    {
+      "candidate_rank": 827,
+      "source_rank": 828,
+      "word": "niciodata",
+      "pos": null,
+      "frequency_count": 39430
+    },
+    {
+      "candidate_rank": 828,
+      "source_rank": 829,
+      "word": "sincer",
+      "pos": null,
+      "frequency_count": 39375
+    },
+    {
+      "candidate_rank": 829,
+      "source_rank": 830,
+      "word": "arăt",
+      "pos": null,
+      "frequency_count": 39346
+    },
+    {
+      "candidate_rank": 830,
+      "source_rank": 831,
+      "word": "dreapta",
+      "pos": null,
+      "frequency_count": 39337
+    },
+    {
+      "candidate_rank": 831,
+      "source_rank": 832,
+      "word": "laşi",
+      "pos": null,
+      "frequency_count": 39096
+    },
+    {
+      "candidate_rank": 832,
+      "source_rank": 833,
+      "word": "scrie",
+      "pos": null,
+      "frequency_count": 39072
+    },
+    {
+      "candidate_rank": 833,
+      "source_rank": 834,
+      "word": "opri",
+      "pos": null,
+      "frequency_count": 39065
+    },
+    {
+      "candidate_rank": 834,
+      "source_rank": 835,
+      "word": "unu",
+      "pos": null,
+      "frequency_count": 39039
+    },
+    {
+      "candidate_rank": 835,
+      "source_rank": 836,
+      "word": "obicei",
+      "pos": null,
+      "frequency_count": 39038
+    },
+    {
+      "candidate_rank": 836,
+      "source_rank": 837,
+      "word": "dumneavoastră",
+      "pos": null,
+      "frequency_count": 39007
+    },
+    {
+      "candidate_rank": 837,
+      "source_rank": 838,
+      "word": "viitoare",
+      "pos": null,
+      "frequency_count": 38905
+    },
+    {
+      "candidate_rank": 838,
+      "source_rank": 839,
+      "word": "vechi",
+      "pos": null,
+      "frequency_count": 38878
+    },
+    {
+      "candidate_rank": 839,
+      "source_rank": 840,
+      "word": "aştept",
+      "pos": null,
+      "frequency_count": 38661
+    },
+    {
+      "candidate_rank": 840,
+      "source_rank": 841,
+      "word": "îti",
+      "pos": null,
+      "frequency_count": 38601
+    },
+    {
+      "candidate_rank": 841,
+      "source_rank": 842,
+      "word": "fugi",
+      "pos": null,
+      "frequency_count": 38394
+    },
+    {
+      "candidate_rank": 842,
+      "source_rank": 843,
+      "word": "minut",
+      "pos": null,
+      "frequency_count": 38205
+    },
+    {
+      "candidate_rank": 843,
+      "source_rank": 844,
+      "word": "însă",
+      "pos": null,
+      "frequency_count": 38059
+    },
+    {
+      "candidate_rank": 844,
+      "source_rank": 845,
+      "word": "afaceri",
+      "pos": null,
+      "frequency_count": 38026
+    },
+    {
+      "candidate_rank": 845,
+      "source_rank": 846,
+      "word": "ţie",
+      "pos": null,
+      "frequency_count": 38001
+    },
+    {
+      "candidate_rank": 846,
+      "source_rank": 847,
+      "word": "plăcea",
+      "pos": null,
+      "frequency_count": 37877
+    },
+    {
+      "candidate_rank": 847,
+      "source_rank": 848,
+      "word": "michael",
+      "pos": null,
+      "frequency_count": 37865
+    },
+    {
+      "candidate_rank": 848,
+      "source_rank": 849,
+      "word": "şti",
+      "pos": null,
+      "frequency_count": 37519
+    },
+    {
+      "candidate_rank": 849,
+      "source_rank": 850,
+      "word": "mâncare",
+      "pos": null,
+      "frequency_count": 37459
+    },
+    {
+      "candidate_rank": 850,
+      "source_rank": 851,
+      "word": "dă-i",
+      "pos": null,
+      "frequency_count": 37412
+    },
+    {
+      "candidate_rank": 851,
+      "source_rank": 852,
+      "word": "ajung",
+      "pos": null,
+      "frequency_count": 37338
+    },
+    {
+      "candidate_rank": 852,
+      "source_rank": 853,
+      "word": "picioare",
+      "pos": null,
+      "frequency_count": 37333
+    },
+    {
+      "candidate_rank": 853,
+      "source_rank": 854,
+      "word": "anul",
+      "pos": null,
+      "frequency_count": 37245
+    },
+    {
+      "candidate_rank": 854,
+      "source_rank": 855,
+      "word": "schimb",
+      "pos": null,
+      "frequency_count": 37239
+    },
+    {
+      "candidate_rank": 855,
+      "source_rank": 856,
+      "word": "întrebare",
+      "pos": null,
+      "frequency_count": 37174
+    },
+    {
+      "candidate_rank": 856,
+      "source_rank": 857,
+      "word": "aer",
+      "pos": null,
+      "frequency_count": 37167
+    },
+    {
+      "candidate_rank": 857,
+      "source_rank": 858,
+      "word": "atâta",
+      "pos": null,
+      "frequency_count": 37150
+    },
+    {
+      "candidate_rank": 858,
+      "source_rank": 859,
+      "word": "charlie",
+      "pos": null,
+      "frequency_count": 37110
+    },
+    {
+      "candidate_rank": 859,
+      "source_rank": 860,
+      "word": "puternic",
+      "pos": null,
+      "frequency_count": 37002
+    },
+    {
+      "candidate_rank": 860,
+      "source_rank": 861,
+      "word": "toţii",
+      "pos": null,
+      "frequency_count": 36951
+    },
+    {
+      "candidate_rank": 861,
+      "source_rank": 862,
+      "word": "rămâi",
+      "pos": null,
+      "frequency_count": 36932
+    },
+    {
+      "candidate_rank": 862,
+      "source_rank": 863,
+      "word": "aminteşti",
+      "pos": null,
+      "frequency_count": 36904
+    },
+    {
+      "candidate_rank": 863,
+      "source_rank": 864,
+      "word": "furat",
+      "pos": null,
+      "frequency_count": 36753
+    },
+    {
+      "candidate_rank": 864,
+      "source_rank": 865,
+      "word": "intra",
+      "pos": null,
+      "frequency_count": 36734
+    },
+    {
+      "candidate_rank": 865,
+      "source_rank": 866,
+      "word": "ajutorul",
+      "pos": null,
+      "frequency_count": 36694
+    },
+    {
+      "candidate_rank": 866,
+      "source_rank": 867,
+      "word": "cafea",
+      "pos": null,
+      "frequency_count": 36562
+    },
+    {
+      "candidate_rank": 867,
+      "source_rank": 868,
+      "word": "vad",
+      "pos": null,
+      "frequency_count": 36561
+    },
+    {
+      "candidate_rank": 868,
+      "source_rank": 869,
+      "word": "promit",
+      "pos": null,
+      "frequency_count": 36499
+    },
+    {
+      "candidate_rank": 869,
+      "source_rank": 870,
+      "word": "poveste",
+      "pos": null,
+      "frequency_count": 36489
+    },
+    {
+      "candidate_rank": 870,
+      "source_rank": 871,
+      "word": "frank",
+      "pos": null,
+      "frequency_count": 36429
+    },
+    {
+      "candidate_rank": 871,
+      "source_rank": 872,
+      "word": "scuză-mă",
+      "pos": null,
+      "frequency_count": 36324
+    },
+    {
+      "candidate_rank": 872,
+      "source_rank": 873,
+      "word": "gândeam",
+      "pos": null,
+      "frequency_count": 36315
+    },
+    {
+      "candidate_rank": 873,
+      "source_rank": 874,
+      "word": "deoarece",
+      "pos": null,
+      "frequency_count": 36259
+    },
+    {
+      "candidate_rank": 874,
+      "source_rank": 875,
+      "word": "treci",
+      "pos": null,
+      "frequency_count": 36191
+    },
+    {
+      "candidate_rank": 875,
+      "source_rank": 876,
+      "word": "toata",
+      "pos": null,
+      "frequency_count": 36172
+    },
+    {
+      "candidate_rank": 876,
+      "source_rank": 877,
+      "word": "lucrez",
+      "pos": null,
+      "frequency_count": 36035
+    },
+    {
+      "candidate_rank": 877,
+      "source_rank": 878,
+      "word": "luptă",
+      "pos": null,
+      "frequency_count": 36028
+    },
+    {
+      "candidate_rank": 878,
+      "source_rank": 879,
+      "word": "film",
+      "pos": null,
+      "frequency_count": 35706
+    },
+    {
+      "candidate_rank": 879,
+      "source_rank": 880,
+      "word": "întrebat",
+      "pos": null,
+      "frequency_count": 35657
+    },
+    {
+      "candidate_rank": 880,
+      "source_rank": 881,
+      "word": "prietene",
+      "pos": null,
+      "frequency_count": 35597
+    },
+    {
+      "candidate_rank": 881,
+      "source_rank": 882,
+      "word": "cat",
+      "pos": null,
+      "frequency_count": 35552
+    },
+    {
+      "candidate_rank": 882,
+      "source_rank": 883,
+      "word": "anume",
+      "pos": null,
+      "frequency_count": 35549
+    },
+    {
+      "candidate_rank": 883,
+      "source_rank": 884,
+      "word": "mamei",
+      "pos": null,
+      "frequency_count": 35482
+    },
+    {
+      "candidate_rank": 884,
+      "source_rank": 885,
+      "word": "plece",
+      "pos": null,
+      "frequency_count": 35424
+    },
+    {
+      "candidate_rank": 885,
+      "source_rank": 886,
+      "word": "bineînţeles",
+      "pos": null,
+      "frequency_count": 35421
+    },
+    {
+      "candidate_rank": 886,
+      "source_rank": 887,
+      "word": "sa-i",
+      "pos": null,
+      "frequency_count": 35349
+    },
+    {
+      "candidate_rank": 887,
+      "source_rank": 888,
+      "word": "mână",
+      "pos": null,
+      "frequency_count": 35347
+    },
+    {
+      "candidate_rank": 888,
+      "source_rank": 889,
+      "word": "mor",
+      "pos": null,
+      "frequency_count": 35293
+    },
+    {
+      "candidate_rank": 889,
+      "source_rank": 890,
+      "word": "vedere",
+      "pos": null,
+      "frequency_count": 35292
+    },
+    {
+      "candidate_rank": 890,
+      "source_rank": 891,
+      "word": "iubito",
+      "pos": null,
+      "frequency_count": 35270
+    },
+    {
+      "candidate_rank": 891,
+      "source_rank": 892,
+      "word": "seară",
+      "pos": null,
+      "frequency_count": 35225
+    },
+    {
+      "candidate_rank": 892,
+      "source_rank": 893,
+      "word": "pana",
+      "pos": null,
+      "frequency_count": 35196
+    },
+    {
+      "candidate_rank": 893,
+      "source_rank": 894,
+      "word": "dăm",
+      "pos": null,
+      "frequency_count": 35157
+    },
+    {
+      "candidate_rank": 894,
+      "source_rank": 895,
+      "word": "întrebări",
+      "pos": null,
+      "frequency_count": 35146
+    },
+    {
+      "candidate_rank": 895,
+      "source_rank": 896,
+      "word": "inca",
+      "pos": null,
+      "frequency_count": 35065
+    },
+    {
+      "candidate_rank": 896,
+      "source_rank": 897,
+      "word": "dreptul",
+      "pos": null,
+      "frequency_count": 35025
+    },
+    {
+      "candidate_rank": 897,
+      "source_rank": 898,
+      "word": "ceilalţi",
+      "pos": null,
+      "frequency_count": 34962
+    },
+    {
+      "candidate_rank": 898,
+      "source_rank": 899,
+      "word": "lupta",
+      "pos": null,
+      "frequency_count": 34948
+    },
+    {
+      "candidate_rank": 899,
+      "source_rank": 900,
+      "word": "sa-mi",
+      "pos": null,
+      "frequency_count": 34889
+    },
+    {
+      "candidate_rank": 900,
+      "source_rank": 901,
+      "word": "apa",
+      "pos": null,
+      "frequency_count": 34876
+    },
+    {
+      "candidate_rank": 901,
+      "source_rank": 902,
+      "word": "caut",
+      "pos": null,
+      "frequency_count": 34671
+    },
+    {
+      "candidate_rank": 902,
+      "source_rank": 903,
+      "word": "voie",
+      "pos": null,
+      "frequency_count": 34538
+    },
+    {
+      "candidate_rank": 903,
+      "source_rank": 904,
+      "word": "george",
+      "pos": null,
+      "frequency_count": 34511
+    },
+    {
+      "candidate_rank": 904,
+      "source_rank": 905,
+      "word": "lucrat",
+      "pos": null,
+      "frequency_count": 34507
+    },
+    {
+      "candidate_rank": 905,
+      "source_rank": 906,
+      "word": "săptămână",
+      "pos": null,
+      "frequency_count": 34449
+    },
+    {
+      "candidate_rank": 906,
+      "source_rank": 907,
+      "word": "le-a",
+      "pos": null,
+      "frequency_count": 34447
+    },
+    {
+      "candidate_rank": 907,
+      "source_rank": 908,
+      "word": "doctore",
+      "pos": null,
+      "frequency_count": 34409
+    },
+    {
+      "candidate_rank": 908,
+      "source_rank": 909,
+      "word": "personal",
+      "pos": null,
+      "frequency_count": 34345
+    },
+    {
+      "candidate_rank": 909,
+      "source_rank": 910,
+      "word": "agent",
+      "pos": null,
+      "frequency_count": 34299
+    },
+    {
+      "candidate_rank": 910,
+      "source_rank": 911,
+      "word": "joe",
+      "pos": null,
+      "frequency_count": 34259
+    },
+    {
+      "candidate_rank": 911,
+      "source_rank": 912,
+      "word": "tom",
+      "pos": null,
+      "frequency_count": 34253
+    },
+    {
+      "candidate_rank": 912,
+      "source_rank": 913,
+      "word": "dracului",
+      "pos": null,
+      "frequency_count": 34224
+    },
+    {
+      "candidate_rank": 913,
+      "source_rank": 914,
+      "word": "femeia",
+      "pos": null,
+      "frequency_count": 34213
+    },
+    {
+      "candidate_rank": 914,
+      "source_rank": 915,
+      "word": "super",
+      "pos": null,
+      "frequency_count": 34150
+    },
+    {
+      "candidate_rank": 915,
+      "source_rank": 916,
+      "word": "fete",
+      "pos": null,
+      "frequency_count": 34113
+    },
+    {
+      "candidate_rank": 916,
+      "source_rank": 917,
+      "word": "sã",
+      "pos": null,
+      "frequency_count": 33915
+    },
+    {
+      "candidate_rank": 917,
+      "source_rank": 918,
+      "word": "ajute",
+      "pos": null,
+      "frequency_count": 33864
+    },
+    {
+      "candidate_rank": 918,
+      "source_rank": 919,
+      "word": "cunoşti",
+      "pos": null,
+      "frequency_count": 33859
+    },
+    {
+      "candidate_rank": 919,
+      "source_rank": 920,
+      "word": "puterea",
+      "pos": null,
+      "frequency_count": 33817
+    },
+    {
+      "candidate_rank": 920,
+      "source_rank": 921,
+      "word": "căpitane",
+      "pos": null,
+      "frequency_count": 33817
+    },
+    {
+      "candidate_rank": 921,
+      "source_rank": 922,
+      "word": "birou",
+      "pos": null,
+      "frequency_count": 33725
+    },
+    {
+      "candidate_rank": 922,
+      "source_rank": 923,
+      "word": "david",
+      "pos": null,
+      "frequency_count": 33716
+    },
+    {
+      "candidate_rank": 923,
+      "source_rank": 924,
+      "word": "pregătit",
+      "pos": null,
+      "frequency_count": 33686
+    },
+    {
+      "candidate_rank": 924,
+      "source_rank": 925,
+      "word": "mike",
+      "pos": null,
+      "frequency_count": 33659
+    },
+    {
+      "candidate_rank": 925,
+      "source_rank": 926,
+      "word": "celor",
+      "pos": null,
+      "frequency_count": 33520
+    },
+    {
+      "candidate_rank": 926,
+      "source_rank": 927,
+      "word": "york",
+      "pos": null,
+      "frequency_count": 33487
+    },
+    {
+      "candidate_rank": 927,
+      "source_rank": 928,
+      "word": "adaptarea",
+      "pos": null,
+      "frequency_count": 33379
+    },
+    {
+      "candidate_rank": 928,
+      "source_rank": 929,
+      "word": "mesaj",
+      "pos": null,
+      "frequency_count": 33347
+    },
+    {
+      "candidate_rank": 929,
+      "source_rank": 930,
+      "word": "omoare",
+      "pos": null,
+      "frequency_count": 33308
+    },
+    {
+      "candidate_rank": 930,
+      "source_rank": 931,
+      "word": "prietena",
+      "pos": null,
+      "frequency_count": 33302
+    },
+    {
+      "candidate_rank": 931,
+      "source_rank": 932,
+      "word": "meargă",
+      "pos": null,
+      "frequency_count": 33209
+    },
+    {
+      "candidate_rank": 932,
+      "source_rank": 933,
+      "word": "gândeşti",
+      "pos": null,
+      "frequency_count": 33203
+    },
+    {
+      "candidate_rank": 933,
+      "source_rank": 934,
+      "word": "doresc",
+      "pos": null,
+      "frequency_count": 33201
+    },
+    {
+      "candidate_rank": 934,
+      "source_rank": 935,
+      "word": "dor",
+      "pos": null,
+      "frequency_count": 33165
+    },
+    {
+      "candidate_rank": 935,
+      "source_rank": 936,
+      "word": "staţi",
+      "pos": null,
+      "frequency_count": 33164
+    },
+    {
+      "candidate_rank": 936,
+      "source_rank": 937,
+      "word": "cui",
+      "pos": null,
+      "frequency_count": 33126
+    },
+    {
+      "candidate_rank": 937,
+      "source_rank": 938,
+      "word": "masina",
+      "pos": null,
+      "frequency_count": 33117
+    },
+    {
+      "candidate_rank": 938,
+      "source_rank": 939,
+      "word": "absolut",
+      "pos": null,
+      "frequency_count": 33095
+    },
+    {
+      "candidate_rank": 939,
+      "source_rank": 940,
+      "word": "aceeaşi",
+      "pos": null,
+      "frequency_count": 33036
+    },
+    {
+      "candidate_rank": 940,
+      "source_rank": 941,
+      "word": "acele",
+      "pos": null,
+      "frequency_count": 33021
+    },
+    {
+      "candidate_rank": 941,
+      "source_rank": 942,
+      "word": "persoane",
+      "pos": null,
+      "frequency_count": 33019
+    },
+    {
+      "candidate_rank": 942,
+      "source_rank": 943,
+      "word": "accident",
+      "pos": null,
+      "frequency_count": 32994
+    },
+    {
+      "candidate_rank": 943,
+      "source_rank": 944,
+      "word": "fiind",
+      "pos": null,
+      "frequency_count": 32984
+    },
+    {
+      "candidate_rank": 944,
+      "source_rank": 945,
+      "word": "sunteti",
+      "pos": null,
+      "frequency_count": 32981
+    },
+    {
+      "candidate_rank": 945,
+      "source_rank": 947,
+      "word": "crimă",
+      "pos": null,
+      "frequency_count": 32873
+    },
+    {
+      "candidate_rank": 946,
+      "source_rank": 948,
+      "word": "părinţii",
+      "pos": null,
+      "frequency_count": 32827
+    },
+    {
+      "candidate_rank": 947,
+      "source_rank": 949,
+      "word": "evident",
+      "pos": null,
+      "frequency_count": 32797
+    },
+    {
+      "candidate_rank": 948,
+      "source_rank": 950,
+      "word": "mi-au",
+      "pos": null,
+      "frequency_count": 32796
+    },
+    {
+      "candidate_rank": 949,
+      "source_rank": 951,
+      "word": "simte",
+      "pos": null,
+      "frequency_count": 32785
+    },
+    {
+      "candidate_rank": 950,
+      "source_rank": 952,
+      "word": "pierde",
+      "pos": null,
+      "frequency_count": 32772
+    },
+    {
+      "candidate_rank": 951,
+      "source_rank": 953,
+      "word": "l",
+      "pos": null,
+      "frequency_count": 32744
+    },
+    {
+      "candidate_rank": 952,
+      "source_rank": 954,
+      "word": "încerci",
+      "pos": null,
+      "frequency_count": 32712
+    },
+    {
+      "candidate_rank": 953,
+      "source_rank": 955,
+      "word": "oamenilor",
+      "pos": null,
+      "frequency_count": 32606
+    },
+    {
+      "candidate_rank": 954,
+      "source_rank": 956,
+      "word": "ordine",
+      "pos": null,
+      "frequency_count": 32440
+    },
+    {
+      "candidate_rank": 955,
+      "source_rank": 957,
+      "word": "domnului",
+      "pos": null,
+      "frequency_count": 32368
+    },
+    {
+      "candidate_rank": 956,
+      "source_rank": 958,
+      "word": "spunem",
+      "pos": null,
+      "frequency_count": 32363
+    },
+    {
+      "candidate_rank": 957,
+      "source_rank": 959,
+      "word": "schimba",
+      "pos": null,
+      "frequency_count": 32342
+    },
+    {
+      "candidate_rank": 958,
+      "source_rank": 960,
+      "word": "ţin",
+      "pos": null,
+      "frequency_count": 32310
+    },
+    {
+      "candidate_rank": 959,
+      "source_rank": 961,
+      "word": "uiţi",
+      "pos": null,
+      "frequency_count": 32224
+    },
+    {
+      "candidate_rank": 960,
+      "source_rank": 962,
+      "word": "noua",
+      "pos": null,
+      "frequency_count": 32217
+    },
+    {
+      "candidate_rank": 961,
+      "source_rank": 963,
+      "word": "stare",
+      "pos": null,
+      "frequency_count": 32120
+    },
+    {
+      "candidate_rank": 962,
+      "source_rank": 964,
+      "word": "mici",
+      "pos": null,
+      "frequency_count": 32092
+    },
+    {
+      "candidate_rank": 963,
+      "source_rank": 965,
+      "word": "continuă",
+      "pos": null,
+      "frequency_count": 32055
+    },
+    {
+      "candidate_rank": 964,
+      "source_rank": 966,
+      "word": "învăţat",
+      "pos": null,
+      "frequency_count": 32048
+    },
+    {
+      "candidate_rank": 965,
+      "source_rank": 967,
+      "word": "rând",
+      "pos": null,
+      "frequency_count": 32038
+    },
+    {
+      "candidate_rank": 966,
+      "source_rank": 968,
+      "word": "salvat",
+      "pos": null,
+      "frequency_count": 32029
+    },
+    {
+      "candidate_rank": 967,
+      "source_rank": 969,
+      "word": "ce-a",
+      "pos": null,
+      "frequency_count": 31969
+    },
+    {
+      "candidate_rank": 968,
+      "source_rank": 970,
+      "word": "băiatul",
+      "pos": null,
+      "frequency_count": 31937
+    },
+    {
+      "candidate_rank": 969,
+      "source_rank": 971,
+      "word": "trimite",
+      "pos": null,
+      "frequency_count": 31934
+    },
+    {
+      "candidate_rank": 970,
+      "source_rank": 972,
+      "word": "plan",
+      "pos": null,
+      "frequency_count": 31752
+    },
+    {
+      "candidate_rank": 971,
+      "source_rank": 973,
+      "word": "stă",
+      "pos": null,
+      "frequency_count": 31722
+    },
+    {
+      "candidate_rank": 972,
+      "source_rank": 974,
+      "word": "caută",
+      "pos": null,
+      "frequency_count": 31649
+    },
+    {
+      "candidate_rank": 973,
+      "source_rank": 975,
+      "word": "speriat",
+      "pos": null,
+      "frequency_count": 31618
+    },
+    {
+      "candidate_rank": 974,
+      "source_rank": 976,
+      "word": "folosi",
+      "pos": null,
+      "frequency_count": 31617
+    },
+    {
+      "candidate_rank": 975,
+      "source_rank": 977,
+      "word": "urăsc",
+      "pos": null,
+      "frequency_count": 31603
+    },
+    {
+      "candidate_rank": 976,
+      "source_rank": 978,
+      "word": "planul",
+      "pos": null,
+      "frequency_count": 31602
+    },
+    {
+      "candidate_rank": 977,
+      "source_rank": 979,
+      "word": "fiule",
+      "pos": null,
+      "frequency_count": 31595
+    },
+    {
+      "candidate_rank": 978,
+      "source_rank": 980,
+      "word": "m-au",
+      "pos": null,
+      "frequency_count": 31511
+    },
+    {
+      "candidate_rank": 979,
+      "source_rank": 981,
+      "word": "suna",
+      "pos": null,
+      "frequency_count": 31501
+    },
+    {
+      "candidate_rank": 980,
+      "source_rank": 982,
+      "word": "închis",
+      "pos": null,
+      "frequency_count": 31415
+    },
+    {
+      "candidate_rank": 981,
+      "source_rank": 983,
+      "word": "m",
+      "pos": null,
+      "frequency_count": 31386
+    },
+    {
+      "candidate_rank": 982,
+      "source_rank": 984,
+      "word": "stie",
+      "pos": null,
+      "frequency_count": 31290
+    },
+    {
+      "candidate_rank": 983,
+      "source_rank": 985,
+      "word": "foame",
+      "pos": null,
+      "frequency_count": 31246
+    },
+    {
+      "candidate_rank": 984,
+      "source_rank": 986,
+      "word": "citit",
+      "pos": null,
+      "frequency_count": 31241
+    },
+    {
+      "candidate_rank": 985,
+      "source_rank": 987,
+      "word": "secret",
+      "pos": null,
+      "frequency_count": 31197
+    },
+    {
+      "candidate_rank": 986,
+      "source_rank": 988,
+      "word": "lucrează",
+      "pos": null,
+      "frequency_count": 31176
+    },
+    {
+      "candidate_rank": 987,
+      "source_rank": 989,
+      "word": "omor",
+      "pos": null,
+      "frequency_count": 31120
+    },
+    {
+      "candidate_rank": 988,
+      "source_rank": 990,
+      "word": "clipă",
+      "pos": null,
+      "frequency_count": 31061
+    },
+    {
+      "candidate_rank": 989,
+      "source_rank": 991,
+      "word": "ţii",
+      "pos": null,
+      "frequency_count": 30964
+    },
+    {
+      "candidate_rank": 990,
+      "source_rank": 992,
+      "word": "mulțumesc",
+      "pos": null,
+      "frequency_count": 30958
+    },
+    {
+      "candidate_rank": 991,
+      "source_rank": 993,
+      "word": "simţit",
+      "pos": null,
+      "frequency_count": 30927
+    },
+    {
+      "candidate_rank": 992,
+      "source_rank": 994,
+      "word": "privire",
+      "pos": null,
+      "frequency_count": 30882
+    },
+    {
+      "candidate_rank": 993,
+      "source_rank": 995,
+      "word": "cauţi",
+      "pos": null,
+      "frequency_count": 30850
+    },
+    {
+      "candidate_rank": 994,
+      "source_rank": 996,
+      "word": "presupun",
+      "pos": null,
+      "frequency_count": 30837
+    },
+    {
+      "candidate_rank": 995,
+      "source_rank": 997,
+      "word": "văzut-o",
+      "pos": null,
+      "frequency_count": 30753
+    },
+    {
+      "candidate_rank": 996,
+      "source_rank": 998,
+      "word": "opreşte-te",
+      "pos": null,
+      "frequency_count": 30748
+    },
+    {
+      "candidate_rank": 997,
+      "source_rank": 999,
+      "word": "masă",
+      "pos": null,
+      "frequency_count": 30748
+    },
+    {
+      "candidate_rank": 998,
+      "source_rank": 1000,
+      "word": "alta",
+      "pos": null,
+      "frequency_count": 30709
+    },
+    {
+      "candidate_rank": 999,
+      "source_rank": 1001,
+      "word": "fetele",
+      "pos": null,
+      "frequency_count": 30698
+    },
+    {
+      "candidate_rank": 1000,
+      "source_rank": 1002,
+      "word": "armă",
+      "pos": null,
+      "frequency_count": 30647
+    }
+  ]
+}
