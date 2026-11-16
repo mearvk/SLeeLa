@@ -1,83 +1,60 @@
-# FRUCHST definition candidate pipeline
+# FRUCHST multilingual definition candidate pipeline
 
-`fruchst_definition_queue.py` creates versioned **review queues**, not production definitions.
-It reads one 1,000-word frequency candidate file and three Kaikki/Wiktextract
-JSONL extracts: English, French, and Spanish Wiktionary editions.
+`fruchst_definition_batch.py` creates a **review queue**, not production definitions. The batch processes all 31 language sets with staged frequency candidates:
 
-Example (Spanish headwords from the first batch):
+- Four `wordhoard-*.json` sets: English, French, Spanish, and German.
+- Twenty-seven `frequencywords-*.json` sets: Simplified Chinese, Hindi, Spanish, Arabic, French, Bengali, Portuguese, Russian, Indonesian, Urdu, German, Japanese, Vietnamese, Telugu, Turkish, Tagalog, Tamil, Persian, Korean, Thai, Italian, Polish, Ukrainian, Malayalam, Malay, Dutch, Romanian, Kazakh, Sinhala, and Afrikaans.
+
+Each candidate headword is looked up in three Wiktionary editions (English, French, and Spanish). The tool streams each source dump once and retains exact NFC headword matches for the explicitly mapped target-language code.
+
+## Batch execution
+
+The workflow downloads the three source archives outside the repository and runs:
 
 ```sh
-python3 languages/tools/fruchst_definition_queue.py \
-  languages/datasets/frequency-candidates/wordhoard-es.json es \
-  --en /data/kaikki/enwiktionary.jsonl \
-  --fr /data/kaikki/frwiktionary.jsonl \
-  --es /data/kaikki/eswiktionary.jsonl \
-  --output /tmp/fruchst-review/es.json
+python3 languages/tools/fruchst_definition_batch.py \
+  --candidates languages/datasets/frequency-candidates \
+  --en /data/kaikki/enwiktionary.jsonl.gz \
+  --fr /data/kaikki/frwiktionary.jsonl.gz \
+  --es /data/kaikki/eswiktionary.jsonl.gz \
+  --output languages/datasets/definition-review
 ```
 
-Repeat for `en`, `fr`, and `de`, changing the candidate file, target
-Wiktionary language code, and output path. Each extract must be a UTF-8 JSONL
-file from the named Wiktionary edition. The input can be the uncompressed
-Kaikki/Wiktextract dump; decompress it before invoking this script.
+Output filenames follow the candidate source, for example `wordhoard-en.review.json` and `frequencywords-hi.review.json`.
 
-## Alignment safeguards
+## Alignment and review safeguards
 
 - Exact NFC headword matching is required; no fuzzy spelling substitution.
-- The entry's `lang_code` must match the target language (not the Wiktionary
-  edition's language).
-- Every matching headword/POS gloss is retained independently for each
-  Wiktionary edition, including senses without a Wikidata QID.
-- A cross-edition alignment candidate is additionally proposed only when all
-  three editions expose the same **sense-level** Wikidata QID and normalized
-  part of speech.
-- Gloss arrays and source line/sense evidence are retained; nothing is silently
-  selected when multiple senses exist.
-- QID/POS agreement is a candidate signal, not proof of equivalence. Every
-  aligned candidate remains `review_status: required`; no production
-  definition is approved by this tool.
-- Missing edition glosses go to manual lookup. Missing QIDs do not cause glosses
-  to be discarded; those remain independent edition candidates for human
-  sense alignment.
+- The source entry Wiktionary `lang_code` must match the explicit mapping in `WIKTIONARY_LANG_CODES`.
+- Candidate POS is used as a filter when supplied. FrequencyWords candidates do not include POS, so **all matching POS senses are retained** for review rather than being discarded.
+- Every matching headword/POS gloss is retained independently for each Wiktionary edition, including senses without a Wikidata QID.
+- A cross-edition alignment candidate is proposed only when all three editions expose the same sense-level Wikidata QID and normalized POS.
+- QID/POS agreement is a candidate signal, not proof of equivalence. All source senses and source-line evidence remain available; nothing is silently selected.
+- Missing edition glosses are marked for manual lookup. Missing QIDs do not cause glosses to be discarded.
+- The `zh-Hans` frequency source is the `zh_cn` corpus, while Wiktionary uses the broader `zh` code. The queue records that mapping, and every Chinese entry requires human script/variety verification.
+- Every definition candidate remains `review_status: required`. `production_definitions_approved` stays zero until a reviewer records explicit selection and approval.
 
 ## Source and license
 
-Kaikki publishes machine-readable Wiktionary extractions. Wiktionary content
-is dual-licensed under CC BY-SA 4.0 and the GNU Free Documentation License
-(GFDL). Preserve attribution and comply with the applicable license terms;
-verify the source edition's notices before redistributing derived definitions.
-The frequency-candidate files retain their separate wordhoard/OpenSubtitles
-attribution and CC BY-SA 4.0 dataset notice. Software license does not replace
-the data licenses.
+The definition sources are Kaikki/Wiktextract extractions of the English, French, and Spanish Wiktionary editions. Wiktionary content is dual-licensed under CC BY-SA 4.0 and the GNU Free Documentation License (GFDL). Preserve attribution and comply with the applicable license terms; verify the source edition notices before redistributing derived definitions.
 
-No FRUCHST binary should be built until a human reviewer has selected one
-sense per headword, confirmed that the three glosses express that same sense,
-checked spelling/grammar, and recorded source/license metadata. The current
-binary builder's all-definitions-present check is necessary but not sufficient
-for semantic approval.
+The frequency-candidate files retain their independent provenance and license metadata:
+- `wordhoard` first-batch data: CC BY-SA 4.0.
+- FrequencyWords/OpenSubtitles-2018: CC BY-SA 4.0 for content; the FrequencyWords repository code is MIT. The code license does not relicense the frequency data.
 
-See the Wiktextract format documentation:
-https://github.com/tatuylonen/wiktextract#format-of-the-extracted-word-entries
-and Kaikki data catalog:
-https://kaikki.org/
+No FRUCHST binary should be built until a human reviewer has selected one sense per headword, confirmed that the English, French, and Spanish glosses express the same sense, checked spelling/grammar and language variety, and recorded source/license metadata. The binary builder approval and provenance checks are necessary but not sufficient for semantic accuracy.
 
-## Current source dump locations
+## Source dump catalog
 
-The tool reads either plain JSONL or `.jsonl.gz` directly. Current Kaikki raw-data
-downloads (check the catalog for newer revisions before each production run):
+The current workflow URLs and revisions are recorded in `SOURCE_CATALOG` in `languages/tools/fruchst_definition_batch.py`. Check the Kaikki catalog before production runs because Wiktionary extracts are updated regularly:
 
 - English edition: https://kaikki.org/dictionary/raw-wiktextract-data.jsonl.gz
-  (about 2.9 GB compressed; English glosses)
 - French edition: https://kaikki.org/frwiktionary/raw-wiktextract-data.jsonl.gz
-  (about 702.5 MB compressed; French glosses; dump revision 2026-10-01)
 - Spanish edition: https://kaikki.org/eswiktionary/raw-wiktextract-data.jsonl.gz
-  (about 98.8 MB compressed; Spanish glosses; dump revision 2026-11-01)
 
-The corresponding uncompressed extracts are very large (English about 24.8 GB,
-French about 6.4 GB, Spanish about 1.1 GB). Keep source dumps outside the
-repository; never commit them. The verified catalog revisions used by the staging workflow are English
-2026-10-01, French 2026-10-01, and Spanish 2026-11-01. Refresh these revision
-labels when Kaikki publishes newer dumps. Generated review queues record the
-exact download URL, dump revision, retrieval timestamp, compressed-file size,
-and SHA-256 for each edition. The SHA-256 identifies the actual bytes used.
+Compressed extracts are large. Keep them outside the repository and never commit raw dumps. Generated queues record each downloaded file SHA-256, compressed size, retrieval timestamp, URL, and dump revision.
 
-Source catalog: https://kaikki.org/dictionary/rawdata.html
+References:
+- Kaikki raw-data catalog: https://kaikki.org/dictionary/rawdata.html
+- Wiktextract extracted-entry format: https://github.com/tatuylonen/wiktextract#format-of-the-extracted-word-entries
+- FRUCHST frequency candidate provenance: `README.md` in this directory.
