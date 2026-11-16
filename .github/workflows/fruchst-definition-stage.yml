@@ -64,4 +64,15 @@ jobs:
             exit 0
           fi
           git commit -m "Stage sourced FRUCHST definition review queues"
-          git push origin HEAD:master
+          # Source downloads can take hours; rebase generated queues onto the
+          # latest master and retry if another repository commit lands.
+          for attempt in 1 2 3; do
+            git fetch origin master
+            git rebase origin/master
+            if git push origin HEAD:master; then
+              exit 0
+            fi
+            echo "Push raced with another master update (attempt ${attempt}/3); retrying."
+          done
+          echo "Unable to publish definition review queues after three attempts." >&2
+          exit 1
