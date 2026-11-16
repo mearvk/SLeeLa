@@ -40,6 +40,9 @@ TARGETS = (
     "en", "zh-Hans", "hi", "es", "ar", "fr", "bn", "pt", "ru", "id",
     "ur", "de", "ja", "vi", "te", "tr", "tl", "ta", "fa", "ko", "th",
     "it", "pl", "uk", "ml", "ms", "nl", "ro", "kk", "si", "af",
+    # unilex batch
+    "pcm", "mr", "ha", "sw", "jv", "gu", "am", "kn", "yo", "my",
+    "or", "pa-Guru", "su", "prs", "uz", "so", "ceb", "mag", "km", "mai",
 )
 WIKTIONARY_LANG_CODES = {
     "en": "en",
@@ -73,14 +76,55 @@ WIKTIONARY_LANG_CODES = {
     "kk": "kk",
     "si": "si",
     "af": "af",
+    "pcm": "pcm",
+    "mr": "mr",
+    "ha": "ha",
+    "sw": "sw",
+    "jv": "jv",
+    "gu": "gu",
+    "am": "am",
+    "kn": "kn",
+    "yo": "yo",
+    "my": "my",
+    "or": "or",
+    "pa-Guru": "pa",
+    "su": "su",
+    # Dari: Wiktionary files most Dari vocabulary under Persian. Both codes are
+    # searched and every gloss records the code it came from.
+    "prs": ("prs", "fa"),
+    "uz": "uz",
+    "so": "so",
+    "ceb": "ceb",
+    "mag": "mag",
+    "km": "km",
+    "mai": "mai",
 }
 TARGET_MAPPING_NOTES = {
     "zh-Hans": (
         "Wiktionary entries use the broad 'zh' code; the candidate word list "
         "is the Simplified Chinese zh_cn frequency set. Verify script/variety "
         "for every selected sense before approval."
-    )
+    ),
+    "pa-Guru": (
+        "Wiktionary 'pa' covers Gurmukhi and Shahmukhi Punjabi; candidates are "
+        "Gurmukhi (Eastern Punjabi), so only Gurmukhi headwords can match exactly."
+    ),
+    "prs": (
+        "Dari candidates are matched against Wiktionary Dari ('prs') and Persian "
+        "('fa') entries. Each gloss records source_lang_code; a Persian gloss "
+        "must be confirmed as valid for Dari usage before approval."
+    ),
+    "uz": (
+        "Candidates are Cyrillic-script Uzbek; Wiktionary Uzbek lemmas are mostly "
+        "Latin-script, so exact matches are expected to be sparse."
+    ),
+    "sw": "Wiktionary 'sw' (Swahili); candidates are Standard Swahili web text.",
 }
+
+
+def wiktionary_codes(language_tag: str) -> tuple[str, ...]:
+    value = WIKTIONARY_LANG_CODES[language_tag]
+    return (value,) if isinstance(value, str) else tuple(value)
 POS_ALIASES = {
     "adj": "adjective",
     "adv": "adverb",
@@ -127,12 +171,12 @@ def qids_for(sense: dict) -> list[str]:
 def candidate_path_for(directory: Path, language_tag: str) -> Path:
     """Find exactly one known candidate file for a registered language tag."""
     matches = [
-        path for prefix in ("wordhoard", "frequencywords")
+        path for prefix in ("wordhoard", "frequencywords", "unilex")
         if (path := directory / f"{prefix}-{language_tag}.json").is_file()
     ]
     if len(matches) != 1:
         raise ValueError(
-            f"{directory}: expected exactly one wordhoard/frequencywords file "
+            f"{directory}: expected exactly one wordhoard/frequencywords/unilex file "
             f"for {language_tag}, found {len(matches)}"
         )
     return matches[0]
@@ -187,8 +231,9 @@ def hash_file(path: Path) -> str:
 def extract_edition(path: Path, wanted: dict[str, set[str]]):
     """Extract target-language entries by explicit Wiktionary language code."""
     tags_by_wiktionary_code = {}
-    for language_tag, wiktionary_code in WIKTIONARY_LANG_CODES.items():
-        tags_by_wiktionary_code.setdefault(wiktionary_code, []).append(language_tag)
+    for language_tag in WIKTIONARY_LANG_CODES:
+        for wiktionary_code in wiktionary_codes(language_tag):
+            tags_by_wiktionary_code.setdefault(wiktionary_code, []).append(language_tag)
 
     found = {language_tag: {} for language_tag in TARGETS}
     opener = gzip.open if path.suffix.casefold() == ".gz" else open
@@ -241,6 +286,7 @@ def extract_edition(path: Path, wanted: dict[str, set[str]]):
                     "senseid": sense.get("senseid", []),
                     "source_line": line_no,
                     "sense_index": sense_index,
+                    "source_lang_code": entry.get("lang_code"),
                 }
                 for language_tag in tags:
                     by_word = found[language_tag].setdefault(word, {})
@@ -263,7 +309,8 @@ def build_queue(
     candidate_file=None,
 ):
     rows, words_with_matches, total_matches = [], 0, 0
-    target_wiktionary_code = WIKTIONARY_LANG_CODES[language_tag]
+    codes = wiktionary_codes(language_tag)
+    target_wiktionary_code = codes[0] if len(codes) == 1 else list(codes)
     if candidate_file is None:
         candidate_file = Path(f"languages/datasets/frequency-candidates/wordhoard-{language_tag}.json")
 
@@ -307,6 +354,7 @@ def build_queue(
                         "sense_index": sense["sense_index"],
                         "senseid": sense["senseid"],
                         "tags": sense["tags"],
+                        "source_lang_code": sense.get("source_lang_code"),
                     } for sense in groups[edition][(qid, pos)]]
                     for edition in EDITIONS
                 },
@@ -326,6 +374,7 @@ def build_queue(
                         "senseid": sense["senseid"],
                         "source_line": sense["source_line"],
                         "sense_index": sense["sense_index"],
+                        "source_lang_code": sense.get("source_lang_code"),
                     })
             edition_candidates[edition] = candidates
 

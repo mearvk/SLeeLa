@@ -1,9 +1,10 @@
 # FRUCHST multilingual definition candidate pipeline
 
-`fruchst_definition_batch.py` creates a **review queue**, not production definitions. The batch processes all 31 language sets with staged frequency candidates:
+`fruchst_definition_batch.py` creates a **review queue**, not production definitions. The batch processes all 51 language sets with staged frequency candidates:
 
 - Four `wordhoard-*.json` sets: English, French, Spanish, and German.
 - Twenty-seven `frequencywords-*.json` sets: Simplified Chinese, Hindi, Spanish, Arabic, French, Bengali, Portuguese, Russian, Indonesian, Urdu, German, Japanese, Vietnamese, Telugu, Turkish, Tagalog, Tamil, Persian, Korean, Thai, Italian, Polish, Ukrainian, Malayalam, Malay, Dutch, Romanian, Kazakh, Sinhala, and Afrikaans.
+- Twenty `unilex-*.json` sets: Nigerian Pidgin, Marathi, Hausa, Swahili, Javanese, Gujarati, Amharic, Kannada, Yoruba, Burmese, Odia, Eastern Punjabi (Gurmukhi), Sundanese, Dari, Uzbek, Somali, Cebuano, Magahi, Khmer, and Maithili.
 
 Each candidate headword is looked up in three Wiktionary editions (English, French, and Spanish). The tool streams each source dump once and retains exact NFC headword matches for the explicitly mapped target-language code.
 
@@ -20,7 +21,7 @@ python3 languages/tools/fruchst_definition_batch.py \
   --output languages/datasets/definition-review
 ```
 
-Output filenames follow the candidate source, for example `wordhoard-en.review.json` and `frequencywords-hi.review.json`.
+Output filenames follow the candidate source, for example `wordhoard-en.review.json`, `frequencywords-hi.review.json`, and `unilex-sw.review.json`.
 
 ## Alignment and review safeguards
 
@@ -32,6 +33,8 @@ Output filenames follow the candidate source, for example `wordhoard-en.review.j
 - QID/POS agreement is a candidate signal, not proof of equivalence. All source senses and source-line evidence remain available; nothing is silently selected.
 - Missing edition glosses are marked for manual lookup. Missing QIDs do not cause glosses to be discarded.
 - The `zh-Hans` frequency source is the `zh_cn` corpus, while Wiktionary uses the broader `zh` code. The queue records that mapping, and every Chinese entry requires human script/variety verification.
+- A language tag may map to more than one Wiktionary code. Dari (`prs`) is matched against both Dari (`prs`) and Persian (`fa`) entries, because Wiktionary files most Dari vocabulary under Persian. Every sense candidate records `source_lang_code`, and a Persian-sourced gloss must be confirmed for Dari usage before approval.
+- Eastern Punjabi (`pa-Guru`) maps to Wiktionary `pa`, which covers both scripts; only Gurmukhi headwords can match. Uzbek candidates are Cyrillic while Wiktionary Uzbek lemmas are mostly Latin, so expect few Uzbek matches until a reviewed transliteration step exists.
 - Every definition candidate remains `review_status: required`. `production_definitions_approved` stays zero until a reviewer records explicit selection and approval.
 
 ## Source and license
@@ -41,6 +44,7 @@ The definition sources are Kaikki/Wiktextract extractions of the English, French
 The frequency-candidate files retain their independent provenance and license metadata:
 - `wordhoard` first-batch data: CC BY-SA 4.0.
 - FrequencyWords/OpenSubtitles-2018: CC BY-SA 4.0 for content; the FrequencyWords repository code is MIT. The code license does not relicense the frequency data.
+- unilex (Unicode, Google Corpus Crawler): Unicode-DFS-2016 / Unicode License v3.
 
 No FRUCHST binary should be built until a human reviewer has selected one sense per headword, confirmed that the English, French, and Spanish glosses express the same sense, checked spelling/grammar and language variety, and recorded source/license metadata. The binary builder approval and provenance checks are necessary but not sufficient for semantic accuracy.
 
