@@ -21,6 +21,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include "library_index.h"
+#include "../subjects/math/sleela_math_kernel_c.h"
 #include "../core/sleela_ui_ids.h"
 #include "../core/sleela_ui_vm.h"
 
@@ -2012,15 +2013,15 @@ private:
         // The synthesized __NativeMath methods remain the fallback authority.
         if(c.callee.rfind("__native_math_",0)==0){
             static const std::pair<const char*,int> mathIds[] = {
-                {"__native_math_pi",0}, {"__native_math_e",1}, {"__native_math_tau",2},
-                {"__native_math_abs",3}, {"__native_math_sign",4},
-                {"__native_math_min",5}, {"__native_math_max",6}, {"__native_math_clamp",7},
-                {"__native_math_sqrt",8}, {"__native_math_exp",9}, {"__native_math_log",10},
-                {"__native_math_log10",11}, {"__native_math_trunc",12},
-                {"__native_math_floor",13}, {"__native_math_ceil",14},
-                {"__native_math_pow",15}, {"__native_math_sin",16},
-                {"__native_math_cos",17}, {"__native_math_tan",18},
-                {"__native_math_hypot",19}, {"__native_math_fmod",20}
+                {"__native_math_pi",SL_MATH_PI}, {"__native_math_e",SL_MATH_E}, {"__native_math_tau",SL_MATH_TAU},
+                {"__native_math_abs",SL_MATH_ABS}, {"__native_math_sign",SL_MATH_SIGN},
+                {"__native_math_min",SL_MATH_MIN}, {"__native_math_max",SL_MATH_MAX}, {"__native_math_clamp",SL_MATH_CLAMP},
+                {"__native_math_sqrt",SL_MATH_SQRT}, {"__native_math_exp",SL_MATH_EXP}, {"__native_math_log",SL_MATH_LOG},
+                {"__native_math_log10",SL_MATH_LOG10}, {"__native_math_trunc",SL_MATH_TRUNC},
+                {"__native_math_floor",SL_MATH_FLOOR}, {"__native_math_ceil",SL_MATH_CEIL},
+                {"__native_math_pow",SL_MATH_POW}, {"__native_math_sin",SL_MATH_SIN},
+                {"__native_math_cos",SL_MATH_COS}, {"__native_math_tan",SL_MATH_TAN},
+                {"__native_math_hypot",SL_MATH_HYPOT}, {"__native_math_fmod",SL_MATH_FMOD}
             };
             for(const auto& entry : mathIds){
                 if(c.callee==entry.first){
