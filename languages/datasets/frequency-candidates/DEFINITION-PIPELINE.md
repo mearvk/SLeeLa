@@ -46,6 +46,8 @@ French and Spanish Wiktionary have entries for few of the target-language headwo
 3. As secondary evidence, the French and Spanish Wiktionary glosses of the same English word are kept.
 4. Items whose English POS matches the source sense POS are preferred. If none match, all items are kept with `pos_match: false`.
 
+Each output file stores every English word once under `english_lookup`. `translation_senses` are English Wiktionary translation boxes (one per sense label) with the French and Spanish words side by side; `glosses` are the French and Spanish Wiktionary definitions of the English word. Each headword lists its `english_pivots`, and each pivot carries `pos_match` per edition (`true`, `false`, or `null` when nothing was found). Files are written as compact JSON.
+
 The pivot can cross senses (for example, an English gloss "bank" may lead to river-bank and money-bank translations), so every equivalent records the English word, both POS values, and source lines. Nothing is selected; every row stays `review_status: required`.
 
 ## Source and license

@@ -167,84 +167,109 @@ def hash_file(path: Path) -> str:
     return digest.hexdigest()
 
 
-def pos_filtered(items: list[dict], pos: str | None) -> tuple[list[dict], bool]:
-    """Prefer items whose English POS matches the source sense; fall back to all, flagged."""
-    if pos:
-        matched = [i for i in items if i["english_pos"] == pos]
-        if matched:
-            return matched, True
-    return items, False
+def sense_boxes(items: list[dict]) -> list[dict]:
+    """Group translation items into English Wiktionary sense boxes with fr and es side by side."""
+    boxes: dict[tuple, dict] = {}
+    for item in items:
+        key = (item["english_pos"], item["translation_sense"], item["source_line"])
+        box = boxes.setdefault(key, {"pos": key[0], "sense": key[1], "source_line": key[2], "fr": [], "es": []})
+        value = {"word": item["word"], "tags": item["tags"]} if item["tags"] else item["word"]
+        if value not in box[item["edition_target"]]:
+            box[item["edition_target"]].append(value)
+    return list(boxes.values())
+
+
+def lookup_for(english: str, wanted_pos: set, translations: dict, glosses: dict) -> dict:
+    """Lookup record for one English word, limited to the POS its pivots need.
+
+    If some pivot POS has no matching English entry, every POS is kept so that
+    nothing usable is dropped; pivots record per-edition pos_match flags.
+    """
+    boxes = sense_boxes(translations.get(english, []))
+    edition_glosses = {e: list(glosses[e].get(english, [])) for e in TARGET_EDITIONS}
+    # Filter each source list separately, and only when every wanted POS is
+    # present in it; a pivot with unknown POS (None) keeps everything.
+    if wanted_pos and all(wanted_pos):
+        if all(wanted_pos <= {b["pos"] for b in boxes if b[e]} for e in TARGET_EDITIONS):
+            boxes = [b for b in boxes if b["pos"] in wanted_pos]
+        for e, items in edition_glosses.items():
+            if wanted_pos <= {g["english_pos"] for g in items}:
+                edition_glosses[e] = [g for g in items if g["english_pos"] in wanted_pos]
+    return {
+        "translation_senses": boxes,
+        "glosses": {e: [{"pos": g["english_pos"], "glosses": g["glosses"], "source_line": g["source_line"],
+                         "sense_index": g["sense_index"]} for g in v] for e, v in edition_glosses.items()},
+    }
 
 
 def build(review: dict, pivots: dict, translations: dict, glosses: dict, review_file: Path, sources: dict) -> dict:
+    needed: dict[str, set] = {}
+    for entry in review["entries"]:
+        for pivot in pivots[entry["word"]]:
+            needed.setdefault(pivot["english"], set()).add(pivot["pos"])
+    lookup = {}
+    for english, pos_set in sorted(needed.items()):
+        record = lookup_for(english, pos_set, translations, glosses)
+        if record["translation_senses"] or any(record["glosses"].values()):
+            lookup[english] = record
+
+    def has(record: dict, edition: str, pos: str | None) -> tuple[bool, bool]:
+        found = [b["pos"] for b in record["translation_senses"] if b[edition]]
+        found += [g["pos"] for g in record["glosses"][edition]]
+        return bool(found), bool(pos) and pos in found
+
     rows = []
     counts = {"candidate_words": 0, "words_with_english_pivot": 0, "words_with_fr_equivalent": 0,
               "words_with_es_equivalent": 0, "words_with_fr_and_es_equivalents": 0,
-              "words_with_fr_and_es_pos_matched": 0, "production_definitions_approved": 0}
+              "words_with_fr_and_es_pos_matched": 0, "english_lookup_words": len(lookup),
+              "production_definitions_approved": 0}
     for entry in review["entries"]:
         counts["candidate_words"] += 1
-        word_pivots = pivots[entry["word"]]
-        equivalents = {e: [] for e in TARGET_EDITIONS}
-        edition_glosses = {e: [] for e in TARGET_EDITIONS}
-        matched_any = {e: False for e in TARGET_EDITIONS}
-        seen = set()
-        for pivot in word_pivots:
-            english = pivot["english"]
-            items, tr_match = pos_filtered(translations.get(english, []), pivot["pos"])
-            for item in items:
-                key = (item["edition_target"], english, item["word"], item["translation_sense"])
-                if key in seen:
-                    continue
-                seen.add(key)
-                equivalents[item["edition_target"]].append({
-                    "english": english, "source_pos": pivot["pos"], "pos_match": tr_match,
-                    **{k: v for k, v in item.items() if k != "edition_target"},
-                })
-                matched_any[item["edition_target"]] |= tr_match
+        word_pivots, any_ed, matched_ed = [], {e: False for e in TARGET_EDITIONS}, {e: False for e in TARGET_EDITIONS}
+        for pivot in pivots[entry["word"]]:
+            record = lookup.get(pivot["english"])
+            flags = {}
             for edition in TARGET_EDITIONS:
-                items, gl_match = pos_filtered(glosses[edition].get(english, []), pivot["pos"])
-                for item in items:
-                    key = (edition, "gloss", english, item["source_line"], item["sense_index"])
-                    if key in seen:
-                        continue
-                    seen.add(key)
-                    edition_glosses[edition].append({"english": english, "source_pos": pivot["pos"],
-                                                     "pos_match": gl_match, **item})
-                    matched_any[edition] |= gl_match
-        has = {e: bool(equivalents[e] or edition_glosses[e]) for e in TARGET_EDITIONS}
+                found, matched = has(record, edition, pivot["pos"]) if record else (False, False)
+                flags[edition] = matched if found else None
+                any_ed[edition] |= found
+                matched_ed[edition] |= matched
+            word_pivots.append({**pivot, "pos_match": flags})
+        both = all(any_ed.values())
         counts["words_with_english_pivot"] += bool(word_pivots)
-        counts["words_with_fr_equivalent"] += has["fr"]
-        counts["words_with_es_equivalent"] += has["es"]
-        counts["words_with_fr_and_es_equivalents"] += has["fr"] and has["es"]
-        counts["words_with_fr_and_es_pos_matched"] += has["fr"] and has["es"] and all(matched_any.values())
+        counts["words_with_fr_equivalent"] += any_ed["fr"]
+        counts["words_with_es_equivalent"] += any_ed["es"]
+        counts["words_with_fr_and_es_equivalents"] += both
+        counts["words_with_fr_and_es_pos_matched"] += all(matched_ed.values())
         rows.append({
             "rank": entry["rank"],
             "word": entry["word"],
             "status": ("no_english_pivot" if not word_pivots else
-                       "fr_es_equivalents_found" if has["fr"] and has["es"] else
-                       "partial_equivalents" if has["fr"] or has["es"] else "no_equivalents_found"),
+                       "fr_es_equivalents_found" if both else
+                       "partial_equivalents" if any(any_ed.values()) else "no_equivalents_found"),
             "english_pivots": word_pivots,
-            "equivalents": equivalents,
-            "edition_glosses_of_english": edition_glosses,
             "review_status": "required",
         })
     return {
-        "schema": "SLeeLa FRUCHST English-pivot equivalents v1",
+        "schema": "SLeeLa FRUCHST English-pivot equivalents v2",
         "language_tag": review["language_tag"],
         "review_queue_file": review_file.as_posix(),
         "method": (
             "English word(s) taken from each English Wiktionary gloss (form-of senses and "
             "wikitext glosses skipped; parentheticals removed; split on ';' and ','; leading "
-            "to/a/an/the removed; 1-3 words kept). Each English word is looked up in English "
-            "Wiktionary for French and Spanish translation-table entries, and in French and "
-            "Spanish Wiktionary for their glosses of the English word. Items whose English POS "
-            "matches the source sense POS are preferred; otherwise all are kept with "
-            "pos_match=false. No equivalent is selected or approved."
+            "to/a/an/the removed; 1-3 words kept). Each English word is looked up once in "
+            "english_lookup: translation_senses are English Wiktionary translation boxes with "
+            "their French and Spanish words side by side; glosses are the French and Spanish "
+            "Wiktionary definitions of the English word. Only POS needed by a pivot are kept "
+            "unless a pivot POS has no match, in which case all POS are kept. Each pivot "
+            "carries pos_match per edition (true, false, or null when nothing was found). "
+            "No equivalent is selected or approved."
         ),
         "sources": sources,
         "counts": counts,
         "production_status": "review_required",
         "entries": rows,
+        "english_lookup": lookup,
     }
 
 
@@ -280,7 +305,7 @@ def main() -> int:
     for path, review in reviews.items():
         doc = build(review, pivots[path], translations, glosses, path, sources)
         out = args.output / path.name.replace(".review.json", ".pivot.json")
-        out.write_text(json.dumps(doc, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        out.write_text(json.dumps(doc, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
         print(json.dumps({"language": review["language_tag"], "file": out.name, **doc["counts"]}, sort_keys=True))
     return 0
 
