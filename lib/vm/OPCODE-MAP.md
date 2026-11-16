@@ -214,6 +214,7 @@ This is the human-readable support map for the canonical source-defined SLeeLa I
 192 | `OP_CHARSTR` | Implemented | `impl/core/sleela_core.c`
 193 | `OP_ADDCHAR` | Implemented | `impl/core/sleela_core.c`
 194 | `OP_NEWARRAYND` | Implemented | `impl/core/sleela_core.c`
+195 | `OP_MATH_CALL` | Implemented | `impl/core/sleela_core.c` (`sl_math_kernel_*` C ABI; Core bytecode fallback)
 
 
 
@@ -265,7 +266,7 @@ generations.
 
 | Opcode range | Family | Allocation |
 |---:|---|---|
-| 195–199 | Shared native math | 195 `OP_MATH_CALL`; 196 `OP_MATH_ARRAY_CALL`; 197–199 unassigned within family |
+| 195–199 | Shared native math | 195 `OP_MATH_CALL` implemented; 196 planned for `OP_MATH_ARRAY_CALL`; 197–199 reserved |
 | 200–207 | Vector | 8 positions |
 | 208–215 | Matrix | 8 positions |
 | 216–223 | Complex | 8 positions |
@@ -274,7 +275,7 @@ generations.
 
 All ranges are inclusive. Vacant positions remain reserved for their family;
 they are not general-purpose gaps. In particular, Transform begins at 232 and
-ends at 281. Existing opcode IDs 0–194, including IPC 179–181, are unchanged.
+ends at 281. Existing opcode IDs 0–194, including IPC 179–181, are unchanged. Opcode 195 is the first executable math-family instruction.
 Do not create enum placeholders or source-registry entries for reserved IDs:
 the source/native ISA equality verifier must continue to describe executable
 instructions only.
