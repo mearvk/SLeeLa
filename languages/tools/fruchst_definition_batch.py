@@ -10,6 +10,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 EDITIONS = ("en", "fr", "es")
+SOURCE_CATALOG = {
+    "en": {"url": "https://kaikki.org/dictionary/raw-wiktextract-data.jsonl.gz", "dump_revision": "2026-10-01"},
+    "fr": {"url": "https://kaikki.org/frwiktionary/raw-wiktextract-data.jsonl.gz", "dump_revision": "2026-10-01"},
+    "es": {"url": "https://kaikki.org/eswiktionary/raw-wiktextract-data.jsonl.gz", "dump_revision": "2026-11-01"},
+}
 TARGETS = ("en", "fr", "es", "de")
 POS_ALIASES = {
     "adj": "adjective", "adv": "adverb", "aux": "auxiliary",
@@ -153,6 +158,8 @@ def build_queue(code, doc, words, by_edition, source_meta):
         "definition_sources": {
             edition: {
                 "project": "Kaikki/Wiktextract extraction of Wiktionary",
+                "url": source_meta[edition]["url"],
+                "dump_revision": source_meta[edition]["dump_revision"],
                 "file": source_meta[edition]["file"],
                 "sha256": source_meta[edition]["sha256"],
                 "size_bytes": source_meta[edition]["size_bytes"],
@@ -189,7 +196,7 @@ def main():
     source_paths = {"en": args.en, "fr": args.fr, "es": args.es}
     retrieved = datetime.now(timezone.utc).isoformat()
     source_meta = {
-        edition: {"file": str(path), "sha256": hash_file(path),
+        edition: {**SOURCE_CATALOG[edition], "file": str(path), "sha256": hash_file(path),
                   "size_bytes": path.stat().st_size, "retrieved_at_utc": retrieved}
         for edition, path in source_paths.items()
     }
