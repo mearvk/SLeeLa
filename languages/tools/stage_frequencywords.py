@@ -18,6 +18,7 @@ UPSTREAM = "https://github.com/hermitdave/FrequencyWords"
 REVISION = "525f9b560de45753a5ea01069454e72e9aa541c6"
 LICENSE = "CC-BY-SA-4.0"
 FREQUENCY_SOURCE = "OpenSubtitles-2018"
+# This workflow stages candidates only; definition approval is a separate gate.
 # Explicit variety mappings only; never silently substitute a related dialect.
 SOURCE_CODES = {
     "zh-Hans": "zh_cn", "hi": "hi", "ar": "ar", "bn": "bn",
