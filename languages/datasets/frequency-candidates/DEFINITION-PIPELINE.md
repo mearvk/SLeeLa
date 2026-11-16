@@ -54,3 +54,23 @@ See the Wiktextract format documentation:
 https://github.com/tatuylonen/wiktextract#format-of-the-extracted-word-entries
 and Kaikki data catalog:
 https://kaikki.org/
+
+## Current source dump locations
+
+The tool reads either plain JSONL or `.jsonl.gz` directly. Current Kaikki raw-data
+downloads (check the catalog for newer revisions before each production run):
+
+- English edition: https://kaikki.org/dictionary/raw-wiktextract-data.jsonl.gz
+  (about 2.9 GB compressed; English glosses)
+- French edition: https://kaikki.org/dictionary/downloads/fr/fr-extract.jsonl.gz
+  (about 702.5 MB compressed; French glosses)
+- Spanish edition: https://kaikki.org/dictionary/downloads/es/es-extract.jsonl.gz
+  (about 98.8 MB compressed; Spanish glosses)
+
+The corresponding uncompressed extracts are very large (English about 24.8 GB,
+French about 6.4 GB, Spanish about 1.1 GB). Keep source dumps outside the
+repository; never commit them. The current catalog identifies the English dump
+as dated 2026-10-01 and the French and Spanish dumps as dated 2026-11-01.
+Record exact retrieval dates and dump revisions in any production manifest.
+
+Source catalog: https://kaikki.org/dictionary/rawdata.html
