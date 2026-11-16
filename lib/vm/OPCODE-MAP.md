@@ -258,11 +258,10 @@ contain the new opcode.
 ## Reserved native math opcode ranges
 
 The native-math ISA allocation is reserved by family so future additions do
-not fragment the instruction set. These are **allocation reservations only**:
-they are not present in the executable source registry or native enum, and
-must be rejected as unsupported until each instruction is implemented and
-validated across the compiler, artifact loader, native VM, and supported VM
-generations.
+not fragment the instruction set. Opcode 195 is implemented; all remaining
+positions in these ranges are **allocation reservations only** and must be
+rejected as unsupported until each instruction is implemented and validated
+across the compiler, artifact loader, native VM, and supported VM generations.
 
 | Opcode range | Family | Allocation |
 |---:|---|---|
