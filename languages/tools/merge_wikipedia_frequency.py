@@ -57,7 +57,7 @@ def aggregate(input_dir: Path, output_dir: Path, registry_path: Path):
         doc["language_directory"] = profile["directory"]
         destination = output_dir / f"wikipedia-{tag}.json"
         destination.write_text(
-            json.dumps(doc, ensure_ascii=False, indent=2) + "\\n",
+            json.dumps(doc, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
         )
         source = doc["source"]
