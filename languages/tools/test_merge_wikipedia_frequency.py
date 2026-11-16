@@ -53,6 +53,42 @@ class WikipediaFrequencyMergeTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 module.validate_document(path, "arz")
 
+    def test_missing_worker_outputs_remain_pending(self):
+        original_map = module.WIKIPEDIA_SOURCE_MAP
+        try:
+            module.WIKIPEDIA_SOURCE_MAP = {
+                "arz": {"wiki_code": "arz", "language_name": "Egyptian Arabic"},
+                "mr": {"wiki_code": "mr", "language_name": "Marathi"},
+            }
+            with tempfile.TemporaryDirectory() as temp:
+                root = Path(temp)
+                input_dir = root / "input"
+                input_dir.mkdir()
+                (input_dir / "wikipedia-arz.json").write_text(
+                    json.dumps(valid_document()), encoding="utf-8"
+                )
+                registry_path = root / "registry.json"
+                registry_path.write_text(json.dumps({
+                    "target_count": 2,
+                    "profiles": [
+                        {"language_tag": "arz", "directory": "arz", "status": "pending"},
+                        {"language_tag": "mr", "directory": "mr", "status": "pending"},
+                    ],
+                }), encoding="utf-8")
+                staged, missing = module.aggregate(
+                    input_dir, root / "frequency-candidates", registry_path
+                )
+                self.assertEqual(staged, ["arz"])
+                self.assertEqual(missing, ["mr"])
+                updated = json.loads(registry_path.read_text(encoding="utf-8"))
+                statuses = {p["language_tag"]: p["status"] for p in updated["profiles"]}
+                self.assertEqual(statuses, {
+                    "arz": "frequency_candidates_staged",
+                    "mr": "pending",
+                })
+        finally:
+            module.WIKIPEDIA_SOURCE_MAP = original_map
+
     def test_aggregates_candidates_and_marks_license_review_pending(self):
         original_map = module.WIKIPEDIA_SOURCE_MAP
         try:
@@ -80,7 +116,7 @@ class WikipediaFrequencyMergeTests(unittest.TestCase):
 
                 self.assertEqual(
                     module.aggregate(input_dir, output_dir, registry_path),
-                    ["arz"],
+                    (["arz"], []),
                 )
                 registry = json.loads(registry_path.read_text(encoding="utf-8"))
                 profile = registry["profiles"][0]
