@@ -1,0 +1,48 @@
+import importlib.util
+import json
+import tempfile
+import unittest
+from pathlib import Path
+
+MODULE_PATH = Path(__file__).with_name("fruchst_definition_batch.py")
+SPEC = importlib.util.spec_from_file_location("fruchst_definition_batch", MODULE_PATH)
+module = importlib.util.module_from_spec(SPEC)
+SPEC.loader.exec_module(module)
+
+class DefinitionBatchTests(unittest.TestCase):
+    def test_pos_aliases(self):
+        self.assertEqual(module.pos_key("NOUN"), "noun")
+        self.assertEqual(module.pos_key("ADP"), "preposition")
+        self.assertEqual(module.pos_key("AUX"), "auxiliary")
+
+    def test_qid_extraction(self):
+        self.assertEqual(module.qids_for({"wikidata": ["Q42", "Q1", "bad", "Q42"]}), ["Q1", "Q42"])
+
+    def test_gzip_extraction(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "fixture.jsonl.gz"
+            import gzip
+            entry = {"word":"casa","lang_code":"es","pos":"noun",
+                     "senses":[{"glosses":["house"],"wikidata":["Q3947"]}]}
+            with gzip.open(path, "wt", encoding="utf-8") as stream:
+                stream.write(json.dumps(entry, ensure_ascii=False) + "\n")
+            found = module.extract_edition(path, {"es":{"casa"},"en":set(),"fr":set(),"de":set()})
+            self.assertIn(("Q3947","noun"), found["es"]["casa"])
+
+    def test_build_queue_filters_candidate_pos_and_keeps_review_gate(self):
+        doc = {"language_tag":"es","source":{"id":"fixture"}}
+        words = {"casa":{"pos":"NOUN","frequency_count":5}}
+        noun = {"glosses":["house"],"source_line":1,"sense_index":1,"senseid":[],"tags":[]}
+        verb = {"glosses":["to marry"],"source_line":2,"sense_index":1,"senseid":[],"tags":[]}
+        senses = {("Q3947","noun"):[noun],("Q999","verb"):[verb]}
+        by_edition = {edition:{"casa":senses} for edition in module.EDITIONS}
+        source_meta = {edition:{"file":edition,"sha256":"0"*64,"size_bytes":1,
+                               "retrieved_at_utc":"2026-01-01T00:00:00+00:00"}
+                       for edition in module.EDITIONS}
+        queue = module.build_queue("es",doc,words,by_edition,source_meta)
+        self.assertEqual(len(queue["entries"][0]["aligned_candidates"]),1)
+        self.assertEqual(queue["entries"][0]["aligned_candidates"][0]["wikidata_sense_qid"],"Q3947")
+        self.assertEqual(queue["counts"]["production_definitions_approved"],0)
+
+if __name__ == "__main__":
+    unittest.main()
