@@ -1,0 +1,95 @@
+{
+  "schema": "sleela.language-alphabet.v1",
+  "language": {
+    "name": "Amharic",
+    "locale": "am"
+  },
+  "writingSystem": {
+    "type": "abugida",
+    "primaryScript": {
+      "name": "Ethiopic (Geʽez)",
+      "iso15924": "Ethi",
+      "direction": "ltr"
+    }
+  },
+  "inventory": {
+    "status": "provisional",
+    "mainLetters": [
+      "ሀ",
+      "ሁ",
+      "ሂ",
+      "ሃ",
+      "ሄ",
+      "ህ",
+      "ሆ",
+      "ለ",
+      "ሉ",
+      "ሊ",
+      "ላ",
+      "ሌ",
+      "ል",
+      "ሎ",
+      "መ",
+      "ሙ",
+      "ሚ",
+      "ማ",
+      "ሜ",
+      "ም",
+      "ሞ",
+      "ረ",
+      "ሩ",
+      "ሪ",
+      "ራ",
+      "ሬ",
+      "ር",
+      "ሮ",
+      "ሰ",
+      "ሱ",
+      "ሲ",
+      "ሳ",
+      "ሴ",
+      "ስ",
+      "ሶ",
+      "ቀ",
+      "ቁ",
+      "ቂ",
+      "ቃ",
+      "ቄ",
+      "ቅ",
+      "ቆ",
+      "በ",
+      "ቡ",
+      "ቢ",
+      "ባ",
+      "ቤ",
+      "ብ",
+      "ቦ",
+      "ተ",
+      "ቱ",
+      "ቲ",
+      "ታ",
+      "ቴ",
+      "ት",
+      "ቶ"
+    ],
+    "auxiliaryLetters": [],
+    "multiCharacterLetters": [],
+    "notes": "Starter inventory; orthographic conventions and regional variants require review against a language-specific authority."
+  },
+  "internationalStyle": {
+    "unicode": "Unicode NFC recommended",
+    "collation": "Use locale-aware collation; do not sort by code point alone.",
+    "timeEtiquette": "Time/date conventions are locale-specific and are intentionally not inferred from the language alone.",
+    "names": "Preserve native-script names and diacritics; do not silently transliterate."
+  },
+  "sources": [
+    {
+      "title": "Unicode CLDR – Exemplar Characters",
+      "url": "https://cldr.unicode.org/translation/core-data/exemplars"
+    },
+    {
+      "title": "Unicode Technical Standard #35 – General",
+      "url": "https://www.unicode.org/reports/tr35/dev/tr35-general.html"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languageAlphabet schemaVersion="1.0" locale="km">
+  <language>Khmer</language>
+  <writingSystem type="abugida">
+    <primaryScript name="Khmer" iso15924="Khmr" direction="ltr"/>
+  </writingSystem>
+  <inventory status="provisional">
+    <mainLetters>
+    <letter>ក</letter>
+    <letter>ខ</letter>
+    <letter>គ</letter>
+    <letter>ឃ</letter>
+    <letter>ង</letter>
+    <letter>ច</letter>
+    <letter>ឆ</letter>
+    <letter>ជ</letter>
+    <letter>ឈ</letter>
+    <letter>ញ</letter>
+    <letter>ដ</letter>
+    <letter>ឋ</letter>
+    <letter>ឌ</letter>
+    <letter>ឍ</letter>
+    <letter>ណ</letter>
+    <letter>ត</letter>
+    <letter>ថ</letter>
+    <letter>ទ</letter>
+    <letter>ធ</letter>
+    <letter>ន</letter>
+    <letter>ប</letter>
+    <letter>ផ</letter>
+    <letter>ព</letter>
+    <letter>ភ</letter>
+    <letter>ម</letter>
+    <letter>យ</letter>
+    <letter>រ</letter>
+    <letter>ល</letter>
+    <letter>វ</letter>
+    <letter>ស</letter>
+    <letter>ហ</letter>
+    <letter>ឡ</letter>
+    <letter>អ</letter>
+    </mainLetters>
+    <auxiliaryLetters status="not-yet-curated"/>
+    <multiCharacterLetters status="not-yet-curated"/>
+  </inventory>
+  <internationalStyle>
+    <unicodeNormalization>NFC</unicodeNormalization>
+    <collation>Use locale-aware collation; do not sort by code point alone.</collation>
+    <timeEtiquette>Time and date conventions are locale-specific and must be selected by locale and region, not inferred from language alone.</timeEtiquette>
+    <names>Preserve native-script names and diacritics; do not silently transliterate.</names>
+  </internationalStyle>
+  <sources>
+    <source title="Unicode CLDR – Exemplar Characters" url="https://cldr.unicode.org/translation/core-data/exemplars"/>
+    <source title="Unicode Technical Standard #35 – General" url="https://www.unicode.org/reports/tr35/dev/tr35-general.html"/>
+  </sources>
+  <editorialNote>Starter inventory for review; not a complete authoritative orthography.</editorialNote>
+</languageAlphabet>

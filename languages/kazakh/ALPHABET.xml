@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languageAlphabet schemaVersion="1.0" locale="kk">
+  <language>Kazakh</language>
+  <writingSystem type="alphabetic">
+    <primaryScript name="Cyrillic (current standard; Latin transition also used)" iso15924="Cyrl" direction="ltr"/>
+  </writingSystem>
+  <inventory status="provisional">
+    <mainLetters>
+    <letter>а</letter>
+    <letter>ә</letter>
+    <letter>б</letter>
+    <letter>в</letter>
+    <letter>г</letter>
+    <letter>ғ</letter>
+    <letter>д</letter>
+    <letter>е</letter>
+    <letter>ё</letter>
+    <letter>ж</letter>
+    <letter>з</letter>
+    <letter>и</letter>
+    <letter>й</letter>
+    <letter>к</letter>
+    <letter>қ</letter>
+    <letter>л</letter>
+    <letter>м</letter>
+    <letter>н</letter>
+    <letter>ң</letter>
+    <letter>о</letter>
+    <letter>ө</letter>
+    <letter>п</letter>
+    <letter>р</letter>
+    <letter>с</letter>
+    <letter>т</letter>
+    <letter>у</letter>
+    <letter>ұ</letter>
+    <letter>ү</letter>
+    <letter>ф</letter>
+    <letter>х</letter>
+    <letter>һ</letter>
+    <letter>ц</letter>
+    <letter>ч</letter>
+    <letter>ш</letter>
+    <letter>щ</letter>
+    <letter>ъ</letter>
+    <letter>ы</letter>
+    <letter>і</letter>
+    <letter>ь</letter>
+    <letter>э</letter>
+    <letter>ю</letter>
+    <letter>я</letter>
+    </mainLetters>
+    <auxiliaryLetters status="not-yet-curated"/>
+    <multiCharacterLetters status="not-yet-curated"/>
+  </inventory>
+  <internationalStyle>
+    <unicodeNormalization>NFC</unicodeNormalization>
+    <collation>Use locale-aware collation; do not sort by code point alone.</collation>
+    <timeEtiquette>Time and date conventions are locale-specific and must be selected by locale and region, not inferred from language alone.</timeEtiquette>
+    <names>Preserve native-script names and diacritics; do not silently transliterate.</names>
+  </internationalStyle>
+  <sources>
+    <source title="Unicode CLDR – Exemplar Characters" url="https://cldr.unicode.org/translation/core-data/exemplars"/>
+    <source title="Unicode Technical Standard #35 – General" url="https://www.unicode.org/reports/tr35/dev/tr35-general.html"/>
+  </sources>
+  <editorialNote>Starter inventory for review; not a complete authoritative orthography.</editorialNote>
+</languageAlphabet>

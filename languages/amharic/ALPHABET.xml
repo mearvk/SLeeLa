@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languageAlphabet schemaVersion="1.0" locale="am">
+  <language>Amharic</language>
+  <writingSystem type="abugida">
+    <primaryScript name="Ethiopic (Geʽez)" iso15924="Ethi" direction="ltr"/>
+  </writingSystem>
+  <inventory status="provisional">
+    <mainLetters>
+    <letter>ሀ</letter>
+    <letter>ሁ</letter>
+    <letter>ሂ</letter>
+    <letter>ሃ</letter>
+    <letter>ሄ</letter>
+    <letter>ህ</letter>
+    <letter>ሆ</letter>
+    <letter>ለ</letter>
+    <letter>ሉ</letter>
+    <letter>ሊ</letter>
+    <letter>ላ</letter>
+    <letter>ሌ</letter>
+    <letter>ል</letter>
+    <letter>ሎ</letter>
+    <letter>መ</letter>
+    <letter>ሙ</letter>
+    <letter>ሚ</letter>
+    <letter>ማ</letter>
+    <letter>ሜ</letter>
+    <letter>ም</letter>
+    <letter>ሞ</letter>
+    <letter>ረ</letter>
+    <letter>ሩ</letter>
+    <letter>ሪ</letter>
+    <letter>ራ</letter>
+    <letter>ሬ</letter>
+    <letter>ር</letter>
+    <letter>ሮ</letter>
+    <letter>ሰ</letter>
+    <letter>ሱ</letter>
+    <letter>ሲ</letter>
+    <letter>ሳ</letter>
+    <letter>ሴ</letter>
+    <letter>ስ</letter>
+    <letter>ሶ</letter>
+    <letter>ቀ</letter>
+    <letter>ቁ</letter>
+    <letter>ቂ</letter>
+    <letter>ቃ</letter>
+    <letter>ቄ</letter>
+    <letter>ቅ</letter>
+    <letter>ቆ</letter>
+    <letter>በ</letter>
+    <letter>ቡ</letter>
+    <letter>ቢ</letter>
+    <letter>ባ</letter>
+    <letter>ቤ</letter>
+    <letter>ብ</letter>
+    <letter>ቦ</letter>
+    <letter>ተ</letter>
+    <letter>ቱ</letter>
+    <letter>ቲ</letter>
+    <letter>ታ</letter>
+    <letter>ቴ</letter>
+    <letter>ት</letter>
+    <letter>ቶ</letter>
+    </mainLetters>
+    <auxiliaryLetters status="not-yet-curated"/>
+    <multiCharacterLetters status="not-yet-curated"/>
+  </inventory>
+  <internationalStyle>
+    <unicodeNormalization>NFC</unicodeNormalization>
+    <collation>Use locale-aware collation; do not sort by code point alone.</collation>
+    <timeEtiquette>Time and date conventions are locale-specific and must be selected by locale and region, not inferred from language alone.</timeEtiquette>
+    <names>Preserve native-script names and diacritics; do not silently transliterate.</names>
+  </internationalStyle>
+  <sources>
+    <source title="Unicode CLDR – Exemplar Characters" url="https://cldr.unicode.org/translation/core-data/exemplars"/>
+    <source title="Unicode Technical Standard #35 – General" url="https://www.unicode.org/reports/tr35/dev/tr35-general.html"/>
+  </sources>
+  <editorialNote>Starter inventory for review; not a complete authoritative orthography.</editorialNote>
+</languageAlphabet>

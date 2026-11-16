@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languageAlphabet schemaVersion="1.0" locale="te">
+  <language>Telugu</language>
+  <writingSystem type="abugida">
+    <primaryScript name="Telugu" iso15924="Telu" direction="ltr"/>
+  </writingSystem>
+  <inventory status="provisional">
+    <mainLetters>
+    <letter>అ</letter>
+    <letter>ఆ</letter>
+    <letter>ఇ</letter>
+    <letter>ఈ</letter>
+    <letter>ఉ</letter>
+    <letter>ఊ</letter>
+    <letter>ఋ</letter>
+    <letter>ఎ</letter>
+    <letter>ఏ</letter>
+    <letter>ఐ</letter>
+    <letter>ఒ</letter>
+    <letter>ఓ</letter>
+    <letter>ఔ</letter>
+    <letter>క</letter>
+    <letter>ఖ</letter>
+    <letter>గ</letter>
+    <letter>ఘ</letter>
+    <letter>ఙ</letter>
+    <letter>చ</letter>
+    <letter>ఛ</letter>
+    <letter>జ</letter>
+    <letter>ఝ</letter>
+    <letter>ఞ</letter>
+    <letter>ట</letter>
+    <letter>ఠ</letter>
+    <letter>డ</letter>
+    <letter>ఢ</letter>
+    <letter>ణ</letter>
+    <letter>త</letter>
+    <letter>థ</letter>
+    <letter>ద</letter>
+    <letter>ధ</letter>
+    <letter>న</letter>
+    <letter>ప</letter>
+    <letter>ఫ</letter>
+    <letter>బ</letter>
+    <letter>భ</letter>
+    <letter>మ</letter>
+    <letter>య</letter>
+    <letter>ర</letter>
+    <letter>ల</letter>
+    <letter>వ</letter>
+    <letter>శ</letter>
+    <letter>ష</letter>
+    <letter>స</letter>
+    <letter>హ</letter>
+    <letter>ళ</letter>
+    </mainLetters>
+    <auxiliaryLetters status="not-yet-curated"/>
+    <multiCharacterLetters status="not-yet-curated"/>
+  </inventory>
+  <internationalStyle>
+    <unicodeNormalization>NFC</unicodeNormalization>
+    <collation>Use locale-aware collation; do not sort by code point alone.</collation>
+    <timeEtiquette>Time and date conventions are locale-specific and must be selected by locale and region, not inferred from language alone.</timeEtiquette>
+    <names>Preserve native-script names and diacritics; do not silently transliterate.</names>
+  </internationalStyle>
+  <sources>
+    <source title="Unicode CLDR – Exemplar Characters" url="https://cldr.unicode.org/translation/core-data/exemplars"/>
+    <source title="Unicode Technical Standard #35 – General" url="https://www.unicode.org/reports/tr35/dev/tr35-general.html"/>
+  </sources>
+  <editorialNote>Starter inventory for review; not a complete authoritative orthography.</editorialNote>
+</languageAlphabet>

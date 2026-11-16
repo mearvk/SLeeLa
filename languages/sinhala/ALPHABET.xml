@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languageAlphabet schemaVersion="1.0" locale="si">
+  <language>Sinhala</language>
+  <writingSystem type="abugida">
+    <primaryScript name="Sinhala" iso15924="Sinh" direction="ltr"/>
+  </writingSystem>
+  <inventory status="provisional">
+    <mainLetters>
+    <letter>අ</letter>
+    <letter>ආ</letter>
+    <letter>ඇ</letter>
+    <letter>ඈ</letter>
+    <letter>ඉ</letter>
+    <letter>ඊ</letter>
+    <letter>උ</letter>
+    <letter>ඌ</letter>
+    <letter>ඍ</letter>
+    <letter>එ</letter>
+    <letter>ඒ</letter>
+    <letter>ඓ</letter>
+    <letter>ඔ</letter>
+    <letter>ඕ</letter>
+    <letter>ඖ</letter>
+    <letter>ක</letter>
+    <letter>ඛ</letter>
+    <letter>ග</letter>
+    <letter>ඝ</letter>
+    <letter>ඞ</letter>
+    <letter>ච</letter>
+    <letter>ඡ</letter>
+    <letter>ජ</letter>
+    <letter>ඣ</letter>
+    <letter>ඤ</letter>
+    <letter>ට</letter>
+    <letter>ඨ</letter>
+    <letter>ඩ</letter>
+    <letter>ඪ</letter>
+    <letter>ණ</letter>
+    <letter>ත</letter>
+    <letter>ථ</letter>
+    <letter>ද</letter>
+    <letter>ධ</letter>
+    <letter>න</letter>
+    <letter>ප</letter>
+    <letter>ඵ</letter>
+    <letter>බ</letter>
+    <letter>භ</letter>
+    <letter>ම</letter>
+    <letter>ය</letter>
+    <letter>ර</letter>
+    <letter>ල</letter>
+    <letter>ව</letter>
+    <letter>ශ</letter>
+    <letter>ෂ</letter>
+    <letter>ස</letter>
+    <letter>හ</letter>
+    <letter>ළ</letter>
+    <letter>ෆ</letter>
+    </mainLetters>
+    <auxiliaryLetters status="not-yet-curated"/>
+    <multiCharacterLetters status="not-yet-curated"/>
+  </inventory>
+  <internationalStyle>
+    <unicodeNormalization>NFC</unicodeNormalization>
+    <collation>Use locale-aware collation; do not sort by code point alone.</collation>
+    <timeEtiquette>Time and date conventions are locale-specific and must be selected by locale and region, not inferred from language alone.</timeEtiquette>
+    <names>Preserve native-script names and diacritics; do not silently transliterate.</names>
+  </internationalStyle>
+  <sources>
+    <source title="Unicode CLDR – Exemplar Characters" url="https://cldr.unicode.org/translation/core-data/exemplars"/>
+    <source title="Unicode Technical Standard #35 – General" url="https://www.unicode.org/reports/tr35/dev/tr35-general.html"/>
+  </sources>
+  <editorialNote>Starter inventory for review; not a complete authoritative orthography.</editorialNote>
+</languageAlphabet>

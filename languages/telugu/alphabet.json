@@ -1,0 +1,86 @@
+{
+  "schema": "sleela.language-alphabet.v1",
+  "language": {
+    "name": "Telugu",
+    "locale": "te"
+  },
+  "writingSystem": {
+    "type": "abugida",
+    "primaryScript": {
+      "name": "Telugu",
+      "iso15924": "Telu",
+      "direction": "ltr"
+    }
+  },
+  "inventory": {
+    "status": "provisional",
+    "mainLetters": [
+      "అ",
+      "ఆ",
+      "ఇ",
+      "ఈ",
+      "ఉ",
+      "ఊ",
+      "ఋ",
+      "ఎ",
+      "ఏ",
+      "ఐ",
+      "ఒ",
+      "ఓ",
+      "ఔ",
+      "క",
+      "ఖ",
+      "గ",
+      "ఘ",
+      "ఙ",
+      "చ",
+      "ఛ",
+      "జ",
+      "ఝ",
+      "ఞ",
+      "ట",
+      "ఠ",
+      "డ",
+      "ఢ",
+      "ణ",
+      "త",
+      "థ",
+      "ద",
+      "ధ",
+      "న",
+      "ప",
+      "ఫ",
+      "బ",
+      "భ",
+      "మ",
+      "య",
+      "ర",
+      "ల",
+      "వ",
+      "శ",
+      "ష",
+      "స",
+      "హ",
+      "ళ"
+    ],
+    "auxiliaryLetters": [],
+    "multiCharacterLetters": [],
+    "notes": "Starter inventory; orthographic conventions and regional variants require review against a language-specific authority."
+  },
+  "internationalStyle": {
+    "unicode": "Unicode NFC recommended",
+    "collation": "Use locale-aware collation; do not sort by code point alone.",
+    "timeEtiquette": "Time/date conventions are locale-specific and are intentionally not inferred from the language alone.",
+    "names": "Preserve native-script names and diacritics; do not silently transliterate."
+  },
+  "sources": [
+    {
+      "title": "Unicode CLDR – Exemplar Characters",
+      "url": "https://cldr.unicode.org/translation/core-data/exemplars"
+    },
+    {
+      "title": "Unicode Technical Standard #35 – General",
+      "url": "https://www.unicode.org/reports/tr35/dev/tr35-general.html"
+    }
+  ]
+}

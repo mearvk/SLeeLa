@@ -1,0 +1,38 @@
+{
+  "schema": "sleela.language-alphabet.v1",
+  "language": {
+    "name": "Mandarin Chinese",
+    "locale": "zh-Hans"
+  },
+  "writingSystem": {
+    "type": "logographic",
+    "primaryScript": {
+      "name": "Han (Simplified)",
+      "iso15924": "Hans",
+      "direction": "ltr"
+    }
+  },
+  "inventory": {
+    "status": "provisional",
+    "mainLetters": [],
+    "auxiliaryLetters": [],
+    "multiCharacterLetters": [],
+    "notes": "No alphabetic letter inventory is asserted. The language is primarily written with logographic characters; phonetic transcription or supplementary scripts may be used."
+  },
+  "internationalStyle": {
+    "unicode": "Unicode NFC recommended",
+    "collation": "Use locale-aware collation; do not sort by code point alone.",
+    "timeEtiquette": "Time/date conventions are locale-specific and are intentionally not inferred from the language alone.",
+    "names": "Preserve native-script names and diacritics; do not silently transliterate."
+  },
+  "sources": [
+    {
+      "title": "Unicode CLDR – Exemplar Characters",
+      "url": "https://cldr.unicode.org/translation/core-data/exemplars"
+    },
+    {
+      "title": "Unicode Technical Standard #35 – General",
+      "url": "https://www.unicode.org/reports/tr35/dev/tr35-general.html"
+    }
+  ]
+}

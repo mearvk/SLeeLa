@@ -1,0 +1,40 @@
+{
+  "schema": "sleela.language-alphabet.v1",
+  "language": {
+    "name": "Najdi Arabic",
+    "locale": "ars"
+  },
+  "writingSystem": {
+    "type": "abjad",
+    "primaryScript": {
+      "name": "Arabic",
+      "iso15924": "Arab",
+      "direction": "rtl"
+    }
+  },
+  "inventory": {
+    "status": "provisional",
+    "mainLetters": [
+      "ابتثجحخدذرزسشصضطظعغفقكلمنهوي"
+    ],
+    "auxiliaryLetters": [],
+    "multiCharacterLetters": [],
+    "notes": "Starter inventory; orthographic conventions and regional variants require review against a language-specific authority."
+  },
+  "internationalStyle": {
+    "unicode": "Unicode NFC recommended",
+    "collation": "Use locale-aware collation; do not sort by code point alone.",
+    "timeEtiquette": "Time/date conventions are locale-specific and are intentionally not inferred from the language alone.",
+    "names": "Preserve native-script names and diacritics; do not silently transliterate."
+  },
+  "sources": [
+    {
+      "title": "Unicode CLDR – Exemplar Characters",
+      "url": "https://cldr.unicode.org/translation/core-data/exemplars"
+    },
+    {
+      "title": "Unicode Technical Standard #35 – General",
+      "url": "https://www.unicode.org/reports/tr35/dev/tr35-general.html"
+    }
+  ]
+}

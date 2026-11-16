@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languageAlphabet schemaVersion="1.0" locale="fa">
+  <language>Iranian Persian</language>
+  <writingSystem type="abjad">
+    <primaryScript name="Persian Arabic" iso15924="Arab" direction="rtl"/>
+  </writingSystem>
+  <inventory status="provisional">
+    <mainLetters>
+    <letter>ا</letter>
+    <letter>ب</letter>
+    <letter>پ</letter>
+    <letter>ت</letter>
+    <letter>ث</letter>
+    <letter>ج</letter>
+    <letter>چ</letter>
+    <letter>ح</letter>
+    <letter>خ</letter>
+    <letter>د</letter>
+    <letter>ذ</letter>
+    <letter>ر</letter>
+    <letter>ز</letter>
+    <letter>ژ</letter>
+    <letter>س</letter>
+    <letter>ش</letter>
+    <letter>ص</letter>
+    <letter>ض</letter>
+    <letter>ط</letter>
+    <letter>ظ</letter>
+    <letter>ع</letter>
+    <letter>غ</letter>
+    <letter>ف</letter>
+    <letter>ق</letter>
+    <letter>ک</letter>
+    <letter>گ</letter>
+    <letter>ل</letter>
+    <letter>م</letter>
+    <letter>ن</letter>
+    <letter>و</letter>
+    <letter>ه</letter>
+    <letter>ی</letter>
+    </mainLetters>
+    <auxiliaryLetters status="not-yet-curated"/>
+    <multiCharacterLetters status="not-yet-curated"/>
+  </inventory>
+  <internationalStyle>
+    <unicodeNormalization>NFC</unicodeNormalization>
+    <collation>Use locale-aware collation; do not sort by code point alone.</collation>
+    <timeEtiquette>Time and date conventions are locale-specific and must be selected by locale and region, not inferred from language alone.</timeEtiquette>
+    <names>Preserve native-script names and diacritics; do not silently transliterate.</names>
+  </internationalStyle>
+  <sources>
+    <source title="Unicode CLDR – Exemplar Characters" url="https://cldr.unicode.org/translation/core-data/exemplars"/>
+    <source title="Unicode Technical Standard #35 – General" url="https://www.unicode.org/reports/tr35/dev/tr35-general.html"/>
+  </sources>
+  <editorialNote>Starter inventory for review; not a complete authoritative orthography.</editorialNote>
+</languageAlphabet>

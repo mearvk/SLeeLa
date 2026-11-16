@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languageAlphabet schemaVersion="1.0" locale="uz">
+  <language>Northern Uzbek</language>
+  <writingSystem type="alphabetic">
+    <primaryScript name="Latin (current standard); Cyrillic also used" iso15924="Latn" direction="ltr"/>
+  </writingSystem>
+  <inventory status="provisional">
+    <mainLetters>
+    <letter>a</letter>
+    <letter>b</letter>
+    <letter>d</letter>
+    <letter>e</letter>
+    <letter>f</letter>
+    <letter>g</letter>
+    <letter>h</letter>
+    <letter>i</letter>
+    <letter>j</letter>
+    <letter>k</letter>
+    <letter>l</letter>
+    <letter>m</letter>
+    <letter>n</letter>
+    <letter>o</letter>
+    <letter>p</letter>
+    <letter>q</letter>
+    <letter>r</letter>
+    <letter>s</letter>
+    <letter>t</letter>
+    <letter>u</letter>
+    <letter>v</letter>
+    <letter>x</letter>
+    <letter>y</letter>
+    <letter>z</letter>
+    <letter>oʻ</letter>
+    <letter>gʻ</letter>
+    <letter>sh</letter>
+    <letter>ch</letter>
+    <letter>ng</letter>
+    </mainLetters>
+    <auxiliaryLetters status="not-yet-curated"/>
+    <multiCharacterLetters status="not-yet-curated"/>
+  </inventory>
+  <internationalStyle>
+    <unicodeNormalization>NFC</unicodeNormalization>
+    <collation>Use locale-aware collation; do not sort by code point alone.</collation>
+    <timeEtiquette>Time and date conventions are locale-specific and must be selected by locale and region, not inferred from language alone.</timeEtiquette>
+    <names>Preserve native-script names and diacritics; do not silently transliterate.</names>
+  </internationalStyle>
+  <sources>
+    <source title="Unicode CLDR – Exemplar Characters" url="https://cldr.unicode.org/translation/core-data/exemplars"/>
+    <source title="Unicode Technical Standard #35 – General" url="https://www.unicode.org/reports/tr35/dev/tr35-general.html"/>
+  </sources>
+  <editorialNote>Starter inventory for review; not a complete authoritative orthography.</editorialNote>
+</languageAlphabet>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languageAlphabet schemaVersion="1.0" locale="ko">
+  <language>Korean</language>
+  <writingSystem type="featural-alphabetic">
+    <primaryScript name="Hangul" iso15924="Kore" direction="ltr"/>
+  </writingSystem>
+  <inventory status="provisional">
+    <mainLetters>
+    <letter>ㄱ</letter>
+    <letter>ㄲ</letter>
+    <letter>ㄴ</letter>
+    <letter>ㄷ</letter>
+    <letter>ㄸ</letter>
+    <letter>ㄹ</letter>
+    <letter>ㅁ</letter>
+    <letter>ㅂ</letter>
+    <letter>ㅃ</letter>
+    <letter>ㅅ</letter>
+    <letter>ㅆ</letter>
+    <letter>ㅇ</letter>
+    <letter>ㅈ</letter>
+    <letter>ㅉ</letter>
+    <letter>ㅊ</letter>
+    <letter>ㅋ</letter>
+    <letter>ㅌ</letter>
+    <letter>ㅍ</letter>
+    <letter>ㅎ</letter>
+    <letter>ㅏ</letter>
+    <letter>ㅐ</letter>
+    <letter>ㅑ</letter>
+    <letter>ㅒ</letter>
+    <letter>ㅓ</letter>
+    <letter>ㅔ</letter>
+    <letter>ㅕ</letter>
+    <letter>ㅖ</letter>
+    <letter>ㅗ</letter>
+    <letter>ㅘ</letter>
+    <letter>ㅙ</letter>
+    <letter>ㅚ</letter>
+    <letter>ㅛ</letter>
+    <letter>ㅜ</letter>
+    <letter>ㅝ</letter>
+    <letter>ㅞ</letter>
+    <letter>ㅟ</letter>
+    <letter>ㅠ</letter>
+    <letter>ㅡ</letter>
+    <letter>ㅢ</letter>
+    <letter>ㅣ</letter>
+    </mainLetters>
+    <auxiliaryLetters status="not-yet-curated"/>
+    <multiCharacterLetters status="not-yet-curated"/>
+  </inventory>
+  <internationalStyle>
+    <unicodeNormalization>NFC</unicodeNormalization>
+    <collation>Use locale-aware collation; do not sort by code point alone.</collation>
+    <timeEtiquette>Time and date conventions are locale-specific and must be selected by locale and region, not inferred from language alone.</timeEtiquette>
+    <names>Preserve native-script names and diacritics; do not silently transliterate.</names>
+  </internationalStyle>
+  <sources>
+    <source title="Unicode CLDR – Exemplar Characters" url="https://cldr.unicode.org/translation/core-data/exemplars"/>
+    <source title="Unicode Technical Standard #35 – General" url="https://www.unicode.org/reports/tr35/dev/tr35-general.html"/>
+  </sources>
+  <editorialNote>Starter inventory for review; not a complete authoritative orthography.</editorialNote>
+</languageAlphabet>
