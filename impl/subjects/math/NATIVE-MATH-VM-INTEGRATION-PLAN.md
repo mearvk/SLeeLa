@@ -7,13 +7,13 @@ new or reduced implementation. The deliverable is one coherent path from
 SLeeLa source through compiler lowering and VM dispatch to the existing native
 math C ABIs, with deterministic results and explicit failure behavior.
 
-The original scalar math integration is part of the required deliverable:
-- Preserve the scalar IEEE-754 kernel and its stable function-ID table.
-- Recover the compatible scalar `OP_MATH_CALL` lowering/dispatch behavior from
-  the historical implementation, but adapt it to the current ISA.
-- Preserve the SLeeLa bytecode fallback for scalar methods when the native
+The original scalar math integration is now restored on current master:
+- The scalar IEEE-754 kernel and stable function-ID table are preserved.
+- `OP_MATH_CALL` is appended at 195, with compiler lowering and native VM
+  dispatch adapted from the historical implementation.
+- The original SLeeLa bytecode fallback remains available when the native
   kernel declines a request.
-- Do not import the historical branch's opcode numbering or its stale enum.
+- The historical branch's opcode numbering and stale enum were not imported.
 
 The typed array/linear-algebra integration is also required:
 - Use the existing `slmath_vm_dispatch` C ABI and `slmath_buffer` descriptors.
