@@ -263,6 +263,7 @@ def build_queue(
     candidate_file=None,
 ):
     rows, words_with_matches, total_matches = [], 0, 0
+    words_with_review_candidates, total_review_candidates = 0, 0
     target_wiktionary_code = WIKTIONARY_LANG_CODES[language_tag]
     if candidate_file is None:
         candidate_file = Path(f"languages/datasets/frequency-candidates/wordhoard-{language_tag}.json")
@@ -313,6 +314,64 @@ def build_queue(
                 "review_status": "required",
             })
 
+        # A Wikidata QID may be absent from one Wiktionary edition even
+        # when the other two editions identify the same concept. Preserve such
+        # cases as explicitly weak review candidates: the QID-bearing editions
+        # provide the anchor, while the missing-QID edition contributes every
+        # same-POS sense as an alternative. Nothing is selected automatically.
+        qid_presence = {}
+        for edition in EDITIONS:
+            for qid, pos in groups[edition]:
+                if qid:
+                    qid_presence.setdefault((qid, pos), set()).add(edition)
+
+        review_alignment_candidates = []
+        for (qid, pos), matching_editions in sorted(qid_presence.items()):
+            if len(matching_editions) < 2:
+                continue
+            per_edition = {}
+            for edition in EDITIONS:
+                exact = groups[edition].get((qid, pos), [])
+                fallback = False
+                if not exact:
+                    exact = [
+                        sense for (other_qid, other_pos), senses in groups[edition].items()
+                        if other_pos == pos
+                        for sense in senses
+                    ]
+                    fallback = True
+                per_edition[edition] = {
+                    "fallback_candidates": fallback,
+                    "senses": exact,
+                }
+            review_alignment_candidates.append({
+                "wikidata_sense_qid": qid,
+                "pos": pos,
+                "qid_supporting_editions": sorted(matching_editions),
+                "qid_support_count": len(matching_editions),
+                "definitions": {
+                    edition: [sense["glosses"] for sense in per_edition[edition]["senses"]]
+                    for edition in EDITIONS
+                },
+                "source_evidence": {
+                    edition: [{
+                        "edition": edition,
+                        "source_line": sense["source_line"],
+                        "sense_index": sense["sense_index"],
+                        "senseid": sense["senseid"],
+                        "tags": sense["tags"],
+                        "qid_fallback": per_edition[edition]["fallback_candidates"],
+                    } for sense in per_edition[edition]["senses"]]
+                    for edition in EDITIONS
+                },
+                "alignment_strength": (
+                    "shared_qid_3_of_3" if len(matching_editions) == 3
+                    else "shared_qid_2_of_3_review_only"
+                ),
+                "review_status": "required",
+                "selection_status": "none",
+            })
+
         edition_candidates = {}
         for edition in EDITIONS:
             candidates = []
@@ -331,6 +390,9 @@ def build_queue(
 
         if aligned:
             words_with_matches += 1
+        if review_alignment_candidates:
+            words_with_review_candidates += 1
+            total_review_candidates += len(review_alignment_candidates)
         rows.append({
             "rank": rank,
             "word": word,
@@ -339,11 +401,14 @@ def build_queue(
             "frequency_count": candidate.get("frequency_count"),
             "definition_status": (
                 "qid_pos_candidates_found" if aligned else
+                "partial_qid_review_candidates_found"
+                if review_alignment_candidates else
                 "edition_gloss_candidates_found"
                 if all(edition_candidates[edition] for edition in EDITIONS) else
                 "manual_lookup_required"
             ),
             "aligned_candidates": aligned,
+            "review_alignment_candidates": review_alignment_candidates,
             "edition_sense_candidates": edition_candidates,
             "edition_candidate_counts": {
                 edition: len(edition_candidates[edition])
@@ -381,9 +446,13 @@ def build_queue(
             "Exact NFC headword and explicit target-language-to-Wiktionary-code mapping. "
             "Candidate POS is applied when supplied; if the frequency source has no POS, "
             "all matching POS senses are retained. All edition glosses are preserved "
-            "independently, including senses without Wikidata QIDs. Shared sense-level "
-            "QIDs create optional cross-edition alignment candidates only. Every "
-            "candidate remains for human review; no sense is auto-selected or approved."
+            "independently, including senses without Wikidata QIDs. A QID shared by all "
+            "three editions creates a strong review candidate. A QID shared by two "
+            "editions creates a partial-QID review candidate; the third edition may "
+            "contribute all same-POS senses as explicitly marked fallback alternatives. "
+            "QID present in only one edition does not create an alignment. POS-only "
+            "gloss pools remain unaligned. Every candidate remains for human review; "
+            "no sense is auto-selected or approved."
         ),
         "counts": {
             "candidate_words": len(rows),
@@ -391,6 +460,8 @@ def build_queue(
             "words_with_edition_gloss_candidates": words_with_all_edition_glosses,
             "words_requiring_manual_lookup": len(rows) - words_with_all_edition_glosses,
             "qid_pos_candidate_triples": total_matches,
+            "words_with_qid_review_candidates": words_with_review_candidates,
+            "qid_pos_review_candidates": total_review_candidates,
             "production_definitions_approved": 0,
         },
         "production_status": "review_required",
