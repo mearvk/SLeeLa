@@ -2,6 +2,11 @@ name: FRUCHST source definition staging
 # Download source data only on explicit FRUCHST pipeline changes.
 
 on:
+  push:
+    branches: [master]
+    paths:
+      - "languages/tools/fruchst_definition_batch.py"
+      - ".github/workflows/fruchst-definition-stage.yml"
   workflow_dispatch:
 
 permissions:
