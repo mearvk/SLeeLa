@@ -28,11 +28,15 @@ Output filenames follow the candidate source, for example `wordhoard-en.review.j
 - The source entry Wiktionary `lang_code` must match the explicit mapping in `WIKTIONARY_LANG_CODES`.
 - Candidate POS is used as a filter when supplied. FrequencyWords candidates do not include POS, so **all matching POS senses are retained** for review rather than being discarded.
 - Every matching headword/POS gloss is retained independently for each Wiktionary edition, including senses without a Wikidata QID.
-- A cross-edition alignment candidate is proposed only when all three editions expose the same sense-level Wikidata QID and normalized POS.
+- A strong cross-edition alignment candidate is proposed when all three editions expose the same sense-level Wikidata QID and normalized POS.
+- A partial-QID review candidate is also proposed when the same QID and POS occur in two editions. The third edition contributes every same-POS sense as an explicitly marked fallback alternative; this is a review pool, not an asserted sense match.
+- A QID present in only one edition does not create an alignment candidate. POS-only gloss pools remain separate and unaligned.
 - QID/POS agreement is a candidate signal, not proof of equivalence. All source senses and source-line evidence remain available; nothing is silently selected.
 - Missing edition glosses are marked for manual lookup. Missing QIDs do not cause glosses to be discarded.
 - The `zh-Hans` frequency source is the `zh_cn` corpus, while Wiktionary uses the broader `zh` code. The queue records that mapping, and every Chinese entry requires human script/variety verification.
-- Every definition candidate remains `review_status: required`. `production_definitions_approved` stays zero until a reviewer records explicit selection and approval.
+- Every definition candidate remains `review_status: required`; partial-QID candidates also carry `selection_status: none`, their supporting editions, and per-edition fallback evidence.
+- `qid_pos_candidate_triples` counts only full 3-of-3 QID matches. `qid_pos_review_candidates` separately counts the broader 2-of-3-or-3-of-3 review candidates. These metrics must not be conflated.
+- `production_definitions_approved` stays zero until a reviewer records explicit selection and approval.
 
 ## Source and license
 
