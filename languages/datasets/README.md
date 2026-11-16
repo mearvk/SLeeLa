@@ -52,3 +52,17 @@ The builder is deterministic: generated_epoch is zero. The manifest is separate 
 ## Completion status
 
 A profile is complete only when its binary validates and its provenance manifest passes the licensing and source-quality review. An empty file, placeholder, repeated headword, synthetic ranking, or missing definition is not a completed dictionary.
+
+
+## First-batch frequency candidates
+
+The English, French, Spanish, and German 1,000-word candidate lists are staged in `frequency-candidates/`. They are sourced from a pinned wordhoard sample revision and carry source-rank, raw occurrence count, POS, and attribution metadata. Regenerate one with:
+
+```sh
+python3 languages/tools/stage_wordhoard.py en languages/datasets/frequency-candidates/wordhoard-en.json
+python3 languages/tools/stage_wordhoard.py fr languages/datasets/frequency-candidates/wordhoard-fr.json
+python3 languages/tools/stage_wordhoard.py es languages/datasets/frequency-candidates/wordhoard-es.json
+python3 languages/tools/stage_wordhoard.py de languages/datasets/frequency-candidates/wordhoard-de.json
+```
+
+These files are not complete dictionaries: all entries still require reviewed, aligned English, French, and Spanish definitions.
