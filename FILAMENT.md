@@ -875,3 +875,58 @@ The smoke command used `exit /b 0`, which may return from a batch context withou
 ### Qualification status
 
 **ROOT COMPILATION/BUILD: PASS ON UBUNTU, macOS AND WINDOWS IN RUN 43666471470. INSTALLATION QUALIFICATION: NOT YET COMPLETE.** The POSIX staged user-local smoke and Windows guided-installer smoke failures are being corrected at the workflow-test level. The install-all/uninstall-all jobs already pass on Ubuntu and macOS, but the staged system/guided install and uninstall checks still need to execute successfully. Native Windows ConPTY remains a separate portability runtime item. Do not mark the aggregate root build/install pipeline qualified until a fresh run passes every required root and dependent installation job.
+
+
+## Root build and installation qualification completed — 2026-11-16
+
+### Latest complete root qualification
+
+**[Root Build and Install Qualification run 43897747386](https://github.com/mearvk/SLeeLa/actions/runs/43897747386)** completed successfully on commit `9a08489746af0821da361c4e6681f51a488919bd`.
+
+All seven jobs were inspected individually; every job and every required step concluded **SUCCESS**:
+
+| Job | Job ID | Conclusion | Evidence |
+|---|---:|---|---|
+| Root make all — Windows 10+ / MinGW-w64 | `133405807762` | **SUCCESS** | Complete root build and wired tests; root product verification; isolated Windows guided installer; installed runtime and compiler product smoke. |
+| Root make all — Ubuntu | `133405808315` | **SUCCESS** | Complete root build and wired tests; root product verification. |
+| Root make all — macOS | `133405808446` | **SUCCESS** | Complete root build and wired tests; root product verification. |
+| Full install-all / uninstall-all — Ubuntu | `133421932637` | **SUCCESS** | Disposable-host standard-location installation and uninstall sequence. |
+| Staged installers — Ubuntu | `133421932803` | **SUCCESS** | User-local install, product smoke and uninstall; staged system install, product smoke and uninstall; guided installer in isolated user prefix. |
+| Full install-all / uninstall-all — macOS | `133421932821` | **SUCCESS** | Standard-location installation and uninstall sequence; local prefixes and system prefix exercised. |
+| Staged installers — macOS | `133421932940` | **SUCCESS** | User-local install, product smoke and uninstall; staged system install, product smoke and uninstall; guided installer in isolated user prefix. |
+
+The Windows root job's guided-installer step completed successfully, and its log records the installed SLeeLa 1.3.2-pro package and the expected `sleela.exe`, `sleelvac.exe`, and `nordshrift.exe` products. Both POSIX staged-installer jobs passed all three install/smoke/uninstall phases. Both POSIX install-all/uninstall-all jobs also passed.
+
+### Earlier / duplicate run handling
+
+- The originally requested [43639947785](https://github.com/mearvk/SLeeLa/actions/runs/43639947785) and [43639947779](https://github.com/mearvk/SLeeLa/actions/runs/43639947779) runs were cancelled and are not qualification evidence.
+- [Run 43897723632](https://github.com/mearvk/SLeeLa/actions/runs/43897723632), commit `90c0d17126e3c58360f5dbd46136a205516b1d47`, had all three root jobs pass and its Ubuntu staged/install-all jobs pass, but its macOS staged-installer job was cancelled. It is not the final qualification result.
+- The subsequent [run 43897747386](https://github.com/mearvk/SLeeLa/actions/runs/43897747386), commit `9a08489746af0821da361c4e6681f51a488919bd`, completed every required root and dependent installation job successfully and is the qualifying run.
+
+### Current-master applicability
+
+At the time of this review, `master` was `a7bd9d1a33c1c8f84aadcdb56469d4203158f110`. A GitHub compare from the qualified root commit `9a08489746af0821da361c4e6681f51a488919bd` to current `master` showed nine commits ahead. The changed paths were limited to FRUCHST language data/review queues/status, the FRUCHST staging workflow, and the arithmetic comparison document. No root build recipes, installer files, implementation sources, or native build workflow files changed in that range. Therefore no intervening change invalidates the root build/install evidence above.
+
+### Separate native portability status — Windows ConPTY remains open
+
+Latest reviewed run: [Native C and C++ Portability 43921778016](https://github.com/mearvk/SLeeLa/actions/runs/43921778016), current-master commit `a7bd9d1a33c1c8f84aadcdb56469d4203158f110`.
+
+| Platform | Job ID | Conclusion |
+|---|---:|---|
+| Ubuntu | `133490648402` | **SUCCESS** |
+| macOS | `133490647940` | **SUCCESS** |
+| Windows 10+ / MinGW-w64 | `133490647371` | **FAILURE — isolated ConPTY smoke timed out** |
+
+Windows completed native compilation, frozen-ISA verification, all nine OSLS CTest cases, and OSLS VM dispatch checks. The isolated command `make -C impl test-terminal-platform` compiled its smoke binary and logged `terminal-ok`, but the three-minute step timed out. The log contains neither `terminal close: begin`, `terminal close: end`, nor `terminal platform smoke: PASS`; the runner then printed `Terminate batch job (Y/N)?` while cleaning up.
+
+This latest evidence does **not** establish that `ClosePseudoConsole()` itself is the hang point: the explicit smoke marker immediately before `slterminal_close()` was never emitted. The stall is before the close call, most likely in the smoke's synchronous output-read/marker-detection phase or the ConPTY output handoff. The full Windows VM regression suite therefore did not run in this job. Similar isolated ConPTY timeouts occurred in portability runs `43897747462`, `43903833075`, `43909816688`, `43913600912`, and `43917641192`. No speculative source change or test weakening is recorded as a fix.
+
+### Final qualification classification
+
+**ROOT BUILD: PASS — UBUNTU, macOS, WINDOWS.**
+
+**INSTALLATION QUALIFICATION: PASS — staged user-local/system/guided installer and uninstall checks on Ubuntu/macOS; Windows guided installer and product smoke; install-all/uninstall-all on Ubuntu/macOS.**
+
+**ROOT BUILD AND INSTALLATION QUALIFICATION: COMPLETE.** The required root and dependent installation jobs all passed in run `43897747386`.
+
+**SEPARATE NATIVE PORTABILITY: PARTIAL — UBUNTU PASS, macOS PASS, WINDOWS CONPTY SMOKE FAIL/TIMEOUT.** This does not invalidate the completed root build/install qualification, but Windows native portability remains unqualified until the smoke-read/ConPTY issue is diagnosed and the isolated smoke plus full VM regression suite pass. No overall native portability PASS is claimed.
