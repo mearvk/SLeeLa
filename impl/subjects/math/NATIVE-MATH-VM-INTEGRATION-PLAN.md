@@ -24,7 +24,7 @@ The typed array/linear-algebra integration is also required:
 
 ## ISA and compatibility constraints
 
-The executable source/native ISA currently ends at opcode 194. Existing
+The executable source/native ISA now ends at opcode 195. Scalar native math dispatch is implemented at 195; typed-array dispatch and later family opcodes remain reserved. Existing
 assignments 0–194 are frozen and append-only, including the fixed IPC block:
 
 - 179 — `OP_IPC_OPEN`
@@ -158,7 +158,7 @@ impossible argument counts, and malformed stack contracts before execution.
 
 ## Delivery sequence
 
-1. Recover and reconcile the original scalar integration against current master.
+1. Recover and reconcile the original scalar integration against current master — complete: opcode 195, compiler lowering, VM dispatch, C ABI linkage, and artifact operand validation are now integrated.
 2. Implement the VM-owned array validation, rooting, and transaction adapter.
 3. Connect the existing typed C ABI through that adapter.
 4. Add the append-only opcode/source ISA/native enum/artifact validation as one
