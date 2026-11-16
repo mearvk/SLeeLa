@@ -6,12 +6,20 @@ on:
       - "languages/tools/fruchst.py"
       - "languages/tools/test_fruchst.py"
       - "languages/FRUCHST_FORMAT.md"
+      - "languages/FRUCHST_TARGETS.json"
+      - "languages/FRUCHST_SOURCES.md"
+      - "languages/README.md"
+      - "languages/datasets/**"
       - ".github/workflows/fruchst-validate.yml"
   pull_request:
     paths:
       - "languages/tools/fruchst.py"
       - "languages/tools/test_fruchst.py"
       - "languages/FRUCHST_FORMAT.md"
+      - "languages/FRUCHST_TARGETS.json"
+      - "languages/FRUCHST_SOURCES.md"
+      - "languages/README.md"
+      - "languages/datasets/**"
       - ".github/workflows/fruchst-validate.yml"
 
 permissions:
