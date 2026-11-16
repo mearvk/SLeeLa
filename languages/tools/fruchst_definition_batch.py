@@ -40,6 +40,9 @@ TARGETS = (
     "en", "zh-Hans", "hi", "es", "ar", "fr", "bn", "pt", "ru", "id",
     "ur", "de", "ja", "vi", "te", "tr", "tl", "ta", "fa", "ko", "th",
     "it", "pl", "uk", "ml", "ms", "nl", "ro", "kk", "si", "af",
+    "arz", "mr", "ha", "pnb-Arab", "sw", "jv", "gu", "am", "kn", "bho",
+    "yo", "ln", "ary", "or", "sd", "pa-Guru", "su", "ig", "ne", "uz",
+    "zu", "skr", "so", "as", "ceb", "mag", "xh", "mai",
 )
 WIKTIONARY_LANG_CODES = {
     "en": "en",
@@ -73,13 +76,53 @@ WIKTIONARY_LANG_CODES = {
     "kk": "kk",
     "si": "si",
     "af": "af",
+    "arz": "arz",
+    "mr": "mr",
+    "ha": "ha",
+    "pnb-Arab": "pnb",
+    "sw": "sw",
+    "jv": "jv",
+    "gu": "gu",
+    "am": "am",
+    "kn": "kn",
+    "bho": "bho",
+    "yo": "yo",
+    "ln": "ln",
+    "ary": "ary",
+    "or": "or",
+    "sd": "sd",
+    "pa-Guru": "pa",
+    "su": "su",
+    "ig": "ig",
+    "ne": "ne",
+    "uz": "uz",
+    "zu": "zu",
+    "skr": "skr",
+    "so": "so",
+    "as": "as",
+    "ceb": "ceb",
+    "mag": "mag",
+    "xh": "xh",
+    "mai": "mai",
 }
 TARGET_MAPPING_NOTES = {
     "zh-Hans": (
         "Wiktionary entries use the broad 'zh' code; the candidate word list "
         "is the Simplified Chinese zh_cn frequency set. Verify script/variety "
         "for every selected sense before approval."
-    )
+    ),
+    "pnb-Arab": (
+        "Wiktionary uses the pnb language code. Verify Western Punjabi identity "
+        "and Shahmukhi script for every selected sense."
+    ),
+    "pa-Guru": (
+        "Wiktionary uses the broad pa code. Verify Eastern Punjabi identity "
+        "and Gurmukhi script for every selected sense."
+    ),
+    "bho": (
+        "The frequency corpus is from Wikimedia's bh Wikipedia project, mapped "
+        "to Bhojpuri. Verify every headword's language identity."
+    ),
 }
 POS_ALIASES = {
     "adj": "adjective",
@@ -127,7 +170,7 @@ def qids_for(sense: dict) -> list[str]:
 def candidate_path_for(directory: Path, language_tag: str) -> Path:
     """Find exactly one known candidate file for a registered language tag."""
     matches = [
-        path for prefix in ("wordhoard", "frequencywords")
+        path for prefix in ("wordhoard", "frequencywords", "wikipedia")
         if (path := directory / f"{prefix}-{language_tag}.json").is_file()
     ]
     if len(matches) != 1:
@@ -144,7 +187,20 @@ def load_candidates(directory: Path):
         raise ValueError("TARGETS and WIKTIONARY_LANG_CODES must cover the same tags")
 
     for language_tag in TARGETS:
-        path = candidate_path_for(directory, language_tag)
+        matches = [
+            path for prefix in ("wordhoard", "frequencywords", "wikipedia")
+            if (path := directory / f"{prefix}-{language_tag}.json").is_file()
+        ]
+        if not matches:
+            # The registry is a target catalog; source acquisition is incremental.
+            # Only languages with an actual staged candidate file enter this run.
+            continue
+        if len(matches) != 1:
+            raise ValueError(
+                f"{directory}: expected exactly one candidate file for "
+                f"{language_tag}, found {len(matches)}"
+            )
+        path = matches[0]
         doc = json.loads(path.read_text(encoding="utf-8"))
         entries = doc.get("entries", [])
         if doc.get("language_tag") != language_tag:
@@ -173,6 +229,8 @@ def load_candidates(directory: Path):
         wanted[language_tag] = set(mapped)
         candidate_paths[language_tag] = path
 
+    if not docs:
+        raise ValueError(f"{directory}: no candidate files found for registered FRUCHST languages")
     return docs, words, wanted, candidate_paths
 
 
@@ -190,7 +248,7 @@ def extract_edition(path: Path, wanted: dict[str, set[str]]):
     for language_tag, wiktionary_code in WIKTIONARY_LANG_CODES.items():
         tags_by_wiktionary_code.setdefault(wiktionary_code, []).append(language_tag)
 
-    found = {language_tag: {} for language_tag in TARGETS}
+    found = {language_tag: {} for language_tag in wanted}
     opener = gzip.open if path.suffix.casefold() == ".gz" else open
     with opener(path, "rt", encoding="utf-8") as stream:
         for line_no, line in enumerate(stream, 1):
@@ -208,7 +266,7 @@ def extract_edition(path: Path, wanted: dict[str, set[str]]):
             if not isinstance(raw_word, str):
                 continue
             word = norm(raw_word)
-            tags = [tag for tag in matching_tags if word in wanted[tag]]
+            tags = [tag for tag in matching_tags if tag in wanted and word in wanted[tag]]
             if not tags:
                 continue
 
@@ -426,7 +484,7 @@ def main():
         for edition, path in source_paths.items()
     }
     args.output.mkdir(parents=True, exist_ok=True)
-    for language_tag in TARGETS:
+    for language_tag in docs:
         candidate_file = candidate_paths[language_tag]
         queue = build_queue(
             language_tag,

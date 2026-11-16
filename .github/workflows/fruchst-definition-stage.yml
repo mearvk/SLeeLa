@@ -6,6 +6,7 @@ on:
     branches: [master]
     paths:
       - "languages/tools/fruchst_definition_batch.py"
+      - "languages/datasets/frequency-candidates/wikipedia-*.json"
       - ".github/workflows/fruchst-definition-stage.yml"
   workflow_dispatch:
 

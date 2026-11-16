@@ -1,60 +1,43 @@
-# FRUCHST multilingual definition candidate pipeline
+# FRUCHST frequency and definition candidate pipeline
 
-`fruchst_definition_batch.py` creates a **review queue**, not production definitions. The batch processes all 31 language sets with staged frequency candidates:
+`fruchst_definition_batch.py` creates **review queues**, not approved definitions or production binaries. It reads staged word lists from three source families:
 
-- Four `wordhoard-*.json` sets: English, French, Spanish, and German.
-- Twenty-seven `frequencywords-*.json` sets: Simplified Chinese, Hindi, Spanish, Arabic, French, Bengali, Portuguese, Russian, Indonesian, Urdu, German, Japanese, Vietnamese, Telugu, Turkish, Tagalog, Tamil, Persian, Korean, Thai, Italian, Polish, Ukrainian, Malayalam, Malay, Dutch, Romanian, Kazakh, Sinhala, and Afrikaans.
+- Four `wordhoard-*.json` lists: English, French, Spanish, and German.
+- Twenty-seven `frequencywords-*.json` lists from FrequencyWords/OpenSubtitles 2018.
+- Up to twenty-eight `wikipedia-*.json` lists from Wikimedia Wikipedia article dumps, clearly marked as encyclopedia-domain candidates rather than conversational frequencies.
 
-Each candidate headword is looked up in three Wiktionary editions (English, French, and Spanish). The tool streams each source dump once and retains exact NFC headword matches for the explicitly mapped target-language code.
+For each word-list entry, the definition tool extracts exact NFC headword gloss candidates from English, French, and Spanish Wiktionary editions. It streams each dump once and retains source line, sense index, POS, tags, QIDs, and dump checksums.
 
-## Batch execution
-
-The workflow downloads the three source archives outside the repository and runs:
-
-```sh
-python3 languages/tools/fruchst_definition_batch.py \
-  --candidates languages/datasets/frequency-candidates \
-  --en /data/kaikki/enwiktionary.jsonl.gz \
-  --fr /data/kaikki/frwiktionary.jsonl.gz \
-  --es /data/kaikki/eswiktionary.jsonl.gz \
-  --output languages/datasets/definition-review
-```
-
-Output filenames follow the candidate source, for example `wordhoard-en.review.json` and `frequencywords-hi.review.json`.
-
-## Alignment and review safeguards
+## Review and alignment policy
 
 - Exact NFC headword matching is required; no fuzzy spelling substitution.
-- The source entry Wiktionary `lang_code` must match the explicit mapping in `WIKTIONARY_LANG_CODES`.
-- Candidate POS is used as a filter when supplied. FrequencyWords candidates do not include POS, so **all matching POS senses are retained** for review rather than being discarded.
-- Every matching headword/POS gloss is retained independently for each Wiktionary edition, including senses without a Wikidata QID.
-- A cross-edition alignment candidate is proposed only when all three editions expose the same sense-level Wikidata QID and normalized POS.
-- QID/POS agreement is a candidate signal, not proof of equivalence. All source senses and source-line evidence remain available; nothing is silently selected.
-- Missing edition glosses are marked for manual lookup. Missing QIDs do not cause glosses to be discarded.
-- The `zh-Hans` frequency source is the `zh_cn` corpus, while Wiktionary uses the broader `zh` code. The queue records that mapping, and every Chinese entry requires human script/variety verification.
-- Every definition candidate remains `review_status: required`. `production_definitions_approved` stays zero until a reviewer records explicit selection and approval.
+- Every target language has an explicit mapping to the language code used by Wiktionary. Script/dialect mappings such as `zh-Hans` → `zh`, `pnb-Arab` → `pnb`, `pa-Guru` → `pa`, and `bho` → `bho` are disclosed in the output and require native-speaker review.
+- Candidate POS filters are applied when supplied. When a frequency source has no POS, all matching POS senses are retained.
+- Glosses without Wikidata QIDs are preserved. Shared sense-level QIDs create optional cross-edition alignment candidates only.
+- QID/POS agreement is a candidate signal, not proof of semantic equivalence. Every source sense remains reviewable; nothing is silently selected.
+- Missing edition glosses require manual lookup. Each candidate remains `review_status: required`.
+- `production_definitions_approved` remains zero until a human reviewer explicitly selects and approves a consistent EN/FR/ES sense.
 
-## Source and license
+## Source-specific limitations
 
-The definition sources are Kaikki/Wiktextract extractions of the English, French, and Spanish Wiktionary editions. Wiktionary content is dual-licensed under CC BY-SA 4.0 and the GNU Free Documentation License (GFDL). Preserve attribution and comply with the applicable license terms; verify the source edition notices before redistributing derived definitions.
+FrequencyWords/OpenSubtitles is subtitle-domain data, not a balanced general-purpose corpus. Its lists contain surface forms rather than lemmas, and ranks should not be compared between languages.
 
-The frequency-candidate files retain their independent provenance and license metadata:
-- `wordhoard` first-batch data: CC BY-SA 4.0.
-- FrequencyWords/OpenSubtitles-2018: CC BY-SA 4.0 for content; the FrequencyWords repository code is MIT. The code license does not relicense the frequency data.
+Wikipedia candidates count lexical surface forms in current-revision main-namespace article text after conservative wikitext cleanup. They are encyclopedia-domain, not conversational or spoken-language frequencies. Topics, named entities, editorial style, bot-generated articles, and text cleanup can skew ranks. The tokenizer intentionally excludes languages needing script-specific segmentation (for example Chinese, Burmese, and Khmer) rather than pretending whitespace tokenization is valid.
 
-No FRUCHST binary should be built until a human reviewer has selected one sense per headword, confirmed that the English, French, and Spanish glosses express the same sense, checked spelling/grammar and language variety, and recorded source/license metadata. The binary builder approval and provenance checks are necessary but not sufficient for semantic accuracy.
+## Licensing and attribution
 
-## Source dump catalog
+The wordhoard and FrequencyWords datasets retain their own attribution and CC BY-SA 4.0 source notices. FrequencyWords' MIT code license does not relicense its frequency content.
 
-The current workflow URLs and revisions are recorded in `SOURCE_CATALOG` in `languages/tools/fruchst_definition_batch.py`. Check the Kaikki catalog before production runs because Wiktionary extracts are updated regularly:
+Wiktionary content is dual-licensed under CC BY-SA 4.0 and GFDL. Wikipedia text is generally available under CC BY-SA 4.0 and GFDL, but imported pages can have additional notices. Preserve attribution, indicate changes, follow ShareAlike requirements, and review per-page notices before redistribution. Each generated candidate file records source URL, revision/checksum, retrieval time, and source license notice. The registry deliberately marks these source reviews as pending.
 
-- English edition: https://kaikki.org/dictionary/raw-wiktextract-data.jsonl.gz
-- French edition: https://kaikki.org/frwiktionary/raw-wiktextract-data.jsonl.gz
-- Spanish edition: https://kaikki.org/eswiktionary/raw-wiktextract-data.jsonl.gz
+No FRUCHST binary should be built until a human reviewer selects one sense per headword, verifies that the English, French, and Spanish glosses express the same meaning, checks spelling and language variety, and records the required source attribution/license information.
 
-Compressed extracts are large. Keep them outside the repository and never commit raw dumps. Generated queues record each downloaded file SHA-256, compressed size, retrieval timestamp, URL, and dump revision.
+## References
 
-References:
+- FrequencyWords: https://github.com/hermitdave/FrequencyWords
 - Kaikki raw-data catalog: https://kaikki.org/dictionary/rawdata.html
-- Wiktextract extracted-entry format: https://github.com/tatuylonen/wiktextract#format-of-the-extracted-word-entries
-- FRUCHST frequency candidate provenance: `README.md` in this directory.
+- Wiktextract format: https://github.com/tatuylonen/wiktextract#format-of-the-extracted-word-entries
+- Wikimedia dumps: https://dumps.wikimedia.org/
+- Wikimedia data dump format: https://meta.wikimedia.org/wiki/Data_dumps/Dump_format
+- Wikimedia Terms of Use: https://foundation.wikimedia.org/wiki/Policy:Terms_of_Use
+- Wikimedia reuse guidance: https://foundation.wikimedia.org/wiki/Legal:Wikimedia_Developer_App_Guidelines

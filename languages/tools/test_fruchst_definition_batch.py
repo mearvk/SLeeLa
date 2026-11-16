@@ -182,6 +182,55 @@ class DefinitionBatchTests(unittest.TestCase):
             module.TARGETS = original_targets
             module.WIKTIONARY_LANG_CODES = original_codes
 
+    def test_loader_supports_incremental_source_acquisition(self):
+        original_targets = module.TARGETS
+        original_codes = module.WIKTIONARY_LANG_CODES
+        try:
+            module.TARGETS = ("zh-Hans", "arz")
+            module.WIKTIONARY_LANG_CODES = {"zh-Hans": "zh", "arz": "arz"}
+            with tempfile.TemporaryDirectory() as temp:
+                directory = Path(temp)
+                entries = [
+                    {
+                        "candidate_rank": rank,
+                        "word": f"词{rank}",
+                        "pos": None,
+                        "frequency_count": 1001 - rank,
+                    }
+                    for rank in range(1, 1001)
+                ]
+                (directory / "frequencywords-zh-Hans.json").write_text(
+                    json.dumps({
+                        "language_tag": "zh-Hans",
+                        "candidate_count": 1000,
+                        "source": {"dataset": "FrequencyWords"},
+                        "entries": entries,
+                    }, ensure_ascii=False),
+                    encoding="utf-8",
+                )
+                docs, words, wanted, paths = module.load_candidates(directory)
+                self.assertEqual(set(docs), {"zh-Hans"})
+                self.assertEqual(set(words), {"zh-Hans"})
+                self.assertEqual(set(wanted), {"zh-Hans"})
+                self.assertEqual(set(paths), {"zh-Hans"})
+        finally:
+            module.TARGETS = original_targets
+            module.WIKTIONARY_LANG_CODES = original_codes
+
+    def test_candidate_path_accepts_wikipedia_source(self):
+        with tempfile.TemporaryDirectory() as temp:
+            directory = Path(temp)
+            path = directory / "wikipedia-arz.json"
+            path.write_text("{}", encoding="utf-8")
+            self.assertEqual(module.candidate_path_for(directory, "arz"), path)
+
+    def test_target_registry_maps_new_language_variants(self):
+        self.assertEqual(module.WIKTIONARY_LANG_CODES["pnb-Arab"], "pnb")
+        self.assertEqual(module.WIKTIONARY_LANG_CODES["pa-Guru"], "pa")
+        self.assertEqual(module.WIKTIONARY_LANG_CODES["bho"], "bho")
+        self.assertIn("ceb", module.TARGETS)
+        self.assertIn("mai", module.TARGETS)
+
     def test_explicit_wiktionary_language_code_mapping(self):
         original_targets = module.TARGETS
         original_codes = module.WIKTIONARY_LANG_CODES
