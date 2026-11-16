@@ -57,6 +57,18 @@ class DefinitionQueueTests(unittest.TestCase):
         self.assertEqual(queue["entries"][0]["definition_status"], "manual_lookup_required")
         self.assertEqual(queue["entries"][0]["aligned_candidates"], [])
 
+    def test_preserves_multiple_senses_with_same_qid_and_pos(self):
+        for edition, path in self.paths.items():
+            entry = json.loads(path.read_text(encoding="utf-8"))
+            extra = dict(entry["senses"][0])
+            extra["glosses"] = [f"Alternative gloss {edition}"]
+            entry["senses"].append(extra)
+            path.write_text(json.dumps(entry) + "\\n", encoding="utf-8")
+        queue = module.build_queue(self.candidate, "es", self.paths)
+        # Two senses in each edition produce all eight review combinations.
+        self.assertEqual(len(queue["entries"][0]["aligned_candidates"]), 8)
+        self.assertTrue(all(x["review_status"] == "required" for x in queue["entries"][0]["aligned_candidates"]))
+
     def test_rejects_wrong_candidate_count(self):
         doc = json.loads(self.candidate.read_text(encoding="utf-8"))
         doc["entries"].pop()
