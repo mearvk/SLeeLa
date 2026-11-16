@@ -42,15 +42,16 @@ Opcodes 182–194 remain unchanged. The reserved native-math allocation is:
 | 224–231 | Decomposition |
 | 232–281 | Transform |
 
-Within the shared block, 195 is planned for scalar `OP_MATH_CALL`, 196 for
-typed `OP_MATH_ARRAY_CALL`, and 197–199 remain vacant. All ranges are
+Within the shared block, 195 is implemented as scalar `OP_MATH_CALL`, 196 is
+reserved for typed `OP_MATH_ARRAY_CALL`, and 197–199 remain vacant. All ranges are
 inclusive; unused positions remain reserved for their family. Transform has
 50 positions, 232 through 281.
 
-These are reservations, not executable instructions. Do not insert placeholder
-entries into the source registry or native enum. Reserved IDs must fail closed
-until implementation, compiler lowering, dispatch, artifact validation,
-supported VM-generation contracts, tests, and documentation land together.
+Except for implemented opcode 195, these are reservations, not executable
+instructions. Do not insert placeholder entries into the source registry or
+native enum. Reserved IDs must fail closed until implementation, compiler
+lowering, dispatch, artifact validation, supported VM-generation contracts,
+tests, and documentation land together.
 Function IDs and typed operation IDs remain distinct from opcode IDs. The
 historical native-math branch's assignment of `OP_MATH_CALL` to 179 is invalid
 for this repository state.
