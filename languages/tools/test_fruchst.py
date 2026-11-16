@@ -64,6 +64,18 @@ class FruchstTests(unittest.TestCase):
         with self.assertRaises(fruchst.FruchstError):
             fruchst.build(data)
 
+    def test_rejects_non_string_headword(self):
+        data = sample_data()
+        data["entries"][0]["word"] = None
+        with self.assertRaises(fruchst.FruchstError):
+            fruchst.build(data)
+
+    def test_rejects_boolean_rank(self):
+        data = sample_data()
+        data["entries"][0]["rank"] = True
+        with self.assertRaises(fruchst.FruchstError):
+            fruchst.build(data)
+
 
 if __name__ == "__main__":
     unittest.main()
