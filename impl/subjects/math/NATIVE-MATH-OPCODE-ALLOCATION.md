@@ -31,10 +31,10 @@ must not be filled by unrelated instructions.
 
 The shared native-math block has these initial planned identifiers:
 
-- 195 — `OP_MATH_CALL`: scalar IEEE-754 dispatch using the stable
+- 195 — `OP_MATH_CALL`: **implemented** scalar IEEE-754 dispatch using the stable
   `SLMATHFunction` ID table and the original fallback stack contract
   `[fallback marker, helper-name String, numeric arguments...]`.
-- 196 — `OP_MATH_ARRAY_CALL`: typed VM-array dispatch through
+- 196 — `OP_MATH_ARRAY_CALL`: planned typed VM-array dispatch through
   `slmath_vm_dispatch`, after the VM ownership, validation, and marshalling
   adapter is implemented.
 - 197–199 remain reserved for future shared math dispatch extensions.
