@@ -9,6 +9,7 @@ MODULE_PATH = Path(__file__).with_name("fruchst_english_round.py")
 SPEC = importlib.util.spec_from_file_location("fruchst_english_round", MODULE_PATH)
 module = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(module)
+import fruchst_lexemes as lexeme_module  # noqa: E402  (importable once the module above set sys.path)
 
 
 def review(tag, words, senses_by_word):
@@ -151,6 +152,66 @@ class EnglishRoundTests(unittest.TestCase):
         before = json.dumps(ar, sort_keys=True)
         self.run_round([], {"ar": ar})
         self.assertEqual(json.dumps(ar, sort_keys=True), before)
+
+
+    def test_rule_based_keys_and_flags(self):
+        dump = [
+            {"word": "당신", "lang_code": "ko", "pos": "pron", "senses": [{"glosses": ["you (honorific)"]}]},
+            {"word": "그거", "lang_code": "ko", "pos": "pron", "senses": [{"glosses": ["that thing"]}]},
+            {"word": "ഞാൻ", "lang_code": "ml", "pos": "pron", "senses": [{"glosses": ["I"]}]},
+            {"word": "что", "lang_code": "ru", "pos": "pron", "senses": [{"glosses": ["what"]}]},
+        ]
+        filler = [chr(0xAC00 + 28 * i) for i in range(25)]
+        ko = review("ko", ["당신이", "그건", "있는", "사람", "you"] + filler, {"사람": [rsense("person", 9, code="ko")]})
+        ml = review("ml", ["ഞാന്"], {})
+        uk = review("uk", ["что", "так"], {"так": [rsense("so", 9, pos="adverb", code="uk")]})
+        out = self.run_round(dump, {"ko": ko, "ml": ml, "uk": uk})
+        rows = {r["word"]: r for r in out["ko"]["entries"]}
+        self.assertEqual(rows["당신이"]["lead_candidate"]["text"], "you (honorific)")
+        self.assertEqual(rows["당신이"]["definitions"][0]["affix"], "이")
+        self.assertEqual(rows["그건"]["definitions"][0]["variant_method"], "contracted_particle")
+        self.assertEqual(rows["있는"]["definitions"], [])
+        self.assertEqual(rows["you"]["flags"].get("script_mismatch"), "LATIN")
+        self.assertEqual(out["ml"]["entries"][0]["lead_candidate"]["text"], "I")
+        self.assertEqual(out["ml"]["entries"][0]["definitions"][0]["variant_method"], "chillu_normalized")
+        chto = out["uk"]["entries"][0]
+        self.assertEqual(chto["definitions"], [])
+        self.assertEqual(chto["flags"]["found_only_in_other_languages"], ["ru"])
+        self.assertEqual(out["uk"]["counts"]["other_language_codes"], {"ru": 1})
+
+    def test_wikidata_lexemes(self):
+        lexemes = [
+            {"type": "lexeme", "id": "L1", "language": "Q9610", "lexicalCategory": "Q1084",
+             "lemmas": {"bn": {"language": "bn", "value": "বই"}},
+             "forms": [{"id": "L1-F2", "representations": {"bn": {"language": "bn", "value": "বইটি"}},
+                        "grammaticalFeatures": ["Q110786"]}],
+             "senses": [{"id": "L1-S1", "glosses": {"en": {"language": "en", "value": "book"}},
+                         "claims": {"P5137": [{"mainsnak": {"datavalue": {"value": {"id": "Q571"}}}}]}},
+                        {"id": "L1-S2", "glosses": {"bn": {"language": "bn", "value": "x"}},
+                         "claims": {"P5972": [{"mainsnak": {"datavalue": {"value": {"id": "L9-S1"}}}}]}}]},
+            {"type": "lexeme", "id": "L9", "language": "Q1860", "lexicalCategory": "Q1084",
+             "lemmas": {"en": {"language": "en", "value": "volume"}},
+             "senses": [{"id": "L9-S1", "glosses": {"en": {"language": "en", "value": "a single book"}}}]},
+        ]
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "lexemes.json.gz"
+            with gzip.open(path, "wt", encoding="utf-8") as stream:
+                stream.write("[\n" + ",\n".join(json.dumps(x, ensure_ascii=False) for x in lexemes) + "\n]\n")
+            hits = lexeme_module.scan_lexemes(path, {"bn": {"বই", "বইটি"}})
+        book = hits[("bn", "বই")]
+        self.assertEqual(book[0]["gloss"], "book")
+        self.assertEqual(book[0]["items"], ["Q571"])
+        self.assertEqual(book[1]["english_translations"][0]["english_lemma"], "volume")
+        self.assertEqual(hits[("bn", "বইটি")][0]["match"], "form")
+
+        bn = review("bn", ["বই", "বইটি"], {})
+        scanner = module.Scanner({"bn": bn}, {}, {})
+        scanner.lexemes = hits
+        out = module.build_profile(Path("bn.review.json"), bn, scanner, None)
+        rows = {r["word"]: r for r in out["entries"]}
+        self.assertEqual(rows["বই"]["english_status"], "lexeme_sense_found")
+        self.assertEqual(rows["বই"]["lead_candidate"]["text"], "book")
+        self.assertEqual(rows["বইটি"]["definitions"][0]["display"], "form of বই: book")
 
 
 if __name__ == "__main__":

@@ -10,11 +10,17 @@ and explains all English definition evidence for each headword:
                                  to the lemma's own definitions (up to 2 hops),
                                  and Korean hanja-reading senses resolved to the
                                  hanja character's definition
-  tier 3  form_of_gloss          a pointer gloss whose lemma could not be found,
+  tier 3  lexeme_sense           Wikidata Lexemes (CC0): English gloss or English
+                                 translation link of a lexeme whose lemma or
+                                 form is the headword (optional --lexemes)
+  tier 4  form_of_gloss          a pointer gloss whose lemma could not be found,
                                  kept verbatim (add-only)
-  tier 4  close_variant          the close-variant pass (definition-variants/),
-                                 with its own form-of senses resolved as well
-  tier 5  translation_equivalent English Wiktionary translation tables that list
+  tier 5  close_variant          the close-variant pass (definition-variants/),
+                                 with its own form-of senses resolved as well,
+                                 plus rule-based keys for words still without
+                                 English (Malayalam chillu spelling, Korean
+                                 particles, Amharic prefixes)
+  tier 6  translation_equivalent English Wiktionary translation tables that list
                                  the headword (exact or with optional marks)
 
 Within tier 1, senses corroborated by a translation table (the English word
@@ -40,9 +46,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from fruchst_definition_batch import TARGETS, norm, pos_key, wiktionary_codes  # noqa: E402
 from fruchst_close_variants import ALEF_CODES, ALEF_TAGS, strip_key, uz_latin  # noqa: E402
+from fruchst_english_segments import profile_scripts, script_mismatch, segment_keys  # noqa: E402
+import fruchst_lexemes  # noqa: E402
 
 SCHEMA = "SLeeLa FRUCHST English round v1"
-TIERS = ("own_sense", "lemma_of_form", "form_of_gloss", "close_variant", "translation_equivalent")
+TIERS = ("own_sense", "lemma_of_form", "lexeme_sense", "form_of_gloss", "close_variant", "translation_equivalent")
 MAX_HOPS = 2
 MAX_LEMMA_SENSES = 6
 MAX_TRANSLATIONS = 40
@@ -259,6 +267,9 @@ class Scanner:
         self.romans: dict[tuple[str, str], list[str]] = {}
         self.translations: dict[tuple[str, str], list[dict]] = {}
         self.lemmas: dict[tuple[str, str], list[dict]] = {}          # (code, key) -> entries
+        self.lexemes: dict[tuple[str, str], list[dict]] = {}         # (tag, word) -> lexeme senses
+        self.lexeme_source = None
+        self.scripts = {tag: profile_scripts(e["word"] for e in doc["entries"]) for tag, doc in reviews.items()}
         for tag, doc in reviews.items():
             codes = wiktionary_codes(tag)
             tcodes = TRANSLATION_CODES.get(tag, codes)
@@ -274,6 +285,22 @@ class Scanner:
                         self.trans_exact.setdefault((code, key), []).append((tag, word))
                         self.trans_strip.setdefault((code, strip_key(key, tag in ALEF_TAGS)), []).append((tag, word))
         self.trans_codes = {code for code, _ in self.trans_exact}
+        # Words with no own English sense and no close variant: rule-based
+        # segment keys, and which other languages list the same spelling.
+        self.missing: dict[str, list[str]] = {}
+        self.seg_index: dict[tuple[str, str], list[tuple]] = {}
+        self.segments: dict[tuple[str, str], list[dict]] = {}
+        self.other_langs: dict[tuple[str, str], set[str]] = {}
+        for tag, doc in reviews.items():
+            vrows = {r["word"]: r for r in variants.get(tag, {}).get("entries", [])}
+            for entry in doc["entries"]:
+                word = entry["word"]
+                if entry["edition_sense_candidates"].get("en") or vrows.get(word, {}).get("close_matches"):
+                    continue
+                self.missing.setdefault(word, []).append(tag)
+                for key in segment_keys(tag, word):
+                    for code in wiktionary_codes(tag):
+                        self.seg_index.setdefault((code, key["stem"]), []).append((tag, word, key))
 
     # pass 1 ------------------------------------------------------------
     def first_pass(self, path: Path) -> None:
@@ -288,8 +315,26 @@ class Scanner:
                 word = norm(word)
                 for tag in self.head_index.get((code, word), ()):
                     self._record_head(tag, word, entry, line_no)
+                for tag in self.missing.get(word, ()):
+                    if code not in wiktionary_codes(tag):
+                        self.other_langs.setdefault((tag, word), set()).add(code)
+                for tag, head, key in self.seg_index.get((code, word), ()):
+                    self._record_segment(tag, head, key, entry, line_no)
                 if code == "en" and ('"translations"' in line):
                     self._record_translations(word, entry, line_no)
+
+    def _record_segment(self, tag, head, key, entry, line_no):
+        pos = pos_key(entry.get("pos"))
+        if key["allowed_pos"] is not None and pos not in key["allowed_pos"]:
+            return
+        senses = [s for s in lemma_senses(entry) if not s["pointer_targets"] and not is_pointer_text(s["glosses"][-1])]
+        if not senses:
+            return
+        bucket = self.segments.setdefault((tag, head), [])
+        if len(bucket) < 12:
+            bucket.append({"stem": key["stem"], "method": key["method"], "affix": key["affix"],
+                           "label": key["label"], "pos": pos, "source_line": line_no,
+                           "lang_code": entry.get("lang_code"), "senses": senses[:MAX_LEMMA_SENSES]})
 
     def _record_head(self, tag, word, entry, line_no):
         romans = romanizations_of(entry)
@@ -481,7 +526,10 @@ def build_entry(tag: str, entry: dict, scanner: Scanner, variant_row: dict | Non
     trans.sort(key=lambda t: (t["match"] != "exact", scanner.english_rank.get(t["english_word"], 10**6),
                               t["source_line"]))
     trans = trans[:MAX_TRANSLATIONS]
-    trans_words = sorted({t["english_word"] for t in trans}, key=lambda w: scanner.english_rank.get(w, 10**6))
+    lexeme_senses = scanner.lexemes.get((tag, word), [])
+    lexeme_words = {link["english_lemma"] for r in lexeme_senses for link in r.get("english_translations", [])}
+    trans_words = sorted({t["english_word"] for t in trans} | lexeme_words,
+                         key=lambda w: scanner.english_rank.get(w, 10**6))
 
     defs, notes, stats = [], [], {"pointer_resolved": 0, "pointer_unresolved": 0, "cleaned": 0, "duplicates": 0}
     seen_text: dict[tuple[str, str], int] = {}
@@ -572,9 +620,9 @@ def build_entry(tag: str, entry: dict, scanner: Scanner, variant_row: dict | Non
     # itself one of the equivalents a gloss lists. More frequent English
     # corroborators rank higher; circular glosses (gloss == headword) and
     # obsolete/archaic/rare senses rank last; Wiktionary order breaks ties.
-    def corroborate(item):
+    def corroborate(item, exclude=frozenset()):
         eq = equivalents(item["text"])
-        hits = [w for w in trans_words if w.casefold() in eq]
+        hits = [w for w in trans_words if w.casefold() in eq and w not in exclude]
         if hits:
             item["corroborated_by_translation_tables"] = hits[:8]
         if item["text"].strip(" .").casefold() == word.casefold():
@@ -596,6 +644,31 @@ def build_entry(tag: str, entry: dict, scanner: Scanner, variant_row: dict | Non
     rest = [d for d in lemma_defs if d["method"] != "lemma_of_form"]
     tier2 = [d for _, d in sorted(enumerate(tier2), key=lambda p: rank_key(p[1], p[0]))]
     for item in own + tier2 + rest:
+        push(item)
+
+    # tier 3: Wikidata Lexemes -------------------------------------------
+    for r in lexeme_senses:
+        links = r.get("english_translations", [])
+        if r.get("gloss"):
+            text = r["gloss"]
+        else:
+            text = ", ".join(dict.fromkeys(link["english_lemma"] for link in links))
+        ev = {"source": "wikidata-lexemes", "lexeme": r["lexeme"], "sense": r["sense"], "match": r["match"],
+              "match_how": r["match_how"]}
+        extra_l = {"lexeme_lemma": r["lemma"]}
+        if r.get("items"):
+            extra_l["wikidata_items"] = r["items"]
+        if links:
+            extra_l["english_translations"] = links
+        if r["match"] == "form":
+            extra_l["display"] = f"form of {r['lemma']}: {text}"
+            if r.get("grammatical_features"):
+                extra_l["grammatical_features"] = r["grammatical_features"]
+        if r["match_how"] != "exact":
+            extra_l["caution"] = "matched with optional marks removed; confirm it is the same word"
+        item = definition("lexeme_sense", [text], r["pos"], ev, **extra_l)
+        # A sense's own translation links are not independent corroboration.
+        corroborate(item, exclude={link["english_lemma"] for link in links})
         push(item)
 
     # tier 3 -------------------------------------------------------------
@@ -621,7 +694,21 @@ def build_entry(tag: str, entry: dict, scanner: Scanner, variant_row: dict | Non
                     extra_v["pointer_gloss"] = True
                 push(definition("close_variant", s["glosses"], match.get("pos"), ev, s.get("tags") or [], **extra_v))
 
-    # tier 4 -------------------------------------------------------------
+    # rule-based keys (Malayalam chillu, Korean particles, Amharic prefixes)
+    for seg in scanner.segments.get((tag, word), []):
+        for s in seg["senses"]:
+            ev = {"source": "enwiktionary", "source_line": seg["source_line"], "sense_index": s["sense_index"],
+                  "lang_code": seg["lang_code"], "variant": seg["stem"], "variant_method": seg["method"]}
+            extra_s = {"variant": seg["stem"], "variant_method": seg["method"]}
+            gloss = clean_gloss(s["glosses"][-1])[0]
+            if seg["affix"]:
+                extra_s["affix"] = seg["affix"]
+                extra_s["affix_meaning"] = seg["label"]
+                extra_s["display"] = f"{seg['stem']} ({gloss}) + {seg['affix']} ({seg['label']})"
+                extra_s["caution"] = "segmented by rule; confirm the stem and affix"
+            push(definition("close_variant", s["glosses"], seg["pos"], ev, s["tags"], s["examples"], **extra_s))
+
+    # tier 6 -------------------------------------------------------------
     for t in trans:
         label = t.get("translation_sense") or (t.get("english_sense_glosses") or [None])[-1]
         text = t["english_word"] if not label else f"{t['english_word']} ({label})"
@@ -650,7 +737,7 @@ def build_entry(tag: str, entry: dict, scanner: Scanner, variant_row: dict | Non
     status = ("no_english_definition_found" if not defs else TIERS[tiers_present[0] - 1] + "_found")
     lead = None
     if defs:
-        pool = [(i, d) for i, d in enumerate(defs) if d["tier"] <= 2] or list(enumerate(defs))
+        pool = [(i, d) for i, d in enumerate(defs) if d["tier"] <= 3] or list(enumerate(defs))
         _, best = min(pool, key=lambda p: rank_key(p[1], p[0])[:4] + (p[1]["tier"], p[0]))
         lead = {k: best[k] for k in ("tier", "method", "text", "pos") if k in best}
         if "display" in best:
@@ -658,6 +745,12 @@ def build_entry(tag: str, entry: dict, scanner: Scanner, variant_row: dict | Non
         if best.get("corroborated_by_translation_tables"):
             lead["corroborated_by"] = best["corroborated_by_translation_tables"][:3]
         lead["review_status"] = "required"
+    flags = {}
+    odd_script = script_mismatch(word, scanner.scripts.get(tag, {}))
+    if odd_script:
+        flags["script_mismatch"] = odd_script
+    if not defs and scanner.other_langs.get((tag, word)):
+        flags["found_only_in_other_languages"] = sorted(scanner.other_langs[(tag, word)])
     row = {
         "rank": entry["rank"],
         "word": word,
@@ -668,6 +761,7 @@ def build_entry(tag: str, entry: dict, scanner: Scanner, variant_row: dict | Non
         "romanizations": scanner.romans.get((tag, word), []),
         "translation_table_english_words": trans_words[:15],
         "definitions": defs,
+        "flags": flags,
         "gloss_notes": notes,
         "review_status": "required",
     }
@@ -697,6 +791,11 @@ def build_profile(path: Path, doc: dict, scanner: Scanner, variants_path: Path |
         "words_with_translation_corroborated_lead": 0,
         "words_with_examples": 0,
         "words_with_romanization": 0,
+        "words_with_wikidata_lexeme_sense": 0,
+        "words_with_rule_based_key_definition": 0,
+        "words_flagged_script_mismatch": 0,
+        "words_found_only_in_other_languages": 0,
+        "other_language_codes": {},
         "production_definitions_approved": 0,
     }
     for entry in doc["entries"]:
@@ -724,6 +823,18 @@ def build_profile(path: Path, doc: dict, scanner: Scanner, variants_path: Path |
             counts["words_with_translation_corroborated_lead"] += 1
         counts["words_with_examples"] += any(d.get("examples") for d in row["definitions"])
         counts["words_with_romanization"] += bool(row["romanizations"])
+        counts["words_with_wikidata_lexeme_sense"] += any(d["method"] == "lexeme_sense" for d in row["definitions"])
+        counts["words_with_rule_based_key_definition"] += any(
+            d.get("variant_method") in ("chillu_normalized", "particle_stripped", "contracted_particle", "prefix_stripped")
+            for d in row["definitions"])
+        counts["words_flagged_script_mismatch"] += "script_mismatch" in row["flags"]
+        others = row["flags"].get("found_only_in_other_languages")
+        if others:
+            counts["words_found_only_in_other_languages"] += 1
+            for code in others:
+                counts["other_language_codes"][code] = counts["other_language_codes"].get(code, 0) + 1
+    top = sorted(counts["other_language_codes"].items(), key=lambda kv: -kv[1])[:10]
+    counts["other_language_codes"] = dict(top)
     return {
         "schema": SCHEMA,
         "language_tag": tag,
@@ -733,13 +844,16 @@ def build_profile(path: Path, doc: dict, scanner: Scanner, variants_path: Path |
         "tier_order": list(TIERS),
         "policy": (
             "Add-only. Every review-queue gloss is kept unchanged; this file adds the English evidence "
-            "English Wiktionary supplies: resolved form-of lemmas, close variants, translation-table "
-            "equivalents, usage examples with English translations, and romanizations. Definitions are "
+            "English Wiktionary and Wikidata Lexemes supply: resolved form-of lemmas, lexeme senses, close "
+            "variants and rule-based keys, translation-table equivalents, usage examples with English "
+            "translations, and romanizations. Words with no English are flagged when their script is rare "
+            "in the profile or when only other languages have an entry for the spelling. Definitions are "
             "ranked (own sense corroborated by a translation table, then own sense in Wiktionary order "
             "with obsolete/archaic/rare senses last, then resolved lemma, close variant, translation "
             "equivalent). The lead candidate is a reviewer's starting point; nothing is selected or approved."
         ),
         "source": {**doc["definition_sources"]["en"]},
+        "lexeme_source": scanner.lexeme_source,
         "counts": counts,
         "production_status": "review_required",
         "entries": rows,
@@ -758,6 +872,7 @@ def main() -> int:
     parser.add_argument("--reviews", type=Path, required=True)
     parser.add_argument("--variants", type=Path, required=True)
     parser.add_argument("--en", type=Path, required=True)
+    parser.add_argument("--lexemes", type=Path, help="Wikidata lexeme JSON dump (.json.gz/.bz2), optional")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -773,6 +888,11 @@ def main() -> int:
                 vpaths[doc["language_tag"]] = vpath
 
     scanner = Scanner(reviews, variants, english_ranks(reviews))
+    if args.lexemes:
+        scanner.lexeme_source = {**fruchst_lexemes.SOURCE, "file": args.lexemes.name,
+                                 "size_bytes": args.lexemes.stat().st_size}
+        scanner.lexemes = fruchst_lexemes.scan_lexemes(
+            args.lexemes, {tag: {e["word"] for e in doc["entries"]} for tag, doc in reviews.items()})
     scanner.first_pass(args.en)
     wanted = pointer_requests(scanner)
     requested = {c: set(w) for c, w in wanted.items()}

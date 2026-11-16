@@ -9,6 +9,8 @@ on:
       - "languages/tools/fruchst_english_pivot.py"
       - "languages/tools/fruchst_close_variants.py"
       - "languages/tools/fruchst_english_round.py"
+      - "languages/tools/fruchst_english_segments.py"
+      - "languages/tools/fruchst_lexemes.py"
       - ".github/workflows/fruchst-definition-stage.yml"
   workflow_dispatch:
 
@@ -50,9 +52,17 @@ jobs:
             https://kaikki.org/eswiktionary/raw-wiktextract-data.jsonl.gz \
             --output "$RUNNER_TEMP/fruchst-sources/es.jsonl.gz" &
           p3=$!
+          # Wikidata Lexemes (CC0) is optional: a failed download only skips that source.
+          ( curl --fail --location --retry 5 --retry-all-errors --retry-delay 10 \
+              https://dumps.wikimedia.org/wikidatawiki/entities/latest-lexemes.json.gz \
+              --output "$RUNNER_TEMP/fruchst-sources/lexemes.json.gz" \
+            || { echo "::warning::Wikidata lexeme dump unavailable; English round runs without it"; \
+                 rm -f "$RUNNER_TEMP/fruchst-sources/lexemes.json.gz"; } ) &
+          p4=$!
           wait "$p1"
           wait "$p2"
           wait "$p3"
+          wait "$p4"
       - name: Extract and align definition candidates
         run: |
           python3 languages/tools/fruchst_definition_batch.py \
@@ -75,12 +85,18 @@ jobs:
             --reviews languages/datasets/definition-review \
             --en "$RUNNER_TEMP/fruchst-sources/en.jsonl.gz" \
             --output languages/datasets/definition-variants
-      - name: English round (resolve form-of lemmas, translation tables, examples)
+      - name: English round (resolve form-of lemmas, Wikidata Lexemes, translation tables, examples)
+        shell: bash
         run: |
+          lexemes=()
+          if [ -s "$RUNNER_TEMP/fruchst-sources/lexemes.json.gz" ]; then
+            lexemes=(--lexemes "$RUNNER_TEMP/fruchst-sources/lexemes.json.gz")
+          fi
           python3 languages/tools/fruchst_english_round.py \
             --reviews languages/datasets/definition-review \
             --variants languages/datasets/definition-variants \
             --en "$RUNNER_TEMP/fruchst-sources/en.jsonl.gz" \
+            "${lexemes[@]}" \
             --output languages/datasets/definition-english
       - name: Commit review queues to master
         run: |

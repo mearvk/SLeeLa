@@ -83,14 +83,22 @@ This batch currently maps 25 target profiles to explicit source variants. It del
 
 ## English round (`definition-english/`)
 
-`tools/fruchst_english_round.py` runs in the source-definition staging workflow after the close-variant pass. It reads the review queues and the close-variant files and makes up to three passes over the English Wiktionary extract (`raw-wiktextract-data.jsonl.gz`). It writes one `<stem>.english.json` per profile. It is add-only: every review-queue gloss stays exactly as staged, and every review sense appears in the English file.
+`tools/fruchst_english_round.py` runs in the source-definition staging workflow after the close-variant pass. It reads the review queues and the close-variant files. It makes up to three passes over the English Wiktionary extract (`raw-wiktextract-data.jsonl.gz`) and, when the download succeeds, one pass over the Wikidata Lexemes dump (`latest-lexemes.json.gz`, CC0). It writes one `<stem>.english.json` per profile. It is add-only: every review-queue gloss stays exactly as staged, and every review sense appears in the English file.
 
-Each headword gets a ranked list of English definitions with source evidence, in five tiers:
+Each headword gets a ranked list of English definitions with source evidence, in six tiers:
 
-1. `own_sense`: the headword's own English sense. Senses corroborated by a translation table rank first, which means an English entry that lists this headword in its translations also appears in the gloss (this picks "from" over "favor" for unvocalized Arabic من). Obsolete, archaic, rare and similar senses rank last. Otherwise Wiktionary order is kept.
+1. `own_sense`: the headword's own English sense. Senses corroborated by a translation table rank first: an English word whose translation table lists this headword is also one of the equivalents the gloss lists. More frequent English corroborators rank higher. Circular glosses (gloss equals headword) and obsolete, archaic or rare senses rank last. Otherwise Wiktionary order is kept.
 2. `lemma_of_form`: a form-of, alt-of or synonym-of sense ("plural of mtu", "genitive of on") resolved to the lemma's own definitions, following up to two links. Korean hanja-reading senses whose gloss is only a Han character are resolved to that character's definition.
-3. `form_of_gloss`: a pointer gloss whose lemma was not found, kept verbatim.
-4. `close_variant`: the close-variant pass, with its form-of senses resolved the same way.
-5. `translation_equivalent`: English entries whose translation tables list the headword, matched exactly or with optional marks removed (Arabic vowel points, for example). Mandarin rows (`cmn`) count for `zh-Hans`, and Uzbek Cyrillic headwords are also matched in Latin script.
+3. `lexeme_sense`: a Wikidata lexeme whose lemma or one of whose forms is the headword. The definition is its English gloss, or the English lexemes it is linked to by translation statements. The sense's "item for this sense" QID is kept.
+4. `form_of_gloss`: a pointer gloss whose lemma was not found, kept verbatim.
+5. `close_variant`: the close-variant pass, with its form-of senses resolved the same way. For words still without English it also adds rule-based keys, each recorded with the rule, stem and affix:
+   - Malayalam word-final chillu in the older encoding (ഞാന് → ഞാൻ);
+   - a stripped or contracted Korean particle (당신이 → 당신 + 이, 그건 → 그거 + -ㄴ), where the stem must be a nominal entry;
+   - a stripped Amharic preposition prefix (የኢትዮጵያ → ኢትዮጵያ + የ "of").
+6. `translation_equivalent`: English entries whose translation tables list the headword, matched exactly or with optional marks removed (Arabic vowel points, for example). Mandarin rows (`cmn`) count for `zh-Hans`, and Uzbek Cyrillic headwords are also matched in Latin script.
 
-Each entry also records usage examples that have English translations, romanizations, the English words from translation tables, and `gloss_notes` for wiki-markup remnants, hanja-reading glosses and unresolved pointers, each with a cleaned display text. `lead_candidate` is the first ranked definition. It is a reviewer's starting point, not a selection. Every row stays `review_required`, and `production_definitions_approved` stays 0.
+Each entry also records usage examples that have English translations, romanizations, the English words from translation tables, and `gloss_notes` for wiki-markup remnants, hanja-reading glosses and unresolved pointers, each with a cleaned display text. Entries also carry `flags`:
+- `script_mismatch`: the word's script differs from the profile's dominant script. These are usually English tokens in subtitle-derived lists.
+- `found_only_in_other_languages`: the word has no English but English Wiktionary has the same spelling in other languages. For example, Russian words in the Ukrainian list are flagged rather than defined.
+
+`lead_candidate` is the best-ranked definition from tiers 1–3. It is a reviewer's starting point, not a selection. Every row stays `review_required`, and `production_definitions_approved` stays 0.
