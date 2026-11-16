@@ -98,23 +98,23 @@ def extract_edition(path: Path, wanted: dict[str, set[str]]):
                 if not glosses:
                     continue
                 by_word = found[code].setdefault(word, {})
-            qids = qids_for(sense)
-            # QIDs are optional Wiktextract metadata. Preserve every gloss even
-            # when no QID exists; only QID-bearing senses can enter the strict
-            # cross-edition alignment set below.
-            record = {
-                "glosses": glosses,
-                "qids": qids,
-                "tags": sorted(t for t in (sense.get("tags") or []) if isinstance(t, str)),
-                "senseid": sense.get("senseid", []),
-                "source_line": line_no,
-                "sense_index": sense_index,
-            }
-            if qids:
-                for qid in qids:
-                    by_word.setdefault((qid, pos), []).append(record)
-            else:
-                by_word.setdefault(("", pos), []).append(record)
+                qids = qids_for(sense)
+                # QIDs are optional Wiktextract metadata. Preserve every gloss even
+                # when no QID exists; only QID-bearing senses can enter strict
+                # cross-edition alignment.
+                record = {
+                    "glosses": glosses,
+                    "qids": qids,
+                    "tags": sorted(t for t in (sense.get("tags") or []) if isinstance(t, str)),
+                    "senseid": sense.get("senseid", []),
+                    "source_line": line_no,
+                    "sense_index": sense_index,
+                }
+                if qids:
+                    for qid in qids:
+                        by_word.setdefault((qid, pos), []).append(record)
+                else:
+                    by_word.setdefault(("", pos), []).append(record)
     return found
 
 def build_queue(code, doc, words, by_edition, source_meta):
@@ -179,7 +179,7 @@ def build_queue(code, doc, words, by_edition, source_meta):
             },
         })
     return {
-        "schema": "SLeeLa FRUCHST definition review queue v2",
+        "schema": "SLeeLa FRUCHST definition review queue v3",
         "language_tag": doc["language_tag"],
         "target_wiktionary_lang_code": code,
         "frequency_candidate_file": f"languages/datasets/frequency-candidates/wordhoard-{code}.json",
@@ -197,10 +197,11 @@ def build_queue(code, doc, words, by_edition, source_meta):
             } for edition in EDITIONS
         },
         "alignment_policy": (
-            "Exact NFC headword, exact target language, normalized candidate POS, "
-            "and shared sense-level Wikidata QID across all three editions. Every "
-            "matched sense remains a review candidate; no sense is auto-selected "
-            "or approved. Multiple source senses are retained separately."
+            "Exact NFC headword, exact target language, and normalized candidate POS. "
+            "All edition glosses are retained independently, including senses without "
+            "Wikidata QIDs. Shared sense-level QIDs create optional cross-edition "
+            "alignment candidates; absence of a QID never discards a gloss. Every "
+            "candidate remains for human review; no sense is auto-selected or approved."
         ),
         "counts": {
             "candidate_words": len(rows),
