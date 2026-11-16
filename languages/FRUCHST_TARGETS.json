@@ -422,11 +422,13 @@
       "iso_639_3": "tha",
       "language_tag": "th",
       "binary_filename": "fruchst.th.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "frequencywords-opensubtitles-2018-th",
+      "license_review": "CC-BY-SA-4.0 attribution recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from FrequencyWords/OpenSubtitles 2018; English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "525f9b560de45753a5ea01069454e72e9aa541c6",
+      "definitions_status": "pending"
     },
     {
       "directory": "javanese",
@@ -701,11 +703,13 @@
       "iso_639_3": "mal",
       "language_tag": "ml",
       "binary_filename": "fruchst.ml.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "frequencywords-opensubtitles-2018-ml",
+      "license_review": "CC-BY-SA-4.0 attribution recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from FrequencyWords/OpenSubtitles 2018; English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "525f9b560de45753a5ea01069454e72e9aa541c6",
+      "definitions_status": "pending"
     },
     {
       "directory": "sindhi",
@@ -980,11 +984,13 @@
       "iso_639_3": "kaz",
       "language_tag": "kk",
       "binary_filename": "fruchst.kk.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "frequencywords-opensubtitles-2018-kk",
+      "license_review": "CC-BY-SA-4.0 attribution recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from FrequencyWords/OpenSubtitles 2018; English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "525f9b560de45753a5ea01069454e72e9aa541c6",
+      "definitions_status": "pending"
     },
     {
       "directory": "magahi",

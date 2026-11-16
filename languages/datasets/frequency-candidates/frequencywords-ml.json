@@ -1,0 +1,7030 @@
+{
+  "schema": "SLeeLa FRUCHST frequency candidate staging v1",
+  "language_tag": "ml",
+  "language_directory": "malayalam",
+  "source": {
+    "dataset": "FrequencyWords",
+    "upstream": "https://github.com/hermitdave/FrequencyWords",
+    "revision": "525f9b560de45753a5ea01069454e72e9aa541c6",
+    "sample": "content/2018/ml/ml_full.txt",
+    "data_license": "CC-BY-SA-4.0",
+    "code_license": "MIT",
+    "frequency_source": "OpenSubtitles-2018",
+    "attribution": [
+      "Hermit Dave / FrequencyWords — https://github.com/hermitdave/FrequencyWords",
+      "OpenSubtitles 2018 — https://opus.nlpl.eu/OpenSubtitles2018.php"
+    ],
+    "selection": "First 1,000 unique NFC-normalized lexical surface forms in source frequency order. Punctuation-only tokens are excluded; source line rank and raw occurrence count are retained.",
+    "limitations": [
+      "Surface forms, not lemmatized headwords.",
+      "Subtitle-domain frequency ranking; not a balanced general-purpose corpus.",
+      "No POS or sense labels are supplied by this source.",
+      "English, French, and Spanish definitions remain pending."
+    ],
+    "license_notice": "FrequencyWords content is CC BY-SA 4.0; preserve attribution and share-alike terms. The repository's code is MIT and does not change the data license."
+  },
+  "candidate_count": 1000,
+  "definitions_status": "pending",
+  "entries": [
+    {
+      "candidate_rank": 1,
+      "source_rank": 1,
+      "word": "ഒരു",
+      "pos": null,
+      "frequency_count": 23546
+    },
+    {
+      "candidate_rank": 2,
+      "source_rank": 2,
+      "word": "ഞാന്",
+      "pos": null,
+      "frequency_count": 20415
+    },
+    {
+      "candidate_rank": 3,
+      "source_rank": 3,
+      "word": "റെ",
+      "pos": null,
+      "frequency_count": 18106
+    },
+    {
+      "candidate_rank": 4,
+      "source_rank": 4,
+      "word": "നീ",
+      "pos": null,
+      "frequency_count": 17045
+    },
+    {
+      "candidate_rank": 5,
+      "source_rank": 5,
+      "word": "ഞാൻ",
+      "pos": null,
+      "frequency_count": 13142
+    },
+    {
+      "candidate_rank": 6,
+      "source_rank": 6,
+      "word": "അത്",
+      "pos": null,
+      "frequency_count": 12943
+    },
+    {
+      "candidate_rank": 7,
+      "source_rank": 7,
+      "word": "എനിക്ക്",
+      "pos": null,
+      "frequency_count": 12240
+    },
+    {
+      "candidate_rank": 8,
+      "source_rank": 8,
+      "word": "ഈ",
+      "pos": null,
+      "frequency_count": 11662
+    },
+    {
+      "candidate_rank": 9,
+      "source_rank": 9,
+      "word": "നിങ്ങള്",
+      "pos": null,
+      "frequency_count": 11106
+    },
+    {
+      "candidate_rank": 10,
+      "source_rank": 10,
+      "word": "ആ",
+      "pos": null,
+      "frequency_count": 9600
+    },
+    {
+      "candidate_rank": 11,
+      "source_rank": 11,
+      "word": "ഇത്",
+      "pos": null,
+      "frequency_count": 9257
+    },
+    {
+      "candidate_rank": 12,
+      "source_rank": 12,
+      "word": "ക്ക്",
+      "pos": null,
+      "frequency_count": 9240
+    },
+    {
+      "candidate_rank": 13,
+      "source_rank": 13,
+      "word": "എന്",
+      "pos": null,
+      "frequency_count": 6721
+    },
+    {
+      "candidate_rank": 14,
+      "source_rank": 14,
+      "word": "എന്റെ",
+      "pos": null,
+      "frequency_count": 6716
+    },
+    {
+      "candidate_rank": 15,
+      "source_rank": 15,
+      "word": "ഇവിടെ",
+      "pos": null,
+      "frequency_count": 6595
+    },
+    {
+      "candidate_rank": 16,
+      "source_rank": 16,
+      "word": "നിനക്ക്",
+      "pos": null,
+      "frequency_count": 5994
+    },
+    {
+      "candidate_rank": 17,
+      "source_rank": 17,
+      "word": "എന്നെ",
+      "pos": null,
+      "frequency_count": 5946
+    },
+    {
+      "candidate_rank": 18,
+      "source_rank": 18,
+      "word": "തന്നെ",
+      "pos": null,
+      "frequency_count": 5699
+    },
+    {
+      "candidate_rank": 19,
+      "source_rank": 19,
+      "word": "പക്ഷെ",
+      "pos": null,
+      "frequency_count": 5697
+    },
+    {
+      "candidate_rank": 20,
+      "source_rank": 20,
+      "word": "അവര്",
+      "pos": null,
+      "frequency_count": 5594
+    },
+    {
+      "candidate_rank": 21,
+      "source_rank": 21,
+      "word": "എന്താ",
+      "pos": null,
+      "frequency_count": 5173
+    },
+    {
+      "candidate_rank": 22,
+      "source_rank": 22,
+      "word": "ഇല്ല",
+      "pos": null,
+      "frequency_count": 4995
+    },
+    {
+      "candidate_rank": 23,
+      "source_rank": 23,
+      "word": "നിങ്ങളുടെ",
+      "pos": null,
+      "frequency_count": 4977
+    },
+    {
+      "candidate_rank": 24,
+      "source_rank": 24,
+      "word": "അതെ",
+      "pos": null,
+      "frequency_count": 4956
+    },
+    {
+      "candidate_rank": 25,
+      "source_rank": 25,
+      "word": "അവന്",
+      "pos": null,
+      "frequency_count": 4836
+    },
+    {
+      "candidate_rank": 26,
+      "source_rank": 26,
+      "word": "എന്ന്",
+      "pos": null,
+      "frequency_count": 4592
+    },
+    {
+      "candidate_rank": 27,
+      "source_rank": 27,
+      "word": "പിന്നെ",
+      "pos": null,
+      "frequency_count": 4529
+    },
+    {
+      "candidate_rank": 28,
+      "source_rank": 28,
+      "word": "നിന്നെ",
+      "pos": null,
+      "frequency_count": 4309
+    },
+    {
+      "candidate_rank": 29,
+      "source_rank": 29,
+      "word": "നമുക്ക്",
+      "pos": null,
+      "frequency_count": 4169
+    },
+    {
+      "candidate_rank": 30,
+      "source_rank": 30,
+      "word": "നിന്",
+      "pos": null,
+      "frequency_count": 4165
+    },
+    {
+      "candidate_rank": 31,
+      "source_rank": 31,
+      "word": "ശരി",
+      "pos": null,
+      "frequency_count": 4096
+    },
+    {
+      "candidate_rank": 32,
+      "source_rank": 32,
+      "word": "എന്ത്",
+      "pos": null,
+      "frequency_count": 4085
+    },
+    {
+      "candidate_rank": 33,
+      "source_rank": 33,
+      "word": "ആണ്",
+      "pos": null,
+      "frequency_count": 3987
+    },
+    {
+      "candidate_rank": 34,
+      "source_rank": 34,
+      "word": "നിന്റെ",
+      "pos": null,
+      "frequency_count": 3802
+    },
+    {
+      "candidate_rank": 35,
+      "source_rank": 35,
+      "word": "വളരെ",
+      "pos": null,
+      "frequency_count": 3763
+    },
+    {
+      "candidate_rank": 36,
+      "source_rank": 36,
+      "word": "നിങ്ങൾ",
+      "pos": null,
+      "frequency_count": 3659
+    },
+    {
+      "candidate_rank": 37,
+      "source_rank": 37,
+      "word": "ഞങ്ങള്",
+      "pos": null,
+      "frequency_count": 3653
+    },
+    {
+      "candidate_rank": 38,
+      "source_rank": 38,
+      "word": "നല്ല",
+      "pos": null,
+      "frequency_count": 3648
+    },
+    {
+      "candidate_rank": 39,
+      "source_rank": 39,
+      "word": "നമ്മള്",
+      "pos": null,
+      "frequency_count": 3393
+    },
+    {
+      "candidate_rank": 40,
+      "source_rank": 40,
+      "word": "പക്ഷേ",
+      "pos": null,
+      "frequency_count": 3236
+    },
+    {
+      "candidate_rank": 41,
+      "source_rank": 41,
+      "word": "അവിടെ",
+      "pos": null,
+      "frequency_count": 3185
+    },
+    {
+      "candidate_rank": 42,
+      "source_rank": 42,
+      "word": "കൊണ്ട്",
+      "pos": null,
+      "frequency_count": 3044
+    },
+    {
+      "candidate_rank": 43,
+      "source_rank": 43,
+      "word": "എല്ലാം",
+      "pos": null,
+      "frequency_count": 2934
+    },
+    {
+      "candidate_rank": 44,
+      "source_rank": 44,
+      "word": "അല്ല",
+      "pos": null,
+      "frequency_count": 2889
+    },
+    {
+      "candidate_rank": 45,
+      "source_rank": 45,
+      "word": "നമ്മുടെ",
+      "pos": null,
+      "frequency_count": 2868
+    },
+    {
+      "candidate_rank": 46,
+      "source_rank": 46,
+      "word": "പോലെ",
+      "pos": null,
+      "frequency_count": 2868
+    },
+    {
+      "candidate_rank": 47,
+      "source_rank": 47,
+      "word": "പോയി",
+      "pos": null,
+      "frequency_count": 2800
+    },
+    {
+      "candidate_rank": 48,
+      "source_rank": 48,
+      "word": "അവള്",
+      "pos": null,
+      "frequency_count": 2657
+    },
+    {
+      "candidate_rank": 49,
+      "source_rank": 49,
+      "word": "വേണ്ട",
+      "pos": null,
+      "frequency_count": 2657
+    },
+    {
+      "candidate_rank": 50,
+      "source_rank": 50,
+      "word": "വാ",
+      "pos": null,
+      "frequency_count": 2609
+    },
+    {
+      "candidate_rank": 51,
+      "source_rank": 51,
+      "word": "നിന്ന്",
+      "pos": null,
+      "frequency_count": 2598
+    },
+    {
+      "candidate_rank": 52,
+      "source_rank": 52,
+      "word": "നന്ദി",
+      "pos": null,
+      "frequency_count": 2593
+    },
+    {
+      "candidate_rank": 53,
+      "source_rank": 53,
+      "word": "ഒന്നും",
+      "pos": null,
+      "frequency_count": 2560
+    },
+    {
+      "candidate_rank": 54,
+      "source_rank": 54,
+      "word": "അയാള്",
+      "pos": null,
+      "frequency_count": 2557
+    },
+    {
+      "candidate_rank": 55,
+      "source_rank": 55,
+      "word": "ഉണ്ട്",
+      "pos": null,
+      "frequency_count": 2541
+    },
+    {
+      "candidate_rank": 56,
+      "source_rank": 56,
+      "word": "ഇനി",
+      "pos": null,
+      "frequency_count": 2527
+    },
+    {
+      "candidate_rank": 57,
+      "source_rank": 57,
+      "word": "ഒന്ന്",
+      "pos": null,
+      "frequency_count": 2497
+    },
+    {
+      "candidate_rank": 58,
+      "source_rank": 58,
+      "word": "എന്താണ്",
+      "pos": null,
+      "frequency_count": 2477
+    },
+    {
+      "candidate_rank": 59,
+      "source_rank": 59,
+      "word": "കാര്യം",
+      "pos": null,
+      "frequency_count": 2461
+    },
+    {
+      "candidate_rank": 60,
+      "source_rank": 60,
+      "word": "പറഞ്ഞു",
+      "pos": null,
+      "frequency_count": 2459
+    },
+    {
+      "candidate_rank": 61,
+      "source_rank": 61,
+      "word": "നിങ്ങളെ",
+      "pos": null,
+      "frequency_count": 2375
+    },
+    {
+      "candidate_rank": 62,
+      "source_rank": 62,
+      "word": "പറഞ്ഞത്",
+      "pos": null,
+      "frequency_count": 2325
+    },
+    {
+      "candidate_rank": 63,
+      "source_rank": 63,
+      "word": "വേണ്ടി",
+      "pos": null,
+      "frequency_count": 2311
+    },
+    {
+      "candidate_rank": 64,
+      "source_rank": 64,
+      "word": "അവനെ",
+      "pos": null,
+      "frequency_count": 2266
+    },
+    {
+      "candidate_rank": 65,
+      "source_rank": 65,
+      "word": "കൂടെ",
+      "pos": null,
+      "frequency_count": 2233
+    },
+    {
+      "candidate_rank": 66,
+      "source_rank": 66,
+      "word": "പറയുന്നത്",
+      "pos": null,
+      "frequency_count": 2215
+    },
+    {
+      "candidate_rank": 67,
+      "source_rank": 67,
+      "word": "നിര്",
+      "pos": null,
+      "frequency_count": 2206
+    },
+    {
+      "candidate_rank": 68,
+      "source_rank": 68,
+      "word": "എല്ലാ",
+      "pos": null,
+      "frequency_count": 2153
+    },
+    {
+      "candidate_rank": 69,
+      "source_rank": 69,
+      "word": "നില്",
+      "pos": null,
+      "frequency_count": 2144
+    },
+    {
+      "candidate_rank": 70,
+      "source_rank": 70,
+      "word": "ഇപ്പോള്",
+      "pos": null,
+      "frequency_count": 2127
+    },
+    {
+      "candidate_rank": 71,
+      "source_rank": 71,
+      "word": "വരൂ",
+      "pos": null,
+      "frequency_count": 2112
+    },
+    {
+      "candidate_rank": 72,
+      "source_rank": 72,
+      "word": "നിന്നും",
+      "pos": null,
+      "frequency_count": 2089
+    },
+    {
+      "candidate_rank": 73,
+      "source_rank": 73,
+      "word": "നോക്ക്",
+      "pos": null,
+      "frequency_count": 2071
+    },
+    {
+      "candidate_rank": 74,
+      "source_rank": 74,
+      "word": "അങ്ങനെ",
+      "pos": null,
+      "frequency_count": 2058
+    },
+    {
+      "candidate_rank": 75,
+      "source_rank": 75,
+      "word": "കാരണം",
+      "pos": null,
+      "frequency_count": 2029
+    },
+    {
+      "candidate_rank": 76,
+      "source_rank": 76,
+      "word": "ഓ",
+      "pos": null,
+      "frequency_count": 1965
+    },
+    {
+      "candidate_rank": 77,
+      "source_rank": 77,
+      "word": "എന്തെങ്കിലും",
+      "pos": null,
+      "frequency_count": 1883
+    },
+    {
+      "candidate_rank": 78,
+      "source_rank": 78,
+      "word": "അവരുടെ",
+      "pos": null,
+      "frequency_count": 1881
+    },
+    {
+      "candidate_rank": 79,
+      "source_rank": 79,
+      "word": "വേണം",
+      "pos": null,
+      "frequency_count": 1835
+    },
+    {
+      "candidate_rank": 80,
+      "source_rank": 80,
+      "word": "അവൻ",
+      "pos": null,
+      "frequency_count": 1828
+    },
+    {
+      "candidate_rank": 81,
+      "source_rank": 81,
+      "word": "ഹേയ്",
+      "pos": null,
+      "frequency_count": 1812
+    },
+    {
+      "candidate_rank": 82,
+      "source_rank": 82,
+      "word": "അവർ",
+      "pos": null,
+      "frequency_count": 1798
+    },
+    {
+      "candidate_rank": 83,
+      "source_rank": 83,
+      "word": "എന്നോട്",
+      "pos": null,
+      "frequency_count": 1793
+    },
+    {
+      "candidate_rank": 84,
+      "source_rank": 84,
+      "word": "വലിയ",
+      "pos": null,
+      "frequency_count": 1791
+    },
+    {
+      "candidate_rank": 85,
+      "source_rank": 85,
+      "word": "അദ്ദേഹം",
+      "pos": null,
+      "frequency_count": 1772
+    },
+    {
+      "candidate_rank": 86,
+      "source_rank": 86,
+      "word": "പേര്",
+      "pos": null,
+      "frequency_count": 1766
+    },
+    {
+      "candidate_rank": 87,
+      "source_rank": 87,
+      "word": "വേഗം",
+      "pos": null,
+      "frequency_count": 1718
+    },
+    {
+      "candidate_rank": 88,
+      "source_rank": 88,
+      "word": "നമ്മൾ",
+      "pos": null,
+      "frequency_count": 1688
+    },
+    {
+      "candidate_rank": 89,
+      "source_rank": 89,
+      "word": "കുറച്ച്",
+      "pos": null,
+      "frequency_count": 1686
+    },
+    {
+      "candidate_rank": 90,
+      "source_rank": 90,
+      "word": "അവരെ",
+      "pos": null,
+      "frequency_count": 1682
+    },
+    {
+      "candidate_rank": 91,
+      "source_rank": 91,
+      "word": "കൂടി",
+      "pos": null,
+      "frequency_count": 1652
+    },
+    {
+      "candidate_rank": 92,
+      "source_rank": 92,
+      "word": "ശരിക്കും",
+      "pos": null,
+      "frequency_count": 1645
+    },
+    {
+      "candidate_rank": 93,
+      "source_rank": 93,
+      "word": "എവിടെ",
+      "pos": null,
+      "frequency_count": 1642
+    },
+    {
+      "candidate_rank": 94,
+      "source_rank": 94,
+      "word": "സ്",
+      "pos": null,
+      "frequency_count": 1629
+    },
+    {
+      "candidate_rank": 95,
+      "source_rank": 95,
+      "word": "മാത്രം",
+      "pos": null,
+      "frequency_count": 1626
+    },
+    {
+      "candidate_rank": 96,
+      "source_rank": 96,
+      "word": "തോന്നുന്നു",
+      "pos": null,
+      "frequency_count": 1594
+    },
+    {
+      "candidate_rank": 97,
+      "source_rank": 97,
+      "word": "സര്",
+      "pos": null,
+      "frequency_count": 1584
+    },
+    {
+      "candidate_rank": 98,
+      "source_rank": 98,
+      "word": "ക്കും",
+      "pos": null,
+      "frequency_count": 1569
+    },
+    {
+      "candidate_rank": 99,
+      "source_rank": 99,
+      "word": "പോ",
+      "pos": null,
+      "frequency_count": 1559
+    },
+    {
+      "candidate_rank": 100,
+      "source_rank": 100,
+      "word": "വര്",
+      "pos": null,
+      "frequency_count": 1545
+    },
+    {
+      "candidate_rank": 101,
+      "source_rank": 101,
+      "word": "പോകാം",
+      "pos": null,
+      "frequency_count": 1539
+    },
+    {
+      "candidate_rank": 102,
+      "source_rank": 102,
+      "word": "പോലും",
+      "pos": null,
+      "frequency_count": 1525
+    },
+    {
+      "candidate_rank": 103,
+      "source_rank": 103,
+      "word": "ജോലി",
+      "pos": null,
+      "frequency_count": 1523
+    },
+    {
+      "candidate_rank": 104,
+      "source_rank": 104,
+      "word": "തീര്",
+      "pos": null,
+      "frequency_count": 1520
+    },
+    {
+      "candidate_rank": 105,
+      "source_rank": 105,
+      "word": "ഇന്ന്",
+      "pos": null,
+      "frequency_count": 1518
+    },
+    {
+      "candidate_rank": 106,
+      "source_rank": 106,
+      "word": "അവളെ",
+      "pos": null,
+      "frequency_count": 1484
+    },
+    {
+      "candidate_rank": 107,
+      "source_rank": 107,
+      "word": "ഹലോ",
+      "pos": null,
+      "frequency_count": 1474
+    },
+    {
+      "candidate_rank": 108,
+      "source_rank": 108,
+      "word": "എനിക്കറിയാം",
+      "pos": null,
+      "frequency_count": 1470
+    },
+    {
+      "candidate_rank": 109,
+      "source_rank": 109,
+      "word": "വരെ",
+      "pos": null,
+      "frequency_count": 1467
+    },
+    {
+      "candidate_rank": 110,
+      "source_rank": 110,
+      "word": "ഏറ്റവും",
+      "pos": null,
+      "frequency_count": 1418
+    },
+    {
+      "candidate_rank": 111,
+      "source_rank": 111,
+      "word": "എങ്ങനെ",
+      "pos": null,
+      "frequency_count": 1417
+    },
+    {
+      "candidate_rank": 112,
+      "source_rank": 112,
+      "word": "മതി",
+      "pos": null,
+      "frequency_count": 1411
+    },
+    {
+      "candidate_rank": 113,
+      "source_rank": 113,
+      "word": "സമയം",
+      "pos": null,
+      "frequency_count": 1398
+    },
+    {
+      "candidate_rank": 114,
+      "source_rank": 114,
+      "word": "അവളുടെ",
+      "pos": null,
+      "frequency_count": 1390
+    },
+    {
+      "candidate_rank": 115,
+      "source_rank": 115,
+      "word": "നിങ്ങൾക്ക്",
+      "pos": null,
+      "frequency_count": 1384
+    },
+    {
+      "candidate_rank": 116,
+      "source_rank": 116,
+      "word": "ചെയ്തു",
+      "pos": null,
+      "frequency_count": 1360
+    },
+    {
+      "candidate_rank": 117,
+      "source_rank": 117,
+      "word": "നന്നായി",
+      "pos": null,
+      "frequency_count": 1358
+    },
+    {
+      "candidate_rank": 118,
+      "source_rank": 118,
+      "word": "അല്ലേ",
+      "pos": null,
+      "frequency_count": 1349
+    },
+    {
+      "candidate_rank": 119,
+      "source_rank": 119,
+      "word": "എത്ര",
+      "pos": null,
+      "frequency_count": 1339
+    },
+    {
+      "candidate_rank": 120,
+      "source_rank": 120,
+      "word": "പറ്റി",
+      "pos": null,
+      "frequency_count": 1337
+    },
+    {
+      "candidate_rank": 121,
+      "source_rank": 121,
+      "word": "വീണ്ടും",
+      "pos": null,
+      "frequency_count": 1329
+    },
+    {
+      "candidate_rank": 122,
+      "source_rank": 122,
+      "word": "ഇപ്പൊ",
+      "pos": null,
+      "frequency_count": 1328
+    },
+    {
+      "candidate_rank": 123,
+      "source_rank": 123,
+      "word": "ഓര്",
+      "pos": null,
+      "frequency_count": 1322
+    },
+    {
+      "candidate_rank": 124,
+      "source_rank": 124,
+      "word": "പറ്റില്ല",
+      "pos": null,
+      "frequency_count": 1318
+    },
+    {
+      "candidate_rank": 125,
+      "source_rank": 125,
+      "word": "ആര്",
+      "pos": null,
+      "frequency_count": 1317
+    },
+    {
+      "candidate_rank": 126,
+      "source_rank": 126,
+      "word": "കുറച്ചു",
+      "pos": null,
+      "frequency_count": 1314
+    },
+    {
+      "candidate_rank": 127,
+      "source_rank": 127,
+      "word": "വരും",
+      "pos": null,
+      "frequency_count": 1312
+    },
+    {
+      "candidate_rank": 128,
+      "source_rank": 128,
+      "word": "എന്നിട്ട്",
+      "pos": null,
+      "frequency_count": 1295
+    },
+    {
+      "candidate_rank": 129,
+      "source_rank": 129,
+      "word": "ചെയ്യുന്നത്",
+      "pos": null,
+      "frequency_count": 1294
+    },
+    {
+      "candidate_rank": 130,
+      "source_rank": 130,
+      "word": "ഞങ്ങൾ",
+      "pos": null,
+      "frequency_count": 1280
+    },
+    {
+      "candidate_rank": 131,
+      "source_rank": 131,
+      "word": "ഞങ്ങളുടെ",
+      "pos": null,
+      "frequency_count": 1280
+    },
+    {
+      "candidate_rank": 132,
+      "source_rank": 132,
+      "word": "എല്ലാവരും",
+      "pos": null,
+      "frequency_count": 1280
+    },
+    {
+      "candidate_rank": 133,
+      "source_rank": 133,
+      "word": "ഒരിക്കലും",
+      "pos": null,
+      "frequency_count": 1279
+    },
+    {
+      "candidate_rank": 134,
+      "source_rank": 134,
+      "word": "ദിവസം",
+      "pos": null,
+      "frequency_count": 1277
+    },
+    {
+      "candidate_rank": 135,
+      "source_rank": 135,
+      "word": "ഇങ്ങനെ",
+      "pos": null,
+      "frequency_count": 1256
+    },
+    {
+      "candidate_rank": 136,
+      "source_rank": 136,
+      "word": "അതു",
+      "pos": null,
+      "frequency_count": 1229
+    },
+    {
+      "candidate_rank": 137,
+      "source_rank": 137,
+      "word": "തിരിച്ചു",
+      "pos": null,
+      "frequency_count": 1207
+    },
+    {
+      "candidate_rank": 138,
+      "source_rank": 138,
+      "word": "അവൾ",
+      "pos": null,
+      "frequency_count": 1200
+    },
+    {
+      "candidate_rank": 139,
+      "source_rank": 139,
+      "word": "അറിയാം",
+      "pos": null,
+      "frequency_count": 1197
+    },
+    {
+      "candidate_rank": 140,
+      "source_rank": 140,
+      "word": "കേള്",
+      "pos": null,
+      "frequency_count": 1187
+    },
+    {
+      "candidate_rank": 141,
+      "source_rank": 141,
+      "word": "എനിക്കു",
+      "pos": null,
+      "frequency_count": 1174
+    },
+    {
+      "candidate_rank": 142,
+      "source_rank": 142,
+      "word": "പണം",
+      "pos": null,
+      "frequency_count": 1174
+    },
+    {
+      "candidate_rank": 143,
+      "source_rank": 143,
+      "word": "ഒരുപാട്",
+      "pos": null,
+      "frequency_count": 1157
+    },
+    {
+      "candidate_rank": 144,
+      "source_rank": 144,
+      "word": "അപ്പോള്",
+      "pos": null,
+      "frequency_count": 1149
+    },
+    {
+      "candidate_rank": 145,
+      "source_rank": 145,
+      "word": "വന്നു",
+      "pos": null,
+      "frequency_count": 1141
+    },
+    {
+      "candidate_rank": 146,
+      "source_rank": 146,
+      "word": "എന്തു",
+      "pos": null,
+      "frequency_count": 1140
+    },
+    {
+      "candidate_rank": 147,
+      "source_rank": 147,
+      "word": "രാത്രി",
+      "pos": null,
+      "frequency_count": 1135
+    },
+    {
+      "candidate_rank": 148,
+      "source_rank": 148,
+      "word": "അതുകൊണ്ട്",
+      "pos": null,
+      "frequency_count": 1129
+    },
+    {
+      "candidate_rank": 149,
+      "source_rank": 149,
+      "word": "കണ്ടു",
+      "pos": null,
+      "frequency_count": 1127
+    },
+    {
+      "candidate_rank": 150,
+      "source_rank": 150,
+      "word": "ഇതാ",
+      "pos": null,
+      "frequency_count": 1127
+    },
+    {
+      "candidate_rank": 151,
+      "source_rank": 151,
+      "word": "ഞാനും",
+      "pos": null,
+      "frequency_count": 1125
+    },
+    {
+      "candidate_rank": 152,
+      "source_rank": 152,
+      "word": "അല്ലെ",
+      "pos": null,
+      "frequency_count": 1122
+    },
+    {
+      "candidate_rank": 153,
+      "source_rank": 153,
+      "word": "വഴി",
+      "pos": null,
+      "frequency_count": 1112
+    },
+    {
+      "candidate_rank": 154,
+      "source_rank": 154,
+      "word": "ചെയ്യും",
+      "pos": null,
+      "frequency_count": 1095
+    },
+    {
+      "candidate_rank": 155,
+      "source_rank": 155,
+      "word": "നോക്കൂ",
+      "pos": null,
+      "frequency_count": 1088
+    },
+    {
+      "candidate_rank": 156,
+      "source_rank": 156,
+      "word": "ആയിരുന്നു",
+      "pos": null,
+      "frequency_count": 1070
+    },
+    {
+      "candidate_rank": 157,
+      "source_rank": 157,
+      "word": "പറയൂ",
+      "pos": null,
+      "frequency_count": 1067
+    },
+    {
+      "candidate_rank": 158,
+      "source_rank": 158,
+      "word": "വേറെ",
+      "pos": null,
+      "frequency_count": 1064
+    },
+    {
+      "candidate_rank": 159,
+      "source_rank": 159,
+      "word": "പോകുന്നു",
+      "pos": null,
+      "frequency_count": 1057
+    },
+    {
+      "candidate_rank": 160,
+      "source_rank": 160,
+      "word": "എനിക്കറിയില്ല",
+      "pos": null,
+      "frequency_count": 1054
+    },
+    {
+      "candidate_rank": 161,
+      "source_rank": 161,
+      "word": "പുതിയ",
+      "pos": null,
+      "frequency_count": 1048
+    },
+    {
+      "candidate_rank": 162,
+      "source_rank": 162,
+      "word": "ചെയ്യാന്",
+      "pos": null,
+      "frequency_count": 1035
+    },
+    {
+      "candidate_rank": 163,
+      "source_rank": 163,
+      "word": "ക്ഷമിക്കണം",
+      "pos": null,
+      "frequency_count": 1034
+    },
+    {
+      "candidate_rank": 164,
+      "source_rank": 164,
+      "word": "അവന്റെ",
+      "pos": null,
+      "frequency_count": 1034
+    },
+    {
+      "candidate_rank": 165,
+      "source_rank": 165,
+      "word": "നല്ലത്",
+      "pos": null,
+      "frequency_count": 1033
+    },
+    {
+      "candidate_rank": 166,
+      "source_rank": 166,
+      "word": "അതിന്",
+      "pos": null,
+      "frequency_count": 1033
+    },
+    {
+      "candidate_rank": 167,
+      "source_rank": 167,
+      "word": "രണ്ടു",
+      "pos": null,
+      "frequency_count": 1032
+    },
+    {
+      "candidate_rank": 168,
+      "source_rank": 168,
+      "word": "മുന്",
+      "pos": null,
+      "frequency_count": 1028
+    },
+    {
+      "candidate_rank": 169,
+      "source_rank": 169,
+      "word": "രണ്ട്",
+      "pos": null,
+      "frequency_count": 1025
+    },
+    {
+      "candidate_rank": 170,
+      "source_rank": 170,
+      "word": "അതേ",
+      "pos": null,
+      "frequency_count": 1023
+    },
+    {
+      "candidate_rank": 171,
+      "source_rank": 171,
+      "word": "ഇപ്പോൾ",
+      "pos": null,
+      "frequency_count": 1021
+    },
+    {
+      "candidate_rank": 172,
+      "source_rank": 172,
+      "word": "സർ",
+      "pos": null,
+      "frequency_count": 1019
+    },
+    {
+      "candidate_rank": 173,
+      "source_rank": 173,
+      "word": "അറിയില്ല",
+      "pos": null,
+      "frequency_count": 1014
+    },
+    {
+      "candidate_rank": 174,
+      "source_rank": 174,
+      "word": "പറ",
+      "pos": null,
+      "frequency_count": 1009
+    },
+    {
+      "candidate_rank": 175,
+      "source_rank": 175,
+      "word": "കൂടുതല്",
+      "pos": null,
+      "frequency_count": 996
+    },
+    {
+      "candidate_rank": 176,
+      "source_rank": 176,
+      "word": "ശേഷം",
+      "pos": null,
+      "frequency_count": 990
+    },
+    {
+      "candidate_rank": 177,
+      "source_rank": 177,
+      "word": "ആദ്യം",
+      "pos": null,
+      "frequency_count": 979
+    },
+    {
+      "candidate_rank": 178,
+      "source_rank": 178,
+      "word": "കാണാന്",
+      "pos": null,
+      "frequency_count": 975
+    },
+    {
+      "candidate_rank": 179,
+      "source_rank": 179,
+      "word": "ആണോ",
+      "pos": null,
+      "frequency_count": 972
+    },
+    {
+      "candidate_rank": 180,
+      "source_rank": 180,
+      "word": "സാർ",
+      "pos": null,
+      "frequency_count": 967
+    },
+    {
+      "candidate_rank": 181,
+      "source_rank": 181,
+      "word": "കഴിയില്ല",
+      "pos": null,
+      "frequency_count": 966
+    },
+    {
+      "candidate_rank": 182,
+      "source_rank": 182,
+      "word": "ആരും",
+      "pos": null,
+      "frequency_count": 963
+    },
+    {
+      "candidate_rank": 183,
+      "source_rank": 183,
+      "word": "അതാണ്",
+      "pos": null,
+      "frequency_count": 955
+    },
+    {
+      "candidate_rank": 184,
+      "source_rank": 184,
+      "word": "ഞാനൊരു",
+      "pos": null,
+      "frequency_count": 938
+    },
+    {
+      "candidate_rank": 185,
+      "source_rank": 185,
+      "word": "നാളെ",
+      "pos": null,
+      "frequency_count": 937
+    },
+    {
+      "candidate_rank": 186,
+      "source_rank": 186,
+      "word": "അയാളുടെ",
+      "pos": null,
+      "frequency_count": 934
+    },
+    {
+      "candidate_rank": 187,
+      "source_rank": 187,
+      "word": "ഡ്",
+      "pos": null,
+      "frequency_count": 932
+    },
+    {
+      "candidate_rank": 188,
+      "source_rank": 188,
+      "word": "കൊള്ളാം",
+      "pos": null,
+      "frequency_count": 929
+    },
+    {
+      "candidate_rank": 189,
+      "source_rank": 189,
+      "word": "പറയുന്നു",
+      "pos": null,
+      "frequency_count": 917
+    },
+    {
+      "candidate_rank": 190,
+      "source_rank": 190,
+      "word": "കാണാം",
+      "pos": null,
+      "frequency_count": 901
+    },
+    {
+      "candidate_rank": 191,
+      "source_rank": 191,
+      "word": "അപ്പൊ",
+      "pos": null,
+      "frequency_count": 898
+    },
+    {
+      "candidate_rank": 192,
+      "source_rank": 192,
+      "word": "മാര്",
+      "pos": null,
+      "frequency_count": 894
+    },
+    {
+      "candidate_rank": 193,
+      "source_rank": 193,
+      "word": "എന്നാല്",
+      "pos": null,
+      "frequency_count": 894
+    },
+    {
+      "candidate_rank": 194,
+      "source_rank": 194,
+      "word": "എന്നാൽ",
+      "pos": null,
+      "frequency_count": 885
+    },
+    {
+      "candidate_rank": 195,
+      "source_rank": 195,
+      "word": "ചെയ്തത്",
+      "pos": null,
+      "frequency_count": 885
+    },
+    {
+      "candidate_rank": 196,
+      "source_rank": 196,
+      "word": "ഇതാണ്",
+      "pos": null,
+      "frequency_count": 881
+    },
+    {
+      "candidate_rank": 197,
+      "source_rank": 197,
+      "word": "താങ്കള്",
+      "pos": null,
+      "frequency_count": 875
+    },
+    {
+      "candidate_rank": 198,
+      "source_rank": 198,
+      "word": "പ്ലീസ്",
+      "pos": null,
+      "frequency_count": 874
+    },
+    {
+      "candidate_rank": 199,
+      "source_rank": 199,
+      "word": "പോകുന്നത്",
+      "pos": null,
+      "frequency_count": 868
+    },
+    {
+      "candidate_rank": 200,
+      "source_rank": 200,
+      "word": "അമ്മ",
+      "pos": null,
+      "frequency_count": 857
+    },
+    {
+      "candidate_rank": 201,
+      "source_rank": 201,
+      "word": "ദയവായി",
+      "pos": null,
+      "frequency_count": 855
+    },
+    {
+      "candidate_rank": 202,
+      "source_rank": 202,
+      "word": "അയാൾ",
+      "pos": null,
+      "frequency_count": 854
+    },
+    {
+      "candidate_rank": 203,
+      "source_rank": 203,
+      "word": "അയാളെ",
+      "pos": null,
+      "frequency_count": 853
+    },
+    {
+      "candidate_rank": 204,
+      "source_rank": 204,
+      "word": "നാശം",
+      "pos": null,
+      "frequency_count": 851
+    },
+    {
+      "candidate_rank": 205,
+      "source_rank": 205,
+      "word": "നിന്നോട്",
+      "pos": null,
+      "frequency_count": 849
+    },
+    {
+      "candidate_rank": 206,
+      "source_rank": 206,
+      "word": "എപ്പോഴും",
+      "pos": null,
+      "frequency_count": 849
+    },
+    {
+      "candidate_rank": 207,
+      "source_rank": 207,
+      "word": "ഓക്കേ",
+      "pos": null,
+      "frequency_count": 849
+    },
+    {
+      "candidate_rank": 208,
+      "source_rank": 208,
+      "word": "ദൈവമേ",
+      "pos": null,
+      "frequency_count": 847
+    },
+    {
+      "candidate_rank": 209,
+      "source_rank": 209,
+      "word": "എന്തിനാ",
+      "pos": null,
+      "frequency_count": 847
+    },
+    {
+      "candidate_rank": 210,
+      "source_rank": 210,
+      "word": "ചെറിയ",
+      "pos": null,
+      "frequency_count": 844
+    },
+    {
+      "candidate_rank": 211,
+      "source_rank": 211,
+      "word": "അതൊരു",
+      "pos": null,
+      "frequency_count": 836
+    },
+    {
+      "candidate_rank": 212,
+      "source_rank": 212,
+      "word": "നാം",
+      "pos": null,
+      "frequency_count": 827
+    },
+    {
+      "candidate_rank": 213,
+      "source_rank": 213,
+      "word": "ച്ചയായും",
+      "pos": null,
+      "frequency_count": 825
+    },
+    {
+      "candidate_rank": 214,
+      "source_rank": 214,
+      "word": "എന്നാണ്",
+      "pos": null,
+      "frequency_count": 824
+    },
+    {
+      "candidate_rank": 215,
+      "source_rank": 215,
+      "word": "കഴിഞ്ഞു",
+      "pos": null,
+      "frequency_count": 821
+    },
+    {
+      "candidate_rank": 216,
+      "source_rank": 216,
+      "word": "പ്രശ്നം",
+      "pos": null,
+      "frequency_count": 818
+    },
+    {
+      "candidate_rank": 217,
+      "source_rank": 217,
+      "word": "വന്നത്",
+      "pos": null,
+      "frequency_count": 814
+    },
+    {
+      "candidate_rank": 218,
+      "source_rank": 218,
+      "word": "ചില",
+      "pos": null,
+      "frequency_count": 808
+    },
+    {
+      "candidate_rank": 219,
+      "source_rank": 219,
+      "word": "കാര്യങ്ങള്",
+      "pos": null,
+      "frequency_count": 808
+    },
+    {
+      "candidate_rank": 220,
+      "source_rank": 220,
+      "word": "എന്ന",
+      "pos": null,
+      "frequency_count": 807
+    },
+    {
+      "candidate_rank": 221,
+      "source_rank": 221,
+      "word": "അല്ലെങ്കില്",
+      "pos": null,
+      "frequency_count": 802
+    },
+    {
+      "candidate_rank": 222,
+      "source_rank": 222,
+      "word": "ജീവിതം",
+      "pos": null,
+      "frequency_count": 802
+    },
+    {
+      "candidate_rank": 223,
+      "source_rank": 223,
+      "word": "പെട്ടെന്ന്",
+      "pos": null,
+      "frequency_count": 801
+    },
+    {
+      "candidate_rank": 224,
+      "source_rank": 224,
+      "word": "മാത്രമേ",
+      "pos": null,
+      "frequency_count": 797
+    },
+    {
+      "candidate_rank": 225,
+      "source_rank": 225,
+      "word": "സത്യം",
+      "pos": null,
+      "frequency_count": 794
+    },
+    {
+      "candidate_rank": 226,
+      "source_rank": 226,
+      "word": "അടുത്ത",
+      "pos": null,
+      "frequency_count": 792
+    },
+    {
+      "candidate_rank": 227,
+      "source_rank": 227,
+      "word": "ഇപ്പോഴും",
+      "pos": null,
+      "frequency_count": 787
+    },
+    {
+      "candidate_rank": 228,
+      "source_rank": 228,
+      "word": "മുഴുവന്",
+      "pos": null,
+      "frequency_count": 780
+    },
+    {
+      "candidate_rank": 229,
+      "source_rank": 229,
+      "word": "കുറിച്ച്",
+      "pos": null,
+      "frequency_count": 777
+    },
+    {
+      "candidate_rank": 230,
+      "source_rank": 230,
+      "word": "സ്ഥലം",
+      "pos": null,
+      "frequency_count": 775
+    },
+    {
+      "candidate_rank": 231,
+      "source_rank": 231,
+      "word": "വെച്ച്",
+      "pos": null,
+      "frequency_count": 771
+    },
+    {
+      "candidate_rank": 232,
+      "source_rank": 232,
+      "word": "ഓഹ്",
+      "pos": null,
+      "frequency_count": 770
+    },
+    {
+      "candidate_rank": 233,
+      "source_rank": 233,
+      "word": "എന്തോ",
+      "pos": null,
+      "frequency_count": 770
+    },
+    {
+      "candidate_rank": 234,
+      "source_rank": 234,
+      "word": "മി",
+      "pos": null,
+      "frequency_count": 762
+    },
+    {
+      "candidate_rank": 235,
+      "source_rank": 235,
+      "word": "ദൈവം",
+      "pos": null,
+      "frequency_count": 754
+    },
+    {
+      "candidate_rank": 236,
+      "source_rank": 236,
+      "word": "നമ്മളെ",
+      "pos": null,
+      "frequency_count": 748
+    },
+    {
+      "candidate_rank": 237,
+      "source_rank": 237,
+      "word": "വേണ്ടത്",
+      "pos": null,
+      "frequency_count": 742
+    },
+    {
+      "candidate_rank": 238,
+      "source_rank": 238,
+      "word": "നല്",
+      "pos": null,
+      "frequency_count": 739
+    },
+    {
+      "candidate_rank": 239,
+      "source_rank": 239,
+      "word": "ഞങ്ങളെ",
+      "pos": null,
+      "frequency_count": 738
+    },
+    {
+      "candidate_rank": 240,
+      "source_rank": 240,
+      "word": "വീട്ടില്",
+      "pos": null,
+      "frequency_count": 737
+    },
+    {
+      "candidate_rank": 241,
+      "source_rank": 241,
+      "word": "കാര്",
+      "pos": null,
+      "frequency_count": 735
+    },
+    {
+      "candidate_rank": 242,
+      "source_rank": 242,
+      "word": "വരാം",
+      "pos": null,
+      "frequency_count": 732
+    },
+    {
+      "candidate_rank": 243,
+      "source_rank": 243,
+      "word": "ഇതൊരു",
+      "pos": null,
+      "frequency_count": 729
+    },
+    {
+      "candidate_rank": 244,
+      "source_rank": 244,
+      "word": "ഇതു",
+      "pos": null,
+      "frequency_count": 728
+    },
+    {
+      "candidate_rank": 245,
+      "source_rank": 245,
+      "word": "തരാം",
+      "pos": null,
+      "frequency_count": 728
+    },
+    {
+      "candidate_rank": 246,
+      "source_rank": 246,
+      "word": "ഉണ്ടോ",
+      "pos": null,
+      "frequency_count": 727
+    },
+    {
+      "candidate_rank": 247,
+      "source_rank": 247,
+      "word": "ഗുഡ്",
+      "pos": null,
+      "frequency_count": 726
+    },
+    {
+      "candidate_rank": 248,
+      "source_rank": 248,
+      "word": "വെറുതെ",
+      "pos": null,
+      "frequency_count": 724
+    },
+    {
+      "candidate_rank": 249,
+      "source_rank": 249,
+      "word": "പുറത്ത്",
+      "pos": null,
+      "frequency_count": 724
+    },
+    {
+      "candidate_rank": 250,
+      "source_rank": 250,
+      "word": "കിട്ടി",
+      "pos": null,
+      "frequency_count": 721
+    },
+    {
+      "candidate_rank": 251,
+      "source_rank": 251,
+      "word": "ഉണ്ടായിരുന്നു",
+      "pos": null,
+      "frequency_count": 720
+    },
+    {
+      "candidate_rank": 252,
+      "source_rank": 252,
+      "word": "വെറും",
+      "pos": null,
+      "frequency_count": 716
+    },
+    {
+      "candidate_rank": 253,
+      "source_rank": 253,
+      "word": "സ്വയം",
+      "pos": null,
+      "frequency_count": 713
+    },
+    {
+      "candidate_rank": 254,
+      "source_rank": 254,
+      "word": "ഒന്നുമില്ല",
+      "pos": null,
+      "frequency_count": 709
+    },
+    {
+      "candidate_rank": 255,
+      "source_rank": 255,
+      "word": "ആള്",
+      "pos": null,
+      "frequency_count": 707
+    },
+    {
+      "candidate_rank": 256,
+      "source_rank": 256,
+      "word": "കഴിയും",
+      "pos": null,
+      "frequency_count": 703
+    },
+    {
+      "candidate_rank": 257,
+      "source_rank": 257,
+      "word": "ആരാണ്",
+      "pos": null,
+      "frequency_count": 696
+    },
+    {
+      "candidate_rank": 258,
+      "source_rank": 258,
+      "word": "ആരെങ്കിലും",
+      "pos": null,
+      "frequency_count": 690
+    },
+    {
+      "candidate_rank": 259,
+      "source_rank": 259,
+      "word": "ചെയ്യാൻ",
+      "pos": null,
+      "frequency_count": 686
+    },
+    {
+      "candidate_rank": 260,
+      "source_rank": 260,
+      "word": "എനിക്കൊരു",
+      "pos": null,
+      "frequency_count": 686
+    },
+    {
+      "candidate_rank": 261,
+      "source_rank": 261,
+      "word": "നിമിഷം",
+      "pos": null,
+      "frequency_count": 679
+    },
+    {
+      "candidate_rank": 262,
+      "source_rank": 262,
+      "word": "മുമ്പ്",
+      "pos": null,
+      "frequency_count": 678
+    },
+    {
+      "candidate_rank": 263,
+      "source_rank": 263,
+      "word": "കാണാൻ",
+      "pos": null,
+      "frequency_count": 675
+    },
+    {
+      "candidate_rank": 264,
+      "source_rank": 264,
+      "word": "ഭക്ഷണം",
+      "pos": null,
+      "frequency_count": 669
+    },
+    {
+      "candidate_rank": 265,
+      "source_rank": 265,
+      "word": "ത്ത്",
+      "pos": null,
+      "frequency_count": 668
+    },
+    {
+      "candidate_rank": 266,
+      "source_rank": 266,
+      "word": "കണ്ടോ",
+      "pos": null,
+      "frequency_count": 665
+    },
+    {
+      "candidate_rank": 267,
+      "source_rank": 267,
+      "word": "സാര്",
+      "pos": null,
+      "frequency_count": 662
+    },
+    {
+      "candidate_rank": 268,
+      "source_rank": 268,
+      "word": "അതിനു",
+      "pos": null,
+      "frequency_count": 661
+    },
+    {
+      "candidate_rank": 269,
+      "source_rank": 269,
+      "word": "ഒക്കെ",
+      "pos": null,
+      "frequency_count": 660
+    },
+    {
+      "candidate_rank": 270,
+      "source_rank": 270,
+      "word": "ആരാ",
+      "pos": null,
+      "frequency_count": 655
+    },
+    {
+      "candidate_rank": 271,
+      "source_rank": 271,
+      "word": "സ്വന്തം",
+      "pos": null,
+      "frequency_count": 652
+    },
+    {
+      "candidate_rank": 272,
+      "source_rank": 272,
+      "word": "പോകൂ",
+      "pos": null,
+      "frequency_count": 652
+    },
+    {
+      "candidate_rank": 273,
+      "source_rank": 273,
+      "word": "ആയി",
+      "pos": null,
+      "frequency_count": 648
+    },
+    {
+      "candidate_rank": 274,
+      "source_rank": 274,
+      "word": "ക്കു",
+      "pos": null,
+      "frequency_count": 645
+    },
+    {
+      "candidate_rank": 275,
+      "source_rank": 275,
+      "word": "ശരിയാണ്",
+      "pos": null,
+      "frequency_count": 641
+    },
+    {
+      "candidate_rank": 276,
+      "source_rank": 276,
+      "word": "പറയാന്",
+      "pos": null,
+      "frequency_count": 636
+    },
+    {
+      "candidate_rank": 277,
+      "source_rank": 277,
+      "word": "കൈ",
+      "pos": null,
+      "frequency_count": 633
+    },
+    {
+      "candidate_rank": 278,
+      "source_rank": 278,
+      "word": "അര്",
+      "pos": null,
+      "frequency_count": 625
+    },
+    {
+      "candidate_rank": 279,
+      "source_rank": 279,
+      "word": "പോകും",
+      "pos": null,
+      "frequency_count": 623
+    },
+    {
+      "candidate_rank": 280,
+      "source_rank": 280,
+      "word": "ഉള്ള",
+      "pos": null,
+      "frequency_count": 622
+    },
+    {
+      "candidate_rank": 281,
+      "source_rank": 281,
+      "word": "ഇങ്ങോട്ട്",
+      "pos": null,
+      "frequency_count": 620
+    },
+    {
+      "candidate_rank": 282,
+      "source_rank": 282,
+      "word": "അച്ഛന്",
+      "pos": null,
+      "frequency_count": 618
+    },
+    {
+      "candidate_rank": 283,
+      "source_rank": 283,
+      "word": "എന്തായാലും",
+      "pos": null,
+      "frequency_count": 616
+    },
+    {
+      "candidate_rank": 284,
+      "source_rank": 284,
+      "word": "നോക്കി",
+      "pos": null,
+      "frequency_count": 616
+    },
+    {
+      "candidate_rank": 285,
+      "source_rank": 285,
+      "word": "അത്ര",
+      "pos": null,
+      "frequency_count": 616
+    },
+    {
+      "candidate_rank": 286,
+      "source_rank": 286,
+      "word": "എന്നു",
+      "pos": null,
+      "frequency_count": 612
+    },
+    {
+      "candidate_rank": 287,
+      "source_rank": 287,
+      "word": "അപ്പോൾ",
+      "pos": null,
+      "frequency_count": 609
+    },
+    {
+      "candidate_rank": 288,
+      "source_rank": 288,
+      "word": "മൂന്ന്",
+      "pos": null,
+      "frequency_count": 607
+    },
+    {
+      "candidate_rank": 289,
+      "source_rank": 289,
+      "word": "പോലീസ്",
+      "pos": null,
+      "frequency_count": 605
+    },
+    {
+      "candidate_rank": 290,
+      "source_rank": 290,
+      "word": "എന്തിന്",
+      "pos": null,
+      "frequency_count": 604
+    },
+    {
+      "candidate_rank": 291,
+      "source_rank": 291,
+      "word": "ഇതൊക്കെ",
+      "pos": null,
+      "frequency_count": 598
+    },
+    {
+      "candidate_rank": 292,
+      "source_rank": 292,
+      "word": "പറയാം",
+      "pos": null,
+      "frequency_count": 598
+    },
+    {
+      "candidate_rank": 293,
+      "source_rank": 293,
+      "word": "പഴയ",
+      "pos": null,
+      "frequency_count": 590
+    },
+    {
+      "candidate_rank": 294,
+      "source_rank": 294,
+      "word": "വരുന്നു",
+      "pos": null,
+      "frequency_count": 588
+    },
+    {
+      "candidate_rank": 295,
+      "source_rank": 295,
+      "word": "കുട്ടി",
+      "pos": null,
+      "frequency_count": 586
+    },
+    {
+      "candidate_rank": 296,
+      "source_rank": 296,
+      "word": "മരിച്ചു",
+      "pos": null,
+      "frequency_count": 586
+    },
+    {
+      "candidate_rank": 297,
+      "source_rank": 297,
+      "word": "ക്കൂ",
+      "pos": null,
+      "frequency_count": 586
+    },
+    {
+      "candidate_rank": 298,
+      "source_rank": 298,
+      "word": "പ്",
+      "pos": null,
+      "frequency_count": 582
+    },
+    {
+      "candidate_rank": 299,
+      "source_rank": 299,
+      "word": "തന്നെയാണ്",
+      "pos": null,
+      "frequency_count": 582
+    },
+    {
+      "candidate_rank": 300,
+      "source_rank": 300,
+      "word": "വച്ച്",
+      "pos": null,
+      "frequency_count": 579
+    },
+    {
+      "candidate_rank": 301,
+      "source_rank": 301,
+      "word": "ട്ട്",
+      "pos": null,
+      "frequency_count": 577
+    },
+    {
+      "candidate_rank": 302,
+      "source_rank": 302,
+      "word": "പുറത്തു",
+      "pos": null,
+      "frequency_count": 573
+    },
+    {
+      "candidate_rank": 303,
+      "source_rank": 303,
+      "word": "ചെയ്യുന്നു",
+      "pos": null,
+      "frequency_count": 572
+    },
+    {
+      "candidate_rank": 304,
+      "source_rank": 304,
+      "word": "പോകണം",
+      "pos": null,
+      "frequency_count": 571
+    },
+    {
+      "candidate_rank": 305,
+      "source_rank": 305,
+      "word": "ഓരോ",
+      "pos": null,
+      "frequency_count": 568
+    },
+    {
+      "candidate_rank": 306,
+      "source_rank": 306,
+      "word": "എനിക്കും",
+      "pos": null,
+      "frequency_count": 565
+    },
+    {
+      "candidate_rank": 307,
+      "source_rank": 307,
+      "word": "സന്തോഷം",
+      "pos": null,
+      "frequency_count": 560
+    },
+    {
+      "candidate_rank": 308,
+      "source_rank": 308,
+      "word": "ഉവ്വ്",
+      "pos": null,
+      "frequency_count": 560
+    },
+    {
+      "candidate_rank": 309,
+      "source_rank": 309,
+      "word": "പറയും",
+      "pos": null,
+      "frequency_count": 556
+    },
+    {
+      "candidate_rank": 310,
+      "source_rank": 310,
+      "word": "അതില്",
+      "pos": null,
+      "frequency_count": 554
+    },
+    {
+      "candidate_rank": 311,
+      "source_rank": 311,
+      "word": "പണി",
+      "pos": null,
+      "frequency_count": 553
+    },
+    {
+      "candidate_rank": 312,
+      "source_rank": 312,
+      "word": "കയ്യില്",
+      "pos": null,
+      "frequency_count": 547
+    },
+    {
+      "candidate_rank": 313,
+      "source_rank": 313,
+      "word": "ഇനിയും",
+      "pos": null,
+      "frequency_count": 544
+    },
+    {
+      "candidate_rank": 314,
+      "source_rank": 314,
+      "word": "ഇപ്പോ",
+      "pos": null,
+      "frequency_count": 543
+    },
+    {
+      "candidate_rank": 315,
+      "source_rank": 315,
+      "word": "അടുത്ത്",
+      "pos": null,
+      "frequency_count": 539
+    },
+    {
+      "candidate_rank": 316,
+      "source_rank": 316,
+      "word": "മാത്രമാണ്",
+      "pos": null,
+      "frequency_count": 538
+    },
+    {
+      "candidate_rank": 317,
+      "source_rank": 317,
+      "word": "അതോ",
+      "pos": null,
+      "frequency_count": 537
+    },
+    {
+      "candidate_rank": 318,
+      "source_rank": 318,
+      "word": "അതിന്റെ",
+      "pos": null,
+      "frequency_count": 536
+    },
+    {
+      "candidate_rank": 319,
+      "source_rank": 319,
+      "word": "യുദ്ധം",
+      "pos": null,
+      "frequency_count": 534
+    },
+    {
+      "candidate_rank": 320,
+      "source_rank": 320,
+      "word": "നിങ്ങളോട്",
+      "pos": null,
+      "frequency_count": 533
+    },
+    {
+      "candidate_rank": 321,
+      "source_rank": 321,
+      "word": "എന്തിനാണ്",
+      "pos": null,
+      "frequency_count": 533
+    },
+    {
+      "candidate_rank": 322,
+      "source_rank": 322,
+      "word": "കിട്ടും",
+      "pos": null,
+      "frequency_count": 532
+    },
+    {
+      "candidate_rank": 323,
+      "source_rank": 323,
+      "word": "പോകാന്",
+      "pos": null,
+      "frequency_count": 531
+    },
+    {
+      "candidate_rank": 324,
+      "source_rank": 324,
+      "word": "റ്",
+      "pos": null,
+      "frequency_count": 529
+    },
+    {
+      "candidate_rank": 325,
+      "source_rank": 325,
+      "word": "വെള്ളം",
+      "pos": null,
+      "frequency_count": 529
+    },
+    {
+      "candidate_rank": 326,
+      "source_rank": 326,
+      "word": "ചെയ്യണം",
+      "pos": null,
+      "frequency_count": 528
+    },
+    {
+      "candidate_rank": 327,
+      "source_rank": 327,
+      "word": "ചെയ്യാം",
+      "pos": null,
+      "frequency_count": 527
+    },
+    {
+      "candidate_rank": 328,
+      "source_rank": 328,
+      "word": "ഞാനാണ്",
+      "pos": null,
+      "frequency_count": 526
+    },
+    {
+      "candidate_rank": 329,
+      "source_rank": 329,
+      "word": "തരൂ",
+      "pos": null,
+      "frequency_count": 524
+    },
+    {
+      "candidate_rank": 330,
+      "source_rank": 330,
+      "word": "നീയും",
+      "pos": null,
+      "frequency_count": 522
+    },
+    {
+      "candidate_rank": 331,
+      "source_rank": 331,
+      "word": "കഴിഞ്ഞ",
+      "pos": null,
+      "frequency_count": 522
+    },
+    {
+      "candidate_rank": 332,
+      "source_rank": 332,
+      "word": "താഴെ",
+      "pos": null,
+      "frequency_count": 521
+    },
+    {
+      "candidate_rank": 333,
+      "source_rank": 333,
+      "word": "പോവുകയാണ്",
+      "pos": null,
+      "frequency_count": 518
+    },
+    {
+      "candidate_rank": 334,
+      "source_rank": 334,
+      "word": "അവസാനം",
+      "pos": null,
+      "frequency_count": 516
+    },
+    {
+      "candidate_rank": 335,
+      "source_rank": 335,
+      "word": "ഹായ്",
+      "pos": null,
+      "frequency_count": 516
+    },
+    {
+      "candidate_rank": 336,
+      "source_rank": 336,
+      "word": "തീർച്ചയായും",
+      "pos": null,
+      "frequency_count": 515
+    },
+    {
+      "candidate_rank": 337,
+      "source_rank": 337,
+      "word": "വരുന്നത്",
+      "pos": null,
+      "frequency_count": 514
+    },
+    {
+      "candidate_rank": 338,
+      "source_rank": 338,
+      "word": "വീട്",
+      "pos": null,
+      "frequency_count": 512
+    },
+    {
+      "candidate_rank": 339,
+      "source_rank": 339,
+      "word": "പെണ്",
+      "pos": null,
+      "frequency_count": 510
+    },
+    {
+      "candidate_rank": 340,
+      "source_rank": 340,
+      "word": "തിരിച്ച്",
+      "pos": null,
+      "frequency_count": 510
+    },
+    {
+      "candidate_rank": 341,
+      "source_rank": 341,
+      "word": "പരിഭാഷ",
+      "pos": null,
+      "frequency_count": 507
+    },
+    {
+      "candidate_rank": 342,
+      "source_rank": 342,
+      "word": "എങ്കില്",
+      "pos": null,
+      "frequency_count": 507
+    },
+    {
+      "candidate_rank": 343,
+      "source_rank": 343,
+      "word": "മാറി",
+      "pos": null,
+      "frequency_count": 506
+    },
+    {
+      "candidate_rank": 344,
+      "source_rank": 344,
+      "word": "ഉം",
+      "pos": null,
+      "frequency_count": 505
+    },
+    {
+      "candidate_rank": 345,
+      "source_rank": 345,
+      "word": "നോക്കാം",
+      "pos": null,
+      "frequency_count": 505
+    },
+    {
+      "candidate_rank": 346,
+      "source_rank": 346,
+      "word": "ആളുകള്",
+      "pos": null,
+      "frequency_count": 505
+    },
+    {
+      "candidate_rank": 347,
+      "source_rank": 347,
+      "word": "കൂടുതൽ",
+      "pos": null,
+      "frequency_count": 503
+    },
+    {
+      "candidate_rank": 348,
+      "source_rank": 348,
+      "word": "അതിനെ",
+      "pos": null,
+      "frequency_count": 501
+    },
+    {
+      "candidate_rank": 349,
+      "source_rank": 349,
+      "word": "ആകെ",
+      "pos": null,
+      "frequency_count": 501
+    },
+    {
+      "candidate_rank": 350,
+      "source_rank": 350,
+      "word": "താ",
+      "pos": null,
+      "frequency_count": 500
+    },
+    {
+      "candidate_rank": 351,
+      "source_rank": 351,
+      "word": "ഒരാള്",
+      "pos": null,
+      "frequency_count": 496
+    },
+    {
+      "candidate_rank": 352,
+      "source_rank": 352,
+      "word": "ഇതെല്ലാം",
+      "pos": null,
+      "frequency_count": 495
+    },
+    {
+      "candidate_rank": 353,
+      "source_rank": 353,
+      "word": "കാണും",
+      "pos": null,
+      "frequency_count": 494
+    },
+    {
+      "candidate_rank": 354,
+      "source_rank": 354,
+      "word": "നേരെ",
+      "pos": null,
+      "frequency_count": 494
+    },
+    {
+      "candidate_rank": 355,
+      "source_rank": 355,
+      "word": "ആണെന്ന്",
+      "pos": null,
+      "frequency_count": 493
+    },
+    {
+      "candidate_rank": 356,
+      "source_rank": 356,
+      "word": "ഇവന്",
+      "pos": null,
+      "frequency_count": 492
+    },
+    {
+      "candidate_rank": 357,
+      "source_rank": 357,
+      "word": "അല്ലെങ്കിൽ",
+      "pos": null,
+      "frequency_count": 492
+    },
+    {
+      "candidate_rank": 358,
+      "source_rank": 358,
+      "word": "ക്കാന്",
+      "pos": null,
+      "frequency_count": 491
+    },
+    {
+      "candidate_rank": 359,
+      "source_rank": 359,
+      "word": "തോന്നുന്നത്",
+      "pos": null,
+      "frequency_count": 488
+    },
+    {
+      "candidate_rank": 360,
+      "source_rank": 360,
+      "word": "നിൽക്ക്",
+      "pos": null,
+      "frequency_count": 488
+    },
+    {
+      "candidate_rank": 361,
+      "source_rank": 361,
+      "word": "കരുതി",
+      "pos": null,
+      "frequency_count": 487
+    },
+    {
+      "candidate_rank": 362,
+      "source_rank": 362,
+      "word": "മറ്റൊരു",
+      "pos": null,
+      "frequency_count": 486
+    },
+    {
+      "candidate_rank": 363,
+      "source_rank": 363,
+      "word": "ചിലപ്പോള്",
+      "pos": null,
+      "frequency_count": 484
+    },
+    {
+      "candidate_rank": 364,
+      "source_rank": 364,
+      "word": "ഞാനത്",
+      "pos": null,
+      "frequency_count": 483
+    },
+    {
+      "candidate_rank": 365,
+      "source_rank": 365,
+      "word": "മോനെ",
+      "pos": null,
+      "frequency_count": 482
+    },
+    {
+      "candidate_rank": 366,
+      "source_rank": 366,
+      "word": "എന്നും",
+      "pos": null,
+      "frequency_count": 481
+    },
+    {
+      "candidate_rank": 367,
+      "source_rank": 367,
+      "word": "കുറെ",
+      "pos": null,
+      "frequency_count": 478
+    },
+    {
+      "candidate_rank": 368,
+      "source_rank": 368,
+      "word": "കൊണ്ടു",
+      "pos": null,
+      "frequency_count": 476
+    },
+    {
+      "candidate_rank": 369,
+      "source_rank": 369,
+      "word": "രാവിലെ",
+      "pos": null,
+      "frequency_count": 473
+    },
+    {
+      "candidate_rank": 370,
+      "source_rank": 370,
+      "word": "പറ്റും",
+      "pos": null,
+      "frequency_count": 473
+    },
+    {
+      "candidate_rank": 371,
+      "source_rank": 371,
+      "word": "ഒന്നു",
+      "pos": null,
+      "frequency_count": 472
+    },
+    {
+      "candidate_rank": 372,
+      "source_rank": 372,
+      "word": "കുഴപ്പമില്ല",
+      "pos": null,
+      "frequency_count": 471
+    },
+    {
+      "candidate_rank": 373,
+      "source_rank": 373,
+      "word": "ശബ്ദം",
+      "pos": null,
+      "frequency_count": 471
+    },
+    {
+      "candidate_rank": 374,
+      "source_rank": 374,
+      "word": "അതും",
+      "pos": null,
+      "frequency_count": 471
+    },
+    {
+      "candidate_rank": 375,
+      "source_rank": 375,
+      "word": "ഫോണ്",
+      "pos": null,
+      "frequency_count": 468
+    },
+    {
+      "candidate_rank": 376,
+      "source_rank": 376,
+      "word": "ബൈ",
+      "pos": null,
+      "frequency_count": 468
+    },
+    {
+      "candidate_rank": 377,
+      "source_rank": 377,
+      "word": "തുടങ്ങി",
+      "pos": null,
+      "frequency_count": 468
+    },
+    {
+      "candidate_rank": 378,
+      "source_rank": 378,
+      "word": "ഇത്ര",
+      "pos": null,
+      "frequency_count": 467
+    },
+    {
+      "candidate_rank": 379,
+      "source_rank": 379,
+      "word": "ന്നു",
+      "pos": null,
+      "frequency_count": 467
+    },
+    {
+      "candidate_rank": 380,
+      "source_rank": 380,
+      "word": "തവണ",
+      "pos": null,
+      "frequency_count": 466
+    },
+    {
+      "candidate_rank": 381,
+      "source_rank": 381,
+      "word": "അമ്മേ",
+      "pos": null,
+      "frequency_count": 464
+    },
+    {
+      "candidate_rank": 382,
+      "source_rank": 382,
+      "word": "മുഴുവൻ",
+      "pos": null,
+      "frequency_count": 464
+    },
+    {
+      "candidate_rank": 383,
+      "source_rank": 383,
+      "word": "അവ",
+      "pos": null,
+      "frequency_count": 461
+    },
+    {
+      "candidate_rank": 384,
+      "source_rank": 384,
+      "word": "ഹാരി",
+      "pos": null,
+      "frequency_count": 461
+    },
+    {
+      "candidate_rank": 385,
+      "source_rank": 385,
+      "word": "അതായത്",
+      "pos": null,
+      "frequency_count": 460
+    },
+    {
+      "candidate_rank": 386,
+      "source_rank": 386,
+      "word": "മിസ്റ്റര്",
+      "pos": null,
+      "frequency_count": 459
+    },
+    {
+      "candidate_rank": 387,
+      "source_rank": 387,
+      "word": "പാര്",
+      "pos": null,
+      "frequency_count": 457
+    },
+    {
+      "candidate_rank": 388,
+      "source_rank": 388,
+      "word": "അറിയാമോ",
+      "pos": null,
+      "frequency_count": 457
+    },
+    {
+      "candidate_rank": 389,
+      "source_rank": 389,
+      "word": "അച്ഛാ",
+      "pos": null,
+      "frequency_count": 449
+    },
+    {
+      "candidate_rank": 390,
+      "source_rank": 390,
+      "word": "പൂര്",
+      "pos": null,
+      "frequency_count": 448
+    },
+    {
+      "candidate_rank": 391,
+      "source_rank": 391,
+      "word": "വീട്ടിൽ",
+      "pos": null,
+      "frequency_count": 447
+    },
+    {
+      "candidate_rank": 392,
+      "source_rank": 392,
+      "word": "വേണോ",
+      "pos": null,
+      "frequency_count": 445
+    },
+    {
+      "candidate_rank": 393,
+      "source_rank": 393,
+      "word": "മനസ്സിലായോ",
+      "pos": null,
+      "frequency_count": 445
+    },
+    {
+      "candidate_rank": 394,
+      "source_rank": 394,
+      "word": "ഇതുവരെ",
+      "pos": null,
+      "frequency_count": 441
+    },
+    {
+      "candidate_rank": 395,
+      "source_rank": 395,
+      "word": "ഭാര്യ",
+      "pos": null,
+      "frequency_count": 440
+    },
+    {
+      "candidate_rank": 396,
+      "source_rank": 396,
+      "word": "വന്ന്",
+      "pos": null,
+      "frequency_count": 440
+    },
+    {
+      "candidate_rank": 397,
+      "source_rank": 397,
+      "word": "കേട്ടോ",
+      "pos": null,
+      "frequency_count": 440
+    },
+    {
+      "candidate_rank": 398,
+      "source_rank": 398,
+      "word": "പ്രവര്",
+      "pos": null,
+      "frequency_count": 440
+    },
+    {
+      "candidate_rank": 399,
+      "source_rank": 399,
+      "word": "ദാ",
+      "pos": null,
+      "frequency_count": 440
+    },
+    {
+      "candidate_rank": 400,
+      "source_rank": 400,
+      "word": "ഇതിന്",
+      "pos": null,
+      "frequency_count": 434
+    },
+    {
+      "candidate_rank": 401,
+      "source_rank": 401,
+      "word": "കാലം",
+      "pos": null,
+      "frequency_count": 434
+    },
+    {
+      "candidate_rank": 402,
+      "source_rank": 402,
+      "word": "കാര്യങ്ങൾ",
+      "pos": null,
+      "frequency_count": 431
+    },
+    {
+      "candidate_rank": 403,
+      "source_rank": 403,
+      "word": "എന്നാ",
+      "pos": null,
+      "frequency_count": 429
+    },
+    {
+      "candidate_rank": 404,
+      "source_rank": 404,
+      "word": "അദ്ദേഹത്തിന്",
+      "pos": null,
+      "frequency_count": 429
+    },
+    {
+      "candidate_rank": 405,
+      "source_rank": 405,
+      "word": "നിനക്കു",
+      "pos": null,
+      "frequency_count": 425
+    },
+    {
+      "candidate_rank": 406,
+      "source_rank": 406,
+      "word": "ലോകം",
+      "pos": null,
+      "frequency_count": 425
+    },
+    {
+      "candidate_rank": 407,
+      "source_rank": 407,
+      "word": "അവർക്ക്",
+      "pos": null,
+      "frequency_count": 424
+    },
+    {
+      "candidate_rank": 408,
+      "source_rank": 408,
+      "word": "ഇന്നലെ",
+      "pos": null,
+      "frequency_count": 424
+    },
+    {
+      "candidate_rank": 409,
+      "source_rank": 409,
+      "word": "ആന്",
+      "pos": null,
+      "frequency_count": 423
+    },
+    {
+      "candidate_rank": 410,
+      "source_rank": 410,
+      "word": "തകര്",
+      "pos": null,
+      "frequency_count": 423
+    },
+    {
+      "candidate_rank": 411,
+      "source_rank": 411,
+      "word": "വാര്",
+      "pos": null,
+      "frequency_count": 422
+    },
+    {
+      "candidate_rank": 412,
+      "source_rank": 412,
+      "word": "കൊല്ലും",
+      "pos": null,
+      "frequency_count": 422
+    },
+    {
+      "candidate_rank": 413,
+      "source_rank": 413,
+      "word": "വിട്",
+      "pos": null,
+      "frequency_count": 421
+    },
+    {
+      "candidate_rank": 414,
+      "source_rank": 414,
+      "word": "ഏയ്",
+      "pos": null,
+      "frequency_count": 420
+    },
+    {
+      "candidate_rank": 415,
+      "source_rank": 415,
+      "word": "സഹായം",
+      "pos": null,
+      "frequency_count": 418
+    },
+    {
+      "candidate_rank": 416,
+      "source_rank": 416,
+      "word": "യാത്ര",
+      "pos": null,
+      "frequency_count": 418
+    },
+    {
+      "candidate_rank": 417,
+      "source_rank": 417,
+      "word": "പകരം",
+      "pos": null,
+      "frequency_count": 411
+    },
+    {
+      "candidate_rank": 418,
+      "source_rank": 418,
+      "word": "ഷം",
+      "pos": null,
+      "frequency_count": 408
+    },
+    {
+      "candidate_rank": 419,
+      "source_rank": 419,
+      "word": "ഇതില്",
+      "pos": null,
+      "frequency_count": 407
+    },
+    {
+      "candidate_rank": 420,
+      "source_rank": 420,
+      "word": "തോന്നുന്നില്ല",
+      "pos": null,
+      "frequency_count": 407
+    },
+    {
+      "candidate_rank": 421,
+      "source_rank": 421,
+      "word": "അധികം",
+      "pos": null,
+      "frequency_count": 406
+    },
+    {
+      "candidate_rank": 422,
+      "source_rank": 422,
+      "word": "കഥ",
+      "pos": null,
+      "frequency_count": 404
+    },
+    {
+      "candidate_rank": 423,
+      "source_rank": 423,
+      "word": "അപ്പോ",
+      "pos": null,
+      "frequency_count": 404
+    },
+    {
+      "candidate_rank": 424,
+      "source_rank": 424,
+      "word": "അവനു",
+      "pos": null,
+      "frequency_count": 402
+    },
+    {
+      "candidate_rank": 425,
+      "source_rank": 425,
+      "word": "കുട്ടികള്",
+      "pos": null,
+      "frequency_count": 401
+    },
+    {
+      "candidate_rank": 426,
+      "source_rank": 426,
+      "word": "ക്ഷമിക്കൂ",
+      "pos": null,
+      "frequency_count": 401
+    },
+    {
+      "candidate_rank": 427,
+      "source_rank": 427,
+      "word": "അന്ന്",
+      "pos": null,
+      "frequency_count": 400
+    },
+    {
+      "candidate_rank": 428,
+      "source_rank": 428,
+      "word": "എവിടെയാണ്",
+      "pos": null,
+      "frequency_count": 398
+    },
+    {
+      "candidate_rank": 429,
+      "source_rank": 429,
+      "word": "ഏതു",
+      "pos": null,
+      "frequency_count": 396
+    },
+    {
+      "candidate_rank": 430,
+      "source_rank": 430,
+      "word": "മാത്രമല്ല",
+      "pos": null,
+      "frequency_count": 395
+    },
+    {
+      "candidate_rank": 431,
+      "source_rank": 431,
+      "word": "സ്വാഗതം",
+      "pos": null,
+      "frequency_count": 395
+    },
+    {
+      "candidate_rank": 432,
+      "source_rank": 432,
+      "word": "ആരോ",
+      "pos": null,
+      "frequency_count": 394
+    },
+    {
+      "candidate_rank": 433,
+      "source_rank": 433,
+      "word": "എന്നത്",
+      "pos": null,
+      "frequency_count": 393
+    },
+    {
+      "candidate_rank": 434,
+      "source_rank": 434,
+      "word": "കുട്ടികളെ",
+      "pos": null,
+      "frequency_count": 390
+    },
+    {
+      "candidate_rank": 435,
+      "source_rank": 435,
+      "word": "എന്നാലും",
+      "pos": null,
+      "frequency_count": 390
+    },
+    {
+      "candidate_rank": 436,
+      "source_rank": 436,
+      "word": "ഫ്",
+      "pos": null,
+      "frequency_count": 388
+    },
+    {
+      "candidate_rank": 437,
+      "source_rank": 437,
+      "word": "ഏത്",
+      "pos": null,
+      "frequency_count": 387
+    },
+    {
+      "candidate_rank": 438,
+      "source_rank": 438,
+      "word": "ഞങ്ങൾക്ക്",
+      "pos": null,
+      "frequency_count": 386
+    },
+    {
+      "candidate_rank": 439,
+      "source_rank": 439,
+      "word": "നീയെന്താ",
+      "pos": null,
+      "frequency_count": 386
+    },
+    {
+      "candidate_rank": 440,
+      "source_rank": 440,
+      "word": "അതാ",
+      "pos": null,
+      "frequency_count": 385
+    },
+    {
+      "candidate_rank": 441,
+      "source_rank": 441,
+      "word": "ചേര്",
+      "pos": null,
+      "frequency_count": 384
+    },
+    {
+      "candidate_rank": 442,
+      "source_rank": 442,
+      "word": "ചെയ്യ്",
+      "pos": null,
+      "frequency_count": 384
+    },
+    {
+      "candidate_rank": 443,
+      "source_rank": 443,
+      "word": "ഇല്ലേ",
+      "pos": null,
+      "frequency_count": 383
+    },
+    {
+      "candidate_rank": 444,
+      "source_rank": 444,
+      "word": "ഒരേ",
+      "pos": null,
+      "frequency_count": 381
+    },
+    {
+      "candidate_rank": 445,
+      "source_rank": 445,
+      "word": "പിടിച്ചു",
+      "pos": null,
+      "frequency_count": 381
+    },
+    {
+      "candidate_rank": 446,
+      "source_rank": 446,
+      "word": "ഇത്രയും",
+      "pos": null,
+      "frequency_count": 380
+    },
+    {
+      "candidate_rank": 447,
+      "source_rank": 447,
+      "word": "സമയത്ത്",
+      "pos": null,
+      "frequency_count": 379
+    },
+    {
+      "candidate_rank": 448,
+      "source_rank": 448,
+      "word": "സോറി",
+      "pos": null,
+      "frequency_count": 378
+    },
+    {
+      "candidate_rank": 449,
+      "source_rank": 449,
+      "word": "പറയണം",
+      "pos": null,
+      "frequency_count": 378
+    },
+    {
+      "candidate_rank": 450,
+      "source_rank": 450,
+      "word": "ഉള്ളൂ",
+      "pos": null,
+      "frequency_count": 378
+    },
+    {
+      "candidate_rank": 451,
+      "source_rank": 451,
+      "word": "പാടില്ല",
+      "pos": null,
+      "frequency_count": 378
+    },
+    {
+      "candidate_rank": 452,
+      "source_rank": 452,
+      "word": "മൂന്നു",
+      "pos": null,
+      "frequency_count": 377
+    },
+    {
+      "candidate_rank": 453,
+      "source_rank": 453,
+      "word": "തല",
+      "pos": null,
+      "frequency_count": 376
+    },
+    {
+      "candidate_rank": 454,
+      "source_rank": 454,
+      "word": "കാണണം",
+      "pos": null,
+      "frequency_count": 376
+    },
+    {
+      "candidate_rank": 455,
+      "source_rank": 455,
+      "word": "ജര്",
+      "pos": null,
+      "frequency_count": 374
+    },
+    {
+      "candidate_rank": 456,
+      "source_rank": 456,
+      "word": "വിവാഹം",
+      "pos": null,
+      "frequency_count": 371
+    },
+    {
+      "candidate_rank": 457,
+      "source_rank": 457,
+      "word": "എന്തുകൊണ്ട്",
+      "pos": null,
+      "frequency_count": 370
+    },
+    {
+      "candidate_rank": 458,
+      "source_rank": 458,
+      "word": "ഭര്",
+      "pos": null,
+      "frequency_count": 369
+    },
+    {
+      "candidate_rank": 459,
+      "source_rank": 459,
+      "word": "അതൊക്കെ",
+      "pos": null,
+      "frequency_count": 367
+    },
+    {
+      "candidate_rank": 460,
+      "source_rank": 460,
+      "word": "ഹേ",
+      "pos": null,
+      "frequency_count": 366
+    },
+    {
+      "candidate_rank": 461,
+      "source_rank": 461,
+      "word": "ഡോക്ടര്",
+      "pos": null,
+      "frequency_count": 363
+    },
+    {
+      "candidate_rank": 462,
+      "source_rank": 462,
+      "word": "ചോദ്യം",
+      "pos": null,
+      "frequency_count": 363
+    },
+    {
+      "candidate_rank": 463,
+      "source_rank": 463,
+      "word": "വെടി",
+      "pos": null,
+      "frequency_count": 362
+    },
+    {
+      "candidate_rank": 464,
+      "source_rank": 464,
+      "word": "വിട്ടു",
+      "pos": null,
+      "frequency_count": 362
+    },
+    {
+      "candidate_rank": 465,
+      "source_rank": 465,
+      "word": "യഥാര്",
+      "pos": null,
+      "frequency_count": 362
+    },
+    {
+      "candidate_rank": 466,
+      "source_rank": 466,
+      "word": "മാഡം",
+      "pos": null,
+      "frequency_count": 361
+    },
+    {
+      "candidate_rank": 467,
+      "source_rank": 467,
+      "word": "പിന്നീട്",
+      "pos": null,
+      "frequency_count": 361
+    },
+    {
+      "candidate_rank": 468,
+      "source_rank": 468,
+      "word": "നോക്കട്ടെ",
+      "pos": null,
+      "frequency_count": 360
+    },
+    {
+      "candidate_rank": 469,
+      "source_rank": 469,
+      "word": "player",
+      "pos": null,
+      "frequency_count": 359
+    },
+    {
+      "candidate_rank": 470,
+      "source_rank": 470,
+      "word": "തമാശ",
+      "pos": null,
+      "frequency_count": 357
+    },
+    {
+      "candidate_rank": 471,
+      "source_rank": 471,
+      "word": "വാക്ക്",
+      "pos": null,
+      "frequency_count": 357
+    },
+    {
+      "candidate_rank": 472,
+      "source_rank": 472,
+      "word": "പറ്റൂ",
+      "pos": null,
+      "frequency_count": 356
+    },
+    {
+      "candidate_rank": 473,
+      "source_rank": 473,
+      "word": "ആയിരിക്കും",
+      "pos": null,
+      "frequency_count": 356
+    },
+    {
+      "candidate_rank": 474,
+      "source_rank": 474,
+      "word": "മുഖം",
+      "pos": null,
+      "frequency_count": 354
+    },
+    {
+      "candidate_rank": 475,
+      "source_rank": 475,
+      "word": "ഒരാളെ",
+      "pos": null,
+      "frequency_count": 354
+    },
+    {
+      "candidate_rank": 476,
+      "source_rank": 476,
+      "word": "സാരമില്ല",
+      "pos": null,
+      "frequency_count": 354
+    },
+    {
+      "candidate_rank": 477,
+      "source_rank": 477,
+      "word": "മുതല്",
+      "pos": null,
+      "frequency_count": 354
+    },
+    {
+      "candidate_rank": 478,
+      "source_rank": 478,
+      "word": "ഉള്ളത്",
+      "pos": null,
+      "frequency_count": 353
+    },
+    {
+      "candidate_rank": 479,
+      "source_rank": 479,
+      "word": "ആഹ്",
+      "pos": null,
+      "frequency_count": 353
+    },
+    {
+      "candidate_rank": 480,
+      "source_rank": 480,
+      "word": "തോക്ക്",
+      "pos": null,
+      "frequency_count": 353
+    },
+    {
+      "candidate_rank": 481,
+      "source_rank": 481,
+      "word": "നിന്നു",
+      "pos": null,
+      "frequency_count": 351
+    },
+    {
+      "candidate_rank": 482,
+      "source_rank": 482,
+      "word": "കേസ്",
+      "pos": null,
+      "frequency_count": 350
+    },
+    {
+      "candidate_rank": 483,
+      "source_rank": 483,
+      "word": "പറയാൻ",
+      "pos": null,
+      "frequency_count": 350
+    },
+    {
+      "candidate_rank": 484,
+      "source_rank": 484,
+      "word": "തോന്നി",
+      "pos": null,
+      "frequency_count": 350
+    },
+    {
+      "candidate_rank": 485,
+      "source_rank": 485,
+      "word": "സാധനം",
+      "pos": null,
+      "frequency_count": 349
+    },
+    {
+      "candidate_rank": 486,
+      "source_rank": 486,
+      "word": "വരാന്",
+      "pos": null,
+      "frequency_count": 347
+    },
+    {
+      "candidate_rank": 487,
+      "source_rank": 487,
+      "word": "മനസ്സിലായി",
+      "pos": null,
+      "frequency_count": 344
+    },
+    {
+      "candidate_rank": 488,
+      "source_rank": 488,
+      "word": "നല്ലൊരു",
+      "pos": null,
+      "frequency_count": 343
+    },
+    {
+      "candidate_rank": 489,
+      "source_rank": 489,
+      "word": "അങ്ങോട്ട്",
+      "pos": null,
+      "frequency_count": 342
+    },
+    {
+      "candidate_rank": 490,
+      "source_rank": 490,
+      "word": "കാശ്",
+      "pos": null,
+      "frequency_count": 342
+    },
+    {
+      "candidate_rank": 491,
+      "source_rank": 491,
+      "word": "മിനിറ്റ്",
+      "pos": null,
+      "frequency_count": 341
+    },
+    {
+      "candidate_rank": 492,
+      "source_rank": 492,
+      "word": "വരുന്നുണ്ട്",
+      "pos": null,
+      "frequency_count": 340
+    },
+    {
+      "candidate_rank": 493,
+      "source_rank": 493,
+      "word": "പറഞ്ഞില്ലേ",
+      "pos": null,
+      "frequency_count": 339
+    },
+    {
+      "candidate_rank": 494,
+      "source_rank": 494,
+      "word": "എങ്കിലും",
+      "pos": null,
+      "frequency_count": 337
+    },
+    {
+      "candidate_rank": 495,
+      "source_rank": 495,
+      "word": "കൊന്നു",
+      "pos": null,
+      "frequency_count": 337
+    },
+    {
+      "candidate_rank": 496,
+      "source_rank": 496,
+      "word": "വല്ല",
+      "pos": null,
+      "frequency_count": 336
+    },
+    {
+      "candidate_rank": 497,
+      "source_rank": 497,
+      "word": "നാല്",
+      "pos": null,
+      "frequency_count": 335
+    },
+    {
+      "candidate_rank": 498,
+      "source_rank": 498,
+      "word": "മിസ്റ്റർ",
+      "pos": null,
+      "frequency_count": 335
+    },
+    {
+      "candidate_rank": 499,
+      "source_rank": 499,
+      "word": "അങ്ങ്",
+      "pos": null,
+      "frequency_count": 335
+    },
+    {
+      "candidate_rank": 500,
+      "source_rank": 500,
+      "word": "അങ്ങിനെ",
+      "pos": null,
+      "frequency_count": 335
+    },
+    {
+      "candidate_rank": 501,
+      "source_rank": 501,
+      "word": "പറഞ്ഞാല്",
+      "pos": null,
+      "frequency_count": 334
+    },
+    {
+      "candidate_rank": 502,
+      "source_rank": 502,
+      "word": "എടുത്തു",
+      "pos": null,
+      "frequency_count": 333
+    },
+    {
+      "candidate_rank": 503,
+      "source_rank": 503,
+      "word": "അയ്യോ",
+      "pos": null,
+      "frequency_count": 332
+    },
+    {
+      "candidate_rank": 504,
+      "source_rank": 504,
+      "word": "ചെയ്ത്",
+      "pos": null,
+      "frequency_count": 330
+    },
+    {
+      "candidate_rank": 505,
+      "source_rank": 505,
+      "word": "എനിക്കത്",
+      "pos": null,
+      "frequency_count": 330
+    },
+    {
+      "candidate_rank": 506,
+      "source_rank": 506,
+      "word": "എന്തൊരു",
+      "pos": null,
+      "frequency_count": 329
+    },
+    {
+      "candidate_rank": 507,
+      "source_rank": 507,
+      "word": "ഉത്തരം",
+      "pos": null,
+      "frequency_count": 329
+    },
+    {
+      "candidate_rank": 508,
+      "source_rank": 508,
+      "word": "താങ്കളുടെ",
+      "pos": null,
+      "frequency_count": 327
+    },
+    {
+      "candidate_rank": 509,
+      "source_rank": 509,
+      "word": "മനുഷ്യന്",
+      "pos": null,
+      "frequency_count": 327
+    },
+    {
+      "candidate_rank": 510,
+      "source_rank": 510,
+      "word": "വാതില്",
+      "pos": null,
+      "frequency_count": 326
+    },
+    {
+      "candidate_rank": 511,
+      "source_rank": 511,
+      "word": "തിരികെ",
+      "pos": null,
+      "frequency_count": 325
+    },
+    {
+      "candidate_rank": 512,
+      "source_rank": 512,
+      "word": "പിടിക്ക്",
+      "pos": null,
+      "frequency_count": 325
+    },
+    {
+      "candidate_rank": 513,
+      "source_rank": 513,
+      "word": "അദ്ദേഹത്തെ",
+      "pos": null,
+      "frequency_count": 324
+    },
+    {
+      "candidate_rank": 514,
+      "source_rank": 514,
+      "word": "വളര്",
+      "pos": null,
+      "frequency_count": 324
+    },
+    {
+      "candidate_rank": 515,
+      "source_rank": 515,
+      "word": "മുൻപ്",
+      "pos": null,
+      "frequency_count": 323
+    },
+    {
+      "candidate_rank": 516,
+      "source_rank": 516,
+      "word": "കുഴപ്പം",
+      "pos": null,
+      "frequency_count": 322
+    },
+    {
+      "candidate_rank": 517,
+      "source_rank": 517,
+      "word": "നിർത്ത്",
+      "pos": null,
+      "frequency_count": 321
+    },
+    {
+      "candidate_rank": 518,
+      "source_rank": 518,
+      "word": "ചിലപ്പോൾ",
+      "pos": null,
+      "frequency_count": 319
+    },
+    {
+      "candidate_rank": 519,
+      "source_rank": 519,
+      "word": "ത്തി",
+      "pos": null,
+      "frequency_count": 319
+    },
+    {
+      "candidate_rank": 520,
+      "source_rank": 520,
+      "word": "മോളെ",
+      "pos": null,
+      "frequency_count": 319
+    },
+    {
+      "candidate_rank": 521,
+      "source_rank": 521,
+      "word": "കരുതുന്നു",
+      "pos": null,
+      "frequency_count": 318
+    },
+    {
+      "candidate_rank": 522,
+      "source_rank": 522,
+      "word": "സാധാരണ",
+      "pos": null,
+      "frequency_count": 318
+    },
+    {
+      "candidate_rank": 523,
+      "source_rank": 523,
+      "word": "കണ്ടിട്ട്",
+      "pos": null,
+      "frequency_count": 317
+    },
+    {
+      "candidate_rank": 524,
+      "source_rank": 524,
+      "word": "ബാക്കി",
+      "pos": null,
+      "frequency_count": 317
+    },
+    {
+      "candidate_rank": 525,
+      "source_rank": 525,
+      "word": "ഇവനെ",
+      "pos": null,
+      "frequency_count": 315
+    },
+    {
+      "candidate_rank": 526,
+      "source_rank": 526,
+      "word": "പറഞ്ഞ",
+      "pos": null,
+      "frequency_count": 315
+    },
+    {
+      "candidate_rank": 527,
+      "source_rank": 527,
+      "word": "ഒരിക്കല്",
+      "pos": null,
+      "frequency_count": 315
+    },
+    {
+      "candidate_rank": 528,
+      "source_rank": 528,
+      "word": "മാസം",
+      "pos": null,
+      "frequency_count": 315
+    },
+    {
+      "candidate_rank": 529,
+      "source_rank": 529,
+      "word": "വല്ലതും",
+      "pos": null,
+      "frequency_count": 313
+    },
+    {
+      "candidate_rank": 530,
+      "source_rank": 530,
+      "word": "നടക്കുന്നത്",
+      "pos": null,
+      "frequency_count": 313
+    },
+    {
+      "candidate_rank": 531,
+      "source_rank": 531,
+      "word": "ആദ്യത്തെ",
+      "pos": null,
+      "frequency_count": 312
+    },
+    {
+      "candidate_rank": 532,
+      "source_rank": 532,
+      "word": "കാണിച്ചു",
+      "pos": null,
+      "frequency_count": 312
+    },
+    {
+      "candidate_rank": 533,
+      "source_rank": 533,
+      "word": "നിന്നാണ്",
+      "pos": null,
+      "frequency_count": 311
+    },
+    {
+      "candidate_rank": 534,
+      "source_rank": 534,
+      "word": "ഇത്തരം",
+      "pos": null,
+      "frequency_count": 311
+    },
+    {
+      "candidate_rank": 535,
+      "source_rank": 535,
+      "word": "പോകാൻ",
+      "pos": null,
+      "frequency_count": 311
+    },
+    {
+      "candidate_rank": 536,
+      "source_rank": 536,
+      "word": "നേരം",
+      "pos": null,
+      "frequency_count": 310
+    },
+    {
+      "candidate_rank": 537,
+      "source_rank": 537,
+      "word": "ഇരിക്ക്",
+      "pos": null,
+      "frequency_count": 309
+    },
+    {
+      "candidate_rank": 538,
+      "source_rank": 538,
+      "word": "അതെന്താ",
+      "pos": null,
+      "frequency_count": 309
+    },
+    {
+      "candidate_rank": 539,
+      "source_rank": 539,
+      "word": "നീയൊരു",
+      "pos": null,
+      "frequency_count": 309
+    },
+    {
+      "candidate_rank": 540,
+      "source_rank": 540,
+      "word": "പോകുന്നില്ല",
+      "pos": null,
+      "frequency_count": 308
+    },
+    {
+      "candidate_rank": 541,
+      "source_rank": 541,
+      "word": "സ്വപ്നം",
+      "pos": null,
+      "frequency_count": 307
+    },
+    {
+      "candidate_rank": 542,
+      "source_rank": 542,
+      "word": "അതിൽ",
+      "pos": null,
+      "frequency_count": 305
+    },
+    {
+      "candidate_rank": 543,
+      "source_rank": 543,
+      "word": "മോശം",
+      "pos": null,
+      "frequency_count": 305
+    },
+    {
+      "candidate_rank": 544,
+      "source_rank": 544,
+      "word": "ഇവര്",
+      "pos": null,
+      "frequency_count": 304
+    },
+    {
+      "candidate_rank": 545,
+      "source_rank": 545,
+      "word": "വരില്ല",
+      "pos": null,
+      "frequency_count": 304
+    },
+    {
+      "candidate_rank": 546,
+      "source_rank": 546,
+      "word": "മുകളില്",
+      "pos": null,
+      "frequency_count": 304
+    },
+    {
+      "candidate_rank": 547,
+      "source_rank": 547,
+      "word": "പോയത്",
+      "pos": null,
+      "frequency_count": 303
+    },
+    {
+      "candidate_rank": 548,
+      "source_rank": 548,
+      "word": "വീട്ടിലേക്ക്",
+      "pos": null,
+      "frequency_count": 302
+    },
+    {
+      "candidate_rank": 549,
+      "source_rank": 549,
+      "word": "കുട്ടിയെ",
+      "pos": null,
+      "frequency_count": 302
+    },
+    {
+      "candidate_rank": 550,
+      "source_rank": 550,
+      "word": "വില്",
+      "pos": null,
+      "frequency_count": 302
+    },
+    {
+      "candidate_rank": 551,
+      "source_rank": 551,
+      "word": "കാണുന്നത്",
+      "pos": null,
+      "frequency_count": 301
+    },
+    {
+      "candidate_rank": 552,
+      "source_rank": 552,
+      "word": "നമ്പര്",
+      "pos": null,
+      "frequency_count": 301
+    },
+    {
+      "candidate_rank": 553,
+      "source_rank": 553,
+      "word": "സ്വര്",
+      "pos": null,
+      "frequency_count": 300
+    },
+    {
+      "candidate_rank": 554,
+      "source_rank": 554,
+      "word": "മറ്റു",
+      "pos": null,
+      "frequency_count": 299
+    },
+    {
+      "candidate_rank": 555,
+      "source_rank": 555,
+      "word": "ആളുകളെ",
+      "pos": null,
+      "frequency_count": 299
+    },
+    {
+      "candidate_rank": 556,
+      "source_rank": 556,
+      "word": "മരണം",
+      "pos": null,
+      "frequency_count": 298
+    },
+    {
+      "candidate_rank": 557,
+      "source_rank": 557,
+      "word": "ഡോക്ടർ",
+      "pos": null,
+      "frequency_count": 297
+    },
+    {
+      "candidate_rank": 558,
+      "source_rank": 558,
+      "word": "വില",
+      "pos": null,
+      "frequency_count": 296
+    },
+    {
+      "candidate_rank": 559,
+      "source_rank": 559,
+      "word": "നേരത്തെ",
+      "pos": null,
+      "frequency_count": 295
+    },
+    {
+      "candidate_rank": 560,
+      "source_rank": 560,
+      "word": "വയ്യ",
+      "pos": null,
+      "frequency_count": 294
+    },
+    {
+      "candidate_rank": 561,
+      "source_rank": 561,
+      "word": "അദ്ദേഹത്തിന്റെ",
+      "pos": null,
+      "frequency_count": 294
+    },
+    {
+      "candidate_rank": 562,
+      "source_rank": 562,
+      "word": "അവസാന",
+      "pos": null,
+      "frequency_count": 294
+    },
+    {
+      "candidate_rank": 563,
+      "source_rank": 563,
+      "word": "കണ്ടെത്തി",
+      "pos": null,
+      "frequency_count": 294
+    },
+    {
+      "candidate_rank": 564,
+      "source_rank": 564,
+      "word": "വിളിച്ചു",
+      "pos": null,
+      "frequency_count": 294
+    },
+    {
+      "candidate_rank": 565,
+      "source_rank": 565,
+      "word": "നിങ്ങടെ",
+      "pos": null,
+      "frequency_count": 294
+    },
+    {
+      "candidate_rank": 566,
+      "source_rank": 566,
+      "word": "ചിലപ്പോ",
+      "pos": null,
+      "frequency_count": 293
+    },
+    {
+      "candidate_rank": 567,
+      "source_rank": 567,
+      "word": "ഉദ്ദേശിച്ചത്",
+      "pos": null,
+      "frequency_count": 292
+    },
+    {
+      "candidate_rank": 568,
+      "source_rank": 568,
+      "word": "ഇല്ലാ",
+      "pos": null,
+      "frequency_count": 291
+    },
+    {
+      "candidate_rank": 569,
+      "source_rank": 569,
+      "word": "ദിവസവും",
+      "pos": null,
+      "frequency_count": 289
+    },
+    {
+      "candidate_rank": 570,
+      "source_rank": 570,
+      "word": "നിങ്ങളും",
+      "pos": null,
+      "frequency_count": 289
+    },
+    {
+      "candidate_rank": 571,
+      "source_rank": 571,
+      "word": "അകത്തേക്ക്",
+      "pos": null,
+      "frequency_count": 289
+    },
+    {
+      "candidate_rank": 572,
+      "source_rank": 572,
+      "word": "ക്കാര്",
+      "pos": null,
+      "frequency_count": 287
+    },
+    {
+      "candidate_rank": 573,
+      "source_rank": 573,
+      "word": "സ്ത്രീ",
+      "pos": null,
+      "frequency_count": 286
+    },
+    {
+      "candidate_rank": 574,
+      "source_rank": 574,
+      "word": "തന്",
+      "pos": null,
+      "frequency_count": 286
+    },
+    {
+      "candidate_rank": 575,
+      "source_rank": 575,
+      "word": "ഇതിനു",
+      "pos": null,
+      "frequency_count": 286
+    },
+    {
+      "candidate_rank": 576,
+      "source_rank": 576,
+      "word": "അമ്മയെ",
+      "pos": null,
+      "frequency_count": 285
+    },
+    {
+      "candidate_rank": 577,
+      "source_rank": 577,
+      "word": "നശിച്ച",
+      "pos": null,
+      "frequency_count": 284
+    },
+    {
+      "candidate_rank": 578,
+      "source_rank": 578,
+      "word": "പാവം",
+      "pos": null,
+      "frequency_count": 284
+    },
+    {
+      "candidate_rank": 579,
+      "source_rank": 579,
+      "word": "ഡി",
+      "pos": null,
+      "frequency_count": 284
+    },
+    {
+      "candidate_rank": 580,
+      "source_rank": 580,
+      "word": "എന്താണെന്ന്",
+      "pos": null,
+      "frequency_count": 283
+    },
+    {
+      "candidate_rank": 581,
+      "source_rank": 581,
+      "word": "ഗീത",
+      "pos": null,
+      "frequency_count": 282
+    },
+    {
+      "candidate_rank": 582,
+      "source_rank": 582,
+      "word": "ചെയ്ത",
+      "pos": null,
+      "frequency_count": 281
+    },
+    {
+      "candidate_rank": 583,
+      "source_rank": 583,
+      "word": "അവൾക്ക്",
+      "pos": null,
+      "frequency_count": 281
+    },
+    {
+      "candidate_rank": 584,
+      "source_rank": 584,
+      "word": "അച്ഛൻ",
+      "pos": null,
+      "frequency_count": 280
+    },
+    {
+      "candidate_rank": 585,
+      "source_rank": 585,
+      "word": "ഇരിക്കൂ",
+      "pos": null,
+      "frequency_count": 280
+    },
+    {
+      "candidate_rank": 586,
+      "source_rank": 586,
+      "word": "അതെല്ലാം",
+      "pos": null,
+      "frequency_count": 280
+    },
+    {
+      "candidate_rank": 587,
+      "source_rank": 587,
+      "word": "കര്",
+      "pos": null,
+      "frequency_count": 280
+    },
+    {
+      "candidate_rank": 588,
+      "source_rank": 588,
+      "word": "സംഭവിച്ചത്",
+      "pos": null,
+      "frequency_count": 280
+    },
+    {
+      "candidate_rank": 589,
+      "source_rank": 589,
+      "word": "റെയും",
+      "pos": null,
+      "frequency_count": 278
+    },
+    {
+      "candidate_rank": 590,
+      "source_rank": 590,
+      "word": "ഉയര്",
+      "pos": null,
+      "frequency_count": 278
+    },
+    {
+      "candidate_rank": 591,
+      "source_rank": 591,
+      "word": "മുന്നില്",
+      "pos": null,
+      "frequency_count": 278
+    },
+    {
+      "candidate_rank": 592,
+      "source_rank": 592,
+      "word": "താല്",
+      "pos": null,
+      "frequency_count": 277
+    },
+    {
+      "candidate_rank": 593,
+      "source_rank": 593,
+      "word": "ഓഫ്",
+      "pos": null,
+      "frequency_count": 277
+    },
+    {
+      "candidate_rank": 594,
+      "source_rank": 594,
+      "word": "ചെയ്യൂ",
+      "pos": null,
+      "frequency_count": 277
+    },
+    {
+      "candidate_rank": 595,
+      "source_rank": 595,
+      "word": "ഉടനെ",
+      "pos": null,
+      "frequency_count": 277
+    },
+    {
+      "candidate_rank": 596,
+      "source_rank": 596,
+      "word": "മിസ്",
+      "pos": null,
+      "frequency_count": 276
+    },
+    {
+      "candidate_rank": 597,
+      "source_rank": 597,
+      "word": "കളി",
+      "pos": null,
+      "frequency_count": 276
+    },
+    {
+      "candidate_rank": 598,
+      "source_rank": 598,
+      "word": "ആവശ്യം",
+      "pos": null,
+      "frequency_count": 275
+    },
+    {
+      "candidate_rank": 599,
+      "source_rank": 599,
+      "word": "ഭാഗം",
+      "pos": null,
+      "frequency_count": 275
+    },
+    {
+      "candidate_rank": 600,
+      "source_rank": 600,
+      "word": "ജോണ്",
+      "pos": null,
+      "frequency_count": 273
+    },
+    {
+      "candidate_rank": 601,
+      "source_rank": 601,
+      "word": "കൂടാതെ",
+      "pos": null,
+      "frequency_count": 273
+    },
+    {
+      "candidate_rank": 602,
+      "source_rank": 602,
+      "word": "ഇവിടുന്ന്",
+      "pos": null,
+      "frequency_count": 272
+    },
+    {
+      "candidate_rank": 603,
+      "source_rank": 603,
+      "word": "ഇന്",
+      "pos": null,
+      "frequency_count": 272
+    },
+    {
+      "candidate_rank": 604,
+      "source_rank": 604,
+      "word": "എല്ലാരും",
+      "pos": null,
+      "frequency_count": 271
+    },
+    {
+      "candidate_rank": 605,
+      "source_rank": 605,
+      "word": "സംസാരിക്കുന്നത്",
+      "pos": null,
+      "frequency_count": 270
+    },
+    {
+      "candidate_rank": 606,
+      "source_rank": 606,
+      "word": "ഏതെങ്കിലും",
+      "pos": null,
+      "frequency_count": 270
+    },
+    {
+      "candidate_rank": 607,
+      "source_rank": 607,
+      "word": "subtitles",
+      "pos": null,
+      "frequency_count": 269
+    },
+    {
+      "candidate_rank": 608,
+      "source_rank": 608,
+      "word": "കേട്ടു",
+      "pos": null,
+      "frequency_count": 269
+    },
+    {
+      "candidate_rank": 609,
+      "source_rank": 609,
+      "word": "എടാ",
+      "pos": null,
+      "frequency_count": 268
+    },
+    {
+      "candidate_rank": 610,
+      "source_rank": 610,
+      "word": "മോനേ",
+      "pos": null,
+      "frequency_count": 268
+    },
+    {
+      "candidate_rank": 611,
+      "source_rank": 611,
+      "word": "മാറ്റി",
+      "pos": null,
+      "frequency_count": 268
+    },
+    {
+      "candidate_rank": 612,
+      "source_rank": 612,
+      "word": "അറിയുമോ",
+      "pos": null,
+      "frequency_count": 267
+    },
+    {
+      "candidate_rank": 613,
+      "source_rank": 613,
+      "word": "അതൊന്നും",
+      "pos": null,
+      "frequency_count": 265
+    },
+    {
+      "candidate_rank": 614,
+      "source_rank": 614,
+      "word": "വർഷം",
+      "pos": null,
+      "frequency_count": 265
+    },
+    {
+      "candidate_rank": 615,
+      "source_rank": 615,
+      "word": "കുറേ",
+      "pos": null,
+      "frequency_count": 265
+    },
+    {
+      "candidate_rank": 616,
+      "source_rank": 616,
+      "word": "അമ്മയുടെ",
+      "pos": null,
+      "frequency_count": 264
+    },
+    {
+      "candidate_rank": 617,
+      "source_rank": 617,
+      "word": "ഞാനിവിടെ",
+      "pos": null,
+      "frequency_count": 263
+    },
+    {
+      "candidate_rank": 618,
+      "source_rank": 618,
+      "word": "ആളുകൾ",
+      "pos": null,
+      "frequency_count": 262
+    },
+    {
+      "candidate_rank": 619,
+      "source_rank": 619,
+      "word": "എടുക്ക്",
+      "pos": null,
+      "frequency_count": 261
+    },
+    {
+      "candidate_rank": 620,
+      "source_rank": 620,
+      "word": "എങ്ങനെയാണ്",
+      "pos": null,
+      "frequency_count": 261
+    },
+    {
+      "candidate_rank": 621,
+      "source_rank": 621,
+      "word": "മറന്നു",
+      "pos": null,
+      "frequency_count": 261
+    },
+    {
+      "candidate_rank": 622,
+      "source_rank": 622,
+      "word": "എവിടെയാ",
+      "pos": null,
+      "frequency_count": 260
+    },
+    {
+      "candidate_rank": 623,
+      "source_rank": 623,
+      "word": "വണ്ടി",
+      "pos": null,
+      "frequency_count": 259
+    },
+    {
+      "candidate_rank": 624,
+      "source_rank": 624,
+      "word": "നീയാണ്",
+      "pos": null,
+      "frequency_count": 259
+    },
+    {
+      "candidate_rank": 625,
+      "source_rank": 625,
+      "word": "പേരും",
+      "pos": null,
+      "frequency_count": 259
+    },
+    {
+      "candidate_rank": 626,
+      "source_rank": 626,
+      "word": "ത്തു",
+      "pos": null,
+      "frequency_count": 259
+    },
+    {
+      "candidate_rank": 627,
+      "source_rank": 627,
+      "word": "പരസ്പരം",
+      "pos": null,
+      "frequency_count": 257
+    },
+    {
+      "candidate_rank": 628,
+      "source_rank": 628,
+      "word": "ആദ്യ",
+      "pos": null,
+      "frequency_count": 257
+    },
+    {
+      "candidate_rank": 629,
+      "source_rank": 629,
+      "word": "ധാരാളം",
+      "pos": null,
+      "frequency_count": 257
+    },
+    {
+      "candidate_rank": 630,
+      "source_rank": 630,
+      "word": "ക്യാപ്റ്റന്",
+      "pos": null,
+      "frequency_count": 257
+    },
+    {
+      "candidate_rank": 631,
+      "source_rank": 631,
+      "word": "പൈസ",
+      "pos": null,
+      "frequency_count": 256
+    },
+    {
+      "candidate_rank": 632,
+      "source_rank": 632,
+      "word": "പോവാം",
+      "pos": null,
+      "frequency_count": 256
+    },
+    {
+      "candidate_rank": 633,
+      "source_rank": 633,
+      "word": "ജീവന്",
+      "pos": null,
+      "frequency_count": 256
+    },
+    {
+      "candidate_rank": 634,
+      "source_rank": 634,
+      "word": "സംസാരിക്കാം",
+      "pos": null,
+      "frequency_count": 256
+    },
+    {
+      "candidate_rank": 635,
+      "source_rank": 635,
+      "word": "ശക്തി",
+      "pos": null,
+      "frequency_count": 256
+    },
+    {
+      "candidate_rank": 636,
+      "source_rank": 636,
+      "word": "തുറക്ക്",
+      "pos": null,
+      "frequency_count": 256
+    },
+    {
+      "candidate_rank": 637,
+      "source_rank": 637,
+      "word": "ന്",
+      "pos": null,
+      "frequency_count": 256
+    },
+    {
+      "candidate_rank": 638,
+      "source_rank": 638,
+      "word": "ഒരെണ്ണം",
+      "pos": null,
+      "frequency_count": 255
+    },
+    {
+      "candidate_rank": 639,
+      "source_rank": 639,
+      "word": "എല്ലാവര്",
+      "pos": null,
+      "frequency_count": 255
+    },
+    {
+      "candidate_rank": 640,
+      "source_rank": 640,
+      "word": "നമ്മെ",
+      "pos": null,
+      "frequency_count": 255
+    },
+    {
+      "candidate_rank": 641,
+      "source_rank": 641,
+      "word": "സംസാരിക്കണം",
+      "pos": null,
+      "frequency_count": 255
+    },
+    {
+      "candidate_rank": 642,
+      "source_rank": 642,
+      "word": "ആരെയും",
+      "pos": null,
+      "frequency_count": 254
+    },
+    {
+      "candidate_rank": 643,
+      "source_rank": 643,
+      "word": "പറ്റുന്നില്ല",
+      "pos": null,
+      "frequency_count": 254
+    },
+    {
+      "candidate_rank": 644,
+      "source_rank": 644,
+      "word": "മാന്",
+      "pos": null,
+      "frequency_count": 254
+    },
+    {
+      "candidate_rank": 645,
+      "source_rank": 645,
+      "word": "മകന്",
+      "pos": null,
+      "frequency_count": 254
+    },
+    {
+      "candidate_rank": 646,
+      "source_rank": 646,
+      "word": "കണ്ടില്ലേ",
+      "pos": null,
+      "frequency_count": 253
+    },
+    {
+      "candidate_rank": 647,
+      "source_rank": 647,
+      "word": "എത്തി",
+      "pos": null,
+      "frequency_count": 253
+    },
+    {
+      "candidate_rank": 648,
+      "source_rank": 648,
+      "word": "അഞ്ച്",
+      "pos": null,
+      "frequency_count": 253
+    },
+    {
+      "candidate_rank": 649,
+      "source_rank": 649,
+      "word": "അവസരം",
+      "pos": null,
+      "frequency_count": 253
+    },
+    {
+      "candidate_rank": 650,
+      "source_rank": 650,
+      "word": "തരും",
+      "pos": null,
+      "frequency_count": 252
+    },
+    {
+      "candidate_rank": 651,
+      "source_rank": 651,
+      "word": "ത്താന്",
+      "pos": null,
+      "frequency_count": 252
+    },
+    {
+      "candidate_rank": 652,
+      "source_rank": 652,
+      "word": "പറ്റുമോ",
+      "pos": null,
+      "frequency_count": 251
+    },
+    {
+      "candidate_rank": 653,
+      "source_rank": 653,
+      "word": "ശരീരം",
+      "pos": null,
+      "frequency_count": 251
+    },
+    {
+      "candidate_rank": 654,
+      "source_rank": 654,
+      "word": "ഭയങ്കര",
+      "pos": null,
+      "frequency_count": 251
+    },
+    {
+      "candidate_rank": 655,
+      "source_rank": 655,
+      "word": "പറഞ്ഞാൽ",
+      "pos": null,
+      "frequency_count": 250
+    },
+    {
+      "candidate_rank": 656,
+      "source_rank": 656,
+      "word": "ഇയാള്",
+      "pos": null,
+      "frequency_count": 250
+    },
+    {
+      "candidate_rank": 657,
+      "source_rank": 657,
+      "word": "എങ്ങനെയുണ്ട്",
+      "pos": null,
+      "frequency_count": 250
+    },
+    {
+      "candidate_rank": 658,
+      "source_rank": 658,
+      "word": "എങ്ങിനെ",
+      "pos": null,
+      "frequency_count": 248
+    },
+    {
+      "candidate_rank": 659,
+      "source_rank": 659,
+      "word": "കല്യാണം",
+      "pos": null,
+      "frequency_count": 248
+    },
+    {
+      "candidate_rank": 660,
+      "source_rank": 660,
+      "word": "എങ്കിൽ",
+      "pos": null,
+      "frequency_count": 247
+    },
+    {
+      "candidate_rank": 661,
+      "source_rank": 661,
+      "word": "ഞാനിത്",
+      "pos": null,
+      "frequency_count": 247
+    },
+    {
+      "candidate_rank": 662,
+      "source_rank": 662,
+      "word": "അടുത്തേക്ക്",
+      "pos": null,
+      "frequency_count": 246
+    },
+    {
+      "candidate_rank": 663,
+      "source_rank": 663,
+      "word": "വിളിക്കാം",
+      "pos": null,
+      "frequency_count": 246
+    },
+    {
+      "candidate_rank": 664,
+      "source_rank": 664,
+      "word": "തോന്നുന്നുണ്ടോ",
+      "pos": null,
+      "frequency_count": 245
+    },
+    {
+      "candidate_rank": 665,
+      "source_rank": 665,
+      "word": "മുന്നോട്ട്",
+      "pos": null,
+      "frequency_count": 245
+    },
+    {
+      "candidate_rank": 666,
+      "source_rank": 666,
+      "word": "കടന്നു",
+      "pos": null,
+      "frequency_count": 244
+    },
+    {
+      "candidate_rank": 667,
+      "source_rank": 667,
+      "word": "തെറ്റ്",
+      "pos": null,
+      "frequency_count": 244
+    },
+    {
+      "candidate_rank": 668,
+      "source_rank": 668,
+      "word": "പരിപാടി",
+      "pos": null,
+      "frequency_count": 244
+    },
+    {
+      "candidate_rank": 669,
+      "source_rank": 669,
+      "word": "രക്തം",
+      "pos": null,
+      "frequency_count": 243
+    },
+    {
+      "candidate_rank": 670,
+      "source_rank": 670,
+      "word": "ഓകെ",
+      "pos": null,
+      "frequency_count": 243
+    },
+    {
+      "candidate_rank": 671,
+      "source_rank": 671,
+      "word": "സിനിമ",
+      "pos": null,
+      "frequency_count": 243
+    },
+    {
+      "candidate_rank": 672,
+      "source_rank": 672,
+      "word": "റിപ്പോര്",
+      "pos": null,
+      "frequency_count": 243
+    },
+    {
+      "candidate_rank": 673,
+      "source_rank": 673,
+      "word": "പതുക്കെ",
+      "pos": null,
+      "frequency_count": 243
+    },
+    {
+      "candidate_rank": 674,
+      "source_rank": 674,
+      "word": "ഒപ്പം",
+      "pos": null,
+      "frequency_count": 242
+    },
+    {
+      "candidate_rank": 675,
+      "source_rank": 675,
+      "word": "എല്ലാവരെയും",
+      "pos": null,
+      "frequency_count": 241
+    },
+    {
+      "candidate_rank": 676,
+      "source_rank": 676,
+      "word": "കണ്ടത്",
+      "pos": null,
+      "frequency_count": 241
+    },
+    {
+      "candidate_rank": 677,
+      "source_rank": 677,
+      "word": "സ്ഥലത്ത്",
+      "pos": null,
+      "frequency_count": 241
+    },
+    {
+      "candidate_rank": 678,
+      "source_rank": 678,
+      "word": "കരുതുന്നത്",
+      "pos": null,
+      "frequency_count": 241
+    },
+    {
+      "candidate_rank": 679,
+      "source_rank": 679,
+      "word": "ശ്രമിച്ചു",
+      "pos": null,
+      "frequency_count": 241
+    },
+    {
+      "candidate_rank": 680,
+      "source_rank": 680,
+      "word": "ഷങ്ങള്",
+      "pos": null,
+      "frequency_count": 241
+    },
+    {
+      "candidate_rank": 681,
+      "source_rank": 681,
+      "word": "കൊണ്ടാണ്",
+      "pos": null,
+      "frequency_count": 240
+    },
+    {
+      "candidate_rank": 682,
+      "source_rank": 682,
+      "word": "പറ്റിയ",
+      "pos": null,
+      "frequency_count": 240
+    },
+    {
+      "candidate_rank": 683,
+      "source_rank": 683,
+      "word": "ആവശ്യമില്ല",
+      "pos": null,
+      "frequency_count": 239
+    },
+    {
+      "candidate_rank": 684,
+      "source_rank": 684,
+      "word": "malayalam",
+      "pos": null,
+      "frequency_count": 238
+    },
+    {
+      "candidate_rank": 685,
+      "source_rank": 685,
+      "word": "ക്കുന്നു",
+      "pos": null,
+      "frequency_count": 238
+    },
+    {
+      "candidate_rank": 686,
+      "source_rank": 686,
+      "word": "മുഴുവനും",
+      "pos": null,
+      "frequency_count": 238
+    },
+    {
+      "candidate_rank": 687,
+      "source_rank": 687,
+      "word": "ഡോ",
+      "pos": null,
+      "frequency_count": 238
+    },
+    {
+      "candidate_rank": 688,
+      "source_rank": 688,
+      "word": "ഇതിൽ",
+      "pos": null,
+      "frequency_count": 238
+    },
+    {
+      "candidate_rank": 689,
+      "source_rank": 689,
+      "word": "പല",
+      "pos": null,
+      "frequency_count": 237
+    },
+    {
+      "candidate_rank": 690,
+      "source_rank": 690,
+      "word": "മിസ്സ്",
+      "pos": null,
+      "frequency_count": 237
+    },
+    {
+      "candidate_rank": 691,
+      "source_rank": 691,
+      "word": "വേണ്ടാ",
+      "pos": null,
+      "frequency_count": 237
+    },
+    {
+      "candidate_rank": 692,
+      "source_rank": 692,
+      "word": "വന്നതാണ്",
+      "pos": null,
+      "frequency_count": 237
+    },
+    {
+      "candidate_rank": 693,
+      "source_rank": 693,
+      "word": "ഫോട്ടോ",
+      "pos": null,
+      "frequency_count": 236
+    },
+    {
+      "candidate_rank": 694,
+      "source_rank": 694,
+      "word": "നിൻറെ",
+      "pos": null,
+      "frequency_count": 236
+    },
+    {
+      "candidate_rank": 695,
+      "source_rank": 695,
+      "word": "ചോദിച്ചു",
+      "pos": null,
+      "frequency_count": 236
+    },
+    {
+      "candidate_rank": 696,
+      "source_rank": 696,
+      "word": "ഉണ്ടാകും",
+      "pos": null,
+      "frequency_count": 235
+    },
+    {
+      "candidate_rank": 697,
+      "source_rank": 697,
+      "word": "നമ്മുക്ക്",
+      "pos": null,
+      "frequency_count": 235
+    },
+    {
+      "candidate_rank": 698,
+      "source_rank": 698,
+      "word": "പുറത്തേക്ക്",
+      "pos": null,
+      "frequency_count": 234
+    },
+    {
+      "candidate_rank": 699,
+      "source_rank": 699,
+      "word": "വന്ന",
+      "pos": null,
+      "frequency_count": 234
+    },
+    {
+      "candidate_rank": 700,
+      "source_rank": 700,
+      "word": "വല്ലാതെ",
+      "pos": null,
+      "frequency_count": 233
+    },
+    {
+      "candidate_rank": 701,
+      "source_rank": 701,
+      "word": "അകത്തു",
+      "pos": null,
+      "frequency_count": 233
+    },
+    {
+      "candidate_rank": 702,
+      "source_rank": 702,
+      "word": "ചായ",
+      "pos": null,
+      "frequency_count": 233
+    },
+    {
+      "candidate_rank": 703,
+      "source_rank": 703,
+      "word": "ഭാഗ്യം",
+      "pos": null,
+      "frequency_count": 232
+    },
+    {
+      "candidate_rank": 704,
+      "source_rank": 704,
+      "word": "ജീവനോടെ",
+      "pos": null,
+      "frequency_count": 232
+    },
+    {
+      "candidate_rank": 705,
+      "source_rank": 705,
+      "word": "പിടിച്ച്",
+      "pos": null,
+      "frequency_count": 231
+    },
+    {
+      "candidate_rank": 706,
+      "source_rank": 706,
+      "word": "മേല്",
+      "pos": null,
+      "frequency_count": 231
+    },
+    {
+      "candidate_rank": 707,
+      "source_rank": 707,
+      "word": "പെട്ടന്ന്",
+      "pos": null,
+      "frequency_count": 230
+    },
+    {
+      "candidate_rank": 708,
+      "source_rank": 708,
+      "word": "വരുന്ന",
+      "pos": null,
+      "frequency_count": 230
+    },
+    {
+      "candidate_rank": 709,
+      "source_rank": 709,
+      "word": "നിക്ക്",
+      "pos": null,
+      "frequency_count": 228
+    },
+    {
+      "candidate_rank": 710,
+      "source_rank": 710,
+      "word": "നിന്നുള്ള",
+      "pos": null,
+      "frequency_count": 227
+    },
+    {
+      "candidate_rank": 711,
+      "source_rank": 711,
+      "word": "താങ്കൾ",
+      "pos": null,
+      "frequency_count": 225
+    },
+    {
+      "candidate_rank": 712,
+      "source_rank": 712,
+      "word": "കാര്യമില്ല",
+      "pos": null,
+      "frequency_count": 225
+    },
+    {
+      "candidate_rank": 713,
+      "source_rank": 713,
+      "word": "വേണ്ടിയാണ്",
+      "pos": null,
+      "frequency_count": 225
+    },
+    {
+      "candidate_rank": 714,
+      "source_rank": 714,
+      "word": "മികച്ച",
+      "pos": null,
+      "frequency_count": 225
+    },
+    {
+      "candidate_rank": 715,
+      "source_rank": 715,
+      "word": "ഞാനാ",
+      "pos": null,
+      "frequency_count": 225
+    },
+    {
+      "candidate_rank": 716,
+      "source_rank": 716,
+      "word": "തന്നു",
+      "pos": null,
+      "frequency_count": 224
+    },
+    {
+      "candidate_rank": 717,
+      "source_rank": 717,
+      "word": "സംസാരിക്കാന്",
+      "pos": null,
+      "frequency_count": 223
+    },
+    {
+      "candidate_rank": 718,
+      "source_rank": 718,
+      "word": "translation",
+      "pos": null,
+      "frequency_count": 223
+    },
+    {
+      "candidate_rank": 719,
+      "source_rank": 719,
+      "word": "നുണ",
+      "pos": null,
+      "frequency_count": 223
+    },
+    {
+      "candidate_rank": 720,
+      "source_rank": 720,
+      "word": "ചെയ്യുക",
+      "pos": null,
+      "frequency_count": 222
+    },
+    {
+      "candidate_rank": 721,
+      "source_rank": 721,
+      "word": "ചെയ്യുന്ന",
+      "pos": null,
+      "frequency_count": 222
+    },
+    {
+      "candidate_rank": 722,
+      "source_rank": 722,
+      "word": "ബന്ധം",
+      "pos": null,
+      "frequency_count": 222
+    },
+    {
+      "candidate_rank": 723,
+      "source_rank": 723,
+      "word": "വിടൂ",
+      "pos": null,
+      "frequency_count": 222
+    },
+    {
+      "candidate_rank": 724,
+      "source_rank": 724,
+      "word": "ക്കണം",
+      "pos": null,
+      "frequency_count": 221
+    },
+    {
+      "candidate_rank": 725,
+      "source_rank": 725,
+      "word": "നമ്പർ",
+      "pos": null,
+      "frequency_count": 221
+    },
+    {
+      "candidate_rank": 726,
+      "source_rank": 726,
+      "word": "എന്നിട്ടും",
+      "pos": null,
+      "frequency_count": 221
+    },
+    {
+      "candidate_rank": 727,
+      "source_rank": 727,
+      "word": "മൊത്തം",
+      "pos": null,
+      "frequency_count": 221
+    },
+    {
+      "candidate_rank": 728,
+      "source_rank": 728,
+      "word": "പോകുകയാണ്",
+      "pos": null,
+      "frequency_count": 221
+    },
+    {
+      "candidate_rank": 729,
+      "source_rank": 729,
+      "word": "കുടുംബം",
+      "pos": null,
+      "frequency_count": 221
+    },
+    {
+      "candidate_rank": 730,
+      "source_rank": 730,
+      "word": "അല്ലാതെ",
+      "pos": null,
+      "frequency_count": 220
+    },
+    {
+      "candidate_rank": 731,
+      "source_rank": 731,
+      "word": "അതുപോലെ",
+      "pos": null,
+      "frequency_count": 218
+    },
+    {
+      "candidate_rank": 732,
+      "source_rank": 732,
+      "word": "കണ്ണ്",
+      "pos": null,
+      "frequency_count": 218
+    },
+    {
+      "candidate_rank": 733,
+      "source_rank": 733,
+      "word": "ഇഷ്ടമാണ്",
+      "pos": null,
+      "frequency_count": 217
+    },
+    {
+      "candidate_rank": 734,
+      "source_rank": 734,
+      "word": "ശരിയല്ലേ",
+      "pos": null,
+      "frequency_count": 217
+    },
+    {
+      "candidate_rank": 735,
+      "source_rank": 735,
+      "word": "അവരോട്",
+      "pos": null,
+      "frequency_count": 217
+    },
+    {
+      "candidate_rank": 736,
+      "source_rank": 736,
+      "word": "കഴിഞ്ഞ്",
+      "pos": null,
+      "frequency_count": 217
+    },
+    {
+      "candidate_rank": 737,
+      "source_rank": 737,
+      "word": "ആല്",
+      "pos": null,
+      "frequency_count": 217
+    },
+    {
+      "candidate_rank": 738,
+      "source_rank": 738,
+      "word": "പറഞ്ഞിട്ടുണ്ട്",
+      "pos": null,
+      "frequency_count": 217
+    },
+    {
+      "candidate_rank": 739,
+      "source_rank": 739,
+      "word": "ചുമ്മാ",
+      "pos": null,
+      "frequency_count": 216
+    },
+    {
+      "candidate_rank": 740,
+      "source_rank": 740,
+      "word": "എന്തിനു",
+      "pos": null,
+      "frequency_count": 216
+    },
+    {
+      "candidate_rank": 741,
+      "source_rank": 741,
+      "word": "കാല്",
+      "pos": null,
+      "frequency_count": 216
+    },
+    {
+      "candidate_rank": 742,
+      "source_rank": 742,
+      "word": "പോണം",
+      "pos": null,
+      "frequency_count": 216
+    },
+    {
+      "candidate_rank": 743,
+      "source_rank": 743,
+      "word": "കയറി",
+      "pos": null,
+      "frequency_count": 216
+    },
+    {
+      "candidate_rank": 744,
+      "source_rank": 744,
+      "word": "പറഞ്ഞില്ല",
+      "pos": null,
+      "frequency_count": 216
+    },
+    {
+      "candidate_rank": 745,
+      "source_rank": 745,
+      "word": "അതല്ല",
+      "pos": null,
+      "frequency_count": 216
+    },
+    {
+      "candidate_rank": 746,
+      "source_rank": 746,
+      "word": "ആഗ്രഹിക്കുന്നു",
+      "pos": null,
+      "frequency_count": 215
+    },
+    {
+      "candidate_rank": 747,
+      "source_rank": 747,
+      "word": "ഇതിന്റെ",
+      "pos": null,
+      "frequency_count": 215
+    },
+    {
+      "candidate_rank": 748,
+      "source_rank": 748,
+      "word": "കണ്ടിട്ടില്ല",
+      "pos": null,
+      "frequency_count": 215
+    },
+    {
+      "candidate_rank": 749,
+      "source_rank": 749,
+      "word": "പറഞ്ഞ്",
+      "pos": null,
+      "frequency_count": 214
+    },
+    {
+      "candidate_rank": 750,
+      "source_rank": 750,
+      "word": "സമയമായി",
+      "pos": null,
+      "frequency_count": 213
+    },
+    {
+      "candidate_rank": 751,
+      "source_rank": 751,
+      "word": "ഇഷ്ടം",
+      "pos": null,
+      "frequency_count": 213
+    },
+    {
+      "candidate_rank": 752,
+      "source_rank": 752,
+      "word": "കൊല്ലാന്",
+      "pos": null,
+      "frequency_count": 213
+    },
+    {
+      "candidate_rank": 753,
+      "source_rank": 753,
+      "word": "കാര്യമാണ്",
+      "pos": null,
+      "frequency_count": 213
+    },
+    {
+      "candidate_rank": 754,
+      "source_rank": 754,
+      "word": "നിയമം",
+      "pos": null,
+      "frequency_count": 213
+    },
+    {
+      "candidate_rank": 755,
+      "source_rank": 755,
+      "word": "സുഖം",
+      "pos": null,
+      "frequency_count": 212
+    },
+    {
+      "candidate_rank": 756,
+      "source_rank": 756,
+      "word": "മരിക്കും",
+      "pos": null,
+      "frequency_count": 212
+    },
+    {
+      "candidate_rank": 757,
+      "source_rank": 757,
+      "word": "പ്രാര്",
+      "pos": null,
+      "frequency_count": 212
+    },
+    {
+      "candidate_rank": 758,
+      "source_rank": 758,
+      "word": "അറസ്റ്റ്",
+      "pos": null,
+      "frequency_count": 212
+    },
+    {
+      "candidate_rank": 759,
+      "source_rank": 759,
+      "word": "മുതൽ",
+      "pos": null,
+      "frequency_count": 212
+    },
+    {
+      "candidate_rank": 760,
+      "source_rank": 760,
+      "word": "കയ്യിൽ",
+      "pos": null,
+      "frequency_count": 212
+    },
+    {
+      "candidate_rank": 761,
+      "source_rank": 761,
+      "word": "ഇതിനെ",
+      "pos": null,
+      "frequency_count": 212
+    },
+    {
+      "candidate_rank": 762,
+      "source_rank": 762,
+      "word": "വരണം",
+      "pos": null,
+      "frequency_count": 211
+    },
+    {
+      "candidate_rank": 763,
+      "source_rank": 763,
+      "word": "മണിക്ക്",
+      "pos": null,
+      "frequency_count": 211
+    },
+    {
+      "candidate_rank": 764,
+      "source_rank": 764,
+      "word": "എൻറെ",
+      "pos": null,
+      "frequency_count": 211
+    },
+    {
+      "candidate_rank": 765,
+      "source_rank": 765,
+      "word": "കിട്ടിയത്",
+      "pos": null,
+      "frequency_count": 211
+    },
+    {
+      "candidate_rank": 766,
+      "source_rank": 766,
+      "word": "മോര്",
+      "pos": null,
+      "frequency_count": 210
+    },
+    {
+      "candidate_rank": 767,
+      "source_rank": 767,
+      "word": "നോക്കണം",
+      "pos": null,
+      "frequency_count": 210
+    },
+    {
+      "candidate_rank": 768,
+      "source_rank": 768,
+      "word": "അരുത്",
+      "pos": null,
+      "frequency_count": 210
+    },
+    {
+      "candidate_rank": 769,
+      "source_rank": 769,
+      "word": "തമ്മില്",
+      "pos": null,
+      "frequency_count": 209
+    },
+    {
+      "candidate_rank": 770,
+      "source_rank": 770,
+      "word": "അവളോട്",
+      "pos": null,
+      "frequency_count": 209
+    },
+    {
+      "candidate_rank": 771,
+      "source_rank": 771,
+      "word": "പറഞ്ഞോ",
+      "pos": null,
+      "frequency_count": 209
+    },
+    {
+      "candidate_rank": 772,
+      "source_rank": 772,
+      "word": "സ്കൂളില്",
+      "pos": null,
+      "frequency_count": 208
+    },
+    {
+      "candidate_rank": 773,
+      "source_rank": 773,
+      "word": "കൊടുക്ക്",
+      "pos": null,
+      "frequency_count": 208
+    },
+    {
+      "candidate_rank": 774,
+      "source_rank": 774,
+      "word": "ദൂരെ",
+      "pos": null,
+      "frequency_count": 208
+    },
+    {
+      "candidate_rank": 775,
+      "source_rank": 775,
+      "word": "ത്തൂ",
+      "pos": null,
+      "frequency_count": 208
+    },
+    {
+      "candidate_rank": 776,
+      "source_rank": 776,
+      "word": "അല്",
+      "pos": null,
+      "frequency_count": 208
+    },
+    {
+      "candidate_rank": 777,
+      "source_rank": 777,
+      "word": "എടുത്ത്",
+      "pos": null,
+      "frequency_count": 208
+    },
+    {
+      "candidate_rank": 778,
+      "source_rank": 778,
+      "word": "പേടിക്കണ്ട",
+      "pos": null,
+      "frequency_count": 207
+    },
+    {
+      "candidate_rank": 779,
+      "source_rank": 779,
+      "word": "ഓക്കെ",
+      "pos": null,
+      "frequency_count": 207
+    },
+    {
+      "candidate_rank": 780,
+      "source_rank": 780,
+      "word": "പറഞ്ഞിരുന്നു",
+      "pos": null,
+      "frequency_count": 207
+    },
+    {
+      "candidate_rank": 781,
+      "source_rank": 781,
+      "word": "സ്നേഹിക്കുന്നു",
+      "pos": null,
+      "frequency_count": 207
+    },
+    {
+      "candidate_rank": 782,
+      "source_rank": 782,
+      "word": "അയാൾക്ക്",
+      "pos": null,
+      "frequency_count": 207
+    },
+    {
+      "candidate_rank": 783,
+      "source_rank": 783,
+      "word": "കൊച്ചു",
+      "pos": null,
+      "frequency_count": 207
+    },
+    {
+      "candidate_rank": 784,
+      "source_rank": 784,
+      "word": "വേണമെങ്കില്",
+      "pos": null,
+      "frequency_count": 206
+    },
+    {
+      "candidate_rank": 785,
+      "source_rank": 785,
+      "word": "അവനോട്",
+      "pos": null,
+      "frequency_count": 206
+    },
+    {
+      "candidate_rank": 786,
+      "source_rank": 786,
+      "word": "പോട്ടെ",
+      "pos": null,
+      "frequency_count": 206
+    },
+    {
+      "candidate_rank": 787,
+      "source_rank": 787,
+      "word": "പറയരുത്",
+      "pos": null,
+      "frequency_count": 206
+    },
+    {
+      "candidate_rank": 788,
+      "source_rank": 788,
+      "word": "പറയട്ടെ",
+      "pos": null,
+      "frequency_count": 206
+    },
+    {
+      "candidate_rank": 789,
+      "source_rank": 789,
+      "word": "അവസാനത്തെ",
+      "pos": null,
+      "frequency_count": 206
+    },
+    {
+      "candidate_rank": 790,
+      "source_rank": 790,
+      "word": "ഇതൊന്നും",
+      "pos": null,
+      "frequency_count": 206
+    },
+    {
+      "candidate_rank": 791,
+      "source_rank": 791,
+      "word": "അത്രയും",
+      "pos": null,
+      "frequency_count": 206
+    },
+    {
+      "candidate_rank": 792,
+      "source_rank": 792,
+      "word": "വിചാരിക്കുന്നത്",
+      "pos": null,
+      "frequency_count": 205
+    },
+    {
+      "candidate_rank": 793,
+      "source_rank": 793,
+      "word": "ഇവിടം",
+      "pos": null,
+      "frequency_count": 205
+    },
+    {
+      "candidate_rank": 794,
+      "source_rank": 794,
+      "word": "പോകുന്ന",
+      "pos": null,
+      "frequency_count": 205
+    },
+    {
+      "candidate_rank": 795,
+      "source_rank": 795,
+      "word": "ഒട്ടും",
+      "pos": null,
+      "frequency_count": 205
+    },
+    {
+      "candidate_rank": 796,
+      "source_rank": 796,
+      "word": "ജനങ്ങള്",
+      "pos": null,
+      "frequency_count": 205
+    },
+    {
+      "candidate_rank": 797,
+      "source_rank": 797,
+      "word": "പര്",
+      "pos": null,
+      "frequency_count": 205
+    },
+    {
+      "candidate_rank": 798,
+      "source_rank": 798,
+      "word": "ദൈവത്തിന്",
+      "pos": null,
+      "frequency_count": 205
+    },
+    {
+      "candidate_rank": 799,
+      "source_rank": 799,
+      "word": "പ്രധാന",
+      "pos": null,
+      "frequency_count": 205
+    },
+    {
+      "candidate_rank": 800,
+      "source_rank": 800,
+      "word": "രീതിയില്",
+      "pos": null,
+      "frequency_count": 204
+    },
+    {
+      "candidate_rank": 801,
+      "source_rank": 801,
+      "word": "ത്ഥ",
+      "pos": null,
+      "frequency_count": 204
+    },
+    {
+      "candidate_rank": 802,
+      "source_rank": 802,
+      "word": "you",
+      "pos": null,
+      "frequency_count": 204
+    },
+    {
+      "candidate_rank": 803,
+      "source_rank": 803,
+      "word": "കഴിഞ്ഞില്ല",
+      "pos": null,
+      "frequency_count": 204
+    },
+    {
+      "candidate_rank": 804,
+      "source_rank": 804,
+      "word": "the",
+      "pos": null,
+      "frequency_count": 204
+    },
+    {
+      "candidate_rank": 805,
+      "source_rank": 805,
+      "word": "സുഹൃത്ത്",
+      "pos": null,
+      "frequency_count": 204
+    },
+    {
+      "candidate_rank": 806,
+      "source_rank": 806,
+      "word": "വരാൻ",
+      "pos": null,
+      "frequency_count": 204
+    },
+    {
+      "candidate_rank": 807,
+      "source_rank": 807,
+      "word": "കൈകാര്യം",
+      "pos": null,
+      "frequency_count": 203
+    },
+    {
+      "candidate_rank": 808,
+      "source_rank": 808,
+      "word": "സഹായിക്കൂ",
+      "pos": null,
+      "frequency_count": 203
+    },
+    {
+      "candidate_rank": 809,
+      "source_rank": 809,
+      "word": "നോക്കുന്നത്",
+      "pos": null,
+      "frequency_count": 203
+    },
+    {
+      "candidate_rank": 810,
+      "source_rank": 810,
+      "word": "അവസ്ഥ",
+      "pos": null,
+      "frequency_count": 203
+    },
+    {
+      "candidate_rank": 811,
+      "source_rank": 811,
+      "word": "കാര്യത്തില്",
+      "pos": null,
+      "frequency_count": 203
+    },
+    {
+      "candidate_rank": 812,
+      "source_rank": 812,
+      "word": "നിനക്കൊരു",
+      "pos": null,
+      "frequency_count": 203
+    },
+    {
+      "candidate_rank": 813,
+      "source_rank": 813,
+      "word": "കുറ്റം",
+      "pos": null,
+      "frequency_count": 202
+    },
+    {
+      "candidate_rank": 814,
+      "source_rank": 814,
+      "word": "വൃത്തികെട്ട",
+      "pos": null,
+      "frequency_count": 201
+    },
+    {
+      "candidate_rank": 815,
+      "source_rank": 815,
+      "word": "എന്തേ",
+      "pos": null,
+      "frequency_count": 201
+    },
+    {
+      "candidate_rank": 816,
+      "source_rank": 816,
+      "word": "തുടങ്ങാം",
+      "pos": null,
+      "frequency_count": 201
+    },
+    {
+      "candidate_rank": 817,
+      "source_rank": 817,
+      "word": "ച്ച",
+      "pos": null,
+      "frequency_count": 201
+    },
+    {
+      "candidate_rank": 818,
+      "source_rank": 818,
+      "word": "ചെയ്യേണ്ടത്",
+      "pos": null,
+      "frequency_count": 201
+    },
+    {
+      "candidate_rank": 819,
+      "source_rank": 819,
+      "word": "ക്കറിയാം",
+      "pos": null,
+      "frequency_count": 200
+    },
+    {
+      "candidate_rank": 820,
+      "source_rank": 820,
+      "word": "നിനക്കെന്താ",
+      "pos": null,
+      "frequency_count": 200
+    },
+    {
+      "candidate_rank": 821,
+      "source_rank": 821,
+      "word": "രണ്ടും",
+      "pos": null,
+      "frequency_count": 200
+    },
+    {
+      "candidate_rank": 822,
+      "source_rank": 822,
+      "word": "വാടാ",
+      "pos": null,
+      "frequency_count": 200
+    },
+    {
+      "candidate_rank": 823,
+      "source_rank": 823,
+      "word": "പോലെയാണ്",
+      "pos": null,
+      "frequency_count": 200
+    },
+    {
+      "candidate_rank": 824,
+      "source_rank": 824,
+      "word": "ദുര്",
+      "pos": null,
+      "frequency_count": 199
+    },
+    {
+      "candidate_rank": 825,
+      "source_rank": 825,
+      "word": "കൊടുത്തു",
+      "pos": null,
+      "frequency_count": 199
+    },
+    {
+      "candidate_rank": 826,
+      "source_rank": 826,
+      "word": "ശരിയായ",
+      "pos": null,
+      "frequency_count": 199
+    },
+    {
+      "candidate_rank": 827,
+      "source_rank": 827,
+      "word": "ഇറങ്ങി",
+      "pos": null,
+      "frequency_count": 199
+    },
+    {
+      "candidate_rank": 828,
+      "source_rank": 828,
+      "word": "അതുകൊണ്ടാണ്",
+      "pos": null,
+      "frequency_count": 199
+    },
+    {
+      "candidate_rank": 829,
+      "source_rank": 829,
+      "word": "ഉറപ്പ്",
+      "pos": null,
+      "frequency_count": 199
+    },
+    {
+      "candidate_rank": 830,
+      "source_rank": 830,
+      "word": "ന്ന",
+      "pos": null,
+      "frequency_count": 199
+    },
+    {
+      "candidate_rank": 831,
+      "source_rank": 831,
+      "word": "മുറി",
+      "pos": null,
+      "frequency_count": 198
+    },
+    {
+      "candidate_rank": 832,
+      "source_rank": 832,
+      "word": "മറുപടി",
+      "pos": null,
+      "frequency_count": 198
+    },
+    {
+      "candidate_rank": 833,
+      "source_rank": 833,
+      "word": "വിചാരിച്ചു",
+      "pos": null,
+      "frequency_count": 198
+    },
+    {
+      "candidate_rank": 834,
+      "source_rank": 834,
+      "word": "ഉണ്ടാവും",
+      "pos": null,
+      "frequency_count": 198
+    },
+    {
+      "candidate_rank": 835,
+      "source_rank": 835,
+      "word": "വന്നിട്ടുണ്ട്",
+      "pos": null,
+      "frequency_count": 198
+    },
+    {
+      "candidate_rank": 836,
+      "source_rank": 836,
+      "word": "വേദന",
+      "pos": null,
+      "frequency_count": 198
+    },
+    {
+      "candidate_rank": 837,
+      "source_rank": 837,
+      "word": "കള്ളം",
+      "pos": null,
+      "frequency_count": 197
+    },
+    {
+      "candidate_rank": 838,
+      "source_rank": 838,
+      "word": "അകത്ത്",
+      "pos": null,
+      "frequency_count": 197
+    },
+    {
+      "candidate_rank": 839,
+      "source_rank": 839,
+      "word": "വിട്ട്",
+      "pos": null,
+      "frequency_count": 197
+    },
+    {
+      "candidate_rank": 840,
+      "source_rank": 840,
+      "word": "തെണ്ടി",
+      "pos": null,
+      "frequency_count": 197
+    },
+    {
+      "candidate_rank": 841,
+      "source_rank": 841,
+      "word": "മ്മന്",
+      "pos": null,
+      "frequency_count": 196
+    },
+    {
+      "candidate_rank": 842,
+      "source_rank": 842,
+      "word": "വൈകി",
+      "pos": null,
+      "frequency_count": 196
+    },
+    {
+      "candidate_rank": 843,
+      "source_rank": 843,
+      "word": "നന്നായിട്ടുണ്ട്",
+      "pos": null,
+      "frequency_count": 195
+    },
+    {
+      "candidate_rank": 844,
+      "source_rank": 844,
+      "word": "ഒരാൾ",
+      "pos": null,
+      "frequency_count": 195
+    },
+    {
+      "candidate_rank": 845,
+      "source_rank": 845,
+      "word": "തീരെ",
+      "pos": null,
+      "frequency_count": 195
+    },
+    {
+      "candidate_rank": 846,
+      "source_rank": 846,
+      "word": "പറയുന്ന",
+      "pos": null,
+      "frequency_count": 195
+    },
+    {
+      "candidate_rank": 847,
+      "source_rank": 847,
+      "word": "ചെയ്യരുത്",
+      "pos": null,
+      "frequency_count": 194
+    },
+    {
+      "candidate_rank": 848,
+      "source_rank": 848,
+      "word": "പ്രത്യേക",
+      "pos": null,
+      "frequency_count": 194
+    },
+    {
+      "candidate_rank": 849,
+      "source_rank": 849,
+      "word": "ഒഹ്",
+      "pos": null,
+      "frequency_count": 194
+    },
+    {
+      "candidate_rank": 850,
+      "source_rank": 850,
+      "word": "മാസ്റ്റര്",
+      "pos": null,
+      "frequency_count": 194
+    },
+    {
+      "candidate_rank": 851,
+      "source_rank": 851,
+      "word": "ഏകദേശം",
+      "pos": null,
+      "frequency_count": 194
+    },
+    {
+      "candidate_rank": 852,
+      "source_rank": 852,
+      "word": "ശെരി",
+      "pos": null,
+      "frequency_count": 194
+    },
+    {
+      "candidate_rank": 853,
+      "source_rank": 853,
+      "word": "വിളിക്ക്",
+      "pos": null,
+      "frequency_count": 193
+    },
+    {
+      "candidate_rank": 854,
+      "source_rank": 854,
+      "word": "കണ്ടിട്ടുണ്ട്",
+      "pos": null,
+      "frequency_count": 193
+    },
+    {
+      "candidate_rank": 855,
+      "source_rank": 855,
+      "word": "i",
+      "pos": null,
+      "frequency_count": 193
+    },
+    {
+      "candidate_rank": 856,
+      "source_rank": 856,
+      "word": "നീയെന്നെ",
+      "pos": null,
+      "frequency_count": 193
+    },
+    {
+      "candidate_rank": 857,
+      "source_rank": 857,
+      "word": "ബര്",
+      "pos": null,
+      "frequency_count": 193
+    },
+    {
+      "candidate_rank": 858,
+      "source_rank": 858,
+      "word": "ഒറ്റ",
+      "pos": null,
+      "frequency_count": 193
+    },
+    {
+      "candidate_rank": 859,
+      "source_rank": 859,
+      "word": "ന്ന്",
+      "pos": null,
+      "frequency_count": 193
+    },
+    {
+      "candidate_rank": 860,
+      "source_rank": 860,
+      "word": "വല്ലാത്ത",
+      "pos": null,
+      "frequency_count": 192
+    },
+    {
+      "candidate_rank": 861,
+      "source_rank": 861,
+      "word": "വീണു",
+      "pos": null,
+      "frequency_count": 192
+    },
+    {
+      "candidate_rank": 862,
+      "source_rank": 862,
+      "word": "ഇതെന്താ",
+      "pos": null,
+      "frequency_count": 192
+    },
+    {
+      "candidate_rank": 863,
+      "source_rank": 863,
+      "word": "അപകടം",
+      "pos": null,
+      "frequency_count": 192
+    },
+    {
+      "candidate_rank": 864,
+      "source_rank": 864,
+      "word": "ബില്",
+      "pos": null,
+      "frequency_count": 191
+    },
+    {
+      "candidate_rank": 865,
+      "source_rank": 865,
+      "word": "ഒറ്റയ്ക്ക്",
+      "pos": null,
+      "frequency_count": 191
+    },
+    {
+      "candidate_rank": 866,
+      "source_rank": 866,
+      "word": "പാട്",
+      "pos": null,
+      "frequency_count": 191
+    },
+    {
+      "candidate_rank": 867,
+      "source_rank": 867,
+      "word": "എത്തും",
+      "pos": null,
+      "frequency_count": 191
+    },
+    {
+      "candidate_rank": 868,
+      "source_rank": 868,
+      "word": "വേണമെങ്കിലും",
+      "pos": null,
+      "frequency_count": 190
+    },
+    {
+      "candidate_rank": 869,
+      "source_rank": 869,
+      "word": "പ്രാവശ്യം",
+      "pos": null,
+      "frequency_count": 189
+    },
+    {
+      "candidate_rank": 870,
+      "source_rank": 870,
+      "word": "സംഭവിച്ചു",
+      "pos": null,
+      "frequency_count": 189
+    },
+    {
+      "candidate_rank": 871,
+      "source_rank": 871,
+      "word": "ഭാര്യയെ",
+      "pos": null,
+      "frequency_count": 189
+    },
+    {
+      "candidate_rank": 872,
+      "source_rank": 872,
+      "word": "ഇല്ലാതെ",
+      "pos": null,
+      "frequency_count": 189
+    },
+    {
+      "candidate_rank": 873,
+      "source_rank": 873,
+      "word": "ഉണ്ടെന്ന്",
+      "pos": null,
+      "frequency_count": 189
+    },
+    {
+      "candidate_rank": 874,
+      "source_rank": 874,
+      "word": "എനിക്കൊന്നും",
+      "pos": null,
+      "frequency_count": 189
+    },
+    {
+      "candidate_rank": 875,
+      "source_rank": 875,
+      "word": "ചുറ്റും",
+      "pos": null,
+      "frequency_count": 188
+    },
+    {
+      "candidate_rank": 876,
+      "source_rank": 876,
+      "word": "യൂ",
+      "pos": null,
+      "frequency_count": 188
+    },
+    {
+      "candidate_rank": 877,
+      "source_rank": 877,
+      "word": "കണ്ടാല്",
+      "pos": null,
+      "frequency_count": 188
+    },
+    {
+      "candidate_rank": 878,
+      "source_rank": 878,
+      "word": "രാജ്യം",
+      "pos": null,
+      "frequency_count": 188
+    },
+    {
+      "candidate_rank": 879,
+      "source_rank": 879,
+      "word": "സംഭവം",
+      "pos": null,
+      "frequency_count": 187
+    },
+    {
+      "candidate_rank": 880,
+      "source_rank": 880,
+      "word": "വേറൊരു",
+      "pos": null,
+      "frequency_count": 187
+    },
+    {
+      "candidate_rank": 881,
+      "source_rank": 881,
+      "word": "തരം",
+      "pos": null,
+      "frequency_count": 187
+    },
+    {
+      "candidate_rank": 882,
+      "source_rank": 882,
+      "word": "സാധനങ്ങള്",
+      "pos": null,
+      "frequency_count": 187
+    },
+    {
+      "candidate_rank": 883,
+      "source_rank": 883,
+      "word": "ഡാഡി",
+      "pos": null,
+      "frequency_count": 186
+    },
+    {
+      "candidate_rank": 884,
+      "source_rank": 884,
+      "word": "വിളിക്കുന്നത്",
+      "pos": null,
+      "frequency_count": 186
+    },
+    {
+      "candidate_rank": 885,
+      "source_rank": 885,
+      "word": "പെണ്ണ്",
+      "pos": null,
+      "frequency_count": 186
+    },
+    {
+      "candidate_rank": 886,
+      "source_rank": 886,
+      "word": "are",
+      "pos": null,
+      "frequency_count": 186
+    },
+    {
+      "candidate_rank": 887,
+      "source_rank": 887,
+      "word": "ഫോൺ",
+      "pos": null,
+      "frequency_count": 186
+    },
+    {
+      "candidate_rank": 888,
+      "source_rank": 888,
+      "word": "എന്തും",
+      "pos": null,
+      "frequency_count": 186
+    },
+    {
+      "candidate_rank": 889,
+      "source_rank": 889,
+      "word": "ജോര്",
+      "pos": null,
+      "frequency_count": 186
+    },
+    {
+      "candidate_rank": 890,
+      "source_rank": 890,
+      "word": "ചെന്ന്",
+      "pos": null,
+      "frequency_count": 186
+    },
+    {
+      "candidate_rank": 891,
+      "source_rank": 891,
+      "word": "ആളെ",
+      "pos": null,
+      "frequency_count": 185
+    },
+    {
+      "candidate_rank": 892,
+      "source_rank": 892,
+      "word": "ഓടി",
+      "pos": null,
+      "frequency_count": 185
+    },
+    {
+      "candidate_rank": 893,
+      "source_rank": 893,
+      "word": "ഒരിക്കൽ",
+      "pos": null,
+      "frequency_count": 185
+    },
+    {
+      "candidate_rank": 894,
+      "source_rank": 894,
+      "word": "യെസ്",
+      "pos": null,
+      "frequency_count": 185
+    },
+    {
+      "candidate_rank": 895,
+      "source_rank": 895,
+      "word": "ഒരുമിച്ച്",
+      "pos": null,
+      "frequency_count": 185
+    },
+    {
+      "candidate_rank": 896,
+      "source_rank": 896,
+      "word": "വിശ്വാസം",
+      "pos": null,
+      "frequency_count": 184
+    },
+    {
+      "candidate_rank": 897,
+      "source_rank": 897,
+      "word": "വിധി",
+      "pos": null,
+      "frequency_count": 184
+    },
+    {
+      "candidate_rank": 898,
+      "source_rank": 898,
+      "word": "കോടതി",
+      "pos": null,
+      "frequency_count": 184
+    },
+    {
+      "candidate_rank": 899,
+      "source_rank": 899,
+      "word": "ചെയ്",
+      "pos": null,
+      "frequency_count": 184
+    },
+    {
+      "candidate_rank": 900,
+      "source_rank": 900,
+      "word": "നിങ്ങളെന്താ",
+      "pos": null,
+      "frequency_count": 184
+    },
+    {
+      "candidate_rank": 901,
+      "source_rank": 901,
+      "word": "ബെര്",
+      "pos": null,
+      "frequency_count": 184
+    },
+    {
+      "candidate_rank": 902,
+      "source_rank": 902,
+      "word": "നടന്നു",
+      "pos": null,
+      "frequency_count": 183
+    },
+    {
+      "candidate_rank": 903,
+      "source_rank": 903,
+      "word": "മിക്കവാറും",
+      "pos": null,
+      "frequency_count": 183
+    },
+    {
+      "candidate_rank": 904,
+      "source_rank": 904,
+      "word": "കൈയ്യിൽ",
+      "pos": null,
+      "frequency_count": 183
+    },
+    {
+      "candidate_rank": 905,
+      "source_rank": 905,
+      "word": "അല്പം",
+      "pos": null,
+      "frequency_count": 183
+    },
+    {
+      "candidate_rank": 906,
+      "source_rank": 906,
+      "word": "മഴ",
+      "pos": null,
+      "frequency_count": 183
+    },
+    {
+      "candidate_rank": 907,
+      "source_rank": 907,
+      "word": "സത്യത്തില്",
+      "pos": null,
+      "frequency_count": 183
+    },
+    {
+      "candidate_rank": 908,
+      "source_rank": 908,
+      "word": "കഴിയുന്നില്ല",
+      "pos": null,
+      "frequency_count": 183
+    },
+    {
+      "candidate_rank": 909,
+      "source_rank": 909,
+      "word": "നോക്കു",
+      "pos": null,
+      "frequency_count": 183
+    },
+    {
+      "candidate_rank": 910,
+      "source_rank": 910,
+      "word": "മറ്റ്",
+      "pos": null,
+      "frequency_count": 181
+    },
+    {
+      "candidate_rank": 911,
+      "source_rank": 911,
+      "word": "ത്ഥം",
+      "pos": null,
+      "frequency_count": 181
+    },
+    {
+      "candidate_rank": 912,
+      "source_rank": 912,
+      "word": "ഇല്ലല്ലോ",
+      "pos": null,
+      "frequency_count": 181
+    },
+    {
+      "candidate_rank": 913,
+      "source_rank": 913,
+      "word": "പറയ്",
+      "pos": null,
+      "frequency_count": 181
+    },
+    {
+      "candidate_rank": 914,
+      "source_rank": 914,
+      "word": "തീരുമാനം",
+      "pos": null,
+      "frequency_count": 181
+    },
+    {
+      "candidate_rank": 915,
+      "source_rank": 915,
+      "word": "നൈറ്റ്",
+      "pos": null,
+      "frequency_count": 181
+    },
+    {
+      "candidate_rank": 916,
+      "source_rank": 916,
+      "word": "സൂക്ഷിച്ച്",
+      "pos": null,
+      "frequency_count": 181
+    },
+    {
+      "candidate_rank": 917,
+      "source_rank": 917,
+      "word": "സംസാരിച്ചു",
+      "pos": null,
+      "frequency_count": 180
+    },
+    {
+      "candidate_rank": 918,
+      "source_rank": 918,
+      "word": "ഇവൻ",
+      "pos": null,
+      "frequency_count": 180
+    },
+    {
+      "candidate_rank": 919,
+      "source_rank": 919,
+      "word": "രൂപ",
+      "pos": null,
+      "frequency_count": 180
+    },
+    {
+      "candidate_rank": 920,
+      "source_rank": 920,
+      "word": "ഇതുപോലെ",
+      "pos": null,
+      "frequency_count": 180
+    },
+    {
+      "candidate_rank": 921,
+      "source_rank": 921,
+      "word": "ഹൃദയം",
+      "pos": null,
+      "frequency_count": 180
+    },
+    {
+      "candidate_rank": 922,
+      "source_rank": 922,
+      "word": "പത്ത്",
+      "pos": null,
+      "frequency_count": 180
+    },
+    {
+      "candidate_rank": 923,
+      "source_rank": 923,
+      "word": "ചര്",
+      "pos": null,
+      "frequency_count": 179
+    },
+    {
+      "candidate_rank": 924,
+      "source_rank": 924,
+      "word": "ഉറപ്പാണോ",
+      "pos": null,
+      "frequency_count": 179
+    },
+    {
+      "candidate_rank": 925,
+      "source_rank": 925,
+      "word": "പപ്പാ",
+      "pos": null,
+      "frequency_count": 179
+    },
+    {
+      "candidate_rank": 926,
+      "source_rank": 926,
+      "word": "താങ്കളെ",
+      "pos": null,
+      "frequency_count": 179
+    },
+    {
+      "candidate_rank": 927,
+      "source_rank": 927,
+      "word": "ഏറെ",
+      "pos": null,
+      "frequency_count": 179
+    },
+    {
+      "candidate_rank": 928,
+      "source_rank": 928,
+      "word": "ക്കുന്നത്",
+      "pos": null,
+      "frequency_count": 179
+    },
+    {
+      "candidate_rank": 929,
+      "source_rank": 929,
+      "word": "പയ്യന്",
+      "pos": null,
+      "frequency_count": 179
+    },
+    {
+      "candidate_rank": 930,
+      "source_rank": 930,
+      "word": "അവനൊരു",
+      "pos": null,
+      "frequency_count": 179
+    },
+    {
+      "candidate_rank": 931,
+      "source_rank": 931,
+      "word": "സ്നേഹം",
+      "pos": null,
+      "frequency_count": 178
+    },
+    {
+      "candidate_rank": 932,
+      "source_rank": 932,
+      "word": "ചെയ്യില്ല",
+      "pos": null,
+      "frequency_count": 178
+    },
+    {
+      "candidate_rank": 933,
+      "source_rank": 933,
+      "word": "ക്ഷമിക്ക്",
+      "pos": null,
+      "frequency_count": 178
+    },
+    {
+      "candidate_rank": 934,
+      "source_rank": 934,
+      "word": "വിചാരം",
+      "pos": null,
+      "frequency_count": 178
+    },
+    {
+      "candidate_rank": 935,
+      "source_rank": 935,
+      "word": "സമ്മാനം",
+      "pos": null,
+      "frequency_count": 177
+    },
+    {
+      "candidate_rank": 936,
+      "source_rank": 936,
+      "word": "ഇവിടുത്തെ",
+      "pos": null,
+      "frequency_count": 177
+    },
+    {
+      "candidate_rank": 937,
+      "source_rank": 937,
+      "word": "മണിക്കൂര്",
+      "pos": null,
+      "frequency_count": 177
+    },
+    {
+      "candidate_rank": 938,
+      "source_rank": 938,
+      "word": "പേടിക്കേണ്ട",
+      "pos": null,
+      "frequency_count": 177
+    },
+    {
+      "candidate_rank": 939,
+      "source_rank": 939,
+      "word": "കൊന്നത്",
+      "pos": null,
+      "frequency_count": 177
+    },
+    {
+      "candidate_rank": 940,
+      "source_rank": 940,
+      "word": "കറുത്ത",
+      "pos": null,
+      "frequency_count": 177
+    },
+    {
+      "candidate_rank": 941,
+      "source_rank": 941,
+      "word": "ആഗ്രഹം",
+      "pos": null,
+      "frequency_count": 177
+    },
+    {
+      "candidate_rank": 942,
+      "source_rank": 942,
+      "word": "കോര്",
+      "pos": null,
+      "frequency_count": 177
+    },
+    {
+      "candidate_rank": 943,
+      "source_rank": 943,
+      "word": "media",
+      "pos": null,
+      "frequency_count": 177
+    },
+    {
+      "candidate_rank": 944,
+      "source_rank": 944,
+      "word": "സി",
+      "pos": null,
+      "frequency_count": 176
+    },
+    {
+      "candidate_rank": 945,
+      "source_rank": 945,
+      "word": "ഉപയോഗിച്ച്",
+      "pos": null,
+      "frequency_count": 176
+    },
+    {
+      "candidate_rank": 946,
+      "source_rank": 946,
+      "word": "കരുതിയത്",
+      "pos": null,
+      "frequency_count": 176
+    },
+    {
+      "candidate_rank": 947,
+      "source_rank": 947,
+      "word": "എന്തുപറ്റി",
+      "pos": null,
+      "frequency_count": 176
+    },
+    {
+      "candidate_rank": 948,
+      "source_rank": 948,
+      "word": "പാട്ട്",
+      "pos": null,
+      "frequency_count": 176
+    },
+    {
+      "candidate_rank": 949,
+      "source_rank": 949,
+      "word": "പേരെ",
+      "pos": null,
+      "frequency_count": 176
+    },
+    {
+      "candidate_rank": 950,
+      "source_rank": 950,
+      "word": "ശ്രദ്ധിക്കൂ",
+      "pos": null,
+      "frequency_count": 175
+    },
+    {
+      "candidate_rank": 951,
+      "source_rank": 951,
+      "word": "എഴുന്നേല്",
+      "pos": null,
+      "frequency_count": 175
+    },
+    {
+      "candidate_rank": 952,
+      "source_rank": 952,
+      "word": "ശരിയാ",
+      "pos": null,
+      "frequency_count": 175
+    },
+    {
+      "candidate_rank": 953,
+      "source_rank": 953,
+      "word": "പോടാ",
+      "pos": null,
+      "frequency_count": 175
+    },
+    {
+      "candidate_rank": 954,
+      "source_rank": 954,
+      "word": "കണ്ട്",
+      "pos": null,
+      "frequency_count": 175
+    },
+    {
+      "candidate_rank": 955,
+      "source_rank": 955,
+      "word": "തുടര്",
+      "pos": null,
+      "frequency_count": 174
+    },
+    {
+      "candidate_rank": 956,
+      "source_rank": 956,
+      "word": "നിങ്ങളാണ്",
+      "pos": null,
+      "frequency_count": 174
+    },
+    {
+      "candidate_rank": 957,
+      "source_rank": 957,
+      "word": "റൂം",
+      "pos": null,
+      "frequency_count": 174
+    },
+    {
+      "candidate_rank": 958,
+      "source_rank": 958,
+      "word": "സില്",
+      "pos": null,
+      "frequency_count": 173
+    },
+    {
+      "candidate_rank": 959,
+      "source_rank": 959,
+      "word": "പകുതി",
+      "pos": null,
+      "frequency_count": 173
+    },
+    {
+      "candidate_rank": 960,
+      "source_rank": 960,
+      "word": "എപ്പോഴെങ്കിലും",
+      "pos": null,
+      "frequency_count": 173
+    },
+    {
+      "candidate_rank": 961,
+      "source_rank": 961,
+      "word": "നിങ്ങളൊരു",
+      "pos": null,
+      "frequency_count": 173
+    },
+    {
+      "candidate_rank": 962,
+      "source_rank": 962,
+      "word": "മാറ്",
+      "pos": null,
+      "frequency_count": 173
+    },
+    {
+      "candidate_rank": 963,
+      "source_rank": 963,
+      "word": "ഉണ്ടല്ലോ",
+      "pos": null,
+      "frequency_count": 173
+    },
+    {
+      "candidate_rank": 964,
+      "source_rank": 964,
+      "word": "പൊയ്ക്കോ",
+      "pos": null,
+      "frequency_count": 173
+    },
+    {
+      "candidate_rank": 965,
+      "source_rank": 965,
+      "word": "നല്ലതാണ്",
+      "pos": null,
+      "frequency_count": 173
+    },
+    {
+      "candidate_rank": 966,
+      "source_rank": 966,
+      "word": "ചെയ്തിട്ടുണ്ട്",
+      "pos": null,
+      "frequency_count": 172
+    },
+    {
+      "candidate_rank": 967,
+      "source_rank": 967,
+      "word": "പറയുക",
+      "pos": null,
+      "frequency_count": 172
+    },
+    {
+      "candidate_rank": 968,
+      "source_rank": 968,
+      "word": "നിനക്കും",
+      "pos": null,
+      "frequency_count": 172
+    },
+    {
+      "candidate_rank": 969,
+      "source_rank": 969,
+      "word": "എനിക്കിത്",
+      "pos": null,
+      "frequency_count": 172
+    },
+    {
+      "candidate_rank": 970,
+      "source_rank": 970,
+      "word": "പ്രൊഫസർ",
+      "pos": null,
+      "frequency_count": 172
+    },
+    {
+      "candidate_rank": 971,
+      "source_rank": 971,
+      "word": "അച്ഛനെ",
+      "pos": null,
+      "frequency_count": 172
+    },
+    {
+      "candidate_rank": 972,
+      "source_rank": 972,
+      "word": "വരട്ടെ",
+      "pos": null,
+      "frequency_count": 172
+    },
+    {
+      "candidate_rank": 973,
+      "source_rank": 973,
+      "word": "ആണു",
+      "pos": null,
+      "frequency_count": 171
+    },
+    {
+      "candidate_rank": 974,
+      "source_rank": 974,
+      "word": "ഒരേയൊരു",
+      "pos": null,
+      "frequency_count": 171
+    },
+    {
+      "candidate_rank": 975,
+      "source_rank": 975,
+      "word": "ദൂരം",
+      "pos": null,
+      "frequency_count": 171
+    },
+    {
+      "candidate_rank": 976,
+      "source_rank": 976,
+      "word": "ഇവള്",
+      "pos": null,
+      "frequency_count": 171
+    },
+    {
+      "candidate_rank": 977,
+      "source_rank": 977,
+      "word": "ഇവിടെയുണ്ട്",
+      "pos": null,
+      "frequency_count": 171
+    },
+    {
+      "candidate_rank": 978,
+      "source_rank": 978,
+      "word": "തന്റെ",
+      "pos": null,
+      "frequency_count": 171
+    },
+    {
+      "candidate_rank": 979,
+      "source_rank": 979,
+      "word": "വിശ്വസിക്കുന്നു",
+      "pos": null,
+      "frequency_count": 170
+    },
+    {
+      "candidate_rank": 980,
+      "source_rank": 980,
+      "word": "കിട്ടിയോ",
+      "pos": null,
+      "frequency_count": 170
+    },
+    {
+      "candidate_rank": 981,
+      "source_rank": 981,
+      "word": "മനസിലായി",
+      "pos": null,
+      "frequency_count": 170
+    },
+    {
+      "candidate_rank": 982,
+      "source_rank": 982,
+      "word": "ല്",
+      "pos": null,
+      "frequency_count": 170
+    },
+    {
+      "candidate_rank": 983,
+      "source_rank": 983,
+      "word": "പ്രിയപ്പെട്ട",
+      "pos": null,
+      "frequency_count": 170
+    },
+    {
+      "candidate_rank": 984,
+      "source_rank": 984,
+      "word": "ത്ത",
+      "pos": null,
+      "frequency_count": 170
+    },
+    {
+      "candidate_rank": 985,
+      "source_rank": 985,
+      "word": "മുകളിൽ",
+      "pos": null,
+      "frequency_count": 170
+    },
+    {
+      "candidate_rank": 986,
+      "source_rank": 986,
+      "word": "ഹാര്",
+      "pos": null,
+      "frequency_count": 169
+    },
+    {
+      "candidate_rank": 987,
+      "source_rank": 987,
+      "word": "വസ്ത്രം",
+      "pos": null,
+      "frequency_count": 169
+    },
+    {
+      "candidate_rank": 988,
+      "source_rank": 988,
+      "word": "കൊല്ലം",
+      "pos": null,
+      "frequency_count": 169
+    },
+    {
+      "candidate_rank": 989,
+      "source_rank": 989,
+      "word": "ചെയ്തിട്ടില്ല",
+      "pos": null,
+      "frequency_count": 169
+    },
+    {
+      "candidate_rank": 990,
+      "source_rank": 990,
+      "word": "എടുത്തോ",
+      "pos": null,
+      "frequency_count": 169
+    },
+    {
+      "candidate_rank": 991,
+      "source_rank": 991,
+      "word": "കൂട്ടി",
+      "pos": null,
+      "frequency_count": 169
+    },
+    {
+      "candidate_rank": 992,
+      "source_rank": 992,
+      "word": "ചേട്ടാ",
+      "pos": null,
+      "frequency_count": 168
+    },
+    {
+      "candidate_rank": 993,
+      "source_rank": 993,
+      "word": "ആരുടെ",
+      "pos": null,
+      "frequency_count": 168
+    },
+    {
+      "candidate_rank": 994,
+      "source_rank": 994,
+      "word": "അമേരിക്കന്",
+      "pos": null,
+      "frequency_count": 168
+    },
+    {
+      "candidate_rank": 995,
+      "source_rank": 995,
+      "word": "തരണം",
+      "pos": null,
+      "frequency_count": 168
+    },
+    {
+      "candidate_rank": 996,
+      "source_rank": 996,
+      "word": "കിട്ടിയ",
+      "pos": null,
+      "frequency_count": 168
+    },
+    {
+      "candidate_rank": 997,
+      "source_rank": 997,
+      "word": "ഭൂമിയിലെ",
+      "pos": null,
+      "frequency_count": 167
+    },
+    {
+      "candidate_rank": 998,
+      "source_rank": 998,
+      "word": "ഇതാണോ",
+      "pos": null,
+      "frequency_count": 167
+    },
+    {
+      "candidate_rank": 999,
+      "source_rank": 999,
+      "word": "കിട്ടില്ല",
+      "pos": null,
+      "frequency_count": 167
+    },
+    {
+      "candidate_rank": 1000,
+      "source_rank": 1000,
+      "word": "മാപ്പ്",
+      "pos": null,
+      "frequency_count": 167
+    }
+  ]
+}
