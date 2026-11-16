@@ -71,10 +71,14 @@ def build(data: dict) -> bytes:
     payload = bytearray(lang_bytes + source_bytes)
     seen = set()
     for expected_rank, entry in enumerate(entries, 1):
-        if not isinstance(entry, dict) or entry.get("rank") != expected_rank:
-            raise FruchstError(f"entry {expected_rank}: ranks must be contiguous and ordered")
-        word = unicodedata.normalize("NFC", str(entry.get("word", "")))
-        word_bytes = nfc_text(word, f"entry {expected_rank} word")
+        if not isinstance(entry, dict):
+            raise FruchstError(f"entry {expected_rank}: entry must be an object")
+        rank = entry.get("rank")
+        if isinstance(rank, bool) or not isinstance(rank, int) or rank != expected_rank:
+            raise FruchstError(f"entry {expected_rank}: ranks must be contiguous integers in order")
+        word_value = entry.get("word")
+        word_bytes = nfc_text(word_value, f"entry {expected_rank} word")
+        word = word_bytes.decode("utf-8")
         if word in seen:
             raise FruchstError(f"entry {expected_rank}: duplicate normalized headword {word!r}")
         seen.add(word)
