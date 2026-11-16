@@ -18,6 +18,7 @@ from pathlib import Path
 
 from fruchst_definition_batch import norm, wiktionary_codes
 from fruchst_close_variants import ALEF_TAGS, strip_key
+from fruchst_english_segments import script_of
 
 SOURCE = {
     "project": "Wikidata Lexemes",
@@ -114,13 +115,19 @@ def scan_lexemes(path: Path, words_by_tag: dict[str, set[str]]) -> dict[tuple[st
                     matched.setdefault((tag, word), (kind, "optional_marks", features))
         if not matched:
             continue
-        lemma_text = next((norm(v["value"]) for v in lemmas.values() if isinstance(v, dict) and v.get("value")), None)
+        lemma_reps = [(k, norm(v["value"])) for k, v in lemmas.items() if isinstance(v, dict) and v.get("value")]
+
+        def lemma_for(tag: str, script_sample: str) -> str | None:
+            """The lemma spelling in the matched profile's own language key and script."""
+            own = [v for k, v in lemma_reps if tag in (keymap.get(k.casefold()) or [])]
+            same_script = [v for v in own if script_of(v) == script_of(script_sample)]
+            return (same_script or own or [v for _, v in lemma_reps] or [None])[0]
         pos = LEXICAL_CATEGORIES.get(entity.get("lexicalCategory"))
         sense_records = []
         for sense in senses:
             gloss = ((sense.get("glosses") or {}).get("en") or {}).get("value")
             claims = sense.get("claims") or {}
-            record = {"lexeme": entity.get("id"), "sense": sense.get("id"), "lemma": lemma_text, "pos": pos,
+            record = {"lexeme": entity.get("id"), "sense": sense.get("id"), "pos": pos,
                       "lexical_category": entity.get("lexicalCategory"), "gloss": norm(gloss) if gloss else None,
                       "items": statement_ids(claims, "P5137"), "translation_senses": statement_ids(claims, "P5972")}
             if record["gloss"] or record["translation_senses"]:
@@ -129,7 +136,7 @@ def scan_lexemes(path: Path, words_by_tag: dict[str, set[str]]) -> dict[tuple[st
             bucket = hits.setdefault((tag, word), [])
             for record in sense_records:
                 if len(bucket) < MAX_SENSES_PER_WORD:
-                    bucket.append({**record, "match": kind, "match_how": how,
+                    bucket.append({**record, "lemma": lemma_for(tag, word), "match": kind, "match_how": how,
                                    **({"grammatical_features": features} if kind == "form" else {})})
 
     # Resolve translation links to English lexeme senses.

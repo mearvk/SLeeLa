@@ -37,7 +37,7 @@ KO_PARTICLES = (
     ("만", "only"), ("야", "vocative/copula"), ("랑", "with/and"), ("요", "polite ending"),
 )
 # Hangul syllable = 0xAC00 + (initial*21 + medial)*28 + final; final 4 = ㄴ, 8 = ㄹ.
-KO_CONTRACTED_FINALS = {4: "-ㄴ (contracted topic marker)", 8: "-ㄹ (contracted object marker)"}
+KO_CONTRACTED_FINALS = {4: ("-ㄴ", "contracted topic marker"), 8: ("-ㄹ", "contracted object marker")}
 
 AM_PREFIXES = (("እንደ", "like/as"), ("የ", "of (genitive)"), ("በ", "in/by/with"), ("ለ", "for/to"), ("ከ", "from/than"))
 AM_STEM_POS = NOMINAL_POS | {"adjective"}
@@ -62,8 +62,8 @@ def segment_keys(tag: str, word: str) -> list[dict]:
         if 0 <= code < 11172 and code % 28 in KO_CONTRACTED_FINALS:
             base = chr(0xAC00 + code - code % 28)
             out.append({"stem": word[:-1] + base, "method": "contracted_particle",
-                        "affix": KO_CONTRACTED_FINALS[code % 28].split()[0],
-                        "label": KO_CONTRACTED_FINALS[code % 28], "allowed_pos": NOMINAL_POS})
+                        "affix": KO_CONTRACTED_FINALS[code % 28][0],
+                        "label": KO_CONTRACTED_FINALS[code % 28][1], "allowed_pos": NOMINAL_POS})
     elif tag == "am":
         for prefix, label in AM_PREFIXES:
             if word.startswith(prefix) and len(word) - len(prefix) >= 2:
