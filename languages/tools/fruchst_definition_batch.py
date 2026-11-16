@@ -40,6 +40,9 @@ TARGETS = (
     "en", "zh-Hans", "hi", "es", "ar", "fr", "bn", "pt", "ru", "id",
     "ur", "de", "ja", "vi", "te", "tr", "tl", "ta", "fa", "ko", "th",
     "it", "pl", "uk", "ml", "ms", "nl", "ro", "kk", "si", "af",
+    "arz", "mr", "ha", "pnb-Arab", "sw", "jv", "gu", "am", "kn", "bho",
+    "yo", "ln", "ary", "or", "sd", "pa-Guru", "su", "ig", "ne", "uz",
+    "zu", "skr", "so", "as", "ceb", "mag", "xh", "mai",
 )
 WIKTIONARY_LANG_CODES = {
     "en": "en",
@@ -73,13 +76,53 @@ WIKTIONARY_LANG_CODES = {
     "kk": "kk",
     "si": "si",
     "af": "af",
+    "arz": "arz",
+    "mr": "mr",
+    "ha": "ha",
+    "pnb-Arab": "pnb",
+    "sw": "sw",
+    "jv": "jv",
+    "gu": "gu",
+    "am": "am",
+    "kn": "kn",
+    "bho": "bho",
+    "yo": "yo",
+    "ln": "ln",
+    "ary": "ary",
+    "or": "or",
+    "sd": "sd",
+    "pa-Guru": "pa",
+    "su": "su",
+    "ig": "ig",
+    "ne": "ne",
+    "uz": "uz",
+    "zu": "zu",
+    "skr": "skr",
+    "so": "so",
+    "as": "as",
+    "ceb": "ceb",
+    "mag": "mag",
+    "xh": "xh",
+    "mai": "mai",
 }
 TARGET_MAPPING_NOTES = {
     "zh-Hans": (
         "Wiktionary entries use the broad 'zh' code; the candidate word list "
         "is the Simplified Chinese zh_cn frequency set. Verify script/variety "
         "for every selected sense before approval."
-    )
+    ),
+    "pnb-Arab": (
+        "Wiktionary uses the pnb language code. Verify Western Punjabi identity "
+        "and Shahmukhi script for every selected sense."
+    ),
+    "pa-Guru": (
+        "Wiktionary uses the broad pa code. Verify Eastern Punjabi identity "
+        "and Gurmukhi script for every selected sense."
+    ),
+    "bho": (
+        "The frequency corpus is from Wikimedia's bh Wikipedia project, mapped "
+        "to Bhojpuri. Verify every headword's language identity."
+    ),
 }
 POS_ALIASES = {
     "adj": "adjective",
@@ -127,7 +170,7 @@ def qids_for(sense: dict) -> list[str]:
 def candidate_path_for(directory: Path, language_tag: str) -> Path:
     """Find exactly one known candidate file for a registered language tag."""
     matches = [
-        path for prefix in ("wordhoard", "frequencywords")
+        path for prefix in ("wordhoard", "frequencywords", "wikipedia")
         if (path := directory / f"{prefix}-{language_tag}.json").is_file()
     ]
     if len(matches) != 1:
