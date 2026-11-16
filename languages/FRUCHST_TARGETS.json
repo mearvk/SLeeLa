@@ -213,11 +213,13 @@
       "iso_639_3": "pcm",
       "language_tag": "pcm",
       "binary_filename": "fruchst.pcm.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-pcm",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact ISO 639-3 match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "egyptian-arabic",
@@ -239,11 +241,13 @@
       "iso_639_3": "mar",
       "language_tag": "mr",
       "binary_filename": "fruchst.mr.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-mr",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "vietnamese",
@@ -282,11 +286,13 @@
       "iso_639_3": "hau",
       "language_tag": "ha",
       "binary_filename": "fruchst.ha.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-ha",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "turkish",
@@ -323,11 +329,13 @@
       "iso_639_3": "swa",
       "language_tag": "sw",
       "binary_filename": "fruchst.sw.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-sw",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (unilex 'sw' (Swahili macrolanguage); content is Standard Swahili); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "tagalog",
@@ -437,11 +445,13 @@
       "iso_639_3": "jav",
       "language_tag": "jv",
       "binary_filename": "fruchst.jv.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-jv",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "italian",
@@ -465,11 +475,13 @@
       "iso_639_3": "guj",
       "language_tag": "gu",
       "binary_filename": "fruchst.gu.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-gu",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "levantine-arabic",
@@ -491,11 +503,13 @@
       "iso_639_3": "amh",
       "language_tag": "am",
       "binary_filename": "fruchst.am.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-am",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "kannada",
@@ -504,11 +518,13 @@
       "iso_639_3": "kan",
       "language_tag": "kn",
       "binary_filename": "fruchst.kn.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-kn",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "bhojpuri",
@@ -543,11 +559,13 @@
       "iso_639_3": "yor",
       "language_tag": "yo",
       "binary_filename": "fruchst.yo.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-yo",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "jinyu-chinese",
@@ -597,11 +615,13 @@
       "iso_639_3": "mya",
       "language_tag": "my",
       "binary_filename": "fruchst.my.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-my",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "algerian-arabic",
@@ -662,11 +682,13 @@
       "iso_639_3": "ori",
       "language_tag": "or",
       "binary_filename": "fruchst.or.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-or",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "ukrainian",
@@ -731,11 +753,13 @@
       "iso_639_3": "pan",
       "language_tag": "pa-Guru",
       "binary_filename": "fruchst.pa.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-pa",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (unilex 'pa' verified Gurmukhi-script (Eastern Punjabi); not used for pnb-Arab); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "sunda",
@@ -744,11 +768,13 @@
       "iso_639_3": "sun",
       "language_tag": "su",
       "binary_filename": "fruchst.su.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-su",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "igbo",
@@ -761,7 +787,7 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Blocked: unilex ig.txt at b3a9ae27a0c2 has only 693 usable word forms (corpus 10594 tokens); 1,000 required. Not padded. Needs a larger corpus."
     },
     {
       "directory": "dari",
@@ -770,11 +796,13 @@
       "iso_639_3": "prs",
       "language_tag": "prs",
       "binary_filename": "fruchst.prs.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-fa-AF",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (CLDR fa-AF is Dari (Afghan Persian), ISO 639-3 prs); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "nepali",
@@ -811,11 +839,13 @@
       "iso_639_3": "uzn",
       "language_tag": "uz",
       "binary_filename": "fruchst.uz.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-uz",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (unilex 'uz' is Cyrillic-script Uzbek of Uzbekistan (Northern Uzbek, uzn); modern official orthography is Latin); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "zulu",
@@ -854,7 +884,7 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Blocked: unilex has only macrolanguage 'ps' (Pashto); Northern vs Southern variety is undocumented. Needs a variety-specific frequency source."
     },
     {
       "directory": "west-central-oromo",
@@ -904,11 +934,13 @@
       "iso_639_3": "som",
       "language_tag": "so",
       "binary_filename": "fruchst.so.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-so",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "romanian",
@@ -962,7 +994,7 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Blocked: unilex has only macrolanguage 'ps' (Pashto); Northern vs Southern variety is undocumented. Needs a variety-specific frequency source."
     },
     {
       "directory": "cebuano",
@@ -971,11 +1003,13 @@
       "iso_639_3": "ceb",
       "language_tag": "ceb",
       "binary_filename": "fruchst.ceb.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-ceb",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "kazakh",
@@ -999,11 +1033,13 @@
       "iso_639_3": "mag",
       "language_tag": "mag",
       "binary_filename": "fruchst.mag.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-mag",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "najdi-arabic",
@@ -1066,11 +1102,13 @@
       "iso_639_3": "khm",
       "language_tag": "km",
       "binary_filename": "fruchst.km.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-km",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     },
     {
       "directory": "afrikaans",
@@ -1098,7 +1136,7 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "notes": "Blocked: unilex fuv.txt at b3a9ae27a0c2 has only 749 usable word forms (corpus 9742 tokens); 1,000 required. Not padded. Needs a larger corpus."
     },
     {
       "directory": "maithili",
@@ -1107,11 +1145,13 @@
       "iso_639_3": "mai",
       "language_tag": "mai",
       "binary_filename": "fruchst.mai.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "unilex-mai",
+      "license_review": "Unicode-DFS-2016 notice recorded; definition-source review pending",
+      "notes": "1,000 unique NFC surface-form candidates staged from unicode-org/unilex (exact match); English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17",
+      "definitions_status": "pending"
     }
   ]
 }

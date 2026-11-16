@@ -29,3 +29,12 @@ A missing source or unclear license is a tracked blocker, not a reason to synthe
 ## First frequency-candidate batch (English, French, Spanish, German)
 
 The initial candidate lists are staged under `datasets/frequency-candidates/` from wordhoard's top-2,000 samples at pinned revision `1bc5730e8d6e682c416c03680b7cb8c6c7ca8cd0`. The source dataset is CC BY-SA 4.0; the upstream code is MIT. Its frequency backbone is OpenSubtitles-2018 via FrequencyWords. This is a subtitle-domain ranking, not a balanced general-language corpus. The staged lists preserve raw occurrence counts and POS, collapse duplicate lemmas, and are not yet FRUCHST dictionaries. English/French/Spanish definitions remain outstanding for all four language lists. See `datasets/frequency-candidates/README.md` and `tools/stage_wordhoard.py`.
+
+## unilex frequency-candidate batch (20 languages)
+
+After the wordhoard batch above and the 27-language FrequencyWords batch (`tools/stage_frequencywords.py`, `frequencywords-*.json`), twenty further profiles are staged from Unicode **unilex** (`unicode-org/unilex`, revision `b3a9ae27a0c29eac217bb15a75c6f8d8efb15d17`) by `tools/stage_unilex.py`. unilex data is under the permissive Unicode Data Files license (Unicode-DFS-2016) and its frequencies come from Google Corpus Crawler web and scripture crawls, scaled to per-billion-token values. Variety mappings are explicit in the stager; `fa-AF` is used for Dari (`prs`) and Gurmukhi `pa` for Eastern Punjabi. Details and limitations are in `datasets/frequency-candidates/README.md`.
+
+Remaining blockers after this batch (29 profiles, no frequency candidates):
+- **No licensed source reachable:** Egyptian, Levantine, Sudanese, Algerian, Moroccan, Saidi, Najdi and Mesopotamian Arabic; Yue, Wu, Jin, Min Nan, Hakka, Xiang and Gan Chinese; Western Punjabi (Shahmukhi), Bhojpuri, Sindhi, Nepali, Assamese, Saraiki, Lingala, Zulu, Xhosa, West Central Oromo. Neither FrequencyWords, wordfreq nor unilex publishes these codes. Leipzig Corpora Collection, OSCAR/CulturaX, and Wikipedia dumps are candidates but need per-corpus license review.
+- **Too small in unilex:** Igbo (693 forms), Nigerian Fulfulde (749 forms).
+- **Macrolanguage only:** Northern and Southern Pashto (unilex `ps` does not identify the variety).
