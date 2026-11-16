@@ -95,9 +95,9 @@ int slterminal_spawn(SLTerminalHandle* terminal, const char* command,
     size.X = (SHORT)(cols > 32767 ? 32767 : cols);
     size.Y = (SHORT)(rows > 32767 ? 32767 : rows);
     hr = CreatePseudoConsole(size, child_in, child_out, 0, &hpc);
-    CloseHandle(child_in);
-    CloseHandle(child_out);
     if (FAILED(hr)) {
+        CloseHandle(child_in);
+        CloseHandle(child_out);
         CloseHandle(parent_in); CloseHandle(parent_out);
         return (int)hr;
     }
@@ -113,6 +113,7 @@ int slterminal_spawn(SLTerminalHandle* terminal, const char* command,
             PROC_THREAD_ATTRIBUTE_PSEUDOCONSOLE, hpc, sizeof(hpc), NULL, NULL)) {
         error_code = GetLastError();
         if (si.lpAttributeList) HeapFree(GetProcessHeap(), 0, si.lpAttributeList);
+        CloseHandle(child_in); CloseHandle(child_out);
         CloseHandle(parent_in); CloseHandle(parent_out); ClosePseudoConsole(hpc);
         return (int)error_code;
     }
@@ -121,6 +122,7 @@ int slterminal_spawn(SLTerminalHandle* terminal, const char* command,
     if (!cmd) {
         DeleteProcThreadAttributeList(si.lpAttributeList);
         HeapFree(GetProcessHeap(), 0, si.lpAttributeList);
+        CloseHandle(child_in); CloseHandle(child_out);
         CloseHandle(parent_in); CloseHandle(parent_out); ClosePseudoConsole(hpc);
         return ERROR_OUTOFMEMORY;
     }
@@ -132,9 +134,15 @@ int slterminal_spawn(SLTerminalHandle* terminal, const char* command,
         free(cmd);
         DeleteProcThreadAttributeList(si.lpAttributeList);
         HeapFree(GetProcessHeap(), 0, si.lpAttributeList);
+        CloseHandle(child_in); CloseHandle(child_out);
         CloseHandle(parent_in); CloseHandle(parent_out); ClosePseudoConsole(hpc);
         return (int)error_code;
     }
+    /* Keep the pipe endpoints supplied to CreatePseudoConsole alive until
+     * CreateProcess has attached the child, as required by the ConPTY setup
+     * sequence. Only then release this process's copies. */
+    CloseHandle(child_in);
+    CloseHandle(child_out);
     CloseHandle(pi.hThread);
     free(cmd);
     DeleteProcThreadAttributeList(si.lpAttributeList);
