@@ -27,6 +27,16 @@ The VM remains the sole owner of arrays. The adapter works with the existing
 VM-local array handles and `SLArrayInstance` storage; it must not introduce a
 second VM array representation.
 
+**Precondition discovered in the 2026-11-15 source audit:** the current array
+instance has no generation/incarnation field, and `array_valid_handle` checks
+slot range plus `active` only. Because the bounded table reuses slots, this is
+not sufficient to distinguish a stale handle from a later occupant. Before
+native array dispatch can claim stale-handle safety, array identity must be
+hardened across *all* array consumers (`OP_ARRGET`, `OP_ARRSET`, `OP_ARRLEN`,
+`OP_ARRPUSH`, allocation, GC reclamation, and host-facing APIs). Do not add a
+private generation check only to opcode 196; that would leave inconsistent
+array-handle semantics. See `VM-ARRAY-ADAPTER-SOURCE-AUDIT.md`.
+
 The adapter must:
 - validate every handle, active slot, logical length, capacity, and element;
 - accept only explicitly supported numeric element tags (`SL_INT`,
@@ -98,15 +108,17 @@ The scalar fallback contract at opcode 195 remains unchanged.
 Opcode 196 may be appended to the executable enum only when all of the
 following land together:
 
-1. A VM-owned adapter in the shared Core engine.
-2. A documented stack/shape/alias contract and deterministic compiler lowering.
-3. Artifact operand validation for the typed operation identifier.
-4. Dispatch through the existing `slmath_vm_dispatch` C ABI.
-5. Tests for stale/invalid handles, non-numeric values, empty arrays, shape
+1. Incarnation-safe array handles across the shared Core array API, including
+   slot reuse and GC reclamation.
+2. A VM-owned adapter in the shared Core engine.
+3. A documented stack/shape/alias contract and deterministic compiler lowering.
+4. Artifact operand validation for the typed operation identifier.
+5. Dispatch through the existing `slmath_vm_dispatch` C ABI.
+6. Tests for stale/invalid handles, non-numeric values, empty arrays, shape
    mismatch, overflow, allocation failure, aliases, worker contention,
    rollback on every kernel failure, and numerical correctness.
-6. Source/native ISA equality and opcode-allocation checks.
-7. Qualification of the shared Core path used by SLVM/1 through SLVM/11.
+7. Source/native ISA equality and opcode-allocation checks.
+8. Qualification of the shared Core path used by SLVM/1 through SLVM/11.
 
 Until then, 196–281 remain reserved and fail closed. Do not renumber, fill
 unrelated gaps, or split a family across non-contiguous ranges.
