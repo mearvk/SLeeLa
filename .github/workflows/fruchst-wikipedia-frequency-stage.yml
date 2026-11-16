@@ -125,8 +125,9 @@ jobs:
           retention-days: 7
 
   publish:
-    name: Validate and publish all Wikipedia candidates
+    name: Validate and publish successful Wikipedia candidates
     needs: stage
+    if: ${{ always() && needs.stage.result != 'cancelled' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -141,7 +142,8 @@ jobs:
           pattern: fruchst-wikipedia-*
           path: staged
           merge-multiple: true
-      - name: Validate all artifacts and update registry
+        continue-on-error: true
+      - name: Validate available artifacts and update registry
         run: |
           set -euo pipefail
           python3 languages/tools/merge_wikipedia_frequency.py \
