@@ -39,11 +39,15 @@ def validate_document(path: Path, expected_tag: str) -> dict:
 
 def aggregate(input_dir: Path, output_dir: Path, registry_path: Path):
     docs = {}
+    missing = []
     for tag in sorted(WIKIPEDIA_SOURCE_MAP):
         source = input_dir / f"wikipedia-{tag}.json"
         if not source.is_file():
-            raise ValueError(f"missing worker output for {tag}: {source}")
+            missing.append(tag)
+            continue
         docs[tag] = validate_document(source, tag)
+    if not docs:
+        raise ValueError("no valid Wikipedia worker artifacts were downloaded")
 
     registry = json.loads(registry_path.read_text(encoding="utf-8"))
     profiles = {item["language_tag"]: item for item in registry["profiles"]}
@@ -77,7 +81,7 @@ def aggregate(input_dir: Path, output_dir: Path, registry_path: Path):
         })
     registry_path.write_text(json.dumps(registry, ensure_ascii=False, indent=2) + "\n",
                              encoding="utf-8")
-    return list(docs)
+    return list(docs), missing
 
 
 def main() -> int:
@@ -87,9 +91,11 @@ def main() -> int:
     parser.add_argument("--registry", type=Path, default=Path("languages/FRUCHST_TARGETS.json"))
     args = parser.parse_args()
     try:
-        tags = aggregate(args.input_dir, args.output_dir, args.registry)
+        tags, missing = aggregate(args.input_dir, args.output_dir, args.registry)
         print(f"Validated and staged {len(tags)} Wikipedia candidate files.")
         print(", ".join(tags))
+        if missing:
+            print(f"Still pending ({len(missing)}): {', '.join(missing)}")
     except (OSError, KeyError, ValueError, json.JSONDecodeError) as exc:
         print(f"merge_wikipedia_frequency: error: {exc}", file=sys.stderr)
         return 2
