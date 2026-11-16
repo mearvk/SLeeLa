@@ -8,7 +8,9 @@ headwords to NFC, and never fabricates missing ranks or words.
 from __future__ import annotations
 import argparse
 import json
+import io
 import sys
+import zipfile
 import unicodedata
 import urllib.error
 import urllib.request
@@ -43,13 +45,26 @@ def clean_headword(value: str) -> str:
     return word
 
 def read_candidates(source_code: str, limit: int = 1000) -> list[dict]:
+    # Most 2018 corpora are plain text; Thai is published as a ZIP archive.
+    extension = ".zip" if source_code == "th" else ".txt"
     url = (
         f"https://raw.githubusercontent.com/hermitdave/FrequencyWords/{REVISION}/"
-        f"content/2018/{source_code}/{source_code}_full.txt"
+        f"content/2018/{source_code}/{source_code}_full{extension}"
     )
     request = urllib.request.Request(url, headers={"User-Agent": "SLeeLa-FRUCHST-stager/1.0"})
     with urllib.request.urlopen(request, timeout=120) as response:
-        content = response.read().decode("utf-8-sig")
+        payload = response.read()
+    if extension == ".zip":
+        with zipfile.ZipFile(io.BytesIO(payload)) as archive:
+            member = f"{source_code}_full.txt"
+            if member not in archive.namelist():
+                text_members = [name for name in archive.namelist() if name.lower().endswith(".txt")]
+                if len(text_members) != 1:
+                    raise ValueError(f"{source_code}: expected {member} or one unambiguous TXT member in archive")
+                member = text_members[0]
+            content = archive.read(member).decode("utf-8-sig")
+    else:
+        content = payload.decode("utf-8-sig")
     candidates: list[dict] = []
     seen: set[str] = set()
     for source_rank, line in enumerate(content.splitlines(), 1):
@@ -116,7 +131,7 @@ def main() -> int:
                     "dataset": "FrequencyWords",
                     "upstream": UPSTREAM,
                     "revision": REVISION,
-                    "sample": f"content/2018/{source_code}/{source_code}_full.txt",
+                    "sample": f"content/2018/{source_code}/{source_code}_full{'.zip' if source_code == 'th' else '.txt'}",
                     "data_license": LICENSE,
                     "code_license": "MIT",
                     "frequency_source": FREQUENCY_SOURCE,
