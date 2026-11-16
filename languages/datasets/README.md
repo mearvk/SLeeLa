@@ -66,3 +66,16 @@ python3 languages/tools/stage_wordhoard.py de languages/datasets/frequency-candi
 ```
 
 These files are not complete dictionaries: all entries still require reviewed, aligned English, French, and Spanish definitions.
+
+
+## Additional frequency-candidate source
+
+A second staging path uses the pinned \`hermitdave/FrequencyWords\` 2018 files, derived from OpenSubtitles 2018. Its content license is CC BY-SA 4.0; the upstream code license is MIT. These source files provide surface-form counts rather than lemmas or POS labels. The stager records the original source line rank and count, filters punctuation-only tokens, preserves NFC spelling, and does not invent missing data.
+
+Run the supported-language batch with:
+
+\`\`\`sh
+python3 languages/tools/stage_frequencywords.py
+\`\`\`
+
+This batch currently maps 25 target profiles to explicit source variants. It deliberately does not substitute dialects (for example, Modern Standard Arabic for Egyptian or Levantine Arabic, or Mandarin for Yue/Wu). The remaining profiles need separate, variety-appropriate source review. Candidate files are not completed dictionaries: all three English/French/Spanish definitions and the associated human review remain pending.

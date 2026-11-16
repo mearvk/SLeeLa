@@ -1,0 +1,55 @@
+name: FRUCHST frequency candidate staging
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: fruchst-frequency-stage-master
+  cancel-in-progress: false
+jobs:
+  stage-frequency-candidates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Stage supported language candidate sets
+        run: python3 languages/tools/stage_frequencywords.py
+      - name: Validate staged candidates
+        run: |
+          python3 - <<'PY'
+          import json
+          import unicodedata
+          from pathlib import Path
+          paths = sorted(Path("languages/datasets/frequency-candidates").glob("frequencywords-*.json"))
+          if not paths:
+              raise SystemExit("no FrequencyWords candidate files were staged")
+          for path in paths:
+              data = json.loads(path.read_text(encoding="utf-8"))
+              entries = data.get("entries")
+              if not isinstance(entries, list) or len(entries) != 1000:
+                  raise SystemExit(f"{path}: expected 1,000 entries")
+              words = [entry.get("word") for entry in entries]
+              normalized = [unicodedata.normalize("NFC", word) for word in words if isinstance(word, str)]
+              if len(words) != 1000 or len(normalized) != 1000 or normalized != words or len(set(words)) != 1000:
+                  raise SystemExit(f"{path}: invalid, non-NFC, or duplicate headwords")
+              if [entry.get("candidate_rank") for entry in entries] != list(range(1, 1001)):
+                  raise SystemExit(f"{path}: invalid candidate rank sequence")
+              print(f"{path}: PASS (1,000 unique NFC headwords)")
+          PY
+      - name: Commit candidate sets and registry updates
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add languages/datasets/frequency-candidates/frequencywords-*.json languages/FRUCHST_TARGETS.json
+          if git diff --cached --quiet; then
+            echo "No new frequency candidate sets."
+            exit 0
+          fi
+          git commit -m "Stage additional FRUCHST frequency candidate sets"
+          git push origin HEAD:master

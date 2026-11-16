@@ -1,12 +1,13 @@
 name: FRUCHST CI
-
 on:
   push:
     branches: [master]
     paths:
       - ".github/workflows/fruchst-ci.yml"
       - ".github/workflows/fruchst-definition-stage.yml"
+      - ".github/workflows/fruchst-frequency-stage.yml"
       - "languages/FRUCHST_FORMAT.md"
+      - "languages/FRUCHST_TARGETS.json"
       - "languages/tools/**"
       - "languages/datasets/frequency-candidates/*.json"
       - "languages/datasets/frequency-candidates/*.md"
@@ -14,19 +15,18 @@ on:
     paths:
       - ".github/workflows/fruchst-ci.yml"
       - ".github/workflows/fruchst-definition-stage.yml"
+      - ".github/workflows/fruchst-frequency-stage.yml"
       - "languages/FRUCHST_FORMAT.md"
+      - "languages/FRUCHST_TARGETS.json"
       - "languages/tools/**"
       - "languages/datasets/frequency-candidates/*.json"
       - "languages/datasets/frequency-candidates/*.md"
   workflow_dispatch:
-
 permissions:
   contents: read
-
 concurrency:
-  group: fruchst-ci-${{ github.ref }}
+  group: fruchst-ci-\${{ github.ref }}
   cancel-in-progress: true
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -44,14 +44,13 @@ jobs:
         run: |
           python3 - <<'PY'
           import json
+          import unicodedata
           from pathlib import Path
-
           root = Path("languages/datasets/frequency-candidates")
-          files = sorted(root.glob("wordhoard-*.json"))
-          expected = {"en", "fr", "es", "de"}
-          found = {path.stem.removeprefix("wordhoard-") for path in files}
-          if found != expected:
-              raise SystemExit(f"expected candidate datasets {sorted(expected)}, found {sorted(found)}")
+          files = sorted(root.glob("*.json"))
+          wordhoard = {p.stem.removeprefix("wordhoard-") for p in files if p.name.startswith("wordhoard-")}
+          if wordhoard != {"en", "fr", "es", "de"}:
+              raise SystemExit(f"expected original wordhoard datasets, found {sorted(wordhoard)}")
           for path in files:
               data = json.loads(path.read_text(encoding="utf-8"))
               entries = data.get("entries")
@@ -63,7 +62,8 @@ jobs:
               words = [entry.get("word") for entry in entries]
               if any(not isinstance(word, str) or not word.strip() for word in words):
                   raise SystemExit(f"{path}: empty or invalid headword")
-              if len({word.casefold() for word in words}) != 1000:
-                  raise SystemExit(f"{path}: duplicate headwords")
-              print(f"{path}: PASS (1000 ranked unique entries)")
+              normalized = [unicodedata.normalize("NFC", word) for word in words]
+              if normalized != words or len(set(words)) != 1000:
+                  raise SystemExit(f"{path}: duplicate or non-NFC headwords")
+              print(f"{path}: PASS (1000 ranked unique NFC entries)")
           PY
