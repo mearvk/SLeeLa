@@ -57,4 +57,15 @@ jobs:
             exit 0
           fi
           git commit -m "Stage additional FRUCHST frequency candidate sets"
-          git push origin HEAD:master
+          # Another master update may land while source files are downloading.
+          # Rebase our generated data onto the latest branch before retrying.
+          for attempt in 1 2 3; do
+            git fetch origin master
+            git rebase origin/master
+            if git push origin HEAD:master; then
+              exit 0
+            fi
+            echo "Push raced with another master update (attempt \${attempt}/3); retrying."
+          done
+          echo "Unable to publish staged candidates after three attempts." >&2
+          exit 1
