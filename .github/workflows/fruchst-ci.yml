@@ -1,0 +1,69 @@
+name: FRUCHST CI
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - ".github/workflows/fruchst-ci.yml"
+      - ".github/workflows/fruchst-definition-stage.yml"
+      - "languages/FRUCHST_FORMAT.md"
+      - "languages/tools/**"
+      - "languages/datasets/frequency-candidates/*.json"
+      - "languages/datasets/frequency-candidates/*.md"
+  pull_request:
+    paths:
+      - ".github/workflows/fruchst-ci.yml"
+      - ".github/workflows/fruchst-definition-stage.yml"
+      - "languages/FRUCHST_FORMAT.md"
+      - "languages/tools/**"
+      - "languages/datasets/frequency-candidates/*.json"
+      - "languages/datasets/frequency-candidates/*.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: fruchst-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile Python tools
+        run: python3 -m compileall -q languages/tools
+      - name: Run FRUCHST unit tests
+        run: python3 -m unittest discover -s languages/tools -p "test_*.py" -v
+      - name: Validate all frequency candidate datasets
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("languages/datasets/frequency-candidates")
+          files = sorted(root.glob("wordhoard-*.json"))
+          expected = {"en", "fr", "es", "de"}
+          found = {path.stem.removeprefix("wordhoard-") for path in files}
+          if found != expected:
+              raise SystemExit(f"expected candidate datasets {sorted(expected)}, found {sorted(found)}")
+          for path in files:
+              data = json.loads(path.read_text(encoding="utf-8"))
+              entries = data.get("entries")
+              if not isinstance(entries, list) or len(entries) != 1000:
+                  raise SystemExit(f"{path}: expected exactly 1000 entries")
+              ranks = [entry.get("rank") for entry in entries]
+              if ranks != list(range(1, 1001)):
+                  raise SystemExit(f"{path}: ranks must be contiguous 1..1000")
+              words = [entry.get("word") for entry in entries]
+              if any(not isinstance(word, str) or not word.strip() for word in words):
+                  raise SystemExit(f"{path}: empty or invalid headword")
+              if len({word.casefold() for word in words}) != 1000:
+                  raise SystemExit(f"{path}: duplicate headwords")
+              print(f"{path}: PASS (1000 ranked unique entries)")
+          PY
