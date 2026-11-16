@@ -8,6 +8,7 @@ import csv
 import json
 import sys
 import unicodedata
+import urllib.error
 import urllib.request
 from pathlib import Path
 
