@@ -18,11 +18,13 @@
       "iso_639_3": "eng",
       "language_tag": "en",
       "binary_filename": "fruchst.en.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "wordhoard-open-subtitles-2018",
+      "license_review": "upstream dataset CC-BY-SA-4.0 attribution recorded; definition-source review pending",
+      "notes": "1,000 unique NFC headword candidates staged; English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "1bc5730e8d6e682c416c03680b7cb8c6c7ca8cd0",
+      "definitions_status": "pending"
     },
     {
       "directory": "mandarin-chinese",
@@ -57,11 +59,13 @@
       "iso_639_3": "spa",
       "language_tag": "es",
       "binary_filename": "fruchst.es.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "wordhoard-open-subtitles-2018",
+      "license_review": "upstream dataset CC-BY-SA-4.0 attribution recorded; definition-source review pending",
+      "notes": "1,000 unique NFC headword candidates staged; English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "1bc5730e8d6e682c416c03680b7cb8c6c7ca8cd0",
+      "definitions_status": "pending"
     },
     {
       "directory": "standard-arabic",
@@ -83,11 +87,13 @@
       "iso_639_3": "fra",
       "language_tag": "fr",
       "binary_filename": "fruchst.fr.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "wordhoard-open-subtitles-2018",
+      "license_review": "upstream dataset CC-BY-SA-4.0 attribution recorded; definition-source review pending",
+      "notes": "1,000 unique NFC headword candidates staged; English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "1bc5730e8d6e682c416c03680b7cb8c6c7ca8cd0",
+      "definitions_status": "pending"
     },
     {
       "directory": "bengali",
@@ -161,11 +167,13 @@
       "iso_639_3": "deu",
       "language_tag": "de",
       "binary_filename": "fruchst.de.bin",
-      "status": "pending_source_review",
-      "entries": 0,
-      "source_id": null,
-      "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
+      "status": "frequency_candidates_staged",
+      "entries": 1000,
+      "source_id": "wordhoard-open-subtitles-2018",
+      "license_review": "upstream dataset CC-BY-SA-4.0 attribution recorded; definition-source review pending",
+      "notes": "1,000 unique NFC headword candidates staged; English/French/Spanish sense-aligned definitions remain outstanding; no production binary generated.",
+      "source_revision": "1bc5730e8d6e682c416c03680b7cb8c6c7ca8cd0",
+      "definitions_status": "pending"
     },
     {
       "directory": "japanese",
