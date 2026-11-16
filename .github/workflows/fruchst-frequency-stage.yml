@@ -1,5 +1,10 @@
 name: FRUCHST frequency candidate staging
 on:
+  push:
+    branches: [master]
+    paths:
+      - "languages/tools/stage_frequencywords.py"
+      - ".github/workflows/fruchst-frequency-stage.yml"
   workflow_dispatch:
 permissions:
   contents: write
