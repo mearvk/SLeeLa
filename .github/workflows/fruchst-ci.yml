@@ -57,7 +57,7 @@ jobs:
               entries = data.get("entries")
               if not isinstance(entries, list) or len(entries) != 1000:
                   raise SystemExit(f"{path}: expected exactly 1000 entries")
-              ranks = [entry.get("rank") for entry in entries]
+              ranks = [entry.get("candidate_rank") for entry in entries]
               if ranks != list(range(1, 1001)):
                   raise SystemExit(f"{path}: ranks must be contiguous 1..1000")
               words = [entry.get("word") for entry in entries]
