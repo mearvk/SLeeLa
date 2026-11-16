@@ -182,6 +182,20 @@ class DefinitionBatchTests(unittest.TestCase):
             module.TARGETS = original_targets
             module.WIKTIONARY_LANG_CODES = original_codes
 
+    def test_candidate_path_accepts_wikipedia_source(self):
+        with tempfile.TemporaryDirectory() as temp:
+            directory = Path(temp)
+            path = directory / "wikipedia-arz.json"
+            path.write_text("{}", encoding="utf-8")
+            self.assertEqual(module.candidate_path_for(directory, "arz"), path)
+
+    def test_target_registry_maps_new_language_variants(self):
+        self.assertEqual(module.WIKTIONARY_LANG_CODES["pnb-Arab"], "pnb")
+        self.assertEqual(module.WIKTIONARY_LANG_CODES["pa-Guru"], "pa")
+        self.assertEqual(module.WIKTIONARY_LANG_CODES["bho"], "bho")
+        self.assertIn("ceb", module.TARGETS)
+        self.assertIn("mai", module.TARGETS)
+
     def test_explicit_wiktionary_language_code_mapping(self):
         original_targets = module.TARGETS
         original_codes = module.WIKTIONARY_LANG_CODES
