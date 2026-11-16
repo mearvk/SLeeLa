@@ -35,6 +35,31 @@ A word counts as having all three when it has an English Wiktionary definition a
 
 Highest gains: Arabic 523 of 569 words without English, Uzbek 505 of 961, Persian 335 of 486, Mandarin 291 of 492. The per-profile table below still counts only each word's own English definition. Close definitions are not yet passed through the French/Spanish English pivot.
 
+## English round
+
+`tools/fruchst_english_round.py` (output in `datasets/definition-english/`, one `<stem>.english.json` per profile) collects every English definition that English Wiktionary supplies for each headword and ranks them. The review-queue glosses are unchanged, and every review sense appears in the English file. Run of 2026-11-16 on the 51 staged profiles (51,000 words):
+
+| Measure | Count |
+|---|---|
+| Words with any English definition | 34,242 (67.1%), up from 28,018 with their own English sense |
+| Words gaining an English definition | 6,224 |
+| Words whose best definition is their own substantive sense | 23,283 |
+| Words whose best definition is a resolved form-of lemma ("plural of mtu" → "person") | 4,495 |
+| Words with only a pointer gloss whose lemma is not in Wiktionary | 240 |
+| Words whose best definition is a close variant | 5,277 |
+| Words whose only English is a translation-table equivalent | 947 |
+| Pointer senses resolved to lemma definitions / unresolved | 11,503 / 993 |
+| Words whose lead candidate is corroborated by a translation table | 15,657 |
+| Words with usage examples translated into English | 12,754 |
+| Words with a romanization | 12,356 |
+| Glosses with wiki markup cleaned for display (original kept) | 431 |
+| Words still without any English definition | 16,758 |
+| Approved definitions | 0 |
+
+Largest gains in words with English: Uzbek 39 → 621, Arabic 431 → 959, Persian 514 → 866, Mandarin 508 → 810, Kannada 146 → 373, Yoruba 356 → 610, German 716 → 980. Form-of resolution matters most where the existing English was mostly pointers: Polish has 523 words, Russian 481, Hindi 351, Portuguese 317 and Romanian 304 whose best definition is now the lemma's meaning.
+
+Known limits: the lead is a ranked suggestion, not a selection. Homograph lemmas can resolve to the wrong entry. For example, Swahili `ya` resolves to the verb suffix `-a` instead of the possessive `-a` ("of"). Function words with many senses still need a reviewer to choose the sense the frequency list means. The lowest-coverage profiles (Magahi 15, Nigerian Pidgin 44, Maithili 102, Sinhala 150) have little English Wiktionary content, so they need another licensed source.
+
 ## Per profile
 
 | Rank | Profile | Tag | Words | EN | FR | ES | All 3 | All 3, POS matched | Word list / blocker |
