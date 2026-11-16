@@ -14,175 +14,176 @@
     {
       "directory": "english",
       "rank": 1,
-      "iso_639_3": "en",
+      "iso_639_1": "en",
+      "iso_639_3": "eng",
       "language_tag": "en",
       "binary_filename": "fruchst.en.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "en"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "mandarin-chinese",
       "rank": 2,
-      "iso_639_3": "zh",
+      "iso_639_1": "zh",
+      "iso_639_3": "cmn",
       "language_tag": "zh-Hans",
       "binary_filename": "fruchst.zh.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "zh"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "hindi",
       "rank": 3,
-      "iso_639_3": "hi",
+      "iso_639_1": "hi",
+      "iso_639_3": "hin",
       "language_tag": "hi",
       "binary_filename": "fruchst.hi.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "hi"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "spanish",
       "rank": 4,
-      "iso_639_3": "es",
+      "iso_639_1": "es",
+      "iso_639_3": "spa",
       "language_tag": "es",
       "binary_filename": "fruchst.es.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "es"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "standard-arabic",
       "rank": 5,
-      "iso_639_3": "ar",
+      "iso_639_1": "ar",
+      "iso_639_3": "arb",
       "language_tag": "ar",
       "binary_filename": "fruchst.ar.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "ar"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "french",
       "rank": 6,
-      "iso_639_3": "fr",
+      "iso_639_1": "fr",
+      "iso_639_3": "fra",
       "language_tag": "fr",
       "binary_filename": "fruchst.fr.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "fr"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "bengali",
       "rank": 7,
-      "iso_639_3": "bn",
+      "iso_639_1": "bn",
+      "iso_639_3": "ben",
       "language_tag": "bn",
       "binary_filename": "fruchst.bn.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "bn"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "portuguese",
       "rank": 8,
-      "iso_639_3": "pt",
+      "iso_639_1": "pt",
+      "iso_639_3": "por",
       "language_tag": "pt",
       "binary_filename": "fruchst.pt.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "pt"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "russian",
       "rank": 9,
-      "iso_639_3": "ru",
+      "iso_639_1": "ru",
+      "iso_639_3": "rus",
       "language_tag": "ru",
       "binary_filename": "fruchst.ru.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "ru"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "indonesian",
       "rank": 10,
-      "iso_639_3": "id",
+      "iso_639_1": "id",
+      "iso_639_3": "ind",
       "language_tag": "id",
       "binary_filename": "fruchst.id.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "id"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "urdu",
       "rank": 11,
-      "iso_639_3": "ur",
+      "iso_639_1": "ur",
+      "iso_639_3": "urd",
       "language_tag": "ur",
       "binary_filename": "fruchst.ur.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "ur"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "standard-german",
       "rank": 12,
-      "iso_639_3": "de",
+      "iso_639_1": "de",
+      "iso_639_3": "deu",
       "language_tag": "de",
       "binary_filename": "fruchst.de.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "de"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "japanese",
       "rank": 13,
-      "iso_639_3": "ja",
+      "iso_639_1": "ja",
+      "iso_639_3": "jpn",
       "language_tag": "ja",
       "binary_filename": "fruchst.ja.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "ja"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "nigerian-pidgin",
       "rank": 14,
+      "iso_639_1": null,
       "iso_639_3": "pcm",
       "language_tag": "pcm",
       "binary_filename": "fruchst.pcm.bin",
@@ -190,12 +191,12 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "egyptian-arabic",
       "rank": 15,
+      "iso_639_1": null,
       "iso_639_3": "arz",
       "language_tag": "arz",
       "binary_filename": "fruchst.arz.bin",
@@ -203,129 +204,129 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "marathi",
       "rank": 16,
-      "iso_639_3": "mr",
+      "iso_639_1": "mr",
+      "iso_639_3": "mar",
       "language_tag": "mr",
       "binary_filename": "fruchst.mr.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "mr"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "vietnamese",
       "rank": 17,
-      "iso_639_3": "vi",
+      "iso_639_1": "vi",
+      "iso_639_3": "vie",
       "language_tag": "vi",
       "binary_filename": "fruchst.vi.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "vi"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "telugu",
       "rank": 18,
-      "iso_639_3": "te",
+      "iso_639_1": "te",
+      "iso_639_3": "tel",
       "language_tag": "te",
       "binary_filename": "fruchst.te.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "te"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "hausa",
       "rank": 19,
-      "iso_639_3": "ha",
+      "iso_639_1": "ha",
+      "iso_639_3": "hau",
       "language_tag": "ha",
       "binary_filename": "fruchst.ha.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "ha"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "turkish",
       "rank": 20,
-      "iso_639_3": "tr",
+      "iso_639_1": "tr",
+      "iso_639_3": "tur",
       "language_tag": "tr",
       "binary_filename": "fruchst.tr.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "tr"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "western-punjabi",
       "rank": 21,
+      "iso_639_1": null,
       "iso_639_3": "pnb",
-      "language_tag": "pnb",
+      "language_tag": "pnb-Arab",
       "binary_filename": "fruchst.pnb.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "swahili",
       "rank": 22,
-      "iso_639_3": "sw",
+      "iso_639_1": "sw",
+      "iso_639_3": "swa",
       "language_tag": "sw",
       "binary_filename": "fruchst.sw.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "sw"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "tagalog",
       "rank": 23,
-      "iso_639_3": "tl",
-      "language_tag": "fil",
+      "iso_639_1": "tl",
+      "iso_639_3": "tgl",
+      "language_tag": "tl",
       "binary_filename": "fruchst.tl.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "tl"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "tamil",
       "rank": 24,
-      "iso_639_3": "ta",
+      "iso_639_1": "ta",
+      "iso_639_3": "tam",
       "language_tag": "ta",
       "binary_filename": "fruchst.ta.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "ta"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "yue-chinese",
       "rank": 25,
+      "iso_639_1": null,
       "iso_639_3": "yue",
       "language_tag": "yue",
       "binary_filename": "fruchst.yue.bin",
@@ -333,12 +334,12 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "wu-chinese",
       "rank": 26,
+      "iso_639_1": null,
       "iso_639_3": "wuu",
       "language_tag": "wuu",
       "binary_filename": "fruchst.wuu.bin",
@@ -346,90 +347,90 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "iranian-persian",
       "rank": 27,
-      "iso_639_3": "fa",
+      "iso_639_1": "fa",
+      "iso_639_3": "pes",
       "language_tag": "fa",
       "binary_filename": "fruchst.fa.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "fa"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "korean",
       "rank": 28,
-      "iso_639_3": "ko",
+      "iso_639_1": "ko",
+      "iso_639_3": "kor",
       "language_tag": "ko",
       "binary_filename": "fruchst.ko.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "ko"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "thai",
       "rank": 29,
-      "iso_639_3": "th",
+      "iso_639_1": "th",
+      "iso_639_3": "tha",
       "language_tag": "th",
       "binary_filename": "fruchst.th.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "th"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "javanese",
       "rank": 30,
-      "iso_639_3": "jv",
+      "iso_639_1": "jv",
+      "iso_639_3": "jav",
       "language_tag": "jv",
       "binary_filename": "fruchst.jv.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "jv"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "italian",
       "rank": 31,
-      "iso_639_3": "it",
+      "iso_639_1": "it",
+      "iso_639_3": "ita",
       "language_tag": "it",
       "binary_filename": "fruchst.it.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "it"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "gujarati",
       "rank": 32,
-      "iso_639_3": "gu",
+      "iso_639_1": "gu",
+      "iso_639_3": "guj",
       "language_tag": "gu",
       "binary_filename": "fruchst.gu.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "gu"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "levantine-arabic",
       "rank": 33,
+      "iso_639_1": null,
       "iso_639_3": "apc",
       "language_tag": "apc",
       "binary_filename": "fruchst.apc.bin",
@@ -437,38 +438,38 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "amharic",
       "rank": 34,
-      "iso_639_3": "am",
+      "iso_639_1": "am",
+      "iso_639_3": "amh",
       "language_tag": "am",
       "binary_filename": "fruchst.am.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "am"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "kannada",
       "rank": 35,
-      "iso_639_3": "kn",
+      "iso_639_1": "kn",
+      "iso_639_3": "kan",
       "language_tag": "kn",
       "binary_filename": "fruchst.kn.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "kn"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "bhojpuri",
       "rank": 36,
+      "iso_639_1": null,
       "iso_639_3": "bho",
       "language_tag": "bho",
       "binary_filename": "fruchst.bho.bin",
@@ -476,12 +477,12 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "sudanese-arabic",
       "rank": 37,
+      "iso_639_1": null,
       "iso_639_3": "apd",
       "language_tag": "apd",
       "binary_filename": "fruchst.apd.bin",
@@ -489,25 +490,25 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "yoruba",
       "rank": 38,
-      "iso_639_3": "yo",
+      "iso_639_1": "yo",
+      "iso_639_3": "yor",
       "language_tag": "yo",
       "binary_filename": "fruchst.yo.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "yo"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "jinyu-chinese",
       "rank": 39,
+      "iso_639_1": null,
       "iso_639_3": "cjy",
       "language_tag": "cjy",
       "binary_filename": "fruchst.cjy.bin",
@@ -515,12 +516,12 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "min-nan-chinese",
       "rank": 40,
+      "iso_639_1": null,
       "iso_639_3": "nan",
       "language_tag": "nan",
       "binary_filename": "fruchst.nan.bin",
@@ -528,38 +529,38 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "polish",
       "rank": 41,
-      "iso_639_3": "pl",
+      "iso_639_1": "pl",
+      "iso_639_3": "pol",
       "language_tag": "pl",
       "binary_filename": "fruchst.pl.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "pl"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "burmese",
       "rank": 42,
-      "iso_639_3": "my",
+      "iso_639_1": "my",
+      "iso_639_3": "mya",
       "language_tag": "my",
       "binary_filename": "fruchst.my.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "my"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "algerian-arabic",
       "rank": 43,
+      "iso_639_1": null,
       "iso_639_3": "arq",
       "language_tag": "arq",
       "binary_filename": "fruchst.arq.bin",
@@ -567,12 +568,12 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "hakka-chinese",
       "rank": 44,
+      "iso_639_1": null,
       "iso_639_3": "hak",
       "language_tag": "hak",
       "binary_filename": "fruchst.hak.bin",
@@ -580,25 +581,25 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "lingala",
       "rank": 45,
-      "iso_639_3": "ln",
+      "iso_639_1": "ln",
+      "iso_639_3": "lin",
       "language_tag": "ln",
       "binary_filename": "fruchst.ln.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "ln"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "moroccan-arabic",
       "rank": 46,
+      "iso_639_1": null,
       "iso_639_3": "ary",
       "language_tag": "ary",
       "binary_filename": "fruchst.ary.bin",
@@ -606,38 +607,38 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "odia",
       "rank": 47,
-      "iso_639_3": "or",
+      "iso_639_1": "or",
+      "iso_639_3": "ori",
       "language_tag": "or",
       "binary_filename": "fruchst.or.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "or"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "ukrainian",
       "rank": 48,
-      "iso_639_3": "uk",
+      "iso_639_1": "uk",
+      "iso_639_3": "ukr",
       "language_tag": "uk",
       "binary_filename": "fruchst.uk.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "uk"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "xiang-chinese",
       "rank": 49,
+      "iso_639_1": null,
       "iso_639_3": "hsn",
       "language_tag": "hsn",
       "binary_filename": "fruchst.hsn.bin",
@@ -645,77 +646,77 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "malayalam",
       "rank": 50,
-      "iso_639_3": "ml",
+      "iso_639_1": "ml",
+      "iso_639_3": "mal",
       "language_tag": "ml",
       "binary_filename": "fruchst.ml.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "ml"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "sindhi",
       "rank": 51,
-      "iso_639_3": "sd",
+      "iso_639_1": "sd",
+      "iso_639_3": "snd",
       "language_tag": "sd",
       "binary_filename": "fruchst.sd.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "sd"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "eastern-punjabi",
       "rank": 52,
-      "iso_639_3": "pa",
+      "iso_639_1": "pa",
+      "iso_639_3": "pan",
       "language_tag": "pa-Guru",
       "binary_filename": "fruchst.pa.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "pa"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "sunda",
       "rank": 53,
-      "iso_639_3": "su",
+      "iso_639_1": "su",
+      "iso_639_3": "sun",
       "language_tag": "su",
       "binary_filename": "fruchst.su.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "su"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "igbo",
       "rank": 54,
-      "iso_639_3": "ig",
+      "iso_639_1": "ig",
+      "iso_639_3": "ibo",
       "language_tag": "ig",
       "binary_filename": "fruchst.ig.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "ig"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "dari",
       "rank": 55,
+      "iso_639_1": null,
       "iso_639_3": "prs",
       "language_tag": "prs",
       "binary_filename": "fruchst.prs.bin",
@@ -723,64 +724,64 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "nepali",
       "rank": 56,
-      "iso_639_3": "ne",
+      "iso_639_1": "ne",
+      "iso_639_3": "nep",
       "language_tag": "ne",
       "binary_filename": "fruchst.ne.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "ne"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "malay",
       "rank": 57,
-      "iso_639_3": "ms",
+      "iso_639_1": "ms",
+      "iso_639_3": "msa",
       "language_tag": "ms",
       "binary_filename": "fruchst.ms.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "ms"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "northern-uzbek",
       "rank": 58,
-      "iso_639_3": "uz",
+      "iso_639_1": "uz",
+      "iso_639_3": "uzn",
       "language_tag": "uz",
       "binary_filename": "fruchst.uz.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "uz"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "zulu",
       "rank": 59,
-      "iso_639_3": "zu",
+      "iso_639_1": "zu",
+      "iso_639_3": "zul",
       "language_tag": "zu",
       "binary_filename": "fruchst.zu.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "zu"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "saidi-arabic",
       "rank": 60,
+      "iso_639_1": null,
       "iso_639_3": "aec",
       "language_tag": "aec",
       "binary_filename": "fruchst.aec.bin",
@@ -788,12 +789,12 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "northern-pashto",
       "rank": 61,
+      "iso_639_1": null,
       "iso_639_3": "pbu",
       "language_tag": "pbu",
       "binary_filename": "fruchst.pbu.bin",
@@ -801,12 +802,12 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "west-central-oromo",
       "rank": 62,
+      "iso_639_1": null,
       "iso_639_3": "gaz",
       "language_tag": "gaz",
       "binary_filename": "fruchst.gaz.bin",
@@ -814,12 +815,12 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "saraiki",
       "rank": 63,
+      "iso_639_1": null,
       "iso_639_3": "skr",
       "language_tag": "skr",
       "binary_filename": "fruchst.skr.bin",
@@ -827,64 +828,64 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "dutch",
       "rank": 64,
-      "iso_639_3": "nl",
+      "iso_639_1": "nl",
+      "iso_639_3": "nld",
       "language_tag": "nl",
       "binary_filename": "fruchst.nl.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "nl"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "somali",
       "rank": 65,
-      "iso_639_3": "so",
+      "iso_639_1": "so",
+      "iso_639_3": "som",
       "language_tag": "so",
       "binary_filename": "fruchst.so.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "so"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "romanian",
       "rank": 66,
-      "iso_639_3": "ro",
+      "iso_639_1": "ro",
+      "iso_639_3": "ron",
       "language_tag": "ro",
       "binary_filename": "fruchst.ro.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "ro"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "assamese",
       "rank": 67,
-      "iso_639_3": "as",
+      "iso_639_1": "as",
+      "iso_639_3": "asm",
       "language_tag": "as",
       "binary_filename": "fruchst.as.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "as"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "gan-chinese",
       "rank": 68,
+      "iso_639_1": null,
       "iso_639_3": "gan",
       "language_tag": "gan",
       "binary_filename": "fruchst.gan.bin",
@@ -892,12 +893,12 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "southern-pashto",
       "rank": 69,
+      "iso_639_1": null,
       "iso_639_3": "pst",
       "language_tag": "pst",
       "binary_filename": "fruchst.pst.bin",
@@ -905,12 +906,12 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "cebuano",
       "rank": 70,
+      "iso_639_1": null,
       "iso_639_3": "ceb",
       "language_tag": "ceb",
       "binary_filename": "fruchst.ceb.bin",
@@ -918,25 +919,25 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "ceb"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "kazakh",
       "rank": 71,
-      "iso_639_3": "kk",
+      "iso_639_1": "kk",
+      "iso_639_3": "kaz",
       "language_tag": "kk",
       "binary_filename": "fruchst.kk.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "kk"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "magahi",
       "rank": 72,
+      "iso_639_1": null,
       "iso_639_3": "mag",
       "language_tag": "mag",
       "binary_filename": "fruchst.mag.bin",
@@ -944,12 +945,12 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "najdi-arabic",
       "rank": 73,
+      "iso_639_1": null,
       "iso_639_3": "ars",
       "language_tag": "ars",
       "binary_filename": "fruchst.ars.bin",
@@ -957,25 +958,25 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "sinhala",
       "rank": 74,
-      "iso_639_3": "si",
+      "iso_639_1": "si",
+      "iso_639_3": "sin",
       "language_tag": "si",
       "binary_filename": "fruchst.si.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "si"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "mesopotamian-arabic",
       "rank": 75,
+      "iso_639_1": null,
       "iso_639_3": "acm",
       "language_tag": "acm",
       "binary_filename": "fruchst.acm.bin",
@@ -983,51 +984,51 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "xhosa",
       "rank": 76,
-      "iso_639_3": "xh",
+      "iso_639_1": "xh",
+      "iso_639_3": "xho",
       "language_tag": "xh",
       "binary_filename": "fruchst.xh.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "xh"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "khmer",
       "rank": 77,
-      "iso_639_3": "km",
+      "iso_639_1": "km",
+      "iso_639_3": "khm",
       "language_tag": "km",
       "binary_filename": "fruchst.km.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "km"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "afrikaans",
       "rank": 78,
-      "iso_639_3": "af",
+      "iso_639_1": "af",
+      "iso_639_3": "afr",
       "language_tag": "af",
       "binary_filename": "fruchst.af.bin",
       "status": "pending_source_review",
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": "af"
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "nigerian-fulfulde",
       "rank": 79,
+      "iso_639_1": null,
       "iso_639_3": "fuv",
       "language_tag": "fuv",
       "binary_filename": "fruchst.fuv.bin",
@@ -1035,12 +1036,12 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     },
     {
       "directory": "maithili",
       "rank": 80,
+      "iso_639_1": null,
       "iso_639_3": "mai",
       "language_tag": "mai",
       "binary_filename": "fruchst.mai.bin",
@@ -1048,8 +1049,7 @@
       "entries": 0,
       "source_id": null,
       "license_review": "pending",
-      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified.",
-      "iso_639_1": null
+      "notes": "Generate only after a suitable frequency corpus and redistributable, sense-aligned definitions are verified."
     }
   ]
 }
