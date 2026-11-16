@@ -9,8 +9,8 @@ import json
 import math
 import re
 import struct
-import sys
 import os
+import sys
 import tempfile
 import unicodedata
 from pathlib import Path
