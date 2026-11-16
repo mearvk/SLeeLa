@@ -1,0 +1,68 @@
+name: FRUCHST source definition staging
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - ".github/workflows/fruchst-definition-stage.yml"
+      - "languages/tools/fruchst_definition_batch.py"
+      - "languages/tools/test_fruchst_definition_batch.py"
+      - "languages/datasets/frequency-candidates/wordhoard-*.json"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  stage-definitions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run FRUCHST tool tests
+        run: python3 -m unittest discover -s languages/tools -p "test_*.py" -v
+      - name: Download Wiktionary source extracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/fruchst-sources"
+          curl --fail --location --retry 5 --retry-all-errors --retry-delay 10 \
+            https://kaikki.org/dictionary/raw-wiktextract-data.jsonl.gz \
+            --output "$RUNNER_TEMP/fruchst-sources/en.jsonl.gz" &
+          p1=$!
+          curl --fail --location --retry 5 --retry-all-errors --retry-delay 10 \
+            https://kaikki.org/frwiktionary/raw-wiktextract-data.jsonl.gz \
+            --output "$RUNNER_TEMP/fruchst-sources/fr.jsonl.gz" &
+          p2=$!
+          curl --fail --location --retry 5 --retry-all-errors --retry-delay 10 \
+            https://kaikki.org/eswiktionary/raw-wiktextract-data.jsonl.gz \
+            --output "$RUNNER_TEMP/fruchst-sources/es.jsonl.gz" &
+          p3=$!
+          wait "$p1"
+          wait "$p2"
+          wait "$p3"
+      - name: Extract and align definition candidates
+        run: |
+          python3 languages/tools/fruchst_definition_batch.py \
+            --candidates languages/datasets/frequency-candidates \
+            --en "$RUNNER_TEMP/fruchst-sources/en.jsonl.gz" \
+            --fr "$RUNNER_TEMP/fruchst-sources/fr.jsonl.gz" \
+            --es "$RUNNER_TEMP/fruchst-sources/es.jsonl.gz" \
+            --output languages/datasets/definition-review
+      - name: Commit review queues to master
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add languages/datasets/definition-review
+          if git diff --cached --quiet; then
+            echo "No definition review queue changes."
+            exit 0
+          fi
+          git commit -m "Stage sourced FRUCHST definition review queues"
+          git push origin HEAD:master
