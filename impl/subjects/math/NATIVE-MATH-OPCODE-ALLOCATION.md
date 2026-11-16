@@ -3,8 +3,8 @@
 ## Existing ISA boundary
 
 The executable source/native ISA now ends at opcode 195. Existing assignments
-0–194 are frozen and append-only; 195 is the first implemented math opcode. In particular, the Native IPC
-worker opcodes remain one contiguous group:
+0–194 are frozen and append-only; 195 is the first implemented math opcode.
+In particular, the Native IPC worker opcodes remain one contiguous group:
 
 - 179 — `OP_IPC_OPEN`
 - 180 — `OP_IPC_CALL`
@@ -16,9 +16,9 @@ never be imported.
 
 ## Reserved native-math allocation
 
-The following ranges are now the reserved, canonical family allocation.
-Ranges are inclusive. Vacant positions remain reserved for their family and
-must not be filled by unrelated instructions.
+The following ranges are now the canonical family allocation. Opcode 195 is
+implemented; all other vacant positions remain reserved for their family.
+Ranges are inclusive and must not be filled by unrelated instructions.
 
 | Opcode range | Family | Reserved positions |
 |---:|---|---:|
