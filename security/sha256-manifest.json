@@ -235,7 +235,7 @@
     },
     {
       "path": "impl/core/sleela_artifact.c",
-      "sha256": "4278abacd60d42b69e02a3514398fcb8e3960cbdb1a7f80719d2b740780ce4f6"
+      "sha256": "e945ab54a2e8a759fedd6043dd2c625cde0815da6048359fad9e41a676405a17"
     },
     {
       "path": "impl/core/sleela_audio_bridge.cpp",
@@ -263,11 +263,11 @@
     },
     {
       "path": "impl/core/sleela_core.c",
-      "sha256": "061cf6e52843e1eb1dca84c1fb24b7ba702915d077ac6cee388e5ce38a556ae2"
+      "sha256": "86d9e57deea3f5604d76fddd87f7db4ba439c1a75c23357d1555468bb97ef989"
     },
     {
       "path": "impl/core/sleela_core.h",
-      "sha256": "56bd12907718f54c8d36bd5696cbde93f5f0928a30071d0710cdbaf81d91e892"
+      "sha256": "d9c780567fd2dff4cc2faaa293d97f12ad1eda09bd7d8220819eda2c180ec554"
     },
     {
       "path": "impl/core/sleela_design_activity.c",
@@ -447,7 +447,7 @@
     },
     {
       "path": "impl/core/sleela_terminal.c",
-      "sha256": "c832b82f0324da8104ccca12959624fcd0913c82b593c8b485530ca8b889aa07"
+      "sha256": "cf294cd8260ef85dca4859337410402150d7159ff611c6dba5b485d042cac235"
     },
     {
       "path": "impl/core/sleela_terminal.h",
@@ -503,7 +503,7 @@
     },
     {
       "path": "impl/core/terminal_platform_smoke.c",
-      "sha256": "b9a0a8948a5a3acb05c732fc8567a67d822fa1b72bc1403bc8c150ecca4d9c2d"
+      "sha256": "a585f85699c4768ed455bc5dc3bd7985ee8196b95ec36cb866ae4cb6e2f357ee"
     },
     {
       "path": "impl/core/thread_platform_smoke.c",
@@ -559,7 +559,7 @@
     },
     {
       "path": "impl/frontend/compiler.cpp",
-      "sha256": "30841994e6075b6767379dede98ce41913185fa5ce69462e1a5d74a4e7683267"
+      "sha256": "9641eea34edc2125d66e3aa0d3d7c03433fa7a50f70fd68dcd50bf4cad7b66fb"
     },
     {
       "path": "impl/frontend/compiler.h",
@@ -914,8 +914,28 @@
       "sha256": "9bb716ead5269e94c59457f8243c708c5de6b0acbc0617e400f5fce262ccad0b"
     },
     {
+      "path": "impl/subjects/math/linear_algebra.cpp",
+      "sha256": "856085e91dff1422b5805af76931a4e7eec3b64aca87c8d8c0d061d0ac949765"
+    },
+    {
+      "path": "impl/subjects/math/linear_algebra.h",
+      "sha256": "8dd490d43604aaee965a2115be46e695c74e7fb1759987068f5abfbffd74d470"
+    },
+    {
+      "path": "impl/subjects/math/math_kernel.hpp",
+      "sha256": "21f075f2e5ed7ab96d91f0ee0e746de25b488ad04d5cdd1242df143a21b820cd"
+    },
+    {
       "path": "impl/subjects/math/math_native.cpp",
       "sha256": "057e4c40f18e80d8500fd281b2cc0684af96e18dc223b7e55e3ca0abeee1f612"
+    },
+    {
+      "path": "impl/subjects/math/sleela_math_kernel_c.cpp",
+      "sha256": "c3e4ffcac08518e10c7e88f6fdac0c60260d8318f4b5d5d4ebd8257f326b214e"
+    },
+    {
+      "path": "impl/subjects/math/sleela_math_kernel_c.h",
+      "sha256": "3980d5da131c711b12b8fcbca70cc33eed409c9538dbb20ac43ffcbcf4723f9a"
     },
     {
       "path": "impl/subjects/native/native_add.h",
@@ -9447,11 +9467,11 @@
     },
     {
       "path": "lib/java/converter/JConvEmitter.sleela",
-      "sha256": "f3b1223961212623c70e6e6f7be3aee58ad2491ed5b17378044a50333454c14e"
+      "sha256": "a098d0a177d0e3fc36872b6de78d1d8350c8d33dbfca951dea040ff2fb24c89b"
     },
     {
       "path": "lib/java/converter/JConvExpr.sleela",
-      "sha256": "97262595e23dd2e20e66c7c33e9ebf86fc5c1f75845ba48160503cbacdc87068"
+      "sha256": "66ee58bf611a159ecfabfedc8cb2900d99155a18fdbb5eeca3742f756441aa4d"
     },
     {
       "path": "lib/java/converter/JConvLambda.sleela",
@@ -9463,11 +9483,11 @@
     },
     {
       "path": "lib/java/converter/JConvMain.sleela",
-      "sha256": "95322c40953fd2904c2864a58df12e60c0072fd95d65d9781660b9532146264e"
+      "sha256": "9990f328232bce718803c8eef184aa600bb02b0ab1879550657e3ce533e7f593"
     },
     {
       "path": "lib/java/converter/JConvModel.sleela",
-      "sha256": "292839ac1d23f53117b0d6c566b6e05897fa4c6070dcde00863718cd67571a3f"
+      "sha256": "6404ce2c78ae0311a124b06311176b68d64c70a1b9f97ba912e9019bd6d5ec94"
     },
     {
       "path": "lib/java/converter/JConvOuter.sleela",
@@ -9475,7 +9495,7 @@
     },
     {
       "path": "lib/java/converter/JConvReport.sleela",
-      "sha256": "702c91d68b1a3296b600b9d2b2946a3dd19bb004d3f841f7ff40f405a980c777"
+      "sha256": "bc6611a904c2618f652d49a8ebad0cd925322f22e009edfed9851d84d2ec1193"
     },
     {
       "path": "lib/java/converter/JConvRewriter.sleela",
@@ -9483,7 +9503,7 @@
     },
     {
       "path": "lib/java/converter/JConvRules.sleela",
-      "sha256": "5216bb43e1b323a46b4d4c5a6df70eadfdbec33b82d664d45e3c3272a4c21352"
+      "sha256": "0d7913a445dbd041fc3e79282043abeb9adeb541c7f0ac663f7ab0feb71483d1"
     },
     {
       "path": "lib/java/converter/JConvSource.sleela",
@@ -9491,7 +9511,7 @@
     },
     {
       "path": "lib/java/converter/JConvTranslator.sleela",
-      "sha256": "0a248e54a3444022c55be6549bb8c5332dc8d0dd9d0bbd7ff44653f68d00cb42"
+      "sha256": "9b7205625b44e4311ff15a06a43d9dac1035bbfeeacbf4a3a229ee2070a2730e"
     },
     {
       "path": "lib/java/converter/JConvWalker.sleela",
@@ -73439,7 +73459,7 @@
     },
     {
       "path": "lib/vm/InstructionSet.sleela",
-      "sha256": "9d9d251d81fd5931e37e95c51b680730d9ce3fc36b19708be68632dbd5bbd368"
+      "sha256": "e790937e0f121761179f0ae258a8aecdc998aed341f90d34ba933d3d5373a40b"
     },
     {
       "path": "lib/vm/SLNativeMemory.sleela",
