@@ -56,6 +56,10 @@ Function IDs and typed operation IDs remain distinct from opcode IDs. The
 historical native-math branch's assignment of `OP_MATH_CALL` to 179 is invalid
 for this repository state.
 
+## VM-owned array adapter contract
+
+The implementation contract is maintained in [`VM-ARRAY-ADAPTER-CONTRACT.md`](VM-ARRAY-ADAPTER-CONTRACT.md). It fixes the ownership, lock, snapshot, shape, alias, rollback, and qualification requirements before opcode 196 is activated. In particular, the first adapter transaction uses the existing `array_mtx` across validation, snapshot, native dispatch, and commit; the interpreter's `workers_cached` fast path is not treated as permission to bypass native-dispatch synchronization. No placeholder opcode is added for any reserved position.
+
 ## VM-generation and decompiler boundary
 
 The premium SLVM/1 through SLVM/11 runners are generated as thin, grade-specific
