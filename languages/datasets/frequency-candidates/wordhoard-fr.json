@@ -1,0 +1,8036 @@
+{
+  "schema": "SLeeLa FRUCHST frequency candidate staging v1",
+  "language_tag": "fr",
+  "language_directory": "french",
+  "source": {
+    "dataset": "wordhoard",
+    "upstream": "https://github.com/natema/wordhoard",
+    "revision": "main (retrieved 2026-11-15)",
+    "sample_path_template": "https://raw.githubusercontent.com/natema/wordhoard/main/samples/{lang}.csv",
+    "data_license": "CC-BY-SA-4.0",
+    "code_license": "MIT (not the license for extracted data)",
+    "frequency_source": "OpenSubtitles-2018 via hermitdave/FrequencyWords",
+    "frequency_source_license": "MIT",
+    "processing_sources": [
+      "spaCy language models",
+      "Wiktionary via Kaikki/Wiktextract"
+    ],
+    "attribution": [
+      "wordhoard — https://github.com/natema/wordhoard (dataset CC BY-SA 4.0)",
+      "OpenSubtitles-2018 frequency data via hermitdave/FrequencyWords (MIT)",
+      "spaCy — https://spacy.io (MIT; lemma/POS processing)",
+      "Wiktionary contributors via Kaikki/Wiktextract (CC BY-SA 4.0; upstream dataset attribution)"
+    ],
+    "selection": "First 1,000 unique NFC-normalized lemmas encountered in source frequency_rank order from the upstream top-2,000 preview. Duplicate lemmas across POS rows are collapsed to their highest-frequency row; original source_rank and frequency_count are retained.",
+    "caveats": [
+      "Frequency-candidate staging only; not a completed FRUCHST dictionary.",
+      "OpenSubtitles-derived rankings are subtitle-domain rankings, not a balanced general-purpose corpus.",
+      "Counts are corpus occurrences, not normalized per million; do not compare raw counts across languages.",
+      "Three definitions (English, French, Spanish) are not yet supplied; no binary should be generated from this staging data."
+    ]
+  },
+  "candidate_count": 1000,
+  "definitions_status": "pending",
+  "entries": [
+    {
+      "candidate_rank": 1,
+      "source_rank": 1,
+      "word": "le",
+      "pos": "DET",
+      "frequency_count": 13177857,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 2,
+      "source_rank": 2,
+      "word": "être",
+      "pos": "AUX",
+      "frequency_count": 10580627,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 3,
+      "source_rank": 3,
+      "word": "de",
+      "pos": "ADP",
+      "frequency_count": 9772909,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 4,
+      "source_rank": 4,
+      "word": "un",
+      "pos": "DET",
+      "frequency_count": 8980704,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 5,
+      "source_rank": 5,
+      "word": "je",
+      "pos": "PRON",
+      "frequency_count": 8308698,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 6,
+      "source_rank": 6,
+      "word": "pas",
+      "pos": "ADV",
+      "frequency_count": 5833676,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 7,
+      "source_rank": 7,
+      "word": "avoir",
+      "pos": "VERB",
+      "frequency_count": 5502687,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 8,
+      "source_rank": 8,
+      "word": "que",
+      "pos": "SCONJ",
+      "frequency_count": 5083052,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 9,
+      "source_rank": 9,
+      "word": "il",
+      "pos": "PRON",
+      "frequency_count": 4970900,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 10,
+      "source_rank": 10,
+      "word": "vous",
+      "pos": "PRON",
+      "frequency_count": 4500162,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 11,
+      "source_rank": 11,
+      "word": "tu",
+      "pos": "ADP",
+      "frequency_count": 4434920,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 12,
+      "source_rank": 12,
+      "word": "et",
+      "pos": "CCONJ",
+      "frequency_count": 4110855,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 13,
+      "source_rank": 13,
+      "word": "ce",
+      "pos": "DET",
+      "frequency_count": 3547934,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 14,
+      "source_rank": 14,
+      "word": "ne",
+      "pos": "ADV",
+      "frequency_count": 3343288,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 15,
+      "source_rank": 15,
+      "word": "en",
+      "pos": "ADP",
+      "frequency_count": 2925411,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 16,
+      "source_rank": 16,
+      "word": "aller",
+      "pos": "VERB",
+      "frequency_count": 2828156,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 17,
+      "source_rank": 17,
+      "word": "faire",
+      "pos": "VERB",
+      "frequency_count": 2800825,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 18,
+      "source_rank": 18,
+      "word": "on",
+      "pos": "PRON",
+      "frequency_count": 2756346,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 19,
+      "source_rank": 19,
+      "word": "cela",
+      "pos": "PRON",
+      "frequency_count": 2742676,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 20,
+      "source_rank": 20,
+      "word": "pour",
+      "pos": "ADP",
+      "frequency_count": 2475533,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 21,
+      "source_rank": 21,
+      "word": "mon",
+      "pos": "DET",
+      "frequency_count": 2244812,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 22,
+      "source_rank": 22,
+      "word": "pouvoir",
+      "pos": "VERB",
+      "frequency_count": 1868708,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 23,
+      "source_rank": 23,
+      "word": "dire",
+      "pos": "VERB",
+      "frequency_count": 1835102,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 24,
+      "source_rank": 24,
+      "word": "qui",
+      "pos": "PRON",
+      "frequency_count": 1665879,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 25,
+      "source_rank": 26,
+      "word": "mais",
+      "pos": "CCONJ",
+      "frequency_count": 1641141,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 26,
+      "source_rank": 27,
+      "word": "lui",
+      "pos": "PRON",
+      "frequency_count": 1595863,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 27,
+      "source_rank": 28,
+      "word": "vouloir",
+      "pos": "VERB",
+      "frequency_count": 1593740,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 28,
+      "source_rank": 29,
+      "word": "savoir",
+      "pos": "VERB",
+      "frequency_count": 1528339,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 29,
+      "source_rank": 30,
+      "word": "dans",
+      "pos": "ADP",
+      "frequency_count": 1508883,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 30,
+      "source_rank": 31,
+      "word": "nous",
+      "pos": "PRON",
+      "frequency_count": 1504467,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 31,
+      "source_rank": 32,
+      "word": "son",
+      "pos": "DET",
+      "frequency_count": 1470778,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 32,
+      "source_rank": 33,
+      "word": "me",
+      "pos": "PRON",
+      "frequency_count": 1446772,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 33,
+      "source_rank": 34,
+      "word": "bien",
+      "pos": "ADV",
+      "frequency_count": 1438129,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 34,
+      "source_rank": 35,
+      "word": "si",
+      "pos": "SCONJ",
+      "frequency_count": 1409401,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 35,
+      "source_rank": 36,
+      "word": "non",
+      "pos": "ADV",
+      "frequency_count": 1294882,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 36,
+      "source_rank": 37,
+      "word": "avec",
+      "pos": "ADP",
+      "frequency_count": 1256800,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 37,
+      "source_rank": 38,
+      "word": "tout",
+      "pos": "ADV",
+      "frequency_count": 1243107,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 38,
+      "source_rank": 39,
+      "word": "plus",
+      "pos": "ADV",
+      "frequency_count": 1214520,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 39,
+      "source_rank": 40,
+      "word": "te",
+      "pos": "PRON",
+      "frequency_count": 1127735,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 40,
+      "source_rank": 41,
+      "word": "au",
+      "pos": "ADP",
+      "frequency_count": 1109359,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 41,
+      "source_rank": 42,
+      "word": "voir",
+      "pos": "VERB",
+      "frequency_count": 1095941,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 42,
+      "source_rank": 43,
+      "word": "moi",
+      "pos": "PRON",
+      "frequency_count": 1048758,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 43,
+      "source_rank": 44,
+      "word": "devoir",
+      "pos": "VERB",
+      "frequency_count": 1025337,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 44,
+      "source_rank": 45,
+      "word": "oui",
+      "pos": "NOUN",
+      "frequency_count": 1001703,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 45,
+      "source_rank": 46,
+      "word": "as",
+      "pos": "PRON",
+      "frequency_count": 974673,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 46,
+      "source_rank": 47,
+      "word": "sur",
+      "pos": "ADP",
+      "frequency_count": 939169,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 47,
+      "source_rank": 48,
+      "word": "quoi",
+      "pos": "PRON",
+      "frequency_count": 894291,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 48,
+      "source_rank": 49,
+      "word": "votre",
+      "pos": "DET",
+      "frequency_count": 888087,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 49,
+      "source_rank": 50,
+      "word": "se",
+      "pos": "PRON",
+      "frequency_count": 867737,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 50,
+      "source_rank": 51,
+      "word": "comme",
+      "pos": "ADP",
+      "frequency_count": 864987,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 51,
+      "source_rank": 52,
+      "word": "bon",
+      "pos": "ADJ",
+      "frequency_count": 746428,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 52,
+      "source_rank": 53,
+      "word": "venir",
+      "pos": "VERB",
+      "frequency_count": 725908,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 53,
+      "source_rank": 54,
+      "word": "ici",
+      "pos": "ADV",
+      "frequency_count": 725494,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 54,
+      "source_rank": 55,
+      "word": "toi",
+      "pos": "DET",
+      "frequency_count": 707904,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 55,
+      "source_rank": 56,
+      "word": "luire",
+      "pos": "PRON",
+      "frequency_count": 689708,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 56,
+      "source_rank": 58,
+      "word": "pourquoi",
+      "pos": "ADV",
+      "frequency_count": 657070,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 57,
+      "source_rank": 59,
+      "word": "chose",
+      "pos": "NOUN",
+      "frequency_count": 653532,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 58,
+      "source_rank": 60,
+      "word": "où",
+      "pos": "ADV",
+      "frequency_count": 643564,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 59,
+      "source_rank": 61,
+      "word": "là",
+      "pos": "ADV",
+      "frequency_count": 643024,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 60,
+      "source_rank": 62,
+      "word": "rien",
+      "pos": "PRON",
+      "frequency_count": 638070,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 61,
+      "source_rank": 63,
+      "word": "parler",
+      "pos": "VERB",
+      "frequency_count": 632129,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 62,
+      "source_rank": 64,
+      "word": "penser",
+      "pos": "VERB",
+      "frequency_count": 615833,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 63,
+      "source_rank": 65,
+      "word": "quand",
+      "pos": "SCONJ",
+      "frequency_count": 598113,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 64,
+      "source_rank": 66,
+      "word": "prendre",
+      "pos": "VERB",
+      "frequency_count": 572843,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 65,
+      "source_rank": 67,
+      "word": "autre",
+      "pos": "ADJ",
+      "frequency_count": 546441,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 66,
+      "source_rank": 68,
+      "word": "alors",
+      "pos": "ADV",
+      "frequency_count": 542173,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 67,
+      "source_rank": 69,
+      "word": "ton",
+      "pos": "NOUN",
+      "frequency_count": 540766,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 68,
+      "source_rank": 71,
+      "word": "comment",
+      "pos": "ADV",
+      "frequency_count": 528569,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 69,
+      "source_rank": 72,
+      "word": "par",
+      "pos": "ADP",
+      "frequency_count": 519463,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 70,
+      "source_rank": 73,
+      "word": "passer",
+      "pos": "VERB",
+      "frequency_count": 515102,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 71,
+      "source_rank": 74,
+      "word": "notre",
+      "pos": "DET",
+      "frequency_count": 504275,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 72,
+      "source_rank": 75,
+      "word": "ou",
+      "pos": "CCONJ",
+      "frequency_count": 497358,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 73,
+      "source_rank": 76,
+      "word": "aimer",
+      "pos": "VERB",
+      "frequency_count": 494862,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 74,
+      "source_rank": 77,
+      "word": "croire",
+      "pos": "VERB",
+      "frequency_count": 490957,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 75,
+      "source_rank": 78,
+      "word": "quelque",
+      "pos": "DET",
+      "frequency_count": 480587,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 76,
+      "source_rank": 79,
+      "word": "merci",
+      "pos": "NOUN",
+      "frequency_count": 471631,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 77,
+      "source_rank": 80,
+      "word": "juste",
+      "pos": "ADV",
+      "frequency_count": 465932,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 78,
+      "source_rank": 81,
+      "word": "trouver",
+      "pos": "VERB",
+      "frequency_count": 462558,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 79,
+      "source_rank": 82,
+      "word": "très",
+      "pos": "ADV",
+      "frequency_count": 462324,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 80,
+      "source_rank": 83,
+      "word": "jamais",
+      "pos": "ADV",
+      "frequency_count": 436873,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 81,
+      "source_rank": 84,
+      "word": "aussi",
+      "pos": "ADV",
+      "frequency_count": 427827,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 82,
+      "source_rank": 85,
+      "word": "vraiment",
+      "pos": "ADV",
+      "frequency_count": 423339,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 83,
+      "source_rank": 86,
+      "word": "même",
+      "pos": "ADV",
+      "frequency_count": 411247,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 84,
+      "source_rank": 87,
+      "word": "oh",
+      "pos": "INTJ",
+      "frequency_count": 408070,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 85,
+      "source_rank": 88,
+      "word": "maintenant",
+      "pos": "ADV",
+      "frequency_count": 402585,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 86,
+      "source_rank": 89,
+      "word": "falloir",
+      "pos": "VERB",
+      "frequency_count": 398701,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 87,
+      "source_rank": 90,
+      "word": "attendre",
+      "pos": "VERB",
+      "frequency_count": 397312,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 88,
+      "source_rank": 91,
+      "word": "arriver",
+      "pos": "VERB",
+      "frequency_count": 383219,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 89,
+      "source_rank": 93,
+      "word": "petit",
+      "pos": "ADJ",
+      "frequency_count": 365982,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 90,
+      "source_rank": 94,
+      "word": "peu",
+      "pos": "ADV",
+      "frequency_count": 354756,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 91,
+      "source_rank": 95,
+      "word": "temps",
+      "pos": "NOUN",
+      "frequency_count": 354330,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 92,
+      "source_rank": 96,
+      "word": "toujours",
+      "pos": "ADV",
+      "frequency_count": 345760,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 93,
+      "source_rank": 97,
+      "word": "encore",
+      "pos": "ADV",
+      "frequency_count": 342386,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 94,
+      "source_rank": 98,
+      "word": "besoin",
+      "pos": "NOUN",
+      "frequency_count": 334595,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 95,
+      "source_rank": 99,
+      "word": "homme",
+      "pos": "NOUN",
+      "frequency_count": 334587,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 96,
+      "source_rank": 100,
+      "word": "vie",
+      "pos": "NOUN",
+      "frequency_count": 326649,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 97,
+      "source_rank": 101,
+      "word": "accord",
+      "pos": "NOUN",
+      "frequency_count": 316630,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 98,
+      "source_rank": 102,
+      "word": "arrêter",
+      "pos": "VERB",
+      "frequency_count": 313165,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 99,
+      "source_rank": 103,
+      "word": "regarder",
+      "pos": "VERB",
+      "frequency_count": 309733,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 100,
+      "source_rank": 104,
+      "word": "seul",
+      "pos": "ADJ",
+      "frequency_count": 300275,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 101,
+      "source_rank": 105,
+      "word": "femme",
+      "pos": "NOUN",
+      "frequency_count": 298987,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 102,
+      "source_rank": 106,
+      "word": "appeler",
+      "pos": "VERB",
+      "frequency_count": 298688,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 103,
+      "source_rank": 107,
+      "word": "fois",
+      "pos": "NOUN",
+      "frequency_count": 297685,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 104,
+      "source_rank": 108,
+      "word": "jour",
+      "pos": "NOUN",
+      "frequency_count": 288759,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 105,
+      "source_rank": 109,
+      "word": "donc",
+      "pos": "ADV",
+      "frequency_count": 281973,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 106,
+      "source_rank": 110,
+      "word": "sans",
+      "pos": "ADP",
+      "frequency_count": 281163,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 107,
+      "source_rank": 111,
+      "word": "monde",
+      "pos": "NOUN",
+      "frequency_count": 280118,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 108,
+      "source_rank": 112,
+      "word": "sûr",
+      "pos": "ADJ",
+      "frequency_count": 277907,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 109,
+      "source_rank": 113,
+      "word": "étai",
+      "pos": "ADJ",
+      "frequency_count": 276408,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 110,
+      "source_rank": 114,
+      "word": "parce",
+      "pos": "ADP",
+      "frequency_count": 273723,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 111,
+      "source_rank": 115,
+      "word": "avant",
+      "pos": "ADP",
+      "frequency_count": 272706,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 112,
+      "source_rank": 116,
+      "word": "fille",
+      "pos": "NOUN",
+      "frequency_count": 271960,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 113,
+      "source_rank": 117,
+      "word": "trop",
+      "pos": "ADV",
+      "frequency_count": 265575,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 114,
+      "source_rank": 118,
+      "word": "sortir",
+      "pos": "VERB",
+      "frequency_count": 264310,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 115,
+      "source_rank": 119,
+      "word": "an",
+      "pos": "NOUN",
+      "frequency_count": 262971,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 116,
+      "source_rank": 120,
+      "word": "essayer",
+      "pos": "VERB",
+      "frequency_count": 261562,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 117,
+      "source_rank": 121,
+      "word": "personn",
+      "pos": "ADJ",
+      "frequency_count": 260005,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 118,
+      "source_rank": 122,
+      "word": "pèr",
+      "pos": "ADJ",
+      "frequency_count": 257456,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 119,
+      "source_rank": 123,
+      "word": "tuer",
+      "pos": "VERB",
+      "frequency_count": 255115,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 120,
+      "source_rank": 124,
+      "word": "nouveau",
+      "pos": "ADJ",
+      "frequency_count": 252813,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 121,
+      "source_rank": 125,
+      "word": "dieu",
+      "pos": "NOUN",
+      "frequency_count": 251742,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 122,
+      "source_rank": 126,
+      "word": "après",
+      "pos": "ADP",
+      "frequency_count": 250383,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 123,
+      "source_rank": 127,
+      "word": "mort",
+      "pos": "NOUN",
+      "frequency_count": 247784,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 124,
+      "source_rank": 128,
+      "word": "mettre",
+      "pos": "VERB",
+      "frequency_count": 245997,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 125,
+      "source_rank": 129,
+      "word": "à",
+      "pos": "ADP",
+      "frequency_count": 244896,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 126,
+      "source_rank": 130,
+      "word": "ouais",
+      "pos": "INTJ",
+      "frequency_count": 241407,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 127,
+      "source_rank": 131,
+      "word": "entendre",
+      "pos": "VERB",
+      "frequency_count": 239261,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 128,
+      "source_rank": 132,
+      "word": "donner",
+      "pos": "VERB",
+      "frequency_count": 234758,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 129,
+      "source_rank": 133,
+      "word": "ok",
+      "pos": "INTJ",
+      "frequency_count": 228115,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 130,
+      "source_rank": 134,
+      "word": "laisser",
+      "pos": "VERB",
+      "frequency_count": 225339,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 131,
+      "source_rank": 135,
+      "word": "mal",
+      "pos": "ADV",
+      "frequency_count": 219886,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 132,
+      "source_rank": 136,
+      "word": "chez",
+      "pos": "ADP",
+      "frequency_count": 218436,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 133,
+      "source_rank": 137,
+      "word": "ami",
+      "pos": "NOUN",
+      "frequency_count": 216587,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 134,
+      "source_rank": 138,
+      "word": "déjà",
+      "pos": "ADV",
+      "frequency_count": 214718,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 135,
+      "source_rank": 139,
+      "word": "depuis",
+      "pos": "ADP",
+      "frequency_count": 214022,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 136,
+      "source_rank": 140,
+      "word": "beaucoup",
+      "pos": "ADV",
+      "frequency_count": 211787,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 137,
+      "source_rank": 141,
+      "word": "grand",
+      "pos": "ADJ",
+      "frequency_count": 209771,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 138,
+      "source_rank": 142,
+      "word": "mère",
+      "pos": "NOUN",
+      "frequency_count": 208153,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 139,
+      "source_rank": 143,
+      "word": "comprendre",
+      "pos": "VERB",
+      "frequency_count": 206462,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 140,
+      "source_rank": 144,
+      "word": "mieux",
+      "pos": "ADV",
+      "frequency_count": 205274,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 141,
+      "source_rank": 145,
+      "word": "enfant",
+      "pos": "NOUN",
+      "frequency_count": 202288,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 142,
+      "source_rank": 146,
+      "word": "chercher",
+      "pos": "VERB",
+      "frequency_count": 201992,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 143,
+      "source_rank": 147,
+      "word": "monsieur",
+      "pos": "NOUN",
+      "frequency_count": 201882,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 144,
+      "source_rank": 148,
+      "word": "demander",
+      "pos": "VERB",
+      "frequency_count": 200396,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 145,
+      "source_rank": 150,
+      "word": "gens",
+      "pos": "NOUN",
+      "frequency_count": 198558,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 146,
+      "source_rank": 151,
+      "word": "heure",
+      "pos": "NOUN",
+      "frequency_count": 195795,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 147,
+      "source_rank": 152,
+      "word": "aider",
+      "pos": "VERB",
+      "frequency_count": 195271,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 148,
+      "source_rank": 153,
+      "word": "désolé",
+      "pos": "NOUN",
+      "frequency_count": 194133,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 149,
+      "source_rank": 154,
+      "word": "maison",
+      "pos": "NOUN",
+      "frequency_count": 193941,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 150,
+      "source_rank": 155,
+      "word": "quel",
+      "pos": "DET",
+      "frequency_count": 193928,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 151,
+      "source_rank": 156,
+      "word": "partir",
+      "pos": "VERB",
+      "frequency_count": 192842,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 152,
+      "source_rank": 157,
+      "word": "revenir",
+      "pos": "VERB",
+      "frequency_count": 190731,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 153,
+      "source_rank": 158,
+      "word": "ca",
+      "pos": "DET",
+      "frequency_count": 189898,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 154,
+      "source_rank": 159,
+      "word": "voilà",
+      "pos": "VERB",
+      "frequency_count": 189677,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 155,
+      "source_rank": 160,
+      "word": "dernier",
+      "pos": "ADJ",
+      "frequency_count": 188263,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 156,
+      "source_rank": 161,
+      "word": "rester",
+      "pos": "VERB",
+      "frequency_count": 185746,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 157,
+      "source_rank": 162,
+      "word": "problème",
+      "pos": "NOUN",
+      "frequency_count": 185105,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 158,
+      "source_rank": 163,
+      "word": "aucun",
+      "pos": "DET",
+      "frequency_count": 182046,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 159,
+      "source_rank": 164,
+      "word": "celui",
+      "pos": "PRON",
+      "frequency_count": 178273,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 160,
+      "source_rank": 165,
+      "word": "soir",
+      "pos": "NOUN",
+      "frequency_count": 177936,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 161,
+      "source_rank": 166,
+      "word": "celer",
+      "pos": "PRON",
+      "frequency_count": 177397,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 162,
+      "source_rank": 167,
+      "word": "premier",
+      "pos": "ADJ",
+      "frequency_count": 176497,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 163,
+      "source_rank": 168,
+      "word": "nom",
+      "pos": "NOUN",
+      "frequency_count": 176490,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 164,
+      "source_rank": 170,
+      "word": "raison",
+      "pos": "NOUN",
+      "frequency_count": 168424,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 165,
+      "source_rank": 171,
+      "word": "nuit",
+      "pos": "NOUN",
+      "frequency_count": 164175,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 166,
+      "source_rank": 172,
+      "word": "finir",
+      "pos": "VERB",
+      "frequency_count": 161835,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 167,
+      "source_rank": 173,
+      "word": "salut",
+      "pos": "VERB",
+      "frequency_count": 160990,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 168,
+      "source_rank": 174,
+      "word": "commencer",
+      "pos": "VERB",
+      "frequency_count": 160807,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 169,
+      "source_rank": 175,
+      "word": "cet",
+      "pos": "DET",
+      "frequency_count": 160783,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 170,
+      "source_rank": 176,
+      "word": "moment",
+      "pos": "NOUN",
+      "frequency_count": 159666,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 171,
+      "source_rank": 177,
+      "word": "argent",
+      "pos": "NOUN",
+      "frequency_count": 159513,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 172,
+      "source_rank": 178,
+      "word": "truc",
+      "pos": "NOUN",
+      "frequency_count": 157507,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 173,
+      "source_rank": 179,
+      "word": "bonjour",
+      "pos": "ADV",
+      "frequency_count": 156301,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 174,
+      "source_rank": 180,
+      "word": "mourir",
+      "pos": "VERB",
+      "frequency_count": 153980,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 175,
+      "source_rank": 181,
+      "word": "plaire",
+      "pos": "VERB",
+      "frequency_count": 153892,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 176,
+      "source_rank": 182,
+      "word": "moins",
+      "pos": "ADV",
+      "frequency_count": 153102,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 177,
+      "source_rank": 183,
+      "word": "maman",
+      "pos": "NOUN",
+      "frequency_count": 152342,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 178,
+      "source_rank": 184,
+      "word": "air",
+      "pos": "NOUN",
+      "frequency_count": 151080,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 179,
+      "source_rank": 185,
+      "word": "reste",
+      "pos": "VERB",
+      "frequency_count": 150311,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 180,
+      "source_rank": 186,
+      "word": "papa",
+      "pos": "NOUN",
+      "frequency_count": 147744,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 181,
+      "source_rank": 187,
+      "word": "entrer",
+      "pos": "ADP",
+      "frequency_count": 147420,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 182,
+      "source_rank": 188,
+      "word": "travailler",
+      "pos": "VERB",
+      "frequency_count": 146090,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 183,
+      "source_rank": 189,
+      "word": "affaire",
+      "pos": "NOUN",
+      "frequency_count": 145585,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 184,
+      "source_rank": 190,
+      "word": "famille",
+      "pos": "NOUN",
+      "frequency_count": 142073,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 185,
+      "source_rank": 191,
+      "word": "main",
+      "pos": "NOUN",
+      "frequency_count": 141915,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 186,
+      "source_rank": 192,
+      "word": "peur",
+      "pos": "NOUN",
+      "frequency_count": 141683,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 187,
+      "source_rank": 193,
+      "word": "rentrer",
+      "pos": "VERB",
+      "frequency_count": 141038,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 188,
+      "source_rank": 194,
+      "word": "question",
+      "pos": "NOUN",
+      "frequency_count": 140601,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 189,
+      "source_rank": 195,
+      "word": "ah",
+      "pos": "INTJ",
+      "frequency_count": 140158,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 190,
+      "source_rank": 196,
+      "word": "rendre",
+      "pos": "VERB",
+      "frequency_count": 139724,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 191,
+      "source_rank": 197,
+      "word": "idée",
+      "pos": "NOUN",
+      "frequency_count": 138238,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 192,
+      "source_rank": 198,
+      "word": "mec",
+      "pos": "NOUN",
+      "frequency_count": 136720,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 193,
+      "source_rank": 199,
+      "word": "oublier",
+      "pos": "VERB",
+      "frequency_count": 136370,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 194,
+      "source_rank": 200,
+      "word": "voiture",
+      "pos": "NOUN",
+      "frequency_count": 136193,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 195,
+      "source_rank": 201,
+      "word": "gars",
+      "pos": "NOUN",
+      "frequency_count": 136154,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 196,
+      "source_rank": 202,
+      "word": "travail",
+      "pos": "NOUN",
+      "frequency_count": 136022,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 197,
+      "source_rank": 203,
+      "word": "somme",
+      "pos": "NOUN",
+      "frequency_count": 135741,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 198,
+      "source_rank": 204,
+      "word": "tête",
+      "pos": "NOUN",
+      "frequency_count": 135539,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 199,
+      "source_rank": 205,
+      "word": "connaître",
+      "pos": "VERB",
+      "frequency_count": 135267,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 200,
+      "source_rank": 206,
+      "word": "fils",
+      "pos": "NOUN",
+      "frequency_count": 134600,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 201,
+      "source_rank": 207,
+      "word": "assez",
+      "pos": "ADV",
+      "frequency_count": 132619,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 202,
+      "source_rank": 209,
+      "word": "eh",
+      "pos": "INTJ",
+      "frequency_count": 131788,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 203,
+      "source_rank": 210,
+      "word": "chance",
+      "pos": "NOUN",
+      "frequency_count": 131330,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 204,
+      "source_rank": 211,
+      "word": "coup",
+      "pos": "NOUN",
+      "frequency_count": 130550,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 205,
+      "source_rank": 212,
+      "word": "minute",
+      "pos": "NOUN",
+      "frequency_count": 129336,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 206,
+      "source_rank": 213,
+      "word": "jouer",
+      "pos": "VERB",
+      "frequency_count": 129032,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 207,
+      "source_rank": 214,
+      "word": "quell",
+      "pos": "ADJ",
+      "frequency_count": 128659,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 208,
+      "source_rank": 215,
+      "word": "manger",
+      "pos": "VERB",
+      "frequency_count": 126613,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 209,
+      "source_rank": 216,
+      "word": "fait",
+      "pos": "ADJ",
+      "frequency_count": 125636,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 210,
+      "source_rank": 217,
+      "word": "vite",
+      "pos": "ADV",
+      "frequency_count": 125063,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 211,
+      "source_rank": 218,
+      "word": "part",
+      "pos": "NOUN",
+      "frequency_count": 122153,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 212,
+      "source_rank": 219,
+      "word": "devenir",
+      "pos": "VERB",
+      "frequency_count": 121966,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 213,
+      "source_rank": 220,
+      "word": "envoyer",
+      "pos": "VERB",
+      "frequency_count": 121965,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 214,
+      "source_rank": 221,
+      "word": "occuper",
+      "pos": "VERB",
+      "frequency_count": 121653,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 215,
+      "source_rank": 222,
+      "word": "tenir",
+      "pos": "VERB",
+      "frequency_count": 121348,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 216,
+      "source_rank": 223,
+      "word": "merde",
+      "pos": "NOUN",
+      "frequency_count": 121318,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 217,
+      "source_rank": 224,
+      "word": "hé",
+      "pos": "DET",
+      "frequency_count": 121065,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 218,
+      "source_rank": 225,
+      "word": "pendant",
+      "pos": "ADP",
+      "frequency_count": 121060,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 219,
+      "source_rank": 226,
+      "word": "demain",
+      "pos": "ADV",
+      "frequency_count": 116541,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 220,
+      "source_rank": 227,
+      "word": "hein",
+      "pos": "INTJ",
+      "frequency_count": 116301,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 221,
+      "source_rank": 228,
+      "word": "vivre",
+      "pos": "VERB",
+      "frequency_count": 115176,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 222,
+      "source_rank": 229,
+      "word": "tard",
+      "pos": "ADV",
+      "frequency_count": 115148,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 223,
+      "source_rank": 231,
+      "word": "histoire",
+      "pos": "NOUN",
+      "frequency_count": 114605,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 224,
+      "source_rank": 232,
+      "word": "année",
+      "pos": "NOUN",
+      "frequency_count": 114583,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 225,
+      "source_rank": 233,
+      "word": "tant",
+      "pos": "ADV",
+      "frequency_count": 113917,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 226,
+      "source_rank": 234,
+      "word": "connai",
+      "pos": "ADJ",
+      "frequency_count": 113815,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 227,
+      "source_rank": 235,
+      "word": "changer",
+      "pos": "VERB",
+      "frequency_count": 113702,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 228,
+      "source_rank": 236,
+      "word": "combien",
+      "pos": "ADV",
+      "frequency_count": 113220,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 229,
+      "source_rank": 237,
+      "word": "sens",
+      "pos": "NOUN",
+      "frequency_count": 112925,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 230,
+      "source_rank": 238,
+      "word": "vieux",
+      "pos": "ADJ",
+      "frequency_count": 112275,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 231,
+      "source_rank": 239,
+      "word": "frère",
+      "pos": "NOUN",
+      "frequency_count": 111528,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 232,
+      "source_rank": 240,
+      "word": "chéri",
+      "pos": "NOUN",
+      "frequency_count": 110889,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 233,
+      "source_rank": 241,
+      "word": "porte",
+      "pos": "VERB",
+      "frequency_count": 110258,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 234,
+      "source_rank": 242,
+      "word": "super",
+      "pos": "VERB",
+      "frequency_count": 108980,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 235,
+      "source_rank": 243,
+      "word": "contre",
+      "pos": "ADP",
+      "frequency_count": 108451,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 236,
+      "source_rank": 244,
+      "word": "apprendre",
+      "pos": "VERB",
+      "frequency_count": 107689,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 237,
+      "source_rank": 245,
+      "word": "espérer",
+      "pos": "VERB",
+      "frequency_count": 107234,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 238,
+      "source_rank": 246,
+      "word": "ensemble",
+      "pos": "NOUN",
+      "frequency_count": 107139,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 239,
+      "source_rank": 247,
+      "word": "importer",
+      "pos": "VERB",
+      "frequency_count": 106594,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 240,
+      "source_rank": 248,
+      "word": "semaine",
+      "pos": "NOUN",
+      "frequency_count": 106512,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 241,
+      "source_rank": 249,
+      "word": "revoir",
+      "pos": "VERB",
+      "frequency_count": 105601,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 242,
+      "source_rank": 250,
+      "word": "gros",
+      "pos": "ADJ",
+      "frequency_count": 105261,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 243,
+      "source_rank": 251,
+      "word": "amour",
+      "pos": "NOUN",
+      "frequency_count": 104503,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 244,
+      "source_rank": 252,
+      "word": "sang",
+      "pos": "NOUN",
+      "frequency_count": 104071,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 245,
+      "source_rank": 253,
+      "word": "oeil",
+      "pos": "NOUN",
+      "frequency_count": 103819,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 246,
+      "source_rank": 254,
+      "word": "payer",
+      "pos": "VERB",
+      "frequency_count": 103147,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 247,
+      "source_rank": 255,
+      "word": "désoler",
+      "pos": "VERB",
+      "frequency_count": 103057,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 248,
+      "source_rank": 256,
+      "word": "meilleur",
+      "pos": "ADJ",
+      "frequency_count": 102115,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 249,
+      "source_rank": 257,
+      "word": "cas",
+      "pos": "NOUN",
+      "frequency_count": 101911,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 250,
+      "source_rank": 258,
+      "word": "sembler",
+      "pos": "VERB",
+      "frequency_count": 101631,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 251,
+      "source_rank": 259,
+      "word": "utiliser",
+      "pos": "VERB",
+      "frequency_count": 100549,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 252,
+      "source_rank": 260,
+      "word": "sou",
+      "pos": "ADP",
+      "frequency_count": 100518,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 253,
+      "source_rank": 261,
+      "word": "souvenir",
+      "pos": "VERB",
+      "frequency_count": 99820,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 254,
+      "source_rank": 262,
+      "word": "partie",
+      "pos": "NOUN",
+      "frequency_count": 97788,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 255,
+      "source_rank": 263,
+      "word": "mauvais",
+      "pos": "ADJ",
+      "frequency_count": 97748,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 256,
+      "source_rank": 264,
+      "word": "aide",
+      "pos": "VERB",
+      "frequency_count": 96574,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 257,
+      "source_rank": 266,
+      "word": "continuer",
+      "pos": "VERB",
+      "frequency_count": 96023,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 258,
+      "source_rank": 267,
+      "word": "demande",
+      "pos": "VERB",
+      "frequency_count": 95954,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 259,
+      "source_rank": 268,
+      "word": "type",
+      "pos": "NOUN",
+      "frequency_count": 95910,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 260,
+      "source_rank": 269,
+      "word": "police",
+      "pos": "NOUN",
+      "frequency_count": 95703,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 261,
+      "source_rank": 270,
+      "word": "genr",
+      "pos": "ADJ",
+      "frequency_count": 95698,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 262,
+      "source_rank": 271,
+      "word": "seulement",
+      "pos": "ADV",
+      "frequency_count": 95569,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 263,
+      "source_rank": 272,
+      "word": "bébé",
+      "pos": "NOUN",
+      "frequency_count": 95419,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 264,
+      "source_rank": 273,
+      "word": "car",
+      "pos": "CCONJ",
+      "frequency_count": 94921,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 265,
+      "source_rank": 274,
+      "word": "point",
+      "pos": "NOUN",
+      "frequency_count": 94848,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 266,
+      "source_rank": 275,
+      "word": "ville",
+      "pos": "NOUN",
+      "frequency_count": 94715,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 267,
+      "source_rank": 276,
+      "word": "mois",
+      "pos": "NOUN",
+      "frequency_count": 94016,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 268,
+      "source_rank": 277,
+      "word": "jeune",
+      "pos": "ADJ",
+      "frequency_count": 92324,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 269,
+      "source_rank": 278,
+      "word": "place",
+      "pos": "NOUN",
+      "frequency_count": 92075,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 270,
+      "source_rank": 279,
+      "word": "ils",
+      "pos": "PRON",
+      "frequency_count": 92010,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 271,
+      "source_rank": 280,
+      "word": "côté",
+      "pos": "NOUN",
+      "frequency_count": 91879,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 272,
+      "source_rank": 281,
+      "word": "endroit",
+      "pos": "NOUN",
+      "frequency_count": 91474,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 273,
+      "source_rank": 282,
+      "word": "écoute",
+      "pos": "NOUN",
+      "frequency_count": 91366,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 274,
+      "source_rank": 283,
+      "word": "laisse",
+      "pos": "VERB",
+      "frequency_count": 91272,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 275,
+      "source_rank": 284,
+      "word": "chaque",
+      "pos": "ADJ",
+      "frequency_count": 91035,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 276,
+      "source_rank": 285,
+      "word": "tomber",
+      "pos": "VERB",
+      "frequency_count": 89642,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 277,
+      "source_rank": 286,
+      "word": "perdre",
+      "pos": "VERB",
+      "frequency_count": 89618,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 278,
+      "source_rank": 287,
+      "word": "parti",
+      "pos": "NOUN",
+      "frequency_count": 89462,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 279,
+      "source_rank": 288,
+      "word": "sentir",
+      "pos": "VERB",
+      "frequency_count": 89118,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 280,
+      "source_rank": 289,
+      "word": "longtemps",
+      "pos": "ADV",
+      "frequency_count": 88619,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 281,
+      "source_rank": 290,
+      "word": "dormir",
+      "pos": "VERB",
+      "frequency_count": 87468,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 282,
+      "source_rank": 291,
+      "word": "façon",
+      "pos": "NOUN",
+      "frequency_count": 87391,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 283,
+      "source_rank": 292,
+      "word": "plein",
+      "pos": "ADJ",
+      "frequency_count": 87051,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 284,
+      "source_rank": 293,
+      "word": "compte",
+      "pos": "NOUN",
+      "frequency_count": 86784,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 285,
+      "source_rank": 294,
+      "word": "perdu",
+      "pos": "NOUN",
+      "frequency_count": 86263,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 286,
+      "source_rank": 295,
+      "word": "compris",
+      "pos": "ADJ",
+      "frequency_count": 85819,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 287,
+      "source_rank": 296,
+      "word": "putain",
+      "pos": "ADJ",
+      "frequency_count": 85798,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 288,
+      "source_rank": 297,
+      "word": "droit",
+      "pos": "NOUN",
+      "frequency_count": 85748,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 289,
+      "source_rank": 298,
+      "word": "bel",
+      "pos": "ADJ",
+      "frequency_count": 85372,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 290,
+      "source_rank": 299,
+      "word": "ni",
+      "pos": "CCONJ",
+      "frequency_count": 84992,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 291,
+      "source_rank": 300,
+      "word": "train",
+      "pos": "NOUN",
+      "frequency_count": 84291,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 292,
+      "source_rank": 301,
+      "word": "leur",
+      "pos": "DET",
+      "frequency_count": 84050,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 293,
+      "source_rank": 302,
+      "word": "attention",
+      "pos": "NOUN",
+      "frequency_count": 84022,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 294,
+      "source_rank": 303,
+      "word": "dur",
+      "pos": "ADJ",
+      "frequency_count": 83423,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 295,
+      "source_rank": 304,
+      "word": "mot",
+      "pos": "NOUN",
+      "frequency_count": 83104,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 296,
+      "source_rank": 305,
+      "word": "retrouver",
+      "pos": "VERB",
+      "frequency_count": 83041,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 297,
+      "source_rank": 306,
+      "word": "corps",
+      "pos": "NOUN",
+      "frequency_count": 82565,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 298,
+      "source_rank": 308,
+      "word": "voici",
+      "pos": "VERB",
+      "frequency_count": 82156,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 299,
+      "source_rank": 309,
+      "word": "dont",
+      "pos": "PRON",
+      "frequency_count": 81842,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 300,
+      "source_rank": 310,
+      "word": "garçon",
+      "pos": "NOUN",
+      "frequency_count": 81796,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 301,
+      "source_rank": 311,
+      "word": "écrire",
+      "pos": "VERB",
+      "frequency_count": 81674,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 302,
+      "source_rank": 312,
+      "word": "important",
+      "pos": "ADJ",
+      "frequency_count": 81562,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 303,
+      "source_rank": 313,
+      "word": "madame",
+      "pos": "NOUN",
+      "frequency_count": 81518,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 304,
+      "source_rank": 314,
+      "word": "matin",
+      "pos": "NOUN",
+      "frequency_count": 80883,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 305,
+      "source_rank": 315,
+      "word": "chambre",
+      "pos": "NOUN",
+      "frequency_count": 80832,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 306,
+      "source_rank": 316,
+      "word": "garder",
+      "pos": "VERB",
+      "frequency_count": 80765,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 307,
+      "source_rank": 317,
+      "word": "terre",
+      "pos": "NOUN",
+      "frequency_count": 80334,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 308,
+      "source_rank": 318,
+      "word": "tellement",
+      "pos": "ADV",
+      "frequency_count": 80089,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 309,
+      "source_rank": 319,
+      "word": "heureux",
+      "pos": "ADJ",
+      "frequency_count": 79834,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 310,
+      "source_rank": 320,
+      "word": "retourner",
+      "pos": "VERB",
+      "frequency_count": 79760,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 311,
+      "source_rank": 321,
+      "word": "acheter",
+      "pos": "VERB",
+      "frequency_count": 79660,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 312,
+      "source_rank": 322,
+      "word": "beau",
+      "pos": "NOUN",
+      "frequency_count": 79411,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 313,
+      "source_rank": 323,
+      "word": "tien",
+      "pos": "NOUN",
+      "frequency_count": 79293,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 314,
+      "source_rank": 324,
+      "word": "écouter",
+      "pos": "VERB",
+      "frequency_count": 79249,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 315,
+      "source_rank": 325,
+      "word": "adorer",
+      "pos": "VERB",
+      "frequency_count": 78683,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 316,
+      "source_rank": 326,
+      "word": "eau",
+      "pos": "NOUN",
+      "frequency_count": 78461,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 317,
+      "source_rank": 327,
+      "word": "rappeler",
+      "pos": "VERB",
+      "frequency_count": 78206,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 318,
+      "source_rank": 328,
+      "word": "ouvrir",
+      "pos": "VERB",
+      "frequency_count": 77531,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 319,
+      "source_rank": 329,
+      "word": "pardon",
+      "pos": "ADJ",
+      "frequency_count": 77144,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 320,
+      "source_rank": 330,
+      "word": "suite",
+      "pos": "NOUN",
+      "frequency_count": 77136,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 321,
+      "source_rank": 331,
+      "word": "cause",
+      "pos": "NOUN",
+      "frequency_count": 76874,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 322,
+      "source_rank": 332,
+      "word": "voler",
+      "pos": "VERB",
+      "frequency_count": 76766,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 323,
+      "source_rank": 333,
+      "word": "vers",
+      "pos": "ADP",
+      "frequency_count": 76542,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 324,
+      "source_rank": 334,
+      "word": "rencontrer",
+      "pos": "VERB",
+      "frequency_count": 76423,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 325,
+      "source_rank": 335,
+      "word": "boire",
+      "pos": "VERB",
+      "frequency_count": 76268,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 326,
+      "source_rank": 336,
+      "word": "porter",
+      "pos": "VERB",
+      "frequency_count": 76003,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 327,
+      "source_rank": 337,
+      "word": "devant",
+      "pos": "ADP",
+      "frequency_count": 75940,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 328,
+      "source_rank": 338,
+      "word": "suivre",
+      "pos": "VERB",
+      "frequency_count": 75790,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 329,
+      "source_rank": 339,
+      "word": "dr",
+      "pos": "NOUN",
+      "frequency_count": 75516,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 330,
+      "source_rank": 340,
+      "word": "enfin",
+      "pos": "ADV",
+      "frequency_count": 75391,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 331,
+      "source_rank": 341,
+      "word": "servir",
+      "pos": "VERB",
+      "frequency_count": 75234,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 332,
+      "source_rank": 342,
+      "word": "mari",
+      "pos": "NOUN",
+      "frequency_count": 75099,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 333,
+      "source_rank": 343,
+      "word": "photo",
+      "pos": "NOUN",
+      "frequency_count": 74383,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 334,
+      "source_rank": 344,
+      "word": "bureau",
+      "pos": "NOUN",
+      "frequency_count": 74091,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 335,
+      "source_rank": 345,
+      "word": "prier",
+      "pos": "VERB",
+      "frequency_count": 73814,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 336,
+      "source_rank": 346,
+      "word": "loin",
+      "pos": "ADV",
+      "frequency_count": 73779,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 337,
+      "source_rank": 347,
+      "word": "recevoir",
+      "pos": "VERB",
+      "frequency_count": 73664,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 338,
+      "source_rank": 348,
+      "word": "boulot",
+      "pos": "NOUN",
+      "frequency_count": 73474,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 339,
+      "source_rank": 349,
+      "word": "possible",
+      "pos": "ADJ",
+      "frequency_count": 72979,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 340,
+      "source_rank": 350,
+      "word": "donne",
+      "pos": "VERB",
+      "frequency_count": 72911,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 341,
+      "source_rank": 351,
+      "word": "fin",
+      "pos": "NOUN",
+      "frequency_count": 72794,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 342,
+      "source_rank": 352,
+      "word": "courir",
+      "pos": "VERB",
+      "frequency_count": 72671,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 343,
+      "source_rank": 353,
+      "word": "montrer",
+      "pos": "VERB",
+      "frequency_count": 72589,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 344,
+      "source_rank": 354,
+      "word": "mme",
+      "pos": "NOUN",
+      "frequency_count": 72458,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 345,
+      "source_rank": 355,
+      "word": "répondre",
+      "pos": "VERB",
+      "frequency_count": 72073,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 346,
+      "source_rank": 356,
+      "word": "docteur",
+      "pos": "NOUN",
+      "frequency_count": 71704,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 347,
+      "source_rank": 357,
+      "word": "plutôt",
+      "pos": "ADV",
+      "frequency_count": 71199,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 348,
+      "source_rank": 358,
+      "word": "sauver",
+      "pos": "VERB",
+      "frequency_count": 71106,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 349,
+      "source_rank": 359,
+      "word": "prêt",
+      "pos": "NOUN",
+      "frequency_count": 70737,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 350,
+      "source_rank": 360,
+      "word": "chef",
+      "pos": "NOUN",
+      "frequency_count": 70640,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 351,
+      "source_rank": 361,
+      "word": "école",
+      "pos": "NOUN",
+      "frequency_count": 69995,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 352,
+      "source_rank": 362,
+      "word": "jeu",
+      "pos": "NOUN",
+      "frequency_count": 69944,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 353,
+      "source_rank": 363,
+      "word": "hier",
+      "pos": "ADV",
+      "frequency_count": 69937,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 354,
+      "source_rank": 364,
+      "word": "feu",
+      "pos": "NOUN",
+      "frequency_count": 69301,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 355,
+      "source_rank": 365,
+      "word": "mentir",
+      "pos": "VERB",
+      "frequency_count": 68699,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 356,
+      "source_rank": 366,
+      "word": "prochain",
+      "pos": "ADJ",
+      "frequency_count": 68608,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 357,
+      "source_rank": 367,
+      "word": "euh",
+      "pos": "INTJ",
+      "frequency_count": 67392,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 358,
+      "source_rank": 368,
+      "word": "dehors",
+      "pos": "ADP",
+      "frequency_count": 67348,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 359,
+      "source_rank": 369,
+      "word": "vérité",
+      "pos": "NOUN",
+      "frequency_count": 67057,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 360,
+      "source_rank": 370,
+      "word": "confiance",
+      "pos": "NOUN",
+      "frequency_count": 67045,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 361,
+      "source_rank": 371,
+      "word": "téléphone",
+      "pos": "NOUN",
+      "frequency_count": 66602,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 362,
+      "source_rank": 372,
+      "word": "journée",
+      "pos": "NOUN",
+      "frequency_count": 66491,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 363,
+      "source_rank": 373,
+      "word": "génial",
+      "pos": "ADJ",
+      "frequency_count": 66377,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 364,
+      "source_rank": 374,
+      "word": "film",
+      "pos": "NOUN",
+      "frequency_count": 65948,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 365,
+      "source_rank": 375,
+      "word": "équipe",
+      "pos": "NOUN",
+      "frequency_count": 65935,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 366,
+      "source_rank": 376,
+      "word": "propos",
+      "pos": "NOUN",
+      "frequency_count": 65929,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 367,
+      "source_rank": 377,
+      "word": "imaginer",
+      "pos": "VERB",
+      "frequency_count": 65048,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 368,
+      "source_rank": 378,
+      "word": "joli",
+      "pos": "ADJ",
+      "frequency_count": 64770,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 369,
+      "source_rank": 379,
+      "word": "propre",
+      "pos": "ADJ",
+      "frequency_count": 64552,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 370,
+      "source_rank": 380,
+      "word": "hey",
+      "pos": "DET",
+      "frequency_count": 63364,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 371,
+      "source_rank": 381,
+      "word": "guerre",
+      "pos": "NOUN",
+      "frequency_count": 62821,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 372,
+      "source_rank": 382,
+      "word": "vendre",
+      "pos": "VERB",
+      "frequency_count": 62816,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 373,
+      "source_rank": 383,
+      "word": "emmener",
+      "pos": "VERB",
+      "frequency_count": 62675,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 374,
+      "source_rank": 384,
+      "word": "près",
+      "pos": "ADV",
+      "frequency_count": 62659,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 375,
+      "source_rank": 385,
+      "word": "cher",
+      "pos": "ADJ",
+      "frequency_count": 62306,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 376,
+      "source_rank": 386,
+      "word": "quitter",
+      "pos": "VERB",
+      "frequency_count": 62201,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 377,
+      "source_rank": 387,
+      "word": "agent",
+      "pos": "NOUN",
+      "frequency_count": 62115,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 378,
+      "source_rank": 388,
+      "word": "dessus",
+      "pos": "NOUN",
+      "frequency_count": 62027,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 379,
+      "source_rank": 389,
+      "word": "mariage",
+      "pos": "NOUN",
+      "frequency_count": 61832,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 380,
+      "source_rank": 390,
+      "word": "suffire",
+      "pos": "VERB",
+      "frequency_count": 61698,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 381,
+      "source_rank": 391,
+      "word": "offrir",
+      "pos": "VERB",
+      "frequency_count": 61640,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 382,
+      "source_rank": 392,
+      "word": "décider",
+      "pos": "VERB",
+      "frequency_count": 61087,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 383,
+      "source_rank": 393,
+      "word": "inquiet",
+      "pos": "ADJ",
+      "frequency_count": 60342,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 384,
+      "source_rank": 394,
+      "word": "livre",
+      "pos": "NOUN",
+      "frequency_count": 60266,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 385,
+      "source_rank": 395,
+      "word": "marche",
+      "pos": "NOUN",
+      "frequency_count": 60060,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 386,
+      "source_rank": 396,
+      "word": "sécurité",
+      "pos": "NOUN",
+      "frequency_count": 60001,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 387,
+      "source_rank": 397,
+      "word": "choisir",
+      "pos": "VERB",
+      "frequency_count": 59942,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 388,
+      "source_rank": 398,
+      "word": "numéro",
+      "pos": "NOUN",
+      "frequency_count": 59561,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 389,
+      "source_rank": 399,
+      "word": "agir",
+      "pos": "VERB",
+      "frequency_count": 59553,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 390,
+      "source_rank": 400,
+      "word": "exactement",
+      "pos": "ADV",
+      "frequency_count": 59442,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 391,
+      "source_rank": 401,
+      "word": "fort",
+      "pos": "ADV",
+      "frequency_count": 59357,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 392,
+      "source_rank": 402,
+      "word": "service",
+      "pos": "NOUN",
+      "frequency_count": 59301,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 393,
+      "source_rank": 403,
+      "word": "presque",
+      "pos": "ADV",
+      "frequency_count": 59183,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 394,
+      "source_rank": 404,
+      "word": "parent",
+      "pos": "NOUN",
+      "frequency_count": 59127,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 395,
+      "source_rank": 405,
+      "word": "derrière",
+      "pos": "ADP",
+      "frequency_count": 59059,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 396,
+      "source_rank": 406,
+      "word": "ben",
+      "pos": "ADV",
+      "frequency_count": 59042,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 397,
+      "source_rank": 407,
+      "word": "capitaine",
+      "pos": "NOUN",
+      "frequency_count": 59039,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 398,
+      "source_rank": 408,
+      "word": "long",
+      "pos": "ADJ",
+      "frequency_count": 58650,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 399,
+      "source_rank": 409,
+      "word": "chien",
+      "pos": "NOUN",
+      "frequency_count": 58513,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 400,
+      "source_rank": 410,
+      "word": "amie",
+      "pos": "NOUN",
+      "frequency_count": 58365,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 401,
+      "source_rank": 411,
+      "word": "fou",
+      "pos": "VERB",
+      "frequency_count": 58314,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 402,
+      "source_rank": 413,
+      "word": "envie",
+      "pos": "NOUN",
+      "frequency_count": 57929,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 403,
+      "source_rank": 414,
+      "word": "tirer",
+      "pos": "VERB",
+      "frequency_count": 57823,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 404,
+      "source_rank": 415,
+      "word": "ordre",
+      "pos": "NOUN",
+      "frequency_count": 57654,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 405,
+      "source_rank": 416,
+      "word": "vue",
+      "pos": "NOUN",
+      "frequency_count": 57392,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 406,
+      "source_rank": 417,
+      "word": "lieu",
+      "pos": "NOUN",
+      "frequency_count": 57007,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 407,
+      "source_rank": 418,
+      "word": "valoir",
+      "pos": "VERB",
+      "frequency_count": 56951,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 408,
+      "source_rank": 419,
+      "word": "protéger",
+      "pos": "VERB",
+      "frequency_count": 56845,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 409,
+      "source_rank": 420,
+      "word": "pied",
+      "pos": "NOUN",
+      "frequency_count": 56684,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 410,
+      "source_rank": 421,
+      "word": "fête",
+      "pos": "NOUN",
+      "frequency_count": 56661,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 411,
+      "source_rank": 422,
+      "word": "ressembler",
+      "pos": "VERB",
+      "frequency_count": 56254,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 412,
+      "source_rank": 423,
+      "word": "battre",
+      "pos": "VERB",
+      "frequency_count": 56167,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 413,
+      "source_rank": 424,
+      "word": "lequel",
+      "pos": "PRON",
+      "frequency_count": 55811,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 414,
+      "source_rank": 425,
+      "word": "gentil",
+      "pos": "ADJ",
+      "frequency_count": 55719,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 415,
+      "source_rank": 426,
+      "word": "pays",
+      "pos": "NOUN",
+      "frequency_count": 55567,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 416,
+      "source_rank": 427,
+      "word": "garde",
+      "pos": "NOUN",
+      "frequency_count": 55293,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 417,
+      "source_rank": 428,
+      "word": "ii",
+      "pos": "ADJ",
+      "frequency_count": 54985,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 418,
+      "source_rank": 429,
+      "word": "cours",
+      "pos": "NOUN",
+      "frequency_count": 54886,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 419,
+      "source_rank": 430,
+      "word": "accepter",
+      "pos": "VERB",
+      "frequency_count": 54869,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 420,
+      "source_rank": 431,
+      "word": "supposer",
+      "pos": "VERB",
+      "frequency_count": 54840,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 421,
+      "source_rank": 432,
+      "word": "bas",
+      "pos": "ADJ",
+      "frequency_count": 54647,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 422,
+      "source_rank": 433,
+      "word": "tour",
+      "pos": "NOUN",
+      "frequency_count": 54545,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 423,
+      "source_rank": 434,
+      "word": "bientôt",
+      "pos": "ADV",
+      "frequency_count": 54494,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 424,
+      "source_rank": 435,
+      "word": "ignorer",
+      "pos": "VERB",
+      "frequency_count": 54459,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 425,
+      "source_rank": 436,
+      "word": "tourner",
+      "pos": "VERB",
+      "frequency_count": 54438,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 426,
+      "source_rank": 437,
+      "word": "peine",
+      "pos": "NOUN",
+      "frequency_count": 54298,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 427,
+      "source_rank": 438,
+      "word": "personne",
+      "pos": "NOUN",
+      "frequency_count": 54104,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 428,
+      "source_rank": 439,
+      "word": "prison",
+      "pos": "NOUN",
+      "frequency_count": 54052,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 429,
+      "source_rank": 440,
+      "word": "parfaire",
+      "pos": "VERB",
+      "frequency_count": 54033,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 430,
+      "source_rank": 441,
+      "word": "retour",
+      "pos": "NOUN",
+      "frequency_count": 53813,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 431,
+      "source_rank": 442,
+      "word": "sérieux",
+      "pos": "ADJ",
+      "frequency_count": 53668,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 432,
+      "source_rank": 443,
+      "word": "ainsi",
+      "pos": "ADV",
+      "frequency_count": 53523,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 433,
+      "source_rank": 444,
+      "word": "découvrir",
+      "pos": "VERB",
+      "frequency_count": 53260,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 434,
+      "source_rank": 445,
+      "word": "raconter",
+      "pos": "VERB",
+      "frequency_count": 53111,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 435,
+      "source_rank": 446,
+      "word": "autant",
+      "pos": "ADV",
+      "frequency_count": 53097,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 436,
+      "source_rank": 447,
+      "word": "carte",
+      "pos": "NOUN",
+      "frequency_count": 52971,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 437,
+      "source_rank": 448,
+      "word": "plan",
+      "pos": "NOUN",
+      "frequency_count": 52873,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 438,
+      "source_rank": 449,
+      "word": "expliquer",
+      "pos": "VERB",
+      "frequency_count": 52787,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 439,
+      "source_rank": 450,
+      "word": "instant",
+      "pos": "NOUN",
+      "frequency_count": 52720,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 440,
+      "source_rank": 451,
+      "word": "différent",
+      "pos": "ADJ",
+      "frequency_count": 52654,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 441,
+      "source_rank": 452,
+      "word": "second",
+      "pos": "ADJ",
+      "frequency_count": 52614,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 442,
+      "source_rank": 453,
+      "word": "facile",
+      "pos": "ADJ",
+      "frequency_count": 52545,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 443,
+      "source_rank": 454,
+      "word": "difficile",
+      "pos": "ADJ",
+      "frequency_count": 52410,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 444,
+      "source_rank": 455,
+      "word": "détester",
+      "pos": "VERB",
+      "frequency_count": 52320,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 445,
+      "source_rank": 456,
+      "word": "arme",
+      "pos": "ADV",
+      "frequency_count": 52139,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 446,
+      "source_rank": 457,
+      "word": "meurtre",
+      "pos": "NOUN",
+      "frequency_count": 52066,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 447,
+      "source_rank": 458,
+      "word": "permettre",
+      "pos": "VERB",
+      "frequency_count": 51834,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 448,
+      "source_rank": 459,
+      "word": "cacher",
+      "pos": "VERB",
+      "frequency_count": 51753,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 449,
+      "source_rank": 460,
+      "word": "ramener",
+      "pos": "VERB",
+      "frequency_count": 51677,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 450,
+      "source_rank": 461,
+      "word": "route",
+      "pos": "NOUN",
+      "frequency_count": 51675,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 451,
+      "source_rank": 462,
+      "word": "pire",
+      "pos": "ADJ",
+      "frequency_count": 51042,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 452,
+      "source_rank": 463,
+      "word": "choix",
+      "pos": "NOUN",
+      "frequency_count": 51014,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 453,
+      "source_rank": 464,
+      "word": "pièce",
+      "pos": "NOUN",
+      "frequency_count": 50970,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 454,
+      "source_rank": 465,
+      "word": "marier",
+      "pos": "VERB",
+      "frequency_count": 50964,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 455,
+      "source_rank": 466,
+      "word": "apporter",
+      "pos": "VERB",
+      "frequency_count": 50879,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 456,
+      "source_rank": 467,
+      "word": "plaisir",
+      "pos": "NOUN",
+      "frequency_count": 50860,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 457,
+      "source_rank": 468,
+      "word": "lit",
+      "pos": "NOUN",
+      "frequency_count": 50808,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 458,
+      "source_rank": 469,
+      "word": "parfois",
+      "pos": "ADV",
+      "frequency_count": 50714,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 459,
+      "source_rank": 470,
+      "word": "noir",
+      "pos": "ADJ",
+      "frequency_count": 50694,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 460,
+      "source_rank": 471,
+      "word": "esprit",
+      "pos": "NOUN",
+      "frequency_count": 50654,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 461,
+      "source_rank": 472,
+      "word": "flic",
+      "pos": "NOUN",
+      "frequency_count": 50597,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 462,
+      "source_rank": 473,
+      "word": "gagner",
+      "pos": "VERB",
+      "frequency_count": 50583,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 463,
+      "source_rank": 474,
+      "word": "bizarre",
+      "pos": "ADJ",
+      "frequency_count": 50412,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 464,
+      "source_rank": 475,
+      "word": "dollar",
+      "pos": "NOUN",
+      "frequency_count": 50389,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 465,
+      "source_rank": 476,
+      "word": "abord",
+      "pos": "NOUN",
+      "frequency_count": 50320,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 466,
+      "source_rank": 477,
+      "word": "sujet",
+      "pos": "NOUN",
+      "frequency_count": 50257,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 467,
+      "source_rank": 478,
+      "word": "faute",
+      "pos": "NOUN",
+      "frequency_count": 50187,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 468,
+      "source_rank": 479,
+      "word": "verre",
+      "pos": "NOUN",
+      "frequency_count": 50125,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 469,
+      "source_rank": 480,
+      "word": "état",
+      "pos": "NOUN",
+      "frequency_count": 50016,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 470,
+      "source_rank": 481,
+      "word": "avion",
+      "pos": "NOUN",
+      "frequency_count": 49895,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 471,
+      "source_rank": 482,
+      "word": "préparer",
+      "pos": "VERB",
+      "frequency_count": 49814,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 472,
+      "source_rank": 483,
+      "word": "vérifier",
+      "pos": "VERB",
+      "frequency_count": 49569,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 473,
+      "source_rank": 484,
+      "word": "toucher",
+      "pos": "VERB",
+      "frequency_count": 49465,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 474,
+      "source_rank": 485,
+      "word": "ensuite",
+      "pos": "ADV",
+      "frequency_count": 48619,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 475,
+      "source_rank": 486,
+      "word": "conduire",
+      "pos": "VERB",
+      "frequency_count": 48556,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 476,
+      "source_rank": 487,
+      "word": "poser",
+      "pos": "VERB",
+      "frequency_count": 48482,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 477,
+      "source_rank": 488,
+      "word": "asseoir",
+      "pos": "VERB",
+      "frequency_count": 48213,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 478,
+      "source_rank": 489,
+      "word": "remettre",
+      "pos": "VERB",
+      "frequency_count": 48168,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 479,
+      "source_rank": 490,
+      "word": "marcher",
+      "pos": "VERB",
+      "frequency_count": 47969,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 480,
+      "source_rank": 491,
+      "word": "doute",
+      "pos": "NOUN",
+      "frequency_count": 47950,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 481,
+      "source_rank": 492,
+      "word": "descendre",
+      "pos": "VERB",
+      "frequency_count": 47839,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 482,
+      "source_rank": 493,
+      "word": "erreur",
+      "pos": "NOUN",
+      "frequency_count": 47816,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 483,
+      "source_rank": 494,
+      "word": "rapport",
+      "pos": "NOUN",
+      "frequency_count": 47790,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 484,
+      "source_rank": 495,
+      "word": "préférer",
+      "pos": "VERB",
+      "frequency_count": 47585,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 485,
+      "source_rank": 496,
+      "word": "force",
+      "pos": "NOUN",
+      "frequency_count": 47527,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 486,
+      "source_rank": 497,
+      "word": "appel",
+      "pos": "NOUN",
+      "frequency_count": 47395,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 487,
+      "source_rank": 498,
+      "word": "idiot",
+      "pos": "NOUN",
+      "frequency_count": 47302,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 488,
+      "source_rank": 499,
+      "word": "ferme",
+      "pos": "ADJ",
+      "frequency_count": 47260,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 489,
+      "source_rank": 500,
+      "word": "enlever",
+      "pos": "VERB",
+      "frequency_count": 47102,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 490,
+      "source_rank": 501,
+      "word": "message",
+      "pos": "NOUN",
+      "frequency_count": 47006,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 491,
+      "source_rank": 502,
+      "word": "dîner",
+      "pos": "VERB",
+      "frequency_count": 46971,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 492,
+      "source_rank": 503,
+      "word": "preuve",
+      "pos": "NOUN",
+      "frequency_count": 46925,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 493,
+      "source_rank": 504,
+      "word": "drôle",
+      "pos": "NOUN",
+      "frequency_count": 46916,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 494,
+      "source_rank": 505,
+      "word": "impossible",
+      "pos": "ADJ",
+      "frequency_count": 46855,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 495,
+      "source_rank": 506,
+      "word": "sûre",
+      "pos": "NOUN",
+      "frequency_count": 46585,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 496,
+      "source_rank": 507,
+      "word": "avocat",
+      "pos": "NOUN",
+      "frequency_count": 46585,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 497,
+      "source_rank": 508,
+      "word": "pos",
+      "pos": "PROPN",
+      "frequency_count": 46544,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 498,
+      "source_rank": 509,
+      "word": "tel",
+      "pos": "ADJ",
+      "frequency_count": 46439,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 499,
+      "source_rank": 510,
+      "word": "réussir",
+      "pos": "VERB",
+      "frequency_count": 46237,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 500,
+      "source_rank": 511,
+      "word": "ceci",
+      "pos": "PRON",
+      "frequency_count": 46192,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 501,
+      "source_rank": 512,
+      "word": "haut",
+      "pos": "ADJ",
+      "frequency_count": 46121,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 502,
+      "source_rank": 513,
+      "word": "sort",
+      "pos": "ADJ",
+      "frequency_count": 45976,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 503,
+      "source_rank": 514,
+      "word": "coucher",
+      "pos": "VERB",
+      "frequency_count": 45778,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 504,
+      "source_rank": 515,
+      "word": "simple",
+      "pos": "ADJ",
+      "frequency_count": 45697,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 505,
+      "source_rank": 516,
+      "word": "jeter",
+      "pos": "VERB",
+      "frequency_count": 45678,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 506,
+      "source_rank": 517,
+      "word": "client",
+      "pos": "NOUN",
+      "frequency_count": 45465,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 507,
+      "source_rank": 518,
+      "word": "hôpital",
+      "pos": "NOUN",
+      "frequency_count": 45254,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 508,
+      "source_rank": 519,
+      "word": "abandonner",
+      "pos": "VERB",
+      "frequency_count": 45194,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 509,
+      "source_rank": 520,
+      "word": "devon",
+      "pos": "NOUN",
+      "frequency_count": 44938,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 510,
+      "source_rank": 521,
+      "word": "clair",
+      "pos": "ADJ",
+      "frequency_count": 44853,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 511,
+      "source_rank": 522,
+      "word": "manquer",
+      "pos": "VERB",
+      "frequency_count": 44829,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 512,
+      "source_rank": 523,
+      "word": "tôt",
+      "pos": "ADV",
+      "frequency_count": 44694,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 513,
+      "source_rank": 524,
+      "word": "coeur",
+      "pos": "NOUN",
+      "frequency_count": 44598,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 514,
+      "source_rank": 525,
+      "word": "dès",
+      "pos": "ADP",
+      "frequency_count": 44598,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 515,
+      "source_rank": 526,
+      "word": "visage",
+      "pos": "NOUN",
+      "frequency_count": 44352,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 516,
+      "source_rank": 527,
+      "word": "café",
+      "pos": "NOUN",
+      "frequency_count": 44063,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 517,
+      "source_rank": 528,
+      "word": "calme",
+      "pos": "PROPN",
+      "frequency_count": 44023,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 518,
+      "source_rank": 529,
+      "word": "président",
+      "pos": "NOUN",
+      "frequency_count": 43978,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 519,
+      "source_rank": 530,
+      "word": "salle",
+      "pos": "NOUN",
+      "frequency_count": 43977,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 520,
+      "source_rank": 531,
+      "word": "cœur",
+      "pos": "PROPN",
+      "frequency_count": 43691,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 521,
+      "source_rank": 532,
+      "word": "terminer",
+      "pos": "VERB",
+      "frequency_count": 43614,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 522,
+      "source_rank": 533,
+      "word": "sûrement",
+      "pos": "ADV",
+      "frequency_count": 43604,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 523,
+      "source_rank": 534,
+      "word": "rue",
+      "pos": "NOUN",
+      "frequency_count": 43524,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 524,
+      "source_rank": 535,
+      "word": "chemin",
+      "pos": "NOUN",
+      "frequency_count": 43484,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 525,
+      "source_rank": 536,
+      "word": "blesser",
+      "pos": "VERB",
+      "frequency_count": 43368,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 526,
+      "source_rank": 537,
+      "word": "marché",
+      "pos": "NOUN",
+      "frequency_count": 43353,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 527,
+      "source_rank": 538,
+      "word": "musiqu",
+      "pos": "ADJ",
+      "frequency_count": 43317,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 528,
+      "source_rank": 539,
+      "word": "sauf",
+      "pos": "ADP",
+      "frequency_count": 43211,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 529,
+      "source_rank": 540,
+      "word": "moyen",
+      "pos": "ADJ",
+      "frequency_count": 43094,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 530,
+      "source_rank": 541,
+      "word": "balle",
+      "pos": "NOUN",
+      "frequency_count": 42962,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 531,
+      "source_rank": 542,
+      "word": "vrai",
+      "pos": "ADJ",
+      "frequency_count": 42889,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 532,
+      "source_rank": 543,
+      "word": "refuser",
+      "pos": "VERB",
+      "frequency_count": 42850,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 533,
+      "source_rank": 544,
+      "word": "roi",
+      "pos": "NOUN",
+      "frequency_count": 42846,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 534,
+      "source_rank": 545,
+      "word": "avis",
+      "pos": "NOUN",
+      "frequency_count": 42822,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 535,
+      "source_rank": 546,
+      "word": "blanc",
+      "pos": "ADJ",
+      "frequency_count": 42821,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 536,
+      "source_rank": 547,
+      "word": "soirée",
+      "pos": "NOUN",
+      "frequency_count": 42776,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 537,
+      "source_rank": 548,
+      "word": "seigneur",
+      "pos": "NOUN",
+      "frequency_count": 42455,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 538,
+      "source_rank": 549,
+      "word": "allai",
+      "pos": "NOUN",
+      "frequency_count": 42452,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 539,
+      "source_rank": 550,
+      "word": "effet",
+      "pos": "NOUN",
+      "frequency_count": 42348,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 540,
+      "source_rank": 551,
+      "word": "mlle",
+      "pos": "NOUN",
+      "frequency_count": 42287,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 541,
+      "source_rank": 552,
+      "word": "cool",
+      "pos": "ADV",
+      "frequency_count": 42254,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 542,
+      "source_rank": 554,
+      "word": "sac",
+      "pos": "NOUN",
+      "frequency_count": 42061,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 543,
+      "source_rank": 555,
+      "word": "cul",
+      "pos": "NOUN",
+      "frequency_count": 41960,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 544,
+      "source_rank": 556,
+      "word": "nul",
+      "pos": "ADJ",
+      "frequency_count": 41921,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 545,
+      "source_rank": 557,
+      "word": "assurer",
+      "pos": "VERB",
+      "frequency_count": 41768,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 546,
+      "source_rank": 558,
+      "word": "malade",
+      "pos": "ADJ",
+      "frequency_count": 41746,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 547,
+      "source_rank": 559,
+      "word": "groupe",
+      "pos": "NOUN",
+      "frequency_count": 41517,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 548,
+      "source_rank": 560,
+      "word": "obtenir",
+      "pos": "VERB",
+      "frequency_count": 41432,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 549,
+      "source_rank": 561,
+      "word": "john",
+      "pos": "PROPN",
+      "frequency_count": 41222,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 550,
+      "source_rank": 562,
+      "word": "bras",
+      "pos": "NOUN",
+      "frequency_count": 41125,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 551,
+      "source_rank": 563,
+      "word": "chanter",
+      "pos": "VERB",
+      "frequency_count": 41122,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 552,
+      "source_rank": 564,
+      "word": "jack",
+      "pos": "ADJ",
+      "frequency_count": 41049,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 553,
+      "source_rank": 565,
+      "word": "recherche",
+      "pos": "NOUN",
+      "frequency_count": 40989,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 554,
+      "source_rank": 566,
+      "word": "faux",
+      "pos": "ADJ",
+      "frequency_count": 40911,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 555,
+      "source_rank": 567,
+      "word": "monter",
+      "pos": "VERB",
+      "frequency_count": 40871,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 556,
+      "source_rank": 568,
+      "word": "régler",
+      "pos": "VERB",
+      "frequency_count": 40570,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 557,
+      "source_rank": 569,
+      "word": "grave",
+      "pos": "ADJ",
+      "frequency_count": 40461,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 558,
+      "source_rank": 570,
+      "word": "partout",
+      "pos": "ADV",
+      "frequency_count": 40420,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 559,
+      "source_rank": 571,
+      "word": "pleurer",
+      "pos": "VERB",
+      "frequency_count": 40408,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 560,
+      "source_rank": 572,
+      "word": "normal",
+      "pos": "ADJ",
+      "frequency_count": 40390,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 561,
+      "source_rank": 573,
+      "word": "face",
+      "pos": "NOUN",
+      "frequency_count": 40259,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 562,
+      "source_rank": 574,
+      "word": "général",
+      "pos": "ADJ",
+      "frequency_count": 40170,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 563,
+      "source_rank": 575,
+      "word": "lettre",
+      "pos": "NOUN",
+      "frequency_count": 39873,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 564,
+      "source_rank": 576,
+      "word": "retard",
+      "pos": "NOUN",
+      "frequency_count": 39856,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 565,
+      "source_rank": 577,
+      "word": "crime",
+      "pos": "NOUN",
+      "frequency_count": 39778,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 566,
+      "source_rank": 578,
+      "word": "surtout",
+      "pos": "ADV",
+      "frequency_count": 39488,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 567,
+      "source_rank": 580,
+      "word": "lire",
+      "pos": "VERB",
+      "frequency_count": 38838,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 568,
+      "source_rank": 581,
+      "word": "pler",
+      "pos": "VERB",
+      "frequency_count": 38823,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 569,
+      "source_rank": 582,
+      "word": "détruire",
+      "pos": "VERB",
+      "frequency_count": 38735,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 570,
+      "source_rank": 583,
+      "word": "pareil",
+      "pos": "ADJ",
+      "frequency_count": 38689,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 571,
+      "source_rank": 584,
+      "word": "médecin",
+      "pos": "NOUN",
+      "frequency_count": 38632,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 572,
+      "source_rank": 585,
+      "word": "intéresser",
+      "pos": "VERB",
+      "frequency_count": 38607,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 573,
+      "source_rank": 587,
+      "word": "bois",
+      "pos": "NOUN",
+      "frequency_count": 38577,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 574,
+      "source_rank": 588,
+      "word": "sinon",
+      "pos": "ADV",
+      "frequency_count": 38576,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 575,
+      "source_rank": 589,
+      "word": "new",
+      "pos": "SCONJ",
+      "frequency_count": 38345,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 576,
+      "source_rank": 590,
+      "word": "ecoute",
+      "pos": "NOUN",
+      "frequency_count": 38316,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 577,
+      "source_rank": 591,
+      "word": "mr",
+      "pos": "NOUN",
+      "frequency_count": 38276,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 578,
+      "source_rank": 592,
+      "word": "jurer",
+      "pos": "VERB",
+      "frequency_count": 38276,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 579,
+      "source_rank": 593,
+      "word": "déranger",
+      "pos": "VERB",
+      "frequency_count": 38266,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 580,
+      "source_rank": 594,
+      "word": "honneur",
+      "pos": "NOUN",
+      "frequency_count": 38264,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 581,
+      "source_rank": 595,
+      "word": "sale",
+      "pos": "ADJ",
+      "frequency_count": 38258,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 582,
+      "source_rank": 596,
+      "word": "clé",
+      "pos": "NOUN",
+      "frequency_count": 38254,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 583,
+      "source_rank": 597,
+      "word": "maître",
+      "pos": "NOUN",
+      "frequency_count": 37992,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 584,
+      "source_rank": 598,
+      "word": "joue",
+      "pos": "VERB",
+      "frequency_count": 37977,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 585,
+      "source_rank": 599,
+      "word": "pauvre",
+      "pos": "NOUN",
+      "frequency_count": 37972,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 586,
+      "source_rank": 600,
+      "word": "ancien",
+      "pos": "ADJ",
+      "frequency_count": 37971,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 587,
+      "source_rank": 601,
+      "word": "certain",
+      "pos": "ADJ",
+      "frequency_count": 37917,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 588,
+      "source_rank": 602,
+      "word": "réponse",
+      "pos": "NOUN",
+      "frequency_count": 37823,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 589,
+      "source_rank": 603,
+      "word": "début",
+      "pos": "NOUN",
+      "frequency_count": 37759,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 590,
+      "source_rank": 604,
+      "word": "cadeau",
+      "pos": "NOUN",
+      "frequency_count": 37697,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 591,
+      "source_rank": 605,
+      "word": "sœur",
+      "pos": "NOUN",
+      "frequency_count": 37496,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 592,
+      "source_rank": 606,
+      "word": "souvent",
+      "pos": "ADV",
+      "frequency_count": 37426,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 593,
+      "source_rank": 607,
+      "word": "loi",
+      "pos": "NOUN",
+      "frequency_count": 37365,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 594,
+      "source_rank": 608,
+      "word": "mets",
+      "pos": "NOUN",
+      "frequency_count": 37355,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 595,
+      "source_rank": 609,
+      "word": "intérieur",
+      "pos": "NOUN",
+      "frequency_count": 37333,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 596,
+      "source_rank": 610,
+      "word": "libre",
+      "pos": "ADJ",
+      "frequency_count": 37256,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 597,
+      "source_rank": 611,
+      "word": "apprécier",
+      "pos": "VERB",
+      "frequency_count": 37171,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 598,
+      "source_rank": 612,
+      "word": "soeur",
+      "pos": "NOUN",
+      "frequency_count": 36929,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 599,
+      "source_rank": 613,
+      "word": "voyage",
+      "pos": "NOUN",
+      "frequency_count": 36916,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 600,
+      "source_rank": 614,
+      "word": "exister",
+      "pos": "VERB",
+      "frequency_count": 36706,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 601,
+      "source_rank": 615,
+      "word": "rêve",
+      "pos": "NOUN",
+      "frequency_count": 36646,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 602,
+      "source_rank": 616,
+      "word": "accident",
+      "pos": "NOUN",
+      "frequency_count": 36635,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 603,
+      "source_rank": 617,
+      "word": "empêcher",
+      "pos": "VERB",
+      "frequency_count": 36521,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 604,
+      "source_rank": 618,
+      "word": "manqu",
+      "pos": "ADJ",
+      "frequency_count": 36432,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 605,
+      "source_rank": 619,
+      "word": "patron",
+      "pos": "NOUN",
+      "frequency_count": 36365,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 606,
+      "source_rank": 620,
+      "word": "amener",
+      "pos": "VERB",
+      "frequency_count": 36352,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 607,
+      "source_rank": 621,
+      "word": "remercier",
+      "pos": "VERB",
+      "frequency_count": 36344,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 608,
+      "source_rank": 622,
+      "word": "scène",
+      "pos": "NOUN",
+      "frequency_count": 36209,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 609,
+      "source_rank": 623,
+      "word": "sam",
+      "pos": "ADP",
+      "frequency_count": 36188,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 610,
+      "source_rank": 624,
+      "word": "cheveu",
+      "pos": "NOUN",
+      "frequency_count": 36114,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 611,
+      "source_rank": 625,
+      "word": "disparu",
+      "pos": "NOUN",
+      "frequency_count": 36060,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 612,
+      "source_rank": 626,
+      "word": "bonsoir",
+      "pos": "INTJ",
+      "frequency_count": 35996,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 613,
+      "source_rank": 627,
+      "word": "content",
+      "pos": "ADV",
+      "frequency_count": 35995,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 614,
+      "source_rank": 628,
+      "word": "armé",
+      "pos": "ADJ",
+      "frequency_count": 35990,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 615,
+      "source_rank": 629,
+      "word": "secret",
+      "pos": "NOUN",
+      "frequency_count": 35927,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 616,
+      "source_rank": 630,
+      "word": "ligne",
+      "pos": "NOUN",
+      "frequency_count": 35908,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 617,
+      "source_rank": 631,
+      "word": "grâce",
+      "pos": "NOUN",
+      "frequency_count": 35904,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 618,
+      "source_rank": 632,
+      "word": "reprendre",
+      "pos": "VERB",
+      "frequency_count": 35872,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 619,
+      "source_rank": 633,
+      "word": "venue",
+      "pos": "NOUN",
+      "frequency_count": 35831,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 620,
+      "source_rank": 634,
+      "word": "relation",
+      "pos": "NOUN",
+      "frequency_count": 35819,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 621,
+      "source_rank": 635,
+      "word": "incroyable",
+      "pos": "ADJ",
+      "frequency_count": 35796,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 622,
+      "source_rank": 636,
+      "word": "voyon",
+      "pos": "NOUN",
+      "frequency_count": 35712,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 623,
+      "source_rank": 637,
+      "word": "dossier",
+      "pos": "NOUN",
+      "frequency_count": 35653,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 624,
+      "source_rank": 638,
+      "word": "stupide",
+      "pos": "ADJ",
+      "frequency_count": 35591,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 625,
+      "source_rank": 639,
+      "word": "récupérer",
+      "pos": "VERB",
+      "frequency_count": 35576,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 626,
+      "source_rank": 640,
+      "word": "âge",
+      "pos": "NOUN",
+      "frequency_count": 35455,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 627,
+      "source_rank": 641,
+      "word": "pote",
+      "pos": "NOUN",
+      "frequency_count": 35433,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 628,
+      "source_rank": 642,
+      "word": "réfléchir",
+      "pos": "VERB",
+      "frequency_count": 35422,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 629,
+      "source_rank": 643,
+      "word": "voix",
+      "pos": "NOUN",
+      "frequency_count": 35335,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 630,
+      "source_rank": 645,
+      "word": "situation",
+      "pos": "NOUN",
+      "frequency_count": 35296,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 631,
+      "source_rank": 646,
+      "word": "bouger",
+      "pos": "VERB",
+      "frequency_count": 35282,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 632,
+      "source_rank": 647,
+      "word": "lever",
+      "pos": "VERB",
+      "frequency_count": 35265,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 633,
+      "source_rank": 648,
+      "word": "bienvenu",
+      "pos": "ADJ",
+      "frequency_count": 35254,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 634,
+      "source_rank": 649,
+      "word": "noël",
+      "pos": "ADV",
+      "frequency_count": 35247,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 635,
+      "source_rank": 650,
+      "word": "prix",
+      "pos": "NOUN",
+      "frequency_count": 35016,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 636,
+      "source_rank": 651,
+      "word": "système",
+      "pos": "NOUN",
+      "frequency_count": 35003,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 637,
+      "source_rank": 652,
+      "word": "lumière",
+      "pos": "NOUN",
+      "frequency_count": 34850,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 638,
+      "source_rank": 653,
+      "word": "spécial",
+      "pos": "ADJ",
+      "frequency_count": 34583,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 639,
+      "source_rank": 654,
+      "word": "promis",
+      "pos": "NOUN",
+      "frequency_count": 34465,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 640,
+      "source_rank": 655,
+      "word": "patient",
+      "pos": "NOUN",
+      "frequency_count": 34241,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 641,
+      "source_rank": 656,
+      "word": "couper",
+      "pos": "VERB",
+      "frequency_count": 34209,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 642,
+      "source_rank": 657,
+      "word": "probablement",
+      "pos": "ADV",
+      "frequency_count": 34122,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 643,
+      "source_rank": 658,
+      "word": "conseil",
+      "pos": "NOUN",
+      "frequency_count": 34091,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 644,
+      "source_rank": 659,
+      "word": "cheval",
+      "pos": "NOUN",
+      "frequency_count": 34074,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 645,
+      "source_rank": 660,
+      "word": "bout",
+      "pos": "ADV",
+      "frequency_count": 33935,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 646,
+      "source_rank": 661,
+      "word": "froid",
+      "pos": "ADJ",
+      "frequency_count": 33901,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 647,
+      "source_rank": 662,
+      "word": "humain",
+      "pos": "ADJ",
+      "frequency_count": 33884,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 648,
+      "source_rank": 664,
+      "word": "tueur",
+      "pos": "NOUN",
+      "frequency_count": 33628,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 649,
+      "source_rank": 665,
+      "word": "habitude",
+      "pos": "NOUN",
+      "frequency_count": 33611,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 650,
+      "source_rank": 666,
+      "word": "hôtel",
+      "pos": "NOUN",
+      "frequency_count": 33499,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 651,
+      "source_rank": 667,
+      "word": "ailleurs",
+      "pos": "ADV",
+      "frequency_count": 33452,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 652,
+      "source_rank": 668,
+      "word": "liste",
+      "pos": "NOUN",
+      "frequency_count": 33357,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 653,
+      "source_rank": 669,
+      "word": "compter",
+      "pos": "VERB",
+      "frequency_count": 33322,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 654,
+      "source_rank": 670,
+      "word": "magnifique",
+      "pos": "ADJ",
+      "frequency_count": 33248,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 655,
+      "source_rank": 671,
+      "word": "contrôle",
+      "pos": "NOUN",
+      "frequency_count": 33115,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 656,
+      "source_rank": 672,
+      "word": "oncle",
+      "pos": "NOUN",
+      "frequency_count": 33109,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 657,
+      "source_rank": 673,
+      "word": "table",
+      "pos": "NOUN",
+      "frequency_count": 33074,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 658,
+      "source_rank": 674,
+      "word": "neuf",
+      "pos": "ADJ",
+      "frequency_count": 33051,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 659,
+      "source_rank": 675,
+      "word": "ouvert",
+      "pos": "ADJ",
+      "frequency_count": 33024,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 660,
+      "source_rank": 676,
+      "word": "anniversaire",
+      "pos": "NOUN",
+      "frequency_count": 32991,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 661,
+      "source_rank": 677,
+      "word": "arranger",
+      "pos": "VERB",
+      "frequency_count": 32979,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 662,
+      "source_rank": 678,
+      "word": "simplement",
+      "pos": "ADV",
+      "frequency_count": 32775,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 663,
+      "source_rank": 679,
+      "word": "sympa",
+      "pos": "ADJ",
+      "frequency_count": 32719,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 664,
+      "source_rank": 680,
+      "word": "prévenir",
+      "pos": "VERB",
+      "frequency_count": 32470,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 665,
+      "source_rank": 681,
+      "word": "prouver",
+      "pos": "VERB",
+      "frequency_count": 32411,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 666,
+      "source_rank": 682,
+      "word": "éviter",
+      "pos": "VERB",
+      "frequency_count": 32374,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 667,
+      "source_rank": 683,
+      "word": "réaliser",
+      "pos": "VERB",
+      "frequency_count": 32346,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 668,
+      "source_rank": 684,
+      "word": "inspecteur",
+      "pos": "NOUN",
+      "frequency_count": 32295,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 669,
+      "source_rank": 685,
+      "word": "amuser",
+      "pos": "VERB",
+      "frequency_count": 32294,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 670,
+      "source_rank": 686,
+      "word": "craindre",
+      "pos": "VERB",
+      "frequency_count": 32259,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 671,
+      "source_rank": 687,
+      "word": "discuter",
+      "pos": "VERB",
+      "frequency_count": 32219,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 672,
+      "source_rank": 688,
+      "word": "dangereux",
+      "pos": "ADJ",
+      "frequency_count": 32161,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 673,
+      "source_rank": 689,
+      "word": "inquiéter",
+      "pos": "VERB",
+      "frequency_count": 32048,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 674,
+      "source_rank": 690,
+      "word": "complètement",
+      "pos": "ADV",
+      "frequency_count": 32034,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 675,
+      "source_rank": 691,
+      "word": "créer",
+      "pos": "VERB",
+      "frequency_count": 31953,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 676,
+      "source_rank": 692,
+      "word": "dos",
+      "pos": "NOUN",
+      "frequency_count": 31944,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 677,
+      "source_rank": 693,
+      "word": "espèce",
+      "pos": "NOUN",
+      "frequency_count": 31936,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 678,
+      "source_rank": 694,
+      "word": "public",
+      "pos": "ADJ",
+      "frequency_count": 31929,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 679,
+      "source_rank": 695,
+      "word": "paix",
+      "pos": "NOUN",
+      "frequency_count": 31914,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 680,
+      "source_rank": 696,
+      "word": "dégager",
+      "pos": "VERB",
+      "frequency_count": 31814,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 681,
+      "source_rank": 697,
+      "word": "york",
+      "pos": "ADJ",
+      "frequency_count": 31805,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 682,
+      "source_rank": 698,
+      "word": "vivant",
+      "pos": "NOUN",
+      "frequency_count": 31667,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 683,
+      "source_rank": 699,
+      "word": "impression",
+      "pos": "NOUN",
+      "frequency_count": 31640,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 684,
+      "source_rank": 700,
+      "word": "chanson",
+      "pos": "NOUN",
+      "frequency_count": 31583,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 685,
+      "source_rank": 701,
+      "word": "bouge",
+      "pos": "NOUN",
+      "frequency_count": 31554,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 686,
+      "source_rank": 702,
+      "word": "montre",
+      "pos": "NOUN",
+      "frequency_count": 31476,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 687,
+      "source_rank": 703,
+      "word": "mission",
+      "pos": "NOUN",
+      "frequency_count": 31403,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 688,
+      "source_rank": 704,
+      "word": "rejoindre",
+      "pos": "VERB",
+      "frequency_count": 31325,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 689,
+      "source_rank": 705,
+      "word": "journal",
+      "pos": "NOUN",
+      "frequency_count": 31281,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 690,
+      "source_rank": 706,
+      "word": "témoin",
+      "pos": "NOUN",
+      "frequency_count": 31279,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 691,
+      "source_rank": 707,
+      "word": "okay",
+      "pos": "INTJ",
+      "frequency_count": 31277,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 692,
+      "source_rank": 708,
+      "word": "censé",
+      "pos": "ADJ",
+      "frequency_count": 31135,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 693,
+      "source_rank": 709,
+      "word": "absolument",
+      "pos": "ADV",
+      "frequency_count": 31103,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 694,
+      "source_rank": 710,
+      "word": "dame",
+      "pos": "NOUN",
+      "frequency_count": 31016,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 695,
+      "source_rank": 711,
+      "word": "bordel",
+      "pos": "NOUN",
+      "frequency_count": 30995,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 696,
+      "source_rank": 712,
+      "word": "victime",
+      "pos": "ADJ",
+      "frequency_count": 30971,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 697,
+      "source_rank": 713,
+      "word": "personnel",
+      "pos": "ADJ",
+      "frequency_count": 30940,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 698,
+      "source_rank": 715,
+      "word": "signe",
+      "pos": "NOUN",
+      "frequency_count": 30724,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 699,
+      "source_rank": 716,
+      "word": "rouge",
+      "pos": "NOUN",
+      "frequency_count": 30645,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 700,
+      "source_rank": 717,
+      "word": "promettre",
+      "pos": "VERB",
+      "frequency_count": 30612,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 701,
+      "source_rank": 718,
+      "word": "sera",
+      "pos": "NOUN",
+      "frequency_count": 30451,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 702,
+      "source_rank": 719,
+      "word": "faim",
+      "pos": "NOUN",
+      "frequency_count": 30414,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 703,
+      "source_rank": 720,
+      "word": "bateau",
+      "pos": "NOUN",
+      "frequency_count": 30393,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 704,
+      "source_rank": 721,
+      "word": "prévoir",
+      "pos": "VERB",
+      "frequency_count": 30388,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 705,
+      "source_rank": 722,
+      "word": "exact",
+      "pos": "ADJ",
+      "frequency_count": 30346,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 706,
+      "source_rank": 723,
+      "word": "autour",
+      "pos": "ADV",
+      "frequency_count": 30343,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 707,
+      "source_rank": 724,
+      "word": "fond",
+      "pos": "NOUN",
+      "frequency_count": 30337,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 708,
+      "source_rank": 725,
+      "word": "surprise",
+      "pos": "NOUN",
+      "frequency_count": 30330,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 709,
+      "source_rank": 726,
+      "word": "inviter",
+      "pos": "VERB",
+      "frequency_count": 30127,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 710,
+      "source_rank": 727,
+      "word": "décision",
+      "pos": "NOUN",
+      "frequency_count": 30109,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 711,
+      "source_rank": 728,
+      "word": "arrière",
+      "pos": "NOUN",
+      "frequency_count": 30079,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 712,
+      "source_rank": 729,
+      "word": "taire",
+      "pos": "ADJ",
+      "frequency_count": 30077,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 713,
+      "source_rank": 730,
+      "word": "colère",
+      "pos": "NOUN",
+      "frequency_count": 30054,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 714,
+      "source_rank": 731,
+      "word": "papier",
+      "pos": "NOUN",
+      "frequency_count": 30050,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 715,
+      "source_rank": 732,
+      "word": "brûler",
+      "pos": "VERB",
+      "frequency_count": 30030,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 716,
+      "source_rank": 733,
+      "word": "boîte",
+      "pos": "NOUN",
+      "frequency_count": 30002,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 717,
+      "source_rank": 734,
+      "word": "excuser",
+      "pos": "VERB",
+      "frequency_count": 29946,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 718,
+      "source_rank": 735,
+      "word": "casser",
+      "pos": "VERB",
+      "frequency_count": 29906,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 719,
+      "source_rank": 736,
+      "word": "forme",
+      "pos": "NOUN",
+      "frequency_count": 29766,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 720,
+      "source_rank": 737,
+      "word": "coin",
+      "pos": "NOUN",
+      "frequency_count": 29758,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 721,
+      "source_rank": 738,
+      "word": "or",
+      "pos": "NOUN",
+      "frequency_count": 29653,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 722,
+      "source_rank": 740,
+      "word": "attaque",
+      "pos": "NOUN",
+      "frequency_count": 29613,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 723,
+      "source_rank": 741,
+      "word": "hors",
+      "pos": "ADP",
+      "frequency_count": 29603,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 724,
+      "source_rank": 742,
+      "word": "soin",
+      "pos": "NOUN",
+      "frequency_count": 29585,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 725,
+      "source_rank": 743,
+      "word": "jambe",
+      "pos": "NOUN",
+      "frequency_count": 29546,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 726,
+      "source_rank": 744,
+      "word": "risque",
+      "pos": "NOUN",
+      "frequency_count": 29451,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 727,
+      "source_rank": 745,
+      "word": "mener",
+      "pos": "VERB",
+      "frequency_count": 29372,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 728,
+      "source_rank": 746,
+      "word": "club",
+      "pos": "NOUN",
+      "frequency_count": 29350,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 729,
+      "source_rank": 747,
+      "word": "soldat",
+      "pos": "NOUN",
+      "frequency_count": 29346,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 730,
+      "source_rank": 748,
+      "word": "tranquille",
+      "pos": "ADJ",
+      "frequency_count": 29276,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 731,
+      "source_rank": 749,
+      "word": "âme",
+      "pos": "NOUN",
+      "frequency_count": 29163,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 732,
+      "source_rank": 750,
+      "word": "présent",
+      "pos": "NOUN",
+      "frequency_count": 29154,
+      "cefr_estimate": "A1"
+    },
+    {
+      "candidate_rank": 733,
+      "source_rank": 751,
+      "word": "professeur",
+      "pos": "NOUN",
+      "frequency_count": 29146,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 734,
+      "source_rank": 752,
+      "word": "plusieurs",
+      "pos": "ADJ",
+      "frequency_count": 29005,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 735,
+      "source_rank": 753,
+      "word": "gauche",
+      "pos": "NOUN",
+      "frequency_count": 29001,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 736,
+      "source_rank": 754,
+      "word": "baiser",
+      "pos": "VERB",
+      "frequency_count": 28986,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 737,
+      "source_rank": 755,
+      "word": "présenter",
+      "pos": "VERB",
+      "frequency_count": 28961,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 738,
+      "source_rank": 756,
+      "word": "manière",
+      "pos": "NOUN",
+      "frequency_count": 28930,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 739,
+      "source_rank": 757,
+      "word": "gosse",
+      "pos": "NOUN",
+      "frequency_count": 28847,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 740,
+      "source_rank": 758,
+      "word": "signifier",
+      "pos": "VERB",
+      "frequency_count": 28846,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 741,
+      "source_rank": 760,
+      "word": "avance",
+      "pos": "NOUN",
+      "frequency_count": 28808,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 742,
+      "source_rank": 761,
+      "word": "vaisseau",
+      "pos": "NOUN",
+      "frequency_count": 28794,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 743,
+      "source_rank": 762,
+      "word": "bar",
+      "pos": "NOUN",
+      "frequency_count": 28722,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 744,
+      "source_rank": 763,
+      "word": "dedans",
+      "pos": "PROPN",
+      "frequency_count": 28714,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 745,
+      "source_rank": 764,
+      "word": "information",
+      "pos": "NOUN",
+      "frequency_count": 28701,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 746,
+      "source_rank": 765,
+      "word": "fermer",
+      "pos": "VERB",
+      "frequency_count": 28649,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 747,
+      "source_rank": 766,
+      "word": "chacun",
+      "pos": "PRON",
+      "frequency_count": 28617,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 748,
+      "source_rank": 767,
+      "word": "juge",
+      "pos": "NOUN",
+      "frequency_count": 28471,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 749,
+      "source_rank": 768,
+      "word": "souffrir",
+      "pos": "VERB",
+      "frequency_count": 28443,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 750,
+      "source_rank": 769,
+      "word": "drogue",
+      "pos": "NOUN",
+      "frequency_count": 28381,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 751,
+      "source_rank": 770,
+      "word": "intéressant",
+      "pos": "ADJ",
+      "frequency_count": 28360,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 752,
+      "source_rank": 771,
+      "word": "soleil",
+      "pos": "NOUN",
+      "frequency_count": 28213,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 753,
+      "source_rank": 772,
+      "word": "charlie",
+      "pos": "VERB",
+      "frequency_count": 28209,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 754,
+      "source_rank": 773,
+      "word": "aura",
+      "pos": "NOUN",
+      "frequency_count": 28194,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 755,
+      "source_rank": 774,
+      "word": "mur",
+      "pos": "NOUN",
+      "frequency_count": 28167,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 756,
+      "source_rank": 775,
+      "word": "paraître",
+      "pos": "VERB",
+      "frequency_count": 28077,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 757,
+      "source_rank": 776,
+      "word": "ciel",
+      "pos": "NOUN",
+      "frequency_count": 28062,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 758,
+      "source_rank": 777,
+      "word": "allô",
+      "pos": "INTJ",
+      "frequency_count": 27992,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 759,
+      "source_rank": 778,
+      "word": "moitié",
+      "pos": "NOUN",
+      "frequency_count": 27938,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 760,
+      "source_rank": 779,
+      "word": "intérêt",
+      "pos": "NOUN",
+      "frequency_count": 27917,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 761,
+      "source_rank": 780,
+      "word": "déjeuner",
+      "pos": "VERB",
+      "frequency_count": 27899,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 762,
+      "source_rank": 781,
+      "word": "étrange",
+      "pos": "ADJ",
+      "frequency_count": 27885,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 763,
+      "source_rank": 782,
+      "word": "danser",
+      "pos": "VERB",
+      "frequency_count": 27843,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 764,
+      "source_rank": 783,
+      "word": "camp",
+      "pos": "VERB",
+      "frequency_count": 27788,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 765,
+      "source_rank": 784,
+      "word": "you",
+      "pos": "NOUN",
+      "frequency_count": 27696,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 766,
+      "source_rank": 785,
+      "word": "selon",
+      "pos": "ADP",
+      "frequency_count": 27696,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 767,
+      "source_rank": 786,
+      "word": "michael",
+      "pos": "PROPN",
+      "frequency_count": 27613,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 768,
+      "source_rank": 787,
+      "word": "classe",
+      "pos": "NOUN",
+      "frequency_count": 27598,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 769,
+      "source_rank": 788,
+      "word": "danger",
+      "pos": "NOUN",
+      "frequency_count": 27590,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 770,
+      "source_rank": 789,
+      "word": "tromper",
+      "pos": "VERB",
+      "frequency_count": 27560,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 771,
+      "source_rank": 790,
+      "word": "souhaiter",
+      "pos": "VERB",
+      "frequency_count": 27524,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 772,
+      "source_rank": 791,
+      "word": "enquête",
+      "pos": "NOUN",
+      "frequency_count": 27481,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 773,
+      "source_rank": 792,
+      "word": "voie",
+      "pos": "NOUN",
+      "frequency_count": 27396,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 774,
+      "source_rank": 793,
+      "word": "sentiment",
+      "pos": "NOUN",
+      "frequency_count": 27340,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 775,
+      "source_rank": 794,
+      "word": "responsable",
+      "pos": "NOUN",
+      "frequency_count": 27319,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 776,
+      "source_rank": 795,
+      "word": "attraper",
+      "pos": "VERB",
+      "frequency_count": 27315,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 777,
+      "source_rank": 796,
+      "word": "trou",
+      "pos": "NOUN",
+      "frequency_count": 27310,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 778,
+      "source_rank": 797,
+      "word": "change",
+      "pos": "NOUN",
+      "frequency_count": 27260,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 779,
+      "source_rank": 798,
+      "word": "but",
+      "pos": "NOUN",
+      "frequency_count": 27202,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 780,
+      "source_rank": 799,
+      "word": "prise",
+      "pos": "NOUN",
+      "frequency_count": 27167,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 781,
+      "source_rank": 800,
+      "word": "doucement",
+      "pos": "ADV",
+      "frequency_count": 27137,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 782,
+      "source_rank": 801,
+      "word": "ressentir",
+      "pos": "VERB",
+      "frequency_count": 27060,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 783,
+      "source_rank": 802,
+      "word": "triste",
+      "pos": "ADJ",
+      "frequency_count": 27007,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 784,
+      "source_rank": 803,
+      "word": "retirer",
+      "pos": "VERB",
+      "frequency_count": 27005,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 785,
+      "source_rank": 804,
+      "word": "reconnaître",
+      "pos": "VERB",
+      "frequency_count": 27004,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 786,
+      "source_rank": 805,
+      "word": "arrivée",
+      "pos": "NOUN",
+      "frequency_count": 26902,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 787,
+      "source_rank": 806,
+      "word": "signer",
+      "pos": "VERB",
+      "frequency_count": 26822,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 788,
+      "source_rank": 807,
+      "word": "don",
+      "pos": "NOUN",
+      "frequency_count": 26797,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 789,
+      "source_rank": 808,
+      "word": "chaud",
+      "pos": "PROPN",
+      "frequency_count": 26762,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 790,
+      "source_rank": 809,
+      "word": "capable",
+      "pos": "ADJ",
+      "frequency_count": 26743,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 791,
+      "source_rank": 810,
+      "word": "david",
+      "pos": "PROPN",
+      "frequency_count": 26710,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 792,
+      "source_rank": 812,
+      "word": "virer",
+      "pos": "VERB",
+      "frequency_count": 26660,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 793,
+      "source_rank": 813,
+      "word": "tom",
+      "pos": "NOUN",
+      "frequency_count": 26651,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 794,
+      "source_rank": 814,
+      "word": "parole",
+      "pos": "NOUN",
+      "frequency_count": 26572,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 795,
+      "source_rank": 815,
+      "word": "combat",
+      "pos": "NOUN",
+      "frequency_count": 26526,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 796,
+      "source_rank": 816,
+      "word": "fil",
+      "pos": "ADJ",
+      "frequency_count": 26520,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 797,
+      "source_rank": 817,
+      "word": "répéter",
+      "pos": "VERB",
+      "frequency_count": 26508,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 798,
+      "source_rank": 818,
+      "word": "survivre",
+      "pos": "VERB",
+      "frequency_count": 26476,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 799,
+      "source_rank": 819,
+      "word": "mien",
+      "pos": "ADJ",
+      "frequency_count": 26458,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 800,
+      "source_rank": 820,
+      "word": "opération",
+      "pos": "NOUN",
+      "frequency_count": 26408,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 801,
+      "source_rank": 821,
+      "word": "épouser",
+      "pos": "VERB",
+      "frequency_count": 26403,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 802,
+      "source_rank": 822,
+      "word": "gamin",
+      "pos": "ADJ",
+      "frequency_count": 26395,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 803,
+      "source_rank": 823,
+      "word": "animal",
+      "pos": "NOUN",
+      "frequency_count": 26395,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 804,
+      "source_rank": 824,
+      "word": "rater",
+      "pos": "VERB",
+      "frequency_count": 26362,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 805,
+      "source_rank": 825,
+      "word": "pousser",
+      "pos": "VERB",
+      "frequency_count": 26362,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 806,
+      "source_rank": 826,
+      "word": "bord",
+      "pos": "NOUN",
+      "frequency_count": 26297,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 807,
+      "source_rank": 827,
+      "word": "réunion",
+      "pos": "NOUN",
+      "frequency_count": 26203,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 808,
+      "source_rank": 828,
+      "word": "américain",
+      "pos": "ADJ",
+      "frequency_count": 26188,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 809,
+      "source_rank": 830,
+      "word": "appartenir",
+      "pos": "VERB",
+      "frequency_count": 26084,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 810,
+      "source_rank": 831,
+      "word": "projet",
+      "pos": "NOUN",
+      "frequency_count": 25966,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 811,
+      "source_rank": 832,
+      "word": "cuisine",
+      "pos": "NOUN",
+      "frequency_count": 25920,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 812,
+      "source_rank": 833,
+      "word": "contact",
+      "pos": "NOUN",
+      "frequency_count": 25902,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 813,
+      "source_rank": 834,
+      "word": "centre",
+      "pos": "NOUN",
+      "frequency_count": 25887,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 814,
+      "source_rank": 835,
+      "word": "joe",
+      "pos": "NOUN",
+      "frequency_count": 25863,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 815,
+      "source_rank": 836,
+      "word": "compagnie",
+      "pos": "NOUN",
+      "frequency_count": 25837,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 816,
+      "source_rank": 838,
+      "word": "coupable",
+      "pos": "ADJ",
+      "frequency_count": 25746,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 817,
+      "source_rank": 839,
+      "word": "poste",
+      "pos": "VERB",
+      "frequency_count": 25731,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 818,
+      "source_rank": 840,
+      "word": "con",
+      "pos": "DET",
+      "frequency_count": 25665,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 819,
+      "source_rank": 841,
+      "word": "diriger",
+      "pos": "VERB",
+      "frequency_count": 25657,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 820,
+      "source_rank": 842,
+      "word": "chasser",
+      "pos": "VERB",
+      "frequency_count": 25654,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 821,
+      "source_rank": 843,
+      "word": "entier",
+      "pos": "ADJ",
+      "frequency_count": 25625,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 822,
+      "source_rank": 844,
+      "word": "test",
+      "pos": "NOUN",
+      "frequency_count": 25615,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 823,
+      "source_rank": 845,
+      "word": "deviner",
+      "pos": "VERB",
+      "frequency_count": 25594,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 824,
+      "source_rank": 846,
+      "word": "mike",
+      "pos": "PROPN",
+      "frequency_count": 25589,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 825,
+      "source_rank": 847,
+      "word": "menacer",
+      "pos": "VERB",
+      "frequency_count": 25525,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 826,
+      "source_rank": 848,
+      "word": "télé",
+      "pos": "NOUN",
+      "frequency_count": 25490,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 827,
+      "source_rank": 850,
+      "word": "doux",
+      "pos": "ADJ",
+      "frequency_count": 25443,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 828,
+      "source_rank": 851,
+      "word": "libérer",
+      "pos": "VERB",
+      "frequency_count": 25404,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 829,
+      "source_rank": 852,
+      "word": "visite",
+      "pos": "NOUN",
+      "frequency_count": 25391,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 830,
+      "source_rank": 853,
+      "word": "debout",
+      "pos": "ADV",
+      "frequency_count": 25323,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 831,
+      "source_rank": 854,
+      "word": "merveilleux",
+      "pos": "ADJ",
+      "frequency_count": 25289,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 832,
+      "source_rank": 855,
+      "word": "bière",
+      "pos": "NOUN",
+      "frequency_count": 25288,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 833,
+      "source_rank": 856,
+      "word": "tué",
+      "pos": "VERB",
+      "frequency_count": 25271,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 834,
+      "source_rank": 857,
+      "word": "doigt",
+      "pos": "NOUN",
+      "frequency_count": 25162,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 835,
+      "source_rank": 858,
+      "word": "riche",
+      "pos": "ADJ",
+      "frequency_count": 25148,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 836,
+      "source_rank": 859,
+      "word": "parier",
+      "pos": "VERB",
+      "frequency_count": 25143,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 837,
+      "source_rank": 861,
+      "word": "excellent",
+      "pos": "ADJ",
+      "frequency_count": 25010,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 838,
+      "source_rank": 862,
+      "word": "touch",
+      "pos": "ADJ",
+      "frequency_count": 25003,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 839,
+      "source_rank": 863,
+      "word": "serez",
+      "pos": "NOUN",
+      "frequency_count": 24918,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 840,
+      "source_rank": 864,
+      "word": "appartement",
+      "pos": "NOUN",
+      "frequency_count": 24908,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 841,
+      "source_rank": 865,
+      "word": "ll",
+      "pos": "DET",
+      "frequency_count": 24887,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 842,
+      "source_rank": 866,
+      "word": "pourtant",
+      "pos": "ADV",
+      "frequency_count": 24861,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 843,
+      "source_rank": 867,
+      "word": "droite",
+      "pos": "NOUN",
+      "frequency_count": 24856,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 844,
+      "source_rank": 868,
+      "word": "gueul",
+      "pos": "ADJ",
+      "frequency_count": 24853,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 845,
+      "source_rank": 869,
+      "word": "tombe",
+      "pos": "NOUN",
+      "frequency_count": 24823,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 846,
+      "source_rank": 870,
+      "word": "travers",
+      "pos": "NOUN",
+      "frequency_count": 24799,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 847,
+      "source_rank": 871,
+      "word": "horrible",
+      "pos": "ADJ",
+      "frequency_count": 24798,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 848,
+      "source_rank": 872,
+      "word": "santé",
+      "pos": "NOUN",
+      "frequency_count": 24796,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 849,
+      "source_rank": 873,
+      "word": "cerveau",
+      "pos": "NOUN",
+      "frequency_count": 24788,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 850,
+      "source_rank": 874,
+      "word": "course",
+      "pos": "NOUN",
+      "frequency_count": 24788,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 851,
+      "source_rank": 875,
+      "word": "ie",
+      "pos": "ADP",
+      "frequency_count": 24760,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 852,
+      "source_rank": 876,
+      "word": "enfer",
+      "pos": "NOUN",
+      "frequency_count": 24711,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 853,
+      "source_rank": 877,
+      "word": "pute",
+      "pos": "NOUN",
+      "frequency_count": 24697,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 854,
+      "source_rank": 878,
+      "word": "frank",
+      "pos": "PROPN",
+      "frequency_count": 24680,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 855,
+      "source_rank": 879,
+      "word": "attaquer",
+      "pos": "VERB",
+      "frequency_count": 24680,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 856,
+      "source_rank": 880,
+      "word": "traiter",
+      "pos": "VERB",
+      "frequency_count": 24678,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 857,
+      "source_rank": 881,
+      "word": "base",
+      "pos": "NOUN",
+      "frequency_count": 24670,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 858,
+      "source_rank": 882,
+      "word": "foutre",
+      "pos": "VERB",
+      "frequency_count": 24627,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 859,
+      "source_rank": 883,
+      "word": "mont",
+      "pos": "ADJ",
+      "frequency_count": 24567,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 860,
+      "source_rank": 884,
+      "word": "intelligent",
+      "pos": "ADJ",
+      "frequency_count": 24514,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 861,
+      "source_rank": 885,
+      "word": "bruit",
+      "pos": "NOUN",
+      "frequency_count": 24475,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 862,
+      "source_rank": 886,
+      "word": "réveiller",
+      "pos": "VERB",
+      "frequency_count": 24454,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 863,
+      "source_rank": 887,
+      "word": "foutr",
+      "pos": "ADJ",
+      "frequency_count": 24434,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 864,
+      "source_rank": 888,
+      "word": "george",
+      "pos": "NOUN",
+      "frequency_count": 24408,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 865,
+      "source_rank": 889,
+      "word": "dommage",
+      "pos": "NOUN",
+      "frequency_count": 24387,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 866,
+      "source_rank": 890,
+      "word": "expérience",
+      "pos": "NOUN",
+      "frequency_count": 24386,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 867,
+      "source_rank": 891,
+      "word": "bombe",
+      "pos": "NOUN",
+      "frequency_count": 24375,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 868,
+      "source_rank": 892,
+      "word": "retenir",
+      "pos": "VERB",
+      "frequency_count": 24330,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 869,
+      "source_rank": 893,
+      "word": "court",
+      "pos": "ADJ",
+      "frequency_count": 24322,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 870,
+      "source_rank": 894,
+      "word": "foutu",
+      "pos": "ADJ",
+      "frequency_count": 24305,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 871,
+      "source_rank": 895,
+      "word": "membre",
+      "pos": "NOUN",
+      "frequency_count": 24262,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 872,
+      "source_rank": 898,
+      "word": "diable",
+      "pos": "NOUN",
+      "frequency_count": 24038,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 873,
+      "source_rank": 899,
+      "word": "vol",
+      "pos": "NOUN",
+      "frequency_count": 24031,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 874,
+      "source_rank": 900,
+      "word": "bouche",
+      "pos": "NOUN",
+      "frequency_count": 24030,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 875,
+      "source_rank": 901,
+      "word": "image",
+      "pos": "NOUN",
+      "frequency_count": 24016,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 876,
+      "source_rank": 902,
+      "word": "concerner",
+      "pos": "VERB",
+      "frequency_count": 24001,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 877,
+      "source_rank": 903,
+      "word": "vidéo",
+      "pos": "NOUN",
+      "frequency_count": 23980,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 878,
+      "source_rank": 904,
+      "word": "machine",
+      "pos": "NOUN",
+      "frequency_count": 23962,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 879,
+      "source_rank": 905,
+      "word": "fonctionner",
+      "pos": "VERB",
+      "frequency_count": 23959,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 880,
+      "source_rank": 906,
+      "word": "habiter",
+      "pos": "VERB",
+      "frequency_count": 23950,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 881,
+      "source_rank": 907,
+      "word": "lieutenant",
+      "pos": "NOUN",
+      "frequency_count": 23937,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 882,
+      "source_rank": 908,
+      "word": "caméra",
+      "pos": "NOUN",
+      "frequency_count": 23905,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 883,
+      "source_rank": 909,
+      "word": "tire",
+      "pos": "VERB",
+      "frequency_count": 23821,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 884,
+      "source_rank": 911,
+      "word": "société",
+      "pos": "NOUN",
+      "frequency_count": 23788,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 885,
+      "source_rank": 912,
+      "word": "seconde",
+      "pos": "NOUN",
+      "frequency_count": 23770,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 886,
+      "source_rank": 913,
+      "word": "fleur",
+      "pos": "NOUN",
+      "frequency_count": 23744,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 887,
+      "source_rank": 914,
+      "word": "frapper",
+      "pos": "VERB",
+      "frequency_count": 23740,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 888,
+      "source_rank": 915,
+      "word": "fenêtre",
+      "pos": "NOUN",
+      "frequency_count": 23546,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 889,
+      "source_rank": 916,
+      "word": "connerie",
+      "pos": "NOUN",
+      "frequency_count": 23534,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 890,
+      "source_rank": 917,
+      "word": "aill",
+      "pos": "ADJ",
+      "frequency_count": 23431,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 891,
+      "source_rank": 918,
+      "word": "milieu",
+      "pos": "NOUN",
+      "frequency_count": 23404,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 892,
+      "source_rank": 919,
+      "word": "officier",
+      "pos": "NOUN",
+      "frequency_count": 23372,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 893,
+      "source_rank": 920,
+      "word": "embrasser",
+      "pos": "VERB",
+      "frequency_count": 23258,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 894,
+      "source_rank": 921,
+      "word": "pardonner",
+      "pos": "VERB",
+      "frequency_count": 23187,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 895,
+      "source_rank": 922,
+      "word": "accuser",
+      "pos": "VERB",
+      "frequency_count": 23178,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 896,
+      "source_rank": 923,
+      "word": "vide",
+      "pos": "NOUN",
+      "frequency_count": 23175,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 897,
+      "source_rank": 924,
+      "word": "honte",
+      "pos": "NOUN",
+      "frequency_count": 23172,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 898,
+      "source_rank": 925,
+      "word": "banque",
+      "pos": "NOUN",
+      "frequency_count": 23171,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 899,
+      "source_rank": 926,
+      "word": "fuir",
+      "pos": "VERB",
+      "frequency_count": 23156,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 900,
+      "source_rank": 927,
+      "word": "kilomètre",
+      "pos": "NOUN",
+      "frequency_count": 23154,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 901,
+      "source_rank": 928,
+      "word": "mise",
+      "pos": "NOUN",
+      "frequency_count": 23143,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 902,
+      "source_rank": 929,
+      "word": "supporter",
+      "pos": "VERB",
+      "frequency_count": 23143,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 903,
+      "source_rank": 930,
+      "word": "remarquer",
+      "pos": "VERB",
+      "frequency_count": 23141,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 904,
+      "source_rank": 931,
+      "word": "copain",
+      "pos": "NOUN",
+      "frequency_count": 23138,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 905,
+      "source_rank": 932,
+      "word": "terrible",
+      "pos": "ADJ",
+      "frequency_count": 23120,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 906,
+      "source_rank": 933,
+      "word": "enfuir",
+      "pos": "VERB",
+      "frequency_count": 23119,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 907,
+      "source_rank": 934,
+      "word": "rir",
+      "pos": "ADJ",
+      "frequency_count": 23042,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 908,
+      "source_rank": 935,
+      "word": "urgence",
+      "pos": "NOUN",
+      "frequency_count": 23018,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 909,
+      "source_rank": 936,
+      "word": "époque",
+      "pos": "NOUN",
+      "frequency_count": 22965,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 910,
+      "source_rank": 937,
+      "word": "action",
+      "pos": "NOUN",
+      "frequency_count": 22949,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 911,
+      "source_rank": 938,
+      "word": "entrée",
+      "pos": "NOUN",
+      "frequency_count": 22914,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 912,
+      "source_rank": 939,
+      "word": "inutile",
+      "pos": "ADJ",
+      "frequency_count": 22870,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 913,
+      "source_rank": 940,
+      "word": "peuple",
+      "pos": "NOUN",
+      "frequency_count": 22831,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 914,
+      "source_rank": 941,
+      "word": "pari",
+      "pos": "PROPN",
+      "frequency_count": 22815,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 915,
+      "source_rank": 942,
+      "word": "trace",
+      "pos": "NOUN",
+      "frequency_count": 22793,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 916,
+      "source_rank": 943,
+      "word": "mer",
+      "pos": "NOUN",
+      "frequency_count": 22783,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 917,
+      "source_rank": 944,
+      "word": "bain",
+      "pos": "NOUN",
+      "frequency_count": 22774,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 918,
+      "source_rank": 945,
+      "word": "gouvernement",
+      "pos": "NOUN",
+      "frequency_count": 22773,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 919,
+      "source_rank": 946,
+      "word": "blagu",
+      "pos": "ADJ",
+      "frequency_count": 22769,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 920,
+      "source_rank": 947,
+      "word": "pierre",
+      "pos": "NOUN",
+      "frequency_count": 22682,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 921,
+      "source_rank": 948,
+      "word": "silence",
+      "pos": "NOUN",
+      "frequency_count": 22671,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 922,
+      "source_rank": 949,
+      "word": "partager",
+      "pos": "VERB",
+      "frequency_count": 22644,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 923,
+      "source_rank": 950,
+      "word": "commandant",
+      "pos": "NOUN",
+      "frequency_count": 22631,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 924,
+      "source_rank": 951,
+      "word": "engager",
+      "pos": "VERB",
+      "frequency_count": 22607,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 925,
+      "source_rank": 952,
+      "word": "peau",
+      "pos": "NOUN",
+      "frequency_count": 22555,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 926,
+      "source_rank": 953,
+      "word": "copine",
+      "pos": "NOUN",
+      "frequency_count": 22507,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 927,
+      "source_rank": 954,
+      "word": "position",
+      "pos": "NOUN",
+      "frequency_count": 22488,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 928,
+      "source_rank": 955,
+      "word": "danse",
+      "pos": "NOUN",
+      "frequency_count": 22466,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 929,
+      "source_rank": 956,
+      "word": "atteindre",
+      "pos": "VERB",
+      "frequency_count": 22465,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 930,
+      "source_rank": 957,
+      "word": "ia",
+      "pos": "NOUN",
+      "frequency_count": 22453,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 931,
+      "source_rank": 958,
+      "word": "niveau",
+      "pos": "NOUN",
+      "frequency_count": 22451,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 932,
+      "source_rank": 959,
+      "word": "regretter",
+      "pos": "VERB",
+      "frequency_count": 22404,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 933,
+      "source_rank": 960,
+      "word": "ennui",
+      "pos": "NOUN",
+      "frequency_count": 22394,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 934,
+      "source_rank": 961,
+      "word": "quartier",
+      "pos": "NOUN",
+      "frequency_count": 22364,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 935,
+      "source_rank": 962,
+      "word": "sourire",
+      "pos": "VERB",
+      "frequency_count": 22350,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 936,
+      "source_rank": 963,
+      "word": "recommencer",
+      "pos": "VERB",
+      "frequency_count": 22342,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 937,
+      "source_rank": 964,
+      "word": "exemple",
+      "pos": "NOUN",
+      "frequency_count": 22339,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 938,
+      "source_rank": 965,
+      "word": "invité",
+      "pos": "NOUN",
+      "frequency_count": 22338,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 939,
+      "source_rank": 966,
+      "word": "avancer",
+      "pos": "VERB",
+      "frequency_count": 22310,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 940,
+      "source_rank": 967,
+      "word": "radio",
+      "pos": "NOUN",
+      "frequency_count": 22298,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 941,
+      "source_rank": 968,
+      "word": "peter",
+      "pos": "VERB",
+      "frequency_count": 22283,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 942,
+      "source_rank": 969,
+      "word": "toilette",
+      "pos": "NOUN",
+      "frequency_count": 22274,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 943,
+      "source_rank": 970,
+      "word": "lancer",
+      "pos": "VERB",
+      "frequency_count": 22233,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 944,
+      "source_rank": 971,
+      "word": "tort",
+      "pos": "NOUN",
+      "frequency_count": 22144,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 945,
+      "source_rank": 972,
+      "word": "amoureux",
+      "pos": "PRON",
+      "frequency_count": 22137,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 946,
+      "source_rank": 973,
+      "word": "tenter",
+      "pos": "VERB",
+      "frequency_count": 22088,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 947,
+      "source_rank": 974,
+      "word": "gérer",
+      "pos": "VERB",
+      "frequency_count": 22010,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 948,
+      "source_rank": 975,
+      "word": "paul",
+      "pos": "PROPN",
+      "frequency_count": 21991,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 949,
+      "source_rank": 976,
+      "word": "magasin",
+      "pos": "NOUN",
+      "frequency_count": 21961,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 950,
+      "source_rank": 977,
+      "word": "rôle",
+      "pos": "NOUN",
+      "frequency_count": 21955,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 951,
+      "source_rank": 978,
+      "word": "félicitation",
+      "pos": "NOUN",
+      "frequency_count": 21877,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 952,
+      "source_rank": 979,
+      "word": "suspect",
+      "pos": "ADJ",
+      "frequency_count": 21874,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 953,
+      "source_rank": 980,
+      "word": "pose",
+      "pos": "NOUN",
+      "frequency_count": 21835,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 954,
+      "source_rank": 981,
+      "word": "adresse",
+      "pos": "VERB",
+      "frequency_count": 21825,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 955,
+      "source_rank": 982,
+      "word": "dingue",
+      "pos": "NOUN",
+      "frequency_count": 21787,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 956,
+      "source_rank": 983,
+      "word": "proposer",
+      "pos": "VERB",
+      "frequency_count": 21719,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 957,
+      "source_rank": 984,
+      "word": "résultat",
+      "pos": "NOUN",
+      "frequency_count": 21714,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 958,
+      "source_rank": 985,
+      "word": "reposer",
+      "pos": "VERB",
+      "frequency_count": 21690,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 959,
+      "source_rank": 986,
+      "word": "fich",
+      "pos": "ADJ",
+      "frequency_count": 21652,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 960,
+      "source_rank": 987,
+      "word": "chat",
+      "pos": "NOUN",
+      "frequency_count": 21631,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 961,
+      "source_rank": 988,
+      "word": "ecouter",
+      "pos": "VERB",
+      "frequency_count": 21630,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 962,
+      "source_rank": 989,
+      "word": "espoir",
+      "pos": "NOUN",
+      "frequency_count": 21626,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 963,
+      "source_rank": 990,
+      "word": "traverser",
+      "pos": "VERB",
+      "frequency_count": 21619,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 964,
+      "source_rank": 991,
+      "word": "max",
+      "pos": "PROPN",
+      "frequency_count": 21608,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 965,
+      "source_rank": 992,
+      "word": "héros",
+      "pos": "NOUN",
+      "frequency_count": 21415,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 966,
+      "source_rank": 993,
+      "word": "match",
+      "pos": "NOUN",
+      "frequency_count": 21415,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 967,
+      "source_rank": 994,
+      "word": "charge",
+      "pos": "NOUN",
+      "frequency_count": 21405,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 968,
+      "source_rank": 995,
+      "word": "zone",
+      "pos": "NOUN",
+      "frequency_count": 21363,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 969,
+      "source_rank": 996,
+      "word": "directeur",
+      "pos": "NOUN",
+      "frequency_count": 21330,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 970,
+      "source_rank": 997,
+      "word": "poursuivre",
+      "pos": "VERB",
+      "frequency_count": 21330,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 971,
+      "source_rank": 998,
+      "word": "briser",
+      "pos": "VERB",
+      "frequency_count": 21324,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 972,
+      "source_rank": 999,
+      "word": "rencontre",
+      "pos": "NOUN",
+      "frequency_count": 21285,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 973,
+      "source_rank": 1000,
+      "word": "sauter",
+      "pos": "VERB",
+      "frequency_count": 21281,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 974,
+      "source_rank": 1001,
+      "word": "remplir",
+      "pos": "VERB",
+      "frequency_count": 21259,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 975,
+      "source_rank": 1002,
+      "word": "nettoyer",
+      "pos": "VERB",
+      "frequency_count": 21242,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 976,
+      "source_rank": 1003,
+      "word": "ridicule",
+      "pos": "ADJ",
+      "frequency_count": 21214,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 977,
+      "source_rank": 1004,
+      "word": "approche",
+      "pos": "NOUN",
+      "frequency_count": 21194,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 978,
+      "source_rank": 1005,
+      "word": "rob",
+      "pos": "ADJ",
+      "frequency_count": 21141,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 979,
+      "source_rank": 1006,
+      "word": "départ",
+      "pos": "NOUN",
+      "frequency_count": 21129,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 980,
+      "source_rank": 1007,
+      "word": "douleur",
+      "pos": "NOUN",
+      "frequency_count": 21122,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 981,
+      "source_rank": 1008,
+      "word": "morceau",
+      "pos": "NOUN",
+      "frequency_count": 21077,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 982,
+      "source_rank": 1009,
+      "word": "note",
+      "pos": "NOUN",
+      "frequency_count": 21051,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 983,
+      "source_rank": 1010,
+      "word": "coûter",
+      "pos": "VERB",
+      "frequency_count": 21034,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 984,
+      "source_rank": 1011,
+      "word": "colonel",
+      "pos": "NOUN",
+      "frequency_count": 20964,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 985,
+      "source_rank": 1012,
+      "word": "futur",
+      "pos": "ADJ",
+      "frequency_count": 20939,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 986,
+      "source_rank": 1013,
+      "word": "dent",
+      "pos": "NOUN",
+      "frequency_count": 20913,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 987,
+      "source_rank": 1014,
+      "word": "vin",
+      "pos": "NOUN",
+      "frequency_count": 20883,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 988,
+      "source_rank": 1015,
+      "word": "liberté",
+      "pos": "NOUN",
+      "frequency_count": 20857,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 989,
+      "source_rank": 1016,
+      "word": "ordinateur",
+      "pos": "NOUN",
+      "frequency_count": 20855,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 990,
+      "source_rank": 1017,
+      "word": "camion",
+      "pos": "NOUN",
+      "frequency_count": 20842,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 991,
+      "source_rank": 1018,
+      "word": "défendre",
+      "pos": "VERB",
+      "frequency_count": 20839,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 992,
+      "source_rank": 1019,
+      "word": "honnête",
+      "pos": "ADJ",
+      "frequency_count": 20832,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 993,
+      "source_rank": 1020,
+      "word": "construire",
+      "pos": "VERB",
+      "frequency_count": 20827,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 994,
+      "source_rank": 1021,
+      "word": "règle",
+      "pos": "NOUN",
+      "frequency_count": 20817,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 995,
+      "source_rank": 1022,
+      "word": "nez",
+      "pos": "NOUN",
+      "frequency_count": 20807,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 996,
+      "source_rank": 1023,
+      "word": "savon",
+      "pos": "NOUN",
+      "frequency_count": 20805,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 997,
+      "source_rank": 1024,
+      "word": "profiter",
+      "pos": "VERB",
+      "frequency_count": 20794,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 998,
+      "source_rank": 1025,
+      "word": "chaussure",
+      "pos": "NOUN",
+      "frequency_count": 20790,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 999,
+      "source_rank": 1026,
+      "word": "grandir",
+      "pos": "VERB",
+      "frequency_count": 20777,
+      "cefr_estimate": "A2"
+    },
+    {
+      "candidate_rank": 1000,
+      "source_rank": 1027,
+      "word": "justice",
+      "pos": "NOUN",
+      "frequency_count": 20765,
+      "cefr_estimate": "A2"
+    }
+  ]
+}
