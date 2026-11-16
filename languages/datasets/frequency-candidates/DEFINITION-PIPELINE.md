@@ -37,6 +37,17 @@ Output filenames follow the candidate source, for example `wordhoard-en.review.j
 - Eastern Punjabi (`pa-Guru`) maps to Wiktionary `pa`, which covers both scripts; only Gurmukhi headwords can match. Uzbek candidates are Cyrillic while Wiktionary Uzbek lemmas are mostly Latin, so expect few Uzbek matches until a reviewed transliteration step exists.
 - Every definition candidate remains `review_status: required`. `production_definitions_approved` stays zero until a reviewer records explicit selection and approval.
 
+## French and Spanish equivalents through English
+
+French and Spanish Wiktionary have entries for few of the target-language headwords, so a second step, `fruchst_english_pivot.py`, finds French and Spanish equivalents through English. It runs in the same workflow after the review queues are built and writes `languages/datasets/definition-pivot/<source>-<tag>.pivot.json`.
+
+1. The English word(s) are taken from each English Wiktionary gloss of the headword. Form-of senses (plural of, locative of, and similar) and wikitext glosses are skipped; parentheticals are removed; the gloss is split on `;` and `,`; a leading to/a/an/the is removed; pieces of one to three words are kept. For the English profile, the headword is the English word.
+2. Each English word is looked up in English Wiktionary, and its French and Spanish translation-table entries are kept with their translation sense label and tags.
+3. As secondary evidence, the French and Spanish Wiktionary glosses of the same English word are kept.
+4. Items whose English POS matches the source sense POS are preferred. If none match, all items are kept with `pos_match: false`.
+
+The pivot can cross senses (for example, an English gloss "bank" may lead to river-bank and money-bank translations), so every equivalent records the English word, both POS values, and source lines. Nothing is selected; every row stays `review_status: required`.
+
 ## Source and license
 
 The definition sources are Kaikki/Wiktextract extractions of the English, French, and Spanish Wiktionary editions. Wiktionary content is dual-licensed under CC BY-SA 4.0 and the GNU Free Documentation License (GFDL). Preserve attribution and comply with the applicable license terms; verify the source edition notices before redistributing derived definitions.
