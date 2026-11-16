@@ -572,15 +572,15 @@ $(NORDSHRIFT_BIN): $(UTF16_OBJ) $(JAVA_STRING_OBJ) $(PLATFORM_OBJ) $(SYSTEM_MONI
 $(THREAD_PLATFORM_SMOKE): core/thread_platform_smoke.c $(THREAD_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore core/thread_platform_smoke.c $(THREAD_OBJ) -o $@ $(LDFLAGS) $(LIBS)
 # sleela_core.o (sleela_artifact.c) calls into the OS-abstraction backends
-# (net/io/path/library/terminal), so any target that links the core must also
-# link those objects, not just the core + time.
+# (net/io/path/library/terminal) and native math kernel, so any target that
+# links the core must also link those objects, not just the core + time.
 $(THREAD_SMOKE_OBJ): core/thread_smoke.c | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
 $(SOCKET_SMOKE_OBJ): core/socket_smoke.c | $(BUILD)
 	$(CC) $(CFLAGS) -Icore -c $< -o $@
-$(THREAD_SMOKE): $(THREAD_SMOKE_OBJ) $(UTF16_OBJ) $(CORE_OBJ) $(JAVA_STRING_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) $(GC_OBJ)
+$(THREAD_SMOKE): $(THREAD_SMOKE_OBJ) $(UTF16_OBJ) $(CORE_OBJ) $(JAVA_STRING_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) $(GC_OBJ) $(NATIVE_MATH_KERNEL_OBJ)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
-$(SOCKET_SMOKE): $(SOCKET_SMOKE_OBJ) $(UTF16_OBJ) $(CORE_OBJ) $(JAVA_STRING_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) $(GC_OBJ)
+$(SOCKET_SMOKE): $(SOCKET_SMOKE_OBJ) $(UTF16_OBJ) $(CORE_OBJ) $(JAVA_STRING_OBJ) $(OSLS_OBJS) $(THREAD_OBJ) $(IO_OBJ) $(NET_OBJ) $(SYNCHRO_OBJ) $(MUNCTION_OBJ) $(BESTOF_OBJ) $(IDEA_CANVAS_OBJS) $(SLUI_OBJS) $(REGISTRY_OBJ) $(PATH_OBJ) $(LIBRARY_OBJ) $(OS_OBJ) $(PLATFORM_OBJ) $(TERMINAL_OBJ) $(TIME_OBJ) $(MEMORY_OBJ) $(MEMMGR_OBJ) $(MEMMGR_G2_OBJ) $(MEMMGR_G3_OBJ) $(GC_OBJ) $(NATIVE_MATH_KERNEL_OBJ)
 	$(CXX) $(CXXFLAGS) $(IDEA_CANVAS_OMP) $^ -o $@ $(LDFLAGS) $(LIBS) $(SLUI_LIBS)
 $(SYNCHRO_SMOKE): core/synchro_smoke.c $(SYNCHRO_OBJ) | $(BUILD)
 	$(CC) $(CFLAGS) -Icore core/synchro_smoke.c $(SYNCHRO_OBJ) -o $@ $(LDFLAGS) $(LIBS)
