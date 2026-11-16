@@ -4,6 +4,27 @@ Max Rupplin - MEARVK LLC - 2026
 
 This is the human-readable support map for the canonical source-defined SLeeLa ISA in `lib/vm/InstructionSet.sleela`.
 
+## Canonical ordering and allocation catalog
+
+`lib/vm/InstructionSet.sleela` is the sole authoritative ordered source registry; the native
+`SLOp` enum in `impl/core/sleela_core.h` must match it exactly by mnemonic and numeric
+position. `tools/isa/opcode-registry-3.0.json` is the machine-readable allocation/status
+catalog, not a second source of opcode assignments. Its verifier checks the
+source registry, native enum, contiguous family allocations, and the complete
+reserved tail through 281:
+
+```sh
+python3 tools/verify-opcode-registry.py
+make -C impl test-opcode-registry
+```
+
+The standard `make -C impl test` suite runs this verifier. The `sleela-build.py inventory-lib`
+gate also runs it before accepting the library inventory. Do not reorder or
+renumber existing entries to make a family look tidier: preserve IDs and add
+new executable instructions only through the append-only registry workflow.
+Reserved IDs are family-owned and remain absent from the executable enum and
+source opcode records until the full implementation is ready.
+
 **Compatibility contract (CI-gated):** the frozen pre-OSLS ISA contains 155 opcodes (0..154), including the original OS-call range 103–123. `OP_OSLS_CALL` is the append-only 156th entry (155). `tools/verify-osls-isa-extension.py` compares the complete source and native enum sequences against `tools/isa/osls-isa-baseline-155.txt`; the cross-platform workflow also builds and executes the OSLS native registry and VM binding tests. The tail groups are the array ops (98–102), the operating-system system calls (103–123, `OP_OS_*`), the GC/system ops (124 `OP_GC_HINT`, 125 `OP_RAN_MEM`), the idea-canvas native-bridge ops (126–147, `OP_IC_*`, from `idea/realtime`), the VM-selection service op (148, `OP_VM_SELECT`), the Modium file-resolution scan op (149, `OP_MODIUM_SCAN`), `OP_UI_CALL` (150), `OP_SSEND` (151), and runtime type/stack ops `OP_CHECKCAST` (152), `OP_INSTANCEOF` (153), `OP_DUP2` (154), and `OP_OSLS_CALL` (155) — all appended to the end of the enum so earlier opcode numbers are unchanged.
 
 > Sync note: the source registry, native enum, and map now cover the appended
