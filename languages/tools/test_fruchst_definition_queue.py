@@ -63,7 +63,7 @@ class DefinitionQueueTests(unittest.TestCase):
             extra = dict(entry["senses"][0])
             extra["glosses"] = [f"Alternative gloss {edition}"]
             entry["senses"].append(extra)
-            path.write_text(json.dumps(entry) + "\\n", encoding="utf-8")
+            path.write_text(json.dumps(entry) + "\n", encoding="utf-8")
         queue = module.build_queue(self.candidate, "es", self.paths)
         # Two senses in each edition produce all eight review combinations.
         self.assertEqual(len(queue["entries"][0]["aligned_candidates"]), 8)
