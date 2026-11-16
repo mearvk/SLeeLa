@@ -77,7 +77,6 @@ NON_POINTER_START = {
     "attached", "marks", "marking", "forms", "forming", "makes",
 }
 HAN_RE = re.compile(r"^[\u2E80-\u2FFF\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF\U00020000-\U0003FFFF]+$")
-WORD_RE = re.compile(r"[^\W_]+(?:['’-][^\W_]+)*", re.UNICODE)
 
 
 # ---------------------------------------------------------------- gloss text
@@ -116,7 +115,8 @@ def is_pointer_text(text: str) -> bool:
     a short label naming a grammatical relation, and "form of address" is a
     real sense.
     """
-    head = re.split(r"[(:]", text, maxsplit=1)[0].strip()
+    head = re.split(r":", re.sub(r"\([^()]*\)", " ", text), maxsplit=1)[0]
+    head = re.sub(r"\s+", " ", head).strip()
     match = re.match(r"^(.{1,80}?)\s+(?:of|for)\s+\S", head)
     if not match:
         return False
@@ -130,7 +130,7 @@ def is_pointer_text(text: str) -> bool:
 
 def text_targets(text: str) -> list[str]:
     """Pointer target named in the gloss text: the first word after "of"/"for"."""
-    head = re.split(r"[(:]", text, maxsplit=1)[0]
+    head = re.split(r":", re.sub(r"\([^()]*\)", " ", text), maxsplit=1)[0]
     match = re.search(r"\s(?:of|for)\s+([^\s,;(/+]+)", head)
     if not match:
         return []
@@ -138,17 +138,25 @@ def text_targets(text: str) -> list[str]:
     return [norm(word)] if word else []
 
 
-def tokens(text: str) -> set[str]:
-    return {t.casefold() for t in WORD_RE.findall(text)}
+LEADING_FILLER = re.compile(r"^(?:to|a|an|the|or|and|be|being|one's|oneself)\s+", re.I)
 
 
-def phrase_in(phrase: str, text_tokens: set[str], text: str) -> bool:
-    words = WORD_RE.findall(phrase)
-    if not words:
-        return False
-    if len(words) == 1:
-        return words[0].casefold() in text_tokens
-    return re.search(r"\b" + r"\W+".join(map(re.escape, words)) + r"\b", text, re.I) is not None
+def equivalents(text: str) -> set[str]:
+    """The English equivalents a gloss lists: its comma/semicolon segments,
+    without parenthesised notes and leading "to", "a", "the", "or"."""
+    body = re.sub(r"\([^()]*\)", " ", text)
+    body = body.split(":", 1)[1] if ":" in body and len(body.split(":", 1)[1].strip()) > 0 else body
+    out = set()
+    for seg in re.split(r"[,;/]| or ", body):
+        seg = re.sub(r"\s+", " ", seg).strip(" .!?\"'").casefold()
+        while seg:
+            stripped = LEADING_FILLER.sub("", seg)
+            if stripped == seg:
+                break
+            seg = stripped
+        if seg:
+            out.add(seg)
+    return out
 
 
 def demotion(tags) -> int:
@@ -550,23 +558,44 @@ def build_entry(tag: str, entry: dict, scanner: Scanner, variant_row: dict | Non
                                 **({"via": r["via"]} if r["via"] else {}),
                                 display=f"{relation}: {lemma_gloss}"))
             continue
-        toks = tokens(" ".join(glosses))
-        corroborating = [w for w in trans_words if phrase_in(w, toks, " ".join(glosses))]
         tags = sense.get("tags") or []
         extras = {}
-        if corroborating:
-            extras["corroborated_by_translation_tables"] = corroborating[:8]
         for k in ("qualifier", "raw_glosses"):
             if k in extra:
                 extras[k] = extra[k]
         if code != wiktionary_codes(tag)[0] and mapping_note:
             extras["caution"] = f"gloss is filed under Wiktionary '{code}'; confirm it is valid for '{tag}'"
-        own.append((-(len(corroborating) > 0), demotion(tags), order,
-                    definition("own_sense", glosses, sense.get("pos"), ev, tags, extra.get("examples", []), **extras)))
-    tier12 = [d for *_, d in sorted(own, key=lambda x: x[:3])]
+        own.append(definition("own_sense", glosses, sense.get("pos"), ev, tags, extra.get("examples", []), **extras))
+
+    # Rank own senses and resolved lemmas by translation-table corroboration:
+    # an English word whose translation table lists this headword and which is
+    # itself one of the equivalents a gloss lists. More frequent English
+    # corroborators rank higher; circular glosses (gloss == headword) and
+    # obsolete/archaic/rare senses rank last; Wiktionary order breaks ties.
+    def corroborate(item):
+        eq = equivalents(item["text"])
+        hits = [w for w in trans_words if w.casefold() in eq]
+        if hits:
+            item["corroborated_by_translation_tables"] = hits[:8]
+        if item["text"].strip(" .").casefold() == word.casefold():
+            item["circular_gloss"] = True
+        return hits
+
+    def rank_key(item, position):
+        hits = item.get("corroborated_by_translation_tables") or []
+        best = min((scanner.english_rank.get(w, 10**6) for w in hits), default=10**7)
+        return (bool(item.get("circular_gloss")), not hits, demotion(item.get("tags")), best, position)
+
     lemma_defs = defs[:]
     defs.clear(); seen_text.clear()
-    for item in tier12 + sorted(lemma_defs, key=lambda d: d["tier"]):
+    for item in own + lemma_defs:
+        corroborate(item)
+    own = [d for _, d in sorted(enumerate(own), key=lambda p: rank_key(p[1], p[0]))]
+    lemma_defs.sort(key=lambda d: d["tier"])
+    tier2 = [d for d in lemma_defs if d["method"] == "lemma_of_form"]
+    rest = [d for d in lemma_defs if d["method"] != "lemma_of_form"]
+    tier2 = [d for _, d in sorted(enumerate(tier2), key=lambda p: rank_key(p[1], p[0]))]
+    for item in own + tier2 + rest:
         push(item)
 
     # tier 3 -------------------------------------------------------------
@@ -621,9 +650,13 @@ def build_entry(tag: str, entry: dict, scanner: Scanner, variant_row: dict | Non
     status = ("no_english_definition_found" if not defs else TIERS[tiers_present[0] - 1] + "_found")
     lead = None
     if defs:
-        lead = {k: defs[0][k] for k in ("tier", "method", "text", "pos") if k in defs[0]}
-        if "display" in defs[0]:
-            lead["display"] = defs[0]["display"]
+        pool = [(i, d) for i, d in enumerate(defs) if d["tier"] <= 2] or list(enumerate(defs))
+        _, best = min(pool, key=lambda p: rank_key(p[1], p[0])[:4] + (p[1]["tier"], p[0]))
+        lead = {k: best[k] for k in ("tier", "method", "text", "pos") if k in best}
+        if "display" in best:
+            lead["display"] = best["display"]
+        if best.get("corroborated_by_translation_tables"):
+            lead["corroborated_by"] = best["corroborated_by_translation_tables"][:3]
         lead["review_status"] = "required"
     row = {
         "rank": entry["rank"],
@@ -687,7 +720,7 @@ def build_profile(path: Path, doc: dict, scanner: Scanner, variants_path: Path |
         counts["glosses_cleaned_for_display"] += stats["cleaned"]
         counts["duplicate_definitions_merged"] += stats["duplicates"]
         counts["definitions_total"] += len(row["definitions"])
-        if row["definitions"] and row["definitions"][0].get("corroborated_by_translation_tables"):
+        if row["lead_candidate"] and row["lead_candidate"].get("corroborated_by"):
             counts["words_with_translation_corroborated_lead"] += 1
         counts["words_with_examples"] += any(d.get("examples") for d in row["definitions"])
         counts["words_with_romanization"] += bool(row["romanizations"])
