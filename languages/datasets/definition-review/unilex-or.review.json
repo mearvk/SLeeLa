@@ -42,7 +42,7 @@
       "file": "/home/runner/work/_temp/fruchst-sources/en.jsonl.gz",
       "sha256": "5ff2c072f8099f2d2ce484bd6957bf179f046d2ad37bc36555edf8bb84cb5291",
       "size_bytes": 3082476978,
-      "retrieved_at_utc": "2026-11-16T14:24:35.459432+00:00",
+      "retrieved_at_utc": "2026-11-16T15:03:21.179395+00:00",
       "license": "Wiktionary dual license: CC BY-SA 4.0 and GFDL; preserve attribution and verify edition notices"
     },
     "fr": {
@@ -52,7 +52,7 @@
       "file": "/home/runner/work/_temp/fruchst-sources/fr.jsonl.gz",
       "sha256": "33c7b73bc11d2533c9c0e0be6484ded76bd9ff29337065f2070b4f1b7d2e4f3c",
       "size_bytes": 736596796,
-      "retrieved_at_utc": "2026-11-16T14:24:35.459432+00:00",
+      "retrieved_at_utc": "2026-11-16T15:03:21.179395+00:00",
       "license": "Wiktionary dual license: CC BY-SA 4.0 and GFDL; preserve attribution and verify edition notices"
     },
     "es": {
@@ -62,7 +62,7 @@
       "file": "/home/runner/work/_temp/fruchst-sources/es.jsonl.gz",
       "sha256": "206001cbdfc783cf4076789366e2c0cb27860da739ddfcc0189c4c878b189da1",
       "size_bytes": 103584114,
-      "retrieved_at_utc": "2026-11-16T14:24:35.459432+00:00",
+      "retrieved_at_utc": "2026-11-16T15:03:21.179395+00:00",
       "license": "Wiktionary dual license: CC BY-SA 4.0 and GFDL; preserve attribution and verify edition notices"
     }
   },
