@@ -2465,3 +2465,8 @@ The project-wide principle is:
 An ABI is successful when independently produced components can cross the boundary without guessing.
 
 **Max Rupplin — MEARVK LLC — 2026**
+
+
+## ABI 1.10 — Scalar native math
+
+ABI 1.10 adds scalar native math opcode 195 (`OP_MATH_CALL`) with the stable `SLMATHFunction` ID table and the original Core bytecode fallback contract. Existing opcode assignments 0–194 remain unchanged.
