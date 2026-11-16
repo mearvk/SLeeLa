@@ -14,6 +14,11 @@ on:
 permissions:
   contents: write
 
+# Serialize queue generation and master commits; do not cancel active source processing.
+concurrency:
+  group: fruchst-definition-stage-master
+  cancel-in-progress: false
+
 jobs:
   stage-definitions:
     runs-on: ubuntu-latest
