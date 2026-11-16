@@ -109,6 +109,45 @@ class DefinitionBatchTests(unittest.TestCase):
         self.assertEqual(queue["counts"]["words_with_edition_gloss_candidates"], 1)
         self.assertEqual(queue["counts"]["production_definitions_approved"], 0)
 
+    def test_two_edition_qid_creates_partial_review_candidate(self):
+        doc = {"language_tag": "es", "source": {"id": "fixture"}}
+        words = {"casa": {"pos": "NOUN", "frequency_count": 5}}
+        by_edition = {
+            "en": {"es": {"casa": {("Q3947", "noun"): [sense("house", 1, qids=["Q3947"]) ]}}},
+            "fr": {"es": {"casa": {("Q3947", "noun"): [sense("maison", 2, qids=["Q3947"]) ]}}},
+            "es": {"es": {"casa": {("", "noun"): [sense("vivienda", 3)]}}},
+        }
+        queue = module.build_queue("es", doc, words, by_edition, source_meta())
+        row = queue["entries"][0]
+        self.assertEqual(row["aligned_candidates"], [])
+        self.assertEqual(row["definition_status"], "partial_qid_review_candidates_found")
+        self.assertEqual(len(row["review_alignment_candidates"]), 1)
+        candidate = row["review_alignment_candidates"][0]
+        self.assertEqual(candidate["qid_supporting_editions"], ["en", "fr"])
+        self.assertEqual(candidate["alignment_strength"], "shared_qid_2_of_3_review_only")
+        self.assertTrue(candidate["source_evidence"]["es"][0]["qid_fallback"])
+        self.assertEqual(candidate["definitions"]["es"], [["vivienda"]])
+        self.assertEqual(candidate["review_status"], "required")
+        self.assertEqual(candidate["selection_status"], "none")
+        self.assertEqual(queue["counts"]["qid_pos_candidate_triples"], 0)
+        self.assertEqual(queue["counts"]["qid_pos_review_candidates"], 1)
+        self.assertEqual(queue["counts"]["production_definitions_approved"], 0)
+
+    def test_qid_in_only_one_edition_does_not_create_alignment(self):
+        doc = {"language_tag": "es", "source": {"id": "fixture"}}
+        words = {"casa": {"pos": "NOUN", "frequency_count": 5}}
+        by_edition = {
+            "en": {"es": {"casa": {("Q3947", "noun"): [sense("house", 1, qids=["Q3947"]) ]}}},
+            "fr": {"es": {"casa": {("", "noun"): [sense("maison", 2)]}}},
+            "es": {"es": {"casa": {("", "noun"): [sense("vivienda", 3)]}}},
+        }
+        queue = module.build_queue("es", doc, words, by_edition, source_meta())
+        row = queue["entries"][0]
+        self.assertEqual(row["review_alignment_candidates"], [])
+        self.assertEqual(row["definition_status"], "edition_gloss_candidates_found")
+        self.assertEqual(queue["counts"]["qid_pos_review_candidates"], 0)
+        self.assertEqual(queue["counts"]["production_definitions_approved"], 0)
+
     def test_all_common_senses_are_preserved(self):
         doc = {"language_tag": "es", "source": {"id": "fixture"}}
         words = {"casa": {"pos": "NOUN", "frequency_count": 5}}

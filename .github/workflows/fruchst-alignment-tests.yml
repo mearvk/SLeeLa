@@ -1,0 +1,35 @@
+name: FRUCHST alignment tests
+
+on:
+  pull_request:
+    paths:
+      - "languages/tools/fruchst_definition_batch.py"
+      - "languages/tools/test_fruchst_definition_batch.py"
+      - "languages/tools/test_fruchst_partial_qid_alignment.py"
+      - ".github/workflows/fruchst-alignment-tests.yml"
+  push:
+    branches:
+      - "fruchst/partial-qid-review-alignment"
+    paths:
+      - "languages/tools/fruchst_definition_batch.py"
+      - "languages/tools/test_fruchst_definition_batch.py"
+      - "languages/tools/test_fruchst_partial_qid_alignment.py"
+      - ".github/workflows/fruchst-alignment-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  alignment-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run FRUCHST definition batch regression tests
+        run: |
+          python3 -m unittest \
+            languages.tools.test_fruchst_definition_batch \
+            languages.tools.test_fruchst_partial_qid_alignment \
+            -v
