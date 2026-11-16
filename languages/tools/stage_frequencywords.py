@@ -90,7 +90,7 @@ def main() -> int:
         parser.error("FRUCHST candidate staging requires exactly 1,000 entries")
     try:
         registry = json.loads(args.targets.read_text(encoding="utf-8"))
-        staged, skipped = [], []
+        staged, skipped, failed = [], [], []
         for profile in registry["profiles"]:
             tag = profile["language_tag"]
             source_code = SOURCE_CODES.get(tag)
@@ -103,7 +103,11 @@ def main() -> int:
             if output.exists() and not args.overwrite:
                 skipped.append(tag)
                 continue
-            entries = read_candidates(source_code, args.limit)
+            try:
+                entries = read_candidates(source_code, args.limit)
+            except (ValueError, urllib.error.URLError, TimeoutError) as exc:
+                failed.append((tag, str(exc)))
+                continue
             document = {
                 "schema": "SLeeLa FRUCHST frequency candidate staging v1",
                 "language_tag": tag,
@@ -160,6 +164,9 @@ def main() -> int:
         args.targets.write_text(json.dumps(registry, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(f"Staged {len(staged)} language sets: {', '.join(staged) or '(none)'}")
         print(f"Skipped existing sets: {', '.join(skipped) or '(none)'}")
+        print(f"Source failures: {len(failed)}")
+        for tag, reason in failed:
+            print(f"  {tag}: {reason}")
         unsupported = [
             p["language_tag"] for p in registry["profiles"]
             if p["status"] != "frequency_candidates_staged" and p["language_tag"] not in SOURCE_CODES
