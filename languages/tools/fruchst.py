@@ -10,6 +10,8 @@ import math
 import re
 import struct
 import sys
+import os
+import tempfile
 import unicodedata
 from pathlib import Path
 
@@ -181,45 +183,98 @@ def validate(blob: bytes) -> dict:
     }
 
 
+
+def validate_production_input(data: dict) -> None:
+    provenance = data.get("provenance")
+    if not isinstance(provenance, dict):
+        raise FruchstError("production provenance object is required")
+    for field in ("frequency_source", "attribution", "license_review"):
+        if not provenance.get(field):
+            raise FruchstError(f"provenance.{field} is required")
+    sources = provenance.get("definition_sources")
+    if not isinstance(sources, dict):
+        raise FruchstError("provenance.definition_sources is required")
+    for code in ("en", "fr", "es"):
+        source = sources.get(code)
+        if not isinstance(source, dict):
+            raise FruchstError(f"provenance.definition_sources.{code} is required")
+        for field in ("url", "dump_revision", "sha256", "license"):
+            if not isinstance(source.get(field), str) or not source[field].strip():
+                raise FruchstError(f"definition source {code} requires {field}")
+        if not re.fullmatch(r"[0-9a-f]{64}", source["sha256"]):
+            raise FruchstError(f"definition source {code} has invalid SHA-256")
+    entries = data.get("entries")
+    if not isinstance(entries, list) or len(entries) != EXPECTED_ENTRIES:
+        raise FruchstError(f"production input must contain exactly {EXPECTED_ENTRIES} entries")
+    for rank, entry in enumerate(entries, 1):
+        if not isinstance(entry, dict) or entry.get("review_status") != "approved":
+            raise FruchstError(f"entry {rank}: human approval is required")
+        selected = entry.get("selected_sense")
+        if not isinstance(selected, dict):
+            raise FruchstError(f"entry {rank}: selected_sense evidence is required")
+        for field in ("sense_id", "evidence", "reviewer", "approved_at_utc"):
+            if not isinstance(selected.get(field), str) or not selected[field].strip():
+                raise FruchstError(f"entry {rank}: selected_sense.{field} is required")
+
+
+def write_atomic(path: Path, content: bytes) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fd, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=str(path.parent))
+    try:
+        with os.fdopen(fd, "wb") as stream:
+            stream.write(content)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, path)
+    except Exception:
+        try:
+            os.unlink(temporary)
+        except OSError:
+            pass
+        raise
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
     build_parser = sub.add_parser("build")
     build_parser.add_argument("input", type=Path)
     build_parser.add_argument("output", type=Path)
-    build_parser.add_argument("--manifest", type=Path)
+    build_parser.add_argument("--manifest", type=Path, required=True)
     validate_parser = sub.add_parser("validate")
     validate_parser.add_argument("binary", type=Path)
+    validate_parser.add_argument("--manifest", type=Path)
     args = parser.parse_args()
 
     try:
         if args.command == "build":
             data = load_input(args.input)
+            validate_production_input(data)
             blob = build(data)
-            args.output.write_bytes(blob)
             result = validate(blob)
-            if args.manifest:
-                manifest = data.get("provenance")
-                if not isinstance(manifest, dict):
-                    raise FruchstError("provenance object required when writing a manifest")
-                manifest_out = {
-                    "format": "FRUCHST",
-                    "format_version": "1.0",
-                    "language_tag": data["language_tag"],
-                    "source_id": data["source_id"],
-                    "frequency_unit": data.get("frequency_unit"),
-                    "entry_count": EXPECTED_ENTRIES,
-                    "binary_file": args.output.name,
-                    "binary_sha256": result["file_sha256"],
-                    "provenance": manifest,
-                }
-                args.manifest.write_text(
-                    json.dumps(manifest_out, ensure_ascii=False, indent=2) + "\n",
-                    encoding="utf-8"
-                )
+            manifest_out = {
+                "format": "FRUCHST",
+                "format_version": "1.0",
+                "language_tag": data["language_tag"],
+                "source_id": data["source_id"],
+                "frequency_unit": data.get("frequency_unit"),
+                "entry_count": EXPECTED_ENTRIES,
+                "binary_file": args.output.name,
+                "binary_sha256": result["file_sha256"],
+                "provenance": data["provenance"],
+            }
+            manifest_bytes = (json.dumps(manifest_out, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+            write_atomic(args.output, blob)
+            write_atomic(args.manifest, manifest_bytes)
             print(json.dumps(result, ensure_ascii=False, indent=2))
         else:
             result = validate(args.binary.read_bytes())
+            if args.manifest:
+                manifest = json.loads(args.manifest.read_text(encoding="utf-8"))
+                if manifest.get("format") != "FRUCHST" or manifest.get("binary_sha256") != result["file_sha256"]:
+                    raise FruchstError("manifest does not match the validated binary")
+                if manifest.get("language_tag") != result["language_tag"] or manifest.get("source_id") != result["source_id"]:
+                    raise FruchstError("manifest identity does not match the validated binary")
             print(json.dumps(result, ensure_ascii=False, indent=2))
     except (OSError, FruchstError, KeyError) as exc:
         print(f"fruchst: error: {exc}", file=sys.stderr)
