@@ -1,0 +1,1845 @@
+{
+ "schema": 1,
+ "description": "Measured inventory of buildable SLeeLa modules for assembling a per-OS binary set. See docs/BINARY-SETS.md.",
+ "source": {
+  "repo": "https://github.com/mearvk/SLeeLa",
+  "branch": "master",
+  "commit": "8ccb9cf1"
+ },
+ "published_set": "https://github.com/mearvk/APML/tree/main/sleela-3.2-binaries",
+ "os": {
+  "linux": {
+   "arch": "x86-64",
+   "format": "ELF",
+   "verified": true,
+   "toolchain": "g++ -std=c++17 -O2 (Amazon Linux 2023 in the build sandbox)",
+   "packages_dnf": [
+    "gcc",
+    "gcc-c++",
+    "make",
+    "python3",
+    "cmake",
+    "libX11-devel",
+    "fontconfig-devel",
+    "freetype-devel",
+    "libpng-devel",
+    "zlib-devel",
+    "openssl-devel"
+   ],
+   "packages_apt_equivalent_untested": [
+    "build-essential",
+    "python3",
+    "cmake",
+    "libx11-dev",
+    "libfontconfig1-dev",
+    "libfreetype-dev",
+    "libpng-dev",
+    "zlib1g-dev",
+    "libssl-dev"
+   ]
+  },
+  "macos": {
+   "format": "Mach-O",
+   "verified": false,
+   "entry_point": "make -C build/macos",
+   "note": "Documented in build/macos/README.md and docs/PLATFORM-SUPPORT.md. Not built or tested in this work."
+  },
+  "windows": {
+   "format": "PE (.exe)",
+   "verified": false,
+   "entry_point": "make -C build/windows (MSYS2 UCRT64 MinGW-w64) or build-windows.ps1",
+   "note": "Documented in build/windows/README.md and docs/PLATFORM-SUPPORT.md. Not built or tested in this work."
+  }
+ },
+ "sparse_core": {
+  "dirs": [
+   "impl",
+   "runtime",
+   "os-level-support",
+   "security",
+   "http-servers",
+   "bash",
+   "common-rails",
+   "audio",
+   "registry",
+   "preferred-routers",
+   "SHEET.sheet",
+   "tools",
+   "java28",
+   "include",
+   "idea",
+   "user-interface",
+   "wifi-common",
+   "ballum",
+   "ledger"
+  ],
+  "approx_size": "119 MB (against the full repository of about 55,000 files)"
+ },
+ "modules": [
+  {
+   "id": "core",
+   "build_dir": "impl",
+   "command": "make -j8 build/sleela build/sleelvac build/nordshrift",
+   "sparse_needs": [
+    "impl",
+    "runtime",
+    "os-level-support",
+    "security",
+    "http-servers",
+    "bash",
+    "common-rails",
+    "audio",
+    "registry",
+    "preferred-routers",
+    "SHEET.sheet",
+    "tools",
+    "java28",
+    "include",
+    "idea",
+    "user-interface",
+    "wifi-common",
+    "ballum",
+    "ledger"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "sleela",
+     "published_as": "sleela",
+     "identical_to_published": true,
+     "sha256": "e56dd85b4ca28f9967fb84d3942dcf8f7ad3acfd913a9d02ec73e9f839fac7cd"
+    },
+    {
+     "built": "sleelvac",
+     "published_as": "sleelvac",
+     "identical_to_published": true,
+     "sha256": "c07825dde653517280b49b7f9349be4feba68f5e9f2eaae3815f5e6a9d433811"
+    },
+    {
+     "built": "nordshrift",
+     "published_as": "nordshrift",
+     "identical_to_published": true,
+     "sha256": "3963b391f168eac2e936c484df1654db43ae77d3d0dde2a8c645b6f429616e7d"
+    }
+   ],
+   "notes": "Needs SLEELA_SHA256_MANIFEST (see docs/BINARY-SETS.md). Rebuilt from a sparse checkout, the three binaries were byte-identical to the published ones."
+  },
+  {
+   "id": "xlt",
+   "build_dir": "impl/xlt",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "impl"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "xltc",
+     "published_as": "xltc",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "antivirus",
+   "build_dir": "antivirus",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "antivirus"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "sleelavirin-scan",
+     "published_as": "sleelavirin-scan",
+     "identical_to_published": true
+    },
+    {
+     "built": "test_bridge",
+     "published_as": "test_bridge",
+     "identical_to_published": true
+    },
+    {
+     "built": "test_scan",
+     "published_as": "test_scan",
+     "identical_to_published": true
+    },
+    {
+     "built": "test_ac",
+     "published_as": "test_ac",
+     "identical_to_published": true
+    },
+    {
+     "built": "test_cpp_scan",
+     "published_as": "test_cpp_scan",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "registry",
+   "build_dir": "registry",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "registry"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "sleela-registry",
+     "published_as": "sleela-registry",
+     "identical_to_published": true
+    },
+    {
+     "built": "sleela-registry3",
+     "published_as": "sleela-registry3",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "idea",
+   "build_dir": "idea",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "idea"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "idea-system",
+     "published_as": "idea-system",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "idea-realtime",
+   "build_dir": "idea/realtime",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "idea"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "idea-canvas-bench",
+     "published_as": "idea-canvas-bench",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "idea-sleela-native",
+   "build_dir": "idea/sleela-native",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "idea"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "sln-demo",
+     "published_as": "sln-demo",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "server-edition",
+   "build_dir": "server-edition",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "logger",
+    "server-edition"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "sleelas",
+     "published_as": "sleelas-server-edition",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "web-server-native",
+   "build_dir": "web-server-technology/native",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "lib",
+    "web-server-technology"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "sleela-web-server",
+     "published_as": "sleela-web-server",
+     "identical_to_published": true
+    }
+   ],
+   "notes": "Pulls lib/ (large) to find a header; not minimised."
+  },
+  {
+   "id": "linux-editors",
+   "build_dir": "linux-editors",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "linux-editors"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "sleela-editor-theme",
+     "published_as": "sleela-editor-theme",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "logger",
+   "build_dir": "logger",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "logger"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "logger-smoke",
+     "published_as": "logger-smoke",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "advantage",
+   "build_dir": "advantage",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "advantage"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "advantage",
+     "published_as": "advantage",
+     "identical_to_published": true
+    },
+    {
+     "built": "analyze",
+     "published_as": "analyze",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "advantage-transport",
+   "build_dir": "advantage/transport",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "advantage"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "transport",
+     "published_as": "transport",
+     "identical_to_published": true
+    },
+    {
+     "built": "bulkfetch",
+     "published_as": "bulkfetch",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "http-2.0",
+   "build_dir": "http-2.0",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "http-2.0",
+    "impl",
+    "preferred-routers",
+    "resolver"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "h21_server",
+     "published_as": "h21_server",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "http-4.0",
+   "build_dir": "http-4.0",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "http-4.0",
+    "impl",
+    "preferred-routers",
+    "resolver"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "http4_selftest",
+     "published_as": "http4_selftest",
+     "identical_to_published": true
+    },
+    {
+     "built": "http4_segmentation_selftest",
+     "published_as": "http4_segmentation_selftest",
+     "identical_to_published": true
+    },
+    {
+     "built": "http4_resume_selftest",
+     "published_as": "http4_resume_selftest",
+     "identical_to_published": true
+    },
+    {
+     "built": "http4_session_selftest",
+     "published_as": "http4_session_selftest",
+     "identical_to_published": true
+    },
+    {
+     "built": "http4_server_bin",
+     "published_as": "http4_server_bin",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "http-5.0",
+   "build_dir": "http-5.0",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "http-5.0",
+    "impl",
+    "preferred-routers",
+    "resolver"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "http5_server",
+     "published_as": "http5_server",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "http-6.0",
+   "build_dir": "http-6.0",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "http-6.0",
+    "impl",
+    "preferred-routers",
+    "resolver"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "http6_server",
+     "published_as": "http6_server",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "http-7.0",
+   "build_dir": "http-7.0",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "http-7.0",
+    "impl",
+    "logger",
+    "preferred-routers",
+    "resolver"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "http7_server",
+     "published_as": "http7_server",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "http-8.0",
+   "build_dir": "http-8.0",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "http-8.0",
+    "impl",
+    "preferred-routers",
+    "resolver"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "http8_server",
+     "published_as": "http8_server",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "http-3.0",
+   "build_dir": "http-3.0",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "http-3.0",
+    "impl",
+    "preferred-routers",
+    "resolver"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "crypto_selftest",
+     "published_as": "crypto_selftest",
+     "identical_to_published": true
+    },
+    {
+     "built": "key_distribution_server",
+     "published_as": "key_distribution_server",
+     "identical_to_published": true
+    },
+    {
+     "built": "http3_pipeline_demo",
+     "published_as": "http3_pipeline_demo",
+     "identical_to_published": true
+    },
+    {
+     "built": "http3_server",
+     "published_as": "http3_server",
+     "identical_to_published": true
+    },
+    {
+     "built": "station_demo",
+     "published_as": null,
+     "identical_to_published": false
+    }
+   ]
+  },
+  {
+   "id": "http-servers-1",
+   "build_dir": "http-servers/1",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "http-servers",
+    "preferred-routers"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "http-server-1",
+     "published_as": "http-server-1",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "http-servers-3",
+   "build_dir": "http-servers/3",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "http-servers",
+    "preferred-routers"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "http-server-3",
+     "published_as": "http-server-3",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "compiler",
+   "build_dir": "compiler",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "compiler"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "sleelac",
+     "published_as": "sleelac",
+     "identical_to_published": true
+    },
+    {
+     "built": "sleela_compiler_tests",
+     "published_as": "sleela_compiler_tests",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "debugger",
+   "build_dir": "debugger",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "debugger"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "debug-conformance-test",
+     "published_as": "debug-conformance-test",
+     "identical_to_published": true
+    },
+    {
+     "built": "debug-diagnostics-test",
+     "published_as": "debug-diagnostics-test",
+     "identical_to_published": true
+    },
+    {
+     "built": "debug-engine-test",
+     "published_as": "debug-engine-test",
+     "identical_to_published": true
+    },
+    {
+     "built": "sleela-debugger",
+     "published_as": "sleela-debugger",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "runtime",
+   "build_dir": "runtime",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "runtime"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "test_java_bridge_injection",
+     "published_as": "test_java_bridge_injection",
+     "identical_to_published": true
+    },
+    {
+     "built": "test_gc_security",
+     "published_as": "test_gc_security",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "java28",
+   "build_dir": "java28",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "java28"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "sleela_java28_demo",
+     "published_as": "sleela_java28_demo",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "api-2.1-bodi",
+   "build_dir": "api/sleela/2.1/bodi",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "api"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "bodi-xml-runner",
+     "published_as": "bodi-xml-runner",
+     "identical_to_published": true
+    }
+   ],
+   "notes": "Takes over a minute."
+  },
+  {
+   "id": "api-2.1-server",
+   "build_dir": "api/sleela/2.1/server",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "api"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "sleelas",
+     "published_as": "sleelas-api-2.1",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "audio-native",
+   "build_dir": "audio/native",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "audio"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "sleela-audio-native",
+     "published_as": "sleela-audio-native",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "readline-examples",
+   "build_dir": "bash/lib/readline/examples",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "bash"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "rltest",
+     "published_as": null,
+     "identical_to_published": false
+    },
+    {
+     "built": "rl",
+     "published_as": null,
+     "identical_to_published": false
+    },
+    {
+     "built": "fileman",
+     "published_as": null,
+     "identical_to_published": false
+    }
+   ]
+  },
+  {
+   "id": "model-3D",
+   "build_dir": "bash/model-3D",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "bash"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "render_smoke",
+     "published_as": "render_smoke",
+     "identical_to_published": true
+    },
+    {
+     "built": "city3d_smoke",
+     "published_as": "city3d_smoke",
+     "identical_to_published": true
+    },
+    {
+     "built": "city3d",
+     "published_as": "city3d",
+     "identical_to_published": true
+    }
+   ],
+   "notes": "Takes about 20 seconds."
+  },
+  {
+   "id": "cdma-tools",
+   "build_dir": "cdma/tools",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "cdma"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "cdma-sim",
+     "published_as": "cdma-sim",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "common-rails",
+   "build_dir": "common-rails",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "common-rails"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "heritage-print-test",
+     "published_as": "heritage-print-test-c",
+     "identical_to_published": true
+    },
+    {
+     "built": "heritage-print-test",
+     "published_as": "heritage-print-test-cpp",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "ledger",
+   "build_dir": "ledger",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "ledger"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "ledger_tool",
+     "published_as": "ledger_tool",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "alphabet-native",
+   "build_dir": "lib/alphabet/native",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "lib"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "alphabet-runtime-tests",
+     "published_as": "alphabet-runtime-tests",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "sleela-sql",
+   "build_dir": "lib/sleela-sql",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "lib"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "sleela-sql",
+     "published_as": "sleela-sql",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "gui-native",
+   "build_dir": "gui/native",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "gui"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "slgui_theme_test",
+     "published_as": "slgui_theme_test",
+     "identical_to_published": true
+    },
+    {
+     "built": "slgui_bridge_test",
+     "published_as": "slgui_bridge_test",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "native",
+   "build_dir": "native",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "native"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "sleela-gov-native",
+     "published_as": "sleela-gov-native",
+     "identical_to_published": true
+    },
+    {
+     "built": "sleela-opcode-native",
+     "published_as": "sleela-opcode-native",
+     "identical_to_published": true
+    },
+    {
+     "built": "sleela-sldocument-native",
+     "published_as": "sleela-sldocument-native",
+     "identical_to_published": true
+    },
+    {
+     "built": "sleela-audio-native",
+     "published_as": "sleela-audio-native-from-native-dir",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "ofdma",
+   "build_dir": "ofdma",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "ofdma"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "test-ofdma",
+     "published_as": "test-ofdma",
+     "identical_to_published": true
+    },
+    {
+     "built": "ofdma-demo",
+     "published_as": "ofdma-demo",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "philosophy",
+   "build_dir": "philosophy",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "philosophy"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "example-c",
+     "published_as": "example-c",
+     "identical_to_published": true
+    },
+    {
+     "built": "test-screen-map",
+     "published_as": "test-screen-map",
+     "identical_to_published": true
+    },
+    {
+     "built": "consistency-example",
+     "published_as": "consistency-example",
+     "identical_to_published": true
+    },
+    {
+     "built": "event-example-c",
+     "published_as": "event-example-c",
+     "identical_to_published": true
+    },
+    {
+     "built": "test-consistency",
+     "published_as": "test-consistency",
+     "identical_to_published": true
+    },
+    {
+     "built": "example-cpp",
+     "published_as": "example-cpp",
+     "identical_to_published": true
+    },
+    {
+     "built": "test-event-tree",
+     "published_as": "test-event-tree",
+     "identical_to_published": true
+    },
+    {
+     "built": "test-partition-api",
+     "published_as": "test-partition-api",
+     "identical_to_published": true
+    },
+    {
+     "built": "partition-example",
+     "published_as": "partition-example",
+     "identical_to_published": true
+    },
+    {
+     "built": "event-example-cpp",
+     "published_as": "event-example-cpp",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "philosophy-int-set",
+   "build_dir": "philosophy/int_set",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "philosophy"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "int-set-generate",
+     "published_as": "int-set-generate",
+     "identical_to_published": true
+    },
+    {
+     "built": "test-int-set",
+     "published_as": "test-int-set",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "philosophy-helper",
+   "build_dir": "philosophy/module/helper",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "philosophy"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "help-example-c",
+     "published_as": "help-example-c",
+     "identical_to_published": true
+    },
+    {
+     "built": "help-example-cpp",
+     "published_as": "help-example-cpp",
+     "identical_to_published": true
+    },
+    {
+     "built": "test-help-desk",
+     "published_as": "test-help-desk",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "philosophy-psychiatry-friend",
+   "build_dir": "philosophy/module/psychiatry-friend",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "philosophy"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "test-speculation-invite",
+     "published_as": "test-speculation-invite",
+     "identical_to_published": true
+    },
+    {
+     "built": "speculation-example",
+     "published_as": "speculation-example",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "resolver",
+   "build_dir": "resolver",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "resolver"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "sleela-resolver",
+     "published_as": "sleela-resolver",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "signal-processing",
+   "build_dir": "signal-processing",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "signal-processing"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "sleela_sp_c_example",
+     "published_as": "sleela_sp_c_example",
+     "identical_to_published": true
+    },
+    {
+     "built": "sleela_sp_cpp_example",
+     "published_as": "sleela_sp_cpp_example",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "sleelactl-convert",
+   "build_dir": "sleelactl/convert",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "sleelactl"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "javaconv",
+     "published_as": "javaconv",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "telephony-skya-native",
+   "build_dir": "telephony-skya/native",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "telephony-skya"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "skya",
+     "published_as": "skya",
+     "identical_to_published": true
+    },
+    {
+     "built": "sleela-skya",
+     "published_as": "sleela-skya",
+     "identical_to_published": true
+    }
+   ]
+  },
+  {
+   "id": "tests",
+   "build_dir": "tests",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "api",
+    "artificial-intelligence",
+    "impl",
+    "tests"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": ".openssl-probe",
+     "published_as": null,
+     "identical_to_published": false
+    },
+    {
+     "built": "neural-nets-xor",
+     "published_as": "neural-nets-xor",
+     "identical_to_published": true
+    },
+    {
+     "built": "character-recognition-cli",
+     "published_as": "character-recognition-cli",
+     "identical_to_published": true
+    },
+    {
+     "built": "character-recognition-smoke",
+     "published_as": "character-recognition-smoke",
+     "identical_to_published": true
+    },
+    {
+     "built": "network-security",
+     "published_as": null,
+     "identical_to_published": false
+    }
+   ],
+   "notes": "Heavy: pulls api, artificial-intelligence and impl; takes over a minute."
+  },
+  {
+   "id": "config",
+   "build_dir": "config",
+   "command": "make -k -j8 all",
+   "sparse_needs": [
+    "config",
+    "runtime",
+    "scripts"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "vm-config-smoke",
+     "published_as": "vm-config-smoke",
+     "identical_to_published": true
+    },
+    {
+     "built": "config-location-smoke",
+     "published_as": "config-location-smoke",
+     "identical_to_published": true
+    }
+   ],
+   "notes": "Needs scripts/ for its check step."
+  },
+  {
+   "id": "sleela-terminal",
+   "build_dir": "sleela-terminal",
+   "command": "make -k -j8 all",
+   "sparse_needs": [
+    "sleela-terminal"
+   ],
+   "status": "verified-sparse-partial",
+   "outputs": [
+    {
+     "built": "smoke",
+     "published_as": "smoke",
+     "identical_to_published": true
+    },
+    {
+     "built": "slsh",
+     "published_as": "slsh",
+     "identical_to_published": true
+    }
+   ],
+   "notes": "slsh and smoke build; the GTK4 app does not (needs GTK4 and VTE dev packages). Use make -k."
+  },
+  {
+   "id": "regex",
+   "build_dir": "regex",
+   "command": "make -k -j8 all",
+   "sparse_needs": [
+    "regex"
+   ],
+   "status": "verified-sparse-partial",
+   "outputs": [
+    {
+     "built": "regex-natural-c",
+     "published_as": "regex-natural-c",
+     "identical_to_published": true
+    },
+    {
+     "built": "regex-c",
+     "published_as": "regex-c",
+     "identical_to_published": true
+    },
+    {
+     "built": "natural-tests-c",
+     "published_as": null,
+     "identical_to_published": false
+    },
+    {
+     "built": "regex-natural-cpp",
+     "published_as": "regex-natural-cpp",
+     "identical_to_published": true
+    },
+    {
+     "built": "natural-tests-cpp",
+     "published_as": null,
+     "identical_to_published": false
+    },
+    {
+     "built": "regex-cpp",
+     "published_as": "regex-cpp",
+     "identical_to_published": true
+    }
+   ],
+   "notes": "Binaries were produced, but make returned non-zero in the sparse tree (cause not isolated). Built cleanly in a full checkout."
+  },
+  {
+   "id": "decompiler",
+   "build_dir": "decompiler",
+   "command": "make -j8 all",
+   "sparse_needs": [
+    "api",
+    "decompiler",
+    "impl",
+    "lib"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "slecompiler-api-inspect",
+     "published_as": "slecompiler-api-inspect",
+     "identical_to_published": true
+    },
+    {
+     "built": "slecompiler-api-library",
+     "published_as": "slecompiler-api-library",
+     "identical_to_published": true
+    },
+    {
+     "built": "slecompiler-api-graph",
+     "published_as": "slecompiler-api-graph",
+     "identical_to_published": true
+    },
+    {
+     "built": "slecompiler-api-cfg",
+     "published_as": "slecompiler-api-cfg",
+     "identical_to_published": true
+    },
+    {
+     "built": "sleela-decompiler",
+     "published_as": "sleela-decompiler",
+     "identical_to_published": true
+    },
+    {
+     "built": "slecompiler-api-slir-vm",
+     "published_as": "slecompiler-api-slir-vm",
+     "identical_to_published": true
+    },
+    {
+     "built": "sleela-decompiler-test",
+     "published_as": "sleela-decompiler-test",
+     "identical_to_published": true
+    }
+   ],
+   "notes": "Takes about a minute."
+  },
+  {
+   "id": "slvm-01",
+   "build_dir": "sleela-virtual-machine/001",
+   "command": "make -C impl libslcore  &&  make -C sleela-virtual-machine/001 all",
+   "sparse_needs": [
+    "impl",
+    "runtime",
+    "os-level-support",
+    "security",
+    "http-servers",
+    "bash",
+    "common-rails",
+    "audio",
+    "registry",
+    "preferred-routers",
+    "SHEET.sheet",
+    "tools",
+    "java28",
+    "include",
+    "idea",
+    "user-interface",
+    "wifi-common",
+    "ballum",
+    "ledger",
+    "sleela-virtual-machine"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "slvm-01",
+     "published_as": "slvm-01"
+    }
+   ],
+   "notes": "Needs impl/build/libslcore.a first (make -C impl libslcore). Sparse build tested on 01 and 11; the others were built in a full checkout."
+  },
+  {
+   "id": "slvm-02",
+   "build_dir": "sleela-virtual-machine/002",
+   "command": "make -C impl libslcore  &&  make -C sleela-virtual-machine/002 all",
+   "sparse_needs": [
+    "impl",
+    "runtime",
+    "os-level-support",
+    "security",
+    "http-servers",
+    "bash",
+    "common-rails",
+    "audio",
+    "registry",
+    "preferred-routers",
+    "SHEET.sheet",
+    "tools",
+    "java28",
+    "include",
+    "idea",
+    "user-interface",
+    "wifi-common",
+    "ballum",
+    "ledger",
+    "sleela-virtual-machine"
+   ],
+   "status": "built-full-tree",
+   "outputs": [
+    {
+     "built": "slvm-02",
+     "published_as": "slvm-02"
+    }
+   ],
+   "notes": "Needs impl/build/libslcore.a first (make -C impl libslcore). Sparse build tested on 01 and 11; the others were built in a full checkout."
+  },
+  {
+   "id": "slvm-03",
+   "build_dir": "sleela-virtual-machine/003",
+   "command": "make -C impl libslcore  &&  make -C sleela-virtual-machine/003 all",
+   "sparse_needs": [
+    "impl",
+    "runtime",
+    "os-level-support",
+    "security",
+    "http-servers",
+    "bash",
+    "common-rails",
+    "audio",
+    "registry",
+    "preferred-routers",
+    "SHEET.sheet",
+    "tools",
+    "java28",
+    "include",
+    "idea",
+    "user-interface",
+    "wifi-common",
+    "ballum",
+    "ledger",
+    "sleela-virtual-machine"
+   ],
+   "status": "built-full-tree",
+   "outputs": [
+    {
+     "built": "slvm-03",
+     "published_as": "slvm-03"
+    }
+   ],
+   "notes": "Needs impl/build/libslcore.a first (make -C impl libslcore). Sparse build tested on 01 and 11; the others were built in a full checkout."
+  },
+  {
+   "id": "slvm-04",
+   "build_dir": "sleela-virtual-machine/004",
+   "command": "make -C impl libslcore  &&  make -C sleela-virtual-machine/004 all",
+   "sparse_needs": [
+    "impl",
+    "runtime",
+    "os-level-support",
+    "security",
+    "http-servers",
+    "bash",
+    "common-rails",
+    "audio",
+    "registry",
+    "preferred-routers",
+    "SHEET.sheet",
+    "tools",
+    "java28",
+    "include",
+    "idea",
+    "user-interface",
+    "wifi-common",
+    "ballum",
+    "ledger",
+    "sleela-virtual-machine"
+   ],
+   "status": "built-full-tree",
+   "outputs": [
+    {
+     "built": "slvm-04",
+     "published_as": "slvm-04"
+    }
+   ],
+   "notes": "Needs impl/build/libslcore.a first (make -C impl libslcore). Sparse build tested on 01 and 11; the others were built in a full checkout."
+  },
+  {
+   "id": "slvm-05",
+   "build_dir": "sleela-virtual-machine/005",
+   "command": "make -C impl libslcore  &&  make -C sleela-virtual-machine/005 all",
+   "sparse_needs": [
+    "impl",
+    "runtime",
+    "os-level-support",
+    "security",
+    "http-servers",
+    "bash",
+    "common-rails",
+    "audio",
+    "registry",
+    "preferred-routers",
+    "SHEET.sheet",
+    "tools",
+    "java28",
+    "include",
+    "idea",
+    "user-interface",
+    "wifi-common",
+    "ballum",
+    "ledger",
+    "sleela-virtual-machine"
+   ],
+   "status": "built-full-tree",
+   "outputs": [
+    {
+     "built": "slvm-05",
+     "published_as": "slvm-05"
+    }
+   ],
+   "notes": "Needs impl/build/libslcore.a first (make -C impl libslcore). Sparse build tested on 01 and 11; the others were built in a full checkout."
+  },
+  {
+   "id": "slvm-06",
+   "build_dir": "sleela-virtual-machine/006",
+   "command": "make -C impl libslcore  &&  make -C sleela-virtual-machine/006 all",
+   "sparse_needs": [
+    "impl",
+    "runtime",
+    "os-level-support",
+    "security",
+    "http-servers",
+    "bash",
+    "common-rails",
+    "audio",
+    "registry",
+    "preferred-routers",
+    "SHEET.sheet",
+    "tools",
+    "java28",
+    "include",
+    "idea",
+    "user-interface",
+    "wifi-common",
+    "ballum",
+    "ledger",
+    "sleela-virtual-machine"
+   ],
+   "status": "built-full-tree",
+   "outputs": [
+    {
+     "built": "slvm-06",
+     "published_as": "slvm-06"
+    }
+   ],
+   "notes": "Needs impl/build/libslcore.a first (make -C impl libslcore). Sparse build tested on 01 and 11; the others were built in a full checkout."
+  },
+  {
+   "id": "slvm-07",
+   "build_dir": "sleela-virtual-machine/007",
+   "command": "make -C impl libslcore  &&  make -C sleela-virtual-machine/007 all",
+   "sparse_needs": [
+    "impl",
+    "runtime",
+    "os-level-support",
+    "security",
+    "http-servers",
+    "bash",
+    "common-rails",
+    "audio",
+    "registry",
+    "preferred-routers",
+    "SHEET.sheet",
+    "tools",
+    "java28",
+    "include",
+    "idea",
+    "user-interface",
+    "wifi-common",
+    "ballum",
+    "ledger",
+    "sleela-virtual-machine"
+   ],
+   "status": "built-full-tree",
+   "outputs": [
+    {
+     "built": "slvm-07",
+     "published_as": "slvm-07"
+    }
+   ],
+   "notes": "Needs impl/build/libslcore.a first (make -C impl libslcore). Sparse build tested on 01 and 11; the others were built in a full checkout."
+  },
+  {
+   "id": "slvm-08",
+   "build_dir": "sleela-virtual-machine/008",
+   "command": "make -C impl libslcore  &&  make -C sleela-virtual-machine/008 all",
+   "sparse_needs": [
+    "impl",
+    "runtime",
+    "os-level-support",
+    "security",
+    "http-servers",
+    "bash",
+    "common-rails",
+    "audio",
+    "registry",
+    "preferred-routers",
+    "SHEET.sheet",
+    "tools",
+    "java28",
+    "include",
+    "idea",
+    "user-interface",
+    "wifi-common",
+    "ballum",
+    "ledger",
+    "sleela-virtual-machine"
+   ],
+   "status": "built-full-tree",
+   "outputs": [
+    {
+     "built": "slvm-08",
+     "published_as": "slvm-08"
+    }
+   ],
+   "notes": "Needs impl/build/libslcore.a first (make -C impl libslcore). Sparse build tested on 01 and 11; the others were built in a full checkout."
+  },
+  {
+   "id": "slvm-09",
+   "build_dir": "sleela-virtual-machine/009",
+   "command": "make -C impl libslcore  &&  make -C sleela-virtual-machine/009 all",
+   "sparse_needs": [
+    "impl",
+    "runtime",
+    "os-level-support",
+    "security",
+    "http-servers",
+    "bash",
+    "common-rails",
+    "audio",
+    "registry",
+    "preferred-routers",
+    "SHEET.sheet",
+    "tools",
+    "java28",
+    "include",
+    "idea",
+    "user-interface",
+    "wifi-common",
+    "ballum",
+    "ledger",
+    "sleela-virtual-machine"
+   ],
+   "status": "built-full-tree",
+   "outputs": [
+    {
+     "built": "slvm-09",
+     "published_as": "slvm-09"
+    }
+   ],
+   "notes": "Needs impl/build/libslcore.a first (make -C impl libslcore). Sparse build tested on 01 and 11; the others were built in a full checkout."
+  },
+  {
+   "id": "slvm-10",
+   "build_dir": "sleela-virtual-machine/010",
+   "command": "make -C impl libslcore  &&  make -C sleela-virtual-machine/010 all",
+   "sparse_needs": [
+    "impl",
+    "runtime",
+    "os-level-support",
+    "security",
+    "http-servers",
+    "bash",
+    "common-rails",
+    "audio",
+    "registry",
+    "preferred-routers",
+    "SHEET.sheet",
+    "tools",
+    "java28",
+    "include",
+    "idea",
+    "user-interface",
+    "wifi-common",
+    "ballum",
+    "ledger",
+    "sleela-virtual-machine"
+   ],
+   "status": "built-full-tree",
+   "outputs": [
+    {
+     "built": "slvm-10",
+     "published_as": "slvm-10"
+    }
+   ],
+   "notes": "Needs impl/build/libslcore.a first (make -C impl libslcore). Sparse build tested on 01 and 11; the others were built in a full checkout."
+  },
+  {
+   "id": "slvm-11",
+   "build_dir": "sleela-virtual-machine/011",
+   "command": "make -C impl libslcore  &&  make -C sleela-virtual-machine/011 all",
+   "sparse_needs": [
+    "impl",
+    "runtime",
+    "os-level-support",
+    "security",
+    "http-servers",
+    "bash",
+    "common-rails",
+    "audio",
+    "registry",
+    "preferred-routers",
+    "SHEET.sheet",
+    "tools",
+    "java28",
+    "include",
+    "idea",
+    "user-interface",
+    "wifi-common",
+    "ballum",
+    "ledger",
+    "sleela-virtual-machine"
+   ],
+   "status": "verified-sparse",
+   "outputs": [
+    {
+     "built": "slvm-11",
+     "published_as": "slvm-11"
+    }
+   ],
+   "notes": "Needs impl/build/libslcore.a first (make -C impl libslcore). Sparse build tested on 01 and 11; the others were built in a full checkout."
+  },
+  {
+   "id": "skya",
+   "build_dir": "build/linux",
+   "command": "make -C build/linux",
+   "status": "built-full-tree",
+   "outputs": [
+    {
+     "built": "skya"
+    },
+    {
+     "built": "sleela-decompiler (via slecompiler cmake)"
+    }
+   ],
+   "notes": "Dispatches to scripts/build-linux.sh and builds the core; about 90 seconds. Built in a full checkout."
+  },
+  {
+   "id": "lib-compiler",
+   "build_dir": "lib/compiler",
+   "command": "make -k -j8 all",
+   "status": "built-full-tree",
+   "outputs": [
+    {
+     "built": "langc_selftest"
+    }
+   ],
+   "notes": "Built in a full checkout; the sparse probe hit duplicate-symbol checks over lib/."
+  },
+  {
+   "id": "http-servers-3-http3",
+   "build_dir": "http-servers/3/http3",
+   "command": "make -j8 all",
+   "status": "built-full-tree",
+   "outputs": [
+    {
+     "built": "http-server-3-http3"
+    }
+   ],
+   "notes": "Built in a full checkout."
+  },
+  {
+   "id": "os-level-support",
+   "build_dir": "os-level-support",
+   "command": "cmake -S os-level-support -B <out-of-tree-dir> -DCMAKE_BUILD_TYPE=Release && cmake --build <out-of-tree-dir> -j8",
+   "status": "built-full-tree",
+   "outputs": [
+    {
+     "built": "osls_test",
+     "published_as": "osls_test"
+    },
+    {
+     "built": "osls_runtime_test",
+     "published_as": "osls_runtime_test"
+    },
+    {
+     "built": "osls_vm_bridge_test",
+     "published_as": "osls_vm_bridge_test"
+    },
+    {
+     "built": "grt_claim_test",
+     "published_as": "grt_claim_test"
+    },
+    {
+     "built": "loader_test_c",
+     "published_as": "loader_test_c"
+    },
+    {
+     "built": "loader_test_cpp",
+     "published_as": "loader_test_cpp"
+    },
+    {
+     "built": "loader_test_reject",
+     "published_as": "loader_test_reject"
+    },
+    {
+     "built": "loader_test_table",
+     "published_as": "loader_test_table"
+    },
+    {
+     "built": "loader_test_typed",
+     "published_as": "loader_test_typed"
+    }
+   ],
+   "notes": "CMake project; build out of tree."
+  },
+  {
+   "id": "lib-os-level-support",
+   "build_dir": "lib/os-level-support",
+   "command": "cmake -S lib/os-level-support -B <out-of-tree-dir> -DCMAKE_BUILD_TYPE=Release && cmake --build <out-of-tree-dir> -j8",
+   "status": "built-full-tree",
+   "outputs": [
+    {
+     "built": "sleela_os_support_test",
+     "published_as": "sleela_os_support_test"
+    }
+   ],
+   "notes": "CMake project; build out of tree."
+  },
+  {
+   "id": "utf-4088",
+   "build_dir": "utf-4088",
+   "command": "cmake -S utf-4088 -B <out-of-tree-dir> -DCMAKE_BUILD_TYPE=Release && cmake --build <out-of-tree-dir> -j8",
+   "status": "built-full-tree",
+   "outputs": [
+    {
+     "built": "utf4088-inspect",
+     "published_as": "utf4088-inspect"
+    },
+    {
+     "built": "utf4088_tests",
+     "published_as": "utf4088_tests"
+    },
+    {
+     "built": "utf4088_encoder_decoder_tests",
+     "published_as": "utf4088_encoder_decoder_tests"
+    }
+   ],
+   "notes": "CMake project; build out of tree."
+  }
+ ],
+ "not_built": [
+  {
+   "dir": "http-1.0",
+   "reason": "Source defect: http1_download_should_resume is defined twice in http1_server.c."
+  },
+  {
+   "dir": "http-servers/2",
+   "reason": "Needs nghttp2 development headers (nghttp2/nghttp2.h)."
+  },
+  {
+   "dir": "http-3.0/kernel",
+   "reason": "Needs Linux kernel build headers."
+  },
+  {
+   "dir": "ballum, lib/ballum",
+   "reason": "Needs system development packages; lib/ballum default target writes system paths."
+  },
+  {
+   "dir": "sleela-terminal (GTK4 app)",
+   "reason": "Needs GTK4 and VTE 2.91 development packages."
+  },
+  {
+   "dir": "connector, lib/connector/*",
+   "reason": "Needs database/client libraries (mysql, curl, odbc, and others); connector downloads a dependency and was blocked."
+  },
+  {
+   "dir": "sommeliers",
+   "reason": "Source defect: stray backslash in feedback.c."
+  },
+  {
+   "dir": "server-edition/http",
+   "reason": "A source file it needs (api/http-multiplexing/sleela_http_api.c) is missing."
+  },
+  {
+   "dir": "sleela-virtual-machine/008/build/linux",
+   "reason": "Include path to sleela_core.h is wrong (the main 008 build works)."
+  },
+  {
+   "dir": "autocad, website-generator, lib/gui, lib/*/example/science",
+   "reason": "SLeeLa programs; their targets run sleelvac checks that fail on unknown types, not native builds."
+  },
+  {
+   "dir": "install, jetbrains, build/macos, build/windows",
+   "reason": "Excluded by policy: installers write system paths or are not Linux builds."
+  }
+ ]
+}
