@@ -233,6 +233,10 @@ def isa_source_native_check() -> tuple[bool, str]:
 
 
 def cmd_inventory_lib(_: argparse.Namespace) -> int:
+    registry_check = run([sys.executable, str(TOOLS / "verify-opcode-registry.py")], cwd=ROOT, check=False)
+    if registry_check.returncode != 0:
+        print("LIBRARY INVENTORY: FAIL; opcode registry verification failed", file=sys.stderr)
+        return registry_check.returncode
     files, symbols = repo_lib_inventory()
     isa_ok, isa_detail = isa_source_native_check()
     if not isa_ok:
