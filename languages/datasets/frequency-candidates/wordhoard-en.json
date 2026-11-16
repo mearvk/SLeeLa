@@ -5,7 +5,7 @@
   "source": {
     "dataset": "wordhoard",
     "upstream": "https://github.com/natema/wordhoard",
-    "revision": "main (retrieved 2026-11-15)",
+    "revision": "1bc5730e8d6e682c416c03680b7cb8c6c7ca8cd0",
     "sample_path_template": "https://raw.githubusercontent.com/natema/wordhoard/main/samples/{lang}.csv",
     "data_license": "CC-BY-SA-4.0",
     "code_license": "MIT (not the license for extracted data)",
@@ -27,7 +27,8 @@
       "OpenSubtitles-derived rankings are subtitle-domain rankings, not a balanced general-purpose corpus.",
       "Counts are corpus occurrences, not normalized per million; do not compare raw counts across languages.",
       "Three definitions (English, French, Spanish) are not yet supplied; no binary should be generated from this staging data."
-    ]
+    ],
+    "sample_url": "https://raw.githubusercontent.com/natema/wordhoard/1bc5730e8d6e682c416c03680b7cb8c6c7ca8cd0/samples/en.csv"
   },
   "candidate_count": 1000,
   "definitions_status": "pending",
