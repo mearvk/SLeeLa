@@ -79,3 +79,18 @@ python3 languages/tools/stage_frequencywords.py
 \`\`\`
 
 This batch currently maps 25 target profiles to explicit source variants. It deliberately does not substitute dialects (for example, Modern Standard Arabic for Egyptian or Levantine Arabic, or Mandarin for Yue/Wu). The remaining profiles need separate, variety-appropriate source review. Candidate files are not completed dictionaries: all three English/French/Spanish definitions and the associated human review remain pending.
+
+
+## English round (`definition-english/`)
+
+`tools/fruchst_english_round.py` runs in the source-definition staging workflow after the close-variant pass. It reads the review queues and the close-variant files and makes up to three passes over the English Wiktionary extract (`raw-wiktextract-data.jsonl.gz`). It writes one `<stem>.english.json` per profile. It is add-only: every review-queue gloss stays exactly as staged, and every review sense appears in the English file.
+
+Each headword gets a ranked list of English definitions with source evidence, in five tiers:
+
+1. `own_sense`: the headword's own English sense. Senses corroborated by a translation table rank first, which means an English entry that lists this headword in its translations also appears in the gloss (this picks "from" over "favor" for unvocalized Arabic من). Obsolete, archaic, rare and similar senses rank last. Otherwise Wiktionary order is kept.
+2. `lemma_of_form`: a form-of, alt-of or synonym-of sense ("plural of mtu", "genitive of on") resolved to the lemma's own definitions, following up to two links. Korean hanja-reading senses whose gloss is only a Han character are resolved to that character's definition.
+3. `form_of_gloss`: a pointer gloss whose lemma was not found, kept verbatim.
+4. `close_variant`: the close-variant pass, with its form-of senses resolved the same way.
+5. `translation_equivalent`: English entries whose translation tables list the headword, matched exactly or with optional marks removed (Arabic vowel points, for example). Mandarin rows (`cmn`) count for `zh-Hans`, and Uzbek Cyrillic headwords are also matched in Latin script.
+
+Each entry also records usage examples that have English translations, romanizations, the English words from translation tables, and `gloss_notes` for wiki-markup remnants, hanja-reading glosses and unresolved pointers, each with a cleaned display text. `lead_candidate` is the first ranked definition. It is a reviewer's starting point, not a selection. Every row stays `review_required`, and `production_definitions_approved` stays 0.

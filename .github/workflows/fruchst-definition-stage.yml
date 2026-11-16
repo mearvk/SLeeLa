@@ -8,6 +8,7 @@ on:
       - "languages/tools/fruchst_definition_batch.py"
       - "languages/tools/fruchst_english_pivot.py"
       - "languages/tools/fruchst_close_variants.py"
+      - "languages/tools/fruchst_english_round.py"
       - ".github/workflows/fruchst-definition-stage.yml"
   workflow_dispatch:
 
@@ -74,12 +75,19 @@ jobs:
             --reviews languages/datasets/definition-review \
             --en "$RUNNER_TEMP/fruchst-sources/en.jsonl.gz" \
             --output languages/datasets/definition-variants
+      - name: English round (resolve form-of lemmas, translation tables, examples)
+        run: |
+          python3 languages/tools/fruchst_english_round.py \
+            --reviews languages/datasets/definition-review \
+            --variants languages/datasets/definition-variants \
+            --en "$RUNNER_TEMP/fruchst-sources/en.jsonl.gz" \
+            --output languages/datasets/definition-english
       - name: Commit review queues to master
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add languages/datasets/definition-review languages/datasets/definition-pivot languages/datasets/definition-variants
+          git add languages/datasets/definition-review languages/datasets/definition-pivot languages/datasets/definition-variants languages/datasets/definition-english
           if git diff --cached --quiet; then
             echo "No definition review queue changes."
             exit 0
