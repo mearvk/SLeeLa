@@ -56,6 +56,23 @@ Function IDs and typed operation IDs remain distinct from opcode IDs. The
 historical native-math branch's assignment of `OP_MATH_CALL` to 179 is invalid
 for this repository state.
 
+## VM-generation and decompiler boundary
+
+The premium SLVM/1 through SLVM/11 runners are generated as thin, grade-specific
+admission layers over the shared `impl/build/libslcore.a`. Their Makefiles link
+that archive rather than carrying independent opcode dispatch loops. Adding
+the math kernel object to `SLCORE_OBJS` therefore supplies opcode 195 to all
+eleven runner builds; each runner still requires a build/self-check against the
+new archive before release qualification.
+
+The current native decompiler under `decompiler/` decodes native executable
+and object-code instruction sets (x86, x86-64, ARM, AArch64). It does not
+currently parse the SLeeLa `.sleela` VM artifact container or its bytecode
+stream. Consequently, it has no SLeeLa VM opcode decoder in which to add a
+special `OP_MATH_CALL` rendering. A separate SLeeLa artifact reader and
+bytecode-to-SLIR path is required before decompiler support can be claimed.
+Do not confuse this with the existing native-binary disassembler.
+
 ## VM array ownership and safety contract
 
 VM arrays remain `SL_ARRAY` values containing VM-local handles into the
@@ -159,18 +176,16 @@ impossible argument counts, and malformed stack contracts before execution.
 
 ## Delivery sequence
 
-1. Recover and reconcile the original scalar integration against current master — complete: opcode 195, compiler lowering, VM dispatch, C ABI linkage, and artifact operand validation are now integrated.
-2. Implement the VM-owned array validation, rooting, and transaction adapter.
-3. Connect the existing typed C ABI through that adapter.
-4. Add the append-only opcode/source ISA/native enum/artifact validation as one
-   coordinated change.
-5. Add deterministic compiler lowering and explicit diagnostics.
-6. Add regression coverage for ownership, marshalling, dispatch, and numerical
-   behavior.
-7. Update the opcode map, VM-generation contracts, API docs, and trusted
-   manifests; then run targeted qualification followed by the broader build
-   matrix.
+1. Recover and reconcile the original scalar integration against current master — complete: opcode 195, stable function-ID lowering, VM dispatch, C ABI linkage, artifact operand validation, and the original Core bytecode fallback are integrated.
+2. Implement the VM-owned array validation, rooting, locking, and transactional snapshot/write-back adapter.
+3. Connect the existing typed C ABI through that adapter; preserve VM ownership and never retain pointers into VM array storage.
+4. Append and validate `OP_MATH_ARRAY_CALL` at 196 only after steps 2–3 define its complete stack, shape, and aliasing contract.
+5. Add deterministic typed compiler lowering and explicit diagnostics; retain the scalar lowering at 195.
+6. Add scalar and typed-array regression coverage, including artifact round-trip, fallback, ownership, marshalling, and numerical behavior.
+7. Update the opcode map, SLVM/1–11 shared-Core compatibility contracts, API docs, and trusted manifests. Add a dedicated SLeeLa VM-artifact decoder to the decompiler before claiming bytecode decompilation support.
+8. Run targeted scalar and typed qualification, then the broader platform/build matrix. Do not create broad CI runs before the targeted source and build causes are understood.
 
 Do not describe standalone C ABI qualification as proof of VM bytecode
 integration. Do not mark this integration complete until the source compiler,
-artifact loader, VM dispatch, tests, and documentation all agree.
+artifact loader, VM dispatch, tests, decompiler boundary, and documentation
+all agree.
