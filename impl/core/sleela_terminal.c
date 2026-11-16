@@ -182,27 +182,10 @@ int slterminal_resize(SLTerminalHandle terminal, unsigned cols, unsigned rows) {
     return SUCCEEDED(hr) ? 0 : (int)hr;
 }
 
-/* Drain ConPTY output on a dedicated thread while ClosePseudoConsole runs.
- * Windows 10/11 releases before 24H2 may emit a final frame during shutdown and
- * wait indefinitely for the output pipe to be drained. Closing the reader
- * before ClosePseudoConsole is documented as an alternative, but is not
- * reliable for every hosted-runner process tree. A concurrent drain follows
- * Microsoft's recommended multi-threaded pipe servicing model. */
-static DWORD WINAPI drain_conpty_output(LPVOID context) {
-    HANDLE output = (HANDLE)context;
-    char buffer[4096];
-    DWORD received = 0;
-    while (ReadFile(output, buffer, (DWORD)sizeof(buffer), &received, NULL) &&
-           received != 0) {
-        /* Discard terminal frames during teardown. */
-    }
-    return 0;
-}
 
 int slterminal_close(SLTerminalHandle terminal) {
     SLWinTerminal* t = as_terminal(terminal);
     DWORD wait_result;
-    HANDLE drain_thread = NULL;
     int rc = 0;
     if (!t) return EINVAL;
 
@@ -223,41 +206,17 @@ int slterminal_close(SLTerminalHandle terminal) {
         rc = wait_result == WAIT_FAILED ? (int)GetLastError() : ERROR_TIMEOUT;
     }
 
-    if (t->output_read && t->console) {
-        drain_thread = CreateThread(NULL, 0, drain_conpty_output,
-                                    t->output_read, 0, NULL);
-        if (!drain_thread) {
-            DWORD error_code = GetLastError();
-            if (rc == 0) rc = (int)error_code;
-            /* Documented fallback for resource exhaustion: close the output
-             * reader before ClosePseudoConsole so legacy Windows can finish. */
-            if (!CloseHandle(t->output_read) && rc == 0)
-                rc = (int)GetLastError();
-            t->output_read = NULL;
-        }
-    }
-
-    if (t->console) {
-        /* Keep output_read open until the drain thread observes the broken pipe.
-         * This allows ClosePseudoConsole to emit and flush its final frame. */
-        ClosePseudoConsole(t->console);
-    }
-    t->console = NULL;
-
-    if (drain_thread) {
-        DWORD drain_wait = WaitForSingleObject(drain_thread, 5000);
-        if (drain_wait == WAIT_TIMEOUT) {
-            (void)CancelSynchronousIo(drain_thread);
-            drain_wait = WaitForSingleObject(drain_thread, 1000);
-            if (rc == 0) rc = ERROR_TIMEOUT;
-        }
-        if (drain_wait == WAIT_FAILED && rc == 0) rc = (int)GetLastError();
-        CloseHandle(drain_thread);
-    }
-
+    /* Close the ConPTY output reader before ClosePseudoConsole. On older
+     * Windows 10/11 console hosts, keeping a reader thread blocked in ReadFile
+     * while closing the pseudo console can deadlock teardown. Closing the pipe
+     * endpoint first is the documented shutdown alternative and makes the
+     * teardown independent of a final VT frame being drained. */
     if (t->output_read && !CloseHandle(t->output_read) && rc == 0)
         rc = (int)GetLastError();
     t->output_read = NULL;
+
+    if (t->console) ClosePseudoConsole(t->console);
+    t->console = NULL;
 
     if (t->process && !CloseHandle(t->process) && rc == 0)
         rc = (int)GetLastError();
