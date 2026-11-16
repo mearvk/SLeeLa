@@ -13,8 +13,7 @@ on:
       - ".github/workflows/fruchst-validate.yml"
   pull_request:
     paths:
-      - "languages/tools/fruchst.py"
-      - "languages/tools/test_fruchst.py"
+      - "languages/tools/**"
       - "languages/FRUCHST_FORMAT.md"
       - "languages/FRUCHST_TARGETS.json"
       - "languages/FRUCHST_SOURCES.md"
@@ -34,4 +33,4 @@ jobs:
         with:
           python-version: "3.12"
       - name: Run FRUCHST unit tests
-        run: python3 -m unittest discover -s languages/tools -p "test_fruchst.py" -v
+        run: python3 -m unittest discover -s languages/tools -p "test_*.py" -v
