@@ -187,7 +187,20 @@ def load_candidates(directory: Path):
         raise ValueError("TARGETS and WIKTIONARY_LANG_CODES must cover the same tags")
 
     for language_tag in TARGETS:
-        path = candidate_path_for(directory, language_tag)
+        matches = [
+            path for prefix in ("wordhoard", "frequencywords", "wikipedia")
+            if (path := directory / f"{prefix}-{language_tag}.json").is_file()
+        ]
+        if not matches:
+            # The registry is a target catalog; source acquisition is incremental.
+            # Only languages with an actual staged candidate file enter this run.
+            continue
+        if len(matches) != 1:
+            raise ValueError(
+                f"{directory}: expected exactly one candidate file for "
+                f"{language_tag}, found {len(matches)}"
+            )
+        path = matches[0]
         doc = json.loads(path.read_text(encoding="utf-8"))
         entries = doc.get("entries", [])
         if doc.get("language_tag") != language_tag:
@@ -216,6 +229,8 @@ def load_candidates(directory: Path):
         wanted[language_tag] = set(mapped)
         candidate_paths[language_tag] = path
 
+    if not docs:
+        raise ValueError(f"{directory}: no candidate files found for registered FRUCHST languages")
     return docs, words, wanted, candidate_paths
 
 
@@ -233,7 +248,7 @@ def extract_edition(path: Path, wanted: dict[str, set[str]]):
     for language_tag, wiktionary_code in WIKTIONARY_LANG_CODES.items():
         tags_by_wiktionary_code.setdefault(wiktionary_code, []).append(language_tag)
 
-    found = {language_tag: {} for language_tag in TARGETS}
+    found = {language_tag: {} for language_tag in wanted}
     opener = gzip.open if path.suffix.casefold() == ".gz" else open
     with opener(path, "rt", encoding="utf-8") as stream:
         for line_no, line in enumerate(stream, 1):
@@ -251,7 +266,7 @@ def extract_edition(path: Path, wanted: dict[str, set[str]]):
             if not isinstance(raw_word, str):
                 continue
             word = norm(raw_word)
-            tags = [tag for tag in matching_tags if word in wanted[tag]]
+            tags = [tag for tag in matching_tags if tag in wanted and word in wanted[tag]]
             if not tags:
                 continue
 
@@ -469,7 +484,7 @@ def main():
         for edition, path in source_paths.items()
     }
     args.output.mkdir(parents=True, exist_ok=True)
-    for language_tag in TARGETS:
+    for language_tag in docs:
         candidate_file = candidate_paths[language_tag]
         queue = build_queue(
             language_tag,
