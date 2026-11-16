@@ -37,14 +37,14 @@ def main() -> int:
         return fail("catalog must identify the authoritative source registry")
 
     source_names = re.findall(
-        r"^[ \\t]*<[ \\t]*(OP_[A-Z0-9_]+)(?:[ \\t]+[0-9]+(?:[ \\t]+--[^\\n]*)?)?[ \\t]*>$",
+        r"^[ \t]*<[ \t]*(OP_[A-Z0-9_]+)(?:[ \t]+[0-9]+(?:[ \t]+--[^\n]*)?)?[ \t]*>$",
         source, re.MULTILINE,
     )
-    enum_match = re.search(r"typedef enum \\{([\\s\\S]*?)\\}\\s*SLOp;", native)
+    enum_match = re.search(r"typedef enum \{([\s\S]*?)\}\s*SLOp;", native)
     if not enum_match:
         return fail("native SLOp enum not found")
-    enum_body = re.sub(r"/\\*[\\s\\S]*?\\*/|//[^\\n]*", "", enum_match.group(1))
-    native_names = [name for name in re.findall(r"\\b(OP_[A-Z0-9_]+)\\b", enum_body)
+    enum_body = re.sub(r"/\*[\s\S]*?\*/|//[^\n]*", "", enum_match.group(1))
+    native_names = [name for name in re.findall(r"\b(OP_[A-Z0-9_]+)\b", enum_body)
                     if name != "OP__COUNT"]
     if source_names != native_names:
         limit = min(len(source_names), len(native_names))
