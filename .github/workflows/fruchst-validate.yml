@@ -1,0 +1,29 @@
+name: FRUCHST format validation
+
+on:
+  push:
+    paths:
+      - "languages/tools/fruchst.py"
+      - "languages/tools/test_fruchst.py"
+      - "languages/FRUCHST_FORMAT.md"
+      - ".github/workflows/fruchst-validate.yml"
+  pull_request:
+    paths:
+      - "languages/tools/fruchst.py"
+      - "languages/tools/test_fruchst.py"
+      - "languages/FRUCHST_FORMAT.md"
+      - ".github/workflows/fruchst-validate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-format:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run FRUCHST unit tests
+        run: python3 -m unittest discover -s languages/tools -p "test_fruchst.py" -v
