@@ -16,7 +16,7 @@ for d,_,fs in os.walk(site):
         p=os.path.join(d,f); rel='/'+os.path.relpath(p,site)
         if rel.startswith('/assets/') or rel=='/favicon.svg': assets[rel]=open(p,encoding='utf-8').read()
 out=os.environ.get('BATCH_DIR','../target/batches/')
-dest=os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),'..','screenshots'))+'/'
+dest=os.path.dirname(os.path.abspath(__file__))+'/'
 T=r"""async (page) => {
 const PAGES=__P__; const ASSETS=__A__; const SHOTS=__S__; const DEST=__D__;
 const types={'.css':'text/css','.js':'application/javascript','.svg':'image/svg+xml'};

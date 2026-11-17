@@ -1,5 +1,7 @@
 # Offline preview and screenshots
 
+The screenshot PNGs live in this folder. [`SCREENSHOTS.md`](SCREENSHOTS.md) indexes them by page and facet.
+
 Use this to capture screenshots without a servlet container. Tomcat stays the real runtime.
 
 - `Preview.java` runs the real servlets against a SLeeLa checkout through a mocked servlet API.
@@ -15,7 +17,7 @@ javac -d target/pv -cp jakarta.servlet-api-6.x.jar $(find src/main/java -name '*
 python3 preview/make_manifest.py ..
 java -cp target/pv:jakarta.servlet-api-6.x.jar Preview .. src/main/webapp target/preview-site \
   $(python3 -c "import json;print(' '.join(sorted({m['url'] for m in json.load(open('preview/manifest.json'))})))")
-python3 preview/make_batches.py      # then run each target/batches/batchNN.js in Playwright, one at a time
+python3 preview/make_batches.py      # then run each target/batches/batchNN.js in Playwright, one at a time (PNGs land in preview/)
 ```
 
 Run the batches one at a time. In testing, parallel runs on a single browser context closed it mid-run.

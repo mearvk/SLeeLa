@@ -44,7 +44,7 @@ then a checkout found by walking up from the working directory.
 `deploy/nginx.conf` is a sample reverse proxy for TLS.
 
 ## Screenshots
-All pages and facets are captured in [`screenshots/`](screenshots/README.md). See [`preview/`](preview/README.md) to regenerate them.
+All pages and facets are captured as PNGs in [`preview/`](preview/SCREENSHOTS.md). See [`preview/README.md`](preview/README.md) to regenerate them.
 
 ## Layout
 ```

@@ -2,7 +2,7 @@
 
 Every page type and facet of the JSP + Servlet site: desktop dark and light, phone width, live filters, theme toggle, search states and error pages. 83 images.
 
-Pages taller than 2600 px are captured to the first 2600 px. Regenerate with the steps in [`../preview/README.md`](../preview/README.md).
+Pages taller than 2600 px are captured to the first 2600 px. Regenerate with the steps in [`README.md`](README.md).
 
 ## Home
 
