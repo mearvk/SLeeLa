@@ -21,6 +21,8 @@
 #   --tomcat-only    skip Apache
 #   --apache-only    skip Tomcat (Tomcat must already serve the site)
 #   --no-rollback    keep the failed state for debugging instead of restoring the backup
+#   --install-deps   apt-get install bubblewrap, util-linux and python3 (the runtime sandbox needs them)
+#   --no-runtime     deploy the site with the Runtime page switched off (sleela.runtime.mode=off)
 #   --war FILE       use a prebuilt WAR instead of building
 #   -h, --help
 #
@@ -34,13 +36,15 @@ set -Eeuo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-DRY_RUN=0; DO_TOMCAT=1; DO_APACHE=1; ROLLBACK=1; WAR_FILE=""
+DRY_RUN=0; DO_TOMCAT=1; DO_APACHE=1; ROLLBACK=1; WAR_FILE=""; INSTALL_DEPS=0; RUNTIME_MODE=auto
 while [ $# -gt 0 ]; do
   case "$1" in
     --dry-run) DRY_RUN=1 ;;
     --tomcat-only) DO_APACHE=0 ;;
     --apache-only) DO_TOMCAT=0 ;;
     --no-rollback) ROLLBACK=0 ;;
+    --install-deps) INSTALL_DEPS=1 ;;
+    --no-runtime) RUNTIME_MODE=off ;;
     --war) shift; WAR_FILE="${1:?--war needs a file}"; [ -e "$WAR_FILE" ] && WAR_FILE="$(cd "$(dirname "$WAR_FILE")" && pwd)/$(basename "$WAR_FILE")" ;;
     -h|--help) sed -n '2,/^set -E/p' "$0" | sed '$d; s/^# \{0,1\}//'; exit 0 ;;
     *) echo "unknown option: $1 (see --help)" >&2; exit 2 ;;
@@ -96,6 +100,33 @@ http_ok() {  # http_ok URL [expected-substring]
   body="$(curl -fsSLk -m 5 "$1" 2>/dev/null)" || return 1
   [ -z "${2:-}" ] || [[ "$body" == *"$2"* ]]
 }
+# verify_page URL LABEL: the page must be the SLeeLa site (meta sleela-site), not another app on the same path
+verify_page() {
+  local body title
+  body="$(curl -fsSLk -m 8 "$1" 2>/dev/null)" || { warn "$2: no answer from $1"; return 1; }
+  if [[ "$body" == *'name="sleela-site"'* ]]; then return 0; fi
+  title="$(printf '%s' "$body" | tr '\n' ' ' | sed -n 's/.*<title>\([^<]*\)<\/title>.*/\1/p' | head -c 80)"
+  warn "$2 is not the SLeeLa site (page title: '${title:-none}')"
+  return 1
+}
+# check_runtime URL: report whether the Runtime page is live or disabled, with the server's own reason
+check_runtime() {
+  local body why
+  RUNTIME_STATUS="unknown"
+  body="$(curl -fsSLk -m 8 "$1" 2>/dev/null)" || { RUNTIME_STATUS="page not reachable"; return 0; }
+  if [[ "$body" == *'data-runtime-state="ready"'* ]]; then RUNTIME_STATUS="ready (sandbox self-test passed)"; return 0; fi
+  why="$(printf '%s' "$body" | tr '\n' ' ' | sed -n 's/.*The runtime is not available right now.<\/strong>[[:space:]]*<span>\([^<]*\)<\/span>.*/\1/p' | head -c 400)"
+  RUNTIME_STATUS="DISABLED: ${why:-reason unknown}"
+  warn "Runtime page is disabled: ${why:-reason unknown}"
+  if [[ "$why" == *"namespace"* || "$why" == *"bwrap"* || "$why" == *"self-test"* || "$why" == *"Operation not permitted"* ]]; then
+    echo "      Likely causes: unprivileged user namespaces are blocked. Check:" >&2
+    echo "        sysctl kernel.unprivileged_userns_clone user.max_user_namespaces kernel.apparmor_restrict_unprivileged_userns" >&2
+    echo "        (Ubuntu 24.04: allow bwrap via AppArmor, or sysctl -w kernel.apparmor_restrict_unprivileged_userns=0)" >&2
+    echo "        and the Tomcat systemd unit: RestrictNamespaces / NoNewPrivileges / ProtectProc / PrivateUsers must not forbid it." >&2
+  fi
+}
+RUNTIME_STATUS="not checked"
+
 wait_http() {  # wait_http URL substring label
   local i
   printf '    waiting for %s ' "$1"
@@ -165,6 +196,23 @@ PY
   return 0
 }
 
+# Tomcat contexts that would answer the site's own paths before ROOT does. Tomcat picks the longest matching context path,
+# so a webapp named "examples" (Tomcat's sample app) shadows /examples/ of the SLeeLa site.
+SITE_PATHS="examples tutorials modules servers api search runtime healthz assets home error"
+TC_CONFLICTS=()   # entries: webapps/NAME[.war]  or  conf/Catalina/localhost/NAME.xml  (relative to CATALINA_BASE)
+find_tomcat_conflicts() {
+  local n f
+  for n in $SITE_PATHS; do
+    for f in "webapps/$n" "webapps/$n.war" "conf/Catalina/localhost/$n.xml"; do
+      if [ -e "$CATALINA_BASE/$f" ] || [ -L "$CATALINA_BASE/$f" ]; then TC_CONFLICTS+=("$f"); fi
+    done
+  done
+  TC_SERVERXML_CONFLICTS=""
+  for n in $SITE_PATHS; do
+    if grep -Eq "<Context[^>]*path=\"/$n\"" "$CATALINA_BASE/conf/server.xml" 2>/dev/null; then TC_SERVERXML_CONFLICTS="$TC_SERVERXML_CONFLICTS /$n"; fi
+  done
+}
+
 # ------------------------------------------------------------------ 1b. detect Apache
 APACHE_REASON=""
 APACHE_HEADERS=0
@@ -175,6 +223,7 @@ detect_apache() {
     || { APACHE_REASON="mod_proxy / mod_proxy_http are not installed in $APACHE_ETC/mods-available"; return 1; }
   [ -d "$APACHE_ETC/conf-available" ] || { APACHE_REASON="$APACHE_ETC/conf-available missing"; return 1; }
   [ -f "$APACHE_ETC/mods-available/headers.load" ] && APACHE_HEADERS=1
+  APACHE_CONFLICTS="$(grep -RnE "^[[:space:]]*(Alias|AliasMatch|ScriptAlias|ProxyPass|ProxyPassMatch|RedirectMatch|Redirect|<Location(Match)?|<Directory)[[:space:]]+\"?(~[[:space:]]+)?\"?/?\^?/?(examples|tutorials|modules|servers|api|search|runtime|healthz|assets)(/|[[:space:]]|\"|\\$|>)" "$APACHE_ETC/apache2.conf" "$APACHE_ETC/conf-enabled/" "$APACHE_ETC/sites-enabled/" 2>/dev/null | grep -v "$CONF_NAME.conf" || true)"
   mapfile -t DOC_ROOTS < <(grep -Rhoi '^[[:space:]]*DocumentRoot[[:space:]]\+.*' "$APACHE_ETC/apache2.conf" "$APACHE_ETC/sites-enabled/" 2>/dev/null \
     | awk '{print $2}' | tr -d '"' | sort -u)
   return 0
@@ -182,7 +231,7 @@ detect_apache() {
 
 TOMCAT_FOUND=0; APACHE_FOUND=0
 if [ "$DO_TOMCAT" = 1 ] || [ "$DO_APACHE" = 1 ]; then
-  if detect_tomcat; then TOMCAT_FOUND=1; fi
+  if detect_tomcat; then TOMCAT_FOUND=1; find_tomcat_conflicts; fi
 fi
 if [ "$DO_APACHE" = 1 ] && detect_apache; then APACHE_FOUND=1; fi
 
@@ -196,6 +245,16 @@ if [ "$DO_APACHE" = 0 ]; then echo "    Apache: skipped (--tomcat-only)"
 elif [ "$APACHE_FOUND" = 1 ]; then echo "    Apache: $APACHE_ETC  DocumentRoot(s): ${DOC_ROOTS[*]:-none}  mod_headers: $([ "$APACHE_HEADERS" = 1 ] && echo yes || echo no)"
 else echo "    Apache: not usable - $APACHE_REASON"; fi
 
+if [ "$TOMCAT_FOUND" = 1 ] && [ "${#TC_CONFLICTS[@]}" -gt 0 ]; then
+  echo "    Tomcat apps that shadow the site's paths (moved into the backup and undeployed): ${TC_CONFLICTS[*]}"
+fi
+if [ "$TOMCAT_FOUND" = 1 ] && [ -n "$TC_SERVERXML_CONFLICTS" ]; then
+  warn "server.xml declares <Context> for$TC_SERVERXML_CONFLICTS. The script does not edit server.xml; remove those Context elements by hand."
+fi
+if [ "$APACHE_FOUND" = 1 ] && [ -n "$APACHE_CONFLICTS" ]; then
+  warn "Existing Apache directives that touch the site's paths. They may win over the SLeeLa proxy rules; review them:"
+  echo "$APACHE_CONFLICTS" | sed 's/^/      /' >&2
+fi
 [ "$DO_TOMCAT" = 0 ] || [ "$TOMCAT_FOUND" = 1 ] || die "cannot deploy to Tomcat: $TOMCAT_REASON"
 if [ "$DO_APACHE" = 1 ] && [ "$APACHE_FOUND" = 1 ] && [ "$TOMCAT_FOUND" = 0 ]; then
   die "Apache can only proxy to a Tomcat on this host, and none is usable: $TOMCAT_REASON"
@@ -222,6 +281,9 @@ if [ "$TOMCAT_FOUND" = 1 ]; then
   backup_path "$CATALINA_BASE/conf/Catalina/localhost/ROOT.xml" tomcat/conf/Catalina/localhost/ROOT.xml
   backup_path "$CATALINA_BASE/conf/server.xml"                 tomcat/conf/server.xml
 fi
+if [ "$TOMCAT_FOUND" = 1 ]; then
+  for f in "${TC_CONFLICTS[@]}"; do backup_path "$CATALINA_BASE/$f" "tomcat/displaced/$f"; done
+fi
 if [ "$APACHE_FOUND" = 1 ]; then
   backup_path "$APACHE_ETC" apache/etc
   for d in "${DOC_ROOTS[@]}"; do backup_path "$d" "apache/docroot$(echo "$d" | sed 's|/*$||')"; done
@@ -235,6 +297,7 @@ fi
   echo 'B="$(cd "$(dirname "$0")" && pwd)"; what="${1:-all}"'
   printf 'CATALINA_BASE=%q; TOMCAT_SERVICE=%q; APACHE_ETC=%q; STATIC_DIR=%q; TOMCAT_OWNER=%q\n' \
     "${CATALINA_BASE:-}" "${TOMCAT_SERVICE:-}" "$APACHE_ETC" "$STATIC_DIR" "${TOMCAT_OWNER:-}"
+  printf 'DISPLACED=('; for f in "${TC_CONFLICTS[@]:-}"; do [ -z "$f" ] || printf ' %q' "$f"; done; printf ' )\n'
   cat <<'EOS'
 if [ "$what" = tomcat ] || [ "$what" = all ]; then
   if [ -n "$CATALINA_BASE" ] && [ -d "$B/tomcat" ]; then
@@ -243,6 +306,10 @@ if [ "$what" = tomcat ] || [ "$what" = all ]; then
     [ ! -e "$B/tomcat/webapps/ROOT" ]     || cp -a "$B/tomcat/webapps/ROOT"     "$CATALINA_BASE/webapps/ROOT"
     [ ! -e "$B/tomcat/webapps/ROOT.war" ] || cp -a "$B/tomcat/webapps/ROOT.war" "$CATALINA_BASE/webapps/ROOT.war"
     [ ! -e "$B/tomcat/conf/Catalina/localhost/ROOT.xml" ] || cp -a "$B/tomcat/conf/Catalina/localhost/ROOT.xml" "$CATALINA_BASE/conf/Catalina/localhost/ROOT.xml"
+    for rel in "${DISPLACED[@]}"; do
+      [ -e "$B/tomcat/displaced/$rel" ] || continue
+      mkdir -p "$CATALINA_BASE/$(dirname "$rel")"; rm -rf "${CATALINA_BASE:?}/$rel"; cp -a "$B/tomcat/displaced/$rel" "$CATALINA_BASE/$rel"
+    done
     [ -z "$TOMCAT_SERVICE" ] || systemctl start "$TOMCAT_SERVICE"
     echo "tomcat restored"
   fi
@@ -262,6 +329,22 @@ EOS
 run chmod 700 "$BACKUP_DIR/restore.sh"
 printf '%s\n' "# saved-path<TAB>original-path, deploy $DATE" "${MANIFEST[@]}" | write_file "$BACKUP_DIR/MANIFEST.tsv"
 echo "    restore with: $BACKUP_DIR/restore.sh [tomcat|apache|all]"
+
+# ------------------------------------------------------------------ 2b. runtime prerequisites
+if [ "$RUNTIME_MODE" = auto ]; then
+  missing=()
+  have bwrap   || missing+=(bubblewrap)
+  have prlimit || missing+=(util-linux)
+  have python3 || missing+=(python3)
+  if [ "${#missing[@]}" -gt 0 ]; then
+    if [ "$INSTALL_DEPS" = 1 ] && have apt-get; then
+      log "Installing runtime sandbox packages: ${missing[*]}"
+      run env DEBIAN_FRONTEND=noninteractive apt-get install -y "${missing[@]}"
+    else
+      warn "The Runtime page needs: ${missing[*]}. Install with: sudo apt-get install ${missing[*]}   (or rerun with --install-deps). The site deploys either way; the Runtime stays disabled until they exist."
+    fi
+  fi
+fi
 
 # ------------------------------------------------------------------ 3. content checkout + WAR
 log "SLeeLa content at $SLEELA_SRC"
@@ -304,17 +387,27 @@ deploy_tomcat() {
 <!-- SLeeLa site, deployed $DATE by html-source/deploy/deploy-apache-tomcat.sh. Content is read live from the checkout below. -->
 <Context>
   <Parameter name="sleela.home" value="$SLEELA_SRC" override="false"/>
+  <Parameter name="sleela.runtime.mode" value="$RUNTIME_MODE" override="false"/>
 </Context>
 EOF
   if [ -n "$TOMCAT_SERVICE" ]; then run systemctl stop "$TOMCAT_SERVICE"; fi
+  for f in "${TC_CONFLICTS[@]}"; do run rm -rf "${CATALINA_BASE:?}/$f"; done
   run rm -rf "$CATALINA_BASE/webapps/ROOT" "$CATALINA_BASE/webapps/ROOT.war"
   run install -m 0644 -o "${TOMCAT_OWNER%:*}" -g "${TOMCAT_OWNER#*:}" "$WAR_FILE" "$CATALINA_BASE/webapps/.ROOT.war.new"
   run mv -f "$CATALINA_BASE/webapps/.ROOT.war.new" "$CATALINA_BASE/webapps/ROOT.war"
   if [ -n "$TOMCAT_SERVICE" ]; then run systemctl start "$TOMCAT_SERVICE"; fi
   [ "$DRY_RUN" = 1 ] && { TOMCAT_STATUS="dry-run"; return 0; }
   if wait_http "http://127.0.0.1:$TOMCAT_PORT/healthz" '"status":"ok"'; then
-    TOMCAT_STATUS="ok  http://127.0.0.1:$TOMCAT_PORT/"
-    return 0
+    local bad=0 pth
+    for pth in / /examples/ /runtime; do
+      verify_page "http://127.0.0.1:$TOMCAT_PORT$pth" "Tomcat $pth" || bad=1
+    done
+    if [ "$bad" = 0 ]; then
+      TOMCAT_STATUS="ok  http://127.0.0.1:$TOMCAT_PORT/"
+      check_runtime "http://127.0.0.1:$TOMCAT_PORT/runtime"
+      return 0
+    fi
+    warn "Tomcat is healthy, but another application answers some of the site's paths."
   fi
   warn "Tomcat did not report healthy. Look at: ${TOMCAT_SERVICE:+journalctl -u $TOMCAT_SERVICE -n 100, }$CATALINA_BASE/logs/"
   { curl -sS -m 5 "http://127.0.0.1:$TOMCAT_PORT/healthz" 2>&1 | head -5; echo; } >&2 || true
@@ -387,10 +480,12 @@ EOF
     return 1
   fi
   systemctl reload apache2
-  if wait_http "$APACHE_URL/healthz" '"status":"ok"' && http_ok "$APACHE_URL/assets/css/sleela.css" "--green"; then
+  if wait_http "$APACHE_URL/healthz" '"status":"ok"' && http_ok "$APACHE_URL/assets/css/sleela.css" "--green" \
+     && verify_page "$APACHE_URL/" "Apache /" && verify_page "$APACHE_URL/examples/" "Apache /examples/" && verify_page "$APACHE_URL/runtime" "Apache /runtime"; then
     APACHE_STATUS="ok  $APACHE_URL/"
     return 0
   fi
+  if [ -n "${APACHE_CONFLICTS:-}" ]; then warn "These existing Apache directives may be answering the site's paths instead:"; echo "$APACHE_CONFLICTS" | sed 's/^/      /' >&2; fi
   warn "the site is not reachable through Apache at $APACHE_URL. Look at /var/log/apache2/error.log"
   if [ "$ROLLBACK" = 1 ]; then warn "rolling Apache back"; "$BACKUP_DIR/restore.sh" apache || warn "Apache rollback failed; restore manually from $BACKUP_DIR"; fi
   APACHE_STATUS="FAILED (rolled back: $([ "$ROLLBACK" = 1 ] && echo yes || echo no))"
@@ -408,6 +503,7 @@ fi
 log "Summary"
 echo "    Tomcat : $TOMCAT_STATUS"
 echo "    Apache : $APACHE_STATUS"
+echo "    Runtime: $RUNTIME_STATUS"
 echo "    Backup : $BACKUP_DIR   (restore: $BACKUP_DIR/restore.sh [tomcat|apache|all])"
 [ "$APACHE_STATUS" = "${APACHE_STATUS#ok}" ] || echo "    Note   : $APACHE_ETC/conf-enabled/$CONF_NAME.conf maps / on every Apache virtual host to the site"
 echo "    Content: $SLEELA_SRC   (to update: git -C $SLEELA_SRC pull && systemctl restart ${TOMCAT_SERVICE:-<tomcat>})"

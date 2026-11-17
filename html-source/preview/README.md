@@ -1,4 +1,4 @@
-# Offline preview and screenshots
+# Offline preview, screenshots and runtime self-check
 
 The screenshot PNGs live in this folder. [`SCREENSHOTS.md`](SCREENSHOTS.md) indexes them by page and facet.
 
@@ -21,3 +21,17 @@ python3 preview/make_batches.py      # then run each target/batches/batchNN.js i
 ```
 
 Run the batches one at a time. In testing, parallel runs on a single browser context closed it mid-run.
+
+## Runtime self-check
+
+`org/sleela/site/runtime/RuntimeCheck.java` tests the Runtime page's safety layers on a host with bubblewrap, prlimit and a
+SLeeLa checkout. It checks that the bundled samples are allowed; that host-reaching programs and several evasion attempts are
+refused (also through library units); and then runs real escape attempts in the sandbox, with the source policy bypassed on
+purpose: reading `/etc`, network, writing to the SLeeLa tree, inherited environment, infinite loops, output floods, leftover
+child processes, memory bombs, rate limits.
+
+```sh
+javac -d target/rc -cp jakarta.servlet-api-6.x.jar $(find src/main/java -name '*.java') preview/org/sleela/site/runtime/RuntimeCheck.java
+cp -r src/main/resources/. target/rc/
+java -cp target/rc:jakarta.servlet-api-6.x.jar org.sleela.site.runtime.RuntimeCheck ..
+```

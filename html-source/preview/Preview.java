@@ -12,6 +12,7 @@ import java.util.*;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import org.sleela.site.ContentIndex;
+import org.sleela.site.runtime.*;
 import org.sleela.site.web.*;
 
 /**
@@ -25,16 +26,36 @@ public final class Preview {
     static <T> T proxy(Class<T> c, InvocationHandler h) { return (T) Proxy.newProxyInstance(Preview.class.getClassLoader(), new Class<?>[] {c}, h); }
 
     static final Map<String, HttpServlet> SERVLETS = new LinkedHashMap<>();
+    static FormToken FORM_TOKEN;
+    static Path EXAMPLE_ROOT;
+
+    /** Programs for the preview's "__src=" parameter, besides bundled sample ids. */
+    static final Map<String, String> CANNED = Map.of(
+        "denied", "#sleela 2.2\nclass T {\n  void main() {\n    int r = osRun(\"cat /etc/passwd\");\n    print(\"done\");\n  }\n}\n",
+        "syntax-error", "#sleela 2.2\nclass T {\n  void main() {\n    print(1 +;\n  }\n}\n");
 
     public static void main(String[] a) throws Exception {
         Path content = Paths.get(a[0]), webapp = Paths.get(a[1]), out = Paths.get(a[2]);
         Map<String, Object> ctxAttrs = new HashMap<>();
         ctxAttrs.put(SiteListener.INDEX, new ContentIndex(content));
-        ServletContext ctx = proxy(ServletContext.class, (p, m, x) -> m.getName().equals("getAttribute") ? ctxAttrs.get(x[0]) : null);
+        ServletContext ctx = proxy(ServletContext.class, (p, m, x) -> {
+            if (m.getName().equals("getAttribute")) return ctxAttrs.get(x[0]);
+            if (m.getName().equals("setAttribute")) { ctxAttrs.put((String) x[0], x[1]); return null; }
+            return null;
+        });
+        Path home = content;
+        EXAMPLE_ROOT = content;
+        RuntimeConfig rc = RuntimeConfig.load(k -> null, home);
+        LibUnits libs = new LibUnits(home);
+        ctxAttrs.put(RuntimeServlet.LIBS, libs);
+        ctxAttrs.put(RuntimeServlet.RUNNER, new SleelaRunner(rc, libs));
+        FORM_TOKEN = new FormToken();
+        ctxAttrs.put(RuntimeServlet.TOKEN, FORM_TOKEN);
         ServletConfig cfg = proxy(ServletConfig.class, (p, m, x) -> m.getName().equals("getServletContext") ? ctx : null);
         SERVLETS.put("", new HomeServlet()); SERVLETS.put("tutorials", new TutorialServlet()); SERVLETS.put("examples", new ExampleServlet());
         SERVLETS.put("modules", new ModuleServlet()); SERVLETS.put("servers", new ServersServlet()); SERVLETS.put("api", new ApiServlet());
         SERVLETS.put("search", new SearchServlet());
+        SERVLETS.put("runtime", new RuntimeServlet());
         for (HttpServlet s : SERVLETS.values()) s.init(cfg);
 
         copyAssets(webapp, out);
@@ -83,13 +104,30 @@ public final class Preview {
         String pathInfo = parts.length > 1 ? "/" + dec(parts[1]) : null;
         HttpServletRequest req = proxy(HttpServletRequest.class, (p, m, x) -> {
             switch (m.getName()) {
-                case "getMethod": return "GET";
+                case "getMethod": return r.params.containsKey("__post") ? "POST" : "GET";
+                case "getRemoteAddr": return "203.0.113.7";
+                case "getHeader": return null;
+                case "setCharacterEncoding": return null;
                 case "getPathInfo": return pathInfo;
                 case "getServletPath": return "/" + first;
                 case "getContextPath": return "";
                 case "setAttribute": attrs.put((String) x[0], x[1]); return null;
                 case "getAttribute": return attrs.get(x[0]);
-                case "getParameter": return r.params.get(x[0]);
+                case "getParameter": {
+                    String k = (String) x[0];
+                    if (r.params.containsKey("__post")) {
+                        if (k.equals("action")) return r.params.get("__post");
+                        if (k.equals("token")) return FORM_TOKEN.issue();
+                        if (k.equals("source")) {
+                            String id = r.params.get("__src");
+                            if (id.startsWith("ex:")) {   // a repo example, as the Open in Runtime button would load it
+                                try { return Files.readString(EXAMPLE_ROOT.resolve(id.substring(3).replaceFirst("^examples-", "examples/"))); } catch (IOException e) { return ""; }
+                            }
+                            return CANNED.containsKey(id) ? CANNED.get(id) : Samples.all().get(id).getSource();
+                        }
+                    }
+                    return r.params.get(k);
+                }
                 case "getRequestDispatcher": r.view = ((String) x[0]).replace("/WEB-INF/views/", "").replace(".jsp", ""); return rd;
                 default: return null;
             }

@@ -4,7 +4,10 @@
   <span class="sep">/</span><c:out value="${fileName}"/></div>
 <div class="section-title">
   <h1><c:out value="${fileName}"/></h1>
-  <div class="btn-row" style="margin:0"><a class="btn ghost small" href="${fn:escapeXml(rawUrl)}">Raw text</a></div>
+  <div class="btn-row" style="margin:0">
+    <c:if test="${not empty runUrl}"><a class="btn small" href="${ctx}${fn:escapeXml(runUrl)}">Open in Runtime</a></c:if>
+    <a class="btn ghost small" href="${fn:escapeXml(rawUrl)}">Raw text</a>
+  </div>
 </div>
 <p class="muted"><code><c:out value="${repoPath}"/></code> &middot; ${lines} line(s) &middot; <c:out value="${lang}"/></p>
 <c:choose>

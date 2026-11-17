@@ -7,6 +7,7 @@
   <div class="btn-row">
     <a class="btn" href="${ctx}/tutorials">Start the tutorials</a>
     <a class="btn ghost" href="${ctx}/examples">Examples by module</a>
+    <a class="btn ghost" href="${ctx}/runtime">Run SLeeLa</a>
     <a class="btn ghost" href="${ctx}/api">API docs</a>
     <a class="btn ghost" href="${ctx}/servers">HTTP servers</a>
   </div>

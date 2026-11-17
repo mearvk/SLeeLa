@@ -1,0 +1,26 @@
+[
+ {
+  "file": "01-hello.sleela",
+  "title": "Hello, SLeeLa"
+ },
+ {
+  "file": "02-loops.sleela",
+  "title": "Loops and squares"
+ },
+ {
+  "file": "03-fibonacci.sleela",
+  "title": "Recursion: Fibonacci"
+ },
+ {
+  "file": "04-fizzbuzz.sleela",
+  "title": "FizzBuzz"
+ },
+ {
+  "file": "05-class-and-fields.sleela",
+  "title": "A class with fields"
+ },
+ {
+  "file": "06-http-colors.sleela",
+  "title": "HTTP colors as data"
+ }
+]

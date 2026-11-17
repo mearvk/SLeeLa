@@ -1,8 +1,8 @@
 # Site screenshots
 
-Every page type and facet of the JSP + Servlet site: desktop dark and light, phone width, live filters, theme toggle, search states and error pages. 83 images.
+Every page type and facet of the JSP + Servlet site: desktop dark and light, phone width, live filters, theme toggle, the Runtime form with real sandbox results, search states and error pages. 97 images.
 
-Pages taller than 2600 px are captured to the first 2600 px. Regenerate with the steps in [`README.md`](README.md).
+The Runtime results are real: the servlet ran each program in the bubblewrap sandbox with the SLeeLa compiler. Pages taller than 2600 px are cut at 2600 px. Regenerate with the steps in [`README.md`](README.md).
 
 ## Home
 
@@ -56,6 +56,7 @@ Pages taller than 2600 px are captured to the first 2600 px. Regenerate with the
 | [example-file-sleela](example-file-sleela.png) | `/examples/examples-gui/CLASSIC-hello-window.sleela` | desktop 1280px, dark |
 | [example-file-sleela-light](example-file-sleela-light.png) | `/examples/examples-gui/CLASSIC-hello-window.sleela` | desktop 1280px, light |
 | [example-file-sleela-mobile](example-file-sleela-mobile.png) | `/examples/examples-gui/CLASSIC-hello-window.sleela` | phone 390px, dark |
+| [example-file-runnable](example-file-runnable.png) | `/examples/examples-extends/inheritance.sleela` | desktop 1280px, dark |
 | [example-file-markdown](example-file-markdown.png) | `/examples/examples-gui/README.md` | desktop 1280px, dark |
 | [example-file-xml](example-file-xml.png) | `/examples/examples/01-math.xml` | desktop 1280px, dark |
 | [example-file-java](example-file-java.png) | `/examples/examples-java/differential/Base64Core.java` | desktop 1280px, dark |
@@ -79,6 +80,24 @@ Pages taller than 2600 px are captured to the first 2600 px. Regenerate with the
 | [module-file-cpp](module-file-cpp.png) | `/modules/sys/http-servers/f/3/http3/main.cpp` | desktop 1280px, dark |
 | [module-file-sleela](module-file-sleela.png) | `/modules/lib/http-3.0/f/Http30Route.sleela` | desktop 1280px, dark |
 | [module-file-makefile](module-file-makefile.png) | `/modules/sys/http-servers/f/3/Makefile` | desktop 1280px, dark |
+
+## Runtime
+
+| Screenshot | URL | Facet |
+|---|---|---|
+| [runtime](runtime.png) | `/runtime` | desktop 1280px, dark |
+| [runtime-light](runtime-light.png) | `/runtime` | desktop 1280px, light |
+| [runtime-mobile](runtime-mobile.png) | `/runtime` | phone 390px, dark |
+| [runtime-sample-fizzbuzz](runtime-sample-fizzbuzz.png) | `/runtime?sample=04-fizzbuzz` | desktop 1280px, dark |
+| [runtime-result-run](runtime-result-run.png) | `/runtime?POST action=run &amp; program=02-loops` | desktop 1280px, dark |
+| [runtime-result-run-light](runtime-result-run-light.png) | `/runtime?POST action=run &amp; program=02-loops` | desktop 1280px, light |
+| [runtime-result-run-mobile](runtime-result-run-mobile.png) | `/runtime?POST action=run &amp; program=03-fibonacci` | phone 390px, dark |
+| [runtime-result-check](runtime-result-check.png) | `/runtime?POST action=check &amp; program=01-hello` | desktop 1280px, dark |
+| [runtime-result-denied](runtime-result-denied.png) | `/runtime?POST action=run &amp; program=denied` | desktop 1280px, dark |
+| [runtime-result-denied-mobile](runtime-result-denied-mobile.png) | `/runtime?POST action=run &amp; program=denied` | phone 390px, dark |
+| [runtime-result-syntax-error](runtime-result-syntax-error.png) | `/runtime?POST action=run &amp; program=syntax-error` | desktop 1280px, dark |
+| [runtime-from-example](runtime-from-example.png) | `/runtime?from=examples-extends/inheritance.sleela` | desktop 1280px, dark |
+| [runtime-from-example-result](runtime-from-example-result.png) | `/runtime?POST action=run &amp; program=ex:examples-extends/inheritance.sleela` | desktop 1280px, dark |
 
 ## HTTP servers
 

@@ -210,6 +210,11 @@
   "mode": "mobile"
  },
  {
+  "name": "example-file-runnable",
+  "url": "/examples/examples-extends/inheritance.sleela",
+  "mode": "dark"
+ },
+ {
   "name": "example-file-markdown",
   "url": "/examples/examples-gui/README.md",
   "mode": "dark"
@@ -311,6 +316,71 @@
  {
   "name": "module-file-makefile",
   "url": "/modules/sys/http-servers/f/3/Makefile",
+  "mode": "dark"
+ },
+ {
+  "name": "runtime",
+  "url": "/runtime",
+  "mode": "dark"
+ },
+ {
+  "name": "runtime-light",
+  "url": "/runtime",
+  "mode": "light"
+ },
+ {
+  "name": "runtime-mobile",
+  "url": "/runtime",
+  "mode": "mobile"
+ },
+ {
+  "name": "runtime-sample-fizzbuzz",
+  "url": "/runtime?sample=04-fizzbuzz",
+  "mode": "dark"
+ },
+ {
+  "name": "runtime-result-run",
+  "url": "/runtime?__post=run&__src=02-loops#result",
+  "mode": "dark"
+ },
+ {
+  "name": "runtime-result-run-light",
+  "url": "/runtime?__post=run&__src=02-loops#result",
+  "mode": "light"
+ },
+ {
+  "name": "runtime-result-run-mobile",
+  "url": "/runtime?__post=run&__src=03-fibonacci#result",
+  "mode": "mobile"
+ },
+ {
+  "name": "runtime-result-check",
+  "url": "/runtime?__post=check&__src=01-hello#result",
+  "mode": "dark"
+ },
+ {
+  "name": "runtime-result-denied",
+  "url": "/runtime?__post=run&__src=denied#result",
+  "mode": "dark"
+ },
+ {
+  "name": "runtime-result-denied-mobile",
+  "url": "/runtime?__post=run&__src=denied#result",
+  "mode": "mobile"
+ },
+ {
+  "name": "runtime-result-syntax-error",
+  "url": "/runtime?__post=run&__src=syntax-error#result",
+  "mode": "dark"
+ },
+ {
+  "name": "runtime-from-example",
+  "url": "/runtime?from=examples-extends/inheritance.sleela",
+  "mode": "dark"
+ },
+ {
+  "name": "runtime-from-example-result",
+  "url": "/runtime?__post=run&__src=ex:examples-extends/inheritance.sleela#result",
   "mode": "dark"
  },
  {

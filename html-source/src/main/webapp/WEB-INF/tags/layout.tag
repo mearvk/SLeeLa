@@ -10,6 +10,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0B0F0F">
+<meta name="sleela-site" content="1">
 <title>${fn:escapeXml(title)} · SLeeLa</title>
 <link rel="icon" type="image/svg+xml" href="${ctx}/favicon.svg">
 <link rel="stylesheet" href="${ctx}/assets/css/sleela.css">
@@ -27,6 +28,7 @@
       <a href="${ctx}/tutorials" class="${active == 'tutorials' ? 'active' : ''}">Tutorials</a>
       <a href="${ctx}/examples" class="${active == 'examples' ? 'active' : ''}">Examples</a>
       <a href="${ctx}/modules" class="${active == 'modules' ? 'active' : ''}">Modules</a>
+      <a href="${ctx}/runtime" class="${active == 'runtime' ? 'active' : ''}">Runtime</a>
       <a href="${ctx}/servers" class="${active == 'servers' ? 'active' : ''}">HTTP servers</a>
       <a href="${ctx}/api" class="${active == 'api' ? 'active' : ''}">API docs</a>
     </nav>

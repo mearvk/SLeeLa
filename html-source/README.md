@@ -12,6 +12,7 @@ Dark by default, light theme and toggle included.
 | `/modules`, `/modules/{lib\|sys}/{name}`, `.../f/{file}` | `ModuleServlet` | `modules.jsp`, `module.jsp`, `source.jsp` |
 | `/servers` | `ServersServlet` | `servers.jsp` (every HTTP server and protocol module) |
 | `/api`, `/api/package/{name}`, `/api/{glossary\|authorship\|packages}` | `ApiServlet` | `api.jsp` (SleelaDoc pages re-skinned) |
+| `/runtime` (GET form, POST run or check) | `RuntimeServlet` | `runtime.jsp` |
 | `/search?q=` | `SearchServlet` | `search.jsp` |
 | `/healthz` | `HealthServlet` | JSON, 200 when content is loaded |
 
@@ -20,6 +21,29 @@ Append `?raw=1` to any example or module file for plain text.
 ## Requirements
 - **Runtime:** Java 11+ and a Jakarta Servlet 6 container: Tomcat 10.1 or 11. Tomcat 9 and 10.0 are refused.
 - **Build:** Maven 3.9+ with Java 11+, or Docker (the scripts fall back to a Maven container).
+
+## Runtime (run SLeeLa on the website)
+
+`/runtime` runs visitor programs with `working-binaries/sleela run main.sleela`. SLeeLa has no sandbox of its own
+(`osRun` is `system()`, `openFile` and `connect` take any path or host), so there are four layers:
+
+1. **Source policy.** Programs naming host-reaching builtins are refused before they start: files and pipes, `osRun`/`osSpawn`,
+   sockets, `Munction`, `synchro*`, `osls*`, `osGetEnv`, `nativeOpen`, `native` members, threads and locks. The check follows the
+   library units a program pulls in, because a capitalized name auto-loads a unit from `lib/` and those units call the same builtins.
+   Comments and strings are blanked the way the SLeeLa lexer does it; anything unclear is treated as code.
+2. **bubblewrap.** New user, pid, ipc, uts, cgroup and network namespaces (no network), read-only `/usr` and SLeeLa tree,
+   empty `/tmp`, a private `/work` deleted after the run, no capabilities, cleared environment.
+3. **prlimit.** Memory, CPU seconds, file size, open files, no core dumps.
+4. **Service limits.** Wall-clock timeout that kills the sandbox, output cap, 2 concurrent runs, 6 runs per minute per client,
+   a CSRF token and same-origin check on the form.
+
+The page enables itself only after a sandbox self-test passes (`working-binaries/sleela` runs a hello program inside bwrap).
+Otherwise the form is shown disabled with the reason. Settings are context parameters in `ROOT.xml` (`sleela.runtime.mode`,
+`timeoutSeconds`, `cpuSeconds`, `memoryMB`, `maxOutputKB`, `maxSourceKB`, `maxConcurrent`, `runsPerMinute`).
+The server needs `bubblewrap`, `util-linux` (prlimit) and `python3` (SLeeLa checks the SHA-256 of its own files before every run).
+`deploy-apache-tomcat.sh --install-deps` installs them. Ubuntu 24.04 restricts unprivileged user namespaces; if the self-test fails
+with a namespace error, allow `bwrap` through AppArmor or set `kernel.apparmor_restrict_unprivileged_userns=0`.
+`preview/` has a self-check that attacks the sandbox on purpose.
 
 ## Deploy on a host running Apache 2 + Tomcat (Debian/Ubuntu)
 
@@ -45,7 +69,13 @@ sudo ./deploy/deploy-apache-tomcat.sh             # deploy to both
 The Apache config applies to **every virtual host** on the server, which is what "the site at `/`" means here.
 DocumentRoot files are backed up but not changed. Turn the site off with `sudo a2disconf sleela-site && sudo systemctl reload apache2`.
 
-Options: `--tomcat-only`, `--apache-only`, `--no-rollback`, `--war FILE`.
+Tomcat apps whose names collide with the site's paths (`examples`, `tutorials`, `modules`, `servers`, `api`, `search`, `runtime`,
+`assets`, `home`, `error`), as webapps or `conf/Catalina/localhost/*.xml`, are copied into the backup and undeployed, because Tomcat serves
+the longest matching context path before ROOT. The stock Tomcat `examples` app is the usual one. `restore.sh tomcat` puts them back.
+Existing Apache `Alias`/`ProxyPass`/`Location` lines on those paths are reported with file and line. After deploying, the script checks
+`/`, `/examples/` and `/runtime` through Tomcat and Apache and reports the Runtime state.
+
+Options: `--tomcat-only`, `--apache-only`, `--no-rollback`, `--install-deps`, `--no-runtime`, `--war FILE`.
 Overrides: `SLEELA_SRC`, `CATALINA_BASE`, `TOMCAT_SERVICE`, `TOMCAT_PORT`, `APACHE_ETC`, `APACHE_URL`, `STATIC_DIR`, `BACKUP_ROOT`.
 To update the content later, run `git -C /srv/sleela pull && sudo systemctl restart tomcat10`; the site caches its file lists at startup.
 

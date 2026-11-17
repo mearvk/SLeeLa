@@ -7,9 +7,11 @@ site=os.environ.get('PREVIEW_SITE','../target/preview-site')
 routes=json.load(open(site+'/routes.json'))
 M=json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'manifest.json')))
 import sys
-if len(sys.argv)>1 and sys.argv[1]=='redo': M=[m for m in M if m['mode']=='mobile' or m['name'].startswith('tutorial-')]
 if len(sys.argv)>2: M=[m for m in M if m['name'] in sys.argv[2:]]
-def page(url): return {'s':int(routes['status:'+url]),'b':open(os.path.join(site,routes[url]),encoding='utf-8').read()}
+elif len(sys.argv)>1 and sys.argv[1]=='redo': M=[m for m in M if m['mode']=='mobile' or m['name'].startswith('tutorial-')]
+def page(url):
+    url = url.split('#')[0]
+    return {'s':int(routes['status:'+url]),'b':open(os.path.join(site,routes[url]),encoding='utf-8').read()}
 assets={}
 for d,_,fs in os.walk(site):
     for f in fs:
@@ -49,10 +51,10 @@ for (const s of SHOTS) {
 }
 return res;
 }"""
-N=6
+N=12
 PFX='redo' if len(sys.argv)>1 else 'batch'
 for b in range(0,len(M),N):
     part=M[b:b+N]
-    js=T.replace('__P__',json.dumps({m['url']:page(m['url']) for m in part})).replace('__A__',json.dumps(assets)).replace('__S__',json.dumps(part)).replace('__D__',json.dumps(dest))
+    js=T.replace('__P__',json.dumps({m['url'].split('#')[0]:page(m['url']) for m in part})).replace('__A__',json.dumps(assets)).replace('__S__',json.dumps(part)).replace('__D__',json.dumps(dest))
     os.makedirs(out,exist_ok=True); open(out+PFX+'%02d.js'%(b//N),'w').write(js)
 print(len(range(0,len(M),N)))

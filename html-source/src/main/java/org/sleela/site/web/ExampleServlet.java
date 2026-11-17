@@ -7,6 +7,9 @@ import org.sleela.site.ContentIndex;
 import org.sleela.site.Model.Crumb;
 import org.sleela.site.Model.ExampleGroup;
 import org.sleela.site.Routes;
+import org.sleela.site.runtime.LibUnits;
+import org.sleela.site.runtime.SleelaRunner;
+import org.sleela.site.runtime.SourcePolicy;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,6 +19,18 @@ import jakarta.servlet.http.HttpServletResponse;
 /** /examples, /examples/{group}, /examples/{group}/{file...}; add ?raw=1 for plain text. */
 @WebServlet(name = "examples", urlPatterns = "/examples/*")
 public class ExampleServlet extends BaseServlet {
+    private final java.util.Map<String, Boolean> runnableCache = new java.util.concurrent.ConcurrentHashMap<>();
+
+    /** The Run button is offered only for programs the runtime would accept (same policy, same library check). */
+    private boolean runnable(String repoPath, String text) {
+        Object runner = getServletContext().getAttribute(RuntimeServlet.RUNNER);
+        Object libs = getServletContext().getAttribute(RuntimeServlet.LIBS);
+        if (!(runner instanceof SleelaRunner) || !(libs instanceof LibUnits)) return false;
+        if (((SleelaRunner) runner).unavailableReason() != null) return false;
+        return runnableCache.computeIfAbsent(repoPath, k ->
+                SourcePolicy.check(text, ((SleelaRunner) runner).config().maxSourceBytes, ((LibUnits) libs)::sourceOf).allowed);
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         ContentIndex ix = index(req, resp);
@@ -43,6 +58,7 @@ public class ExampleServlet extends BaseServlet {
         String name = rel.substring(rel.lastIndexOf('/') + 1);
         if ("1".equals(req.getParameter("raw"))) { sendRawText(resp, name, text); return; }
         List<Crumb> crumbs = List.of(new Crumb("Examples", "/examples"), new Crumb(g.getLabel(), g.getUrl()));
+        if (name.endsWith(".sleela") && runnable(repoPath, text)) req.setAttribute("runUrl", "/runtime?from=" + Routes.seg(g.getSlug() + "/" + rel).replace("%2F", "/"));
         sourceView(req, resp, name, crumbs, "examples", repoPath, name, text, ContentIndex.langOf(name),
                 req.getContextPath() + g.getUrl() + "/" + Routes.path(rel) + "?raw=1");
     }
