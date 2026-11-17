@@ -3,6 +3,7 @@
 #include "unsigned_integer.h"
 #include "wide_integer.h"
 #include "annotation_pipeline.h"
+#include "../annotation/ForwardingAnnotation.hpp"
 #include <map>
 #include "class_relations.h"
 #include "language_handler.h"
@@ -988,6 +989,12 @@ public:
     if(d.severity==frontend::AnnotationDiagnostic::Severity::Error) err(d.message);
     else r.warnings.push_back("Semantic warning: "+d.message);
   }
+  // An annotation written directly before a class, method or field binds to it, not to the document, so the
+  // document pass above never sees it. A @next destination is judged by the same rule wherever it is written.
+  auto checkNext=[&](const std::vector<annotation::Annotation>&anns){
+    for(const auto&a:anns) if(a.name=="next"&&!annotation::ForwardingPolicy::valid_destination(a.value)) err("invalid @next destination '"+a.value+"'");
+  };
+  for(const auto&c:p.classes){ checkNext(c.java.annotations); for(const auto&m:c.methods) checkNext(m.java.annotations); for(const auto&f:c.fields) checkNext(f.annotations); }
   for(const auto&c:p.classes)for(const auto&f:c.fields)fieldInit(c,f);
   for(const auto&c:p.classes)for(const auto&m:c.methods)method(c,m);
   return r;

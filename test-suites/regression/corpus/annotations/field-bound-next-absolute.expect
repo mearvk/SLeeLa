@@ -1,0 +1,7 @@
+id: ANN-FIELD-BOUND
+family: traversal
+expect: reject
+command: check
+message: invalid @next destination
+reference: impl/frontend/semantic.cpp (run: @next on classes, methods and fields)
+note: A field-level @next is judged by the same destination rule.

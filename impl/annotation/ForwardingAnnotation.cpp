@@ -24,5 +24,24 @@ bool ForwardingPolicy::valid_destination(const std::string& v) noexcept {
            c.find('\\') == std::string::npos && c.find(':') == std::string::npos &&
            c.find('%') == std::string::npos;
 }
+std::string ForwardingPolicy::normalize_destination(const std::string& v) {
+    auto word = [](char ch) { return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9'); };
+    std::string out;
+    out.reserve(v.size());
+    for (size_t i = 0; i < v.size(); ++i) {
+        const char ch = v[i];
+        if (ch == ' ' || ch == '\t') {
+            const char before = out.empty() ? '\0' : out.back();
+            size_t j = i + 1;
+            while (j < v.size() && (v[j] == ' ' || v[j] == '\t')) ++j;
+            const char after = j < v.size() ? v[j] : '\0';
+            if (word(before) && word(after)) out.push_back(' ');   // "a b" stays two words
+            i = j - 1;
+            continue;
+        }
+        out.push_back(ch);
+    }
+    return out;
+}
 bool ForwardingPolicy::valid(const ForwardingAnnotation& f) noexcept{return valid_destination(f.next);}
 }

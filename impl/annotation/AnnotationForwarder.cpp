@@ -11,7 +11,7 @@ ForwardingResult AnnotationForwarder::forward(const DocumentAnnotations& d) cons
         if (r.candidates > 1) {
             r.rejected = true; r.status = ForwardingStatus::Multiple; r.next.clear(); return r;
         }
-        r.next = a.value;
+        r.next = ForwardingPolicy::normalize_destination(a.value);
     }
     if (r.candidates == 1) { r.forwarded = true; r.status = ForwardingStatus::Forwarded; }
     return r;

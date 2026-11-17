@@ -30,7 +30,8 @@ binds to that class instead of to the document.
     }
 
 The parser reads the text inside the parentheses as source tokens and joins them with single spaces,
-so a value is a sequence of tokens, not raw text: `system/network` is stored as `system / network`.
+so a value is a sequence of tokens, not raw text: `system/network` is stored as `system / network`
+(the forwarder normalizes it back for `@next`).
 Architecture paths, source paths, release identifiers, counters, and capability names fit this form
 without a second expression grammar. A backslash is not a legal source character.
 
@@ -41,7 +42,9 @@ without a second expression grammar. A backslash is not a legal source character
 3. AST owns the annotation collection; annotations are part of the parsed program.
 4. Semantic analysis validates known annotations, repetition policy, and safe @next
    destinations: a destination must be relative (no leading `/`, no drive or scheme `:`), must not contain a
-   parent component (`..`, also when the tokens are spaced apart), a backslash, a `%`, or a control character. Unknown annotations are preserved with warnings.
+   parent component (`..`, also when the tokens are spaced apart), a backslash, a `%`, or a control character. The same
+   rule applies to a `@next` written before a class, method or field. The forwarded destination is reported
+   as written (`system/net`): the spaces the parser inserts around `/`, `.` and `-` are closed. Unknown annotations are preserved with warnings.
 5. Compiler refuses semantic-invalid annotation programs before bytecode emission.
 6. Runtime installs the same annotation collection and resolves the forwarding decision
    through AnnotationForwarder. Runtime forwarding never bypasses capabilities or routing

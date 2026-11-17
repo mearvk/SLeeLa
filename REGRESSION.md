@@ -73,7 +73,7 @@ New workflow `.github/workflows/regression-set.yml`, on pushes and pull requests
 ### New coverage
 
 - Native suites `reg_memmgr`, `reg_thread`, `reg_net` (loopback), `reg_synchro` (loopback UDP echo server), `reg_http6` (frame layout, truncation, oversized lengths, round trips, random input) and `reg_router`. The instrumented allocator is now mutex-protected so suites with worker threads may allocate.
-- `corpus/` (63 cases): annotations, `@next` traversal and percent-encoding, HTTP 6.0 framing, parser and semantic rejection, accepted oddities, compile-time and run-time limits. See `test-suites/regression/corpus/README.md`.
+- `corpus/` (63 cases at first, 66 after the follow-up below): annotations, `@next` traversal and percent-encoding, HTTP 6.0 framing, parser and semantic rejection, accepted oddities, compile-time and run-time limits. See `test-suites/regression/corpus/README.md`.
 - `test_doc_versions.py`: the release and syntax range in the source and the binary must match the documents that state them.
 - 32 new mutants for the new code (85 in all).
 
@@ -93,15 +93,26 @@ New workflow `.github/workflows/regression-set.yml`, on pushes and pull requests
 
 Syntax 3.1 (range 1.0 .. 3.1, release 1.3.2-pro) replaces the earlier 3.0 ceiling in 22 documents (`markdown/`, `impl/`, `lib/`, `decompiler/`, `docs/`, `api/sleela/2.1/language/`, `install/`, and others); `markdown/VERSION.md` now names 3.1 as current. `impl/frontend/ANNOTATION_PIPELINE.md` now describes the `@name(value)` form the parser accepts. `impl/RUNTIME-AUDIT.md` finding 11 is closed by `test_doc_versions.py`.
 
+### Open issues closed afterwards (same day)
+
+| Issue | Resolution |
+|---|---|
+| `ANN-CLASS-BOUND` | Decided: a `@next` before a class, method or field is judged by the document rule (`impl/frontend/semantic.cpp`). New cases `ANN-METHOD-BOUND`, `ANN-FIELD-BOUND`. |
+| `ANN-NEXT-SPELLING` | `ForwardingPolicy::normalize_destination` closes the spaces the parser inserts around `/`, `.` and `-`; the forwarder reports `system/net`. New case `ANN-NEXT-SPELLING-PUNCT`. |
+| Both cases | Promoted from known issues to hard assertions; the corpus now has 66 cases and no open known issue. |
+| `test_frontend_annotations.cpp` | Updated to the `@name(value)` form and `public class`; built against the `impl/build` objects it passes. It is still not part of a make target. |
+| Nordshrift arrays | The Sleela target emits arrays (any rank, `{...}` in declarations, element read/write, compound assignment, `.length`); output runs identically and re-emits to itself (`Arrays` added to the emitter tests). The Sleela target also printed annotations in the old line form; it now writes `@name(value)`. |
+| Nordshrift Java target | Still refuses arrays, deliberately: a Java array prints as an identity hash and `int` is widened to `long`, so the output would differ from the VM. The error now says so. |
+| `SHA256-DIGESTS.md` | Regenerated. |
+
+Final result: full set 203 tests, 0 failed, 196 s, against the rebuilt `working-binaries/sleela`; project targets `test-sleela`, `test-nordshrift` (+ `-compiler`, `-semantic`, `-compat`, `-e2e`), `-version`, `-lineage`, `-class-dispatch`, `-ref`, `-syntax-1.8`, `-catalog` and `check-manifest` pass.
+
 ### Still open
 
-- `ANN-CLASS-BOUND`: an annotation directly before `class` binds to the class and skips `@next` validation; the pipeline document says it is a document annotation. A language decision.
-- `ANN-NEXT-SPELLING`: a forwarded destination prints as `system / net`.
-- `test-suites/cpp/test_frontend_annotations.cpp` uses the old line form (`@scope system`) and is not built.
-- Nordshrift's Java and Sleela targets do not emit arrays; the C target does not emit the enhanced `for` or objects.
-- Not verified here: the Windows and macOS branches of `sleela_events.c` and of the new suites (the new network, thread and synchro suites are POSIX-only and skip on Windows; CI covers `events_portable.c` on all three).
+- The Windows and macOS builds of the new suites. `reg_net`, `reg_thread` and `reg_synchro` are POSIX-only and skip there; this sandbox has no Windows or macOS toolchain, so porting them could not be checked here. CI covers `events_portable.c` on all three systems.
+- The C target does not emit the enhanced `for` or objects; the Java target does not emit arrays or objects (all fail closed).
+- The Sleela emitter does not print class-level annotations, so a document annotation re-read as a class annotation is dropped on the second emit.
 - Other recursion shapes are not capped (for example very long `else if` chains parse); a crash from a new shape belongs in the corpus.
-- `SHA256-DIGESTS.md` was not regenerated in this pass; it still lists the previous `working-binaries/` digests and the changed files.
 
 ## Verification pass (before the repair)
 

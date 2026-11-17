@@ -7,14 +7,14 @@
 
 int main() {
     const std::string source =
-        "@scope system\n"
-        "@area network\n"
-        "@responsibility transport\n"
-        "@provider posix-socket\n"
-        "@source impl/network/TcpTransport.cpp\n"
-        "@capability network.connect\n"
-        "@next system/network/multiplexing\n"
-        "class AnnotationAware { void main() { print(\"ok\"); } }\n";
+        "@scope(system)\n"
+        "@area(network)\n"
+        "@responsibility(transport)\n"
+        "@provider(posix-socket)\n"
+        "@source(impl/network/TcpTransport.cpp)\n"
+        "@capability(network.connect)\n"
+        "@next(system/network/multiplexing)\n"
+        "public class AnnotationAware { void main() { print(\"ok\"); } }\n";
 
     sleela::Lexer lexer(source);
     auto tokens = lexer.tokenize();
@@ -23,7 +23,8 @@ int main() {
 
     assert(program.annotations.count("scope") == 1);
     assert(program.annotations.count("next") == 1);
-    assert(program.annotations.first("next")->value == "system/network/multiplexing");
+    // the parser joins annotation tokens with spaces; the forwarder closes the gaps
+    assert(sleela::annotation::ForwardingPolicy::normalize_destination(program.annotations.first("next")->value) == "system/network/multiplexing");
 
     auto semantic = sleela::analyzeSemantics(program, sleela::SyntaxVersion{1,3});
     assert(semantic.ok());

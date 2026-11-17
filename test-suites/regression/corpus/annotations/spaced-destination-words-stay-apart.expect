@@ -1,0 +1,7 @@
+id: ANN-NEXT-SPELLING-PUNCT
+family: annotations
+expect: accept
+command: run
+output: Nexter Colony: system/net-v2/x.y
+reference: impl/annotation/ForwardingAnnotation.cpp (normalize_destination)
+note: Hyphens and dots inside a destination survive the spacing repair.

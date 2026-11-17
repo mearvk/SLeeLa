@@ -87,14 +87,10 @@ very long `else if` chain still parses), so a crash from a new shape is a defect
 
 ## Known gaps
 
-- `ANN-CLASS-BOUND`: an annotation written directly before `class` binds to that class, so it skips the
-  `@next` validation that document annotations get. `impl/frontend/ANNOTATION_PIPELINE.md` describes the
-  older behaviour (document annotations before the first class). Which one is intended is a language
-  decision.
-- `ANN-NEXT-SPELLING`: the parser joins annotation tokens with spaces, so a forwarded `system/net` is
-  reported as `system / net`.
-- `impl/frontend/ANNOTATION_PIPELINE.md` and `test-suites/cpp/test_frontend_annotations.cpp` use the
-  line form `@scope system`; the parser accepts only `@scope(system)`.
+None open. `ANN-CLASS-BOUND` and `ANN-NEXT-SPELLING` were known issues and are now hard assertions: a
+`@next` written before a class, method or field is judged by the same destination rule as a document
+annotation, and the forwarder reports a destination as written (`system/net`, not `system / net`).
+`impl/frontend/ANNOTATION_PIPELINE.md` describes the `@name(value)` form the parser accepts.
 
 ## Running
 
@@ -119,11 +115,14 @@ very long `else if` chain still parses), so a crash from a new shape is a defect
 | `ANN-NEXT-EMPTY` | annotations | `annotations/next-empty-value.sleela` | reject (`check`) | A value-form annotation needs a value. |
 | `ANN-NEXT-MULTI-CHECK` | annotations | `annotations/next-multiple-checks.sleela` | accept (`check`) | Several @next declarations are legal metadata; only forwarding refuses them (next case). |
 | `ANN-NEXT-MULTI-RUN` | annotations | `annotations/next-multiple-forwarding.sleela` | reject (`run`) | The runtime refuses ambiguous forwarding before any code runs. |
-| `ANN-NEXT-SPELLING` | annotations | `annotations/forwarded-destination-keeps-its-slashes.sleela` | known issue (accept per contract) | The parser joins an annotation's tokens with single spaces, so the forwarded destination reads 'system / net' instead of 'system/net'. The safety... |
+| `ANN-NEXT-SPELLING` | annotations | `annotations/forwarded-destination-keeps-its-slashes.sleela` | accept (`run`) | The parser joins annotation tokens with spaces; the forwarder now closes the gaps around '/', '.' and '-', so the destination is reported as written. |
+| `ANN-NEXT-SPELLING-PUNCT` | annotations | `annotations/spaced-destination-words-stay-apart.sleela` | accept (`run`) | Hyphens and dots inside a destination survive the spacing repair. |
 | `ANN-OK-DOCUMENT` | annotations | `annotations/ok-document-annotations.sleela` | accept (`check`) | The reference shape: document annotations, one safe relative @next. |
 | `ANN-UNKNOWN` | annotations | `annotations/unknown-annotation.sleela` | accept (`check`) | Unknown annotations are kept and reported as a warning, never silently dropped. |
 | `ANN-UNTERMINATED` | annotations | `annotations/unterminated-parenthesis.sleela` | reject (`check`) | The parenthesis is never closed. |
-| `ANN-CLASS-BOUND` | traversal | `annotations/class-bound-annotation-is-not-document-metadata.sleela` | known issue (reject per contract) | The pipeline document says annotations before the first class are document annotations and are validated. The parser now binds them to that class... |
+| `ANN-CLASS-BOUND` | traversal | `annotations/class-bound-annotation-is-not-document-metadata.sleela` | reject (`check`) | An annotation written directly before a class binds to that class, not to the document. The same destination rule applies to it (it used to bypass... |
+| `ANN-FIELD-BOUND` | traversal | `annotations/field-bound-next-absolute.sleela` | reject (`check`) | A field-level @next is judged by the same destination rule. |
+| `ANN-METHOD-BOUND` | traversal | `annotations/method-bound-next-parent.sleela` | reject (`check`) | A method-level @next is judged by the same destination rule. |
 | `ANN-NEXT-ABSOLUTE` | traversal | `annotations/next-absolute-path.sleela` | reject (`check`) | An absolute destination would leave the architecture tree. |
 | `ANN-NEXT-BACKSLASH` | traversal | `annotations/next-backslash.sleela` | reject (`check`) | A backslash is not a legal source character; the lexer refuses it before the policy sees it. |
 | `ANN-NEXT-DRIVE` | traversal | `annotations/next-drive-letter.sleela` | reject (`check`) | Windows-absolute destination. |

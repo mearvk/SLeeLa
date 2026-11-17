@@ -114,7 +114,12 @@ extended regression set (corpus, memory manager, threads, sockets, synchro, HTTP
 - `slmm_realloc` no longer refuses a growth whose result fits under the limit (old and new were both
   counted); `slthread_*` return -1 for a NULL argument instead of crashing on POSIX; `slnet_write` on an
   invalid handle fails for a zero-length write too.
-Checked: 200/200 regression tests (with mutation testing) with
+- `@next` is judged by the same destination rule on a class, method or field as on the document, and a forwarded
+  destination is reported as written (`system/net`, not `system / net`).
+- the Nordshrift Sleela target emits arrays (creation of any rank, `{...}` initializers in declarations, element
+  read/write and compound assignment, `.length`) and prints annotations as `@name(value)`; the output runs
+  identically and re-emits to itself. The Java target still refuses arrays on purpose.
+Checked: 203/203 regression tests (with mutation testing) with
 `SLEELA_BIN=$PWD/working-binaries/sleela`.
 
 Reported versions:
@@ -125,8 +130,8 @@ Reported versions:
 SHA-256 of the committed copies:
 
 ```
-61a89262dd481257951359be5becd7df4177fd509e95b34107d180ba9e45e34f  sleela
-9bc3ac9a5e46e744814bfd4b39766d8a43cf35e7daa5ca69d2c95f963d26aad6  nordshrift
+c63a351075a92fd61aa3420e55cf14c21f765e7fcaba3eef423d73ef465fccf8  sleela
+ad138060fc19ed1da398880818ec624af7de8823777f51fd37892717d5db223f  nordshrift
 ```
 
 ---

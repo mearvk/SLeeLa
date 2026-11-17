@@ -80,6 +80,9 @@ class Emitters(ProgramTestCase):
         "Str": 'class Str { static String g(int n) { if (n == 0) { return "end"; } return "n" + n + "," + g(n - 1); } void main() { print(g(3)); print("a" + 1 + 2); } }',
         "Pure": PURE,
         "Algo": ALGO,
+        "Arrays": 'class Arrays { int[] g = {7, 8};\n'
+                  '  void main() { int[] a = {1, 2, 3}; int[][] m = {{1, 2}, {3, 4}}; int[] b = new int[3]; int[][] r = new int[2][3]; int[][] j = new int[2][];\n'
+                  '    b[0] = a[1] + m[1][0]; b[1] += 5; b[2]++; a[0] = r[1][2]; print(b); print(a.length); print(m[1][1]); print(g[0]); print(j.length); } }',
         "Obj": 'class B { String hi() { return "b"; } }\n'
                'class K extends B { String hi() { return "k"; } }\n'
                'class Counter { int v = 1; static int made = 7; int get() { return this.v + 1; }\n'
@@ -162,10 +165,10 @@ class Emitters(ProgramTestCase):
             self.assertNotEqual(r.returncode, 0, f"{target}: {why} must be rejected:\n{r.stdout[-300:]}")
             self.assertIn("cannot emit", rs.diagnostics(r))
             self.assertEqual([l for l in rs.program_output(r) if l.strip()], [], f"{target}: partial output for {why}")
-        # Arrays pass the shared lowering gate (the C target emits them); the
-        # Java and Sleela emitters do not print them yet and must refuse.
+        # Arrays pass the shared lowering gate. The C and Sleela targets emit them; the Java target
+        # refuses: printing an array and widening int to long would not match the VM (a Java array
+        # prints as an identity hash), so a silent translation would change behaviour.
         for target, body, why in (("java", "int[] a = {1, 2}; print(a[0]);", "array access in Java"),
-                                  ("sleela", "int[] a = {1, 2}; print(a[0]);", "array access in Sleela"),
                                   ("c", "int[] a = {1, 2}; for (int x : a) { print(x); }", "enhanced for in C")):
             d = rs.fresh_dir("ns-more")
             rs.write_program(d, "T.sleela", f"#sleela 3.1\nclass T {{ void main() {{ {body} }} }}")

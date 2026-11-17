@@ -1,8 +1,7 @@
 id: ANN-NEXT-SPELLING
 family: annotations
-status: known-issue
 expect: accept
 command: run
 output: Nexter Colony: system/net
 reference: impl/frontend/parser.cpp (parseAnnotation)
-note: The parser joins an annotation's tokens with single spaces, so the forwarded destination reads 'system / net' instead of 'system/net'. The safety check now ignores the spaces; the stored value is still the spaced text.
+note: The parser joins annotation tokens with spaces; the forwarder now closes the gaps around '/', '.' and '-', so the destination is reported as written.
