@@ -198,6 +198,7 @@ void reg_run_case(const char *name, void (*fn)(void)) {
     g_case_failed_mark = g_failed - failed_before;
     if (g_case_failed_mark) ++g_failed_cases;
     printf("  %s  %s\n", g_case_failed_mark ? "FAIL" : "ok  ", name);
+    fflush(stdout);   /* a later crash must not swallow the results so far */
 }
 
 int reg_finish(const char *suite) {

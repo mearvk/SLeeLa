@@ -23,7 +23,8 @@ C_STD="${C_STD:-c11}"; CXX_STD="${CXX_STD:-c++20}"
 # keep untracked build artifacts out of the audit. Empty (disabled) if git is
 # unavailable or this is not a work tree, in which case all source is audited.
 AUDIT_TRACKED=""
-if command -v git >/dev/null 2>&1 && git -C "$ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+# Building this set walks every tracked file; only the audit modes use it.
+if { [ "$MODE" = audit ] || [ "$MODE" = headers ] || [ "$MODE" = all ]; } && command -v git >/dev/null 2>&1 && git -C "$ROOT" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   while IFS= read -r _p; do AUDIT_TRACKED="$AUDIT_TRACKED<$_p>"; done < <(git -C "$ROOT" ls-files)
 fi
 
@@ -111,7 +112,10 @@ headers(){ local f inc; while IFS= read -r f; do if audit_excluded "$f"; then co
 sleela_sources(){ bash "$SUITE/sleela-source-behavior.sh" >"$LOG/sleela-source-behavior.log" 2>&1 && pass "SLeeLa source behavioral corpus" || fail "SLeeLa source behavioral corpus"; }
 coverage(){ if ! have "$PYTHON"; then skip "Python unavailable"; return; fi; bash "$SUITE/generate-function-coverage.sh" >"$LOG/function-coverage.log" 2>&1 && pass "function inventory" || fail "function inventory"; "$PYTHON" "$SUITE/generate-behavior-skeletons.py" >"$LOG/behavior-skeletons.log" 2>&1 && pass "behavior skeletons" || fail "behavior skeletons"; }
 negative(){ [ -d "$SUITE/negative" ] && pass "negative corpus" || fail "negative corpus"; }
-regression(){ [ -d "$SUITE/regression" ] && pass "regression corpus" || fail "regression corpus"; }
+regression(){ [ -d "$SUITE/regression" ] || { fail "regression corpus"; return; }
+  if have "$PYTHON" && [ -f "$SUITE/regression/python/run_regression.py" ]; then
+    "$PYTHON" "$SUITE/regression/python/run_regression.py" --fast >"$LOG/regression.log" 2>&1 && pass "regression set (C, C++, Python; --fast)" || fail "regression set (see $LOG/regression.log)"
+  else skip "regression set (Python unavailable)"; fi; }
 sanitizers(){ bash "$SUITE/sanitizers/run.sh" >"$LOG/sanitizers.log" 2>&1 && pass "sanitizers" || fail "sanitizers"; }
 case "$MODE" in smoke) smoke;; headers) headers;; audit) audit;; coverage) coverage;; negative) negative;; regression) regression;; sleela-sources) sleela_sources;; sanitizers) sanitizers;; all) smoke; headers; audit; coverage; negative; regression; sleela_sources; sanitizers;; esac
 echo "SLeeLa Testbed: PASS=$PASS FAIL=$FAIL SKIP=$SKIP"; [ "$FAIL" -eq 0 ]

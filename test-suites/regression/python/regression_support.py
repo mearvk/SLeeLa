@@ -29,7 +29,8 @@ REG = HERE.parent                      # test-suites/regression
 ROOT = REG.parents[1]                  # repository root
 BUILD = REG / "build"                  # ignored by the repository's **/build/ rule
 LOGS = BUILD / "logs"
-SCRATCH = BUILD / "scratch"
+# per-process scratch: two concurrent runs must not delete each other's working files
+SCRATCH = BUILD / "scratch" / f"run-{os.getpid()}"
 
 CORE = ROOT / "impl" / "core"
 FRONTEND = ROOT / "impl" / "frontend"
@@ -56,6 +57,7 @@ SOURCES: Dict[str, Path] = {
     "path": CORE / "sleela_path.c",
     "time": CORE / "sleela_time.c",
     "memory": CORE / "sleela_memory.c",
+    "events": CORE / "sleela_events.c",
     "lexer": FRONTEND / "lexer.cpp",
 }
 
@@ -67,6 +69,7 @@ SUITES: Dict[str, tuple] = {
     "reg_regex": ("c", ["regex"]),
     "reg_path": ("c", ["path"]),
     "reg_time_memory": ("c", ["time", "memory"]),
+    "reg_events": ("c", ["events"]),
     "reg_lexer": ("cpp", ["lexer"]),
     "reg_model": ("cpp", ["utf16", "java_string", "java_string_codec", "regex", "path"]),
 }
@@ -134,7 +137,7 @@ def build_suite(name: str, replace: Optional[Dict[str, Path]] = None, tag: str =
     out.parent.mkdir(parents=True, exist_ok=True)
     objs = [(replace or {}).get(lib) or library_object(lib) for lib in libs]
     cmd = [CXX if cxx else CC, *(STRICT_CXX if cxx else STRICT_C), *_extra_flags(), src,
-           support_object(), *objs, *WRAP, "-o", out]
+           support_object(), *objs, *WRAP, "-pthread", "-o", out]
     if not cxx:
         cmd += ["-lm"]
     r = _run(cmd)

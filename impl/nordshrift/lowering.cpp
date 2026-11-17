@@ -38,6 +38,12 @@ struct Lowerer {
             expr(x->receiver.get()); for (const auto& a:x->args) expr(a.get());
             out.ops.push_back("expr.method.end"); return;
         }
+        if (auto x=dynamic_cast<const AssignmentExpr*>(e)) {
+            out.ops.push_back("expr.assign:"+x->op); expr(x->target.get()); expr(x->value.get()); out.ops.push_back("expr.assign.end"); return;
+        }
+        if (auto x=dynamic_cast<const ConditionalExpr*>(e)) {
+            out.ops.push_back("expr.cond"); expr(x->cond.get()); expr(x->thenE.get()); expr(x->elseE.get()); out.ops.push_back("expr.cond.end"); return;
+        }
         if (dynamic_cast<const ThisExpr*>(e)) { out.ops.push_back("expr.this"); return; }
         if (dynamic_cast<const SuperExpr*>(e)) { out.ops.push_back("expr.super"); return; }
         if (auto x=dynamic_cast<const NewExpr*>(e)) {

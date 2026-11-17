@@ -79,6 +79,16 @@ tail waits for the next read. Before, a non-ASCII file could not be read safely
 in pieces (`javaStringFromUtf8` stopped the VM on a split character). Regression
 check: `impl/examples/read_utf8_pieces.sleela`.
 
+Rebuilt 2026-11-17 (`sleela` and `nordshrift`), same versions, for the defects the
+regression set (`test-suites/regression/`) found: regex quantifier overflow
+(`sleela_regex.c`); instants before 1970 and JSON escaping in `sleela_time.c`;
+full token text for `!=`, `<=`, `>=` (`lexer.cpp`); `String s += <value>`
+(`semantic.cpp`); and the Nordshrift emitters, which now fail closed on any node they
+cannot print, give the C target real bitwise/shift operators, assignments, `++`/`--`
+and `?:`, and make the Sleela target keep `static`, `protected`, `extends` and
+`implements`. Checked: `test-suites/regression/python/run_regression.py` with
+`SLEELA_BIN=working-binaries/sleela`.
+
 Reported versions:
 
 - `sleela` — `SLeeLa™ Language/Runtime 1.3.2-pro` (supported source syntax 1.0 – 3.1)
@@ -87,8 +97,8 @@ Reported versions:
 SHA-256 of the committed copies:
 
 ```
-d16950f968af8c5366ad430bff141c3a4ab1fa77588f7814e9fe83128ddf2b69  sleela
-3a625e63ded097a85817d998a7aa54465b7c5ede8b3d5109ce33af94f4cde47c  nordshrift
+d3276fc7f5731b7ae72b51e5b442a75c331129a238ab68df87118afddf8969ab  sleela
+586a6b8caf9611bfd34259df621a3c741642d2e2883210f4224a2b6c0d422e35  nordshrift
 ```
 
 ---

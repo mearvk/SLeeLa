@@ -1,20 +1,21 @@
 # Regression set: session progress (17 November 2026)
 
-Two stages this session:
+Three stages this session:
 
 1. Commit `8e570460`: the regression set (C, C++, Python only).
-2. This stage: the defects it found were fixed in the Sleela code, the trust-root
-   manifest was reconciled, and each former known issue became a hard assertion.
+2. Commit `0ea1760b`: the defects it found were fixed in the Sleela code, the
+   trust-root manifest was reconciled, and each former known issue became a hard assertion.
+3. This stage ("improve all"): the open items from stage 2 were closed (see below).
 
 ## Status
 
 | Item | State |
 |---|---|
-| C suites (utf16, java_string, codec, regex, path, time/memory) | passing |
+| C suites (utf16, java_string, codec, regex, path, time/memory, events) | passing |
 | C++ suites (lexer, model-based differential) | passing |
 | Python suites (ctypes, CLI language/contract/transpilers, integrity, mutation) | passing |
-| Full run against the source-built compiler | 110 tests, 0 failures, about 110 s |
-| Mutation test | 45 injected defects, all detected |
+| Full run against the committed `working-binaries/sleela` | 113 tests, 0 failures (about 90 s with `--fast`, about 3 min with mutation testing) |
+| Mutation test | 51 injected defects, all detected (a hang counts as detected) |
 | Open known issues | none |
 | `security/sha256-manifest.json` | regenerated; `make check-manifest` prints OK |
 
@@ -34,31 +35,37 @@ Two stages this session:
 | NS-EMIT-BLOCKS | block bodies are printed once, so `emit(emit(x)) == emit(x)` | `sleela_emit.cpp` |
 | MANIFEST-NESTED-BUILD | generator skips `build/` and `.build/` below scanned dirs (no tracked source file is affected) | `tools/generate-sha256-manifest.py` |
 
+## Stage 3 changes
+
+| Item | Change |
+|---|---|
+| `test-syntax-1.8` | The fixture expectations were stale: the compiler gives more precise messages ("declares no constructor to accept 2 argument(s)", "constructor overload resolution requires syntax 3.0"). Updated the expected text in `tests/sleela-syntax-1.8/run_syntax_1_8_tests.sh`; it passes with old and new binaries. |
+| Nordshrift lowering | Assignment expressions (`=` and every compound operator), `++`/`--`, and `?:` now lower and emit for the Sleela, Java and C targets. Loops with counters now transpile. The C target still rejects array access and a postfix `++`/`--` whose value is used, with a clear message. |
+| `sleela_events.c` (new `reg_events` suite) | Three defects fixed. (1) `set`/`wait`/`close` on `SL_EVENT_INVALID` dereferenced `-1` and crashed. (2) `slevent_wait` never blocked: a timed wait returned `ETIMEDOUT` at once and `set` from another thread could not wake anyone. The event is now a mutex + condition variable, one `set` wakes every waiter, `UINT32_MAX` waits forever. (3) `signal()` was one-shot under strict feature macros, so a second signal killed the process; now `sigaction`. |
+| `run-all.sh --regression` | Now runs `run_regression.py --fast` instead of only checking that the directory exists. It also skips the git-tracked-file scan unless an audit mode needs it (that scan alone took over 15 minutes). |
+| Regression harness | Per-process scratch directory, so concurrent runs cannot delete each other's files; results flush after each case so a crash keeps earlier output. |
+| `working-binaries/` | `sleela` and `nordshrift` rebuilt from the fixed source; README digests and provenance note, the toolchain steering doc, and `SHA256-DIGESTS.md` updated. |
+
 ## Verified against the project's own tests
 
 With the rebuilt compiler: `test-regex`, `test-time-platform`, `test-path-platform`,
 `test-java-utf16`, `test-java-string`, `test-version`, `test-class-dispatch`,
 `test-lineage`, `test-ref`, `test-runtime-artifact-abi`, `test-unsigned-integer`,
-`test-nordshrift`, `-compiler`, `-semantic`, `-e2e`, `-compat` and `test-catalog` all pass.
+`test-nordshrift`, `-compiler`, `-semantic`, `-e2e`, `-compat`, `test-catalog`,
+`test-syntax-1.8` and the events platform smoke test all pass.
 
-Two project tests fail, neither caused by this work:
-
-- `test-syntax-1.8`: two rejection messages differ from the expected text. It fails the
-  same way with the old committed `working-binaries/sleela`.
-- `test-sleela`: `struct_network.sleela` makes a network request, and the sandbox has no
-  network.
+`test-sleela` still stops at `impl/examples/struct_network.sleela`. Its fixed port 45231
+is already answered by an HTTP proxy in this sandbox (it replies `400 Bad Request`), so
+`listen` fails and the example's error path closes an invalid socket. This is the
+environment, not the code; on a host where the port is free the example is unaffected.
 
 ## Not done
 
-- `working-binaries/sleela` and `nordshrift` are still the old builds. They run against the
-  new manifest, but they do not contain these fixes. Refreshing them means copying
-  `impl/build/{sleela,nordshrift}` and updating the documents that carry digests and
-  version claims (`working-binaries/README.md`, the steering docs, `SHA256-DIGESTS.md`).
 - Verified only on Linux x86-64 with GCC 11.5. ASan/UBSan is not installed in the sandbox,
-  so `--sanitize` is untested.
-- Not wired into `test-suites/run-all.sh` or CI.
-- Nordshrift's lowering still rejects assignment expressions, array access, ternaries and
-  a few other nodes. It now fails with a clear message instead of emitting wrong code.
+  so `--sanitize` is untested. The Windows and macOS branches of `sleela_events.c` were not
+  compiled here.
+- Not wired into CI (`.github/workflows`).
+- Nordshrift's C target still rejects array access and value-producing postfix `++`/`--`.
 
 ## How to run
 
@@ -72,8 +79,7 @@ After any edit under `lib/**` or `impl/` source, regenerate the manifest:
 
 ## Possible next steps
 
-1. Refresh `working-binaries/` and the documents that describe them.
-2. Wire `run_regression.py --fast` into `run-all.sh --regression` and CI.
-3. Decide on the two unrelated failing project tests (`test-syntax-1.8`, and `test-sleela` offline).
-4. Extend Nordshrift lowering to the nodes it still rejects, with matching regression tests.
-5. Add suites for more of `impl/core` (net, events, memmgr) and the annotation pipeline.
+1. Run the set in CI on Linux, macOS and Windows runners, with `--sanitize` where available.
+2. Make `struct_network.sleela` pick a free port (or skip when the port is taken).
+3. Array support in the Nordshrift C target.
+4. Suites for more of `impl/core` (net, memmgr, synchro) and the annotation pipeline.

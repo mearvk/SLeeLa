@@ -279,7 +279,7 @@
     },
     {
       "path": "impl/core/sleela_events.c",
-      "sha256": "f2b5387291da06e6dbd82627bc91bbb5e5ed8fc9378c70bdbb012b517d71d5e5"
+      "sha256": "c2ed29e57a0cfbed482f2881b270b4f2f15ccccafec6500d773928f37b366ec3"
     },
     {
       "path": "impl/core/sleela_events.h",
@@ -759,7 +759,7 @@
     },
     {
       "path": "impl/nordshrift/lowering.cpp",
-      "sha256": "7655b24b83d60d5b366b3c3c665f5238d1b3f88a7e27fcb6ac7a63ae2d3d875a"
+      "sha256": "a7dc940923f052a12d26fc1ad8ee5f717e78ed43216b94d06bd3fa66339c0553"
     },
     {
       "path": "impl/nordshrift/lowering.h",
@@ -791,7 +791,7 @@
     },
     {
       "path": "impl/nordshrift/sleela_emit.cpp",
-      "sha256": "fc63b19eaebcaff8ba1241c10fdd77634f413d0a822340c0d2d61fecfbad23df"
+      "sha256": "c9d00a082a903bf4e98ede14eee482dd5ca11f90d72b19819781ba6fb619ce44"
     },
     {
       "path": "impl/nordshrift/sleela_emit.h",

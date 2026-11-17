@@ -107,6 +107,25 @@ struct JavaGen {
 
     void emitBlock(const Block& b, int n) { for (auto& s : b.stmts) emitStmt(s.get(), n); }
     void emitBody(const Stmt* s, int n) { if (auto b = dynamic_cast<const Block*>(s)) emitBlock(*b, n); else emitStmt(s, n); }
+    // An expression whose value is discarded: assignments print without parentheses.
+    void emitTop(const Expr* e) {
+        if (auto a = dynamic_cast<const AssignmentExpr*>(e)) { emitAssign(a); return; }
+        if (auto u = dynamic_cast<const Unary*>(e)) {
+            if (u->op == "post++" || u->op == "post--") { emitExpr(u->operand.get()); out << u->op.substr(4); return; }
+            if (u->op == "++" || u->op == "--") { out << u->op; emitExpr(u->operand.get()); return; }
+        }
+        emitExpr(e);
+    }
+    void emitAssign(const AssignmentExpr* a) {
+        if (!dynamic_cast<const VarExpr*>(a->target.get()) && !dynamic_cast<const MemberAccess*>(a->target.get()))
+            unsupported("Java", "this assignment target", &typeid(*a->target));
+        emitExpr(a->target.get()); out << " " << a->op << " "; emitExpr(a->value.get());
+    }
+    void emitUnary(const Unary* x) {
+        if (x->op == "post++" || x->op == "post--") { out << "("; emitExpr(x->operand.get()); out << x->op.substr(4) << ")"; return; }
+        if (x->op == "++" || x->op == "--") { out << "(" << x->op; emitExpr(x->operand.get()); out << ")"; return; }
+        out << x->op << "("; emitExpr(x->operand.get()); out << ")";
+    }
 
     void emitStmt(const Stmt* s, int n) {
         if (auto b = dynamic_cast<const Block*>(s)) { ind(n); out << "{\n"; emitBlock(*b, n+1); ind(n); out << "}\n"; return; }
@@ -116,7 +135,7 @@ struct JavaGen {
             out << ";\n"; return;
         }
         if (auto a = dynamic_cast<const Assign*>(s)) { ind(n); out << a->name << " = "; emitExpr(a->value.get()); out << ";\n"; return; }
-        if (auto e = dynamic_cast<const ExprStmt*>(s)) { ind(n); emitExpr(e->expr.get()); out << ";\n"; return; }
+        if (auto e = dynamic_cast<const ExprStmt*>(s)) { ind(n); emitTop(e->expr.get()); out << ";\n"; return; }
         if (auto p = dynamic_cast<const PrintStmt*>(s)) { ind(n); out << "System.out.println("; emitExpr(p->expr.get()); out << ");\n"; return; }
         if (auto r = dynamic_cast<const ReturnStmt*>(s)) { ind(n); out << "return"; if (r->value) { out << " "; emitExpr(r->value.get()); } out << ";\n"; return; }
         if (auto i = dynamic_cast<const IfStmt*>(s)) {
@@ -142,7 +161,7 @@ struct JavaGen {
     void emitInline(const Stmt* s) {
         if (auto d = dynamic_cast<const VarDecl*>(s)) { out << mapType(d->type) << " " << d->name; if (d->init) { out << " = "; emitExpr(d->init.get()); } return; }
         if (auto a = dynamic_cast<const Assign*>(s)) { out << a->name << " = "; emitExpr(a->value.get()); return; }
-        if (auto e = dynamic_cast<const ExprStmt*>(s)) { emitExpr(e->expr.get()); return; }
+        if (auto e = dynamic_cast<const ExprStmt*>(s)) { emitTop(e->expr.get()); return; }
         unsupported("Java", "this for-header statement", &typeid(*s));
     }
 
@@ -153,8 +172,10 @@ struct JavaGen {
         if (auto x = dynamic_cast<const StrLit*>(e)) { out << "\"" << esc(x->value) << "\""; return; }
         if (dynamic_cast<const NullLit*>(e)) { out << "null"; return; }
         if (auto x = dynamic_cast<const VarExpr*>(e)) { out << x->name; return; }
-        if (auto x = dynamic_cast<const Unary*>(e)) { out << x->op << "("; emitExpr(x->operand.get()); out << ")"; return; }
+        if (auto x = dynamic_cast<const Unary*>(e)) { emitUnary(x); return; }
         if (auto x = dynamic_cast<const Binary*>(e)) { out << "("; emitExpr(x->lhs.get()); out << " " << x->op << " "; emitExpr(x->rhs.get()); out << ")"; return; }
+        if (auto x = dynamic_cast<const AssignmentExpr*>(e)) { out << "("; emitAssign(x); out << ")"; return; }
+        if (auto x = dynamic_cast<const ConditionalExpr*>(e)) { out << "("; emitExpr(x->cond.get()); out << " ? "; emitExpr(x->thenE.get()); out << " : "; emitExpr(x->elseE.get()); out << ")"; return; }
         if (auto x = dynamic_cast<const Call*>(e)) {
             out << x->callee << "(";
             for (size_t i = 0; i < x->args.size(); i++) { if (i) out << ", "; emitExpr(x->args[i].get()); }
@@ -203,12 +224,31 @@ struct SleelaGen {
     }
     void emitBlock(const Block& b, int n) { for (auto& s : b.stmts) emitStmt(s.get(), n); }
     void emitBody(const Stmt* s, int n) { if (auto b = dynamic_cast<const Block*>(s)) emitBlock(*b, n); else emitStmt(s, n); }
+    // An expression whose value is discarded: assignments print without parentheses.
+    void emitTop(const Expr* e) {
+        if (auto a = dynamic_cast<const AssignmentExpr*>(e)) { emitAssign(a); return; }
+        if (auto u = dynamic_cast<const Unary*>(e)) {
+            if (u->op == "post++" || u->op == "post--") { emitExpr(u->operand.get()); out << u->op.substr(4); return; }
+            if (u->op == "++" || u->op == "--") { out << u->op; emitExpr(u->operand.get()); return; }
+        }
+        emitExpr(e);
+    }
+    void emitAssign(const AssignmentExpr* a) {
+        if (!dynamic_cast<const VarExpr*>(a->target.get()) && !dynamic_cast<const MemberAccess*>(a->target.get()))
+            unsupported("Sleela", "this assignment target", &typeid(*a->target));
+        emitExpr(a->target.get()); out << " " << a->op << " "; emitExpr(a->value.get());
+    }
+    void emitUnary(const Unary* x) {
+        if (x->op == "post++" || x->op == "post--") { out << "("; emitExpr(x->operand.get()); out << x->op.substr(4) << ")"; return; }
+        if (x->op == "++" || x->op == "--") { out << "(" << x->op; emitExpr(x->operand.get()); out << ")"; return; }
+        out << x->op << "("; emitExpr(x->operand.get()); out << ")";
+    }
     void emitStmt(const Stmt* s, int n) {
         if (auto b = dynamic_cast<const Block*>(s)) { ind(n); out << "{\n"; emitBlock(*b, n+1); ind(n); out << "}\n"; return; }
         if (auto d = dynamic_cast<const VarDecl*>(s)) { ind(n); out << d->type << " " << d->name; if (d->init) { out << " = "; emitExpr(d->init.get()); } out << ";\n"; return; }
         if (auto a = dynamic_cast<const Assign*>(s)) { ind(n); out << a->name << " = "; emitExpr(a->value.get()); out << ";\n"; return; }
         if (auto fa = dynamic_cast<const FieldAssign*>(s)) { ind(n); emitExpr(fa->base.get()); out << "." << fa->field << " = "; emitExpr(fa->value.get()); out << ";\n"; return; }
-        if (auto e = dynamic_cast<const ExprStmt*>(s)) { ind(n); emitExpr(e->expr.get()); out << ";\n"; return; }
+        if (auto e = dynamic_cast<const ExprStmt*>(s)) { ind(n); emitTop(e->expr.get()); out << ";\n"; return; }
         if (auto p = dynamic_cast<const PrintStmt*>(s)) { ind(n); out << "print("; emitExpr(p->expr.get()); out << ");\n"; return; }
         if (auto r = dynamic_cast<const ReturnStmt*>(s)) { ind(n); out << "return"; if (r->value) { out << " "; emitExpr(r->value.get()); } out << ";\n"; return; }
         if (auto i = dynamic_cast<const IfStmt*>(s)) { ind(n); out << "if ("; emitExpr(i->cond.get()); out << ") {\n"; emitBody(i->thenS.get(), n+1); ind(n); out << "}"; if (i->elseS) { out << " else {\n"; emitBody(i->elseS.get(), n+1); ind(n); out << "}"; } out << "\n"; return; }
@@ -220,7 +260,7 @@ struct SleelaGen {
     void emitInline(const Stmt* s) {
         if (auto d = dynamic_cast<const VarDecl*>(s)) { out << d->type << " " << d->name; if (d->init) { out << " = "; emitExpr(d->init.get()); } return; }
         if (auto a = dynamic_cast<const Assign*>(s)) { out << a->name << " = "; emitExpr(a->value.get()); return; }
-        if (auto e = dynamic_cast<const ExprStmt*>(s)) { emitExpr(e->expr.get()); return; }
+        if (auto e = dynamic_cast<const ExprStmt*>(s)) { emitTop(e->expr.get()); return; }
         unsupported("Sleela", "this for-header statement", &typeid(*s));
     }
     void emitExpr(const Expr* e) {
@@ -230,8 +270,10 @@ struct SleelaGen {
         if (auto x = dynamic_cast<const StrLit*>(e)) { out << "\"" << esc(x->value) << "\""; return; }
         if (dynamic_cast<const NullLit*>(e)) { out << "null"; return; }
         if (auto x = dynamic_cast<const VarExpr*>(e)) { out << x->name; return; }
-        if (auto x = dynamic_cast<const Unary*>(e)) { out << x->op << "("; emitExpr(x->operand.get()); out << ")"; return; }
+        if (auto x = dynamic_cast<const Unary*>(e)) { emitUnary(x); return; }
         if (auto x = dynamic_cast<const Binary*>(e)) { out << "("; emitExpr(x->lhs.get()); out << " " << x->op << " "; emitExpr(x->rhs.get()); out << ")"; return; }
+        if (auto x = dynamic_cast<const AssignmentExpr*>(e)) { out << "("; emitAssign(x); out << ")"; return; }
+        if (auto x = dynamic_cast<const ConditionalExpr*>(e)) { out << "("; emitExpr(x->cond.get()); out << " ? "; emitExpr(x->thenE.get()); out << " : "; emitExpr(x->elseE.get()); out << ")"; return; }
         if (auto x = dynamic_cast<const Call*>(e)) { out << x->callee << "("; for (size_t i=0;i<x->args.size();i++){ if(i) out<<", "; emitExpr(x->args[i].get()); } out << ")"; return; }
         if (dynamic_cast<const ThisExpr*>(e)) { out << "this"; return; }
         if (dynamic_cast<const SuperExpr*>(e)) { out << "super"; return; }
@@ -338,11 +380,39 @@ struct CGen {
     }
     void emitBlock(const Block& b, int n) { for (auto& s : b.stmts) emitStmt(s.get(), n); }
     void emitBody(const Stmt* s, int n) { if (auto b = dynamic_cast<const Block*>(s)) emitBlock(*b, n); else emitStmt(s, n); }
+    // An expression whose value is discarded: ++/-- may use the cheaper prefix form.
+    void emitTop(const Expr* e) {
+        if (auto u = dynamic_cast<const Unary*>(e)) {
+            if ((u->op == "post++" || u->op == "post--") && dynamic_cast<const VarExpr*>(u->operand.get())) {
+                emitIncDec(static_cast<const VarExpr*>(u->operand.get())->name, u->op[4] == '+'); return;
+            }
+        }
+        emitExpr(e);
+    }
+    void emitIncDec(const std::string& name, bool inc) {
+        out << "(" << name << " = " << (inc ? "nsv_add(" : "nsv_sub(") << name << ", nsv_int(1)))";
+    }
+    void emitAssignC(const AssignmentExpr* a) {
+        auto v = dynamic_cast<const VarExpr*>(a->target.get());
+        if (!v) unsupported("C", "an assignment to anything but a local variable or field name", &typeid(*a->target));
+        static const std::pair<const char*, const char*> kCompound[] = {
+            {"+=","nsv_add"},{"-=","nsv_sub"},{"*=","nsv_mul"},{"/=","nsv_div"},{"%=","nsv_mod"},
+            {"&=","nsv_band"},{"|=","nsv_bor"},{"^=","nsv_bxor"},{"<<=","nsv_shl"},{">>=","nsv_shr"},{">>>=","nsv_ushr"}};
+        out << "(" << v->name << " = ";
+        if (a->op == "=") emitExpr(a->value.get());
+        else {
+            const char* fn = nullptr;
+            for (const auto& kv : kCompound) if (a->op == kv.first) { fn = kv.second; break; }
+            if (!fn) unsupported("C", ("assignment operator '" + a->op + "'").c_str());
+            out << fn << "(" << v->name << ", "; emitExpr(a->value.get()); out << ")";
+        }
+        out << ")";
+    }
     void emitStmt(const Stmt* s, int n) {
         if (auto b = dynamic_cast<const Block*>(s)) { ind(n); out << "{\n"; emitBlock(*b, n+1); ind(n); out << "}\n"; return; }
         if (auto d = dynamic_cast<const VarDecl*>(s)) { ind(n); out << "nsv " << d->name << " = "; if (d->init) emitExpr(d->init.get()); else out << "nsv_int(0)"; out << ";\n"; return; }
         if (auto a = dynamic_cast<const Assign*>(s)) { ind(n); out << a->name << " = "; emitExpr(a->value.get()); out << ";\n"; return; }
-        if (auto e = dynamic_cast<const ExprStmt*>(s)) { ind(n); emitExpr(e->expr.get()); out << ";\n"; return; }
+        if (auto e = dynamic_cast<const ExprStmt*>(s)) { ind(n); emitTop(e->expr.get()); out << ";\n"; return; }
         if (auto p = dynamic_cast<const PrintStmt*>(s)) { ind(n); out << "nsv_print("; emitExpr(p->expr.get()); out << ");\n"; return; }
         if (auto r = dynamic_cast<const ReturnStmt*>(s)) { ind(n); out << "return "; if (r->value) emitExpr(r->value.get()); else out << "nsv_int(0)"; out << ";\n"; return; }
         if (auto i = dynamic_cast<const IfStmt*>(s)) { ind(n); out << "if (nsv_truth("; emitExpr(i->cond.get()); out << ")) {\n"; emitBody(i->thenS.get(), n+1); ind(n); out << "}"; if (i->elseS) { out << " else {\n"; emitBody(i->elseS.get(), n+1); ind(n); out << "}"; } out << "\n"; return; }
@@ -361,7 +431,7 @@ struct CGen {
     void emitInlineDecl(const Stmt* s) {
         if (auto d = dynamic_cast<const VarDecl*>(s)) { out << "nsv " << d->name << " = "; if (d->init) emitExpr(d->init.get()); else out << "nsv_int(0)"; return; }
         if (auto a = dynamic_cast<const Assign*>(s)) { out << a->name << " = "; emitExpr(a->value.get()); return; }
-        if (auto e = dynamic_cast<const ExprStmt*>(s)) { emitExpr(e->expr.get()); return; }
+        if (auto e = dynamic_cast<const ExprStmt*>(s)) { emitTop(e->expr.get()); return; }
         unsupported("C", "this for-header statement", &typeid(*s));
     }
     void emitExpr(const Expr* e) {
@@ -372,6 +442,13 @@ struct CGen {
         if (dynamic_cast<const NullLit*>(e)) { out << "nsv_int(0)"; return; }
         if (auto x = dynamic_cast<const VarExpr*>(e)) { out << x->name; return; }
         if (auto x = dynamic_cast<const Unary*>(e)) {
+            if (x->op == "++" || x->op == "--") {
+                auto v = dynamic_cast<const VarExpr*>(x->operand.get());
+                if (!v) unsupported("C", "++/-- on anything but a variable");
+                emitIncDec(v->name, x->op[0] == '+'); return;
+            }
+            if (x->op == "post++" || x->op == "post--")
+                unsupported("C", "a postfix ++/-- whose value is used (only statement and for-update uses are supported)");
             const char* fn = x->op=="-"?"nsv_neg":x->op=="!"?"nsv_not":x->op=="~"?"nsv_bnot":nullptr;
             if (!fn) unsupported("C", ("unary operator '" + x->op + "'").c_str());
             out << fn << "("; emitExpr(x->operand.get()); out << ")"; return;
@@ -395,6 +472,8 @@ struct CGen {
             for (size_t i = 0; i < x->args.size(); i++) { if (i) out << ", "; emitExpr(x->args[i].get()); }
             out << ")"; return;
         }
+        if (auto x = dynamic_cast<const AssignmentExpr*>(e)) { emitAssignC(x); return; }
+        if (auto x = dynamic_cast<const ConditionalExpr*>(e)) { out << "(nsv_truth("; emitExpr(x->cond.get()); out << ") ? "; emitExpr(x->thenE.get()); out << " : "; emitExpr(x->elseE.get()); out << ")"; return; }
         unsupported("C", "this expression", &typeid(*e));
     }
 };

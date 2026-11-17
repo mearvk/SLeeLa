@@ -48,8 +48,8 @@ expect_ok "constructor-args-pass.sleela"    "new Point(3,4) runs the declared co
 
 echo "rejected:"
 expect_reject "let-inference-invalid-null.sleela"       "let = null is rejected"                 "cannot infer a usable type"
-expect_reject "constructor-arity-invalid.sleela"        "wrong constructor arity is rejected"    "expects a different number of arguments"
-expect_reject "constructor-overload-unsupported.sleela" "constructor overloading is rejected"    "duplicate method"
+expect_reject "constructor-arity-invalid.sleela"        "wrong constructor arity is rejected"    "declares no constructor to accept 2 argument(s)"
+expect_reject "constructor-overload-unsupported.sleela" "constructor overloading needs syntax 3.0" "constructor overload resolution requires syntax 3.0"
 
 if [ "$fail" -eq 0 ]; then
     echo "SYNTAX 1.8 TESTS: PASS"

@@ -50,12 +50,36 @@ PURE_WANT = ["610", "21", "9", "5050", "true", "true", "tri=55", "2", "-2", "-3"
              "true", "false", "true", "false", "false", "true", "false"]
 
 
+ALGO = """class Algo {
+    static int collatz(int n) { int s = 0; while (n != 1) { if (n % 2 == 0) { n = n / 2; } else { n = 3 * n + 1; } s++; } return s; }
+    static int sumTo(int n) { int t = 0; for (int i = 1; i <= n; i++) { t += i; } return t; }
+    static int pick(int a, int b) { return a > b ? a : b; }
+    static int digits(int n) { int c = 0; while (n > 0) { n = n / 10; c++; } return c; }
+    void main() {
+        int k = 0; k += 5; k *= 3; k -= 1; k <<= 2; k ^= 5; k |= 256; k &= 511; k >>= 1; print(k);
+        print(collatz(27)); print(sumTo(100)); print(pick(3, 9)); print(pick(9, 3)); print(digits(9876543));
+        int j = 10; j--; --j; ++j; print(j);
+        for (int i = 0; i < 3; i++) { print("i=" + i); }
+        int m = 7; int r = m > 5 ? m * 2 : m; print(r);
+    }
+}
+"""
+def _collatz(n):
+    s = 0
+    while n != 1:
+        n = n // 2 if n % 2 == 0 else 3 * n + 1
+        s += 1
+    return s
+_k = 0; _k += 5; _k *= 3; _k -= 1; _k <<= 2; _k ^= 5; _k |= 256; _k &= 511; _k >>= 1
+ALGO_WANT = [str(_k), str(_collatz(27)), str(sum(range(1, 101))), "9", "9", "7", "9", "i=0", "i=1", "i=2", "14"]
+
 class Emitters(ProgramTestCase):
     SOURCES = {
         "Hello": 'class Hello { void main() { print("hello"); print(1 + 2); } }',
         "Loop": "class Loop { static int sum(int n) { if (n == 0) { return 0; } return n + sum(n - 1); } void main() { print(sum(10)); } }",
         "Str": 'class Str { static String g(int n) { if (n == 0) { return "end"; } return "n" + n + "," + g(n - 1); } void main() { print(g(3)); print("a" + 1 + 2); } }',
         "Pure": PURE,
+        "Algo": ALGO,
         "Obj": 'class B { String hi() { return "b"; } }\n'
                'class K extends B { String hi() { return "k"; } }\n'
                'class Counter { int v = 1; static int made = 7; int get() { return this.v + 1; }\n'
@@ -122,12 +146,6 @@ class Emitters(ProgramTestCase):
         self.assertIn("static int sum(int n)", emitted_text(emit(d, "Loop.sleela", extra=("--emit",))))
 
     def test_emitters_fail_closed_on_unsupported_constructs(self):
-        d = rs.fresh_dir("ns-assign")                        # local assignment is outside the lowerable subset
-        rs.write_program(d, "Asg.sleela", "#sleela 3.1\nclass Asg { void main() { int s = 0; s = s + 1; print(s); } }")
-        cp = emit(d, "Asg.sleela", "c")
-        self.assertNotEqual(cp.returncode, 0)
-        self.assertIn("unsupported", rs.diagnostics(cp))
-        self.assertNotIn("int main", cp.stdout, "no partial C may be emitted")
         # nothing the emitters cannot print may vanish from the output: each case must fail, with no partial output
         cases = [
             ("java", "class B { String h() { return \"b\"; } }\nclass K extends B { String h() { return \"k\"; } }\nclass M { void main() { print(1); } }", "inheritance"),
@@ -144,11 +162,14 @@ class Emitters(ProgramTestCase):
             self.assertNotEqual(r.returncode, 0, f"{target}: {why} must be rejected:\n{r.stdout[-300:]}")
             self.assertIn("cannot emit", rs.diagnostics(r))
             self.assertEqual([l for l in rs.program_output(r) if l.strip()], [], f"{target}: partial output for {why}")
-        d = rs.fresh_dir("ns-tern")
-        rs.write_program(d, "T.sleela", "#sleela 3.1\nclass T { void main() { print(1 > 0 ? 1 : 2); } }")
-        cp = emit(d, "T.sleela", "c")
-        self.assertNotEqual(cp.returncode, 0)
-        self.assertIn("unsupported", rs.diagnostics(cp))
+        for body, why in (("int[] a = {1, 2}; print(a[0]);", "array access"),
+                          ("int x = 1; print(x++);", "postfix value in C")):
+            d = rs.fresh_dir("ns-more")
+            rs.write_program(d, "T.sleela", f"#sleela 3.1\nclass T {{ void main() {{ {body} }} }}")
+            cp = emit(d, "T.sleela", "c")
+            self.assertNotEqual(cp.returncode, 0, why)
+            self.assertTrue("unsupported" in rs.diagnostics(cp) or "cannot emit" in rs.diagnostics(cp), why + ": " + rs.diagnostics(cp))
+            self.assertNotIn("int main", cp.stdout, "no partial C may be emitted")
 
 
 @unittest.skipUnless(HAVE_JAVA, "javac/java not installed")
@@ -169,6 +190,12 @@ class JavaTarget(ProgramTestCase):
         vm = rs.program_output(rs.run_sleela(["run", "Pure.sleela"], cwd=d))
         self.assertEqual(vm, PURE_WANT)
         self.assertEqual(self.java_run(d, "Pure"), PURE_WANT)
+
+    def test_algorithm_with_loops_assignments_and_ternary(self):
+        d = rs.fresh_dir("java-algo")
+        rs.write_program(d, "Algo.sleela", "#sleela 3.1\n" + ALGO)
+        self.assertEqual(rs.program_output(rs.run_sleela(["run", "Algo.sleela"], cwd=d)), ALGO_WANT, "VM vs oracle")
+        self.assertEqual(self.java_run(d, "Algo"), ALGO_WANT, "JVM vs oracle")
 
     def test_generated_integer_expressions_agree_across_vm_jvm_and_oracle(self):
         rng = random.Random(0x7A5A)
@@ -198,6 +225,13 @@ class CTarget(ProgramTestCase):
         run = self.c_run(d, "Pure")
         self.assertEqual(run.returncode, 0)
         self.assertEqual(run.stdout.splitlines(), PURE_WANT)
+
+    def test_algorithm_with_loops_assignments_and_ternary(self):
+        d = rs.fresh_dir("c-algo")
+        rs.write_program(d, "Algo.sleela", "#sleela 3.1\n" + ALGO)
+        run = self.c_run(d, "Algo")
+        self.assertEqual(run.returncode, 0, run.stderr)
+        self.assertEqual(run.stdout.splitlines(), ALGO_WANT, "emitted C vs oracle")
 
     def test_bitwise_and_shift_operators_compile_correctly(self):
         """Regression (was NS-C-BITOPS): & | ^ << >> >>> and ~ map to real integer operations."""

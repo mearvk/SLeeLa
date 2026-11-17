@@ -12,6 +12,7 @@ under test-suites/regression/build/mutants/.
 Set REG_SKIP_MUTATION=1 to skip (about a minute of compiles).
 """
 import os
+import subprocess
 import unittest
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -48,6 +49,12 @@ MUTANTS = [
     ("time-negative-seconds-truncate", "time", CORE + "sleela_time.c", "if(ms%1000<0)q-=1;", "", ["reg_time_memory"]),
     ("time-json-truncation-silent", "time", CORE + "sleela_time.c", "if((size_t)w>=n){out[0]=0;return ERANGE;}", "if(0){out[0]=0;return ERANGE;}", ["reg_time_memory"]),
     ("lexer-noteq-text-truncated", "lexer", FE + "lexer.cpp", 'emit(Tok::NotEq,"!=")', 'emit(Tok::NotEq,"!")', ["reg_lexer"]),
+    ("events-wait-never-blocks", "events", CORE + "sleela_events.c", "while (!obj->state && rc == 0) rc = pthread_cond_timedwait(&obj->cond, &obj->lock, &deadline);", "", ["reg_events"]),
+    ("events-set-wakes-one-waiter", "events", CORE + "sleela_events.c", "pthread_cond_broadcast(&obj->cond);", "pthread_cond_signal(&obj->cond);", ["reg_events"]),
+    ("events-invalid-handle-dereferenced", "events", CORE + "sleela_events.c", "return (event == 0 || event == SL_EVENT_INVALID) ? NULL : (SLEventObject*)(intptr_t)event;", "return event == 0 ? NULL : (SLEventObject*)(intptr_t)event;", ["reg_events"]),
+    ("events-signal-handler-one-shot", "events", CORE + "sleela_events.c", "action.sa_flags = SA_RESTART;", "action.sa_flags = SA_RESETHAND;", ["reg_events"]),
+    ("events-queue-capacity-off-by-one", "events", CORE + "sleela_events.c", "if (sl_queue_count == SL_EVENT_QUEUE_CAPACITY) {", "if (sl_queue_count == SL_EVENT_QUEUE_CAPACITY - 1) {", ["reg_events"]),
+    ("events-poll-does-not-advance", "events", CORE + "sleela_events.c", "sl_queue_head = (sl_queue_head + 1U) % SL_EVENT_QUEUE_CAPACITY;", "sl_queue_head = sl_queue_head % SL_EVENT_QUEUE_CAPACITY;", ["reg_events"]),
     ("path-root-collapses-to-empty", "path", CORE + "sleela_path.c", "while (j > 1 && out[j - 1] == SL_PATH_NATIVE_SEPARATOR) --j;", "while (j > 0 && out[j - 1] == SL_PATH_NATIVE_SEPARATOR) --j;", ["reg_path", "reg_model"]),
     ("path-normalize-off-by-one-write", "path", CORE + "sleela_path.c", "if (j + 1 >= out_size) return -1;", "if (j + 1 > out_size) return -1;", ["reg_path"]),
     ("path-mkdir-not-idempotent", "path", CORE + "sleela_path.c", "if (slpath_is_directory(path)) return 0;", "if (0) return 0;", ["reg_path"]),
@@ -94,8 +101,11 @@ def kill(mutant):
         if lib not in rs.SUITES[suite][1]:
             raise AssertionError(f"{ident}: {suite} does not link {lib}")
         exe = rs.build_suite(suite, replace={lib: obj}, tag=ident)
-        res = rs.run_binary(exe, timeout=300)
-        verdicts[suite] = res.returncode != 0
+        try:
+            res = rs.run_binary(exe, timeout=60)
+            verdicts[suite] = res.returncode != 0
+        except subprocess.TimeoutExpired:
+            verdicts[suite] = True          # a hang (e.g. a lost wake-up) is a detected defect
     return ident, verdicts
 
 
