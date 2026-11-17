@@ -13,6 +13,7 @@ SLEELA.syntax / impl/DESIGN.md):
   * doubles print with C `%g` formatting (6 significant digits).
 """
 import random
+import subprocess
 import unittest
 
 import regression_support as rs
@@ -497,6 +498,44 @@ class Dbl { void main() {
 } }""", "Dbl")
         self.assertEqual(out, ["3.5", "0.333333", "0.3", "2.5", "3.5", "6", "3", "-3", "1e+10", "1e-05", "100", "1.23457e+08",
                                "10", "0.75", "true", "true", "true"])
+
+
+class ArrayText(ProgramTestCase):
+    """Regression (was VM-ARRAY-TEXT-DEADLOCK): converting an array of arrays to
+    text took the VM's array lock, then took it again for each inner array, and
+    hung forever. print(m), "m=" + m and new T[a][b] printing all hit it."""
+
+    def run_bounded(self, source: str, name: str):
+        d = rs.fresh_dir(name)
+        rs.write_program(d, f"{name}.sleela", "#sleela 3.1\n" + source)
+        try:
+            cp = rs.run_sleela(["run", f"{name}.sleela"], cwd=d, timeout=60)
+        except subprocess.TimeoutExpired:
+            self.fail(f"{name}: the VM hung converting an array to text")
+        self.assertEqual(cp.returncode, 0, rs.diagnostics(cp))
+        return rs.program_output(cp)
+
+    def test_nested_arrays_print_and_concatenate(self):
+        out = self.run_bounded("""
+class Nest { void main() {
+    int[][] m = {{1, 2}, {3}}; print(m); print("m=" + m);
+    int[][] w = new int[2][2]; w[1][0] = 5; print(w);
+    int[][] half = new int[2][]; print(half); int[] row = {7}; half[1] = row; print(half);
+    String[][] s = {{"a", "b"}, {}}; print(s);
+    int[][][] cube = {{{1}, {2, 3}}, {}}; print(cube);
+    int[] flat = {4, 5}; print(flat); int[] none = new int[0]; print(none);
+} }""", "Nest")
+        self.assertEqual(out, ["[[1, 2], [3]]", "m=[[1, 2], [3]]", "[[0, 0], [5, 0]]", "[null, null]",
+                               "[null, [7]]", "[[a, b], []]", "[[[1], [2, 3]], []]", "[4, 5]", "[]"])
+
+    def test_deep_nesting_is_cut_off_not_recursed_forever(self):
+        decls, t = ["    int[] a0 = {7};"], "int[]"
+        for k in range(1, 21):
+            t += "[]"
+            decls.append(f"    {t} a{k} = {{a{k - 1}}};")
+        body = "\n".join(decls)
+        out = self.run_bounded(f"class Deep {{ void main() {{\n{body}\n    print(a20);\n}} }}", "Deep")
+        self.assertEqual(out, ["[" * 16 + "[...]" + "]" * 16])
 
 
 if __name__ == "__main__":

@@ -205,12 +205,27 @@ KNOWN_FILE = BUILD / "known-issues.json"
 NOISE = ("[memory-manager]", "[security]", "[defender]", "verification:")
 
 
+class CompilerSelectionError(RuntimeError):
+    pass
+
+
 def sleela_binary() -> Optional[Path]:
     """Compiler under test: $SLEELA_BIN, else the source build, else the
-    committed prebuilt binary."""
-    for cand in (os.environ.get("SLEELA_BIN"), ROOT / "impl" / "build" / "sleela", ROOT / "working-binaries" / "sleela"):
-        if cand and Path(cand).is_file() and os.access(cand, os.X_OK):
-            return Path(cand)
+    committed prebuilt binary.
+
+    The result is always an absolute path: the CLI suites run the compiler from
+    per-test scratch directories, where a relative path would not resolve.
+    An explicit $SLEELA_BIN that is not an executable file is an error, never a
+    silent fallback to a different compiler."""
+    explicit = os.environ.get("SLEELA_BIN")
+    if explicit:
+        path = Path(explicit).expanduser().resolve()
+        if not (path.is_file() and os.access(path, os.X_OK)):
+            raise CompilerSelectionError(f"SLEELA_BIN={explicit!r} is not an executable file (resolved to {path})")
+        return path
+    for cand in (ROOT / "impl" / "build" / "sleela", ROOT / "working-binaries" / "sleela"):
+        if cand.is_file() and os.access(cand, os.X_OK):
+            return cand.resolve()
     return None
 
 

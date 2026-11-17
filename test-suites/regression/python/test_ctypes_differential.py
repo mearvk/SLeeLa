@@ -8,6 +8,7 @@ Java's String.hashCode()/compareTo() are re-implemented from their published
 definitions.  None of this shares code with the C under test.
 """
 import ctypes
+import os
 import random
 import re
 import struct
@@ -26,6 +27,12 @@ def load():
     global _lib
     if _lib is not None:
         return _lib
+    if os.environ.get("REG_SANITIZE") == "1":
+        # An ASan-instrumented shared object cannot be dlopen()ed into an
+        # uninstrumented Python (the ASan runtime must be loaded first). The
+        # same code is sanitizer-checked through the native C/C++ suites.
+        raise unittest.SkipTest("ctypes differential is not run under REG_SANITIZE=1; "
+                                "the native suites cover this code with ASan/UBSan")
     LIB.parent.mkdir(parents=True, exist_ok=True)
     objs = []
     for name in ("utf16", "java_string", "java_string_codec", "regex", "path", "time"):

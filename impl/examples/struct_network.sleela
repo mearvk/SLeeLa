@@ -15,6 +15,22 @@ struct Order {
 class StructNetwork {
     // The network worker has no object receiver; shared socket state is static.
     static int listener;
+    static int port;
+
+    // listen() returns -1 when the port is taken, so try a small range
+    // instead of failing when another process holds the first port.
+    static int openListener() {
+        int candidate = 45231;
+        while (candidate < 45263) {
+            int handle = listen(candidate);
+            if (handle >= 0) {
+                port = candidate;
+                return handle;
+            }
+            candidate = candidate + 1;
+        }
+        return -1;
+    }
 
     // Server: accept one client, receive a packed Order, rebuild it, and
     // acknowledge with a computed notional value.
@@ -37,7 +53,7 @@ class StructNetwork {
         String wire = structPack(o);
         print("wire = " + wire);
 
-        int socket = connect("127.0.0.1", 45231);
+        int socket = connect("127.0.0.1", port);
         sockwrite(socket, wire);
         String ack = sockread(socket);
         sockclose(socket);
@@ -45,7 +61,11 @@ class StructNetwork {
     }
 
     static void main() {
-        listener = listen(45231);
+        listener = openListener();
+        if (listener < 0) {
+            print("struct_network: no free port in 45231-45262");
+            throw "struct_network: no free port";
+        }
         spawn(server);
         String ack = client();
         print(ack);

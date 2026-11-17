@@ -89,6 +89,19 @@ and `?:`, and make the Sleela target keep `static`, `protected`, `extends` and
 `implements`. Checked: `test-suites/regression/python/run_regression.py` with
 `SLEELA_BIN=working-binaries/sleela`.
 
+Rebuilt again 2026-11-17 (`sleela` and `nordshrift`), same versions:
+- the VM no longer hangs converting an array of arrays to text (`print(m)`,
+  `"m=" + m`); `value_to_text` held the array lock across the recursive call
+  (`impl/core/sleela_core.c`). Nesting deeper than 16 prints `[...]`.
+- the Nordshrift C target emits arrays (creation, `{...}` literals, any rank,
+  element read/write and compound assignment, `.length`, printing, bounds
+  errors) and `++`/`--` whose value is used; the shared lowering gate accepts
+  array indexing and checks array-initializer elements. The Java and Sleela
+  targets still refuse arrays (fail closed).
+Checked: 121/121 regression tests with
+`SLEELA_BIN=$PWD/working-binaries/sleela` (an absolute path; a relative one now
+also works).
+
 Reported versions:
 
 - `sleela` — `SLeeLa™ Language/Runtime 1.3.2-pro` (supported source syntax 1.0 – 3.1)
@@ -97,8 +110,8 @@ Reported versions:
 SHA-256 of the committed copies:
 
 ```
-d3276fc7f5731b7ae72b51e5b442a75c331129a238ab68df87118afddf8969ab  sleela
-586a6b8caf9611bfd34259df621a3c741642d2e2883210f4224a2b6c0d422e35  nordshrift
+a2a18b650b36ab59c1b0feb347f4c6c29c85ea6d8bb98bcde1d5b27a487e3430  sleela
+f13ec15f2db8913bea543676e99802e491c22182f89ff4accec807696a300369  nordshrift
 ```
 
 ---

@@ -1752,7 +1752,14 @@ static void format_int128(sl_int128_t v, char* buf, size_t cap) {
     while (n > 0 && pos < cap - 1) buf[pos++] = tmp[--n];
     buf[pos] = '\0';
 }
+/* Arrays may contain arrays (and, through Object-typed elements, themselves).
+ * Rendering stops at this depth and prints "[...]" instead of recursing on. */
+#define SL_TEXT_MAX_DEPTH 16
+static void value_to_text_depth(SLVM* vm, SLValue v, char* buf, size_t cap, int depth);
 static void value_to_text(SLVM* vm, SLValue v, char* buf, size_t cap) {
+    value_to_text_depth(vm, v, buf, cap, 0);
+}
+static void value_to_text_depth(SLVM* vm, SLValue v, char* buf, size_t cap, int depth) {
     switch (v.type) {
         case SL_NULL:   snprintf(buf, cap, "null"); break;
         case SL_INT:    snprintf(buf, cap, "%lld", (long long)v.as.i); break;
@@ -1770,20 +1777,30 @@ static void value_to_text(SLVM* vm, SLValue v, char* buf, size_t cap) {
             /* Render as [e0, e1, ...] so print()/String concat on an array is
              * legible. Bounded by cap; elements are rendered recursively. */
             if (!array_valid_handle(vm, v.as.h)) { snprintf(buf, cap, "[]"); break; }
+            if (depth >= SL_TEXT_MAX_DEPTH) { snprintf(buf, cap, "[...]"); break; }
+            /* Copy the elements while holding array_mtx, then render them with
+             * the lock released. Rendering an element that is itself an array
+             * takes array_mtx again; it is not recursive, so holding it across
+             * the recursive call deadlocked on any array of arrays. */
             pthread_mutex_lock(&vm->array_mtx);
             SLArrayInstance* ai = &vm->arrays[v.as.h];
+            int len = ai->len > 0 ? ai->len : 0;
+            SLValue* snap = len ? (SLValue*)malloc((size_t)len * sizeof(SLValue)) : NULL;
+            if (snap) memcpy(snap, ai->elems, (size_t)len * sizeof(SLValue));
+            pthread_mutex_unlock(&vm->array_mtx);
+            if (len && !snap) { snprintf(buf, cap, "[...]"); break; }
             size_t pos = 0;
             if (pos + 1 < cap) buf[pos++] = '[';
-            for (int i = 0; i < ai->len && pos + 2 < cap; ++i) {
+            for (int i = 0; i < len && pos + 2 < cap; ++i) {
                 if (i > 0 && pos + 2 < cap) { buf[pos++] = ','; buf[pos++] = ' '; }
                 char ebuf[256];
-                value_to_text(vm, ai->elems[i], ebuf, sizeof(ebuf));
+                value_to_text_depth(vm, snap[i], ebuf, sizeof(ebuf), depth + 1);
                 size_t elen = strlen(ebuf);
                 for (size_t k = 0; k < elen && pos + 2 < cap; ++k) buf[pos++] = ebuf[k];
             }
             if (pos + 1 < cap) buf[pos++] = ']';
             buf[pos] = '\0';
-            pthread_mutex_unlock(&vm->array_mtx);
+            free(snap);
         } break;
     }
 }

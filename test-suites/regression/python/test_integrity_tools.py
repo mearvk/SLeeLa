@@ -319,5 +319,52 @@ class RepositoryToolingHygiene(unittest.TestCase):
         self.assertEqual(bad, [])
 
 
+class CompilerSelection(unittest.TestCase):
+    """Regression (was HARNESS-RELATIVE-SLEELA-BIN): a relative $SLEELA_BIN was
+    returned as given, and the CLI suites run the compiler from scratch
+    directories, so nearly every CLI test failed with FileNotFoundError. A
+    missing $SLEELA_BIN silently fell back to a different compiler."""
+
+    def setUp(self):
+        self.saved = os.environ.get("SLEELA_BIN")
+        self.cwd = os.getcwd()
+
+    def tearDown(self):
+        os.chdir(self.cwd)
+        if self.saved is None:
+            os.environ.pop("SLEELA_BIN", None)
+        else:
+            os.environ["SLEELA_BIN"] = self.saved
+
+    def test_relative_path_is_resolved_to_an_absolute_one(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            exe = Path(tmp) / "bin" / "fake-sleela"
+            exe.parent.mkdir()
+            exe.write_text("#!/bin/sh\nexit 0\n")
+            exe.chmod(0o755)
+            os.chdir(tmp)
+            os.environ["SLEELA_BIN"] = "bin/fake-sleela"
+            got = rs.sleela_binary()
+            self.assertTrue(got.is_absolute(), got)
+            self.assertEqual(got, exe.resolve())
+
+    def test_explicit_path_that_is_not_an_executable_is_an_error(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            not_exec = Path(tmp) / "plain.txt"
+            not_exec.write_text("x")
+            not_exec.chmod(0o644)
+            for value in (str(Path(tmp) / "missing"), str(not_exec), tmp):
+                os.environ["SLEELA_BIN"] = value
+                with self.assertRaises(rs.CompilerSelectionError, msg=value):
+                    rs.sleela_binary()
+
+    def test_runner_refuses_to_start_with_a_bad_sleela_bin(self):
+        env = dict(os.environ, SLEELA_BIN="/nonexistent/sleela")
+        r = subprocess.run([sys.executable, str(rs.HERE / "run_regression.py"), "--only", "integrity"],
+                           capture_output=True, text=True, env=env, timeout=120)
+        self.assertEqual(r.returncode, 2, r.stdout + r.stderr)
+        self.assertIn("SLEELA_BIN", r.stderr)
+
+
 if __name__ == "__main__":
     unittest.main()

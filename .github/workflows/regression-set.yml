@@ -1,0 +1,142 @@
+name: Regression set (C, C++, Python)
+
+# Runs test-suites/regression on every change to the code it covers:
+#   linux       full set (with mutation testing) against the compiler built from
+#               impl/, then the fast set against the committed working-binaries/sleela
+#   sanitizers  the native C/C++ suites under ASan + UBSan
+#   events      a portable test of impl/core/sleela_events.c on Linux, macOS and
+#               Windows (the full suites need GNU ld --wrap, so they are Linux-only)
+
+on:
+  push:
+    branches: [master, main]
+    paths:
+      - 'impl/**'
+      - 'lib/**'
+      - 'test-suites/regression/**'
+      - 'working-binaries/**'
+      - 'security/sha256-manifest.json'
+      - 'tools/generate-sha256-manifest.py'
+      - 'tools/verify-before-execution.py'
+      - 'SHEET.sheet'
+      - '.github/workflows/regression-set.yml'
+  pull_request:
+    branches: [master, main]
+    paths:
+      - 'impl/**'
+      - 'lib/**'
+      - 'test-suites/regression/**'
+      - 'working-binaries/**'
+      - 'security/sha256-manifest.json'
+      - 'tools/generate-sha256-manifest.py'
+      - 'tools/verify-before-execution.py'
+      - 'SHEET.sheet'
+      - '.github/workflows/regression-set.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: regression-set-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  linux:
+    name: Full set (Linux, source-built compiler)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install toolchains
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential pkg-config python3 openjdk-21-jdk \
+            libx11-dev libfreetype-dev libfontconfig1-dev libpng-dev zlib1g-dev
+
+      - name: Check the trust-root manifest
+        working-directory: impl
+        run: SLEELA_SHA256_MANIFEST="$PWD/../security/sha256-manifest.json" make check-manifest
+
+      - name: Build the compiler from source
+        working-directory: impl
+        run: SLEELA_SHA256_MANIFEST="$PWD/../security/sha256-manifest.json" make -j"$(nproc)" build/sleela
+
+      - name: Regression set against the source build (with mutation testing)
+        run: SLEELA_BIN="$PWD/impl/build/sleela" python3 test-suites/regression/python/run_regression.py
+
+      - name: Regression set against the committed working-binaries/sleela
+        run: SLEELA_BIN="$PWD/working-binaries/sleela" python3 test-suites/regression/python/run_regression.py --fast
+
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-logs-linux
+          path: test-suites/regression/build/logs
+          if-no-files-found: ignore
+
+  sanitizers:
+    name: Native suites under ASan + UBSan
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install toolchains
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential python3
+
+      - name: C and C++ suites with -fsanitize=address,undefined
+        env:
+          ASAN_OPTIONS: detect_leaks=1:abort_on_error=1
+          UBSAN_OPTIONS: print_stacktrace=1:halt_on_error=1
+        run: python3 test-suites/regression/python/run_regression.py --sanitize --only native
+
+      - name: Upload logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-logs-sanitizers
+          path: test-suites/regression/build/logs
+          if-no-files-found: ignore
+
+  events:
+    name: sleela_events.c (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up MinGW-w64 (Windows)
+        if: runner.os == 'Windows'
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          install: mingw-w64-ucrt-x86_64-gcc
+
+      - name: Build and run (Linux / macOS)
+        if: runner.os != 'Windows'
+        run: |
+          cc --version | head -1
+          cc -std=c11 -Wall -Wextra -Wpedantic -Werror \
+            test-suites/regression/c/events_portable.c impl/core/sleela_events.c \
+            -o events_portable -pthread
+          ./events_portable
+
+      - name: Build and run (Windows)
+        if: runner.os == 'Windows'
+        shell: msys2 {0}
+        run: |
+          gcc --version | head -1
+          gcc -std=c11 -Wall -Wextra -Wpedantic -Werror \
+            test-suites/regression/c/events_portable.c impl/core/sleela_events.c \
+            -o events_portable.exe
+          ./events_portable.exe

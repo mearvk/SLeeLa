@@ -49,8 +49,14 @@ struct Lowerer {
         if (auto x=dynamic_cast<const NewExpr*>(e)) {
             out.ops.push_back("expr.new:"+x->typeName+":"+std::to_string(x->args.size()));
             for (const auto& a:x->args) expr(a.get());   /* arguments are validated too: none may be dropped */
+            if (x->hasInit) {                            /* syntax 3.1 array initializer {a, b, c} */
+                out.ops.push_back("expr.new.init:"+std::to_string(x->init.size()));
+                for (const auto& v:x->init) expr(v.get());
+                out.ops.push_back("expr.new.init.end");
+            }
             out.ops.push_back("expr.new.end"); return;
         }
+        if (auto x=dynamic_cast<const ArrayAccess*>(e)) { out.ops.push_back("expr.index"); expr(x->base.get()); expr(x->index.get()); out.ops.push_back("expr.index.end"); return; }
         if (auto x=dynamic_cast<const MemberAccess*>(e)) { out.ops.push_back("expr.member:"+x->field); expr(x->base.get()); out.ops.push_back("expr.member.end"); return; }
         fail(std::string("unsupported expression node: ")+typeid(*e).name());
     }

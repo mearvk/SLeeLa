@@ -52,6 +52,12 @@ static void sl_signal_handler(int signal_number) {
     if (signal_number >= 0 && signal_number < (int)(sizeof(sl_signal_flags) / sizeof(sl_signal_flags[0]))) {
         sl_signal_flags[signal_number] = 1;
     }
+#ifdef _WIN32
+    /* The Windows CRT resets a signal() handler to SIG_DFL before calling it,
+     * so without re-installing, a second delivery would terminate the process
+     * (the POSIX branch uses sigaction for the same reason). */
+    (void)signal(signal_number, sl_signal_handler);
+#endif
 }
 
 SLEventPlatform slevent_platform(void) {
@@ -109,7 +115,14 @@ int slevent_clear_signal(int signal_number) {
     return 0;
 }
 
-#ifndef _WIN32
+#ifdef _WIN32
+/* SL_EVENT_INVALID is (HANDLE)-1, which Windows treats as the current-process
+ * pseudo-handle: waiting on it would block until the process exits. Reject it
+ * (and 0) before any Win32 call, matching the POSIX branch's EINVAL. */
+static HANDLE sl_event_handle(SLEventHandle event) {
+    return (event == 0 || event == SL_EVENT_INVALID) ? NULL : (HANDLE)(intptr_t)event;
+}
+#else
 /* A manual-reset event: a flag guarded by a mutex, with a condition variable so
  * that waiters block instead of polling and one set releases every waiter. */
 typedef struct {
@@ -153,7 +166,9 @@ SLEventHandle slevent_create(int initial_state) {
 
 int slevent_set(SLEventHandle event) {
 #ifdef _WIN32
-    return SetEvent((HANDLE)(intptr_t)event) ? 0 : (int)GetLastError();
+    HANDLE handle = sl_event_handle(event);
+    if (!handle) return EINVAL;
+    return SetEvent(handle) ? 0 : (int)GetLastError();
 #else
     SLEventObject* obj = sl_event_object(event);
     if (!obj) return EINVAL;
@@ -167,7 +182,9 @@ int slevent_set(SLEventHandle event) {
 
 int slevent_reset(SLEventHandle event) {
 #ifdef _WIN32
-    return ResetEvent((HANDLE)(intptr_t)event) ? 0 : (int)GetLastError();
+    HANDLE handle = sl_event_handle(event);
+    if (!handle) return EINVAL;
+    return ResetEvent(handle) ? 0 : (int)GetLastError();
 #else
     SLEventObject* obj = sl_event_object(event);
     if (!obj) return EINVAL;
@@ -180,7 +197,10 @@ int slevent_reset(SLEventHandle event) {
 
 int slevent_wait(SLEventHandle event, uint32_t timeout_ms) {
 #ifdef _WIN32
-    DWORD result = WaitForSingleObject((HANDLE)(intptr_t)event, timeout_ms == UINT32_MAX ? INFINITE : timeout_ms);
+    HANDLE handle = sl_event_handle(event);
+    DWORD result;
+    if (!handle) return EINVAL;
+    result = WaitForSingleObject(handle, timeout_ms == UINT32_MAX ? INFINITE : timeout_ms);
     return result == WAIT_OBJECT_0 ? 0 : (result == WAIT_TIMEOUT ? ETIMEDOUT : (int)GetLastError());
 #else
     SLEventObject* obj = sl_event_object(event);
@@ -205,7 +225,9 @@ int slevent_wait(SLEventHandle event, uint32_t timeout_ms) {
 
 int slevent_close(SLEventHandle event) {
 #ifdef _WIN32
-    return CloseHandle((HANDLE)(intptr_t)event) ? 0 : (int)GetLastError();
+    HANDLE handle = sl_event_handle(event);
+    if (!handle) return EINVAL;
+    return CloseHandle(handle) ? 0 : (int)GetLastError();
 #else
     SLEventObject* obj = sl_event_object(event);
     if (!obj) return EINVAL;
@@ -217,11 +239,7 @@ int slevent_close(SLEventHandle event) {
 }
 
 int slevent_valid(SLEventHandle event) {
-#ifdef _WIN32
     return event != SL_EVENT_INVALID && event != 0;
-#else
-    return event != SL_EVENT_INVALID && event != 0;
-#endif
 }
 
 int slevent_post(uint32_t type, uint32_t code, intptr_t value) {

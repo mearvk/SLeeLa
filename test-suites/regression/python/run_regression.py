@@ -129,6 +129,12 @@ def main() -> int:
         print(f"{len(tests)} tests")
         return 0
 
+    try:
+        rs.sleela_binary()
+    except rs.CompilerSelectionError as exc:
+        print(f"run_regression: {exc}", file=sys.stderr)
+        return 2
+
     rs.BUILD.mkdir(parents=True, exist_ok=True)
     if rs.KNOWN_FILE.exists():
         rs.KNOWN_FILE.unlink()
