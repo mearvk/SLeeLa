@@ -89,9 +89,7 @@ const Vocab kKeywords[] = {
     {"boolean", Tok::KwBoolT, "boolean"}, {"String", Tok::KwStringT, "String"},
 };
 
-// Operators and punctuation.  `text` is the token text the lexer should carry;
-// for !=, <= and >= it currently carries only the first character (see the
-// KNOWN ISSUE case), so those three are checked by kind only.
+// Operators and punctuation; the token text must equal the spelling.
 struct OpVocab { const char *src; Tok kind; bool text_checked; };
 const OpVocab kOps[] = {
     {"@", Tok::At, true}, {"(", Tok::LParen, true}, {")", Tok::RParen, true}, {"{", Tok::LBrace, true},
@@ -103,8 +101,8 @@ const OpVocab kOps[] = {
     {"|=", Tok::OrAssign, true}, {"^=", Tok::XorAssign, true}, {"<<=", Tok::ShlAssign, true},
     {">>=", Tok::ShrAssign, true}, {">>>=", Tok::UshrAssign, true}, {"++", Tok::Increment, true},
     {"--", Tok::Decrement, true}, {"<<", Tok::ShiftLeft, true}, {">>", Tok::ShiftRight, true},
-    {">>>", Tok::UnsignedShiftRight, true}, {"==", Tok::EqEq, true}, {"!=", Tok::NotEq, false},
-    {"<", Tok::Lt, true}, {"<=", Tok::Le, false}, {">", Tok::Gt, true}, {">=", Tok::Ge, false},
+    {">>>", Tok::UnsignedShiftRight, true}, {"==", Tok::EqEq, true}, {"!=", Tok::NotEq, true},
+    {"<", Tok::Lt, true}, {"<=", Tok::Le, true}, {">", Tok::Gt, true}, {">=", Tok::Ge, true},
     {"&&", Tok::AndAnd, true}, {"||", Tok::OrOr, true}, {"&", Tok::BitAnd, true}, {"|", Tok::BitOr, true},
     {"^", Tok::BitXor, true}, {"!", Tok::Not, true}, {"~", Tok::BitNot, true}, {"?", Tok::Question, true},
     {":", Tok::Colon, true}, {"::", Tok::DoubleColon, true}, {":::", Tok::TripleColon, true}, {"->", Tok::Arrow, true},
@@ -159,15 +157,16 @@ void t_operators_longest_match() {
     REG_CHECK(kinds("!!a") == "! ! identifier");
 }
 
-// KNOWN ISSUE: the token *text* for !=, <= and >= is only the first character.
-// The kinds are right (so the parser works) but diagnostics that print
-// Token::text show "!" / "<" / ">" instead of the operator that was written.
-void t_known_compound_comparison_text() {
-    bool ok = true;
-    ok = ok && lex("a != b")[1].text == "!=";
-    ok = ok && lex("a <= b")[1].text == "<=";
-    ok = ok && lex("a >= b")[1].text == ">=";
-    REG_KNOWN(ok, "LEX-CMP-TEXT", "token text of !=, <= and >= is truncated to its first character");
+// Regression (was LEX-CMP-TEXT): the token text of !=, <= and >= is the full
+// operator, so diagnostics that print Token::text show what was written.
+void t_comparison_token_text_is_the_full_operator() {
+    REG_CHECK(lex("a != b")[1].text == "!=");
+    REG_CHECK(lex("a <= b")[1].text == "<=");
+    REG_CHECK(lex("a >= b")[1].text == ">=");
+    REG_CHECK(lex("a ! b")[1].text == "!");
+    REG_CHECK(lex("a < b")[1].text == "<");
+    REG_CHECK(lex("a > b")[1].text == ">");
+    REG_CHECK(texts("a!=b<=c>=d") == "a|!=|b|<=|c|>=|d");
 }
 
 void t_identifiers_and_hyphen_rule() {
@@ -464,7 +463,7 @@ void t_large_input_is_linear() {
 int main() {
     REG_RUN(t_keywords);
     REG_RUN(t_operators_longest_match);
-    REG_RUN(t_known_compound_comparison_text);
+    REG_RUN(t_comparison_token_text_is_the_full_operator);
     REG_RUN(t_identifiers_and_hyphen_rule);
     REG_RUN(t_numeric_literals);
     REG_RUN(t_string_literals);

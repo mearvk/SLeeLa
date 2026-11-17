@@ -1,6 +1,7 @@
 #include "sleela_regex.h"
 #include <ctype.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <string.h>
 
 static void reset_result(SleelaRegexResult *r, SleelaRegexLevel level) {
@@ -18,14 +19,18 @@ static int shape_name(const char *name, const char **base, size_t *base_len,
     else if (name[i] == '{') {
         size_t a = 0, b = 0, j = i + 1; int have_a = 0, have_b = 0;
         while (j < n && isdigit((unsigned char)name[j])) {
-            have_a = 1; a = a * 10 + (size_t)(name[j] - '0'); ++j;
+            size_t d = (size_t)(name[j] - '0');
+            if (a > (SIZE_MAX - d) / 10) return 0;   /* count does not fit: not a valid shape */
+            have_a = 1; a = a * 10 + d; ++j;
         }
         if (!have_a) return 0;
         if (name[j] == '}') { min = a; max = a; ++j; }
         else if (name[j] == ',') {
             ++j;
             while (j < n && isdigit((unsigned char)name[j])) {
-                have_b = 1; b = b * 10 + (size_t)(name[j] - '0'); ++j;
+                size_t d = (size_t)(name[j] - '0');
+                if (b > (SIZE_MAX - d) / 10) return 0;
+                have_b = 1; b = b * 10 + d; ++j;
             }
             if (name[j] != '}') return 0;
             min = a; max = have_b ? b : (size_t)-1;

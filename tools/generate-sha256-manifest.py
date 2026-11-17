@@ -104,6 +104,13 @@ DEFAULT_EXTRA_FILES = [
     "SHEET.sheet",
 ]
 SOURCE_SUFFIXES = {".c", ".h", ".cpp", ".hpp", ".cc", ".hh", ".mm"}
+# Generated output: a directory with one of these names anywhere below a scanned
+# source directory is never part of the trusted source set.
+GENERATED_DIR_NAMES = {"build", ".build"}
+
+
+def is_generated(path: Path, base: Path) -> bool:
+    return any(part in GENERATED_DIR_NAMES for part in path.relative_to(base).parts[:-1])
 
 
 def sha256_of(path: Path) -> str:
@@ -132,14 +139,14 @@ def collect(root: Path) -> list[dict[str, str]]:
         if not base.is_dir():
             continue
         for path in sorted(base.rglob("*")):
-            if path.is_file() and path.suffix in SOURCE_SUFFIXES:
+            if path.is_file() and path.suffix in SOURCE_SUFFIXES and not is_generated(path, base):
                 add(path)
     for d in LIBRARY_SOURCE_DIRS:
         base = root / d
         if not base.is_dir():
             continue
         for path in sorted(base.rglob("*")):
-            if path.is_file() and path.suffix in LIBRARY_SUFFIXES:
+            if path.is_file() and path.suffix in LIBRARY_SUFFIXES and not is_generated(path, base):
                 add(path)
     for f in DEFAULT_EXTRA_FILES:
         p = root / f

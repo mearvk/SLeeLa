@@ -162,16 +162,31 @@ static void t_shape_level_literal_with_quantifier_chars(void) {
     REG_CHECK(matched("digit", "exact digit", 2));     /* text 'digit' is not 1 digit char; literal fallback */
 }
 
-/* KNOWN ISSUE: quantifier counts are accumulated in size_t without an overflow
- * check, so {2^64+1} silently wraps to {1}. A count that does not fit must not
- * be treated as a small one. */
-static void t_known_quantifier_overflow(void) {
-    R r;
-    (void)run("5", "exact digit{18446744073709551617}", 2, &r);
-    REG_KNOWN(!r.matched, "REGEX-QUANT-OVERFLOW",
-              "digit{18446744073709551617} wraps to digit{1} and matches \"5\"");
-    (void)run("5", "exact digit{4294967297}", 2, &r);
-    REG_CHECK(!r.matched);   /* 2^32+1 does not wrap on 64-bit size_t */
+/* Regression (was REGEX-QUANT-OVERFLOW): quantifier counts are accumulated with
+ * an overflow check, so a count that does not fit size_t is an invalid shape
+ * (no match) and never wraps around to a small number. */
+static void t_quantifier_overflow_is_not_wrapped(void) {
+    static const char *huge[] = {
+        "exact digit{18446744073709551617}",        /* 2^64 + 1 would wrap to {1} */
+        "exact digit{18446744073709551616}",        /* 2^64 would wrap to {0}      */
+        "exact digit{99999999999999999999}",
+        "exact digit{1,18446744073709551617}",
+        "exact digit{18446744073709551617,}",
+        "exact digit{0,36893488147419103232}",
+    };
+    for (size_t i = 0; i < sizeof huge / sizeof huge[0]; ++i) {
+        R r; SleelaRegexStatus s;
+        s = run("5", huge[i], 2, &r);
+        REG_EQ_I(SLEELA_REGEX_OK, s); REG_CHECK(!r.matched);
+        s = run("", huge[i], 2, &r);
+        REG_EQ_I(SLEELA_REGEX_OK, s); REG_CHECK(!r.matched);
+    }
+    /* the largest representable counts still parse (they just cannot match short text) */
+    REG_CHECK(!matched("5", "exact digit{18446744073709551615}", 2));
+    REG_CHECK(matched("5", "exact digit{1,18446744073709551615}", 2));
+    REG_CHECK(matched("55", "exact digit{2,18446744073709551615}", 2));
+    REG_CHECK(matched("", "exact digit{0,18446744073709551615}", 2));
+    REG_CHECK(matched("5", "exact digit{1}", 2));
 }
 
 /* Differential: find-family against libc strstr/strncmp over random text. */
@@ -259,7 +274,7 @@ int main(void) {
     REG_RUN(t_shapes);
     REG_RUN(t_malformed_shapes_do_not_match);
     REG_RUN(t_shape_level_literal_with_quantifier_chars);
-    REG_RUN(t_known_quantifier_overflow);
+    REG_RUN(t_quantifier_overflow_is_not_wrapped);
     REG_RUN(t_differential_find_family);
     REG_RUN(t_differential_shapes);
     REG_RUN(t_large_text);

@@ -56,6 +56,12 @@ class Emitters(ProgramTestCase):
         "Loop": "class Loop { static int sum(int n) { if (n == 0) { return 0; } return n + sum(n - 1); } void main() { print(sum(10)); } }",
         "Str": 'class Str { static String g(int n) { if (n == 0) { return "end"; } return "n" + n + "," + g(n - 1); } void main() { print(g(3)); print("a" + 1 + 2); } }',
         "Pure": PURE,
+        "Obj": 'class B { String hi() { return "b"; } }\n'
+               'class K extends B { String hi() { return "k"; } }\n'
+               'class Counter { int v = 1; static int made = 7; int get() { return this.v + 1; }\n'
+               '                static int twice(int x) { return x * 2; } protected static int hidden = 99; static int reveal() { return hidden; } }\n'
+               'class Obj { void main() { B b = new K(); print(b.hi()); print(new B().hi()); Counter c = new Counter();\n'
+               '           print(c.get()); print(Counter.twice(21)); print(Counter.made); print(Counter.reveal()); } }',
     }
 
     def write(self, name):
@@ -66,7 +72,9 @@ class Emitters(ProgramTestCase):
     def test_emitted_sleela_has_the_same_behaviour_as_the_source(self):
         for name in self.SOURCES:
             d = self.write(name)
-            direct = rs.program_output(rs.run_sleela(["run", f"{name}.sleela"], cwd=d))
+            run0 = rs.run_sleela(["run", f"{name}.sleela"], cwd=d)
+            self.assertEqual(run0.returncode, 0, f"{name} (source): {rs.diagnostics(run0)}")
+            direct = rs.program_output(run0)
             first = emit(d, f"{name}.sleela", extra=("--emit",))
             self.assertEqual(first.returncode, 0, f"{name}: {rs.diagnostics(first)}")
             text = emitted_text(first)
@@ -86,44 +94,32 @@ class Emitters(ProgramTestCase):
             self.assertIn("structure preserved", rt.stderr)
             self.assertEqual(rs.program_output(rt), direct, f"{name}: round trip changed behaviour")
 
-    def test_emit_is_idempotent_for_block_free_programs(self):
-        for name in ("Hello",):
+    def test_emit_is_idempotent(self):
+        """Regression (was NS-EMIT-BLOCKS): emit(emit(x)) == emit(x), also for if/while bodies."""
+        for name in self.SOURCES:
             d = self.write(name)
-            text = emitted_text(emit(d, f"{name}.sleela", extra=("--emit",)))
+            first = emit(d, f"{name}.sleela", extra=("--emit",))
+            self.assertEqual(first.returncode, 0, f"{name}: {rs.diagnostics(first)}")
+            text = emitted_text(first)
             e = rs.fresh_dir("ns-idem-" + name.lower())
             rs.write_program(e, f"{name}.sleela", "#sleela 3.1\n" + text)
-            self.assertEqual(emitted_text(emit(e, f"{name}.sleela", extra=("--emit",))), text, name)
+            second = emit(e, f"{name}.sleela", extra=("--emit",))
+            self.assertEqual(second.returncode, 0, f"{name}: {rs.diagnostics(second)}")
+            self.assertEqual(emitted_text(second), text, name)
 
-    def test_known_issues_in_the_sleela_emitter(self):
-        """KNOWN ISSUES in impl/nordshrift/sleela_emit.cpp (Sleela target):
-        NS-EMIT-BLOCKS  every re-emission wraps an `if` body in one more `{ }`;
-        NS-EMIT-STATIC  the `static` modifier is dropped;
-        NS-EMIT-QUALIFIED  `print(A.f())` is emitted as `print()` (arguments lost)."""
+    def test_emitter_preserves_modifiers_inheritance_and_member_forms(self):
+        """Regression (was NS-EMIT-STATIC / NS-EMIT-QUALIFIED / NS-EMIT-SILENT-DROP)."""
+        d = self.write("Obj")
+        text = emitted_text(emit(d, "Obj.sleela", extra=("--emit",)))
+        for needle in ("class K extends B", "static int twice(int x)", "static int made = 7", "protected static int hidden = 99",
+                       "new K()", "new B().hi()", "b.hi()", "Counter.twice(21)", "Counter.made", "this.v + 1"):
+            self.assertIn(needle, text)
+        self.assertNotIn("print()", text)
+        self.assertNotIn("= ;", text)
+
+    def test_loop_program_keeps_static(self):
         d = self.write("Loop")
-        t1 = emitted_text(emit(d, "Loop.sleela", extra=("--emit",)))
-        e = rs.fresh_dir("ns-blocks")
-        rs.write_program(e, "Loop.sleela", "#sleela 3.1\n" + t1)
-        t2 = emitted_text(emit(e, "Loop.sleela", extra=("--emit",)))
-        rs.record_known_issue("NS-EMIT-BLOCKS", "re-emitting adds a redundant { } around every if body (emit is not idempotent)",
-                              still_open=t1 != t2, source="test_cli_transpilers")
-        rs.record_known_issue("NS-EMIT-STATIC", "`static` is dropped from methods/fields in the Sleela target",
-                              still_open="static int sum" not in t1, source="test_cli_transpilers")
-        q = rs.fresh_dir("ns-qual")
-        rs.write_program(q, "Q.sleela", "#sleela 3.1\nclass A { static int f() { return 7; } }\nclass Q { void main() { print(A.f()); } }")
-        cp = emit(q, "Q.sleela", extra=("--emit",))
-        lost = cp.returncode == 0 and "print()" in emitted_text(cp)
-        rs.record_known_issue("NS-EMIT-QUALIFIED", "qualified static call argument `A.f()` is silently emitted as an empty print()",
-                              still_open=lost, source="test_cli_transpilers")
-        o = rs.fresh_dir("ns-obj")
-        rs.write_program(o, "O.sleela", "#sleela 3.1\nclass B { String hi() { return \"b\"; } }\n"
-                                        "class K extends B { String hi() { return \"k\"; } }\n"
-                                        "class O { void main() { B b = new K(); print(b.hi()); } }")
-        cp = emit(o, "O.sleela", extra=("--emit",))
-        text = emitted_text(cp)
-        dropped = cp.returncode == 0 and ("= ;" in text or "extends" not in text)
-        rs.record_known_issue("NS-EMIT-SILENT-DROP", "`new K()` is emitted as an empty expression (`B b = ;`), `extends` is dropped and "
-                              "`b.hi()` becomes `print()`: unsupported nodes should fail emission, not vanish",
-                              still_open=dropped, source="test_cli_transpilers")
+        self.assertIn("static int sum(int n)", emitted_text(emit(d, "Loop.sleela", extra=("--emit",))))
 
     def test_emitters_fail_closed_on_unsupported_constructs(self):
         d = rs.fresh_dir("ns-assign")                        # local assignment is outside the lowerable subset
@@ -132,6 +128,22 @@ class Emitters(ProgramTestCase):
         self.assertNotEqual(cp.returncode, 0)
         self.assertIn("unsupported", rs.diagnostics(cp))
         self.assertNotIn("int main", cp.stdout, "no partial C may be emitted")
+        # nothing the emitters cannot print may vanish from the output: each case must fail, with no partial output
+        cases = [
+            ("java", "class B { String h() { return \"b\"; } }\nclass K extends B { String h() { return \"k\"; } }\nclass M { void main() { print(1); } }", "inheritance"),
+            ("c", "class B { String h() { return \"b\"; } }\nclass K extends B { String h() { return \"k\"; } }\nclass M { void main() { print(1); } }", "inheritance"),
+            ("c", "class B { int f() { return 1; } }\nclass M { void main() { B b = new B(); print(b.f()); } }", "expression"),
+            ("java", "class B { int f() { return 1; } }\nclass M { void main() { B b = new B(); print(b.f()); } }", "expression"),
+            ("sleela", "class B { B(int x) { } }\nclass M { void main() { print(1); } }", "constructors"),
+            ("sleela", "interface I { int f(); }\nclass M { void main() { print(1); } }", "interfaces"),
+        ]
+        for target, body, why in cases:
+            f = rs.fresh_dir("ns-closed")
+            rs.write_program(f, "M.sleela", "#sleela 3.1\n" + body)
+            r = emit(f, "M.sleela", target)
+            self.assertNotEqual(r.returncode, 0, f"{target}: {why} must be rejected:\n{r.stdout[-300:]}")
+            self.assertIn("cannot emit", rs.diagnostics(r))
+            self.assertEqual([l for l in rs.program_output(r) if l.strip()], [], f"{target}: partial output for {why}")
         d = rs.fresh_dir("ns-tern")
         rs.write_program(d, "T.sleela", "#sleela 3.1\nclass T { void main() { print(1 > 0 ? 1 : 2); } }")
         cp = emit(d, "T.sleela", "c")
@@ -187,24 +199,28 @@ class CTarget(ProgramTestCase):
         self.assertEqual(run.returncode, 0)
         self.assertEqual(run.stdout.splitlines(), PURE_WANT)
 
-    def test_known_issue_bitwise_operators_are_miscompiled(self):
-        """KNOWN ISSUE NS-C-BITOPS: impl/nordshrift/sleela_emit.cpp maps every
-        binary operator it does not list (& | ^ << >> >>>) to nsv_or, the
-        *logical* or, instead of rejecting it.  `6 & 3` must print 2."""
+    def test_bitwise_and_shift_operators_compile_correctly(self):
+        """Regression (was NS-C-BITOPS): & | ^ << >> >>> and ~ map to real integer operations."""
         d = rs.fresh_dir("c-bits")
-        rs.write_program(d, "Bits.sleela", "#sleela 3.1\nclass Bits { void main() { print(6 & 3); print(6 ^ 3); print(1 << 4); print(6 | 3); } }")
+        rs.write_program(d, "Bits.sleela", "#sleela 3.1\nclass Bits { void main() { print(6 & 3); print(6 ^ 3); print(1 << 4); print(6 | 3);"
+                                          " print(0 - 16 >> 2); print(0 - 16 >>> 60); print(~5); print(5 & 0 - 2); print(true && false); print(false || true); } }")
         vm = rs.program_output(rs.run_sleela(["run", "Bits.sleela"], cwd=d))
-        self.assertEqual(vm, ["2", "5", "16", "7"])                 # the VM is right
-        cp = emit(d, "Bits.sleela", "c")
-        if cp.returncode != 0:
-            correct = True                                          # rejecting is an acceptable fix
-        else:
-            (d / "Bits.c").write_text(emitted_text(cp))
-            subprocess.run([rs.CC, "-w", "Bits.c", "-o", "Bits"], cwd=d, capture_output=True, timeout=120)
-            run = subprocess.run(["./Bits"], cwd=d, capture_output=True, text=True, timeout=30)
-            correct = run.stdout.splitlines() == vm
-        rs.record_known_issue("NS-C-BITOPS", "C target lowers & ^ << >> to logical-or (6 & 3 != 2); should reject or compile correctly",
-                              still_open=not correct, source="test_cli_transpilers")
+        self.assertEqual(vm, ["2", "5", "16", "7", "-4", "15", "-6", "4", "false", "true"])
+        run = self.c_run(d, "Bits")
+        self.assertEqual(run.returncode, 0, run.stderr)
+        self.assertEqual(run.stdout.splitlines(), vm)
+
+    def test_generated_integer_expressions_agree_across_vm_c_and_oracle(self):
+        rng = random.Random(0xC0FFEE)
+        exprs = [random_expr(rng, rng.randint(1, 5)) for _ in range(150)]
+        body = "\n".join(f"        print({e.render()});" for e in exprs)
+        d = rs.fresh_dir("c-expr")
+        rs.write_program(d, "Ex.sleela", f"#sleela 3.1\nclass Ex {{ void main() {{\n{body}\n    }} }}")
+        want = [str(e.value()) for e in exprs]
+        self.assertEqual(rs.program_output(rs.run_sleela(["run", "Ex.sleela"], cwd=d)), want, "VM vs oracle")
+        run = self.c_run(d, "Ex")
+        self.assertEqual(run.returncode, 0, run.stderr)
+        self.assertEqual(run.stdout.splitlines(), want, "emitted C vs oracle")
 
 
 if __name__ == "__main__":

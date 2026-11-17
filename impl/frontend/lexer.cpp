@@ -199,13 +199,13 @@ std::vector<Token> Lexer::tokenize(){
             case'{':emit(Tok::LBrace,"{");break;case'}':emit(Tok::RBrace,"}");break;case'[':emit(Tok::LBracket,"[");break;case']':emit(Tok::RBracket,"]");break;
             case';':emit(Tok::Semicolon,";");break;case',':emit(Tok::Comma,",");break;case'.':emit(Tok::Dot,".");break;
             case'=':if(match('='))emit(Tok::EqEq,"==");else emit(Tok::Assign,"=");break;
-            case'!':emit(match('=')?Tok::NotEq:Tok::Not,"!");break;
+            case'!':if(match('='))emit(Tok::NotEq,"!=");else emit(Tok::Not,"!");break;
             case'+':if(match('+'))emit(Tok::Increment,"++");else if(match('='))emit(Tok::PlusAssign,"+=");else emit(Tok::Plus,"+");break;
             case'-':if(match('-'))emit(Tok::Decrement,"--");else if(match('='))emit(Tok::MinusAssign,"-=");else if(match('>'))emit(Tok::Arrow,"->");else emit(Tok::Minus,"-");break;
             case'*':if(match('='))emit(Tok::StarAssign,"*=");else emit(Tok::Star,"*");break;case'/':if(match('='))emit(Tok::SlashAssign,"/=");else emit(Tok::Slash,"/");break;
             case'%':if(match('='))emit(Tok::PercentAssign,"%=");else emit(Tok::Percent,"%");break;
-            case'<':if(match('<')){if(match('='))emit(Tok::ShlAssign,"<<=");else emit(Tok::ShiftLeft,"<<");}else emit(match('=')?Tok::Le:Tok::Lt,"<");break;
-            case'>':if(match('>')){if(match('>')){if(match('='))emit(Tok::UshrAssign,">>>=");else emit(Tok::UnsignedShiftRight,">>>");}else if(match('='))emit(Tok::ShrAssign,">>=");else emit(Tok::ShiftRight,">>");}else emit(match('=')?Tok::Ge:Tok::Gt,">");break;
+            case'<':if(match('<')){if(match('='))emit(Tok::ShlAssign,"<<=");else emit(Tok::ShiftLeft,"<<");}else if(match('='))emit(Tok::Le,"<=");else emit(Tok::Lt,"<");break;
+            case'>':if(match('>')){if(match('>')){if(match('='))emit(Tok::UshrAssign,">>>=");else emit(Tok::UnsignedShiftRight,">>>");}else if(match('='))emit(Tok::ShrAssign,">>=");else emit(Tok::ShiftRight,">>");}else if(match('='))emit(Tok::Ge,">=");else emit(Tok::Gt,">");break;
             case'&':if(match('&'))emit(Tok::AndAnd,"&&");else if(match('='))emit(Tok::AndAssign,"&=");else emit(Tok::BitAnd,"&");break;
             case'|':if(match('|'))emit(Tok::OrOr,"||");else if(match('='))emit(Tok::OrAssign,"|=");else emit(Tok::BitOr,"|");break;
             case'^':if(match('='))emit(Tok::XorAssign,"^=");else emit(Tok::BitXor,"^");break;case'~':emit(Tok::BitNot,"~");break;

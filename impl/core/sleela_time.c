@@ -185,7 +185,10 @@ int sltime_query_ntp(const char* host,uint32_t timeout_ms,SLTimeSample* sample){
  }
  freeaddrinfo(res);return result;
 }
-static int utc_tm(int64_t ms,struct tm* t){time_t sec=(time_t)(ms/1000);
+/* Floor division: the whole-second part of an instant before 1970 must round
+ * toward -infinity so it agrees with the (always non-negative) millisecond part. */
+static int64_t floor_div_1000(int64_t ms){int64_t q=ms/1000;if(ms%1000<0)q-=1;return q;}
+static int utc_tm(int64_t ms,struct tm* t){time_t sec=(time_t)floor_div_1000(ms);
 #ifdef _WIN32
  return gmtime_s(t,&sec)==0;
 #else
@@ -197,6 +200,27 @@ int sltime_format_iso8601(int64_t ms,char* out,size_t n){struct tm t;long m=(lon
 int sltime_http_date(int64_t ms,char* out,size_t n){static const char* wd[]={"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};static const char* mo[]={"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"};struct tm t;
  if(!out||n<30||!utc_tm(ms,&t)){return EINVAL;}
  snprintf(out,n,"%s, %02d %s %04d %02d:%02d:%02d GMT",wd[t.tm_wday],t.tm_mday,mo[t.tm_mon],t.tm_year+1900,t.tm_hour,t.tm_min,t.tm_sec);return 0;}
-int sltime_json(const SLTimeSample* s,char* out,size_t n){if(!s||!out||n<64)return EINVAL;return snprintf(out,n,"{\"utc_ms\":%lld,\"monotonic_ns\":%llu,\"offset_ms\":%lld,\"uncertainty_us\":%llu,\"source\":%u,\"stratum\":%u,\"country\":\"%s\",\"timezone\":\"%s\",\"source_host\":\"%s\"}",(long long)s->utc_ms,(unsigned long long)s->monotonic_ns,(long long)s->utc_offset_ms,(unsigned long long)s->uncertainty_us,s->source,s->stratum,s->country,s->timezone,s->source_host)<0?EIO:0;}
+/* JSON string escaping: quote, backslash and control characters. Returns the
+ * escaped length, or (size_t)-1 when `cap` is too small. */
+static size_t json_escape(const char* in,char* out,size_t cap){
+ size_t o=0;
+ for(;*in;++in){
+  unsigned char c=(unsigned char)*in;
+  if(c=='"'||c=='\\'){if(o+2>=cap)return (size_t)-1;out[o++]='\\';out[o++]=(char)c;}
+  else if(c<0x20){if(o+6>=cap)return (size_t)-1;o+=(size_t)snprintf(out+o,cap-o,"\\u%04x",(unsigned)c);}
+  else{if(o+1>=cap)return (size_t)-1;out[o++]=(char)c;}
+ }
+ if(o>=cap)return (size_t)-1;
+ out[o]=0;return o;
+}
+int sltime_json(const SLTimeSample* s,char* out,size_t n){
+ char country[3*6+1],zone[64*6+1],host[256*6+1];int w;
+ if(!s||!out||n<64)return EINVAL;
+ if(json_escape(s->country,country,sizeof country)==(size_t)-1||json_escape(s->timezone,zone,sizeof zone)==(size_t)-1||json_escape(s->source_host,host,sizeof host)==(size_t)-1)return EINVAL;
+ w=snprintf(out,n,"{\"utc_ms\":%lld,\"monotonic_ns\":%llu,\"offset_ms\":%lld,\"uncertainty_us\":%llu,\"source\":%u,\"stratum\":%u,\"country\":\"%s\",\"timezone\":\"%s\",\"source_host\":\"%s\"}",(long long)s->utc_ms,(unsigned long long)s->monotonic_ns,(long long)s->utc_offset_ms,(unsigned long long)s->uncertainty_us,s->source,s->stratum,country,zone,host);
+ if(w<0)return EIO;
+ if((size_t)w>=n){out[0]=0;return ERANGE;}   /* never hand back a truncated (invalid) record */
+ return 0;
+}
 int sltime_rmi_record(const SLTimeSample* s,char* out,size_t n){return sltime_json(s,out,n);}
 size_t sltime_bodi_record(const SLTimeSample* s,uint8_t* out,size_t n){const size_t need=32;if(!s||!out||n<need)return 0;uint64_t u=(uint64_t)s->utc_ms,m=s->monotonic_ns,e=s->uncertainty_us;uint32_t a=s->source,b=s->stratum;int i;for(i=0;i<8;i++)out[i]=(uint8_t)(u>>(56-8*i));for(i=0;i<8;i++)out[8+i]=(uint8_t)(m>>(56-8*i));for(i=0;i<8;i++)out[16+i]=(uint8_t)(e>>(56-8*i));out[24]=a>>24;out[25]=a>>16;out[26]=a>>8;out[27]=a;out[28]=b>>24;out[29]=b>>16;out[30]=b>>8;out[31]=b;return need;}

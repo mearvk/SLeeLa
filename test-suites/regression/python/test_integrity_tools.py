@@ -207,7 +207,7 @@ class ManifestGenerator(unittest.TestCase):
     def test_generator_on_a_miniature_tree(self):
         root = self.dir / "mini"
         for rel, data in {"impl/core/x.c": b"int x;\n", "impl/frontend/y.cpp": b"int y;\n", "lib/A/B.sleela": b"class B {}\n",
-                          "SHEET.sheet": b"sheet\n", "bash/vendored.c": b"nope\n", "impl/core/build/gen.c": b"gen\n",
+                          "SHEET.sheet": b"sheet\n", "bash/vendored.c": b"nope\n", "impl/core/build/gen.c": b"gen\n", "lib/A/.build/x.sleela": b"class X {}\n",
                           "impl/core/notes.txt": b"ignored\n"}.items():
             p = root / rel
             p.parent.mkdir(parents=True, exist_ok=True)
@@ -221,9 +221,8 @@ class ManifestGenerator(unittest.TestCase):
         self.assertIn("lib/A/B.sleela", paths)
         self.assertIn("SHEET.sheet", paths)
         self.assertNotIn("bash/vendored.c", paths)
-        rs.record_known_issue("MANIFEST-NESTED-BUILD", "generate-sha256-manifest.py documents that build/ output is excluded, "
-                              "but a build/ directory nested inside a scanned source dir is hashed",
-                              still_open="impl/core/build/gen.c" in paths, source="test_integrity_tools")
+        self.assertNotIn("impl/core/build/gen.c", paths)          # generated output is never trusted source
+        self.assertNotIn("lib/A/.build/x.sleela", paths)
         self.assertNotIn("impl/core/notes.txt", paths)
         self.assertEqual(verify(out, root).returncode, 0)
         (root / "lib/A/B.sleela").write_bytes(b"class B { }\n")            # edit after generation

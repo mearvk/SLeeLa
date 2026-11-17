@@ -185,6 +185,19 @@ static void t_format_calendar_sweep(void) {
             return;
         }
     }
+    /* instants before 1970, including fractional seconds, against the oracle */
+    for (int it = 0; it < 60000; ++it) {
+        long long ms = -(long long)(reg_next() % 2208988800000ull);       /* 1970 back to 1900 */
+        char want_iso[128], want_http[128], iso[48], http[48];
+        oracle_iso(ms, want_iso, want_http);
+        REG_REQUIRE(sltime_format_iso8601(ms, iso, sizeof iso) == 0);
+        REG_REQUIRE(sltime_http_date(ms, http, sizeof http) == 0);
+        reg_note_check();
+        if (strcmp(iso, want_iso) != 0 || strcmp(http, want_http) != 0) {
+            reg_fail(__FILE__, __LINE__, "ms=%lld got %s / %s want %s / %s", ms, iso, http, want_iso, want_http);
+            return;
+        }
+    }
     /* every month boundary in 2023/2024 (leap year) */
     for (int month = 0; month < 24; ++month) {
         char want_iso[128], want_http[128], iso[48];
@@ -195,22 +208,22 @@ static void t_format_calendar_sweep(void) {
     }
 }
 
-/* KNOWN ISSUE: seconds are derived with C division (truncates toward zero) but
- * the millisecond field with a floored modulus, so any pre-1970 instant that is
- * not a whole second is formatted a second late (-1 ms -> ".999" of 1970-01-01
- * instead of 1969-12-31T23:59:59.999Z). */
-static void t_known_negative_fractional_ms(void) {
-    static const long long v[] = {-1, -999, -1001, -86400001, -1700000000123LL};
-    int all_ok = 1;
-    for (size_t i = 0; i < sizeof v / sizeof v[0]; ++i) {
-        char want_iso[128], want_http[128], iso[48], http[48];
-        oracle_iso(v[i], want_iso, want_http);
-        (void)sltime_format_iso8601(v[i], iso, sizeof iso);
-        (void)sltime_http_date(v[i], http, sizeof http);
-        if (strcmp(iso, want_iso) != 0 || strcmp(http, want_http) != 0) all_ok = 0;
+/* Regression (was TIME-NEG-FLOOR): the whole-second part is floored, so it
+ * agrees with the millisecond field for every instant before 1970. */
+static void t_negative_fractional_instants(void) {
+    static const struct { long long ms; const char *iso, *http; } g[] = {
+        {-1LL, "1969-12-31T23:59:59.999Z", "Wed, 31 Dec 1969 23:59:59 GMT"},
+        {-999LL, "1969-12-31T23:59:59.001Z", "Wed, 31 Dec 1969 23:59:59 GMT"},
+        {-1000LL, "1969-12-31T23:59:59.000Z", "Wed, 31 Dec 1969 23:59:59 GMT"},
+        {-1001LL, "1969-12-31T23:59:58.999Z", "Wed, 31 Dec 1969 23:59:58 GMT"},
+        {-86400001LL, "1969-12-30T23:59:59.999Z", "Tue, 30 Dec 1969 23:59:59 GMT"},
+        {-86400000LL, "1969-12-31T00:00:00.000Z", "Wed, 31 Dec 1969 00:00:00 GMT"},
+    };
+    char iso[64], http[64];
+    for (size_t i = 0; i < sizeof g / sizeof g[0]; ++i) {
+        REG_EQ_I(0, sltime_format_iso8601(g[i].ms, iso, sizeof iso)); REG_EQ_S(g[i].iso, iso);
+        REG_EQ_I(0, sltime_http_date(g[i].ms, http, sizeof http)); REG_EQ_S(g[i].http, http);
     }
-    REG_KNOWN(all_ok, "TIME-NEG-FLOOR",
-              "format_iso8601/http_date truncate instead of floor for negative non-whole-second instants");
 }
 
 static void t_json_and_records(void) {
@@ -243,16 +256,30 @@ static void t_json_and_records(void) {
     {   uint8_t exact[32]; REG_EQ_U(32, sltime_bodi_record(&s, exact, 32)); REG_EQ_MEM(bodi, exact, 32); }
 }
 
-/* KNOWN ISSUE: string fields are interpolated into JSON without escaping, so a
- * timezone containing a quote produces a record that is not the same JSON
- * value (structure injection through sltime_set_location). */
-static void t_known_json_escaping(void) {
+/* Regression (was TIME-JSON-ESCAPE): string fields are JSON-escaped, so a
+ * hostile timezone cannot break out of its string or inject members; a record
+ * that does not fit is an error, never a truncated (invalid) document. */
+static void t_json_escaping_and_truncation(void) {
     SLTimeSample s; char j[512];
     memset(&s, 0, sizeof s);
-    strcpy(s.timezone, "x\"y");
+    strcpy(s.timezone, "x\"y\\z");
+    strcpy(s.source_host, "a\nb\tc");
+    s.country[0] = 'U'; s.country[1] = 'S';
     REG_EQ_I(0, sltime_json(&s, j, sizeof j));
-    REG_KNOWN(strstr(j, "x\"y") == NULL, "TIME-JSON-ESCAPE",
-              "sltime_json emits timezone/country/source_host verbatim, unescaped");
+    REG_CHECK(strstr(j, "\"timezone\":\"x\\\"y\\\\z\"") != NULL);
+    REG_CHECK(strstr(j, "\"source_host\":\"a\\u000ab\\u0009c\"") != NULL);
+    REG_CHECK(strchr(j, '\n') == NULL && strchr(j, '\t') == NULL);
+    {   /* injection attempt: close the string and add a member */
+        SLTimeSample h; memset(&h, 0, sizeof h);
+        strcpy(h.timezone, "\",\"admin\":true,\"x\":\"");
+        REG_EQ_I(0, sltime_json(&h, j, sizeof j));
+        REG_CHECK(strstr(j, "\"admin\":true") == NULL);   /* the quotes stay escaped, no new member */
+    }
+    {   /* a buffer that is large enough for the minimum but not for the record */
+        char small[80]; memset(small, 'Z', sizeof small);
+        REG_EQ_I(ERANGE, sltime_json(&s, small, sizeof small));
+        REG_EQ_U(0, small[0]);
+    }
 }
 
 /* ---- memory ------------------------------------------------------------- */
@@ -338,9 +365,9 @@ int main(void) {
     REG_RUN(t_format_golden);
     REG_RUN(t_format_buffer_contract);
     REG_RUN(t_format_calendar_sweep);
-    REG_RUN(t_known_negative_fractional_ms);
+    REG_RUN(t_negative_fractional_instants);
     REG_RUN(t_json_and_records);
-    REG_RUN(t_known_json_escaping);
+    REG_RUN(t_json_escaping_and_truncation);
     REG_RUN(t_memory_platform);
     REG_RUN(t_memory_alloc_semantics);
     REG_RUN(t_memory_alloc_failure_paths);

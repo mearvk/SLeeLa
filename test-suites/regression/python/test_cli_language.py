@@ -462,16 +462,28 @@ class Ex {
             self.assertIn("64", rs.diagnostics(results["run"]))
 
 
-class KnownGaps(ProgramTestCase):
-    def test_known_issue_string_compound_assignment_with_int(self):
-        """KNOWN ISSUE LANG-STR-PLUSEQ: Java allows `s += 1` on a String; the
-        semantic checker rejects it (`s = s + 1` and `s += "x"` both work)."""
-        d = rs.fresh_dir("pluseq")
-        p = rs.write_program(d, "PlusEq.sleela", '#sleela 3.1\nclass PlusEq { void main() { String s = "a"; s += 1; print(s); } }')
-        cp = rs.run_sleela(["run", p.name], cwd=d)
-        accepted = cp.returncode == 0 and rs.program_output(cp) == ["a1"]
-        rs.record_known_issue("LANG-STR-PLUSEQ", "`String s; s += 1;` is rejected: cannot assign int to 's' of type string",
-                              still_open=not accepted, source="test_cli_language")
+class StringCompoundAssignment(ProgramTestCase):
+    def test_string_plus_equals_appends_the_text_form_of_any_value(self):
+        """Regression (was LANG-STR-PLUSEQ): Java allows `s += <int|double|boolean|String>`."""
+        out, _ = self.run_program("""
+class Pe {
+    String f = "f";
+    void main() {
+        String s = "a"; s += 1; print(s); s += 2.5; print(s); s += true; print(s); s += "x"; print(s);
+        s += 7 * 6; print(s);
+        String[] arr = new String[2]; arr[0] = "p"; arr[0] += 9; print(arr[0]);
+        f += 3; print(f);
+        int n = 5; n += 1; print(n);
+    }
+}""", "Pe")
+        self.assertEqual(out, ["a1", "a12.5", "a12.5true", "a12.5truex", "a12.5truex42", "p9", "f3", "6"])
+
+    def test_string_compound_assignment_other_than_plus_is_still_rejected(self):
+        d = rs.fresh_dir("strminus")
+        p = rs.write_program(d, "Sm.sleela", '#sleela 3.1\nclass Sm { void main() { String s = "a"; s -= 1; print(s); } }')
+        self.assertNotEqual(rs.run_sleela(["run", p.name], cwd=d).returncode, 0)
+        p = rs.write_program(d, "Si.sleela", '#sleela 3.1\nclass Si { void main() { int n = 1; n += "x"; print(n); } }')
+        self.assertNotEqual(rs.run_sleela(["run", p.name], cwd=d).returncode, 0)
 
 
 class NumericFormatting(ProgramTestCase):

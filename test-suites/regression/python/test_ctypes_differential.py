@@ -358,13 +358,14 @@ class TimeDifferential(unittest.TestCase):
             ms = -1000 * rng.randrange(1, 2_208_988_800)               # back to 1900
             self.assertEqual(self.c_fmt(ms), self.fmt(ms), ms)
 
-    def test_known_issue_fractional_instants_before_1970(self):
-        """KNOWN ISSUE TIME-NEG-FLOOR: seconds truncate toward zero while the
-        millisecond field is floored, so -1 ms prints as 1970-01-01T00:00:00.999Z."""
-        bad = [ms for ms in (-1, -999, -1001, -86_400_001, -1_700_000_000_123) if self.c_fmt(ms) != self.fmt(ms)]
-        rs.record_known_issue("TIME-NEG-FLOOR", "format_iso8601/http_date mis-format negative non-whole-second instants "
-                              f"(e.g. {bad[:2]})" if bad else "appears fixed", still_open=bool(bad),
-                              source="test_ctypes_differential")
+    def test_fractional_instants_before_1970(self):
+        """Regression (was TIME-NEG-FLOOR): seconds are floored, not truncated."""
+        for ms in (-1, -999, -1001, -86_400_001, -1_700_000_000_123):
+            self.assertEqual(self.c_fmt(ms), self.fmt(ms), ms)
+        rng = random.Random(1899)
+        for _ in range(20000):
+            ms = -rng.randrange(1, 2_208_988_800_000)                    # back to 1900, any millisecond
+            self.assertEqual(self.c_fmt(ms), self.fmt(ms), ms)
 
 
 if __name__ == "__main__":
