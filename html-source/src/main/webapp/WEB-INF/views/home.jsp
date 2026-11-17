@@ -36,7 +36,7 @@
 </p>
 <div class="grid">
   <c:forEach var="m" items="${httpModules}" end="7">
-    <a class="card" href="${ctx}${m.url}"><h3><c:out value="${m.name}"/></h3><p><c:out value="${m.relDir}"/></p></a>
+    <a class="card" href="${ctx}${m.url}"><h3><c:out value="${m.name}"/></h3><p><span class="pill"><c:out value="${m.kind == 'lib' ? 'library' : 'system'}"/></span><c:if test="${m.api}"><span class="pill green">API</span></c:if></p></a>
   </c:forEach>
 </div>
 </t:layout>

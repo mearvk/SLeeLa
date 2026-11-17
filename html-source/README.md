@@ -43,6 +43,9 @@ Content root lookup order: `-Dsleela.home`, `SLEELA_HOME`, `sleela.home` context
 then a checkout found by walking up from the working directory.
 `deploy/nginx.conf` is a sample reverse proxy for TLS.
 
+## Screenshots
+All pages and facets are captured in [`screenshots/`](screenshots/README.md). See [`preview/`](preview/README.md) to regenerate them.
+
 ## Layout
 ```
 src/main/java/org/sleela/site/        ContentIndex, Markdown, Routes, ApiPages, SiteConfig, Model

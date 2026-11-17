@@ -10,8 +10,8 @@
   <article class="doc">
     ${html}
     <div class="btn-row">
-      <c:if test="${not empty prev}"><a class="btn ghost" href="${ctx}${prev.url}">&larr; <c:out value="${prev.title}"/></a></c:if>
-      <c:if test="${not empty next}"><a class="btn" href="${ctx}${next.url}"><c:out value="${next.title}"/> &rarr;</a></c:if>
+      <c:if test="${not empty prev}"><a class="btn ghost" href="${ctx}${prev.url}">&laquo; <c:out value="${prev.title}"/></a></c:if>
+      <c:if test="${not empty next}"><a class="btn" href="${ctx}${next.url}"><c:out value="${next.title}"/> &raquo;</a></c:if>
     </div>
   </article>
 </div>

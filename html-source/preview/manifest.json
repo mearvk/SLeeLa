@@ -1,0 +1,472 @@
+[
+ {
+  "name": "home",
+  "url": "/",
+  "mode": "dark"
+ },
+ {
+  "name": "home-light",
+  "url": "/",
+  "mode": "light"
+ },
+ {
+  "name": "home-mobile",
+  "url": "/",
+  "mode": "mobile"
+ },
+ {
+  "name": "home-theme-toggle-clicked",
+  "url": "/",
+  "mode": "dark",
+  "actions": [
+   [
+    "click",
+    "#theme-toggle"
+   ]
+  ]
+ },
+ {
+  "name": "tutorials-index",
+  "url": "/tutorials",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorials-index-light",
+  "url": "/tutorials",
+  "mode": "light"
+ },
+ {
+  "name": "tutorials-index-mobile",
+  "url": "/tutorials",
+  "mode": "mobile"
+ },
+ {
+  "name": "tutorial-01-what-is-sleela",
+  "url": "/tutorials/01-what-is-sleela",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorial-02-first-wrapper",
+  "url": "/tutorials/02-first-wrapper",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorial-03-types-structs-classes",
+  "url": "/tutorials/03-types-structs-classes",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorial-04-control-flow",
+  "url": "/tutorials/04-control-flow",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorial-05-sst-and-nordshrift",
+  "url": "/tutorials/05-sst-and-nordshrift",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorial-06-the-triplet",
+  "url": "/tutorials/06-the-triplet",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorial-07-conducted-methods",
+  "url": "/tutorials/07-conducted-methods",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorial-08-subjects",
+  "url": "/tutorials/08-subjects",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorial-09-verification",
+  "url": "/tutorials/09-verification",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorial-10-ledger",
+  "url": "/tutorials/10-ledger",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorial-11-http3-and-colors",
+  "url": "/tutorials/11-http3-and-colors",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorial-12-capstone",
+  "url": "/tutorials/12-capstone",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorial-13-metadata-class",
+  "url": "/tutorials/13-metadata-class",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorial-14-text-and-strings",
+  "url": "/tutorials/14-text-and-strings",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorial-15-philosophers-constructors",
+  "url": "/tutorials/15-philosophers-constructors",
+  "mode": "dark"
+ },
+ {
+  "name": "tutorial-11-light",
+  "url": "/tutorials/11-http3-and-colors",
+  "mode": "light"
+ },
+ {
+  "name": "tutorial-11-mobile",
+  "url": "/tutorials/11-http3-and-colors",
+  "mode": "mobile"
+ },
+ {
+  "name": "examples-index",
+  "url": "/examples",
+  "mode": "dark"
+ },
+ {
+  "name": "examples-index-light",
+  "url": "/examples",
+  "mode": "light"
+ },
+ {
+  "name": "examples-index-mobile",
+  "url": "/examples",
+  "mode": "mobile"
+ },
+ {
+  "name": "examples-index-filtered",
+  "url": "/examples",
+  "mode": "dark",
+  "actions": [
+   [
+    "type",
+    "input[data-filter-list]",
+    "gui"
+   ]
+  ]
+ },
+ {
+  "name": "examples-group-root",
+  "url": "/examples/examples",
+  "mode": "dark"
+ },
+ {
+  "name": "examples-group-gui",
+  "url": "/examples/examples-gui",
+  "mode": "dark"
+ },
+ {
+  "name": "examples-group-gui-light",
+  "url": "/examples/examples-gui",
+  "mode": "light"
+ },
+ {
+  "name": "examples-group-gui-mobile",
+  "url": "/examples/examples-gui",
+  "mode": "mobile"
+ },
+ {
+  "name": "examples-group-gui-filtered",
+  "url": "/examples/examples-gui",
+  "mode": "dark",
+  "actions": [
+   [
+    "type",
+    "input[data-filter-list]",
+    "COMPONENT"
+   ]
+  ]
+ },
+ {
+  "name": "examples-group-lib-gui",
+  "url": "/examples/lib-examples-gui",
+  "mode": "dark"
+ },
+ {
+  "name": "examples-group-lib-compiler",
+  "url": "/examples/lib-examples-compiler",
+  "mode": "dark"
+ },
+ {
+  "name": "example-file-sleela",
+  "url": "/examples/examples-gui/CLASSIC-hello-window.sleela",
+  "mode": "dark"
+ },
+ {
+  "name": "example-file-sleela-light",
+  "url": "/examples/examples-gui/CLASSIC-hello-window.sleela",
+  "mode": "light"
+ },
+ {
+  "name": "example-file-sleela-mobile",
+  "url": "/examples/examples-gui/CLASSIC-hello-window.sleela",
+  "mode": "mobile"
+ },
+ {
+  "name": "example-file-markdown",
+  "url": "/examples/examples-gui/README.md",
+  "mode": "dark"
+ },
+ {
+  "name": "example-file-xml",
+  "url": "/examples/examples/01-math.xml",
+  "mode": "dark"
+ },
+ {
+  "name": "example-file-java",
+  "url": "/examples/examples-java/differential/Base64Core.java",
+  "mode": "dark"
+ },
+ {
+  "name": "modules-index",
+  "url": "/modules",
+  "mode": "dark"
+ },
+ {
+  "name": "modules-index-light",
+  "url": "/modules",
+  "mode": "light"
+ },
+ {
+  "name": "modules-index-mobile",
+  "url": "/modules",
+  "mode": "mobile"
+ },
+ {
+  "name": "modules-index-filtered",
+  "url": "/modules",
+  "mode": "dark",
+  "actions": [
+   [
+    "type",
+    "input[data-filter-list]",
+    "http"
+   ]
+  ]
+ },
+ {
+  "name": "module-sys-http-servers",
+  "url": "/modules/sys/http-servers",
+  "mode": "dark"
+ },
+ {
+  "name": "module-sys-http-3",
+  "url": "/modules/sys/http-3.0",
+  "mode": "dark"
+ },
+ {
+  "name": "module-lib-http-3-with-api",
+  "url": "/modules/lib/http-3.0",
+  "mode": "dark"
+ },
+ {
+  "name": "module-lib-http-3-with-api-light",
+  "url": "/modules/lib/http-3.0",
+  "mode": "light"
+ },
+ {
+  "name": "module-lib-http-3-with-api-mobile",
+  "url": "/modules/lib/http-3.0",
+  "mode": "mobile"
+ },
+ {
+  "name": "module-lib-http-3-with-api-filtered",
+  "url": "/modules/lib/http-3.0",
+  "mode": "dark",
+  "actions": [
+   [
+    "type",
+    "input[data-filter-list]",
+    "Route"
+   ]
+  ]
+ },
+ {
+  "name": "module-lib-crypto",
+  "url": "/modules/lib/crypto",
+  "mode": "dark"
+ },
+ {
+  "name": "module-file-readme",
+  "url": "/modules/sys/http-servers/f/README.md",
+  "mode": "dark"
+ },
+ {
+  "name": "module-file-cpp",
+  "url": "/modules/sys/http-servers/f/3/http3/main.cpp",
+  "mode": "dark"
+ },
+ {
+  "name": "module-file-sleela",
+  "url": "/modules/lib/http-3.0/f/Http30Route.sleela",
+  "mode": "dark"
+ },
+ {
+  "name": "module-file-makefile",
+  "url": "/modules/sys/http-servers/f/3/Makefile",
+  "mode": "dark"
+ },
+ {
+  "name": "servers",
+  "url": "/servers",
+  "mode": "dark"
+ },
+ {
+  "name": "servers-light",
+  "url": "/servers",
+  "mode": "light"
+ },
+ {
+  "name": "servers-mobile",
+  "url": "/servers",
+  "mode": "mobile"
+ },
+ {
+  "name": "servers-filtered",
+  "url": "/servers",
+  "mode": "dark",
+  "actions": [
+   [
+    "type",
+    "input[data-filter-list]",
+    "http-2"
+   ]
+  ]
+ },
+ {
+  "name": "api-home",
+  "url": "/api",
+  "mode": "dark"
+ },
+ {
+  "name": "api-home-light",
+  "url": "/api",
+  "mode": "light"
+ },
+ {
+  "name": "api-home-mobile",
+  "url": "/api",
+  "mode": "mobile"
+ },
+ {
+  "name": "api-home-filtered",
+  "url": "/api",
+  "mode": "dark",
+  "actions": [
+   [
+    "type",
+    "input[data-filter]",
+    "crypto"
+   ]
+  ]
+ },
+ {
+  "name": "api-packages",
+  "url": "/api/packages",
+  "mode": "dark"
+ },
+ {
+  "name": "api-glossary",
+  "url": "/api/glossary",
+  "mode": "dark"
+ },
+ {
+  "name": "api-authorship",
+  "url": "/api/authorship",
+  "mode": "dark"
+ },
+ {
+  "name": "api-package-http-3",
+  "url": "/api/package/http-3.0",
+  "mode": "dark"
+ },
+ {
+  "name": "api-package-http-3-light",
+  "url": "/api/package/http-3.0",
+  "mode": "light"
+ },
+ {
+  "name": "api-package-http-3-mobile",
+  "url": "/api/package/http-3.0",
+  "mode": "mobile"
+ },
+ {
+  "name": "api-package-http-3-filtered",
+  "url": "/api/package/http-3.0",
+  "mode": "dark",
+  "actions": [
+   [
+    "type",
+    "input[data-filter]",
+    "route"
+   ]
+  ]
+ },
+ {
+  "name": "api-package-crypto",
+  "url": "/api/package/crypto",
+  "mode": "dark"
+ },
+ {
+  "name": "api-package-alphabet",
+  "url": "/api/package/alphabet",
+  "mode": "dark"
+ },
+ {
+  "name": "search-results-http",
+  "url": "/search?q=http",
+  "mode": "dark"
+ },
+ {
+  "name": "search-results-http-light",
+  "url": "/search?q=http",
+  "mode": "light"
+ },
+ {
+  "name": "search-results-http-mobile",
+  "url": "/search?q=http",
+  "mode": "mobile"
+ },
+ {
+  "name": "search-results-colors",
+  "url": "/search?q=colors",
+  "mode": "dark"
+ },
+ {
+  "name": "search-no-results",
+  "url": "/search?q=zzzzqq",
+  "mode": "dark"
+ },
+ {
+  "name": "search-too-short",
+  "url": "/search?q=a",
+  "mode": "dark"
+ },
+ {
+  "name": "search-empty",
+  "url": "/search",
+  "mode": "dark"
+ },
+ {
+  "name": "error-404-tutorial",
+  "url": "/tutorials/nope",
+  "mode": "dark"
+ },
+ {
+  "name": "error-404-api",
+  "url": "/api/package/nope",
+  "mode": "light"
+ },
+ {
+  "name": "error-404-module",
+  "url": "/modules/lib/nope",
+  "mode": "mobile"
+ }
+]

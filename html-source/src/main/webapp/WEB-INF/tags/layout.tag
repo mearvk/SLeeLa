@@ -35,7 +35,7 @@
         <input id="q" name="q" type="search" placeholder="Search ( / )" aria-label="Search" maxlength="100" value="${fn:escapeXml(param.q)}">
         <button class="btn" type="submit">Go</button>
       </form>
-      <button class="btn ghost icon" id="theme-toggle" type="button" aria-label="Toggle light and dark theme" title="Toggle theme">&#9680;</button>
+      <button class="btn ghost icon" id="theme-toggle" type="button" aria-label="Toggle light and dark theme" title="Toggle theme"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.5a6.5 6.5 0 0 1 0 13Z" fill="currentColor"/></svg></button>
     </div>
   </div>
 </header>
