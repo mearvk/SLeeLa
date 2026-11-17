@@ -1,7 +1,0 @@
-id: PARSE-OK-CRLF
-family: parser-acceptance
-expect: accept
-command: run
-output: ok
-reference: impl/frontend/lexer.cpp
-note: A file with Windows line endings is the same program.

@@ -156,7 +156,7 @@ very long `else if` chain still parses), so a crash from a new shape is a defect
 | `SEM-UNKNOWN-TYPE` | parser-rejection | `parser/unknown-type.sleela` | reject (`check`) | Type check, not parse. |
 | `PARSE-OK-BLANK-LINES` | parser-acceptance | `parser/blank-and-whitespace-lines.sleela` | accept (`run`) | Empty and whitespace-only lines before the first declaration. |
 | `PARSE-OK-COMMENTS` | parser-acceptance | `parser/every-comment-form.sleela` | accept (`run`) | All four comment forms are skipped; an angle comment must start its line. |
-| `PARSE-OK-CRLF` | parser-acceptance | `parser/crlf-line-endings.sleela` | accept (`run`) | A file with Windows line endings is the same program. |
+| `PARSE-OK-CRLF` | parser-acceptance | generated | accept (`run`) | A file with Windows line endings is the same program. Generated because the repository normalizes text files to LF. |
 | `PARSE-OK-MAX-LONG` | parser-acceptance | `parser/largest-long-literal.sleela` | accept (`run`) | The largest 64-bit literal is in range (one more is PARSE-INT-OVERFLOW). |
 | `PARSE-OK-NO-FINAL-NEWLINE` | parser-acceptance | `parser/no-trailing-newline.sleela` | accept (`run`) | The last token may end the file. |
 | `PARSE-OK-UNICODE` | parser-acceptance | `parser/unicode-string-literal.sleela` | accept (`run`) | Non-ASCII text, including a character outside the BMP, survives lexing and printing. |
