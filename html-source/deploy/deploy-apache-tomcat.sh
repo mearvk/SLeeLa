@@ -10,6 +10,8 @@
 #   2. Backs up what is served at "/" now into /backup/$DATE: Tomcat webapps/ROOT(.war) + ROOT.xml + server.xml,
 #      every Apache DocumentRoot, the whole /etc/apache2 tree, and the previous static dir. Writes backup/restore.sh.
 #   3. Fetches or refreshes the SLeeLa checkout (content is read live from it) and builds the WAR (mvn, else Docker).
+#      Builds the premium VMs (slvm-1..11) in the checkout so the Runtime page can offer them; a VM that does not build
+#      stays disabled on the page and the deploy continues.
 #   4. Tomcat: installs the WAR as ROOT, points it at the checkout via conf/Catalina/localhost/ROOT.xml, restarts,
 #      and waits for /healthz. On failure it restores the Tomcat backup automatically (unless --no-rollback).
 #   5. Apache: enables proxy + proxy_http (+ headers), serves /assets and /favicon.svg itself from STATIC_DIR,
@@ -21,7 +23,9 @@
 #   --tomcat-only    skip Apache
 #   --apache-only    skip Tomcat (Tomcat must already serve the site)
 #   --no-rollback    keep the failed state for debugging instead of restoring the backup
-#   --install-deps   apt-get install bubblewrap, util-linux and python3 (the runtime sandbox needs them)
+#   --install-deps   apt-get install bubblewrap, util-linux and python3 (the runtime sandbox needs them),
+#                    plus gcc, g++ and make (build-essential) for the premium VMs
+#   --no-premium-vms do not build the premium VMs (the Runtime page then offers the Native VM only)
 #   --no-runtime     deploy the site with the Runtime page switched off (sleela.runtime.mode=off)
 #   --war FILE       use a prebuilt WAR instead of building
 #   -h, --help
@@ -36,7 +40,7 @@ set -Eeuo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-DRY_RUN=0; DO_TOMCAT=1; DO_APACHE=1; ROLLBACK=1; WAR_FILE=""; INSTALL_DEPS=0; RUNTIME_MODE=auto
+DRY_RUN=0; DO_TOMCAT=1; DO_APACHE=1; ROLLBACK=1; WAR_FILE=""; INSTALL_DEPS=0; RUNTIME_MODE=auto; PREMIUM_VMS=1
 while [ $# -gt 0 ]; do
   case "$1" in
     --dry-run) DRY_RUN=1 ;;
@@ -45,6 +49,7 @@ while [ $# -gt 0 ]; do
     --no-rollback) ROLLBACK=0 ;;
     --install-deps) INSTALL_DEPS=1 ;;
     --no-runtime) RUNTIME_MODE=off ;;
+    --no-premium-vms) PREMIUM_VMS=0 ;;
     --war) shift; WAR_FILE="${1:?--war needs a file}"; [ -e "$WAR_FILE" ] && WAR_FILE="$(cd "$(dirname "$WAR_FILE")" && pwd)/$(basename "$WAR_FILE")" ;;
     -h|--help) sed -n '2,/^set -E/p' "$0" | sed '$d; s/^# \{0,1\}//'; exit 0 ;;
     *) echo "unknown option: $1 (see --help)" >&2; exit 2 ;;
@@ -336,6 +341,7 @@ if [ "$RUNTIME_MODE" = auto ]; then
   have bwrap   || missing+=(bubblewrap)
   have prlimit || missing+=(util-linux)
   have python3 || missing+=(python3)
+  if [ "$PREMIUM_VMS" = 1 ]; then { have cc && have c++ && have make && have ar; } || missing+=(build-essential); fi
   if [ "${#missing[@]}" -gt 0 ]; then
     if [ "$INSTALL_DEPS" = 1 ] && have apt-get; then
       log "Installing runtime sandbox packages: ${missing[*]}"
@@ -346,7 +352,7 @@ if [ "$RUNTIME_MODE" = auto ]; then
   fi
 fi
 
-# ------------------------------------------------------------------ 3. content checkout + WAR
+# ------------------------------------------------------------------ 3. content checkout, premium VMs, WAR
 log "SLeeLa content at $SLEELA_SRC"
 if [ -d "$SLEELA_SRC/.git" ]; then
   run git -C "$SLEELA_SRC" pull --ff-only
@@ -356,6 +362,43 @@ else
   run mkdir -p "$(dirname "$SLEELA_SRC")"
   run git clone --depth 1 --branch "$SLEELA_REF" "$SLEELA_REPO" "$SLEELA_SRC"
   run chmod -R a+rX "$SLEELA_SRC"
+fi
+
+# Premium VMs for the Runtime page. The sandbox mounts the checkout read-only, so `sleela vm run premium N` cannot build a
+# VM during a visitor run; build them here. Only the Core engine archive is needed (not the whole toolchain that the root
+# `make premium-vms` builds first). make is incremental, so a redeploy rebuilds only what the pull changed.
+PREMIUM_STATUS="not built (--no-premium-vms)"
+if [ "$RUNTIME_MODE" = off ]; then
+  PREMIUM_STATUS="not built (runtime off)"
+elif [ "$PREMIUM_VMS" = 1 ]; then
+  log "Building the premium VMs (slvm-1..11)"
+  PVM_LOG="$BACKUP_DIR/premium-vms.log"; [ "$DRY_RUN" = 1 ] && PVM_LOG=/dev/stdout
+  if ! { have cc && have c++ && have make && have ar; }; then
+    PREMIUM_STATUS="not built (needs gcc, g++ and make: rerun with --install-deps)"
+    warn "Premium VMs $PREMIUM_STATUS"
+  elif ! run env SLEELA_SHA256_MANIFEST="$SLEELA_SRC/security/sha256-manifest.json" make -C "$SLEELA_SRC/impl" -j"$(nproc 2>/dev/null || echo 2)" libslcore >"$PVM_LOG" 2>&1; then
+    PREMIUM_STATUS="not built (Core engine build failed, see $PVM_LOG)"
+    warn "Premium VMs $PREMIUM_STATUS"
+  else
+    built=0; failed=()
+    for n in 001 002 003 004 005 006 007 008 009 010 011; do
+      if run make -C "$SLEELA_SRC/sleela-virtual-machine/$n" all >>"$PVM_LOG" 2>&1 \
+         && run make -C "$SLEELA_SRC/sleela-virtual-machine/$n" test >>"$PVM_LOG" 2>&1; then
+        built=$((built + 1))
+      else
+        failed+=("$n")
+        # a VM that fails its selfcheck must not be offered: the site enables a VM when its binary exists
+        [ "$DRY_RUN" = 1 ] || rm -f "$SLEELA_SRC/sleela-virtual-machine/$n/vm-build/slvm-${n:1}"
+      fi
+    done
+    run chmod -R a+rX "$SLEELA_SRC/impl/build" "$SLEELA_SRC/sleela-virtual-machine"
+    PREMIUM_STATUS="$built of 11 built and selfchecked"
+    if [ "${#failed[@]}" -gt 0 ]; then
+      PREMIUM_STATUS="$PREMIUM_STATUS (failed: ${failed[*]}, see $PVM_LOG)"
+      warn "Premium VMs: $PREMIUM_STATUS"
+    fi
+    echo "    premium VMs: $PREMIUM_STATUS"
+  fi
 fi
 
 if [ -z "$WAR_FILE" ]; then
@@ -504,6 +547,7 @@ log "Summary"
 echo "    Tomcat : $TOMCAT_STATUS"
 echo "    Apache : $APACHE_STATUS"
 echo "    Runtime: $RUNTIME_STATUS"
+echo "    Premium VMs: $PREMIUM_STATUS"
 echo "    Backup : $BACKUP_DIR   (restore: $BACKUP_DIR/restore.sh [tomcat|apache|all])"
 [ "$APACHE_STATUS" = "${APACHE_STATUS#ok}" ] || echo "    Note   : $APACHE_ETC/conf-enabled/$CONF_NAME.conf maps / on every Apache virtual host to the site"
 echo "    Content: $SLEELA_SRC   (to update: git -C $SLEELA_SRC pull && systemctl restart ${TOMCAT_SERVICE:-<tomcat>})"

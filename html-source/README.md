@@ -42,7 +42,7 @@ Append `?raw=1` to any example or module file for plain text.
 - **Standard 1..10** (`idea-vm-001..010`): listed but disabled, because the CLI cannot boot programs on them yet (`sleela vm run N` is refused).
 - **Premium 1..11** (`slvm-1..11`, Foundation to Sovereign): `sleela vm run premium N /work/main.sleela`, started in the read-only SLeeLa tree.
   An option is enabled only when `sleela-virtual-machine/NNN/vm-build/slvm-NN` exists on the server. The sandbox cannot build it,
-  so build them once at the root of the checkout with `make premium-vms` (it builds the Core engine first).
+  so `deploy-apache-tomcat.sh` builds the Core engine archive and all eleven VMs in the checkout and runs each VM's selfcheck.
 - Check syntax uses the compiler only, so it boots no VM.
 
 The page enables itself only after a sandbox self-test passes (`working-binaries/sleela` runs a hello program inside bwrap).
@@ -68,6 +68,8 @@ sudo ./deploy/deploy-apache-tomcat.sh             # deploy to both
    - Apache: every `DocumentRoot`, all of `/etc/apache2`, and the previous static dir.
    - `MANIFEST.tsv` lists every copy; `restore.sh [tomcat|apache|all]` puts it all back.
 3. **Content:** clones `mearvk/SLeeLa` to `/srv/sleela`, or pulls if it is already there. The site reads it live.
+   Then it builds the premium VMs there (`make -C impl libslcore`, then `make all test` in each `sleela-virtual-machine/NNN`).
+   A VM that fails is left out of the Runtime dropdown and the deploy continues; the log is `premium-vms.log` in the backup dir.
 4. **Tomcat:** installs the WAR as `ROOT.war` and writes `conf/Catalina/localhost/ROOT.xml`, which points the app at the checkout.
    Then it restarts the service and waits for `/healthz`. If that fails, it restores the Tomcat backup.
 5. **Apache:** enables `proxy`, `proxy_http` and `headers`. Apache serves `/assets` and `/favicon.svg` itself from
@@ -83,7 +85,8 @@ the longest matching context path before ROOT. The stock Tomcat `examples` app i
 Existing Apache `Alias`/`ProxyPass`/`Location` lines on those paths are reported with file and line. After deploying, the script checks
 `/`, `/examples/` and `/runtime` through Tomcat and Apache and reports the Runtime state.
 
-Options: `--tomcat-only`, `--apache-only`, `--no-rollback`, `--install-deps`, `--no-runtime`, `--war FILE`.
+Options: `--tomcat-only`, `--apache-only`, `--no-rollback`, `--install-deps` (also installs `build-essential` for the premium VMs),
+`--no-runtime`, `--no-premium-vms`, `--war FILE`.
 Overrides: `SLEELA_SRC`, `CATALINA_BASE`, `TOMCAT_SERVICE`, `TOMCAT_PORT`, `APACHE_ETC`, `APACHE_URL`, `STATIC_DIR`, `BACKUP_ROOT`.
 To update the content later, run `git -C /srv/sleela pull && sudo systemctl restart tomcat10`; the site caches its file lists at startup.
 
