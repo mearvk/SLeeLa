@@ -18,30 +18,49 @@ Dark by default, light theme and toggle included.
 Append `?raw=1` to any example or module file for plain text.
 
 ## Requirements
-Java 17+, Maven 3.9+, a Jakarta Servlet 6 container (Tomcat 10.1 or 11; Docker image uses 10.1 on JRE 21).
+- **Runtime:** Java 11+ and a Jakarta Servlet 6 container: Tomcat 10.1 or 11. Tomcat 9 and 10.0 are refused.
+- **Build:** Maven 3.9+ with Java 11+, or Docker (the scripts fall back to a Maven container).
 
-## Deploy on Linux
+## Deploy on a host running Apache 2 + Tomcat (Debian/Ubuntu)
 
-**Docker (recommended).** Clones SLeeLa to `/srv/sleela`, builds the image, starts the site and waits for `/healthz`:
+```sh
+sudo ./deploy/deploy-apache-tomcat.sh --dry-run   # preview every step, change nothing
+sudo ./deploy/deploy-apache-tomcat.sh             # deploy to both
+```
+
+1. **Detect:** finds Tomcat (`/var/lib/tomcat10`, `/var/lib/tomcat11`, `/opt/tomcat`, ... or `CATALINA_BASE`), its version,
+   systemd unit and HTTP port. Finds Apache (`/etc/apache2`, `a2enmod`, `mod_proxy_http`). A target that is missing or
+   unsuitable is skipped with the reason.
+2. **Back up** everything served at `/` now into `/backup/$DATE` (`YYYY-MM-DD_HHMMSS`):
+   - Tomcat: `webapps/ROOT`, `ROOT.war`, `conf/Catalina/localhost/ROOT.xml` and `server.xml`.
+   - Apache: every `DocumentRoot`, all of `/etc/apache2`, and the previous static dir.
+   - `MANIFEST.tsv` lists every copy; `restore.sh [tomcat|apache|all]` puts it all back.
+3. **Content:** clones `mearvk/SLeeLa` to `/srv/sleela`, or pulls if it is already there. The site reads it live.
+4. **Tomcat:** installs the WAR as `ROOT.war` and writes `conf/Catalina/localhost/ROOT.xml`, which points the app at the checkout.
+   Then it restarts the service and waits for `/healthz`. If that fails, it restores the Tomcat backup.
+5. **Apache:** enables `proxy`, `proxy_http` and `headers`. Apache serves `/assets` and `/favicon.svg` itself from
+   `/var/www/sleela-site` and proxies everything else to Tomcat. The config is `conf-available/sleela-site.conf`.
+   It runs `apache2ctl configtest` before reloading and checks `/healthz` through Apache. If either fails, it restores `/etc/apache2`.
+
+The Apache config applies to **every virtual host** on the server, which is what "the site at `/`" means here.
+DocumentRoot files are backed up but not changed. Turn the site off with `sudo a2disconf sleela-site && sudo systemctl reload apache2`.
+
+Options: `--tomcat-only`, `--apache-only`, `--no-rollback`, `--war FILE`.
+Overrides: `SLEELA_SRC`, `CATALINA_BASE`, `TOMCAT_SERVICE`, `TOMCAT_PORT`, `APACHE_ETC`, `APACHE_URL`, `STATIC_DIR`, `BACKUP_ROOT`.
+To update the content later, run `git -C /srv/sleela pull && sudo systemctl restart tomcat10`; the site caches its file lists at startup.
+
+## Deploy with Docker instead
 
 ```sh
 ./deploy/deploy.sh                       # http://localhost:8080
 SLEELA_SRC=/srv/sleela SITE_PORT=80 ./deploy/deploy.sh
 ```
-Content is read live from the checkout, so `git -C /srv/sleela pull` updates the site without a rebuild
-(restart the container to refresh cached indexes).
-
-**Existing Tomcat.** Builds a self-contained WAR (tutorials, examples, modules, HTTP modules and API docs bundled
-under `WEB-INF/content`) and installs it as `ROOT.war`:
-
-```sh
-CATALINA_BASE=/opt/tomcat ./deploy/deploy-tomcat.sh
-```
-`mvn package -Dnobundle` builds a small WAR instead; point it at a checkout with `SLEELA_HOME=/path` or `-Dsleela.home=/path`.
-
-Content root lookup order: `-Dsleela.home`, `SLEELA_HOME`, `sleela.home` context-param, bundled `WEB-INF/content`,
-then a checkout found by walking up from the working directory.
+Without root, the checkout defaults to `~/sleela`. Rerunning pulls new content and recreates the container.
 `deploy/nginx.conf` is a sample reverse proxy for TLS.
+
+Content root lookup order: `-Dsleela.home`, `SLEELA_HOME`, `sleela.home` context parameter, bundled `WEB-INF/content`,
+then a checkout found by walking up from the working directory. `mvn package` without `-Dnobundle` builds a
+self-contained WAR with the content inside.
 
 ## Screenshots
 All pages and facets are captured as PNGs in [`preview/`](preview/SCREENSHOTS.md). See [`preview/README.md`](preview/README.md) to regenerate them.
