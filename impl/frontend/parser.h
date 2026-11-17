@@ -55,7 +55,7 @@ private:
     Method parseMethod(bool isStatic,bool isProtected,unsigned modifiers=0, std::vector<annotation::Annotation> annotations={});
     bool isTypeStart() const;
     std::string parseType(std::vector<annotation::Annotation>* typeAnnotations=nullptr);
-    StmtP parseStatement(); std::unique_ptr<Block> parseBlock(); StmtP parseSimpleStatement();
+    StmtP parseStatement(); StmtP parseStatementImpl(); int stmtDepth_=0; std::unique_ptr<Block> parseBlock(); StmtP parseSimpleStatement();
     // Resolve the per-iteration sleep (milliseconds) a loop's leading timing
     // annotations (@loopDelay / @loopBudget) request. Returns 0 when none apply.
     long loopTimingMillis(const std::vector<annotation::Annotation>& anns);

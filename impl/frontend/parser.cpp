@@ -38,7 +38,7 @@ bool isChainOperator(Tok k){
     case Tok::ShiftLeft: case Tok::ShiftRight: case Tok::UnsignedShiftRight:
     case Tok::EqEq: case Tok::NotEq: case Tok::Lt: case Tok::Le: case Tok::Gt: case Tok::Ge:
     case Tok::AndAnd: case Tok::OrOr: case Tok::BitAnd: case Tok::BitOr: case Tok::BitXor:
-    case Tok::TripleColon: case Tok::Question: case Tok::Assign:
+    case Tok::TripleColon: case Tok::Question: case Tok::Assign: case Tok::Dot: case Tok::Colon:
     case Tok::PlusAssign: case Tok::MinusAssign: case Tok::StarAssign: case Tok::SlashAssign:
     case Tok::PercentAssign: case Tok::AndAssign: case Tok::OrAssign: case Tok::XorAssign:
     case Tok::ShlAssign: case Tok::ShrAssign: case Tok::UshrAssign:
@@ -1140,7 +1140,15 @@ StmtP Parser::parseFor(){expect(Tok::KwFor,"'for'");expect(Tok::LParen,"'('");
 StmtP Parser::parseSynchronized(){expect(Tok::KwSynchronized,"'synchronized'");expect(Tok::LParen,"'('");auto s=std::make_unique<SynchronizedStmt>();s->monitor=parseExpr();expect(Tok::RParen,"')'");s->body=parseBlock();return s;}
 StmtP Parser::parseTry(){expect(Tok::KwTry,"'try'");auto s=std::make_unique<TryStmt>();s->body=parseBlock();while(accept(Tok::KwCatch)){expect(Tok::LParen,"'('");CatchClause c; if(check(Tok::KwFinal))++i_; c.types.push_back(parseQualifiedName()); while(accept(Tok::BitOr)) c.types.push_back(parseQualifiedName()); for(size_t k=0;k<c.types.size();++k){ if(k) c.type+="|"; c.type+=c.types[k]; } c.variable=expect(Tok::Ident,"exception variable").text;expect(Tok::RParen,"')'");c.body=parseBlock();s->catches.push_back(std::move(c));}if(accept(Tok::KwFinally))s->finallyBlock=parseBlock();if(s->catches.empty()&&!s->finallyBlock)error("try requires catch or finally");return s;}
 StmtP Parser::parseSwitch(){expect(Tok::KwSwitch,"'switch'");expect(Tok::LParen,"'('");auto s=std::make_unique<SwitchStmt>();s->selector=parseExpr();expect(Tok::RParen,"')'");expect(Tok::LBrace,"'{'");while(!check(Tok::RBrace)&&!check(Tok::Eof)){SwitchCase sc;if(accept(Tok::KwDefault)){sc.isDefault=true;expect(Tok::Colon,"':'");}else{expect(Tok::KwCase,"'case'");sc.labels.push_back(parseExpr());while(accept(Tok::Comma))sc.labels.push_back(parseExpr());expect(Tok::Colon,"':'");}while(!check(Tok::KwCase)&&!check(Tok::KwDefault)&&!check(Tok::RBrace)&&!check(Tok::Eof))sc.statements.push_back(parseStatement());s->cases.push_back(std::move(sc));}expect(Tok::RBrace,"'}'");return s;}
+// Statements nest through their bodies and through `else` (an else-if chain is one level per link), also
+// without braces, so the bracket check cannot see them. Each level costs several native stack frames.
+static const int kMaxStatementDepth = 3000;
 StmtP Parser::parseStatement(){
+ if(stmtDepth_>=kMaxStatementDepth) error("statements are nested too deeply (limit "+std::to_string(kMaxStatementDepth)+", counting each else-if)");
+ struct Level{ int& d; explicit Level(int& x):d(x){++d;} ~Level(){--d;} } level(stmtDepth_);
+ return parseStatementImpl();
+}
+StmtP Parser::parseStatementImpl(){
  // A statement may carry leading annotations. The statement-level annotations
  // are the loop-timing ones (@loopDelay / @loopBudget), which set a loop's
  // per-iteration sleep, and @spill, which marks the loop entry as a timer-start

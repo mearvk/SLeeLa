@@ -675,11 +675,11 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "11ab019bb33fb757fca0437a7166decc7037b4ebdc510d73704fd4ffcd62d0a1"
+      "sha256": "bc75bb7ac128442c78cf75da26e258dcda39e1673edb708618698ce803ba33b5"
     },
     {
       "path": "impl/frontend/parser.h",
-      "sha256": "58df9cd85e237172ff29a55b125223c77f3966882741f7ed68ff3bf1eafe4995"
+      "sha256": "d0fa1906e80f4f5c53b191108d80c485d76b165a11dc3384b4a0545c561ae7b5"
     },
     {
       "path": "impl/frontend/permissible.cpp",
@@ -791,7 +791,7 @@
     },
     {
       "path": "impl/nordshrift/sleela_emit.cpp",
-      "sha256": "77016fcfe0c10de20982942f4e5d5d15b93d61ddc3e443f60b9df1ca5cb76b21"
+      "sha256": "15498262bd72d8b7575d164ce944a42d49519181b8da39fba54ffdf631c24c22"
     },
     {
       "path": "impl/nordshrift/sleela_emit.h",

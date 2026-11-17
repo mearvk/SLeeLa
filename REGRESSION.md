@@ -105,14 +105,25 @@ Syntax 3.1 (range 1.0 .. 3.1, release 1.3.2-pro) replaces the earlier 3.0 ceilin
 | Nordshrift Java target | Still refuses arrays, deliberately: a Java array prints as an identity hash and `int` is widened to `long`, so the output would differ from the VM. The error now says so. |
 | `SHA256-DIGESTS.md` | Regenerated. |
 
-Final result: full set 203 tests, 0 failed, 196 s, against the rebuilt `working-binaries/sleela`; project targets `test-sleela`, `test-nordshrift` (+ `-compiler`, `-semantic`, `-compat`, `-e2e`), `-version`, `-lineage`, `-class-dispatch`, `-ref`, `-syntax-1.8`, `-catalog` and `check-manifest` pass.
+Result at that point: full set 203 tests, 0 failed, 196 s, against the rebuilt `working-binaries/sleela`; project targets `test-sleela`, `test-nordshrift` (+ `-compiler`, `-semantic`, `-compat`, `-e2e`), `-version`, `-lineage`, `-class-dispatch`, `-ref`, `-syntax-1.8`, `-catalog` and `check-manifest` pass.
+
+### Remaining items, worked in order (same day)
+
+| Item | Result |
+|---|---|
+| Class-level annotations in the Sleela emitter | Printed before the class; a document annotation makes the first class `public class` so it stays a document annotation (it was silently turned into a class annotation, which dropped its forwarding). A first class with annotations of its own plus document annotations is refused. `DocAnnot` and `ClassAnnot` join the emitter tests (run, round trip, idempotence). |
+| Uncapped recursion shapes | Probed 18 shapes at 20,000 to 60,000 levels. Five crashed: an else-if chain, nested `for` and `do` without braces, a member-access chain, a label chain. Statement nesting is now capped at 3000 (`parseStatement`), and `.` and `:` count with the operators. Seven new corpus cases, two of them at the cap (corpus: 73 cases). |
+| C target, enhanced `for` | Emitted over arrays (iterable evaluated once, bounds-checked element read). Over an Iterable object it still refuses. New test compares the C program with the VM. |
+| Java target arrays and objects | Not done, on purpose: a Java array prints as an identity hash and `int` widens to `long`, so the output would differ from the VM. |
+| C target objects | Not done: it needs an object model the C runtime does not have. |
+| Windows and macOS builds of `reg_net`, `reg_thread`, `reg_synchro` | Not done: no such toolchain in this sandbox, so a port could not be checked. |
+
+Final result: full set 211 tests, 0 failed, 206 s, against the rebuilt `working-binaries/sleela`; `test-sleela`, `test-nordshrift` (+ `-compiler`, `-semantic`, `-compat`, `-e2e`), `test-version`, `test-syntax-1.8`, `test-catalog` and `check-manifest` pass.
 
 ### Still open
 
-- The Windows and macOS builds of the new suites. `reg_net`, `reg_thread` and `reg_synchro` are POSIX-only and skip there; this sandbox has no Windows or macOS toolchain, so porting them could not be checked here. CI covers `events_portable.c` on all three systems.
-- The C target does not emit the enhanced `for` or objects; the Java target does not emit arrays or objects (all fail closed).
-- The Sleela emitter does not print class-level annotations, so a document annotation re-read as a class annotation is dropped on the second emit.
-- Other recursion shapes are not capped (for example very long `else if` chains parse); a crash from a new shape belongs in the corpus.
+- Windows and macOS builds of the POSIX-only suites (see above).
+- The C target has no objects; the Java target has no arrays or objects.
 
 ## Verification pass (before the repair)
 

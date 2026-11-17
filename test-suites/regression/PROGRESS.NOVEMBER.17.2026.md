@@ -1,6 +1,6 @@
 # Regression set: session progress (17 November 2026)
 
-Five stages this session:
+Six stages this session:
 
 1. Commit `8e570460`: the regression set (C, C++, Python only).
 2. Commit `0ea1760b`: the defects it found were fixed in the Sleela code, the
@@ -8,6 +8,7 @@ Five stages this session:
 3. Stage 3 ("improve all"): the open items from stage 2 were closed (see below). The root `REGRESSION.md` records the repair pass that followed (CI, Nordshrift C arrays, events on Windows).
 4. Stage 4: more coverage (memory manager, threads, sockets, synchro, HTTP 6.0 frames, preferred router), a populated corpus, sanitizer run, and documents brought to syntax 3.1. Details in "Stage 4" below.
 5. Stage 5: the issues left open by stage 4 were closed (see "Stage 5").
+6. Stage 6: the remaining items were worked in order (see "Stage 6").
 
 ## Status
 
@@ -17,7 +18,7 @@ Five stages this session:
 | C++ suites (lexer, model-based differential) | passing |
 | Python suites (ctypes, CLI language/contract/transpilers, corpus, integrity, document versions, mutation) | passing |
 | Native suites under ASan + UBSan | passing (run locally in stage 4) |
-| Full run against the committed `working-binaries/sleela` | 203 tests, 0 failures (about 113 s with `--fast`, about 196 s with mutation testing) |
+| Full run against the committed `working-binaries/sleela` | 211 tests, 0 failures (about 115 s with `--fast`, about 206 s with mutation testing) |
 | Mutation test | 85 injected defects, all detected (a hang counts as detected) |
 | Open known issues | none |
 | `security/sha256-manifest.json` | regenerated; `make check-manifest` prints OK |
@@ -54,7 +55,7 @@ Five stages this session:
 | Item | Change |
 |---|---|
 | New C suites | `reg_memmgr`, `reg_thread`, `reg_net`, `reg_synchro`, `reg_http6`, `reg_router`. The instrumented allocator got a mutex so suites with worker threads can allocate. |
-| Corpus | `corpus/` held 63 cases at this stage (66 after stage 5) in seven families, a `.expect` sidecar per fixture, generated cases for oversized inputs, and a README whose table is checked against the fixtures. Run as the `corpus` group. |
+| Corpus | `corpus/` held 63 cases at this stage (66 after stage 5, 73 after stage 6) in seven families, a `.expect` sidecar per fixture, generated cases for oversized inputs, and a README whose table is checked against the fixtures. Run as the `corpus` group. |
 | Defects fixed | Compiler crashes on deep nesting, long operator chains and long identifiers (now diagnostics); `@next` traversal bypass through token spacing, drive letters and `%`; `slmm_realloc` double counting; NULL arguments in `slthread_*` on POSIX; zero-length `slnet_write` on an invalid handle. Table in the root `REGRESSION.md`. |
 | Sanitizers | The native suites pass under ASan + UBSan locally (the libraries are installed here under a versioned name; `LD_LIBRARY_PATH` points the loader at them). The earlier note that they were not installed is out of date. |
 | Document versions | Syntax 3.1 replaces 3.0 as the stated ceiling in 22 documents. `test_doc_versions.py` keeps the release, the range and those documents in step. `impl/RUNTIME-AUDIT.md` finding 11 is closed. |
@@ -79,6 +80,15 @@ Left open by stage 4 and closed in stage 5: Nordshrift arrays (Sleela target), r
 
 Not done: Windows and macOS builds of the POSIX-only suites (no such toolchain here), the C target's
 enhanced `for` and objects, the Java target's arrays and objects, class-level annotations in the Sleela emitter.
+
+## Stage 6 (remaining items, in order)
+
+| Item | Result |
+|---|---|
+| Sleela emitter, class annotations | Printed; document annotations keep their meaning (`public class` follows them). |
+| Recursion shapes | Else-if chains, brace-less nested loops, member chains and label chains no longer crash the compiler: statement nesting is capped at 3000 and `.`/`:` count with the operators. Corpus: 73 cases. |
+| C target | Enhanced `for` over arrays. |
+| Not done | C objects; Java arrays and objects (output would differ from the VM); Windows and macOS builds of the POSIX-only suites (no toolchain here). |
 
 ## Verified against the project's own tests
 
@@ -114,5 +124,5 @@ After any edit under `lib/**` or `impl/` source, regenerate the manifest:
 
 1. Port the POSIX-only suites (net, thread, synchro, path) to Windows and macOS runners.
 2. Array and object support in the Nordshrift Java and Sleela targets.
-3. Print class-level annotations in the Sleela emitter.
+3. An object model for the C target (enhanced `for` over arrays is done).
 4. Suites for more of `impl/core` (io, library, terminal, ai, media) and for `impl/frontend` semantic and compiler passes.

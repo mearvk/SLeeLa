@@ -119,7 +119,10 @@ extended regression set (corpus, memory manager, threads, sockets, synchro, HTTP
 - the Nordshrift Sleela target emits arrays (creation of any rank, `{...}` initializers in declarations, element
   read/write and compound assignment, `.length`) and prints annotations as `@name(value)`; the output runs
   identically and re-emits to itself. The Java target still refuses arrays on purpose.
-Checked: 203/203 regression tests (with mutation testing) with
+- the compiler refuses statement nesting over 3000 levels (each `else if` counts, with or without braces) and
+  member-access or label chains over 5000, instead of crashing; the Nordshrift C target emits the enhanced `for`
+  over arrays; the Sleela target keeps class annotations and writes `public class` after document annotations.
+Checked: 211/211 regression tests (with mutation testing) with
 `SLEELA_BIN=$PWD/working-binaries/sleela`.
 
 Reported versions:
@@ -130,8 +133,8 @@ Reported versions:
 SHA-256 of the committed copies:
 
 ```
-c63a351075a92fd61aa3420e55cf14c21f765e7fcaba3eef423d73ef465fccf8  sleela
-ad138060fc19ed1da398880818ec624af7de8823777f51fd37892717d5db223f  nordshrift
+0c8f7cd85355ae1a299754e7df8f4e5efdf7059c7d9ffcdda0e8e88f79b80bc0  sleela
+9f251995cfb2d5a6921a5a9c1f858b3b938a06d1a1d8b15ee30bf2328f207a42  nordshrift
 ```
 
 ---

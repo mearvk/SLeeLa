@@ -82,8 +82,11 @@ The compiler refuses, with a `Syntax error ... too deep / too long` message, sou
 otherwise exhaust the native stack: more than 1000 levels of `()`, `[]` and `{}`, more than 5000
 operators between two statement separators, more than 1000 prefix operators in a row, and more than
 1000 back-to-back casts. The caps sit far above real programs; `LIMIT-NEST-AT-CAP` and
-`LIMIT-CHAIN-AT-CAP` run programs just under them. Other deep shapes are not capped (for example a
-very long `else if` chain still parses), so a crash from a new shape is a defect to add here.
+`LIMIT-CHAIN-AT-CAP` run programs just under them. Statements nest through their bodies and through
+`else` (an else-if chain is one level per link), with or without braces: more than 3000 levels is refused
+(`LIMIT-ELSE-IF-CHAIN`, `LIMIT-NESTED-LOOPS-NO-BRACES`, `LIMIT-NESTED-DO-NO-BRACES`; `LIMIT-ELSE-IF-AT-CAP` runs 2,900 links).
+Member-access (`.`) and label (`:`) chains count with the operators (`LIMIT-MEMBER-CHAIN`, `LIMIT-LABEL-CHAIN`). A crash from a shape
+not listed is a defect to add here.
 
 ## Known gaps
 
@@ -161,12 +164,19 @@ annotation, and the forwarder reports a destination as written (`system/net`, no
 | `PARSE-OK-UNICODE` | parser-acceptance | `parser/unicode-string-literal.sleela` | accept (`run`) | Non-ASCII text, including a character outside the BMP, survives lexing and printing. |
 | `LIMIT-CAST-CHAIN` | resource-limits | generated | reject (`check`) | 30,000 back-to-back casts nest without any open bracket. |
 | `LIMIT-CHAIN-AT-CAP` | resource-limits | generated | accept (`run`) | A 4,000-operator statement is under the cap and still runs. |
+| `LIMIT-ELSE-IF-AT-CAP` | resource-limits | generated | accept (`run`) | 2,900 else-if links is under the cap and runs. |
+| `LIMIT-ELSE-IF-CHAIN` | resource-limits | generated | reject (`check`) | 60,000 chained else-if links. Each link is one level of statement recursion with no bracket to count. |
+| `LIMIT-LABEL-CHAIN` | resource-limits | generated | reject (`check`) | 60,000 stacked statement labels. |
 | `LIMIT-LONG-IDENTIFIER` | resource-limits | generated | accept (`check`) | A 2,000,000-character identifier is legal. Dependency discovery used std::regex, which recurses per character and crashed. |
 | `LIMIT-LONG-IDENTIFIER-RUN` | resource-limits | generated | accept (`run`) | A 50,000-character identifier runs end to end. |
 | `LIMIT-MANY-CLASSES` | resource-limits | generated | accept (`check`) | 20,000 declarations. |
+| `LIMIT-MEMBER-CHAIN` | resource-limits | generated | reject (`check`) | A 60,000-call member chain builds a left-deep tree. |
+| `LIMIT-MEMBER-CHAIN-AT-CAP` | resource-limits | generated | accept (`run`) | A 4,000-call member chain is under the cap and runs. |
 | `LIMIT-NEST-AT-CAP` | resource-limits | generated | accept (`run`) | 900 nested parentheses is under the cap and still runs. |
 | `LIMIT-NEST-BLOCKS` | resource-limits | generated | reject (`check`) | 5,000 nested blocks. |
 | `LIMIT-NEST-PARENS` | resource-limits | generated | reject (`check`) | 20,000 nested parentheses. The parser recursed once per level and crashed with a segmentation fault. |
+| `LIMIT-NESTED-DO-NO-BRACES` | resource-limits | generated | reject (`check`) | 20,000 nested do statements. |
+| `LIMIT-NESTED-LOOPS-NO-BRACES` | resource-limits | generated | reject (`check`) | 60,000 nested for statements without braces. |
 | `LIMIT-OPERATOR-CHAIN` | resource-limits | generated | reject (`check`) | One statement of 100,000 chained operators builds a left-deep tree that later passes walk recursively. |
 | `LIMIT-PREFIX-RUN` | resource-limits | generated | reject (`check`) | 5,000 prefix operators in a row. |
 | `LIMIT-STRING-1MB` | resource-limits | generated | accept (`run`) | A one-megabyte string literal. |

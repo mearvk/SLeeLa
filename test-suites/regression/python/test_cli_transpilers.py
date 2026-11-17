@@ -83,6 +83,8 @@ class Emitters(ProgramTestCase):
         "Arrays": 'class Arrays { int[] g = {7, 8};\n'
                   '  void main() { int[] a = {1, 2, 3}; int[][] m = {{1, 2}, {3, 4}}; int[] b = new int[3]; int[][] r = new int[2][3]; int[][] j = new int[2][];\n'
                   '    b[0] = a[1] + m[1][0]; b[1] += 5; b[2]++; a[0] = r[1][2]; print(b); print(a.length); print(m[1][1]); print(g[0]); print(j.length); } }',
+        "DocAnnot": '@scope(system)\n@next(system/net)\npublic class DocAnnot { void main() { print("ok"); } }',
+        "ClassAnnot": '@scope(a)\nclass ClassAnnot { void main() { print("ok"); } }',
         "Obj": 'class B { String hi() { return "b"; } }\n'
                'class K extends B { String hi() { return "k"; } }\n'
                'class Counter { int v = 1; static int made = 7; int get() { return this.v + 1; }\n'
@@ -168,8 +170,7 @@ class Emitters(ProgramTestCase):
         # Arrays pass the shared lowering gate. The C and Sleela targets emit them; the Java target
         # refuses: printing an array and widening int to long would not match the VM (a Java array
         # prints as an identity hash), so a silent translation would change behaviour.
-        for target, body, why in (("java", "int[] a = {1, 2}; print(a[0]);", "array access in Java"),
-                                  ("c", "int[] a = {1, 2}; for (int x : a) { print(x); }", "enhanced for in C")):
+        for target, body, why in (("java", "int[] a = {1, 2}; print(a[0]);", "array access in Java"),):
             d = rs.fresh_dir("ns-more")
             rs.write_program(d, "T.sleela", f"#sleela 3.1\nclass T {{ void main() {{ {body} }} }}")
             cp = emit(d, "T.sleela", target)
@@ -275,6 +276,24 @@ class CTarget(ProgramTestCase):
         run = self.c_run(d, "Arr")
         self.assertEqual(run.returncode, 0, run.stderr)
         self.assertEqual(run.stdout.splitlines(), ARRAYS_WANT, "emitted C vs expected")
+
+    def test_enhanced_for_over_arrays_agrees_with_the_vm(self):
+        """The enhanced for (was: rejected by the C target): sum, nested loops over a rank-2 array, an empty
+        array, the iterable evaluated once, the loop variable not leaking, and an error from a null iterable."""
+        body = ("int calls = 0; int[] a = {3, 4, 5}; int t = 0; for (int x : a) { t += x; } print(t); "
+                "int[][] m = {{1, 2}, {3, 4}}; int u = 0; for (int[] row : m) { for (int y : row) { u = u * 10 + y; } } print(u); "
+                "int[] e = new int[0]; for (int z : e) { print(\"never\"); } "
+                "for (int x : a) { a[0] = 99; print(x); } "
+                "String[] w = {\"p\", \"q\"}; String j = \"\"; for (String s : w) { j += s; } print(j);")
+        d = rs.fresh_dir("c-foreach")
+        rs.write_program(d, "Fe.sleela", "#sleela 3.1\nclass Fe { void main() { " + body + " } }")
+        vm_run = rs.run_sleela(["run", "Fe.sleela"], cwd=d)
+        self.assertEqual(vm_run.returncode, 0, rs.diagnostics(vm_run))
+        vm = rs.program_output(vm_run)
+        self.assertEqual(vm[:3], ["12", "1234", "3"], "VM baseline")
+        run = self.c_run(d, "Fe")
+        self.assertEqual(run.returncode, 0, run.stderr)
+        self.assertEqual(run.stdout.splitlines(), vm, "emitted C vs VM")
 
     def test_array_errors_stop_like_the_vm(self):
         cases = (
