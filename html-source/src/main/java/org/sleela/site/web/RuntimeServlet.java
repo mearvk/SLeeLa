@@ -3,6 +3,7 @@ package org.sleela.site.web;
 import java.io.IOException;
 import java.net.URI;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.sleela.site.ContentIndex;
@@ -11,6 +12,7 @@ import org.sleela.site.runtime.FormToken;
 import org.sleela.site.runtime.RuntimeConfig;
 import org.sleela.site.runtime.Samples;
 import org.sleela.site.runtime.SleelaRunner;
+import org.sleela.site.runtime.VmChoice;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -62,7 +64,8 @@ public class RuntimeServlet extends BaseServlet {
         SleelaRunner runner = runner();
         SleelaRunner.Result result = runner == null
                 ? null
-                : runner.submit("check".equals(req.getParameter("action")) ? "check" : "run", source, client(req));
+                : runner.submit("check".equals(req.getParameter("action")) ? "check" : "run", source, client(req),
+                        VmChoice.find(runner.vms(), req.getParameter("vm")));
         req.setAttribute("action", "check".equals(req.getParameter("action")) ? "check" : "run");
         show(req, resp, source, result);
     }
@@ -86,6 +89,10 @@ public class RuntimeServlet extends BaseServlet {
         req.setAttribute("unavailable", unavailable);
         req.setAttribute("limits", limits);
         req.setAttribute("samples", Samples.list());
+        List<VmChoice> vms = runner == null ? VmChoice.catalog(null) : runner.vms();
+        req.setAttribute("vms", vms);
+        VmChoice picked = VmChoice.find(vms, req.getParameter("vm"));
+        req.setAttribute("vmSelected", picked.isAvailable() ? picked.id : VmChoice.DEFAULT_ID);
         req.setAttribute("token", tokens().issue());
         resp.setHeader("Cache-Control", "no-store");
         render(req, resp, "runtime", "Runtime", "runtime");

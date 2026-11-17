@@ -37,6 +37,14 @@ Append `?raw=1` to any example or module file for plain text.
 4. **Service limits.** Wall-clock timeout that kills the sandbox, output cap, 2 concurrent runs, 6 runs per minute per client,
    a CSRF token and same-origin check on the form.
 
+**VM selection.** A dropdown picks the VM a run uses, and the result names it (a `VM:` line and the first output line):
+- **Native** (default): `sleela run main.sleela` on `impl/core`.
+- **Standard 1..10** (`idea-vm-001..010`): listed but disabled, because the CLI cannot boot programs on them yet (`sleela vm run N` is refused).
+- **Premium 1..11** (`slvm-1..11`, Foundation to Sovereign): `sleela vm run premium N /work/main.sleela`, started in the read-only SLeeLa tree.
+  An option is enabled only when `sleela-virtual-machine/NNN/vm-build/slvm-NN` exists on the server. The sandbox cannot build it,
+  so build them once at the root of the checkout with `make premium-vms` (it builds the Core engine first).
+- Check syntax uses the compiler only, so it boots no VM.
+
 The page enables itself only after a sandbox self-test passes (`working-binaries/sleela` runs a hello program inside bwrap).
 Otherwise the form is shown disabled with the reason. Settings are context parameters in `ROOT.xml` (`sleela.runtime.mode`,
 `timeoutSeconds`, `cpuSeconds`, `memoryMB`, `maxOutputKB`, `maxSourceKB`, `maxConcurrent`, `runsPerMinute`).

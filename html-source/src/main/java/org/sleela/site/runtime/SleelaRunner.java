@@ -27,11 +27,13 @@ import java.util.regex.Pattern;
  *      empty tmpfs /tmp, a private writable /work that is deleted afterwards, all capabilities dropped, cleared environment.
  *   3. prlimit: address space, CPU seconds, written file size, open files, no core dumps.
  *   4. Wall-clock deadline here (the whole sandbox is killed), output cap, one run at a time per slot, per-client rate limit.
- * The program name is always the fixed string main.sleela and the arguments are fixed; visitors choose only the file contents.
+ * The program name is always the fixed string main.sleela and the arguments are fixed; visitors choose only the file contents
+ * and one VM from the fixed VmChoice table. A premium VM is booted with `sleela vm run premium N /work/main.sleela` from the
+ * read-only SLeeLa tree (the CLI resolves sleela-virtual-machine/NNN relative to its working directory).
  */
 public final class SleelaRunner {
 
-    public enum Status { OK, ERROR, DENIED, TIMEOUT, BUSY, RATE_LIMITED, DISABLED, TOO_LARGE }
+    public enum Status { OK, ERROR, DENIED, TIMEOUT, BUSY, RATE_LIMITED, DISABLED, TOO_LARGE, VM_UNAVAILABLE }
 
     public static final class Result {
         public final Status status;
@@ -40,9 +42,15 @@ public final class SleelaRunner {
         public final long millis;
         public final boolean truncated;
         public final List<String> notes;
+        /** Which VM ran (or would have run) the program, as shown to the visitor. */
+        public final String vm;
         Result(Status s, int exit, String out, long ms, boolean trunc, List<String> notes) {
-            this.status = s; this.exitCode = exit; this.output = out; this.millis = ms; this.truncated = trunc; this.notes = notes;
+            this(s, exit, out, ms, trunc, notes, null);
         }
+        Result(Status s, int exit, String out, long ms, boolean trunc, List<String> notes, String vm) {
+            this.status = s; this.exitCode = exit; this.output = out; this.millis = ms; this.truncated = trunc; this.notes = notes; this.vm = vm;
+        }
+        Result withVm(String vm) { return new Result(status, exitCode, output, millis, truncated, notes, vm); }
         public String getStatus() { return status.name(); }
         public int getExitCode() { return exitCode; }
         public String getOutput() { return output; }
@@ -50,6 +58,7 @@ public final class SleelaRunner {
         public boolean isTruncated() { return truncated; }
         public List<String> getNotes() { return notes; }
         public boolean isOk() { return status == Status.OK; }
+        public String getVm() { return vm; }
     }
 
     /** Startup lines the compiler prints for every run; hidden from visitors. */
@@ -71,6 +80,9 @@ public final class SleelaRunner {
 
     public RuntimeConfig config() { return cfg; }
 
+    /** The VMs a visitor can choose from, with availability checked against this server. */
+    public List<VmChoice> vms() { return VmChoice.catalog(cfg.home); }
+
     /** null when ready, else the reason the runtime is unavailable. Re-checked at most once a minute. */
     public String unavailableReason() {
         if (cfg.mode == RuntimeConfig.Mode.OFF) return "The runtime is switched off on this server (sleela.runtime.mode=off).";
@@ -91,17 +103,26 @@ public final class SleelaRunner {
         if (cfg.prlimit == null) return "prlimit (util-linux) is not installed on the server.";
         if (cfg.binary == null || !Files.isExecutable(cfg.binary)) return "The SLeeLa compiler binary was not found or is not executable: " + cfg.binary;
         if (!Files.isRegularFile(cfg.home.resolve("tools/verify-before-execution.py"))) return "tools/verify-before-execution.py is missing from " + cfg.home + ".";
-        Result r = execute("run", "#sleela 2.2\nclass SelfTest { void main() { print(\"selftest-ok\"); } }\n");
+        Result r = execute("run", VmChoice.catalog(cfg.home).get(0), "#sleela 2.2\nclass SelfTest { void main() { print(\"selftest-ok\"); } }\n");
         if (r.status == Status.OK && r.output.contains("selftest-ok")) return null;
         String why = r.output.isBlank() ? String.join(" ", r.notes) : r.output.trim();
         if (why.length() > 300) why = why.substring(0, 300) + "...";
         return "The sandbox self-test failed (" + r.status + "): " + why;
     }
 
-    /** Visitor entry point. action is "run" or "check". */
-    public Result submit(String action, String source, String clientId) {
+    /** Visitor entry point. action is "run" or "check"; vm is from vms(). */
+    public Result submit(String action, String source, String clientId, VmChoice vm) {
+        boolean check = "check".equals(action);
+        String used = check ? "None. A syntax check runs in the compiler only, so no VM is booted." : vm.getDisplay();
+        return submitOn(check, source, clientId, vm).withVm(used);
+    }
+
+    private Result submitOn(boolean check, String source, String clientId, VmChoice vm) {
         String unavailable = unavailableReason();
         if (unavailable != null) return new Result(Status.DISABLED, -1, "", 0, false, List.of(unavailable));
+        if (!check && !vm.isAvailable()) {
+            return new Result(Status.VM_UNAVAILABLE, -1, "", 0, false, List.of(vm.getDisplay() + " is not available: " + vm.unavailable));
+        }
 
         // rate limit first: refused programs cost CPU to analyse, so they count too
         if (!allow(clientId)) {
@@ -117,7 +138,7 @@ public final class SleelaRunner {
             return new Result(Status.BUSY, -1, "", 0, false, List.of("The runtime is busy with other visitors. Try again in a few seconds."));
         }
         try {
-            return execute("check".equals(action) ? "check" : "run", source);
+            return execute(check ? "check" : "run", vm, source);
         } finally {
             slots.release();
         }
@@ -141,7 +162,8 @@ public final class SleelaRunner {
 
     // ------------------------------------------------------------------ execution
 
-    Result execute(String sub, String source) {
+    Result execute(String sub, VmChoice vm, String source) {
+        boolean premium = "run".equals(sub) && vm.tier == VmChoice.Tier.PREMIUM;
         long t0 = System.nanoTime();
         Path dir = null;
         List<String> notes = new ArrayList<>();
@@ -163,7 +185,9 @@ public final class SleelaRunner {
             cmd.add("--ro-bind"); cmd.add(home); cmd.add(home);
             for (String extra : cfg.extraReadOnlyBinds) { cmd.add("--ro-bind"); cmd.add(extra); cmd.add(extra); }
             cmd.add("--bind"); cmd.add(dir.toString()); cmd.add("/work");
-            cmd.add("--chdir"); cmd.add("/work");
+            // The premium CLI path finds sleela-virtual-machine/NNN relative to its working directory, so it starts in the
+            // read-only SLeeLa tree; its compiled artifact goes to the empty tmpfs /tmp. Everything else starts in /work.
+            cmd.add("--chdir"); cmd.add(premium ? home : "/work");
             for (String[] e : new String[][] {{"PATH", "/usr/bin:/bin"}, {"HOME", "/tmp"}, {"LANG", "C.UTF-8"}, {"SLEELA_HOME", home}}) {
                 cmd.add("--setenv"); cmd.add(e[0]); cmd.add(e[1]);
             }
@@ -175,8 +199,12 @@ public final class SleelaRunner {
             cmd.add("--core=0");
             cmd.add("--");
             cmd.add(cfg.binary.toRealPath().toString());
-            cmd.add(sub);
-            cmd.add("main.sleela");
+            if (premium) {
+                for (String a : new String[] {"vm", "run", "premium", Integer.toString(vm.number), "/work/main.sleela"}) cmd.add(a);
+            } else {
+                cmd.add(sub);
+                cmd.add("main.sleela");
+            }
 
             ProcessBuilder pb = new ProcessBuilder(cmd);
             pb.redirectErrorStream(true);

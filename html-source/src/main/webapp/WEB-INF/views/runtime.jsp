@@ -20,6 +20,7 @@
       <select id="sample" name="sample">
         <c:forEach var="s" items="${samples}"><option value="${fn:escapeXml(s.id)}" ${s.id == sampleId ? 'selected' : ''}><c:out value="${s.title}"/></option></c:forEach>
       </select>
+      <input type="hidden" name="vm" value="${fn:escapeXml(vmSelected)}">
       <button class="btn ghost small" type="submit">Load</button>
       <c:if test="${not empty loaded}"><span class="muted">Loaded: <code><c:out value="${loaded}"/></code></span></c:if>
     </form>
@@ -27,6 +28,20 @@
     <form action="${ctx}/runtime" method="post" id="runtime-form">
       <input type="hidden" name="token" value="${fn:escapeXml(token)}">
       <label class="sr-only" for="source">SLeeLa source</label>
+      <div class="sample-picker vm-picker">
+        <label for="vm">Virtual machine</label>
+        <select id="vm" name="vm">
+          <optgroup label="Native VM">
+            <c:forEach var="v" items="${vms}"><c:if test="${v.tier == 'NATIVE'}"><option value="${fn:escapeXml(v.id)}" ${v.id == vmSelected ? 'selected' : ''}><c:out value="${v.display}"/></option></c:if></c:forEach>
+          </optgroup>
+          <optgroup label="Standard VMs (idea-vm-001 to 010)">
+            <c:forEach var="v" items="${vms}"><c:if test="${v.tier == 'STANDARD'}"><option value="${fn:escapeXml(v.id)}" ${v.available ? '' : 'disabled'} ${v.id == vmSelected ? 'selected' : ''} title="${fn:escapeXml(v.unavailable)}"><c:out value="${v.display}"/><c:if test="${not v.available}"> (not runnable yet)</c:if></option></c:if></c:forEach>
+          </optgroup>
+          <optgroup label="Premium VMs (slvm-1 to 11)">
+            <c:forEach var="v" items="${vms}"><c:if test="${v.tier == 'PREMIUM'}"><option value="${fn:escapeXml(v.id)}" ${v.available ? '' : 'disabled'} ${v.id == vmSelected ? 'selected' : ''} title="${fn:escapeXml(v.unavailable)}"><c:out value="${v.display}"/><c:if test="${not v.available}"> (not built on this server)</c:if></option></c:if></c:forEach>
+          </optgroup>
+        </select>
+      </div>
       <textarea id="source" name="source" class="code-input" rows="22" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off"><c:out value="${source}"/></textarea>
       <div class="btn-row">
         <button class="btn" type="submit" name="action" value="run" ${empty unavailable ? '' : 'disabled'}>Run</button>
@@ -62,11 +77,13 @@
           <div class="notice warn" role="alert" data-result="${fn:escapeXml(result.status)}"><strong>Not run</strong></div>
         </c:otherwise>
       </c:choose>
+      <p class="vm-used"><strong>VM:</strong> <c:out value="${result.vm}"/></p>
       <c:if test="${not empty result.notes}">
         <ul class="notes"><c:forEach var="n" items="${result.notes}"><li><c:out value="${n}"/></li></c:forEach></ul>
       </c:if>
       <c:if test="${not empty result.output}">
-        <pre class="out" tabindex="0" aria-label="Program output"><c:out value="${result.output}"/></pre>
+        <pre class="out" tabindex="0" aria-label="Program output"><c:out value="[VM: ${result.vm}]"/>
+<c:out value="${result.output}"/></pre>
       </c:if>
       <c:if test="${empty result.output and result.status == 'OK'}"><p class="muted">The program printed nothing.</p></c:if>
     </c:if>
@@ -79,6 +96,13 @@
       <li>${limits.memoryMB} MB of memory</li>
       <li>${limits.outputKB} KB of output, ${limits.sourceKB} KB of source</li>
       <li>${limits.perMinute} runs per minute per visitor</li>
+    </ul>
+    <h2>Virtual machines</h2>
+    <ul>
+      <li><strong>Native</strong>: the default engine in <code>impl/core</code>, used by <code>sleela run</code>.</li>
+      <li><strong>Standard</strong> 1 to 10: the <code>idea-vm</code> progression. Listed for reference; the SLeeLa CLI cannot boot programs on them yet.</li>
+      <li><strong>Premium</strong> 1 to 11: the <code>slvm</code> generations, Foundation to Sovereign, run with <code>sleela vm run premium N</code>. Available when built on the server.</li>
+      <li>Check syntax does not use a VM.</li>
     </ul>
     <h2>Isolation</h2>
     <ul>
