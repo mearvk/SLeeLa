@@ -25523,7 +25523,7 @@ dc701e750cb43bd1164b570528f349c2699cf5dce53830f1e7945f02974c056c  common-rails/P
 ecaa0eb28348126d1a75a8cbde4dd1bddafa58a98432ed3b05b61ecafaaec092  common-rails/PrintWriter.sleela
 b489b4d07f4fef0f9fdffff3c61d70344a4e809c1a30e5baf1e892c5d532cee1  common-rails/README.md
 6e0a143a1d1b7b10488146e082b11db02d0629ac037e9c0d249756f14364605b  comparison/ABI-AND-INTEROPERABILITY.md
-3e8dfc612b4034a1e630f543d7b557370589af65901f6d980f2b7d292cbfd08b  comparison/ARITHMETIC.SPEED.001.md
+cd9c8148741bd5304bcbdcbc720ad21e1fbf4a83f377317a353e8f68e70de1f6  comparison/ARITHMETIC.SPEED.001.md
 7ccd7cf466750bab11dcc3d117b94f2e6a1a202eae05ba9647f4385a502b8012  comparison/ARITHMETIC.SPEED.002.md
 2564dcebc197eabc266cec3b2848a7820e1883f84af7c5952e4182fbee6b37d6  comparison/ARITHMETIC.SPEED.SLEELA.001.md
 866399839e213f46d99888aaade1b31124819721849382a031dc6479324e941c  comparison/ARRAY-STRING-BOUNDS-VECTORS.md
@@ -29066,7 +29066,7 @@ eaf60857af61efa4b0c0ecfd2d1487b1af95d686ccace818cdc80b6da78631a1  html-source/pr
 ba0d7cd849812a41321d443a8ed6b7a44f1b2eb9e453c89b105e834a50d79188  html-source/preview/tutorials-index-light.png
 ef2bf58bd65ecb4ab06ed5eaf6628636265779e84d34f780ccfee0053c68de71  html-source/preview/tutorials-index-mobile.png
 3cf3cbea709b1fc84516a0f80f9a21c5d25f623488b412e20f5f2b4a0d3aa2f4  html-source/preview/tutorials-index.png
-2db33a9f6556ed09e863b95ef00bac6190e148e161466a574418bb1a1b725362  html-source/README.md
+2181943266f26ede0d8fcf0c93238455c0bfed77b985146f66882e6e86d6ced6  html-source/README.md
 ab1e26e6371dacf5e78fa69e8f1409169fcc0ed6e088c049f1db5ef4466da513  html-source/src/main/java/org/sleela/site/ApiPages.java
 fb9e4737397571690987e61582d52d6ea3d541ade334255c79b8facd6f0718fb  html-source/src/main/java/org/sleela/site/ContentIndex.java
 1f1d51a92e75408883dbedfc1c97c5a4aa2bb9d5e96953a70f3984be25b243f7  html-source/src/main/java/org/sleela/site/Html.java
@@ -29077,8 +29077,9 @@ a9df0cdc600b7d463e1dab35f3beae6f7e84eed5cd76095ed4ae62bd33e22054  html-source/sr
 151e18c546c1630335614b8756fe387f45fc0f36ce9fbe507768875c2546b3f4  html-source/src/main/java/org/sleela/site/runtime/LibUnits.java
 146b4ce82df65e47be6b9b8c860a10014e82b34f1083402520fd8a564adc8b35  html-source/src/main/java/org/sleela/site/runtime/RuntimeConfig.java
 164bf7aca0b54d8df3d4951f5d8cda1743532a09dd7ba5f8ae9fdb0efd6e8f29  html-source/src/main/java/org/sleela/site/runtime/Samples.java
-838c9fb53620b1724bff1a6a3933a1e8250efdb75c4877c2cb813e96a2feedb9  html-source/src/main/java/org/sleela/site/runtime/SleelaRunner.java
+f8d8a2ca58556ec49c510173bb803d6b2c233dabd3f8087d35b2a050fd7091f7  html-source/src/main/java/org/sleela/site/runtime/SleelaRunner.java
 33a089d99c8c23ceff22140f42bd930d04f445fdca614a310f133b7c9e0dcce5  html-source/src/main/java/org/sleela/site/runtime/SourcePolicy.java
+4a590d34e6b4c8cb049258c78301ad9b5f3a9b9f5c73945bba63274e67506833  html-source/src/main/java/org/sleela/site/runtime/VmChoice.java
 3b97476831e3f4b9ae04c79656826d4c6b342f5394b9fa1cbd825637f8fcb8ed  html-source/src/main/java/org/sleela/site/SiteConfig.java
 852066b44893e997cb458b1ab0495186ff688a25325960c7f8b118d251737490  html-source/src/main/java/org/sleela/site/web/ApiServlet.java
 7cb65b2a2edf2e0355050450828727b61c9bd40c77b7cd0caab6555b66322aa3  html-source/src/main/java/org/sleela/site/web/BaseServlet.java
@@ -29087,7 +29088,7 @@ ea167cf325046d41699aa42f5f1b6e0da84bad115967fe2cad9ac841ef573261  html-source/sr
 85012308d76576ca3f6637b0f50fd9495a81a027c946ed8339b9bf864608f828  html-source/src/main/java/org/sleela/site/web/HealthServlet.java
 9d3e1673886cf012cacb03f5c94e631f6b1161ee44dcf36b9330142fa32cca58  html-source/src/main/java/org/sleela/site/web/HomeServlet.java
 a5e92d5cb2dd97276e055c220fb1296effbcc9cfae080d659206c4c572fdf18d  html-source/src/main/java/org/sleela/site/web/ModuleServlet.java
-026ad72765c0419e8ed4d18282e616af2e647f5dd793dedfc668cb0746903f89  html-source/src/main/java/org/sleela/site/web/RuntimeServlet.java
+41c7d03e692b6f63bc565ebf66b611f933533d030b6db8a737d21f0b72e9f700  html-source/src/main/java/org/sleela/site/web/RuntimeServlet.java
 137c482ff492d84c991e7a8e4604c26ed91e0732afda63e4ffdda0bcc9c56979  html-source/src/main/java/org/sleela/site/web/SearchServlet.java
 882f876f47535b378c55f8c7f7b644d36ce2f62fddf2615f474f2ce6105baa82  html-source/src/main/java/org/sleela/site/web/SecurityHeadersFilter.java
 07be772fbfdbcd75457bb3ef9e6d59bbdb587aba699fb9ca60159c3b810d6555  html-source/src/main/java/org/sleela/site/web/ServersServlet.java
@@ -29114,7 +29115,7 @@ a2b6796052a2c78c6d3dc0b00386c82647c3a594c1b6a596e273d1f5dca17a35  html-source/sr
 bbe8f7b7cd704ed98954414c847dd3e995da578e17a8750d44cb8ded5179229f  html-source/src/main/webapp/WEB-INF/views/module.jsp
 99ea6ad7547a84942c0b35a813cecca9dc29ca256295ea06cdf1d920de8c49eb  html-source/src/main/webapp/WEB-INF/views/modules.jsp
 0530572497c939e35b5dbcada1ea48138624fe0413cedefd7953ee3bafeecd1b  html-source/src/main/webapp/WEB-INF/views/_prelude.jspf
-0ac4b85c1e92058f8f98becba76ead08c698648d01f9a4b48447e7850c6db2c1  html-source/src/main/webapp/WEB-INF/views/runtime.jsp
+472c02da6eae4c1884b9dc2e1294ad11d3ae95e5c08099fd79d6c438a3269dc9  html-source/src/main/webapp/WEB-INF/views/runtime.jsp
 d44d123e52dc4a4a1b8bbe0603ee72506ed272133fa210f4f45c3ec8afff5309  html-source/src/main/webapp/WEB-INF/views/search.jsp
 5e339c63cf5938fada192e65204ac2aff2aaa87f1c87c59d69f4f2063aabd3c2  html-source/src/main/webapp/WEB-INF/views/servers.jsp
 92c1509bfd824c4c0c1b184ad9dc1462e16792b26eaa84c2ee1a26c1e41499a7  html-source/src/main/webapp/WEB-INF/views/source.jsp
