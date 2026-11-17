@@ -930,3 +930,72 @@ This latest evidence does **not** establish that `ClosePseudoConsole()` itself i
 **ROOT BUILD AND INSTALLATION QUALIFICATION: COMPLETE.** The required root and dependent installation jobs all passed in run `43897747386`.
 
 **SEPARATE NATIVE PORTABILITY: PARTIAL — UBUNTU PASS, macOS PASS, WINDOWS CONPTY SMOKE FAIL/TIMEOUT.** This does not invalidate the completed root build/install qualification, but Windows native portability remains unqualified until the smoke-read/ConPTY issue is diagnosed and the isolated smoke plus full VM regression suite pass. No overall native portability PASS is claimed.
+
+
+## Root qualification recheck — 2026-11-17
+
+### Latest complete root build and installation qualification
+
+**[Root Build and Install Qualification run 44125228847](https://github.com/mearvk/SLeeLa/actions/runs/44125228847)** completed with workflow conclusion **SUCCESS** on tested commit `8e341fffdb5ddc73873304115c9feeb757c7f2ad`.
+
+All seven individual jobs were fetched and inspected. Every job and every required step concluded **SUCCESS**:
+
+| Job | Job ID | Conclusion | Log evidence |
+|---|---:|---|---|
+| Root make all — Windows 10+ / MinGW-w64 | `134187071006` | **SUCCESS** | Complete root build and wired test targets; root product verification; isolated PowerShell guided installer; installed `sleela version` and `sleelvac version` smoke commands. Installer reports SLeeLa 1.3.2-pro installed. |
+| Root make all — macOS | `134187071321` | **SUCCESS** | Complete root build and wired test targets; product verification; codec, runtime GC/security, and Registry 3.0 tests passed. |
+| Root make all — Ubuntu | `134187071588` | **SUCCESS** | Complete root build and wired test targets; product verification; codec, runtime GC/security, and Registry 3.0 tests passed. |
+| Staged installers — Ubuntu | `134215358601` | **SUCCESS** | User-local install, product smoke and uninstall; staged system install, product smoke and uninstall; isolated guided installer. Log reports build complete, SLeeLa 1.3.2-pro installed, and SHA-256 manifest honored fail-closed. |
+| Staged installers — macOS | `134215359180` | **SUCCESS** | User-local install, product smoke and uninstall; staged system install, product smoke and uninstall; isolated guided installer. Log reports build complete, SLeeLa 1.3.2-pro installed, and SHA-256 manifest honored fail-closed. |
+| Full install-all / uninstall-all — Ubuntu | `134215358943` | **SUCCESS** | Standard install locations exercised; install-all completed; uninstall-all removed user-local and system-prefix installations. |
+| Full install-all / uninstall-all — macOS | `134215358629` | **SUCCESS** | Standard install locations exercised; install-all completed; uninstall-all removed user-local and system-prefix installations. |
+
+The root build logs also show the runtime GC/security regression tests and SLeeLa Registry 3.0 record tests passing on Ubuntu, macOS, and Windows. Windows guided-install smoke exercised both the installed runtime and compiler. The POSIX staged installer jobs exercised both local and system installs and their uninstall paths. The full install-all/uninstall-all jobs passed on both POSIX platforms.
+
+One optional macOS EICAR/ClamAV integration case was skipped because `clamscan` was not installed; this did not fail the test suite. It is a dependency-based skip, not a passing ClamAV detection test.
+
+### Current-master applicability
+
+At this review, `master` is `40791033cdfea796b484fee4ae750a7d6b8eba61`, one commit ahead of the tested root commit. The GitHub compare reports exactly one changed path: `comparison/ARITHMETIC.SPEED.001.md` (documentation only). No build, runtime, test, install, security, or workflow source changed after the qualifying commit. The successful root/install evidence therefore applies to current `master`.
+
+### 512 MiB test-allocation concern
+
+The latest root logs report the configured memory-manager hard limit as 2,147,483,648 bytes and show the runtime GC/security regression tests passing on all three root platforms. The previously discussed 512 MiB assertion is a value check against the configured GC limit; it does not allocate a 512 MiB test buffer. The corrected expected GC default is 1 GiB, and the separate 2 GiB memory-manager hard limit remains intact. No allocation-heavy test was weakened or skipped to obtain this qualification.
+
+### Separate native portability recheck
+
+**[Native C and C++ Portability run 44125228809](https://github.com/mearvk/SLeeLa/actions/runs/44125228809)** completed with workflow conclusion **FAILURE** on the same tested commit `8e341fffdb5ddc73873304115c9feeb757c7f2ad`.
+
+| Platform | Job ID | Conclusion |
+|---|---:|---|
+| Ubuntu | `134187071995` | **SUCCESS** |
+| macOS | `134187072146` | **SUCCESS** |
+| Windows 10+ / MinGW-w64 | `134187071359` | **FAILURE — terminal-platform smoke** |
+
+The Windows native runtime and static-core compilation, frozen ISA verification, OSLS registry build, all nine OSLS CTest cases, and OSLS VM dispatch checks passed. The concrete failing command was:
+
+```sh
+make -C impl test-terminal-platform
+```
+
+The smoke binary compiled successfully. Its log then showed:
+
+- `terminal read: begin (10-second deadline)`
+- `terminal-ok` appeared in the Actions log, but the test's captured ConPTY output buffer did not contain the marker.
+- The read timed out after 10 seconds.
+- The test reported `terminal read failed: error=1 bytes=131`; those 131 captured bytes were ConPTY VT initialization/control sequences, not the expected command marker.
+- Make failed at `Makefile:1158: test-terminal-platform` with error 1.
+
+The smoke worker's `error=1` is its own generic read-failure classification: `slterminal_read()` currently converts a failed Win32 `ReadFile` to `-1` without preserving the underlying `GetLastError()`. Thus the evidence localizes the current failure to the Windows ConPTY output/read path before the close markers; it does not prove a compiler failure or a `ClosePseudoConsole()` teardown hang. The full Windows VM regression suite was not reached in this run.
+
+No speculative ConPTY source change or test weakening is claimed as a repair. A safe next diagnostic should preserve the actual Win32 read error and determine why the child marker is absent from the captured pipe before changing the ConPTY lifecycle. This portability failure is separate from the fully successful root build and installation qualification.
+
+### Final status after the 2026-11-17 recheck
+
+**ROOT BUILD: PASS — UBUNTU, macOS, WINDOWS.**
+
+**INSTALLATION QUALIFICATION: PASS — WINDOWS GUIDED INSTALLER/PRODUCT SMOKE; UBUNTU AND macOS STAGED USER-LOCAL/SYSTEM/GUIDED INSTALL AND UNINSTALL; UBUNTU AND macOS INSTALL-ALL/UNINSTALL-ALL.**
+
+**ROOT BUILD AND INSTALLATION QUALIFICATION: COMPLETE.** All seven required jobs in run `44125228847` passed. The original requested runs `43639947785` and `43639947779` remain cancelled and are not used as qualification evidence.
+
+**SEPARATE NATIVE PORTABILITY: PARTIAL — UBUNTU PASS, macOS PASS, WINDOWS CONPTY OUTPUT-READ SMOKE FAIL.** This does not invalidate the completed root build/install qualification. Windows native portability remains unqualified; the full Windows VM regression suite did not run in this portability job.
