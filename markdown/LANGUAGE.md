@@ -10,7 +10,7 @@ A `.sleela` file is a Wrapper™. A source unit may begin with its language-vers
 
 ## Syntax edition
 
-The current normative edition is **SLeeLa Syntax 3.0**. The shared Sleela/Sleelvac frontend accepts `#sleela` declarations from **1.0 through 3.0**; an unversioned source defaults to 3.0 with a warning. Syntax 3.0 consolidates the established 1.x/2.x surface without erasing historical feature gates. A feature remains unavailable below its own minimum syntax version, even when a newer compiler accepts the file. See [`SLEELA.syntax`](../SLEELA.syntax) for normative grammar and [`api/sleela/2.1/language/SYNTAX-VERSION-MATRIX.md`](../api/sleela/2.1/language/SYNTAX-VERSION-MATRIX.md) for the feature history.
+The current normative edition is **SLeeLa Syntax 3.1** (also written 3.01). The shared Sleela/Sleelvac frontend accepts `#sleela` declarations from **1.0 through 3.1**; an unversioned source defaults to 3.1 with a warning. Syntax 3.0 consolidates the established 1.x/2.x surface without erasing historical feature gates. A feature remains unavailable below its own minimum syntax version, even when a newer compiler accepts the file. See [`SLEELA.syntax`](../SLEELA.syntax) for normative grammar and [`api/sleela/2.1/language/SYNTAX-VERSION-MATRIX.md`](../api/sleela/2.1/language/SYNTAX-VERSION-MATRIX.md) for the feature history.
 
 ## Core constructs
 

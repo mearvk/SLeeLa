@@ -52,6 +52,12 @@ compiler also treats as the verb on every receiver.
 ### 2.4 Stale documents
 `impl/RUNTIME-SERVICES.md` said no collector existed and that the ISA has 98 opcodes. Both are corrected.
 
+### 2.7 Version statements (was finding 11)
+`working-binaries/` reported syntax 1.0 to 3.0 and the documents repeated that ceiling. The binaries report
+1.0 to 3.1 (release 1.3.2-pro), and the documents that state the current range were brought to match.
+Test: `test-suites/regression/python/test_doc_versions.py` (group `integrity`) compares the release and range in the
+source and in the binary under test with those documents, so the next change of range names every document that lags.
+
 ## 3. Findings, not changed
 
 | # | Finding | Evidence | Why it matters | Suggested action |
@@ -66,7 +72,6 @@ compiler also treats as the verb on every receiver.
 | 8 | **Two string kinds** (plain UTF-8 and the VM-owned UTF-16 kind) | known | an unpaired surrogate or NUL is a runtime error for the plain kind only; each opcode that takes a string needs a stated rule for the other kind | a table of opcode by string kind |
 | 9 | **The verifier is a Python script** found by searching upward from the current directory | observed when `SLEELA_HOME` is unset | an installed runtime without the repository cannot run | decide whether verification is part of an installed runtime |
 | 10 | **Platform backends are only CI-covered where a workflow exists** (`native-portability`, `wifi-native`, `utf4088`, ...) | workflow list | Windows and macOS paths for sockets, terminal, threads | one table: backend by platform by workflow |
-| 11 | `working-binaries/` report syntax 1.0 to 3.0 | read | users get "future edition" on 3.1 code | refresh and update the listed documents |
 
 ## 4. Decision recorded (2026-11-13)
 

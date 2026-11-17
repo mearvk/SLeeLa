@@ -1,0 +1,7 @@
+id: SEM-UNKNOWN-TYPE
+family: parser-rejection
+expect: reject
+command: check
+message: unknown variable type 'Foo'
+reference: impl/frontend/semantic.cpp
+note: Type check, not parse.

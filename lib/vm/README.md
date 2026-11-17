@@ -215,9 +215,9 @@ The package build is available with `make -C lib/vm` and from the repository roo
 ## Language edition and VM conformance — Syntax 3.0
 
 All SLeeLa VM source and artifact interfaces are governed by the repository
-root [`SLEELA.syntax`](../../SLEELA.syntax). Syntax **3.0** is the current
+root [`SLEELA.syntax`](../../SLEELA.syntax). Syntax **3.1** is the current
 normative language edition. The shared compiler accepts source pragmas from
-**1.0 through 3.0**; each source file retains its declared `#sleela X.Y`
+**1.0 through 3.1**; each source file retains its declared `#sleela X.Y`
 edition and each feature retains its historical minimum-version gate.
 
 The VM must consume the compiler's versioned artifact and source metadata

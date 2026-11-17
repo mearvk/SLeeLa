@@ -1,0 +1,7 @@
+id: PARSE-BRACE-MISSING
+family: parser-rejection
+expect: reject
+command: check
+message: expected '}'
+reference: impl/frontend/parser.cpp
+note: The file ends inside a method.

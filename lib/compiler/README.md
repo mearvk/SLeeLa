@@ -106,8 +106,8 @@ SLeeLa source-level reference handlers are provided by `SLCaseHandler.sleela`, `
 ## Authoritative language specification — Syntax 3.0
 
 The repository-root [`SLEELA.syntax`](../../SLEELA.syntax) is the single
-normative language specification. **Syntax 3.0** is the current edition; the
-shared native frontend accepts declared source syntax **1.0–3.0** and defaults
+normative language specification. **Syntax 3.1** is the current edition; the
+shared native frontend accepts declared source syntax **1.0–3.1** and defaults
 unversioned source to 3.0 with a warning. A source file's `#sleela X.Y`
 pragma selects its syntax edition. Compiler/tool release numbers are
 independent of that language version.

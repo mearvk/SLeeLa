@@ -102,6 +102,21 @@ Checked: 121/121 regression tests with
 `SLEELA_BIN=$PWD/working-binaries/sleela` (an absolute path; a relative one now
 also works).
 
+Rebuilt again 2026-11-17 (`sleela` and `nordshrift`), same versions, for the defects the
+extended regression set (corpus, memory manager, threads, sockets, synchro, HTTP 6.0 frames) found:
+- the compiler no longer crashes on hostile source. Parser pre-pass limits (1000 nesting levels, 5000
+  operators per statement, 1000 prefix operators, 1000 back-to-back casts) end in a `Syntax error ... too
+  deep / too long` diagnostic instead of a stack overflow (`impl/frontend/parser.cpp`); dependency
+  discovery scans identifiers by hand instead of with `std::regex`, which overflowed the stack on an
+  identifier of about 50,000 characters (`impl/frontend/driver.cpp`).
+- `@next` destinations: a parent component hidden by token spacing (`../..` arrived as `. . / . .`), a drive
+  or scheme (`:`), `%` and control characters are refused (`impl/annotation/ForwardingAnnotation.cpp`).
+- `slmm_realloc` no longer refuses a growth whose result fits under the limit (old and new were both
+  counted); `slthread_*` return -1 for a NULL argument instead of crashing on POSIX; `slnet_write` on an
+  invalid handle fails for a zero-length write too.
+Checked: 200/200 regression tests (with mutation testing) with
+`SLEELA_BIN=$PWD/working-binaries/sleela`.
+
 Reported versions:
 
 - `sleela` — `SLeeLa™ Language/Runtime 1.3.2-pro` (supported source syntax 1.0 – 3.1)
@@ -110,8 +125,8 @@ Reported versions:
 SHA-256 of the committed copies:
 
 ```
-a2a18b650b36ab59c1b0feb347f4c6c29c85ea6d8bb98bcde1d5b27a487e3430  sleela
-f13ec15f2db8913bea543676e99802e491c22182f89ff4accec807696a300369  nordshrift
+61a89262dd481257951359be5becd7df4177fd509e95b34107d180ba9e45e34f  sleela
+9bc3ac9a5e46e744814bfd4b39766d8a43cf35e7daa5ca69d2c95f963d26aad6  nordshrift
 ```
 
 ---

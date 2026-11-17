@@ -1,0 +1,6 @@
+id: HTTP6-OVERSIZE
+family: http-framing
+expect: reject
+rc: -3
+reference: http-6.0/http6_protocol.c
+note: One byte over the 16 MiB cap.

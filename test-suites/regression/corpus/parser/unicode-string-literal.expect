@@ -1,0 +1,7 @@
+id: PARSE-OK-UNICODE
+family: parser-acceptance
+expect: accept
+command: run
+output: héllo ✓ 😀
+reference: impl/frontend/lexer.cpp
+note: Non-ASCII text, including a character outside the BMP, survives lexing and printing.

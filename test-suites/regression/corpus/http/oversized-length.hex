@@ -1,0 +1,5 @@
+# header declares 16 MiB + 1 payload bytes
+# bytes 0..31 are the header: version, type, flags(2), stream(8), request(8), sequence(8), length(4)
+
+06 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 01

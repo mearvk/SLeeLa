@@ -122,7 +122,7 @@ class Hello { void main() { print("Hello, Sleela!"); } }
 ```
 
 The compiler **rejects** any file whose declared version is outside its
-supported range (shown by `sleela version`, currently `1.0 .. 3.0`); a file with
+supported range (shown by `sleela version`, currently `1.0 .. 3.1`); a file with
 no pragma is accepted with a warning and assumed to be the floor version. The
 supported range is defined in [`frontend/version.h`](frontend/version.h). The current
 normative language grammar is [`../SLEELA.syntax`](../SLEELA.syntax), syntax version
@@ -452,9 +452,9 @@ target. See the 2026-10-03 entry in [`../REVISIONS.md`](../REVISIONS.md).
 
 ## Current language edition
 
-The normative SLeeLa language edition is **3.0**. Sleela and Sleelvac share the
+The normative SLeeLa language edition is **3.1**. Sleela and Sleelvac share the
 same native frontend and version resolver; both report and enforce source syntax
-**1.0–3.0**. Nordshrift delegates to that resolver. Older source declarations
+**1.0–3.1**. Nordshrift delegates to that resolver. Older source declarations
 remain accepted, and historical feature gates (such as `@mix` at syntax 2.9)
 remain in force. Tool release numbers are independent of the language edition.
 

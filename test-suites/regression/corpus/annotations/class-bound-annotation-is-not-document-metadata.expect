@@ -1,0 +1,7 @@
+id: ANN-CLASS-BOUND
+family: traversal
+status: known-issue
+expect: reject
+message: invalid @next destination
+reference: impl/frontend/parser.cpp (parseProgram) and impl/frontend/ANNOTATION_PIPELINE.md
+note: The pipeline document says annotations before the first class are document annotations and are validated. The parser now binds them to that class (Java annotation support), so they bypass validation. Whether a class-bound @next should be checked is a language decision; the case keeps the gap visible.

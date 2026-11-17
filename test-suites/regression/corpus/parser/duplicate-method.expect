@@ -1,0 +1,7 @@
+id: SEM-DUP-METHOD
+family: parser-rejection
+expect: reject
+command: check
+message: duplicate method 'A::f'
+reference: impl/frontend/semantic.cpp
+note: Two methods with one signature.

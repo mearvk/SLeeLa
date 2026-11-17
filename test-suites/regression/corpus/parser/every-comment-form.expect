@@ -1,0 +1,7 @@
+id: PARSE-OK-COMMENTS
+family: parser-acceptance
+expect: accept
+command: run
+output: ok
+reference: impl/frontend/lexer.cpp
+note: All four comment forms are skipped; an angle comment must start its line.

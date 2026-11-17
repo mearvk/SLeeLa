@@ -1,0 +1,6 @@
+id: ANN-NEXT-BACKSLASH
+family: traversal
+expect: reject
+message: unexpected character
+reference: impl/frontend/lexer.cpp
+note: A backslash is not a legal source character; the lexer refuses it before the policy sees it.

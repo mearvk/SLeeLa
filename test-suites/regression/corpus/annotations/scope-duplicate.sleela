@@ -1,0 +1,4 @@
+#sleela 3.1
+@scope(a)
+@scope(b)
+public class A { void main() { print("ok"); } }

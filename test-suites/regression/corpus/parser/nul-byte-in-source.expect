@@ -1,0 +1,7 @@
+id: PARSE-NUL
+family: parser-rejection
+expect: reject
+command: check
+message: Lexical error
+reference: impl/frontend/lexer.cpp
+note: A NUL byte inside code is a lexical error.

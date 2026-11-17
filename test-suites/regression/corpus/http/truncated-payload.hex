@@ -1,0 +1,6 @@
+# header promises 10 payload bytes, 5 arrive
+# bytes 0..31 are the header: version, type, flags(2), stream(8), request(8), sequence(8), length(4)
+
+06 02 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0a
+73 68 6f 72 74

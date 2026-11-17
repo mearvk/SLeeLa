@@ -1,0 +1,7 @@
+id: ANN-NEXT-DRIVE
+family: traversal
+expect: reject
+message: invalid @next destination
+reference: impl/annotation/ForwardingAnnotation.cpp (ForwardingPolicy::valid_destination)
+defect: ANN-NEXT-ABSOLUTE-FORMS: a drive or scheme prefix is an absolute path on Windows and was accepted.
+note: Windows-absolute destination.

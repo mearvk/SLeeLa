@@ -217,7 +217,9 @@ SLNetCount slnet_read(SLNetHandle handle, char* buffer, size_t capacity) {
 }
 
 SLNetCount slnet_write(SLNetHandle handle, const char* data, size_t length) {
-    if (!data || length == 0 || !slnet_valid(handle)) return length == 0 ? 0 : -1;
+    if (!slnet_valid(handle)) return -1;
+    if (length == 0) return 0;
+    if (!data) return -1;
 #ifdef _WIN32
     int n = send((SOCKET)handle, data, (int)(length > INT_MAX ? INT_MAX : length), 0);
 #else

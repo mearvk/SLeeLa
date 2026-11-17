@@ -1,0 +1,7 @@
+id: ANN-NEXT-PERCENT
+family: percent-encoding
+expect: reject
+message: invalid @next destination
+reference: impl/annotation/ForwardingAnnotation.cpp (ForwardingPolicy::valid_destination)
+defect: ANN-NEXT-PERCENT-SMUGGLE: a consumer that decodes the value would read '..'; the policy now refuses '%' instead of trusting every consumer.
+note: Percent-encoded parent directory.

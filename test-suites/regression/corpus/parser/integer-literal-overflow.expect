@@ -1,0 +1,7 @@
+id: PARSE-INT-OVERFLOW
+family: parser-rejection
+expect: reject
+command: check
+message: out of range for a 64-bit integer
+reference: impl/frontend/parser.cpp
+note: A literal wider than 64 bits.

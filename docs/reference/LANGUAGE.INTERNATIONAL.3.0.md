@@ -46,7 +46,7 @@ A source file may declare its grammar edition with a first-line version pragma:
 #sleela 3.0
 ```
 
-The current compiler gate accepts declared syntax versions **1.0 through 3.0**. If the pragma is omitted, the compiler defaults to 3.0 with a warning. A version outside the accepted range, or a malformed declaration, is rejected.
+The current compiler gate accepts declared syntax versions **1.0 through 3.1**. If the pragma is omitted, the compiler defaults to 3.1 with a warning. A version outside the accepted range, or a malformed declaration, is rejected.
 
 Syntax 3.0 consolidates the established 1.x and 2.x language surface. It does **not** erase historical feature gates: a construct introduced in 2.9 remains gated at 2.9 even when compiled by a 3.0-capable compiler.
 
@@ -437,7 +437,7 @@ SLeeLa is a broad language-and-runtime project. Its documentation should disting
 
 Important qualifications in the current references include:
 
-- Syntax 3.0 is the current accepted grammar ceiling, not an automatic enablement of every historical or proposed feature.
+- Syntax 3.1 is the current accepted grammar ceiling (this reference describes the 3.0 surface), not an automatic enablement of every historical or proposed feature.
 - Constructor overload resolution and `this(...)` / base-constructor delegation are not verified and are rejected explicitly.
 - `prestige` remains a proposal.
 - `U<n>`, `C<n>`, and the named wide-integer families have distinct documented meanings and implementation boundaries; do not infer universal end-to-end support from their grammar or type recognition.

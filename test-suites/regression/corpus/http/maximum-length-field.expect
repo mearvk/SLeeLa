@@ -1,0 +1,6 @@
+id: HTTP6-LENGTH-FFFFFFFF
+family: http-framing
+expect: reject
+rc: -3
+reference: http-6.0/http6_protocol.c
+note: The largest 32-bit length must not wrap a size computation.

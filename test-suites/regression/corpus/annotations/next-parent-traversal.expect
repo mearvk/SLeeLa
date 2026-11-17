@@ -1,0 +1,7 @@
+id: ANN-NEXT-PARENT
+family: traversal
+expect: reject
+message: invalid @next destination
+reference: impl/annotation/ForwardingAnnotation.cpp (ForwardingPolicy::valid_destination)
+defect: ANN-NEXT-DOTDOT-BYPASS: the parser joins tokens with spaces, so the text reached the check as '. . / . .' and the '..' test never matched.
+note: Parent-directory traversal.

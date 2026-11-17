@@ -58,6 +58,51 @@ New workflow `.github/workflows/regression-set.yml`, on pushes and pull requests
 - Nordshrift's Java and Sleela targets do not emit arrays yet, and the C target does not emit the enhanced `for` or objects. All of these fail closed with a "cannot emit" error.
 - The unrelated `Native C and C++ Portability` Windows job fails in `test-terminal-platform` (ConPTY); separate work is in progress on that.
 
+## Third pass: coverage, corpus, document versions (17 November 2026)
+
+| Check | Result |
+|---|---|
+| Full set (with mutation tests), `working-binaries/sleela` | 200 tests, 0 failed, 0 skipped, 193 s |
+| Fast set, compiler built from `impl/` | 198 tests, 0 failed, 113 s |
+| Native suites under ASan + UBSan, run locally | 17 tests, 0 failed (runtime libraries found through `LD_LIBRARY_PATH`) |
+| Mutation test | 85 injected defects, all detected |
+| New corpus against the previous `working-binaries/sleela` | 11 cases fail (crashes and the `@next` traversal bypass), as intended |
+| Project targets re-run on the rebuilt compiler: `test-sleela`, `test-memmgr`, `-memmgr-grades`, `-thread-platform`, `-threads`, `-network`, `-network-platform`, `-synchro`, `test-nordshrift` (+ `-compiler`, `-semantic`, `-compat`, `-e2e`), `-version`, `-lineage`, `-class-dispatch`, `-ref`, `-syntax-1.8`, `-regex`, `-catalog`, `-runtime-artifact-abi`, `-unsigned-integer`, `-java-utf16`, `-java-string` | all pass |
+| `make check-manifest` | OK |
+
+### New coverage
+
+- Native suites `reg_memmgr`, `reg_thread`, `reg_net` (loopback), `reg_synchro` (loopback UDP echo server), `reg_http6` (frame layout, truncation, oversized lengths, round trips, random input) and `reg_router`. The instrumented allocator is now mutex-protected so suites with worker threads may allocate.
+- `corpus/` (63 cases): annotations, `@next` traversal and percent-encoding, HTTP 6.0 framing, parser and semantic rejection, accepted oddities, compile-time and run-time limits. See `test-suites/regression/corpus/README.md`.
+- `test_doc_versions.py`: the release and syntax range in the source and the binary must match the documents that state them.
+- 32 new mutants for the new code (85 in all).
+
+### Defects fixed
+
+| ID | Defect | Fix | Files |
+|---|---|---|---|
+| PARSE-STACK-OVERFLOW / TREE-WALK-STACK-OVERFLOW | About 8,000 nested parentheses, 30,000 chained operators or 30,000 chained casts crashed the compiler with a segmentation fault. | A token pre-pass refuses source over fixed limits with a diagnostic. | `impl/frontend/parser.cpp` |
+| REGEX-STACK-OVERFLOW | An identifier of about 50,000 characters crashed dependency discovery (`std::regex` recurses per character). | Hand-written identifier scan. | `impl/frontend/driver.cpp` |
+| ANN-NEXT-DOTDOT-BYPASS | The parser joins annotation tokens with spaces, so `@next(../../etc)` reached the `..` check as `. . / . .` and was accepted. | The check ignores whitespace. | `impl/annotation/ForwardingAnnotation.cpp` |
+| ANN-NEXT-ABSOLUTE-FORMS, ANN-NEXT-PERCENT-SMUGGLE | A drive or scheme (`C:/x`) and a percent-encoded `..` were accepted. | `:`, `%` and control characters are refused. | `ForwardingAnnotation.cpp` |
+| MEMMGR-REALLOC-HEADROOM | `slmm_realloc` counted the old and new block together, so a growth that fits under the limit was refused. | The old block is credited while the new size is checked; the copy runs outside the lock. | `impl/core/sleela_memmgr.c` |
+| THREAD-NULL-ARGUMENTS | On POSIX a NULL mutex, condition variable or thread handle was passed to pthreads and crashed (the Windows branch returned -1). | NULL is refused with -1 on every platform. | `impl/core/sleela_thread.c` |
+| NET-WRITE-INVALID-ZERO | `slnet_write(SL_NET_INVALID, p, 0)` returned 0 (success). | An invalid handle fails first. | `impl/core/sleela_net.c` |
+
+### Documents brought to the current version
+
+Syntax 3.1 (range 1.0 .. 3.1, release 1.3.2-pro) replaces the earlier 3.0 ceiling in 22 documents (`markdown/`, `impl/`, `lib/`, `decompiler/`, `docs/`, `api/sleela/2.1/language/`, `install/`, and others); `markdown/VERSION.md` now names 3.1 as current. `impl/frontend/ANNOTATION_PIPELINE.md` now describes the `@name(value)` form the parser accepts. `impl/RUNTIME-AUDIT.md` finding 11 is closed by `test_doc_versions.py`.
+
+### Still open
+
+- `ANN-CLASS-BOUND`: an annotation directly before `class` binds to the class and skips `@next` validation; the pipeline document says it is a document annotation. A language decision.
+- `ANN-NEXT-SPELLING`: a forwarded destination prints as `system / net`.
+- `test-suites/cpp/test_frontend_annotations.cpp` uses the old line form (`@scope system`) and is not built.
+- Nordshrift's Java and Sleela targets do not emit arrays; the C target does not emit the enhanced `for` or objects.
+- Not verified here: the Windows and macOS branches of `sleela_events.c` and of the new suites (the new network, thread and synchro suites are POSIX-only and skip on Windows; CI covers `events_portable.c` on all three).
+- Other recursion shapes are not capped (for example very long `else if` chains parse); a crash from a new shape belongs in the corpus.
+- `SHA256-DIGESTS.md` was not regenerated in this pass; it still lists the previous `working-binaries/` digests and the changed files.
+
 ## Verification pass (before the repair)
 
 On `master` at `17814fc4` with the then-committed binary: fast set 111/111 (81 s), full set 113/113 (155 s); the compiler rebuilt from `impl/` was byte-identical to `working-binaries/sleela`; `check-manifest` OK. This matched `test-suites/regression/PROGRESS.NOVEMBER.17.2026.md`.

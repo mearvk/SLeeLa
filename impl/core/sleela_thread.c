@@ -99,17 +99,22 @@ int slthread_join(SLThreadHandle thread) {
 
 #else
 
-int slthread_mutex_init(SLThreadMutex* mutex) { return pthread_mutex_init(mutex, NULL); }
-int slthread_mutex_destroy(SLThreadMutex* mutex) { return pthread_mutex_destroy(mutex); }
-int slthread_mutex_lock(SLThreadMutex* mutex) { return pthread_mutex_lock(mutex); }
-int slthread_mutex_unlock(SLThreadMutex* mutex) { return pthread_mutex_unlock(mutex); }
+/* A NULL argument is rejected with -1 on every platform (as the Windows branch
+ * does) instead of being passed to pthreads, which would dereference it. */
+int slthread_mutex_init(SLThreadMutex* mutex) { return mutex ? pthread_mutex_init(mutex, NULL) : -1; }
+int slthread_mutex_destroy(SLThreadMutex* mutex) { return mutex ? pthread_mutex_destroy(mutex) : -1; }
+int slthread_mutex_lock(SLThreadMutex* mutex) { return mutex ? pthread_mutex_lock(mutex) : -1; }
+int slthread_mutex_unlock(SLThreadMutex* mutex) { return mutex ? pthread_mutex_unlock(mutex) : -1; }
 
-int slthread_cond_init(SLThreadCond* cond) { return pthread_cond_init(cond, NULL); }
-int slthread_cond_destroy(SLThreadCond* cond) { return pthread_cond_destroy(cond); }
-int slthread_cond_wait(SLThreadCond* cond, SLThreadMutex* mutex) { return pthread_cond_wait(cond, mutex); }
-int slthread_cond_broadcast(SLThreadCond* cond) { return pthread_cond_broadcast(cond); }
+int slthread_cond_init(SLThreadCond* cond) { return cond ? pthread_cond_init(cond, NULL) : -1; }
+int slthread_cond_destroy(SLThreadCond* cond) { return cond ? pthread_cond_destroy(cond) : -1; }
+int slthread_cond_wait(SLThreadCond* cond, SLThreadMutex* mutex) {
+    return (cond && mutex) ? pthread_cond_wait(cond, mutex) : -1;
+}
+int slthread_cond_broadcast(SLThreadCond* cond) { return cond ? pthread_cond_broadcast(cond) : -1; }
 
 int slthread_create(SLThreadHandle* thread, SLThreadStart start, void* arg) {
+    if (!thread || !start) return -1;
     return pthread_create(thread, NULL, start, arg);
 }
 int slthread_join(SLThreadHandle thread) { return pthread_join(thread, NULL); }

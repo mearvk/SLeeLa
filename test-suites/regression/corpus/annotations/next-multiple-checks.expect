@@ -1,0 +1,6 @@
+id: ANN-NEXT-MULTI-CHECK
+family: annotations
+expect: accept
+command: check
+reference: impl/frontend/annotation_pipeline.cpp (validateLanguageAnnotations)
+note: Several @next declarations are legal metadata; only forwarding refuses them (next case).

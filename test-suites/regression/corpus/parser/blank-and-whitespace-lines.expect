@@ -1,0 +1,7 @@
+id: PARSE-OK-BLANK-LINES
+family: parser-acceptance
+expect: accept
+command: run
+output: ok
+reference: impl/frontend/lexer.cpp
+note: Empty and whitespace-only lines before the first declaration.

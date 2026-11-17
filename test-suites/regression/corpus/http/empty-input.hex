@@ -1,0 +1,3 @@
+# zero bytes on the wire
+# bytes 0..31 are the header: version, type, flags(2), stream(8), request(8), sequence(8), length(4)
+

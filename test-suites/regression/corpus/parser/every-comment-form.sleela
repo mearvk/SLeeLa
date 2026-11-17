@@ -1,0 +1,7 @@
+#sleela 3.1
+// line comment
+# hash comment
+< angle comment >
+<< block
+spanning lines >>
+public class A { void main() { print("ok"); } }

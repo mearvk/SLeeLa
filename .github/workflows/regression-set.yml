@@ -1,7 +1,7 @@
 name: Regression set (C, C++, Python)
 
 # Runs test-suites/regression on every change to the code it covers:
-#   linux       full set (with mutation testing) against the compiler built from
+#   linux       full set (corpus, mutation testing, document versions) against the compiler built from
 #               impl/, then the fast set against the committed working-binaries/sleela
 #   sanitizers  the native C/C++ suites under ASan + UBSan
 #   events      a portable test of impl/core/sleela_events.c on Linux, macOS and
@@ -19,6 +19,21 @@ on:
       - 'tools/generate-sha256-manifest.py'
       - 'tools/verify-before-execution.py'
       - 'SHEET.sheet'
+      - 'http-6.0/**'
+      - 'preferred-routers/**'
+      # documents that state the compiler release and syntax range (test_doc_versions.py)
+      - 'README.md'
+      - 'markdown/**'
+      - 'install/**'
+      - 'man/**'
+      - 'decompiler/**'
+      - 'docs/README.md'
+      - 'munction/MANUAL.md'
+      - 'pi-generator/README.md'
+      - 'ballum/example/README.md'
+      - 'artificial-intelligence/large-language-models/sleela/README.md'
+      - 'api/sleela/2.1/language/**'
+      - '.kiro/steering/**'
       - '.github/workflows/regression-set.yml'
   pull_request:
     branches: [master, main]
@@ -31,6 +46,21 @@ on:
       - 'tools/generate-sha256-manifest.py'
       - 'tools/verify-before-execution.py'
       - 'SHEET.sheet'
+      - 'http-6.0/**'
+      - 'preferred-routers/**'
+      # documents that state the compiler release and syntax range (test_doc_versions.py)
+      - 'README.md'
+      - 'markdown/**'
+      - 'install/**'
+      - 'man/**'
+      - 'decompiler/**'
+      - 'docs/README.md'
+      - 'munction/MANUAL.md'
+      - 'pi-generator/README.md'
+      - 'ballum/example/README.md'
+      - 'artificial-intelligence/large-language-models/sleela/README.md'
+      - 'api/sleela/2.1/language/**'
+      - '.kiro/steering/**'
       - '.github/workflows/regression-set.yml'
   workflow_dispatch:
 

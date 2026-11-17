@@ -1,0 +1,7 @@
+id: PARSE-PRAGMA-OVERFLOW
+family: parser-rejection
+expect: reject
+command: check
+message: malformed #sleela version pragma
+reference: impl/frontend/version.cpp
+note: A major number that overflows an int is malformed, not wrapped.

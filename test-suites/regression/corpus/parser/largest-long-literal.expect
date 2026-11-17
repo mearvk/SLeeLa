@@ -1,0 +1,7 @@
+id: PARSE-OK-MAX-LONG
+family: parser-acceptance
+expect: accept
+command: run
+output: 9223372036854775807
+reference: impl/frontend/parser.cpp
+note: The largest 64-bit literal is in range (one more is PARSE-INT-OVERFLOW).

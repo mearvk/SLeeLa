@@ -1,0 +1,6 @@
+id: ANN-DUP-SCOPE
+family: annotations
+expect: reject
+message: may occur only once
+reference: impl/frontend/annotation_pipeline.cpp (validateLanguageAnnotations)
+note: Only next, requires, capability, counter and supporter may repeat.

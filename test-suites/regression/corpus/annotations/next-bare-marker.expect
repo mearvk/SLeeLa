@@ -1,0 +1,6 @@
+id: ANN-NEXT-BARE
+family: annotations
+expect: reject
+message: invalid @next destination
+reference: impl/frontend/annotation_pipeline.cpp (validateLanguageAnnotations)
+note: @next without parentheses carries no destination.

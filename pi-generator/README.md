@@ -28,7 +28,7 @@ SLeeLa VM math kernel, or `sleelactl` performance.
 
 The source declares `#sleela 2.9` so it is accepted by both the older
 `Sleelvac™` compiler (supported range 1.0 – 2.9) and the current
-`SLeeLa™ Language/Runtime` build (1.0 – 3.0). It uses no 3.0-only syntax — only
+`SLeeLa™ Language/Runtime` build (1.0 – 3.1). It uses no 3.0-only syntax — only
 integer arithmetic, `int[]`, `while`, and the `openFile`/`write`/`close` file
 API, all available in 2.x.
 
@@ -45,7 +45,7 @@ enormous string.
 ```sh
 # from the repository root, with the source-built compiler
 impl/build/sleela run pi-generator/PiGenerator.sleela
-# or the prebuilt toolchain (supports syntax 1.0 – 3.0):
+# or the prebuilt toolchain (supports syntax 1.0 – 3.1):
 working-binaries/sleela run pi-generator/PiGenerator.sleela
 ```
 

@@ -1,0 +1,2 @@
+#sleela x
+public class A { void main() { print("ok"); } }

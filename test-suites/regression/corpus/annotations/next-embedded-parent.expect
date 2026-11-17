@@ -1,0 +1,7 @@
+id: ANN-NEXT-EMBEDDED-PARENT
+family: traversal
+expect: reject
+message: invalid @next destination
+reference: impl/annotation/ForwardingAnnotation.cpp (ForwardingPolicy::valid_destination)
+defect: ANN-NEXT-DOTDOT-BYPASS
+note: A parent component in the middle of a path.

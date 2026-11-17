@@ -205,6 +205,7 @@ void slmm_free(void* ptr) {
 void* slmm_realloc(void* ptr, size_t size) {
     SLMMHeader* oldh;
     size_t oldsize;
+    int oldcounted;
     void* np;
 
     if (!ptr) return slmm_alloc(size);
@@ -213,13 +214,31 @@ void* slmm_realloc(void* ptr, size_t size) {
     oldh = header_of(ptr);
     if (oldh->magic != SLMM_MAGIC) return NULL;
     oldsize = oldh->size;
+    oldcounted = oldh->counted ? 1 : 0;
 
-    /* Simplicity over in-place growth: allocate new, copy, free old. This keeps
-     * accounting exact and correct across an enable/disable boundary. */
-    np = slmm_alloc(size);
-    if (!np) return NULL;                 /* old block untouched, as realloc  */
+    /* The old block is about to be replaced, so its bytes do not count against
+     * the limit while the new size is checked: growing a block whose RESULT
+     * fits under the limit must not fail just because old + new would not.
+     * Allocate new, copy, then release old. On failure the old block is
+     * untouched and its accounting is restored, as with realloc(). */
+    lock();
+    if (oldcounted) g_live_bytes = g_live_bytes >= oldsize ? g_live_bytes - oldsize : 0;
+    np = alloc_locked(size);
+    if (!np) {
+        if (oldcounted) g_live_bytes += oldsize;
+        unlock();
+        return NULL;
+    }
+    if (oldcounted) {
+        if (g_live_allocs) g_live_allocs--;
+        g_total_frees++;
+    }
+    oldh->magic = 0;   /* poison so a double free is caught */
+    unlock();
+
+    /* Both blocks are private to this caller, so the copy needs no lock. */
     memcpy(np, ptr, oldsize < size ? oldsize : size);
-    slmm_free(ptr);
+    slmemory_free(oldh);
     return np;
 }
 

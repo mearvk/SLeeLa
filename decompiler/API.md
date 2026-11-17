@@ -136,10 +136,10 @@ The model includes Type, Field, Variable, and FunctionSignature for reusable typ
 This is an API foundation rather than a claim that every construct can already be recovered from every binary. The decompiler must populate these objects from actual analysis evidence and preserve uncertainty.
 
 
-## SLeeLa syntax 3.0 source target
+## SLeeLa syntax 3.1 source target
 
-The SLeeLa source-output target is aligned with the normative syntax **3.0**
-edition. The compiler gate accepts declared source syntax 1.0–3.0. When
+The SLeeLa source-output target is aligned with the normative syntax **3.1**
+edition. The compiler gate accepts declared source syntax 1.0–3.1. When
 reconstructing SLeeLa, the decompiler should preserve a known original source
 version when evidence supports it; otherwise it must label the selected target
 version explicitly and avoid claiming that reconstructed source is byte-for-byte

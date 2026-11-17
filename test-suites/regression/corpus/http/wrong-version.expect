@@ -1,0 +1,6 @@
+id: HTTP6-VERSION
+family: http-framing
+expect: reject
+rc: -3
+reference: http-6.0/http6_protocol.c
+note: Only version 6 is accepted.

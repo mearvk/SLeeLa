@@ -1,0 +1,7 @@
+id: PARSE-EMPTY
+family: parser-rejection
+expect: reject
+command: check
+message: Syntax error
+reference: impl/frontend/parser.cpp
+note: A zero-byte file.

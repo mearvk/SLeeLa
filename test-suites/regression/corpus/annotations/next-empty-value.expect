@@ -1,0 +1,6 @@
+id: ANN-NEXT-EMPTY
+family: annotations
+expect: reject
+message: must not have an empty value
+reference: impl/frontend/annotation_pipeline.cpp (validateLanguageAnnotations)
+note: A value-form annotation needs a value.

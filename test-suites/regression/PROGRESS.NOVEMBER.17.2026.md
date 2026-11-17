@@ -1,22 +1,24 @@
 # Regression set: session progress (17 November 2026)
 
-Three stages this session:
+Four stages this session:
 
 1. Commit `8e570460`: the regression set (C, C++, Python only).
 2. Commit `0ea1760b`: the defects it found were fixed in the Sleela code, the
    trust-root manifest was reconciled, and each former known issue became a hard assertion.
-3. This stage ("improve all"): the open items from stage 2 were closed (see below).
+3. Stage 3 ("improve all"): the open items from stage 2 were closed (see below). The root `REGRESSION.md` records the repair pass that followed (CI, Nordshrift C arrays, events on Windows).
+4. Stage 4: more coverage (memory manager, threads, sockets, synchro, HTTP 6.0 frames, preferred router), a populated corpus, sanitizer run, and documents brought to syntax 3.1. Details in "Stage 4" below.
 
 ## Status
 
 | Item | State |
 |---|---|
-| C suites (utf16, java_string, codec, regex, path, time/memory, events) | passing |
+| C suites (utf16, java_string, codec, regex, path, time/memory, events, memmgr, thread, net, synchro, http6, router) | passing |
 | C++ suites (lexer, model-based differential) | passing |
-| Python suites (ctypes, CLI language/contract/transpilers, integrity, mutation) | passing |
-| Full run against the committed `working-binaries/sleela` | 113 tests, 0 failures (about 90 s with `--fast`, about 3 min with mutation testing) |
-| Mutation test | 51 injected defects, all detected (a hang counts as detected) |
-| Open known issues | none |
+| Python suites (ctypes, CLI language/contract/transpilers, corpus, integrity, document versions, mutation) | passing |
+| Native suites under ASan + UBSan | passing (run locally in stage 4) |
+| Full run against the committed `working-binaries/sleela` | 200 tests, 0 failures (about 113 s with `--fast`, about 190 s with mutation testing) |
+| Mutation test | 85 injected defects, all detected (a hang counts as detected) |
+| Open known issues | two corpus cases (`ANN-CLASS-BOUND`, `ANN-NEXT-SPELLING`); see the root `REGRESSION.md` |
 | `security/sha256-manifest.json` | regenerated; `make check-manifest` prints OK |
 
 ## Defects fixed
@@ -46,6 +48,23 @@ Three stages this session:
 | Regression harness | Per-process scratch directory, so concurrent runs cannot delete each other's files; results flush after each case so a crash keeps earlier output. |
 | `working-binaries/` | `sleela` and `nordshrift` rebuilt from the fixed source; README digests and provenance note, the toolchain steering doc, and `SHA256-DIGESTS.md` updated. |
 
+## Stage 4 (coverage, corpus, document versions)
+
+| Item | Change |
+|---|---|
+| New C suites | `reg_memmgr`, `reg_thread`, `reg_net`, `reg_synchro`, `reg_http6`, `reg_router`. The instrumented allocator got a mutex so suites with worker threads can allocate. |
+| Corpus | `corpus/` holds 63 cases in seven families, a `.expect` sidecar per fixture, generated cases for oversized inputs, and a README whose table is checked against the fixtures. Run as the `corpus` group. |
+| Defects fixed | Compiler crashes on deep nesting, long operator chains and long identifiers (now diagnostics); `@next` traversal bypass through token spacing, drive letters and `%`; `slmm_realloc` double counting; NULL arguments in `slthread_*` on POSIX; zero-length `slnet_write` on an invalid handle. Table in the root `REGRESSION.md`. |
+| Sanitizers | The native suites pass under ASan + UBSan locally (the libraries are installed here under a versioned name; `LD_LIBRARY_PATH` points the loader at them). The earlier note that they were not installed is out of date. |
+| Document versions | Syntax 3.1 replaces 3.0 as the stated ceiling in 22 documents. `test_doc_versions.py` keeps the release, the range and those documents in step. `impl/RUNTIME-AUDIT.md` finding 11 is closed. |
+| CI | `regression-set.yml` now also triggers on `http-6.0/`, `preferred-routers/` and the documents that state the version. (The workflow itself was added in the repair pass; the "Not wired into CI" note below is out of date.) |
+| Mutants | 85: 32 new, for memmgr, thread, net, synchro, http6 and router. |
+| Test timing | The network suites scan from a per-process port offset and the synchro loss test uses a 250 ms budget, after one mutation run failed under parallel load. |
+| `working-binaries/` | `sleela` and `nordshrift` rebuilt from the fixed source; README digests and note updated. |
+
+Not done in stage 4: Windows and macOS builds of the new suites (they skip there), Nordshrift arrays in the
+Java and Sleela targets, regeneration of `SHA256-DIGESTS.md`, and a decision on `ANN-CLASS-BOUND`.
+
 ## Verified against the project's own tests
 
 With the rebuilt compiler: `test-regex`, `test-time-platform`, `test-path-platform`,
@@ -61,10 +80,9 @@ environment, not the code; on a host where the port is free the example is unaff
 
 ## Not done
 
-- Verified only on Linux x86-64 with GCC 11.5. ASan/UBSan is not installed in the sandbox,
-  so `--sanitize` is untested. The Windows and macOS branches of `sleela_events.c` were not
-  compiled here.
-- Not wired into CI (`.github/workflows`).
+- Verified only on Linux x86-64 with GCC 11.5 (superseded: stage 4 ran ASan/UBSan locally and CI covers
+  `events_portable.c` on all three systems).
+- Not wired into CI (superseded: `.github/workflows/regression-set.yml` exists).
 - Nordshrift's C target still rejects array access and value-producing postfix `++`/`--`.
 
 ## How to run
@@ -79,7 +97,7 @@ After any edit under `lib/**` or `impl/` source, regenerate the manifest:
 
 ## Possible next steps
 
-1. Run the set in CI on Linux, macOS and Windows runners, with `--sanitize` where available.
-2. Make `struct_network.sleela` pick a free port (or skip when the port is taken).
-3. Array support in the Nordshrift C target.
-4. Suites for more of `impl/core` (net, memmgr, synchro) and the annotation pipeline.
+1. Port the POSIX-only suites (net, thread, synchro, path) to Windows and macOS runners.
+2. Array and object support in the Nordshrift Java and Sleela targets.
+3. Decide `ANN-CLASS-BOUND`, then promote the case to a hard assertion.
+4. Suites for more of `impl/core` (io, library, terminal, ai, media) and for `impl/frontend` semantic and compiler passes.

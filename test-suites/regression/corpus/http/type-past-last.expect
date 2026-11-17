@@ -1,0 +1,6 @@
+id: HTTP6-TYPE-21
+family: http-framing
+expect: reject
+rc: -3
+reference: http-6.0/http6_protocol.c
+note: Type 20 (RECIPIENT_LABEL) is the last one.

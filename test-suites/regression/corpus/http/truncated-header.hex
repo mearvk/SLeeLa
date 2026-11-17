@@ -1,0 +1,5 @@
+# 31 of the 32 header bytes
+# bytes 0..31 are the header: version, type, flags(2), stream(8), request(8), sequence(8), length(4)
+
+06 06 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00

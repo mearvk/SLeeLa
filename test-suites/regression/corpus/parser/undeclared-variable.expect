@@ -1,0 +1,7 @@
+id: SEM-UNDECLARED
+family: parser-rejection
+expect: reject
+command: check
+message: assignment to undeclared variable 'y'
+reference: impl/frontend/semantic.cpp
+note: Assignment before declaration.

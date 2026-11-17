@@ -10,6 +10,7 @@ Groups
     native     builds and runs the C and C++ suites (strict flags, leak/heap-guard checked)
     ctypes     the C core driven from Python against Python oracles
     cli        the `sleela` compiler: language semantics, contract, transpilers
+    corpus     hostile and malformed inputs (annotations, traversal, HTTP frames, parser, limits)
     integrity  SHA-256 gate tooling, committed manifest, /lib inventory
     mutation   injects defects into the code under test; every one must be caught
 
@@ -37,7 +38,8 @@ GROUPS = {
     "native": ["test_native_suites"],
     "ctypes": ["test_ctypes_differential"],
     "cli": ["test_cli_language", "test_cli_contract", "test_cli_transpilers"],
-    "integrity": ["test_integrity_tools"],
+    "corpus": ["test_corpus"],
+    "integrity": ["test_integrity_tools", "test_doc_versions"],
     "mutation": ["test_mutation_kill"],
 }
 

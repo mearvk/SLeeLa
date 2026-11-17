@@ -1,0 +1,6 @@
+id: HTTP6-OK-PING
+family: http-framing
+expect: accept
+rc: 0
+reference: http-6.0/http6_protocol.c
+note: The smallest legal frame.

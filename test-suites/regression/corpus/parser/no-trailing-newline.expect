@@ -1,0 +1,7 @@
+id: PARSE-OK-NO-FINAL-NEWLINE
+family: parser-acceptance
+expect: accept
+command: run
+output: ok
+reference: impl/frontend/lexer.cpp
+note: The last token may end the file.

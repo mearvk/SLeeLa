@@ -211,7 +211,7 @@ Use the subsystem only with software you are authorized to inspect.
 
 SLeeLa is the current source reconstruction target under the normative
 SLEELA.syntax **3.0** edition. The shared compiler accepts source syntax
-**1.0–3.0**. A decompiler must preserve a known original source version and
+**1.0–3.1**. A decompiler must preserve a known original source version and
 artifact metadata; it must not automatically upgrade historical source or
 assign 3.0 to output whose constructs have not been validated against that
 edition and their feature-specific minimum gates. Decompiler product releases

@@ -42,7 +42,6 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include <regex>
 #include <set>
 #include <chrono>
 #include <cerrno>
@@ -1785,7 +1784,23 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
     std::string source=initialSource;
     for(const auto& c:program.classes) loadedPaths.insert(c.name);
     for(const auto& s:program.structs) loadedPaths.insert(s.name);
-    std::regex identifier(R"(\b[A-Za-z_][A-Za-z0-9_]*\b)");
+    // Identifier discovery is a hand-written scan, not std::regex: libstdc++'s regex
+    // matcher recurses once per character, so one long identifier in the source
+    // (50,000 characters is enough) overflowed the stack and crashed the compiler.
+    // A match is a maximal run of [A-Za-z0-9_] that starts with a letter or '_'
+    // (the same set the former pattern \b[A-Za-z_][A-Za-z0-9_]*\b produced).
+    auto scanIdentifiers = [](const std::string& text) {
+        std::vector<std::pair<std::string, std::size_t>> found;
+        auto isWord = [](char ch) { return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch == '_'; };
+        for (std::size_t at = 0; at < text.size();) {
+            if (!isWord(text[at])) { ++at; continue; }
+            std::size_t end = at + 1;
+            while (end < text.size() && isWord(text[end])) ++end;
+            if (!(text[at] >= '0' && text[at] <= '9')) found.emplace_back(text.substr(at, end - at), at);
+            at = end;
+        }
+        return found;
+    };
     // Ignore comments and string/character literals during dependency discovery.
     // Documentation text must not trigger unrelated library loads (for example,
     // the word "Certificate" in a comment must not resolve Java API classes).
@@ -1885,12 +1900,12 @@ static bool loadReferencedLibraryUnits(const std::string& initialSource,sleela::
     for(size_t pass=0;pass<64;++pass){
         std::set<std::string> names(seeds.begin(),seeds.end());
         const std::string scanSource = dependencyScanText(source);
-        for(std::sregex_iterator it(scanSource.begin(),scanSource.end(),identifier),end;it!=end;++it){
-            const std::string name=it->str();
+        for(const auto& identifierMatch:scanIdentifiers(scanSource)){
+            const std::string& name=identifierMatch.first;
             // A name that follows '.' is a member or the tail of a qualified
             // name (java.util.List): it is not a library unit reference. The
             // Java signature surface erases package-qualified types to Any.
-            const auto pos=static_cast<std::size_t>(it->position());
+            const std::size_t pos=identifierMatch.second;
             std::size_t back=pos;
             while(back>0 && (scanSource[back-1]==' '||scanSource[back-1]=='\t')) --back;
             if(!name.empty() && std::isupper(static_cast<unsigned char>(name[0])) && back>0 && scanSource[back-1]=='.'){

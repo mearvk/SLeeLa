@@ -21,6 +21,58 @@ const Token& Parser::peek(int off) const { size_t p=i_+(size_t)off; if(p>=toks_.
 bool Parser::accept(Tok k){if(check(k)){i_++;return true;}return false;}
 const Token& Parser::expect(Tok k,const char* what){if(!check(k)) error(std::string("expected ")+what+" but found '"+(cur().text.empty()?tokName(cur().kind):cur().text)+"'");return toks_[i_++];}
 void Parser::error(const std::string& msg) const {const Token&t=cur();throw std::runtime_error("Syntax error (line "+std::to_string(t.line)+", col "+std::to_string(t.col)+"): "+msg);}
+// Pre-pass: refuse source whose shape would exhaust the native stack. The parser,
+// the semantic pass and the code generator all recurse over the syntax tree, so a
+// few thousand nested parentheses (or a statement of tens of thousands of chained
+// operators, which builds a left-deep tree) crashed the compiler with a segmentation
+// fault instead of reporting an error. The limits are far above any real program.
+// Returns the index of the first offending token, or toks.size() when the source is fine.
+namespace {
+constexpr int kMaxNesting = 1000;        // levels of ( ), [ ] and { } at one point
+constexpr int kMaxOperatorRun = 5000;    // operators between two statement separators
+constexpr int kMaxPrefixRun = 1000;      // prefix operators in a row (- - - ... x)
+constexpr int kMaxCastRun = 1000;        // back-to-back casts, (int)(int)(int)...x
+bool isChainOperator(Tok k){
+    switch(k){
+    case Tok::Plus: case Tok::Minus: case Tok::Star: case Tok::Slash: case Tok::Percent:
+    case Tok::ShiftLeft: case Tok::ShiftRight: case Tok::UnsignedShiftRight:
+    case Tok::EqEq: case Tok::NotEq: case Tok::Lt: case Tok::Le: case Tok::Gt: case Tok::Ge:
+    case Tok::AndAnd: case Tok::OrOr: case Tok::BitAnd: case Tok::BitOr: case Tok::BitXor:
+    case Tok::TripleColon: case Tok::Question: case Tok::Assign:
+    case Tok::PlusAssign: case Tok::MinusAssign: case Tok::StarAssign: case Tok::SlashAssign:
+    case Tok::PercentAssign: case Tok::AndAssign: case Tok::OrAssign: case Tok::XorAssign:
+    case Tok::ShlAssign: case Tok::ShrAssign: case Tok::UshrAssign:
+        return true;
+    default: return false;
+    }
+}
+bool isPrefixOperator(Tok k){
+    return k==Tok::Not||k==Tok::BitNot||k==Tok::Increment||k==Tok::Decrement||k==Tok::Minus||k==Tok::Plus;
+}
+size_t findStackHazard(const std::vector<Token>& toks,std::string& why){
+    int depth=0; long ops=0, prefix=0, casts=0;
+    for(size_t k=0;k<toks.size();++k){
+        const Tok t=toks[k].kind;
+        if(t==Tok::LParen||t==Tok::LBracket||t==Tok::LBrace){
+            if(++depth>kMaxNesting){ why="nesting is too deep (limit "+std::to_string(kMaxNesting)+" levels of (), [] and {})"; return k; }
+        } else if(t==Tok::RParen||t==Tok::RBracket||t==Tok::RBrace){
+            if(depth>0) --depth;
+        }
+        if(t==Tok::Semicolon||t==Tok::LBrace||t==Tok::RBrace||t==Tok::Comma){ ops=0; casts=0; }
+        else {
+            if(t==Tok::LParen && k>0 && toks[k-1].kind==Tok::RParen && ++casts>kMaxCastRun){
+                why="too many chained casts or calls in one statement (limit "+std::to_string(kMaxCastRun)+")"; return k;
+            }
+            if(isChainOperator(t) && ++ops>kMaxOperatorRun){
+                why="expression is too long (more than "+std::to_string(kMaxOperatorRun)+" operators in one statement)"; return k;
+            }
+        }
+        if(isPrefixOperator(t)){ if(++prefix>kMaxPrefixRun){ why="too many prefix operators in a row (limit "+std::to_string(kMaxPrefixRun)+")"; return k; } }
+        else prefix=0;
+    }
+    return toks.size();
+}
+} // namespace
 // Pre-pass: record every `struct Name` so that Name is recognised as a type
 // name throughout parsing, regardless of declaration order (C/C++-like: a
 // struct type may be referenced before or after its definition here).
@@ -300,6 +352,7 @@ LoopSpill Parser::loopSpill(const std::vector<annotation::Annotation>& anns){
     return out;
 }
 Program Parser::parseProgram(){
+    { std::string why; const size_t at=findStackHazard(toks_,why); if(at<toks_.size()){ i_=at; error(why); } }
     collectStructNames(); Program p; bool contentStarted=false;
     while(!check(Tok::Eof)){
         if(check(Tok::At)){

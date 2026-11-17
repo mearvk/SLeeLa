@@ -1,0 +1,6 @@
+id: HTTP6-EMPTY
+family: http-framing
+expect: reject
+rc: -2
+reference: http-6.0/http6_protocol.c
+note: Nothing to read is a short header, not a crash.

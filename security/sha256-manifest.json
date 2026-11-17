@@ -351,7 +351,7 @@
     },
     {
       "path": "impl/core/sleela_memmgr.c",
-      "sha256": "76df54848444810d733b94ad72f75cd0dfb75684157d854ca3486b9edcdaf1f5"
+      "sha256": "c476e00ffeefd2692ede0a96229ea3284855d0998132a43c7c50dd7225a94283"
     },
     {
       "path": "impl/core/sleela_memmgr.h",
@@ -391,7 +391,7 @@
     },
     {
       "path": "impl/core/sleela_net.c",
-      "sha256": "9c13706eb47cdc50ee0a8be201c615e87be09bd3edc39613fc112770ff4b3228"
+      "sha256": "7e0a389ba0b70bab3acd8e0e5440c9681816a355a626a2b92c1fbbf835817c1b"
     },
     {
       "path": "impl/core/sleela_net.h",
@@ -455,7 +455,7 @@
     },
     {
       "path": "impl/core/sleela_thread.c",
-      "sha256": "389763f60d0d9f046a53b09e20131f862534071ed575839d4703b143bfc4b131"
+      "sha256": "0be3f46cecfa2fa180003b522796d2ca2857f5f4eb7af2821716e4a7c162ff74"
     },
     {
       "path": "impl/core/sleela_thread.h",
@@ -575,7 +575,7 @@
     },
     {
       "path": "impl/frontend/driver.cpp",
-      "sha256": "00757df5f019e77dada88e8e6c09b84a953e426eefbf8e3fc2b4837ee9ac1a43"
+      "sha256": "eb56ecd22b072271a68d672cea0f3f8f8e1c7f09d72c78484651ce7c728e4539"
     },
     {
       "path": "impl/frontend/dynamite.cpp",
@@ -675,7 +675,7 @@
     },
     {
       "path": "impl/frontend/parser.cpp",
-      "sha256": "884e0d201ad6d4277499128f29e0ae193fa2055bca951359907a646f9cd0e9e1"
+      "sha256": "11ab019bb33fb757fca0437a7166decc7037b4ebdc510d73704fd4ffcd62d0a1"
     },
     {
       "path": "impl/frontend/parser.h",

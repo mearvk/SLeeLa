@@ -1,0 +1,6 @@
+id: ANN-OK-DOCUMENT
+family: annotations
+expect: accept
+command: check
+reference: impl/frontend/annotation_pipeline.cpp (validateLanguageAnnotations)
+note: The reference shape: document annotations, one safe relative @next.

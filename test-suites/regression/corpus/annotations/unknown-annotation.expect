@@ -1,0 +1,6 @@
+id: ANN-UNKNOWN
+family: annotations
+expect: accept
+warning: unknown annotation '@frobnicate' is preserved as metadata
+reference: impl/frontend/annotation_pipeline.cpp (validateLanguageAnnotations)
+note: Unknown annotations are kept and reported as a warning, never silently dropped.

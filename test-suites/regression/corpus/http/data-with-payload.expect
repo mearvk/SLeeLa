@@ -1,0 +1,6 @@
+id: HTTP6-OK-DATA
+family: http-framing
+expect: accept
+rc: 0
+reference: http-6.0/http6_protocol.c
+note: Header fields and payload round-trip.

@@ -1,0 +1,7 @@
+id: PARSE-COMMENT-UNTERMINATED
+family: parser-rejection
+expect: reject
+command: check
+message: unterminated angle-bracket block comment
+reference: impl/frontend/lexer.cpp
+note: The << comment has no >>.

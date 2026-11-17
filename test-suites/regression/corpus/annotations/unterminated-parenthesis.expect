@@ -1,0 +1,6 @@
+id: ANN-UNTERMINATED
+family: annotations
+expect: reject
+message: unterminated annotation
+reference: impl/frontend/parser.cpp (parseAnnotation)
+note: The parenthesis is never closed.

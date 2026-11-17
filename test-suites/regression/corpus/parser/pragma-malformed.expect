@@ -1,0 +1,7 @@
+id: PARSE-PRAGMA-MALFORMED
+family: parser-rejection
+expect: reject
+command: check
+message: malformed #sleela version pragma
+reference: impl/frontend/version.cpp
+note: A non-numeric version.

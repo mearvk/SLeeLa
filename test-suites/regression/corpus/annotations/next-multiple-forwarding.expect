@@ -1,0 +1,7 @@
+id: ANN-NEXT-MULTI-RUN
+family: annotations
+expect: reject
+command: run
+message: multiple @next annotations require an explicit multi-destination policy
+reference: impl/annotation/AnnotationRuntime.cpp
+note: The runtime refuses ambiguous forwarding before any code runs.

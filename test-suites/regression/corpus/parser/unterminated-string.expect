@@ -1,0 +1,7 @@
+id: PARSE-STRING-UNTERMINATED
+family: parser-rejection
+expect: reject
+command: check
+message: unterminated string literal
+reference: impl/frontend/lexer.cpp
+note: The closing quote is missing.

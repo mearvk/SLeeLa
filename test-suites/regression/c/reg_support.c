@@ -13,6 +13,7 @@
 #include <errno.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <pthread.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <string.h>
@@ -118,17 +119,40 @@ static void tracked_free(void *p) {
     r->user = TOMBSTONE; r->size = 0; --g_live;
 }
 
-void *__wrap_malloc(size_t size) { return tracked_alloc(size); }
+/* One lock serialises the table, so suites that run worker threads (memmgr,
+ * events) can allocate safely.  The public entry points take it; the helpers
+ * above and below do not, so realloc can call them without re-entering. */
+static pthread_mutex_t g_lock = PTHREAD_MUTEX_INITIALIZER;
+
+void *__wrap_malloc(size_t size) {
+    void *p;
+    pthread_mutex_lock(&g_lock);
+    p = tracked_alloc(size);
+    pthread_mutex_unlock(&g_lock);
+    return p;
+}
 
 void *__wrap_calloc(size_t n, size_t size) {
     void *p;
     if (size != 0 && n > (size_t)-1 / size) { errno = ENOMEM; return NULL; }
+    pthread_mutex_lock(&g_lock);
     p = tracked_alloc(n * size);
     if (p) memset(p, 0, n * size);
+    pthread_mutex_unlock(&g_lock);
     return p;
 }
 
+static void *realloc_locked(void *p, size_t size);
+
 void *__wrap_realloc(void *p, size_t size) {
+    void *q;
+    pthread_mutex_lock(&g_lock);
+    q = realloc_locked(p, size);
+    pthread_mutex_unlock(&g_lock);
+    return q;
+}
+
+static void *realloc_locked(void *p, size_t size) {
     Rec *r; void *q; size_t keep;
     if (!p) return tracked_alloc(size);
     r = find(p);
@@ -143,7 +167,11 @@ void *__wrap_realloc(void *p, size_t size) {
     return q;
 }
 
-void __wrap_free(void *p) { tracked_free(p); }
+void __wrap_free(void *p) {
+    pthread_mutex_lock(&g_lock);
+    tracked_free(p);
+    pthread_mutex_unlock(&g_lock);
+}
 
 size_t reg_alloc_live(void) { return g_live; }
 unsigned long reg_alloc_calls(void) { return g_calls; }

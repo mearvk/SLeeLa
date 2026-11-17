@@ -11,7 +11,8 @@
  *       * can fail the Nth allocation  -> out-of-memory paths are executed;
  *   - a deterministic PRNG, so "random" cases replay identically.
  *
- * Single-threaded by design.
+ * The allocator is mutex-protected; the harness counters (REG_CHECK, cases)
+ * are not, so worker threads must not call the REG_ macros.
  */
 #ifndef SLEELA_REGRESSION_H
 #define SLEELA_REGRESSION_H

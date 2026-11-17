@@ -1,0 +1,7 @@
+id: PARSE-NO-CLASSES
+family: parser-rejection
+expect: reject
+command: check
+message: program contains no classes
+reference: impl/frontend/parser.cpp
+note: A pragma and nothing else.

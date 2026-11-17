@@ -1,0 +1,7 @@
+#sleela 3.1
+// Document annotations must be followed by a modifier, import or struct, not directly by `class`.
+@scope(system)
+@area(network)
+@responsibility(transport)
+@next(system/network/multiplexing)
+public class A { void main() { print("ok"); } }

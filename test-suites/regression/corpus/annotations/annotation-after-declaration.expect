@@ -1,0 +1,6 @@
+id: ANN-AFTER-CLASS
+family: annotations
+expect: reject
+message: declaration annotations must precede their declaration
+reference: impl/frontend/parser.cpp (parseProgram)
+note: A document annotation after the first class is refused.

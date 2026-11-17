@@ -1,0 +1,6 @@
+id: HTTP6-TRUNC-HEADER
+family: http-framing
+expect: reject
+rc: -2
+reference: http-6.0/http6_protocol.c
+note: One byte short of a header.

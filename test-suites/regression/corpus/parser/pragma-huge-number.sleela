@@ -1,0 +1,2 @@
+#sleela 99999999999999999999.1
+public class A { void main() { print("ok"); } }

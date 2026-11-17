@@ -22,3 +22,5 @@ Families:
 - compiler/parser rejection.
 
 Every case has a bounded runtime and explicit expected rejection.
+
+The fixtures for these families live in [`../regression/corpus/`](../regression/corpus/README.md) and run with the regression set.

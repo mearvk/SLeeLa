@@ -5,7 +5,7 @@ The version declared in a source file (for example, `#sleela 2.9`) is the
 normative grammar is [`SLEELA.syntax`](../../../../SLEELA.syntax); the compiler gate
 is implemented in `impl/frontend/version.{h,cpp}`.
 
-The compiler currently accepts source syntax **1.0 through 3.0** and defaults
+The compiler currently accepts source syntax **1.0 through 3.1** and defaults
 unversioned source to **3.0** with a warning. Syntax 3.0 consolidates the
 established 1.x/2.x language surface into the current normative edition; it
 adds no new grammar production solely through the edition bump. A newer
@@ -51,10 +51,10 @@ must not be described as changing runtime behavior.
   implementation, or regression tests.
 
 
-## Syntax 3.0 edition status
+## Syntax 3.1 edition status
 
-Syntax 3.0 is the current specification edition and the compiler's accepted
+Syntax 3.1 is the current specification edition and the compiler's accepted
 ceiling. It consolidates the earlier language surface without changing the
 minimum version required by any historical feature. The 2.9 `@mix` feature
 remains gated at syntax 2.9. The §27 `prestige` marker remains a future proposal
-and is not made valid by the 3.0 edition. See [the normative syntax specification](../../../../SLEELA.syntax).
+and is not made valid by the 3.1 edition. See [the normative syntax specification](../../../../SLEELA.syntax).

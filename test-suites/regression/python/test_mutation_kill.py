@@ -76,6 +76,44 @@ MUTANTS = [
     ("lexer-triple-colon-lost", "lexer", FE + "lexer.cpp", 'emit(Tok::TripleColon,":::")', 'emit(Tok::DoubleColon,":::")', ["reg_lexer"]),
     ("lexer-column-zero-based-after-newline", "lexer", FE + "lexer.cpp", "if(c=='\\n'){line_++;col_=1;}", "if(c=='\\n'){line_++;col_=0;}", ["reg_lexer"]),
     ("lexer-unicode-escape-radix", "lexer", FE + "lexer.cpp", "cp=(cp<<4)|v;}out+=utf8FromCodePoint(cp)", "cp=(cp<<3)|v;}out+=utf8FromCodePoint(cp)", ["reg_lexer"]),
+    # ---- memory manager ----
+    ("memmgr-limit-boundary-off-by-one", "memmgr", CORE + "sleela_memmgr.c", "g_live_bytes > g_limit - size", "g_live_bytes >= g_limit - size", ["reg_memmgr"]),
+    ("memmgr-overflow-unchecked", "memmgr", CORE + "sleela_memmgr.c", "if (size > (size_t)-1 - span) {", "if (0) {", ["reg_memmgr"]),
+    ("memmgr-realloc-counts-old-and-new", "memmgr", CORE + "sleela_memmgr.c", "    if (oldcounted) g_live_bytes = g_live_bytes >= oldsize ? g_live_bytes - oldsize : 0;\n", "", ["reg_memmgr"]),
+    ("memmgr-free-ignores-counted-flag", "memmgr", CORE + "sleela_memmgr.c", "    if (h->counted) {\n        if (g_live_bytes >= h->size)", "    if (1) {\n        if (g_live_bytes >= h->size)", ["reg_memmgr"]),
+    ("memmgr-calloc-not-zeroed", "memmgr", CORE + "sleela_memmgr.c", "if (p) memset(p, 0, bytes);", "", ["reg_memmgr"]),
+    ("memmgr-peak-not-tracked", "memmgr", CORE + "sleela_memmgr.c", "if (g_live_bytes > g_peak_bytes) g_peak_bytes = g_live_bytes;", "", ["reg_memmgr"]),
+    # ---- threads ----
+    ("thread-create-null-handle-dereferenced", "thread", CORE + "sleela_thread.c", "    if (!thread || !start) return -1;\n    return pthread_create", "    if (!start) return -1;\n    return pthread_create", ["reg_thread"]),
+    ("thread-lock-null-dereferenced", "thread", CORE + "sleela_thread.c", "return mutex ? pthread_mutex_lock(mutex) : -1;", "return pthread_mutex_lock(mutex);", ["reg_thread"]),
+    ("thread-cond-wait-null-dereferenced", "thread", CORE + "sleela_thread.c", "return (cond && mutex) ? pthread_cond_wait(cond, mutex) : -1;", "return pthread_cond_wait(cond, mutex);", ["reg_thread"]),
+    ("thread-broadcast-wakes-one", "thread", CORE + "sleela_thread.c", "return cond ? pthread_cond_broadcast(cond) : -1; }", "return cond ? pthread_cond_signal(cond) : -1; }", ["reg_thread"]),
+    # ---- sockets ----
+    ("net-zero-write-on-invalid-handle-succeeds", "net", CORE + "sleela_net.c", "    if (!slnet_valid(handle)) return -1;\n    if (length == 0) return 0;\n    if (!data) return -1;\n", "    if (!data || length == 0 || !slnet_valid(handle)) return length == 0 ? 0 : -1;\n", ["reg_net"]),
+    ("net-eof-reported-as-error", "net", CORE + "sleela_net.c", "    ssize_t n = recv((int)handle, buffer, capacity, 0);\n#endif\n    return n < 0 ? -1 : (SLNetCount)n;", "    ssize_t n = recv((int)handle, buffer, capacity, 0);\n#endif\n    return n <= 0 ? -1 : (SLNetCount)n;", ["reg_net"]),
+    ("net-receive-timeout-microseconds-wrong", "net", CORE + "sleela_net.c", "rcv.tv_usec = (suseconds_t)((receive_ms % 1000U) * 1000U);", "rcv.tv_usec = (suseconds_t)((receive_ms % 1000U) * 1U);", ["reg_net"]),
+    ("net-listen-on-accepts-zero-backlog", "net", CORE + "sleela_net.c", "if (port == 0 || backlog < 1) return SL_NET_INVALID;", "if (port == 0) return SL_NET_INVALID;", ["reg_net"]),
+    ("net-foreign-platform-accepted", "net", CORE + "sleela_net.c", "if (requested != SL_NET_AUTO && requested != slnet_platform()) return -1;", "if (0) return -1;", ["reg_net"]),
+    ("net-double-close-succeeds", "net", CORE + "sleela_net.c", "    return close((int)handle) == 0 ? 0 : -1;", "    close((int)handle); return 0;", ["reg_net"]),
+    # ---- synchro ----
+    ("synchro-accepts-any-reply-tag", "synchro", CORE + "sleela_synchro.c", "        if (rseq != seq) {", "        if (0) {", ["reg_synchro"]),
+    ("synchro-loss-scale-wrong", "synchro", CORE + "sleela_synchro.c", "return (lost * 1000) / s->sent;", "return (lost * 100) / s->sent;", ["reg_synchro"]),
+    ("synchro-sample-store-overrun", "synchro", CORE + "sleela_synchro.c", "if (s->nsamples < SL_SYNCHRO_MAX_SAMPLES) s->samples[s->nsamples++] = rtt_us;", "if (s->nsamples <= SL_SYNCHRO_MAX_SAMPLES) s->samples[s->nsamples++] = rtt_us;", ["reg_synchro"]),
+    ("synchro-negative-timeout-sends", "synchro", CORE + "sleela_synchro.c", "if (!s || timeout_ms < 0) return -1;", "if (!s) return -1;", ["reg_synchro"]),
+    ("synchro-payload-not-clamped", "synchro", CORE + "sleela_synchro.c", "if (payload_len > 1472) payload_len = 1472;", "", ["reg_synchro"]),
+    # ---- HTTP 6.0 frames ----
+    ("http6-length-cap-off-by-one", "http6", "http-6.0/http6_protocol.c", "if (h->payload_length > HTTP6_MAX_PAYLOAD)", "if (h->payload_length >= HTTP6_MAX_PAYLOAD)", ["reg_http6"]),
+    ("http6-available-check-off-by-one", "http6", "http-6.0/http6_protocol.c", "if ((size_t)h->payload_length > available)", "if ((size_t)h->payload_length >= available)", ["reg_http6"]),
+    ("http6-length-field-offset", "http6", "http-6.0/http6_protocol.c", "h.payload_length = g32(wire + 28);", "h.payload_length = g32(wire + 27);", ["reg_http6"]),
+    ("http6-last-type-rejected", "http6", "http-6.0/http6_protocol.c", "h->type > HTTP6_FRAME_RECIPIENT_LABEL", "h->type >= HTTP6_FRAME_RECIPIENT_LABEL", ["reg_http6"]),
+    ("http6-encode-capacity-off-by-one", "http6", "http-6.0/http6_protocol.c", "if (out_cap < HTTP6_FRAME_HEADER_SIZE + h->payload_length)", "if (out_cap + 1 < HTTP6_FRAME_HEADER_SIZE + h->payload_length)", ["reg_http6"]),
+    ("http6-short-header-accepted", "http6", "http-6.0/http6_protocol.c", "if (wire_len < HTTP6_FRAME_HEADER_SIZE)\n        return -2;", "if (wire_len + 1 < HTTP6_FRAME_HEADER_SIZE)\n        return -2;", ["reg_http6"]),
+    ("http6-flags-not-encoded", "http6", "http-6.0/http6_protocol.c", "p16(out + 2,  h->flags);", "p16(out + 2, 0);", ["reg_http6"]),
+    # ---- preferred router ----
+    ("router-min-score-not-enforced", "router", "preferred-routers/preferred_router.c", "if(score_for_role(role)<min_score)", "if(0)", ["reg_router"]),
+    ("router-min-score-not-clamped", "router", "preferred-routers/preferred_router.c", "if(min_score>5)min_score=5;", "", ["reg_router"]),
+    ("router-negative-generation", "router", "preferred-routers/preferred_router.c", "return g>=1&&g<=9?g:0;", "return g<=9?g:0;", ["reg_router"]),
+    ("router-policy-minimum-not-clamped", "router", "preferred-routers/preferred_router.c", "if(minimum_preference>5)minimum_preference=5;", "", ["reg_router"]),
 ]
 
 

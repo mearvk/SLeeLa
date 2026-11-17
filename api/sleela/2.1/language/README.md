@@ -18,8 +18,8 @@ establish the implemented boundary.
 
 ## Current syntax edition: 3.0
 
-The compiler accepts source syntax from **1.0 through 3.0** and defaults unversioned source to
-3.0 with a warning. The normative specification consolidates the established
+The compiler accepts source syntax from **1.0 through 3.1** and defaults unversioned source to
+3.1 with a warning. The normative specification consolidates the established
 1.x/2.x language surface; historical feature-specific minimum gates remain.
 A file's `#sleela X.Y` pragma selects its source-syntax edition; the compiler
 release number is a separate version and does not silently change that pragma.

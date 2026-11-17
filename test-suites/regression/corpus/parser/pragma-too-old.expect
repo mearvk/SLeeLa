@@ -1,0 +1,7 @@
+id: PARSE-PRAGMA-OLD
+family: parser-rejection
+expect: reject
+command: check
+message: older than this compiler's minimum supported syntax
+reference: impl/frontend/version.cpp
+note: Below the floor.

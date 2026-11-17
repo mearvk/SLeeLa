@@ -58,6 +58,12 @@ SOURCES: Dict[str, Path] = {
     "time": CORE / "sleela_time.c",
     "memory": CORE / "sleela_memory.c",
     "events": CORE / "sleela_events.c",
+    "memmgr": CORE / "sleela_memmgr.c",
+    "thread": CORE / "sleela_thread.c",
+    "net": CORE / "sleela_net.c",
+    "synchro": CORE / "sleela_synchro.c",
+    "http6": ROOT / "http-6.0" / "http6_protocol.c",
+    "router": ROOT / "preferred-routers" / "preferred_router.c",
     "lexer": FRONTEND / "lexer.cpp",
 }
 
@@ -70,6 +76,12 @@ SUITES: Dict[str, tuple] = {
     "reg_path": ("c", ["path"]),
     "reg_time_memory": ("c", ["time", "memory"]),
     "reg_events": ("c", ["events"]),
+    "reg_memmgr": ("c", ["memmgr", "memory", "thread"]),
+    "reg_thread": ("c", ["thread"]),
+    "reg_net": ("c", ["net"]),
+    "reg_synchro": ("c", ["synchro"]),
+    "reg_http6": ("c", ["http6", "router"]),
+    "reg_router": ("c", ["router"]),
     "reg_lexer": ("cpp", ["lexer"]),
     "reg_model": ("cpp", ["utf16", "java_string", "java_string_codec", "regex", "path"]),
 }

@@ -214,11 +214,11 @@ The compiler and Nordshrift use the same recursive /lib discovery path; the VM-f
 
 The path-level manifest is lib/LIBRARY.SYMBOLS.md; the package summary is lib/LIBRARY.INDEX.md.
 
-## SLeeLa source-language compatibility — Syntax 3.0
+## SLeeLa source-language compatibility — Syntax 3.1
 
 Nordshrift's SLeeLa source input and output use the shared Sleelvac frontend
-contract. The current normative SLeeLa language edition is **Syntax 3.0**;
-the shared frontend accepts declared source syntax **1.0–3.0**. Source
+contract. The current normative SLeeLa language edition is **Syntax 3.1**;
+the shared frontend accepts declared source syntax **1.0–3.1**. Source
 version pragmas remain authoritative for each file, and constructs introduced
 in earlier editions remain subject to their historical minimum-version gates.
 

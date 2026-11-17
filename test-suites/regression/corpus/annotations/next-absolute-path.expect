@@ -1,0 +1,6 @@
+id: ANN-NEXT-ABSOLUTE
+family: traversal
+expect: reject
+message: invalid @next destination
+reference: impl/annotation/ForwardingAnnotation.cpp (ForwardingPolicy::valid_destination)
+note: An absolute destination would leave the architecture tree.

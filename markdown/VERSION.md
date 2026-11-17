@@ -3,7 +3,7 @@
 Advanced the shared SLeeLa Language/Runtime release identifier for both
 `sleela` and `sleelvac` from `0.3.30-dev` to `1.3.2-pro`. The product
 release identifier is independent of the SLeeLa language syntax edition
-(`3.0`) and does not imply that every separately versioned project component
+(`3.1`) and does not imply that every separately versioned project component
 has left development status. The historical `0.3.30` increment below is
 preserved as a record of that earlier release.
 
@@ -12,8 +12,8 @@ preserved as a record of that earlier release.
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
-**Sleela Language Syntax:** 3.0 (supported range 1.0 .. 3.0)  
-**Compiler Compatibility Gate:** 3.0  
+**Sleela Language Syntax:** 3.1 (supported range 1.0 .. 3.1)  
+**Compiler Compatibility Gate:** 3.1  
 **Java Authorship Transition Gate:** 1.19-dev
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Pro Release  

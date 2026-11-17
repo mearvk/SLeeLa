@@ -1,0 +1,4 @@
+#sleela 3.1
+@next(a/b)
+@next(c/d)
+public class A { void main() { print("ok"); } }

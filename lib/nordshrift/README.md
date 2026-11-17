@@ -36,7 +36,7 @@ Nordshrift consumes SST declarations as symbols through `NordshriftSymbol`, `Nor
 ## SLeeLa language edition — Syntax 3.0
 
 Nordshrift uses the shared Sleelvac frontend and therefore accepts the same
-SLeeLa source syntax range: **1.0–3.0**. Syntax 3.0 is the current normative
+SLeeLa source syntax range: **1.0–3.1**. Syntax 3.1 is the current normative
 edition. The selected source pragma and feature-specific minimum gates remain
 attached to each generated or consumed SLeeLa source; Nordshrift must not
 relabel legacy source as 3.0.
