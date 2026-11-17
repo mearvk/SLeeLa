@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+  <display-name>SLeeLa documentation site</display-name>
+
+  <!-- Optional: path to a checkout of mearvk/SLeeLa. The SLEELA_HOME env var or -Dsleela.home take precedence. -->
+  <!--
+  <context-param>
+    <param-name>sleela.home</param-name>
+    <param-value>/srv/sleela</param-value>
+  </context-param>
+  -->
+
+  <session-config>
+    <session-timeout>10</session-timeout>
+    <cookie-config><http-only>true</http-only></cookie-config>
+    <tracking-mode>COOKIE</tracking-mode>
+  </session-config>
+
+  <jsp-config>
+    <jsp-property-group>
+      <url-pattern>*.jsp</url-pattern>
+      <page-encoding>UTF-8</page-encoding>
+      <scripting-invalid>true</scripting-invalid>
+      <trim-directive-whitespaces>true</trim-directive-whitespaces>
+      <include-prelude>/WEB-INF/views/_prelude.jspf</include-prelude>
+    </jsp-property-group>
+  </jsp-config>
+
+  <mime-mapping><extension>svg</extension><mime-type>image/svg+xml</mime-type></mime-mapping>
+
+  <error-page><error-code>404</error-code><location>/error</location></error-page>
+  <error-page><error-code>405</error-code><location>/error</location></error-page>
+  <error-page><error-code>500</error-code><location>/error</location></error-page>
+  <error-page><exception-type>java.lang.Throwable</exception-type><location>/error</location></error-page>
+</web-app>

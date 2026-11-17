@@ -1,0 +1,13 @@
+services:
+  site:
+    build: .
+    image: sleela-site:1.0.0
+    ports:
+      - "${SITE_PORT:-8080}:8080"
+    environment:
+      SLEELA_HOME: /data/sleela
+    volumes:
+      - ${SLEELA_SRC:-/srv/sleela}:/data/sleela:ro
+    restart: unless-stopped
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]

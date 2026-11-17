@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.sleela</groupId>
+  <artifactId>sleela-site</artifactId>
+  <version>1.0.0</version>
+  <packaging>war</packaging>
+  <name>SLeeLa documentation site (JSP + Servlet)</name>
+
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
+    <!-- repository root that is bundled into the WAR (this module lives in <root>/html-source) -->
+    <repo.root>${project.basedir}/..</repo.root>
+  </properties>
+
+  <dependencies>
+    <!-- Servlet 6.0 API: provided by Tomcat 10.1+/11, Jetty 12 (ee10), etc. -->
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <version>6.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- JSTL is not part of Tomcat, so it ships inside the WAR -->
+    <dependency>
+      <groupId>jakarta.servlet.jsp.jstl</groupId>
+      <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.web</groupId>
+      <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+      <version>3.0.1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>sleela-site</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.4.0</version>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <!--
+      Default: bundle a snapshot of the SLeeLa text content into WEB-INF/content so the WAR is self-contained.
+      Skip with -Dnobundle (then point the site at a checkout with SLEELA_HOME).
+    -->
+    <profile>
+      <id>bundle</id>
+      <activation><property><name>!nobundle</name></property></activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <configuration>
+              <webResources>
+                <resource>
+                  <directory>${repo.root}/tutorial</directory>
+                  <targetPath>WEB-INF/content/tutorial</targetPath>
+                  <includes><include>**/*.md</include><include>**/*.sleela</include></includes>
+                </resource>
+                <resource>
+                  <directory>${repo.root}/examples</directory>
+                  <targetPath>WEB-INF/content/examples</targetPath>
+                  <includes>
+                    <include>**/*.md</include><include>**/*.sleela</include><include>**/*.xml</include><include>**/*.java</include>
+                    <include>**/*.c</include><include>**/*.h</include><include>**/*.sh</include><include>**/*.sst</include>
+                    <include>**/*.txt</include><include>Makefile</include>
+                  </includes>
+                </resource>
+                <resource>
+                  <directory>${repo.root}/lib</directory>
+                  <targetPath>WEB-INF/content/lib</targetPath>
+                  <includes><include>**/*.sleela</include><include>**/*.md</include><include>**/*.sh</include><include>**/*.xml</include></includes>
+                </resource>
+                <resource>
+                  <directory>${repo.root}/docs/api</directory>
+                  <targetPath>WEB-INF/content/docs/api</targetPath>
+                  <includes><include>*.html</include><include>package/*.html</include></includes>
+                </resource>
+                <resource>
+                  <directory>${repo.root}/docs</directory>
+                  <targetPath>WEB-INF/content/docs</targetPath>
+                  <includes><include>*.md</include></includes>
+                </resource>
+                <!-- system modules: README + top-level docs of each directory -->
+                <resource>
+                  <directory>${repo.root}</directory>
+                  <targetPath>WEB-INF/content</targetPath>
+                  <includes><include>*/*.md</include><include>SLEELA.syntax</include></includes>
+                  <excludes><exclude>html-source/**</exclude><exclude>lib/**</exclude><exclude>docs/**</exclude><exclude>examples/**</exclude><exclude>tutorial/**</exclude></excludes>
+                </resource>
+                <!-- every HTTP server / protocol module in full -->
+                <resource>
+                  <directory>${repo.root}</directory>
+                  <targetPath>WEB-INF/content</targetPath>
+                  <includes><include>http*/**</include><include>web-server-technology/**</include><include>server-edition/**</include></includes>
+                  <excludes>
+                    <exclude>**/build/**</exclude><exclude>**/*.o</exclude><exclude>**/*.a</exclude><exclude>**/*.so</exclude>
+                    <exclude>**/*.pyc</exclude><exclude>**/*.png</exclude><exclude>**/*.jpg</exclude><exclude>**/*.pdf</exclude>
+                  </excludes>
+                </resource>
+              </webResources>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>
