@@ -27,7 +27,7 @@ The toolchain is **two** native executables. The committed copies in
 [`/working-binaries/`](../../working-binaries/) report:
 
 - **`sleela`** — committed payload reports `SLeeLa™ Language/Runtime 1.3.2-pro`
-  and supports source syntax **1.0 – 3.1**. It is stale relative to the current
+  and supports source syntax only through **3.1**. It is stale relative to the current
   source tree; rebuild it before relying on Syntax 3.2. Source builds now use
   tool identity **1.0121** and accept syntax **1.0 – 3.2**.
   Subcommands: `check <f>`, `run <f>`, `compile <f...> -o <out>`,
