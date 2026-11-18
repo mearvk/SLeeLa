@@ -185,6 +185,10 @@ private:
     const Tok& at(size_t i) const { return T[std::min(i, T.size() - 1)]; }
     bool isOp(const char* s) const { return cur().kind == JT_OP && cur().text == s; }
     bool isOpAt(size_t i, const char* s) const { return at(i).kind == JT_OP && at(i).text == s; }
+    bool targetContextEndsAtCurrentToken() const {
+        return atEof() || isOp(")") || isOp("]") || isOp(",") ||
+               isOp(";") || isOp(":") || isOp("}");
+    }
     bool isKw(const char* s) const { return cur().kind == JT_IDENT && cur().text == s; }
     bool isKwAt(size_t i, const char* s) const { return at(i).kind == JT_IDENT && at(i).text == s; }
     bool atEof() const { return cur().kind == JT_EOF; }
@@ -1637,7 +1641,7 @@ private:
                         size_t dot = owner.rfind('.');
                         if (dot != std::string::npos) owner = owner.substr(dot + 1);
                         Ty expectedType = lambdaTarget_;
-                        const Ty* expected = expectedType.known() && !isOp(".") && !isOp("[") && !isOp("::") ? &expectedType : nullptr;
+                        const Ty* expected = expectedType.known() && targetContextEndsAtCurrentToken() ? &expectedType : nullptr;
                         args = adaptArgs(pickMethod(owner, name, args, 0, -1, nullptr, expected), args);
                         E r = callResult(owner, name, args, e.code + "." + mapMember(name) + "(" + joinArgs(args) + ")", true, nullptr, expected);
                         e = r;
