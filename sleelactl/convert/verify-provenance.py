@@ -63,6 +63,8 @@ if not isinstance(model, dict) or not isinstance(model.get("sha256"), str):
 model_path = model_override or (repo / "impl/subjects/conversion/conversion.model")
 if file_sha(model_path) != model["sha256"]:
     fail("shared conversion model digest mismatch")
+if data.get("converterSourceComplete") is not True:
+    fail("converter source inventory is incomplete; full provenance cannot be verified")
 converter_fp = verify_list("converterSources", data.get("converterSources"), repo, False)
 if converter_fp != data.get("converterSourceSha256"):
     fail("converter source aggregate mismatch")
