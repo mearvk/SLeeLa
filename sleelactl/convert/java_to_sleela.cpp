@@ -2915,19 +2915,19 @@ private:
         std::string header = "class " + name;
         if (!tparams.empty()) { header += "<"; for (size_t i = 0; i < tparams.size(); i++) header += (i ? ", " : "") + tparams[i]; header += ">"; }
         std::vector<std::string> ifaceNames;
+        std::vector<Ty> ifaceTypes;
         if (acceptKw("implements")) {
-            std::vector<std::string> ifs;
-            auto one = [&]() { Ty t = parseType(); ifs.push_back(t.n == "?" ? std::string("Any") : t.n); };
-            one();
-            while (acceptOp(",")) one();
-            ifaceNames = ifs;
-            header += " implements " + ifs[0];
-            for (size_t i = 1; i < ifs.size(); i++) header += ", " + ifs[i];
+            std::vector<Ty> ifs;
+            ifs.push_back(parseType());
+            while (acceptOp(",")) ifs.push_back(parseType());
+            for (const Ty& iface:ifs) { ifaceNames.push_back(iface.n == "?" ? std::string("Any") : iface.n); ifaceTypes.push_back(iface); }
+            header += " implements " + ifaceNames[0];
+            for (size_t i = 1; i < ifs.size(); i++) header += ", " + ifaceNames[i];
         }
         expectOp("{");
         ClassInfo& ci = classes[name];
         if (pass == 1) {
-            ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = ""; ci.ifaces = ifaceNames; ci.isInterface = false;
+            ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false;
             for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ci.methods.push_back(ms); }
             MethodSig canon; canon.name = "<init>"; canon.ret = mk("void"); canon.varargs = compVarargs; for (auto& c : comps) canon.params.push_back(c.second); ci.methods.push_back(canon);
             MethodSig ts; ts.name = "toString"; ts.ret = mk("String"); ci.methods.push_back(ts);
