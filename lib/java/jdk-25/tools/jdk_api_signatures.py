@@ -112,7 +112,7 @@ def generic_annotation(tparams: str) -> list:
     """Preserve Java method type parameters as metadata, not target syntax."""
     if not tparams:
         return []
-    value = tparams.replace("\\\\", "\\\\\\\\").replace('"', "'")
+    value = tparams.replace("\\", "\\\\").replace('"', "'")
     return [f'  @generic("{value}")']
 
 
@@ -182,14 +182,14 @@ def render_ctor(type_name: str, cls: str, m: dict) -> str:
     return "\\n".join(lines)
 
 
-IMPL_SIG = re.compile(r"^  (?:@\w+\s+)?(?:(?:public|protected|private|static|final|abstract|default|synchronized|native|strictfp) )*(?:<[^()]*> )?[A-Za-z_][\w.]*(?:<[^()]*>)?(?:\[\])* +(\w+)\s*\(([^)]*)\)", re.M)
+IMPL_SIG = re.compile(r"^  (?:@\w+\s+)?(?P<mods>(?:(?:public|protected|private|static|final|abstract|default|synchronized|native|strictfp) )*)(?:<[^()]*> )?[A-Za-z_][\w.]*(?:<[^()]*>)?(?:\[\])* +(?P<name>\w+)\s*\((?P<params>[^)]*)\)", re.M)
 INT_KIND = {"int", "long", "short", "byte", "char"}
 FLOAT_KIND = {"float", "double"}
 
 
 def kind(t: str, tvars: set) -> str:
-    """The parameter kind the VM tells apart (see the module docstring)."""
-    t = t.strip()
+    """Classify a Java parameter by the runtime distinction SLeeLa can make."""
+    t = re.sub(r"@[\w.]+(?:\([^()]*\))?\s*", "", t).strip()
     if t.startswith("final "):
         t = t[6:].strip()
     if t.endswith("..."):
@@ -205,7 +205,7 @@ def kind(t: str, tvars: set) -> str:
         return "Z"
     if raw in ("String", "string", "java.lang.String"):
         return "S"
-    if raw in ("Any", "Object", "java.lang.Object") or raw in tvars or (len(raw) == 1 and raw.isupper()):
+    if raw in ("Any", "Object", "java.lang.Object") or raw in tvars or raw == "?":
         return "A"
     return "R"
 
@@ -220,11 +220,53 @@ def param_types(params: str) -> list:
     return out
 
 
-def impl_sigs(text: str) -> dict:
-    """name -> list of parameter-kind tuples of the methods declared in text."""
+def impl_sigs(text: str, exclude_static: bool = False) -> dict:
+    """Index implementation methods by name and runtime parameter kinds."""
     out = {}
-    for name, params in IMPL_SIG.findall(text):
-        out.setdefault(name, []).append(tuple(kind(t, set()) for t in param_types(params)))
+    for match in IMPL_SIG.finditer(text):
+        if exclude_static and "static" in match.group("mods").split():
+            continue
+        name = match.group("name")
+        out.setdefault(name, []).append(tuple(kind(t, set()) for t in param_types(match.group("params"))))
+    return out
+
+
+def signature_key(member: dict, class_tvars: set) -> tuple:
+    """Stable SLeeLa overload key, retaining array rank after generic erasure."""
+    tvars = class_tvars | tvar_names(member.get("tparams", ""))
+    return (member["name"], tuple(erased(p[0], tvars) for p in member["params"]))
+
+
+def build_signature_index(type_record: dict) -> dict:
+    """Group exact Java declarations by SLeeLa-visible signature, retaining collisions."""
+    class_tvars = tvar_names(type_record.get("tparams", ""))
+    index = {}
+    for member in type_record.get("members", []):
+        index.setdefault(signature_key(member, class_tvars), []).append(member)
+    for group in index.values():
+        group.sort(key=lambda m: (m.get("name", ""), tuple(p[0] for p in m.get("params", [])), m.get("tparams", "")))
+    return index
+
+
+def inherited_implementation_methods(name: str, api: dict, impl_texts: dict) -> dict:
+    """Collect implemented superclass/interface methods; interface statics are not inherited."""
+    out, pending, visited = {}, [], {name}
+    root = api.get(name, {})
+    if root.get("super"):
+        pending.append(root["super"])
+    pending.extend(root.get("interfaces", []))
+    while pending:
+        parent = pending.pop(0)
+        if not parent or parent in visited or parent not in api:
+            continue
+        visited.add(parent)
+        record = api[parent]
+        methods = impl_sigs(impl_texts.get(parent, ""), exclude_static=record.get("kind") == "interface")
+        for method_name, kinds in methods.items():
+            out.setdefault(method_name, []).extend(kinds)
+        if record.get("super"):
+            pending.append(record["super"])
+        pending.extend(record.get("interfaces", []))
     return out
 
 
@@ -259,26 +301,16 @@ def main() -> int:
     sigs = {json.loads(l)["name"]: json.loads(l) for l in SIGS.read_text(encoding="utf-8").splitlines() if l.strip()}
     api = {json.loads(l)["name"]: json.loads(l) for l in dec.API.read_text(encoding="utf-8").splitlines() if l.strip()}
 
-    texts, impl_names = {}, {}
+    texts, impl_texts = {}, {}
     for name, t in api.items():
         p = dec.type_file(t["name"], t["binary"])
         if p.is_file():
             src = p.read_text(encoding="utf-8", errors="replace")
             texts[name] = (p, src)
             mo = IMPL.search(src)
-            impl_names[name] = impl_sigs(mo.group(1)) if mo else {}
+            impl_texts[name] = mo.group(1) if mo else ""
 
-    def inherited(name):
-        out, n = {}, api[name].get("super")
-        for _ in range(40):
-            if not n or n not in api:
-                break
-            for k, v in impl_names.get(n, {}).items():
-                out.setdefault(k, []).extend(v)
-            n = api[n].get("super")
-        return out
-
-    changed = total = abstract = ctors = 0
+    changed = total = abstract = ctors = collision_total = 0
     for name, t in api.items():
         if name not in texts or name in SKIP_TYPES or name not in sigs:
             continue
@@ -298,22 +330,25 @@ def main() -> int:
         outside = IMPL.sub("", base) if mo_impl else base
         blocked = set(METHOD.findall(outside)) | set(dec.FIELD_DECL.findall(base))
         own = impl_sigs(mo_impl.group(1)) if mo_impl else {}
-        for k, v in inherited(name).items():
+        for k, v in inherited_implementation_methods(name, api, impl_texts).items():
             own.setdefault(k, []).extend(v)
 
         def taken(m, tv):
             want = tuple(kind(p[0], tv) for p in m["params"])
             return any(accepts(have, want) for have in own.get(m["name"], []))
         class_tvars = tvar_names(sigs[name]["tparams"])
+        signature_groups = build_signature_index(sigs[name])
+        collision_total += sum(max(0, len(group) - 1) for key, group in signature_groups.items() if key[0] != "<init>")
         seen, lines = set(), []
-        for m in sigs[name]["members"]:
-            if m["name"] == "<init>" or m["name"] in blocked or not dec.usable(m["name"], cls) or not renderable(m):
+        for key, group in signature_groups.items():
+            candidates = [m for m in group if m["name"] != "<init>"]
+            if not candidates:
+                continue
+            m = candidates[0]
+            if m["name"] in blocked or not dec.usable(m["name"], cls) or not renderable(m):
                 continue
             tv = class_tvars | tvar_names(m["tparams"])
-            if taken(m, tv):
-                continue
-            key = (m["name"], tuple(erased(p[0], tv) for p in m["params"]))
-            if key in seen:
+            if taken(m, tv) or key in seen:
                 continue
             seen.add(key)
             lines.append(render(name, m))
@@ -321,12 +356,18 @@ def main() -> int:
             abstract += 1 if m["abstract"] else 0
         # Constructors: overload resolution binds by arity then type, so each Java
         # constructor is written unless the type already declares one of that arity.
-        have = {len(split_top(x)) for x in re.findall(r"^  (?:@\w+\s+)?(?:public|protected|private)? ?" + re.escape(cls) + r"\s*\(([^)]*)\)", base, re.M)}
+        have = []
+        ctor_re = re.compile(r"^  (?:@\w+\s+)?(?:(?:public|protected|private) )?" + re.escape(cls) + r"\s*\(([^)]*)\)", re.M)
+        for existing_params in ctor_re.findall(base):
+            have.append(tuple(kind(t, class_tvars) for t in param_types(existing_params)))
         ctor_lines, cseen = [], set()
         for m in sigs[name]["members"]:
-            if m["name"] != "<init>" or m["tparams"] or not renderable(m) or len(m["params"]) in have:
+            if m["name"] != "<init>" or not renderable(m):
                 continue
             tv = class_tvars | tvar_names(m["tparams"])
+            want = tuple(kind(p[0], tv) for p in m["params"])
+            if any(accepts(existing, want) for existing in have):
+                continue
             ckey = tuple(erased(p[0], tv) for p in m["params"])
             if ckey in cseen:
                 continue
