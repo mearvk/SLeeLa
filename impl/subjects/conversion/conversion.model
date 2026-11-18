@@ -302,7 +302,7 @@ chartext StringBuffer insert 1
 # ---- 9d. Built-in call names (measured 2026-11-14, IDENTIFIER-COLLISIONS.md). An unqualified
 #          call m(...) reaches the VM built-in, so a Java method of one of these names is
 #          called as this.m(...) or Owner.m(...). The names are fine as variables and as
-#          method declarations. sleelactl keeps the same list in builtin_names.h.
+#          method declarations. Both converters consume this list directly.
 qualify accept
 qualify arrayGet
 qualify arrayLength
