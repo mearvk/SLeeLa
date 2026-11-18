@@ -24,17 +24,20 @@ Section, [`lib/java/JAVA.SPEC.md`](../../lib/java/JAVA.SPEC.md). Java improvemen
 
 Like `math` and `physics`, `conversion` is a subject with a model:
 `impl/subjects/conversion/conversion.model`. It holds the Java types, boxing,
-promotion and primitive widening (JLS 5.1.2), operator templates for
-`int`/`long`/`double`/`boolean`/`String`, narrowing casts, compound-assignment
-and `++`/`--` rules, string conversion, and library result types. C++ overload
-selection consults the model for primitive invocation widening and considers
+promotion and primitive widening (JLS 5.1.2), model-ranked operand classes,
+operator templates for `int`/`long`/`float`/`double`/`boolean`/`String`,
+the primitive cast matrix, compound-assignment and `++`/`--` rules, string
+conversion, context-aware identifier replacements, built-in qualification,
+and library result types. C++ overload selection consults the model for primitive
+invocation widening and considers
 fixed-arity calls before varargs, recursive reference-array covariance, known
 reference subtyping, inherited overloads, direct unbounded method-variable
 inference, and most-specific parameter types. Explicit and wildcard static
 method/field imports are resolved when their owner is known. Incomparable or
-unsupported candidates fail closed. The SLeeLa `JConvModel` loads the same `widen` rows (with matching
-built-in defaults) through `canWiden`; the native expression pass uses these
-edges for supported unary and binary numeric promotion. Direct unbounded method type variables
+unsupported candidates fail closed. The SLeeLa `JConvModel` loads the same type, promotion, operator, cast, widening,
+rename and qualification rows (with matching built-in defaults where required).
+The native expression pass uses the shared rows for integral and binary32 promotion,
+float rounding, primitive casts and text conversion. Direct unbounded method type variables
 (`T`, `T[]`, and `T...`) are inferred from argument types; bounded variables and
 nested generic-argument substitution remain fail-closed. Explicit and wildcard
 static imports resolve when their owner/method is present in the shared model or
