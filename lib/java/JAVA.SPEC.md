@@ -208,7 +208,7 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
   untyped. A method reference `Type::static`, `Type::instance`, `Type::new`, `this::m` and
   `local::m` is the lambda it stands for. Refused: a lambda or anonymous class inside another generated class (capture-chain lowering is not yet implemented),
   a bound method reference on an expression that is not a local, and a target interface whose SAM signature
-  is not known. Tests: `Anon`, `Functional`, `Refs`, `reject/LambdaUse`.
+  is not known. Tests: `Anon`, `Functional`, `Refs`, `reject/LambdaUse`, `reject/NestedLambda`.
 - Pattern matching. `x instanceof T v` declares `v` before the statement and tests
   `(x instanceof T) && ((v = (T) x) != null)`; an impure subject is held in a temporary. `case Type t ->`
   patterns and record patterns are refused. Test: `Refs`.
