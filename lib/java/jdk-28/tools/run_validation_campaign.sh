@@ -56,12 +56,14 @@ if [ ! -x "$bin" ]; then
 fi
 export SLEELA_HOME="$root" SLEELA_LIB="$root/lib" SLEELA_BIN="$bin"
 
-run_gate "jdk28-inventory" python3 "$root/lib/java/jdk-28/tools/validate_jdk28.py"
 run_gate "jdk-signature-index-tests" python3 -m unittest discover -s "$root/lib/java/jdk-25/tools" -p "test_jdk_api_signatures.py"
 run_gate "jdk-signature-index-audit" python3 "$root/lib/java/jdk-25/tools/jdk_api_signatures.py" --audit
 run_gate "jdk28-generator-tests" python3 -m unittest discover -s "$root/lib/java/jdk-28/tools" -p "test_generate_jdk28.py"
 run_gate "jdk28-generator-syntax" python3 -m py_compile "$root/lib/java/jdk-28/tools/generate_jdk28.py" "$root/lib/java/jdk-25/tools/jdk_api_signatures.py"
 run_gate "jdk28-signature-index-audit" python3 "$root/lib/java/jdk-28/tools/generate_jdk28.py" --audit
+run_gate "jdk28-regenerate" python3 "$root/lib/java/jdk-28/tools/generate_jdk28.py"
+run_gate "source-integrity-manifest-refresh" python3 "$root/tools/generate-sha256-manifest.py" --root "$root" --output "$root/security/sha256-manifest.json"
+run_gate "jdk28-inventory" python3 "$root/lib/java/jdk-28/tools/validate_jdk28.py"
 run_gate "java-library-manifest" python3 "$root/lib/java/validate.py"
 run_gate "jdk28-api-envelope-contract" python3 "$root/tests/jdk28_functional_equivalence.py"
 run_gate "jdk28-compiler-check" env SLEELA_BIN="$bin" REPORT="$report_dir/CHECK-REPORT.txt" bash "$root/lib/java/jdk-28/tools/check_jdk28.sh" "${JDK28_CHECK_JOBS:-8}"
@@ -75,6 +77,10 @@ run_gate "jdk28-tier-coverage-comparison" python3 "$root/lib/java/jdk-25/tools/j
 # exact API declarations whose bodies are still fail-loud stubs. Exit 2 is an
 # honest partial result, not a campaign pass and not a reason to hide the report.
 run_partial "jdk28-functional-equivalence" python3 "$root/tests/jdk28_functional_equivalence.py" --functional
+
+# Keep the regenerated output reviewable without silently committing it.
+git diff --stat -- lib/java/jdk-28 > "$report_dir/GENERATED-DIFF-STAT.txt" || true
+git diff --binary -- lib/java/jdk-28 > "$report_dir/GENERATED-JDK28.patch" || true
 
 {
   echo "# JDK 28 validation campaign"
