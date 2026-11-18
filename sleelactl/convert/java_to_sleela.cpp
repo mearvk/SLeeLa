@@ -1043,6 +1043,7 @@ private:
     bool isSubtypeName(const std::string& from, const std::string& to, int depth = 0) const {
         if (from == to) return true;
         if (depth > 32) return false;
+        if (to == "Object") return true;
         auto it=classes.find(from);
         if (it==classes.end()) return to=="Object";
         if (!it->second.super.empty() && isSubtypeName(it->second.super,to,depth+1)) return true;
@@ -3347,6 +3348,7 @@ private:
                     currentName=cur().text;
                     if (names) names->push_back(currentName);
                     typeVars.insert(currentName);
+                    if (upperBounds) (*upperBounds)[currentName]="Object";
                     expectName=false;
                 } else if (inBound && !boundNameSeen && upperBounds && !currentName.empty()) {
                     (*upperBounds)[currentName]=cur().text;
