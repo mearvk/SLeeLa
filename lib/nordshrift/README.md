@@ -33,7 +33,7 @@ Nordshrift consumes SST declarations as symbols through `NordshriftSymbol`, `Nor
 - `tutorials/03-library-bridge.md`
 - `tutorials/04-invalid-symbols.md`
 
-## SLeeLa language edition — Syntax 3.0
+## SLeeLa language edition — Syntax 3.2
 
 Nordshrift uses the shared Sleelvac frontend and therefore accepts the same
 SLeeLa source syntax range: **1.0–3.2**. Syntax 3.2 is the current normative
