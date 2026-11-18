@@ -10,7 +10,7 @@ normative specifications from implementation notes and live validation results.
 - [SLeeLa International 3.0 — Language and Feature Reference](reference/LANGUAGE.INTERNATIONAL.3.0.md) — reader-facing overview of the language, compiler, runtime, standard library, syntax features, and implementation boundaries.
 - [Language syntax specification](../SLEELA.syntax) — normative SLeeLa
   **Syntax 3.0** grammar. The shared compiler gate in
-  `impl/frontend/version.{h,cpp}` accepts source syntax **1.0–3.1** and
+  `impl/frontend/version.{h,cpp}` accepts source syntax **1.0–3.2** and
   defaults unversioned source to 3.1 with a warning. Syntax 3.0 consolidates
   the established 1.x/2.x language surface while preserving each feature's
   original minimum-version gate. The `@mix` consequent-field feature remains
