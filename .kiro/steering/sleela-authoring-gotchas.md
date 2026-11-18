@@ -5,15 +5,16 @@ inclusion: always
 # SLeeLa authoring gotchas (verified against the source-built compiler)
 
 Confirmed behaviours of the toolchain that `sleela check` alone will not catch.
-These were verified against the current compiler, which supports **source
-syntax 1.0 – 3.1**. Keep new/edited `.sleela` code within these rules.
+These were verified against the current source compiler, which supports **source
+syntax 1.0 – 3.2**. The checked-in prebuilt binary is older and must not be used
+to claim Syntax 3.2 support until it is rebuilt. Keep new/edited `.sleela` code within these rules.
 
 ## Compiler choice
 
-- The prebuilt `working-binaries/sleela` is current: it reports
-  `SLeeLa™ Language/Runtime 1.3.2-pro` and supports **syntax 1.0 – 3.2**, so it
-  checks and runs the whole tree (including `#sleela 2.x`, `#sleela 3.0` and
-  `#sleela 3.1` files). Use it directly:
+- The committed `working-binaries/sleela` payload reports
+  `SLeeLa™ Language/Runtime 1.3.2-pro` and supports **syntax 1.0 – 3.1** only.
+  It does not yet validate the complete Syntax 3.2 feature set. Use a freshly
+  rebuilt `impl/build/sleela` for Syntax 3.2 validation:
 
       ./working-binaries/sleela check <file>
       ./working-binaries/sleela run   <file>
