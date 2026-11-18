@@ -227,7 +227,7 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
   written when the class has none). SLeeLa alone would run them at allocation, before every
   constructor, so a superclass constructor would see subclass fields already set. An initializer that
   needs extra statements (a temporary) stays on the field. Enums, records and anonymous classes keep
-  field initializers on the field. Refused: `static { }` blocks (`[init-block]`). Test: `Init`.
+  field initializers on the field. Refused: `static { }` blocks (`[init-block]`) because Java class initialization is lazy and ordered by active use; the converter does not yet synthesize a guarded class-initialization state machine. Tests: `Init`, `reject/StaticInitializer`.
 - Inherited library members. A call on a user class that extends a library type (`class MyEx extends
   Exception`) is typed through the superclass chain and the model `ret` rows, so `e.getMessage()` has
   the type `String`. Test: `Init`.
@@ -239,10 +239,7 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
 - Object text. An object of a class of this tree shown as text calls `toString()` through a
   generated static helper `Owner.javaText(x)` (`null` is `"null"`); other objects through
   `JavaFormat.objectText` (4.4).
-- Boxed types. Boxed values are held as primitives; a boxed type written as a declared, parameter,
-  return or cast type (`Integer i = 42`, `(Long) o`) is refused (`[boxed]`) because the declaration
-  would name the `lib/java` class, to which a primitive is not assignable. Boxed type arguments
-  (`List<Integer>`) are erased and converted. Test: `reject/BoxedDecl`.
+- Boxed types. Scalar wrapper declarations and parameters use primitive storage for non-null values; modelled boxing/unboxing and invocation widening are supported (`BoxingOverload`, `BoxingUnboxingWidening`). A wrapper default or explicit `null` assignment is refused (`[boxed-null]`) because a primitive slot cannot preserve Java null; wrapper arrays are refused (`[boxed]`) because reference-array identity and nullable elements are not represented. Boxed type arguments (`List<Integer>`) are erased. Tests: `BoxingUnboxingWidening`, `reject/BoxedDecl`, `reject/BoxedNull`.
 - Interfaces carry no metadata fields; every class carries the Metadata Class record.
 - Limits: at most 64 instance fields per class (13 are metadata).
 
@@ -284,10 +281,10 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 | An object held in an erased generic shown as text | its run-time kind (object or primitive) is unknown at conversion | a run-time text helper that recognises primitives |
 | A nested user exception in `Throwable.toString()` | prints `Outer__Inner`, Java `Outer$Inner` | a binary-name table for hoisted types |
 | `static { }` initializer blocks | class initialization runs on first use (JLS 12.4) | a guarded static init method called on first access |
-| `Object.equals`/`hashCode`/`getClass` on a type that does not declare them (enums included) | SLeeLa has no root object methods | identity `equals`, an identity hash, a runtime class name |
+| `Object.equals`/`hashCode`/`getClass` on a type that does not declare them (enums included) | the identity adapter exists as library groundwork but the converter does not yet bind generated object handles to it | wire VM heap identity, object handles and runtime class names into generated classes; keep wait/notify/clone refused |
 | `String.format` with a non-literal format, `%e`, argument indexes | runtime format parsing | a runtime formatter in `JavaFormat` |
 | `synchronized`/`volatile` in a multi-threaded program | memory model | real monitors, or keep the single-thread policy |
-| `native` | no body | none |
+| `native` | no Java body and no declared Java-to-SLeeLa ABI binding | accept only when a modelled, verified native binding maps the exact owner/signature/ABI; otherwise fail closed (`[native]`) |
 
 ## 6. How to extend the tier
 
