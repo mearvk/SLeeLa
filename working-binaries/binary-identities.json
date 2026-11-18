@@ -1,0 +1,128 @@
+{
+  "schema": "sleela.binary-identities.v1",
+  "registry_version": "1.0121",
+  "effective_date": "2026-11-18",
+  "policy": {
+    "versioned_binary_minimum": "1.012",
+    "unversioned_binary_initial": "1.0121",
+    "identity_is_separate_from_product_version": true,
+    "source_only_changes_do_not_relabel_binary_payload": true,
+    "syntax_3_2_claim_requires_rebuild_and_regression_pass": true
+  },
+  "artifacts": [
+    {
+      "path": "working-binaries/sleela",
+      "identity": "SLEELA-BIN-1.012",
+      "artifact_version": "1.012",
+      "product_version": "1.3.2-pro",
+      "status": "existing_payload_not_rebuilt_for_syntax_3_2",
+      "sha256": "0c8f7cd85355ae1a299754e7df8f4e5efdf7059c7d9ffcdda0e8e88f79b80bc0"
+    },
+    {
+      "path": "working-binaries/nordshrift",
+      "identity": "NORDSHRIFT-BIN-1.012",
+      "artifact_version": "1.012",
+      "product_version": "2.7.1-dev",
+      "status": "existing_payload_not_rebuilt_for_syntax_3_2",
+      "sha256": "9f251995cfb2d5a6921a5a9c1f858b3b938a06d1a1d8b15ee30bf2328f207a42"
+    },
+    {
+      "path": "ide/sleela-intellij/.intellijPlatform/sandbox/sleela-intellij/IU-2025.3.6.1/plugins/sleela-intellij/lib/sleela-intellij-0.3.0-dev.jar",
+      "identity": "SLEELA-INTELLIJ-PLUGIN-BIN-1.012",
+      "artifact_version": "1.012",
+      "product_version": "0.3.0-dev",
+      "status": "stale_payload_name_and_embedded_version; rebuild_required"
+    },
+    {
+      "path": "tests/nordshrift",
+      "identity": "NORDSHRIFT-TEST-BIN-1.0121",
+      "artifact_version": "1.0121",
+      "product_version": null,
+      "status": "previously_unversioned_payload"
+    },
+    {
+      "path": "modules/AE6E66/source/EmailDistributor.class",
+      "identity": "EMAIL-DISTRIBUTOR-CLASS-1.0121",
+      "artifact_version": "1.0121",
+      "product_version": null,
+      "status": "previously_unversioned_payload"
+    },
+    {
+      "path": "telephony-skya/javafx/target/classes/com/mearvk/sleela/skya/SkyaApp.class",
+      "identity": "SKYA-APP-CLASS-1.0121",
+      "artifact_version": "1.0121",
+      "product_version": null,
+      "status": "previously_unversioned_build_output"
+    },
+    {
+      "path": "telephony-skya/javafx/target/classes/com/mearvk/sleela/skya/SkyaClientApp.class",
+      "identity": "SKYA-CLIENT-APP-CLASS-1.0121",
+      "artifact_version": "1.0121",
+      "product_version": null,
+      "status": "previously_unversioned_build_output"
+    },
+    {
+      "path": "telephony-skya/javafx/target/classes/com/mearvk/sleela/skya/SkyaConfigManager.class",
+      "identity": "SKYA-CONFIG-MANAGER-CLASS-1.0121",
+      "artifact_version": "1.0121",
+      "product_version": null,
+      "status": "previously_unversioned_build_output"
+    },
+    {
+      "path": "telephony-skya/javafx/target/classes/com/mearvk/sleela/skya/SkyaConnectApp.class",
+      "identity": "SKYA-CONNECT-APP-CLASS-1.0121",
+      "artifact_version": "1.0121",
+      "product_version": null,
+      "status": "previously_unversioned_build_output"
+    },
+    {
+      "path": "telephony-skya/javafx/target/classes/com/mearvk/sleela/skya/SkyaGroupManager$Group.class",
+      "identity": "SKYA-GROUP-MANAGER-GROUP-CLASS-1.0121",
+      "artifact_version": "1.0121",
+      "product_version": null,
+      "status": "previously_unversioned_build_output"
+    },
+    {
+      "path": "telephony-skya/javafx/target/classes/com/mearvk/sleela/skya/SkyaGroupManager.class",
+      "identity": "SKYA-GROUP-MANAGER-CLASS-1.0121",
+      "artifact_version": "1.0121",
+      "product_version": null,
+      "status": "previously_unversioned_build_output"
+    },
+    {
+      "path": "telephony-skya/javafx/target/classes/com/mearvk/sleela/skya/SkyaProtocolFooter.class",
+      "identity": "SKYA-PROTOCOL-FOOTER-CLASS-1.0121",
+      "artifact_version": "1.0121",
+      "product_version": null,
+      "status": "previously_unversioned_build_output"
+    },
+    {
+      "path": "telephony-skya/javafx/target/classes/com/mearvk/sleela/skya/SkyaRoomListManager$Room.class",
+      "identity": "SKYA-ROOM-LIST-MANAGER-ROOM-CLASS-1.0121",
+      "artifact_version": "1.0121",
+      "product_version": null,
+      "status": "previously_unversioned_build_output"
+    },
+    {
+      "path": "telephony-skya/javafx/target/classes/com/mearvk/sleela/skya/SkyaRoomListManager.class",
+      "identity": "SKYA-ROOM-LIST-MANAGER-CLASS-1.0121",
+      "artifact_version": "1.0121",
+      "product_version": null,
+      "status": "previously_unversioned_build_output"
+    },
+    {
+      "path": "api/sleela/2.8/generic.dna.bin",
+      "identity": "GENERIC-DNA-DATA-BIN-1.0121",
+      "artifact_version": "1.0121",
+      "product_version": null,
+      "status": "previously_unversioned_data_payload"
+    },
+    {
+      "path": "utf-4088/tools/utf4088-million.bin",
+      "identity": "UTF4088-MILLION-DATA-BIN-1.0121",
+      "artifact_version": "1.0121",
+      "product_version": null,
+      "status": "previously_unversioned_data_payload"
+    }
+  ]
+}
