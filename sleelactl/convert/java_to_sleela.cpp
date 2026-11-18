@@ -1259,6 +1259,10 @@ private:
                 const bool variable=phase==2 && m.varargs && args.size()+1>=n;
                 if (!fixed && !variable) continue;
                 std::map<std::string,Ty> inferred;
+                // A formal ? super T contributes the constraint T <: A when
+                // the actual invariant type argument is A. Keep it until all
+                // argument and target-type constraints have inferred T.
+                std::map<std::string,std::vector<Ty>> lowerWildcardUpperConstraints;
                 int cost=0; bool applicable=true;
                 for (size_t i=0;i<args.size();++i) {
                     Ty target;
@@ -1312,11 +1316,19 @@ private:
                                     continue;
                                 }
                                 if (farg.wildcard==3 && farg.bound) {
-                                    // Lower-bounded wildcard does not provide an exact
-                                    // inference for its own type variable. Accept only a
-                                    // fully known, non-variable lower bound that converts
-                                    // to the actual type argument.
-                                    if (farg.bound->n.rfind("$T$",0)==0 ||
+                                    // For List<? super T> with an actual List<A>, Java
+                                    // constrains T to be a subtype of A. This is not an
+                                    // exact inference for T; collect it and validate it
+                                    // after constraints from other arguments/target typing.
+                                    if (farg.bound->n.rfind("$T$",0)==0 && farg.bound->dims==0) {
+                                        if (!aarg.known() || aarg.n=="null" || aarg.wildcard!=0)
+                                            return false;
+                                        lowerWildcardUpperConstraints[farg.bound->n.substr(3)].push_back(aarg);
+                                        continue;
+                                    }
+                                    // More deeply nested lower-bound expressions need
+                                    // a full constraint formula; do not approximate them.
+                                    if (farg.bound->n.find("$T$")!=std::string::npos ||
                                         invocationCost(*farg.bound,aarg)<0) return false;
                                     continue;
                                 }
@@ -1385,6 +1397,19 @@ private:
                             };
                         if (!inferFromTarget(m.ret,*expectedResultType)) applicable=false;
                     }
+                }
+                // Resolve deferred ? super constraints only after all formal
+                // arguments and the target result type have contributed inference.
+                if (applicable) for (const auto& constraint : lowerWildcardUpperConstraints) {
+                    auto value=inferred.find(constraint.first);
+                    if (value==inferred.end()) { applicable=false; break; }
+                    for (const Ty& upper : constraint.second) {
+                        if (value->second.dims!=upper.dims ||
+                            !isSubtypeName(value->second.n,upper.n)) {
+                            applicable=false; break;
+                        }
+                    }
+                    if (!applicable) break;
                 }
                 if (!applicable || inferred.size()!=m.typeParams.size()) {
                     if (!m.typeParams.empty()) sawUnsupportedGeneric=true;
