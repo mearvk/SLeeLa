@@ -142,7 +142,7 @@ Recent additions to the language, drivers, and standard library:
   filesystem at runtime and lists the real **folders (then files, as natural
   motion)**, bounded by user-overridable caps of **6 MB / 6000 files / 6
   minutes**. The `lib/sleeladoc` units are maintained at the current edition,
-  **`#sleela 3.0`**. See [`man/man1/sleela.1`](man/man1/sleela.1) and
+  **`#sleela 3.2`**. See [`man/man1/sleela.1`](man/man1/sleela.1) and
   [`lib/sleeladoc/README.md`](lib/sleeladoc/README.md).
 - **SleelaDoc — a Javadoc-style documentation solution, with a generated HTML
   site.** **SleelaDoc** is SLeeLa's in-source doc-comment convention
@@ -310,13 +310,13 @@ interactive deployment workflow and all installation options, see
 [Quick and Safe Install](install/README.md).
 
 ## V. Language and Runtime
-The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). Compiler/tool version and source syntax version are distinct: the source compiler accepts syntax **1.0 – 3.1**, and the committed `working-binaries/` toolchain (rebuilt 2026-11-13) reports the same range. The new API build is produced by `make api-docs`.
+The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). Compiler/tool version and source syntax version are distinct: the source compiler accepts syntax **1.0 – 3.2** and defaults unversioned source to 3.2. The committed `working-binaries/` toolchain is separately versioned; see its binary identity registry and rebuild status before relying on a prebuilt executable. The new API build is produced by `make api-docs`.
 
-- **Syntax 3.2.** §44 character literals, array initializers, labeled `break`/`continue`, and `return`/`break`/`continue` that run `finally`; §45 the `char` specification; §46 the array specification (`a.length`, `new T[a][b]`).
-- **Syntax 3.0** consolidates the 1.0–2.9 surface into the current normative edition, preserving all feature-specific minimum gates. It adds the **`pure` and `gasoline` document markers** (§30) — a pair of bare, contextual, declarative-only Preonems that mean nearly the same thing, each marking the document's standing by its own honesty; method and constructor overload resolution (§40) and `this(...)`/`super(...)` delegation (§43.6); Java support (§43); and host-authorized Native Drive (§36). Below 3.0, a class that declares more than one constructor is rejected.
+- **Syntax 3.2 (current).** Syntax 3.1 (§44) adds character literals, array initializers, labeled `break`/`continue`, and `return`/`break`/`continue` that run `finally`; Syntax 3.2 (§§45–46) formalizes typed `char` semantics and array behavior (`a.length`, multidimensional creation, nested initializers).
+- **Syntax 3.0** consolidated the 1.0–2.9 surface into one maintained specification, preserving all feature-specific minimum gates. It adds the **`pure` and `gasoline` document markers** (§30) — a pair of bare, contextual, declarative-only Preonems that mean nearly the same thing, each marking the document's standing by its own honesty; method and constructor overload resolution (§40) and `this(...)`/`super(...)` delegation (§43.6); Java support (§43); and host-authorized Native Drive (§36). Below syntax 3.0, a class that declares more than one constructor is rejected.
 - **Syntax 2.9** adds **`@mix` consequent fields** (§28): a class may declare multiple same-named instance fields when each carries `@mix`, understood as one indexed group (top-down `1,2,3,…` or manual `@mix(1,2,3,...)` whose index count must match the group).
 - **Carried forward:** the base-2 signed/unsigned wide-integer families `int32`..`int16777216` (§24) and `uint32`..`uint16777216` (§25) over the earlier `long`/`int64`/`int128` (§21); **keyword supporter documents** (§22); and the **Preonems** — the declarative-only document markers `author`/`authorial` (§18), `material`/`memory` (§19–§20), `determine` (§23), `object`/`field` (§26), `pure`/`gasoline` (§30), and `artifact` (§35, legislature-grade standing graded unto time and space), collectively titled the Preonems (§26.1).
-- SleelaDoc's nine source units declare `#sleela 3.0`. Consult the grammar and implementation notes before relying on a feature.
+- SleelaDoc's nine source units retain their declared `#sleela 3.0` compatibility level. Consult the grammar and implementation notes before relying on a feature.
 
 The repository includes a native C/C++ implementation, SLVM generation references, standard-library modules, tests, examples, and platform integrations. Implementation and validation status varies by module; consult its specification and current CI results rather than assuming uniform completeness.
 
