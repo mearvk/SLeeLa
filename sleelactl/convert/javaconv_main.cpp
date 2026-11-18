@@ -193,7 +193,7 @@ public:
     explicit OutputTransaction(fs::path destination) : final_(std::move(destination)) {}
     ~OutputTransaction() {
         std::error_code ec;
-        if (!stage_.empty()) fs::remove_all(stage_, ec);
+        if (stageCreated_ && !stage_.empty()) fs::remove_all(stage_, ec);
         if (backupMoved_ && !committed_) {
             ec.clear();
             if (!fs::exists(final_, ec)) {
@@ -234,6 +234,7 @@ public:
         }
         fs::create_directory(stage_, ec);
         if (ec) { *why = "cannot create transaction stage: " + ec.message(); return false; }
+        stageCreated_ = true;
         if (exists && !copyTree(final_, stage_, why)) return false;
         return true;
     }
@@ -270,6 +271,7 @@ public:
             return false;
         }
         stage_.clear();
+        stageCreated_ = false;
         committed_ = true;
         return true;
     }
@@ -310,6 +312,7 @@ private:
     }
 
     fs::path final_, stage_, backup_;
+    bool stageCreated_ = false;
     bool backupMoved_ = false;
     bool committed_ = false;
 };
