@@ -3225,17 +3225,38 @@ private:
         return m;
     }
 
-    void skipTypeParams(std::vector<std::string>* names, bool* bounded = nullptr) {
+    void skipTypeParams(std::vector<std::string>* names, bool* bounded = nullptr,
+                        std::map<std::string,std::string>* upperBounds = nullptr) {
         if (!isOp("<")) return;
         int d = 0;
         bool expectName = true;
+        std::string currentName;
+        bool inBound = false;
+        bool boundNameSeen = false;
         do {
-            if (isOp("<")) { d++; expectName = (d == 1); }
+            if (isOp("<")) { d++; if (d==1) { expectName=true; currentName.clear(); inBound=false; boundNameSeen=false; } }
             else if (isOp(">")) d--;
             else if (isOp(">>")) d -= 2;
-            else if (isOp(",") && d == 1) { expectName = true; }
-            else if (isKw("extends") && d == 1 && bounded) { *bounded = true; }
-            else if (isIdentTok(cur()) && expectName && d == 1) { if (names) names->push_back(cur().text); typeVars.insert(cur().text); expectName = false; }
+            else if (isOp(">>>")) d -= 3;
+            else if (isOp(",") && d == 1) { expectName = true; currentName.clear(); inBound=false; boundNameSeen=false; }
+            else if (isKw("extends") && d == 1) { if (bounded) *bounded = true; inBound=true; }
+            else if (isOp("&") && d == 1) {
+                // Intersection bounds need a constraint set; do not silently treat
+                // only the first component as the complete bound.
+                if (upperBounds && !currentName.empty()) (*upperBounds)[currentName] = "&";
+                inBound=true; boundNameSeen=true;
+            }
+            else if (isIdentTok(cur()) && d == 1) {
+                if (expectName) {
+                    currentName=cur().text;
+                    if (names) names->push_back(currentName);
+                    typeVars.insert(currentName);
+                    expectName=false;
+                } else if (inBound && !boundNameSeen && upperBounds && !currentName.empty()) {
+                    (*upperBounds)[currentName]=cur().text;
+                    boundNameSeen=true;
+                }
+            }
             p++;
         } while (d > 0 && !atEof());
     }
@@ -3574,8 +3595,9 @@ private:
 
         std::vector<std::string> mtp;
         bool mtpBounded = false;
+        std::map<std::string,std::string> mtpBounds;
         std::set<std::string> savedVars = typeVars;
-        skipTypeParams(&mtp, &mtpBounded);
+        skipTypeParams(&mtp, &mtpBounded, &mtpBounds);
         SetScope methodTypeVarScope(methodTypeVars_);
         methodTypeVars_.clear();
         methodTypeVars_.insert(mtp.begin(), mtp.end());
@@ -3594,7 +3616,7 @@ private:
             if (isKw("throws")) skipThrows();
             curRet = mk("void");
             if (pass == 1) {
-                MethodSig ms; ms.name = "<init>"; ms.ret = mk("void"); ms.varargs = ctorVarargs; ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded;
+                MethodSig ms; ms.name = "<init>"; ms.ret = mk("void"); ms.varargs = ctorVarargs; ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded; ms.typeParamBounds = mtpBounds;
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }
