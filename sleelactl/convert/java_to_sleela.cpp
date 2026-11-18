@@ -1020,9 +1020,10 @@ private:
         if(from.dims!=0 || to.dims!=0) return -1;
         std::string primitive;
         if(isPrimitiveName(from.n) && to.boxed && modelBoxed(to.n,&primitive)) {
-            if(from.n==primitive) return 4; // boxing
-            if(cm_find(&M,"widen",from.n.c_str(),primitive.c_str(),nullptr)) return 5;
-            return -1;
+            // JLS 5.3 does not permit primitive widening followed by boxing
+            // during method invocation (int -> Long is not an invocation
+            // conversion). Only identity boxing is admitted in this phase.
+            return from.n==primitive ? 4 : -1;
         }
         if(from.boxed && modelBoxed(from.n,&primitive) && isPrimitiveName(to.n)) {
             if(primitive==to.n) return 4; // unboxing
@@ -1031,13 +1032,28 @@ private:
         // Boxing to Object is permitted only when the model declares a
         // wrapper for the primitive. The box records are keyed by wrapper name,
         // so inspect the indexed records for their primitive column.
-        if(isPrimitiveName(from.n) && to.n=="Object") {
-            for(size_t i=0;i<M.n;i++) {
-                const cm_rec& rec=M.recs[i];
-                if(std::string(rec.kind)=="box" && rec.nf>1 && from.n==rec.f[1]) return 8;
+        if(isPrimitiveName(from.n)) {
+            std::string wrapper;
+            if (modelWrapperForPrimitive(from.n,&wrapper)) {
+                const bool numeric = wrapper=="Byte" || wrapper=="Short" || wrapper=="Integer" ||
+                    wrapper=="Long" || wrapper=="Float" || wrapper=="Double";
+                if (to.n=="Object" || to.n=="Serializable" ||
+                    (numeric && to.n=="Number")) return 8;
+                if (to.n=="Comparable" &&
+                    (to.args.empty() || (to.args.size()==1 && to.args[0].n==wrapper))) return 8;
             }
         }
-        if(from.boxed && to.n=="Object") return 8;
+        if(from.boxed) {
+            std::string primitive;
+            if (modelBoxed(from.n,&primitive)) {
+                const bool numeric = from.n=="Byte" || from.n=="Short" || from.n=="Integer" ||
+                    from.n=="Long" || from.n=="Float" || from.n=="Double";
+                if (to.n=="Object" || to.n=="Serializable" ||
+                    (numeric && to.n=="Number")) return 8;
+                if (to.n=="Comparable" &&
+                    (to.args.empty() || (to.args.size()==1 && to.args[0].n==from.n))) return 8;
+            }
+        }
         return -1;
     }
 
@@ -1296,22 +1312,25 @@ private:
                 // prove is intentionally rejected rather than guessed.
                 for (const auto& bound : m.typeParamBounds) {
                     auto value=inferred.find(bound.first);
-                    if (value==inferred.end() || bound.second.empty() || bound.second=="&") {
+                    if (value==inferred.end() || bound.second.empty()) {
                         applicable=false; break;
                     }
-                    auto other=inferred.find(bound.second);
-                    std::string boundName=other==inferred.end()?bound.second:other->second.n;
-                    if (other==inferred.end()) {
-                        const size_t dot=boundName.rfind('.');
-                        if (dot!=std::string::npos) boundName=boundName.substr(dot+1);
-                        auto nested=nestedMap_.find(boundName);
-                        if (nested!=nestedMap_.end() && nested->second!="\x01") boundName=nested->second;
+                    for (std::string boundName : bound.second) {
+                        auto other=inferred.find(boundName);
+                        if (other!=inferred.end()) boundName=other->second.n;
+                        else {
+                            const size_t dot=boundName.rfind('.');
+                            if (dot!=std::string::npos) boundName=boundName.substr(dot+1);
+                            auto nested=nestedMap_.find(boundName);
+                            if (nested!=nestedMap_.end() && nested->second!="\x01") boundName=nested->second;
+                        }
+                        const bool arrayBound=value->second.dims>0 &&
+                            (boundName=="Object" || boundName=="Cloneable" || boundName=="Serializable");
+                        if (!arrayBound && (value->second.dims!=0 || !isSubtypeName(value->second.n,boundName))) {
+                            applicable=false; break;
+                        }
                     }
-                    const bool arrayBound=value->second.dims>0 &&
-                        (boundName=="Object" || boundName=="Cloneable" || boundName=="Serializable");
-                    if (!arrayBound && (value->second.dims!=0 || !isSubtypeName(value->second.n,boundName))) {
-                        applicable=false; break;
-                    }
+                    if (!applicable) break;
                 }
                 if (!applicable) { sawUnsupportedGeneric=true; continue; }
                 MethodSig resolved=m;
@@ -3429,7 +3448,7 @@ private:
     }
 
     void skipTypeParams(std::vector<std::string>* names, bool* bounded = nullptr,
-                        std::map<std::string,std::string>* upperBounds = nullptr) {
+                        std::map<std::string,std::vector<std::string>>* upperBounds = nullptr) {
         if (!isOp("<")) return;
         int d = 0;
         bool expectName = true;
@@ -3444,14 +3463,14 @@ private:
             else if (isOp(",") && d == 1) { expectName = true; currentName.clear(); inBound=false; boundNameSeen=false; }
             else if (isKw("extends") && d == 1) { if (bounded) *bounded = true; inBound=true; }
             else if (isOp("&") && d == 1) {
-                // Intersection bounds need a constraint set; do not silently treat
-                // only the first component as the complete bound.
-                if (upperBounds && !currentName.empty()) (*upperBounds)[currentName] = "&";
-                inBound=true; boundNameSeen=true;
+                // Preserve every intersection component; inference validates all
+                // declared bounds after collecting constraints from invocation sites.
+                inBound=true; boundNameSeen=false;
             }
             else if (isOp(".") && d == 1 && inBound && boundNameSeen &&
                      upperBounds && !currentName.empty() && isIdentTok(at(p+1))) {
-                (*upperBounds)[currentName] += "." + at(p+1).text;
+                auto& bounds=(*upperBounds)[currentName];
+                if (!bounds.empty()) bounds.back() += "." + at(p+1).text;
                 p++; // the loop increment consumes the qualified segment
             }
             else if (isIdentTok(cur()) && d == 1) {
@@ -3461,7 +3480,7 @@ private:
                     typeVars.insert(currentName);
                     expectName=false;
                 } else if (inBound && !boundNameSeen && upperBounds && !currentName.empty()) {
-                    (*upperBounds)[currentName]=cur().text;
+                    (*upperBounds)[currentName].push_back(cur().text);
                     boundNameSeen=true;
                 }
             }
@@ -3809,7 +3828,7 @@ private:
 
         std::vector<std::string> mtp;
         bool mtpBounded = false;
-        std::map<std::string,std::string> mtpBounds;
+        std::map<std::string,std::vector<std::string>> mtpBounds;
         std::set<std::string> savedVars = typeVars;
         skipTypeParams(&mtp, &mtpBounded, &mtpBounds);
         SetScope methodTypeVarScope(methodTypeVars_);
@@ -3877,7 +3896,7 @@ private:
             if (isKw("throws")) skipThrows();
             curRet = ty;
             if (pass == 1) {
-                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls; ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded;
+                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls; ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded; ms.typeParamBounds = mtpBounds;
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }
