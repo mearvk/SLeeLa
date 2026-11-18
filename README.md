@@ -109,13 +109,13 @@ Recent additions to the language, drivers, and standard library:
   (ISA 157), which also backs a general **`sleep(<ms>)`** built-in callable
   anywhere; the pause is implemented portably (`nanosleep` / `Sleep`). Specified
   in [`SLEELA.syntax` §32](SLEELA.syntax); API reference in
-  [`api/sleela/3.0/LOOP_TIMING_API.md`](api/sleela/3.0/LOOP_TIMING_API.md);
+  [`api/sleela/3.1/LOOP_TIMING_API.md`](api/sleela/3.1/LOOP_TIMING_API.md);
   runnable
   [`examples/loop-timing-annotation-demo.sleela`](examples/loop-timing-annotation-demo.sleela).
   A session-additions index (including this, the native `OP_BIGMUL`
   big-integer multiply, and the standalone **[local-generator](local-generator/README.md)**
   and **[pi-generator](pi-generator/README.md)** tools) lives at
-  [`api/sleela/3.0/SESSION-ADDITIONS-API.md`](api/sleela/3.0/SESSION-ADDITIONS-API.md).
+  [`api/sleela/3.1/SESSION-ADDITIONS-API.md`](api/sleela/3.1/SESSION-ADDITIONS-API.md).
   The three generated API surfaces
   ([`sleeladoc-api/`](sleeladoc-api/README.md),
   [`docs/api/`](docs/api/README.md), and the immutable
@@ -310,7 +310,7 @@ interactive deployment workflow and all installation options, see
 [Quick and Safe Install](install/README.md).
 
 ## V. Language and Runtime
-The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). Compiler/tool version and source syntax version are distinct: the source compiler accepts syntax **1.0 – 3.2** and defaults unversioned source to 3.2. The committed `working-binaries/` toolchain is separately versioned; see its binary identity registry and rebuild status before relying on a prebuilt executable. The new API build is produced by `make api-docs`.
+The current reader-facing overview is [SLeeLa International Version 3.2](docs/reference/LANGUAGE.INTERNATIONAL.3.2.md). The authoritative grammar is [`SLEELA.syntax`](SLEELA.syntax). Compiler/tool version and source syntax version are distinct: the source compiler accepts syntax **1.0 – 3.2** and defaults unversioned source to 3.2. The committed `working-binaries/` toolchain is separately versioned; see its binary identity registry and rebuild status before relying on a prebuilt executable. The new API build is produced by `make api-docs`.
 
 - **Syntax 3.2 (current).** Syntax 3.1 (§44) adds character literals, array initializers, labeled `break`/`continue`, and `return`/`break`/`continue` that run `finally`; Syntax 3.2 (§§45–46) formalizes typed `char` semantics and array behavior (`a.length`, multidimensional creation, nested initializers).
 - **Syntax 3.0** consolidated the 1.0–2.9 surface into one maintained specification, preserving all feature-specific minimum gates. It adds the **`pure` and `gasoline` document markers** (§30) — a pair of bare, contextual, declarative-only Preonems that mean nearly the same thing, each marking the document's standing by its own honesty; method and constructor overload resolution (§40) and `this(...)`/`super(...)` delegation (§43.6); Java support (§43); and host-authorized Native Drive (§36). Below syntax 3.0, a class that declares more than one constructor is rejected.
