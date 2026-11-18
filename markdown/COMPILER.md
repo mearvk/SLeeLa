@@ -111,7 +111,7 @@ range is `1.0 .. 3.2`:
 A rejected source exits non-zero with a descriptive diagnostic, e.g.:
 
 ```
-sleela: prog.sleela: error: source declares Sleela syntax 3.2, which exceeds
+sleela: prog.sleela: error: source declares Sleela syntax 3.3, which exceeds
 this compiler's supported range (1.0 .. 3.2). Upgrade the compiler or lower
 the #sleela pragma.
 ```
