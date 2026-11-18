@@ -20,7 +20,7 @@ jobs:
       SLEELA_LIB: ${{ github.workspace }}/lib
       SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
       JDK28_CHECK_JOBS: "8"
-      JDK28_REPORT_DIR: ${{ runner.temp }}/jdk28-validation
+      JDK28_REPORT_DIR: ${{ github.workspace }}/build/jdk28-validation
     steps:
       - name: Check out source
         uses: actions/checkout@v4
@@ -59,6 +59,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jdk28-validation-reports
-          path: ${{ runner.temp }}/jdk28-validation
+          path: ${{ github.workspace }}/build/jdk28-validation
           if-no-files-found: warn
           retention-days: 30
