@@ -222,3 +222,11 @@ PR #372 was not merged wholesale. Its lower-bound inference implementation overl
 - Added `GenericConstructorExplicitArguments.java` as a positive differential fixture and `GenericConstructorBoundConflict.java` as a fail-closed bound-conflict fixture. Inventory is now 48 positive and 26 refusal fixtures; these are file counts, not passing results.
 - The source parser helper is shared by ordinary type references and explicit constructor arguments, preserving nested generic parsing and wildcard syntax consistently.
 - **Verification: NOT RUN by user direction.** No build, self-check, javac/differential run, or CI was started. Production remains HOLD.
+
+
+### Protected instance-field receiver accessibility (2026-11-18)
+
+- Closed a cross-package protected-access gap in expression field lookup. A subclass could previously pass the owner/subclass visibility check and then select an inherited protected instance field through a receiver statically typed as the superclass. Java forbids that access under JLS 6.6.2.1.
+- The converter now checks the field's declaring owner package and, for cross-package subclass access, requires the receiver's static type to be the current subclass or a subtype of it. Existing `this`/subclass-typed access remains permitted; invalid Base-typed receiver access fails with `[member-access]`.
+- Expanded the project protected-access harness case to exercise legal subclass-typed field access and added a negative multi-source project case that first confirms javac rejects the Base-typed receiver, then requires converter refusal with no generated files.
+- **Verification: NOT RUN by user direction.** The shell regression harness was edited but not executed. No build, test, or CI was started. Package-qualified canonical symbol identity remains the next major resolver migration; production remains HOLD.
