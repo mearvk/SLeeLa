@@ -1643,7 +1643,7 @@ private:
                         continue;
                     }
                     std::string recvType = e.ty.dims == 0 ? e.ty.n : std::string("array");
-                    const Ty* expected = lambdaTarget_.known() ? &lambdaTarget_ : nullptr;
+                    const Ty* expected = lambdaTarget_.known() && !isOp(".") && !isOp("[") && !isOp("::") ? &lambdaTarget_ : nullptr;
                     args = adaptArgs(pickMethod(recvType, name, args, 0, -1, &e.ty, expected), args);
                     // model 9c: a library parameter that takes a char as text
                     for (size_t ai = 0; ai < args.size(); ai++) {
