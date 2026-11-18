@@ -37,7 +37,8 @@ struct MethodSig {
     Ty ret;
     std::vector<Ty> params;
     std::vector<std::string> typeParams; // method-level type variables retained for invocation inference
-    bool hasTypeParamBounds = false; // bounded inference is refused until bounds are modelled
+    bool hasTypeParamBounds = false; // true when one or more type parameters declare bounds
+    std::map<std::string, std::string> typeParamBounds; // first class/interface bound; intersection bounds remain unsupported
     bool isStatic = false;
     bool varargs = false;   // the last parameter is T... (its type is stored as T[])
     bool isAbstract = false; // declared without a body (an interface method, or abstract)
