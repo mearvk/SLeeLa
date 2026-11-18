@@ -11,10 +11,9 @@ struct SyntaxVersion { int major=0, minor=0; std::string str() const { return st
 // (sections 45 and 46) formalizes typed char behavior and array semantics,
 // including multidimensional creation (`new T[a][b]`) and `a.length`.
 // `#sleela 3.01` is accepted as the same numeric version as 3.1; it is not 3.2.
-// Previously: 1.0 .. 3.0. Features
-// introduced in later minors are still gated individually (a 1.0 source that
-// uses, e.g., network built-ins errors with "requires #sleela 1.1"), but the
-// floor itself is 1.0 so the runtime can drive the whole 1.0 .. 3.0 range.
+// Historical compatibility remains: features introduced in later minors are
+// gated individually (a 1.0 source using network built-ins still errors with
+// "requires #sleela 1.1"). The accepted floor remains 1.0.
 // Syntax 2.3 adds the philosophers Guide-chain expression
 // (`new T(...) :: Guide :: Guide ...`, section 17 of SLEELA.syntax).
 // Syntax 2.4 adds the `author`/`authorial` document marker: a document so
