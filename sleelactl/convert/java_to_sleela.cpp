@@ -2142,13 +2142,21 @@ private:
             auto declaration = classes.find(name);
             if (declaration != classes.end()) {
                 const ClassInfo& genericClass = declaration->second;
+                if (!genericClass.typeParams.empty() && genericClass.typeParams.size() != constructedArgs.size())
+                    fail("generic-type", "wrong number of explicit type arguments in constructor allocation of " + name);
                 for (size_t ai = 0; ai < genericClass.typeParams.size() && ai < constructedArgs.size(); ++ai) {
                     auto bounds = genericClass.typeParamBounds.find(genericClass.typeParams[ai]);
-                    if (bounds == genericClass.typeParamBounds.end()) continue;
-                    const Ty& actual = constructedArgs[ai];
-                    if (!actual.known() || actual.wildcard || actual.dims != 0) continue;
-                    for (std::string boundName : bounds->second) {
-                        if (boundName.empty() || boundName.find('<') != std::string::npos || boundName.find('
+                    if (bounds == genericClass.typeParamBounds.end() || constructedArgs[ai].wildcard || !constructedArgs[ai].known()) continue;
+                    for (const std::string& bound : bounds->second) {
+                        if (bound.find('<') == std::string::npos && bound.find('&') == std::string::npos &&
+                            !isSubtypeName(constructedArgs[ai].n, bound))
+                            fail("generic-type", "explicit constructor type argument does not satisfy its declared class bound");
+                    }
+                }
+            }
+        }
+        if (isOp("[") && !constructedArgs.empty())
+            fail("generic-array", "generic array creation with explicit type arguments is not supported");
             // new T[a][b]..[] (syntax 3.1 multi-dimensional creation) or new T[]..{...} (initializer)
             std::vector<std::string> sized;
             int rank = 0;
