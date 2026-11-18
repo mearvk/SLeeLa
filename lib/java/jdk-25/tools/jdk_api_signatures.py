@@ -84,7 +84,7 @@ def erased(t: str, tvars: set) -> str:
     references are not runtime types in SLeeLa. Preserve primitive and String
     distinctions, array rank, and turn Java varargs into array types.
     """
-    text = re.sub(r"@[\\w.]+(?:\\([^()]*\\))?\\s*", "", t).strip()
+    text = re.sub(r"@[\w.]+(?:\([^()]*\))?\s*", "", t).strip()
     if text.endswith("..."):
         text = text[:-3].rstrip() + "[]"
     return dec.erase(text)
@@ -131,7 +131,7 @@ def render(type_name: str, m: dict) -> str:
         params.append(f"{erased(ptype, tvars)} {pname}")
     ret = erased(m["ret"], tvars)
     head = " ".join(mods + [ret, m["name"]])
-    throws = (" throws " + ", ".join(erased(x, tvars) for x in m["throws"])) if m["throws"] else ""
+    throws = (" throws " + ", ".join("Any" if x in tvars else x for x in m["throws"])) if m["throws"] else ""
     jsig = type_name + "." + m["name"] + "(" + ", ".join(p[0] for p in m["params"]) + ")"
     jsig = jsig.replace('"', "'")
     if m["abstract"]:
@@ -139,7 +139,7 @@ def render(type_name: str, m: dict) -> str:
     else:
         body = f'throw new UnsupportedOperationException("not yet implemented in SLeeLa: {jsig}");'
     lines.append(f"  {head}({', '.join(params)}){throws} {{ {body} }}")
-    return "\\n".join(lines)
+    return "\n".join(lines)
 
 
 def split_top(s: str) -> list:
@@ -174,12 +174,12 @@ def render_ctor(type_name: str, cls: str, m: dict) -> str:
             pname = pname + "_"
         params.append(f"{erased(ptype, tvars)} {pname}")
     head = " ".join(mods + [cls])
-    throws = (" throws " + ", ".join(erased(x, tvars) for x in m["throws"])) if m["throws"] else ""
+    throws = (" throws " + ", ".join("Any" if x in tvars else x for x in m["throws"])) if m["throws"] else ""
     jsig = type_name + ".<init>(" + ", ".join(p[0] for p in m["params"]) + ")"
     jsig = jsig.replace('"', "'")
     body = f'throw new UnsupportedOperationException("not yet implemented in SLeeLa: {jsig}");'
     lines.append(f"  {head}({', '.join(params)}){throws} {{ {body} }}")
-    return "\\n".join(lines)
+    return "\n".join(lines)
 
 
 IMPL_SIG = re.compile(r"^  (?:@\w+\s+)?(?P<mods>(?:(?:public|protected|private|static|final|abstract|default|synchronized|native|strictfp) )*)(?:<[^()]*> )?[A-Za-z_][\w.]*(?:<[^()]*>)?(?:\[\])* +(?P<name>\w+)\s*\((?P<params>[^)]*)\)", re.M)
