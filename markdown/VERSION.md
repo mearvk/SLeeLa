@@ -12,8 +12,8 @@ preserved as a record of that earlier release.
 **Sleela-Complete:** 0.3.2-dev  
 **Nordshrift Complete:** 2.7.1-dev  
 **Native Foundation:** 0.3.2-dev  
-**Sleela Language Syntax:** 3.1 (supported range 1.0 .. 3.2)  
-**Compiler Compatibility Gate:** 3.1  
+**Sleela Language Syntax:** 3.2 (supported range 1.0 .. 3.2)  
+**Compiler Compatibility Gate:** 3.2  
 **Java Authorship Transition Gate:** 1.19-dev
 **Edition:** SLeeLa Complete / Native Foundation  
 **Status:** Pro Release  
