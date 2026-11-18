@@ -30,7 +30,7 @@ No workflow run was found for the inspected current master SHA at the time of th
 
 **Assessment date:** 2026-11-18  
 **Repository:** `mearvk/SLeeLa`  
-**Baseline inspected:** `master` at `3478f4856d044b615ff2e999ca5730a80eedd394` (2026-11-18 verification refresh) at `c00fd2f3ed760a2a840cecd02a02daec032b6453` (JDK 28 signature-index and validation-campaign merge)  
+**Source baseline inspected:** `3478f4856d044b615ff2e999ca5730a80eedd394` (master tip at verification time; subsequent commits in this update are documentation-only).
 **Decision:** **HOLD — not production-qualified**  
 **Scope:** Java-to-SLeeLa conversion, Java API signature generation, JDK 28 validation, compiler acceptance, representative execution, refusal accounting, and release evidence.
 
