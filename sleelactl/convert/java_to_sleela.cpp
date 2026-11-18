@@ -13,6 +13,7 @@ extern "C" {
 #include <cctype>
 #include <algorithm>
 #include <cstdio>
+#include <functional>
 #include <cstdlib>
 #include <map>
 #include <set>
@@ -110,6 +111,7 @@ private:
     std::map<std::string, std::string> importedTypes_;
     std::map<std::string, std::vector<std::string>> staticImports_;
     std::vector<std::string> staticWildcardImports_;
+    int pendingGenericClosers_ = 0;
 
     // per-type / per-method state
     std::string curClass;
@@ -345,6 +347,16 @@ private:
         return i;
     }
 
+    bool isGenericClose() const {
+        return pendingGenericClosers_ > 0 || isOp(">") || isOp(">>") || isOp(">>>");
+    }
+    void consumeGenericClose() {
+        if (pendingGenericClosers_ > 0) { --pendingGenericClosers_; return; }
+        if (isOp(">")) { ++p; return; }
+        if (isOp(">>")) { ++p; ++pendingGenericClosers_; return; }
+        if (isOp(">>>")) { ++p; pendingGenericClosers_ += 2; return; }
+        fail("syntax", "expected '>' to close generic type arguments");
+    }
     Ty parseType() {
         size_t end = scanType(p);
         if (end == (size_t)-1) fail("syntax", "expected a type but found '" + descr() + "'");
@@ -354,30 +366,40 @@ private:
             if (isOp("(")) { int d = 0; do { if (isOp("(")) d++; else if (isOp(")")) d--; p++; } while (d > 0 && !atEof()); }
         }
         std::string name = ident();
-        // A type-qualified name Outer.Inner names the hoisted type Outer__Inner (package segments, which
-        // start in lower case, are dropped). Resolving only the last segment would bind Format.Field to
-        // the nested Field of the current file: java.text.NumberFormat.Field then extended itself.
+        // A type-qualified name Outer.Inner names the hoisted type Outer__Inner.
         std::string qual;
         int depth = 0;
+        std::vector<Ty> genericArgs;
         for (;;) {
             if (isOp("<")) {
-                int d = 0;
-                do {
-                    if (isOp("<")) d++; else if (isOp(">")) d--; else if (isOp(">>")) d -= 2; else if (isOp(">>>")) d -= 3;
-                    p++;
-                } while (d > 0 && !atEof());
+                p++;
+                while (!isGenericClose() && !atEof()) {
+                    Ty arg;
+                    if (acceptOp("?")) {
+                        arg.n = "?";
+                        if (acceptKw("extends")) { arg.wildcard=2; arg.bound=std::make_shared<Ty>(parseType()); }
+                        else if (acceptKw("super")) { arg.wildcard=3; arg.bound=std::make_shared<Ty>(parseType()); }
+                        else arg.wildcard=1;
+                    } else arg=parseType();
+                    genericArgs.push_back(arg);
+                    if (acceptOp(",")) continue;
+                    if (!isGenericClose()) fail("generic-type", "expected ',' or '>' in generic type arguments");
+                }
+                consumeGenericClose();
             }
             if (isOp(".") && isIdentTok(at(p + 1))) {
                 if (!name.empty() && std::isupper((unsigned char)name[0])) qual = qual.empty() ? resolveTypeName(name) : qual + "__" + name;
                 else qual.clear();
                 p++;
                 name = ident();
+                genericArgs.clear();
                 continue;
             }
             break;
         }
         while (isOp("[") && isOpAt(p + 1, "]")) { p += 2; depth++; }
         Ty t = mk(name, depth);
+        t.args = genericArgs;
         if (qual.empty() && methodTypeVars_.count(name)) t.n = "$T$" + name;
         else if (qual.empty() && typeVars.count(name)) t.n = "?";
         else if (qual.empty()) t.n = resolveTypeName(name);
