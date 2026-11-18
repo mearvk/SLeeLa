@@ -254,3 +254,10 @@ This is the latest repository/CI inspection and supersedes the earlier run-state
 PR [#378](https://github.com/mearvk/SLeeLa/pull/378) remains open and unmerged; its validation head is 4 commits ahead and 14 behind current master, with only four workflow-file changes. Its queued runs do not qualify the current master. The current master combined status has no status entries yet.
 
 **Release decision: HOLD.** Only the baseline identity and manifest change-impact review are confirmed. Direct SHA-256 verification and gates 3–8 still need actual execution and archived evidence. Historical November 13 measurements remain historical and are not promoted to current results.
+
+
+## Master continuation update — 18 November 2026
+
+The converter now retains class type-parameter upper bounds for classes and records and validates concrete known type arguments against the supported simple-bound subset. Same-compilation-unit duplicate declarations are now rejected deterministically alongside cross-unit duplicates. New positive and fail-closed fixtures cover bounded class arguments and deferred wildcard lower-bound inference, including target-return inference; the project differential harness also checks duplicate declarations within one source file. The fixture inventory is 47 positive and 24 refusal programs.
+
+These are **unverified implementation changes**. At the user's direction, no CI, compiler build, self-check or differential test was run for this update. Parameterized/intersection class bounds, package-qualified symbol identity, full target typing, wildcard capture, intersection LUB, and generic constructor/diamond inference remain incomplete. Release status remains **HOLD**.
