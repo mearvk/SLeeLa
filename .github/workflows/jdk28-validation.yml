@@ -1,4 +1,5 @@
 name: JDK 28 Validation Campaign
+# Production qualification request: retain all JDK 28 reports, including partial functional-equivalence output.
 
 on:
   push:
