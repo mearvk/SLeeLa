@@ -99,7 +99,7 @@ export JDK28_SIGNATURES_JSONL="$reflection_dir/jdk-signatures.jsonl"
 run_gate "jdk-signature-index-tests" python3 -m unittest discover -s "$root/lib/java/jdk-25/tools" -p "test_jdk_api_signatures.py"
 run_gate "jdk-signature-index-audit" python3 "$root/lib/java/jdk-25/tools/jdk_api_signatures.py" --audit
 run_gate "jdk28-generator-tests" python3 -m unittest discover -s "$root/lib/java/jdk-28/tools" -p "test_generate_jdk28.py"
-run_gate "jdk28-generator-syntax" python3 -m py_compile "$root/lib/java/jdk-28/tools/generate_jdk28.py" "$root/lib/java/jdk-25/tools/jdk_api_signatures.py"
+run_gate "jdk28-generator-syntax" python3 -m py_compile "$root/lib/java/jdk-28/tools/generate_jdk28.py" "$root/lib/java/jdk-28/tools/compare_jdk25_jdk28.py" "$root/lib/java/jdk-25/tools/jdk_api_signatures.py"
 run_gate "jdk28-signature-index-audit" python3 "$root/lib/java/jdk-28/tools/generate_jdk28.py" --audit
 run_gate "jdk28-regenerate" python3 "$root/lib/java/jdk-28/tools/generate_jdk28.py"
 run_gate "jdk28-generated-diff-check" git diff --check -- lib/java/jdk-28
