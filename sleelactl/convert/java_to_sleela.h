@@ -54,6 +54,7 @@ struct MethodSig {
 struct FieldInfo { Ty ty; bool isStatic = false; };
 struct ClassInfo {
     std::string sourceName;           // source unit that contributed this declaration
+    std::string packageName;          // declared Java package (empty for the unnamed package)
     bool ambiguous = false;           // duplicate simple name across project units: fail closed
     std::map<std::string, FieldInfo> fields;
     std::vector<MethodSig> methods;

@@ -111,6 +111,8 @@ private:
     std::map<std::string, std::string> importedTypes_;
     std::map<std::string, std::vector<std::string>> staticImports_;
     std::vector<std::string> staticWildcardImports_;
+    std::vector<std::string> wildcardTypeImports_;
+    std::string packageName_;
     int pendingGenericClosers_ = 0;
 
     // per-type / per-method state
@@ -171,14 +173,37 @@ private:
         auto im = importedTypes_.find(n);
         if (im != importedTypes_.end() && im->second == "\x01")
             throw ConvErr{cur().line, cur().col, "import-ambiguous", "the simple type name '" + n + "' is imported from more than one package"};
-        auto projectType = classes.find(n);
-        if (projectType != classes.end() && projectType->second.ambiguous)
-            throw ConvErr{cur().line, cur().col, "type-ambiguous",
-                "the simple type name '" + n + "' is declared by multiple source units; package-qualified resolution is not yet available"};
-        auto it = nestedMap_.find(n);
-        if (it == nestedMap_.end()) return n;
-        if (it->second == "\x01") throw ConvErr{cur().line, cur().col, "nested-ambiguous", "the simple name '" + n + "' is used by several nested types"};
-        return it->second;
+        if (im != importedTypes_.end()) {
+            for (const auto& entry : classes) {
+                std::string dotted = entry.first;
+                for (size_t pos = 0; (pos = dotted.find("__", pos)) != std::string::npos; )
+                    dotted.replace(pos, 2, ".");
+                const std::string full = entry.second.packageName.empty() ? dotted : entry.second.packageName + "." + dotted;
+                if (full == im->second) {
+                    if (entry.second.ambiguous) throw ConvErr{cur().line, cur().col, "type-ambiguous", "the imported type '" + im->second + "' has duplicate declarations"};
+                    return entry.first;
+                }
+            }
+            return n;
+        }
+        auto local = classes.find(n);
+        if (local != classes.end() && local->second.packageName == packageName_) {
+            if (local->second.ambiguous) throw ConvErr{cur().line, cur().col, "type-ambiguous", "the type '" + n + "' has duplicate declarations in package '" + packageName_ + "'"};
+            return n;
+        }
+        bool wildcardMatch = false;
+        for (const auto& pkg : wildcardTypeImports_)
+            if (local != classes.end() && local->second.packageName == pkg) wildcardMatch = true;
+        if (wildcardMatch) {
+            if (local->second.ambiguous) throw ConvErr{cur().line, cur().col, "type-ambiguous", "the wildcard-imported type '" + n + "' has duplicate declarations"};
+            return n;
+        }
+        if (local != classes.end() && local->second.ambiguous)
+            throw ConvErr{cur().line, cur().col, "type-ambiguous", "the simple type name '" + n + "' is declared by multiple source units and cannot be selected by this compilation unit"};
+        auto nested = nestedMap_.find(n);
+        if (nested == nestedMap_.end()) return n;
+        if (nested->second == "\x01") throw ConvErr{cur().line, cur().col, "nested-ambiguous", "the simple name '" + n + "' is used by several nested types"};
+        return nested->second;
     }
     // ---------------------------------------------------------- tokens ----
     const Tok& cur() const { return T[p]; }
@@ -3109,6 +3134,7 @@ private:
         if (pass == 1) {
             if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
+            ci.packageName = packageName_;
             ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false;
             for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ci.methods.push_back(ms); }
             MethodSig canon; canon.name = "<init>"; canon.ret = mk("void"); canon.varargs = compVarargs; for (auto& c : comps) canon.params.push_back(c.second); ci.methods.push_back(canon);
@@ -3651,9 +3677,15 @@ private:
         importedTypes_.clear();
         staticImports_.clear();
         staticWildcardImports_.clear();
+        wildcardTypeImports_.clear();
+        packageName_.clear();
         size_t guard = 0;
         try {
-            if (isKw("package")) { while (!isOp(";") && !atEof()) p++; p++; }
+            if (isKw("package")) {
+                p++;
+                while (!isOp(";") && !atEof()) { packageName_ += cur().text; p++; }
+                if (isOp(";")) p++;
+            }
             while (isKw("import")) {
                 p++;
                 bool isStatic = acceptKw("static");
@@ -3679,7 +3711,9 @@ private:
                             staticImports_[full.substr(dot+1)].push_back(owner);
                         }
                     }
-                } else if (full.size() > 2 && full.compare(full.size()-2,2,".*") != 0) {
+                } else if (full.size() > 2 && full.compare(full.size()-2,2,".*") == 0) {
+                    wildcardTypeImports_.push_back(full.substr(0, full.size()-2));
+                } else if (!full.empty()) {
                     size_t dot = full.rfind('.');
                     std::string simple = dot == std::string::npos ? full : full.substr(dot+1);
                     auto it = importedTypes_.find(simple);
@@ -3832,6 +3866,7 @@ private:
         if (pass == 1) {
             if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
+            ci.packageName = packageName_;
             ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = superName; ci.superType = superType; ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : "";
         }
         std::vector<std::string> memberLines;
