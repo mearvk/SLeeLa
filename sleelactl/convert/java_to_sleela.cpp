@@ -3800,9 +3800,8 @@ private:
             topLevelName_ = name; anonCounter_ = 0; pendingTypes_.clear(); innerMode_ = false;
         }
         std::vector<std::string> tparams;
-        bool classTparamsBounded = false;
         std::map<std::string,std::vector<std::string>> classTparamBounds;
-        skipTypeParams(&tparams, &classTparamsBounded, &classTparamBounds);
+        skipTypeParams(&tparams, nullptr, &classTparamBounds);
         std::string header = std::string(isIface ? "interface " : "class ") + name;
         if (!tparams.empty()) {
             header += "<";
