@@ -181,7 +181,7 @@ class JConvModel {
     this.shrInt = "JavaOperands.shrInt($a, $b)";
     this.ushrInt = "JavaOperands.ushrInt($a, $b)";
     this.tostrDouble = "Double.toString($a)";
-    this.tostrFloat = "JavaFloat.text($a)";
+    this.tostrFloat = "JavaFloat.text(JavaFloat.f32((double) $a))";
     this.tostrChar = "JavaText.plainIfRepresentable(JavaText.codePointU($a))";
     this.tostrRef = "JavaFormat.objectText($a)";
     this.divInt = "JavaOperands.divInt($a, $b)";
