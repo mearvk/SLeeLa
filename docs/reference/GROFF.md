@@ -95,7 +95,7 @@ Inside a line we switch fonts with `\f`:
 
 ```
 .\" comment: who owns this page and how to rebuild the binary
-.TH SLEELA 1 "2026-10-24" "SLeeLa 1.3.2-pro" "SLeeLa Manual"
+.TH SLEELA 1 "2026-10-24" "SLeeLa 1.0121" "SLeeLa Manual"
 .SH NAME
 sleela \- SLeeLa compiler and runtime front end (Sleelvac(TM))
 .SH SYNOPSIS
