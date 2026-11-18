@@ -261,3 +261,8 @@ PR [#378](https://github.com/mearvk/SLeeLa/pull/378) remains open and unmerged; 
 The converter now retains class type-parameter upper bounds for classes and records and validates concrete known type arguments against the supported simple-bound subset. Same-compilation-unit duplicate declarations are now rejected deterministically alongside cross-unit duplicates. New positive and fail-closed fixtures cover bounded class arguments and deferred wildcard lower-bound inference, including target-return inference; the project differential harness also checks duplicate declarations within one source file. The fixture inventory is 47 positive and 24 refusal programs.
 
 These are **unverified implementation changes**. At the user's direction, no CI, compiler build, self-check or differential test was run for this update. Parameterized/intersection class bounds, package-qualified symbol identity, full target typing, wildcard capture, intersection LUB, and generic constructor/diamond inference remain incomplete. Release status remains **HOLD**.
+
+
+### Generic constructor/diamond inference guard — 2026-11-18
+
+The C++ Java converter now refuses `new Type<>(...)` with `[generic-constructor-diamond]` instead of consuming `<>` and emitting a raw allocation. This closes a silent-erasure path but does **not** implement generic constructor inference, constructor overload resolution, target-type propagation or full class-bound substitution. A javac-valid refusal fixture, `GenericConstructorDiamond.java`, was added; the refusal inventory is now 25. This fixture and implementation are **NOT RUN / NOT VERIFIED** by user direction. Production remains **HOLD**.
