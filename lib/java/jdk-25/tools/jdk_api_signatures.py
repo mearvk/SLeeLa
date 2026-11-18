@@ -229,9 +229,9 @@ def impl_sigs(text: str, exclude_static: bool = False, exclude_private: bool = F
     out = {}
     for match in IMPL_SIG.finditer(text):
         modifiers = match.group("mods").split()
-        line_end = text.find("\\n", match.end())
+        line_end = text.find("\n", match.end())
         line = text[match.start():line_end if line_end >= 0 else len(text)]
-        if "abstract" in modifiers or re.search(r"\\)\\s*;", line):
+        if "abstract" in modifiers or re.search(r"\)\s*;", line):
             continue
         if exclude_static and "static" in modifiers:
             continue
