@@ -1,6 +1,6 @@
 # SLeeLa 3.0 API edition
 
-> **Superseded.** The current edition is [3.2](../3.1/README.md). This edition is preserved as it was and is no longer written to by `make api-docs`.
+> **Superseded.** The current edition is [3.2](../3.2/README.md). This edition is preserved as it was and is no longer written to by `make api-docs`.
 
 **Historical language edition:** SLeeLa syntax 3.0  
 **Normative specification:** [`SLEELA.syntax`](../../../SLEELA.syntax)  
