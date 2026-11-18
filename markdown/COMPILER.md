@@ -27,7 +27,7 @@ Wrapper™ (.sleela source)
      ---- slcore_exchange(): the executable "exchange" API ----
 ```
 
-The current normative language edition is **SLeeLa syntax 3.1**. The native Sleela/Sleelvac frontend accepts source syntax **1.0–3.1**; its product release number is tracked separately. The compiler lives in [`impl/frontend/`](impl/frontend/) and owns **no execution
+The current normative language edition is **SLeeLa syntax 3.2**. The native Sleela/Sleelvac frontend accepts source syntax **1.0–3.2**; its product release number is tracked separately. The compiler lives in [`impl/frontend/`](impl/frontend/) and owns **no execution
 logic**: it walks the AST and drives the C core purely through the builder
 helpers over `slcore_exchange`. The same front end is reused by **Nordshrift**
 (the `.sst` transpiler driver) to parse the sources it transpiles.
@@ -101,18 +101,18 @@ range is `1.0 .. 3.2`:
 | `1.3` | **accepted** | earlier syntax remains compatible |
 | `2.9` | **accepted** | historical `@mix` feature gate still applies |
 | `3.0` | **accepted** | previous normative edition |
-| `3.1` | **accepted** | current normative edition (also written `3.01`) |
-| `3.2` | **rejected** (too new) | above the supported ceiling |
+| `3.1` | **accepted** | previous edition; section 44 |
+| `3.2` | **accepted** | current normative edition; sections 45 and 46 |
 | `0.9` | **rejected** (too old) | below the supported floor |
 | `one.zero` | **rejected** (malformed) | not a numeric `MAJOR.MINOR` |
-| *(none)* | **accepted, with warning** | defaults to 3.1 |
+| *(none)* | **accepted, with warning** | defaults to 3.2 |
 
 
 A rejected source exits non-zero with a descriptive diagnostic, e.g.:
 
 ```
 sleela: prog.sleela: error: source declares Sleela syntax 3.2, which exceeds
-this compiler's supported range (1.0 .. 3.1). Upgrade the compiler or lower
+this compiler's supported range (1.0 .. 3.2). Upgrade the compiler or lower
 the #sleela pragma.
 ```
 
@@ -141,13 +141,13 @@ the current values are:
 | Component | Version | Meaning | Source of truth |
 |-----------|---------|---------|-----------------|
 | **SLeeLa toolchain / implementation** (`sleela` CLI) | **1.3.2-pro** | The current Pro release of the C/C++ front end + core in `impl/`. | `impl/frontend/driver.cpp` |
-| **Sleela language syntax** | **3.1** (range `1.0 .. 3.1`) | The grammar version a `.sleela` file declares via `#sleela`. | `impl/frontend/version.h` |
+| **Sleela language syntax** | **3.2** (range `1.0 .. 3.2`) | The grammar version a `.sleela` file declares via `#sleela`. | `impl/frontend/version.h` |
 | **Nordshrift** (`.sst` transpiler driver) | **2.7.1-dev** | Reuses this front end; enforces the same syntax rules. | `impl/nordshrift/nordshrift.cpp` |
 | **NS-SST-0001** (`.sst` format spec) | **1.0.0** (Normative) | The `.sst` control-sheet format. | `SST.model` |
 | **SL-META-0001** (metadocument) | **1.0.0** (Pre-Normative) | The governing language metadocument, incl. §4.4. | `src/Sleela.manifest` |
 
 > **In short:** the compiler/runtime product release is **1.3.2-pro** and the
-> current language edition is **SLeeLa syntax 3.1**. These are independent
+> current language edition is **SLeeLa syntax 3.2**. These are independent
 > version tracks; Nordshrift delegates to the same frontend compatibility gate.
 
 Query the live values:
@@ -155,7 +155,7 @@ Query the live values:
 ```sh
 ./build/sleela version
 #  SLeeLa Language/Runtime 1.3.2-pro
-#    supported .sleela syntax: 1.0 .. 3.1 (declare per-file with '#sleela X.Y')
+#    supported .sleela syntax: 1.0 .. 3.2 (declare per-file with '#sleela X.Y')
 ```
 
 ---
