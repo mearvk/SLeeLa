@@ -3434,6 +3434,7 @@ private:
     }
 
     void parseUnit() {
+        pendingGenericClosers_ = 0;
         // Preserve explicit imports and static-import owners. Unqualified static calls
         // are considered only after normal in-scope and enclosing-instance lookup.
         importedTypes_.clear();
