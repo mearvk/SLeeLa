@@ -337,7 +337,7 @@ def member_signature_index(sig):
 
 
 def member_blocks(t, sig, cls: str, impl: str = "", api_by_name=None, impl_texts=None):
-    """Build API stubs from an overload index without shadowing inherited logic."""
+    """Build JDK 28 type files using the JDK 25 reflected member baseline and overload index."""
     lines = []
     taken = set(dec.ENVELOPE) | HELPERS
     ctv = sg.tvar_names(sig["tparams"]) if sig else set()
@@ -351,13 +351,13 @@ def member_blocks(t, sig, cls: str, impl: str = "", api_by_name=None, impl_texts
     budget_used += len(impl_fields)
     decl = dec.declarations(t, cls, taken | impl_fields, set(impl_methods), budget_used, bool(impl))
     if decl:
-        lines.append("  < ---- BEGIN java declarations (from the JDK 28 API) ---- >")
+        lines.append("  < ---- BEGIN java declarations (JDK 25 reflected member baseline; JDK 28 type inventory) ---- >")
         lines += decl
         lines.append("  < ---- END java declarations ---- >")
     dtext = "\n".join(decl)
     declared = set(dec.FIELD_DECL.findall(dtext)) | set(dec.METHOD_DECL.findall(dtext)) | set(sg.METHOD.findall(dtext))
     if sig is None:
-        lines.append("  < ---- members pending: no exact signature-index record for this type ---- >")
+        lines.append("  < ---- members pending: no JDK 25 reflected signature-index record for this type ---- >")
         return lines, 0, 0, 0
 
     signature_groups, collisions = member_signature_index(sig)
@@ -399,12 +399,12 @@ def member_blocks(t, sig, cls: str, impl: str = "", api_by_name=None, impl_texts
 
     if ctors:
         lines.append("")
-        lines.append("  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >")
+        lines.append("  < ---- BEGIN java constructors (JDK 25 reflected signatures; JDK 28 type inventory) ---- >")
         lines += ctors
         lines.append("  < ---- END java constructors ---- >")
     if meths:
         lines.append("")
-        lines.append("  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >")
+        lines.append("  < ---- BEGIN java signatures (JDK 25 reflected signatures; JDK 28 type inventory) ---- >")
         lines.append("  << Not yet SLeeLa logic: each method returns the default value of its")
         lines.append("     Java return type. @throwable names what Java throws for it (abstract:")
         lines.append("     AbstractMethodError, else UnsupportedOperationException, plus the")
@@ -416,7 +416,7 @@ def member_blocks(t, sig, cls: str, impl: str = "", api_by_name=None, impl_texts
 
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate or audit the JDK 28 API signature index.")
-    parser.add_argument("--audit", action="store_true", help="report JDK 28 signature coverage without rewriting files")
+    parser.add_argument("--audit", action="store_true", help="report JDK 28 inventory coverage against JDK 25 reflected signatures without rewriting files")
     args = parser.parse_args()
     api = {}
     for l in (LIBJAVA / "api" / "jdk-api.jsonl").read_text(encoding="utf-8").splitlines():
@@ -443,9 +443,9 @@ def main() -> int:
         varargs_members = sum(any(p[0].endswith("...") for p in member.get("params", [])) for member in members)
         pending_types = len(names - api_names)
         missing_signatures = len((names & api_names) - set(sigs))
-        print(f"JDK 28 signature index: {len(indexed)} indexed types, {len(members)} Java members")
+        print(f"JDK 28 inventory cross-indexed with JDK 25 reflection: {len(indexed)} types, {len(members)} Java members")
         print(f"generic classes: {generic_classes}; generic members: {generic_members}; wildcard members: {wildcard_members}; varargs members: {varargs_members}")
-        print(f"SLeeLa-erasure overload collisions: {collisions}; new JDK 28 types pending reflected member data: {pending_types}; known types missing signature records: {missing_signatures}")
+        print(f"SLeeLa-erasure overload collisions: {collisions}; JDK 28 types absent from JDK 25 reflection: {pending_types}; known types missing signature records: {missing_signatures}")
         print("Index coverage is declaration evidence only; fail-loud API stubs are not implemented Java behavior.")
         return 0
 
@@ -482,7 +482,7 @@ def main() -> int:
                 stats["implemented"] = stats.get("implemented", 0) + 1
         if t and sig:
             body, nc, nm, ncollisions = member_blocks(t, sig, cls, impl, api_by_name, impl_texts)
-            status = "members from the JDK 28 API (exact signatures)"
+            status = "members from JDK 25 reflection baseline (JDK 28 type inventory)"
             stats["with_members"] += 1
             stats["ctors"] += nc
             stats["methods"] += nm
@@ -520,7 +520,7 @@ class {cls} {{
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(text, encoding="utf-8")
         stats["files"] += 1
-        index.append("\t".join([fq, module, kind, "lib/java/jdk-28/" + out_rel.as_posix(), src_url, "api" if t and sig else "signature-pending" if t else "pending"]))
+        index.append("\t".join([fq, module, kind, "lib/java/jdk-28/" + out_rel.as_posix(), src_url, "jdk25-reflected" if t and sig else "signature-pending" if t else "pending"]))
     (OUT / "INDEX.tsv").write_text("\n".join(index) + "\n", encoding="utf-8")
 
     # Every documented module has a folder, as online (docs/api/<module>/module-summary.html).
