@@ -204,3 +204,12 @@ PR #372 was not merged wholesale. Its lower-bound inference implementation overl
 3. Expand target-type constraints through assignment, field initializers, return expressions, lambdas and nested invocation contexts.
 4. Implement wildcard capture identities/conversion and intersection LUB/bounds; retain fail-closed behavior where the type model cannot represent the result.
 5. Continue semantic parity and transactional/provenance fault-injection work, then run the full differential campaign when authorized.
+
+
+### Generic constructor/diamond inference — fail-closed guard (2026-11-18)
+
+- The `new` expression parser previously consumed constructor type arguments without retaining them. In particular, `new Box<>(value)` could be lowered as a raw allocation, silently discarding Java's diamond-inferred class arguments.
+- Added an explicit `[generic-constructor-diamond]` refusal at the allocation site. The converter now refuses this unsupported form rather than emitting a potentially semantically incorrect raw construction. Explicit type arguments continue through the existing path; their complete constructor/class-bound inference is not claimed by this guard.
+- Added `sleelactl/convert/tests/reject/GenericConstructorDiamond.java`, a javac-valid source fixture with a generic constructor and assignment target. Updated the refusal inventory from 24 to 25.
+- This is a correctness guard, not completion of generic constructor inference. The next implementation must retain explicit/diamond type arguments, resolve constructor overloads, infer class variables from arguments and target context, substitute declared bounds, and validate the resulting constraints before emission.
+- **Verification: NOT RUN by user direction.** No build, self-check, JDK fixture, differential test or CI was run. The new fixture is inventory only; production remains HOLD.
