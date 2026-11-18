@@ -12,7 +12,7 @@ normative specifications from implementation notes and live validation results.
   **Syntax 3.2** grammar. The shared compiler gate in
   `impl/frontend/version.{h,cpp}` accepts source syntax **1.0–3.2** and
   defaults unversioned source to 3.2 with a warning. Syntax 3.0 consolidates
-  the established 1.x/2.x language surface while preserving each feature's
+  the established 1.x/2.x language surface in Syntax 3.0 while preserving each feature's
   original minimum-version gate. The `@mix` consequent-field feature remains
   gated at 2.9 (§28); the `prestige` marker in §27 remains a future proposal,
   not an implemented feature. Compiler/tool release numbers are independent
