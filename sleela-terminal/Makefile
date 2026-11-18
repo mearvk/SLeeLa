@@ -63,7 +63,7 @@ m5-smoke: $(SLSH)
 test: smoke version-smoke m5-smoke
 
 version-smoke: $(SLSH)
-	@test "$($(SLSH) --version)" = "slsh 1.0121 (SleelaTerminal shell)" || { echo "slsh version identity mismatch" >&2; exit 1; }
+	@$(SLSH) --version | grep -qx "slsh 1.0121 (SleelaTerminal shell)" || { echo "slsh version identity mismatch" >&2; exit 1; }
 
 # Validate DESTDIR staging, executable permissions, and the installed CLI.
 install-smoke: $(SLSH)
