@@ -543,6 +543,11 @@ private:
     E lit(const std::string& code, const Ty& ty) { E e; e.code = code; e.ty = ty; return e; }
 
     E coerce(const E& v, const Ty& target) {
+        // A Java wrapper may use primitive storage only while it is non-null.
+        // SLeeLa has no nullable primitive slot, so never turn Java null into
+        // an apparently valid primitive assignment.
+        if (target.boxed && v.isNull)
+            fail("boxed-null", "a nullable Java wrapper cannot be represented by primitive SLeeLa storage");
         // Only model-declared primitive widening is implicit. The same cast
         // template is used for assignments, arguments and return expressions.
         if (v.ty.dims != 0 || target.dims != 0) return v;
@@ -2439,7 +2444,7 @@ private:
                 line("< assert statement omitted: Java assertions are disabled by default >");
                 return;
             }
-            if (w == "class" || w == "interface" || w == "enum" || (w == "record" && isIdentTok(at(p + 1)) && isOpAt(p + 2, "("))) unsup("nested");
+            if (w == "class" || w == "interface" || w == "enum" || (w == "record" && isIdentTok(at(p + 1)) && isOpAt(p + 2, "("))) unsup("local-type");
             if (w == "abstract" || w == "static") unsup("nested");
             if (looksLikeDecl()) {
                 parseLocalDecl(false, nullptr);
@@ -4246,6 +4251,8 @@ private:
                 if (hoistable && out.size() == outBefore) { classInit_->inits.push_back("    this." + name + " = " + init + ";"); decl += dflt; hoisted = true; }
                 else decl += " = " + init;
             } else {
+                if (ft.boxed)
+                    fail("boxed-null", "a wrapper field without an initializer defaults to null, which primitive SLeeLa storage cannot represent");
                 decl += dflt;
             }
             (void)hoisted;
