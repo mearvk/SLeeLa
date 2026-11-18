@@ -1,4 +1,5 @@
 name: java-convert
+# Production qualification request: execute on the November 18 validation PR head.
 
 # Differential test of the sleelactl Java -> SLeeLa converter (sleelactl/convert).
 # Every program in sleelactl/convert/tests/java runs on a real JDK and, converted, on the
