@@ -2,8 +2,8 @@
    SLeeLa two-dimensional array library.
    Definition: Helpers over int[][] and double[][] (SLEELA.syntax section 46): creation of
    rectangular grids, row and column counts, copy, fill, transpose, sum and text. Requires
-   #sleela 3.1 in the using program (it uses a.length and new T[a][b]). >>
-#sleela 3.1
+   #sleela 3.2 in the using program (it uses a.length and new T[a][b]). >>
+#sleela 3.2
 material;
 class SLArray2D {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
