@@ -3,7 +3,7 @@
 > **Container.** Java container content (`SLEELA.syntax` section 38.4). Nothing
 > here is part of the SLeeLa specification or adds syntax to SLeeLa.
 
-Status: **0.7.8, best effort (2026-11-14).** Output stays at syntax **3.1** (also
+Status: **0.7.9, best effort (2026-11-18).** Output stays at syntax **3.1** (also
 written 3.01) by the owner's decision; syntax 3.1 sections 45 and 46 forms are not used
 (`.kiro/steering/java-converter-lib.md`). The operand laws come from the shared
 conversion model, `impl/subjects/conversion/conversion.model` (read by
@@ -27,9 +27,10 @@ constructs are listed in section 4.
 **Policy (decided 2026-11-13 by the repository owner): per-member stubs.**
 `lib/java/converter` keeps the rest of a type when one member cannot be
 converted, and marks that member with a stub that throws. It does not adopt the
-whole-file refusal of `sleelactl java-convert`. Where both converters share a
-law (the `binop`, `tostr` rows of `conversion.model`), this module applies the
-same template, so the two agree on what the converted code computes.
+whole-file refusal of `sleelactl java-convert`. Where both converters share a law (type/promotion, `binop`, `unop`, `cast`,
+`widen`, `tostr`, `rename` and `qualify` rows), this module reads the same
+model record. The C++ translator is fail-closed when a required row is absent;
+the native converter retains its documented per-member stub policy.
 
 ## 1. What it is
 
@@ -39,9 +40,11 @@ same folders. Run on the JDK sources (the `<module>/<package>/<Type>.java` layou
 of a JDK `src.zip`), it produces the JDK 28 type tree as converted SLeeLa:
 `java.base/java/util/Optional.java` becomes `java.base/java/util/Optional.sleela`.
 
-Every Java-to-SLeeLa decision with functional or declarative significance is
-taken in this module, in one place: [`JConvRules.sleela`](JConvRules.sleela)
-holds the table, and the other units apply it.
+Shared Java semantic laws live in `impl/subjects/conversion/conversion.model`.
+`JConvModel.sleela` reads that data for both converter implementations;
+`JConvRules.sleela` applies the native converter's source-rewrite policy. Type
+classification, primitive promotion, operator/cast templates, identifier
+replacements and built-in qualification are not maintained as competing tables.
 
 The output is **not** written into `lib/java/jdk-28`. That tier is curated
 (API-derived, no Java source text) and the converter refuses to write there.
@@ -105,7 +108,7 @@ Speed: about 3 seconds per Java file on the source-built VM (16 files, 13,552
 output lines in 50 s). The 4,721 public JDK 28 types are therefore a run of
 several hours. Use `JCONV_FILTER` to convert one package or module at a time.
 
-## 3. The rules (all in `JConvRules` and applied by `JConvLexer` / `JConvRewriter` / `JConvTranslator`)
+## 3. The rules (shared laws in `conversion.model`; rewrite policy in `JConvRules`)
 
 | # | Java | SLeeLa output | Why |
 |---|---|---|---|
