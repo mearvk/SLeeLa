@@ -39,19 +39,36 @@ def main():
     removed_types = sorted(old_types.keys() - new_types.keys())
     changed_types = sorted(old_types.keys() & new_types.keys())
     member_added = member_removed = member_changed = 0
+    field_added = field_removed = field_changed = 0
+    type_metadata_changed = 0
     member_add_samples, member_remove_samples = [], []
     for name in changed_types:
+        old_record, new_record = old_types[name], new_types[name]
+        if any(old_record.get(k) != new_record.get(k) for k in ("kind", "super", "interfaces", "abstract")):
+            type_metadata_changed += 1
+
         before = Counter(json.dumps(m, sort_keys=True) for m in old_members.get(name, []))
         after = Counter(json.dumps(m, sort_keys=True) for m in new_members.get(name, []))
         added = list((after - before).elements())
         removed = list((before - after).elements())
         member_added += len(added)
         member_removed += len(removed)
-        # Same erased Java declaration key but different generic/return/modifier
-        # metadata is called out separately as a changed declaration.
-        old_keys = Counter(member_key(m) for m in old_members.get(name, []))
-        new_keys = Counter(member_key(m) for m in new_members.get(name, []))
-        member_changed += sum((old_keys & new_keys).values()) if added and removed else 0
+        old_by_key, new_by_key = {}, {}
+        for member in old_members.get(name, []):
+            old_by_key.setdefault(member_key(member), Counter())[json.dumps(member, sort_keys=True)] += 1
+        for member in new_members.get(name, []):
+            new_by_key.setdefault(member_key(member), Counter())[json.dumps(member, sort_keys=True)] += 1
+        for key in old_by_key.keys() & new_by_key.keys():
+            changed_out = sum((old_by_key[key] - new_by_key[key]).values())
+            changed_in = sum((new_by_key[key] - old_by_key[key]).values())
+            member_changed += min(changed_out, changed_in)
+
+        old_fields = {field[0]: tuple(field) for field in old_record.get("fields", [])}
+        new_fields = {field[0]: tuple(field) for field in new_record.get("fields", [])}
+        field_added += len(new_fields.keys() - old_fields.keys())
+        field_removed += len(old_fields.keys() - new_fields.keys())
+        field_changed += sum(old_fields[k] != new_fields[k] for k in old_fields.keys() & new_fields.keys())
+
         if added and len(member_add_samples) < 20:
             member_add_samples.extend(f"{name}: {json.loads(x).get('name')}({', '.join(p[0] for p in json.loads(x).get('params', []))})" for x in added[:20-len(member_add_samples)])
         if removed and len(member_remove_samples) < 20:
@@ -70,7 +87,11 @@ def main():
         f"- JDK 28 types without a signature record: {len(missing_sig_types)}",
         f"- Member declarations added: {member_added}",
         f"- Member declarations removed: {member_removed}",
-        f"- Same-name/parameter-key changed-member candidates (overlap estimate): {member_changed}", "",
+        f"- Existing member keys with changed generic/return/modifier metadata: {member_changed}",
+        f"- Public/protected fields added: {field_added}",
+        f"- Public/protected fields removed: {field_removed}",
+        f"- Public/protected fields changed: {field_changed}",
+        f"- Type metadata changes (kind/super/interfaces/abstract): {type_metadata_changed}", "",
         "## Added types", "",
         *(f"- {x}" for x in added_types[:100]), "",
         "## Removed types", "",
