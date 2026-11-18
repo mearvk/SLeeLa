@@ -42,7 +42,6 @@ struct E {
     int line = 0, col = 0;
 };
 
-const std::set<std::string> kPrim = {"boolean", "byte", "short", "char", "int", "long", "float", "double"};
 const std::set<std::string> kModifiers = {"public", "private", "protected", "static", "final", "abstract",
                                           "synchronized", "volatile", "transient", "native", "strictfp",
                                           "default", "sealed"};
@@ -261,7 +260,13 @@ private:
         const cm_rec* tr = cm_find(&M, "type", c.c_str(), nullptr, nullptr);
         return tr ? std::atoi(tr->f[3]) : 0;
     }
-    bool isPrimTy(const Ty& t) const { return t.dims == 0 && kPrim.count(t.n) > 0; }
+    bool isPrimitiveName(const std::string& n) const {
+        const cm_rec* tr = cm_find(&M, "type", n.c_str(), nullptr, nullptr);
+        if (!tr) return false;
+        const std::string kind = tr->f[2];
+        return kind == "integral" || kind == "floating" || kind == "boolean";
+    }
+    bool isPrimTy(const Ty& t) const { return t.dims == 0 && isPrimitiveName(t.n) > 0; }
     bool isNumericCls(const std::string& c) const { return rankOf(c) > 0; }
 
     // Identifier replacements are shared data. The value-only next rule keeps
@@ -455,11 +460,11 @@ private:
     std::string strOf(const E& x) const {
         // JLS 5.1.11: an object becomes text by its toString(); null becomes "null". SLeeLa would show
         // the handle (Name#3), so the call is made explicitly for classes whose toString is known.
-        if (x.ty.dims == 0 && !kPrim.count(x.ty.n) && x.ty.n != "String" && x.ty.n != "?" && x.ty.n != "null" && !x.isType && hasToString(x.ty.n)) {
+        if (x.ty.dims == 0 && !isPrimitiveName(x.ty.n) && x.ty.n != "String" && x.ty.n != "?" && x.ty.n != "null" && !x.isType && hasToString(x.ty.n)) {
             // the owner class carries a static helper javaText(x): null is "null", else x.toString()
             return toStringOwner(x.ty.n) + ".javaText(" + x.code + ")";
         }
-        if (x.ty.dims == 0 && kPrim.count(x.ty.n)) {
+        if (x.ty.dims == 0 && isPrimitiveName(x.ty.n)) {
             const cm_rec* r = cm_find(&M, "tostr", x.ty.n.c_str(), nullptr, nullptr);
             if (r) return subst(r->f[1], x.code, "");
         }
@@ -468,7 +473,7 @@ private:
         // already show as Java does, so they keep their own text. A value of unknown type ("?", an
         // erased generic or an untyped call result such as e.getSuppressed().length) may be a
         // primitive at run time, so it keeps the plain SLeeLa text.
-        if (x.ty.dims == 0 && !kPrim.count(x.ty.n) && x.ty.n != "String" && x.ty.n != "null" && x.ty.n != "?" && !x.isType && !modelBoxed(x.ty.n)) {
+        if (x.ty.dims == 0 && !isPrimitiveName(x.ty.n) && x.ty.n != "String" && x.ty.n != "null" && x.ty.n != "?" && !x.isType && !modelBoxed(x.ty.n)) {
             auto ci = classes.find(x.ty.n);
             if (ci != classes.end() && !ci->second.isInterface && !ci->second.isEnum) {
                 // a class of this tree without toString(): Java shows Name@hash unless a library
@@ -564,7 +569,7 @@ private:
         E r;
         r.pure = a.pure;
         r.ty = to;
-        if (to.dims == 0 && kPrim.count(to.n)) {
+        if (to.dims == 0 && isPrimitiveName(to.n)) {
             if (to.n == "boolean") { r.code = a.code; return r; }
             std::string from = classOf(a.ty);
             if (from == "unknown") unsup("untyped");
@@ -596,7 +601,7 @@ private:
             return false;
         }
         const Tok& first = at(p + 1);
-        bool prim = first.kind == JT_IDENT && kPrim.count(first.text) && e == p + 2 + 0 + 0 ? true : (first.kind == JT_IDENT && kPrim.count(first.text));
+        bool prim = first.kind == JT_IDENT && isPrimitiveName(first.text) && e == p + 2 + 0 + 0 ? true : (first.kind == JT_IDENT && isPrimitiveName(first.text));
         const Tok& nx = at(e + 1);
         if (prim) return true;  // (int) -x is a cast
         // reference cast: next token must start an operand that is not binary +/-
@@ -907,7 +912,7 @@ private:
         if (!from.known() || !to.known() || depth > 32) return -1;
         if (from == to) return 0;
         if (from.n == "null" && to.dims >= 0 && to.n != "?" && to.n != "void" &&
-            !(to.dims == 0 && kPrim.count(to.n))) return 1;
+            !(to.dims == 0 && isPrimitiveName(to.n))) return 1;
         if (from.dims > 0 && to.dims == 0 &&
             (to.n == "Object" || to.n == "Cloneable" || to.n == "Serializable")) return 8;
         if (from.dims > 0 && to.dims > 0) {
@@ -916,13 +921,13 @@ private:
             // are int[] references), but int[] is not Object[].
             Ty fromComponent=mk(from.n,from.dims-1);
             Ty toComponent=mk(to.n,to.dims-1);
-            if (fromComponent.dims==0 && kPrim.count(fromComponent.n)) {
+            if (fromComponent.dims==0 && isPrimitiveName(fromComponent.n)) {
                 return fromComponent==toComponent ? 0 : -1;
             }
             return invocationCost(fromComponent,toComponent,depth+1);
         }
         if (from.dims != to.dims) return -1;
-        if (kPrim.count(from.n) && kPrim.count(to.n)) {
+        if (isPrimitiveName(from.n) && isPrimitiveName(to.n)) {
             return cm_find(&M, "widen", from.n.c_str(), to.n.c_str(), nullptr) ? 1 : -1;
         }
         if (from.n == to.n) return 0;
@@ -1417,7 +1422,7 @@ private:
         }
         if (w == "switch") return parseSwitchExpr();
         if (w == "new") return parseNew();
-        if (kPrim.count(w)) {
+        if (isPrimitiveName(w)) {
             // int.class, int[].class -- not supported
             unsup("untyped");
         }
@@ -1685,7 +1690,7 @@ private:
             fail("model", "the conversion model has no compound-assignment rule for '" + op + "' on '" + cls + "'");
         E combined = emitBinary(bop, lhs, rhs);
         E store = combined;
-        if (lhs.ty.dims == 0 && kPrim.count(lhs.ty.n) && lhs.ty.n != "boolean") {
+        if (lhs.ty.dims == 0 && isPrimitiveName(lhs.ty.n) && lhs.ty.n != "boolean") {
             std::string rc = classOf(combined.ty);
             // narrowing back to the variable type (JLS 15.26.2 implicit cast)
             if (!(rc == "int" && (lhs.ty.n == "int")) && !(rc == "long" && lhs.ty.n == "long") && !(rc == "double" && lhs.ty.n == "double") && !(rc == "float" && lhs.ty.n == "float"))
@@ -2387,10 +2392,10 @@ private:
                     const Ty& priorRet = found[i]->ret;
                     const bool sameRet = sameErasedType(nextRet, priorRet);
                     const bool nextCovariant = nextRet.dims == priorRet.dims &&
-                        !kPrim.count(nextRet.n) && !kPrim.count(priorRet.n) &&
+                        !isPrimitiveName(nextRet.n) && !isPrimitiveName(priorRet.n) &&
                         isSubtypeName(nextRet.n, priorRet.n);
                     const bool priorCovariant = nextRet.dims == priorRet.dims &&
-                        !kPrim.count(nextRet.n) && !kPrim.count(priorRet.n) &&
+                        !isPrimitiveName(nextRet.n) && !isPrimitiveName(priorRet.n) &&
                         isSubtypeName(priorRet.n, nextRet.n);
                     if (sameRet || nextCovariant || priorCovariant) {
                         if (nextCovariant || (sameRet && isSubtypeName(m.owner, found[i]->owner))) found[i] = &m;
@@ -2693,7 +2698,7 @@ private:
             bool simpleC = true, hashC = true;
             for (auto& c : comps) {
                 const Ty& t = c.second;
-                const bool pr = t.dims == 0 && (kPrim.count(t.n) > 0) && t.n != "float" && t.n != "double";
+                const bool pr = t.dims == 0 && (isPrimitiveName(t.n) > 0) && t.n != "float" && t.n != "double";
                 const bool st = t.dims == 0 && t.n == "String";
                 if (!pr && !st) simpleC = false;
                 if (!(t.dims == 0 && (t.n == "int" || t.n == "short" || t.n == "byte" || t.n == "char" || t.n == "boolean" || t.n == "long" || st))) hashC = false;
@@ -2792,7 +2797,7 @@ private:
         bool simpleComps = true, hashable = true;
         for (auto& c : comps) {
             const Ty& t = c.second;
-            const bool prim = t.dims == 0 && (kPrim.count(t.n) > 0) && t.n != "float" && t.n != "double";
+            const bool prim = t.dims == 0 && (isPrimitiveName(t.n) > 0) && t.n != "float" && t.n != "double";
             const bool str = t.dims == 0 && t.n == "String";
             if (!prim && !str) simpleComps = false;
             if (!(t.dims == 0 && (t.n == "int" || t.n == "short" || t.n == "byte" || t.n == "char" || t.n == "boolean" || t.n == "long" || str))) hashable = false;
