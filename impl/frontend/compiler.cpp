@@ -1302,7 +1302,7 @@ private:
         return true;
     }
     void emitMember(const MemberAccess& m){
-        if(m.arrayLength){ emitExpr(m.base.get()); emit(OP_ARRLEN); return; }   // syntax 3.1: a.length
+        if(m.arrayLength){ emitExpr(m.base.get()); emit(OP_ARRLEN); return; }   // syntax 3.2: a.length
         // Back-propagate the terminal degree requirement to the origin.
         // next.next is the Degree-2 proposal. When that proposal is itself
         // static, its viewpoint extends by another two degrees to Degree 4.
