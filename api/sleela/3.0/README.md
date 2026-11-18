@@ -1,12 +1,12 @@
 # SLeeLa 3.0 API edition
 
-> **Superseded.** The current edition is [3.1](../3.1/README.md) (also written 3.01). This edition is preserved as it was and is no longer written to by `make api-docs`.
+> **Superseded.** The current edition is [3.2](../3.1/README.md). This edition is preserved as it was and is no longer written to by `make api-docs`.
 
-**Current language edition:** SLeeLa syntax 3.0  
+**Historical language edition:** SLeeLa syntax 3.0  
 **Normative specification:** [`SLEELA.syntax`](../../../SLEELA.syntax)  
-**Compiler gate:** `impl/frontend/version.h` — supported source syntax 1.0–3.0
+**Current compiler gate:** `impl/frontend/version.h` — supported source syntax 1.0–3.2
 
-The 3.0 API edition documents the current `/lib` source tree. Its generated
+This immutable 3.0 API snapshot documents the `/lib` source tree as it stood for that edition. Its generated
 snapshot is stored in an immutable numbered directory:
 
 - [Version 050 — latest generated HTML API snapshot](version-050/index.html)
