@@ -25,6 +25,7 @@ public class RemainingOverloadRules {
         System.out.println(nullable(null));
         System.out.println(arity("one"));
         System.out.println(arity("one", "two"));
-        System.out.println(new Child().inherited(Integer.valueOf(3)));
+        Integer inheritedValue = 3;
+        System.out.println(new Child().inherited(inheritedValue));
     }
 }
