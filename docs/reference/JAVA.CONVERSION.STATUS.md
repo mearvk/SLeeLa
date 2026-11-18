@@ -22,7 +22,7 @@ This refresh records repository/workflow state only. It does not convert histori
 
 ## Current master and production qualification update (2026-11-18)
 
-**Master baseline inspected:** `3478f4856d044b615ff2e999ca5730a80eedd394` (verification refresh 2026-11-18)..  
+**Source baseline inspected:** `3478f4856d044b615ff2e999ca5730a80eedd394` (master tip at verification time; subsequent commits in this update are documentation-only).
 **Merged work:** [PR #375](https://github.com/mearvk/SLeeLa/pull/375), merged 2026-11-18.  
 **Release decision:** **HOLD — current production qualification has not completed.**
 
