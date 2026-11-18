@@ -1,6 +1,7 @@
 public class GenericCommonReference {
     static class Parent { }
     static class Child extends Parent { }
+    static class Sibling extends Parent { }
 
     static <T> T choose(T first, T second) {
         return first;
@@ -12,5 +13,6 @@ public class GenericCommonReference {
 
     public static void main(String[] args) {
         System.out.println(accept(choose(new Child(), new Parent())));
+        System.out.println(accept(choose(new Child(), new Sibling())));
     }
 }
