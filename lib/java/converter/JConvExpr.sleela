@@ -264,7 +264,9 @@ class JConvExpr {
       if (k == 1 && t == "return") {
         int e = stmtEnd(p, b);
         int h = 0;
-        if (intLike(this.rw.kindOfType(this.rw.curReturnType))) { h = 1; }
+        String returnKind = this.rw.kindOfType(this.rw.curReturnType);
+        if (intLike(returnKind)) { h = 1; }
+        else if (returnKind == "f") { h = 4; }
         enqueue(p + 1, e, h);
         p = e + 1;
         continue;
@@ -284,7 +286,9 @@ class JConvExpr {
       if (dt != "") {
         int e3 = stmtEnd(p, b);
         int h3 = 0;
-        if (intLike(this.rw.kindOfType(dt))) { h3 = 1; }
+        String declaredKind = this.rw.kindOfType(dt);
+        if (intLike(declaredKind)) { h3 = 1; }
+        else if (declaredKind == "f") { h3 = 4; }
         < each declarator: name = init >
         int i = this.declAt;
         while (i < e3) {
@@ -338,7 +342,9 @@ class JConvExpr {
     if (dt != "") {
       int eq = this.declAt + 1;
       int h = 0;
-      if (intLike(this.rw.kindOfType(dt))) { h = 1; }
+      String declaredKind = this.rw.kindOfType(dt);
+      if (intLike(declaredKind)) { h = 1; }
+      else if (declaredKind == "f") { h = 4; }
       if (isOpTok(eq, "=")) { enqueue(eq + 1, s1, h); }
     } else {
       enqueueList(a, s1, 1);
@@ -1041,6 +1047,8 @@ class JConvExpr {
       if (h == 2) { tostrIfNeeded(root, 0); }
       < a chartext argument: only a char becomes text >
       if (h == 3 && this.nK[root] == "c") { tostrIfNeeded(root, 0); }
+      < a value assigned to a float variable, returned as float, or used as a float for-init >
+      if (h == 4) { wrapOne(this.nA[root], this.nB[root], this.rw.rules.model.castTemplate("double", "float"), 0); }
     }
     applyEdits();
   }
