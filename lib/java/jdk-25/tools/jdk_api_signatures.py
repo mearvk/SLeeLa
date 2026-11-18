@@ -116,8 +116,8 @@ def generic_annotation(tparams: str) -> list:
     return [f'  @generic("{value}")']
 
 
-def render(type_name: str, m: dict) -> str:
-    tvars = tvar_names(m.get("tparams", ""))
+def render(type_name: str, m: dict, class_tvars: set | None = None) -> str:
+    tvars = (class_tvars or set()) | tvar_names(m.get("tparams", ""))
     mods = [x for x in m["mods"].split() if x != "abstract"]
     lines = []
     if m["protected"] and not m["static"]:
@@ -160,8 +160,8 @@ def split_top(s: str) -> list:
     return out
 
 
-def render_ctor(type_name: str, cls: str, m: dict) -> str:
-    tvars = tvar_names(m.get("tparams", ""))
+def render_ctor(type_name: str, cls: str, m: dict, class_tvars: set | None = None) -> str:
+    tvars = (class_tvars or set()) | tvar_names(m.get("tparams", ""))
     mods = [x for x in m["mods"].split() if x in ("public", "protected")]
     lines = []
     if m["protected"]:
@@ -351,7 +351,7 @@ def main() -> int:
             if taken(m, tv) or key in seen:
                 continue
             seen.add(key)
-            lines.append(render(name, m))
+            lines.append(render(name, m, class_tvars))
             total += 1
             abstract += 1 if m["abstract"] else 0
         # Constructors: overload resolution binds by arity then type, so each Java
@@ -372,7 +372,7 @@ def main() -> int:
             if ckey in cseen:
                 continue
             cseen.add(ckey)
-            ctor_lines.append(render_ctor(name, cls, m))
+            ctor_lines.append(render_ctor(name, cls, m, class_tvars))
             ctors += 1
         new = base
         if lines or ctor_lines:
