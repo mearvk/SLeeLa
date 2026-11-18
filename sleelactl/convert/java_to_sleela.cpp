@@ -2985,7 +2985,12 @@ private:
     bool isBuiltinCallName(const std::string& n) const {
         return cm_find(&M, "qualify", n.c_str(), nullptr, nullptr) != nullptr;
     }
-    static std::string mapMember(const std::string& n) { return n == "close" ? "closeResource" : n; }
+    std::string mapMember(const std::string& n) const {
+        if (n != "close") return n;
+        const cm_rec* r = cm_find(&M, "rename", "close", "all", nullptr);
+        if (!r) fail("model", "the conversion model has no close member mapping");
+        return r->f[2];
+    }
     bool lastVarargs_ = false;
     std::string yieldVar_;
     Ty yieldTy_;
