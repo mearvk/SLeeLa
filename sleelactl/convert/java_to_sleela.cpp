@@ -1076,6 +1076,13 @@ private:
         if (from == to) return true;
         if (depth > 32) return false;
         if (to == "Object" && !isPrimitiveName(from)) return true;
+        // Wrapper supertypes needed when a primitive argument is boxed during
+        // generic inference (for example T extends Number with identity(1)).
+        if (modelBoxed(from)) {
+            const bool numeric = from=="Byte" || from=="Short" || from=="Integer" ||
+                from=="Long" || from=="Float" || from=="Double";
+            if (to=="Serializable" || to=="Comparable" || (numeric && to=="Number")) return true;
+        }
         auto it=classes.find(from);
         if (it==classes.end()) return to=="Object";
         if (!it->second.super.empty() && isSubtypeName(it->second.super,to,depth+1)) return true;
