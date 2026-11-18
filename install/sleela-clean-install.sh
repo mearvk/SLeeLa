@@ -28,8 +28,8 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd -- "$SCRIPT_DIR/.." && pwd)"
 
 PRODUCT="SLeeLa"
-RELEASE="1.3.2-pro"
-SYNTAX_RANGE="1.0 - 3.1"
+RELEASE="1.0121"
+SYNTAX_RANGE="1.0 - 3.2"
 TAGLINE="THE NOW. THE INGREDIENT."
 
 # ---------------------------------------------------------------------------
