@@ -63,8 +63,8 @@ Recent additions to the language, drivers, and standard library:
   `SLDoubleArray`, `SLRefArray`, `SLArray2D` helpers). Related 3.0 work: §43.7
   (interfaces are runtime supertypes; calls on `Any` receivers) and §37.5 (VM
   faults are catchable inside `try`). The source compiler accepts syntax 1.0 –
-  3.1, and the committed `working-binaries/` toolchain was rebuilt on 2026-11-13
-  and now reports the same range. See [Section V](#v-language-and-runtime).
+  3.2. Runtime/compiler binary identity is 1.0121; the version banners derive
+  the supported range from the shared frontend gate. See [Section V](#v-language-and-runtime).
 
 - **The `advantage` standard-library package — advantaging a dividend, with
   math, physics, integration, grading, and routable output.**
