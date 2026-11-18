@@ -11,7 +11,7 @@ normative specifications from implementation notes and live validation results.
 - [Language syntax specification](../SLEELA.syntax) — normative SLeeLa
   **Syntax 3.0** grammar. The shared compiler gate in
   `impl/frontend/version.{h,cpp}` accepts source syntax **1.0–3.2** and
-  defaults unversioned source to 3.1 with a warning. Syntax 3.0 consolidates
+  defaults unversioned source to 3.2 with a warning. Syntax 3.0 consolidates
   the established 1.x/2.x language surface while preserving each feature's
   original minimum-version gate. The `@mix` consequent-field feature remains
   gated at 2.9 (§28); the `prestige` marker in §27 remains a future proposal,
@@ -29,7 +29,7 @@ normative specifications from implementation notes and live validation results.
   SleelaDoc HTML site for the whole `/lib` tree (Home → Package → Class →
   Members), regenerated from source by `tools/generate-sleeladoc-api.py`.
   Per-edition snapshots live under [`api/sleela/`](../api/sleela/); the
-  current **3.1** edition (also written 3.01) is captured as immutable
+  previous **3.1** edition is preserved in immutable snapshots; the current edition is **3.2**
   snapshots in numbered subfolders, starting at
   [`version-001`](../api/sleela/3.1/version-001/index.html). The 3.0 edition
   and the older 2.x editions are preserved alongside it. Each later
