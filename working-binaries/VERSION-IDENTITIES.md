@@ -30,11 +30,7 @@ and the bytecode/artifact format. These numbers are not interchangeable.
 | `working-binaries/sleela` | SLeeLa Language/Runtime 1.3.2-pro | 1.012 | Rebuild required before claiming Syntax 3.2 |
 | `working-binaries/nordshrift` | Nordshrift 2.7.1-dev | 1.012 | Rebuild required before claiming Syntax 3.2 |
 
-The product identities above are retained; the artifact identity is an
-additional monotonically versioned binary-build identity. No binary payload
-is relabelled by this document. The committed prebuilt executables must be
-replaced and their SHA-256 values regenerated as part of the reproducible
-build/release step.
+The product identities above describe the currently committed payloads; the artifact identity is an additional monotonically versioned binary-build identity. The source-built `sleela` and `sleelvac` release identity is now **1.0121**, and the source compiler accepts Syntax 3.2. No committed binary payload is relabelled by that source change. The prebuilt executables must be rebuilt and replaced, then their SHA-256 values regenerated, before the checked-in binaries can claim the new product identity or Syntax 3.2 support.
 
 ## Additional tracked binary artifacts
 
