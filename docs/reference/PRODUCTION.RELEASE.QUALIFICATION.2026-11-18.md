@@ -222,3 +222,31 @@ Production release remains blocked until all of these are true:
 **Release status: HOLD.** The repository has meaningful converter and signature-index progress, historical positive differential evidence, a fail-closed refusal model, and a JDK 28 campaign. It does not yet have current-master compile logs, current positive/negative execution results, completed JDK 28 campaign artifacts, or complete Java API functional implementations.
 
 Do not tag or advertise this baseline as a production Java-conversion release. The next valid release candidate is the first commit for which the commands in section 3 have completed and their raw outputs and machine-readable reports have been archived. Update the measured counts only from those outputs.
+
+
+## Verification refresh — current master `0efee0beeee62f883b369c54dc55cf9f620ae308` (2026-11-18, latest inspection)
+
+This section supersedes the earlier branch/run metadata above where it differs.
+
+| Gate | Current finding | Qualification |
+|---|---|---|
+| 1. Master baseline | **CONFIRMED** — master points to `0efee0beeee62f883b369c54dc55cf9f620ae308` (`docs: clarify Java verification baseline`). | Baseline identity verified through GitHub. |
+| 2. SHA-256 manifest impact | **PASS — change-impact scope only.** Comparing `3478f4856d044b615ff2e999ca5730a80eedd394` to current master shows five commits and only three changed files: `comparison/ARITHMETIC.SPEED.001.md`, this report, and `docs/reference/JAVA.CONVERSION.STATUS.md`. None are in the generator's protected source directories or explicit native-input list. | No manifest regeneration is indicated by this delta. The byte-for-byte `tools/verify-before-execution.py` run was not executed; do not describe the runtime verifier itself as passed. |
+| 3. Runtime/compiler/converter builds | **NOT VERIFIED** — no completed current-master build logs were found. | No compile success claimed. |
+| 4. Conversion model and JDK 28 signatures | **PENDING** — no completed current-master self-check or JDK 28 campaign artifact inspected. | Model 1.5.0 still needs execution against the current tree. |
+| 5. Differential and refusal suites | **PENDING** — PR Java-converter and regression jobs remain queued; no completed current-master results. | Historical 32/32 is not current evidence. |
+| 6. Native per-member policy, transactional publication, provenance, repeat-run | **UNVERIFIED** — no completed current-baseline logs/artifacts inspected. | Test scripts/contracts are not proof of execution. |
+| 7. Representative Java execution | **UNVERIFIED** — no current-baseline JDK-reference versus SLeeLa output comparison inspected. | No runtime equivalence claim. |
+| 8. JDK 28 and platform qualification | **PENDING** — current-master native portability run is queued; its Linux, Windows 10+/MinGW-w64, and macOS jobs are queued. JDK 28, Java differential, regression, and root-build qualification have not completed on current master. | No platform or JDK 28 qualification claim. |
+
+### Current CI and branch state
+
+- Current master SHA: `0efee0beeee62f883b369c54dc55cf9f620ae308`.
+- Combined commit status currently exposes **no status entries** for this SHA.
+- Latest native portability workflow on current master: [run 44417706501](https://github.com/mearvk/SLeeLa/actions/runs/44417706501); all three platform jobs are queued.
+- Other recent master push runs inspected (including regression and portability runs on earlier commits) are also queued; none supplied a completed result for the current tip.
+- PR [#378](https://github.com/mearvk/SLeeLa/pull/378) is still open/unmerged. Its head `6f7fc49723eed52dfbbe9827c047944c1787e43c` is now **4 commits ahead / 14 behind** current master. The four ahead commits change only the four workflow files `.github/workflows/java-convert.yml`, `.github/workflows/jdk28-validation.yml`, `.github/workflows/regression-set.yml`, and `.github/workflows/root-build-install.yml`. Its Java, JDK 28, regression, portability and root-build runs remain queued/pending on that stale PR head. Do not treat them as current-master results or merge without reconciling the 14-commit divergence.
+
+### Overall decision
+
+**HOLD — production qualification is not complete.** Gate 1 is confirmed. Gate 2 passes only the manifest change-impact review; direct digest verification remains unexecuted. Gates 3–8 lack completed current-master evidence. The repository connector does not provide a local shell/checkout or workflow-dispatch action in this session, so no local build, verifier, converter, or representative program execution is claimed.
