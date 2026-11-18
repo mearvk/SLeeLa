@@ -139,11 +139,12 @@ This is an API foundation rather than a claim that every construct can already b
 ## SLeeLa syntax 3.1 source target
 
 The SLeeLa source-output target is aligned with the normative syntax **3.1**
-edition. The compiler gate accepts declared source syntax 1.0–3.1. When
+edition. The compiler gate accepts declared source syntax 1.0–3.2 and defaults
+unversioned source to 3.2 with a warning. When
 reconstructing SLeeLa, the decompiler should preserve a known original source
 version when evidence supports it; otherwise it must label the selected target
 version explicitly and avoid claiming that reconstructed source is byte-for-byte
-or semantically identical to the original. Syntax 3.0 does not make unsupported
+or semantically identical to the original. Syntax 3.2 does not make unsupported
 instructions, source constructs, or native behavior recoverable.
 
 Normative grammar: [`SLEELA.syntax`](../SLEELA.syntax). Generated standard-library
