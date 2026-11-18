@@ -11,7 +11,8 @@
 #      every Apache DocumentRoot, the whole /etc/apache2 tree, and the previous static dir. Writes backup/restore.sh.
 #   3. Fetches or refreshes the SLeeLa checkout (content is read live from it) and builds the WAR (mvn, else Docker).
 #      Builds the premium VMs (slvm-1..11) in the checkout so the Runtime page can offer them; a VM that does not build
-#      stays disabled on the page and the deploy continues.
+#      stays disabled on the page and the deploy continues. Also builds and smoke-runs the ten standard VMs
+#      (idea-vm-001..010, `make -C virtual-machine/vm-version`); a failure there is reported and the deploy continues.
 #   4. Tomcat: installs the WAR as ROOT, points it at the checkout via conf/Catalina/localhost/ROOT.xml, restarts,
 #      and waits for /healthz. On failure it restores the Tomcat backup automatically (unless --no-rollback).
 #   5. Apache: enables proxy + proxy_http (+ headers), serves /assets and /favicon.svg itself from STATIC_DIR,
@@ -24,8 +25,9 @@
 #   --apache-only    skip Tomcat (Tomcat must already serve the site)
 #   --no-rollback    keep the failed state for debugging instead of restoring the backup
 #   --install-deps   apt-get install bubblewrap, util-linux and python3 (the runtime sandbox needs them),
-#                    plus gcc, g++ and make (build-essential) for the premium VMs
+#                    plus gcc, g++ and make (build-essential) for the premium and standard VMs
 #   --no-premium-vms do not build the premium VMs (the Runtime page then offers the Native VM only)
+#   --no-standard-vms do not build and smoke-run the ten standard VMs (idea-vm-001..010)
 #   --no-runtime     deploy the site with the Runtime page switched off (sleela.runtime.mode=off)
 #   --war FILE       use a prebuilt WAR instead of building
 #   -h, --help
@@ -40,7 +42,7 @@ set -Eeuo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 
-DRY_RUN=0; DO_TOMCAT=1; DO_APACHE=1; ROLLBACK=1; WAR_FILE=""; INSTALL_DEPS=0; RUNTIME_MODE=auto; PREMIUM_VMS=1
+DRY_RUN=0; DO_TOMCAT=1; DO_APACHE=1; ROLLBACK=1; WAR_FILE=""; INSTALL_DEPS=0; RUNTIME_MODE=auto; PREMIUM_VMS=1; STANDARD_VMS=1
 while [ $# -gt 0 ]; do
   case "$1" in
     --dry-run) DRY_RUN=1 ;;
@@ -50,6 +52,7 @@ while [ $# -gt 0 ]; do
     --install-deps) INSTALL_DEPS=1 ;;
     --no-runtime) RUNTIME_MODE=off ;;
     --no-premium-vms) PREMIUM_VMS=0 ;;
+    --no-standard-vms) STANDARD_VMS=0 ;;
     --war) shift; WAR_FILE="${1:?--war needs a file}"; [ -e "$WAR_FILE" ] && WAR_FILE="$(cd "$(dirname "$WAR_FILE")" && pwd)/$(basename "$WAR_FILE")" ;;
     -h|--help) sed -n '2,/^set -E/p' "$0" | sed '$d; s/^# \{0,1\}//'; exit 0 ;;
     *) echo "unknown option: $1 (see --help)" >&2; exit 2 ;;
@@ -363,7 +366,7 @@ if [ "$RUNTIME_MODE" = auto ]; then
   have bwrap   || missing+=(bubblewrap)
   have prlimit || missing+=(util-linux)
   have python3 || missing+=(python3)
-  if [ "$PREMIUM_VMS" = 1 ]; then { have cc && have c++ && have make && have ar; } || missing+=(build-essential); fi
+  if [ "$PREMIUM_VMS" = 1 ] || [ "$STANDARD_VMS" = 1 ]; then { have cc && have c++ && have make && have ar; } || missing+=(build-essential); fi
   if [ "${#missing[@]}" -gt 0 ]; then
     if [ "$INSTALL_DEPS" = 1 ] && have apt-get; then
       log "Installing runtime sandbox packages: ${missing[*]}"
@@ -423,6 +426,30 @@ elif [ "$PREMIUM_VMS" = 1 ]; then
     fi
     echo "    premium VMs: $PREMIUM_STATUS"
   fi
+fi
+
+# Standard VMs (the ten escalating idea-vm-001..010): each is built from its own folder and smoke-run. They need only a C
+# compiler, not the Core archive, so this runs even when the premium VMs could not be built.
+STANDARD_STATUS="not built (--no-standard-vms)"
+if [ "$STANDARD_VMS" = 1 ]; then
+  log "Building the standard VMs (idea-vm-001..010)"
+  SVM_DIR="$SLEELA_SRC/virtual-machine/vm-version"
+  SVM_LOG="$BACKUP_DIR/standard-vms.log"; [ "$DRY_RUN" = 1 ] && SVM_LOG=/dev/stdout
+  if [ ! -f "$SVM_DIR/Makefile" ]; then
+    STANDARD_STATUS="not built (no $SVM_DIR/Makefile; update the checkout: git -C $SLEELA_SRC pull)"
+    warn "Standard VMs $STANDARD_STATUS"
+  elif ! { have cc && have make; }; then
+    STANDARD_STATUS="not built (needs gcc and make: rerun with --install-deps)"
+    warn "Standard VMs $STANDARD_STATUS"
+  elif run make -C "$SVM_DIR" all >"$SVM_LOG" 2>&1; then
+    STANDARD_STATUS="10 of 10 built and smoke-run"
+    echo "    standard VMs: $STANDARD_STATUS"
+  else
+    STANDARD_STATUS="build failed (see $SVM_LOG)"
+    warn "Standard VMs: $STANDARD_STATUS"
+    tail_safe "$SVM_LOG" 60
+  fi
+  [ "$DRY_RUN" = 1 ] || run chmod -R a+rX "$SVM_DIR/build" 2>/dev/null || true
 fi
 
 if [ -z "$WAR_FILE" ]; then
@@ -590,6 +617,7 @@ echo "    Tomcat : $TOMCAT_STATUS"
 echo "    Apache : $APACHE_STATUS"
 echo "    Runtime: $RUNTIME_STATUS"
 echo "    Premium VMs: $PREMIUM_STATUS"
+echo "    Standard VMs: $STANDARD_STATUS"
 echo "    Backup : $BACKUP_DIR   (restore: $BACKUP_DIR/restore.sh [tomcat|apache|all])"
 [ "$APACHE_STATUS" = "${APACHE_STATUS#ok}" ] || echo "    Note   : $APACHE_ETC/conf-enabled/$CONF_NAME.conf maps / on every Apache virtual host to the site"
 echo "    Content: $SLEELA_SRC   (to update: git -C $SLEELA_SRC pull && systemctl restart ${TOMCAT_SERVICE:-<tomcat>})"
