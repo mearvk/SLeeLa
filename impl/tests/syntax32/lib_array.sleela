@@ -1,0 +1,46 @@
+#sleela 3.2
+class LibArray {
+  void main() {
+    int[] a = {5, 3, 9, 1, 7};
+    print(SLIntArray.toText(a));
+    print(SLIntArray.sumOf(a) + " " + SLIntArray.minOf(a) + " " + SLIntArray.maxOf(a));
+    int[] b = SLIntArray.copyOf(a, 3);
+    print(SLIntArray.toText(b) + " " + SLIntArray.toText(SLIntArray.copyOf(a, 7)));
+    print(SLIntArray.toText(SLIntArray.copyOfRange(a, 1, 4)));
+    print(SLIntArray.toText(SLIntArray.concat(b, a)));
+    SLIntArray.sort(a);
+    print(SLIntArray.toText(a));
+    print(SLIntArray.binarySearch(a, 7) + " " + SLIntArray.binarySearch(a, 4) + " " + SLIntArray.binarySearch(a, 100));
+    SLIntArray.reverse(a);
+    print(SLIntArray.toText(a));
+    SLIntArray.swap(a, 0, 4);
+    print(SLIntArray.toText(a));
+    print(SLIntArray.indexOf(a, 9) + " " + SLIntArray.lastIndexOf(a, 1) + " " + SLIntArray.contains(a, 42));
+    int[] f = new int[4];
+    SLIntArray.fill(f, 6);
+    SLIntArray.fillRange(f, 1, 3, 0);
+    print(SLIntArray.toText(f));
+    print(SLIntArray.isEqual(f, new int[]{6, 0, 0, 6}) + " " + SLIntArray.isEqual(f, a));
+    int[] big = new int[200];
+    for (int i = 0; i < 200; i++) { big[i] = (i * 37) % 101; }
+    SLIntArray.sort(big);
+    boolean ok = true;
+    for (int i = 1; i < 200; i++) { if (big[i - 1] > big[i]) { ok = false; } }
+    print(ok);
+    double[] d = {2.5, 0.5, 4};
+    print(SLDoubleArray.sumOf(d) + " " + SLDoubleArray.minOf(d) + " " + SLDoubleArray.maxOf(d));
+    print(SLDoubleArray.indexOf(d, 0.5));
+    Any[] r = new Any[3];
+    SLRefArray.fill(r, "z");
+    print(SLRefArray.lengthOf(r) + " " + r[2] + " " + SLRefArray.isEmpty(r) + " " + SLRefArray.same(r, r));
+    int[][] g = SLArray2D.create(2, 3);
+    SLArray2D.fill(g, 4);
+    g[1][2] = 9;
+    print(SLArray2D.toText(g) + " " + SLArray2D.sumOf(g));
+    print(SLArray2D.toText(SLArray2D.transpose(g)));
+    int[][] c = SLArray2D.copy(g);
+    c[0][0] = 0;
+    print(g[0][0] + " " + c[0][0] + " " + SLArray2D.isRectangular(g) + " " + SLArray2D.rows(g) + SLArray2D.cols(g, 1));
+    try { SLIntArray.checkIndex(5, 3); } catch (RuntimeException e) { print("caught"); }
+  }
+}
