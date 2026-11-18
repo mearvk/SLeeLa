@@ -170,3 +170,11 @@ This was a repository-document and implementation-scope review through the GitHu
 - Source commit: 5bad03a4ad9af7adbb2900fd1a9a1b7432275e1b; fixture commit: 05d30a7555a0c296c7feb631de69b34ca0a46276.
 - Verification status: NOT RUN / NOT PASS. The push-triggered JDK 28 workflow run was created and then cancelled by GitHub before useful job execution. No local compiler or differential suite was available through this repository-edit session. Do not count the fixture as passing until the converter build and full differential suite complete.
 - Still outstanding for this numbered milestone: complete target-type constraint propagation across all expression contexts; proper wildcard capture identities and capture conversion; intersection LUB representation and preservation; generic constructor/diamond inference and constructor overloads; remaining class-generic receiver/field/initializer contexts. Existing upper-bound-only and unique-common-supertype paths remain partial, not full JLS inference.
+
+
+### Direct-to-master integration — PR #379 (2026-11-18)
+
+- Per the user's instruction to push existing work directly to `master`, PR [#379](https://github.com/mearvk/SLeeLa/pull/379) was marked ready and merged.
+- Merge commit: `081099e892f3e341c723ccf7d804ccafcb3c0169` (three commits; three files: deferred wildcard lower-bound inference, its Java differential fixture, and this progress ledger).
+- The PR's JDK differential job was still queued at merge time; the JDK 28 workflow had been cancelled. No compile, differential, runtime or platform pass is claimed for this merge. The change is pushed, but remains verification-pending.
+- PR #372 is not merged by this action: its head is 413 commits behind current `master`, its mergeability check reports false, and its JDK converter and native portability workflows recorded failures. Its non-overlapping changes must be reviewed and ported onto current `master` rather than merging its stale branch wholesale.
