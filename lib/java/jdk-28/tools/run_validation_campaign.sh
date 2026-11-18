@@ -2,7 +2,7 @@
 # Full JDK 28 API/library validation campaign.
 # Run from any directory; requires Python 3, a JDK (25+), and a source-built SLeeLa runtime.
 set -uo pipefail
-root="$(cd "$(dirname "$0")/../../.." && pwd)"
+root="$(cd "$(dirname "$0")/../../../.. && pwd)"
 bin="${SLEELA_BIN:-$root/impl/build/sleela}"
 report_dir="${JDK28_REPORT_DIR:-$root/build/jdk28-validation}"
 mkdir -p "$report_dir"
