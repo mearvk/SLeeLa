@@ -45,7 +45,7 @@ The repository tree inventory also finds these non-toolchain binary payloads. Th
 | `api/sleela/2.8/generic.dna.bin` | 1.0121 | Binary data artifact; identity assigned without changing its data format |
 | `utf-4088/tools/utf4088-million.bin` | 1.0121 | Generated binary data artifact; identity assigned without changing its data format |
 
-The 1.0121 assignments are registry identities. They do not alter byte payloads. The inventory covers 16 binary payloads: 2 toolchain executables, 1 plugin JAR, 1 native test executable, 9 Java class files, and 2 binary data files.
+The 1.0121 assignments are registry identities. They do not alter byte payloads. The inventory covers 15 binary payloads: 2 toolchain executables, 1 plugin JAR, 1 native test executable, 9 Java class files, and 2 binary data files.
 The class and data artifacts should be regenerated from their owning sources when
 those projects next build. The old IntelliJ JAR is explicitly not represented as
 rebuilt: its source build identity is 1.012, while the committed JAR still needs
