@@ -138,6 +138,10 @@ class JConvRules {
      int follows intType; long, float, double and boolean are kept. >>
   String mapTypeName(String n) {
     if (n == "int") { return this.intType; }
+    if (this.model != null && this.model.loaded) {
+      String mapped = this.model.targetType(n);
+      if (mapped != "") { return mapped; }
+    }
     return n;
   }
 
