@@ -151,5 +151,21 @@ else
   printf 'FAIL  duplicate-type (rc=%s)\n%s\n' "$duplicate_rc" "$duplicate_out"; fail=$((fail+1))
 fi
 
+# Duplicate declarations in the same compilation unit are ambiguous too;
+# sourceName alone must not make a second declaration look like a re-visit.
+mkdir -p "$tmp/duplicate-same/src" "$tmp/duplicate-same/out"
+cat > "$tmp/duplicate-same/src/Duplicate.java" <<'JAVA'
+class Repeated { int first() { return 1; } }
+class Repeated { int second() { return 2; } }
+class DuplicateUse { Repeated value; }
+JAVA
+same_duplicate_out="$("$conv" --jdk "$tmp/duplicate-same/src" --out "$tmp/duplicate-same/out" --quiet 2>&1)"
+same_duplicate_rc=$?
+if [ "$same_duplicate_rc" -eq 1 ] && printf '%s' "$same_duplicate_out" | grep -q "\[type-ambiguous\]"; then
+  printf 'PASS  %-12s duplicate declaration in one source unit refused\n' "duplicate-same-unit"; pass=$((pass+1))
+else
+  printf 'FAIL  duplicate-same-unit (rc=%s)\n%s\n' "$same_duplicate_rc" "$same_duplicate_out"; fail=$((fail+1))
+fi
+
 echo "javaconv differential: pass=$pass fail=$fail"
 [ "$fail" -eq 0 ]
