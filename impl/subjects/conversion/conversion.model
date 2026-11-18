@@ -9513,13 +9513,15 @@ unsupported incr-expr ++/-- of a floating point value used as a value cannot rec
 unsupported assign-expr an assignment inside a construct the converter cannot hoist or sequence
 unsupported switch-expr a switch expression must start the expression of a declaration, assignment, return or expression statement; type patterns and case null are not converted
 unsupported string-static String is a keyword type in SLeeLa, so String.valueOf / String.format / String.join cannot be called as static members yet
-unsupported nested nested/inner/anonymous types are not converted yet
+unsupported nested nested/inner/anonymous types that cannot be safely hoisted or captured are not converted
+unsupported local-type local class, interface, enum or record declarations inside executable blocks are not hoisted into the project symbol table
+unsupported boxed-null a nullable boxed wrapper cannot be represented by primitive SLeeLa storage; null wrapper assignment or default initialization is refused
 unsupported module-declaration Java Platform Module System declarations (module-info.java) are not converted
 unsupported annotation-type annotation interface declarations and annotation members are not converted
 unsupported switch-pattern Java type, guarded, record, and null switch patterns are not converted
 unsupported untyped operand type cannot be determined, so the Java operator semantics cannot be selected
-unsupported init-block a static initializer block, or an initializer block outside an ordinary class, is not converted yet; instance initializer blocks are converted
+unsupported init-block a static initializer block, or an initializer block outside an ordinary class, is not converted; instance initializer blocks in ordinary classes are converted
 unsupported member-annotation an annotation type or annotation member declaration is not converted
 unsupported object-method a java.lang.Object method (equals, hashCode, getClass ...) on a user type that does not declare it is not converted yet
 unsupported object-text an object of a type of this tree with no toString() in its class chain is shown as text: Java prints an identity hash (Name@1b6d3586), which has no equivalent
-unsupported boxed a boxed type (Integer, Long, Double, ...) used as a declared, parameter, return or cast type; boxed type arguments (List<Integer>) are erased and are converted
+unsupported boxed arrays of boxed wrapper types are not represented as reference arrays; scalar non-null wrappers use primitive storage
