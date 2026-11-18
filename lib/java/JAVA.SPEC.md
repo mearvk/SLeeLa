@@ -238,7 +238,7 @@ String context goes through `tostr char`. Tests: `Strings`, `Operands`.
 - Object text. An object of a class of this tree shown as text calls `toString()` through a
   generated static helper `Owner.javaText(x)` (`null` is `"null"`); other objects through
   `JavaFormat.objectText` (4.4).
-- Boxed types. Scalar wrapper declarations and parameters use primitive storage for non-null values; modelled boxing/unboxing and invocation widening are supported (`BoxingOverload`, `BoxingUnboxingWidening`). A wrapper default or explicit `null` assignment is refused (`[boxed-null]`) because a primitive slot cannot preserve Java null; wrapper arrays are refused (`[boxed]`) because reference-array identity and nullable elements are not represented. Boxed type arguments (`List<Integer>`) are erased. Tests: `BoxingUnboxingWidening`, `reject/BoxedDecl`, `reject/BoxedNull`.
+- Boxed types. Scalar wrapper declarations and parameters use primitive storage for non-null values; modelled boxing/unboxing and invocation widening are supported (`BoxingOverload`, `BoxingUnboxingWidening`). A wrapper default or explicit `null` assignment is refused (`[boxed-null]`) because a primitive slot cannot preserve Java null; wrapper arrays are refused (`[boxed]`) because reference-array identity and nullable elements are not represented. Boxed type arguments (`List<Integer>`) are erased. Tests: `BoxingUnboxingWidening`, `reject/BoxedDecl`, `reject/BoxedNull`, `reject/BoxedNullParameter`, `reject/BoxedNullField`.
 - Interfaces carry no metadata fields; every class carries the Metadata Class record.
 - Limits: at most 64 instance fields per class (13 are metadata).
 
