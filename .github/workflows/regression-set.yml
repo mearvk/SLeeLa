@@ -1,4 +1,5 @@
 name: Regression set (C, C++, Python)
+# Production qualification request: run Linux, sanitizer, macOS and Windows event regression jobs.
 
 # Runs test-suites/regression on every change to the code it covers:
 #   linux       full set (corpus, mutation testing, document versions) against the compiler built from
