@@ -14,11 +14,10 @@
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
     `#sleela 3.0`) is the grammar edition defined here and enforced by
     `impl/frontend/version.{h,cpp}` (supported range 1.0 .. 3.2).
-    Syntax 3.01 (also spelled 3.1; the minor is an integer, 44.1) is the current
-    normative edition: section 44 (the character literal, the array initializer,
-    labeled statements, and return / break / continue through `finally`),
-    section 45 (the char specification) and section 46 (the array specification,
-    `a.length` and `new T[a][b]`). Syntax 3.0 consolidated the 1.x and 2.x
+    Syntax 3.2 is the current normative edition. It retains section 44 (character
+    literals, array initializers, labeled statements, and abrupt completion
+    through `finally`) and formalizes section 45 (typed `char` semantics) and
+    section 46 (array length, multidimensional creation, and nested initializers). Syntax 3.0 consolidated the 1.x and 2.x
     language surface into one specification and keeps historical feature
     gates intact; it does not silently enable a feature below that feature's
     original minimum version. Syntax 3.0 also adds the `pure` and `gasoline`
