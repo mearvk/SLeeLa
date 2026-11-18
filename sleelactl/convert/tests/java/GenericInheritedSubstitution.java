@@ -5,7 +5,10 @@ public class GenericInheritedSubstitution {
     Base(T value) { this.value = value; }
     public T get() { return value; }
   }
-  static class TextValue extends Base<String> {
+  static class Mid<T> extends Base<T> {
+    Mid(T value) { super(value); }
+  }
+  static class TextValue extends Mid<String> {
     TextValue(String value) { super(value); }
   }
   static class IntegerValue extends Base<Integer> {
