@@ -16,6 +16,7 @@ public class WildcardGeneric {
         Child child = first(children, new Child());
         acceptsAny(children);
         acceptsSuper(parents);
+        acceptsArray(childBags);
         System.out.println(child != null);
     }
 }
