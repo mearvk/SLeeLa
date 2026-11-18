@@ -1118,6 +1118,8 @@ private:
                     if (variable && n && i>=n-1) target=mk(m.params.back().n,m.params.back().dims-1);
                     else if (i<n) target=m.params[i];
                     else { applicable=false; break; }
+                    const bool directTypeVariable=target.n.rfind("$T$",0)==0;
+                    const int directVariableDims=target.dims;
                     std::function<bool(const Ty&,const Ty&)> inferGeneric =
                         [&](const Ty& formal, const Ty& actual) -> bool {
                             if (formal.n.rfind("$T$",0)==0) {
@@ -1170,11 +1172,11 @@ private:
                             return true;
                         };
                     if (!inferGeneric(target,args[i].ty)) { applicable=false; break; }
-                    if (target.n.rfind("$T$",0)==0) {
+                    if (directTypeVariable) {
                         auto ti=inferred.find(target.n.substr(3));
                         if (ti==inferred.end()) { applicable=false; break; }
                         target=ti->second;
-                        target.dims+=m.params[i<n?i:n-1].dims;
+                        target.dims+=directVariableDims;
                     }
                     if (args[i].lambdaPos!=(size_t)-1) {
                         if (phase<2 && m.varargs && n && i==n-1 && target.dims>0) { applicable=false; break; }
