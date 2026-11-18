@@ -498,7 +498,7 @@ int main(int argc, char** argv) {
     OutputTransaction transaction(outRoot);
     std::string transactionError;
     if (!transaction.begin(&transactionError)) {
-        std::cerr << "javaconv: " << transactionError << "\\n";
+        std::cerr << "javaconv: " << transactionError << "\n";
         cm_free(&model);
         return 2;
     }
@@ -752,7 +752,7 @@ int main(int argc, char** argv) {
     }
 
     if (!transaction.commit(&transactionError)) {
-        std::cerr << "javaconv: " << transactionError << "\\n";
+        std::cerr << "javaconv: " << transactionError << "\n";
         cm_free(&model);
         return 2;
     }
