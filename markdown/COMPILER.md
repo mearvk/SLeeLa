@@ -140,13 +140,13 @@ the current values are:
 
 | Component | Version | Meaning | Source of truth |
 |-----------|---------|---------|-----------------|
-| **SLeeLa toolchain / implementation** (`sleela` CLI) | **1.3.2-pro** | The current Pro release of the C/C++ front end + core in `impl/`. | `impl/frontend/driver.cpp` |
+| **SLeeLa toolchain / implementation** (`sleela` CLI) | **1.0121** | The current Pro release of the C/C++ front end + core in `impl/`. | `impl/frontend/driver.cpp` |
 | **Sleela language syntax** | **3.2** (range `1.0 .. 3.2`) | The grammar version a `.sleela` file declares via `#sleela`. | `impl/frontend/version.h` |
 | **Nordshrift** (`.sst` transpiler driver) | **2.7.1-dev** | Reuses this front end; enforces the same syntax rules. | `impl/nordshrift/nordshrift.cpp` |
 | **NS-SST-0001** (`.sst` format spec) | **1.0.0** (Normative) | The `.sst` control-sheet format. | `SST.model` |
 | **SL-META-0001** (metadocument) | **1.0.0** (Pre-Normative) | The governing language metadocument, incl. §4.4. | `src/Sleela.manifest` |
 
-> **In short:** the compiler/runtime product release is **1.3.2-pro** and the
+> **In short:** the compiler/runtime product release is **1.0121** and the
 > current language edition is **SLeeLa syntax 3.2**. These are independent
 > version tracks; Nordshrift delegates to the same frontend compatibility gate.
 
@@ -154,7 +154,7 @@ Query the live values:
 
 ```sh
 ./build/sleela version
-#  SLeeLa Language/Runtime 1.3.2-pro
+#  SLeeLa Language/Runtime 1.0121
 #    supported .sleela syntax: 1.0 .. 3.2 (declare per-file with '#sleela X.Y')
 ```
 
