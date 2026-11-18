@@ -1134,7 +1134,7 @@ private:
                 int cost=0; bool applicable=true;
                 for (size_t i=0;i<args.size();++i) {
                     Ty target;
-                    if (variable && n && i>=n-1) target=mk(m.params.back().n,m.params.back().dims-1);
+                    if (variable && n && i>=n-1) { target=m.params.back(); target.dims--; }
                     else if (i<n) target=m.params[i];
                     else { applicable=false; break; }
                     const bool directTypeVariable=target.n.rfind("$T$",0)==0;
@@ -1284,7 +1284,7 @@ private:
         const MethodSig& selected = resolvedMethod(m);
         const size_t n = selected.params.size();
         const bool directVarargs = selected.varargs && n > 0 && args.size() == n &&
-            (args.back().isNull || (args.back().ty.dims == selected.params.back().dims && args.back().ty.n == selected.params.back().n));
+            (args.back().isNull || (args.back().ty == selected.params.back()));
         for (size_t i = 0; i < args.size(); i++) {
             if (args[i].lambdaPos == (size_t)-1) continue;
             const size_t pi = i < n ? i : (selected.varargs && n > 0 ? n-1 : n);
@@ -1303,7 +1303,7 @@ private:
             const Ty& vt = selected.params.back();
             const bool direct = directVarargs;
             if (!direct) {
-                Ty et = mk(vt.n, vt.dims - 1);
+                Ty et = vt; et.dims--;
                 std::string body;
                 bool imp = false;
                 for (size_t i = fixed; i < args.size(); i++) {
