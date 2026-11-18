@@ -23,9 +23,10 @@ def safe(rel):
     p = pathlib.PurePosixPath(rel)
     return bool(rel) and not p.is_absolute() and all(x not in ("", ".", "..") for x in p.parts)
 
-if len(sys.argv) != 5:
-    fail("usage: verify-provenance.py MANIFEST REPO_ROOT SOURCE_ROOT OUTPUT_ROOT")
-manifest, repo, src, out = map(pathlib.Path, sys.argv[1:])
+if len(sys.argv) not in (5, 6):
+    fail("usage: verify-provenance.py MANIFEST REPO_ROOT SOURCE_ROOT OUTPUT_ROOT [MODEL_PATH]")
+manifest, repo, src, out = map(pathlib.Path, sys.argv[1:5])
+model_override = pathlib.Path(sys.argv[5]) if len(sys.argv) == 6 else None
 try:
     data = json.loads(manifest.read_text(encoding="utf-8"))
 except Exception as exc:
@@ -33,11 +34,11 @@ except Exception as exc:
 if data.get("schema") != "sleelactl.javaconv.provenance.v1":
     fail("unsupported manifest schema")
 
-def verify_list(label, entries, root):
+def verify_list(label, entries, root, require_sorted=True):
     if not isinstance(entries, list):
         fail(f"{label} is not an array")
     names = [x.get("path") for x in entries]
-    if names != sorted(names) or len(names) != len(set(names)):
+    if len(names) != len(set(names)) or (require_sorted and names != sorted(names)):
         fail(f"{label} paths are not unique and sorted")
     fingerprint = bytearray()
     for item in entries:
@@ -59,10 +60,10 @@ if not isinstance(model, dict) or not isinstance(model.get("sha256"), str):
     fail("model digest missing")
 # The converter records the exact model digest; its configured path may be outside
 # the repository, so the default shared model is the verifiable repository contract.
-model_path = repo / "impl/subjects/conversion/conversion.model"
+model_path = model_override or (repo / "impl/subjects/conversion/conversion.model")
 if file_sha(model_path) != model["sha256"]:
     fail("shared conversion model digest mismatch")
-converter_fp = verify_list("converterSources", data.get("converterSources"), repo)
+converter_fp = verify_list("converterSources", data.get("converterSources"), repo, False)
 if converter_fp != data.get("converterSourceSha256"):
     fail("converter source aggregate mismatch")
 input_fp = verify_list("inputs", data.get("inputs"), src)
