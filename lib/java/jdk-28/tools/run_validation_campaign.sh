@@ -6,6 +6,7 @@ root="$(cd "$(dirname "$0")/../../../.. && pwd)"
 bin="${SLEELA_BIN:-$root/impl/build/sleela}"
 report_dir="${JDK28_REPORT_DIR:-$root/build/jdk28-validation}"
 mkdir -p "$report_dir"
+cd "$root"
 overall=0
 passed=0
 failed=0
