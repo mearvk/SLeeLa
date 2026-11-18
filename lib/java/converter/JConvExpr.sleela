@@ -765,9 +765,8 @@ class JConvExpr {
     if (t == 3) {
       if (k == "f" && (op == "-" || op == "+")) {
         sub(l, false, depth);
-        String f32 = this.rw.rules.model.castTemplate("double", "float");
+        String f32 = floatCastTemplate(this.nK[l]);
         wrapOne(this.nA[l], this.nB[l], f32, 2 * depth + 2);
-        wrapOne(this.nA[n], this.nB[n], f32, 2 * depth + 1);
       } else if (op == "-" || op == "~" || op == "+") { sub(l, k == "i", depth); }
       else { sub(l, false, depth); }
       return;
@@ -799,7 +798,7 @@ class JConvExpr {
       if (op == "=" || op == "+=" || op == "-=" || op == "*=" || op == "&=" || op == "|=" || op == "^=") { sub(r, vh, depth); }
       else { sub(r, false, depth); }
       if (tk2 == "f" && op == "=") {
-        String f32 = this.rw.rules.model.castTemplate("double", "float");
+        String f32 = floatCastTemplate(this.nK[r]);
         wrapOne(this.nA[r], this.nB[r], f32, 2 * depth + 1);
       }
       return;
@@ -808,18 +807,20 @@ class JConvExpr {
     if (k == "f" && (op == "+" || op == "-" || op == "*" || op == "/" || op == "%")) {
       sub(l, false, depth);
       sub(r, false, depth);
-      String f32 = this.rw.rules.model.castTemplate("double", "float");
-      wrapOne(this.nA[l], this.nB[l], f32, 2 * depth + 3);
-      wrapOne(this.nA[r], this.nB[r], f32, 2 * depth + 3);
-      wrapOne(this.nA[n], this.nB[n], f32, 2 * depth + 1);
+      String leftF32 = floatCastTemplate(this.nK[l]);
+      String rightF32 = floatCastTemplate(this.nK[r]);
+      wrapOne(this.nA[l], this.nB[l], leftF32, 2 * depth + 3);
+      wrapOne(this.nA[r], this.nB[r], rightF32, 2 * depth + 3);
+      wrapOne(this.nA[n], this.nB[n], this.rw.rules.model.castTemplate("double", "float"), 2 * depth + 1);
       return;
     }
     if ((op == "<" || op == ">" || op == "<=" || op == ">=" || op == "==" || op == "!=") && merge(this.nK[l], this.nK[r]) == "f") {
       sub(l, false, depth);
       sub(r, false, depth);
-      String f32cmp = this.rw.rules.model.castTemplate("double", "float");
-      wrapOne(this.nA[l], this.nB[l], f32cmp, 2 * depth + 2);
-      wrapOne(this.nA[r], this.nB[r], f32cmp, 2 * depth + 2);
+      String leftCmp = floatCastTemplate(this.nK[l]);
+      String rightCmp = floatCastTemplate(this.nK[r]);
+      wrapOne(this.nA[l], this.nB[l], leftCmp, 2 * depth + 2);
+      wrapOne(this.nA[r], this.nB[r], rightCmp, 2 * depth + 2);
       return;
     }
     if (k == "i" && (op == "+" || op == "-" || op == "*" || op == "&" || op == "|" || op == "^")) {
@@ -897,6 +898,15 @@ class JConvExpr {
     this.eOrd[this.eN] = ord;
     this.eSeq[this.eN] = seq;
     this.eN = this.eN + 1;
+  }
+
+  < the model cast row that converts an expression kind to binary32 >
+  String floatCastTemplate(String kind) {
+    if (kind == "i") { return this.rw.rules.model.castTemplate("int", "float"); }
+    if (kind == "l") { return this.rw.rules.model.castTemplate("long", "float"); }
+    if (kind == "c") { return this.rw.rules.model.castTemplate("char", "float"); }
+    if (kind == "f") { return this.rw.rules.model.castTemplate("float", "float"); }
+    return this.rw.rules.model.castTemplate("double", "float");
   }
 
   < a one-operand template F(G(x)) written around a .. b-1 >
@@ -1058,7 +1068,7 @@ class JConvExpr {
       < a chartext argument: only a char becomes text >
       if (h == 3 && this.nK[root] == "c") { tostrIfNeeded(root, 0); }
       < a value assigned to a float variable, returned as float, or used as a float for-init >
-      if (h == 4) { wrapOne(this.nA[root], this.nB[root], this.rw.rules.model.castTemplate("double", "float"), 0); }
+      if (h == 4) { wrapOne(this.nA[root], this.nB[root], floatCastTemplate(this.nK[root]), 0); }
     }
     applyEdits();
   }
