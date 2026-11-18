@@ -252,7 +252,7 @@ def build_signature_index(type_record: dict) -> dict:
         index.setdefault(signature_key(member, class_tvars), []).append(member)
     for group in index.values():
         group.sort(key=lambda m: (m.get("name", ""), tuple(p[0] for p in m.get("params", [])), m.get("tparams", "")))
-    return index
+    return dict(sorted(index.items(), key=lambda item: (item[0][0], item[0][1])))
 
 
 def inherited_implementation_methods(name: str, api: dict, impl_texts: dict) -> dict:
