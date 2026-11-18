@@ -2,8 +2,9 @@
    Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
    Definition: the expression half of the typed pass. It reads the statements of
    one converted member (the output token list of JConvRewriter), parses every
-   expression into a precedence tree, and writes the Java int laws of the
-   conversion model where they change a result:
+   expression into a precedence tree, and writes the Java numeric laws of the
+   conversion model where they change a result: Java int wrap and division,
+   plus binary32 float promotion, rounding, casts and text conversion:
    - int add, subtract, multiply, and, or, xor, not and shift left agree with
      arithmetic modulo 2^32, so a chain of them needs one wrap (the cast long
      int row, JavaOperands.toInt) only where its value leaves int arithmetic: a
