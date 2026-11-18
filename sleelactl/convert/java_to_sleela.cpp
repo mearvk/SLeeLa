@@ -919,6 +919,10 @@ private:
 
     std::vector<E> parseArgs() {
         std::vector<E> a;
+        // An enclosing assignment/return target constrains the invocation itself,
+        // not independent invocations nested in its argument expressions.
+        struct TargetRestore { Ty& slot; Ty saved; ~TargetRestore() { slot=saved; } } restore{lambdaTarget_,lambdaTarget_};
+        lambdaTarget_=Ty();
         expectOp("(");
         if (!isOp(")")) {
             do {
@@ -1206,7 +1210,7 @@ private:
         return true;
     }
 
-    const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0, int invocationKind = -1, const Ty* receiverType = nullptr) const {
+    const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0, int invocationKind = -1, const Ty* receiverType = nullptr, const Ty* expectedResultType = nullptr) const {
         if (depth > 32) return nullptr;
         std::vector<const MethodSig*> all;
         collectNamedMethods(cls,name,all);
@@ -1346,6 +1350,42 @@ private:
                     if(c<0){applicable=false;break;}
                     cost+=c;
                 }
+                if (applicable && expectedResultType && expectedResultType->known() && !m.typeParams.empty()) {
+                    std::function<bool(const Ty&)> containsMethodVariable = [&](const Ty& value) {
+                        if (value.n.rfind("$T$",0)==0) return true;
+                        for (const Ty& arg:value.args) if (containsMethodVariable(arg)) return true;
+                        return value.bound && containsMethodVariable(*value.bound);
+                    };
+                    if (containsMethodVariable(m.ret)) {
+                        std::function<bool(const Ty&,const Ty&)> inferFromTarget =
+                            [&](const Ty& formal,const Ty& expected) -> bool {
+                                if (formal.n.rfind("$T$",0)==0) {
+                                    if (!expected.known() || expected.n=="null" || expected.dims<formal.dims) return false;
+                                    Ty candidate=expected;
+                                    candidate.dims-=formal.dims;
+                                    if (candidate.dims==0 && isPrimitiveName(candidate.n)) {
+                                        std::string wrapper;
+                                        if (!modelWrapperForPrimitive(candidate.n,&wrapper)) return false;
+                                        candidate.n=wrapper; candidate.boxed=true;
+                                    }
+                                    const std::string variable=formal.n.substr(3);
+                                    auto prior=inferred.find(variable);
+                                    if (prior==inferred.end()) inferred[variable]=candidate;
+                                    else if (invocationCostLoose(prior->second,candidate)<0) return false;
+                                    return true;
+                                }
+                                if (formal.args.empty() || expected.n!=formal.n ||
+                                    expected.dims!=formal.dims || formal.args.size()!=expected.args.size()) return true;
+                                for (size_t i=0;i<formal.args.size();++i) {
+                                    const Ty& fa=formal.args[i];
+                                    if (fa.wildcard==1) continue;
+                                    if (!inferFromTarget(fa,expected.args[i])) return false;
+                                }
+                                return true;
+                            };
+                        if (!inferFromTarget(m.ret,*expectedResultType)) applicable=false;
+                    }
+                }
                 if (!applicable || inferred.size()!=m.typeParams.size()) {
                     if (!m.typeParams.empty()) sawUnsupportedGeneric=true;
                     continue;
@@ -1389,6 +1429,11 @@ private:
                 };
                 for (Ty& t:resolved.params) t=instantiate(t);
                 resolved.ret=instantiate(resolved.ret);
+                if (expectedResultType && expectedResultType->known() &&
+                    m.ret.n.rfind("$T$",0)==0 &&
+                    invocationCostLoose(resolved.ret,*expectedResultType)<0) {
+                    sawUnsupportedGeneric=true; continue;
+                }
                 if(!best || cost<bestCost) {
                     best=mp; bestResolved=resolved; bestCost=cost; ambiguous=false;
                 } else if(cost==bestCost && best) {
@@ -1516,12 +1561,12 @@ private:
         fail("object-method", "java.lang.Object." + name + " on " + recvType + ", which does not declare it, has no SLeeLa equivalent yet");
     }
 
-    E callResult(const std::string& recvType, const std::string& name, const std::vector<E>& args, std::string code, bool staticCall, const Ty* receiverType = nullptr) {
+    E callResult(const std::string& recvType, const std::string& name, const std::vector<E>& args, std::string code, bool staticCall, const Ty* receiverType = nullptr, const Ty* expectedResultType = nullptr) {
         E r;
         r.code = code;
         r.pure = false;
         (void)staticCall;
-        if (const MethodSig* m = pickMethod(recvType, name, args, 0, -1, receiverType)) {
+        if (const MethodSig* m = pickMethod(recvType, name, args, 0, -1, receiverType, expectedResultType)) {
             r.ty = resolvedMethod(m).ret;
             return r;
         }
@@ -1539,7 +1584,7 @@ private:
             auto ci = classes.find(up);
             if (ci == classes.end() || ci->second.super.empty() || ci->second.super == up) break;
             up = ci->second.super;
-            if (const MethodSig* m = pickMethod(up, name, args)) { r.ty = resolvedMethod(m).ret; return r; }
+            if (const MethodSig* m = pickMethod(up, name, args, 0, -1, nullptr, expectedResultType)) { r.ty = resolvedMethod(m).ret; return r; }
             rec = cm_find(&M, "ret", up.c_str(), name.c_str(), nullptr);
         }
         if (rec) {
