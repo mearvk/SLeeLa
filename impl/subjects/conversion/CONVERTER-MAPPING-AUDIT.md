@@ -183,5 +183,29 @@ creation time. Do not count an unknown-target stub as successful conversion.
    inference subset as C++.
 5. Complete package-aware symbol identity for colliding simple type names,
    wildcard type-import indexing, module/accessibility checks, and static
-   nested-type imports. Add whole-run staging to C++ and SHA-256
-   source/model/converter/output provenance to the SLeeLa-native converter.
+   nested-type imports.
+6. Add native project-wide overload-aware signature indexing, generic method
+   inference, and generic SAM substitution; this remains the largest semantic
+   parity gap. The native method table still collapses overloads by name.
+7. Add native ownership tracking for stale-output cleanup and run both new
+   repeat-run/provenance regression suites on a pinned JDK 28 fixture.
+
+
+## 2026-11-18 transactional publication update
+
+Both converter launch paths now have whole-run staged publication. The C++
+converter's existing transaction preserves output mtimes while copying the prior
+generation into its stage; its differential suite now checks repeat-run mtimes
+and independently verifies the per-file SHA-256 provenance inventory. The
+SLeeLa-native launcher stages the complete run across VM batches/restarts,
+refuses unsafe source/output trees, writes and independently validates a
+stable source/model/converter/output provenance manifest, and swaps the
+published directory only after `DONE`. Its integration regression checks
+repeat-run bytes/paths/mtimes and failure rollback. These tests are added, not
+reported as passing: no local build or converter execution was performed in
+this session.
+
+This does not close semantic parity. Native per-member stubs remain partial
+results, and its name-keyed method table still loses overload distinctions;
+project-wide overload resolution, generic invocation inference, generic SAM
+target substitution, and aligned accepted/refused outcomes remain required.
