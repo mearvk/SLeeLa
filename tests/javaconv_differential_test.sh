@@ -169,6 +169,74 @@ else
   printf 'FAIL  project-package (project build or conversion failed)\n'; cat "$tmp/project-package/javac.err"; fail=$((fail+1))
 fi
 
+# protected inherited members remain accessible to a cross-package subclass.
+mkdir -p "$tmp/project-protected/src/fixture/alpha" "$tmp/project-protected/src/fixture/child" "$tmp/project-protected/src/fixture/use" "$tmp/project-protected/cls" "$tmp/project-protected/sl"
+cat > "$tmp/project-protected/src/fixture/alpha/Base.java" <<'JAVA'
+package fixture.alpha;
+public class Base {
+  protected int value() { return 31; }
+}
+JAVA
+cat > "$tmp/project-protected/src/fixture/child/Child.java" <<'JAVA'
+package fixture.child;
+import fixture.alpha.Base;
+public class Child extends Base {
+  public int expose() { return value(); }
+}
+JAVA
+cat > "$tmp/project-protected/src/fixture/use/Main.java" <<'JAVA'
+package fixture.use;
+import fixture.child.Child;
+public class Main {
+  public static void main(String[] args) {
+    System.out.println(new Child().expose());
+  }
+}
+JAVA
+if javac -d "$tmp/project-protected/cls" "$tmp/project-protected/src/fixture/alpha/Base.java" "$tmp/project-protected/src/fixture/child/Child.java" "$tmp/project-protected/src/fixture/use/Main.java" 2> "$tmp/project-protected/javac.err" &&
+   java -cp "$tmp/project-protected/cls" fixture.use.Main > "$tmp/project-protected/expected.out" 2>&1 &&
+   "$conv" --jdk "$tmp/project-protected/src" --out "$tmp/project-protected/sl" --quiet; then
+  (cd "$tmp/project-protected/sl" && timeout 300 "$sleela" run fixture/use/Main.sleela 2>&1 | filter) > "$tmp/project-protected/actual.out"
+  if diff -u "$tmp/project-protected/expected.out" "$tmp/project-protected/actual.out" > "$tmp/project-protected/diff"; then
+    printf 'PASS  %-12s protected inherited member access in subclass matches the JDK\n' "protected-access"; pass=$((pass+1))
+  else
+    printf 'FAIL  project-protected\n'; head -40 "$tmp/project-protected/diff"; fail=$((fail+1))
+  fi
+else
+  printf 'FAIL  project-protected (project build or conversion failed)\n'; cat "$tmp/project-protected/javac.err"; fail=$((fail+1))
+fi
+
+# package-private members and top-level types are not visible across packages.
+mkdir -p "$tmp/project-access/src/fixture/alpha" "$tmp/project-access/src/fixture/use" "$tmp/project-access/out"
+cat > "$tmp/project-access/src/fixture/alpha/Visible.java" <<'JAVA'
+package fixture.alpha;
+public class Visible {
+  int hidden = 7;
+  public Visible() {}
+}
+JAVA
+cat > "$tmp/project-access/src/fixture/use/Main.java" <<'JAVA'
+package fixture.use;
+import fixture.alpha.Visible;
+public class Main {
+  public static void main(String[] args) {
+    Visible value = new Visible();
+    System.out.println(value.hidden);
+  }
+}
+JAVA
+if javac -d "$tmp/project-access/cls" "$tmp/project-access/src/fixture/alpha/Visible.java" "$tmp/project-access/src/fixture/use/Main.java" 2> "$tmp/project-access/javac.err"; then
+  printf 'FAIL  project-access (javac unexpectedly accepted package-private field access)\n'; fail=$((fail+1))
+else
+  access_out="$("$conv" --jdk "$tmp/project-access/src" --out "$tmp/project-access/out" --quiet 2>&1)"
+  access_rc=$?
+  if [ "$access_rc" -eq 1 ] && printf '%s' "$access_out" | grep -q "\[member-access\]" && [ "$(find "$tmp/project-access/out" -name '*.sleela' | wc -l)" -eq 0 ]; then
+    printf 'PASS  %-12s cross-package package-private field access refused with no output\n' "member-access"; pass=$((pass+1))
+  else
+    printf 'FAIL  project-access (rc=%s)\n%s\n' "$access_rc" "$access_out"; fail=$((fail+1))
+  fi
+fi
+
 # duplicate simple declarations must never be resolved by source traversal order
 mkdir -p "$tmp/duplicate/src/a" "$tmp/duplicate/src/b" "$tmp/duplicate/out"
 cat > "$tmp/duplicate/src/a/First.java" <<'JAVA'
