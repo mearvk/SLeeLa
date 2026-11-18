@@ -1166,7 +1166,7 @@ The following Java generic forms are recognized as intended surface but are
 ### 16.5 Version gate
 
 Generic type signatures are specified by `#sleela 2.2`. They remain accepted by the current frontend across its supported source range
-1.0 .. 3.0, but their feature gate remains 2.2: a document should declare
+1.0 .. 3.2, but their feature gate remains 2.2: a document should declare
 #sleela 2.2 or later to rely on generic type signatures normatively.
 
 
