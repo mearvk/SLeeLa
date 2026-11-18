@@ -2122,6 +2122,11 @@ private:
             name = ident();
             for (;;) {
                 if (isOp("<")) {
+                    // Diamond inference requires constructor constraints plus the
+                    // assignment/return target type. Do not erase <> and emit a raw
+                    // allocation: that silently loses Java's inferred class arguments.
+                    if (isOpAt(p + 1, ">"))
+                        fail("generic-constructor-diamond", "diamond inference for constructor allocation is not yet implemented; use explicit type arguments or retain this source as a refusal");
                     int d = 0;
                     do { if (isOp("<")) d++; else if (isOp(">")) d--; else if (isOp(">>")) d -= 2; else if (isOp(">>>")) d -= 3; p++; } while (d > 0 && !atEof());
                 }
