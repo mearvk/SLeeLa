@@ -7,9 +7,8 @@ result types, and the constructs refused (fail closed).
 
 It is consumed by `sleelactl/convert` (C lexer + model loader, C++ translator),
 registered in sleelactl as `java-convert`, and by `lib/java/converter` (a SLeeLa
-program; `JConvModel.sleela` reads the `ret`, `field`, `binop int` shift,
-division and remainder rows, the `cast long int` row (the 32-bit wrap) and the
-`tostr` rows; its output stays at syntax 3.1). Unlike math/physics it is not compiled
+program; `JConvModel.sleela` reads type/rank/promotion, operator, cast, widening,
+rename, qualification, `ret`, `field` and `tostr` rows; its output stays at syntax 3.1). Unlike math/physics it is not compiled
 into the `sleela` runtime: it governs a tool, and its executable half is
 `lib/java/JavaOperands.sleela`. Rules: `.kiro/steering/java-to-sleela-conversion.md`.
 
@@ -18,6 +17,7 @@ into the `sleela` runtime: it governs a tool, and its executable half is
 | Revision | Change |
 |---|---|
 | 1.0.0 | Types, boxing, promotion, operators, casts, compound assignment, string conversion, 45 hand `ret` / `field` rows, refusals |
+| 1.5.0 (2026-11-18) | Shared type/rank/promotion laws; `promote float`; binary32 arithmetic, comparisons, unary operations, increment/decrement and text rows; all 49 numeric primitive cast pairs; context-aware `rename` records and built-in qualification consumed by both converters. C++ self-check expanded and `builtin_names.h` retired. New C++ `Floats` cases added; not yet built or differentially verified. |
 | 1.3.0 (2026-11-13) | Law rows: `tostr reference` (string conversion of an object through `JavaFormat.objectText`), section 9c `chartext` (library parameters that take a char as text: `StringBuilder`/`StringBuffer` `append`, `insert`). Refusal rows `boxed`, `object-text`. |
 | 1.2.0 (2026-11-13) | Refusal rows `init-block` (static initializer blocks), `member-annotation`, `object-method` (`equals`/`hashCode`/`getClass` on a user type that does not declare them). No law changed. |
 | 1.1.0 (2026-11-13) | Section **10b**: 8,922 `ret` rows reflected from the public API of OpenJDK 25.0.2 (`lib/java/jdk-25/api/jdk-signatures.jsonl`, `jdk-api.jsonl`) by `generate_ret_rows.py`, for the procedural core of `java.base` (`java.lang`, `java.util`, `java.io`, `java.math`, `java.time`, `java.text`, `java.net`, `java.nio`, ...; the list is `SCOPE` in the script). Hand rows win. |
