@@ -1,0 +1,89 @@
+name: JDK 28 validation campaign
+
+on:
+  push:
+    branches:
+      - work/jdk28-signature-index-generic-validation
+    paths:
+      - ".github/workflows/jdk28-validation.yml"
+      - "lib/java/jdk-25/tools/jdk_api_signatures.py"
+      - "lib/java/jdk-25/tools/test_jdk_api_signatures.py"
+      - "lib/java/jdk-28/**"
+      - "lib/java/converter/**"
+      - "examples/java/**"
+      - "tests/jdk28_functional_equivalence.py"
+      - "impl/**"
+      - "security/**"
+  pull_request:
+    branches: [master, main]
+    paths:
+      - ".github/workflows/jdk28-validation.yml"
+      - "lib/java/jdk-25/tools/jdk_api_signatures.py"
+      - "lib/java/jdk-25/tools/test_jdk_api_signatures.py"
+      - "lib/java/jdk-28/**"
+      - "lib/java/converter/**"
+      - "examples/java/**"
+      - "tests/jdk28_functional_equivalence.py"
+      - "impl/**"
+      - "security/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jdk28-validation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  jdk28:
+    name: Complete JDK 28 API and converter validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    env:
+      SLEELA_HOME: ${{ github.workspace }}
+      SLEELA_LIB: ${{ github.workspace }}/lib
+      SLEELA_SHA256_MANIFEST: ${{ github.workspace }}/security/sha256-manifest.json
+      JDK28_CHECK_JOBS: "8"
+      JDK28_REPORT_DIR: ${{ runner.temp }}/jdk28-validation
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install build and validation dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential g++ make cmake pkg-config python3 \
+            libx11-dev libxrandr-dev libfontconfig1-dev libfreetype6-dev \
+            libpng-dev zlib1g-dev
+
+      - name: Set up reference JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "25"
+
+      - name: Rebuild checkout-local integrity manifest
+        run: python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json
+
+      - name: Build runtime from the tested commit
+        run: |
+          make -C impl build/sleela
+          impl/build/sleela version
+
+      - name: Run the complete JDK 28 campaign
+        env:
+          SLEELA_BIN: ${{ github.workspace }}/impl/build/sleela
+        run: bash lib/java/jdk-28/tools/run_validation_campaign.sh
+
+      - name: Upload campaign reports, including partial functional results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jdk28-validation-reports
+          path: ${{ runner.temp }}/jdk28-validation
+          if-no-files-found: warn
+          retention-days: 30
