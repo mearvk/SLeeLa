@@ -83,7 +83,7 @@ public class ApiDump {
                         if (v != null && (c.isInterface() || true)) { try { f.setAccessible(true); } catch (Throwable e) {} }
                         fields.add("[" + q(f.getName()) + "," + q(tn(f.getType())) + "," + Modifier.isStatic(mo) + (v != null ? "," + v : "") + "]");
                     }
-                } catch (Throwable e) { }
+                } catch (Throwable e) { System.err.println("REFLECTION_ERROR fields " + cn + ": " + e); }
                 s.append(",\"fields\":[").append(String.join(",", fields)).append("]");
                 List<String> methods = new ArrayList<>();
                 try {
@@ -97,7 +97,7 @@ public class ApiDump {
                         if (!(Modifier.isPublic(mo) || Modifier.isProtected(mo)) || k.isSynthetic() || k.isBridge()) continue;
                         methods.add("[" + q(k.getName()) + "," + q(tn(k.getReturnType())) + ",[" + Arrays.stream(k.getParameterTypes()).map(p -> q(tn(p))).collect(Collectors.joining(",")) + "]," + Modifier.isStatic(mo) + "," + Modifier.isAbstract(mo) + "," + k.isDefault() + "]");
                     }
-                } catch (Throwable e) { }
+                } catch (Throwable e) { System.err.println("REFLECTION_ERROR members " + cn + ": " + e); }
                 s.append(",\"methods\":[").append(String.join(",", methods)).append("]}");
                 out.add(s.toString());
             }
