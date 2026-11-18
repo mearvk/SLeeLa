@@ -36,6 +36,25 @@ is relabelled by this document. The committed prebuilt executables must be
 replaced and their SHA-256 values regenerated as part of the reproducible
 build/release step.
 
+## Additional tracked binary artifacts
+
+The repository tree inventory also finds these non-toolchain binary payloads:
+
+| Artifact | Identity | Classification / action |
+|---|---:|---|
+| `ide/sleela-intellij/.../sleela-intellij-0.3.0-dev.jar` | 1.012 | IntelliJ plugin; Gradle source version advanced to 1.012, but the checked-in JAR is still the old 0.3.0-dev payload and must be rebuilt/replaced |
+| `modules/AE6E66/source/EmailDistributor.class` | 1.0121 | Previously unversioned Java class artifact |
+| `telephony-skya/javafx/target/classes/com/mearvk/sleela/skya/*.class` (9 class files) | 1.0121 | Previously unversioned Java build artifacts |
+| `api/sleela/2.8/generic.dna.bin` | 1.0121 | Binary data artifact; identity assigned without changing its data format |
+| `utf-4088/tools/utf4088-million.bin` | 1.0121 | Generated binary data artifact; identity assigned without changing its data format |
+
+The 1.0121 assignments are registry identities. They do not alter byte payloads.
+The class and data artifacts should be regenerated from their owning sources when
+those projects next build. The old IntelliJ JAR is explicitly not represented as
+rebuilt: its source build identity is 1.012, while the committed JAR still needs
+replacement. The two SLeeLa toolchain binaries remain product-versioned and
+must be rebuilt to carry the current Syntax 3.2 source gate.
+
 ## New identities
 
 - `SLEELA-BIN-1.012` — SLeeLa compiler/runtime executable artifact identity.
