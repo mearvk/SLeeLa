@@ -54,7 +54,7 @@ class JDK28SignatureIndexTests(unittest.TestCase):
         member_record = record["members"][0]
         self.assertEqual(
             next(iter(groups)),
-            sig_key := __import__("jdk_api_signatures").signature_key(member_record, {"T"})
+            sig_key := gen.sg.signature_key(member_record, {"T"})
         )
         self.assertEqual(sig_key, ("convert", ("String[]", "Any", "Any[]")))
 
