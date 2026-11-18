@@ -440,6 +440,7 @@ private:
         // A package-qualified type such as a.b.Widget is resolved by its full
         // source identity before nested member-type segments are hoisted.
         std::string qual;
+        bool resolvedQualifiedBase = false;
         if (!name.empty() && std::islower((unsigned char)name[0])) {
             std::string packagePrefix = name;
             while (isOp(".") && isIdentTok(at(p + 1))) {
@@ -447,6 +448,7 @@ private:
                 if (!next.empty() && std::isupper((unsigned char)next[0])) {
                     p++;
                     name = resolveQualifiedTypeName(packagePrefix + "." + ident());
+                    resolvedQualifiedBase = true;
                     break;
                 }
                 p++;
@@ -478,8 +480,10 @@ private:
                 consumeGenericClose();
             }
             if (isOp(".") && isIdentTok(at(p + 1))) {
-                if (!name.empty() && std::isupper((unsigned char)name[0])) qual = qual.empty() ? resolveTypeName(name) : qual + "__" + name;
-                else qual.clear();
+                if (!name.empty() && std::isupper((unsigned char)name[0])) {
+                    qual = qual.empty() ? (resolvedQualifiedBase ? name : resolveTypeName(name)) : qual + "__" + name;
+                    resolvedQualifiedBase = false;
+                } else qual.clear();
                 p++;
                 name = ident();
                 genericArgs.clear();
@@ -492,6 +496,7 @@ private:
         t.args = genericArgs;
         if (qual.empty() && methodTypeVars_.count(name)) t.n = "$T$" + name;
         else if (qual.empty() && typeVars.count(name)) t.n = "$C$" + name;
+        else if (qual.empty() && resolvedQualifiedBase) t.n = name;
         else if (qual.empty()) t.n = resolveTypeName(name);
         else t.n = qual + "__" + name;
         // Preserve wrapper identity for overload resolution, while emitType lowers
