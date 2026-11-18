@@ -450,9 +450,9 @@ def main() -> int:
         varargs_members = sum(any(p[0].endswith("...") for p in member.get("params", [])) for member in members)
         pending_types = len(names - api_names)
         missing_signatures = len((names & api_names) - set(sigs))
-        print(f"JDK 28 inventory cross-indexed with JDK 25 reflection: {len(indexed)} types, {len(members)} Java members")
+        print(f"JDK 28 inventory cross-indexed with JDK 28 runtime reflection: {len(indexed)} types, {len(members)} Java members")
         print(f"generic classes: {generic_classes}; generic members: {generic_members}; wildcard members: {wildcard_members}; varargs members: {varargs_members}")
-        print(f"SLeeLa-erasure overload collisions: {collisions}; JDK 28 types absent from JDK 25 reflection: {pending_types}; known types missing signature records: {missing_signatures}")
+        print(f"SLeeLa-erasure overload collisions: {collisions}; docs types absent from JDK 28 runtime reflection: {pending_types}; known types missing signature records: {missing_signatures}")
         print("Index coverage is declaration evidence only; fail-loud API stubs are not implemented Java behavior.")
         return 0
 
@@ -527,7 +527,7 @@ class {cls} {{
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(text, encoding="utf-8")
         stats["files"] += 1
-        index.append("\t".join([fq, module, kind, "lib/java/jdk-28/" + out_rel.as_posix(), src_url, "jdk25-reflected" if t and sig else "signature-pending" if t else "pending"]))
+        index.append("\t".join([fq, module, kind, "lib/java/jdk-28/" + out_rel.as_posix(), src_url, "jdk28-reflected" if t and sig else "signature-pending" if t else "pending"]))
     (OUT / "INDEX.tsv").write_text("\n".join(index) + "\n", encoding="utf-8")
 
     # Every documented module has a folder, as online (docs/api/<module>/module-summary.html).
