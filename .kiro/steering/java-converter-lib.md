@@ -36,18 +36,20 @@ converter (README: `lib/java/converter/README.md`). It is separate from
 
 ## Working notes (2026-11-18, converter 0.7.9): how to verify fast
 
-- **Owner priority:** get the translation and `impl/subjects/conversion/conversion.model`
-  right before implementing exact JDK library behaviour. Put Java-to-SLeeLa law in the
-  model as rows; the `/lib` converter should read them, not hardcode them. The C++
-  loader (`sleelactl/convert/conv_model.c`) fails closed on an unknown row kind: add
-  each new kind to its `fields_for` table, then run `make test` in `sleelactl/convert`
-  (differential suite, 32/32).
+- **Owner priority:** keep the translation and `impl/subjects/conversion/conversion.model`
+  authoritative before implementing exact JDK library behaviour. Model 1.5.0 now
+  carries primitive type/rank/promotion, the full numeric cast matrix, binary32
+  rules, context-aware renames and built-in qualification. The C++ loader
+  (`sleelactl/convert/conv_model.c`) fails closed on an unknown row kind: add
+  each new kind to its `fields_for` table. The current 0.7.9/model 1.5.0 changes
+  still need the native sample regression and C++ differential suites; do not
+  describe them as verified until those runs pass.
 - **Regression after any converter change (about 3 min):** convert the 17-file JDK
   sample and the samples, then diff against the previous output. Each
   `samples/<dir>/<Name>.java` has a `<Name>.java.expected.txt` from OpenJDK. Convert
   with `JCONV_IN=lib/java/converter/samples JCONV_FILTER=<dir>/ JCONV_SCOPE=all
-  JCONV_BUNDLE=1`, run the `.sleela` with `impl/build/sleela`, and diff. Current set:
-  `demo` (ConvDemo), `lambda`, `classlit`, `model`, `nextname`, `qualify`, all identical.
+  JCONV_BUNDLE=1`, run the `.sleela` with `impl/build/sleela`, and diff. Last recorded verified set: `demo` (ConvDemo), `lambda`, `classlit`, `model`,
+  `nextname`, `qualify`, all identical before the 0.7.9/model 1.5.0 changes.
 - **JDK source:** OpenJDK 25.0.2 `src.zip` is under the mise Java installs; extract
   with Python `zipfile` (a shell `unzip` with globs stalled). The whole public JDK
   (`JCONV_SCOPE=api`) converts in about 4 min with the default `JCONV_BATCH=500`.
