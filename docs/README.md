@@ -31,7 +31,7 @@ normative specifications from implementation notes and live validation results.
   Per-edition snapshots live under [`api/sleela/`](../api/sleela/); the
   previous **3.1** edition is preserved in immutable snapshots; the current edition is **3.2**
   snapshots in numbered subfolders. The 3.1, 3.0, and older 2.x editions
-  and the older 2.x editions are preserved alongside it. Each later
+  are preserved alongside it. Each later
   regeneration adds the next unused `version-NNN/` folder.
 - [UI component quality — visibility, margin, and icon](UI-COMPONENT-QUALITY.md) —
   the `lib/ui` standard layout model's per-component quality axes and how
