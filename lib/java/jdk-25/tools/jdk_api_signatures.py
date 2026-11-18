@@ -301,9 +301,23 @@ def renderable(m: dict) -> bool:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--audit", action="store_true", help="report generic and erased-overload coverage without changing files")
     args = ap.parse_args()
     sigs = {json.loads(l)["name"]: json.loads(l) for l in SIGS.read_text(encoding="utf-8").splitlines() if l.strip()}
     api = {json.loads(l)["name"]: json.loads(l) for l in dec.API.read_text(encoding="utf-8").splitlines() if l.strip()}
+    if args.audit:
+        members = [m for record in sigs.values() for m in record.get("members", [])]
+        groups = [g for record in sigs.values() for g in build_signature_index(record).values()]
+        collisions = sum(max(0, len(group) - 1) for group in groups)
+        generic = sum(bool(m.get("tparams")) for m in members)
+        wildcard = sum("?" in " ".join([p[0] for p in m.get("params", [])] + [m.get("ret", "")]) for m in members)
+        varargs = sum(any(p[0].endswith("...") for p in m.get("params", [])) for m in members)
+        unsupported = sum(not renderable(m) for m in members)
+        print(f"signature index: {len(sigs)} types, {len(members)} Java members")
+        print(f"generic members: {generic}; wildcard-bearing: {wildcard}; varargs: {varargs}")
+        print(f"SLeeLa erased signatures: {len(groups)} groups; overload collisions: {collisions}; unsupported spellings: {unsupported}")
+        print("Signatures and stubs are API declarations only; fail-loud stubs are not implemented Java behavior.")
+        return 0
 
     texts, impl_texts = {}, {}
     for name, t in api.items():
