@@ -1090,6 +1090,51 @@ private:
         return false;
     }
 
+    // Compute a representable least upper bound. If the common supertype graph
+    // has one unique most-specific class/interface, retain it instead of
+    // widening every unrelated implementation to Object. Full intersection
+    // types with multiple incomparable minimal bounds remain unsupported.
+    std::string leastCommonReferenceName(const std::string& a, const std::string& b) const {
+        auto collect = [&](const std::string& root, std::set<std::string>& out) {
+            std::function<void(const std::string&,int)> visit = [&](const std::string& name,int depth) {
+                if (name.empty() || depth>32 || !out.insert(name).second) return;
+                auto it=classes.find(name);
+                if (it==classes.end()) { if(name!="Object") out.insert("Object"); return; }
+                if (!it->second.super.empty()) visit(it->second.super,depth+1);
+                for (const auto& iface:it->second.ifaces) visit(iface,depth+1);
+                if (it->second.isInterface) visit("Object",depth+1);
+            };
+            visit(root,0);
+        };
+        std::set<std::string> left,right,common;
+        collect(a,left); collect(b,right);
+        std::set_intersection(left.begin(),left.end(),right.begin(),right.end(),
+                              std::inserter(common,common.begin()));
+        std::vector<std::string> minimal;
+        for (const auto& candidate:common) {
+            bool lessSpecific=false;
+            for (const auto& other:common) {
+                if (candidate!=other && isSubtypeName(other,candidate)) {
+                    lessSpecific=true; break;
+                }
+            }
+            if (!lessSpecific) minimal.push_back(candidate);
+        }
+        if (minimal.size()==1) return minimal.front();
+
+        // Multiple incomparable minima need an intersection type. Until Ty and
+        // the SLeeLa emitter can represent that form, preserve the class bound.
+        std::string commonClass=a;
+        int hops=0;
+        while (!commonClass.empty() && ++hops<=32 && !isSubtypeName(b,commonClass)) {
+            auto it=classes.find(commonClass);
+            commonClass=(it==classes.end() || it->second.super.empty())
+                ? std::string("Object") : it->second.super;
+            if (commonClass=="Object") break;
+        }
+        return commonClass.empty() ? std::string("Object") : commonClass;
+    }
+
     void collectNamedMethods(const std::string& cls, const std::string& name,
                              std::vector<const MethodSig*>& out, int depth = 0) const {
         if (depth > 32) return;
@@ -1242,19 +1287,7 @@ private:
                                         !isPrimitiveName(prior.n) && !isPrimitiveName(inferredType.n)) {
                                         if (isSubtypeName(prior.n,inferredType.n)) ti->second=inferredType;
                                         else if (!isSubtypeName(inferredType.n,prior.n)) {
-                                            // Compute a conservative least common class.
-                                            // Interface intersections and parameterized
-                                            // least-containing invocations remain unsupported.
-                                            std::string common=prior.n;
-                                            int hops=0;
-                                            while (!common.empty() && ++hops<=32 &&
-                                                   !isSubtypeName(inferredType.n,common)) {
-                                                auto ci=classes.find(common);
-                                                common=(ci==classes.end() || ci->second.super.empty())
-                                                    ? std::string("Object") : ci->second.super;
-                                                if (common=="Object") break;
-                                            }
-                                            if (common.empty()) common="Object";
+                                            const std::string common=leastCommonReferenceName(prior.n,inferredType.n);
                                             ti->second=mk(common);
                                         }
                                     } else return false;
