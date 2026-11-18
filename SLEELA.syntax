@@ -3482,13 +3482,11 @@ document that declares a syntax below 3.1.
 
 ### 44.1 Version
 
-The syntax version after 3.0 is **3.1**. The minor is an integer, so
-`#sleela 3.01` and `#sleela 3.1` name the same edition (a leading zero is
-accepted and normalized; `version.cpp` reads the minor as a number). The
-supported range is 1.0 .. 3.1; `#sleela 3.2` is rejected as a future edition. Sections 44, 45
-and 46 are one edition (an earlier revision of this file described 45 and 46 as 3.2; they
-are part of 3.1). A
-source with no `#sleela` line defaults to the ceiling, 3.1.
+Syntax 3.1 is the edition introduced by section 44. Syntax 3.2 is the current
+normative edition and adds the typed-`char` and complete array semantics in
+sections 45 and 46. The supported range is 1.0 .. 3.2; a source with no
+`#sleela` line defaults to 3.2. `#sleela 3.01` is accepted as the numeric
+spelling of 3.1; it does not mean 3.2.
 
 Every 3.1 form below is gated: in a document declaring a syntax below 3.1 the
 parser records the use and semantic analysis reports
@@ -3630,13 +3628,13 @@ Regression tests: `bash impl/tests/syntax31/run_syntax31_tests.sh` (outputs in
 rejected with the stated message) and `bash impl/tests/version/run_version_tests.sh`.
 
 
-## 45. Syntax 3.1 — the char specification
+## 45. Syntax 3.2 — the char specification
 
 This section is **normative** and **implemented in the source compiler and VM**
 (`impl/frontend`, `impl/core`). It defines the `char` type that Java source needs
-and that the character literal (44.2) has as its type. The library is `lib/char/`
-(45.8). Below 3.1 there is no character literal; a variable declared `char` is an
-ordinary integer and prints as its decimal code.
+and that the character literal (44.2) has as its type under 3.2. The library is
+`lib/char/` (45.8). Under 3.1, `char` remains an integer-compatible spelling
+without typed-character behavior; character literals are integer-valued.
 
 ### 45.1 The type
 
@@ -3697,7 +3695,7 @@ method taking `int`) is an integer and shows as its decimal code.
 
 ### 45.6 Lowering
 
-Two append-only opcodes (section 44 of `sleela_core.h`):
+Two append-only character opcodes (192–193; section 45 of `sleela_core.h`):
 
 - `OP_CHARSTR` (192) pops a char and pushes it as a plain String; emitted before
   `OP_PRINT` for a char-typed `print` argument.
@@ -3709,7 +3707,7 @@ Two append-only opcodes (section 44 of `sleela_core.h`):
 
 The flags are computed by semantic analysis (`Binary::charMask`,
 `PrintStmt::charArg`, `AssignmentExpr::charMask`) only when the declared syntax is
-3.1 or later.
+3.2 or later.
 
 ### 45.7 Not done
 
@@ -3728,19 +3726,25 @@ The flags are computed by semantic analysis (`Binary::charMask`,
 `toUpperCase`, `toLowerCase`, `digitValue(c, radix)`, `forDigit(d, radix)`,
 `isHighSurrogate`, `isLowSurrogate`, `isSurrogate`, `toCodePoint(high, low)`,
 `compare`, `hashCode`. Every method except the text of `toString` works in any
-syntax version; `toString` shows the character under 3.1 and the decimal code below.
+syntax version; `toString` shows the character under 3.2 and the decimal code below.
 
 Tests: `impl/tests/syntax31/char_text.sleela`, `char_int_in_3_0.sleela`,
 `lib_char.sleela`; run `bash impl/tests/syntax31/run_syntax31_tests.sh`.
 
 
-## 46. Syntax 3.1 — the array specification
+## 46. Syntax 3.2 — the array specification
 
 This section is **normative** and **implemented in the source compiler and VM**.
-It collects what an array is in SLeeLa, and adds the array length member and
-multi-dimensional creation. The initializer is 44.3. The library is `lib/array/` (46.8).
+It collects what an array is in SLeeLa, and adds the array length member,
+multidimensional creation, and nested initializer semantics. The base array
+initializer syntax is 44.3 (Syntax 3.1); the forms and semantics defined here
+require Syntax 3.2. The library is `lib/array/` (46.8).
 
 ### 46.1 Types and values
+
+The `a.length` member and multidimensional creation forms are gated to
+`#sleela 3.2`. Under 3.1, use the `arrayLength(a)` library helper and single-rank
+array creation. Nested initializers and typed `char[]` semantics require 3.2.
 
 `T[]` is an array of `T`; `T[][]`, `T[][][]`, ... are arrays of arrays, for any
 element type `T` the compiler knows (primitive, String, class, struct, `Any`). An
