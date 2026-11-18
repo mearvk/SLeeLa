@@ -72,3 +72,8 @@ same code.
 
 [`PROGRESS.NOVEMBER.17.2026.md`](PROGRESS.NOVEMBER.17.2026.md) records the stages of this work and the
 current state; the root `REGRESSION.md` records the verification and repair pass.
+
+
+## November 18 session update
+
+The language-wide test counts below and in the November 17 progress note remain historical until re-run. The Java converter/JDK 28 qualification work merged separately and is tracked in the [root regression status](../../REGRESSION.md#november-18-session-java-converter-jdk-28-validation-and-release-qualification) and [November 18 session continuation note](../../docs/reference/SESSION.CONTINUATION.2026-11-18.md). Do not interpret the November 17 211-test result as validation of the November 18 Java converter changes.

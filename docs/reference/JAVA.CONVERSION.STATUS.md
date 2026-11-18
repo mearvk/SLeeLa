@@ -2,6 +2,45 @@
 
 # Java to SLeeLa Conversion: Overall Status
 
+## Current master and production qualification update (2026-11-18)
+
+**Master baseline:** `c00fd2f3ed760a2a840cecd02a02daec032b6453`.  
+**Merged work:** [PR #375](https://github.com/mearvk/SLeeLa/pull/375), merged 2026-11-18.  
+**Release decision:** **HOLD — current production qualification has not completed.**
+
+PR #375 added the deterministic erased-signature index, generic declaration metadata, erased-signature collision reporting, inherited superclass/interface implementation checks, constructor compatibility by parameter kind, JDK 28 reflection generation, and JDK 25-to-28 API comparison scaffolding. It did not establish that the revised converter compiles or that converted programs execute correctly.
+
+### Current evidence (do not conflate with historical measurements)
+
+| Gate | Status on 2026-11-18 |
+|---|---|
+| Runtime clean build from current master | NOT RUN in this session |
+| C++ converter build and model self-check | NOT RUN |
+| Current positive Java differential suite | NOT RUN |
+| Current refusal fixture suite | NOT RUN |
+| SLeeLa-native per-member stub-policy test | NOT RUN |
+| Repeat-run / transactional publication / provenance tests | NOT RUN |
+| Representative converted program execution | NOT RUN |
+| JDK 28 reflection and signature campaign | PENDING; no completed artifact inspected |
+| JDK 28 functional equivalence | PARTIAL; generated envelopes and fail-loud stubs are not Java behavior |
+| Workflow result on merge commit | No run/status result was exposed during this assessment |
+
+The 32/32 differential result, 22 positive programs, 9 refusals, and 420/884 (426 with `--single-thread`) JDK 25 whole-tree conversion counts remain **historical 2026-11-13 measurements**. They do not validate the current model 1.5.0 or PR #375.
+
+### Refusal accounting
+
+Known open categories remain: generic target inference and wildcard capture; generic constructors and unresolved class-generic contexts; unknown SAM targets; nested generated-class capture chains; local classes and `outer.new Inner()`; switch type/record patterns and sealed exhaustiveness; static initializer blocks; unsupported inherited `Object` methods; boxed null and wrapper arrays; multithreaded `synchronized`/`volatile`; native declarations without verified ABI bindings; ambiguous nested names; and remaining syntax/model limits.
+
+The C++ converter's whole-file fail-closed policy and the SLeeLa-native converter's per-member fail-loud stub policy are different contracts. Count refusals, stubs and implemented behavior separately. A generated declaration or stub is not a working Java member.
+
+### Reproduction and release gate
+
+Use the commands and representative fixture matrix in `docs/reference/PRODUCTION.RELEASE.QUALIFICATION.2026-11-18.md`. Archive the compiler output, raw logs, JDK reference output, converted output, diffs, exit codes, commit and model hashes, host/toolchain identity, refusal inventory and functional-equivalence report. The release remains on HOLD until these are generated from the exact release candidate and platform qualification is complete.
+
+The repository connector used for this documentation update did not provide a local checkout or shell execution path. No build or program execution is claimed for this session.
+
+
+
 **Historical measurements:** 2026-11-13. **Current model implementation:** 2026-11-18 on `master`.
 **Subject:** `sleelactl java-convert` (the C/C++ converter in `sleelactl/convert`), the conversion
 model `impl/subjects/conversion/conversion.model` (revision **1.5.0**, implementation updated 2026-11-18), and the Java tier under
