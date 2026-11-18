@@ -27,7 +27,7 @@ SLeeLa VM math kernel, or `sleelactl` performance.
 ## Algorithm
 
 The source declares `#sleela 2.9` so it is accepted by both the older
-`Sleelvac™` compiler (supported range 1.0 – 2.9) and the current
+`Sleelvac™` compiler (supported range 1.0 – 3.2) and the current
 `SLeeLa™ Language/Runtime` build (1.0 – 3.2). It uses no 3.0-only syntax — only
 integer arithmetic, `int[]`, `while`, and the `openFile`/`write`/`close` file
 API, all available in 2.x.
