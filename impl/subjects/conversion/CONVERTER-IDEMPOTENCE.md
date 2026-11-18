@@ -82,12 +82,17 @@ converter; unrelated files must remain untouched.
   source files were present; the compiled binary identity is not recorded.
   The manifest has no timestamps or absolute checkout paths and labels the JDK
   version as a declared label rather than asserting release authenticity.
-- **Not yet complete:** output generation is not yet staged as a whole-run
-  transaction; a late I/O failure can leave some newly written files before
-  the ownership manifest is committed. The provenance record does not verify
-  that the source tree is an official JDK release archive.
-- **Not yet verified:** no local compile or test run has been recorded for
-  these changes. Do not call this pass green.
+- Whole-run staging/publication is implemented by `OutputTransaction`; it
+  preserves unowned files, refuses unsafe prior-output entries, restores the
+  previous generation on publication failure, and writes reports/manifests
+  before the directory swap.
+- The immutable source snapshot, exact model digest, converter-source inventory,
+  and output digests are recorded. The provenance intentionally does not claim
+  official JDK authenticity from `--jdk-version`; it binds the actual source
+  snapshot instead. `tests/javaconv_differential_test.sh` now independently
+  validates provenance and checks repeat-run output mtimes in its transaction
+  fixture. These tests have been added but have not yet been executed in this
+  session.
 
 ### SLeeLa-native converter
 
