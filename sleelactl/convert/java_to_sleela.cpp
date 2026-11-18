@@ -1515,8 +1515,8 @@ private:
         }
         E r; r.code = safeName(name); r.ty = mk("?"); return r;
     }
-    static std::string safeNameForCall(const std::string& n) {
-        // `Iterator.next()` and user-declared next() are ordinary Java methods.
+    std::string safeNameForCall(const std::string& n) const {
+        // Iterator.next() and user-declared next() are ordinary Java methods.
         return n == "next" ? n : safeName(n);
     }
 
