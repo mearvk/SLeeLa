@@ -169,6 +169,18 @@ private:
     };
     static constexpr const char* kInitMarker = "@@FIELDINIT@@";
     std::string curSimple_;         // the source name of the class being parsed (constructors are written with it)
+    bool typeAccessible(const std::string& key, const ClassInfo& info) const {
+        auto host = [](const std::string& n) {
+            const size_t p = n.find("__");
+            return p == std::string::npos ? n : n.substr(0, p);
+        };
+        if (info.typeVisibility == "public") return true;
+        if (info.typeVisibility == "private") return host(key) == host(curClass);
+        if (info.packageName == packageName_) return true;
+        if (info.typeVisibility == "protected") return isSubtypeName(curClass, host(key));
+        return false;
+    }
+
     std::string resolveTypeName(const std::string& n) const {
         auto im = importedTypes_.find(n);
         if (im != importedTypes_.end() && im->second == "\x01")
@@ -181,8 +193,8 @@ private:
                 const std::string full = entry.second.packageName.empty() ? dotted : entry.second.packageName + "." + dotted;
                 if (full == im->second) {
                     if (entry.second.ambiguous) throw ConvErr{cur().line, cur().col, "type-ambiguous", "the imported type '" + im->second + "' has duplicate declarations"};
-                    if (entry.second.packageName != packageName_ && entry.second.typeVisibility != "public")
-                        throw ConvErr{cur().line, cur().col, "type-access", "type '" + im->second + "' is not public outside package '" + entry.second.packageName + "'"};
+                    if (!typeAccessible(entry.first, entry.second))
+                        throw ConvErr{cur().line, cur().col, "type-access", "type '" + im->second + "' is not accessible from package '" + packageName_ + "'"};
                     return entry.first;
                 }
             }
@@ -198,8 +210,8 @@ private:
             if (local != classes.end() && local->second.packageName == pkg) wildcardMatch = true;
         if (wildcardMatch) {
             if (local->second.ambiguous) throw ConvErr{cur().line, cur().col, "type-ambiguous", "the wildcard-imported type '" + n + "' has duplicate declarations"};
-            if (local->second.packageName != packageName_ && local->second.typeVisibility != "public")
-                throw ConvErr{cur().line, cur().col, "type-access", "type '" + n + "' is not public outside package '" + local->second.packageName + "'"};
+            if (!typeAccessible(n, local->second))
+                throw ConvErr{cur().line, cur().col, "type-access", "type '" + n + "' is not accessible from package '" + packageName_ + "'"};
             return n;
         }
         if (local != classes.end() && local->second.ambiguous)
@@ -1290,6 +1302,11 @@ private:
         // from the most-derived owner. Distinct overloads remain separate candidates.
         for (const MethodSig* m:all) {
             if (!memberAccessible(m->owner, m->visibility)) { sawInaccessible = true; continue; }
+            if (m->visibility == "protected" && receiverType) {
+                auto ownerInfo = classes.find(m->owner);
+                if (ownerInfo != classes.end() && ownerInfo->second.packageName != packageName_ &&
+                    !isSubtypeName(receiverType->n, curClass)) { sawInaccessible = true; continue; }
+            }
             if (invocationKind >= 0 && m->isStatic != (invocationKind == 1)) continue;
             bool merged=false;
             for (size_t i=0;i<candidates.size();++i) {
