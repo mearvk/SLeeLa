@@ -73,7 +73,7 @@ class JDK28SignatureIndexTests(unittest.TestCase):
 
     def test_inherited_interface_implementation_prevents_redundant_stub(self):
         t = {"name": "example.Child", "kind": "class", "fields": [], "components": []}
-        sig = {"tparams": "", "members": [method("ready", ("int",), "boolean"), method("hidden", ("int",), "void"), method("abstractHelper", ("int",), "void")]}
+        sig = {"tparams": "", "members": [method("ready", ("int",), "boolean"), method("hidden", ("int",), "void"), method("abstractHelper", ("int",), "void", mods="public abstract")]}
         api = {
             "example.Child": {"name": "example.Child", "kind": "class", "super": None, "interfaces": ["example.Ready"]},
             "example.Ready": {"name": "example.Ready", "kind": "interface", "super": None, "interfaces": []},
