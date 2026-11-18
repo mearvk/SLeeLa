@@ -2087,7 +2087,10 @@ class JConvRewriter {
       if (this.ok[i] == 1 && this.ot[i] == "next") {
         int j = i + 1;
         while (j < this.on && this.ok[j] == 6) { j = j + 1; }
-        if (j >= this.on || this.ot[j] != "(") { this.ot[i] = "next_"; }
+        if (j >= this.on || this.ot[j] != "(") {
+          String mapped = this.rules.model.renameOf("next", "value");
+          this.ot[i] = mapped == "" ? "next_" : mapped;
+        }
       }
       i = i + 1;
     }
