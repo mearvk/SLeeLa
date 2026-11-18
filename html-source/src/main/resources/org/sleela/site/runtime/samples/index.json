@@ -22,5 +22,45 @@
  {
   "file": "06-http-colors.sleela",
   "title": "HTTP colors as data"
+ },
+ {
+  "file": "07-prime-sieve.sleela",
+  "title": "Primes: Sieve of Eratosthenes"
+ },
+ {
+  "file": "08-game-of-life.sleela",
+  "title": "Game of Life: a walking glider"
+ },
+ {
+  "file": "09-towers-of-hanoi.sleela",
+  "title": "Towers of Hanoi"
+ },
+ {
+  "file": "10-sort-and-search.sleela",
+  "title": "Insertion sort and binary search"
+ },
+ {
+  "file": "11-collatz-and-gcd.sleela",
+  "title": "Euclid GCD and Collatz chains"
+ },
+ {
+  "file": "12-pascals-triangle.sleela",
+  "title": "Pascal triangle"
+ },
+ {
+  "file": "13-n-queens.sleela",
+  "title": "N-Queens by backtracking"
+ },
+ {
+  "file": "14-mandelbrot.sleela",
+  "title": "Mandelbrot set in text"
+ },
+ {
+  "file": "15-text-tricks.sleela",
+  "title": "Text as cells: palindromes"
+ },
+ {
+  "file": "16-rpn-calculator.sleela",
+  "title": "Stack machine: RPN calculator"
  }
 ]

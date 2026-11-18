@@ -1,0 +1,106 @@
+#sleela 2.2
+< Text as cells: a word is a String array of single glyphs, so reverse, palindrome and vowel tests are plain loops. >
+class TextTricks {
+
+  void load(String[] c, String w0, String w1, String w2, String w3, String w4, String w5, String w6) {
+    c[0] = w0; c[1] = w1; c[2] = w2; c[3] = w3; c[4] = w4; c[5] = w5; c[6] = w6; c[7] = "";
+  }
+
+  int length(String[] c) {
+    int n = 0;
+    while (n < 8 && c[n] != "") {
+      n = n + 1;
+    }
+    return n;
+  }
+
+  String text(String[] c) {
+    String s = "";
+    for (int i = 0; i < length(c); i = i + 1) {
+      s = s + c[i];
+    }
+    return s;
+  }
+
+  String reversed(String[] c) {
+    String s = "";
+    for (int i = length(c) - 1; i >= 0; i = i - 1) {
+      s = s + c[i];
+    }
+    return s;
+  }
+
+  boolean palindrome(String[] c) {
+    int n = length(c);
+    for (int i = 0; i < n / 2; i = i + 1) {
+      if (c[i] != c[n - 1 - i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  int vowels(String[] c) {
+    int count = 0;
+    for (int i = 0; i < length(c); i = i + 1) {
+      String g = c[i];
+      if (g == "a" || g == "e" || g == "i" || g == "o" || g == "u") {
+        count = count + 1;
+      }
+    }
+    return count;
+  }
+
+  void report(String[] c) {
+    print(text(c) + ": length=" + length(c) + " vowels=" + vowels(c) + " reversed=" + reversed(c) + " palindrome=" + palindrome(c));
+  }
+
+  void main() {
+    String[] w = new String[8];
+    load(w, "l", "e", "v", "e", "l", "", "");
+    report(w);
+    load(w, "r", "a", "c", "e", "c", "a", "r");
+    report(w);
+    load(w, "s", "l", "e", "e", "l", "a", "");
+    report(w);
+    load(w, "n", "o", "o", "n", "", "", "");
+    report(w);
+  }
+
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class example. Values are faithful to the real origin; unknown values are none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9115;
+  String metaAuthor = "MEARVK LLC";
+  String metaDate = "2026-11-18";
+  String metaCopyright = "none";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "National";
+  String metaBirthDate = "2026";
+  int metaScienceRating = 4;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getMetaAuthor() { return metaAuthor; }
+  void setMetaAuthor(String v) { metaAuthor = v; }
+  String getMetaDate() { return metaDate; }
+  void setMetaDate(String v) { metaDate = v; }
+  String getMetaCopyright() { return metaCopyright; }
+  void setMetaCopyright(String v) { metaCopyright = v; }
+  String getMetaTrademark() { return metaTrademark; }
+  void setMetaTrademark(String v) { metaTrademark = v; }
+  String getMetaCorporation() { return metaCorporation; }
+  void setMetaCorporation(String v) { metaCorporation = v; }
+  String getMetaOrigin() { return metaOrigin; }
+  void setMetaOrigin(String v) { metaOrigin = v; }
+  String getMetaBirthDate() { return metaBirthDate; }
+  void setMetaBirthDate(String v) { metaBirthDate = v; }
+  int getMetaScienceRating() { return metaScienceRating; }
+  void setMetaScienceRating(int v) { metaScienceRating = v; }
+  String getMetaNationalSchedule() { return metaNationalSchedule; }
+  void setMetaNationalSchedule(String v) { metaNationalSchedule = v; }
+}

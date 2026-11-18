@@ -1,0 +1,97 @@
+#sleela 2.2
+< Insertion sort, then binary search over the sorted result. >
+class SortAndSearch {
+
+  void insertionSort(int[] a, int n) {
+    for (int i = 1; i < n; i = i + 1) {
+      int key = a[i];
+      int j = i - 1;
+      while (j >= 0 && a[j] > key) {
+        a[j + 1] = a[j];
+        j = j - 1;
+      }
+      a[j + 1] = key;
+    }
+  }
+
+  int binarySearch(int[] a, int n, int target) {
+    int lo = 0;
+    int hi = n - 1;
+    int steps = 0;
+    while (lo <= hi) {
+      steps = steps + 1;
+      int mid = (lo + hi) / 2;
+      if (a[mid] == target) {
+        print("  found " + target + " at index " + mid + " after " + steps + " probes");
+        return mid;
+      }
+      if (a[mid] < target) {
+        lo = mid + 1;
+      } else {
+        hi = mid - 1;
+      }
+    }
+    print("  " + target + " not found after " + steps + " probes");
+    return -1;
+  }
+
+  String listing(int[] a, int n) {
+    String s = "";
+    for (int i = 0; i < n; i = i + 1) {
+      s = s + a[i] + " ";
+    }
+    return s;
+  }
+
+  void main() {
+    int n = 12;
+    int[] a = new int[n];
+    int seed = 17;
+    for (int i = 0; i < n; i = i + 1) {
+      seed = (seed * 31 + 7) % 101;
+      a[i] = seed;
+    }
+    print("before: " + listing(a, n));
+    insertionSort(a, n);
+    print("after:  " + listing(a, n));
+    binarySearch(a, n, a[7]);
+    binarySearch(a, n, 1000);
+  }
+
+  < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
+  << Baseline identity for a worker-class example. Values are faithful to the real origin; unknown values are none. >>
+  String metaVersion = "1.0.0";
+  int metaId = 9110;
+  String metaAuthor = "MEARVK LLC";
+  String metaDate = "2026-11-18";
+  String metaCopyright = "none";
+  String metaTrademark = "none";
+  String metaCorporation = "MEARVK LLC";
+  String metaOrigin = "National";
+  String metaBirthDate = "2026";
+  int metaScienceRating = 4;
+  String metaNationalSchedule = "none";
+
+  String getMetaVersion() { return metaVersion; }
+  void setMetaVersion(String v) { metaVersion = v; }
+  int getMetaId() { return metaId; }
+  void setMetaId(int v) { metaId = v; }
+  String getMetaAuthor() { return metaAuthor; }
+  void setMetaAuthor(String v) { metaAuthor = v; }
+  String getMetaDate() { return metaDate; }
+  void setMetaDate(String v) { metaDate = v; }
+  String getMetaCopyright() { return metaCopyright; }
+  void setMetaCopyright(String v) { metaCopyright = v; }
+  String getMetaTrademark() { return metaTrademark; }
+  void setMetaTrademark(String v) { metaTrademark = v; }
+  String getMetaCorporation() { return metaCorporation; }
+  void setMetaCorporation(String v) { metaCorporation = v; }
+  String getMetaOrigin() { return metaOrigin; }
+  void setMetaOrigin(String v) { metaOrigin = v; }
+  String getMetaBirthDate() { return metaBirthDate; }
+  void setMetaBirthDate(String v) { metaBirthDate = v; }
+  int getMetaScienceRating() { return metaScienceRating; }
+  void setMetaScienceRating(int v) { metaScienceRating = v; }
+  String getMetaNationalSchedule() { return metaNationalSchedule; }
+  void setMetaNationalSchedule(String v) { metaNationalSchedule = v; }
+}
