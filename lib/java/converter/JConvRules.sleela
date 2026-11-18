@@ -107,7 +107,8 @@ class JConvRules {
     if (this.model != null && this.model.loaded && this.model.renameN > 0) {
       String mapped = this.model.renameOf(n, "all");
       if (mapped != "") { out = mapped; }
-    } else if (isRenamedIdent(n)) { out = n + "_"; }
+    } else if (n == "close") { out = "closeResource"; }
+    else if (isRenamedIdent(n)) { out = n + "_"; }
     < a dollar sign is not a SLeeLa identifier character >
     if (out.indexOf("$") >= 0) { out = out.replace("$", "_S_"); }
     return out;
