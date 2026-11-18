@@ -30,7 +30,7 @@ GUI   := $(BUILD)/SleelaTerminal
 GTK4_VTE_CFLAGS := $(shell $(PKG_CONFIG) --cflags $(GTK4_VTE_PKGS) 2>/dev/null)
 GTK4_VTE_LIBS   := $(shell $(PKG_CONFIG) --libs $(GTK4_VTE_PKGS) 2>/dev/null)
 
-.PHONY: all cli all-gui smoke test m5-smoke gui install install-gui install-all check-gui-deps do-install do-install-gui install-strip uninstall clean sanitize fuzz
+.PHONY: all cli all-gui smoke test version-smoke m5-smoke gui install install-gui install-all check-gui-deps do-install do-install-gui install-strip uninstall clean sanitize fuzz
 
 all: all-gui
 
@@ -60,7 +60,10 @@ gui: $(GUI)
 m5-smoke: $(SLSH)
 	sh ./m5-smoke.sh $(SLSH)
 
-test: smoke m5-smoke
+test: smoke version-smoke m5-smoke
+
+version-smoke: $(SLSH)
+	@test "$($(SLSH) --version)" = "slsh 1.0121 (SleelaTerminal shell)" || { echo "slsh version identity mismatch" >&2; exit 1; }
 
 # Validate DESTDIR staging, executable permissions, and the installed CLI.
 install-smoke: $(SLSH)
