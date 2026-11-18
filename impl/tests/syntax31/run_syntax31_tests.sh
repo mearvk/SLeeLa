@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Syntax 3.1, also written 3.01 (SLEELA.syntax sections 44, 45, 46): character literal and the char
-# type, array initializer, a.length, multi-dimensional arrays, labeled statements, abrupt
-# completion through finally. Each <name>.sleela has a
+# Syntax 3.1 (SLEELA.syntax section 44): character literals, array initializers,
+# labeled statements, and abrupt completion through finally. Syntax 3.2 tests live in
+# ../syntax32. Each <name>.sleela has a
 # <name>.expected.txt; gate_* and bad_* must be rejected with the stated message.
 # usage: run_syntax31_tests.sh [path-to-sleela]
 set -u
