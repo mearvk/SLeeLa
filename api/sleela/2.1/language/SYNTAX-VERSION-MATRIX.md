@@ -6,9 +6,9 @@ normative grammar is [`SLEELA.syntax`](../../../../SLEELA.syntax); the compiler 
 is implemented in `impl/frontend/version.{h,cpp}`.
 
 The compiler currently accepts source syntax **1.0 through 3.2** and defaults
-unversioned source to **3.0** with a warning. Syntax 3.0 consolidates the
-established 1.x/2.x language surface into the current normative edition; it
-adds no new grammar production solely through the edition bump. A newer
+unversioned source to **3.2** with a warning. Syntax 3.0 consolidated the
+established 1.x/2.x language surface; Syntax 3.1 and 3.2 add the features
+specified in `SLEELA.syntax` §§44–46. A newer
 compiler does not silently upgrade an older source file: each feature remains
 subject to its own syntax-version gate.
 
