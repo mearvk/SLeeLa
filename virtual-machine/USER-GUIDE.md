@@ -96,8 +96,9 @@ sleela vm run native program.sleela      # same as plain `sleela run` (Native VM
 > builds that generation's VM on demand (if needed), compiles your program to a
 > Core artifact, and **actually boots the generation VM and runs the program on
 > it**. The premium VMs are built by the master build (`make premium-vms`, part
-> of `make all`). Standard think-tank versions (`1..10`) are not yet bootable
-> this way — use the Native VM (plain `sleela run`) for those.
+> of `make all`). The standard think-tank versions (`1..10`) are built
+> and smoke-run by `make standard-vms` (also part of `make all`), but are not yet
+> bootable this way — use the Native VM (plain `sleela run`) to run programs.
 
 ### Lock in a VM generation
 

@@ -3,7 +3,7 @@
 # Product-specific Makefiles remain authoritative. This root dispatcher only
 # enters those existing build systems; it does not duplicate their source lists.
 
-.PHONY: all build uninstall uninstall-all autocheck core java28 xlt regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test runtime-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install advanced-build tutorial-check tests server config route common-rails registry registry-test premium-vms sleeladoc sleeladoc-jar api-docs clean verify-security help guess install-guide install-editors uninstall-editors
+.PHONY: all build uninstall uninstall-all autocheck core java28 xlt regex compiler decompiler vm scripting jetbrains connector connector-test connector-check-deps codecs codecs-test churn churn-test churn-data-check antivirus antivirus-test runtime-test antivirus-clamav antivirus-integrity antivirus-integrity-check ballum ballum-test ballum-deps ballum-check-deps ballum-install ballum-uninstall ballum-clean lib-ballum lib-ballum-check lib-ballum-install install install-all install-local install-system install-check install-product clean-install advanced-build tutorial-check tests server config route common-rails registry registry-test standard-vms premium-vms sleeladoc sleeladoc-jar api-docs clean verify-security help guess install-guide install-editors uninstall-editors
 
 SLEELA_MANIFEST_CONSENT ?=
 # Answer the "install the advanced (beautified/guided) build?" prompt
@@ -45,7 +45,7 @@ export PYTHON
 EDITORS ?=
 EDITOR_ARGS ?=
 
-all: core java28 xlt regex compiler decompiler vm scripting jetbrains install-check tutorial-check tests config route common-rails codecs codecs-test churn churn-test antivirus antivirus-test runtime-test registry premium-vms ballum
+all: core java28 xlt regex compiler decompiler vm scripting jetbrains install-check tutorial-check tests config route common-rails codecs codecs-test churn churn-test antivirus antivirus-test runtime-test registry standard-vms premium-vms ballum
 
 # `build` is the human-facing entry point: it performs the full `make all`
 # build and THEN offers, with a yes/no prompt, to simply install the advanced
@@ -429,6 +429,11 @@ registry: core
 registry-test: registry
 	$(MAKE) -C registry test
 
+# Build and run the ten standard (escalating idea-vm-001..010) VMs. Each version
+# is compiled from its own folder, so no Core archive is needed.
+standard-vms:
+	$(MAKE) -C virtual-machine/vm-version all
+
 # Build the eleven premium SLVM generations as real runnable VMs. Each links
 # the shared native Core engine archive (impl/build/libslcore.a, produced by
 # `core`) and runs compiled .sleela artifacts; `sleela vm run premium <n> <prog>`
@@ -443,6 +448,7 @@ premium-vms: core
 	@echo "SLeeLa premium VMs built and selfchecked: sleela-virtual-machine/0NN/vm-build/slvm-NN"
 
 clean:
+	$(MAKE) -C virtual-machine/vm-version clean
 	@set -e; for n in 001 002 003 004 005 006 007 008 009 010 011; do \
 	  echo "=== cleaning premium SLVM $$n ==="; \
 	  $(MAKE) -C sleela-virtual-machine/$$n clean; \
@@ -503,7 +509,7 @@ guess:
 	@echo "  scripting -> jetbrains -> install-check -> tutorial-check ->"
 	@echo "  tests -> config -> route -> common-rails -> codecs -> codecs-test ->"
 	@echo "  churn -> churn-test -> antivirus -> antivirus-test -> runtime-test ->"
-	@echo "  registry -> premium-vms -> ballum"
+	@echo "  registry -> standard-vms -> premium-vms -> ballum"
 	@echo "  Key dependency edges (prerequisite -> dependent):"
 	@echo "    autocheck, verify-security  ->  core"
 	@echo "    core                        ->  install / install-local /"
@@ -519,6 +525,7 @@ guess:
 	@echo "    compiler     lib/compiler"
 	@echo "    decompiler   lib/decompiler"
 	@echo "    vm           lib/vm"
+	@echo "    standard-vms the 10 escalating idea-vm-001..010 VMs (no Core needed)"
 	@echo "    premium-vms  the 11 premium SLVM generations (need core first)"
 	@echo "    ballum       native display library; falls back to the portable"
 	@echo "                 test when OS display libs are missing (non-fatal)"
@@ -655,6 +662,7 @@ help:
 	@echo "  make lib-ballum Validate the SLeeLa lib/ballum sources and build the native backend below it"
 	@echo "  make lib-ballum-check Validate the lib/ballum .sleela sources with the compiler"
 	@echo "  make lib-ballum-install [PREFIX=/usr/local] Validate and install the lib/ballum native backend"
+	@echo "  make standard-vms Build and run the 10 standard (idea-vm-001..010) VMs"
 	@echo "  make premium-vms Build and run selfchecks for all 11 premium SLVM generations"
 	@echo "  make regex     Build regex/ and its test suites"
 	@echo "  make registry  Build the registry core and materialize the baseline registry table (part of 'make all')"
