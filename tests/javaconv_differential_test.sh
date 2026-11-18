@@ -10,6 +10,7 @@
 #
 # usage: tests/javaconv_differential_test.sh [path-to-sleela] [path-to-javaconv]
 set -u
+set -o pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
 root="$(cd "$here/.." && pwd)"
 conv="${2:-$root/sleelactl/convert/build/javaconv}"
@@ -124,12 +125,12 @@ if javac -d "$tmp/project-generic/cls" "$tmp/project-generic/src/Box.java" "$tmp
    "$conv" --jdk "$tmp/project-generic/src" --out "$tmp/project-generic/sl" --quiet; then
   (cd "$tmp/project-generic/sl" && timeout 300 "$sleela" run Main.sleela 2>&1 | filter) > "$tmp/project-generic/actual.out"
   if diff -u "$tmp/project-generic/expected.out" "$tmp/project-generic/actual.out" > "$tmp/project-generic/diff"; then
-    printf 'PASS  %-12s cross-file class-generic substitution identical to the JDK\\n' "project-generic"; pass=$((pass+1))
+    printf 'PASS  %-12s cross-file class-generic substitution identical to the JDK\n' "project-generic"; pass=$((pass+1))
   else
-    printf 'FAIL  project-generic\\n'; head -40 "$tmp/project-generic/diff"; fail=$((fail+1))
+    printf 'FAIL  project-generic\n'; head -40 "$tmp/project-generic/diff"; fail=$((fail+1))
   fi
 else
-  printf 'FAIL  project-generic (project build or conversion failed)\\n'; cat "$tmp/project-generic/javac.err"; fail=$((fail+1))
+  printf 'FAIL  project-generic (project build or conversion failed)\n'; cat "$tmp/project-generic/javac.err"; fail=$((fail+1))
 fi
 
 # duplicate simple declarations must never be resolved by source traversal order
@@ -149,6 +150,50 @@ if [ "$duplicate_rc" -eq 1 ] && printf '%s' "$duplicate_out" | grep -q "\[type-a
   printf 'PASS  %-12s ambiguous project-wide simple name refused\n' "duplicate-type"; pass=$((pass+1))
 else
   printf 'FAIL  duplicate-type (rc=%s)\n%s\n' "$duplicate_rc" "$duplicate_out"; fail=$((fail+1))
+fi
+
+# project-wide generic inheritance: type arguments must be substituted through
+# a cross-file superclass and interface edge before inherited calls are emitted.
+mkdir -p "$tmp/project-inherited/src" "$tmp/project-inherited/cls" "$tmp/project-inherited/sl"
+cat > "$tmp/project-inherited/src/Value.java" <<'JAVA'
+public interface Value<T> { T get(); }
+JAVA
+cat > "$tmp/project-inherited/src/Base.java" <<'JAVA'
+public class Base<T> implements Value<T> {
+  private T value;
+  public Base(T value) { this.value = value; }
+  public T get() { return value; }
+}
+JAVA
+cat > "$tmp/project-inherited/src/Mid.java" <<'JAVA'
+public class Mid<T> extends Base<T> {
+  public Mid(T value) { super(value); }
+}
+JAVA
+cat > "$tmp/project-inherited/src/TextValue.java" <<'JAVA'
+public class TextValue extends Mid<String> {
+  public TextValue(String value) { super(value); }
+}
+JAVA
+cat > "$tmp/project-inherited/src/Main.java" <<'JAVA'
+public class Main {
+  public static void main(String[] args) {
+    Value<String> value = new TextValue("project-inherited");
+    System.out.println(value.get());
+  }
+}
+JAVA
+if javac -d "$tmp/project-inherited/cls" "$tmp/project-inherited/src/"*.java 2> "$tmp/project-inherited/javac.err" &&
+   java -cp "$tmp/project-inherited/cls" Main > "$tmp/project-inherited/expected.out" 2>&1 &&
+   "$conv" --jdk "$tmp/project-inherited/src" --out "$tmp/project-inherited/sl" --quiet; then
+  (cd "$tmp/project-inherited/sl" && timeout 300 "$sleela" run Main.sleela 2>&1 | filter) > "$tmp/project-inherited/actual.out"
+  if diff -u "$tmp/project-inherited/expected.out" "$tmp/project-inherited/actual.out" > "$tmp/project-inherited/diff"; then
+    printf 'PASS  %-12s cross-file generic superclass/interface substitution identical to the JDK\n' "project-inherited"; pass=$((pass+1))
+  else
+    printf 'FAIL  project-inherited\n'; head -40 "$tmp/project-inherited/diff"; fail=$((fail+1))
+  fi
+else
+  printf 'FAIL  project-inherited (project build or conversion failed)\n'; cat "$tmp/project-inherited/javac.err"; fail=$((fail+1))
 fi
 
 echo "javaconv differential: pass=$pass fail=$fail"
