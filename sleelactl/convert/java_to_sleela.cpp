@@ -383,7 +383,10 @@ private:
     std::string emitType(const Ty& t) const {
         std::string n = t.n;
         if (n == "?" || n.rfind("$T$", 0) == 0) n = "Any";
-        if (n == "float") n = "double";   // a binary32 value is held in a double that is rounded to 24 bits after each operation (JavaFloat)
+        else {
+            const cm_rec* tr = cm_find(&M, "type", n.c_str(), nullptr, nullptr);
+            if (tr && tr->f[1][0]) n = tr->f[1];
+        }
         for (int i = 0; i < t.dims; i++) n += "[]";
         return n;
     }
