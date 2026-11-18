@@ -52,7 +52,7 @@ to run Java source files:
 
 At the time of this 0.3.30 tool-release increment, the supported source-
 syntax range was 1.0 .. 2.5. The language edition has since advanced to
-Syntax 3.0; the current compiler gate accepts 1.0 .. 3.0. This historical note
+Syntax 3.2; the current compiler gate accepts 1.0 .. 3.2. This historical note
 records the state at that earlier increment, not the current syntax range.
 Tool-release and language-syntax versions remain independent.
 
@@ -329,12 +329,13 @@ Library expansion and inventory recount. Advanced the active development line to
 **SLeeLa — MEARVK LLC — 2026**
 
 
-## Language syntax 3.0 edition
+## Historical language syntax 3.0 edition
 
-The normative SLeeLa language specification is now **3.0**. The native
-compiler gate accepts declared source syntax 1.0 through 3.0 and defaults
-unversioned source to 3.0 with a warning. The edition consolidates the
-established 1.x/2.x language surface; feature-specific minimum syntax gates
-remain in force. The runtime/compiler product release (0.3.30-dev), Nordshrift
+Syntax 3.0 consolidated the established 1.x/2.x language surface and remains
+a supported source declaration. It has been superseded as the current normative
+edition by **Syntax 3.2**. The native compiler gate accepts declared source
+syntax 1.0 through 3.2 and defaults unversioned source to 3.2 with a warning.
+Syntax 3.1 and 3.2 add the capabilities specified in `SLEELA.syntax` sections
+44–46. Historical feature-specific minimum syntax gates remain in force. The runtime/compiler product release (0.3.30-dev), Nordshrift
 product release (2.7.1-dev), and NS-SST-0001 format version are independent
 version tracks.
