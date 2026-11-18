@@ -21,7 +21,7 @@ namespace {
 constexpr const char *kApplicationId = "com.mearvk.SleelaTerminal";
 constexpr const char *kWindowTitle = "SleelaTerminal™ — MEARVK LLC";
 constexpr const char *kConfigName = "sleela-terminal.conf";
-constexpr const char *kVersion = "1.0.0";
+constexpr const char *kVersion = "1.0121";
 
 // ---- Lightbar pulse: conserved artist configuration ---------------------
 // The lightbar hosts a SINGLE breathing pulse of light that is logarithmically
