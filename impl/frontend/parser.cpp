@@ -1018,7 +1018,7 @@ ExprP Parser::parsePrimary(){
         auto n=std::make_unique<NewExpr>(type);
         if(accept(Tok::LBracket)){
             if(check(Tok::RBracket)){
-                // Syntax 3.1: new T[]{a, b, c}; syntax 3.1 also new T[][]{{..},{..}} (any rank)
+                // Syntax 3.1: new T[]{a, b, c}; syntax 3.2 also new T[][]{{..},{..}} (any rank)
                 i_++;
                 std::string arrType=n->typeName+"[]";
                 while(check(Tok::LBracket)&&peek(1).kind==Tok::RBracket){ i_+=2; arrType+="[]"; uses32_.insert("multi-dimensional array creation"); }
@@ -1036,7 +1036,7 @@ ExprP Parser::parsePrimary(){
                     if(sawUnsized) error("array dimension expression after an empty '[]' in 'new "+n->typeName+"'");
                     n->args.push_back(parseExpr()); expect(Tok::RBracket,"']'"); n->typeName += "[]";
                 }
-                uses31_.insert("multi-dimensional array creation");
+                uses32_.insert("multi-dimensional array creation");
             }
             if(n->args.size()>8) error("array creation with more than 8 sized dimensions");
             return parsePostfix(std::move(n));
