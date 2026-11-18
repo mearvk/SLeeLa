@@ -225,14 +225,14 @@ public class ChildBad extends Base {
 }
 JAVA
 if javac -d "$tmp/project-protected-receiver/cls" "$tmp/project-protected-receiver/src/fixture/alpha/Base.java" "$tmp/project-protected-receiver/src/fixture/child/ChildBad.java" 2> "$tmp/project-protected-receiver/javac.err"; then
-  printf 'FAIL  protected-receiver (javac unexpectedly accepted Base-typed protected field receiver)\\n'; fail=$((fail+1))
+  printf 'FAIL  protected-receiver (javac unexpectedly accepted Base-typed protected field receiver)\n'; fail=$((fail+1))
 else
   receiver_out="$("$conv" --jdk "$tmp/project-protected-receiver/src" --out "$tmp/project-protected-receiver/out" --quiet 2>&1)"
   receiver_rc=$?
   if [ "$receiver_rc" -eq 1 ] && printf '%s' "$receiver_out" | grep -q "\\[member-access\\]" && [ "$(find "$tmp/project-protected-receiver/out" -name '*.sleela' | wc -l)" -eq 0 ]; then
-    printf 'PASS  %-12s cross-package protected field through Base receiver refused with no output\\n' "protected-receiver"; pass=$((pass+1))
+    printf 'PASS  %-12s cross-package protected field through Base receiver refused with no output\n' "protected-receiver"; pass=$((pass+1))
   else
-    printf 'FAIL  protected-receiver (rc=%s)\\n%s\\n' "$receiver_rc" "$receiver_out"; fail=$((fail+1))
+    printf 'FAIL  protected-receiver (rc=%s)\\n%s\n' "$receiver_rc" "$receiver_out"; fail=$((fail+1))
   fi
 fi
 
@@ -361,17 +361,17 @@ public class Main { public static void main(String[] args) { System.out.println(
 JAVA
 if "$conv" --jdk "$tmp/transaction/src" --out "$tmp/transaction/out" --quiet; then
   if ! python3 "$root/sleelactl/convert/verify-provenance.py" "$tmp/transaction/out/CONVERSION-PROVENANCE.json" "$root" "$tmp/transaction/src" "$tmp/transaction/out"; then
-    printf 'FAIL  %-12s independent provenance validation failed\\n' "provenance"; fail=$((fail+1))
+    printf 'FAIL  %-12s independent provenance validation failed\n' "provenance"; fail=$((fail+1))
   else
-    printf 'PASS  %-12s source/model/converter/output SHA-256 provenance independently verified\\n' "provenance"; pass=$((pass+1))
+    printf 'PASS  %-12s source/model/converter/output SHA-256 provenance independently verified\n' "provenance"; pass=$((pass+1))
   fi
-  find "$tmp/transaction/out" -type f -printf '%P\\t%T@\\n' | sort > "$tmp/transaction/mtime.before"
+  find "$tmp/transaction/out" -type f -printf '%P\\t%T@\n' | sort > "$tmp/transaction/mtime.before"
   if "$conv" --jdk "$tmp/transaction/src" --out "$tmp/transaction/out" --quiet &&
-     find "$tmp/transaction/out" -type f -printf '%P\\t%T@\\n' | sort > "$tmp/transaction/mtime.after" &&
+     find "$tmp/transaction/out" -type f -printf '%P\\t%T@\n' | sort > "$tmp/transaction/mtime.after" &&
      diff -u "$tmp/transaction/mtime.before" "$tmp/transaction/mtime.after" >/dev/null; then
-    printf 'PASS  %-12s repeat conversion preserves every output mtime\\n' "repeat-run"; pass=$((pass+1))
+    printf 'PASS  %-12s repeat conversion preserves every output mtime\n' "repeat-run"; pass=$((pass+1))
   else
-    printf 'FAIL  repeat-run (paths or mtimes changed on identical input)\\n'; fail=$((fail+1))
+    printf 'FAIL  repeat-run (paths or mtimes changed on identical input)\n'; fail=$((fail+1))
   fi
   cp "$tmp/transaction/out/.javaconv-emitted" "$tmp/transaction/manifest.before"
   cat > "$tmp/transaction/src/Main.java" <<'JAVA'
@@ -380,7 +380,7 @@ JAVA
   cat > "$tmp/transaction/src/ZCollision.java" <<'JAVA'
 public class ZCollision { }
 JAVA
-  printf 'user-owned sentinel\\n' > "$tmp/transaction/out/ZCollision.sleela"
+  printf 'user-owned sentinel\n' > "$tmp/transaction/out/ZCollision.sleela"
   before_main="$(cat "$tmp/transaction/out/Main.sleela")"
   before_manifest="$(cat "$tmp/transaction/out/.javaconv-emitted")"
   tx_out="$("$conv" --jdk "$tmp/transaction/src" --out "$tmp/transaction/out" --quiet 2>&1)"
@@ -389,12 +389,12 @@ JAVA
   after_manifest="$(cat "$tmp/transaction/out/.javaconv-emitted")"
   sentinel="$(cat "$tmp/transaction/out/ZCollision.sleela")"
   if [ "$tx_rc" -eq 2 ] && [ "$before_main" = "$after_main" ] && [ "$before_manifest" = "$after_manifest" ] && [ "$sentinel" = "user-owned sentinel" ]; then
-    printf 'PASS  %-12s failed generation leaves previous output, manifest and unowned files intact\\n' "transaction"; pass=$((pass+1))
+    printf 'PASS  %-12s failed generation leaves previous output, manifest and unowned files intact\n' "transaction"; pass=$((pass+1))
   else
-    printf 'FAIL  transaction (rc=%s)\\n%s\\n' "$tx_rc" "$tx_out"; fail=$((fail+1))
+    printf 'FAIL  transaction (rc=%s)\\n%s\n' "$tx_rc" "$tx_out"; fail=$((fail+1))
   fi
 else
-  printf 'FAIL  transaction (could not establish initial generation)\\n'; fail=$((fail+1))
+  printf 'FAIL  transaction (could not establish initial generation)\n'; fail=$((fail+1))
 fi
 
 # duplicate declarations in the same compilation unit must be refused too
