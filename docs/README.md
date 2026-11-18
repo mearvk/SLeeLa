@@ -9,7 +9,7 @@ normative specifications from implementation notes and live validation results.
 
 - [SLeeLa International 3.0 — Language and Feature Reference](reference/LANGUAGE.INTERNATIONAL.3.0.md) — reader-facing overview of the language, compiler, runtime, standard library, syntax features, and implementation boundaries.
 - [Language syntax specification](../SLEELA.syntax) — normative SLeeLa
-  **Syntax 3.0** grammar. The shared compiler gate in
+  **Syntax 3.2** grammar. The shared compiler gate in
   `impl/frontend/version.{h,cpp}` accepts source syntax **1.0–3.2** and
   defaults unversioned source to 3.2 with a warning. Syntax 3.0 consolidates
   the established 1.x/2.x language surface while preserving each feature's
@@ -30,8 +30,7 @@ normative specifications from implementation notes and live validation results.
   Members), regenerated from source by `tools/generate-sleeladoc-api.py`.
   Per-edition snapshots live under [`api/sleela/`](../api/sleela/); the
   previous **3.1** edition is preserved in immutable snapshots; the current edition is **3.2**
-  snapshots in numbered subfolders, starting at
-  [`version-001`](../api/sleela/3.1/version-001/index.html). The 3.0 edition
+  snapshots in numbered subfolders. The 3.1, 3.0, and older 2.x editions
   and the older 2.x editions are preserved alongside it. Each later
   regeneration adds the next unused `version-NNN/` folder.
 - [UI component quality — visibility, margin, and icon](UI-COMPONENT-QUALITY.md) —
