@@ -132,3 +132,67 @@ On `master` at `17814fc4` with the then-committed binary: fast set 111/111 (81 s
 ## Also this session: FRUCHST language dictionaries
 
 The same session extended the FRUCHST 80-language dictionary work under `languages/`; see `languages/FRUCHST_STATUS.md`. In summary: 51 of 80 profiles have 1,000-word lists; 22,344 of the 51,000 listed words have English, French and Spanish definitions or equivalents (French and Spanish found directly or through the English word); close-variant matching added English for 5,277 more words, bringing English coverage to 65.5%; no definition is approved yet.
+
+
+## November 18 session: Java converter, JDK 28 validation and release qualification
+
+This session continues the Java conversion and generic-resolution work. It is a separate validation track from the language-wide regression results above; the November 17 counts are retained as historical results and were **not re-run** against the November 18 Java changes.
+
+### Repository baseline and merged work
+
+- Baseline: `master` at `c00fd2f3ed760a2a840cecd02a02daec032b6453`.
+- PR [#375](https://github.com/mearvk/SLeeLa/pull/375) merged into `master`: deterministic erased signature indexing, generic metadata retention, collision reporting, inherited superclass/interface implementation checks, constructor parameter compatibility, JDK 28 reflection inputs, and JDK 25-to-28 API comparison scaffolding.
+- The merged change explicitly leaves validation pending. Generated API envelopes and fail-loud stubs are declarations/contracts, not implemented Java behavior.
+- PR [#376](https://github.com/mearvk/SLeeLa/pull/376) adds the production release qualification report. At the time of this status update it is open on `work/production-release-qualification-report`; it is not yet part of `master`.
+
+### Current regression evidence
+
+| Area | November 18 status |
+|---|---|
+| Language-wide regression set | **Not re-run.** Latest recorded result remains November 17: 211 tests, 0 failed, 206 s, against the rebuilt `working-binaries/sleela`. |
+| Fast regression set | **Not re-run.** November 17 record: 198 tests, 0 failed, 113 s. |
+| Native ASan/UBSan suites | **Not re-run in this session.** November 17 record: 17 tests, 0 failed. |
+| Mutation suite | **Not re-run.** November 17 record: 85 injected defects detected. |
+| JDK 28 signature-index and generic-resolution tests | Source changes merged; current execution result **PENDING**. |
+| C++ converter and runtime clean build | **NOT RUN in this session**. |
+| SLeeLa-native converter differential and per-member stub policy | **NOT RUN in this session**. |
+| Representative Java-to-SLeeLa program execution | **NOT RUN in this session**. |
+| Hosted workflow status for merge commit | No workflow runs or combined commit statuses were exposed by the repository connection at inspection time. Do not claim CI passed. |
+
+The November 17 regression set remains valid as a dated result for its tested commit and toolchain. It is not evidence that the Java converter changes in `c00fd2f3` passed those tests.
+
+### Release qualification
+
+The report `docs/reference/PRODUCTION.RELEASE.QUALIFICATION.2026-11-18.md` defines the release gates. The decision remains **HOLD** until a clean checkout build, converter self-checks, positive and negative differential tests, repeat-run/provenance checks, JDK 28 campaign, representative executions, and platform evidence are actually collected.
+
+### Known Java conversion refusals and limitations
+
+The current specification and converter status continue to identify:
+- unresolved generic target-type inference, wildcard capture, intersection least-upper-bound constraints and generic constructor inference;
+- uncollected functional-interface SAM targets;
+- nested lambda/anonymous-class capture chains;
+- local classes and `outer.new Inner()`;
+- switch type/record patterns and sealed exhaustiveness;
+- static initializer blocks;
+- unsupported inherited `Object` methods;
+- boxed null values and wrapper arrays;
+- multithreaded `synchronized`/`volatile` semantics (the documented simplification is single-threaded only);
+- Java native methods without a verified ABI binding;
+- remaining ambiguous nested-type names and model/syntax limits.
+
+The C++ converter remains fail-closed at whole-file scope. The SLeeLa-native converter retains its documented per-member policy: supported siblings may be emitted, while unsupported members are represented by fail-loud stubs and counted. Such stubs are not functional implementations and must not be included in behavioral-equivalence totals.
+
+### Next regression sequence
+
+1. Build the runtime and C++ converter from the exact `master` commit; regenerate and verify the integrity manifest from that checkout.
+2. Run converter model self-check and generated signature/result-row checks.
+3. Run the complete positive differential suite and all current refusal fixtures; retain raw logs and exact counts.
+4. Run the SLeeLa-native per-member stub-policy and repeat-run/provenance tests.
+5. Run the JDK 28 validation campaign and archive signature inventories, collision reports, API deltas and functional-equivalence diagnostics.
+6. Execute representative converted programs and compare output with the reference JDK.
+7. Run native, language-wide and platform regression suites; report Linux, Windows 10+ and macOS separately.
+8. Update measured counts only from those outputs; keep the production release on HOLD until every required gate is satisfied.
+
+### Session tooling boundary
+
+Repository files and pull requests were updated through the GitHub repository interface. This session did not have a local checkout or shell execution path for the repository, so no build, compiler invocation, program execution or regression command was run. This limitation is recorded rather than substituting estimates or historical results.
