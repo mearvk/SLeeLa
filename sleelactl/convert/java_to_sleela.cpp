@@ -236,6 +236,16 @@ private:
         if (r && prim) *prim = r->f[1];
         return r != nullptr;
     }
+    bool modelWrapperForPrimitive(const std::string& n, std::string* wrapper = nullptr) const {
+        for (size_t i=0;i<M.n;i++) {
+            const cm_rec& rec=M.recs[i];
+            if (std::string(rec.kind)=="box" && rec.nf>1 && n==rec.f[1]) {
+                if (wrapper) *wrapper=rec.f[0];
+                return true;
+            }
+        }
+        return false;
+    }
 
     // Operand class, numeric rank and unary promotion are data in conversion.model.
     std::string classOf(const Ty& t) const {
@@ -1093,6 +1103,15 @@ private:
                         if (args[i].ty.dims < target.dims) { applicable=false; break; }
                         Ty inferredType=args[i].ty;
                         inferredType.dims-=target.dims;
+                        // Java type arguments cannot be primitive. Generic
+                        // inference boxes a scalar primitive into its wrapper;
+                        // an array whose component would be primitive is not T[].
+                        if (inferredType.dims==0 && isPrimitiveName(inferredType.n)) {
+                            std::string wrapper;
+                            if (!modelWrapperForPrimitive(inferredType.n,&wrapper)) { applicable=false; break; }
+                            inferredType.n=wrapper;
+                            inferredType.boxed=true;
+                        }
                         auto ti=inferred.find(variableName);
                         if (ti==inferred.end()) inferred[variableName]=inferredType;
                         else if (!(ti->second==inferredType)) {
