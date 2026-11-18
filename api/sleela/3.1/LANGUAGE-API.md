@@ -1,9 +1,9 @@
-# SLeeLa 3.1 language API
+# SLeeLa 3.2 language API
 
 Normative text: [`SLEELA.syntax`](../../../SLEELA.syntax) sections 44 (literal, initializer, labels, `finally`),
 45 (the char specification) and 46 (the array specification). This page is the quick reference; where it and the
-specification differ, the specification wins. Every form below needs `#sleela 3.1` (or `3.01`); under an older
-declaration it is the error `<form> requires #sleela 3.1`.
+specification differ, the specification wins. Every form below needs `#sleela 3.2`; under an older
+declaration it is the error `<form> requires #sleela 3.2`.
 
 ## Character
 
