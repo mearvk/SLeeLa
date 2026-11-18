@@ -146,13 +146,14 @@ source snapshot:
 
 ## Next implementation order
 
-1. Complete whole-run transactional staging/publication in the C++ converter.
-2. Add a repeat-run/mtime regression test for both converter output paths and
-   validate the C++ provenance manifest against independently computed hashes.
-3. Add native ownership tracking and safe stale-output cleanup without deleting
+1. Run the added C++ provenance/repeat-run transaction regression and the
+   native repeat-run/rollback integration regression; fix any failures.
+2. Add native ownership tracking and safe stale-output cleanup without deleting
    unowned files; test interrupted batch/resume and publication rollback.
-4. Pin the exact JDK 28 source archive/revision used for the conformance corpus.
-5. Complete native overload-aware project indexing and generic invocation
-   inference to close the documented semantic-parity gap.
+3. Pin the exact JDK 28 source archive/revision used for the conformance corpus.
+4. Complete native overload-aware project indexing, generic invocation
+   inference and generic SAM substitution to close the semantic-parity gap.
+5. Align accepted/refused semantics and add JDK differential fixtures for each
+   newly shared behavior.
 6. Run both converters independently; report complete, partial/stubbed,
    refused, and infrastructure-failed counts separately.
