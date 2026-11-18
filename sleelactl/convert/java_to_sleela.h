@@ -45,7 +45,7 @@ struct MethodSig {
     std::vector<Ty> params;
     std::vector<std::string> typeParams; // method-level type variables retained for invocation inference
     bool hasTypeParamBounds = false; // true when one or more type parameters declare bounds
-    std::map<std::string, std::string> typeParamBounds; // first class/interface bound; intersection bounds remain unsupported
+    std::map<std::string, std::vector<std::string>> typeParamBounds; // every declared upper bound, including intersections
     bool isStatic = false;
     bool varargs = false;   // the last parameter is T... (its type is stored as T[])
     bool isAbstract = false; // declared without a body (an interface method, or abstract)
@@ -53,6 +53,8 @@ struct MethodSig {
 };
 struct FieldInfo { Ty ty; bool isStatic = false; };
 struct ClassInfo {
+    std::string sourceName;           // source unit that contributed this declaration
+    bool ambiguous = false;           // duplicate simple name across project units: fail closed
     std::map<std::string, FieldInfo> fields;
     std::vector<MethodSig> methods;
     std::vector<std::string> typeParams; // declared class type variables, in source order
