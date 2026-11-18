@@ -1270,12 +1270,12 @@ private:
         if (visibility == "public") return true;
         auto it = classes.find(owner);
         if (it == classes.end()) return true;
-        if (it->second.packageName == packageName_) return true;
         auto host = [](const std::string& n) {
             const size_t p = n.find("__");
             return p == std::string::npos ? n : n.substr(0, p);
         };
         if (visibility == "private") return host(owner) == host(curClass);
+        if (it->second.packageName == packageName_) return true;
         if (visibility == "protected") return isSubtypeName(curClass, owner);
         return false;
     }
