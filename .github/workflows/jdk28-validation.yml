@@ -39,11 +39,12 @@ jobs:
             libx11-dev libxrandr-dev libfontconfig1-dev libfreetype6-dev \
             libpng-dev zlib1g-dev
 
-      - name: Set up reference JDK
-        uses: actions/setup-java@v4
+      - name: Set up reference JDK 28
+        uses: oracle-actions/setup-java@v1
         with:
-          distribution: temurin
-          java-version: "25"
+          website: jdk.java.net
+          release: "28"
+          version: latest
 
       - name: Rebuild checkout-local integrity manifest
         run: python3 tools/generate-sha256-manifest.py --root . --output security/sha256-manifest.json
