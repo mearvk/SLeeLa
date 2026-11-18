@@ -73,16 +73,16 @@ class JDK28SignatureIndexTests(unittest.TestCase):
 
     def test_inherited_interface_implementation_prevents_redundant_stub(self):
         t = {"name": "example.Child", "kind": "class", "fields": [], "components": []}
-        sig = {"tparams": "", "members": [method("ready", ("int",), "boolean"), method("hidden", ("int",), "void")]}
+        sig = {"tparams": "", "members": [method("ready", ("int",), "boolean"), method("hidden", ("int",), "void"), method("abstractHelper", ("int",), "void")]}
         api = {
             "example.Child": {"name": "example.Child", "kind": "class", "super": None, "interfaces": ["example.Ready"]},
             "example.Ready": {"name": "example.Ready", "kind": "interface", "super": None, "interfaces": []},
         }
-        impl_texts = {"example.Ready": "  public default boolean ready(int value) { return true; }\n  private void hidden(int value) { }"}
+        impl_texts = {"example.Ready": "  public default boolean ready(int value) { return true; }\n  private void hidden(int value) { }\\n  public abstract void abstractHelper(int value);"}
         lines, constructors, methods, collisions = gen.member_blocks(
             t, sig, "Child", "", api, impl_texts
         )
-        self.assertEqual(methods, 1)
+        self.assertEqual(methods, 2)
         self.assertNotIn("ready(", "\n".join(lines))
         self.assertIn("hidden(", "\n".join(lines))
 
