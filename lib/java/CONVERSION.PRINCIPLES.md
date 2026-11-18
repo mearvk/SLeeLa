@@ -107,7 +107,7 @@ Every row has a proof program under `sleelactl/convert/tests/java/` (run
 | Records | field per component, canonical (or compact) constructor, accessors, `toString`, `equals`/`hashCode` for simple components | converter | `Records` |
 | Field defaults and initialization order | default value on every field; field initializers and instance `{ }` blocks after `super(...)` | converter | `Init` |
 | `close()` | mapped to `closeResource()` in declarations and calls | converter `mapMember` | `Resources` |
-| A method named like a SLeeLa built-in (`read`, `write`, `accept`, `lock`, ...) | calls qualified with the owner class or `this.` | converter, `builtin_names.h` | `Bounds` |
+| A method named like a SLeeLa built-in (`read`, `write`, `accept`, `lock`, ...) | calls qualified with the owner class or `this.` | converter, shared `qualify` model rows | `Bounds` |
 | Reserved or built-in member names | refused; locals renamed | converter | `Varargs` (a method named `join` was caught); no refusal test |
 | Packages, imports | dropped; library members resolve through `import java.jdk-N;` | converter | all |
 
