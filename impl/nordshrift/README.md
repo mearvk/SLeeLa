@@ -204,7 +204,7 @@ The canonical base-class definitions remain in [`../../api/sleela-complete/`](..
 
 Nordshrift Complete is an **authoring-level completeness** designation. It does not claim that every native backend or platform implementation is production-complete.
 
-## SLeeLa language syntax 3.1
+## SLeeLa language syntax 3.2
 
 Nordshrift 2.7.1-dev uses the shared Sleelvac frontend and now reports support
 for the current SLeeLa syntax **3.2** edition (source range 1.0–3.2).
