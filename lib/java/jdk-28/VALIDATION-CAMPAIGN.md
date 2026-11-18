@@ -24,7 +24,10 @@ The functional-equivalence diagnostic may exit with status 2. The campaign
 records that outcome as PARTIAL, not PASS: the JDK 28 library intentionally
 contains exact API declarations whose bodies still throw or return defaults.
 The signature index preserves generic declarations as @generic metadata and
-uses SLeeLa-visible erased types for overload indexing. When multiple Java
+uses the same SLeeLa runtime type table as the primary Java API generator for
+overload indexing. One-dimensional primitive and String arrays retain their
+typed array forms; multidimensional and unsupported reference arrays erase to
+Any, consistently across both generators. When multiple Java
 overloads collapse to the same target signature, the audit reports the
 collision rather than claiming that each overload is separately represented.
 Implemented superclass and interface methods are included in stub suppression;
