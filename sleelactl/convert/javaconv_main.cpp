@@ -12,6 +12,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstdint>
+#include <chrono>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -177,6 +178,138 @@ bool writeIfChanged(const fs::path& path, const std::string& bytes, std::string*
     if (!out) { *why = "cannot write output: " + path.string(); return false; }
     return true;
 }
+
+/*
+ * Every conversion is assembled in a sibling staging directory. The old output
+ * tree is copied without following symlinks; all generated files, ownership
+ * metadata, provenance and reports are written to the stage. Only after every
+ * write succeeds is the directory exchanged with the previous generation.
+ * Keeping stage and destination under the same parent keeps renames on one
+ * filesystem. Any pre-publication error leaves the previous generation intact.
+ */
+class OutputTransaction {
+public:
+    explicit OutputTransaction(fs::path destination) : final_(std::move(destination)) {}
+    ~OutputTransaction() {
+        std::error_code ec;
+        if (!stage_.empty()) fs::remove_all(stage_, ec);
+        if (backupMoved_ && !committed_) {
+            ec.clear();
+            if (!fs::exists(final_, ec)) {
+                ec.clear();
+                fs::rename(backup_, final_, ec);
+            }
+        }
+        if (!backup_.empty() && committed_) {
+            ec.clear();
+            fs::remove_all(backup_, ec);
+        }
+    }
+
+    bool begin(std::string* why) {
+        std::error_code ec;
+        final_ = fs::absolute(final_, ec).lexically_normal();
+        if (ec) { *why = "cannot resolve output destination: " + ec.message(); return false; }
+        const fs::path parent = final_.parent_path();
+        fs::create_directories(parent, ec);
+        if (ec) { *why = "cannot create output parent: " + ec.message(); return false; }
+        const auto stamp = std::chrono::steady_clock::now().time_since_epoch().count();
+        const std::string suffix = ".javaconv-" + std::to_string(stamp);
+        stage_ = parent / (final_.filename().string() + suffix + ".stage");
+        backup_ = parent / (final_.filename().string() + suffix + ".backup");
+        if (fs::exists(stage_, ec) || fs::exists(backup_, ec)) {
+            *why = "transaction staging name already exists";
+            return false;
+        }
+        const fs::file_status st = fs::symlink_status(final_, ec);
+        const bool exists = !ec && st.type() != fs::file_type::not_found;
+        if (ec != std::errc::no_such_file_or_directory && ec) {
+            *why = "cannot inspect output destination: " + ec.message();
+            return false;
+        }
+        if (exists && (fs::is_symlink(st) || !fs::is_directory(st))) {
+            *why = "output destination must be a real directory, not a symlink or file";
+            return false;
+        }
+        fs::create_directory(stage_, ec);
+        if (ec) { *why = "cannot create transaction stage: " + ec.message(); return false; }
+        if (exists && !copyTree(final_, stage_, why)) return false;
+        return true;
+    }
+
+    const fs::path& stageRoot() const { return stage_; }
+
+    bool commit(std::string* why) {
+        std::error_code ec;
+        const fs::file_status st = fs::symlink_status(final_, ec);
+        const bool hadDestination = !ec && st.type() != fs::file_type::not_found;
+        if (ec != std::errc::no_such_file_or_directory && ec) {
+            *why = "cannot re-inspect output destination before publish: " + ec.message();
+            return false;
+        }
+        if (hadDestination) {
+            if (fs::is_symlink(st) || !fs::is_directory(st)) {
+                *why = "output destination changed to a non-directory before publish";
+                return false;
+            }
+            fs::rename(final_, backup_, ec);
+            if (ec) { *why = "cannot move previous output generation aside: " + ec.message(); return false; }
+            backupMoved_ = true;
+        }
+        fs::rename(stage_, final_, ec);
+        if (ec) {
+            const std::string publishError = ec.message();
+            if (backupMoved_) {
+                ec.clear();
+                fs::rename(backup_, final_, ec);
+                if (!ec) backupMoved_ = false;
+            }
+            *why = "cannot publish staged output generation: " + publishError +
+                   (backupMoved_ ? "; previous generation remains at " + backup_.string() : "");
+            return false;
+        }
+        stage_.clear();
+        committed_ = true;
+        return true;
+    }
+
+private:
+    static bool copyTree(const fs::path& source, const fs::path& destination, std::string* why) {
+        std::error_code ec;
+        fs::recursive_directory_iterator it(source, fs::directory_options::none, ec), end;
+        if (ec) { *why = "cannot enumerate previous output tree: " + ec.message(); return false; }
+        for (; it != end; it.increment(ec)) {
+            if (ec) { *why = "cannot enumerate previous output tree: " + ec.message(); return false; }
+            const fs::path rel = fs::relative(it->path(), source, ec);
+            if (ec || !safeManifestPath(rel.generic_string())) {
+                *why = "unsafe path in previous output tree";
+                return false;
+            }
+            const fs::file_status st = it->symlink_status(ec);
+            if (ec) { *why = "cannot inspect previous output entry: " + ec.message(); return false; }
+            if (fs::is_symlink(st)) {
+                *why = "refusing symlink in previous output tree: " + it->path().string();
+                return false;
+            }
+            const fs::path target = destination / rel;
+            if (fs::is_directory(st)) {
+                fs::create_directories(target, ec);
+            } else if (fs::is_regular_file(st)) {
+                fs::create_directories(target.parent_path(), ec);
+                if (!ec) fs::copy_file(it->path(), target, fs::copy_options::overwrite_existing, ec);
+            } else {
+                *why = "refusing special file in previous output tree: " + it->path().string();
+                return false;
+            }
+            if (ec) { *why = "cannot stage previous output entry '" + rel.generic_string() + "': " + ec.message(); return false; }
+        }
+        return true;
+    }
+
+    fs::path final_, stage_, backup_;
+    bool backupMoved_ = false;
+    bool committed_ = false;
+};
 
 struct FileOutcome {
     std::string rel;
@@ -356,6 +489,18 @@ int main(int argc, char** argv) {
         o.checkedArrays = !c.uncheckedSizes;
         javaconv::collect(in.source, model, o, table);
     }
+
+    // Work on a complete staged generation. All existing output, including
+    // unowned user files, is preserved in the stage; the destination is untouched
+    // until every output, manifest, provenance file and report has been written.
+    OutputTransaction transaction(outRoot);
+    std::string transactionError;
+    if (!transaction.begin(&transactionError)) {
+        std::cerr << "javaconv: " << transactionError << "\\n";
+        cm_free(&model);
+        return 2;
+    }
+    outRoot = transaction.stageRoot();
 
     // Keep the previous ownership manifest intact until the new output set is
     // known. Existing files may be replaced only when the prior manifest owns them.
@@ -615,6 +760,11 @@ int main(int argc, char** argv) {
             shown++;
         }
         if (failed > shown) std::cout << "  ... " << (failed - shown) << " more in the report\n";
+    }
+    if (!transaction.commit(&transactionError)) {
+        std::cerr << "javaconv: " << transactionError << "\\n";
+        cm_free(&model);
+        return 2;
     }
     cm_free(&model);
     return failed ? 1 : 0;
