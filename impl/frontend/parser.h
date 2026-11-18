@@ -19,6 +19,7 @@ private:
     std::set<std::string> structNames_;
     // Syntax 3.1 surface seen while parsing; copied to Program::syntax31Uses.
     std::set<std::string> uses31_;
+    std::set<std::string> uses32_;   // syntax 3.2 surface (typed char and multidimensional arrays)
     ExprP parseArrayLiteral(const std::string& arrayType);
     ExprP parseInitializer(const std::string& declType);
     // Nested classes (syntax 1.11) hoisted out of their enclosing class during
