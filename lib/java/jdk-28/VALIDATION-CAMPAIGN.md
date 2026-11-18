@@ -28,7 +28,7 @@ uses SLeeLa-visible erased types for overload indexing. When multiple Java
 overloads collapse to the same target signature, the audit reports the
 collision rather than claiming that each overload is separately represented.
 Implemented superclass and interface methods are included in stub suppression;
-private and interface-static methods are not inherited. Constructor suppression
+private, abstract, and interface-static declarations are not treated as inherited implementations. Constructor suppression
 uses parameter-kind compatibility, not arity alone.
 
 The /lib/java/converter policy remains per-member fail-loud stubs. A member
