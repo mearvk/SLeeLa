@@ -229,7 +229,7 @@ cast float short JavaOperands.d2s($a)
 cast float char JavaOperands.d2c($a)
 cast float int JavaOperands.d2i($a)
 cast float long JavaOperands.d2l($a)
-cast float float =
+cast float float JavaFloat.f32((double) $a)
 cast float double =
 cast double float JavaFloat.f32($a)
 
