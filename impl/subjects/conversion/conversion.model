@@ -63,6 +63,7 @@ box Short short
 box Character char
 box Integer int
 box Long long
+box Float float
 box Double double
 box Boolean boolean
 
