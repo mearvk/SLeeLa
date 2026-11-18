@@ -330,6 +330,19 @@ cat > "$tmp/transaction/src/Main.java" <<'JAVA'
 public class Main { public static void main(String[] args) { System.out.println(1); } }
 JAVA
 if "$conv" --jdk "$tmp/transaction/src" --out "$tmp/transaction/out" --quiet; then
+  if ! python3 "$root/sleelactl/convert/verify-provenance.py" "$tmp/transaction/out/CONVERSION-PROVENANCE.json" "$root" "$tmp/transaction/src" "$tmp/transaction/out"; then
+    printf 'FAIL  %-12s independent provenance validation failed\\n' "provenance"; fail=$((fail+1))
+  else
+    printf 'PASS  %-12s source/model/converter/output SHA-256 provenance independently verified\\n' "provenance"; pass=$((pass+1))
+  fi
+  find "$tmp/transaction/out" -type f -printf '%P\\t%T@\\n' | sort > "$tmp/transaction/mtime.before"
+  if "$conv" --jdk "$tmp/transaction/src" --out "$tmp/transaction/out" --quiet &&
+     find "$tmp/transaction/out" -type f -printf '%P\\t%T@\\n' | sort > "$tmp/transaction/mtime.after" &&
+     diff -u "$tmp/transaction/mtime.before" "$tmp/transaction/mtime.after" >/dev/null; then
+    printf 'PASS  %-12s repeat conversion preserves every output mtime\\n' "repeat-run"; pass=$((pass+1))
+  else
+    printf 'FAIL  repeat-run (paths or mtimes changed on identical input)\\n'; fail=$((fail+1))
+  fi
   cp "$tmp/transaction/out/.javaconv-emitted" "$tmp/transaction/manifest.before"
   cat > "$tmp/transaction/src/Main.java" <<'JAVA'
 public class Main { public static void main(String[] args) { System.out.println(2); } }
