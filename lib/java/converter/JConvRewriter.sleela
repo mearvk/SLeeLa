@@ -1807,19 +1807,26 @@ class JConvRewriter {
     return cur;
   }
 
-  < i int, l long, d double, c char, s String, b boolean, ? unknown >
+  < i int, l long, f float, d double, c char, s String, b boolean, ? unknown >
   String kindOfType(String t) {
-    if (t == "int32" || t == "int" || t == "short" || t == "byte") { return "i"; }
+    if (t == "int32") { return "i"; }
     if (t == "Integer" || t == "Short" || t == "Byte") { return "i"; }
     if (t == "Long") { return "l"; }
-    if (t == "Double" || t == "Float") { return "d"; }
+    if (t == "Double") { return "d"; }
+    if (t == "Float") { return "f"; }
     if (t == "Character") { return "c"; }
     if (t == "Boolean") { return "b"; }
-    if (t == "char") { return "c"; }
-    if (t == "long") { return "l"; }
-    if (t == "double" || t == "float") { return "d"; }
-    if (t == "String") { return "s"; }
-    if (t == "boolean") { return "b"; }
+    String kind = this.rules.model.typeKind(t);
+    if (kind == "integral") {
+      if (t == "char") { return "c"; }
+      String promoted = this.rules.model.promotedType(t);
+      if (promoted == "int") { return "i"; }
+      if (promoted == "long") { return "l"; }
+      return "?";
+    }
+    if (kind == "floating") { return t == "float" ? "f" : "d"; }
+    if (kind == "boolean") { return "b"; }
+    if (kind == "text") { return "s"; }
     return "?";
   }
 
