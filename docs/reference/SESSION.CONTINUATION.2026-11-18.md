@@ -65,3 +65,11 @@ Keep converter policies distinct: the C++ converter is whole-file fail-closed; t
 - `REGRESSION.md`
 - `test-suites/regression/PROGRESS.NOVEMBER.18.2026.md`
 
+## Post-merge continuation update
+
+- PR #376 (production release qualification report) is merged to `master` at `d2b766c7280b1fb8d8b14ceb95bb84bffd1665c5`.
+- PR #377 (regression status and this session continuation record) is merged to `master` at `9835bb53591cb27e590a4cf08be959682059f862`.
+- The current known `master` baseline is therefore `9835bb53591cb27e590a4cf08be959682059f862`, subject to rechecking `master` immediately before any execution.
+- The earlier note that #376 was still open and #377 awaited review is historical and superseded.
+- The requested eight-stage campaign remains: exact checkout/integrity, clean builds, model/index checks, positive and refusal differential tests, native per-member stub and transactional provenance tests, representative Java execution, JDK 28 campaign, then full regression/sanitizer/platform qualification.
+- No shell/build/test runner or workflow-dispatch capability was available through the repository connection in this session. No command execution or test pass is claimed. Production release remains **HOLD**.
