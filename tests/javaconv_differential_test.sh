@@ -165,8 +165,13 @@ public class Base<T> implements Value<T> {
   public T get() { return value; }
 }
 JAVA
+cat > "$tmp/project-inherited/src/Mid.java" <<'JAVA'
+public class Mid<T> extends Base<T> {
+  public Mid(T value) { super(value); }
+}
+JAVA
 cat > "$tmp/project-inherited/src/TextValue.java" <<'JAVA'
-public class TextValue extends Base<String> {
+public class TextValue extends Mid<String> {
   public TextValue(String value) { super(value); }
 }
 JAVA
