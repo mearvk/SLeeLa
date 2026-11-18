@@ -372,16 +372,19 @@ private:
         else if (qual.empty() && typeVars.count(name)) t.n = "?";
         else if (qual.empty()) t.n = resolveTypeName(name);
         else t.n = qual + "__" + name;
-        // A boxed type written as a type (Integer i, (Long) o, Double[] a). The converter holds
-        // boxed values as primitives, but a declaration would name the lib/java class Integer, to
-        // which a primitive is not assignable, so the output would not compile. Type arguments
-        // (List<Integer>) are erased and do not reach this point.
-        if (qual.empty() && modelBoxed(t.n)) fail("boxed", "the boxed type " + t.n + " used as a declared or cast type is not converted yet");
+        // Preserve wrapper identity for overload resolution, while emitType lowers
+        // wrapper storage to the primitive representation used by SLeeLa. Wrapper
+        // arrays still require a distinct reference-array representation.
+        if (qual.empty() && modelBoxed(t.n)) {
+            if (t.dims) fail("boxed", "arrays of boxed wrapper types are not represented yet");
+            t.boxed = true;
+        }
         return t;
     }
 
     std::string emitType(const Ty& t) const {
         std::string n = t.n;
+        if (t.boxed) { std::string primitive; if (modelBoxed(n,&primitive)) n=primitive; }
         if (n == "?" || n.rfind("$T$", 0) == 0) n = "Any";
         else {
             const cm_rec* tr = cm_find(&M, "type", n.c_str(), nullptr, nullptr);
@@ -957,19 +960,18 @@ private:
         if(strict>=0) return strict;
         if(from.dims!=0 || to.dims!=0) return -1;
         std::string primitive;
-        if(isPrimitiveName(from.n) && modelBoxed(to.n,&primitive)) {
+        if(isPrimitiveName(from.n) && to.boxed && modelBoxed(to.n,&primitive)) {
             if(from.n==primitive) return 4; // boxing
             if(cm_find(&M,"widen",from.n.c_str(),primitive.c_str(),nullptr)) return 5;
             return -1;
         }
-        if(modelBoxed(from.n,&primitive) && isPrimitiveName(to.n)) {
+        if(from.boxed && modelBoxed(from.n,&primitive) && isPrimitiveName(to.n)) {
             if(primitive==to.n) return 4; // unboxing
             if(cm_find(&M,"widen",primitive.c_str(),to.n.c_str(),nullptr)) return 5;
         }
-        // Boxing to Object and unboxing followed by reference widening are the
-        // only additional reference cases represented by the current type model.
+        // Boxing to Object and wrapper-reference widening are reference conversions.
         if(isPrimitiveName(from.n) && to.n=="Object" && modelBoxed(from.n,&primitive)) return 8;
-        if(modelBoxed(from.n,&primitive) && to.n=="Object") return 8;
+        if(from.boxed && to.n=="Object") return 8;
         return -1;
     }
 
