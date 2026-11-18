@@ -7,7 +7,7 @@ The repository maintains three complementary API documentation surfaces:
 - [Contributor API site](../docs/api/index.html) — the documentation-facing
   entry point, generated from the same source inventory.
 - [SLeeLa language API editions](sleela/README.md) — versioned language API
-  snapshots. The current edition is [SLeeLa 3.2](sleela/3.2/README.md) (also written 3.01).
+  snapshots. The current edition is [SLeeLa 3.2](sleela/3.2/README.md) (also written 3.2).
 
 Native C and C++ API references are catalogued under [`native/`](native/).
 The historical SLeeLa 2.1, 2.6, 2.8, and 2.9 material remains available and
