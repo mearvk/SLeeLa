@@ -35,6 +35,7 @@ Idempotent: rewrites every generated file. usage: python3 lib/java/jdk-28/tools/
 """
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import re
@@ -154,13 +155,15 @@ IMPL_RE = re.compile(r"^  < ---- BEGIN java implementation.*?^  < ---- END java 
 IMPL_CTOR = r"^  (?:@\w+\s+)?(?:public |protected |private )?{cls}\s*\(([^)]*)\)"
 
 
-def impl_cover(impl: str, cls: str):
-    """What an implementation block already provides: method kinds, ctor arities, field names."""
+def impl_cover(impl: str, cls: str, class_tvars: set | None = None):
+    """Implementation methods and constructors indexed by accepted parameter kinds."""
     methods = sg.impl_sigs(impl)
-    ctor_arities = {len(sg.split_top(x)) if x.strip() else 0
-                    for x in re.findall(IMPL_CTOR.format(cls=re.escape(cls)), impl, re.M)}
+    ctor_signatures = [
+        tuple(sg.kind(t, class_tvars or set()) for t in sg.param_types(params))
+        for params in re.findall(IMPL_CTOR.format(cls=re.escape(cls)), impl, re.M)
+    ]
     fields = set(dec.FIELD_DECL.findall(impl))
-    return methods, ctor_arities, fields
+    return methods, ctor_signatures, fields
 
 
 PRIM_INT = {"int", "long", "short", "byte", "char"}
@@ -191,23 +194,27 @@ def erase(t: str) -> str:
     """The SLeeLa generics method (SLEELA.syntax 16.3, 38.1): erasure.
 
     A type variable or any parameterized / package-qualified reference type
-    erases to Any; java.lang.String erases to String; primitives stay; array
-    and varargs suffixes are kept on the erased element type."""
+    erases to Any; java.lang.String erases to String; primitives stay; Java
+    varargs become the equivalent one-dimensional array parameter."""
     t = ANNOT.sub("", t).strip()
+    # Java varargs have exactly one array dimension at the call boundary.
     suffix = ""
     if t.endswith("..."):
-        suffix, t = "...", t[:-3].strip()
+        suffix, t = "[]", t[:-3].strip()
     dims = ""
     while t.endswith("[]"):
         dims, t = dims + "[]", t[:-2].strip()
     raw = t.split("<", 1)[0].strip()
     if raw in PRIMS:
-        base = raw
+        canonical = raw
     elif raw in ("java.lang.String", "String"):
-        base = "String"
+        canonical = "java.lang.String"
     else:
-        base = "Any"
-    return base + dims + suffix
+        canonical = "Any"
+    # Use the same target-type table as the primary Java API generator.
+    # In particular, SLeeLa has typed one-dimensional primitive/String arrays;
+    # multidimensional arrays and arrays of other references erase to Any.
+    return dec.sl_type(canonical + dims + suffix)
 
 
 def params_of(m) -> str:
@@ -318,64 +325,90 @@ def generics_record(sig, cls: str) -> str:
 '''
 
 
-def member_blocks(t, sig, cls: str, impl: str = ""):
-    """Declarations, constructors and methods for a type known to the reflected API.
+def member_signature_index(sig):
+    """Group Java declarations by their SLeeLa-erased overload key."""
+    groups = {}
+    if not sig:
+        return groups, 0
+    for member in sig.get("members", []):
+        key = (member["name"], tuple(erase(p[0]) for p in member["params"]))
+        groups.setdefault(key, []).append(member)
+    for group in groups.values():
+        group.sort(key=lambda m: (tuple(p[0] for p in m["params"]), m.get("tparams", "")))
+    groups = dict(sorted(groups.items(), key=lambda item: (item[0][0], item[0][1])))
+    collisions = sum(max(0, len(group) - 1) for group in groups.values())
+    return groups, collisions
 
-    Members already provided by the implementation block (same name and
-    accepted argument kinds, same constructor arity, same field name) are not
-    written again as stubs."""
+
+def member_blocks(t, sig, cls: str, impl: str = "", api_by_name=None, impl_texts=None):
+    """Build JDK 28 type files from the selected runtime reflection and overload index."""
     lines = []
     taken = set(dec.ENVELOPE) | HELPERS
-    impl_methods, impl_ctors, impl_fields = impl_cover(impl, cls)
+    ctv = sg.tvar_names(sig["tparams"]) if sig else set()
+    impl_methods, impl_ctors, impl_fields = impl_cover(impl, cls, ctv)
+    if api_by_name is not None and impl_texts is not None:
+        inherited = sg.inherited_implementation_methods(t["name"], api_by_name, impl_texts)
+        for name, kinds in inherited.items():
+            impl_methods.setdefault(name, []).extend(kinds)
+
     budget_used = FIXED_FIELDS + (2 if t["kind"] == "enum" else 0) + len(t.get("components", []))
-    budget_used += len([f for f in impl_fields])
+    budget_used += len(impl_fields)
     decl = dec.declarations(t, cls, taken | impl_fields, set(impl_methods), budget_used, bool(impl))
     if decl:
-        lines.append("  < ---- BEGIN java declarations (from the JDK 28 API) ---- >")
+        lines.append("  < ---- BEGIN java declarations (selected runtime reflection; JDK 28 docs inventory) ---- >")
         lines += decl
         lines.append("  < ---- END java declarations ---- >")
     dtext = "\n".join(decl)
     declared = set(dec.FIELD_DECL.findall(dtext)) | set(dec.METHOD_DECL.findall(dtext)) | set(sg.METHOD.findall(dtext))
     if sig is None:
-        return lines, 0, 0
-    ctv = sg.tvar_names(sig["tparams"])
-    has_ctor_arity = set(impl_ctors)
+        lines.append("  < ---- members pending: no reflected signature-index record for this type ---- >")
+        return lines, 0, 0, 0
+
+    signature_groups, collisions = member_signature_index(sig)
+    blocked_ctor_arities = set()
     if t["kind"] == "enum":
-        has_ctor_arity.add(2)
+        blocked_ctor_arities.add(2)
     if t["kind"] == "record":
-        has_ctor_arity.add(len(t.get("components", [])))
+        blocked_ctor_arities.add(len(t.get("components", [])))
+
     ctors, cseen = [], set()
-    for m in sig["members"]:
-        if cls in dec.RESERVED:
-            break  # a class named by a SLeeLa keyword (String) cannot declare constructors
-        if m["name"] != "<init>" or len(m["params"]) in has_ctor_arity:
+    if cls not in dec.RESERVED:
+        for key, group in signature_groups.items():
+            if key[0] != "<init>":
+                continue
+            m = group[0]
+            if len(m["params"]) in blocked_ctor_arities:
+                continue
+            tv = ctv | sg.tvar_names(m["tparams"])
+            want = tuple(sg.kind(p[0], tv) for p in m["params"])
+            if any(sg.accepts(have, want) for have in impl_ctors):
+                continue
+            if key in cseen:
+                continue
+            cseen.add(key)
+            ctors.append(render_ctor_stub(t["name"], cls, m))
+
+    meths = []
+    for key, group in signature_groups.items():
+        if key[0] == "<init>":
             continue
-        key = tuple(erase(p[0]) for p in m["params"])
-        if key in cseen:
-            continue
-        cseen.add(key)
-        ctors.append(render_ctor_stub(t["name"], cls, m))
-    meths, mseen = [], set()
-    for m in sig["members"]:
-        if m["name"] == "<init>" or m["name"] in declared or m["name"] in taken or not dec.usable(m["name"], cls):
+        m = group[0]
+        if m["name"] in declared or m["name"] in taken or not dec.usable(m["name"], cls):
             continue
         tv = ctv | sg.tvar_names(m["tparams"])
         want = tuple(sg.kind(p[0], tv) for p in m["params"])
         if any(sg.accepts(have, want) for have in impl_methods.get(m["name"], [])):
             continue
-        key = (m["name"], tuple(erase(p[0]) for p in m["params"]))
-        if key in mseen:
-            continue
-        mseen.add(key)
         meths.append(render_stub(t["name"], m))
+
     if ctors:
         lines.append("")
-        lines.append("  < ---- BEGIN java constructors (exact JDK 28 API signatures) ---- >")
+        lines.append("  < ---- BEGIN java constructors (selected runtime reflection; JDK 28 docs inventory) ---- >")
         lines += ctors
         lines.append("  < ---- END java constructors ---- >")
     if meths:
         lines.append("")
-        lines.append("  < ---- BEGIN java signatures (exact JDK 28 API signatures) ---- >")
+        lines.append("  < ---- BEGIN java signatures (selected runtime reflection; JDK 28 docs inventory) ---- >")
         lines.append("  << Not yet SLeeLa logic: each method returns the default value of its")
         lines.append("     Java return type. @throwable names what Java throws for it (abstract:")
         lines.append("     AbstractMethodError, else UnsupportedOperationException, plus the")
@@ -383,24 +416,63 @@ def member_blocks(t, sig, cls: str, impl: str = ""):
         lines.append("     java implementation block; the generator then drops the stub. >>")
         lines += meths
         lines.append("  < ---- END java signatures ---- >")
-    return lines, len(ctors), len(meths)
-
+    return lines, len(ctors), len(meths), collisions
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description="Generate or audit the JDK 28 API signature index.")
+    parser.add_argument("--audit", action="store_true", help="report JDK 28 inventory coverage against selected reflected API data")
+    parser.add_argument("--api-jsonl", default=os.environ.get("JDK28_API_JSONL", str(LIBJAVA / "api" / "jdk-api.jsonl")))
+    parser.add_argument("--signatures-jsonl", default=os.environ.get("JDK28_SIGNATURES_JSONL", str(LIBJAVA / "api" / "jdk-signatures.jsonl")))
+    args = parser.parse_args()
+    api_path, signatures_path = Path(args.api_jsonl), Path(args.signatures_jsonl)
     api = {}
-    for l in (LIBJAVA / "api" / "jdk-api.jsonl").read_text(encoding="utf-8").splitlines():
+    for l in api_path.read_text(encoding="utf-8").splitlines():
         if l.strip():
             t = json.loads(l)
             api[(t["module"], t["name"])] = t
     sigs = {}
-    for l in (LIBJAVA / "api" / "jdk-signatures.jsonl").read_text(encoding="utf-8").splitlines():
+    for l in signatures_path.read_text(encoding="utf-8").splitlines():
         if l.strip():
-            s = json.loads(l)
-            sigs[s["name"]] = s
+            record = json.loads(l)
+            sigs[record["name"]] = record
+
+    if args.audit:
+        rows = list(inventory())
+        names = {fq for _module, fq, _pkg, _simple, _rel in rows}
+        api_names = {record["name"] for record in api.values()}
+        indexed = [sigs[name] for name in sorted(names) if name in sigs and name in api_names]
+        members = [m for record in indexed for m in record.get("members", [])]
+        groups = [group for record in indexed for group in member_signature_index(record)[0].values()]
+        collisions = sum(max(0, len(group) - 1) for group in groups)
+        generic_classes = sum(bool(record.get("tparams")) for record in indexed)
+        generic_members = sum(bool(member.get("tparams")) for member in members)
+        wildcard_members = sum("?" in " ".join([p[0] for p in member.get("params", [])] + [member.get("ret", "")]) for member in members)
+        varargs_members = sum(any(p[0].endswith("...") for p in member.get("params", [])) for member in members)
+        pending_types = len(names - api_names)
+        missing_signatures = len((names & api_names) - set(sigs))
+        reflected_not_documented = len(api_names - names)
+        print(f"JDK 28 inventory cross-indexed with JDK 28 runtime reflection: {len(indexed)} types, {len(members)} Java members")
+        print(f"generic classes: {generic_classes}; generic members: {generic_members}; wildcard members: {wildcard_members}; varargs members: {varargs_members}")
+        print(f"SLeeLa-erasure overload collisions: {collisions}; docs types absent from JDK 28 runtime reflection: {pending_types}; known types missing signature records: {missing_signatures}")
+        print(f"JDK 28 reflected types absent from the docs inventory: {reflected_not_documented}")
+        print("Index coverage is declaration evidence only; fail-loud API stubs are not implemented Java behavior.")
+        return 2 if pending_types or missing_signatures or reflected_not_documented else 0
 
     index = ["# java_type\tmodule\tkind\tsleela_file\tjava_source\tmembers"]
-    stats = {"files": 0, "with_members": 0, "pending": 0, "ctors": 0, "methods": 0}
-    for module, fq, pkg, simple, rel in inventory():
+    stats = {"files": 0, "with_members": 0, "pending": 0, "pending_signatures": 0, "ctors": 0, "methods": 0, "collisions": 0}
+    inventory_rows = list(inventory())
+    api_by_name = {record["name"]: record for record in api.values()}
+    impl_texts = {}
+    for module, fq, pkg, simple, rel in inventory_rows:
+        existing = API_DIR / Path(module, *pkg.split("."), simple + ".sleela")
+        if existing.is_file():
+            existing_text = existing.read_text(encoding="utf-8", errors="replace")
+            impl_match = IMPL_RE.search(existing_text)
+            impl_texts[fq] = impl_match.group(0) if impl_match else ""
+        else:
+            impl_texts[fq] = ""
+
+    for module, fq, pkg, simple, rel in inventory_rows:
         cls = simple.split(".")[-1]
         t = api.get((module, fq))
         sig = sigs.get(fq) if t else None
@@ -417,14 +489,19 @@ def main() -> int:
             if mo:
                 impl = mo.group(0)
                 stats["implemented"] = stats.get("implemented", 0) + 1
-        if t:
-            body, nc, nm = member_blocks(t, sig, cls, impl)
-            status = "members from the JDK 28 API (exact signatures)"
+        if t and sig:
+            body, nc, nm, ncollisions = member_blocks(t, sig, cls, impl, api_by_name, impl_texts)
+            status = "members from selected runtime reflection (JDK 28)"
             stats["with_members"] += 1
             stats["ctors"] += nc
             stats["methods"] += nm
+            stats["collisions"] += ncollisions
+        elif t:
+            body = ["  < ---- members pending: no reflected signature-index record for this type ---- >"]
+            status = "type identity known; member signatures pending (not found in runtime reflection)"
+            stats["pending_signatures"] += 1
         else:
-            body = ["  < ---- members pending: new in JDK 28, read them from the Java Source page ---- >"]
+            body = ["  < ---- members pending: type is in the JDK 28 docs inventory but absent from runtime reflection ---- >"]
             status = "pending (new in JDK 28; members to be read from the Source page)"
             stats["pending"] += 1
         nested = ""
@@ -452,7 +529,7 @@ class {cls} {{
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(text, encoding="utf-8")
         stats["files"] += 1
-        index.append("\t".join([fq, module, kind, "lib/java/jdk-28/" + out_rel.as_posix(), src_url, "api" if t else "pending"]))
+        index.append("\t".join([fq, module, kind, "lib/java/jdk-28/" + out_rel.as_posix(), src_url, "jdk28-reflected" if t and sig else "signature-pending" if t else "pending"]))
     (OUT / "INDEX.tsv").write_text("\n".join(index) + "\n", encoding="utf-8")
 
     # Every documented module has a folder, as online (docs/api/<module>/module-summary.html).
@@ -478,9 +555,11 @@ class {cls} {{
         mods.append(f"{module}\t0\tlib/java/jdk-28/{module}/\t{url}\t{evidence}")
     (OUT / "MODULES.tsv").write_text("\n".join(mods) + "\n", encoding="utf-8")
     stats["modules"] = len(counts) + len(NO_PACKAGE_MODULES)
-    print(f"jdk-28: {stats['files']} files (1:1 with JDK 28 types); {stats['with_members']} with API members, "
-          f"{stats['pending']} pending; {stats['ctors']} constructors, {stats['methods']} methods; "
-          f"{stats['modules']} module folders; {stats.get('implemented', 0)} files with SLeeLa logic")
+    print(f"jdk-28: {stats['files']} files (1:1 with JDK 28 types); {stats['with_members']} with JDK 28 reflected members, "
+          f"{stats['pending']} new types pending, {stats['pending_signatures']} known types missing signatures; "
+          f"{stats['ctors']} constructors, {stats['methods']} methods; "
+          f"{stats['modules']} module folders; {stats.get('implemented', 0)} files with SLeeLa logic; "
+          f"{stats['collisions']} Java overloads collapsed by SLeeLa erasure")
     return 0
 
 

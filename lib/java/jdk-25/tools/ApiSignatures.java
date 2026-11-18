@@ -198,7 +198,7 @@ public class ApiSignatures {
                         int m = k.getModifiers();
                         if ((Modifier.isPublic(m) || Modifier.isProtected(m)) && !k.isSynthetic() && !k.isBridge()) entries.add(entry(type, k, false));
                     }
-                } catch (Throwable e) { }
+                } catch (Throwable e) { System.err.println("REFLECTION_ERROR members " + cn + ": " + e); }
                 System.out.println("{\"name\":" + q(type) + ",\"binary\":" + q(cn) + ",\"tparams\":" + q(typeParams(c.getTypeParameters()))
                         + ",\"members\":[" + String.join(",", entries) + "]}");
                 types++;
