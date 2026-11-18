@@ -103,12 +103,12 @@ The native implementation is now wired directly to the authoritative `/impl/fron
 
 SLeeLa source-level reference handlers are provided by `SLCaseHandler.sleela`, `SLObjectCreationResolver.sleela`, and `SLConstructorSeries.sleela`. These define the intended compiler contract; integration with the native frontend and passing tests must be verified before describing the feature as production-ready.
 
-## Authoritative language specification — Syntax 3.0
+## Authoritative language specification — Syntax 3.2
 
 The repository-root [`SLEELA.syntax`](../../SLEELA.syntax) is the single
-normative language specification. **Syntax 3.1** is the current edition; the
+normative language specification. **Syntax 3.2** is the current edition; the
 shared native frontend accepts declared source syntax **1.0–3.2** and defaults
-unversioned source to 3.0 with a warning. A source file's `#sleela X.Y`
+unversioned source to 3.2 with a warning. A source file's `#sleela X.Y`
 pragma selects its syntax edition. Compiler/tool release numbers are
 independent of that language version.
 
