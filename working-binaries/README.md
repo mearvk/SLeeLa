@@ -3,7 +3,7 @@
 Prebuilt native SLeeLa toolchain binaries, kept here for quick access. Artifact identities are separate from product versions; see [VERSION-IDENTITIES.md](VERSION-IDENTITIES.md).
 
 | Binary | Product version | Artifact identity | What it is | Size |
-|--------|------------|------|
+|--------|-----------------|-------------------|-------------|------|
 | `sleela` | `1.3.2-pro` | `SLEELA-BIN-1.012` | the authoritative SLeeLa compiler/runner. **Committed binary currently reports source syntax 1.0 – 3.1; Syntax 3.2 source support requires rebuild**, native C/C++ Core VM. Subcommands include `check`, `run`, `compile -o <out>`, `validate-artifact`, `nordshrift [--emit\|--roundtrip] [--target=…]`, `version`. **There is no separate `sleelac`** — compilation is `sleela compile`. | ~3.0 MB |
 | `nordshrift` | `2.7.1-dev` | `NORDSHRIFT-BIN-1.012` | the SLeeLa `.sst` transpiler driver (NS-SST-0001 spec 2.2); committed binary currently drives SLeeLa source syntax up to 3.1; rebuild required for 3.2. Subcommands: `check`, `build`, `objects`, `relevance --target=java\|sleela\|c`, `version`. (The SLeeLa → Nordshrift → back round-trip is `sleela nordshrift`, inside the `sleela` binary.) | ~2.6 MB |
 
@@ -54,8 +54,10 @@ Rebuilt 2026-11-12 (`sleela` and `nordshrift`) for the `Sleela.home` lineage
 `super("constructor")`, `Sleela.VM|System|OS`, and the `Security2` boot).
 Rebuilt 2026-11-13 (`sleela` and `nordshrift`) from `impl/` at the syntax 3.1 (3.01)
 edition: character literals, array initializers, labeled `break`/`continue`,
-`finally` on abrupt exit (SLEELA.syntax section 44), the `char` and array
-specifications (sections 45, 46), and the Java-tier runtime changes through
+`finally` on abrupt exit (SLEELA.syntax section 44), the typed `char` and array
+specifications (sections 45, 46) were present in the source snapshot but had not yet been
+split into the Syntax 3.2 gate; the committed executable must be rebuilt before those features
+are advertised as Syntax 3.2. The Java-tier runtime changes through
 SLEELA.syntax 43.7 and 37.5. Checked at that build: `version` reported source syntax 1.0 – 3.1,
 and a `#sleela 3.1` program using a char literal, an array initializer and
 `a.length` checks and runs (the previous copy could not).
@@ -128,9 +130,9 @@ Checked: 211/211 regression tests (with mutation testing) with
 Reported versions:
 
 - `sleela` — `SLeeLa™ Language/Runtime 1.3.2-pro` (supported source syntax 1.0 – 3.1)
-- `nordshrift` — `Nordshrift 2.7.1-dev` (NS-SST-0001 spec 2.2; drives SLeeLa up to 3.2)
+- `nordshrift` — `Nordshrift 2.7.1-dev` (NS-SST-0001 spec 2.2; committed binary supports SLeeLa source through 3.1; rebuild required for 3.2)
 
-SHA-256 of the committed copies:
+SHA-256 of the committed copies (these hashes identify the old payloads; they must change when rebuilt binaries are committed):
 
 ```
 0c8f7cd85355ae1a299754e7df8f4e5efdf7059c7d9ffcdda0e8e88f79b80bc0  sleela
