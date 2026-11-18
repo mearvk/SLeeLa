@@ -10,6 +10,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: jdk28-validation-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   jdk28:
     name: JDK 28 API and converter validation
