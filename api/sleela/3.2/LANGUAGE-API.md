@@ -2,10 +2,11 @@
 
 Normative text: [`SLEELA.syntax`](../../../SLEELA.syntax) sections 44 (literal, initializer, labels, `finally`),
 45 (the char specification) and 46 (the array specification). This page is the quick reference; where it and the
-specification differ, the specification wins. Every form below needs `#sleela 3.2`; under an older
-declaration it is the error `<form> requires #sleela 3.2`.
+specification differ, the specification wins. Section 44 forms require `#sleela 3.1`; the typed-char
+and array forms in sections 45 and 46 require `#sleela 3.2`. Earlier source declarations retain their
+historical feature gates.
 
-## Character
+## Character (Syntax 3.2)
 
 | Form | Meaning |
 |---|---|
@@ -20,7 +21,7 @@ declaration it is the error `<form> requires #sleela 3.2`.
 A character outside the basic multilingual plane is a lexical error (it is two code units).
 Library: `lib/char/SLChar.sleela` (classification, case, digits, surrogates, `toCodePoint`, `compare`).
 
-## Arrays
+## Arrays (Syntax 3.2)
 
 | Form | Meaning |
 |---|---|
@@ -36,7 +37,7 @@ Library: `lib/char/SLChar.sleela` (classification, case, digits, surrogates, `to
 passing share it. Limits: 4096 live arrays (each row of a grid is one), 2^25 elements per array, 32 bytes per element.
 Library: `lib/array/` — `SLIntArray`, `SLDoubleArray`, `SLRefArray`, `SLArray2D` (copy, fill, sort, search, sum, transpose, text).
 
-## Labeled statements and abrupt completion
+## Labeled statements and abrupt completion (Syntax 3.1)
 
 | Form | Meaning |
 |---|---|
