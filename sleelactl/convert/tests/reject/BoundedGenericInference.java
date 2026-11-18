@@ -5,6 +5,6 @@ public class BoundedGenericInference {
     }
 
     public static void main(String[] args) {
-        System.out.println(identity(1));
+        System.out.println(identity("not-a-number"));
     }
 }
