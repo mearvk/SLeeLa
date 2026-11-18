@@ -19,14 +19,17 @@ member; the shared model determines the collision and replacement policy.
 | `close` | `closeResource` | Special Java resource-method mapping; the VM's `close` is receiver-independent |
 | `int128`, `int64`, `print`, `require`, `struct`, `usualgc`, `usualmem` | trailing `_` | Shared `rename ... all ...` rows |
 | `next` | `next_` in value context only | `next()` and `it.next()` remain ordinary Java method calls |
-| `connect`, `send` | qualified call when unqualified | Shared `qualify` rows; not globally renamed |
+| `connect`, `send` | shared `qualify` row for unqualified calls | Receiver-qualified calls still need member-context rewriting because these are receiver-independent Munction verbs; not yet fully solved |
 | `main` | preserved for the entry class | Entry-point contract |
 | `String` | no rename | Java type name; handled by type conversion |
 
 The `rename` records carry an explicit context (`all` or `value`). This
 prevents the earlier failure where globally renaming `next` also rewrote
 library calls such as `it.next()`. Built-in call qualification is a separate
-rule: it applies to method calls, not variable identifiers.
+rule: it applies to method calls, not variable identifiers. The special
+receiver-independent verbs `connect` and `send` still need member-context
+renaming for declarations and calls on converted source types; `qualify` alone
+is not sufficient for those receiver-call cases.
 
 C++ currently refuses reserved Java member declarations that would collide
 with SLeeLa names, rather than emitting a potentially inconsistent renamed
