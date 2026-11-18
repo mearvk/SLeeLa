@@ -1,4 +1,4 @@
-# Java identifiers that collide with SLeeLa (measured 2026-11-14)
+# Java identifiers that collide with SLeeLa (reviewed 2026-11-18)
 
 Each of 192 candidate words (SLeeLa keywords, the compiler's built-in names in
 `impl/frontend/semantic.cpp`, `next`, and the two converters' rename lists) was
@@ -6,41 +6,33 @@ used as a Java identifier in a `#sleela 3.1` / `spark;` program and run with
 `impl/build/sleela`: as a local, a parameter and a field (`var`), and as a
 method declared and called only through `this.m()` / `obj.m()` (`methodq`).
 
-The qualify list below is in `conversion.model` as `qualify` rows (section 9d,
-2026-11-14); `sleelactl/convert/conv_model.c` accepts the kind, and
-lib/java/converter reads it (`JConvRules.isBuiltinCallName`). The renames are
-not model rows yet: each converter keeps its own rename list.
+The `qualify` inventory is in section 9d of `conversion.model`; the shared
+`rename` inventory is in section 9e. Both the C++ model loader and native
+`JConvModel` read these rows. The C++ converter remains fail-closed for reserved
+member declarations, while the native converter applies the replacement per
+member; the shared model determines the collision and replacement policy.
 
-## Must be renamed (13)
+## Replacement and qualification policy
 
-| Word | var | method, qualified call |
+| Word | Shared model policy | Notes |
 |---|---|---|
-| `String` | FAIL | FAIL |
-| `close` | ok | FAIL |
-| `connect` | ok | FAIL |
-| `int128` | FAIL | FAIL |
-| `int64` | FAIL | FAIL |
-| `main` | ok | FAIL |
-| `next` | FAIL | ok |
-| `print` | FAIL | FAIL |
-| `require` | FAIL | FAIL |
-| `send` | ok | FAIL |
-| `struct` | FAIL | FAIL |
-| `usualgc` | FAIL | FAIL |
-| `usualmem` | FAIL | FAIL |
+| `close` | `closeResource` | Special Java resource-method mapping; the VM's `close` is receiver-independent |
+| `int128`, `int64`, `print`, `require`, `struct`, `usualgc`, `usualmem` | trailing `_` | Shared `rename ... all ...` rows |
+| `next` | `next_` in value context only | `next()` and `it.next()` remain ordinary Java method calls |
+| `connect`, `send` | qualified call when unqualified | Shared `qualify` rows; not globally renamed |
+| `main` | preserved for the entry class | Entry-point contract |
+| `String` | no rename | Java type name; handled by type conversion |
 
-`next` is the silent one: as a variable it reads as the integer 1 (the
-next-degree idiom, `impl/frontend/compiler.cpp` `emitVar`). `main` must not be
-renamed on an entry class. lib/java/converter renames a `next` that is not called
-(0.7.7, `JConvRewriter.renameNextVariables`); neither converter handles `connect` or
-`send` yet, and the sleelactl list (`kSleelaReserved`) also misses `require`,
-`usualgc`, `usualmem`, `int64`, `int128`.
+The `rename` records carry an explicit context (`all` or `value`). This
+prevents the earlier failure where globally renaming `next` also rewrote
+library calls such as `it.next()`. Built-in call qualification is a separate
+rule: it applies to method calls, not variable identifiers.
 
-Do not add `next`, `connect` or `send` to `JConvRules.isRenamedIdent`: that list
-renames every use, method calls included, so `it.next()` on a library Iterator
-became `it.next_()` (tried 2026-11-14, reverted). `next` needs a rename of
-variables, parameters and fields only; `connect` and `send` need a rename of
-declared methods of the converted tree only, not of library calls.
+C++ currently refuses reserved Java member declarations that would collide
+with SLeeLa names, rather than emitting a potentially inconsistent renamed
+member; the diagnostic lookup uses the same `rename` model row. Local/value
+renaming and call qualification are model-driven. The native converter applies
+the shared member replacement in its per-member output policy.
 
 ## Fine as a variable; as a method only when every call is qualified (170)
 
