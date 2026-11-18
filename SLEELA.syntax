@@ -12,7 +12,7 @@
 
     Versioning note: two distinct version numbers apply and must not be
     conflated. The **syntax version** (MAJOR.MINOR, declared per file with
-    `#sleela 3.0`) is the grammar edition defined here and enforced by
+    `#sleela 3.2`) is the grammar edition defined here and enforced by
     `impl/frontend/version.{h,cpp}` (supported range 1.0 .. 3.2).
     Syntax 3.2 is the current normative edition. It retains section 44 (character
     literals, array initializers, labeled statements, and abrupt completion
