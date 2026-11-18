@@ -171,13 +171,21 @@ private:
         auto im = importedTypes_.find(n);
         if (im != importedTypes_.end() && im->second == "\x01")
             throw ConvErr{cur().line, cur().col, "import-ambiguous", "the simple type name '" + n + "' is imported from more than one package"};
-        auto projectType = classes.find(n);
+        // The project symbol table is keyed by source-level simple name. An
+        // explicit package-qualified import therefore resolves to that indexed
+        // simple name, rather than leaking "pkg.Type" into member lookup.
+        std::string simple = n;
+        if (im != importedTypes_.end()) {
+            const size_t dot = im->second.rfind('.');
+            if (dot != std::string::npos) simple = im->second.substr(dot + 1);
+        }
+        auto projectType = classes.find(simple);
         if (projectType != classes.end() && projectType->second.ambiguous)
             throw ConvErr{cur().line, cur().col, "type-ambiguous",
-                "the simple type name '" + n + "' is declared by multiple source units; package-qualified resolution is not yet available"};
-        auto it = nestedMap_.find(n);
-        if (it == nestedMap_.end()) return n;
-        if (it->second == "\x01") throw ConvErr{cur().line, cur().col, "nested-ambiguous", "the simple name '" + n + "' is used by several nested types"};
+                "the simple type name '" + simple + "' is declared by multiple source units; package-qualified identity is not yet available"};
+        auto it = nestedMap_.find(simple);
+        if (it == nestedMap_.end()) return simple;
+        if (it->second == "\x01") throw ConvErr{cur().line, cur().col, "nested-ambiguous", "the simple name '" + simple + "' is used by several nested types"};
         return it->second;
     }
     // ---------------------------------------------------------- tokens ----
