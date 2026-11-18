@@ -2,7 +2,7 @@
 
     Language:        Sleela
     Syntax version:  3.2  (sections 45 and 46: typed char semantics and multidimensional arrays)
-    Compiler:        SLeeLa Language/Runtime 1.3.2-pro  (version gate accepts syntax 1.0 .. 3.2)
+    Compiler:        SLeeLa Language/Runtime 1.0121  (version gate accepts syntax 1.0 .. 3.2)
     Surface:         Java-like
     Core:            Turing-complete, thread-friendly C/C++ execution core
     Companion:       SHEET.sheet (system-object catalog), SST.model (NS-SST-0001),
