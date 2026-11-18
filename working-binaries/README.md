@@ -56,7 +56,7 @@ Rebuilt 2026-11-13 (`sleela` and `nordshrift`) from `impl/` at the syntax 3.1 (3
 edition: character literals, array initializers, labeled `break`/`continue`,
 `finally` on abrupt exit (SLEELA.syntax section 44), the `char` and array
 specifications (sections 45, 46), and the Java-tier runtime changes through
-SLEELA.syntax 43.7 and 37.5. Checked: `version` reports source syntax 1.0 – 3.2,
+SLEELA.syntax 43.7 and 37.5. Checked at that build: `version` reported source syntax 1.0 – 3.1,
 and a `#sleela 3.1` program using a char literal, an array initializer and
 `a.length` checks and runs (the previous copy could not).
 Rebuilt again 2026-11-13 for a VM performance fix, same versions: the plain String
