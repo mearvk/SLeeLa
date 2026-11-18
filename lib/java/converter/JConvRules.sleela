@@ -16,7 +16,7 @@ class JConvRules {
   String metaVersion = "0.6.0";
   int metaId = 0;
   String metaAuthor = "Max Rupplin";
-  String metaDate = "2026-11-12";
+  String metaDate = "2026-11-18";
   String metaCopyright = "MEARVK LLC";
   String metaTrademark = "none";
   String metaCorporation = "MEARVK LLC";
