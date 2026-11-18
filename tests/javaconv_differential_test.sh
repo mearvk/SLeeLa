@@ -323,5 +323,36 @@ else
   printf 'FAIL  project-inherited (project build or conversion failed)\n'; cat "$tmp/project-inherited/javac.err"; fail=$((fail+1))
 fi
 
+# transactional publication: a late collision after an earlier staged file was
+# rendered must not alter the previously published generation or its ownership list.
+mkdir -p "$tmp/transaction/src" "$tmp/transaction/out"
+cat > "$tmp/transaction/src/Main.java" <<'JAVA'
+public class Main { public static void main(String[] args) { System.out.println(1); } }
+JAVA
+if "$conv" --jdk "$tmp/transaction/src" --out "$tmp/transaction/out" --quiet; then
+  cp "$tmp/transaction/out/.javaconv-emitted" "$tmp/transaction/manifest.before"
+  cat > "$tmp/transaction/src/Main.java" <<'JAVA'
+public class Main { public static void main(String[] args) { System.out.println(2); } }
+JAVA
+  cat > "$tmp/transaction/src/ZCollision.java" <<'JAVA'
+public class ZCollision { }
+JAVA
+  printf 'user-owned sentinel\\n' > "$tmp/transaction/out/ZCollision.sleela"
+  before_main="$(cat "$tmp/transaction/out/Main.sleela")"
+  before_manifest="$(cat "$tmp/transaction/out/.javaconv-emitted")"
+  tx_out="$("$conv" --jdk "$tmp/transaction/src" --out "$tmp/transaction/out" --quiet 2>&1)"
+  tx_rc=$?
+  after_main="$(cat "$tmp/transaction/out/Main.sleela")"
+  after_manifest="$(cat "$tmp/transaction/out/.javaconv-emitted")"
+  sentinel="$(cat "$tmp/transaction/out/ZCollision.sleela")"
+  if [ "$tx_rc" -eq 2 ] && [ "$before_main" = "$after_main" ] && [ "$before_manifest" = "$after_manifest" ] && [ "$sentinel" = "user-owned sentinel" ]; then
+    printf 'PASS  %-12s failed generation leaves previous output, manifest and unowned files intact\\n' "transaction"; pass=$((pass+1))
+  else
+    printf 'FAIL  transaction (rc=%s)\\n%s\\n' "$tx_rc" "$tx_out"; fail=$((fail+1))
+  fi
+else
+  printf 'FAIL  transaction (could not establish initial generation)\\n'; fail=$((fail+1))
+fi
+
 echo "javaconv differential: pass=$pass fail=$fail"
 [ "$fail" -eq 0 ]
