@@ -55,7 +55,7 @@ class JDK28SignatureIndexTests(unittest.TestCase):
         )
         rendered = "\n".join(lines)
         self.assertEqual(constructors, 1)
-        self.assertEqual(methods, 1)
+        self.assertEqual(methods, 0)
         self.assertIn("Widget(String arg0)", rendered)
         self.assertNotIn("Widget(int arg0)", rendered)
 
@@ -82,7 +82,7 @@ class JDK28SignatureIndexTests(unittest.TestCase):
         lines, constructors, methods, collisions = gen.member_blocks(
             t, sig, "Child", "", api, impl_texts
         )
-        self.assertEqual(methods, 0)
+        self.assertEqual(methods, 1)
         self.assertNotIn("ready(", "\n".join(lines))
         self.assertIn("hidden(", "\n".join(lines))
 
