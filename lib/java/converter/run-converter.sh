@@ -104,7 +104,10 @@ manifest = {
   "inputs": [{"path": p.relative_to(src).as_posix(), "sha256": digest(p)} for p in inputs],
   "outputs": [{"path": p.relative_to(out).as_posix(), "sha256": digest(p)} for p in outputs],
 }
-(out / "CONVERSION-PROVENANCE.json").write_text(json.dumps(manifest, sort_keys=True, indent=2) + "\n")
+manifest_path = out / "CONVERSION-PROVENANCE.json"
+manifest_bytes = (json.dumps(manifest, sort_keys=True, indent=2) + "\n").encode()
+if not manifest_path.is_file() or manifest_path.read_bytes() != manifest_bytes:
+    manifest_path.write_bytes(manifest_bytes)
 PY
 python3 "$here/verify-provenance.py" "$JCONV_OUT/CONVERSION-PROVENANCE.json" "$root" "$JCONV_IN" "$JCONV_OUT"
 
