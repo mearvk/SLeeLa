@@ -902,7 +902,7 @@ private:
     }
     // Lower a (possibly compound) assignment expression. The result value is
     // left on the stack. Compound ops expand to `target = target <op> value`.
-    // Syntax 3.1: `s += c` with a char value c appends the character, not its number.
+    // Syntax 3.2: `s += c` with a char value c appends the character, not its number.
     unsigned compoundCharMask_=0;
     bool narrowCharStore_=false;
     void emitBinOpC(const std::string& o){ if(o=="+"&&compoundCharMask_){ emit(OP_ADDCHAR,(int)compoundCharMask_); return; } emitBinOp(o); }
@@ -980,7 +980,7 @@ private:
             } else {
                 emitValue();             // [array, index, value]
             }
-            if(narrowCharStore_){ emit(OP_CONST,slvm_add_const_int(vm_,0xFFFF)); emit(OP_BAND); }   // syntax 3.1: char[] element store keeps 16 bits
+            if(narrowCharStore_){ emit(OP_CONST,slvm_add_const_int(vm_,0xFFFF)); emit(OP_BAND); }   // syntax 3.2: char[] element store keeps 16 bits
             emit(OP_ARRSET);                         // [value]
             return;
         }
@@ -1212,7 +1212,7 @@ private:
             return;
         }
         if(n.args.size()>=2 && n.typeName.size()>=2 && n.typeName.compare(n.typeName.size()-2,2,"[]")==0){
-            // Syntax 3.1 multi-dimensional creation: new T[a][b]... / new T[a][b][]
+            // Syntax 3.2 multi-dimensional creation: new T[a][b]... / new T[a][b][]
             std::string base=n.typeName; size_t rank=0;
             while(base.size()>=2 && base.compare(base.size()-2,2,"[]")==0){ base.erase(base.size()-2); ++rank; }
             for(const auto& d:n.args) emitExpr(d.get());
