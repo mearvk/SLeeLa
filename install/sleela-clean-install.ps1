@@ -5,7 +5,7 @@ param([string]$Destination = "", [switch]$NoBuild, [switch]$Plain)
 $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $RepoRoot = Split-Path -Parent $ScriptDir
-$Release = "1.3.2-pro"
+$Release = "1.0121"
 function Heading([string]$Text) {
   Write-Host ""; Write-Host ("-" * 72) -ForegroundColor DarkGray
   Write-Host ("  SLeeLa | " + $Text) -ForegroundColor Green
