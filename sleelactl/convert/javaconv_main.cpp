@@ -241,6 +241,10 @@ int main(int argc, char** argv) {
             if (!cm_find(&model, "binop", "float", op, nullptr)) { std::cerr << "missing float binop " << op << "\n"; missing++; }
         for (const char* op : {"+", "-"})
             if (!cm_find(&model, "unop", "float", op, nullptr)) { std::cerr << "missing float unop " << op << "\n"; missing++; }
+        const cm_rec* floatType = cm_find(&model, "type", "float", nullptr, nullptr);
+        if (!floatType || std::string(floatType->f[1]) != "double") {
+            std::cerr << "missing Java float storage spelling (double)\n"; missing++;
+        }
         if (!cm_find(&model, "promote", "float", nullptr, nullptr)) { std::cerr << "missing float unary promotion\n"; missing++; }
         if (!cm_find(&model, "incr", "float", nullptr, nullptr)) { std::cerr << "missing float increment law\n"; missing++; }
         for (const char* op : {"+", "-", "*", "/", "%"})
