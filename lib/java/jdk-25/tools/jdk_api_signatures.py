@@ -224,11 +224,14 @@ def param_types(params: str) -> list:
     return out
 
 
-def impl_sigs(text: str, exclude_static: bool = False) -> dict:
+def impl_sigs(text: str, exclude_static: bool = False, exclude_private: bool = False) -> dict:
     """Index implementation methods by name and runtime parameter kinds."""
     out = {}
     for match in IMPL_SIG.finditer(text):
-        if exclude_static and "static" in match.group("mods").split():
+        modifiers = match.group("mods").split()
+        if exclude_static and "static" in modifiers:
+            continue
+        if exclude_private and "private" in modifiers:
             continue
         name = match.group("name")
         out.setdefault(name, []).append(tuple(kind(t, set()) for t in param_types(match.group("params"))))
@@ -265,7 +268,7 @@ def inherited_implementation_methods(name: str, api: dict, impl_texts: dict) -> 
             continue
         visited.add(parent)
         record = api[parent]
-        methods = impl_sigs(impl_texts.get(parent, ""), exclude_static=record.get("kind") == "interface")
+        methods = impl_sigs(impl_texts.get(parent, ""), exclude_static=record.get("kind") == "interface", exclude_private=True)
         for method_name, kinds in methods.items():
             out.setdefault(method_name, []).extend(kinds)
         if record.get("super"):
