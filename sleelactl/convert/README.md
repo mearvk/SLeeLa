@@ -33,7 +33,7 @@ invocation widening and considers
 strict fixed-arity calls before loose boxing/unboxing applicability and varargs, recursive reference-array covariance, known
 reference subtyping, inherited overloads, bounded and nested method-variable
 inference, wildcard compatibility, direct class-generic receiver substitution,
-and most-specific parameter types. Explicit and wildcard static
+and most-specific parameter types. Explicit type imports resolve to unique project-indexed simple names across package source units; collisions remain fail-closed because full package-qualified symbol identity is not yet modeled. Explicit and wildcard static
 method/field imports are resolved when their owner is known. Incomparable or
 unsupported candidates fail closed. The SLeeLa `JConvModel` loads the same type, promotion, operator, cast, widening,
 rename and qualification rows (with matching built-in defaults where required).
