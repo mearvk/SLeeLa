@@ -72,5 +72,84 @@ else
   printf 'FAIL  stale-output (a failed-closed file left Stale.sleela behind)\n'; fail=$((fail+1))
 fi
 
+# project-wide resolution: declarations are indexed before any source unit is translated
+mkdir -p "$tmp/project/src" "$tmp/project/cls" "$tmp/project/sl"
+cat > "$tmp/project/src/Widget.java" <<'JAVA'
+public class Widget {
+  int value() { return 23; }
+}
+JAVA
+cat > "$tmp/project/src/Main.java" <<'JAVA'
+public class Main {
+  public static void main(String[] args) {
+    Widget widget = new Widget();
+    System.out.println(widget.value());
+  }
+}
+JAVA
+if javac -d "$tmp/project/cls" "$tmp/project/src/Widget.java" "$tmp/project/src/Main.java" 2> "$tmp/project/javac.err" &&
+   java -cp "$tmp/project/cls" Main > "$tmp/project/expected.out" 2>&1 &&
+   "$conv" --jdk "$tmp/project/src" --out "$tmp/project/sl" --quiet; then
+  (cd "$tmp/project/sl" && timeout 300 "$sleela" run Main.sleela 2>&1 | filter) > "$tmp/project/actual.out"
+  if diff -u "$tmp/project/expected.out" "$tmp/project/actual.out" > "$tmp/project/diff"; then
+    printf 'PASS  %-12s cross-file type and member resolution identical to the JDK\n' "project-index"; pass=$((pass+1))
+  else
+    printf 'FAIL  project-index\n'; head -40 "$tmp/project/diff"; fail=$((fail+1))
+  fi
+else
+  printf 'FAIL  project-index (project build or conversion failed)\n'; cat "$tmp/project/javac.err"; fail=$((fail+1))
+fi
+
+# cross-file generic substitution: a type declared in another source unit keeps
+# its class type argument through field writes, method returns, and call resolution.
+mkdir -p "$tmp/project-generic/src" "$tmp/project-generic/cls" "$tmp/project-generic/sl"
+cat > "$tmp/project-generic/src/Box.java" <<'JAVA'
+public class Box<T> {
+  private T value;
+  public void set(T value) { this.value = value; }
+  public T get() { return value; }
+}
+JAVA
+cat > "$tmp/project-generic/src/Main.java" <<'JAVA'
+public class Main {
+  public static void main(String[] args) {
+    Box<String> box = new Box<String>();
+    box.set("project-generic");
+    System.out.println(box.get());
+  }
+}
+JAVA
+if javac -d "$tmp/project-generic/cls" "$tmp/project-generic/src/Box.java" "$tmp/project-generic/src/Main.java" 2> "$tmp/project-generic/javac.err" &&
+   java -cp "$tmp/project-generic/cls" Main > "$tmp/project-generic/expected.out" 2>&1 &&
+   "$conv" --jdk "$tmp/project-generic/src" --out "$tmp/project-generic/sl" --quiet; then
+  (cd "$tmp/project-generic/sl" && timeout 300 "$sleela" run Main.sleela 2>&1 | filter) > "$tmp/project-generic/actual.out"
+  if diff -u "$tmp/project-generic/expected.out" "$tmp/project-generic/actual.out" > "$tmp/project-generic/diff"; then
+    printf 'PASS  %-12s cross-file class-generic substitution identical to the JDK\\n' "project-generic"; pass=$((pass+1))
+  else
+    printf 'FAIL  project-generic\\n'; head -40 "$tmp/project-generic/diff"; fail=$((fail+1))
+  fi
+else
+  printf 'FAIL  project-generic (project build or conversion failed)\\n'; cat "$tmp/project-generic/javac.err"; fail=$((fail+1))
+fi
+
+# duplicate simple declarations must never be resolved by source traversal order
+mkdir -p "$tmp/duplicate/src/a" "$tmp/duplicate/src/b" "$tmp/duplicate/out"
+cat > "$tmp/duplicate/src/a/First.java" <<'JAVA'
+class Clash { int first() { return 1; } }
+JAVA
+cat > "$tmp/duplicate/src/b/Second.java" <<'JAVA'
+class Clash { int second() { return 2; } }
+JAVA
+cat > "$tmp/duplicate/src/Use.java" <<'JAVA'
+class Use { Clash value; }
+JAVA
+duplicate_out="$("$conv" --jdk "$tmp/duplicate/src" --out "$tmp/duplicate/out" --quiet 2>&1)"
+duplicate_rc=$?
+if [ "$duplicate_rc" -eq 1 ] && printf '%s' "$duplicate_out" | grep -q "\[type-ambiguous\]"; then
+  printf 'PASS  %-12s ambiguous project-wide simple name refused\n' "duplicate-type"; pass=$((pass+1))
+else
+  printf 'FAIL  duplicate-type (rc=%s)\n%s\n' "$duplicate_rc" "$duplicate_out"; fail=$((fail+1))
+fi
+
 echo "javaconv differential: pass=$pass fail=$fail"
 [ "$fail" -eq 0 ]

@@ -171,6 +171,10 @@ private:
         auto im = importedTypes_.find(n);
         if (im != importedTypes_.end() && im->second == "\x01")
             throw ConvErr{cur().line, cur().col, "import-ambiguous", "the simple type name '" + n + "' is imported from more than one package"};
+        auto projectType = classes.find(n);
+        if (projectType != classes.end() && projectType->second.ambiguous)
+            throw ConvErr{cur().line, cur().col, "type-ambiguous",
+                "the simple type name '" + n + "' is declared by multiple source units; package-qualified resolution is not yet available"};
         auto it = nestedMap_.find(n);
         if (it == nestedMap_.end()) return n;
         if (it->second == "\x01") throw ConvErr{cur().line, cur().col, "nested-ambiguous", "the simple name '" + n + "' is used by several nested types"};
@@ -181,6 +185,10 @@ private:
     const Tok& at(size_t i) const { return T[std::min(i, T.size() - 1)]; }
     bool isOp(const char* s) const { return cur().kind == JT_OP && cur().text == s; }
     bool isOpAt(size_t i, const char* s) const { return at(i).kind == JT_OP && at(i).text == s; }
+    bool targetContextEndsAtCurrentToken() const {
+        return atEof() || isOp(")") || isOp("]") || isOp(",") ||
+               isOp(";") || isOp(":") || isOp("}");
+    }
     bool isKw(const char* s) const { return cur().kind == JT_IDENT && cur().text == s; }
     bool isKwAt(size_t i, const char* s) const { return at(i).kind == JT_IDENT && at(i).text == s; }
     bool atEof() const { return cur().kind == JT_EOF; }
@@ -722,6 +730,8 @@ private:
             p++;
             
             if (!isLvalueCode(e)) fail("syntax", "the left side of an assignment must be a variable, field or array element");
+            struct TargetRestore { Ty& slot; Ty saved; ~TargetRestore() { slot=saved; } } restore{lambdaTarget_,lambdaTarget_};
+            lambdaTarget_=e.ty;
             E rhs = parseExpr();
             std::string text = assignText(e, op, rhs);
             E r;
@@ -915,6 +925,10 @@ private:
 
     std::vector<E> parseArgs() {
         std::vector<E> a;
+        // An enclosing assignment/return target constrains the invocation itself,
+        // not independent invocations nested in its argument expressions.
+        struct TargetRestore { Ty& slot; Ty saved; ~TargetRestore() { slot=saved; } } restore{lambdaTarget_,lambdaTarget_};
+        lambdaTarget_=Ty();
         expectOp("(");
         if (!isOp(")")) {
             do {
@@ -1020,9 +1034,10 @@ private:
         if(from.dims!=0 || to.dims!=0) return -1;
         std::string primitive;
         if(isPrimitiveName(from.n) && to.boxed && modelBoxed(to.n,&primitive)) {
-            if(from.n==primitive) return 4; // boxing
-            if(cm_find(&M,"widen",from.n.c_str(),primitive.c_str(),nullptr)) return 5;
-            return -1;
+            // JLS 5.3 does not permit primitive widening followed by boxing
+            // during method invocation (int -> Long is not an invocation
+            // conversion). Only identity boxing is admitted in this phase.
+            return from.n==primitive ? 4 : -1;
         }
         if(from.boxed && modelBoxed(from.n,&primitive) && isPrimitiveName(to.n)) {
             if(primitive==to.n) return 4; // unboxing
@@ -1031,13 +1046,28 @@ private:
         // Boxing to Object is permitted only when the model declares a
         // wrapper for the primitive. The box records are keyed by wrapper name,
         // so inspect the indexed records for their primitive column.
-        if(isPrimitiveName(from.n) && to.n=="Object") {
-            for(size_t i=0;i<M.n;i++) {
-                const cm_rec& rec=M.recs[i];
-                if(std::string(rec.kind)=="box" && rec.nf>1 && from.n==rec.f[1]) return 8;
+        if(isPrimitiveName(from.n)) {
+            std::string wrapper;
+            if (modelWrapperForPrimitive(from.n,&wrapper)) {
+                const bool numeric = wrapper=="Byte" || wrapper=="Short" || wrapper=="Integer" ||
+                    wrapper=="Long" || wrapper=="Float" || wrapper=="Double";
+                if (to.n=="Object" || to.n=="Serializable" ||
+                    (numeric && to.n=="Number")) return 8;
+                if (to.n=="Comparable" &&
+                    (to.args.empty() || (to.args.size()==1 && to.args[0].n==wrapper))) return 8;
             }
         }
-        if(from.boxed && to.n=="Object") return 8;
+        if(from.boxed) {
+            std::string primitive;
+            if (modelBoxed(from.n,&primitive)) {
+                const bool numeric = from.n=="Byte" || from.n=="Short" || from.n=="Integer" ||
+                    from.n=="Long" || from.n=="Float" || from.n=="Double";
+                if (to.n=="Object" || to.n=="Serializable" ||
+                    (numeric && to.n=="Number")) return 8;
+                if (to.n=="Comparable" &&
+                    (to.args.empty() || (to.args.size()==1 && to.args[0].n==from.n))) return 8;
+            }
+        }
         return -1;
     }
 
@@ -1056,11 +1086,55 @@ private:
         if (from == to) return true;
         if (depth > 32) return false;
         if (to == "Object" && !isPrimitiveName(from)) return true;
+        // Wrapper supertypes needed when a primitive argument is boxed during
+        // generic inference (for example T extends Number with identity(1)).
+        if (modelBoxed(from)) {
+            const bool numeric = from=="Byte" || from=="Short" || from=="Integer" ||
+                from=="Long" || from=="Float" || from=="Double";
+            if (to=="Serializable" || to=="Comparable" || (numeric && to=="Number")) return true;
+        }
         auto it=classes.find(from);
         if (it==classes.end()) return to=="Object";
         if (!it->second.super.empty() && isSubtypeName(it->second.super,to,depth+1)) return true;
         for (const auto& iface:it->second.ifaces) if (isSubtypeName(iface,to,depth+1)) return true;
         return false;
+    }
+
+    // Compute a representable least upper bound. If the common supertype graph
+    // has one unique most-specific class/interface, retain it instead of
+    // widening every unrelated implementation to Object. Full intersection
+    // types with multiple incomparable minimal bounds remain unsupported.
+    std::string leastCommonReferenceName(const std::string& a, const std::string& b) const {
+        auto collect = [&](const std::string& root, std::set<std::string>& out) {
+            std::function<void(const std::string&,int)> visit = [&](const std::string& name,int depth) {
+                if (name.empty() || depth>32 || !out.insert(name).second) return;
+                auto it=classes.find(name);
+                if (it==classes.end()) { if(name!="Object") out.insert("Object"); return; }
+                if (!it->second.super.empty()) visit(it->second.super,depth+1);
+                for (const auto& iface:it->second.ifaces) visit(iface,depth+1);
+                if (it->second.isInterface) visit("Object",depth+1);
+            };
+            visit(root,0);
+        };
+        std::set<std::string> left,right,common;
+        collect(a,left); collect(b,right);
+        for (const auto& candidate:left) if (right.count(candidate)) common.insert(candidate);
+        std::vector<std::string> minimal;
+        for (const auto& candidate:common) {
+            bool lessSpecific=false;
+            for (const auto& other:common) {
+                if (candidate!=other && isSubtypeName(other,candidate)) {
+                    lessSpecific=true; break;
+                }
+            }
+            if (!lessSpecific) minimal.push_back(candidate);
+        }
+        if (minimal.size()==1) return minimal.front();
+
+        // Multiple incomparable minima are a true intersection LUB. Ty cannot
+        // yet carry that set of bounds, so return no result and let inference
+        // fail closed rather than silently erase an interface constraint.
+        return std::string();
     }
 
     void collectNamedMethods(const std::string& cls, const std::string& name,
@@ -1135,7 +1209,7 @@ private:
         return true;
     }
 
-    const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0, int invocationKind = -1, const Ty* receiverType = nullptr) const {
+    const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0, int invocationKind = -1, const Ty* receiverType = nullptr, const Ty* expectedResultType = nullptr) const {
         if (depth > 32) return nullptr;
         std::vector<const MethodSig*> all;
         collectNamedMethods(cls,name,all);
@@ -1215,19 +1289,8 @@ private:
                                         !isPrimitiveName(prior.n) && !isPrimitiveName(inferredType.n)) {
                                         if (isSubtypeName(prior.n,inferredType.n)) ti->second=inferredType;
                                         else if (!isSubtypeName(inferredType.n,prior.n)) {
-                                            // Compute a conservative least common class.
-                                            // Interface intersections and parameterized
-                                            // least-containing invocations remain unsupported.
-                                            std::string common=prior.n;
-                                            int hops=0;
-                                            while (!common.empty() && ++hops<=32 &&
-                                                   !isSubtypeName(inferredType.n,common)) {
-                                                auto ci=classes.find(common);
-                                                common=(ci==classes.end() || ci->second.super.empty())
-                                                    ? std::string("Object") : ci->second.super;
-                                                if (common=="Object") break;
-                                            }
-                                            if (common.empty()) common="Object";
+                                            const std::string common=leastCommonReferenceName(prior.n,inferredType.n);
+                                            if (common.empty()) return false;
                                             ti->second=mk(common);
                                         }
                                     } else return false;
@@ -1287,6 +1350,42 @@ private:
                     if(c<0){applicable=false;break;}
                     cost+=c;
                 }
+                if (applicable && expectedResultType && expectedResultType->known() && !m.typeParams.empty()) {
+                    std::function<bool(const Ty&)> containsMethodVariable = [&](const Ty& value) {
+                        if (value.n.rfind("$T$",0)==0) return true;
+                        for (const Ty& arg:value.args) if (containsMethodVariable(arg)) return true;
+                        return value.bound && containsMethodVariable(*value.bound);
+                    };
+                    if (containsMethodVariable(m.ret)) {
+                        std::function<bool(const Ty&,const Ty&)> inferFromTarget =
+                            [&](const Ty& formal,const Ty& expected) -> bool {
+                                if (formal.n.rfind("$T$",0)==0) {
+                                    if (!expected.known() || expected.n=="null" || expected.dims<formal.dims) return false;
+                                    Ty candidate=expected;
+                                    candidate.dims-=formal.dims;
+                                    if (candidate.dims==0 && isPrimitiveName(candidate.n)) {
+                                        std::string wrapper;
+                                        if (!modelWrapperForPrimitive(candidate.n,&wrapper)) return false;
+                                        candidate.n=wrapper; candidate.boxed=true;
+                                    }
+                                    const std::string variable=formal.n.substr(3);
+                                    auto prior=inferred.find(variable);
+                                    if (prior==inferred.end()) inferred[variable]=candidate;
+                                    else if (invocationCostLoose(prior->second,candidate)<0) return false;
+                                    return true;
+                                }
+                                if (formal.args.empty() || expected.n!=formal.n ||
+                                    expected.dims!=formal.dims || formal.args.size()!=expected.args.size()) return true;
+                                for (size_t i=0;i<formal.args.size();++i) {
+                                    const Ty& fa=formal.args[i];
+                                    if (fa.wildcard==1) continue;
+                                    if (!inferFromTarget(fa,expected.args[i])) return false;
+                                }
+                                return true;
+                            };
+                        if (!inferFromTarget(m.ret,*expectedResultType)) applicable=false;
+                    }
+                }
                 if (!applicable || inferred.size()!=m.typeParams.size()) {
                     if (!m.typeParams.empty()) sawUnsupportedGeneric=true;
                     continue;
@@ -1296,22 +1395,25 @@ private:
                 // prove is intentionally rejected rather than guessed.
                 for (const auto& bound : m.typeParamBounds) {
                     auto value=inferred.find(bound.first);
-                    if (value==inferred.end() || bound.second.empty() || bound.second=="&") {
+                    if (value==inferred.end() || bound.second.empty()) {
                         applicable=false; break;
                     }
-                    auto other=inferred.find(bound.second);
-                    std::string boundName=other==inferred.end()?bound.second:other->second.n;
-                    if (other==inferred.end()) {
-                        const size_t dot=boundName.rfind('.');
-                        if (dot!=std::string::npos) boundName=boundName.substr(dot+1);
-                        auto nested=nestedMap_.find(boundName);
-                        if (nested!=nestedMap_.end() && nested->second!="\x01") boundName=nested->second;
+                    for (std::string boundName : bound.second) {
+                        auto other=inferred.find(boundName);
+                        if (other!=inferred.end()) boundName=other->second.n;
+                        else {
+                            const size_t dot=boundName.rfind('.');
+                            if (dot!=std::string::npos) boundName=boundName.substr(dot+1);
+                            auto nested=nestedMap_.find(boundName);
+                            if (nested!=nestedMap_.end() && nested->second!="\x01") boundName=nested->second;
+                        }
+                        const bool arrayBound=value->second.dims>0 &&
+                            (boundName=="Object" || boundName=="Cloneable" || boundName=="Serializable");
+                        if (!arrayBound && (value->second.dims!=0 || !isSubtypeName(value->second.n,boundName))) {
+                            applicable=false; break;
+                        }
                     }
-                    const bool arrayBound=value->second.dims>0 &&
-                        (boundName=="Object" || boundName=="Cloneable" || boundName=="Serializable");
-                    if (!arrayBound && (value->second.dims!=0 || !isSubtypeName(value->second.n,boundName))) {
-                        applicable=false; break;
-                    }
+                    if (!applicable) break;
                 }
                 if (!applicable) { sawUnsupportedGeneric=true; continue; }
                 MethodSig resolved=m;
@@ -1327,6 +1429,11 @@ private:
                 };
                 for (Ty& t:resolved.params) t=instantiate(t);
                 resolved.ret=instantiate(resolved.ret);
+                if (expectedResultType && expectedResultType->known() &&
+                    m.ret.n.rfind("$T$",0)==0 &&
+                    invocationCostLoose(resolved.ret,*expectedResultType)<0) {
+                    sawUnsupportedGeneric=true; continue;
+                }
                 if(!best || cost<bestCost) {
                     best=mp; bestResolved=resolved; bestCost=cost; ambiguous=false;
                 } else if(cost==bestCost && best) {
@@ -1454,12 +1561,12 @@ private:
         fail("object-method", "java.lang.Object." + name + " on " + recvType + ", which does not declare it, has no SLeeLa equivalent yet");
     }
 
-    E callResult(const std::string& recvType, const std::string& name, const std::vector<E>& args, std::string code, bool staticCall, const Ty* receiverType = nullptr) {
+    E callResult(const std::string& recvType, const std::string& name, const std::vector<E>& args, std::string code, bool staticCall, const Ty* receiverType = nullptr, const Ty* expectedResultType = nullptr) {
         E r;
         r.code = code;
         r.pure = false;
         (void)staticCall;
-        if (const MethodSig* m = pickMethod(recvType, name, args, 0, -1, receiverType)) {
+        if (const MethodSig* m = pickMethod(recvType, name, args, 0, -1, receiverType, expectedResultType)) {
             r.ty = resolvedMethod(m).ret;
             return r;
         }
@@ -1477,7 +1584,7 @@ private:
             auto ci = classes.find(up);
             if (ci == classes.end() || ci->second.super.empty() || ci->second.super == up) break;
             up = ci->second.super;
-            if (const MethodSig* m = pickMethod(up, name, args)) { r.ty = resolvedMethod(m).ret; return r; }
+            if (const MethodSig* m = pickMethod(up, name, args, 0, -1, nullptr, expectedResultType)) { r.ty = resolvedMethod(m).ret; return r; }
             rec = cm_find(&M, "ret", up.c_str(), name.c_str(), nullptr);
         }
         if (rec) {
@@ -1533,13 +1640,17 @@ private:
                         std::string owner = e.code;
                         size_t dot = owner.rfind('.');
                         if (dot != std::string::npos) owner = owner.substr(dot + 1);
-                        args = adaptArgs(pickMethod(owner, name, args), args);
-                        E r = callResult(owner, name, args, e.code + "." + mapMember(name) + "(" + joinArgs(args) + ")", true);
+                        Ty expectedType = lambdaTarget_;
+                        const Ty* expected = expectedType.known() && targetContextEndsAtCurrentToken() ? &expectedType : nullptr;
+                        args = adaptArgs(pickMethod(owner, name, args, 0, -1, nullptr, expected), args);
+                        E r = callResult(owner, name, args, e.code + "." + mapMember(name) + "(" + joinArgs(args) + ")", true, nullptr, expected);
                         e = r;
                         continue;
                     }
                     std::string recvType = e.ty.dims == 0 ? e.ty.n : std::string("array");
-                    args = adaptArgs(pickMethod(recvType, name, args, 0, -1, &e.ty), args);
+                    Ty expectedType = lambdaTarget_;
+                    const Ty* expected = expectedType.known() && !isOp(".") && !isOp("[") && !isOp("::") ? &expectedType : nullptr;
+                    args = adaptArgs(pickMethod(recvType, name, args, 0, -1, &e.ty, expected), args);
                     // model 9c: a library parameter that takes a char as text
                     for (size_t ai = 0; ai < args.size(); ai++) {
                         const std::string idx = std::to_string(ai);
@@ -1548,7 +1659,7 @@ private:
                             args[ai].ty = mk("String");
                         }
                     }
-                    E r = callResult(recvType, name, args, paren(e.code) + "." + mapMember(name) + "(" + joinArgs(args) + ")", false, &e.ty);
+                    E r = callResult(recvType, name, args, paren(e.code) + "." + mapMember(name) + "(" + joinArgs(args) + ")", false, &e.ty, expected);
                     e = r;
                     continue;
                 }
@@ -1707,7 +1818,9 @@ private:
         std::string name = ident();
         if (isOp("(")) {
             std::vector<E> a = parseArgs();
-            const MethodSig* pm = pickMethod(curClass, name, a);
+            Ty expectedType = lambdaTarget_;
+            const Ty* expected = expectedType.known() && !isOp(".") && !isOp("[") && !isOp("::") ? &expectedType : nullptr;
+            const MethodSig* pm = pickMethod(curClass, name, a, 0, -1, nullptr, expected);
             std::string qualifier;
             std::string importedOwner;
             if (!pm) {
@@ -1718,7 +1831,7 @@ private:
                 std::sort(owners.begin(), owners.end());
                 owners.erase(std::unique(owners.begin(), owners.end()), owners.end());
                 for (const auto& owner : owners) {
-                    const MethodSig* candidate = pickMethod(owner, name, a);
+                    const MethodSig* candidate = pickMethod(owner, name, a, 0, -1, nullptr, expected);
                     const bool modeled = cm_find(&M, "ret", owner.c_str(), name.c_str(), nullptr) != nullptr ||
                         cm_find(&M, "call", (owner + "." + name).c_str(), nullptr, nullptr) != nullptr;
                     if (candidate && !candidate->isStatic) continue;
@@ -1732,7 +1845,7 @@ private:
             }
             if (!pm && importedOwner.empty() && !anonStack_.empty()) {
                 const AnonCtx& ac = anonStack_.back();
-                if (const MethodSig* om = pickMethod(ac.outerClass, name, a)) {
+                if (const MethodSig* om = pickMethod(ac.outerClass, name, a, 0, -1, nullptr, expected)) {
                     pm = om;
                     if (om->isStatic) qualifier = ac.outerClass + ".";
                     else { if (ac.outerStatic) fail("outer-instance", "call of an instance method of the enclosing class from a static context"); qualifier = "outer_."; }
@@ -1750,7 +1863,7 @@ private:
             r.code = qualifier + mapMember(safeNameForCall(name)) + "(" + joinArgs(a) + ")";
             r.pure = false;
             if (pm) r.ty = resolvedMethod(pm).ret;
-            else if (!importedOwner.empty()) r = callResult(importedOwner, name, a, r.code, true);
+            else if (!importedOwner.empty()) r = callResult(importedOwner, name, a, r.code, true, nullptr, expected);
             else r.ty = mk("?");
             return r;
         }
@@ -2071,7 +2184,7 @@ private:
     }
 
     void parseStatement() {
-        allowHoist_ = true; hoistTy_ = mk("?");
+        allowHoist_ = true; hoistTy_ = mk("?"); lambdaTarget_ = Ty();
         const Tok& t = cur();
         if (t.kind == JT_OP) {
             if (t.text == "{") {
@@ -2966,6 +3079,8 @@ private:
         expectOp("{");
         ClassInfo& ci = classes[name];
         if (pass == 1) {
+            if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
+            else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
             ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false;
             for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ci.methods.push_back(ms); }
             MethodSig canon; canon.name = "<init>"; canon.ret = mk("void"); canon.varargs = compVarargs; for (auto& c : comps) canon.params.push_back(c.second); ci.methods.push_back(canon);
@@ -3137,7 +3252,11 @@ private:
         }
         expectOp("{");
         ClassInfo& ci = classes[name];
-        if (pass == 1) { ci.fields.clear(); ci.methods.clear(); ci.isEnum = true; ci.super = ""; ci.ifaces = ifaceNames; }
+        if (pass == 1) {
+            if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
+            else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
+            ci.fields.clear(); ci.methods.clear(); ci.isEnum = true; ci.super = ""; ci.ifaces = ifaceNames;
+        }
         size_t beforeDiags = diags.size();
 
         struct Const { std::string name; std::vector<E> args; std::string sub; std::vector<std::string> subLines; int subFields = 0; };
@@ -3429,7 +3548,7 @@ private:
     }
 
     void skipTypeParams(std::vector<std::string>* names, bool* bounded = nullptr,
-                        std::map<std::string,std::string>* upperBounds = nullptr) {
+                        std::map<std::string,std::vector<std::string>>* upperBounds = nullptr) {
         if (!isOp("<")) return;
         int d = 0;
         bool expectName = true;
@@ -3444,14 +3563,14 @@ private:
             else if (isOp(",") && d == 1) { expectName = true; currentName.clear(); inBound=false; boundNameSeen=false; }
             else if (isKw("extends") && d == 1) { if (bounded) *bounded = true; inBound=true; }
             else if (isOp("&") && d == 1) {
-                // Intersection bounds need a constraint set; do not silently treat
-                // only the first component as the complete bound.
-                if (upperBounds && !currentName.empty()) (*upperBounds)[currentName] = "&";
-                inBound=true; boundNameSeen=true;
+                // Preserve every intersection component; inference validates all
+                // declared bounds after collecting constraints from invocation sites.
+                inBound=true; boundNameSeen=false;
             }
             else if (isOp(".") && d == 1 && inBound && boundNameSeen &&
                      upperBounds && !currentName.empty() && isIdentTok(at(p+1))) {
-                (*upperBounds)[currentName] += "." + at(p+1).text;
+                auto& bounds=(*upperBounds)[currentName];
+                if (!bounds.empty()) bounds.back() += "." + at(p+1).text;
                 p++; // the loop increment consumes the qualified segment
             }
             else if (isIdentTok(cur()) && d == 1) {
@@ -3461,7 +3580,7 @@ private:
                     typeVars.insert(currentName);
                     expectName=false;
                 } else if (inBound && !boundNameSeen && upperBounds && !currentName.empty()) {
-                    (*upperBounds)[currentName]=cur().text;
+                    (*upperBounds)[currentName].push_back(cur().text);
                     boundNameSeen=true;
                 }
             }
@@ -3682,7 +3801,11 @@ private:
         ClassInit cinit;
         InitScope hoistScope(this, isIface ? nullptr : &cinit);
         ClassInfo& ci = classes[name];
-        if (pass == 1) { ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = superName; ci.superType = superType; ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : ""; }
+        if (pass == 1) {
+            if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
+            else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
+            ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = superName; ci.superType = superType; ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : "";
+        }
         std::vector<std::string> memberLines;
         int instanceFields = 0;
         size_t beforeDiags = diags.size();
@@ -3809,7 +3932,7 @@ private:
 
         std::vector<std::string> mtp;
         bool mtpBounded = false;
-        std::map<std::string,std::string> mtpBounds;
+        std::map<std::string,std::vector<std::string>> mtpBounds;
         std::set<std::string> savedVars = typeVars;
         skipTypeParams(&mtp, &mtpBounded, &mtpBounds);
         SetScope methodTypeVarScope(methodTypeVars_);
@@ -3877,7 +4000,7 @@ private:
             if (isKw("throws")) skipThrows();
             curRet = ty;
             if (pass == 1) {
-                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls; ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded;
+                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls; ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded; ms.typeParamBounds = mtpBounds;
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }
