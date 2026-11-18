@@ -44,13 +44,19 @@ public final class SleelaRunner {
         public final List<String> notes;
         /** Which VM ran (or would have run) the program, as shown to the visitor. */
         public final String vm;
+        /** One line on why that VM differs from or improves on the others; null when not applicable. */
+        public final String why;
         Result(Status s, int exit, String out, long ms, boolean trunc, List<String> notes) {
             this(s, exit, out, ms, trunc, notes, null);
         }
         Result(Status s, int exit, String out, long ms, boolean trunc, List<String> notes, String vm) {
-            this.status = s; this.exitCode = exit; this.output = out; this.millis = ms; this.truncated = trunc; this.notes = notes; this.vm = vm;
+            this(s, exit, out, ms, trunc, notes, vm, null);
         }
-        Result withVm(String vm) { return new Result(status, exitCode, output, millis, truncated, notes, vm); }
+        Result(Status s, int exit, String out, long ms, boolean trunc, List<String> notes, String vm, String why) {
+            this.status = s; this.exitCode = exit; this.output = out; this.millis = ms; this.truncated = trunc; this.notes = notes; this.vm = vm; this.why = why;
+        }
+        Result withVm(String vm, String why) { return new Result(status, exitCode, output, millis, truncated, notes, vm, why); }
+        public String getWhy() { return why; }
         public String getStatus() { return status.name(); }
         public int getExitCode() { return exitCode; }
         public String getOutput() { return output; }
@@ -114,7 +120,7 @@ public final class SleelaRunner {
     public Result submit(String action, String source, String clientId, VmChoice vm) {
         boolean check = "check".equals(action);
         String used = check ? "None. A syntax check runs in the compiler only, so no VM is booted." : vm.getDisplay();
-        return submitOn(check, source, clientId, vm).withVm(used);
+        return submitOn(check, source, clientId, vm).withVm(used, check ? null : vm.getWhy());
     }
 
     private Result submitOn(boolean check, String source, String clientId, VmChoice vm) {
@@ -164,6 +170,7 @@ public final class SleelaRunner {
 
     Result execute(String sub, VmChoice vm, String source) {
         boolean premium = "run".equals(sub) && vm.tier == VmChoice.Tier.PREMIUM;
+        boolean standard = "run".equals(sub) && vm.tier == VmChoice.Tier.STANDARD;
         long t0 = System.nanoTime();
         Path dir = null;
         List<String> notes = new ArrayList<>();
@@ -198,12 +205,19 @@ public final class SleelaRunner {
             cmd.add("--nofile=64");
             cmd.add("--core=0");
             cmd.add("--");
-            cmd.add(cfg.binary.toRealPath().toString());
-            if (premium) {
-                for (String a : new String[] {"vm", "run", "premium", Integer.toString(vm.number), "/work/main.sleela"}) cmd.add(a);
+            if (standard) {
+                // A standard VM is a built smoke/demo program, not an engine: run its own self-check. The visitor source is
+                // written to /work like any run but is not executed by it.
+                cmd.add(cfg.home.resolve(vm.binaryPath).toRealPath().toString());
+                notes.add(vm.getVmName() + " is a self-check program, not an engine. It ran its own checks below; your program was not executed on it.");
             } else {
-                cmd.add(sub);
-                cmd.add("main.sleela");
+                cmd.add(cfg.binary.toRealPath().toString());
+                if (premium) {
+                    for (String a : new String[] {"vm", "run", "premium", Integer.toString(vm.number), "/work/main.sleela"}) cmd.add(a);
+                } else {
+                    cmd.add(sub);
+                    cmd.add("main.sleela");
+                }
             }
 
             ProcessBuilder pb = new ProcessBuilder(cmd);

@@ -35,7 +35,7 @@
             <c:forEach var="v" items="${vms}"><c:if test="${v.tier == 'NATIVE'}"><option value="${fn:escapeXml(v.id)}" ${v.id == vmSelected ? 'selected' : ''}><c:out value="${v.display}"/></option></c:if></c:forEach>
           </optgroup>
           <optgroup label="Standard VMs (idea-vm-001 to 010)">
-            <c:forEach var="v" items="${vms}"><c:if test="${v.tier == 'STANDARD'}"><option value="${fn:escapeXml(v.id)}" ${v.available ? '' : 'disabled'} ${v.id == vmSelected ? 'selected' : ''} title="${fn:escapeXml(v.unavailable)}"><c:out value="${v.display}"/><c:if test="${not v.available}"> (not runnable yet)</c:if></option></c:if></c:forEach>
+            <c:forEach var="v" items="${vms}"><c:if test="${v.tier == 'STANDARD'}"><option value="${fn:escapeXml(v.id)}" ${v.available ? '' : 'disabled'} ${v.id == vmSelected ? 'selected' : ''} title="${fn:escapeXml(v.available ? v.why : v.unavailable)}"><c:out value="${v.display}"/><c:choose><c:when test="${v.available}"> (self-check)</c:when><c:otherwise> (not built on this server)</c:otherwise></c:choose></option></c:if></c:forEach>
           </optgroup>
           <optgroup label="Premium VMs (slvm-1 to 11)">
             <c:forEach var="v" items="${vms}"><c:if test="${v.tier == 'PREMIUM'}"><option value="${fn:escapeXml(v.id)}" ${v.available ? '' : 'disabled'} ${v.id == vmSelected ? 'selected' : ''} title="${fn:escapeXml(v.unavailable)}"><c:out value="${v.display}"/><c:if test="${not v.available}"> (not built on this server)</c:if></option></c:if></c:forEach>
@@ -78,12 +78,14 @@
         </c:otherwise>
       </c:choose>
       <p class="vm-used"><strong>VM:</strong> <c:out value="${result.vm}"/></p>
+      <c:if test="${not empty result.why}"><p class="vm-why"><strong>Why this VM:</strong> <c:out value="${result.why}"/></p></c:if>
       <c:if test="${not empty result.notes}">
         <ul class="notes"><c:forEach var="n" items="${result.notes}"><li><c:out value="${n}"/></li></c:forEach></ul>
       </c:if>
       <c:if test="${not empty result.output}">
         <pre class="out" tabindex="0" aria-label="Program output"><c:out value="[VM: ${result.vm}]"/>
-<c:out value="${result.output}"/></pre>
+<c:if test="${not empty result.why}"><c:out value="[Why this VM: ${result.why}]"/>
+</c:if><c:out value="${result.output}"/></pre>
       </c:if>
       <c:if test="${empty result.output and result.status == 'OK'}"><p class="muted">The program printed nothing.</p></c:if>
     </c:if>
@@ -100,7 +102,7 @@
     <h2>Virtual machines</h2>
     <ul>
       <li><strong>Native</strong>: the default engine in <code>impl/core</code>, used by <code>sleela run</code>.</li>
-      <li><strong>Standard</strong> 1 to 10: the <code>idea-vm</code> progression. Listed for reference; the SLeeLa CLI cannot boot programs on them yet.</li>
+      <li><strong>Standard</strong> 1 to 10: the <code>idea-vm</code> progression. Smoke programs, not engines: once built on the server they can be selected, and the page runs the VM's own self-check and shows why it differs from the previous version. Your program is not executed on them.</li>
       <li><strong>Premium</strong> 1 to 11: the <code>slvm</code> generations, Foundation to Sovereign, run with <code>sleela vm run premium N</code>. Available when built on the server.</li>
       <li>Check syntax does not use a VM.</li>
     </ul>
