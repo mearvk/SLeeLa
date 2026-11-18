@@ -278,7 +278,7 @@ Syntax 3.0 includes several additions that go beyond declarative source annotati
 - `@spill` marks a loop timer-start behavior as defined by the normative syntax specification.
 - `sleep(ms)` blocks the current thread for a millisecond count.
 
-The loop annotations lower to the VM sleep operation (`OP_SLEEP`, ISA index 157). See [the loop-timing API reference](../../api/sleela/3.2/LOOP_TIMING_API.md) and [the runnable example](../../examples/loop-timing-annotation-demo.sleela).
+The loop annotations lower to the VM sleep operation (`OP_SLEEP`, ISA index 157). See [the loop-timing API reference](../../api/sleela/3.0/LOOP_TIMING_API.md) and [the runnable example](../../examples/loop-timing-annotation-demo.sleela).
 
 ### 9.2 Big-integer operations
 
@@ -395,7 +395,7 @@ Other developer-facing facilities include:
 - generated API sites and immutable versioned API snapshots;
 - local project generation and standalone utility programs.
 
-See [`lib/sleeladoc/README.md`](../../lib/sleeladoc/README.md), [`manifesto/SLEELADOC.md`](../../manifesto/SLEELADOC.md), and [`api/sleela/3.0/SESSION-ADDITIONS-API.md`](../../api/sleela/3.2/SESSION-ADDITIONS-API.md).
+See [`lib/sleeladoc/README.md`](../../lib/sleeladoc/README.md), [`manifesto/SLEELADOC.md`](../../manifesto/SLEELADOC.md), and [`api/sleela/3.0/SESSION-ADDITIONS-API.md`](../../api/sleela/3.0/SESSION-ADDITIONS-API.md).
 
 ## 15. Build and try SLeeLa
 
