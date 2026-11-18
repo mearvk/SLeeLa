@@ -115,3 +115,16 @@ measured over the tree.
 Earlier note, kept for the record: the earlier whole-tree measurement (JDK 25 `java.base`, 345 of 884
 files) predates these lowerings and has not been repeated. Nothing is claimed beyond what the report of
 a run and the differential tests show.
+
+## Package identity and accessibility (incremental)
+
+The project index retains the declared package for each collected source type. The current resolver supports same-package lookup, explicit single-type imports, ordinary package on-demand imports, explicit imports of indexed nested types, and package-qualified source type names. Type accessibility is checked for public, package-private, protected, and private nested types where their declaring type is indexed.
+
+Member lookup records Java visibility for fields, methods, and constructors. Package-private and private access are restricted, protected inherited access is permitted from a subclass, and protected instance method access checks the qualifying receiver type. The converter remains fail-closed for unresolved duplicate simple names because the project symbol table still has a simple-name keyed declaration store; complete simultaneous resolution of same-named declarations in different packages requires the next symbol-table migration.
+
+The following Java source forms are explicitly refused with construct-specific diagnostics rather than being treated as ordinary declarations:
+
+- JPMS module declarations (`module-info.java`).
+- Annotation interface declarations.
+
+This is not a claim of complete JLS accessibility or Java language coverage. In particular, protected field receiver checks, all nested-type access combinations, static nested-type wildcard imports, module readability, and the remaining preview/newer Java constructs still require dedicated implementation and JDK differential fixtures.
