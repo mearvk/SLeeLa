@@ -25,7 +25,7 @@
       <c:if test="${not empty loaded}"><span class="muted">Loaded: <code><c:out value="${loaded}"/></code></span></c:if>
     </form>
 
-    <form action="${ctx}/runtime" method="post" id="runtime-form">
+    <form action="${ctx}/runtime#result" method="post" id="runtime-form">
       <input type="hidden" name="token" value="${fn:escapeXml(token)}">
       <label class="sr-only" for="source">SLeeLa source</label>
       <div class="sample-picker vm-picker">
@@ -49,46 +49,49 @@
       </div>
     </form>
 
-    <c:if test="${not empty result}">
-      <h2 id="result">Result</h2>
+    <section class="result-panel" id="result" aria-live="polite" aria-labelledby="result-title">
+      <div class="result-head">
+        <h2 id="result-title">Output</h2>
+        <c:if test="${not empty result}">
+          <span class="result-stats">
+            <c:if test="${result.exitCode >= 0}">exit code ${result.exitCode}</c:if><c:if test="${result.exitCode >= 0 and result.millis > 0}"> &middot; </c:if><c:if test="${result.millis > 0}">${result.millis} ms</c:if>
+          </span>
+        </c:if>
+      </div>
       <c:choose>
-        <c:when test="${result.status == 'OK'}">
-          <div class="notice ok" role="status" data-result="ok">
-            <strong><c:out value="${action == 'check' ? 'Checked' : 'Finished'}"/></strong>
-            <span>in ${result.millis} ms, exit code ${result.exitCode}.</span>
-          </div>
-        </c:when>
-        <c:when test="${result.status == 'ERROR'}">
-          <div class="notice bad" role="alert" data-result="error">
-            <strong>The program ended with an error</strong>
-            <span>exit code ${result.exitCode} after ${result.millis} ms.</span>
-          </div>
-        </c:when>
-        <c:when test="${result.status == 'TIMEOUT'}">
-          <div class="notice bad" role="alert" data-result="timeout"><strong>Time limit reached</strong><span>The program was stopped.</span></div>
-        </c:when>
-        <c:when test="${result.status == 'DENIED' || result.status == 'TOO_LARGE'}">
-          <div class="notice bad" role="alert" data-result="denied">
-            <strong>This program was not run</strong>
-            <span>The website only runs programs that stay inside the SLeeLa language.</span>
-          </div>
+        <c:when test="${empty result}">
+          <p class="muted result-empty">The output of your program appears here after you press Run or Check syntax.</p>
         </c:when>
         <c:otherwise>
-          <div class="notice warn" role="alert" data-result="${fn:escapeXml(result.status)}"><strong>Not run</strong></div>
+          <c:choose>
+            <c:when test="${result.status == 'OK'}">
+              <div class="notice ok" role="status" data-result="ok"><strong><c:out value="${action == 'check' ? 'Checked' : 'Finished'}"/></strong></div>
+            </c:when>
+            <c:when test="${result.status == 'ERROR'}">
+              <div class="notice bad" role="alert" data-result="error"><strong>The program ended with an error</strong></div>
+            </c:when>
+            <c:when test="${result.status == 'TIMEOUT'}">
+              <div class="notice bad" role="alert" data-result="timeout"><strong>Time limit reached</strong><span>The program was stopped.</span></div>
+            </c:when>
+            <c:when test="${result.status == 'DENIED' || result.status == 'TOO_LARGE'}">
+              <div class="notice bad" role="alert" data-result="denied">
+                <strong>This program was not run</strong>
+                <span>The website only runs programs that stay inside the SLeeLa language.</span>
+              </div>
+            </c:when>
+            <c:otherwise>
+              <div class="notice warn" role="alert" data-result="${fn:escapeXml(result.status)}"><strong>Not run</strong></div>
+            </c:otherwise>
+          </c:choose>
+          <c:if test="${not empty result.notes}">
+            <ul class="notes"><c:forEach var="n" items="${result.notes}"><li><c:out value="${n}"/></li></c:forEach></ul>
+          </c:if>
+          <pre class="out" tabindex="0" aria-label="Program output"><c:out value="[VM: ${result.vm}]"/>
+<c:if test="${not empty result.why}"><c:out value="[Why this VM: ${result.why}]"/>
+</c:if><c:choose><c:when test="${not empty result.output}"><c:out value="${result.output}"/></c:when><c:when test="${result.status == 'OK'}"><c:out value="(the program printed nothing)"/></c:when></c:choose></pre>
         </c:otherwise>
       </c:choose>
-      <p class="vm-used"><strong>VM:</strong> <c:out value="${result.vm}"/></p>
-      <c:if test="${not empty result.why}"><p class="vm-why"><strong>Why this VM:</strong> <c:out value="${result.why}"/></p></c:if>
-      <c:if test="${not empty result.notes}">
-        <ul class="notes"><c:forEach var="n" items="${result.notes}"><li><c:out value="${n}"/></li></c:forEach></ul>
-      </c:if>
-      <c:if test="${not empty result.output}">
-        <pre class="out" tabindex="0" aria-label="Program output"><c:out value="[VM: ${result.vm}]"/>
-<c:if test="${not empty result.why}"><c:out value="[Why this VM: ${result.why}]"/>
-</c:if><c:out value="${result.output}"/></pre>
-      </c:if>
-      <c:if test="${empty result.output and result.status == 'OK'}"><p class="muted">The program printed nothing.</p></c:if>
-    </c:if>
+    </section>
   </section>
 
   <aside class="side info">
