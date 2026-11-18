@@ -85,7 +85,7 @@ def tree_files(base, suffix=None):
                   and (suffix is None or p.name.endswith(suffix)))
 inputs = tree_files(src, ".java")
 model = pathlib.Path(os.environ.get("JCONV_MODEL", str(root / "impl/subjects/conversion/conversion.model")))
-converter = sorted((root / "lib/java/converter").glob("*.sleela")) + [root / "lib/java/converter/run-converter.sh"]
+converter = sorted(list((root / "lib/java/converter").glob("*.sleela")) + [root / "lib/java/converter/run-converter.sh", root / "lib/java/converter/verify-provenance.py"])
 outputs = [p for p in tree_files(out) if p.name != "CONVERSION-PROVENANCE.json"]
 release = src / "release"
 jdk_identity = os.environ.get("JCONV_JDK_ID", "")
