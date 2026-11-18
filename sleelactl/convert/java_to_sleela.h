@@ -61,6 +61,7 @@ struct ClassInfo {
     std::map<std::string, FieldInfo> fields;
     std::vector<MethodSig> methods;
     std::vector<std::string> typeParams; // declared class type variables, in source order
+    std::map<std::string, std::vector<std::string>> typeParamBounds; // supported declared class upper bounds
     std::string innerOf;               // for an inner (non-static) class: the hoisted name of its enclosing class
     bool isInterface = false;          // an interface (its bodiless methods are the functional-interface candidates)
     bool isEnum = false;               // an enum type (constants are static fields of the class)
