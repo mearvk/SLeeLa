@@ -1300,7 +1300,11 @@ private:
                         applicable=false; break;
                     }
                     auto other=inferred.find(bound.second);
-                    const std::string boundName=other==inferred.end()?bound.second:other->second.n;
+                    std::string boundName=other==inferred.end()?bound.second:other->second.n;
+                    if (other==inferred.end()) {
+                        const size_t dot=boundName.rfind('.');
+                        if (dot!=std::string::npos) boundName=boundName.substr(dot+1);
+                    }
                     const bool arrayBound=value->second.dims>0 &&
                         (boundName=="Object" || boundName=="Cloneable" || boundName=="Serializable");
                     if (!arrayBound && (value->second.dims!=0 || !isSubtypeName(value->second.n,boundName))) {
@@ -3442,6 +3446,11 @@ private:
                 // only the first component as the complete bound.
                 if (upperBounds && !currentName.empty()) (*upperBounds)[currentName] = "&";
                 inBound=true; boundNameSeen=true;
+            }
+            else if (isOp(".") && d == 1 && inBound && boundNameSeen &&
+                     upperBounds && !currentName.empty() && isIdentTok(at(p+1))) {
+                (*upperBounds)[currentName] += "." + at(p+1).text;
+                p++; // the loop increment consumes the qualified segment
             }
             else if (isIdentTok(cur()) && d == 1) {
                 if (expectName) {
