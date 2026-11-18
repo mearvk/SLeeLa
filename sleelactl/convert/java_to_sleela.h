@@ -60,7 +60,9 @@ struct ClassInfo {
     bool isInterface = false;          // an interface (its bodiless methods are the functional-interface candidates)
     bool isEnum = false;               // an enum type (constants are static fields of the class)
     std::string super;                 // simple name of the superclass, "" if none
+    Ty superType;                       // parameterized superclass type, when declared
     std::vector<std::string> ifaces;   // simple names of implemented / extended interfaces
+    std::vector<Ty> ifaceTypes;         // parameterized interface types, in declaration order
 };
 
 // Member signatures of every type seen so far. Collecting the whole JDK tree
