@@ -1517,7 +1517,7 @@ private:
                     r.code = paren(e.code) + "." + name;
                     r.pure = e.pure;
                     r.ty = mk("?");
-                    if (e.ty.dims == 0) if (const FieldInfo* fi = findField(e.ty.n, name)) r.ty = fi->ty;
+                    if (e.ty.dims == 0) if (const FieldInfo* fi = findField(e.ty.n, name)) r.ty = instantiateClassType(fi->ty,e.ty);
                 }
                 e = r;
                 continue;
