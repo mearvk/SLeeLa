@@ -14,7 +14,8 @@ import java.util.List;
  *   standard-N    idea-vm-001..010 under virtual-machine/vm-version/NNN. They are smoke/demo programs, not engines: the
  *                 CLI cannot boot a program on them. When the server has built
  *                 virtual-machine/vm-version/build/NNN/idea-vm-NNN (make standard-vms) the visitor can select one and
- *                 the page runs that VM's own self-check and shows its output; the visitor's source is not executed.
+ *                 the page runs the visitor program on the native core they are built on, then that VM's own
+ *                 self-check, and shows both outputs.
  *   premium-N     slvm-1..11 under sleela-virtual-machine/NNN. Real VMs, run with `sleela vm run premium N`. They are
  *                 runnable only when the server has built sleela-virtual-machine/NNN/vm-build/slvm-NN (make premium-vms);
  *                 the sandbox is read-only, so the CLI cannot build one on demand during a visitor run.

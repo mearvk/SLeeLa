@@ -88,7 +88,7 @@
           </c:if>
           <pre class="out" tabindex="0" aria-label="Program output"><c:out value="[VM: ${result.vm}]"/>
 <c:if test="${not empty result.why}"><c:out value="[Why this VM: ${result.why}]"/>
-</c:if><c:choose><c:when test="${not empty result.output}"><c:out value="${result.output}"/></c:when><c:when test="${result.status == 'OK'}"><c:out value="(the program printed nothing)"/></c:when></c:choose></pre>
+</c:if><c:choose><c:when test="${not empty result.output}"><c:out value="${result.output}"/></c:when><c:when test="${result.status == 'OK'}"><c:out value="(your program printed nothing)"/></c:when></c:choose></pre>
         </c:otherwise>
       </c:choose>
     </section>
@@ -105,7 +105,7 @@
     <h2>Virtual machines</h2>
     <ul>
       <li><strong>Native</strong>: the default engine in <code>impl/core</code>, used by <code>sleela run</code>.</li>
-      <li><strong>Standard</strong> 1 to 10: the <code>idea-vm</code> progression. Smoke programs, not engines: once built on the server they can be selected, and the page runs the VM's own self-check and shows why it differs from the previous version. Your program is not executed on them.</li>
+      <li><strong>Standard</strong> 1 to 10: the <code>idea-vm</code> progression. Self-check programs layered on the native core. Once built on the server they can be selected: your program runs on that native core, then the VM's own self-check runs, and both outputs are shown.</li>
       <li><strong>Premium</strong> 1 to 11: the <code>slvm</code> generations, Foundation to Sovereign, run with <code>sleela vm run premium N</code>. Available when built on the server.</li>
       <li>Check syntax does not use a VM.</li>
     </ul>

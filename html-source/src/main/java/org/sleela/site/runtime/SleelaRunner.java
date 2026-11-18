@@ -168,7 +168,27 @@ public final class SleelaRunner {
 
     // ------------------------------------------------------------------ execution
 
+    /**
+     * Runs one action. A standard VM (idea-vm-NNN) is a self-check program layered on the same native core, not an engine
+     * that takes a program, so for a standard run the visitor program runs on the native engine first (its print output is
+     * shown), and then the standard VM's own self-check runs and its output is appended under a labelled divider.
+     */
     Result execute(String sub, VmChoice vm, String source) {
+        if (!"run".equals(sub) || vm.tier != VmChoice.Tier.STANDARD) return executeOnce(sub, vm, source);
+        VmChoice nativeVm = VmChoice.catalog(cfg.home).get(0);
+        Result prog = executeOnce("run", nativeVm, source);
+        Result self = executeOnce("run", vm, "");
+        List<String> notes = new ArrayList<>();
+        notes.add("Your program ran on the native core that " + vm.getVmName() + " is built on (" + vm.getVmName()
+                + " does not load programs itself). Its output is first; the " + vm.getVmName() + " self-check follows.");
+        notes.addAll(prog.notes);
+        if (self.status != Status.OK) notes.add(vm.getVmName() + " self-check did not pass (" + self.status + ", exit code " + self.exitCode + ").");
+        String out = (prog.output.isEmpty() ? "(your program printed nothing)" : prog.output)
+                + "\n\n---- " + vm.getVmName() + " self-check ----\n" + self.output;
+        return new Result(prog.status, prog.exitCode, out, prog.millis + self.millis, prog.truncated || self.truncated, notes);
+    }
+
+    private Result executeOnce(String sub, VmChoice vm, String source) {
         boolean premium = "run".equals(sub) && vm.tier == VmChoice.Tier.PREMIUM;
         boolean standard = "run".equals(sub) && vm.tier == VmChoice.Tier.STANDARD;
         long t0 = System.nanoTime();
@@ -209,7 +229,6 @@ public final class SleelaRunner {
                 // A standard VM is a built smoke/demo program, not an engine: run its own self-check. The visitor source is
                 // written to /work like any run but is not executed by it.
                 cmd.add(cfg.home.resolve(vm.binaryPath).toRealPath().toString());
-                notes.add(vm.getVmName() + " is a self-check program, not an engine. It ran its own checks below; your program was not executed on it.");
             } else {
                 cmd.add(cfg.binary.toRealPath().toString());
                 if (premium) {
