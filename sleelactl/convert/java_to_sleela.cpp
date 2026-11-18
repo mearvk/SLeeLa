@@ -948,7 +948,7 @@ private:
                 if (c >= 0) return c+1;
             }
         }
-        if (to.n == "Object") return 8;
+        if (to.n == "Object" && !isPrimitiveName(from.n)) return 8;
         return -1;
     }
 
