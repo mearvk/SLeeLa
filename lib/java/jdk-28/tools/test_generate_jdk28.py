@@ -55,7 +55,7 @@ class JDK28SignatureIndexTests(unittest.TestCase):
         )
         rendered = "\n".join(lines)
         self.assertEqual(constructors, 1)
-        self.assertEqual(methods, 0)
+        self.assertEqual(methods, 1)
         self.assertIn("Widget(String arg0)", rendered)
         self.assertNotIn("Widget(int arg0)", rendered)
 
@@ -73,12 +73,12 @@ class JDK28SignatureIndexTests(unittest.TestCase):
 
     def test_inherited_interface_implementation_prevents_redundant_stub(self):
         t = {"name": "example.Child", "kind": "class", "fields": [], "components": []}
-        sig = {"tparams": "", "members": [method("ready", ("int",), "boolean")]}
+        sig = {"tparams": "", "members": [method("ready", ("int",), "boolean"), method("hidden", ("int",), "void")]}
         api = {
             "example.Child": {"name": "example.Child", "kind": "class", "super": None, "interfaces": ["example.Ready"]},
             "example.Ready": {"name": "example.Ready", "kind": "interface", "super": None, "interfaces": []},
         }
-        impl_texts = {"example.Ready": "  public default boolean ready(int value) { return true; }"}
+        impl_texts = {"example.Ready": "  public default boolean ready(int value) { return true; }\n  private void hidden(int value) { }"}
         lines, constructors, methods, collisions = gen.member_blocks(
             t, sig, "Child", "", api, impl_texts
         )
