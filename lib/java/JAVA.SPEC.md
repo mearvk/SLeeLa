@@ -274,7 +274,7 @@ This table is the status of `sleelactl java-convert`. The second converter, `lib
 
 | Construct | Why | Plan |
 |---|---|---|
-| Operands of unknown type | no generics inference: generic parameters are untyped, so arithmetic on them is refused (this is what blocks most JDK lambdas and collections code) | collect generic signatures and substitute type arguments |
+| Operands of unknown type after supported generic inference | target-type inference, interface-intersection least-upper-bound constraints, wildcard capture, generic constructors, and unresolved class-generic contexts remain unsupported | implement the remaining JLS 15.12 constraint solver; keep unresolved calls fail-closed |
 | A lambda or method reference whose target is a JDK interface not in the collected tree and not in the seeded list | the abstract method is unknown | collect the JDK interfaces (convert the JDK tree) |
 | Lambda or anonymous class inside another generated class | nested capture chains | capture through the enclosing generated class |
 | `outer.new Inner()`, local classes | rare forms | hoist local classes like nested ones |
