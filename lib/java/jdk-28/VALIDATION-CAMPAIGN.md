@@ -37,8 +37,9 @@ tests/per-member-stub-policy.sh verifies that behavior and that the conversion
 report records the stub. This policy is distinct from the sleelactl
 java-convert converter's fail-closed per-file contract.
 
-CI uploads detailed logs and the summary as the jdk28-validation-reports
-artifact. A successful campaign means its executable gates passed; it does
+CI uploads detailed logs, the summary, and the generated-output diff preview as
+the jdk28-validation-reports artifact. Generated files are not auto-committed;
+the patch is reviewed separately before any repository update. A successful campaign means its executable gates passed; it does
 not mean every JDK 28 API member has working behavior.
 
 Important baseline limitation: the current JDK 28 generator reads member and
