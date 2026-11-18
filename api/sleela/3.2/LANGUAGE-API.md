@@ -25,12 +25,12 @@ Library: `lib/char/SLChar.sleela` (classification, case, digits, surrogates, `to
 
 | Form | Meaning |
 |---|---|
-| `int[] a = {3, 1, 2};` `static int[] p = {2, 3};` | array initializer (local or field); `{}` and a trailing comma are allowed |
+| `int[] a = {3, 1, 2};` `static int[] p = {2, 3};` | single-rank array initializer (local or field), available in 3.1; `{}` and a trailing comma are allowed |
 | `new int[]{4, 5, 6}` | an array expression |
-| `new int[3][4]`, `new int[2][3][4]` | rectangular creation, any rank up to 8 sized dimensions |
-| `new int[3][]` | a jagged array: three rows, each `null` until assigned |
-| `new int[][]{{1, 2}, {3}}` | nested initializer |
-| `a.length` | the number of elements; read-only (`a.length = 5` and `a.length++` are errors); `arrayLength(a)` is the same |
+| `new int[3][4]`, `new int[2][3][4]` | rectangular creation, Syntax 3.2; any rank up to 8 sized dimensions |
+| `new int[3][]` | Syntax 3.2 jagged array: three rows, each `null` until assigned |
+| `new int[][]{{1, 2}, {3}}` | Syntax 3.2 nested initializer |
+| `a.length` | Syntax 3.2 array length; read-only (`a.length = 5` and `a.length++` are errors); `arrayLength(a)` remains available below 3.2 |
 | `a[i]` | the index is checked on every access; out of range is a runtime error (catchable inside a `try`, `SLEELA.syntax` 37.5) |
 
 `new T[n]` fills with `0`, `0.0`, `false` or `null` by element type. An array is a reference: assignment and argument
@@ -50,5 +50,4 @@ An undefined label is `break to undefined label 'x'`.
 
 ## Version
 
-`#sleela 3.2` and `#sleela 3.2` name the same edition. The supported range is 1.0 to 3.2; `#sleela 3.2` is a future
-edition and is rejected.
+`#sleela 3.01` is the numeric spelling of Syntax 3.1; `#sleela 3.2` is the current edition. The supported range is 1.0 to 3.2, and unversioned source defaults to 3.2.
