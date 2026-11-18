@@ -4,7 +4,7 @@
    16-bit UTF-16 code unit held in an integer slot. The methods classify and map ASCII and
    Latin-1 chars, convert between chars, codes and digits, and recognize surrogates. Chars
    beyond Latin-1 need the Unicode tables and are the business of the Java text tier. >>
-#sleela 3.1
+#sleela 3.2
 material;
 class SLChar {
   < ---- Descriptive metadata (version 1.11 nested-friendly accessors) ---- >
