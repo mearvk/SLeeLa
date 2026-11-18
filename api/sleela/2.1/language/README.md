@@ -16,11 +16,12 @@ establish the implemented boundary.
 - [Verified system references](system-namespace/REFERENCES.md) — reference
   inventory and its fixture evidence.
 
-## Current syntax edition: 3.0
+## Current syntax edition: 3.2
 
-The compiler accepts source syntax from **1.0 through 3.1** and defaults unversioned source to
-3.1 with a warning. The normative specification consolidates the established
-1.x/2.x language surface; historical feature-specific minimum gates remain.
+The compiler accepts source syntax from **1.0 through 3.2** and defaults unversioned source to
+3.2 with a warning. Syntax 3.2 is the current normative edition; it adds typed `char`
+semantics and complete array-shape rules in sections 45 and 46, following the
+Syntax 3.1 additions in section 44. Historical feature-specific minimum gates remain.
 A file's `#sleela X.Y` pragma selects its source-syntax edition; the compiler
 release number is a separate version and does not silently change that pragma.
 
@@ -28,8 +29,9 @@ Syntax 2.9 introduced `@mix` consequent fields (see §28 of
 [`SLEELA.syntax`](../../../../SLEELA.syntax)). Repeated same-named instance fields
 must carry `@mix`; their declaration order supplies indexes unless explicit
 indexes are provided. The `prestige` marker described in §27 remains a future
-proposal and is **not** an implemented feature. Syntax 3.0 does not add a new
-reserved word or grammar production solely through the edition bump.
+proposal and is **not** an implemented feature. Syntax 3.0 was a consolidation
+release; the current edition's additional grammar and semantic rules are
+specified explicitly in sections 44–46 of `SLEELA.syntax`.
 
 ## Earlier versioned feature: syntax 1.9 GC hints
 
