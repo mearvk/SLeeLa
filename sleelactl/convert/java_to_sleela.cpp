@@ -1607,6 +1607,11 @@ private:
         if (!m) return args;
         const MethodSig& selected = resolvedMethod(m);
         const size_t n = selected.params.size();
+        for (size_t i = 0; i < args.size(); ++i) {
+            const size_t pi = i < n ? i : (selected.varargs && n > 0 ? n - 1 : n);
+            if (pi < n && args[i].isNull && selected.params[pi].boxed)
+                fail("boxed-null", "null cannot be passed to a wrapper parameter represented by primitive SLeeLa storage");
+        }
         const bool directVarargs = selected.varargs && n > 0 && args.size() == n &&
             (args.back().isNull || (args.back().ty == selected.params.back()));
         for (size_t i = 0; i < args.size(); i++) {
@@ -4279,6 +4284,7 @@ private:
                 if (isOp("...")) {   // variable arity: the parameter is an array, call sites pack the extra arguments
                     p++;
                     t.dims++;
+                    if (t.boxed) fail("boxed", "varargs of boxed wrappers require a nullable reference-array representation");
                     lastVarargs_ = true;
                 }
                 std::string n = ident();
