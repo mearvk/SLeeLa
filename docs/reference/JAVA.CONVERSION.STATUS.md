@@ -22,7 +22,9 @@ Both the C++ converter and SLeeLa-native converter read the relevant rows.
 The C++ self-check has been extended to require these records.
 
 **Verification status:** these model/converter changes have not yet been built or
-run through the C++ or native differential suites. The 32/32 and 420/884 results
+run through the C++ or native differential suites. The trusted build and important-file
+SHA-256 manifests also need regeneration from a full checkout before the verified
+build gate is used. The 32/32 and 420/884 results
 below remain historical results from 2026-11-13; they do not validate model 1.5.0.
 
 ## 1. Summary
