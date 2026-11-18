@@ -280,7 +280,7 @@ incr float JavaFloat.f32($a + 1.0) ;; JavaFloat.f32($a - 1.0)
 #          renders a double as 3 where Java prints 3.0, so the Java layout is
 #          taken from the lib/java tier (Double.toString, shortest round-trip).
 tostr double Double.toString($a)
-tostr float JavaFloat.text($a)
+tostr float JavaFloat.text(JavaFloat.f32((double) $a))
 tostr char JavaText.plainIfRepresentable(JavaText.codePointU($a))
 #          A reference whose class (or a library ancestor) supplies toString() is
 #          shown through it; null is "null". SLeeLa would show the VM handle
