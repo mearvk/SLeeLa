@@ -45,7 +45,8 @@ Java throws `NegativeArraySizeException`; the VM ended the program. The converte
 ### 2.6 Methods named like a built-in
 A Java method called `read`, `write`, `accept`, `lock`, `send`, `listen`, `join`, ... was taken for the SLeeLa built-in
 by an unqualified call ("read(handle) takes one argument"). The converter now qualifies such a call with its owner class
-(static) or `this.` (instance). The list is `sleelactl/convert/builtin_names.h`, taken from the compiler's call table.
+(static) or `this.` (instance). The authoritative list is the `qualify` section of
+`impl/subjects/conversion/conversion.model`, maintained against the compiler's call table.
 Not covered: a Java method named like a Munction verb (`connect`, `send`, `enable`, ...) called ON a receiver, which the
 compiler also treats as the verb on every receiver.
 
