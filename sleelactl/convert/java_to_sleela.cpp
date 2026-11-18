@@ -1262,14 +1262,30 @@ private:
         return true;
     }
 
+    bool memberAccessible(const std::string& owner, const std::string& visibility) const {
+        if (visibility == "public") return true;
+        auto it = classes.find(owner);
+        if (it == classes.end()) return true;
+        if (it->second.packageName == packageName_) return true;
+        auto host = [](const std::string& n) {
+            const size_t p = n.find("__");
+            return p == std::string::npos ? n : n.substr(0, p);
+        };
+        if (visibility == "private") return host(owner) == host(curClass);
+        if (visibility == "protected") return isSubtypeName(curClass, owner);
+        return false;
+    }
+
     const MethodSig* pickMethod(const std::string& cls, const std::string& name, const std::vector<E>& args, int depth = 0, int invocationKind = -1, const Ty* receiverType = nullptr, const Ty* expectedResultType = nullptr) const {
         if (depth > 32) return nullptr;
         std::vector<const MethodSig*> all;
         collectNamedMethods(cls,name,all);
         std::vector<const MethodSig*> candidates;
+        bool sawInaccessible = false;
         // Collapse overrides with the same erased signature, retaining the declaration
         // from the most-derived owner. Distinct overloads remain separate candidates.
         for (const MethodSig* m:all) {
+            if (!memberAccessible(m->owner, m->visibility)) { sawInaccessible = true; continue; }
             if (invocationKind >= 0 && m->isStatic != (invocationKind == 1)) continue;
             bool merged=false;
             for (size_t i=0;i<candidates.size();++i) {
@@ -1503,6 +1519,8 @@ private:
         }
         if(ambiguous) throw ConvErr{cur().line,cur().col,"overload-ambiguous",
             "multiple applicable overloads of '"+cls+"."+name+"' remain incomparable under supported Java invocation conversions"};
+        if (!best && sawInaccessible)
+            throw ConvErr{cur().line,cur().col,"member-access","no accessible overload of '"+cls+"."+name+"' is visible from package '"+packageName_+"'"};
         if (!best && sawUnsupportedGeneric)
             throw ConvErr{cur().line,cur().col,"generic-inference",
                 "generic overload '"+cls+"."+name+"' requires a bound or generic substitution that cannot be proven, target typing, or a common-type inference rule not yet supported"};
@@ -1575,7 +1593,11 @@ private:
         auto it = classes.find(cls);
         if (it == classes.end() || depth > 32) return nullptr;
         auto f = it->second.fields.find(name);
-        if (f != it->second.fields.end()) return &f->second;
+        if (f != it->second.fields.end()) {
+            if (!memberAccessible(cls, f->second.visibility))
+                throw ConvErr{cur().line,cur().col,"member-access","field '"+cls+"."+name+"' is not accessible from package '"+packageName_+"'"};
+            return &f->second;
+        }
         if (!it->second.super.empty()) if (const FieldInfo* s = findField(it->second.super, name, depth + 1)) return s;
         for (const auto& i : it->second.ifaces) if (const FieldInfo* s = findField(i, name, depth + 1)) return s;
         return nullptr;
@@ -3097,7 +3119,7 @@ private:
     // compact constructor runs its body first), one accessor per component, and the generated
     // toString() "Name[a=1, b=2]" and, when every component is a primitive or a String,
     // equals(Object) and, for int-like, long, boolean and String components, hashCode().
-    void parseRecord(const std::string& nestPrefix, const std::string& outerName, bool nestedStatic) {
+    void parseRecord(const std::string& nestPrefix, const std::string& outerName, bool nestedStatic, const Mods& typeMods) {
         InitScope noHoist(this, nullptr);
         expectKw("record");
         const bool nested = !nestPrefix.empty();
@@ -3134,7 +3156,7 @@ private:
         if (pass == 1) {
             if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
-            ci.packageName = packageName_;
+            ci.packageName = packageName_; ci.typeVisibility = visibilityOf(typeMods);
             ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = ""; ci.superType = Ty(); ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = false;
             for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ci.methods.push_back(ms); }
             MethodSig canon; canon.name = "<init>"; canon.ret = mk("void"); canon.varargs = compVarargs; for (auto& c : comps) canon.params.push_back(c.second); ci.methods.push_back(canon);
@@ -3281,7 +3303,7 @@ private:
     // instance per constant (a constant with a body is an instance of a generated subclass), a
     // static values array, and values()/valueOf()/name()/ordinal()/toString()/compareTo().
     // A bare constant name in a case label is resolved by parseCaseLabel.
-    void parseEnum(const std::string& nestPrefix = "") {
+    void parseEnum(const std::string& nestPrefix = "", const Mods& typeMods = Mods()) {
         InitScope noHoist(this, nullptr);
         expectKw("enum");
         typeVars.clear();
@@ -3309,6 +3331,7 @@ private:
         if (pass == 1) {
             if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
+            ci.packageName = packageName_; ci.typeVisibility = visibilityOf(typeMods);
             ci.fields.clear(); ci.methods.clear(); ci.isEnum = true; ci.super = ""; ci.ifaces = ifaceNames;
         }
         size_t beforeDiags = diags.size();
@@ -3578,6 +3601,13 @@ private:
 
     // ---------------------------------------------------------- members ----
     struct Mods { std::set<std::string> set; bool has(const char* s) const { return set.count(s) > 0; } };
+    std::string visibilityOf(const Mods& mods) const {
+        if (mods.has("public")) return "public";
+        if (mods.has("protected")) return "protected";
+        if (mods.has("private")) return "private";
+        return "package";
+    }
+
 
     Mods parseModifiers() {
         Mods m;
@@ -3803,8 +3833,8 @@ private:
         bool isIface = false;
         if (isKw("class")) p++;
         else if (isKw("interface")) { p++; isIface = true; }
-        else if (isKw("enum")) { parseEnum(nestPrefix); return; }
-        else if (isKw("record") && isIdentTok(at(p + 1))) { parseRecord(nestPrefix, outerName, nestedStatic); return; }
+        else if (isKw("enum")) { parseEnum(nestPrefix, mods); return; }
+        else if (isKw("record") && isIdentTok(at(p + 1))) { parseRecord(nestPrefix, outerName, nestedStatic, mods); return; }
         else if (isKw("record")) unsup("nested");
         else if (isOp("@")) unsup("annotation-type");
         else fail("syntax", "expected a class or interface declaration but found '" + descr() + "'");
@@ -3868,7 +3898,7 @@ private:
         if (pass == 1) {
             if (!ci.sourceName.empty() && ci.sourceName != opt.sourceName) ci.ambiguous = true;
             else if (ci.sourceName.empty()) ci.sourceName = opt.sourceName;
-            ci.packageName = packageName_;
+            ci.packageName = packageName_; ci.typeVisibility = visibilityOf(mods);
             ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = superName; ci.superType = superType; ci.ifaces = ifaceNames; ci.ifaceTypes = ifaceTypes; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : "";
         }
         std::vector<std::string> memberLines;
@@ -4018,7 +4048,7 @@ private:
             if (isKw("throws")) skipThrows();
             curRet = mk("void");
             if (pass == 1) {
-                MethodSig ms; ms.name = "<init>"; ms.ret = mk("void"); ms.varargs = ctorVarargs; ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded; ms.typeParamBounds = mtpBounds;
+                MethodSig ms; ms.name = "<init>"; ms.ret = mk("void"); ms.varargs = ctorVarargs; ms.owner = cls; ms.visibility = visibilityOf(mods); ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded; ms.typeParamBounds = mtpBounds;
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }
@@ -4065,7 +4095,7 @@ private:
             if (isKw("throws")) skipThrows();
             curRet = ty;
             if (pass == 1) {
-                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls; ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded; ms.typeParamBounds = mtpBounds;
+                MethodSig ms; ms.name = name; ms.ret = ty; ms.isStatic = isStatic; ms.varargs = methodVarargs; ms.isAbstract = isOp(";"); ms.owner = cls; ms.visibility = visibilityOf(mods); ms.typeParams = mtp; ms.hasTypeParamBounds = mtpBounded; ms.typeParamBounds = mtpBounds;
                 for (auto& pr : params) ms.params.push_back(pr.second);
                 ci.methods.push_back(ms);
             }
@@ -4117,7 +4147,7 @@ private:
             while (isOp("[") && isOpAt(p + 1, "]")) { p += 2; ft.dims++; }
             if (cm_find(&M, "rename", name.c_str(), "all", nullptr))
                 fail("reserved-member", "a field named '" + name + "' collides with a SLeeLa reserved word");
-            FieldInfo fi; fi.ty = ft; fi.isStatic = isStatic || isIface;
+            FieldInfo fi; fi.ty = ft; fi.isStatic = isStatic || isIface; fi.visibility = isIface ? "public" : visibilityOf(mods);
             if (pass == 1) ci.fields[name] = fi;
             std::string decl = std::string((isStatic || isIface) ? "static " : "") + emitType(ft) + " " + name;
             // JLS 4.12.5: a field starts at the default value of its type. SLeeLa leaves it null, which
