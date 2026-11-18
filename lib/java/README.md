@@ -439,3 +439,14 @@ Implementations should be developed dependency-first, with explicit provenance f
 `implementations/java/lang/JavaObjectIdentity.sleela` defines identity equality and identity-derived hashing for a live object when the runtime supplies a stable heap identity and object handle. Monitor/wait-notify, cloning, and default textual conversion remain explicitly unsupported.
 
 `implementations/java/lang/JavaStringValue.sleela` is the VM-backed UTF-16 facade documented above. Its operations use explicit UTF-16 intrinsics; it is not the older scalar-backed subset and does not imply automatic instance-method dispatch for the general SLeeLa `String` type.
+
+
+## JDK 28 validation and partial implementation status
+
+The full inventory, compiler, conformance, differential, signature-index, and
+converter regression campaign is documented in
+[JDK 28 validation campaign](jdk-28/VALIDATION-CAMPAIGN.md). Its functional-
+equivalence diagnostic is reported separately: exact API signatures and
+fail-loud stubs are not working Java behavior. The native source converter
+retains the documented per-member stub policy; see
+[converter/README.md](converter/README.md).
