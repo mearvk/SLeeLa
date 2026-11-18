@@ -38,17 +38,18 @@ build/release step.
 
 ## Additional tracked binary artifacts
 
-The repository tree inventory also finds these non-toolchain binary payloads:
+The repository tree inventory also finds these non-toolchain binary payloads. The authoritative per-path identity map is [binary-identities.json](binary-identities.json):
 
 | Artifact | Identity | Classification / action |
 |---|---:|---|
-| `ide/sleela-intellij/.../sleela-intellij-0.3.0-dev.jar` | 1.012 | IntelliJ plugin; Gradle source version advanced to 1.012, but the checked-in JAR is still the old 0.3.0-dev payload and must be rebuilt/replaced |
+| `ide/sleela-intellij/.../sleela-intellij-0.3.0-dev.jar` | 1.012 | IntelliJ plugin; build metadata is 1.012, but the checked-in JAR remains the old 0.3.0-dev payload and must be rebuilt/replaced |
+| `tests/nordshrift` | 1.0121 | Previously unversioned executable test artifact; assigned a stable identity pending owner/build provenance |
 | `modules/AE6E66/source/EmailDistributor.class` | 1.0121 | Previously unversioned Java class artifact |
 | `telephony-skya/javafx/target/classes/com/mearvk/sleela/skya/*.class` (9 class files) | 1.0121 | Previously unversioned Java build artifacts |
 | `api/sleela/2.8/generic.dna.bin` | 1.0121 | Binary data artifact; identity assigned without changing its data format |
 | `utf-4088/tools/utf4088-million.bin` | 1.0121 | Generated binary data artifact; identity assigned without changing its data format |
 
-The 1.0121 assignments are registry identities. They do not alter byte payloads.
+The 1.0121 assignments are registry identities. They do not alter byte payloads. The inventory covers 16 binary payloads: 2 toolchain executables, 1 plugin JAR, 1 native test executable, 9 Java class files, and 2 binary data files.
 The class and data artifacts should be regenerated from their owning sources when
 those projects next build. The old IntelliJ JAR is explicitly not represented as
 rebuilt: its source build identity is 1.012, while the committed JAR still needs
@@ -57,6 +58,8 @@ must be rebuilt to carry the current Syntax 3.2 source gate.
 
 ## New identities
 
+The concrete identities for every inventoried payload are recorded in `binary-identities.json`; this section names the primary toolchain identities:
+
 - `SLEELA-BIN-1.012` — SLeeLa compiler/runtime executable artifact identity.
 - `NORDSHRIFT-BIN-1.012` — Nordshrift executable artifact identity.
 - `SLEELA-UNVERSIONED-BIN-1.0121` — reserved initial identity for any
@@ -64,7 +67,4 @@ must be rebuilt to carry the current Syntax 3.2 source gate.
 - `NORDSHRIFT-UNVERSIONED-BIN-1.0121` — reserved initial identity for any
   previously unversioned Nordshrift binary discovered during inventory.
 
-The reserved 1.0121 identities are not assigned to the two known prebuilt
-executables because those already have product versions. Any additional
-unversioned binary must receive a concrete name, path, platform, architecture,
-SHA-256, and 1.0121 identity before publication.
+The 1.0121 identities are assigned to the inventoried unversioned artifacts. Any newly discovered unversioned binary must receive a concrete name, path, platform, architecture, SHA-256, and 1.0121 identity before publication. SHA-256 values must be computed from the actual payload at build time; Git blob SHA-1 values are not substitutes.
