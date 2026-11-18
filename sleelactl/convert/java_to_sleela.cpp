@@ -1301,14 +1301,13 @@ private:
                     }
                     auto other=inferred.find(bound.second);
                     const std::string boundName=other==inferred.end()?bound.second:other->second.n;
-                    if (value->second.dims!=0 || !isSubtypeName(value->second.n,boundName)) {
+                    const bool arrayBound=value->second.dims>0 &&
+                        (boundName=="Object" || boundName=="Cloneable" || boundName=="Serializable");
+                    if (!arrayBound && (value->second.dims!=0 || !isSubtypeName(value->second.n,boundName))) {
                         applicable=false; break;
                     }
                 }
                 if (!applicable) { sawUnsupportedGeneric=true; continue; }
-                if (m.hasTypeParamBounds && m.typeParamBounds.size()!=m.typeParams.size()) {
-                    sawUnsupportedGeneric=true; continue;
-                }
                 MethodSig resolved=m;
                 std::function<Ty(const Ty&)> instantiate = [&](const Ty& source) {
                     Ty t=source;
@@ -3449,7 +3448,6 @@ private:
                     currentName=cur().text;
                     if (names) names->push_back(currentName);
                     typeVars.insert(currentName);
-                    if (upperBounds) (*upperBounds)[currentName]="Object";
                     expectName=false;
                 } else if (inBound && !boundNameSeen && upperBounds && !currentName.empty()) {
                     (*upperBounds)[currentName]=cur().text;
