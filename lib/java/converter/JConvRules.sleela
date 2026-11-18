@@ -1,10 +1,11 @@
 << lib/java/converter/JConvRules.sleela
    Java container content (SLEELA.syntax 38.4): not part of the SLeeLa specification.
-   Definition: the single table of functional and declarative decisions the
-   converter makes when it turns Java source into SLeeLa source. Every rename,
-   type mapping, modifier rule, built-in collision and unsupported construct is
-   decided here, so a revision of the conversion is a revision of this class.
-   The reasons for each rule are in lib/java/converter/README.md (section 3). >>
+   Definition: the native converter's source-rewrite policy. Shared semantic
+   laws (primitive types, promotion, casts, operators, identifier replacements,
+   and built-in qualification) are read from conversion.model through
+   JConvModel; this class applies the native converter's per-member and syntax
+   policy, modifier rules and unsupported-construct decisions. The reasons for
+   each rule are in lib/java/converter/README.md (section 3). >>
 #sleela 3.0
 material;
 
