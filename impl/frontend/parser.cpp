@@ -591,6 +591,7 @@ Program Parser::parseProgram(){
     p.nestedClassCount=(int)hoistedNested_.size();
     for(auto& h:hoistedNested_) p.classes.push_back(std::move(h));
     for(const auto& u:uses31_) p.syntax31Uses.push_back(u);
+    for(const auto& u:uses32_) p.syntax32Uses.push_back(u);
     return p;
 }
 StructDecl Parser::parseStruct(){expect(Tok::KwStruct,"'struct'");StructDecl s;s.name=expect(Tok::Ident,"struct name").text;expect(Tok::LBrace,"'{'");while(!check(Tok::RBrace)&&!check(Tok::Eof)){Field f;f.type=parseType();f.name=expect(Tok::Ident,"field name").text;expect(Tok::Semicolon,"';'");s.fields.push_back(std::move(f));}expect(Tok::RBrace,"'}'");return s;}
@@ -1020,7 +1021,7 @@ ExprP Parser::parsePrimary(){
                 // Syntax 3.1: new T[]{a, b, c}; syntax 3.1 also new T[][]{{..},{..}} (any rank)
                 i_++;
                 std::string arrType=n->typeName+"[]";
-                while(check(Tok::LBracket)&&peek(1).kind==Tok::RBracket){ i_+=2; arrType+="[]"; uses31_.insert("multi-dimensional array creation"); }
+                while(check(Tok::LBracket)&&peek(1).kind==Tok::RBracket){ i_+=2; arrType+="[]"; uses32_.insert("multi-dimensional array creation"); }
                 if(!check(Tok::LBrace))error("expected '{' after 'new "+n->typeName+"[]' (an array creation needs a size or an initializer)");
                 return parsePostfix(parseArrayLiteral(arrType));
             }
