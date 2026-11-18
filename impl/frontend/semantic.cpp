@@ -539,8 +539,8 @@ class Analyzer{
    }
   }
   Type b=expr(e);if(b.kind==Kind::Unknown)return b;
-  if(f=="length"&&b.kind==Kind::Array){   // syntax 3.1: a.length
-   if(syntax<SyntaxVersion{3,1})err("the array length member requires #sleela 3.1 (use arrayLength(a) below 3.1)");
+  if(f=="length"&&b.kind==Kind::Array){   // syntax 3.2: a.length
+   if(syntax<SyntaxVersion{3,2})err("the array length member requires #sleela 3.2 (use arrayLength(a) below 3.2)");
    if(curMA_)curMA_->arrayLength=true;
    return{Kind::Int,{},{}};
   }
