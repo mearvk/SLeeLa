@@ -3118,6 +3118,8 @@ private:
         return isOpAt(j, "{") || isKwAt(j, "implements");
     }
 
+    struct Mods { std::set<std::string> set; bool has(const char* s) const { return set.count(s) > 0; } };
+
     // ---- record (JLS 8.10) -------------------------------------------------------------------
     // A record is lowered to a class with one field per component, the canonical constructor (a
     // compact constructor runs its body first), one accessor per component, and the generated
@@ -3604,7 +3606,6 @@ private:
     }
 
     // ---------------------------------------------------------- members ----
-    struct Mods { std::set<std::string> set; bool has(const char* s) const { return set.count(s) > 0; } };
     std::string visibilityOf(const Mods& mods) const {
         if (mods.has("public")) return "public";
         if (mods.has("protected")) return "protected";
