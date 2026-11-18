@@ -69,7 +69,7 @@ Runtime internals may evolve without changing the documented exchange contract u
 The runtime consumes artifacts produced by the authoritative SLeeLa compiler;
 it does not define a separate source grammar. The current normative language
 edition is **SLeeLa Syntax 3.0**, and the shared frontend accepts source syntax
-**1.0–3.1**. Source-version resolution and parsing belong to the compiler;
+**1.0–3.2**. Source-version resolution and parsing belong to the compiler;
 the runtime must preserve and respect the artifact's compatibility metadata.
 
 Syntax 3.0 consolidates the established 1.x/2.x surface. It does not erase
