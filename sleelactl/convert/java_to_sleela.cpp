@@ -1108,8 +1108,7 @@ private:
         };
         std::set<std::string> left,right,common;
         collect(a,left); collect(b,right);
-        std::set_intersection(left.begin(),left.end(),right.begin(),right.end(),
-                              std::inserter(common,common.begin()));
+        for (const auto& candidate:left) if (right.count(candidate)) common.insert(candidate);
         std::vector<std::string> minimal;
         for (const auto& candidate:common) {
             bool lessSpecific=false;
