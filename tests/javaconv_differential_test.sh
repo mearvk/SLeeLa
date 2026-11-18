@@ -10,6 +10,7 @@
 #
 # usage: tests/javaconv_differential_test.sh [path-to-sleela] [path-to-javaconv]
 set -u
+set -o pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
 root="$(cd "$here/.." && pwd)"
 conv="${2:-$root/sleelactl/convert/build/javaconv}"
@@ -151,9 +152,6 @@ else
   printf 'FAIL  duplicate-type (rc=%s)\n%s\n' "$duplicate_rc" "$duplicate_out"; fail=$((fail+1))
 fi
 
-echo "javaconv differential: pass=$pass fail=$fail"
-[ "$fail" -eq 0 ]
-
 # project-wide generic inheritance: type arguments must be substituted through
 # a cross-file superclass and interface edge before inherited calls are emitted.
 mkdir -p "$tmp/project-inherited/src" "$tmp/project-inherited/cls" "$tmp/project-inherited/sl"
@@ -192,3 +190,6 @@ if javac -d "$tmp/project-inherited/cls" "$tmp/project-inherited/src/"*.java 2> 
 else
   printf 'FAIL  project-inherited (project build or conversion failed)\n'; cat "$tmp/project-inherited/javac.err"; fail=$((fail+1))
 fi
+
+echo "javaconv differential: pass=$pass fail=$fail"
+[ "$fail" -eq 0 ]
