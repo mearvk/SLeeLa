@@ -69,7 +69,7 @@ class JDK28SignatureIndexTests(unittest.TestCase):
             t, sig, "Box", "  public Box(Any value) { }"
         )
         self.assertEqual(constructors, 0)
-        self.assertEqual(methods, 0)
+        self.assertEqual(methods, 1)
 
     def test_inherited_interface_implementation_prevents_redundant_stub(self):
         t = {"name": "example.Child", "kind": "class", "fields": [], "components": []}
@@ -84,6 +84,7 @@ class JDK28SignatureIndexTests(unittest.TestCase):
         )
         self.assertEqual(methods, 0)
         self.assertNotIn("ready(", "\n".join(lines))
+        self.assertIn("hidden(", "\n".join(lines))
 
 
 if __name__ == "__main__":
