@@ -3549,7 +3549,7 @@ private:
         std::string name = ident();
 
         if (isOp("(")) {
-            if (kSleelaReserved.count(name) && name != "close")
+            if (cm_find(&M, "rename", name.c_str(), "all", nullptr) && name != "close")
                 fail("reserved-member", "a method named '" + name + "' collides with a SLeeLa reserved word or built-in");
             scopes.clear(); usedNames.clear(); pushScope(); tmpCounter = 0;
             std::vector<std::pair<std::string, Ty>> params = parseParams();
@@ -3608,7 +3608,7 @@ private:
         for (;;) {
             Ty ft = ty;
             while (isOp("[") && isOpAt(p + 1, "]")) { p += 2; ft.dims++; }
-            if (kSleelaReserved.count(name))
+            if (cm_find(&M, "rename", name.c_str(), "all", nullptr))
                 fail("reserved-member", "a field named '" + name + "' collides with a SLeeLa reserved word");
             FieldInfo fi; fi.ty = ft; fi.isStatic = isStatic || isIface;
             if (pass == 1) ci.fields[name] = fi;
