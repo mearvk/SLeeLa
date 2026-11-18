@@ -178,3 +178,29 @@ This was a repository-document and implementation-scope review through the GitHu
 - Merge commit: `081099e892f3e341c723ccf7d804ccafcb3c0169` (three commits; three files: deferred wildcard lower-bound inference, its Java differential fixture, and this progress ledger).
 - The PR's JDK differential job was still queued at merge time; the JDK 28 workflow had been cancelled. No compile, differential, runtime or platform pass is claimed for this merge. The change is pushed, but remains verification-pending.
 - PR #372 is not merged by this action: its head is 413 commits behind current `master`, its mergeability check reports false, and its JDK converter and native portability workflows recorded failures. Its non-overlapping changes must be reviewed and ported onto current `master` rather than merging its stale branch wholesale.
+
+
+### Main-sequence continuation — class bounds and duplicate declarations (2026-11-18)
+
+Changes pushed directly to `master` after reconciling the still-open PR #372 against the current tree:
+
+- Retained class type-parameter upper-bound metadata in the converter symbol model for ordinary classes and records.
+- Added validation of concrete, known, non-wildcard type arguments against supported simple declared upper bounds. Parameterized/intersection bounds and unknown/wildcard actuals are not claimed as fully validated.
+- Changed pass-one duplicate detection so a repeated declaration in the same source unit is marked ambiguous, in addition to cross-source duplicates.
+- Added positive/negative JDK differential fixtures for bounded class arguments and wildcard lower-bound inference from both invocation arguments and target return context: `BoundedClassType`, `BoundedClassTypeConflict`, `LowerBoundWildcardInference`, and `LowerBoundWildcardConflict`.
+- Added a project-level same-compilation-unit duplicate declaration refusal test.
+- Updated the converter README inventory to 47 positive fixtures and 24 refusal fixtures. These counts describe files present, not passing tests.
+
+PR #372 was not merged wholesale. Its lower-bound inference implementation overlaps with and is superseded by the more general deferred-`Ty` constraint handling merged in PR #379. Its simple package-import change also overlaps with the current master's existing package-aware resolver and its broader package/nested-import fixture. Full package-qualified symbol identity remains a separate unresolved migration because the central class map is still keyed by simple/hoisted names.
+
+**Verification:** NOT RUN by request. No compiler build, converter self-check, JDK differential suite, or CI campaign was started for these commits. The added fixtures and bound checks are implementation work only until the user schedules verification. Production remains HOLD.
+
+**Current source commit:** `9e058fcc871010a42362737870cc182d673e8428` (clean 4,414-line converter source; class/record bound retention and same-unit duplicate guards). Earlier intermediate source content was replaced with the clean PR #379-integrated baseline before this final source commit; do not use intermediate commit `e6b1cc15baef7716433ba59a311f63e79db7a854` as a candidate.
+
+### Next implementation sequence
+
+1. Migrate project symbol identity from simple-name keys to package-qualified canonical keys while retaining deterministic source-level lookup, nested-type identity, import ambiguity, and accessibility semantics.
+2. Complete generic constructor and diamond inference, including constructor overload selection and declared class-bound substitution.
+3. Expand target-type constraints through assignment, field initializers, return expressions, lambdas and nested invocation contexts.
+4. Implement wildcard capture identities/conversion and intersection LUB/bounds; retain fail-closed behavior where the type model cannot represent the result.
+5. Continue semantic parity and transactional/provenance fault-injection work, then run the full differential campaign when authorized.
