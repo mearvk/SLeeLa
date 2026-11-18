@@ -8,7 +8,7 @@ Run from the repository root:
 The campaign separates these evidence classes instead of treating an API
 envelope as an implementation:
 
-1. JDK 28 inventory and index integrity.
+1. JDK 28 runtime reflection (module/type/field/member inventory) and docs-index integrity.
 2. Generic signature-index unit tests and an audit of type variables,
    wildcards, varargs, erasure collisions, and unsupported spellings.
 3. The /lib/java manifest and JDK 28 API identity/envelope contract.
