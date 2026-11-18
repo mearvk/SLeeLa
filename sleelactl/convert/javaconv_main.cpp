@@ -247,6 +247,12 @@ int main(int argc, char** argv) {
             !cm_find(&model, "cast", "float", "long", nullptr)) {
             std::cerr << "missing binary32 cast law\n"; missing++;
         }
+        static const char* const numericTypes[] = {"byte", "short", "char", "int", "long", "float", "double"};
+        for (const char* from : numericTypes)
+            for (const char* to : numericTypes)
+                if (!cm_find(&model, "cast", from, to, nullptr)) {
+                    std::cerr << "missing primitive cast " << from << " -> " << to << "\n"; missing++;
+                }
         if (!cm_find(&model, "tostr", "float", nullptr, nullptr)) { std::cerr << "missing float text law\n"; missing++; }
         if (!cm_find(&model, "rename", "next", "value", nullptr) ||
             !cm_find(&model, "rename", "close", "all", nullptr)) {
