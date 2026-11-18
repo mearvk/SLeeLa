@@ -911,9 +911,10 @@ private:
         return false;
     }
 
-    // JLS 5.3 invocation conversions used during overload selection. This deliberately
-    // handles identity, primitive widening and known reference subtyping; boxing,
-    // unchecked conversions and capture conversion remain fail-closed.
+    // JLS 5.3 strict invocation conversions used in overload phase 1:
+    // identity, primitive widening and known reference subtyping. Loose-phase
+    // boxing/unboxing is handled separately by invocationCostLoose; unchecked
+    // conversions and capture conversion remain fail-closed.
     int invocationCost(const Ty& from, const Ty& to, int depth = 0) const {
         if (!from.known() || !to.known() || depth > 32) return -1;
         if (from == to) return 0;
