@@ -401,7 +401,7 @@ private:
         Ty t = mk(name, depth);
         t.args = genericArgs;
         if (qual.empty() && methodTypeVars_.count(name)) t.n = "$T$" + name;
-        else if (qual.empty() && typeVars.count(name)) t.n = "?";
+        else if (qual.empty() && typeVars.count(name)) t.n = "$C$" + name;
         else if (qual.empty()) t.n = resolveTypeName(name);
         else t.n = qual + "__" + name;
         // Preserve wrapper identity for overload resolution, while emitType lowers
@@ -2864,7 +2864,7 @@ private:
         expectOp("{");
         ClassInfo& ci = classes[name];
         if (pass == 1) {
-            ci.fields.clear(); ci.methods.clear(); ci.super = ""; ci.ifaces = ifaceNames; ci.isInterface = false;
+            ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = ""; ci.ifaces = ifaceNames; ci.isInterface = false;
             for (auto& c : comps) { FieldInfo fi; fi.ty = c.second; ci.fields[c.first] = fi; MethodSig ms; ms.name = c.first; ms.ret = c.second; ci.methods.push_back(ms); }
             MethodSig canon; canon.name = "<init>"; canon.ret = mk("void"); canon.varargs = compVarargs; for (auto& c : comps) canon.params.push_back(c.second); ci.methods.push_back(canon);
             MethodSig ts; ts.name = "toString"; ts.ret = mk("String"); ci.methods.push_back(ts);
@@ -3570,7 +3570,7 @@ private:
         ClassInit cinit;
         InitScope hoistScope(this, isIface ? nullptr : &cinit);
         ClassInfo& ci = classes[name];
-        if (pass == 1) { ci.fields.clear(); ci.methods.clear(); ci.super = superName; ci.ifaces = ifaceNames; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : ""; }
+        if (pass == 1) { ci.fields.clear(); ci.methods.clear(); ci.typeParams = tparams; ci.super = superName; ci.ifaces = ifaceNames; ci.isInterface = isIface; ci.innerOf = innerMode_ ? outerName : ""; }
         std::vector<std::string> memberLines;
         int instanceFields = 0;
         size_t beforeDiags = diags.size();
