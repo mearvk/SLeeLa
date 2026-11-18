@@ -62,6 +62,7 @@ run_gate "jdk28-generator-tests" python3 -m unittest discover -s "$root/lib/java
 run_gate "jdk28-generator-syntax" python3 -m py_compile "$root/lib/java/jdk-28/tools/generate_jdk28.py" "$root/lib/java/jdk-25/tools/jdk_api_signatures.py"
 run_gate "jdk28-signature-index-audit" python3 "$root/lib/java/jdk-28/tools/generate_jdk28.py" --audit
 run_gate "jdk28-regenerate" python3 "$root/lib/java/jdk-28/tools/generate_jdk28.py"
+run_gate "jdk28-generated-diff-check" git diff --check -- lib/java/jdk-28
 run_gate "source-integrity-manifest-refresh" python3 "$root/tools/generate-sha256-manifest.py" --root "$root" --output "$root/security/sha256-manifest.json"
 run_gate "jdk28-inventory" python3 "$root/lib/java/jdk-28/tools/validate_jdk28.py"
 run_gate "java-library-manifest" python3 "$root/lib/java/validate.py"
