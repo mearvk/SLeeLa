@@ -970,8 +970,15 @@ private:
             if(primitive==to.n) return 4; // unboxing
             if(cm_find(&M,"widen",primitive.c_str(),to.n.c_str(),nullptr)) return 5;
         }
-        // Boxing to Object and wrapper-reference widening are reference conversions.
-        if(isPrimitiveName(from.n) && to.n=="Object" && modelBoxed(from.n,&primitive)) return 8;
+        // Boxing to Object is permitted only when the model declares a
+        // wrapper for the primitive. The box records are keyed by wrapper name,
+        // so inspect the indexed records for their primitive column.
+        if(isPrimitiveName(from.n) && to.n=="Object") {
+            for(size_t i=0;i<M.n;i++) {
+                const cm_rec& rec=M.recs[i];
+                if(std::string(rec.kind)=="box" && rec.nf>1 && from.n==rec.f[1]) return 8;
+            }
+        }
         if(from.boxed && to.n=="Object") return 8;
         return -1;
     }
