@@ -3534,7 +3534,7 @@ types, `0.0` for `double` / `float`, `false` for `boolean`, `null` otherwise. Fr
 `U<width>`) start at zero too (`arrayFillKind` in `impl/frontend/compiler.cpp`);
 before, `new int32[n]` held `null`. The 128-bit-backed members keep `null`.
 
-Multi-dimensional creation `new T[a][b]` is part of 3.1 (46.3); below 3.1 `new T[n]` takes one dimension.
+Multi-dimensional creation `new T[a][b]` is part of Syntax 3.2 (46.3); below 3.2 `new T[n]` takes one dimension.
 
 ### 44.4 Labeled statements, `break label`, `continue label`
 
@@ -3728,8 +3728,8 @@ The flags are computed by semantic analysis (`Binary::charMask`,
 `compare`, `hashCode`. Every method except the text of `toString` works in any
 syntax version; `toString` shows the character under 3.2 and the decimal code below.
 
-Tests: `impl/tests/syntax31/char_text.sleela`, `char_int_in_3_0.sleela`,
-`lib_char.sleela`; run `bash impl/tests/syntax31/run_syntax31_tests.sh`.
+Tests: `impl/tests/syntax32/char_text.sleela` and `lib_char.sleela`; run
+`bash impl/tests/syntax32/run_syntax32_tests.sh`.
 
 
 ## 46. Syntax 3.2 — the array specification
@@ -3776,8 +3776,8 @@ brackets must be trailing and leave those rows `null`; with no sized dimension a
 empty brackets introduce an initializer of that rank, `new int[][]{{7, 8}, {9}}`; a sized dimension after an empty
 one (`new T[2][][3]`) is a syntax error, as is more than eight sized dimensions.
 The element default (46.2) applies to the innermost sized level; trailing unsized
-levels are `null`. A multi-dimensional creation below 3.1 is the error
-`multi-dimensional array creation requires #sleela 3.1`.
+levels are `null`. A multi-dimensional creation below 3.2 is the error
+`multi-dimensional array creation requires #sleela 3.2`.
 
 Limit: because every row is an array object, a grid needs `1 + rows` of the 4096
 live-array slots (`new int[4096][1]` fails with `array allocation failed ... the
@@ -3790,11 +3790,11 @@ builds and drops many grids runs in constant space.
     int w = g[0].length;       < length of row 0 >
     int m = new int[7].length;
 
-In 3.1 `a.length` is the number of elements of the array `a`. It is read-only:
+In 3.2 `a.length` is the number of elements of the array `a`. It is read-only:
 `a.length = n` and `a.length++` are the error `the array length is read-only`. It
 is exactly `arrayLength(a)`, which remains available (and is what a library meant to
-run under any syntax uses). Below 3.1 `a.length` is the error `the array length
-member requires #sleela 3.1 (use arrayLength(a) below 3.1)`. A null array is the
+run under any syntax uses). Below 3.2 `a.length` is the error `the array length
+member requires #sleela 3.2 (use arrayLength(a) below 3.2)`. A null array is the
 runtime error `length() on a non-array value`.
 
 ### 46.5 Indexing
@@ -3835,7 +3835,7 @@ half-built grid.
 - `SLDoubleArray` over `double[]`: `copyOf`, `fill`, `sumOf`, `minOf`, `maxOf`,
   `indexOf`, `isEqual`, `reverse`.
 - `SLRefArray` over `Any[]`: `isEmpty`, `lengthOf`, `checkIndex`, `copyOf`, `fill`, `same`.
-- `SLArray2D` over `int[][]` and `double[][]` (needs 3.1): `create`, `createDouble`,
+- `SLArray2D` over `int[][]` and `double[][]` (needs 3.2): `create`, `createDouble`,
   `rows`, `cols`, `isRectangular`, `fill`, `copy`, `transpose`, `sumOf`, `toText`.
 
 The first three use `arrayLength` and run under any syntax that has arrays.
@@ -3846,6 +3846,6 @@ Array covariance and runtime element contracts (46.6), `clone()`, array of
 generics, variable-arity parameters `T... xs` (44.6), `new T[n]{...}`, creation
 above rank 8, and catchable index exceptions.
 
-Tests: `impl/tests/syntax31/array_nd.sleela` (including a 12,300-array
+Tests: `impl/tests/syntax32/array_nd.sleela` (including a 12,300-array
 collection stress), `lib_array.sleela`, `gate_*` and `bad_*`; run
-`bash impl/tests/syntax31/run_syntax31_tests.sh`.
+`bash impl/tests/syntax32/run_syntax32_tests.sh`.
