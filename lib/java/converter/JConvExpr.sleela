@@ -753,8 +753,12 @@ class JConvExpr {
     if (t == 6) {
       boolean ch = intLike(this.rw.kindOfType(op));
       sub(l, ch, depth);
-      < numeric casts follow the shared model rows, including float-to-integral saturation >
-      if (this.nK[l] == "d" || this.nK[l] == "f") { castCall(n, l, op, depth); }
+      < numeric casts follow the shared model rows, including narrowing and binary32 conversions >
+      String sourceKind = this.nK[l];
+      String targetKind = this.rw.kindOfType(op);
+      boolean numericSource = sourceKind == "i" || sourceKind == "l" || sourceKind == "f" || sourceKind == "d" || sourceKind == "c";
+      boolean numericTarget = targetKind == "i" || targetKind == "l" || targetKind == "f" || targetKind == "d" || targetKind == "c";
+      if (numericSource && numericTarget) { castCall(n, l, op, depth); }
       return;
     }
     if (t == 3) {
@@ -947,7 +951,12 @@ class JConvExpr {
   void castCall(int n, int l, String ty, int depth) {
     String to = ty;
     if (ty == "int32") { to = "int"; }
-    String from = this.nK[l] == "f" ? "float" : "double";
+    String from = "double";
+    String sourceKind = this.nK[l];
+    if (sourceKind == "f") { from = "float"; }
+    else if (sourceKind == "i") { from = "int"; }
+    else if (sourceKind == "l") { from = "long"; }
+    else if (sourceKind == "c") { from = "char"; }
     String fn = this.rw.unaryFn(this.rw.rules.model.castTemplate(from, to));
     if (fn == "") { return; }
     int p0 = this.nA[n];
