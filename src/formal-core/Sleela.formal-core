@@ -912,7 +912,7 @@ not this document's revision.
 14.1 Version axes. Three identifiers must not be conflated:
 
   - Source syntax edition: the per-file #sleela M.N pragma.
-  - Compiler/tool release: for example SLeeLa 1.3.2-pro.
+  - Compiler/tool release: for example SLeeLa 1.0121.
   - Formal-document revision: SL-FORMAL-0001 Revision 0.2.0.
 
 A source file declaring edition n may use only features whose version gate is
