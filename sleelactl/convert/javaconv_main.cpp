@@ -20,6 +20,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <utility>
 
 namespace fs = std::filesystem;
 
@@ -278,9 +279,9 @@ private:
         std::error_code ec;
         fs::recursive_directory_iterator it(source, fs::directory_options::none, ec), end;
         if (ec) { *why = "cannot enumerate previous output tree: " + ec.message(); return false; }
-        for (; it != end; it.increment(ec)) {
-            if (ec) { *why = "cannot enumerate previous output tree: " + ec.message(); return false; }
-            const fs::path rel = fs::relative(it->path(), source, ec);
+        while (it != end) {
+            const fs::path entryPath = it->path();
+            const fs::path rel = fs::relative(entryPath, source, ec);
             if (ec || !safeManifestPath(rel.generic_string())) {
                 *why = "unsafe path in previous output tree";
                 return false;
@@ -288,7 +289,7 @@ private:
             const fs::file_status st = it->symlink_status(ec);
             if (ec) { *why = "cannot inspect previous output entry: " + ec.message(); return false; }
             if (fs::is_symlink(st)) {
-                *why = "refusing symlink in previous output tree: " + it->path().string();
+                *why = "refusing symlink in previous output tree: " + entryPath.string();
                 return false;
             }
             const fs::path target = destination / rel;
@@ -296,12 +297,14 @@ private:
                 fs::create_directories(target, ec);
             } else if (fs::is_regular_file(st)) {
                 fs::create_directories(target.parent_path(), ec);
-                if (!ec) fs::copy_file(it->path(), target, fs::copy_options::overwrite_existing, ec);
+                if (!ec) fs::copy_file(entryPath, target, fs::copy_options::overwrite_existing, ec);
             } else {
-                *why = "refusing special file in previous output tree: " + it->path().string();
+                *why = "refusing special file in previous output tree: " + entryPath.string();
                 return false;
             }
             if (ec) { *why = "cannot stage previous output entry '" + rel.generic_string() + "': " + ec.message(); return false; }
+            it.increment(ec);
+            if (ec) { *why = "cannot enumerate previous output tree: " + ec.message(); return false; }
         }
         return true;
     }
