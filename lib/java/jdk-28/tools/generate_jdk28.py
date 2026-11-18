@@ -331,6 +331,7 @@ def member_signature_index(sig):
         groups.setdefault(key, []).append(member)
     for group in groups.values():
         group.sort(key=lambda m: (tuple(p[0] for p in m["params"]), m.get("tparams", "")))
+    groups = dict(sorted(groups.items(), key=lambda item: (item[0][0], item[0][1])))
     collisions = sum(max(0, len(group) - 1) for group in groups.values())
     return groups, collisions
 
