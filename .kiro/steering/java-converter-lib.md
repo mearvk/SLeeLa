@@ -2,7 +2,7 @@
 inclusion: always
 ---
 
-# lib/java/converter: standing decisions (repository owner, 2026-11-13)
+# lib/java/converter: standing decisions (repository owner, updated 2026-11-18)
 
 Repo-scoped, always-on. `lib/java/converter` is the SLeeLa-language Java to SLeeLa
 converter (README: `lib/java/converter/README.md`). It is separate from
@@ -16,10 +16,11 @@ converter (README: `lib/java/converter/README.md`). It is separate from
    files declare `#sleela 3.1` and use only forms up to section 44. Do not adopt
    syntax 3.1 forms (sections 45, 46: typed char text, read-only `a.length`,
    `new T[a][b]`) unless the owner asks for it.
-3. **Laws come from the shared model.** Operator, cast, string-conversion and
-   result-type laws are read from `impl/subjects/conversion/conversion.model`
+3. **Shared semantic laws come from the model.** Type/rank/promotion, operator,
+   cast, widening, string-conversion, identifier-replacement and built-in
+   qualification laws are read from `impl/subjects/conversion/conversion.model`
    (`JConvModel`). Where both converters apply a law, they use the same row.
-   Change a law in the model, not in the converter.
+   Change a law in the model, not in either converter.
 4. **Verify by output.** After a converter change: convert
    `lib/java/converter/samples` with `JCONV_BUNDLE=1`, run it, and diff against
    `samples/ConvDemo.java.expected.txt` and `samples/LambdaDemo.java.expected.txt`
@@ -33,7 +34,7 @@ converter (README: `lib/java/converter/README.md`). It is separate from
    document, so a runnable program with lambdas must be one `JCONV_BUNDLE=1`
    document.
 
-## Working notes (2026-11-14, converter 0.7.8): how to verify fast
+## Working notes (2026-11-18, converter 0.7.9): how to verify fast
 
 - **Owner priority:** get the translation and `impl/subjects/conversion/conversion.model`
   right before implementing exact JDK library behaviour. Put Java-to-SLeeLa law in the
@@ -63,11 +64,14 @@ converter (README: `lib/java/converter/README.md`). It is separate from
   put new state in a helper class such as `JConvClassLit`); a bare `next` is the
   integer 1; `require`, `close`, `print`, `record`, `String` are not usable names.
   The measured list is `impl/subjects/conversion/IDENTIFIER-COLLISIONS.md`.
-- **Rename rules apply to every use.** `JConvRules.isRenamedIdent` renames library
-  method calls too (`it.next()` would become `it.next_()`), so a word that is only bad
-  as a variable needs a context rule like `JConvRewriter.renameNextVariables`.
+- **Rename rules are context-aware.** Shared `rename` rows carry a context;
+  `next` is `value`-only and `JConvRewriter.renameNextVariables` reads that row,
+  preserving calls such as `it.next()`. `close` maps to `closeResource`.
 - **Open items:**
-  - The 13 renames are not model rows yet.
-  - `connect` and `send` must be renamed only as methods declared in the converted code.
+  - `connect` and `send` still need member-context rewriting for declarations
+    and calls on converted source types; qualification alone does not solve
+    receiver-independent Munction verbs.
+  - Native float compound-assignment lowering and cross-converter float
+    differential verification remain open.
   - A type's own Javadoc is dropped from the output.
   - Many `jdk-28` stubs return defaults instead of throwing.
