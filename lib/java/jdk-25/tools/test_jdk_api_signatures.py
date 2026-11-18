@@ -87,7 +87,7 @@ class SignatureErasureTests(unittest.TestCase):
         }
         impl = {
             "Base": "  public void base(int value) { }",
-            "First": "  public default void defaulted(int value) { }\n  public static void helper(int value) { }",
+            "First": "  public default void defaulted(int value) { }\n  public static void helper(int value) { }\n  private void privateHelper(int value) { }",
             "Second": "  public void inherited(int value) { }",
         }
         found = sig.inherited_implementation_methods("Child", api, impl)
@@ -95,6 +95,7 @@ class SignatureErasureTests(unittest.TestCase):
         self.assertIn("defaulted", found)
         self.assertIn("inherited", found)
         self.assertNotIn("helper", found)
+        self.assertNotIn("privateHelper", found)
 
     def test_constructor_assignability_distinguishes_same_arity(self):
         self.assertFalse(sig.accepts(("R",), ("I",)))
