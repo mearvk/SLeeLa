@@ -968,15 +968,23 @@ class JConvExpr {
     else if (sourceKind == "i") { from = "int"; }
     else if (sourceKind == "l") { from = "long"; }
     else if (sourceKind == "c") { from = "char"; }
-    String fn = this.rw.unaryFn(this.rw.rules.model.castTemplate(from, to));
-    if (fn == "") { return; }
+    String tpl = this.rw.rules.model.castTemplate(from, to);
+    if (tpl == "" || tpl == "=") { return; }
     int p0 = this.nA[n];
     if (this.rw.ot[p0] != "(" || this.rw.ot[p0 + 2] != ")") { return; }
     int ord = 2 * depth + 1;
-    edit(p0, fn, 1, 3, ord, 0);
-    edit(p0 + 1, "(", 5, 3, ord, 0);
-    edit(p0 + 2, "", 5, 4, ord, 0);
-    edit(this.nB[n], ")", 5, 2, ord, 0);
+    String fn = this.rw.unaryFn(tpl);
+    if (fn != "") {
+      edit(p0, fn, 1, 3, ord, 0);
+      edit(p0 + 1, "(", 5, 3, ord, 0);
+      edit(p0 + 2, "", 5, 4, ord, 0);
+      edit(this.nB[n], ")", 5, 2, ord, 0);
+    } else if (tpl.startsWith("JavaFloat.") || tpl.startsWith("JavaOperands.")) {
+      wrapOne(this.nA[l], this.nB[l], tpl, ord);
+      edit(p0, "", 5, 4, ord, 0);
+      edit(p0 + 1, "", 5, 4, ord, 0);
+      edit(p0 + 2, "", 5, 4, ord, 0);
+    } else { return; }
     this.calls = this.calls + 1;
   }
 
