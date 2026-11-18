@@ -106,6 +106,7 @@ manifest = {
 }
 (out / "CONVERSION-PROVENANCE.json").write_text(json.dumps(manifest, sort_keys=True, indent=2) + "\n")
 PY
+python3 "$here/verify-provenance.py" "$JCONV_OUT/CONVERSION-PROVENANCE.json" "$root" "$JCONV_IN" "$JCONV_OUT"
 
 if [ -e "$FINAL_OUT" ]; then mv "$FINAL_OUT" "$backup"; fi
 if ! mv "$stage" "$FINAL_OUT"; then
