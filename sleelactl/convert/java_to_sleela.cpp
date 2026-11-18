@@ -181,6 +181,8 @@ private:
                 const std::string full = entry.second.packageName.empty() ? dotted : entry.second.packageName + "." + dotted;
                 if (full == im->second) {
                     if (entry.second.ambiguous) throw ConvErr{cur().line, cur().col, "type-ambiguous", "the imported type '" + im->second + "' has duplicate declarations"};
+                    if (entry.second.packageName != packageName_ && entry.second.typeVisibility != "public")
+                        throw ConvErr{cur().line, cur().col, "type-access", "type '" + im->second + "' is not public outside package '" + entry.second.packageName + "'"};
                     return entry.first;
                 }
             }
@@ -196,6 +198,8 @@ private:
             if (local != classes.end() && local->second.packageName == pkg) wildcardMatch = true;
         if (wildcardMatch) {
             if (local->second.ambiguous) throw ConvErr{cur().line, cur().col, "type-ambiguous", "the wildcard-imported type '" + n + "' has duplicate declarations"};
+            if (local->second.packageName != packageName_ && local->second.typeVisibility != "public")
+                throw ConvErr{cur().line, cur().col, "type-access", "type '" + n + "' is not public outside package '" + local->second.packageName + "'"};
             return n;
         }
         if (local != classes.end() && local->second.ambiguous)
